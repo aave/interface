@@ -54,6 +54,7 @@ export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
+    privateJsonRPCUrl: "https://eth-sepolia.g.alchemy.com/v2/VAfNJrTN-TopQjFDwcdLeeDOLDiFQcBP",
     publicJsonRPCUrl: [
       'https://eth-sepolia.public.blastapi.io',
       'https://rpc.sepolia.org',

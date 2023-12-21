@@ -15,6 +15,7 @@ import {
   networkConfigs as _networkConfigs,
 } from '../ui-config/networksConfig';
 import { RotationProvider } from './rotationProvider';
+import { ProviderWithSend } from 'src/components/transactions/GovVote/temporary/VotingMachineService';
 
 export type Pool = {
   address: string;
@@ -122,15 +123,15 @@ export const availableMarkets = Object.keys(marketsData).filter((key) =>
 
 const linkBuilder =
   ({ baseUrl, addressPrefix = 'address', txPrefix = 'tx' }: ExplorerLinkBuilderConfig) =>
-  ({ tx, address }: ExplorerLinkBuilderProps): string => {
-    if (tx) {
-      return `${baseUrl}/${txPrefix}/${tx}`;
-    }
-    if (address) {
-      return `${baseUrl}/${addressPrefix}/${address}`;
-    }
-    return baseUrl;
-  };
+    ({ tx, address }: ExplorerLinkBuilderProps): string => {
+      if (tx) {
+        return `${baseUrl}/${txPrefix}/${tx}`;
+      }
+      if (address) {
+        return `${baseUrl}/${addressPrefix}/${address}`;
+      }
+      return baseUrl;
+    };
 
 export function getNetworkConfig(chainId: ChainId): NetworkConfig {
   const config = networkConfigs[chainId];
@@ -159,14 +160,14 @@ export const isFeatureEnabled = {
   switch: (data: MarketDataType) => data.enabledFeatures?.switch,
 };
 
-const providers: { [network: string]: ethersProviders.Provider } = {};
+const providers: { [network: string]: ProviderWithSend } = {};
 
 /**
  * Created a fallback rpc provider in which providers are prioritized from private to public and in case there are multiple public ones, from top to bottom.
  * @param chainId
  * @returns provider or fallbackprovider in case multiple rpcs are configured
  */
-export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
+export const getProvider = (chainId: ChainId): ProviderWithSend => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
     const chainProviders: string[] = [];

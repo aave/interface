@@ -52,6 +52,7 @@ export type VotingChain = typeof votingChainIds[number];
 export interface VotingMachineConfig {
   portalToMachineMap: { [votingPoralAddress: string]: string };
   votingPortalDataHelperAddress: string;
+  votingMachineAddress: string;
 }
 
 export interface GovernanceV3Config {
@@ -71,6 +72,7 @@ const sepoliaVotingMachineConfig: VotingMachineConfig = {
     '0x1079bAa48E56065d43b4344866B187a485cb0A92': '0xA1995F1d5A8A247c064a76F336E1C2ecD24Ef0D9',
   },
   votingPortalDataHelperAddress: '0x133210F3fe2deEB34e65deB6861ee3dF87393977',
+  votingMachineAddress: '0xA1995F1d5A8A247c064a76F336E1C2ecD24Ef0D9',
 };
 
 const fujiVotingMachineConfig: VotingMachineConfig = {
@@ -78,6 +80,7 @@ const fujiVotingMachineConfig: VotingMachineConfig = {
     '0x4f47EdF2577995aBd7B875Eed75b3F28a20E696F': '0x767AA57554690D23D1E0594E8746271C97e1A1e4',
   },
   votingPortalDataHelperAddress: '0x133210F3fe2deEB34e65deB6861ee3dF87393977',
+  votingMachineAddress: '0x767AA57554690D23D1E0594E8746271C97e1A1e4',
 };
 
 export const governanceV3Config: GovernanceV3Config = {
