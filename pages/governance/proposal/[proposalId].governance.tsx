@@ -3,10 +3,12 @@ import { Grid } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Meta } from 'src/components/Meta';
+import { usePayloadsData } from 'src/hooks/governance/usePayloadsData';
 import { useProposal } from 'src/hooks/governance/useProposal';
 import { useGetVotingConfig } from 'src/hooks/governance/useProposals';
 import { useProposalVotes } from 'src/hooks/governance/useProposalVotes';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { ProposalLifecycle } from 'src/modules/governance/proposal/ProposalLifecycle';
 // import { ProposalDetails } from 'src/modules/governance/proposal/ProposalDetails';
 import { ProposalOverview } from 'src/modules/governance/proposal/ProposalOverview';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
@@ -31,10 +33,25 @@ export default function ProposalPage() {
     error: newProposalError,
   } = useProposal(+proposalId);
 
+  const payloadParams =
+    proposal?.proposalData.proposalData.payloads.map((p) => {
+      return {
+        payloadControllerAddress: p.payloadsController,
+        payloadId: p.payloadId,
+        chainId: p.chain,
+      };
+    }) || [];
+
+  const { data: payloadData } = usePayloadsData(payloadParams);
+
   const { data: constants, isLoading: constantsLoading } = useGetVotingConfig();
   const proposalVotes = useProposalVotes({ proposalId });
 
   const loading = newProposalLoading || constantsLoading;
+
+  const proposalVotingConfig = constants?.votingConfigs.find(
+    (c) => c.accessLevel === proposal?.proposalData.proposalData.accessLevel
+  );
 
   const formattedProposal =
     proposal &&
@@ -75,7 +92,11 @@ export default function ProposalPage() {
                   proposalVotes={proposalVotes}
                   loading={loading}
                 />
-                {/* <ProposalDetails /> */}
+                <ProposalLifecycle
+                  proposal={proposal}
+                  payloads={payloadData}
+                  votingConfig={proposalVotingConfig}
+                />
               </>
             )}
           </Grid>
