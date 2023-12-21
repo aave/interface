@@ -1,5 +1,11 @@
 import { ChainId } from '@aave/contract-helpers';
-// import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import {
+  AaveSafetyModule,
+  AaveV3Ethereum,
+  GovernanceV3Avalanche,
+  GovernanceV3Ethereum,
+  GovernanceV3Polygon,
+} from '@bgd-labs/aave-address-book';
 
 export interface GovernanceConfig {
   chainId: ChainId;
@@ -48,7 +54,6 @@ export const governanceConfig: GovernanceConfig = {
 };
 
 export const votingChainIds = [ChainId.sepolia, ChainId.fuji] as const;
-export type VotingChain = typeof votingChainIds[number];
 
 export interface VotingMachineConfig {
   portalToMachineMap: { [votingPoralAddress: string]: string };
@@ -60,8 +65,8 @@ export interface VotingMachineConfig {
 export interface GovernanceV3Config {
   coreChainId: ChainId;
   governanceCoreSubgraphUrl: string;
-  votingChainConfig: { [key in VotingChain]: VotingMachineConfig };
-  payloadsControllerDataHelpers: { [key in VotingChain]: string };
+  votingChainConfig: { [chainId: number]: VotingMachineConfig };
+  payloadsControllerDataHelpers: { [chainId: number]: string };
   addresses: {
     GOVERNANCE_CORE: string;
     GOVERNANCE_DATA_HELPER: string;
@@ -90,27 +95,80 @@ const fujiVotingMachineConfig: VotingMachineConfig = {
     'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/votingmachine-sepolia-avalanche-testnet/v2/gn',
 };
 
-export const governanceV3Config: GovernanceV3Config = {
-  coreChainId: ChainId.sepolia,
-  governanceCoreSubgraphUrl:
-    'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/governance-v3/v2.0.1/gn',
-  votingChainConfig: {
-    [ChainId.sepolia]: sepoliaVotingMachineConfig,
-    [ChainId.fuji]: fujiVotingMachineConfig,
+type GovernanceChainConfig = {
+  [chainId: number]: GovernanceV3Config;
+};
+
+export const governanceChainConfig: GovernanceChainConfig = {
+  [ChainId.sepolia]: {
+    coreChainId: ChainId.sepolia,
+    governanceCoreSubgraphUrl:
+      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/governance-v3/v2.0.1/gn',
+    votingChainConfig: {
+      [ChainId.sepolia]: sepoliaVotingMachineConfig,
+      [ChainId.fuji]: fujiVotingMachineConfig,
+    },
+    payloadsControllerDataHelpers: {
+      [ChainId.sepolia]: '0x6B9AF21B95FE20b5a878b43670c23124841ec31A',
+      [ChainId.fuji]: '0x6B9AF21B95FE20b5a878b43670c23124841ec31A',
+    },
+    votingAssets: [
+      // TODO: could query the contracts for list of voting assets
+      '0xdaEcee477B931b209e8123401EA37582ACB3811d',
+      '0x354032B31339853A3D682613749F183328d07275',
+      '0x26aAB2aE39897338c2d91491C46c14a8c2a67919',
+    ],
+    addresses: {
+      GOVERNANCE_CORE: '0xc4ABF658C3Dda84225cF8A07d7D5Bb6Aa41d9E59',
+      GOVERNANCE_DATA_HELPER: '0x863f9De2f82AB502612E8B7d4f4863c8535cb8cA',
+      WALLET_BALANCE_PROVIDER: '0xCD4e0d6D2b1252E2A709B8aE97DBA31164C5a709', // AaveV3Ethereum.WALLET_BALANCE_PROVIDER,
+    },
   },
-  payloadsControllerDataHelpers: {
-    [ChainId.sepolia]: '0x6B9AF21B95FE20b5a878b43670c23124841ec31A',
-    [ChainId.fuji]: '0x6B9AF21B95FE20b5a878b43670c23124841ec31A',
-  },
-  votingAssets: [
-    // TODO: could query the contracts for list of voting assets
-    '0xdaEcee477B931b209e8123401EA37582ACB3811d',
-    '0x354032B31339853A3D682613749F183328d07275',
-    '0x26aAB2aE39897338c2d91491C46c14a8c2a67919',
-  ],
-  addresses: {
-    GOVERNANCE_CORE: '0xc4ABF658C3Dda84225cF8A07d7D5Bb6Aa41d9E59',
-    GOVERNANCE_DATA_HELPER: '0x863f9De2f82AB502612E8B7d4f4863c8535cb8cA',
-    WALLET_BALANCE_PROVIDER: '0xCD4e0d6D2b1252E2A709B8aE97DBA31164C5a709', // AaveV3Ethereum.WALLET_BALANCE_PROVIDER,
+  [ChainId.mainnet]: {
+    coreChainId: ChainId.mainnet,
+    governanceCoreSubgraphUrl: '',
+    votingChainConfig: {
+      [ChainId.mainnet]: {
+        portalToMachineMap: {
+          [GovernanceV3Ethereum.VOTING_PORTAL_ETH_ETH]: GovernanceV3Ethereum.VOTING_MACHINE,
+        },
+        votingPortalDataHelperAddress: GovernanceV3Ethereum.VM_DATA_HELPER,
+        votingMachineAddress: GovernanceV3Ethereum.VOTING_MACHINE,
+        subgraphUrl: '',
+      },
+      [ChainId.polygon]: {
+        portalToMachineMap: {
+          [GovernanceV3Ethereum.VOTING_PORTAL_ETH_POL]: GovernanceV3Polygon.VOTING_MACHINE,
+        },
+        votingPortalDataHelperAddress: GovernanceV3Polygon.VM_DATA_HELPER,
+        votingMachineAddress: GovernanceV3Polygon.VOTING_MACHINE,
+        subgraphUrl: '',
+      },
+      [ChainId.avalanche]: {
+        portalToMachineMap: {
+          [GovernanceV3Ethereum.VOTING_PORTAL_ETH_AVAX]: GovernanceV3Avalanche.VOTING_MACHINE,
+        },
+        votingPortalDataHelperAddress: GovernanceV3Avalanche.VM_DATA_HELPER,
+        votingMachineAddress: GovernanceV3Avalanche.VOTING_MACHINE,
+        subgraphUrl: '',
+      },
+    },
+    payloadsControllerDataHelpers: {
+      [ChainId.mainnet]: GovernanceV3Ethereum.PC_DATA_HELPER,
+      [ChainId.polygon]: GovernanceV3Polygon.PC_DATA_HELPER,
+      [ChainId.avalanche]: GovernanceV3Avalanche.PC_DATA_HELPER,
+    },
+    votingAssets: [
+      AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
+      AaveV3Ethereum.ASSETS.AAVE.A_TOKEN,
+      AaveSafetyModule.STK_AAVE,
+    ],
+    addresses: {
+      GOVERNANCE_CORE: GovernanceV3Ethereum.GOVERNANCE,
+      GOVERNANCE_DATA_HELPER: GovernanceV3Ethereum.GOV_DATA_HELPER,
+      WALLET_BALANCE_PROVIDER: AaveV3Ethereum.WALLET_BALANCE_PROVIDER,
+    },
   },
 };
+
+export const governanceV3Config = governanceChainConfig[ChainId.sepolia];

@@ -1,7 +1,6 @@
 import { ChainId, Payload } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
-import { VotingChain } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 type PayloadParams = {
@@ -44,7 +43,7 @@ async function fetchPayloadsData(params: PayloadParams[], service: GovernanceV3S
 
   const promises: Promise<Payload[]>[] = [];
   Object.entries(payloadsByChainId).forEach(([chainId, payloads]) => {
-    const chainIdKey = +chainId as VotingChain;
+    const chainIdKey = +chainId;
     Object.entries(payloads).forEach(([payloadControllerAddress, payloadIds]) => {
       promises.push(service.getPayloadsData(payloadControllerAddress, payloadIds, chainIdKey));
     });

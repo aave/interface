@@ -2,7 +2,7 @@ import { ChainId } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
-import { governanceV3Config, VotingChain } from 'src/ui-config/governanceConfig';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 
 export type ProposalVote = {
   proposalId: string;
@@ -39,7 +39,7 @@ export const useProposalVotesQuery = ({
   return useQuery({
     queryFn: () =>
       request<{ voteEmitteds: ProposalVote[] }>(
-        governanceV3Config.votingChainConfig[votingChainId as VotingChain].subgraphUrl,
+        governanceV3Config.votingChainConfig[votingChainId as ChainId].subgraphUrl,
         getProposalVotes,
         {
           proposalId,

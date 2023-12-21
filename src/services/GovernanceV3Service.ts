@@ -9,7 +9,7 @@ import {
 } from '@aave/contract-helpers';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { governanceV3Config, VotingChain, votingChainIds } from 'src/ui-config/governanceConfig';
+import { governanceV3Config, votingChainIds } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 export class GovernanceV3Service {
@@ -26,7 +26,7 @@ export class GovernanceV3Service {
     return new GovernanceCoreService(governanceV3Config.addresses.GOVERNANCE_CORE, provider);
   }
 
-  private getPayloadDataHelperService(chainId: VotingChain) {
+  private getPayloadDataHelperService(chainId: ChainId) {
     const provider = getProvider(governanceV3Config.coreChainId);
     return new PayloadsDataHelperService(
       governanceV3Config.payloadsControllerDataHelpers[chainId],
@@ -98,7 +98,7 @@ export class GovernanceV3Service {
   }
 
   async getPayloadsData(payloadsControllerAddress: string, payloadIds: number[], chainId: ChainId) {
-    const dataHelperService = this.getPayloadDataHelperService(chainId as VotingChain);
+    const dataHelperService = this.getPayloadDataHelperService(chainId);
     const payloadsData = await dataHelperService.getPayloadsData(
       payloadsControllerAddress,
       payloadIds
