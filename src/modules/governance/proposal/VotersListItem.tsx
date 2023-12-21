@@ -41,13 +41,13 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
     return name.length < 16 ? name : textCenterEllipsis(name, 12, 3);
   };
 
-  // Voting power - convert the bignumber for displaying. Adjust decimals based off of large and small values.
+  // Voting power - Adjust decimals based off of large and small values.
   // Decimals increase in precision as values become lower:
   // Four for 0<n<1.
   // Three for 1<=n<10.
   // Two for 10<=n<1000.
   // Zero decimals for 1000<=n<Infinity.
-  const displayVotingPower = Number(voter.votingPower) / 10 ** 18;
+  const displayVotingPower = Number(voter.votingPower);
   const displayVotingPowerDecimals =
     displayVotingPower < 1
       ? 4
