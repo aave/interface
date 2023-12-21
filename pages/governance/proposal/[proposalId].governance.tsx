@@ -45,7 +45,10 @@ export default function ProposalPage() {
   const { data: payloadData } = usePayloadsData(payloadParams);
 
   const { data: constants, isLoading: constantsLoading } = useGetVotingConfig();
-  const proposalVotes = useProposalVotes({ proposalId });
+  const proposalVotes = useProposalVotes({
+    proposalId,
+    votingChainId: proposal?.proposalData.votingChainId,
+  });
 
   const loading = newProposalLoading || constantsLoading;
 

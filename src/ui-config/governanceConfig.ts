@@ -54,11 +54,11 @@ export interface VotingMachineConfig {
   portalToMachineMap: { [votingPoralAddress: string]: string };
   votingPortalDataHelperAddress: string;
   votingMachineAddress: string;
+  subgraphUrl: string;
 }
 
 export interface GovernanceV3Config {
   coreChainId: ChainId;
-  votingMachineSubgraphUrl: string;
   governanceCoreSubgraphUrl: string;
   votingChainConfig: { [key in VotingChain]: VotingMachineConfig };
   payloadsControllerDataHelpers: { [key in VotingChain]: string };
@@ -76,6 +76,8 @@ const sepoliaVotingMachineConfig: VotingMachineConfig = {
   },
   votingPortalDataHelperAddress: '0x133210F3fe2deEB34e65deB6861ee3dF87393977',
   votingMachineAddress: '0xA1995F1d5A8A247c064a76F336E1C2ecD24Ef0D9',
+  subgraphUrl:
+    'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/votingmachine-sepolia/v1/gn',
 };
 
 const fujiVotingMachineConfig: VotingMachineConfig = {
@@ -84,12 +86,12 @@ const fujiVotingMachineConfig: VotingMachineConfig = {
   },
   votingPortalDataHelperAddress: '0x133210F3fe2deEB34e65deB6861ee3dF87393977',
   votingMachineAddress: '0x767AA57554690D23D1E0594E8746271C97e1A1e4',
+  subgraphUrl:
+    'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/votingmachine-sepolia-avalanche-testnet/v2/gn',
 };
 
 export const governanceV3Config: GovernanceV3Config = {
   coreChainId: ChainId.sepolia,
-  votingMachineSubgraphUrl:
-    'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/votingmachine-sepolia-avalanche-testnet/v2/gn',
   governanceCoreSubgraphUrl:
     'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/governance-v3/v2.0.1/gn',
   votingChainConfig: {
