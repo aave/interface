@@ -44,6 +44,17 @@ export const ProposalLifecycle = ({
 
   const proposalState = getLifecycleState(proposal, payloads);
 
+  const votingClosedStepLabel = <Trans>Voting closed</Trans>;
+  // TODO: show if passed/failed
+  // if (proposalState >= ProposalLifecycleStep.VotingClosed) {
+  // proposal.votingMachineData.
+  // votingClosedStepLabel = (
+  //   <>
+  //     <Trans>Voting closed</Trans>
+  //     {'Passed'}
+  //   </>
+  // );
+  // }
   return (
     <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
       <Typography variant="h3">
@@ -59,36 +70,25 @@ export const ProposalLifecycle = ({
         }}
       >
         <ProposalStep
-          state={
-            proposalState >= ProposalLifecycleStep.Created ? StepState.Completed : StepState.Active
-          }
+          completed={proposalState > ProposalLifecycleStep.Created}
+          active={proposalState === ProposalLifecycleStep.Created}
           stepName={<Trans>Created</Trans>}
           timestamp={formatTime(proposal.proposalData.proposalData.creationTime)}
         />
         <ProposalStep
-          state={
-            proposalState > ProposalLifecycleStep.OpenForVoting
-              ? StepState.Completed
-              : StepState.Active
-          }
+          completed={proposalState > ProposalLifecycleStep.OpenForVoting}
+          active={proposalState === ProposalLifecycleStep.OpenForVoting}
           stepName={<Trans>Open for voting</Trans>}
           timestamp={formatTime(getOpenForVotingTimestamp(proposalState, proposal, votingConfig))}
         />
         <ProposalStep
-          state={
-            proposalState > ProposalLifecycleStep.VotingClosed
-              ? StepState.Completed
-              : StepState.Active
-          }
-          stepName={<Trans>Voting closed</Trans>}
+          completed={proposalState > ProposalLifecycleStep.VotingClosed}
+          active={proposalState === ProposalLifecycleStep.VotingClosed}
+          stepName={votingClosedStepLabel}
           timestamp={formatTime(getVotingClosedTimestamp(proposalState, proposal, votingConfig))}
         />
         <ProposalStep
-          state={
-            proposalState === ProposalLifecycleStep.PayloadsExecuted
-              ? StepState.Completed
-              : StepState.Active
-          }
+          completed={proposalState >= ProposalLifecycleStep.PayloadsExecuted}
           stepName={<Trans>Payloads executed</Trans>}
           timestamp={formatTime(
             getPayloadsExecutedTimestamp(proposalState, proposal, votingConfig, payloads)
@@ -102,37 +102,30 @@ export const ProposalLifecycle = ({
 
 const getLifecycleState = (proposal: EnhancedProposal, payloads: Payload[]) => {
   if (proposal.proposalData.proposalData.state === ProposalV3State.Created) {
-    console.log('created');
     return ProposalLifecycleStep.Created;
   }
 
   if (proposal.proposalData.proposalData.state === ProposalV3State.Active) {
-    console.log('open for voting');
     return ProposalLifecycleStep.OpenForVoting;
   }
 
   if (proposal.votingMachineData.state === VotingMachineProposalState.Finished) {
-    console.log('voting closed');
     return ProposalLifecycleStep.VotingClosed;
   }
 
   const payloadsExecuted = payloads.every((payload) => payload.state === PayloadState.Executed);
   if (payloadsExecuted) {
-    console.log('payloads executed');
     return ProposalLifecycleStep.PayloadsExecuted;
   }
 
   if (proposal.proposalData.proposalData.state === ProposalV3State.Cancelled) {
-    console.log('cancelled');
     return ProposalLifecycleStep.Cancelled;
   }
 
   if (proposal.proposalData.proposalData.state === ProposalV3State.Expired) {
-    console.log('expired');
     return ProposalLifecycleStep.Expired;
   }
 
-  console.log('default - created');
   return ProposalLifecycleStep.Created; // TODO
 };
 
@@ -184,38 +177,47 @@ const formatTime = (timestamp: number) => {
   return dayjs.unix(timestamp).format('MMM D, YYYY h:mm A');
 };
 
-enum StepState {
-  Completed,
-  Active,
-}
-
 const ProposalStep = ({
   stepName,
   timestamp,
-  state,
   lastStep,
+  completed,
+  active,
 }: {
   stepName: ReactNode;
   timestamp: string;
-  state: StepState;
   lastStep?: boolean;
+  completed?: boolean;
+  active?: boolean;
 }) => {
   const theme = useTheme();
-  const dotColor =
-    state === StepState.Completed ? theme.palette.primary.main : theme.palette.text.disabled;
-  const connectorColor =
-    state === StepState.Completed ? theme.palette.primary.main : theme.palette.text.disabled;
+
   return (
     <TimelineItem>
       <TimelineSeparator>
         <TimelineDot
-          sx={{ background: dotColor }}
-          variant={state === StepState.Active ? 'outlined' : 'filled'}
+          sx={{
+            background: completed
+              ? theme.palette.primary.main
+              : active
+              ? 'unset'
+              : theme.palette.text.disabled,
+            borderColor:
+              completed || active ? theme.palette.primary.main : theme.palette.text.disabled,
+            my: 1,
+          }}
+          variant={active ? 'outlined' : 'filled'}
         />
-        {!lastStep && <TimelineConnector sx={{ background: connectorColor }} />}
+        {!lastStep && (
+          <TimelineConnector
+            sx={{
+              background: completed ? theme.palette.primary.main : theme.palette.text.disabled,
+            }}
+          />
+        )}
       </TimelineSeparator>
       <TimelineContent>
-        <Typography sx={{ mt: 0.5 }} variant="main14">
+        <Typography sx={{ mt: -1.5 }} variant="main14">
           {stepName}
         </Typography>
         <Typography variant="tooltip" color="text.muted">

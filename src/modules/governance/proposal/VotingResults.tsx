@@ -88,15 +88,14 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
                 roundDown
                 sx={{ display: 'block' }}
               />
-              {/*
-                <FormattedNumber
-                  variant="caption"
-                  value={minQuorumVotes}
-                  visibleDecimals={2}
-                  roundDown
-                  color="text.muted"
-                />
-                */}
+
+              <FormattedNumber
+                variant="caption"
+                value={proposal.quorum}
+                visibleDecimals={2}
+                roundDown
+                color="text.muted"
+              />
             </Box>
           </Row>
           <Row
@@ -106,8 +105,10 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
           >
             <CheckBadge
               loading={loading}
-              text={proposal.diffReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>}
-              checked={proposal.diffReached}
+              text={
+                proposal.differentialReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>
+              }
+              checked={proposal.differentialReached}
               sx={{ height: 48 }}
               variant="description"
             />
@@ -124,23 +125,21 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
             sx={{ height: 48 }}
             captionVariant="description"
           >
-            {/*
             <Box sx={{ textAlign: 'right' }}>
               <FormattedNumber
-                value={diff}
+                value={proposal.currentDifferential}
                 visibleDecimals={2}
                 roundDown
                 sx={{ display: 'block' }}
               />
               <FormattedNumber
                 variant="caption"
-                value={requiredDiff}
+                value={proposal.requiredDifferential}
                 visibleDecimals={2}
                 roundDown
                 color="text.muted"
               />
-              </Box>
-              */}
+            </Box>
           </Row>
           {/*
           <Row
