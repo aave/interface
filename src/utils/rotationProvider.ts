@@ -125,6 +125,7 @@ export class RotationProvider extends BaseProvider {
     return checkNetworks(networks);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async send(method: string, params: Array<any>): Promise<any> {
     const index = this.currentProviderIndex;
     try {

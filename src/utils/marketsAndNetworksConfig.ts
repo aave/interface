@@ -1,6 +1,6 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
-import { providers as ethersProviders } from 'ethers';
+import { ProviderWithSend } from 'src/components/transactions/GovVote/temporary/VotingMachineService';
 
 import {
   CustomMarket,
@@ -15,7 +15,6 @@ import {
   networkConfigs as _networkConfigs,
 } from '../ui-config/networksConfig';
 import { RotationProvider } from './rotationProvider';
-import { ProviderWithSend } from 'src/components/transactions/GovVote/temporary/VotingMachineService';
 
 export type Pool = {
   address: string;
@@ -123,15 +122,15 @@ export const availableMarkets = Object.keys(marketsData).filter((key) =>
 
 const linkBuilder =
   ({ baseUrl, addressPrefix = 'address', txPrefix = 'tx' }: ExplorerLinkBuilderConfig) =>
-    ({ tx, address }: ExplorerLinkBuilderProps): string => {
-      if (tx) {
-        return `${baseUrl}/${txPrefix}/${tx}`;
-      }
-      if (address) {
-        return `${baseUrl}/${addressPrefix}/${address}`;
-      }
-      return baseUrl;
-    };
+  ({ tx, address }: ExplorerLinkBuilderProps): string => {
+    if (tx) {
+      return `${baseUrl}/${txPrefix}/${tx}`;
+    }
+    if (address) {
+      return `${baseUrl}/${addressPrefix}/${address}`;
+    }
+    return baseUrl;
+  };
 
 export function getNetworkConfig(chainId: ChainId): NetworkConfig {
   const config = networkConfigs[chainId];
