@@ -1,10 +1,14 @@
-import { VotingMachineDataHelperService, VotingMachineProposal } from '@aave/contract-helpers';
+import {
+  ChainId,
+  VotingMachineDataHelperService,
+  VotingMachineProposal,
+} from '@aave/contract-helpers';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
-import { governanceV3Config, VotingChain } from 'src/ui-config/governanceConfig';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 type VotingChainProposal = {
-  [key in VotingChain]: {
+  [chainId: number]: {
     [votingPortalAddress: string]: Array<{
       id: number;
       snapshotBlockHash: string;
@@ -13,7 +17,7 @@ type VotingChainProposal = {
 };
 
 export class VotingMachineService {
-  private getDataHelperService(chainId: VotingChain) {
+  private getDataHelperService(chainId: ChainId) {
     const provider = getProvider(chainId);
     governanceV3Config.votingChainConfig;
     return new VotingMachineDataHelperService(
@@ -31,7 +35,7 @@ export class VotingMachineService {
     user?: string
   ) {
     const proposalsByVotingChainId: VotingChainProposal = proposals.reduce((acc, proposal) => {
-      const chainId: VotingChain = proposal.chainId;
+      const chainId = proposal.chainId;
       const votingPortalAddress = proposal.votingPortalAddress;
 
       if (!acc[chainId]) {
@@ -53,7 +57,7 @@ export class VotingMachineService {
 
     const promises: Promise<VotingMachineProposal[]>[] = [];
     Object.entries(proposalsByVotingChainId).forEach(([chainId, proposals]) => {
-      const chainIdKey = +chainId as VotingChain;
+      const chainIdKey = +chainId;
       const dataHelperService = this.getDataHelperService(chainIdKey);
       Object.entries(proposals).forEach(([votingPortalAddress, proposals]) => {
         promises.push(

@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
@@ -28,18 +29,24 @@ const getProposalVotes = gql`
   }
 `;
 
-export const useProposalVotesQuery = ({ proposalId }: { proposalId: string }) => {
+export const useProposalVotesQuery = ({
+  proposalId,
+  votingChainId,
+}: {
+  proposalId: string;
+  votingChainId: ChainId | undefined;
+}) => {
   return useQuery({
     queryFn: () =>
       request<{ voteEmitteds: ProposalVote[] }>(
-        governanceV3Config.votingMachineSubgraphUrl,
+        governanceV3Config.votingChainConfig[votingChainId as ChainId].subgraphUrl,
         getProposalVotes,
         {
           proposalId,
         }
       ),
     queryKey: ['proposalVotes', proposalId],
-    enabled: true,
+    enabled: votingChainId !== undefined,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -55,8 +62,14 @@ const sortByVotingPower = (a: ProposalVote, b: ProposalVote) => {
   return a.votingPower < b.votingPower ? 1 : a.votingPower > b.votingPower ? -1 : 0;
 };
 
-export const useProposalVotes = ({ proposalId }: { proposalId: string }): ProposalVotes => {
-  const { data, isFetching } = useProposalVotesQuery({ proposalId });
+export const useProposalVotes = ({
+  proposalId,
+  votingChainId,
+}: {
+  proposalId: string;
+  votingChainId: ChainId | undefined;
+}): ProposalVotes => {
+  const { data, isFetching } = useProposalVotesQuery({ proposalId, votingChainId });
 
   return {
     yaeVotes: data?.filter((vote) => vote.support === true).sort(sortByVotingPower) || [],

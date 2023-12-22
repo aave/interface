@@ -9,16 +9,16 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useRootStore } from 'src/store/root';
-import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
+// import { useRootStore } from 'src/store/root';
+// import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 import { SearchInput } from '../../components/SearchInput';
 import { TitleWithSearchBar } from '../../components/TitleWithSearchBar';
 
 type ProposalListHeaderProps = {
-  proposalFilter: string;
-  handleProposalFilterChange: (value: string) => void;
-  handleSearchQueryChange: (value: string) => void;
+  proposalFilter?: string;
+  handleProposalFilterChange?: (value: string) => void;
+  handleSearchQueryChange?: (value: string) => void;
 };
 
 type ProposalListHeaderElementProps = {
@@ -93,19 +93,15 @@ export const ProposalListHeaderMobile: React.FC<ProposalListHeaderElementProps> 
   );
 };
 
-export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
-  proposalFilter,
-  handleProposalFilterChange,
-  handleSearchQueryChange,
-}) => {
-  const handleChange = (event: SelectChangeEvent) => {
-    trackEvent(GOVERNANCE_PAGE.FILTER, { filter: event.target.value });
-    handleProposalFilterChange(event.target.value as string);
-  };
+export const ProposalListHeader: React.FC<ProposalListHeaderProps> = () => {
+  // const handleChange = (event: SelectChangeEvent) => {
+  //   trackEvent(GOVERNANCE_PAGE.FILTER, { filter: event.target.value });
+  //   handleProposalFilterChange(event.target.value as string);
+  // };
   const { breakpoints } = useTheme();
 
   const md = useMediaQuery(breakpoints.up('md'));
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  // const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <Box
@@ -127,17 +123,23 @@ export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
       }}
     >
       {!md ? (
-        <ProposalListHeaderMobile
-          proposalFilter={proposalFilter}
-          handleChange={handleChange}
-          handleSearchQueryChange={handleSearchQueryChange}
-        />
+        <Typography variant="h3" sx={{ flexGrow: 1 }}>
+          <Trans>Proposals</Trans>
+        </Typography>
       ) : (
-        <ProposalListHeaderDesktop
-          proposalFilter={proposalFilter}
-          handleChange={handleChange}
-          handleSearchQueryChange={handleSearchQueryChange}
-        />
+        // <ProposalListHeaderMobile
+        //   proposalFilter={proposalFilter}
+        //   handleChange={handleChange}
+        //   handleSearchQueryChange={handleSearchQueryChange}
+        // />
+        <Typography variant="h3" sx={{ flexGrow: 1 }}>
+          <Trans>Proposals</Trans>
+        </Typography>
+        // <ProposalListHeaderDesktop
+        //   proposalFilter={proposalFilter}
+        //   handleChange={handleChange}
+        //   handleSearchQueryChange={handleSearchQueryChange}
+        // />
       )}
     </Box>
   );

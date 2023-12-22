@@ -8,7 +8,7 @@ import {
   ProposalV3State,
   VotingMachineProposal,
 } from '@aave/contract-helpers';
-import { normalizeBN } from '@aave/math-utils';
+import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { SubgraphProposal } from 'src/hooks/governance/useProposals';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -123,8 +123,11 @@ export type FormattedProposalV3 = {
   againstVotes: number;
   forPercent: number;
   againstPercent: number;
+  quorum: string;
   quorumReached: boolean;
-  diffReached: boolean;
+  currentDifferential: string;
+  requiredDifferential: string;
+  differentialReached: boolean;
   votingChainId: number;
 };
 
@@ -134,15 +137,24 @@ export const formatProposalV3 = (
   constants: Constants,
   votingMachineData: VotingMachineProposal
 ): FormattedProposalV3 => {
+  const quorum = constants.votingConfigs[proposalData.proposalData.accessLevel].config.quorum;
   const quorumReached = isQuorumReached(
-    proposalData.proposalData.forVotes,
-    constants.votingConfigs[proposalData.proposalData.accessLevel].config.quorum,
+    votingMachineData.proposalData.forVotes,
+    quorum,
     constants.precisionDivider
   );
-  const diffReached = isDifferentialReached(
-    proposalData.proposalData.forVotes,
-    proposalData.proposalData.againstVotes,
-    constants.votingConfigs[proposalData.proposalData.accessLevel].config.differential,
+
+  const forVotesBN = valueToBigNumber(votingMachineData.proposalData.forVotes);
+  const againstVotesBN = valueToBigNumber(votingMachineData.proposalData.againstVotes);
+  const currentDifferential = normalizeBN(forVotesBN.minus(againstVotesBN), 18).toString();
+
+  const requiredDifferential =
+    constants.votingConfigs[proposalData.proposalData.accessLevel].config.differential;
+
+  const differentialReached = isDifferentialReached(
+    votingMachineData.proposalData.forVotes,
+    votingMachineData.proposalData.againstVotes,
+    requiredDifferential,
     constants.precisionDivider
   );
 
@@ -170,8 +182,11 @@ export const formatProposalV3 = (
     againstVotes,
     forPercent,
     againstPercent,
+    quorum,
     quorumReached,
-    diffReached,
+    currentDifferential,
+    requiredDifferential,
+    differentialReached,
     accessLevel: proposalData.proposalData.accessLevel,
     votingChainId: proposalData.votingChainId,
   };

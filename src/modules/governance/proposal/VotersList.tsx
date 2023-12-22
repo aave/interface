@@ -17,11 +17,13 @@ export const VotersList = ({ compact = false, voters, sx }: VotersListProps): JS
       {voters.length === 0 ? (
         <Box sx={{ color: 'text.secondary' }}>—</Box>
       ) : (
-        voters.map((voter) => (
-          <Fragment key={voter.voter}>
-            <VotersListItem voter={voter} compact={compact} />
-          </Fragment>
-        ))
+        voters
+          .sort((a, b) => Number(b.votingPower) - Number(a.votingPower))
+          .map((voter) => (
+            <Fragment key={voter.voter}>
+              <VotersListItem voter={voter} compact={compact} />
+            </Fragment>
+          ))
       )}
     </Box>
   );
