@@ -11,7 +11,7 @@ import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -80,7 +80,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
 
   const tokens = [
     {
-      address: governanceConfig.stkAaveTokenAddress,
+      address: governanceV3Config.votingAssets.stkAaveTokenAddress,
       symbol: 'stkAAVE',
       name: 'Staked AAVE',
       amount: stkAave,
@@ -89,7 +89,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       type: DelegationTokenType.STKAAVE,
     },
     {
-      address: governanceConfig.aaveTokenAddress,
+      address: governanceV3Config.votingAssets.aaveTokenAddress,
       symbol: 'AAVE',
       name: 'AAVE',
       amount: aave,
@@ -98,7 +98,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       type: DelegationTokenType.AAVE,
     },
     {
-      address: governanceConfig.aAaveTokenAddress,
+      address: governanceV3Config.votingAssets.aAaveTokenAddress,
       symbol: 'aAave',
       name: 'aAave',
       amount: aAave,
@@ -134,9 +134,9 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   // is Network mismatched
   const govChain =
     currentNetworkConfig.isFork &&
-    currentNetworkConfig.underlyingChainId === governanceConfig.chainId
+    currentNetworkConfig.underlyingChainId === governanceV3Config.coreChainId
       ? currentChainId
-      : governanceConfig.chainId;
+      : governanceV3Config.coreChainId;
   const isWrongNetwork = connectedChainId !== govChain;
 
   const networkConfig = getNetworkConfig(govChain);

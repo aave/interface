@@ -1,7 +1,7 @@
 import { ChainId, WalletBalanceProvider } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 interface GovernanceTokensBalance {
@@ -38,9 +38,9 @@ export class WalletBalanceService {
     const balances = await walletBalanceService.batchBalanceOf(
       [user],
       [
-        governanceConfig.aaveTokenAddress,
-        governanceConfig.aAaveTokenAddress,
-        governanceConfig.stkAaveTokenAddress,
+        governanceV3Config.votingAssets.aaveTokenAddress,
+        governanceV3Config.votingAssets.aAaveTokenAddress,
+        governanceV3Config.votingAssets.stkAaveTokenAddress,
       ]
     );
     return {

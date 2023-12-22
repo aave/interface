@@ -5,17 +5,17 @@ import { Box, Checkbox, FormControlLabel, OutlinedInput, Stack, Typography } fro
 import { isAddress, parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
-// import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
-// import { useRootStore } from 'src/store/root';
-// import { governanceConfig } from 'src/ui-config/governanceConfig';
-import { networkConfigs } from 'src/utils/marketsAndNetworksConfig';
+import { useRootStore } from 'src/store/root';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
+import { getNetworkConfig, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
 
 import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { GasStation } from '../GasStation/GasStation';
-// import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovRepresentativesActions } from './GovRepresentativesActions';
 
 export interface UIRepresentative {
@@ -31,11 +31,11 @@ export const GovRepresentativesContent = ({
   representatives: Array<{ chainId: ChainId; representative: string }>;
 }) => {
   const { mainTxState, txError } = useModalContext();
-  // const { chainId: connectedChainId } = useWeb3Context();
-  // const [currentNetworkConfig, currentChainId] = useRootStore((state) => [
-  //   state.currentNetworkConfig,
-  //   state.currentChainId,
-  // ]);
+  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const [currentNetworkConfig, currentChainId] = useRootStore((state) => [
+    state.currentNetworkConfig,
+    state.currentChainId,
+  ]);
   const [reps, setReps] = useState<UIRepresentative[]>(
     representatives.map((r) => {
       if (r.representative === ZERO_ADDRESS) {
@@ -47,14 +47,14 @@ export const GovRepresentativesContent = ({
   );
 
   // is Network mismatched
-  // const govChain =
-  //   currentNetworkConfig.isFork &&
-  //   currentNetworkConfig.underlyingChainId === governanceConfig.chainId
-  //     ? currentChainId
-  //     : governanceConfig.chainId;
-  // const isWrongNetwork = connectedChainId !== govChain;
+  const govChain =
+    currentNetworkConfig.isFork &&
+    currentNetworkConfig.underlyingChainId === governanceV3Config.coreChainId
+      ? currentChainId
+      : governanceV3Config.coreChainId;
+  const isWrongNetwork = connectedChainId !== govChain;
 
-  // const networkConfig = getNetworkConfig(govChain);
+  const networkConfig = getNetworkConfig(govChain);
 
   const handleChange = (value: string, i: number) => {
     const valid = isAddress(value);
@@ -97,9 +97,9 @@ export const GovRepresentativesContent = ({
       <Box sx={{ p: 3 }}>
         <TxModalTitle title="Edit address" />
       </Box>
-      {/* {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
-      )} */}
+      )}
       <Stack direction="column" gap={2}>
         {reps.map((r, i) => (
           <Box

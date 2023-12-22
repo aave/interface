@@ -10,7 +10,7 @@ import { WalletBalanceService } from 'src/services/WalletBalanceService';
 import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
 
-import { governanceConfig } from './governanceConfig';
+import { governanceV3Config } from './governanceConfig';
 import { stakeConfig } from './stakeConfig';
 
 interface SharedDependenciesContext {
@@ -31,8 +31,8 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const getGovernanceProvider = (chainId: number) => {
     const networkConfig = getNetworkConfig(chainId);
     const isGovernanceFork =
-      networkConfig.isFork && networkConfig.underlyingChainId === governanceConfig.chainId;
-    return isGovernanceFork ? getProvider(chainId) : getProvider(governanceConfig.chainId);
+      networkConfig.isFork && networkConfig.underlyingChainId === governanceV3Config.coreChainId;
+    return isGovernanceFork ? getProvider(chainId) : getProvider(governanceV3Config.coreChainId);
   };
   const getStakeProvider = (chainId: number) => {
     const networkConfig = getNetworkConfig(chainId);

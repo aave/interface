@@ -2,7 +2,7 @@ import { AaveGovernanceService, ChainId, Power, tEthereumAddress } from '@aave/c
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { governanceConfig, governanceV3Config } from 'src/ui-config/governanceConfig';
 // import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 interface Powers {
@@ -70,7 +70,8 @@ export class GovernanceService {
   // }
 
   async getPowers(govChainId: ChainId, user: string): Promise<Powers> {
-    const { aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress } = governanceConfig;
+    const { aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress } =
+      governanceV3Config.votingAssets;
 
     const aaveGovernanceService = this.getAaveGovernanceService(govChainId);
 

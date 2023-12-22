@@ -9,7 +9,7 @@ import {
 } from '@aave/contract-helpers';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { governanceV3Config, votingChainIds } from 'src/ui-config/governanceConfig';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 export class GovernanceV3Service {
@@ -64,7 +64,7 @@ export class GovernanceV3Service {
     const representationData = await dataHelperService.getRepresentationData(
       governanceV3Config.addresses.GOVERNANCE_CORE,
       user,
-      [...votingChainIds]
+      [...governanceV3Config.votingChainIds]
     );
     return representationData;
   }

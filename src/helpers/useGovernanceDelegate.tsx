@@ -14,7 +14,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import META_DELEGATE_HELPER_ABI from 'src/meta-batch-helper.json';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { governanceConfig, governanceV3Config } from 'src/ui-config/governanceConfig';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 
 import { DelegationType } from './types';
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
@@ -114,7 +114,7 @@ export const useGovernanceDelegate = (
           {
             delegator: user,
             delegatee,
-            underlyingAsset: governanceConfig.aaveTokenAddress,
+            underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
             deadline,
             v: utils.splitSignature(signatures[0]).v,
             r: utils.splitSignature(signatures[0]).r,
@@ -124,7 +124,7 @@ export const useGovernanceDelegate = (
           {
             delegator: user,
             delegatee,
-            underlyingAsset: governanceConfig.stkAaveTokenAddress,
+            underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
             deadline,
             v: utils.splitSignature(signatures[1]).v,
             r: utils.splitSignature(signatures[1]).r,
@@ -134,7 +134,7 @@ export const useGovernanceDelegate = (
           {
             delegator: user,
             delegatee,
-            underlyingAsset: governanceConfig.aAaveTokenAddress,
+            underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
             deadline,
             v: utils.splitSignature(signatures[2]).v,
             r: utils.splitSignature(signatures[2]).r,
@@ -180,9 +180,9 @@ export const useGovernanceDelegate = (
         txs = await delegateTokensByTypeBySig({
           user,
           tokens: [
-            governanceConfig.aaveTokenAddress,
-            governanceConfig.stkAaveTokenAddress,
-            governanceConfig.aAaveTokenAddress,
+            governanceV3Config.votingAssets.aaveTokenAddress,
+            governanceV3Config.votingAssets.stkAaveTokenAddress,
+            governanceV3Config.votingAssets.aAaveTokenAddress,
           ],
           data: [
             {
@@ -349,9 +349,9 @@ export const useGovernanceDelegate = (
     if (delegationTokenType === DelegationTokenType.BOTH) {
       setApprovalTxState({ ...approvalTxState, loading: true });
       const [aaveNonce, stkAaveNonce, aAaveNonce] = await Promise.all([
-        getTokenNonce(user, governanceConfig.aaveTokenAddress),
-        getTokenNonce(user, governanceConfig.stkAaveTokenAddress),
-        getTokenNonce(user, governanceConfig.aAaveTokenAddress),
+        getTokenNonce(user, governanceV3Config.votingAssets.aaveTokenAddress),
+        getTokenNonce(user, governanceV3Config.votingAssets.stkAaveTokenAddress),
+        getTokenNonce(user, governanceV3Config.votingAssets.aAaveTokenAddress),
       ]);
       const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
       setDeadline(deadline);
@@ -363,7 +363,7 @@ export const useGovernanceDelegate = (
         {
           delegator: user,
           delegatee: delegatee,
-          underlyingAsset: governanceConfig.aaveTokenAddress,
+          underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
           deadline,
           nonce: String(aaveNonce),
           delegationType: GovernancePowerTypeApp.All,
@@ -373,7 +373,7 @@ export const useGovernanceDelegate = (
         {
           delegator: user,
           delegatee: delegatee,
-          underlyingAsset: governanceConfig.stkAaveTokenAddress,
+          underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
           deadline,
           nonce: String(stkAaveNonce),
           delegationType: GovernancePowerTypeApp.All,
@@ -383,7 +383,7 @@ export const useGovernanceDelegate = (
         {
           delegator: user,
           delegatee: delegatee,
-          underlyingAsset: governanceConfig.aAaveTokenAddress,
+          underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
           governanceTokenName: 'Aave Ethereum AAVE',
           deadline,
           nonce: String(aAaveNonce),
@@ -452,10 +452,10 @@ export const useGovernanceDelegate = (
             delegatee,
             governanceToken:
               delegationTokenType === DelegationTokenType.AAVE
-                ? governanceConfig.aaveTokenAddress
+                ? governanceV3Config.votingAssets.aaveTokenAddress
                 : delegationTokenType === DelegationTokenType.STKAAVE
-                ? governanceConfig.stkAaveTokenAddress
-                : governanceConfig.aAaveTokenAddress,
+                ? governanceV3Config.votingAssets.stkAaveTokenAddress
+                : governanceV3Config.votingAssets.aAaveTokenAddress,
             // delegationTokenType === DelegationTokenType.AAVE
             //   ? governanceConfig.aaveTokenAddress
             //   : governanceConfig.stkAaveTokenAddress,
@@ -468,10 +468,10 @@ export const useGovernanceDelegate = (
             delegationType,
             governanceToken:
               delegationTokenType === DelegationTokenType.AAVE
-                ? governanceConfig.aaveTokenAddress
+                ? governanceV3Config.votingAssets.aaveTokenAddress
                 : delegationTokenType === DelegationTokenType.STKAAVE
-                ? governanceConfig.stkAaveTokenAddress
-                : governanceConfig.aAaveTokenAddress,
+                ? governanceV3Config.votingAssets.stkAaveTokenAddress
+                : governanceV3Config.votingAssets.aAaveTokenAddress,
             // delegationTokenType === DelegationTokenType.AAVE
             //   ? governanceConfig.aaveTokenAddress
             //   : governanceConfig.stkAaveTokenAddress,
