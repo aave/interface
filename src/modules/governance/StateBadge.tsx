@@ -8,14 +8,13 @@ interface StateBadgeProps {
 
 const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
   const COLOR_MAP = {
-    // TODO: review colors
     [ProposalV3State.Null]: theme.palette.secondary.main,
-    [ProposalV3State.Created]: theme.palette.secondary.main,
+    [ProposalV3State.Created]: theme.palette.primary.light,
     [ProposalV3State.Active]: theme.palette.success.main,
-    [ProposalV3State.Queued]: theme.palette.warning.main,
-    [ProposalV3State.Executed]: theme.palette.primary.light,
-    [ProposalV3State.Cancelled]: theme.palette.primary.light,
-    [ProposalV3State.Expired]: theme.palette.primary.light,
+    [ProposalV3State.Queued]: theme.palette.primary.light,
+    [ProposalV3State.Executed]: theme.palette.success.main,
+    [ProposalV3State.Cancelled]: theme.palette.error.main,
+    [ProposalV3State.Expired]: theme.palette.error.main,
     [ProposalV3State.Failed]: theme.palette.error.main,
   };
   const color = COLOR_MAP[state] || '#000';
