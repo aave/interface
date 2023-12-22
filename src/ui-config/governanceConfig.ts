@@ -128,7 +128,8 @@ export const governanceChainConfig: GovernanceChainConfig = {
   },
   [ChainId.mainnet]: {
     coreChainId: ChainId.mainnet,
-    governanceCoreSubgraphUrl: '',
+    governanceCoreSubgraphUrl:
+      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gov-v3/2.0.0/gn',
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {
@@ -136,7 +137,8 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Ethereum.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Ethereum.VOTING_MACHINE,
-        subgraphUrl: '',
+        subgraphUrl:
+          'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gov-v3-voting-machine-mainnet/1/gn',
       },
       [ChainId.polygon]: {
         portalToMachineMap: {
@@ -144,7 +146,8 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Polygon.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Polygon.VOTING_MACHINE,
-        subgraphUrl: '',
+        subgraphUrl:
+          'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gov-v3-voting-machine-matic/1/gn',
       },
       [ChainId.avalanche]: {
         portalToMachineMap: {
@@ -152,7 +155,8 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Avalanche.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Avalanche.VOTING_MACHINE,
-        subgraphUrl: '',
+        subgraphUrl:
+          'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gov-v3-voting-machine-avalanche/1/gn',
       },
     },
     payloadsControllerDataHelpers: {
