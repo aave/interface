@@ -104,8 +104,8 @@ export const useGovernanceDelegate = (
       console.log('SIGNATURE', signatures);
 
       const { v: v1, r: r1, s: s1 } = utils.splitSignature(signatures[0]);
-      const { v: v2, r: r2, s: s2 } = utils.splitSignature(signatures[1]);
-      const { v: v3, r: r3, s: s3 } = utils.splitSignature(signatures[2]);
+      // const { v: v2, r: r2, s: s2 } = utils.splitSignature(signatures[1]);
+      // const { v: v3, r: r3, s: s3 } = utils.splitSignature(signatures[2]);
 
       let txs: EthereumTransactionTypeExtended[] = [];
 
@@ -127,26 +127,26 @@ export const useGovernanceDelegate = (
             s: utils.splitSignature(signatures[0]).s,
             delegationType: DelegationType.BOTH,
           },
-          {
-            delegator: user,
-            delegatee,
-            underlyingAsset: governanceConfig.stkAaveTokenAddress,
-            deadline,
-            v: utils.splitSignature(signatures[1]).v,
-            r: utils.splitSignature(signatures[1]).r,
-            s: utils.splitSignature(signatures[1]).s,
-            delegationType: DelegationType.BOTH,
-          },
-          {
-            delegator: user,
-            delegatee,
-            underlyingAsset: governanceConfig.aAaveTokenAddress,
-            deadline,
-            v: utils.splitSignature(signatures[2]).v,
-            r: utils.splitSignature(signatures[2]).r,
-            s: utils.splitSignature(signatures[2]).s,
-            delegationType: DelegationType.BOTH,
-          },
+          // {
+          //   delegator: user,
+          //   delegatee,
+          //   underlyingAsset: governanceConfig.stkAaveTokenAddress,
+          //   deadline,
+          //   v: utils.splitSignature(signatures[1]).v,
+          //   r: utils.splitSignature(signatures[1]).r,
+          //   s: utils.splitSignature(signatures[1]).s,
+          //   delegationType: DelegationType.BOTH,
+          // },
+          // {
+          //   delegator: user,
+          //   delegatee,
+          //   underlyingAsset: governanceConfig.aAaveTokenAddress,
+          //   deadline,
+          //   v: utils.splitSignature(signatures[2]).v,
+          //   r: utils.splitSignature(signatures[2]).r,
+          //   s: utils.splitSignature(signatures[2]).s,
+          //   delegationType: DelegationType.BOTH,
+          // },
         ];
 
         const metaDelegateHelperContract = new ethers.Contract(
@@ -333,7 +333,7 @@ export const useGovernanceDelegate = (
   const delegateMetaSig = ({
     underlyingAsset,
     delegatee,
-    delegateByType,
+    delegationType,
     delegator,
     increaseNonce,
     governanceTokenName,
@@ -341,7 +341,9 @@ export const useGovernanceDelegate = (
     // connectedChainId,
     deadline,
   }: DelegateMetaSigParams) => {
-    const isAllDelegate = delegateByType === GovernancePowerTypeApp.All;
+    console.log('delegateByType ---->', delegationType, GovernancePowerTypeApp.All);
+
+    const isAllDelegate = Number(delegationType) === Number(GovernancePowerTypeApp.All);
 
     const sigBaseType = [
       { name: 'nonce', type: 'uint256' },
@@ -376,13 +378,13 @@ export const useGovernanceDelegate = (
       message: isAllDelegate ? { ...typesData } : { ...typesData, delegationType },
     };
 
-    return JSON.stringify(typeData);
+    return typeData;
   };
 
   const signMetaTxs = async () => {
     if (delegationTokenType === DelegationTokenType.BOTH) {
       setApprovalTxState({ ...approvalTxState, loading: true });
-      const [aaveNonce, stkAaveNonce] = await Promise.all([
+      const [aaveNonce, stkAaveNonce, aAaveNonce] = await Promise.all([
         getTokenNonce(user, governanceConfig.aaveTokenAddress),
         getTokenNonce(user, governanceConfig.stkAaveTokenAddress),
         getTokenNonce(user, governanceConfig.aAaveTokenAddress),
@@ -428,31 +430,31 @@ export const useGovernanceDelegate = (
           delegatee: delegatee,
           underlyingAsset: governanceConfig.aaveTokenAddress,
           deadline,
-          nonce: aaveNonce,
+          nonce: String(aaveNonce),
           delegationType: DelegationType.BOTH,
-          governanceTokenName: 'Aave Token',
+          governanceTokenName: 'Aave token V3',
           increaseNonce: false,
         },
-        {
-          delegator: user,
-          delegatee: delegatee,
-          underlyingAsset: governanceConfig.stkAaveTokenAddress,
-          deadline,
-          nonce: stkAaveNonce,
-          delegationType: DelegationType.BOTH,
-          governanceTokenName: 'Staked Token',
-          increaseNonce: false,
-        },
-        {
-          delegator: user,
-          delegatee: delegatee,
-          underlyingAsset: governanceConfig.aAaveTokenAddress,
-          governanceTokenName: 'aAave',
-          deadline,
-          nonce: aAaveNonce,
-          delegationType: DelegationType.BOTH,
-          increaseNonce: false,
-        },
+        // {
+        //   delegator: user,
+        //   delegatee: delegatee,
+        //   underlyingAsset: governanceConfig.stkAaveTokenAddress,
+        //   deadline,
+        //   nonce: String(stkAaveNonce),
+        //   delegationType: DelegationType.BOTH,
+        //   governanceTokenName: 'Staked Token',
+        //   increaseNonce: false,
+        // },
+        // {
+        //   delegator: user,
+        //   delegatee: delegatee,
+        //   underlyingAsset: governanceConfig.aAaveTokenAddress,
+        //   governanceTokenName: 'Aave Ethereum AAVE',
+        //   deadline,
+        //   nonce: String(aAaveNonce),
+        //   delegationType: DelegationType.BOTH,
+        //   increaseNonce: false,
+        // },
       ];
 
       const unsignedPayloads: string[] = [];
