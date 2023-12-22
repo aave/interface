@@ -4,18 +4,17 @@ import {
   ProtocolAction,
   tEthereumAddress,
 } from '@aave/contract-helpers';
-import { ethers } from 'ethers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { utils } from 'ethers';
+import { BigNumber, ethers, utils } from 'ethers';
 import { useEffect, useState } from 'react';
 import { DelegationTokenType } from 'src/components/transactions/GovDelegation/DelegationTokenSelector';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import META_DELEGATE_HELPER_ABI from 'src/meta-batch-helper.json';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
-import META_DELEGATE_HELPER_ABI from 'src/meta-batch-helper.json';
 
 import { DelegationType } from './types';
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
@@ -160,6 +159,8 @@ export const useGovernanceDelegate = (
         const txData = await metaDelegateHelperContract.populateTransaction.batchMetaDelegate(
           delegateParams
         );
+
+        txData.gasLimit = BigNumber.from(10000000);
 
         console.log('txData --->', txData);
 
@@ -401,6 +402,8 @@ export const useGovernanceDelegate = (
       message: isAllDelegate ? { ...typesData } : { ...typesData, delegationType },
     };
 
+    console.log(typeData);
+
     return JSON.stringify(typeData);
   };
 
@@ -498,7 +501,6 @@ export const useGovernanceDelegate = (
       }
       try {
         const signedPayload: SignatureLike[] = [];
-
         for (const unsignedPayload of unsignedPayloads) {
           signedPayload.push(await signTxData(unsignedPayload));
         }
