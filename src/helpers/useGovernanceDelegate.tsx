@@ -464,7 +464,7 @@ export const useGovernanceDelegate = (
           underlyingAsset: governanceConfig.stkAaveTokenAddress,
           deadline,
           nonce: String(stkAaveNonce),
-          delegationType: DelegationType.BOTH,
+          delegationType: GovernancePowerTypeApp.All,
           governanceTokenName: 'Staked Token',
           increaseNonce: false,
         },
@@ -475,7 +475,7 @@ export const useGovernanceDelegate = (
           governanceTokenName: 'Aave Ethereum AAVE',
           deadline,
           nonce: String(aAaveNonce),
-          delegationType: DelegationType.BOTH,
+          delegationType: GovernancePowerTypeApp.All,
           increaseNonce: false,
         },
       ];
