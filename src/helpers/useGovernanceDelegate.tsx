@@ -100,18 +100,13 @@ export const useGovernanceDelegate = (
     if (isSignatureAction) {
       setMainTxState({ ...mainTxState, loading: true });
 
-      console.log('SIGNATURE', signatures);
-
       const { v: v1, r: r1, s: s1 } = utils.splitSignature(signatures[0]);
       const { v: v2, r: r2, s: s2 } = utils.splitSignature(signatures[1]);
       const { v: v3, r: r3, s: s3 } = utils.splitSignature(signatures[2]);
 
       let txs: EthereumTransactionTypeExtended[] = [];
 
-      console.log('DELEGATION TYPE', delegationType, DelegationType.BOTH);
       if (delegationType === DelegationType.BOTH) {
-        console.log(' LETS GO IN EHRE');
-
         // ALL --> Means both powers
         // do delegation with meta
         // continue in here
@@ -149,7 +144,7 @@ export const useGovernanceDelegate = (
         ];
 
         const metaDelegateHelperContract = new ethers.Contract(
-          governanceV3Config.addresses.AAVE_META_HELPER,
+          governanceV3Config.addresses.GOVERNANCE_META_HELPER,
           META_DELEGATE_HELPER_ABI,
           provider
         );
@@ -171,7 +166,6 @@ export const useGovernanceDelegate = (
             setTxError(undefined);
           },
           errorCallback: (error, hash) => {
-            console.log('whats the erorrrrrrrr', error);
             const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
             setTxError(parsedError);
             setMainTxState({
