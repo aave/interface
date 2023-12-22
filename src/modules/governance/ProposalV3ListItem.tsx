@@ -1,5 +1,13 @@
-import { ProposalV3State } from '@aave/contract-helpers';
+import {
+  ProposalData,
+  ProposalV3State,
+  VotingConfig,
+  VotingMachineProposal,
+} from '@aave/contract-helpers';
+import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography } from '@mui/material';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 import { networkConfigs } from 'src/ui-config/networksConfig';
@@ -7,6 +15,8 @@ import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 import { StateBadge } from './StateBadge';
 import { VoteBar } from './VoteBar';
+
+dayjs.extend(relativeTime);
 
 export const ProposalV3ListItem = ({
   id,
@@ -18,6 +28,9 @@ export const ProposalV3ListItem = ({
   forPercent,
   againstPercent,
   votingChainId,
+  proposalData,
+  votingMachineData,
+  votingConfig,
 }: {
   id: string;
   title: string;
@@ -28,9 +41,15 @@ export const ProposalV3ListItem = ({
   forPercent: number;
   againstPercent: number;
   votingChainId: number;
+  proposalData: ProposalData;
+  votingMachineData: VotingMachineProposal;
+  votingConfig: VotingConfig;
 }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
   const network = networkConfigs[votingChainId];
+
+  const timestamp = getProposalTimestamp(proposalData, votingMachineData, votingConfig);
+  console.log(timestamp);
 
   return (
     <Box
@@ -69,9 +88,20 @@ export const ProposalV3ListItem = ({
           >
             <img src={network.networkLogoPath} height="100%" width="100%" alt="network logo" />
           </Box>
-          <Typography variant="description" color="text.secondary">
-            Ends in 3 days (TODO)
-          </Typography>
+          {proposalState === ProposalV3State.Created && (
+            <>
+              <Typography variant="description" color="text.secondary">
+                <Trans>starts</Trans> {timestamp}
+              </Typography>
+            </>
+          )}
+          {proposalState === ProposalV3State.Active && (
+            <>
+              <Typography variant="description" color="text.secondary">
+                <Trans>ends</Trans> {timestamp}
+              </Typography>
+            </>
+          )}
         </Stack>
         <Typography variant="h3" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {title}
@@ -89,33 +119,6 @@ export const ProposalV3ListItem = ({
         >
           {shortDescription}
         </Typography>
-        {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
-          <StateBadge state={proposal.state} loading={false} />
-          <FormattedProposalTime
-            state={0}
-            startTimestamp={proposal.startTimestamp}
-            executionTime={proposal.executionTime}
-            expirationTimestamp={proposal.expirationTimestamp}
-            executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-          />
-          <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} loading={mightBeStale} />
-          <CheckBadge
-            text={<Trans>Differential</Trans>}
-            checked={diffReached}
-            loading={mightBeStale}
-          />
-          {accessLevel === AccessLevel.Long_Executor ? (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="subheader2" component="span" sx={{ mr: 1 }}>
-                Long Executor
-              </Typography>
-              <ShieldExclamationIcon
-                color={quorumReached ? palette.success.main : palette.warning.main}
-                height="16"
-              />
-            </Box>
-          ) : null}
-        </Box> */}
       </Stack>
       <Stack
         flexGrow={1}
@@ -131,4 +134,26 @@ export const ProposalV3ListItem = ({
       </Stack>
     </Box>
   );
+};
+
+const getProposalTimestamp = (
+  proposalData: ProposalData,
+  votingMachineData: VotingMachineProposal,
+  votingConfig: VotingConfig
+) => {
+  const state = proposalData.proposalData.state;
+  const creationTime = proposalData.proposalData.creationTime;
+  const votingMachineStartTime = votingMachineData.proposalData.startTime;
+  if (state === ProposalV3State.Created || votingMachineStartTime === 0) {
+    const votingStartDelay = votingConfig.config.coolDownBeforeVotingStart;
+    return dayjs.unix(creationTime + Number(votingStartDelay)).fromNow();
+  }
+
+  if (state === ProposalV3State.Active) {
+    const votingDuration = votingConfig.config.votingDuration;
+    return dayjs.unix(votingMachineStartTime + Number(votingDuration)).fromNow();
+  }
+
+  // only showing timestamps for created/active proposals for now
+  return '';
 };

@@ -1,3 +1,4 @@
+import { VotingConfig } from '@aave/contract-helpers';
 import { Box, Paper, Skeleton, Stack } from '@mui/material';
 import { Fragment, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -46,6 +47,13 @@ export const ProposalsV3List = () => {
               {group.proposals.map((proposal, index) => (
                 <ProposalV3ListItem
                   key={proposal.proposalId}
+                  proposalData={group.proposalData[index]}
+                  votingMachineData={group.votingMachingData[index]}
+                  votingConfig={
+                    config.votingConfigs.find(
+                      (c) => c.accessLevel === group.proposalData[index].proposalData.accessLevel
+                    ) as VotingConfig
+                  }
                   {...formatProposalV3(
                     proposal,
                     group.proposalData[index],
