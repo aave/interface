@@ -62,7 +62,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
               <FormattedNumber
-                value={Number(aavePower) + Number(stkAavePower)}
+                value={Number(aavePower) + Number(stkAavePower) + Number(aAavePower)}
                 variant="subheader1"
               />
               <Typography variant="helperText" color="text.secondary">

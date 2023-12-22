@@ -104,8 +104,8 @@ export const useGovernanceDelegate = (
       console.log('SIGNATURE', signatures);
 
       const { v: v1, r: r1, s: s1 } = utils.splitSignature(signatures[0]);
-      // const { v: v2, r: r2, s: s2 } = utils.splitSignature(signatures[1]);
-      // const { v: v3, r: r3, s: s3 } = utils.splitSignature(signatures[2]);
+      const { v: v2, r: r2, s: s2 } = utils.splitSignature(signatures[1]);
+      const { v: v3, r: r3, s: s3 } = utils.splitSignature(signatures[2]);
 
       let txs: EthereumTransactionTypeExtended[] = [];
 
@@ -135,7 +135,7 @@ export const useGovernanceDelegate = (
             v: utils.splitSignature(signatures[1]).v,
             r: utils.splitSignature(signatures[1]).r,
             s: utils.splitSignature(signatures[1]).s,
-            delegationType: DelegationType.BOTH,
+            delegationType: GovernancePowerTypeApp.All,
           },
           {
             delegator: user,
@@ -145,7 +145,7 @@ export const useGovernanceDelegate = (
             v: utils.splitSignature(signatures[2]).v,
             r: utils.splitSignature(signatures[2]).r,
             s: utils.splitSignature(signatures[2]).s,
-            delegationType: DelegationType.BOTH,
+            delegationType: GovernancePowerTypeApp.All,
           },
         ];
 
@@ -465,7 +465,7 @@ export const useGovernanceDelegate = (
           deadline,
           nonce: String(stkAaveNonce),
           delegationType: GovernancePowerTypeApp.All,
-          governanceTokenName: 'Staked Token',
+          governanceTokenName: 'Staked Aave',
           increaseNonce: false,
         },
         {
