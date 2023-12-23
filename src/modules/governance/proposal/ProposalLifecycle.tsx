@@ -31,6 +31,7 @@ enum ProposalLifecycleStep {
   PayloadsExecuted,
   Cancelled,
   Expired,
+  Done,
 }
 
 export const ProposalLifecycle = ({
@@ -98,7 +99,8 @@ export const ProposalLifecycle = ({
           timestamp={formatTime(getVotingClosedTimestamp(proposalState, proposal, votingConfig))}
         />
         <ProposalStep
-          completed={proposalState >= ProposalLifecycleStep.PayloadsExecuted}
+          completed={proposalState > ProposalLifecycleStep.PayloadsExecuted}
+          active={proposalState === ProposalLifecycleStep.PayloadsExecuted}
           stepName={<Trans>Payloads executed</Trans>}
           timestamp={formatTime(
             getPayloadsExecutedTimestamp(proposalState, proposal, votingConfig, payloads)
@@ -141,13 +143,20 @@ const getLifecycleState = (proposal: EnhancedProposal, payloads: Payload[]) => {
     return ProposalLifecycleStep.OpenForVoting;
   }
 
-  if (proposal.votingMachineData.state === VotingMachineProposalState.Finished) {
+  if (
+    proposal.votingMachineData.state === VotingMachineProposalState.Finished ||
+    proposal.proposalData.proposalData.state === ProposalV3State.Queued
+  ) {
     return ProposalLifecycleStep.VotingClosed;
   }
 
-  const payloadsExecuted = payloads.every((payload) => payload.state === PayloadState.Executed);
-  if (payloadsExecuted) {
-    return ProposalLifecycleStep.PayloadsExecuted;
+  if (proposal.proposalData.proposalData.state === ProposalV3State.Executed) {
+    const payloadsExecuted = payloads.every((payload) => payload.state === PayloadState.Executed);
+    if (payloadsExecuted) {
+      return ProposalLifecycleStep.Done;
+    } else {
+      return ProposalLifecycleStep.PayloadsExecuted;
+    }
   }
 
   if (proposal.proposalData.proposalData.state === ProposalV3State.Cancelled) {
@@ -158,7 +167,7 @@ const getLifecycleState = (proposal: EnhancedProposal, payloads: Payload[]) => {
     return ProposalLifecycleStep.Expired;
   }
 
-  return ProposalLifecycleStep.Created; // TODO
+  return ProposalLifecycleStep.Done;
 };
 
 const getOpenForVotingTimestamp = (

@@ -1,7 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
 
 export const isQuorumReached = (forVotes: string, quorum: string, precisionDivider: string) => {
-  return valueToBigNumber(forVotes).gt(valueToBigNumber(quorum).multipliedBy(precisionDivider));
+  return valueToBigNumber(forVotes).gte(valueToBigNumber(quorum).multipliedBy(precisionDivider));
 };
 
 export const isDifferentialReached = (
