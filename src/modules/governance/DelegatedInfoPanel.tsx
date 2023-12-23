@@ -66,7 +66,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
                 variant="subheader1"
               />
               <Typography variant="helperText" color="text.secondary">
-                AAVE + stkAAVE
+                AAVE + stkAAVE + aAAVE
               </Typography>
             </Box>
           </Row>
@@ -119,7 +119,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
                 }
               >
                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                  <TokenIcon symbol="aAave" sx={{ width: 16, height: 16 }} />
+                  <TokenIcon aToken symbol="aave" sx={{ width: 16, height: 16 }} />
                   <FormattedNumber value={aAavePower} variant="subheader1" />
                 </Box>
               </Row>

@@ -5,7 +5,7 @@ import { utils } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { DelegationType } from 'src/helpers/types';
+import { GovernancePowerTypeApp } from 'src/helpers/types';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
@@ -54,8 +54,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   // error states
 
   // selector states
-  const [delegationTokenType, setDelegationTokenType] = useState(DelegationTokenType.BOTH);
-  const [delegationType, setDelegationType] = useState(DelegationType.BOTH);
+  const [delegationTokenType, setDelegationTokenType] = useState(DelegationTokenType.ALL);
+  const [delegationType, setDelegationType] = useState(GovernancePowerTypeApp.ALL);
   const [delegate, setDelegate] = useState('');
 
   const isRevokeModal = type === ModalType.RevokeGovDelegation;
@@ -69,8 +69,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   useEffect(() => {
     if (onlyOnePowerToRevoke) {
       if (powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '')
-        setDelegationType(DelegationType.PROPOSITION_POWER);
-      else setDelegationType(DelegationType.VOTING);
+        setDelegationType(GovernancePowerTypeApp.PROPOSITION);
+      else setDelegationType(GovernancePowerTypeApp.VOTING);
     }
   }, [onlyOnePowerToRevoke, powers]);
 
@@ -99,8 +99,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
     },
     {
       address: governanceV3Config.votingAssets.aAaveTokenAddress,
-      symbol: 'aAave',
-      name: 'aAave',
+      symbol: 'aAAVE',
+      name: 'aAAVE',
       amount: aAave,
       votingDelegatee: powers?.aAaveVotingDelegatee,
       propositionDelegatee: powers?.aAavePropositionDelegatee,
@@ -238,7 +238,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
         delegationTokenType={delegationTokenType}
         delegatee={delegate}
         isWrongNetwork={isWrongNetwork}
-        blocked={delegateAddressBlockingError !== undefined || delegate === '' || !delegationType}
+        blocked={delegateAddressBlockingError !== undefined || delegate === ''}
         isRevoke={isRevokeModal}
       />
     </>
