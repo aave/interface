@@ -226,7 +226,10 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
           </FormControl>
         </>
       )}
-      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      <GasStation
+        gasLimit={parseUnits(gasLimit || '0', 'wei')}
+        chainId={governanceV3Config.coreChainId}
+      />
 
       {txError && <GasEstimationError txError={txError} />}
 

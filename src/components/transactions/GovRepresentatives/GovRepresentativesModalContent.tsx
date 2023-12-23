@@ -175,7 +175,11 @@ export const GovRepresentativesContent = ({
         ))}
       </Stack>
       <Box sx={{ px: 3 }}>
-        <GasStation disabled={blocked || !isDirty} gasLimit={parseUnits('1000000', 'wei')} />
+        <GasStation
+          disabled={blocked || !isDirty}
+          gasLimit={parseUnits('1000000', 'wei')}
+          chainId={governanceV3Config.coreChainId}
+        />
         {txError && <GasEstimationError txError={txError} />}
         <GovRepresentativesActions
           blocked={blocked || !isDirty}
