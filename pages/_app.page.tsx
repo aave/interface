@@ -94,7 +94,13 @@ function getWeb3Library(provider: any): providers.Web3Provider {
   return library;
 }
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;

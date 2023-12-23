@@ -87,21 +87,17 @@ export default function ProposalPage() {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            {proposal && formattedProposal && (
-              <>
-                <VoteInfo proposal={proposal} />
-                <VotingResults
-                  proposal={formattedProposal}
-                  proposalVotes={proposalVotes}
-                  loading={loading}
-                />
-                <ProposalLifecycle
-                  proposal={proposal}
-                  payloads={payloadData}
-                  votingConfig={proposalVotingConfig}
-                />
-              </>
-            )}
+            {proposal && <VoteInfo proposal={proposal} />}
+            <VotingResults
+              proposal={formattedProposal}
+              proposalVotes={proposalVotes}
+              loading={loading}
+            />
+            <ProposalLifecycle
+              proposal={proposal}
+              payloads={payloadData}
+              votingConfig={proposalVotingConfig}
+            />
           </Grid>
         </Grid>
       </ContentContainer>

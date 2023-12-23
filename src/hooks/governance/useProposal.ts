@@ -86,7 +86,6 @@ export const useProposal = (proposalId: number) => {
     queryFn: () => fetchProposal(proposalId, governanceV3Service, votingMachineSerivce, user),
     queryKey: ['governance_proposal', proposalId],
     refetchOnMount: false,
-    refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
 };

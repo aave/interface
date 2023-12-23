@@ -132,9 +132,7 @@ export const useGetVotingConfig = () => {
   return useQuery({
     queryFn: () => governanceV3Service.getVotingConfig(),
     queryKey: ['votingConfig'],
-    enabled: true,
     refetchOnMount: false,
-    refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     staleTime: Infinity,
   });

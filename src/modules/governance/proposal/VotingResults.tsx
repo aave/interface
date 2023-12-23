@@ -11,8 +11,8 @@ import { VoteBar } from '../VoteBar';
 import { VotersListContainer } from './VotersListContainer';
 
 interface VotingResultsPros {
-  proposal: FormattedProposalV3;
-  proposalVotes: ProposalVotes;
+  proposal?: FormattedProposalV3;
+  proposalVotes?: ProposalVotes;
   loading: boolean;
 }
 
@@ -37,7 +37,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
             sx={{ mt: 3 }}
             loading={loading}
           />
-          <VotersListContainer proposal={proposal} proposalVotes={proposalVotes} />
+          {proposalVotes && <VotersListContainer proposal={proposal} proposalVotes={proposalVotes} />}
           <Row caption={<Trans>State</Trans>} sx={{ height: 48 }} captionVariant="description">
             <Box
               sx={{
