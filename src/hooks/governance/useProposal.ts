@@ -84,7 +84,7 @@ export const useProposal = (proposalId: number) => {
   const user = useRootStore((store) => store.account);
   return useQuery({
     queryFn: () => fetchProposal(proposalId, governanceV3Service, votingMachineSerivce, user),
-    queryKey: ['governance_proposal', proposalId],
+    queryKey: ['governance_proposal', proposalId, user],
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
