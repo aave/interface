@@ -5,6 +5,7 @@ import {
   VotingConfig,
   VotingMachineProposalState,
 } from '@aave/contract-helpers';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Timeline,
@@ -15,10 +16,13 @@ import {
   timelineItemClasses,
   TimelineSeparator,
 } from '@mui/lab';
-import { Paper, Typography, useTheme } from '@mui/material';
+import { Button, Paper, SvgIcon, Typography, useTheme } from '@mui/material';
 import dayjs from 'dayjs';
 import { ReactNode } from 'react';
+import { Link } from 'src/components/primitives/Link';
 import { EnhancedProposal } from 'src/hooks/governance/useProposal';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 enum ProposalLifecycleStep {
   Created,
@@ -38,6 +42,8 @@ export const ProposalLifecycle = ({
   payloads: Payload[] | undefined;
   votingConfig: VotingConfig | undefined;
 }) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   if (payloads === undefined || proposal === undefined || votingConfig === undefined) {
     return <></>; // TODO: skeleton
   }
@@ -55,6 +61,10 @@ export const ProposalLifecycle = ({
   //   </>
   // );
   // }
+
+  const urlRegex = /https?:\/\/[^\s"]+/g;
+  const discussionUrl = proposal.proposal.discussions.match(urlRegex);
+
   return (
     <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
       <Typography variant="h3">
@@ -96,6 +106,28 @@ export const ProposalLifecycle = ({
           lastStep
         />
       </Timeline>
+      {discussionUrl && (
+        <Button
+          component={Link}
+          target="_blank"
+          rel="noopener"
+          onClick={() =>
+            trackEvent(GENERAL.EXTERNAL_LINK, {
+              AIP: proposal.proposalData.id,
+              Link: 'Forum Discussion',
+            })
+          }
+          href={discussionUrl[0]}
+          variant="outlined"
+          endIcon={
+            <SvgIcon>
+              <ExternalLinkIcon />
+            </SvgIcon>
+          }
+        >
+          <Trans>Forum discussion</Trans>
+        </Button>
+      )}
     </Paper>
   );
 };

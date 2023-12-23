@@ -14,6 +14,7 @@ export type SubgraphProposal = {
   shortDescription: string;
   description: string;
   author: string;
+  discussions: string;
 };
 
 export interface EnhancedProposal {
@@ -31,6 +32,7 @@ const getProposalQuery = gql`
       shortDescription
       description
       author
+      discussions
     }
   }
 `;

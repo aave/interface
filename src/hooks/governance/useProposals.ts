@@ -12,6 +12,7 @@ export type SubgraphProposal = {
   shortDescription: string;
   description: string;
   author: string;
+  discussions: string;
 };
 
 const getProposalsQuery = gql`
@@ -23,6 +24,7 @@ const getProposalsQuery = gql`
       shortDescription
       description
       author
+      discussions
     }
   }
 `;

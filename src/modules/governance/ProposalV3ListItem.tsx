@@ -49,7 +49,6 @@ export const ProposalV3ListItem = ({
   const network = networkConfigs[votingChainId];
 
   const timestamp = getProposalTimestamp(proposalData, votingMachineData, votingConfig);
-  console.log(timestamp);
 
   return (
     <Box

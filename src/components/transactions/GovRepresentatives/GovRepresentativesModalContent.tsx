@@ -1,5 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Box, Checkbox, FormControlLabel, OutlinedInput, Stack, Typography } from '@mui/material';
 import { isAddress, parseUnits } from 'ethers/lib/utils';
@@ -151,8 +151,11 @@ export const GovRepresentativesContent = ({
               </Stack>
               <OutlinedInput
                 sx={{ height: '44px' }}
+                placeholder={t`Enter ETH address`}
                 value={r.representative}
+                error={r.invalid && !r.remove}
                 disabled={r.remove}
+                fullWidth
                 inputProps={{ sx: { py: 2, px: 3, fontSize: '14px' } }}
                 endAdornment={
                   r.representative === '' || r.invalid ? null : (
@@ -174,7 +177,7 @@ export const GovRepresentativesContent = ({
           </Box>
         ))}
       </Stack>
-      <Box sx={{ px: 3 }}>
+      <Box sx={{ px: 3, pb: 3 }}>
         <GasStation
           disabled={blocked || !isDirty}
           gasLimit={parseUnits('1000000', 'wei')}
