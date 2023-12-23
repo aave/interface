@@ -1,7 +1,8 @@
-import { ProposalV3State } from '@aave/contract-helpers';
+import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button, Paper, Typography } from '@mui/material';
 import { constants } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
@@ -30,7 +31,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
     proposal.votingMachineData.votingAssets
   );
 
-  const voteOngoing = proposal.proposalData.proposalData.state === ProposalV3State.Active;
+  const voteOngoing = proposal.votingMachineData.state === VotingMachineProposalState.Active;
 
   const didVote = powerAtProposalStart && voteOnProposal?.votingPower !== '0';
   const showAlreadyVotedMsg = !!user && voteOnProposal && didVote;
@@ -80,7 +81,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                 <Trans>
                   With a voting power of{' '}
                   <FormattedNumber
-                    value={powerAtProposalStart || 0}
+                    value={formatUnits(proposal.votingMachineData.votedInfo.votingPower, 18) || 0}
                     variant="caption"
                     visibleDecimals={2}
                   />

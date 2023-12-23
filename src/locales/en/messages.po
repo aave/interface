@@ -989,6 +989,7 @@ msgid "English"
 msgstr "English"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+#: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Enter ETH address"
 msgstr "Enter ETH address"
 
@@ -1071,6 +1072,10 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "Forum discussion"
+msgstr "Forum discussion"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
@@ -3131,6 +3136,7 @@ msgid "enabled"
 msgstr "enabled"
 
 #: src/modules/governance/FormattedProposalTime.tsx
+#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "ends"
 
@@ -3176,6 +3182,7 @@ msgid "staking view"
 msgstr "staking view"
 
 #: src/modules/governance/FormattedProposalTime.tsx
+#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr "starts"
 
