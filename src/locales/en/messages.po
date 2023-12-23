@@ -2062,6 +2062,10 @@ msgstr "Something went wrong"
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 msgstr "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 
+#: pages/maintenance.page.tsx
+msgid "Sorry, we are currently undergoing maintenance. Please check back shortly or follow updates on <0>X</0>."
+msgstr "Sorry, we are currently undergoing maintenance. Please check back shortly or follow updates on <0>X</0>."
+
 #: pages/404.page.tsx
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
@@ -2632,6 +2636,10 @@ msgstr "Unbacked"
 #: src/ui-config/errorMapping.tsx
 msgid "Unbacked mint cap is exceeded"
 msgstr "Unbacked mint cap is exceeded"
+
+#: pages/maintenance.page.tsx
+msgid "Under Maintenance"
+msgstr "Under Maintenance"
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
