@@ -4,6 +4,7 @@ import { Trans } from '@lingui/macro';
 import { AbiCoder, keccak256, RLP } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
+import { useGovernanceTokensAndPowers } from 'src/hooks/governance/useGovernanceTokensAndPowers';
 import { EnhancedProposal } from 'src/hooks/governance/useProposal';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -106,7 +107,7 @@ const getBaseVotingPowerSlot = (asset: string, withDelegation: boolean) => {
 
 const getVotingBalanceProofs = (
   user: string,
-  assets: string[],
+  assets: Array<{ underlyingAsset: string; isWithDelegatedPower: boolean }>,
   chainId: ChainId,
   blockHash: string
 ) => {
@@ -114,15 +115,22 @@ const getVotingBalanceProofs = (
   const abiCoder = new AbiCoder();
   return Promise.all(
     assets.map((asset) => {
-      const baseVotingSlot = getBaseVotingPowerSlot(asset, false);
+      const baseVotingSlot = getBaseVotingPowerSlot(
+        asset.underlyingAsset,
+        asset.isWithDelegatedPower
+      );
       const votingPowerSlot = keccak256(
         abiCoder.encode(['address', 'uint256'], [user, baseVotingSlot])
       );
       return provider
-        .send<unknown, GetProofResponse>('eth_getProof', [asset, [votingPowerSlot], blockHash])
+        .send<unknown, GetProofResponse>('eth_getProof', [
+          asset.underlyingAsset,
+          [votingPowerSlot],
+          blockHash,
+        ])
         .then((rawProof) => {
           return {
-            underlyingAsset: asset,
+            underlyingAsset: asset.underlyingAsset,
             slot: `${baseVotingSlot}`,
             proof: RLP.encode(rawProof.storageProof[0].proof.map((elem) => RLP.decode(elem))),
           };
@@ -148,9 +156,10 @@ export const GovVoteActions = ({
   const user = useRootStore((store) => store.account);
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx, signTxData } = useWeb3Context();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const tokenPowers = useGovernanceTokensAndPowers(currentMarketData);
   const [signature, setSignature] = useState<string | undefined>(undefined);
   const proposalId = proposal.proposal.proposalId;
-  const assets = ['0xdaEcee477B931b209e8123401EA37582ACB3811d'];
   const blockHash = proposal.proposalData.proposalData.snapshotBlockHash;
   const votingChainId = proposal.proposalData.votingChainId;
   const votingProvider = getProvider(votingChainId);
@@ -158,6 +167,21 @@ export const GovVoteActions = ({
     governanceV3Config.votingChainConfig[votingChainId].votingMachineAddress;
 
   const withGelatoRelayer = false;
+
+  const assets = [
+    // {
+    //   underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
+    //   isWithDelegatedPower: tokenPowers?.isStkAaveTokenWithDelegatedPower || false,
+    // },
+    // {
+    //   underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
+    //   isWithDelegatedPower: tokenPowers?.isAaveTokenWithDelegatedPower || false,
+    // },
+    {
+      underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
+      isWithDelegatedPower: true,
+    },
+  ]; // CHANGE_BEFORE_PROD
 
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
@@ -226,7 +250,10 @@ export const GovVoteActions = ({
         +proposalId,
         user,
         support,
-        assets.map((elem) => ({ underlyingAsset: elem, slot: getBaseVotingPowerSlot(elem, false) }))
+        assets.map((elem) => ({
+          underlyingAsset: elem.underlyingAsset,
+          slot: getBaseVotingPowerSlot(elem.underlyingAsset, elem.isWithDelegatedPower),
+        }))
       );
       const signature = await signTxData(toSign);
       setSignature(signature.toString());
