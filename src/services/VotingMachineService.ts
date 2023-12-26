@@ -53,8 +53,6 @@ export class VotingMachineService {
       return acc;
     }, {} as VotingChainProposal);
 
-    console.log('props by chain id', proposalsByVotingChainId);
-
     const promises: Promise<VotingMachineProposal[]>[] = [];
     Object.entries(proposalsByVotingChainId).forEach(([chainId, proposals]) => {
       const chainIdKey = +chainId;

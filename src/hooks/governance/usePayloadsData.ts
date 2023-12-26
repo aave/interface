@@ -50,6 +50,5 @@ async function fetchPayloadsData(params: PayloadParams[], service: GovernanceV3S
   });
 
   const data = await Promise.all(promises);
-  console.log(data.flat());
   return data.flat();
 }

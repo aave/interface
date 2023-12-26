@@ -90,8 +90,6 @@ export const GovRepresentativesContent = ({
     );
   }
 
-  console.log(reps);
-
   return (
     <Box sx={{ m: -3 }}>
       <Box sx={{ p: 3 }}>

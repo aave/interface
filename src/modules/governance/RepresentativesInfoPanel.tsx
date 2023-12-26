@@ -6,7 +6,7 @@ import { Box, Button, IconButton, Paper, Stack, SvgIcon, Typography } from '@mui
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
 import { Link } from 'src/components/primitives/Link';
 import { useRepresentatives } from 'src/hooks/governance/useRepresentatives';
-import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
+// import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { networkConfigs } from 'src/ui-config/networksConfig';
@@ -24,10 +24,10 @@ export const RepresentativesInfoPanel = () => {
 
   const { data } = useRepresentatives(account);
 
-  const { data: isContractAddress, isFetching: fetchingIsContractAddress } =
-    useIsContractAddress(account);
-
-  console.log(isContractAddress, fetchingIsContractAddress);
+  {
+    //   const { data: isContractAddress, isFetching: fetchingIsContractAddress } =
+    // useIsContractAddress(account);
+  }
 
   const isAddressSelectedAsRepresentative = data?.Represented.some(
     (r) => r.votersRepresented.length > 0
