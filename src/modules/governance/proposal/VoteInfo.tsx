@@ -1,35 +1,47 @@
-import { ProposalState } from '@aave/contract-helpers';
+import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Button, Typography } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
+import { constants } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { useVoteOnProposal } from 'src/hooks/governance/useVoteOnProposal';
+import { EnhancedProposal } from 'src/hooks/governance/useProposal';
 import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
-import { CustomProposalType } from 'src/static-build/proposal';
 import { useRootStore } from 'src/store/root';
 
-export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
+interface VoteInfoProps {
+  proposal: EnhancedProposal;
+}
+
+export function VoteInfo({ proposal }: VoteInfoProps) {
   const { openGovVote } = useModalContext();
   const user = useRootStore((state) => state.account);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const voteOnProposal = proposal.votingMachineData.votedInfo;
 
-  const { data: voteOnProposal } = useVoteOnProposal(currentMarketData, id);
-  const { data: powerAtProposalStart } = useVotingPowerAt(currentMarketData, strategy, startBlock);
+  const blockHash =
+    proposal.proposalData.proposalData.snapshotBlockHash === constants.HashZero
+      ? 'latest'
+      : proposal.proposalData.proposalData.snapshotBlockHash;
 
-  const voteOngoing = state === ProposalState.Active;
+  const { data: powerAtProposalStart } = useVotingPowerAt(
+    blockHash,
+    proposal.votingMachineData.votingAssets
+  );
 
-  // Messages
+  const voteOngoing = proposal.votingMachineData.state === VotingMachineProposalState.Active;
+
   const didVote = powerAtProposalStart && voteOnProposal?.votingPower !== '0';
   const showAlreadyVotedMsg = !!user && voteOnProposal && didVote;
+
   const showCannotVoteMsg = !!user && voteOngoing && Number(powerAtProposalStart) === 0;
   const showCanVoteMsg =
     powerAtProposalStart && !didVote && !!user && voteOngoing && Number(powerAtProposalStart) !== 0;
 
   return (
-    <>
+    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
       <Typography variant="h3" sx={{ mb: 8 }}>
         <Trans>Your voting info</Trans>
       </Typography>
@@ -69,7 +81,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
                 <Trans>
                   With a voting power of{' '}
                   <FormattedNumber
-                    value={powerAtProposalStart || 0}
+                    value={formatUnits(proposal.votingMachineData.votedInfo.votingPower, 18) || 0}
                     variant="caption"
                     visibleDecimals={2}
                   />
@@ -88,7 +100,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
                 color="success"
                 variant="contained"
                 fullWidth
-                onClick={() => openGovVote(id, true, powerAtProposalStart)}
+                onClick={() => openGovVote(proposal, true, powerAtProposalStart)}
               >
                 <Trans>Vote YAE</Trans>
               </Button>
@@ -96,7 +108,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
                 color="error"
                 variant="contained"
                 fullWidth
-                onClick={() => openGovVote(id, false, powerAtProposalStart)}
+                onClick={() => openGovVote(proposal, false, powerAtProposalStart)}
                 sx={{ mt: 2 }}
               >
                 <Trans>Vote NAY</Trans>
@@ -107,6 +119,6 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
       ) : (
         <ConnectWalletButton />
       )}
-    </>
+    </Paper>
   );
 }

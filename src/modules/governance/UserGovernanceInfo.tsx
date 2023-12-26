@@ -4,6 +4,7 @@ import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWall
 import { useRootStore } from 'src/store/root';
 
 import { DelegatedInfoPanel } from './DelegatedInfoPanel';
+import { RepresentativesInfoPanel } from './RepresentativesInfoPanel';
 import { VotingPowerInfoPanel } from './VotingPowerInfoPanel';
 
 export const UserGovernanceInfo = () => {
@@ -13,6 +14,7 @@ export const UserGovernanceInfo = () => {
     <>
       <VotingPowerInfoPanel />
       <DelegatedInfoPanel />
+      <RepresentativesInfoPanel />
     </>
   ) : (
     <Paper sx={{ p: 6 }}>

@@ -3,7 +3,7 @@ import FormControl from '@mui/material/FormControl';
 import { useEffect } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
-import { DelegationType } from 'src/helpers/types';
+import { GovernancePowerTypeApp } from 'src/helpers/types';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 
 import { TokenIcon } from '../../primitives/TokenIcon';
@@ -19,16 +19,17 @@ export type DelegationToken = {
 };
 
 export enum DelegationTokenType {
-  BOTH = 0,
+  ALL = 0,
   AAVE,
   STKAAVE,
+  aAave,
 }
 
 export type DelegationTokenSelectorProps = {
   delegationTokens: DelegationToken[];
   setDelegationTokenType: (type: DelegationTokenType) => void;
   delegationTokenType: DelegationTokenType;
-  delegationType: DelegationType;
+  delegationType: GovernancePowerTypeApp;
   filter: boolean;
 };
 
@@ -46,14 +47,22 @@ export const TokenRow: React.FC<TokenRowProps> = ({ symbol, amount }) => {
           {Array.isArray(symbol) ? (
             symbol.map((token, index) => (
               <>
-                <TokenIcon symbol={token} sx={{ width: 16, height: 16 }} />
+                <TokenIcon
+                  aToken={token === 'aAAVE'}
+                  symbol={token === 'aAAVE' ? 'aave' : token}
+                  sx={{ width: 16, height: 16 }}
+                />
                 <Typography variant="subheader1">{token}</Typography>
                 {index < symbol.length - 1 && <Typography variant="subheader1">+</Typography>}
               </>
             ))
           ) : (
             <>
-              <TokenIcon symbol={symbol} sx={{ width: 16, height: 16 }} />
+              <TokenIcon
+                aToken={symbol === 'aAAVE'}
+                symbol={symbol === 'aAAVE' ? 'aave' : symbol}
+                sx={{ width: 16, height: 16 }}
+              />
               <Typography variant="subheader1">{symbol}</Typography>
             </>
           )}
@@ -67,11 +76,11 @@ export const TokenRow: React.FC<TokenRowProps> = ({ symbol, amount }) => {
 
 const filterTokens = (
   tokens: DelegationToken[],
-  delegationType: DelegationType
+  delegationType: GovernancePowerTypeApp
 ): DelegationToken[] => {
-  if (delegationType === DelegationType.VOTING) {
+  if (delegationType === GovernancePowerTypeApp.VOTING) {
     return tokens.filter((token) => token.votingDelegatee !== '');
-  } else if (delegationType === DelegationType.PROPOSITION_POWER) {
+  } else if (delegationType === GovernancePowerTypeApp.PROPOSITION) {
     return tokens.filter((token) => token.propositionDelegatee !== '');
   }
   return tokens.filter(
@@ -87,7 +96,7 @@ export const DelegationTokenSelector = ({
   filter,
 }: DelegationTokenSelectorProps) => {
   const {
-    data: { aave, stkAave },
+    data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
 
   const filteredTokens = filter ? filterTokens(delegationTokens, delegationType) : delegationTokens;
@@ -110,10 +119,15 @@ export const DelegationTokenSelector = ({
         }
       >
         <FormControlLabel
-          value={DelegationTokenType.BOTH}
+          value={DelegationTokenType.ALL}
           control={<Radio size="small" />}
           componentsProps={{ typography: { width: '100%' } }}
-          label={<TokenRow symbol={['AAVE', 'stkAAVE']} amount={Number(aave) + Number(stkAave)} />}
+          label={
+            <TokenRow
+              symbol={['AAVE', 'stkAAVE', 'aAAVE']}
+              amount={Number(aave) + Number(stkAave) + Number(aAave)}
+            />
+          }
           data-cy={`delegate-token-both`}
         />
         <FormControlLabel
@@ -129,6 +143,13 @@ export const DelegationTokenSelector = ({
           componentsProps={{ typography: { width: '100%' } }}
           label={<TokenRow symbol="stkAAVE" amount={stkAave} />}
           data-cy={`delegate-token-stkAAVE`}
+        />
+        <FormControlLabel
+          value={DelegationTokenType.aAave}
+          control={<Radio size="small" />}
+          componentsProps={{ typography: { width: '100%' } }}
+          label={<TokenRow symbol="aAAVE" amount={aAave} />}
+          data-cy={`delegate-token-aAave`}
         />
       </RadioGroup>
     </FormControl>

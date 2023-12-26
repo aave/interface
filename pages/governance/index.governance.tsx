@@ -6,7 +6,7 @@ import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
-import { ProposalsList } from 'src/modules/governance/ProposalsList';
+import { ProposalsV3List } from 'src/modules/governance/ProposalsV3List';
 import { UserGovernanceInfo } from 'src/modules/governance/UserGovernanceInfo';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
@@ -20,7 +20,22 @@ const GovDelegationModal = dynamic(() =>
   )
 );
 
+const GovRepresentativesModal = dynamic(() =>
+  import('../../src/components/transactions/GovRepresentatives/GovRepresentativesModal').then(
+    (module) => module.GovRepresentativesModal
+  )
+);
+
 export const getStaticProps = async () => {
+  // const queryClient = new QueryClient();
+  // await queryClient.prefetchQuery({ queryKey: ['proposals'], queryFn: () => getProposals });
+
+  // return {
+  //   props: {
+  //     dehydratedState: dehydrate(queryClient),
+  //   },
+  // };
+
   const IpfsFetcher = new Ipfs();
   const ProposalFetcher = new Proposal();
 
@@ -39,7 +54,11 @@ export const getStaticProps = async () => {
     };
   });
 
-  return { props: { proposals: proposals.slice().reverse() } };
+  return {
+    props: {
+      proposals: proposals.slice().reverse(),
+    },
+  };
 };
 
 enum Tabs {
@@ -60,6 +79,8 @@ export default function Governance(props: GovernancePageProps) {
   const isMobile = useMediaQuery(breakpoints.down('lg'));
   const [mode, setMode] = useState(Tabs.PROPOSALS);
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  console.log(props);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
@@ -95,14 +116,14 @@ export default function Governance(props: GovernancePageProps) {
         </StyledToggleButtonGroup>
         {isMobile ? (
           mode === Tabs.PROPOSALS ? (
-            <ProposalsList {...props} />
+            <ProposalsV3List />
           ) : (
             <UserGovernanceInfo />
           )
         ) : (
           <Grid container spacing={4}>
             <Grid item md={8}>
-              <ProposalsList {...props} />
+              <ProposalsV3List />
             </Grid>
             <Grid item md={4}>
               <UserGovernanceInfo />
@@ -119,6 +140,7 @@ Governance.getLayout = function getLayout(page: React.ReactElement) {
     <MainLayout>
       {page}
       <GovDelegationModal />
+      <GovRepresentativesModal />
     </MainLayout>
   );
 };

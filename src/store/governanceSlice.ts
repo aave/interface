@@ -10,7 +10,7 @@ import {
   GovPrepareDelegateSig,
   GovPrepareDelegateSigByType,
 } from '@aave/contract-helpers';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { governanceConfig, governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
 
@@ -41,8 +41,8 @@ export const createGovernanceSlice: StateCreator<
     const currentNetworkConfig = get().currentNetworkConfig;
     const isStakeFork =
       currentNetworkConfig.isFork &&
-      currentNetworkConfig.underlyingChainId === governanceConfig?.chainId;
-    return isStakeFork ? get().jsonRpcProvider() : getProvider(governanceConfig.chainId);
+      currentNetworkConfig.underlyingChainId === governanceV3Config.coreChainId;
+    return isStakeFork ? get().jsonRpcProvider() : getProvider(governanceV3Config.coreChainId);
   }
   return {
     delegateByType: (args) => {

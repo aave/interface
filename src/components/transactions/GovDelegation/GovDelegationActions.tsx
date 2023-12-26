@@ -1,4 +1,4 @@
-import { DelegationType } from 'src/helpers/types';
+import { GovernancePowerTypeApp } from 'src/helpers/types';
 import { useGovernanceDelegate } from 'src/helpers/useGovernanceDelegate';
 
 import { DelegationTxsWrapper } from '../DelegationTxsWrapper';
@@ -7,7 +7,7 @@ import { DelegationTokenType } from './DelegationTokenSelector';
 export type GovDelegationActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
-  delegationType: DelegationType;
+  delegationType: GovernancePowerTypeApp;
   delegationTokenType: DelegationTokenType;
   delegatee: string;
   isRevoke: boolean;
@@ -37,7 +37,7 @@ export const GovDelegationActions = ({
       handleSignatures={signMetaTxs}
       handleAction={action}
       isWrongNetwork={isWrongNetwork}
-      requiresSignature={delegationTokenType === DelegationTokenType.BOTH}
+      requiresSignature={delegationTokenType === DelegationTokenType.ALL}
       blocked={blocked}
       approvalTxState={approvalTxState}
     />

@@ -1,7 +1,21 @@
-import { ChainId, Proposal, ProposalState } from '@aave/contract-helpers';
-import { normalizeBN } from '@aave/math-utils';
+import {
+  AccessLevel,
+  ChainId,
+  Constants,
+  Proposal,
+  ProposalData,
+  ProposalState,
+  ProposalV3State,
+  VotingMachineProposal,
+} from '@aave/contract-helpers';
+import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
+import { SubgraphProposal } from 'src/hooks/governance/useProposals';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+
+import { isDifferentialReached, isQuorumReached } from '../helpers';
+
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export type FormattedProposal = {
   id?: string;
@@ -98,3 +112,113 @@ export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'
     startTimestamp + (proposal.endBlock - proposal.startBlock) * averageBlockTime;
   return { ...proposal, startTimestamp, creationTimestamp, expirationTimestamp };
 }
+
+export type FormattedProposalV3 = {
+  id: string;
+  title: string;
+  shortDescription: string;
+  proposalState: ProposalV3State;
+  accessLevel: AccessLevel;
+  forVotes: number;
+  againstVotes: number;
+  forPercent: number;
+  againstPercent: number;
+  quorum: string;
+  quorumReached: boolean;
+  currentDifferential: string;
+  requiredDifferential: string;
+  differentialReached: boolean;
+  votingChainId: number;
+};
+
+export const formatProposalV3 = (
+  proposal: SubgraphProposal,
+  proposalData: ProposalData,
+  constants: Constants,
+  votingMachineData: VotingMachineProposal
+): FormattedProposalV3 => {
+  const quorum = constants.votingConfigs[proposalData.proposalData.accessLevel].config.quorum;
+  const quorumReached = isQuorumReached(
+    votingMachineData.proposalData.forVotes,
+    quorum,
+    constants.precisionDivider
+  );
+
+  const forVotesBN = valueToBigNumber(votingMachineData.proposalData.forVotes);
+  const againstVotesBN = valueToBigNumber(votingMachineData.proposalData.againstVotes);
+  const currentDifferential = normalizeBN(forVotesBN.minus(againstVotesBN), 18).toString();
+
+  const requiredDifferential =
+    constants.votingConfigs[proposalData.proposalData.accessLevel].config.differential;
+
+  const differentialReached = isDifferentialReached(
+    votingMachineData.proposalData.forVotes,
+    votingMachineData.proposalData.againstVotes,
+    requiredDifferential,
+    constants.precisionDivider
+  );
+
+  const allVotes = new BigNumber(votingMachineData.proposalData.forVotes).plus(
+    votingMachineData.proposalData.againstVotes
+  );
+  const forPercent = allVotes.gt(0)
+    ? new BigNumber(votingMachineData.proposalData.forVotes).dividedBy(allVotes).toNumber()
+    : 0;
+  const forVotes = normalizeBN(votingMachineData.proposalData.forVotes, 18).toNumber();
+
+  const againstPercent = allVotes.gt(0)
+    ? new BigNumber(votingMachineData.proposalData.againstVotes).dividedBy(allVotes).toNumber()
+    : 0;
+  const againstVotes = normalizeBN(votingMachineData.proposalData.againstVotes, 18).toNumber();
+
+  // getProposalState(proposalData.proposalData, votingMachineData);
+
+  return {
+    id: proposalData.id,
+    title: proposal.title,
+    shortDescription: proposal.shortDescription,
+    proposalState: proposalData.proposalData.state,
+    forVotes,
+    againstVotes,
+    forPercent,
+    againstPercent,
+    quorum,
+    quorumReached,
+    currentDifferential,
+    requiredDifferential,
+    differentialReached,
+    accessLevel: proposalData.proposalData.accessLevel,
+    votingChainId: proposalData.votingChainId,
+  };
+};
+
+export enum ProposalUIState {
+  PROPOSAL_CREATED,
+  VOTING_STARTED,
+  VOTING_FINISHED,
+  PAYLOADS_EXECUTED,
+}
+
+// const getProposalState = (proposal: ProposalV3, votingMachineData: VotingMachineProposal) => {
+//   if (proposal.state === ProposalV3State.Created) {
+//     // voting start on ...
+//   }
+//   if (proposal.state === ProposalV3State.Active) {
+//     // voting ends on ...
+//   }
+//   if (proposal.state === ProposalV3State.Queued) {
+//     // can be executed on ...
+//   }
+//   if (proposal.state === ProposalV3State.Executed) {
+//     // executed on ...
+//   }
+//   if (proposal.state === ProposalV3State.Cancelled) {
+//     // canceled on ...
+//   }
+//   if (proposal.state === ProposalV3State.Failed) {
+//     // failed on ...
+//   }
+//   if (proposal.state === ProposalV3State.Expired) {
+//     // expired on ...
+//   }
+// };

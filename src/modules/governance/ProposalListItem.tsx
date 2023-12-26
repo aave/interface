@@ -9,7 +9,7 @@ import { useRootStore } from 'src/store/root';
 import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 import { FormattedProposalTime } from './FormattedProposalTime';
-import { StateBadge } from './StateBadge';
+// import { StateBadge } from './StateBadge';
 import { formatProposal } from './utils/formatProposal';
 import { isProposalStateImmutable } from './utils/immutableStates';
 import { VoteBar } from './VoteBar';
@@ -57,7 +57,7 @@ export function ProposalListItem({
           {ipfs.title}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
-          <StateBadge state={proposal.state} loading={mightBeStale} />
+          {/* <StateBadge state={proposal.state} loading={mightBeStale} /> */}
           <FormattedProposalTime
             state={proposal.state}
             startTimestamp={proposal.startTimestamp}
