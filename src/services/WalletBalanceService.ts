@@ -4,7 +4,7 @@ import { Provider } from '@ethersproject/providers';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
-interface GovernanceTokensBalance {
+export interface GovernanceTokensBalance {
   aave: string;
   stkAave: string;
   aAave: string;

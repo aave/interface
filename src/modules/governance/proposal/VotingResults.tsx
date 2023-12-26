@@ -37,7 +37,9 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
             sx={{ mt: 3 }}
             loading={loading}
           />
-          {proposalVotes && <VotersListContainer proposal={proposal} proposalVotes={proposalVotes} />}
+          {proposalVotes && (
+            <VotersListContainer proposal={proposal} proposalVotes={proposalVotes} />
+          )}
           <Row caption={<Trans>State</Trans>} sx={{ height: 48 }} captionVariant="description">
             <Box
               sx={{

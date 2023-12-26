@@ -5,7 +5,7 @@ import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { governanceConfig, governanceV3Config } from 'src/ui-config/governanceConfig';
 // import { MarketDataType } from 'src/ui-config/marketsConfig';
 
-interface Powers {
+export interface Powers {
   votingPower: string;
   aaveTokenPower: Power;
   stkAaveTokenPower: Power;
@@ -122,6 +122,7 @@ export class GovernanceService {
         user
       ),
     };
+    console.log('powers', powers);
     return powers;
   }
 }
