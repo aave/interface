@@ -197,7 +197,7 @@ export const GovVoteActions = ({
         );
         const gelatoRelay = new GelatoRelay();
         const gelatoRequest = {
-          chainId: votingChainId,
+          chainId: BigInt(votingChainId),
           target: votingMachineAddress,
           data: tx.data || '',
         };
