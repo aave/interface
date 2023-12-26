@@ -122,7 +122,6 @@ export class GovernanceService {
         user
       ),
     };
-    console.log('powers', powers);
     return powers;
   }
 }

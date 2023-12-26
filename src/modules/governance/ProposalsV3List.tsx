@@ -1,7 +1,9 @@
 import { VotingConfig } from '@aave/contract-helpers';
-import { Box, Paper, Skeleton, Stack } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Box, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { Fragment, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
+import { Link } from 'src/components/primitives/Link';
 import {
   useGetProposalCount,
   useGetVotingConfig,
@@ -20,7 +22,6 @@ export const ProposalsV3List = () => {
   const { data: totalCount, isFetching: fetchingProposalCount } = useGetProposalCount();
   const { data, isFetching: fetchingProposals, fetchNextPage } = useProposals(totalCount);
   const { data: config, isFetching: fetchingVotingConfig } = useGetVotingConfig();
-
   const totalNumberOfProposalsLoaded = data?.pages.reduce(
     (acc, page) => acc + page.proposals.length,
     0
@@ -42,7 +43,7 @@ export const ProposalsV3List = () => {
             totalNumberOfProposalsLoaded === undefined || totalNumberOfProposalsLoaded < totalCount
           }
         >
-          {data?.pages.map((group, i) => (
+          {data.pages.map((group, i) => (
             <Fragment key={i}>
               {group.proposals.map((proposal, index) => (
                 <ProposalV3ListItem
@@ -66,8 +67,24 @@ export const ProposalsV3List = () => {
           ))}
           {loading && Array.from({ length: 5 }).map((_, i) => <ProposalListSkeleton key={i} />)}
         </InfiniteScroll>
-      ) : (
+      ) : loading ? (
         Array.from({ length: 5 }).map((_, i) => <ProposalListSkeleton key={i} />)
+      ) : (
+        <Box p={4}>
+          <Typography variant="subheader1">
+            <Trans>
+              Governance V3 is now live but there are no new proposals yet. Check back soon or visit{' '}
+              <Link
+                variant="subheader1"
+                sx={{ textDecoration: 'underline' }}
+                href="https://governance-v2.aave.com/"
+              >
+                Governance V2
+              </Link>{' '}
+              to see proposals on V2.
+            </Trans>
+          </Typography>
+        </Box>
       )}
     </Paper>
   );

@@ -92,7 +92,6 @@ export class GovernanceV3Service {
         async (s) => (await s.service.getPowerAt(block.number, user, GovernancePowerType.VOTING))[0]
       )
     );
-    console.log(result);
     const totalPower = result.reduce((acum, elem) => acum.add(elem), BigNumber.from(0));
     return formatUnits(totalPower, 18);
   }
