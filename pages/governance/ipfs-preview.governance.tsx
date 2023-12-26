@@ -15,8 +15,7 @@ const GovVoteModal = dynamic(() =>
 export default function IpfsPreview() {
   const router = useRouter();
   const ipfsHash = router.query.ipfsHash as string;
-  const [ipfs, setIpfs] = useState<IpfsType>();
-  console.log(ipfs);
+  const [, setIpfs] = useState<IpfsType>();
   async function fetchIpfs() {
     const proposalMetadata = await getProposalMetadata(ipfsHash, governanceConfig.ipfsGateway);
     const newIpfs = {

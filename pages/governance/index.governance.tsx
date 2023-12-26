@@ -74,13 +74,11 @@ export type GovernancePageProps = {
   }[];
 };
 
-export default function Governance(props: GovernancePageProps) {
+export default function Governance() {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('lg'));
   const [mode, setMode] = useState(Tabs.PROPOSALS);
   const trackEvent = useRootStore((store) => store.trackEvent);
-
-  console.log(props);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
