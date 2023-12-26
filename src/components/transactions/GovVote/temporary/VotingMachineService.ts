@@ -15,14 +15,9 @@ interface VotingBalanceProof {
 }
 
 export class VotingMachineService {
-  private readonly _contract;
   private readonly _interface;
 
-  constructor(
-    private readonly votingMachineContractAddress: string,
-    private readonly provider: ProviderWithSend
-  ) {
-    this._contract = VotingMachine__factory.connect(votingMachineContractAddress, provider);
+  constructor(private readonly votingMachineContractAddress: string) {
     this._interface = VotingMachine__factory.createInterface();
   }
 

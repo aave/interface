@@ -150,20 +150,19 @@ export const GovVoteActions = ({
   const { sendTx, signTxData } = useWeb3Context();
   const [signature, setSignature] = useState<string | undefined>(undefined);
   const proposalId = proposal.proposal.proposalId;
-  const assets = ['0xdaEcee477B931b209e8123401EA37582ACB3811d'];
   const blockHash = proposal.proposalData.proposalData.snapshotBlockHash;
   const votingChainId = proposal.proposalData.votingChainId;
-  const votingProvider = getProvider(votingChainId);
   const votingMachineAddress =
     governanceV3Config.votingChainConfig[votingChainId].votingMachineAddress;
+  const assets = proposal.votingMachineData.votingAssets;
 
   const withGelatoRelayer = false;
 
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
     try {
-      const proofs = await getVotingBalanceProofs(user, assets, ChainId.sepolia, blockHash); // CHANGE_BEFORE_PROD
-      const votingMachineService = new VotingMachineService(votingMachineAddress, votingProvider);
+      const proofs = await getVotingBalanceProofs(user, assets, ChainId.mainnet, blockHash); // CHANGE_BEFORE_PROD
+      const votingMachineService = new VotingMachineService(votingMachineAddress);
       if (withGelatoRelayer && signature) {
         const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
           user,
@@ -200,7 +199,7 @@ export const GovVoteActions = ({
           support,
           proofs
         );
-        const txWithEstimatedGas = await estimateGasLimit(tx, ChainId.fuji);
+        const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
         const response = await sendTx(txWithEstimatedGas);
         await response.wait(1);
         setMainTxState({

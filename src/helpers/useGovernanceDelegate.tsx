@@ -16,6 +16,7 @@ import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 
+import { DelegationType } from './types';
 // import { DelegationType } from './types';
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
@@ -27,7 +28,7 @@ export enum GovernancePowerTypeApp {
 
 export const useGovernanceDelegate = (
   delegationTokenType: DelegationTokenType,
-  delegationType: GovernancePowerTypeApp,
+  delegationType: DelegationType,
   skip: boolean,
   delegatee: string
 ) => {
@@ -119,7 +120,7 @@ export const useGovernanceDelegate = (
 
       let txData: PopulatedTransaction;
 
-      if (delegationType === GovernancePowerTypeApp.All) {
+      if (delegationType === DelegationType.BOTH) {
         // NOTE: Delegation for Voting & Proposition
         txs = [
           {
@@ -260,7 +261,7 @@ export const useGovernanceDelegate = (
   interface DelegateMetaSigParams {
     underlyingAsset: tEthereumAddress;
     delegatee: tEthereumAddress;
-    delegationType: GovernancePowerTypeApp;
+    delegationType: DelegationType;
     delegator: tEthereumAddress;
     increaseNonce: boolean;
     governanceTokenName: string;
@@ -281,7 +282,7 @@ export const useGovernanceDelegate = (
     // connectedChainId,
     deadline,
   }: DelegateMetaSigParams) => {
-    const isAllDelegate = Number(delegationType) === Number(GovernancePowerTypeApp.All);
+    const isAllDelegate = Number(delegationType) === Number(DelegationType.BOTH);
 
     const sigBaseType = [
       { name: 'nonce', type: 'uint256' },
@@ -394,7 +395,7 @@ export const useGovernanceDelegate = (
 
       const unsignedPayloads: string[] = [];
       for (const tx of delegationParameters) {
-        if (delegationType !== GovernancePowerTypeApp.All) {
+        if (delegationType !== DelegationType.BOTH) {
           const payload = delegateMetaSig(tx);
           // const payload = await prepareDelegateByTypeSignature({ ...tx, type: delegationType });
           unsignedPayloads.push(payload);
@@ -446,7 +447,7 @@ export const useGovernanceDelegate = (
         setLoadingTxns(false);
       } else {
         let txs: EthereumTransactionTypeExtended[] = [];
-        if (delegationType === GovernancePowerTypeApp.All) {
+        if (delegationType === DelegationType.BOTH) {
           // TODO check if this is working as normal
           txs = await delegate({
             delegatee,
