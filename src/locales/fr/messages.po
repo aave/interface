@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-12-26 18:04\n"
+"PO-Revision-Date: 2023-12-27 00:16\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1121,6 +1121,10 @@ msgstr "Accéder au tableau de bord V3"
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Gouvernance"
+
+#: src/modules/governance/ProposalsV3List.tsx
+msgid "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
+msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
