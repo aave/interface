@@ -25,18 +25,17 @@ export const queryKeysFactory = {
     proposalId,
     'voteOnProposal',
   ],
-  votingPowerAt: (
-    user: string,
-    strategy: string,
-    blockNumber: number,
-    marketData: MarketDataType
-  ) => [
+  votingPowerAt: (user: string, blockHash: string, votingAssets: string[]) => [
     ...queryKeysFactory.governance,
     ...queryKeysFactory.user(user),
-    ...queryKeysFactory.market(marketData),
-    strategy,
-    blockNumber,
+    ...votingAssets,
+    blockHash,
     'votingPowerAt',
+  ],
+  governanceRepresentatives: (user: string) => [
+    ...queryKeysFactory.governance,
+    ...queryKeysFactory.user(user),
+    'representatives',
   ],
   governanceTokens: (user: string, marketData: MarketDataType) => [
     ...queryKeysFactory.governance,

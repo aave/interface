@@ -15,8 +15,7 @@ const GovVoteModal = dynamic(() =>
 export default function IpfsPreview() {
   const router = useRouter();
   const ipfsHash = router.query.ipfsHash as string;
-  const [ipfs, setIpfs] = useState<IpfsType>();
-
+  const [, setIpfs] = useState<IpfsType>();
   async function fetchIpfs() {
     const proposalMetadata = await getProposalMetadata(ipfsHash, governanceConfig.ipfsGateway);
     const newIpfs = {
@@ -31,7 +30,7 @@ export default function IpfsPreview() {
     if (!ipfsHash) return;
     fetchIpfs();
   }, [ipfsHash]);
-  return <ProposalPage ipfs={ipfs} proposal={undefined} />;
+  return <ProposalPage />;
 }
 
 IpfsPreview.getLayout = function getLayout(page: React.ReactElement) {
