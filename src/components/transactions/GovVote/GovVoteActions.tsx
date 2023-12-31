@@ -156,8 +156,7 @@ export const GovVoteActions = ({
   const user = useRootStore((store) => store.account);
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx, signTxData } = useWeb3Context();
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const tokenPowers = useGovernanceTokensAndPowers(currentMarketData);
+  const tokenPowers = useGovernanceTokensAndPowers();
   const [signature, setSignature] = useState<string | undefined>(undefined);
   const proposalId = proposal.proposal.proposalId;
   const blockHash = proposal.proposalData.proposalData.snapshotBlockHash;
