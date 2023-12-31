@@ -1,21 +1,21 @@
 import { Trans } from '@lingui/macro';
 import { Button, Divider, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { constants } from 'ethers';
 import { AvatarSize } from 'src/components/Avatar';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ExternalUserDisplay } from 'src/components/UserDisplay';
+import { useGovernanceDelegatees } from 'src/hooks/governance/useDelegateeData';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
-import { usePowers } from 'src/hooks/governance/usePowers';
 import { useModalContext } from 'src/hooks/useModal';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 type DelegatedPowerProps = {
-  user: string;
   aavePower: string;
   stkAavePower: string;
   aaveDelegatee: string;
@@ -26,7 +26,6 @@ type DelegatedPowerProps = {
 };
 
 const DelegatedPower: React.FC<DelegatedPowerProps> = ({
-  user,
   aavePower,
   stkAavePower,
   aaveDelegatee,
@@ -35,9 +34,9 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
   aAavePower,
   title,
 }) => {
-  const isAaveSelfDelegated = !aaveDelegatee || user === aaveDelegatee;
-  const isStkAaveSelfDelegated = !stkAaveDelegatee || user === stkAaveDelegatee;
-  const isAAaveSelfDelegated = !aAaveDelegatee || user === aAaveDelegatee;
+  const isAaveSelfDelegated = !aaveDelegatee || constants.AddressZero === aaveDelegatee;
+  const isStkAaveSelfDelegated = !stkAaveDelegatee || constants.AddressZero === stkAaveDelegatee;
+  const isAAaveSelfDelegated = !aAaveDelegatee || constants.AddressZero === aAaveDelegatee;
 
   if (isAaveSelfDelegated && isStkAaveSelfDelegated && isAAaveSelfDelegated) return null;
 
@@ -133,11 +132,10 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
 
 export const DelegatedInfoPanel = () => {
   const address = useRootStore((store) => store.account);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
     data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
-  const { data: powers } = usePowers(currentMarketData);
+  const { data: powers } = useGovernanceDelegatees();
   const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -147,20 +145,20 @@ export const DelegatedInfoPanel = () => {
     Number(aave) <= 0 &&
     Number(stkAave) <= 0 &&
     Number(aAave) <= 0 &&
-    powers.aavePropositionDelegatee === '' &&
-    powers.aaveVotingDelegatee === '' &&
-    powers.stkAavePropositionDelegatee === '' &&
-    powers.stkAaveVotingDelegatee === '' &&
-    powers.aAavePropositionDelegatee === '' &&
-    powers.aAaveVotingDelegatee === '';
+    powers.aavePropositionDelegatee === constants.AddressZero &&
+    powers.aaveVotingDelegatee === constants.AddressZero &&
+    powers.stkAavePropositionDelegatee === constants.AddressZero &&
+    powers.stkAaveVotingDelegatee === constants.AddressZero &&
+    powers.aAavePropositionDelegatee === constants.AddressZero &&
+    powers.aAaveVotingDelegatee === constants.AddressZero;
 
   const showRevokeButton =
-    powers.aavePropositionDelegatee !== '' ||
-    powers.aaveVotingDelegatee !== '' ||
-    powers.stkAavePropositionDelegatee !== '' ||
-    powers.stkAaveVotingDelegatee !== '' ||
-    powers.aAaveVotingDelegatee !== '' ||
-    powers.aAavePropositionDelegatee !== '';
+    powers.aavePropositionDelegatee !== constants.AddressZero ||
+    powers.aaveVotingDelegatee !== constants.AddressZero ||
+    powers.stkAavePropositionDelegatee !== constants.AddressZero ||
+    powers.stkAaveVotingDelegatee !== constants.AddressZero ||
+    powers.aAaveVotingDelegatee !== constants.AddressZero ||
+    powers.aAavePropositionDelegatee !== constants.AddressZero;
 
   return (
     <Paper sx={{ mt: 2 }}>
@@ -198,7 +196,6 @@ export const DelegatedInfoPanel = () => {
               aAaveDelegatee={powers.aAaveVotingDelegatee}
               aaveDelegatee={powers.aaveVotingDelegatee}
               stkAaveDelegatee={powers.stkAaveVotingDelegatee}
-              user={address}
               title="Voting power"
             />
             <DelegatedPower
@@ -208,7 +205,6 @@ export const DelegatedInfoPanel = () => {
               stkAavePower={stkAave}
               aaveDelegatee={powers.aavePropositionDelegatee}
               stkAaveDelegatee={powers.stkAavePropositionDelegatee}
-              user={address}
               title="Proposition power"
             />
           </>

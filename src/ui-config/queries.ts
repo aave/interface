@@ -12,10 +12,10 @@ export const queryKeysFactory = {
     marketData.market,
   ],
   user: (user: string) => [user],
-  powers: (user: string, marketData: MarketDataType) => [
+  powers: (user: string, chainId: number) => [
     ...queryKeysFactory.governance,
     ...queryKeysFactory.user(user),
-    ...queryKeysFactory.market(marketData),
+    chainId,
     'powers',
   ],
   voteOnProposal: (user: string, proposalId: number, marketData: MarketDataType) => [
@@ -91,6 +91,18 @@ export const queryKeysFactory = {
     token,
     spender,
     'approvedAmount',
+  ],
+  tokenPowers: (user: string, token: string, chainId: number) => [
+    ...queryKeysFactory.user(user),
+    token,
+    chainId,
+    'tokenPowers',
+  ],
+  tokenDelegatees: (user: string, token: string, chainId: number) => [
+    ...queryKeysFactory.user(user),
+    token,
+    chainId,
+    'tokenDelegatees',
   ],
 };
 

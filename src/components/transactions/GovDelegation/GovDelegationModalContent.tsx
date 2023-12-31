@@ -1,13 +1,13 @@
 import { canBeEnsAddress } from '@aave/contract-helpers';
 import { t, Trans } from '@lingui/macro';
 import { FormControl, TextField, Typography } from '@mui/material';
-import { utils } from 'ethers';
+import { constants, utils } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { GovernancePowerTypeApp } from 'src/helpers/types';
+import { useGovernanceDelegatees } from 'src/hooks/governance/useDelegateeData';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
-import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -46,11 +46,10 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
     data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
-  const { data: powers, refetch } = usePowers(currentMarketData);
+  const { data: powers, refetch } = useGovernanceDelegatees();
   // error states
 
   // selector states
@@ -63,12 +62,17 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const onlyOnePowerToRevoke =
     isRevokeModal &&
     !!powers &&
-    ((powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '') ||
-      (powers.aavePropositionDelegatee === '' && powers.stkAavePropositionDelegatee === ''));
+    ((powers.aaveVotingDelegatee === constants.AddressZero &&
+      powers.stkAaveVotingDelegatee === constants.AddressZero) ||
+      (powers.aavePropositionDelegatee === constants.AddressZero &&
+        powers.stkAavePropositionDelegatee === constants.AddressZero));
 
   useEffect(() => {
     if (onlyOnePowerToRevoke) {
-      if (powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '')
+      if (
+        powers.aaveVotingDelegatee === constants.AddressZero &&
+        powers.stkAaveVotingDelegatee === constants.AddressZero
+      )
         setDelegationType(GovernancePowerTypeApp.PROPOSITION);
       else setDelegationType(GovernancePowerTypeApp.VOTING);
     }
@@ -154,9 +158,10 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       )}
       {(isRevokeModal &&
         !!powers &&
-        ((powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '') ||
-          (powers.aavePropositionDelegatee === '' &&
-            powers.stkAavePropositionDelegatee === ''))) || (
+        ((powers.aaveVotingDelegatee === constants.AddressZero &&
+          powers.stkAaveVotingDelegatee === constants.AddressZero) ||
+          (powers.aavePropositionDelegatee === constants.AddressZero &&
+            powers.stkAavePropositionDelegatee === constants.AddressZero))) || (
         <>
           <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
             <Trans>{isRevokeModal ? 'Power to revoke' : 'Power to delegate'}</Trans>

@@ -1,7 +1,6 @@
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
 import { Powers } from 'src/services/GovernanceService';
 import { GovernanceTokensBalance } from 'src/services/WalletBalanceService';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { useGovernanceTokens } from './useGovernanceTokens';
 import { usePowers } from './usePowers';
@@ -15,10 +14,8 @@ interface GovernanceTokensAndPowers extends Powers, GovernanceTokensBalance {
   ) => Promise<QueryObserverResult<Powers, unknown>>;
 }
 
-export const useGovernanceTokensAndPowers = (
-  marketData: MarketDataType
-): GovernanceTokensAndPowers | undefined => {
-  const { data: powers, refetch: refetchPowers } = usePowers(marketData);
+export const useGovernanceTokensAndPowers = (): GovernanceTokensAndPowers | undefined => {
+  const { data: powers, refetch: refetchPowers } = usePowers();
   const { data: governanceTokens } = useGovernanceTokens();
 
   if (!powers || !governanceTokens) {
