@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-12-27 00:16\n"
+"PO-Revision-Date: 2024-01-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -848,7 +848,6 @@ msgstr "详"
 msgid "Developers"
 msgstr "开发 人员"
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
 msgstr "微分"
@@ -1738,7 +1737,6 @@ msgstr "价格影响 {0}%"
 msgid "Privacy"
 msgstr "隐私"
 
-#: src/modules/governance/proposal/ProposalDetails.tsx
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "提案详情"
@@ -1783,7 +1781,6 @@ msgstr "该资产的协议供应上限为 100%。无法进一步供应。"
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "该资产的协议供应上限为 100%。无法进一步供应。"
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Quorum"
 msgstr "法定人数"

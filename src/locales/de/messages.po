@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-12-27 00:16\n"
+"PO-Revision-Date: 2024-01-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -848,7 +848,6 @@ msgstr "Details"
 msgid "Developers"
 msgstr "Entwickler"
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
 msgstr "Differential"
@@ -1738,7 +1737,6 @@ msgstr "Einfluss auf den Preis {0}%"
 msgid "Privacy"
 msgstr "Privatsphäre"
 
-#: src/modules/governance/proposal/ProposalDetails.tsx
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Details zum Angebot"
@@ -1783,7 +1781,6 @@ msgstr "Die Obergrenze für das Protokollangebot liegt für diesen Vermögenswer
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "Die Obergrenze für das Protokollangebot liegt für diesen Vermögenswert bei 100 %. Weiterer Nachschub nicht verfügbar."
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Quorum"
 msgstr "Quorum"

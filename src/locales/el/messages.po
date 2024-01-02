@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-12-27 00:16\n"
+"PO-Revision-Date: 2024-01-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -848,7 +848,6 @@ msgstr "Λεπτομέρειες"
 msgid "Developers"
 msgstr "Προγραμματιστές"
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
 msgstr "Διαφορικό"
@@ -1738,7 +1737,6 @@ msgstr ""
 msgid "Privacy"
 msgstr ""
 
-#: src/modules/governance/proposal/ProposalDetails.tsx
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Λεπτομέρειες πρότασης"
@@ -1783,7 +1781,6 @@ msgstr ""
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr ""
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Quorum"
 msgstr "Απαρτία"
