@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-12-27 00:16\n"
+"PO-Revision-Date: 2024-01-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -848,7 +848,6 @@ msgstr "Détails"
 msgid "Developers"
 msgstr "Développeurs"
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
 msgstr "Différentiel"
@@ -1738,7 +1737,6 @@ msgstr "Impact sur les prix {0}%"
 msgid "Privacy"
 msgstr "Vie privée"
 
-#: src/modules/governance/proposal/ProposalDetails.tsx
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Détails de la proposition"
@@ -1783,7 +1781,6 @@ msgstr "Limite d’approvisionnement du protocole à 100 % pour cet actif. D’a
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "La limite d’approvisionnement du protocole est de 100 % pour cet actif. D’autres approvisionnements ne sont pas disponibles."
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Quorum"
 msgstr "Quorum"

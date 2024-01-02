@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-12-27 00:16\n"
+"PO-Revision-Date: 2024-01-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -848,7 +848,6 @@ msgstr "Detalles"
 msgid "Developers"
 msgstr "Desarrolladores"
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
 msgstr "Diferencial"
@@ -1738,7 +1737,6 @@ msgstr "Impacto en el precio {0}%"
 msgid "Privacy"
 msgstr "Privacidad"
 
-#: src/modules/governance/proposal/ProposalDetails.tsx
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Detalles de la propuesta"
@@ -1783,7 +1781,6 @@ msgstr "El límite de suministro del protocolo está al 100% para este activo. N
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "El límite de suministro del protocolo está al 100% para este activo. No es posible suministrar más."
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Quorum"
 msgstr "Quorum"
