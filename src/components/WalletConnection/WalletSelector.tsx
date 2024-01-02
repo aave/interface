@@ -21,7 +21,6 @@ export type WalletRowProps = {
 };
 const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   const { connectWallet, loading } = useWeb3Context();
-  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const getWalletIcon = (walletType: WalletType) => {
     switch (walletType) {
@@ -76,8 +75,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   };
 
   const connectWalletClick = () => {
-    trackEvent(AUTH.CONNECT_WALLET, { walletType: walletType, walletName: walletName });
-    connectWallet(walletType);
+    connectWallet(walletType, walletName);
   };
   return (
     <Button

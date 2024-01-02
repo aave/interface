@@ -13,6 +13,7 @@ import { BigNumber, PopulatedTransaction, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { AUTH } from 'src/utils/mixPanelEvents';
 import { hexToAscii } from 'src/utils/utils';
 
 // import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
@@ -29,7 +30,7 @@ export type ERC20TokenType = {
 };
 
 export type Web3Data = {
-  connectWallet: (wallet: WalletType) => Promise<void>;
+  connectWallet: (wallet: WalletType, walletName?: string) => Promise<void>;
   connectReadOnlyMode: (address: string) => Promise<void>;
   disconnectWallet: () => void;
   currentAccount: string;
@@ -72,12 +73,18 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
+  const [walletName, setWalletName] = useState<string>();
   const [setAccount, currentChainId] = useRootStore((store) => [
     store.setAccount,
     store.currentChainId,
   ]);
   const setAccountLoading = useRootStore((store) => store.setAccountLoading);
-  const setWalletType = useRootStore((store) => store.setWalletType);
+  const [walletType, setWalletType] = useRootStore((store) => [
+    store.walletType,
+    store.setWalletType,
+  ]);
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   // for now we use network changed as it returns the chain string instead of hex
   // const handleChainChanged = (chainId: number) => {
   //   console.log('chainChanged', chainId);
@@ -129,7 +136,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // connect to the wallet specified by wallet type
   const connectWallet = useCallback(
-    async (wallet: WalletType) => {
+    async (wallet: WalletType, walletName?: string) => {
       setLoading(true);
       try {
         const connector: AbstractConnector = getWallet(wallet, chainId, currentChainId);
@@ -147,6 +154,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         setConnector(connector);
         setSwitchNetworkError(undefined);
         setWalletType(wallet);
+        setWalletName(walletName);
         localStorage.setItem('walletProvider', wallet.toString());
         setDeactivated(false);
         setLoading(false);
@@ -431,6 +439,16 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   useEffect(() => {
     setAccountLoading(loading);
   }, [loading]);
+
+  useEffect(() => {
+    if (account && walletType && walletName) {
+      trackEvent(AUTH.CONNECT_WALLET, {
+        walletType: walletType,
+        walletName: walletName,
+        walletAddress: account,
+      });
+    }
+  }, [account, walletType, walletName]);
 
   return (
     <Web3Context.Provider
