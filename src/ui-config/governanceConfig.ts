@@ -142,5 +142,5 @@ export const governanceChainConfig: GovernanceChainConfig = {
   },
 };
 
-const coreNetwork = ChainId.sepolia;
+const coreNetwork = ChainId.mainnet;
 export const governanceV3Config = governanceChainConfig[coreNetwork];
