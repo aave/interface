@@ -8,8 +8,6 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsV3List } from 'src/modules/governance/ProposalsV3List';
 import { UserGovernanceInfo } from 'src/modules/governance/UserGovernanceInfo';
-import { Ipfs, IpfsType } from 'src/static-build/ipfs';
-import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../../src/components/ContentContainer';
@@ -26,53 +24,10 @@ const GovRepresentativesModal = dynamic(() =>
   )
 );
 
-export const getStaticProps = async () => {
-  // const queryClient = new QueryClient();
-  // await queryClient.prefetchQuery({ queryKey: ['proposals'], queryFn: () => getProposals });
-
-  // return {
-  //   props: {
-  //     dehydratedState: dehydrate(queryClient),
-  //   },
-  // };
-
-  const IpfsFetcher = new Ipfs();
-  const ProposalFetcher = new Proposal();
-
-  const proposals = [...Array(ProposalFetcher.count()).keys()].map((id) => {
-    const ipfs = IpfsFetcher.get(id);
-    const proposal = ProposalFetcher.get(id);
-    return {
-      ipfs: {
-        title: ipfs.title,
-        id: ipfs.id,
-        originalHash: ipfs.originalHash,
-        shortDescription: ipfs.shortDescription || '',
-      },
-      proposal,
-      prerendered: true,
-    };
-  });
-
-  return {
-    props: {
-      proposals: proposals.slice().reverse(),
-    },
-  };
-};
-
 enum Tabs {
   PROPOSALS,
   INFORMATION,
 }
-
-export type GovernancePageProps = {
-  proposals: {
-    ipfs: Pick<IpfsType, 'title' | 'id' | 'originalHash' | 'shortDescription'>;
-    proposal: CustomProposalType;
-    prerendered: boolean;
-  }[];
-};
 
 export default function Governance() {
   const { breakpoints } = useTheme();

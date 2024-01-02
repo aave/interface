@@ -843,7 +843,6 @@ msgstr "Details"
 msgid "Developers"
 msgstr "Developers"
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
 msgstr "Differential"
@@ -1733,7 +1732,6 @@ msgstr "Price impact {0}%"
 msgid "Privacy"
 msgstr "Privacy"
 
-#: src/modules/governance/proposal/ProposalDetails.tsx
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
@@ -1778,7 +1776,6 @@ msgstr "Protocol supply cap at 100% for this asset. Further supply unavailable."
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Quorum"
 msgstr "Quorum"

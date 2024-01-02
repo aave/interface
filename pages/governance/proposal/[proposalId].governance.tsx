@@ -9,7 +9,6 @@ import { useGetVotingConfig } from 'src/hooks/governance/useProposals';
 import { useProposalVotes } from 'src/hooks/governance/useProposalVotes';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ProposalLifecycle } from 'src/modules/governance/proposal/ProposalLifecycle';
-// import { ProposalDetails } from 'src/modules/governance/proposal/ProposalDetails';
 import { ProposalOverview } from 'src/modules/governance/proposal/ProposalOverview';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
