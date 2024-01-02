@@ -7,13 +7,13 @@ import {
   dashboardAssetValuesVerification,
   switchApyBlocked,
 } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHEthereumV3: 9000,
+};
 
 const testData = {
-  depositBaseAmount: {
-    asset: assets.arbitrumMarket.ETH,
-    amount: 9000,
-    hasApproval: true,
-  },
   testCases: {
     borrow: [
       {
@@ -77,9 +77,11 @@ const testData = {
 
 describe('LINK INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyArbitrumFork({ v3: true });
+  configEnvWithTenderlyArbitrumFork({
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
 
-  supply(testData.depositBaseAmount, skipTestState, true);
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
