@@ -29,7 +29,7 @@ const donors: Donors = {
   aETHEthereumV3: {
     name: 'aETH',
     donorWalletAddress: '0x01d1f55d94a53a9517c07f793f35320FAA0D2DCf',
-    tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
+    tokenAddress: '0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8',
   },
   aETHArbitrumV3: {
     name: 'aETH',
