@@ -2,7 +2,7 @@ import { AaveGovernanceService, ChainId, Power, tEthereumAddress } from '@aave/c
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
-import { governanceConfig, governanceV3Config } from 'src/ui-config/governanceConfig';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 // import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 export interface Powers {
@@ -23,6 +23,8 @@ export interface Powers {
 //   support: boolean;
 // }
 
+const AAVE_GOVERNANCE_V2 = '0xEC568fffba86c094cf06b22134B23074DFE2252c';
+
 const checkIfDelegateeIsUser = (delegatee: tEthereumAddress, userAddress: tEthereumAddress) =>
   delegatee == ZERO_ADDRESS || delegatee.toLocaleLowerCase() === userAddress.toLocaleLowerCase()
     ? ''
@@ -33,9 +35,8 @@ export class GovernanceService {
   private getAaveGovernanceService(chainId: ChainId) {
     const provider = this.getProvider(chainId);
     return new AaveGovernanceService(provider, {
-      GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
-      GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
-      ipfsGateway: governanceConfig.ipfsGateway,
+      GOVERNANCE_ADDRESS: AAVE_GOVERNANCE_V2,
+      GOVERNANCE_HELPER_ADDRESS: governanceV3Config.addresses.TOKEN_POWER_HELPER,
     });
   }
 
