@@ -13,7 +13,7 @@ import { dashboardAssetValuesVerification } from '../../../../support/steps/veri
 import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
 
 const tokensToRequest: RequestedTokens = {
-  aETHEthereumV3: 9000,
+  aETHEthereumV3: 900,
 };
 
 const testData = {
@@ -94,7 +94,6 @@ describe('DAI INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
     v3: true,
     tokens: tokenSet(tokensToRequest),
   });
-
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });

@@ -10,7 +10,7 @@ import {
 import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
 
 const tokensToRequest: RequestedTokens = {
-  aETHEthereumV3: 9000,
+  aETHArbitrumV3: 100,
 };
 
 const testData = {

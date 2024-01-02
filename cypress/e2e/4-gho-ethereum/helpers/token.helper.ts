@@ -23,18 +23,18 @@ const donors: Donors = {
   },
   aDAIEthereumV3: {
     name: 'aDAI',
-    donorWalletAddress: '0xAddressForMaticV2',
-    tokenAddress: '0xTokenAddressForMaticV2',
+    donorWalletAddress: '0x018008bfb33d285247A21d44E50697654f754e63',
+    tokenAddress: '0xaD0135AF20fa82E106607257143d0060A7eB5cBf',
   },
   aETHEthereumV3: {
     name: 'aETH',
     donorWalletAddress: '0x01d1f55d94a53a9517c07f793f35320FAA0D2DCf',
-    tokenAddress: '0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8',
+    tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
   },
   aETHArbitrumV3: {
     name: 'aETH',
-    donorWalletAddress: '0x44228872dd6bea2e877682adfbc11d74bcbcdd39',
-    tokenAddress: '0x603B5383d1F701C120D4A8E24F2DAccEF30b80b4',
+    donorWalletAddress: '0xb7fb2b774eb5e2dad9c060fb367acbdc7fa7099b',
+    tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
   },
   aAVAXAvalancheV3: {
     name: 'aAVAX',
