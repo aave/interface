@@ -6,8 +6,8 @@ import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { GovernancePowerTypeApp } from 'src/helpers/types';
-import { useGovernanceDelegatees } from 'src/hooks/governance/useDelegateeData';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
+import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -49,7 +49,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const {
     data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
-  const { data: powers, refetch } = useGovernanceDelegatees();
+  const { data: powers, refetch } = usePowers();
   // error states
 
   // selector states

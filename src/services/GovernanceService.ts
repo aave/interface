@@ -1,7 +1,6 @@
-import { AaveGovernanceService, ChainId, Power, tEthereumAddress } from '@aave/contract-helpers';
+import { AaveGovernanceService, ChainId, Power } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
-import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 // import { MarketDataType } from 'src/ui-config/marketsConfig';
 
@@ -25,10 +24,6 @@ export interface Powers {
 
 const AAVE_GOVERNANCE_V2 = '0xEC568fffba86c094cf06b22134B23074DFE2252c';
 
-const checkIfDelegateeIsUser = (delegatee: tEthereumAddress, userAddress: tEthereumAddress) =>
-  delegatee == ZERO_ADDRESS || delegatee.toLocaleLowerCase() === userAddress.toLocaleLowerCase()
-    ? ''
-    : delegatee;
 export class GovernanceService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
@@ -100,28 +95,15 @@ export class GovernanceService {
           .toString(),
         18
       ),
-      aAaveVotingDelegatee: checkIfDelegateeIsUser(
-        aAaveTokenPower.delegatedAddressVotingPower,
-        user
-      ),
-      aAavePropositionDelegatee: checkIfDelegateeIsUser(
-        aAaveTokenPower.delegatedAddressPropositionPower,
-        user
-      ),
+      aAaveVotingDelegatee: aAaveTokenPower.delegatedAddressVotingPower,
+      aAavePropositionDelegatee: aAaveTokenPower.delegatedAddressPropositionPower,
 
-      aaveVotingDelegatee: checkIfDelegateeIsUser(aaveTokenPower.delegatedAddressVotingPower, user),
-      aavePropositionDelegatee: checkIfDelegateeIsUser(
-        aaveTokenPower.delegatedAddressPropositionPower,
-        user
-      ),
-      stkAaveVotingDelegatee: checkIfDelegateeIsUser(
-        stkAaveTokenPower.delegatedAddressVotingPower,
-        user
-      ),
-      stkAavePropositionDelegatee: checkIfDelegateeIsUser(
-        stkAaveTokenPower.delegatedAddressPropositionPower,
-        user
-      ),
+      aaveVotingDelegatee: aaveTokenPower.delegatedAddressVotingPower,
+      aavePropositionDelegatee: aaveTokenPower.delegatedAddressPropositionPower,
+
+      stkAaveVotingDelegatee: stkAaveTokenPower.delegatedAddressVotingPower,
+
+      stkAavePropositionDelegatee: stkAaveTokenPower.delegatedAddressPropositionPower,
     };
     return powers;
   }
