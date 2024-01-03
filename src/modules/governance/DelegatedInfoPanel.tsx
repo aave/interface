@@ -1,39 +1,44 @@
 import { Trans } from '@lingui/macro';
 import { Button, Divider, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { constants } from 'ethers';
 import { AvatarSize } from 'src/components/Avatar';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ExternalUserDisplay } from 'src/components/UserDisplay';
+import { useGovernanceDelegatees } from 'src/hooks/governance/useDelegateeData';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
-import { usePowers } from 'src/hooks/governance/usePowers';
 import { useModalContext } from 'src/hooks/useModal';
+import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 type DelegatedPowerProps = {
-  user: string;
   aavePower: string;
   stkAavePower: string;
   aaveDelegatee: string;
   stkAaveDelegatee: string;
   title: string;
+  aAavePower: string;
+  aAaveDelegatee: string;
 };
 
 const DelegatedPower: React.FC<DelegatedPowerProps> = ({
-  user,
   aavePower,
   stkAavePower,
   aaveDelegatee,
   stkAaveDelegatee,
+  aAaveDelegatee,
+  aAavePower,
   title,
 }) => {
-  const isAaveSelfDelegated = !aaveDelegatee || user === aaveDelegatee;
-  const isStkAaveSelfDelegated = !stkAaveDelegatee || user === stkAaveDelegatee;
+  const isAaveSelfDelegated = !aaveDelegatee || constants.AddressZero === aaveDelegatee;
+  const isStkAaveSelfDelegated = !stkAaveDelegatee || constants.AddressZero === stkAaveDelegatee;
+  const isAAaveSelfDelegated = !aAaveDelegatee || constants.AddressZero === aAaveDelegatee;
 
-  if (isAaveSelfDelegated && isStkAaveSelfDelegated) return null;
+  if (isAaveSelfDelegated && isStkAaveSelfDelegated && isAAaveSelfDelegated) return null;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 6, mb: 2 }}>
@@ -41,7 +46,9 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
         <Trans>{title}</Trans>
       </Typography>
       <Box sx={{ display: 'flex', gap: 4, flexDirection: 'column' }}>
-        {aaveDelegatee === stkAaveDelegatee ? (
+        {aaveDelegatee !== ZERO_ADDRESS &&
+        aaveDelegatee === stkAaveDelegatee &&
+        aaveDelegatee === aAaveDelegatee ? (
           <Row
             align="flex-start"
             caption={
@@ -54,11 +61,11 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
               <FormattedNumber
-                value={Number(aavePower) + Number(stkAavePower)}
+                value={Number(aavePower) + Number(stkAavePower) + Number(aAavePower)}
                 variant="subheader1"
               />
               <Typography variant="helperText" color="text.secondary">
-                AAVE + stkAAVE
+                AAVE + stkAAVE + aAAVE
               </Typography>
             </Box>
           </Row>
@@ -98,6 +105,24 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
                 </Box>
               </Row>
             )}
+
+            {!isAAaveSelfDelegated && (
+              <Row
+                align="flex-start"
+                caption={
+                  <ExternalUserDisplay
+                    avatarProps={{ size: AvatarSize.XS }}
+                    titleProps={{ variant: 'subheader1' }}
+                    address={aAaveDelegatee}
+                  />
+                }
+              >
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                  <TokenIcon aToken symbol="aave" sx={{ width: 16, height: 16 }} />
+                  <FormattedNumber value={aAavePower} variant="subheader1" />
+                </Box>
+              </Row>
+            )}
           </>
         )}
       </Box>
@@ -107,11 +132,10 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
 
 export const DelegatedInfoPanel = () => {
   const address = useRootStore((store) => store.account);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
-    data: { aave, stkAave },
+    data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
-  const { data: powers } = usePowers(currentMarketData);
+  const { data: powers } = useGovernanceDelegatees();
   const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -120,16 +144,21 @@ export const DelegatedInfoPanel = () => {
   const disableButton =
     Number(aave) <= 0 &&
     Number(stkAave) <= 0 &&
-    powers.aavePropositionDelegatee === '' &&
-    powers.aaveVotingDelegatee === '' &&
-    powers.stkAavePropositionDelegatee === '' &&
-    powers.stkAaveVotingDelegatee === '';
+    Number(aAave) <= 0 &&
+    powers.aavePropositionDelegatee === constants.AddressZero &&
+    powers.aaveVotingDelegatee === constants.AddressZero &&
+    powers.stkAavePropositionDelegatee === constants.AddressZero &&
+    powers.stkAaveVotingDelegatee === constants.AddressZero &&
+    powers.aAavePropositionDelegatee === constants.AddressZero &&
+    powers.aAaveVotingDelegatee === constants.AddressZero;
 
   const showRevokeButton =
-    powers.aavePropositionDelegatee !== '' ||
-    powers.aaveVotingDelegatee !== '' ||
-    powers.stkAavePropositionDelegatee !== '' ||
-    powers.stkAaveVotingDelegatee !== '';
+    powers.aavePropositionDelegatee !== constants.AddressZero ||
+    powers.aaveVotingDelegatee !== constants.AddressZero ||
+    powers.stkAavePropositionDelegatee !== constants.AddressZero ||
+    powers.stkAaveVotingDelegatee !== constants.AddressZero ||
+    powers.aAaveVotingDelegatee !== constants.AddressZero ||
+    powers.aAavePropositionDelegatee !== constants.AddressZero;
 
   return (
     <Paper sx={{ mt: 2 }}>
@@ -139,8 +168,8 @@ export const DelegatedInfoPanel = () => {
         </Typography>
         <Typography typography="description" sx={{ mt: 1 }} color="text.secondary">
           <Trans>
-            Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You
-            will not be sending any tokens, only the rights to vote and propose changes to the
+            Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers.
+            You will not be sending any tokens, only the rights to vote and propose changes to the
             protocol. You can re-delegate or revoke power to self at any time.
           </Trans>
           <Link
@@ -156,24 +185,26 @@ export const DelegatedInfoPanel = () => {
         </Typography>
         {disableButton ? (
           <Typography variant="description" color="text.muted" mt={6}>
-            <Trans>You have no AAVE/stkAAVE balance to delegate.</Trans>
+            <Trans>You have no AAVE/stkAAVE/aAave balance to delegate.</Trans>
           </Typography>
         ) : (
           <>
             <DelegatedPower
               aavePower={aave}
               stkAavePower={stkAave}
+              aAavePower={aAave}
+              aAaveDelegatee={powers.aAaveVotingDelegatee}
               aaveDelegatee={powers.aaveVotingDelegatee}
               stkAaveDelegatee={powers.stkAaveVotingDelegatee}
-              user={address}
               title="Voting power"
             />
             <DelegatedPower
               aavePower={aave}
+              aAavePower={aAave}
+              aAaveDelegatee={powers.aAavePropositionDelegatee}
               stkAavePower={stkAave}
               aaveDelegatee={powers.aavePropositionDelegatee}
               stkAaveDelegatee={powers.stkAavePropositionDelegatee}
-              user={address}
               title="Proposition power"
             />
           </>

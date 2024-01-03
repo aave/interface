@@ -2,9 +2,9 @@
 .gitignore
 .eslintcache
 .eslintignore
+.gitattributes
 node_modules/
 public/
-scripts/
 
 # Artifacts
 .next/

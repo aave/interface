@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-15 00:16\n"
+"PO-Revision-Date: 2024-01-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -245,9 +245,9 @@ msgstr "Der Betrag muss größer als 0 sein."
 msgid "Amount to unstake"
 msgstr "Betrag, der nicht eingesetzt werden soll"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "An error has occurred fetching the proposal metadata from IPFS."
-msgstr "Beim Abrufen der Vorschlagsmetadaten aus IPFS ist ein Fehler aufgetreten."
+#: src/modules/governance/proposal/ProposalOverview.tsx
+msgid "An error has occurred fetching the proposal."
+msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
@@ -355,10 +355,6 @@ msgstr "Vermögenswerte mit null LTV ({assetsBlockingWithdraw}) müssen als Sich
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "At a discount"
 msgstr "Mit einem Rabatt"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Author"
-msgstr "Verfasser"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
@@ -603,6 +599,10 @@ msgstr "Kann als Sicherheit dienen"
 msgid "Can be executed"
 msgstr "Kann ausgeführt werden"
 
+#: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
+msgid "Can't validate the wallet address. Try again."
+msgstr ""
+
 #: src/components/TitleWithSearchBar.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Cancel"
@@ -613,8 +613,8 @@ msgid "Cannot disable E-Mode"
 msgstr "E-Modus kann nicht deaktiviert werden"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes, your delegate's voting/proposition power will be automatically adjusted."
-msgstr "Wählen Sie aus, wie viel Abstimmungs-/Vorschlagsmacht Sie an jemand anderen abgeben möchten, indem Sie einen Teil Ihres AAVE- oder stkAAVE-Guthabens delegieren. Ihre Token verbleiben auf Ihrem Konto, aber Ihr Delegierter kann in Ihrem Namen abstimmen oder Vorschläge machen. Wenn sich Ihr AAVE- oder stkAAVE-Saldo ändert, wird die Abstimmungs-/Vorschlagskraft Ihres Delegierten automatisch angepasst."
+msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave balance changes, your delegate's voting/proposition power will be automatically adjusted."
+msgstr ""
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
@@ -721,6 +721,18 @@ msgstr "Sammler-Vertrag"
 msgid "Collector Info"
 msgstr "Sammler-Info"
 
+#: src/components/transactions/GovRepresentatives/GovRepresentativesActions.tsx
+msgid "Confirm transaction"
+msgstr ""
+
+#: src/components/transactions/GovRepresentatives/GovRepresentativesActions.tsx
+msgid "Confirming transaction"
+msgstr ""
+
+#: src/modules/governance/RepresentativesInfoPanel.tsx
+msgid "Connect"
+msgstr ""
+
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
@@ -763,7 +775,7 @@ msgstr "Fehlertext kopieren"
 msgid "Covered debt"
 msgstr "Gedeckte Schuldverschreibungen"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Created"
 msgstr "Erstellt"
 
@@ -771,7 +783,7 @@ msgstr "Erstellt"
 msgid "Current LTV"
 msgstr "Aktueller LTV"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Current differential"
 msgstr "Stromdifferenz"
 
@@ -784,7 +796,7 @@ msgstr "Aktueller v2-Saldo"
 msgid "Current v2 balance"
 msgstr "Aktueller v2-Saldo"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Current votes"
 msgstr "Aktuelle Abstimmungen"
 
@@ -836,8 +848,7 @@ msgstr "Details"
 msgid "Developers"
 msgstr "Entwickler"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-#: src/modules/governance/ProposalListItem.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
 msgstr "Differential"
 
@@ -935,6 +946,10 @@ msgstr "Der E-Modus erhöht Ihren LTV für eine ausgewählte Kategorie von Verm�
 msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
 msgstr "Der E-Modus erhöht Ihren LTV für eine ausgewählte Kategorie von Vermögenswerten, was bedeutet, dass Sie, wenn der E-Modus aktiviert ist, eine höhere Kreditaufnahme über Vermögenswerte derselben E-Mode-Kategorie haben, die von Aave Governance definiert werden. Sie können den E-Modus über Ihr <0>Dashboard</0> aufrufen. Weitere Informationen zum E-Modus und den angewandten Einschränkungen finden Sie in <1>den häufig gestellten Fragen</1> oder im <2>technischen Dokument zu Aave V3</2>."
 
+#: src/modules/governance/RepresentativesInfoPanel.tsx
+msgid "Edit"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Effective interest rate"
 msgstr "Effektivzins"
@@ -973,19 +988,12 @@ msgstr "Wenn Sie den E-Modus aktivieren, können Sie nur Vermögenswerte ausleih
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
 msgstr "Wenn Sie diesen Vermögenswert als Sicherheit aktivieren, erhöhen Sie Ihre Kreditkraft und Ihren Gesundheitsfaktor. Es kann jedoch liquidiert werden, wenn Ihr Gesundheitsfaktor unter 1 fällt."
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Ended"
-msgstr "Beendet"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Ends"
-msgstr "Enden"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
 msgstr "Englisch"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+#: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Enter ETH address"
 msgstr "ETH-Adresse eingeben"
 
@@ -1004,10 +1012,6 @@ msgstr "Geschätzter Zinseszins, einschließlich Abschlag für Staking {0}AAVE i
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
 msgstr "Überschreitet den Rabatt"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Executed"
-msgstr "Ausgeführt"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Expected amount to repay"
@@ -1073,7 +1077,7 @@ msgstr "Flashloan ist für diesen Vermögenswert deaktiviert, daher kann diese P
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "Für die Rückzahlung einer bestimmten Art von Schulden muss der Benutzer Schulden dieser Art haben"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
 msgstr "Forumsdiskussion"
 
@@ -1116,6 +1120,10 @@ msgstr "Wechseln Sie zum V3-Dashboard"
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
+
+#: src/modules/governance/ProposalsV3List.tsx
+msgid "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
+msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -1295,6 +1303,10 @@ msgstr "Erfahren Sie mehr in unserem <0>FAQ-Leitfaden</0>"
 msgid "Learn more."
 msgstr "Weitere Informationen."
 
+#: src/modules/governance/RepresentativesInfoPanel.tsx
+msgid "Linked addresses"
+msgstr ""
+
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
 msgstr "Verknüpfungen"
@@ -1400,6 +1412,7 @@ msgstr "Maximaler Schlupf"
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 msgstr "Der maximale Betrag, der für die Kreditaufnahme gegen diesen Vermögenswert zur Verfügung steht, ist begrenzt, da die Schuldenobergrenze bei {0}%."
 
+#: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
@@ -1409,7 +1422,6 @@ msgstr "Der maximale Betrag, der für die Ausleihe zur Verfügung steht, beträg
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "Der maximale Betrag, der für die Kreditaufnahme zur Verfügung steht, ist begrenzt, da die Obergrenze für die Kreditaufnahme des Protokolls fast erreicht ist."
 
-#: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "Die maximale Menge, die zur Verfügung steht, beträgt <0/> {0} (<1/>)."
@@ -1545,6 +1557,7 @@ msgstr "Kein Stimmrecht"
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "None"
 msgstr "Nichts"
 
@@ -1568,8 +1581,8 @@ msgstr "Nicht genügend eingesetztes Guthaben"
 msgid "Not enough voting power to participate in this proposal"
 msgstr "Nicht genügend Stimmrecht, um sich an diesem Vorschlag zu beteiligen"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Not reached"
 msgstr "Nicht erreicht"
 
@@ -1604,6 +1617,10 @@ msgstr "Ok, schließen"
 msgid "Ok, I got it"
 msgstr "Ok, ich hab's verstanden"
 
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "Open for voting"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Vorgang wird nicht unterstützt"
@@ -1623,6 +1640,10 @@ msgstr "Seite nicht gefunden"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Die Teilnahme an dieser {symbol} Reserve gibt annualisierte Belohnungen."
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "Payloads executed"
+msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1716,15 +1737,17 @@ msgstr "Einfluss auf den Preis {0}%"
 msgid "Privacy"
 msgstr "Privatsphäre"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Details zum Angebot"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Proposal overview"
 msgstr "Vorschlagsübersicht"
 
 #: pages/governance/index.governance.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
@@ -1758,8 +1781,7 @@ msgstr "Die Obergrenze für das Protokollangebot liegt für diesen Vermögenswer
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "Die Obergrenze für das Protokollangebot liegt für diesen Vermögenswert bei 100 %. Weiterer Nachschub nicht verfügbar."
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-#: src/modules/governance/ProposalListItem.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Quorum"
 msgstr "Quorum"
 
@@ -1767,12 +1789,12 @@ msgstr "Quorum"
 msgid "Rate change"
 msgstr "Änderung des Tarifs"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Raw-Ipfs"
 msgstr "Roh-IPFS"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Reached"
 msgstr "Erreicht"
 
@@ -1831,6 +1853,10 @@ msgstr "Restschuld"
 msgid "Remaining supply"
 msgstr "Verbleibendes Angebot"
 
+#: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
+msgid "Remove"
+msgstr ""
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Repaid"
 msgstr "Zurückgezahlt"
@@ -1863,6 +1889,14 @@ msgstr "Vergeltend {symbol}"
 #: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Repayment amount to reach {0}% utilization"
 msgstr "Zu erreichender Rückzahlungsbetrag {0}% Auslastung"
+
+#: src/modules/governance/RepresentativesInfoPanel.tsx
+msgid "Representative smart contract wallet (ie. Safe) addresses on other chains."
+msgstr ""
+
+#: src/modules/governance/RepresentativesInfoPanel.tsx
+msgid "Representing smart contract wallet (ie. Safe) addresses on other chains."
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
@@ -1945,10 +1979,6 @@ msgstr "Sicherheit Ihrer hinterlegten Sicherheiten gegen die geliehenen Vermöge
 msgid "Save and share"
 msgstr "Speichern und teilen"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Seatbelt report"
-msgstr "Sicherheitsgurt-Bericht"
-
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
 msgstr "Es scheint, als ob wir das Netzwerk nicht automatisch umschalten können. Bitte prüfen Sie, ob Sie es von der Wallet aus ändern können."
@@ -2005,12 +2035,12 @@ msgstr "Delegierung einrichten"
 msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr "Richte Benachrichtigungen über deinen Gesundheitsfaktor mit der Hal-App ein."
 
-#: pages/governance/proposal/[proposalId].governance.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
+#: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on Lens"
 msgstr "Auf Lens teilen"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on twitter"
 msgstr "Auf Twitter teilen"
 
@@ -2156,11 +2186,7 @@ msgstr "Staking-Guthaben"
 msgid "Staking discount"
 msgstr "Staking-Rabatt"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Started"
-msgstr "Gestartet"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "State"
 msgstr "Zustand"
 
@@ -2583,10 +2609,6 @@ msgstr "Gesamtmarktgröße"
 msgid "Total supplied"
 msgstr "Gelieferte Gesamtmenge"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Total voting power"
-msgstr "Stimmrechte insgesamt"
-
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
 msgstr "Gesamtwert"
@@ -2672,8 +2694,8 @@ msgid "Use it to vote for or against active proposals."
 msgstr "Verwenden Sie es, um für oder gegen aktive Vorschläge zu stimmen."
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
-msgstr "Verwenden Sie Ihr AAVE- und stkAAVE-Guthaben, um Ihre Abstimmungs- und Vorschlagsbefugnisse zu delegieren. Sie senden keine Token, sondern nur das Recht, abzustimmen und Änderungen am Protokoll vorzuschlagen. Sie können die Macht jederzeit an sich selbst erneut delegieren oder widerrufen."
+msgid "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
+msgstr ""
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
@@ -2810,12 +2832,16 @@ msgstr "Abstimmungen"
 msgid "Voting"
 msgstr "Stimmabgabe"
 
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "Voting closed"
+msgstr ""
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
 msgstr "Stimmrecht"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Voting results"
 msgstr "Abstimmungsergebnisse"
 
@@ -2976,8 +3002,8 @@ msgid "You don’t have enough funds in your wallet to repay the full amount. If
 msgstr "Sie haben nicht genug Geld in Ihrem Portemonnaie, um den vollen Betrag zurückzuzahlen. Wenn Sie mit Ihrem aktuellen Geldbetrag zurückzahlen, haben Sie immer noch eine kleine Kreditposition in Ihrem Dashboard."
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "You have no AAVE/stkAAVE balance to delegate."
-msgstr "Sie haben kein AAVE/stkAAVE-Guthaben zu delegieren."
+msgid "You have no AAVE/stkAAVE/aAave balance to delegate."
+msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
@@ -3116,6 +3142,7 @@ msgid "enabled"
 msgstr "ermöglichte"
 
 #: src/modules/governance/FormattedProposalTime.tsx
+#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "enden"
 
@@ -3161,6 +3188,7 @@ msgid "staking view"
 msgstr "Stakening-Ansicht"
 
 #: src/modules/governance/FormattedProposalTime.tsx
+#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr "Beginnt"
 
