@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-12-27 00:16\n"
+"PO-Revision-Date: 2024-01-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -848,7 +848,6 @@ msgstr "Подробности"
 msgid "Developers"
 msgstr "Разработчики"
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
 msgstr "Дифференциальный"
@@ -1738,7 +1737,6 @@ msgstr "Влияние на цену {0}%"
 msgid "Privacy"
 msgstr "Конфиденциальность"
 
-#: src/modules/governance/proposal/ProposalDetails.tsx
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Сведения о предложении"
@@ -1783,7 +1781,6 @@ msgstr "Ограничение предложения протокола сос�
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "Лимит предложения протокола составляет 100% для этого актива. Дальнейшая поставка недоступна."
 
-#: src/modules/governance/ProposalListItem.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Quorum"
 msgstr "Кворум"
