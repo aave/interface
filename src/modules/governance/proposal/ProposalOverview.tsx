@@ -28,7 +28,7 @@ import { StateBadge } from 'src/modules/governance/StateBadge';
 // import { IpfsType } from 'src/static-build/ipfs';
 // import { CustomProposalType } from 'src/static-build/proposal';
 import { useRootStore } from 'src/store/root';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { ipfsGateway } from 'src/ui-config/governanceConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 const CenterAlignedImage = styled('img')({
@@ -111,7 +111,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                       Link: 'Raw Ipfs',
                     })
                   }
-                  href={`${governanceConfig.ipfsGateway}/${proposal.proposal.ipfsHash}`}
+                  href={`${ipfsGateway}/${proposal.proposal.ipfsHash}`}
                   startIcon={
                     <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
                       <DownloadIcon />
