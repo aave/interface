@@ -1,4 +1,5 @@
 import {
+  DelegationType,
   EthereumTransactionTypeExtended,
   gasLimitRecommendations,
   MetaDelegateParams,
@@ -17,12 +18,11 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-import { GovernancePowerTypeApp } from './types';
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
 export const useGovernanceDelegate = (
   delegationTokenType: DelegationTokenType,
-  delegationType: GovernancePowerTypeApp,
+  delegationType: DelegationType,
   skip: boolean,
   delegatee: string
 ) => {
@@ -106,7 +106,7 @@ export const useGovernanceDelegate = (
 
       let txData: PopulatedTransaction;
 
-      if (delegationType === GovernancePowerTypeApp.ALL) {
+      if (delegationType === DelegationType.ALL) {
         // NOTE: Delegation for Voting & Proposition
         txs = [
           {
@@ -290,7 +290,7 @@ export const useGovernanceDelegate = (
 
       const unsignedPayloads: string[] = [];
       for (const tx of delegationParameters) {
-        if (delegationType !== GovernancePowerTypeApp.ALL) {
+        if (delegationType !== DelegationType.ALL) {
           const payload = await delegationTokenService.prepareV3DelegateByTypeSignature(tx);
           unsignedPayloads.push(payload);
         } else {
@@ -340,7 +340,7 @@ export const useGovernanceDelegate = (
         setLoadingTxns(false);
       } else {
         let txs: EthereumTransactionTypeExtended[] = [];
-        if (delegationType === GovernancePowerTypeApp.ALL) {
+        if (delegationType === DelegationType.ALL) {
           // TODO check if this is working as normal
           txs = await delegate({
             delegatee,
