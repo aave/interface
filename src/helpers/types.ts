@@ -23,12 +23,6 @@ export type EmodeCategory = {
   assets: string[];
 };
 
-export enum GovernancePowerTypeApp {
-  VOTING,
-  PROPOSITION,
-  ALL,
-}
-
 export enum CollateralType {
   ENABLED,
   ISOLATED_ENABLED,

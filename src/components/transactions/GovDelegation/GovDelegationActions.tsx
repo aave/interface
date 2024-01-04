@@ -1,4 +1,4 @@
-import { GovernancePowerTypeApp } from 'src/helpers/types';
+import { DelegationType } from '@aave/contract-helpers';
 import { useGovernanceDelegate } from 'src/helpers/useGovernanceDelegate';
 
 import { DelegationTxsWrapper } from '../DelegationTxsWrapper';
@@ -7,7 +7,7 @@ import { DelegationTokenType } from './DelegationTokenSelector';
 export type GovDelegationActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
-  delegationType: GovernancePowerTypeApp;
+  delegationType: DelegationType;
   delegationTokenType: DelegationTokenType;
   delegatee: string;
   isRevoke: boolean;
