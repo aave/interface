@@ -31,7 +31,7 @@ export const useGovernanceDelegate = (
   const getTokenNonce = useRootStore((state) => state.getTokenNonce);
   // const delegateTokensBySig = useRootStore((state) => state.delegateTokensBySig);
   // const delegateTokensByTypeBySig = useRootStore((state) => state.delegateTokensByTypeBySig);
-  const user = useRootStore((state) => state.account);
+  const [user, estimateGasLimit] = useRootStore((state) => [state.account, state.estimateGasLimit]);
   const { signTxData, sendTx, chainId: connectedChainId, getTxError } = useWeb3Context();
 
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
@@ -136,7 +136,8 @@ export const useGovernanceDelegate = (
         },
       ];
 
-      const txData = await delegationTokenService.batchMetaDelegate(user, txs, connectedChainId);
+      let txData = await delegationTokenService.batchMetaDelegate(user, txs, connectedChainId);
+      txData = await estimateGasLimit(txData);
 
       return processTx({
         tx: () => sendTx(txData),
