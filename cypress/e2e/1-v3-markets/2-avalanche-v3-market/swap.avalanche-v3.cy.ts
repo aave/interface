@@ -2,15 +2,15 @@ import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../support/steps/configuration.steps';
-import { supply, swap } from '../../../support/steps/main.steps';
+import { swap } from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aAVAXAvalancheV3: 100,
+};
 
 const testData = {
-  deposit: {
-    asset: assets.avalancheV3Market.AVAX,
-    amount: 100,
-    hasApproval: true,
-  },
   swap: [
     {
       fromAsset: assets.avalancheV3Market.AVAX,
@@ -42,9 +42,11 @@ const testData = {
 
 describe('SWAP, AVALANCHE V3 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
-
-  supply(testData.deposit, skipTestState, true);
+  configEnvWithTenderlyAvalancheFork({
+    market: 'fork_proto_avalanche_v3',
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   testData.swap.forEach((swapCase) => {
     swap(swapCase, skipTestState, false);
   });
