@@ -7,12 +7,11 @@ import {
 } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { BigNumber, ethers, PopulatedTransaction, utils } from 'ethers';
+import { utils } from 'ethers';
 import { useEffect, useState } from 'react';
 import { DelegationTokenType } from 'src/components/transactions/GovDelegation/DelegationTokenSelector';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import META_DELEGATE_HELPER_ABI from 'src/meta-batch-helper.json';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
@@ -33,7 +32,7 @@ export const useGovernanceDelegate = (
   // const delegateTokensBySig = useRootStore((state) => state.delegateTokensBySig);
   // const delegateTokensByTypeBySig = useRootStore((state) => state.delegateTokensByTypeBySig);
   const user = useRootStore((state) => state.account);
-  const { signTxData, sendTx, provider, chainId: connectedChainId, getTxError } = useWeb3Context();
+  const { signTxData, sendTx, chainId: connectedChainId, getTxError } = useWeb3Context();
 
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -104,92 +103,40 @@ export const useGovernanceDelegate = (
 
       let txs: MetaDelegateParams[] = [];
 
-      let txData: PopulatedTransaction;
+      txs = [
+        {
+          delegator: user,
+          delegatee,
+          underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
+          deadline,
+          v: v1,
+          r: r1,
+          s: s1,
+          delegationType: delegationType,
+        },
+        {
+          delegator: user,
+          delegatee,
+          underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
+          deadline,
+          v: v2,
+          r: r2,
+          s: s2,
+          delegationType: delegationType,
+        },
+        {
+          delegator: user,
+          delegatee,
+          underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
+          deadline,
+          v: v3,
+          r: r3,
+          s: s3,
+          delegationType: delegationType,
+        },
+      ];
 
-      if (delegationType === DelegationType.ALL) {
-        // NOTE: Delegation for Voting & Proposition
-        txs = [
-          {
-            delegator: user,
-            delegatee,
-            underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
-            deadline,
-            v: v1,
-            r: r1,
-            s: s1,
-            delegationType: delegationType,
-          },
-          {
-            delegator: user,
-            delegatee,
-            underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
-            deadline,
-            v: v2,
-            r: r2,
-            s: s2,
-            delegationType: delegationType,
-          },
-          {
-            delegator: user,
-            delegatee,
-            underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
-            deadline,
-            v: v3,
-            r: r3,
-            s: s3,
-            delegationType: delegationType,
-          },
-        ];
-
-        // TODO Utilities
-        const metaDelegateHelperContract = new ethers.Contract(
-          governanceV3Config.addresses.GOVERNANCE_META_HELPER,
-          META_DELEGATE_HELPER_ABI,
-          provider
-        );
-
-        txData = await metaDelegateHelperContract.populateTransaction.batchMetaDelegate(txs);
-
-        txData.gasLimit = BigNumber.from(10000000);
-      } else {
-        // NOTE: Delegation for only Voting or Proposition
-
-        txs = [
-          {
-            delegator: user,
-            delegatee,
-            underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
-            deadline,
-            v: v1,
-            r: r1,
-            s: s1,
-            delegationType: delegationType,
-          },
-          {
-            delegator: user,
-            delegatee,
-            underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
-            deadline,
-            v: v2,
-            r: r2,
-            s: s2,
-            delegationType: delegationType,
-          },
-          {
-            delegator: user,
-            delegatee,
-            underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
-            deadline,
-            v: v3,
-            r: r3,
-            s: s3,
-            delegationType: delegationType,
-          },
-        ];
-
-        txData = await delegationTokenService.batchMetaDelegate(user, txs, connectedChainId);
-        txData.gasLimit = BigNumber.from(10000000);
-      }
+      const txData = await delegationTokenService.batchMetaDelegate(user, txs, connectedChainId);
 
       return processTx({
         tx: () => sendTx(txData),

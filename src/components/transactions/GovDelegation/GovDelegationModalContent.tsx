@@ -1,4 +1,4 @@
-import { canBeEnsAddress, DelegationType } from '@aave/contract-helpers';
+import { DelegationType } from '@aave/contract-helpers';
 import { t, Trans } from '@lingui/macro';
 import { FormControl, TextField, Typography } from '@mui/material';
 import { constants, utils } from 'ethers';
@@ -113,7 +113,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
 
   // handle delegate address errors
   let delegateAddressBlockingError: ErrorType | undefined = undefined;
-  if (delegate !== '' && !utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
+  if (delegate !== '' && !utils.isAddress(delegate)) {
     delegateAddressBlockingError = ErrorType.NOT_AN_ADDRESS;
   }
 
