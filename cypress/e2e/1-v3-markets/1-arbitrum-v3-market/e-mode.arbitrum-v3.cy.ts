@@ -2,11 +2,16 @@ import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyArbitrumFork } from '../../../support/steps/configuration.steps';
-import { borrow, emodeActivating, supply } from '../../../support/steps/main.steps';
+import { borrow, emodeActivating } from '../../../support/steps/main.steps';
 import {
   borrowsAvailable,
   checkDashboardHealthFactor,
 } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHArbitrumV3: 10,
+};
 
 const testData = {
   testCases: {
@@ -41,11 +46,11 @@ const testData = {
 
 describe('E-MODE SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyArbitrumFork({ v3: true });
+  configEnvWithTenderlyArbitrumFork({
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   describe('Prepare min health factor state, with stable coins', () => {
-    supply(testData.testCases.deposit1, skipTestState, true);
-    borrow(testData.testCases.borrow, skipTestState, true);
-    supply(testData.testCases.deposit2, skipTestState, true);
     borrow(testData.testCases.borrow, skipTestState, true);
     checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
   });

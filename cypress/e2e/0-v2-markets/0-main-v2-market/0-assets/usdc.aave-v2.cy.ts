@@ -10,6 +10,11 @@ import {
   withdraw,
 } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHEthereumV2: 0.5,
+};
 
 const testData = {
   depositETH: {
@@ -99,8 +104,7 @@ const testData = {
 //due asset frozen
 describe.skip('USDC INTEGRATION SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMainnetFork({});
-  supply(testData.depositETH, skipTestState, true);
+  configEnvWithTenderlyMainnetFork({ tokens: tokenSet(tokensToRequest) });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });

@@ -7,13 +7,13 @@ import {
   dashboardAssetValuesVerification,
   switchApyBlocked,
 } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aAVAXAvalancheV2: 5000,
+};
 
 const testData = {
-  depositBaseAmount: {
-    asset: assets.avalancheMarket.AVAX,
-    amount: 5000,
-    hasApproval: true,
-  },
   testCases: {
     borrow: {
       asset: assets.avalancheMarket.WETH,
@@ -66,9 +66,7 @@ const testData = {
 
 describe('WETH INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAvalancheFork({});
-
-  supply(testData.depositBaseAmount, skipTestState, true);
+  configEnvWithTenderlyAvalancheFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.testCases.borrow, skipTestState, true);
   supply(testData.testCases.deposit, skipTestState, true);
   repay(testData.testCases.repay, skipTestState, false);

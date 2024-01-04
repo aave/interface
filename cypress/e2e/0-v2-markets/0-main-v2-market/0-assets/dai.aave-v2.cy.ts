@@ -4,13 +4,13 @@ import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyMainnetFork } from '../../../../support/steps/configuration.steps';
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHEthereumV2: 0.5,
+};
 
 const testData = {
-  depositETH: {
-    asset: assets.aaveMarket.ETH,
-    amount: 0.5,
-    hasApproval: true,
-  },
   testCases: {
     deposit: {
       asset: assets.aaveMarket.DAI,
@@ -87,8 +87,7 @@ const testData = {
 //due asset frozen
 describe.skip('DAI INTEGRATION SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMainnetFork({});
-  supply(testData.depositETH, skipTestState, true);
+  configEnvWithTenderlyMainnetFork({ tokens: tokenSet(tokensToRequest) });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });

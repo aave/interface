@@ -2,15 +2,15 @@ import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyMainnetFork } from '../../../support/steps/configuration.steps';
-import { supply, swap } from '../../../support/steps/main.steps';
+import { swap } from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHEthereumV2: 1,
+};
 
 const testData = {
-  deposit: {
-    asset: assets.aaveMarket.ETH,
-    amount: 1,
-    hasApproval: true,
-  },
   swap: [
     {
       fromAsset: assets.aaveMarket.ETH,
@@ -42,9 +42,7 @@ const testData = {
 
 describe('SWAP, AAVE V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMainnetFork({});
-
-  supply(testData.deposit, skipTestState, true);
+  configEnvWithTenderlyMainnetFork({ tokens: tokenSet(tokensToRequest) });
   testData.swap.forEach((swapCase) => {
     swap(swapCase, skipTestState, false);
   });

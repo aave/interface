@@ -4,6 +4,11 @@ import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyPolygonFork } from '../../../../support/steps/configuration.steps';
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aMATICPolygonV2: 800,
+};
 
 const testData = {
   depositBaseAmount: {
@@ -68,9 +73,7 @@ const testData = {
 
 describe.skip('USDC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyPolygonFork({});
-
-  supply(testData.depositBaseAmount, skipTestState, true);
+  configEnvWithTenderlyPolygonFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.testCases.borrow, skipTestState, true);
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {

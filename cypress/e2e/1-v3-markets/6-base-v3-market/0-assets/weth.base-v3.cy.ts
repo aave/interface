@@ -106,7 +106,7 @@ const testData = {
   },
 };
 //due oracle
-describe.skip('ETH INTEGRATION SPEC, BASE V3 MARKET', () => {
+describe('ETH INTEGRATION SPEC, BASE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyBaseFork({ v3: true });
 

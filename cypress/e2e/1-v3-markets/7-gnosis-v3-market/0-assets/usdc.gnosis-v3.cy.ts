@@ -4,13 +4,13 @@ import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyGnosisFork } from '../../../../support/steps/configuration.steps';
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  axDAIGnosisV3: 9000,
+};
 
 const testData = {
-  depositBaseAmount: {
-    asset: assets.gnosisV3Market.xDAI,
-    amount: 9000,
-    hasApproval: true,
-  },
   testCases: {
     borrow: [
       {
@@ -70,9 +70,10 @@ const testData = {
 
 describe('USDC INTEGRATION SPEC, GNOSIS V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyGnosisFork({ v3: true });
-
-  supply(testData.depositBaseAmount, skipTestState, true);
+  configEnvWithTenderlyGnosisFork({
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });

@@ -7,13 +7,13 @@ import {
   dashboardAssetValuesVerification,
   switchApyBlocked,
 } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aMATICPolygonV3: 9000,
+};
 
 const testData = {
-  depositBaseAmount: {
-    asset: assets.polygonV3Market.MATIC,
-    amount: 9000,
-    hasApproval: true,
-  },
   testCases: {
     borrow: [
       {
@@ -79,9 +79,11 @@ const testData = {
 
 describe('WBTC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
-
-  supply(testData.depositBaseAmount, skipTestState, true);
+  configEnvWithTenderlyPolygonFork({
+    market: 'fork_proto_polygon_v3',
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });

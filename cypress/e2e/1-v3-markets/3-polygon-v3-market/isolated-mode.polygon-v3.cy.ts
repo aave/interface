@@ -10,6 +10,11 @@ import {
   switchCollateralBlockedInModal,
   verifyCountOfBorrowAssets,
 } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aMATICPolygonV3: 100,
+};
 
 const testData = {
   testCases: {
@@ -80,9 +85,12 @@ const testData = {
 //skip due unstable swap and polygon at all
 describe.skip('ISOLATED MODE SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
+  configEnvWithTenderlyPolygonFork({
+    market: 'fork_proto_polygon_v3',
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   describe('Get isolated asset', () => {
-    supply(testData.testCases.depositMATIC, skipTestState, true);
     swap(testData.testCases.swapMATIC, skipTestState, true); //swap don't work
   });
   describe('Verify isolated mode property', () => {

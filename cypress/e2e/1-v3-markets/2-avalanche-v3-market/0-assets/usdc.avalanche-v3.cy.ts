@@ -10,13 +10,13 @@ import {
   withdraw,
 } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aAVAXAvalancheV3: 9000,
+};
 
 const testData = {
-  depositBaseAmount: {
-    asset: assets.avalancheV3Market.AVAX,
-    amount: 9000,
-    hasApproval: true,
-  },
   testCases: {
     borrow: [
       {
@@ -103,9 +103,11 @@ const testData = {
 //skip while usdc frozen
 describe.skip('DAI INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
-
-  supply(testData.depositBaseAmount, skipTestState, true);
+  configEnvWithTenderlyAvalancheFork({
+    market: 'fork_proto_avalanche_v3',
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });

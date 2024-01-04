@@ -2,15 +2,15 @@ import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../support/steps/configuration.steps';
-import { supply, swap } from '../../../support/steps/main.steps';
+import { swap } from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aAVAXAvalancheV2: 100,
+};
 
 const testData = {
-  deposit: {
-    asset: assets.avalancheMarket.AVAX,
-    amount: 100,
-    hasApproval: true,
-  },
   swap: [
     {
       fromAsset: assets.avalancheMarket.AVAX,
@@ -42,9 +42,7 @@ const testData = {
 
 describe('SWAP, AVALANCHE V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAvalancheFork({});
-
-  supply(testData.deposit, skipTestState, true);
+  configEnvWithTenderlyAvalancheFork({ tokens: tokenSet(tokensToRequest) });
   testData.swap.forEach((swapCase) => {
     swap(swapCase, skipTestState, false);
   });

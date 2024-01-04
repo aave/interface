@@ -4,14 +4,14 @@ import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
 import { borrow, supply, withdraw } from '../../../support/steps/main.steps';
 import { checkDashboardHealthFactor } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aMATICPolygonV2: 1,
+};
 
 const testData = {
   testCases: {
-    deposit1: {
-      asset: assets.polygonMarket.MATIC,
-      amount: 1,
-      hasApproval: true,
-    },
     borrow: {
       asset: assets.polygonMarket.MATIC,
       amount: 1,
@@ -37,9 +37,7 @@ const testData = {
 
 describe.skip('CRITICAL CONDITIONS SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyPolygonFork({});
-
-  supply(testData.testCases.deposit1, skipTestState, true);
+  configEnvWithTenderlyPolygonFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.testCases.borrow, skipTestState, true);
   checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.11 }, skipTestState);
   supply(testData.testCases.deposit2, skipTestState, true);

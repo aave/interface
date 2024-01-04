@@ -11,13 +11,13 @@ import {
   withdrawAndSwitch,
 } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHArbitrumV3: 100,
+};
 
 const testData = {
-  depositBaseAmount: {
-    asset: assets.arbitrumMarket.ETH,
-    amount: 9000,
-    hasApproval: true,
-  },
   testCases: {
     borrow: [
       {
@@ -104,9 +104,10 @@ const testData = {
 
 describe('DAI INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyArbitrumFork({ v3: true });
-
-  supply(testData.depositBaseAmount, skipTestState, true);
+  configEnvWithTenderlyArbitrumFork({
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
