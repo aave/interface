@@ -8,6 +8,7 @@ import {
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { utils } from 'ethers';
+import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
 import { DelegationTokenType } from 'src/components/transactions/GovDelegation/DelegationTokenSelector';
 import { useModalContext } from 'src/hooks/useModal';
@@ -15,6 +16,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
@@ -148,6 +150,9 @@ export const useGovernanceDelegate = (
             success: true,
           });
           setTxError(undefined);
+          queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.powers(user, governanceV3Config.coreChainId),
+          });
         },
         errorCallback: (error, hash) => {
           const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
@@ -172,6 +177,9 @@ export const useGovernanceDelegate = (
             success: true,
           });
           setTxError(undefined);
+          queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.powers(user, governanceV3Config.coreChainId),
+          });
         },
         errorCallback: (error, hash) => {
           const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
