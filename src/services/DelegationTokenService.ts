@@ -7,7 +7,7 @@ import {
 import { Provider } from '@ethersproject/providers';
 import { PopulatedTransaction } from 'ethers';
 import { FixedPointDecimal } from 'src/architecture/FixedPointDecimal';
-import { governanceChainConfig } from 'src/ui-config/governanceConfig';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 
 export interface TokenDelegationPower {
   address: string;
@@ -26,7 +26,7 @@ export class DelegationTokenService {
   private getBatchDelegationTokenService(chainId: number) {
     const provider = this.getProvider(chainId);
 
-    const GOVERNANCE_META_HELPER = governanceChainConfig[chainId].addresses.GOVERNANCE_META_HELPER;
+    const GOVERNANCE_META_HELPER = governanceV3Config.addresses.GOVERNANCE_META_HELPER;
 
     return new MetaDelegateHelperService(GOVERNANCE_META_HELPER, provider);
   }
