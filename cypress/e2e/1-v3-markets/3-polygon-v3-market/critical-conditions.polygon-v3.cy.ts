@@ -34,8 +34,8 @@ const testData = {
     },
   },
 };
-
-describe('CRITICAL CONDITIONS SPEC, POLYGON V3 MARKET', () => {
+//due Matic frozen
+describe.skip('CRITICAL CONDITIONS SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({
     market: 'fork_proto_polygon_v3',
