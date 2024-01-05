@@ -8,14 +8,14 @@ import {
   checkDashboardHealthFactor,
   checkEmodeActivatingDisabled,
 } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aAVAXAvalancheV3: 10,
+};
 
 const testData = {
   testCases: {
-    deposit1: {
-      asset: assets.avalancheV3Market.AVAX,
-      amount: 10,
-      hasApproval: true,
-    },
     borrow: {
       asset: assets.avalancheV3Market.DAI,
       amount: 9999,
@@ -49,9 +49,12 @@ const testData = {
 
 describe('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
+  configEnvWithTenderlyAvalancheFork({
+    market: 'fork_proto_avalanche_v3',
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   describe('Prepare min health factor state, with stable coins', () => {
-    supply(testData.testCases.deposit1, skipTestState, true);
     borrow(testData.testCases.borrow, skipTestState, true);
     supply(testData.testCases.deposit2, skipTestState, true);
     borrow(testData.testCases.borrow, skipTestState, true);

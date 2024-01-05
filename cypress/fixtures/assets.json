@@ -1054,6 +1054,12 @@
       "shortName": "aUSDbC",
       "collateral": true,
       "wrapped": false
+    },
+    "cbETH": {
+      "fullName": "Coinbase Wrapped Staked ETH (cbETH)",
+      "shortName": "cbETH",
+      "collateral": true,
+      "wrapped": false
     }
   },
   "gnosisV3Market": {
@@ -1078,6 +1084,12 @@
     "aUSDC": {
       "fullName": "aUSDC",
       "shortName": "aUSDC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "wstETH": {
+      "fullName": "wstETH",
+      "shortName": "wstETH",
       "collateral": true,
       "wrapped": false
     }

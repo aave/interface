@@ -4,13 +4,13 @@ import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyBaseFork } from '../../../../support/steps/configuration.steps';
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHBaseV3: 5,
+};
 
 const testData = {
-  depositBaseAmount: {
-    asset: assets.baseV3Market.ETH,
-    amount: 5,
-    hasApproval: true,
-  },
   testCases: {
     borrow: [
       {
@@ -75,12 +75,13 @@ const testData = {
     ],
   },
 };
-//due oracle
-describe.skip('USDbC INTEGRATION SPEC, BASE V3 MARKET', () => {
-  const skipTestState = skipState(false);
-  configEnvWithTenderlyBaseFork({ v3: true });
 
-  supply(testData.depositBaseAmount, skipTestState, true);
+describe('USDbC INTEGRATION SPEC, BASE V3 MARKET', () => {
+  const skipTestState = skipState(false);
+  configEnvWithTenderlyBaseFork({
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
