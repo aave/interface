@@ -12,7 +12,6 @@ import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
@@ -44,15 +43,8 @@ export const SupplyWrappedTokenActions = ({
   sx,
   ...props
 }: SupplyWrappedTokenActionProps) => {
-  const [
-    user,
-    walletApprovalMethodPreference,
-    estimateGasLimit,
-    addTransaction,
-    currentMarketData,
-  ] = useRootStore((state) => [
+  const [user, estimateGasLimit, addTransaction, currentMarketData] = useRootStore((state) => [
     state.account,
-    state.walletApprovalMethodPreference,
     state.estimateGasLimit,
     state.addTransaction,
     state.currentMarketData,
@@ -93,7 +85,8 @@ export const SupplyWrappedTokenActions = ({
     });
   }
 
-  const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+  // currently only token that can be wrapped is DAI -> sDAI which doesn't support permit
+  const usePermit = false; // walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   // Update gas estimation
   let supplyGasLimit = 0;
@@ -195,7 +188,7 @@ export const SupplyWrappedTokenActions = ({
 
   return (
     <TxActionsWrapper
-      blocked={false} // TODO
+      blocked={false}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={isWrongNetwork}
@@ -208,7 +201,7 @@ export const SupplyWrappedTokenActions = ({
       handleApproval={() => approvalAction()}
       handleAction={action}
       requiresApproval={requiresApproval}
-      tryPermit={false} // TODO
+      tryPermit={usePermit}
       sx={sx}
       {...props}
     />
