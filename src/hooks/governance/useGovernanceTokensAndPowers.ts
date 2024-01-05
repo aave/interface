@@ -1,5 +1,5 @@
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
-import { Powers } from 'src/services/GovernanceService';
+import { Powers } from 'src/services/GovernanceTokenPowerService';
 import { GovernanceTokensBalance } from 'src/services/WalletBalanceService';
 
 import { useGovernanceTokens } from './useGovernanceTokens';

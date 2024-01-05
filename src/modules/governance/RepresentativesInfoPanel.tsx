@@ -14,9 +14,7 @@ import { networkConfigs } from 'src/ui-config/networksConfig';
 import { ZERO_ADDRESS } from './utils/formatProposal';
 
 // Setting up a representative is only useful for smart contract wallets.
-// If connected account is an EOA, this section is hidden.
-
-// If an account has representatives, then we assume that there is no need to set up a representative,
+// If an account is representing an address, then we assume that there is no need to set up a representative
 // and it will show the addresses that have selected the current account to represent them.
 export const RepresentativesInfoPanel = () => {
   const { openGovRepresentatives } = useModalContext();
@@ -24,18 +22,12 @@ export const RepresentativesInfoPanel = () => {
 
   const { data } = useRepresentatives(account);
 
-  {
-    //   const { data: isContractAddress, isFetching: fetchingIsContractAddress } =
-    // useIsContractAddress(account);
-  }
+  //   const { data: isContractAddress, isFetching: fetchingIsContractAddress } =
+  // useIsContractAddress(account);
 
   const isAddressSelectedAsRepresentative = data?.Represented.some(
     (r) => r.votersRepresented.length > 0
   );
-
-  // if (!isContractAddress) {
-  //   return null;
-  // }
 
   return (
     <Paper sx={{ mt: 2 }}>

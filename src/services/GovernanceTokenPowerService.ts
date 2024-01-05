@@ -17,53 +17,18 @@ export interface Powers {
   aAavePropositionDelegatee: string;
 }
 
-// interface VoteOnProposalData {
-//   votingPower: string;
-//   support: boolean;
-// }
-
-const AAVE_GOVERNANCE_V2 = '0xEC568fffba86c094cf06b22134B23074DFE2252c';
-
-export class GovernanceService {
+export class GovernanceTokenPowerService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
   private getAaveGovernanceService(chainId: ChainId) {
     const provider = this.getProvider(chainId);
+    // This is the legacy governance service that we are only using to fetch token powers.
+    // the GOVERNANCE_ADDRESS is not used in that case, but is required by the service.
     return new AaveGovernanceService(provider, {
-      GOVERNANCE_ADDRESS: AAVE_GOVERNANCE_V2,
+      GOVERNANCE_ADDRESS: governanceV3Config.addresses.GOVERNANCE_CORE,
       GOVERNANCE_HELPER_ADDRESS: governanceV3Config.addresses.TOKEN_POWER_HELPER,
     });
   }
-
-  // async getVotingPowerAt(
-  //   marketData: MarketDataType,
-  //   user: string,
-  //   strategy: string,
-  //   block: number
-  // ) {
-  //   const aaveGovernanceService = this.getAaveGovernanceService(marketData);
-  //   return aaveGovernanceService.getVotingPowerAt({
-  //     user,
-  //     strategy,
-  //     block,
-  //   });
-  // }
-
-  // async getVoteOnProposal(
-  //   marketData: MarketDataType,
-  //   user: string,
-  //   proposalId: number
-  // ): Promise<VoteOnProposalData> {
-  //   const aaveGovernanceService = this.getAaveGovernanceService(marketData);
-  //   const { votingPower, support } = await aaveGovernanceService.getVoteOnProposal({
-  //     user,
-  //     proposalId,
-  //   });
-  //   return {
-  //     votingPower: normalize(votingPower.toString(), 18),
-  //     support,
-  //   };
-  // }
 
   async getPowers(govChainId: ChainId, user: string): Promise<Powers> {
     const { aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress } =

@@ -36,7 +36,6 @@ export function StateBadge({ state, loading }: StateBadgeProps) {
   return <Badge state={state}>{stateToString(state)}</Badge>;
 }
 
-// TODO: maybe move this to utils
 const stateToString = (state: ProposalV3State) => {
   switch (state) {
     case ProposalV3State.Null:

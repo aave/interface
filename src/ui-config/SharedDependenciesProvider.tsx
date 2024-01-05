@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import { ApprovedAmountService } from 'src/services/ApprovedAmountService';
 import { DelegationTokenService } from 'src/services/DelegationTokenService';
-import { GovernanceService } from 'src/services/GovernanceService';
+import { GovernanceTokenPowerService } from 'src/services/GovernanceTokenPowerService';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
@@ -15,7 +15,7 @@ import { governanceV3Config } from './governanceConfig';
 import { stakeConfig } from './stakeConfig';
 
 interface SharedDependenciesContext {
-  governanceService: GovernanceService;
+  governanceTokenPowerService: GovernanceTokenPowerService;
   governanceV3Service: GovernanceV3Service;
   votingMachineSerivce: VotingMachineService;
   governanceWalletBalanceService: WalletBalanceService;
@@ -44,7 +44,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   };
 
   // services
-  const governanceService = new GovernanceService(getGovernanceProvider);
+  const governanceTokenPowerService = new GovernanceTokenPowerService(getGovernanceProvider);
   const governanceV3Service = new GovernanceV3Service();
   const votingMachineSerivce = new VotingMachineService();
   const governanceWalletBalanceService = new WalletBalanceService(getGovernanceProvider);
@@ -59,7 +59,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   return (
     <SharedDependenciesContext.Provider
       value={{
-        governanceService,
+        governanceTokenPowerService,
         governanceV3Service,
         votingMachineSerivce,
         governanceWalletBalanceService,
