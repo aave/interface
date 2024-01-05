@@ -1,13 +1,13 @@
+import { DelegationType } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { GovernancePowerTypeApp } from 'src/helpers/types';
 
 export type DelegationTypeSelectorProps = {
-  delegationType: GovernancePowerTypeApp;
-  setDelegationType: React.Dispatch<React.SetStateAction<GovernancePowerTypeApp>>;
+  delegationType: DelegationType;
+  setDelegationType: React.Dispatch<React.SetStateAction<DelegationType>>;
 };
 
 export const DelegationTypeSelector = ({
@@ -15,7 +15,7 @@ export const DelegationTypeSelector = ({
   setDelegationType,
 }: DelegationTypeSelectorProps) => {
   useEffect(() => {
-    setDelegationType(GovernancePowerTypeApp.ALL);
+    setDelegationType(DelegationType.ALL);
   }, [setDelegationType]);
 
   return (
@@ -25,8 +25,8 @@ export const DelegationTypeSelector = ({
       onChange={(_, value) => setDelegationType(value)}
     >
       <StyledTxModalToggleButton
-        value={GovernancePowerTypeApp.ALL}
-        disabled={delegationType === GovernancePowerTypeApp.ALL}
+        value={DelegationType.ALL}
+        disabled={delegationType === DelegationType.ALL}
       >
         <Typography variant="buttonM">
           <Trans>Both</Trans>
@@ -34,8 +34,8 @@ export const DelegationTypeSelector = ({
       </StyledTxModalToggleButton>
 
       <StyledTxModalToggleButton
-        value={GovernancePowerTypeApp.VOTING}
-        disabled={delegationType === GovernancePowerTypeApp.VOTING}
+        value={DelegationType.VOTING}
+        disabled={delegationType === DelegationType.VOTING}
       >
         <Typography variant="buttonM">
           <Trans>Voting</Trans>
@@ -43,8 +43,8 @@ export const DelegationTypeSelector = ({
       </StyledTxModalToggleButton>
 
       <StyledTxModalToggleButton
-        value={GovernancePowerTypeApp.PROPOSITION}
-        disabled={delegationType === GovernancePowerTypeApp.PROPOSITION}
+        value={DelegationType.PROPOSITION}
+        disabled={delegationType === DelegationType.PROPOSITION}
       >
         <Typography variant="buttonM">
           <Trans>Proposition</Trans>

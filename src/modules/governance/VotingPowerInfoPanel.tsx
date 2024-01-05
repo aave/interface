@@ -6,12 +6,11 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
-import { useTotalTokensPowers } from 'src/hooks/governance/useTokensPower';
-import { governanceV3Config } from 'src/ui-config/governanceConfig';
+import { usePowers } from 'src/hooks/governance/usePowers';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 export function VotingPowerInfoPanel() {
-  const { data: powers } = useTotalTokensPowers(Object.values(governanceV3Config.votingAssets));
+  const { data: powers } = usePowers();
   return (
     <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
       <Typography
@@ -60,7 +59,7 @@ export function VotingPowerInfoPanel() {
             </TextWithTooltip>
             <FormattedNumber
               data-cy={`voting-power`}
-              value={powers.votingPower.format()}
+              value={powers.votingPower}
               variant="h2"
               visibleDecimals={2}
             />
@@ -104,7 +103,7 @@ export function VotingPowerInfoPanel() {
             </TextWithTooltip>
             <FormattedNumber
               data-cy={`proposition-power`}
-              value={powers.propositionPower.format()}
+              value={powers.propositionPower}
               variant="h2"
               visibleDecimals={2}
             />
