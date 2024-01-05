@@ -1,13 +1,12 @@
-import { canBeEnsAddress } from '@aave/contract-helpers';
+import { DelegationType } from '@aave/contract-helpers';
 import { t, Trans } from '@lingui/macro';
 import { FormControl, TextField, Typography } from '@mui/material';
 import { constants, utils } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { GovernancePowerTypeApp } from 'src/helpers/types';
-import { useGovernanceDelegatees } from 'src/hooks/governance/useDelegateeData';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
+import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -49,12 +48,12 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const {
     data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
-  const { data: powers, refetch } = useGovernanceDelegatees();
+  const { data: powers, refetch } = usePowers();
   // error states
 
   // selector states
   const [delegationTokenType, setDelegationTokenType] = useState(DelegationTokenType.ALL);
-  const [delegationType, setDelegationType] = useState(GovernancePowerTypeApp.ALL);
+  const [delegationType, setDelegationType] = useState(DelegationType.ALL);
   const [delegate, setDelegate] = useState('');
 
   const isRevokeModal = type === ModalType.RevokeGovDelegation;
@@ -73,8 +72,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
         powers.aaveVotingDelegatee === constants.AddressZero &&
         powers.stkAaveVotingDelegatee === constants.AddressZero
       )
-        setDelegationType(GovernancePowerTypeApp.PROPOSITION);
-      else setDelegationType(GovernancePowerTypeApp.VOTING);
+        setDelegationType(DelegationType.PROPOSITION);
+      else setDelegationType(DelegationType.VOTING);
     }
   }, [onlyOnePowerToRevoke, powers]);
 
@@ -114,7 +113,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
 
   // handle delegate address errors
   let delegateAddressBlockingError: ErrorType | undefined = undefined;
-  if (delegate !== '' && !utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
+  if (delegate !== '' && !utils.isAddress(delegate)) {
     delegateAddressBlockingError = ErrorType.NOT_AN_ADDRESS;
   }
 

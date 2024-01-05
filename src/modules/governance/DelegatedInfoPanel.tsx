@@ -8,8 +8,8 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ExternalUserDisplay } from 'src/components/UserDisplay';
-import { useGovernanceDelegatees } from 'src/hooks/governance/useDelegateeData';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
+import { usePowers } from 'src/hooks/governance/usePowers';
 import { useModalContext } from 'src/hooks/useModal';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
@@ -135,7 +135,7 @@ export const DelegatedInfoPanel = () => {
   const {
     data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
-  const { data: powers } = useGovernanceDelegatees();
+  const { data: powers } = usePowers();
   const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 

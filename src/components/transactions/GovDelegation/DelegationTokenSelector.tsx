@@ -1,9 +1,9 @@
+import { DelegationType } from '@aave/contract-helpers';
 import { Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { useEffect } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
-import { GovernancePowerTypeApp } from 'src/helpers/types';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 
 import { TokenIcon } from '../../primitives/TokenIcon';
@@ -29,7 +29,7 @@ export type DelegationTokenSelectorProps = {
   delegationTokens: DelegationToken[];
   setDelegationTokenType: (type: DelegationTokenType) => void;
   delegationTokenType: DelegationTokenType;
-  delegationType: GovernancePowerTypeApp;
+  delegationType: DelegationType;
   filter: boolean;
 };
 
@@ -76,11 +76,11 @@ export const TokenRow: React.FC<TokenRowProps> = ({ symbol, amount }) => {
 
 const filterTokens = (
   tokens: DelegationToken[],
-  delegationType: GovernancePowerTypeApp
+  delegationType: DelegationType
 ): DelegationToken[] => {
-  if (delegationType === GovernancePowerTypeApp.VOTING) {
+  if (delegationType === DelegationType.VOTING) {
     return tokens.filter((token) => token.votingDelegatee !== '');
-  } else if (delegationType === GovernancePowerTypeApp.PROPOSITION) {
+  } else if (delegationType === DelegationType.PROPOSITION) {
     return tokens.filter((token) => token.propositionDelegatee !== '');
   }
   return tokens.filter(
