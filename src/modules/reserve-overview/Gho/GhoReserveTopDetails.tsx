@@ -1,12 +1,17 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 
-export const GhoReserveTopDetails = () => {
-  const { ghoLoadingData, ghoReserveData } = useAppDataContext();
+export const GhoReserveTopDetails = ({ reserve }: { reserve: ComputedReserveData }) => {
+  const { ghoLoadingData } = useAppDataContext();
 
   const loading = ghoLoadingData;
   const theme = useTheme();
@@ -15,11 +20,16 @@ export const GhoReserveTopDetails = () => {
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
+  const totalBorrowed = BigNumber.min(
+    valueToBigNumber(reserve.totalDebt),
+    valueToBigNumber(reserve.borrowCap)
+  ).toNumber();
+
   return (
     <>
       <TopInfoPanelItem title={<Trans>Total borrowed</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={ghoReserveData.aaveFacilitatorBucketLevel}
+          value={totalBorrowed}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
@@ -29,7 +39,7 @@ export const GhoReserveTopDetails = () => {
 
       <TopInfoPanelItem title={<Trans>Available to borrow</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+          value={reserve.borrowCap}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}

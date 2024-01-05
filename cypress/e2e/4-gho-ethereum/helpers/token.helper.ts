@@ -1,31 +1,101 @@
 import { TokenRequest } from '../../../support/actions/tenderly.actions';
-import donors from '../fixtures/donors.json';
 
-export const tokenSet = ({ stkAave = 0, aAAVE = 0, aDAI = 0 }) => {
+export interface DonorInfo {
+  name: string;
+  donorWalletAddress: string;
+  tokenAddress: string;
+}
+
+export interface Donors {
+  [key: string]: DonorInfo;
+}
+
+const donors: Donors = {
+  stkAAVE: {
+    name: 'stkAAVE',
+    donorWalletAddress: '0xaFDAbFb6227507fF6522b8a242168F6b5F353a6E',
+    tokenAddress: '0x4da27a545c0c5B758a6BA100e3a049001de870f5',
+  },
+  aAAVE: {
+    name: 'aAAVE',
+    donorWalletAddress: '0xE466d6Cf6E2C3F3f8345d39633d4A968EC879bD5',
+    tokenAddress: '0xFFC97d72E13E01096502Cb8Eb52dEe56f74DAD7B',
+  },
+  aDAIEthereumV3: {
+    name: 'aDAI',
+    donorWalletAddress: '0x018008bfb33d285247A21d44E50697654f754e63',
+    tokenAddress: '0xaD0135AF20fa82E106607257143d0060A7eB5cBf',
+  },
+  aETHEthereumV3: {
+    name: 'aETH',
+    donorWalletAddress: '0x01d1f55d94a53a9517c07f793f35320FAA0D2DCf',
+    tokenAddress: '0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8',
+  },
+  aETHArbitrumV3: {
+    name: 'aETH',
+    donorWalletAddress: '0xb7fb2b774eb5e2dad9c060fb367acbdc7fa7099b',
+    tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
+  },
+  aAVAXAvalancheV3: {
+    name: 'aAVAX',
+    donorWalletAddress: '0xAe783a7C8C607EFe00548A0592BF9cDb50903B79',
+    tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
+  },
+  aMATICPolygonV3: {
+    name: 'aMATIC',
+    donorWalletAddress: '0x790c9422839FD93a3A4E31e531f96cC87F397c00',
+    tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
+  },
+  aETHOptimismV3: {
+    name: 'aETH',
+    donorWalletAddress: '0xf7ca1f0ff0995c84fef530f7c74c69fb80331e81',
+    tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
+  },
+  aETHBaseV3: {
+    name: 'aETH',
+    donorWalletAddress: '0xb463c4d7c574bd0a05a1320186378dd6a7aeaa33',
+    tokenAddress: '0xD4a0e0b9149BCee3C920d2E00b5dE09138fd8bb7',
+  },
+  axDAIGnosisV3: {
+    name: 'axDAI',
+    donorWalletAddress: '0x458cd345b4c05e8df39d0a07220feb4ec19f5e6f',
+    tokenAddress: '0xd0Dd6cEF72143E22cCED4867eb0d5F2328715533',
+  },
+  aETHEthereumV2: {
+    name: 'aETH',
+    donorWalletAddress: '0x1111567E0954E74f6bA7c4732D534e75B81DC42E',
+    tokenAddress: '0x030bA81f1c18d280636F32af80b9AAd02Cf0854e',
+  },
+  aMATICPolygonV2: {
+    name: 'aMATIC',
+    donorWalletAddress: '0x7068Ea5255cb05931EFa8026Bd04b18F3DeB8b0B',
+    tokenAddress: '0x8dF3aad3a84da6b69A4DA8aeC3eA40d9091B2Ac4',
+  },
+  aAVAXAvalancheV2: {
+    name: 'aAVAX',
+    donorWalletAddress: '0xe5dbFF893E6120C0d013FB046cd755990E4BE9a9',
+    tokenAddress: '0xDFE521292EcE2A4f44242efBcD66Bc594CA9714B',
+  },
+};
+
+export type RequestedTokens = {
+  [key: string]: number;
+};
+
+export const tokenSet = (requestedTokens: RequestedTokens): TokenRequest[] => {
   const tokenRequest: TokenRequest[] = [];
-  if (stkAave != 0) {
-    tokenRequest.push({
-      tokenAddress: donors.stkAAVE.tokenAddress,
-      donorAddress: donors.stkAAVE.donorWalletAddress,
-      tokenCount: stkAave.toString(),
-      name: donors.stkAAVE.name,
-    });
+
+  for (const [tokenKey, tokenAmount] of Object.entries(requestedTokens)) {
+    const donorInfo = donors[tokenKey];
+    if (tokenAmount !== 0 && donorInfo) {
+      tokenRequest.push({
+        tokenAddress: donorInfo.tokenAddress,
+        donorAddress: donorInfo.donorWalletAddress,
+        tokenCount: tokenAmount.toString(),
+        name: donorInfo.name,
+      });
+    }
   }
-  if (aAAVE != 0) {
-    tokenRequest.push({
-      tokenAddress: donors.aAAVE.tokenAddress,
-      donorAddress: donors.aAAVE.donorWalletAddress,
-      tokenCount: aAAVE.toString(),
-      name: donors.aAAVE.name,
-    });
-  }
-  if (aDAI != 0) {
-    tokenRequest.push({
-      tokenAddress: donors.aDAI.tokenAddress,
-      donorAddress: donors.aDAI.donorWalletAddress,
-      tokenCount: aDAI.toString(),
-      name: donors.aDAI.name,
-    });
-  }
+
   return tokenRequest;
 };

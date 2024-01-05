@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-15 00:16\n"
+"PO-Revision-Date: 2024-01-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -245,9 +245,9 @@ msgstr "金额必须大于 0"
 msgid "Amount to unstake"
 msgstr "取消质押的金额"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "An error has occurred fetching the proposal metadata from IPFS."
-msgstr "从 IPFS 获取提案元数据时发生错误。"
+#: src/modules/governance/proposal/ProposalOverview.tsx
+msgid "An error has occurred fetching the proposal."
+msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
@@ -355,10 +355,6 @@ msgstr "LTV 为零 （{assetsBlockingWithdraw}） 必须撤回或禁用作为抵
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "At a discount"
 msgstr "打折"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Author"
-msgstr "作者"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
@@ -603,6 +599,10 @@ msgstr "可以作为抵押品"
 msgid "Can be executed"
 msgstr "可以执行"
 
+#: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
+msgid "Can't validate the wallet address. Try again."
+msgstr ""
+
 #: src/components/TitleWithSearchBar.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Cancel"
@@ -613,8 +613,8 @@ msgid "Cannot disable E-Mode"
 msgstr "无法禁用 E 模式"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes, your delegate's voting/proposition power will be automatically adjusted."
-msgstr "通过委托您的一些 AAVE 或 stkAAVE 余额来选择给予其他人多少投票/提案权。您的代币将保留在您的帐户中，但您的代表将能够代表您投票或提议。如果您的 AAVE 或 stkAAVE 余额发生变化，您的代表的投票/提案权将自动调整。"
+msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave balance changes, your delegate's voting/proposition power will be automatically adjusted."
+msgstr ""
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
@@ -721,6 +721,18 @@ msgstr "收藏家合同"
 msgid "Collector Info"
 msgstr "收藏家信息"
 
+#: src/components/transactions/GovRepresentatives/GovRepresentativesActions.tsx
+msgid "Confirm transaction"
+msgstr ""
+
+#: src/components/transactions/GovRepresentatives/GovRepresentativesActions.tsx
+msgid "Confirming transaction"
+msgstr ""
+
+#: src/modules/governance/RepresentativesInfoPanel.tsx
+msgid "Connect"
+msgstr ""
+
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
@@ -763,7 +775,7 @@ msgstr "复制错误文本"
 msgid "Covered debt"
 msgstr "担保债务"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Created"
 msgstr "创建"
 
@@ -771,7 +783,7 @@ msgstr "创建"
 msgid "Current LTV"
 msgstr "当前 LTV"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Current differential"
 msgstr "电流差"
 
@@ -784,7 +796,7 @@ msgstr "当前 v2 余额"
 msgid "Current v2 balance"
 msgstr "当前 v2 余额"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Current votes"
 msgstr "当前投票"
 
@@ -836,8 +848,7 @@ msgstr "详"
 msgid "Developers"
 msgstr "开发 人员"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-#: src/modules/governance/ProposalListItem.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
 msgstr "微分"
 
@@ -935,6 +946,10 @@ msgstr "E-Mode 将选定资产类别的 LTV 提高到最高<0/>。 <1>了解更�
 msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
 msgstr "E-Mode会增加所选资产类别的LTV，这意味着当启用E-mode时，您将比Aave Governance定义的相同E-mode类别的资产拥有更高的借贷能力。您可以从 <0>仪表板</0>进入 E-Mode。要了解有关 E-Mode 和应用限制的更多信息，请参阅 <1>FAQ</1> 或 <2>Aave V3 技术论文</2>。"
 
+#: src/modules/governance/RepresentativesInfoPanel.tsx
+msgid "Edit"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Effective interest rate"
 msgstr "实际利率"
@@ -973,19 +988,12 @@ msgstr "启用 E-Mode 仅允许您借入属于所选类别的资产。请访问�
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
 msgstr "启用此资产作为抵押品可增加您的借贷能力和健康系数。但是，如果您的健康系数降至 1 以下，它可能会被清算。"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Ended"
-msgstr "结束"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Ends"
-msgstr "结束"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
 msgstr "英语"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+#: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Enter ETH address"
 msgstr "输入 ETH 地址"
 
@@ -1004,10 +1012,6 @@ msgstr "估计复利，包括质押折扣 {0}安全模块中的AAVE。"
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
 msgstr "超出折扣"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Executed"
-msgstr "执行"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Expected amount to repay"
@@ -1073,7 +1077,7 @@ msgstr "此资产禁用了 Flashloan，因此无法迁移此位置。"
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "为了偿还特定类型的债务，用户需要拥有该类型的债务"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
 msgstr "论坛讨论"
 
@@ -1116,6 +1120,10 @@ msgstr "转到 V3 仪表板"
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "统辖"
+
+#: src/modules/governance/ProposalsV3List.tsx
+msgid "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
+msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -1295,6 +1303,10 @@ msgstr "在我们的<0>常见问题解答指南</0>中了解更多信息"
 msgid "Learn more."
 msgstr "了解更多信息。"
 
+#: src/modules/governance/RepresentativesInfoPanel.tsx
+msgid "Linked addresses"
+msgstr ""
+
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
 msgstr "链接"
@@ -1400,6 +1412,7 @@ msgstr "最大滑点"
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 msgstr "该资产可借入的最高金额是有限的，因为债务上限为 {0}%."
 
+#: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
@@ -1409,7 +1422,6 @@ msgstr "可借款的最高金额为 <0/> {0} (<1/>)."
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "可借入的最大金额是有限的，因为协议借款上限即将达到。"
 
-#: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "可供应的最大数量为 <0/> {0} (<1/>)."
@@ -1545,6 +1557,7 @@ msgstr "没有投票权"
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "None"
 msgstr "没有"
 
@@ -1568,8 +1581,8 @@ msgstr "质押余额不足"
 msgid "Not enough voting power to participate in this proposal"
 msgstr "没有足够的投票权参与该提案"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Not reached"
 msgstr "未达到"
 
@@ -1604,6 +1617,10 @@ msgstr "好的，关闭"
 msgid "Ok, I got it"
 msgstr "好的，我明白了"
 
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "Open for voting"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "不支持操作"
@@ -1623,6 +1640,10 @@ msgstr "页面未找到"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "参与其中 {symbol} Reserve 提供年度奖励。"
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "Payloads executed"
+msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1716,15 +1737,17 @@ msgstr "价格影响 {0}%"
 msgid "Privacy"
 msgstr "隐私"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "提案详情"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Proposal overview"
 msgstr "提案概述"
 
 #: pages/governance/index.governance.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
@@ -1758,8 +1781,7 @@ msgstr "该资产的协议供应上限为 100%。无法进一步供应。"
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "该资产的协议供应上限为 100%。无法进一步供应。"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-#: src/modules/governance/ProposalListItem.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Quorum"
 msgstr "法定人数"
 
@@ -1767,12 +1789,12 @@ msgstr "法定人数"
 msgid "Rate change"
 msgstr "费率变化"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Raw-Ipfs"
 msgstr "原始 IPFS"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Reached"
 msgstr "达到"
 
@@ -1831,6 +1853,10 @@ msgstr "剩余债务"
 msgid "Remaining supply"
 msgstr "剩余供应量"
 
+#: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
+msgid "Remove"
+msgstr ""
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Repaid"
 msgstr "偿还"
@@ -1863,6 +1889,14 @@ msgstr "偿还 {symbol}"
 #: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Repayment amount to reach {0}% utilization"
 msgstr "要达到的还款金额 {0}利用率百分比"
+
+#: src/modules/governance/RepresentativesInfoPanel.tsx
+msgid "Representative smart contract wallet (ie. Safe) addresses on other chains."
+msgstr ""
+
+#: src/modules/governance/RepresentativesInfoPanel.tsx
+msgid "Representing smart contract wallet (ie. Safe) addresses on other chains."
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
@@ -1945,10 +1979,6 @@ msgstr "您存入的抵押品与借入资产及其标的价值相抵触。"
 msgid "Save and share"
 msgstr "保存和分享"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Seatbelt report"
-msgstr "安全带报告"
-
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
 msgstr "似乎我们无法自动切换网络。请检查您是否可以从钱包中更改它。"
@@ -2005,12 +2035,12 @@ msgstr "设置委派"
 msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr "使用 Hal 应用程序设置有关您的健康因子的通知。"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
+#: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on Lens"
 msgstr "在镜头上分享"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on twitter"
 msgstr "在推特上分享"
 
@@ -2156,11 +2186,7 @@ msgstr "质押余额"
 msgid "Staking discount"
 msgstr "质押折扣"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Started"
-msgstr "开始"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "State"
 msgstr "州"
 
@@ -2583,10 +2609,6 @@ msgstr "总市场规模"
 msgid "Total supplied"
 msgstr "供应总量"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Total voting power"
-msgstr "总投票权"
-
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
 msgstr "总价值"
@@ -2672,8 +2694,8 @@ msgid "Use it to vote for or against active proposals."
 msgstr "用它来投票支持或反对活跃的提案。"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
-msgstr "使用您的 AAVE 和 stkAAVE 余额来委托您的投票权和提案权。您不会发送任何代币，只有投票权和对协议提出更改。您可以随时将权力重新委托或撤销给自己。"
+msgid "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
+msgstr ""
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
@@ -2810,12 +2832,16 @@ msgstr "票"
 msgid "Voting"
 msgstr "投票"
 
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "Voting closed"
+msgstr ""
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
 msgstr "投票权"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Voting results"
 msgstr "投票结果"
 
@@ -2976,8 +3002,8 @@ msgid "You don’t have enough funds in your wallet to repay the full amount. If
 msgstr "您的钱包中没有足够的资金来偿还全额。如果您继续用当前金额还款，您的仪表板中仍将有一个小额借款头寸。"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "You have no AAVE/stkAAVE balance to delegate."
-msgstr "您没有 AAVE/stkAAVE 余额可供委托。"
+msgid "You have no AAVE/stkAAVE/aAave balance to delegate."
+msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
@@ -3116,6 +3142,7 @@ msgid "enabled"
 msgstr "启用"
 
 #: src/modules/governance/FormattedProposalTime.tsx
+#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "结束"
 
@@ -3161,6 +3188,7 @@ msgid "staking view"
 msgstr "质押视图"
 
 #: src/modules/governance/FormattedProposalTime.tsx
+#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr "开始"
 

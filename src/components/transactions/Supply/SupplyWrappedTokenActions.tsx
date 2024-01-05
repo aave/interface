@@ -14,7 +14,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -44,14 +44,19 @@ export const SupplyWrappedTokenActions = ({
   sx,
   ...props
 }: SupplyWrappedTokenActionProps) => {
-  const [user, walletApprovalMethodPreference, estimateGasLimit, addTransaction] = useRootStore(
-    (state) => [
-      state.account,
-      state.walletApprovalMethodPreference,
-      state.estimateGasLimit,
-      state.addTransaction,
-    ]
-  );
+  const [
+    user,
+    walletApprovalMethodPreference,
+    estimateGasLimit,
+    addTransaction,
+    currentMarketData,
+  ] = useRootStore((state) => [
+    state.account,
+    state.walletApprovalMethodPreference,
+    state.estimateGasLimit,
+    state.addTransaction,
+    state.currentMarketData,
+  ]);
 
   const { refetchPoolData } = useBackgroundDataProvider();
   const { tokenWrapperService } = useSharedDependencies();
@@ -73,7 +78,11 @@ export const SupplyWrappedTokenActions = ({
     data: approvedAmount,
     isFetching,
     refetch: fetchApprovedAmount,
-  } = useApprovedAmount(tokenIn, tokenWrapperAddress);
+  } = useApprovedAmount({
+    marketData: currentMarketData,
+    token: tokenIn,
+    spender: tokenWrapperAddress,
+  });
 
   let requiresApproval = false;
   if (approvedAmount !== undefined) {
@@ -172,7 +181,7 @@ export const SupplyWrappedTokenActions = ({
         assetName: symbol,
       });
 
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       refetchPoolData && refetchPoolData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);

@@ -1,19 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-type UseVotingPowerAtArgs = {
-  strategy: string;
-  block: number;
-};
-
-export const useVotingPowerAt = ({ strategy, block }: UseVotingPowerAtArgs) => {
-  const { governanceService } = useSharedDependencies();
+export const useVotingPowerAt = (blockhash: string, votingAssets: string[]) => {
+  const { governanceV3Service } = useSharedDependencies();
   const user = useRootStore((store) => store.account);
   return useQuery({
-    queryFn: () => governanceService.getVotingPowerAt({ user, strategy, block }),
-    queryKey: [QueryKeys.VOTING_POWER_AT, user, strategy, block, governanceService.toHash()],
+    queryFn: () => governanceV3Service.getVotingPowerAt(blockhash, user, votingAssets),
+    queryKey: queryKeysFactory.votingPowerAt(user, blockhash, votingAssets),
     enabled: !!user,
   });
 };
