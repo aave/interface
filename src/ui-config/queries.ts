@@ -60,9 +60,11 @@ export const queryKeysFactory = {
     ...queryKeysFactory.market(marketData),
     'poolReservesDataHumanized',
   ],
-  generalStakeUiData: (marketData: MarketDataType) => [
+  generalStakeUiData: (marketData: MarketDataType, stakedTokens, oracleAddresses) => [
     ...queryKeysFactory.staking,
     ...queryKeysFactory.market(marketData),
+    stakedTokens,
+    oracleAddresses,
     'generalStakeUiData',
   ],
   userStakeUiData: (user: string, marketData: MarketDataType) => [

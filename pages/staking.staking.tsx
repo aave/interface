@@ -21,6 +21,9 @@ import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
+const AAVE = '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9';
+export const AAVE_ORACLE = '0x6Df09E975c830ECae5bd4eD9d90f3A95a4f88012';
+
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 const StakeModal = dynamic(() =>
@@ -54,8 +57,13 @@ export default function Staking() {
 
   const { data: stakeUserResult, isLoading: stakeUserResultLoading } =
     useUserStakeUiData(currentMarketData);
-  const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
-    useGeneralStakeUiData(currentMarketData);
+  const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } = useGeneralStakeUiData(
+    currentMarketData,
+    [AAVE],
+    [AAVE_ORACLE]
+  );
+
+  console.log(' HERE ', stakeGeneralResult, stakeUserResultLoading);
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 
