@@ -1,21 +1,14 @@
 import { ProposalData, VotingMachineProposal } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
+import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { VotingMachineService } from 'src/services/VotingMachineService';
 import { useRootStore } from 'src/store/root';
-import { governanceV3Config } from 'src/ui-config/governanceConfig';
+import { governanceV3Config, ipfsGateway } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-export type SubgraphProposal = {
-  proposalId: string;
-  ipfsHash: string;
-  title: string;
-  shortDescription: string;
-  description: string;
-  author: string;
-  discussions: string;
-};
+import { SubgraphProposal } from './useProposals';
 
 export interface EnhancedProposal {
   proposal: SubgraphProposal;
@@ -27,12 +20,8 @@ const getProposalQuery = gql`
   query getProposals($proposalId: Int!) {
     proposalCreateds(where: { proposalId: $proposalId }) {
       proposalId
+      cid
       ipfsHash
-      title
-      shortDescription
-      description
-      author
-      discussions
     }
   }
 `;
@@ -56,6 +45,11 @@ async function fetchProposal(
 ): Promise<EnhancedProposal> {
   const proposal = await getProposal(proposalId);
 
+  const metadata = await getProposalMetadata(proposal.cid, ipfsGateway);
+  const proposalWithMetadata = {
+    ...proposal,
+    ...metadata,
+  };
   const proposalData = (await governanceV3Service.getProposalsData(+proposalId, +proposalId, 1))[0];
 
   const votingMachineData = (
@@ -73,7 +67,7 @@ async function fetchProposal(
   )[0];
 
   return {
-    proposal,
+    proposal: proposalWithMetadata,
     proposalData,
     votingMachineData,
   };
