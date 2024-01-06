@@ -1,7 +1,8 @@
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
 import { Powers } from 'src/services/GovernanceService';
 import { GovernanceTokensBalance } from 'src/services/WalletBalanceService';
-
+const { BigNumber } = require('ethers');
+import { ethers } from 'ethers';
 import { useGovernanceTokens } from './useGovernanceTokens';
 import { usePowers } from './usePowers';
 
@@ -22,15 +23,21 @@ export const useGovernanceTokensAndPowers = (): GovernanceTokensAndPowers | unde
     return undefined;
   }
 
+  const convertToBigNumber = (value: typeof BigNumber, decimals = 18) =>
+    value ? ethers.utils.parseUnits(value.toString(), decimals) : BigNumber.from(0);
+
+  const aAavePower = convertToBigNumber(powers.aaveTokenPower.votingPower);
+  const aAaveToken = convertToBigNumber(governanceTokens.aAave);
+  const aavePower = convertToBigNumber(powers.aaveTokenPower.votingPower);
+  const aaveToken = convertToBigNumber(governanceTokens.aave);
+  const stkAavePower = convertToBigNumber(powers.stkAaveTokenPower.votingPower);
+  const stkAaveToken = convertToBigNumber(governanceTokens.stkAave);
   return {
     ...powers,
     ...governanceTokens,
-    isAAaveTokenWithDelegatedPower:
-      powers?.aaveTokenPower.votingPower.gt(governanceTokens.aAave) || false,
-    isAaveTokenWithDelegatedPower:
-      powers?.aaveTokenPower.votingPower.gt(governanceTokens.aave) || false,
-    isStkAaveTokenWithDelegatedPower:
-      powers?.stkAaveTokenPower.votingPower.gt(governanceTokens.stkAave) || false,
+    isAAaveTokenWithDelegatedPower: aAavePower.gt(aAaveToken),
+    isAaveTokenWithDelegatedPower: aavePower.gt(aaveToken),
+    isStkAaveTokenWithDelegatedPower: stkAavePower.gt(stkAaveToken),
     refetchPowers,
   };
 };

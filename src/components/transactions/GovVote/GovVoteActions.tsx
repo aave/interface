@@ -97,7 +97,7 @@ const generateSubmitVoteSignature = (
 };
 
 const getBaseVotingPowerSlot = (asset: string, withDelegation: boolean) => {
-  if (asset === '0x26aAB2aE39897338c2d91491C46c14a8c2a67919') {
+  if (asset === governanceV3Config.votingAssets.aAaveTokenAddress) {
     // aAave CHANGE_BEFORE_PROD
     if (withDelegation) return 64;
     return 52;
@@ -182,24 +182,44 @@ export const GovVoteActions = ({
   ]; // CHANGE_BEFORE_PROD
 
   const action = async () => {
+    console.log('proposalId', proposalId);
+
     setMainTxState({ ...mainTxState, loading: true });
     try {
+      console.log('YO1');
+
       const proofs = await getVotingBalanceProofs(user, assets, ChainId.mainnet, blockHash);
+      console.log('YO2');
+
       const votingMachineService = new VotingMachineService(votingMachineAddress);
+      console.log('YO3');
+      console.log('withGelatoRelayer', withGelatoRelayer, signature);
+
       if (withGelatoRelayer && signature) {
-        const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
-          user,
-          +proposalId,
-          support,
-          proofs,
-          signature.toString()
-        );
+        let tx;
+        try {
+          tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
+            user,
+            +proposalId,
+            support,
+            proofs,
+            signature.toString()
+          );
+        } catch (e) {
+          console.log('e --->', e);
+        }
+
+        console.log('YO4');
+
         const gelatoRelay = new GelatoRelay();
         const gelatoRequest = {
           chainId: BigInt(votingChainId),
           target: votingMachineAddress,
           data: tx.data || '',
         };
+
+        console.log('gelatoRequest', gelatoRequest);
+
         const response = await gelatoRelay.sponsoredCall(gelatoRequest, '');
         setTimeout(async function checkForStatus() {
           const status = await gelatoRelay.getTaskStatus(response.taskId);
@@ -216,13 +236,19 @@ export const GovVoteActions = ({
           }
         }, 5000);
       } else {
+        console.log('yo 5', user, +proposalId, support, proofs);
         const tx = await votingMachineService.generateSubmitVoteTxData(
           user,
           +proposalId,
           support,
           proofs
         );
+        console.log('yo 6', tx, votingChainId);
+
         const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
+
+        console.log('txWithEstimatedGas', txWithEstimatedGas);
+
         const response = await sendTx(txWithEstimatedGas);
         await response.wait(1);
         setMainTxState({
