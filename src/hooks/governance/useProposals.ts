@@ -1,8 +1,9 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
+import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { VotingMachineService } from 'src/services/VotingMachineService';
-import { governanceV3Config } from 'src/ui-config/governanceConfig';
+import { governanceV3Config, ipfsGateway } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 export type SubgraphProposal = {
@@ -13,18 +14,15 @@ export type SubgraphProposal = {
   description: string;
   author: string;
   discussions: string;
+  cid: string;
 };
 
 const getProposalsQuery = gql`
   query getProposals($first: Int!, $skip: Int!) {
     proposalCreateds(orderBy: proposalId, orderDirection: desc, first: $first, skip: $skip) {
       proposalId
+      cid
       ipfsHash
-      title
-      shortDescription
-      description
-      author
-      discussions
     }
   }
 `;
@@ -49,8 +47,17 @@ async function fetchProposals(
   const result = await getProposals(PAGE_SIZE, pageParam * PAGE_SIZE);
   const proposals = result.proposalCreateds;
 
-  const fromId = proposals[0].proposalId;
-  const toId = proposals[proposals.length - 1].proposalId;
+  const proposalsWithMetadata = [];
+  for (const proposal of proposals) {
+    const metadata = await getProposalMetadata(proposal.cid, ipfsGateway);
+    proposalsWithMetadata.push({
+      ...proposal,
+      ...metadata,
+    });
+  }
+
+  const fromId = proposalsWithMetadata[0].proposalId;
+  const toId = proposalsWithMetadata[proposalsWithMetadata.length - 1].proposalId;
 
   const proposalData = await governanceV3Service.getProposalsData(+fromId, +toId, PAGE_SIZE);
 
@@ -65,7 +72,7 @@ async function fetchProposals(
   const votingMachingData = await votingMachineSerivce.getProposalsData(votingMachineParams);
 
   return {
-    proposals,
+    proposals: proposalsWithMetadata,
     proposalData,
     votingMachingData,
   };

@@ -2,8 +2,12 @@ import { ChainId } from '@aave/contract-helpers';
 import {
   AaveSafetyModule,
   AaveV3Ethereum,
+  GovernanceV3Arbitrum,
   GovernanceV3Avalanche,
+  GovernanceV3Base,
   GovernanceV3Ethereum,
+  GovernanceV3Gnosis,
+  GovernanceV3Optimism,
   GovernanceV3Polygon,
 } from '@bgd-labs/aave-address-book';
 
@@ -92,7 +96,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
     coreChainId: ChainId.mainnet,
     votingChainIds: [ChainId.polygon, ChainId.avalanche],
     governanceCoreSubgraphUrl:
-      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gov-v3/2.0.0/gn',
+      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/test-gov/1.0.7/gn',
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {
@@ -126,6 +130,10 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.mainnet]: GovernanceV3Ethereum.PC_DATA_HELPER,
       [ChainId.polygon]: GovernanceV3Polygon.PC_DATA_HELPER,
       [ChainId.avalanche]: GovernanceV3Avalanche.PC_DATA_HELPER,
+      [ChainId.optimism]: GovernanceV3Optimism.PC_DATA_HELPER,
+      [ChainId.xdai]: GovernanceV3Gnosis.PC_DATA_HELPER,
+      [ChainId.arbitrum_one]: GovernanceV3Arbitrum.PC_DATA_HELPER,
+      [ChainId.base]: GovernanceV3Base.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,

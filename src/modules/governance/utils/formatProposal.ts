@@ -6,6 +6,7 @@ import {
   ProposalData,
   ProposalState,
   ProposalV3State,
+  VotingConfig,
   VotingMachineProposal,
 } from '@aave/contract-helpers';
 import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
@@ -137,7 +138,11 @@ export const formatProposalV3 = (
   constants: Constants,
   votingMachineData: VotingMachineProposal
 ): FormattedProposalV3 => {
-  const quorum = constants.votingConfigs[proposalData.proposalData.accessLevel].config.quorum;
+  const votingConfig = constants.votingConfigs.find(
+    (c) => c.accessLevel === proposalData.proposalData.accessLevel
+  ) as VotingConfig;
+
+  const quorum = votingConfig.config.quorum;
   const quorumReached = isQuorumReached(
     votingMachineData.proposalData.forVotes,
     quorum,
@@ -148,9 +153,7 @@ export const formatProposalV3 = (
   const againstVotesBN = valueToBigNumber(votingMachineData.proposalData.againstVotes);
   const currentDifferential = normalizeBN(forVotesBN.minus(againstVotesBN), 18).toString();
 
-  const requiredDifferential =
-    constants.votingConfigs[proposalData.proposalData.accessLevel].config.differential;
-
+  const requiredDifferential = votingConfig.config.differential;
   const differentialReached = isDifferentialReached(
     votingMachineData.proposalData.forVotes,
     votingMachineData.proposalData.againstVotes,
