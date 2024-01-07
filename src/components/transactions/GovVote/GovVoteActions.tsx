@@ -187,34 +187,20 @@ export const GovVoteActions = ({
   }
 
   const action = async () => {
-    console.log('proposalId', proposalId);
-
     setMainTxState({ ...mainTxState, loading: true });
     try {
-      console.log('YO1');
-
       const proofs = await getVotingBalanceProofs(user, assets, ChainId.mainnet, blockHash);
-      console.log('YO2');
 
       const votingMachineService = new VotingMachineService(votingMachineAddress);
-      console.log('YO3');
-      console.log('withGelatoRelayer', withGelatoRelayer, signature);
 
       if (withGelatoRelayer && signature) {
-        let tx;
-        try {
-          tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
-            user,
-            +proposalId,
-            support,
-            proofs,
-            signature.toString()
-          );
-        } catch (e) {
-          console.log('e --->', e);
-        }
-
-        console.log('YO4');
+        const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
+          user,
+          +proposalId,
+          support,
+          proofs,
+          signature.toString()
+        );
 
         const gelatoRelay = new GelatoRelay();
         const gelatoRequest = {
@@ -222,8 +208,6 @@ export const GovVoteActions = ({
           target: votingMachineAddress,
           data: tx.data || '',
         };
-
-        console.log('gelatoRequest', gelatoRequest);
 
         const response = await gelatoRelay.sponsoredCall(gelatoRequest, '');
         setTimeout(async function checkForStatus() {
@@ -241,18 +225,14 @@ export const GovVoteActions = ({
           }
         }, 5000);
       } else {
-        console.log('yo 5', user, +proposalId, support, proofs);
         const tx = await votingMachineService.generateSubmitVoteTxData(
           user,
           +proposalId,
           support,
           proofs
         );
-        console.log('yo 6', tx, votingChainId);
 
         const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
-
-        console.log('txWithEstimatedGas', txWithEstimatedGas);
 
         const response = await sendTx(txWithEstimatedGas);
         await response.wait(1);
