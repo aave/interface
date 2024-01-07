@@ -24,15 +24,15 @@ export const useGovernanceTokensAndPowers = (): GovernanceTokensAndPowers | unde
     return undefined;
   }
 
-  // TODO Refactor and fix this
-  const convertToBigNumber = (value: BigNumber | string, decimals = 18) =>
+  // TODO Refactor and fix
+  const convertToBigNumber = (value: string, decimals = 18) =>
     value ? ethers.utils.parseUnits(value.toString(), decimals) : BigNumber.from(0);
 
-  const aAavePower = convertToBigNumber(powers.aaveTokenPower.votingPower);
+  const aAavePower = powers.aaveTokenPower.votingPower;
   const aAaveToken = convertToBigNumber(governanceTokens.aAave);
-  const aavePower = convertToBigNumber(powers.aaveTokenPower.votingPower);
+  const aavePower = powers.aaveTokenPower.votingPower;
   const aaveToken = convertToBigNumber(governanceTokens.aave);
-  const stkAavePower = convertToBigNumber(powers.stkAaveTokenPower.votingPower);
+  const stkAavePower = powers.stkAaveTokenPower.votingPower;
   const stkAaveToken = convertToBigNumber(governanceTokens.stkAave);
   return {
     ...powers,
