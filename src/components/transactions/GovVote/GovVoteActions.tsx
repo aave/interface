@@ -166,20 +166,25 @@ export const GovVoteActions = ({
 
   const withGelatoRelayer = false;
 
-  const assets = [
-    {
+  const assets: Array<{ underlyingAsset: string; isWithDelegatedPower: boolean }> = [];
+  if (tokenPowers?.aAave !== '0') {
+    assets.push({
+      underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
+      isWithDelegatedPower: tokenPowers?.isAAaveTokenWithDelegatedPower || false,
+    });
+  }
+  if (tokenPowers?.stkAave !== '0') {
+    assets.push({
       underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
       isWithDelegatedPower: tokenPowers?.isStkAaveTokenWithDelegatedPower || false,
-    },
-    {
+    });
+  }
+  if (tokenPowers?.aave !== '0') {
+    assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
       isWithDelegatedPower: tokenPowers?.isAaveTokenWithDelegatedPower || false,
-    },
-    {
-      underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
-      isWithDelegatedPower: true,
-    },
-  ]; // CHANGE_BEFORE_PROD
+    });
+  }
 
   const action = async () => {
     console.log('proposalId', proposalId);
@@ -215,7 +220,7 @@ export const GovVoteActions = ({
         const gelatoRequest = {
           chainId: BigInt(votingChainId),
           target: votingMachineAddress,
-          data: tx.data || '',
+          data: tx?.data || '',
         };
 
         console.log('gelatoRequest', gelatoRequest);
