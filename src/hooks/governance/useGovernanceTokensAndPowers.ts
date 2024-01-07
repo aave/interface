@@ -1,8 +1,9 @@
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
+import { ethers } from 'ethers';
+import { BigNumber } from 'ethers/lib/ethers';
 import { Powers } from 'src/services/GovernanceService';
 import { GovernanceTokensBalance } from 'src/services/WalletBalanceService';
-const { BigNumber } = require('ethers');
-import { ethers } from 'ethers';
+
 import { useGovernanceTokens } from './useGovernanceTokens';
 import { usePowers } from './usePowers';
 
@@ -23,7 +24,8 @@ export const useGovernanceTokensAndPowers = (): GovernanceTokensAndPowers | unde
     return undefined;
   }
 
-  const convertToBigNumber = (value: typeof BigNumber, decimals = 18) =>
+  // TODO Refactor and fix this
+  const convertToBigNumber = (value: BigNumber | string, decimals = 18) =>
     value ? ethers.utils.parseUnits(value.toString(), decimals) : BigNumber.from(0);
 
   const aAavePower = convertToBigNumber(powers.aaveTokenPower.votingPower);
