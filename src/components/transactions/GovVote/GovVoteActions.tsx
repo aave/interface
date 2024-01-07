@@ -220,7 +220,7 @@ export const GovVoteActions = ({
         const gelatoRequest = {
           chainId: BigInt(votingChainId),
           target: votingMachineAddress,
-          data: tx?.data || '',
+          data: tx.data || '',
         };
 
         console.log('gelatoRequest', gelatoRequest);
