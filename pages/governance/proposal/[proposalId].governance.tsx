@@ -15,10 +15,10 @@ import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
 import { VotingResults } from 'src/modules/governance/proposal/VotingResults';
 import { formatProposalV3 } from 'src/modules/governance/utils/formatProposal';
 
-import { ContentContainer } from '../../../../src/components/ContentContainer';
+import { ContentContainer } from '../../../src/components/ContentContainer';
 
 const GovVoteModal = dynamic(() =>
-  import('../../../../src/components/transactions/GovVote/GovVoteModal').then(
+  import('../../../src/components/transactions/GovVote/GovVoteModal').then(
     (module) => module.GovVoteModal
   )
 );
