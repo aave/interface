@@ -7,6 +7,7 @@ import {
   GovernanceV3Base,
   GovernanceV3Ethereum,
   GovernanceV3Gnosis,
+  GovernanceV3Metis,
   GovernanceV3Optimism,
   GovernanceV3Polygon,
 } from '@bgd-labs/aave-address-book';
@@ -134,6 +135,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.xdai]: GovernanceV3Gnosis.PC_DATA_HELPER,
       [ChainId.arbitrum_one]: GovernanceV3Arbitrum.PC_DATA_HELPER,
       [ChainId.base]: GovernanceV3Base.PC_DATA_HELPER,
+      [ChainId.metis_andromeda]: GovernanceV3Metis.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
