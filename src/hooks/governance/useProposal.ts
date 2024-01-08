@@ -50,7 +50,20 @@ async function fetchProposal(
     ...proposal,
     ...metadata,
   };
-  const proposalData = (await governanceV3Service.getProposalsData(+proposalId, +proposalId, 1))[0];
+
+  let fromId = +proposalId;
+  const toId = +proposalId;
+  let limit = 1;
+
+  // the data helper contract assumes that if 'from' is 0, it'll start at the latest proposal.
+  // in order to fetch the proposal with id 0, we need to start at 1 and fetch 2 proposals.
+  if (fromId === 0) {
+    fromId = 1;
+    limit = 2;
+  }
+
+  const data = await governanceV3Service.getProposalsData(fromId, toId, limit);
+  const proposalData = data[limit - 1];
 
   const votingMachineData = (
     await votingMachineService.getProposalsData(
