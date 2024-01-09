@@ -100,8 +100,6 @@ export function AppHeader() {
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  console.log('currentMarketData', currentMarketData);
-
   useEffect(() => {
     if (mobileDrawerOpen && !md) {
       setMobileDrawerOpen(false);
