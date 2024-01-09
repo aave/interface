@@ -9,9 +9,10 @@ import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getENSProvider, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxErrorView } from '../FlowCommons/Error';
@@ -20,7 +21,11 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { DelegationTokenSelector, DelegationTokenType } from './DelegationTokenSelector';
+import {
+  DelegationToken,
+  DelegationTokenSelector,
+  DelegationTokenType,
+} from './DelegationTokenSelector';
 import { DelegationTypeSelector } from './DelegationTypeSelector';
 import { GovDelegationActions } from './GovDelegationActions';
 
@@ -52,7 +57,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   // error states
 
   // selector states
-  const [delegationTokenType, setDelegationTokenType] = useState(DelegationTokenType.ALL);
+  const [delegationTokenType, setDelegationTokenType] = useState<DelegationTokenType[]>([]);
   const [delegationType, setDelegationType] = useState(DelegationType.ALL);
   const [delegate, setDelegate] = useState('');
 
@@ -81,11 +86,12 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
     setDelegate(isRevokeModal ? currentAccount : '');
   }, [isRevokeModal, setDelegate, currentAccount]);
 
-  const tokens = [
+  let tokens: DelegationToken[] = [
     {
       address: governanceV3Config.votingAssets.stkAaveTokenAddress,
       symbol: 'stkAAVE',
       name: 'Staked AAVE',
+      domainName: 'Staked Aave',
       amount: stkAave,
       votingDelegatee: powers?.stkAaveVotingDelegatee,
       propositionDelegatee: powers?.stkAavePropositionDelegatee,
@@ -95,6 +101,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       address: governanceV3Config.votingAssets.aaveTokenAddress,
       symbol: 'AAVE',
       name: 'AAVE',
+      domainName: 'Aave token V3',
       amount: aave,
       votingDelegatee: powers?.aaveVotingDelegatee,
       propositionDelegatee: powers?.aavePropositionDelegatee,
@@ -104,6 +111,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       address: governanceV3Config.votingAssets.aAaveTokenAddress,
       symbol: 'aAAVE',
       name: 'aAAVE',
+      domainName: 'Aave Ethereum AAVE',
       amount: aAave,
       votingDelegatee: powers?.aAaveVotingDelegatee,
       propositionDelegatee: powers?.aAavePropositionDelegatee,
@@ -111,8 +119,36 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
     },
   ];
 
-  // handle delegate address errors
+  if (isRevokeModal) {
+    tokens = tokens.filter((token) => {
+      if (delegationType === DelegationType.VOTING) {
+        return token.votingDelegatee !== ZERO_ADDRESS;
+      } else if (delegationType === DelegationType.PROPOSITION) {
+        return token.propositionDelegatee !== ZERO_ADDRESS;
+      }
+
+      return token.propositionDelegatee !== ZERO_ADDRESS || token.votingDelegatee !== ZERO_ADDRESS;
+    });
+  }
+
   let delegateAddressBlockingError: ErrorType | undefined = undefined;
+
+  const handleDelegateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    setDelegate(e.target.value);
+    const address = e.target.value;
+    if (address.slice(-4) === '.eth') {
+      // Attempt to resolve ENS name and use resolved address if valid
+      const resolvedAddress = await getENSProvider().resolveName(address);
+      if (resolvedAddress && utils.isAddress(resolvedAddress)) {
+        setDelegate(resolvedAddress);
+      } else {
+        delegateAddressBlockingError = ErrorType.NOT_AN_ADDRESS;
+      }
+    }
+  };
+
+  // handle delegate address errors
   if (delegate !== '' && !utils.isAddress(delegate)) {
     delegateAddressBlockingError = ErrorType.NOT_AN_ADDRESS;
   }
@@ -133,6 +169,12 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   useEffect(() => {
     if (txState.success) refetch();
   }, [txState.success, refetch]);
+
+  const handleSelectedTokensChange = (tokens: DelegationTokenType[]) => {
+    setDelegationTokenType(tokens);
+  };
+
+  const tokensSelected = tokens.filter((token) => delegationTokenType.includes(token.type));
 
   // is Network mismatched
   const govChain =
@@ -158,9 +200,11 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       {(isRevokeModal &&
         !!powers &&
         ((powers.aaveVotingDelegatee === constants.AddressZero &&
-          powers.stkAaveVotingDelegatee === constants.AddressZero) ||
+          powers.stkAaveVotingDelegatee === constants.AddressZero &&
+          powers.aAaveVotingDelegatee === constants.AddressZero) ||
           (powers.aavePropositionDelegatee === constants.AddressZero &&
-            powers.stkAavePropositionDelegatee === constants.AddressZero))) || (
+            powers.stkAavePropositionDelegatee === constants.AddressZero &&
+            powers.aAavePropositionDelegatee === constants.AddressZero))) || (
         <>
           <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
             <Trans>{isRevokeModal ? 'Power to revoke' : 'Power to delegate'}</Trans>
@@ -192,8 +236,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
         >
           <Trans>
             Choose how much voting/proposition power to give to someone else by delegating some of
-            your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your
-            delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave
+            your AAVE, stkAAVE or aAAVE balance. Your tokens will remain in your account, but your
+            delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAAVE
             balance changes, your delegate&apos;s voting/proposition power will be automatically
             adjusted.
           </Trans>
@@ -201,11 +245,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       )}
 
       <DelegationTokenSelector
-        setDelegationTokenType={setDelegationTokenType}
-        delegationTokenType={delegationTokenType}
         delegationTokens={tokens}
-        delegationType={delegationType}
-        filter={isRevokeModal}
+        onSelectedTokensChange={handleSelectedTokensChange}
       />
       {!isRevokeModal && (
         <>
@@ -221,7 +262,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
               variant="outlined"
               fullWidth
               value={delegate}
-              onChange={(e) => setDelegate(e.target.value)}
+              onChange={handleDelegateChange}
               placeholder={t`Enter ETH address`}
               error={delegateAddressBlockingError !== undefined}
               helperText={handleDelegateAddressError()}
@@ -239,10 +280,14 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
 
       <GovDelegationActions
         delegationType={delegationType}
-        delegationTokenType={delegationTokenType}
+        delegationTokens={tokensSelected}
         delegatee={delegate}
         isWrongNetwork={isWrongNetwork}
-        blocked={delegateAddressBlockingError !== undefined || delegate === ''}
+        blocked={
+          delegateAddressBlockingError !== undefined ||
+          delegate === '' ||
+          tokensSelected.length === 0
+        }
         isRevoke={isRevokeModal}
       />
     </>

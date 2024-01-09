@@ -18,25 +18,21 @@ export interface TokenDelegationPower {
 export class DelegationTokenService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-  private getDelegationTokenService(tokenAddress: string, chainId: number) {
-    const provider = this.getProvider(chainId);
+  private getDelegationTokenService(tokenAddress: string) {
+    const provider = this.getProvider(governanceV3Config.coreChainId);
     return new AaveTokenV3Service(tokenAddress, provider);
   }
 
-  private getBatchDelegationTokenService(chainId: number) {
-    const provider = this.getProvider(chainId);
+  private getBatchDelegationTokenService() {
+    const provider = this.getProvider(governanceV3Config.coreChainId);
 
     const GOVERNANCE_META_HELPER = governanceV3Config.addresses.GOVERNANCE_META_HELPER;
 
     return new MetaDelegateHelperService(GOVERNANCE_META_HELPER, provider);
   }
 
-  async getTokenPowers(
-    user: string,
-    token: string,
-    chainId: number
-  ): Promise<TokenDelegationPower> {
-    const service = this.getDelegationTokenService(token, chainId);
+  async getTokenPowers(user: string, token: string): Promise<TokenDelegationPower> {
+    const service = this.getDelegationTokenService(token);
     const result = await service.getPowers(user);
     return {
       address: token,
@@ -46,8 +42,8 @@ export class DelegationTokenService {
   }
 
   // NOTE using MetaDelegateHelperService methods below
-  async getTokenDelegatees(user: string, token: string, chainId: number) {
-    const service = this.getDelegationTokenService(token, chainId);
+  async getTokenDelegatees(user: string, token: string) {
+    const service = this.getDelegationTokenService(token);
     return service.getDelegateeData(user);
   }
 
@@ -59,10 +55,9 @@ export class DelegationTokenService {
     increaseNonce,
     governanceTokenName,
     nonce,
-    connectedChainId,
     deadline,
   }: DelegateMetaSigParams): Promise<string> {
-    const service = this.getBatchDelegationTokenService(connectedChainId);
+    const service = this.getBatchDelegationTokenService();
     return service.prepareV3DelegateByTypeSignature({
       underlyingAsset,
       delegatee,
@@ -71,17 +66,16 @@ export class DelegationTokenService {
       increaseNonce,
       governanceTokenName,
       nonce,
-      connectedChainId,
+      connectedChainId: governanceV3Config.coreChainId,
       deadline,
     });
   }
 
   async batchMetaDelegate(
     user: string,
-    delegateParams: MetaDelegateParams[],
-    connectedChainId: number
+    delegateParams: MetaDelegateParams[]
   ): Promise<PopulatedTransaction> {
-    const service = this.getBatchDelegationTokenService(connectedChainId);
+    const service = this.getBatchDelegationTokenService();
     return service.batchMetaDelegate(user, delegateParams);
   }
 }
