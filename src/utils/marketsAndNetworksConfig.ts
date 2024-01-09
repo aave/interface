@@ -189,9 +189,7 @@ export const getProvider = (chainId: ChainId): ProviderWithSend => {
 };
 
 export const getENSProvider = () => {
-  const chainId = 1;
-  const config = getNetworkConfig(chainId);
-  return new StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
+  return new StaticJsonRpcProvider('https://rpc.ankr.com/eth', ChainId.mainnet);
 };
 
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/44';
