@@ -59,7 +59,7 @@ export const useProposalVotesQuery = ({
 };
 
 const sortByVotingPower = (a: ProposalVote, b: ProposalVote) => {
-  return a.votingPower < b.votingPower ? 1 : a.votingPower > b.votingPower ? -1 : 0;
+  return +a.votingPower < +b.votingPower ? 1 : +a.votingPower > +b.votingPower ? -1 : 0;
 };
 
 export const useProposalVotes = ({
