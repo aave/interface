@@ -43,7 +43,7 @@ const donors: Donors = {
   },
   aMATICPolygonV3: {
     name: 'aMATIC',
-    donorWalletAddress: '0x790c9422839FD93a3A4E31e531f96cC87F397c00',
+    donorWalletAddress: '0xa9F6e565A12A1D512Df641Fd703b58E620e8483E',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
   },
   aETHOptimismV3: {
