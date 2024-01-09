@@ -2,32 +2,18 @@ import { ChainId } from '@aave/contract-helpers';
 import {
   AaveSafetyModule,
   AaveV3Ethereum,
+  GovernanceV3Arbitrum,
   GovernanceV3Avalanche,
+  GovernanceV3Base,
   GovernanceV3Ethereum,
+  GovernanceV3Gnosis,
+  GovernanceV3Metis,
+  GovernanceV3Optimism,
   GovernanceV3Polygon,
 } from '@bgd-labs/aave-address-book';
 
-export interface GovernanceConfig {
-  addresses: {
-    AAVE_GOVERNANCE_V2: string;
-    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: string;
-    AAVE_GOVERNANCE_V2_EXECUTOR_LONG: string;
-    AAVE_GOVERNANCE_V2_HELPER: string;
-  };
-  ipfsGateway: string;
-  fallbackIpfsGateway: string;
-}
-
-export const governanceConfig: GovernanceConfig = {
-  addresses: {
-    AAVE_GOVERNANCE_V2: '0xc4ABF658C3Dda84225cF8A07d7D5Bb6Aa41d9E59', // '0xEC568fffba86c094cf06b22134B23074DFE2252c',
-    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '0x61910EcD7e8e942136CE7Fe7943f956cea1CC2f7',
-    AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '0xEE56e2B3D491590B5b31738cC34d5232F378a8D5',
-    AAVE_GOVERNANCE_V2_HELPER: '0x78b04AD18d76B6E2F41C84af4C4C5C5c61b60a10', // '0xBb7baf0534423e3108E1D03c259104cDba2C1cB7',
-  },
-  ipfsGateway: 'https://cloudflare-ipfs.com/ipfs',
-  fallbackIpfsGateway: 'https://ipfs.io/ipfs',
-};
+export const ipfsGateway = 'https://cloudflare-ipfs.com/ipfs';
+export const fallbackIpfsGateway = 'https://ipfs.io/ipfs';
 
 export interface VotingMachineConfig {
   portalToMachineMap: { [votingPoralAddress: string]: string };
@@ -47,6 +33,7 @@ export interface GovernanceV3Config {
     GOVERNANCE_DATA_HELPER: string;
     WALLET_BALANCE_PROVIDER: string;
     GOVERNANCE_META_HELPER: string;
+    TOKEN_POWER_HELPER: string;
   };
   votingAssets: {
     aaveTokenAddress: string;
@@ -103,13 +90,14 @@ export const governanceChainConfig: GovernanceChainConfig = {
       GOVERNANCE_DATA_HELPER: '0x863f9De2f82AB502612E8B7d4f4863c8535cb8cA',
       WALLET_BALANCE_PROVIDER: '0xCD4e0d6D2b1252E2A709B8aE97DBA31164C5a709',
       GOVERNANCE_META_HELPER: '0x8aFD68632A4B4d9fB3F2956Ca921Eb2d69146491',
+      TOKEN_POWER_HELPER: '0x78b04AD18d76B6E2F41C84af4C4C5C5c61b60a10',
     },
   },
   [ChainId.mainnet]: {
     coreChainId: ChainId.mainnet,
     votingChainIds: [ChainId.polygon, ChainId.avalanche],
     governanceCoreSubgraphUrl:
-      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gov-v3/2.0.0/gn',
+      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/test-gov/1.0.7/gn',
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {
@@ -143,6 +131,11 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.mainnet]: GovernanceV3Ethereum.PC_DATA_HELPER,
       [ChainId.polygon]: GovernanceV3Polygon.PC_DATA_HELPER,
       [ChainId.avalanche]: GovernanceV3Avalanche.PC_DATA_HELPER,
+      [ChainId.optimism]: GovernanceV3Optimism.PC_DATA_HELPER,
+      [ChainId.xdai]: GovernanceV3Gnosis.PC_DATA_HELPER,
+      [ChainId.arbitrum_one]: GovernanceV3Arbitrum.PC_DATA_HELPER,
+      [ChainId.base]: GovernanceV3Base.PC_DATA_HELPER,
+      [ChainId.metis_andromeda]: GovernanceV3Metis.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
@@ -154,6 +147,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       GOVERNANCE_DATA_HELPER: GovernanceV3Ethereum.GOV_DATA_HELPER,
       WALLET_BALANCE_PROVIDER: AaveV3Ethereum.WALLET_BALANCE_PROVIDER,
       GOVERNANCE_META_HELPER: GovernanceV3Ethereum.META_DELEGATE_HELPER,
+      TOKEN_POWER_HELPER: '0xBb7baf0534423e3108E1D03c259104cDba2C1cB7',
     },
   },
 };

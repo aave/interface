@@ -1,15 +1,15 @@
 import assets from '../../../fixtures/assets.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../support/steps/configuration.steps';
-import { claimReward, supply, withdraw } from '../../../support/steps/main.steps';
+import { claimReward, withdraw } from '../../../support/steps/main.steps';
 import { rewardIsNotAvailable } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aAVAXAvalancheV2: 1000,
+};
 
 const testData = {
-  deposit: {
-    asset: assets.avalancheMarket.AVAX,
-    amount: 1000,
-    hasApproval: true,
-  },
   withdraw: {
     asset: assets.avalancheMarket.AVAX,
     isCollateral: true,
@@ -23,9 +23,7 @@ const testData = {
 
 describe.skip('REWARD, AVALANCHE V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAvalancheFork({});
-
-  supply(testData.deposit, skipTestState, true);
+  configEnvWithTenderlyAvalancheFork({ tokens: tokenSet(tokensToRequest) });
   claimReward(testData.claimReward, skipTestState, true);
   withdraw(testData.withdraw, skipTestState, true);
   claimReward(testData.claimReward, skipTestState, true);

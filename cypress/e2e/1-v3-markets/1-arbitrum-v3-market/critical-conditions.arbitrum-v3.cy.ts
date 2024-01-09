@@ -4,14 +4,14 @@ import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyArbitrumFork } from '../../../support/steps/configuration.steps';
 import { borrow, supply, withdraw } from '../../../support/steps/main.steps';
 import { checkDashboardHealthFactor } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHArbitrumV3: 1,
+};
 
 const testData = {
   testCases: {
-    deposit1: {
-      asset: assets.arbitrumMarket.ETH,
-      amount: 1,
-      hasApproval: true,
-    },
     borrow: {
       asset: assets.arbitrumMarket.ETH,
       amount: 1,
@@ -37,9 +37,10 @@ const testData = {
 
 describe('CRITICAL CONDITIONS SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyArbitrumFork({ v3: true });
-
-  supply(testData.testCases.deposit1, skipTestState, true);
+  configEnvWithTenderlyArbitrumFork({
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   borrow(testData.testCases.borrow, skipTestState, true);
   checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.11 }, skipTestState);
   supply(testData.testCases.deposit2, skipTestState, true);

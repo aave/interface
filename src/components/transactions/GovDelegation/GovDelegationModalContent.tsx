@@ -1,11 +1,10 @@
-import { canBeEnsAddress } from '@aave/contract-helpers';
+import { DelegationType } from '@aave/contract-helpers';
 import { t, Trans } from '@lingui/macro';
 import { FormControl, TextField, Typography } from '@mui/material';
-import { utils } from 'ethers';
+import { constants, utils } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { GovernancePowerTypeApp } from 'src/helpers/types';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
@@ -46,16 +45,15 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
     data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
-  const { data: powers, refetch } = usePowers(currentMarketData);
+  const { data: powers, refetch } = usePowers();
   // error states
 
   // selector states
   const [delegationTokenType, setDelegationTokenType] = useState(DelegationTokenType.ALL);
-  const [delegationType, setDelegationType] = useState(GovernancePowerTypeApp.ALL);
+  const [delegationType, setDelegationType] = useState(DelegationType.ALL);
   const [delegate, setDelegate] = useState('');
 
   const isRevokeModal = type === ModalType.RevokeGovDelegation;
@@ -63,14 +61,19 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const onlyOnePowerToRevoke =
     isRevokeModal &&
     !!powers &&
-    ((powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '') ||
-      (powers.aavePropositionDelegatee === '' && powers.stkAavePropositionDelegatee === ''));
+    ((powers.aaveVotingDelegatee === constants.AddressZero &&
+      powers.stkAaveVotingDelegatee === constants.AddressZero) ||
+      (powers.aavePropositionDelegatee === constants.AddressZero &&
+        powers.stkAavePropositionDelegatee === constants.AddressZero));
 
   useEffect(() => {
     if (onlyOnePowerToRevoke) {
-      if (powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '')
-        setDelegationType(GovernancePowerTypeApp.PROPOSITION);
-      else setDelegationType(GovernancePowerTypeApp.VOTING);
+      if (
+        powers.aaveVotingDelegatee === constants.AddressZero &&
+        powers.stkAaveVotingDelegatee === constants.AddressZero
+      )
+        setDelegationType(DelegationType.PROPOSITION);
+      else setDelegationType(DelegationType.VOTING);
     }
   }, [onlyOnePowerToRevoke, powers]);
 
@@ -110,7 +113,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
 
   // handle delegate address errors
   let delegateAddressBlockingError: ErrorType | undefined = undefined;
-  if (delegate !== '' && !utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
+  if (delegate !== '' && !utils.isAddress(delegate)) {
     delegateAddressBlockingError = ErrorType.NOT_AN_ADDRESS;
   }
 
@@ -154,9 +157,10 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       )}
       {(isRevokeModal &&
         !!powers &&
-        ((powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '') ||
-          (powers.aavePropositionDelegatee === '' &&
-            powers.stkAavePropositionDelegatee === ''))) || (
+        ((powers.aaveVotingDelegatee === constants.AddressZero &&
+          powers.stkAaveVotingDelegatee === constants.AddressZero) ||
+          (powers.aavePropositionDelegatee === constants.AddressZero &&
+            powers.stkAavePropositionDelegatee === constants.AddressZero))) || (
         <>
           <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
             <Trans>{isRevokeModal ? 'Power to revoke' : 'Power to delegate'}</Trans>

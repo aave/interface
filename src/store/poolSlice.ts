@@ -1,4 +1,5 @@
 import {
+  AaveTokenV3Service,
   ApproveDelegationType,
   ApproveType,
   BaseDebtToken,
@@ -41,6 +42,7 @@ import {
   LPSupplyParamsType,
   LPSupplyWithPermitType,
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
+import { AaveSafetyModule, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import dayjs from 'dayjs';
 import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
@@ -824,12 +826,30 @@ export const createPoolSlice: StateCreator<
       },
     },
     generateSignatureRequest: async ({ token, amount, deadline, spender }, opts = {}) => {
+      const v3Tokens = [
+        AaveV3Ethereum.ASSETS.AAVE.UNDERLYING.toLowerCase(),
+        AaveV3Ethereum.ASSETS.AAVE.A_TOKEN.toLowerCase(),
+        AaveSafetyModule.STK_AAVE.toLowerCase(),
+      ];
+
       const provider = get().jsonRpcProvider(opts.chainId);
-      const tokenERC20Service = new ERC20Service(provider);
-      const tokenERC2612Service = new ERC20_2612Service(provider);
-      const { name } = await tokenERC20Service.getTokenData(token);
+
+      let name = '';
+      let version = '1';
+      if (v3Tokens.includes(token.toLowerCase())) {
+        const aaveV3TokenService = new AaveTokenV3Service(token, provider);
+        const domain = await aaveV3TokenService.getEip712Domain();
+        name = domain.name;
+        version = domain.version;
+      } else {
+        const tokenERC20Service = new ERC20Service(provider);
+        name = (await tokenERC20Service.getTokenData(token)).name;
+      }
+
       const { chainId } = await provider.getNetwork();
+      const tokenERC2612Service = new ERC20_2612Service(provider);
       const nonce = await tokenERC2612Service.getNonce({ token, owner: get().account });
+
       const typeData = {
         types: {
           EIP712Domain: [
@@ -849,7 +869,7 @@ export const createPoolSlice: StateCreator<
         primaryType: 'Permit',
         domain: {
           name,
-          version: '1',
+          version,
           chainId,
           verifyingContract: token,
         },
