@@ -14,14 +14,14 @@ const testData = {
   borrow: {
     asset: assets.polygonV3Market.DAI,
     amount: 50,
-    apyType: constants.borrowAPYType.stable,
+    apyType: constants.borrowAPYType.default,
     hasApproval: true,
   },
   swap: {
     fromAsset: assets.polygonV3Market.DAI,
     toAsset: assets.polygonV3Market.WBTC,
     isBorrowed: true,
-    isVariableBorrowedAPY: false,
+    isVariableBorrowedAPY: true,
     amount: 200,
     hasApproval: false,
     isMaxAmount: true,
@@ -37,7 +37,7 @@ const testData = {
   },
 };
 
-describe.skip('SWITCH BORROWED, POLYGON V3 MARKET, INTEGRATION SPEC', () => {
+describe('SWITCH BORROWED, POLYGON V3 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({
     market: 'fork_proto_polygon_v3',
