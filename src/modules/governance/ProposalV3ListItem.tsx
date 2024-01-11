@@ -10,7 +10,6 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
-import { networkConfigs } from 'src/ui-config/networksConfig';
 import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 import { StateBadge } from './StateBadge';
@@ -27,7 +26,6 @@ export const ProposalV3ListItem = ({
   againstVotes,
   forPercent,
   againstPercent,
-  votingChainId,
   proposalData,
   votingMachineData,
   votingConfig,
@@ -46,8 +44,6 @@ export const ProposalV3ListItem = ({
   votingConfig: VotingConfig;
 }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const network = networkConfigs[votingChainId];
-
   const timestamp = getProposalTimestamp(proposalData, votingMachineData, votingConfig);
 
   return (
@@ -79,14 +75,7 @@ export const ProposalV3ListItem = ({
       >
         <Stack direction="row" gap={3} alignItems="center">
           <StateBadge state={proposalState} loading={false} />
-          <Box
-            sx={{
-              height: 16,
-              width: 16,
-            }}
-          >
-            <img src={network.networkLogoPath} height="100%" width="100%" alt="network logo" />
-          </Box>
+
           {proposalState === ProposalV3State.Created && (
             <>
               <Typography variant="description" color="text.secondary">
