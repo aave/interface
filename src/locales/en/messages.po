@@ -2521,6 +2521,10 @@ msgstr "This is the total amount that you are able to supply to in this reserve.
 msgid "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 msgstr "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 
+#: src/modules/governance/proposal/VoteInfo.tsx
+msgid "This vote is free on"
+msgstr "This vote is free on"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to be able to withdraw your staked asset."
 msgstr "Time left to be able to withdraw your staked asset."
