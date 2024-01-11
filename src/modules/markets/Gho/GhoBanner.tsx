@@ -23,10 +23,13 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData, ghoLoadingData } = useAppDataContext();
 
-  const totalBorrowed = BigNumber.min(
-    valueToBigNumber(reserve?.totalDebt || 0),
-    valueToBigNumber(reserve?.borrowCap || 0)
-  ).toNumber();
+  let totalBorrowed = Number(reserve?.totalDebt);
+  if (Number(reserve?.borrowCap) > 0) {
+    totalBorrowed = BigNumber.min(
+      valueToBigNumber(reserve?.totalDebt || 0),
+      valueToBigNumber(reserve?.borrowCap || 0)
+    ).toNumber();
+  }
 
   return (
     <Box

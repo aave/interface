@@ -8,7 +8,12 @@ export const GHO_SYMBOL = 'GHO';
  * @returns {bool} - If the GHO token is available for minting
  */
 
-export const GHO_SUPPORTED_MARKETS = ['proto_mainnet_v3', 'fork_proto_mainnet_v3'];
+export const GHO_SUPPORTED_MARKETS = [
+  'proto_mainnet_v3',
+  'fork_proto_mainnet_v3',
+  'proto_sepolia_v3',
+  'fork_proto_sepolia_v3',
+];
 
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
   return reserves.find((reserve) => reserve.symbol === GHO_SYMBOL);
