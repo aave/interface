@@ -41,8 +41,6 @@ export default function ProposalPage() {
       };
     }) || [];
 
-  console.log(payloadParams);
-
   const { data: payloadData } = usePayloadsData(payloadParams);
 
   const { data: constants, isLoading: constantsLoading } = useGetVotingConfig();
