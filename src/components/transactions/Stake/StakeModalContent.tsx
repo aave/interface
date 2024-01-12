@@ -30,7 +30,7 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-type StakingType = 'aave' | 'bpt';
+// type StakingType = 'aave' | 'bpt';
 
 export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
@@ -39,21 +39,35 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
+  const TOKEN_STAKING_ADDRESS = stakeConfig.tokens[stakeAssetName].TOKEN_STAKING;
+  const TOKEN_STAKING_ORACLE = stakeConfig.tokens[stakeAssetName].TOKEN_ORACLE;
 
-  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  const { data: stakeUserResult } = useUserStakeUiData(
+    currentMarketData,
+    [TOKEN_STAKING_ADDRESS],
+    [TOKEN_STAKING_ORACLE]
+  );
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(
+    currentMarketData,
+    [TOKEN_STAKING_ADDRESS],
+    [TOKEN_STAKING_ORACLE]
+  );
 
-  console.log('stakeUserResult ---', stakeUserResult);
-  console.log('stakeAssetName', stakeAssetName);
+  let stakeData;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
+    [stakeData] = stakeGeneralResult.stakeData;
+  }
+
+  let stakeUserData;
+  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
+    [stakeUserData] = stakeUserResult.stakeUserData;
+  }
+
   // states
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  const walletBalance = normalize(
-    stakeUserResult?.[stakeAssetName as StakingType].underlyingTokenUserBalance || '0',
-    18
-  );
+  const walletBalance = normalize(stakeUserData?.underlyingTokenUserBalance || '0', 18);
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? walletBalance : _amount;

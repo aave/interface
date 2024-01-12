@@ -5,6 +5,10 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useRootStore } from 'src/store/root';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
+
+export const STK_AAVE_ORACLE = '0x6Df09E975c830ECae5bd4eD9d90f3A95a4f88012'; //NOTE ITS AAVE ORACLE
+const STK_BPT_ORACLE = '0x0De156f178a20114eeec0eBF71d7772064476b0D';
 
 export interface StakingPanelNoWalletProps {
   description?: React.ReactNode;
@@ -18,11 +22,29 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   icon,
 }) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
+  // const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
   let stakingAPY = '';
 
-  if (stakedToken == 'AAVE') stakingAPY = stakeGeneralResult?.aave.stakeApy || '0';
-  if (stakedToken == 'ABPT') stakingAPY = stakeGeneralResult?.bpt.stakeApy || '0';
+  const {
+    tokens: {
+      aave: { TOKEN_STAKING: STK_AAVE },
+      bpt: { TOKEN_STAKING: STK_BPT },
+    },
+  } = stakeConfig;
+
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(
+    currentMarketData,
+    [STK_AAVE, STK_BPT],
+    [STK_AAVE_ORACLE, STK_BPT_ORACLE]
+  );
+
+  let stkAave, stkBpt;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
+    [stkAave, stkBpt] = stakeGeneralResult.stakeData;
+  }
+
+  if (stakedToken == 'AAVE') stakingAPY = stkAave?.stakeApy || '0';
+  if (stakedToken == 'ABPT') stakingAPY = stkBpt?.stakeApy || '0';
   return (
     <Box
       sx={(theme) => ({

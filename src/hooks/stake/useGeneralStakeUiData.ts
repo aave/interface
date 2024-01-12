@@ -5,16 +5,15 @@ import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider'
 
 export const useGeneralStakeUiData = (
   marketData: MarketDataType,
-  stakedTokens: String[],
-  oracleAddresses: String[]
+  stakedTokens: string[],
+  oracles: string[]
 ) => {
   const { uiStakeDataService } = useSharedDependencies();
-  console.log('WTF', stakedTokens, oracleAddresses);
 
   return useQuery({
     queryFn: () =>
-      uiStakeDataService.getGeneralStakeUIDataHumanized(marketData, stakedTokens, oracleAddresses),
-    queryKey: queryKeysFactory.generalStakeUiData(marketData, stakedTokens, oracleAddresses),
+      uiStakeDataService.getGeneralStakeUIDataHumanized(marketData, stakedTokens, oracles),
+    queryKey: queryKeysFactory.generalStakeUiData(marketData, stakedTokens, oracles),
     refetchInterval: POLLING_INTERVAL,
   });
 };

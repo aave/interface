@@ -29,7 +29,7 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-type StakingType = 'aave' | 'bpt';
+// type StakingType = 'aave' | 'bpt';
 
 export const StakeRewardClaimRestakeModalContent = ({
   stakeAssetName,
@@ -41,19 +41,40 @@ export const StakeRewardClaimRestakeModalContent = ({
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
-  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  const TOKEN_STAKING_ADDRESS = stakeConfig.tokens[stakeAssetName].TOKEN_STAKING;
+  const TOKEN_STAKING_ORACLE = stakeConfig.tokens[stakeAssetName].TOKEN_ORACLE;
+
+  const { data: stakeUserResult } = useUserStakeUiData(
+    currentMarketData,
+    [TOKEN_STAKING_ADDRESS],
+    [TOKEN_STAKING_ORACLE]
+  );
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(
+    currentMarketData,
+    [TOKEN_STAKING_ADDRESS],
+    [TOKEN_STAKING_ORACLE]
+  );
+
+  let stakeData;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
+    [stakeData] = stakeGeneralResult.stakeData;
+  }
+
+  let stakeUserData;
+  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
+    [stakeUserData] = stakeUserResult.stakeUserData;
+  }
+
+  // const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
+  // const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
+  // const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  const maxAmountToClaim = normalize(
-    stakeUserResult?.[stakeAssetName as StakingType].userIncentivesToClaim || '0',
-    18
-  );
+  const maxAmountToClaim = normalize(stakeUserData?.userIncentivesToClaim || '0', 18);
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToClaim : _amount;
 

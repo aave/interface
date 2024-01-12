@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useRootStore } from 'src/store/root';
@@ -9,7 +8,7 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 export const GetGhoToken = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleClick = () => {
     trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'Get Gho' });
   };
 

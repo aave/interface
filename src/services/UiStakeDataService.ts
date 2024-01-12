@@ -14,22 +14,24 @@ export class UiStakeDataService {
     });
   }
 
-  async getGeneralStakeUIDataHumanized(marketData: MarketDataType, stakedTokens, oracleAddresses) {
+  async getGeneralStakeUIDataHumanized(
+    marketData: MarketDataType,
+    stakedTokens: string[],
+    oracles: string[]
+  ) {
     const uiStakeDataService = this.getUiStakeDataService(marketData);
 
-    // console.log('uiStakeDataService -->', uiStakeDataService);
-    console.log('stake DATA params -->', stakedTokens, oracleAddresses);
-    // console.log(
-    //   'WE GOT DATA -->',
-    //   await uiStakeDataService.getGeneralStakeUIData(stakedTokens, oracleAddresses)
-    // );
-    return uiStakeDataService.getGeneralStakeUIData(stakedTokens, oracleAddresses);
+    return uiStakeDataService.getStakedAssetDataBatch(stakedTokens, oracles);
   }
 
-  async getUserStakeUIDataHumanized(marketData: MarketDataType, user: string) {
+  async getUserStakeUIDataHumanized(
+    marketData: MarketDataType,
+    user: string,
+    stakedAssets: string[],
+    oracles: string[]
+  ) {
     const uiStakeDataService = this.getUiStakeDataService(marketData);
-    console.log('uiStakeDataService', uiStakeDataService);
 
-    return uiStakeDataService.getUserStakeUIDataHumanized({ user });
+    return uiStakeDataService.getUserStakeUIDataHumanized({ user, stakedAssets, oracles });
   }
 }

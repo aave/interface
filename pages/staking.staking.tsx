@@ -14,17 +14,17 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
-import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
-
+// import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
-const AAVE = '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9';
-export const AAVE_ORACLE = '0x6Df09E975c830ECae5bd4eD9d90f3A95a4f88012';
-
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
+
+export const STK_AAVE_ORACLE = '0x6Df09E975c830ECae5bd4eD9d90f3A95a4f88012'; //NOTE ITS AAVE ORACLE
+const STK_BPT_ORACLE = '0x0De156f178a20114eeec0eBF71d7772064476b0D';
 
 const StakeModal = dynamic(() =>
   import('../src/components/transactions/Stake/StakeModal').then((module) => module.StakeModal)
@@ -53,17 +53,35 @@ const UnStakeModal = dynamic(() =>
 export default function Staking() {
   const { currentAccount, loading, chainId } = useWeb3Context();
 
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const {
+    tokens: {
+      aave: { TOKEN_STAKING: STK_AAVE },
+      bpt: { TOKEN_STAKING: STK_BPT },
+    },
+  } = stakeConfig;
 
-  const { data: stakeUserResult, isLoading: stakeUserResultLoading } =
-    useUserStakeUiData(currentMarketData);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const { data: stakeUserResult, isLoading: stakeUserResultLoading } = useUserStakeUiData(
+    currentMarketData,
+    [STK_AAVE, STK_BPT],
+    [STK_AAVE_ORACLE, STK_BPT_ORACLE]
+  );
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } = useGeneralStakeUiData(
     currentMarketData,
-    [AAVE],
-    [AAVE_ORACLE]
+    [STK_AAVE, STK_BPT],
+    [STK_AAVE_ORACLE, STK_BPT_ORACLE]
   );
 
-  console.log(' HERE ', stakeGeneralResult, stakeUserResultLoading);
+  let stkAave, stkBpt;
+
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
+    [stkAave, stkBpt] = stakeGeneralResult.stakeData;
+  }
+
+  let stkAaveUserData, stkBptUserData;
+  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
+    [stkAaveUserData, stkBptUserData] = stakeUserResult.stakeUserData;
+  }
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 
@@ -75,7 +93,7 @@ export default function Staking() {
     openStakeRewardsRestakeClaim,
   } = useModalContext();
 
-  const [mode, setMode] = useState<'aave' | 'bpt' | 'g  ho'>('aave');
+  const [mode, setMode] = useState<'aave' | 'bpt' | 'gho'>('aave');
 
   const { name: network } = getNetworkConfig(chainId);
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -88,12 +106,10 @@ export default function Staking() {
 
   // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
   const tvl = formatUnits(
-    BigNumber.from(stakeGeneralResult?.aave.stakeTokenTotalSupply || '0')
-      .mul(stakeGeneralResult?.aave.stakeTokenPriceEth || '0')
+    BigNumber.from(stkAave?.stakeTokenTotalSupply || '0')
+      .mul(stkAave?.stakeTokenPriceEth || '0')
       .add(
-        BigNumber.from(stakeGeneralResult?.bpt.stakeTokenTotalSupply || '0').mul(
-          stakeGeneralResult?.bpt.stakeTokenPriceEth || '0'
-        )
+        BigNumber.from(stkBpt?.stakeTokenTotalSupply || '0').mul(stkBpt?.stakeTokenPriceEth || '0')
       )
       .mul(stakeGeneralResult?.ethPriceUsd || 1),
     18 + 18 + 8 // 2x total supply (18 decimals), 1x ethPriceUSD (8 decimals)
@@ -101,14 +117,12 @@ export default function Staking() {
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
   const stkEmission = formatEther(
-    BigNumber.from(stakeGeneralResult?.aave.distributionPerSecond || '0')
-      .add(stakeGeneralResult?.bpt.distributionPerSecond || '0')
+    BigNumber.from(stkAave?.distributionPerSecond || '0')
+      .add(stkBpt?.distributionPerSecond || '0')
       .mul('86400')
   );
 
   const isStakeAAVE = mode === 'aave';
-
-  console.log('stakeGeneralResult', stakeGeneralResult);
 
   return (
     <>
@@ -163,8 +177,8 @@ export default function Staking() {
                   stakedToken="AAVE"
                   maxSlash="0.3"
                   icon="aave"
-                  stakeData={stakeGeneralResult?.aave}
-                  stakeUserData={stakeUserResult?.aave}
+                  stakeData={stkAave}
+                  stakeUserData={stkAaveUserData} // todo change?
                   ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake('aave', 'AAVE')}
                   onCooldownAction={() => openStakeCooldown('aave')}
@@ -188,8 +202,8 @@ export default function Staking() {
                   stakedToken="ABPT"
                   maxSlash="0.3"
                   icon="stkbpt"
-                  stakeData={stakeGeneralResult?.bpt}
-                  stakeUserData={stakeUserResult?.bpt}
+                  stakeData={stkBpt}
+                  stakeUserData={stkBptUserData}
                   ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake('bpt', 'stkBPT')}
                   onCooldownAction={() => openStakeCooldown('bpt')}
@@ -199,7 +213,7 @@ export default function Staking() {
                 />
               </Grid>
 
-              <Grid
+              {/* <Grid
                 item
                 xs={12}
                 lg={6}
@@ -210,7 +224,7 @@ export default function Staking() {
                   stakedToken="GHO"
                   maxSlash="1" // 100%
                   icon="gho"
-                  stakeData={stakeGeneralResult?.gho}
+                  stakeData={stakeGeneralResult?.gho} // todo GHO
                   stakeUserData={stakeUserResult?.gho}
                   ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake('gho', 'gho')}
@@ -219,7 +233,7 @@ export default function Staking() {
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('gho', 'AAVE')}
                   headerAction={<GetGhoToken />}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
           </>
         ) : (
