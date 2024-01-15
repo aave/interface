@@ -34,7 +34,7 @@ export const stakeConfig: StakeConfig = {
     [Stake.gho]: {
       TOKEN_STAKING: '0xcC12d8ed9111cA6a99BE5ded6F9CD6f21C360502', // stkGHO FORK
       STAKING_REWARD_TOKEN: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
-      TOKEN_ORACLE: '0x',
+      TOKEN_ORACLE: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc',
     },
   },
 };

@@ -14,7 +14,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
-// import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
+import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
@@ -57,14 +57,15 @@ export default function Staking() {
     tokens: {
       aave: { TOKEN_STAKING: STK_AAVE },
       bpt: { TOKEN_STAKING: STK_BPT },
+      gho: { TOKEN_STAKING: STK_GHO, TOKEN_ORACLE: STK_GHO_ORACLE },
     },
   } = stakeConfig;
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: stakeUserResult, isLoading: stakeUserResultLoading } = useUserStakeUiData(
     currentMarketData,
-    [STK_AAVE, STK_BPT],
-    [STK_AAVE_ORACLE, STK_BPT_ORACLE]
+    [STK_AAVE, STK_BPT, STK_GHO],
+    [STK_AAVE_ORACLE, STK_BPT_ORACLE, STK_GHO_ORACLE]
   );
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } = useGeneralStakeUiData(
     currentMarketData,
@@ -72,16 +73,18 @@ export default function Staking() {
     [STK_AAVE_ORACLE, STK_BPT_ORACLE]
   );
 
-  let stkAave, stkBpt;
+  let stkAave, stkBpt, stkGho;
 
   if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stkAave, stkBpt] = stakeGeneralResult.stakeData;
+    [stkAave, stkBpt, stkGho] = stakeGeneralResult.stakeData;
   }
 
-  let stkAaveUserData, stkBptUserData;
+  let stkAaveUserData, stkBptUserData, stkGhoUserData;
   if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stkAaveUserData, stkBptUserData] = stakeUserResult.stakeUserData;
+    [stkAaveUserData, stkBptUserData, stkGhoUserData] = stakeUserResult.stakeUserData;
   }
+  console.log('stkGho', stkGho);
+  console.log('stkGhoUserData', stkGhoUserData);
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 
@@ -213,7 +216,7 @@ export default function Staking() {
                 />
               </Grid>
 
-              {/* <Grid
+              <Grid
                 item
                 xs={12}
                 lg={6}
@@ -233,7 +236,7 @@ export default function Staking() {
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('gho', 'AAVE')}
                   headerAction={<GetGhoToken />}
                 />
-              </Grid> */}
+              </Grid>
             </Grid>
           </>
         ) : (
