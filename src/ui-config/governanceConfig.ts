@@ -97,7 +97,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
     coreChainId: ChainId.mainnet,
     votingChainIds: [ChainId.polygon, ChainId.avalanche],
     governanceCoreSubgraphUrl:
-      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/test-gov/1.0.7/gn',
+      'https://api.thegraph.com/subgraphs/name/joaquinbattilana/governance-v3',
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {

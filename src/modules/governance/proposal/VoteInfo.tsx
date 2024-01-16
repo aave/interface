@@ -22,9 +22,10 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
   const voteOnProposal = proposal.votingMachineData.votedInfo;
 
   const blockHash =
-    proposal.proposalData.proposalData.snapshotBlockHash === constants.HashZero
+    proposal.proposal.snapshotBlockHash === constants.HashZero ||
+    proposal.proposal.snapshotBlockHash === null
       ? 'latest'
-      : proposal.proposalData.proposalData.snapshotBlockHash;
+      : proposal.proposal.snapshotBlockHash;
 
   const { data: powerAtProposalStart } = useVotingPowerAt(
     blockHash,

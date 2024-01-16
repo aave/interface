@@ -1,18 +1,12 @@
-import { VotingConfig } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { Fragment, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { Link } from 'src/components/primitives/Link';
-import {
-  useGetProposalCount,
-  useGetVotingConfig,
-  useProposals,
-} from 'src/hooks/governance/useProposals';
+import { useGetProposalCount, useProposals } from 'src/hooks/governance/useProposals';
 
 import { ProposalListHeader } from './ProposalListHeader';
 import { ProposalV3ListItem } from './ProposalV3ListItem';
-import { formatProposalV3 } from './utils/formatProposal';
 import { VoteBar } from './VoteBar';
 
 export const ProposalsV3List = () => {
@@ -21,13 +15,12 @@ export const ProposalsV3List = () => {
 
   const { data: totalCount, isFetching: fetchingProposalCount } = useGetProposalCount();
   const { data, isFetching: fetchingProposals, fetchNextPage } = useProposals(totalCount);
-  const { data: config, isFetching: fetchingVotingConfig } = useGetVotingConfig();
   const totalNumberOfProposalsLoaded = data?.pages.reduce(
     (acc, page) => acc + page.proposals.length,
     0
   );
 
-  const loading = fetchingProposalCount || fetchingProposals || fetchingVotingConfig;
+  const loading = fetchingProposalCount || fetchingProposals;
 
   return (
     <Paper>
@@ -36,7 +29,7 @@ export const ProposalsV3List = () => {
         handleProposalFilterChange={setProposalFilter}
         handleSearchQueryChange={(value: string) => console.log(value)}
       />
-      {data && config ? (
+      {data ? (
         <InfiniteScroll
           loadMore={() => fetchNextPage()}
           hasMore={
@@ -45,23 +38,8 @@ export const ProposalsV3List = () => {
         >
           {data.pages.map((group, i) => (
             <Fragment key={i}>
-              {group.proposals.map((proposal, index) => (
-                <ProposalV3ListItem
-                  key={proposal.proposalId}
-                  proposalData={group.proposalData[index]}
-                  votingMachineData={group.votingMachingData[index]}
-                  votingConfig={
-                    config.votingConfigs.find(
-                      (c) => c.accessLevel === group.proposalData[index].proposalData.accessLevel
-                    ) as VotingConfig
-                  }
-                  {...formatProposalV3(
-                    proposal,
-                    group.proposalData[index],
-                    config,
-                    group.votingMachingData[index]
-                  )}
-                />
+              {group.proposals.map((proposal) => (
+                <ProposalV3ListItem key={proposal.id} proposal={proposal} />
               ))}
             </Fragment>
           ))}

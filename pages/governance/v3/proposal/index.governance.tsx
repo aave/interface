@@ -1,11 +1,9 @@
 import { Grid } from '@mui/material';
-// import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Meta } from 'src/components/Meta';
 import { usePayloadsData } from 'src/hooks/governance/usePayloadsData';
 import { useProposal } from 'src/hooks/governance/useProposal';
-import { useGetVotingConfig } from 'src/hooks/governance/useProposals';
 import { useProposalVotes } from 'src/hooks/governance/useProposalVotes';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ProposalLifecycle } from 'src/modules/governance/proposal/ProposalLifecycle';
@@ -13,7 +11,6 @@ import { ProposalOverview } from 'src/modules/governance/proposal/ProposalOvervi
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
 import { VotingResults } from 'src/modules/governance/proposal/VotingResults';
-import { formatProposalV3 } from 'src/modules/governance/utils/formatProposal';
 
 import { ContentContainer } from '../../../../src/components/ContentContainer';
 
@@ -33,45 +30,30 @@ export default function ProposalPage() {
   } = useProposal(+proposalId);
 
   const payloadParams =
-    proposal?.proposalData.proposalData.payloads.map((p) => {
+    proposal?.proposal.payloads.map((p) => {
       return {
         payloadControllerAddress: p.payloadsController,
-        payloadId: p.payloadId,
-        chainId: p.chain,
+        payloadId: +p.id,
+        chainId: +p.chainId,
       };
     }) || [];
 
   const { data: payloadData } = usePayloadsData(payloadParams);
 
-  const { data: constants, isLoading: constantsLoading } = useGetVotingConfig();
   const proposalVotes = useProposalVotes({
     proposalId,
-    votingChainId: proposal?.proposalData.votingChainId,
+    votingChainId: proposal ? +proposal.proposal.votingPortal.votingMachineChainId : undefined,
   });
 
-  const loading = newProposalLoading || constantsLoading;
-
-  const proposalVotingConfig = constants?.votingConfigs.find(
-    (c) => c.accessLevel === proposal?.proposalData.proposalData.accessLevel
-  );
-
-  const formattedProposal =
-    proposal &&
-    constants &&
-    formatProposalV3(
-      proposal.proposal,
-      proposal.proposalData,
-      constants,
-      proposal.votingMachineData
-    );
+  const loading = newProposalLoading;
 
   return (
     <>
       {proposal && (
         <Meta
           imageUrl="https://app.aave.com/aaveMetaLogo-min.jpg"
-          title={proposal.proposal.title}
-          description={proposal.proposal.shortDescription}
+          title={proposal.proposal.proposalMetadata.title}
+          description={proposal.proposal.proposalMetadata.shortDescription}
         />
       )}
       <ProposalTopPanel />
@@ -87,16 +69,8 @@ export default function ProposalPage() {
           </Grid>
           <Grid item xs={12} md={4}>
             {proposal && <VoteInfo proposal={proposal} />}
-            <VotingResults
-              proposal={formattedProposal}
-              proposalVotes={proposalVotes}
-              loading={loading}
-            />
-            <ProposalLifecycle
-              proposal={proposal}
-              payloads={payloadData}
-              votingConfig={proposalVotingConfig}
-            />
+            <VotingResults proposal={proposal} proposalVotes={proposalVotes} loading={loading} />
+            <ProposalLifecycle proposal={proposal} payloads={payloadData} />
           </Grid>
         </Grid>
       </ContentContainer>

@@ -158,9 +158,9 @@ export const GovVoteActions = ({
   const { sendTx, signTxData } = useWeb3Context();
   const tokenPowers = useGovernanceTokensAndPowers();
   const [signature, setSignature] = useState<string | undefined>(undefined);
-  const proposalId = proposal.proposal.proposalId;
-  const blockHash = proposal.proposalData.proposalData.snapshotBlockHash;
-  const votingChainId = proposal.proposalData.votingChainId;
+  const proposalId = +proposal.proposal.id;
+  const blockHash = proposal.proposal.snapshotBlockHash || '';
+  const votingChainId = +proposal.proposal.votingPortal.votingMachineChainId;
   const votingMachineAddress =
     governanceV3Config.votingChainConfig[votingChainId].votingMachineAddress;
 
