@@ -85,6 +85,90 @@ export interface Proposal extends Omit<SubgraphProposal, 'proposalMetadata' | 'v
   };
 }
 
+const getProposalsByIdQuery = gql`
+  query getProposalsById($ids: [String!]!) {
+    proposals(where: { id_in: $ids }) {
+      id
+      creator
+      accessLevel
+      ipfsHash
+      proposalMetadata {
+        id
+        title
+        rawContent
+      }
+      state
+      votingPortal {
+        id
+        votingMachineChainId
+        votingMachine
+        enabled
+      }
+      votingConfig {
+        id
+        cooldownBeforeVotingStart
+        votingDuration
+        yesThreshold
+        yesNoDifferential
+        minPropositionPower
+      }
+      payloads {
+        id
+        chainId
+        accessLevel
+        payloadsController
+      }
+      transactions {
+        id
+        created {
+          id
+          blockNumber
+          timestamp
+        }
+        active {
+          id
+          blockNumber
+          timestamp
+        }
+        queued {
+          id
+          blockNumber
+          timestamp
+        }
+        failed {
+          id
+          blockNumber
+          timestamp
+        }
+        executed {
+          id
+          blockNumber
+          timestamp
+        }
+        canceled {
+          id
+          blockNumber
+          timestamp
+        }
+      }
+      votingDuration
+      snapshotBlockHash
+      votes {
+        id
+        forVotes
+        againstVotes
+      }
+      constants {
+        id
+        precisionDivider
+        cooldownPeriod
+        expirationTime
+        cancellationFee
+      }
+    }
+  }
+`;
+
 const getProposalsQuery = gql`
   query getProposals($first: Int!, $skip: Int!) {
     proposals(orderBy: id, orderDirection: desc, first: $first, skip: $skip) {
@@ -195,12 +279,31 @@ export const getProposals = (first: number, skip: number) =>
     }
   );
 
+export const getProposalsByIds = (ids: string[]) =>
+  request<{ proposals: SubgraphProposal[] }>(
+    governanceV3Config.governanceCoreSubgraphUrl,
+    getProposalsByIdQuery,
+    {
+      ids,
+    }
+  );
+
 const PAGE_SIZE = 10;
 
-async function fetchProposals(pageParam: number, votingMachineSerivce: VotingMachineService) {
-  const result = await getProposals(PAGE_SIZE, pageParam * PAGE_SIZE);
-  const proposals = result.proposals;
+export async function fetchSubgraphProposalsByIds(ids: string[]) {
+  const result = await getProposalsByIds(ids);
+  return result.proposals;
+}
 
+async function fetchSubgraphProposals(pageParam: number) {
+  const result = await getProposals(PAGE_SIZE, pageParam * PAGE_SIZE);
+  return result.proposals;
+}
+
+export async function fetchProposals(
+  proposals: SubgraphProposal[],
+  votingMachineSerivce: VotingMachineService
+) {
   const proposalsWithMetadata = await Promise.all(
     proposals.map((proposal) => enhanceProposalWithMetadata(proposal))
   );
@@ -261,7 +364,8 @@ export const useProposals = (totalCount: number) => {
   const { votingMachineSerivce } = useSharedDependencies();
   return useInfiniteQuery({
     queryFn: async ({ pageParam = 0 }) => {
-      return fetchProposals(pageParam, votingMachineSerivce);
+      const proposals = await fetchSubgraphProposals(pageParam);
+      return fetchProposals(proposals, votingMachineSerivce);
     },
     queryKey: ['proposals'],
     enabled: totalCount > 0,

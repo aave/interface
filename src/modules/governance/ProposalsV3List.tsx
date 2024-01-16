@@ -1,17 +1,20 @@
-import { Trans } from '@lingui/macro';
-import { Box, Paper, Skeleton, Stack, Typography } from '@mui/material';
-import { Fragment, useState } from 'react';
+import { Box, Paper, Skeleton, Stack } from '@mui/material';
+import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { Link } from 'src/components/primitives/Link';
-import { useGetProposalCount, useProposals } from 'src/hooks/governance/useProposals';
+import { NoSearchResults } from 'src/components/NoSearchResults';
+import { Proposal, useGetProposalCount, useProposals } from 'src/hooks/governance/useProposals';
+import { useProposalsSearch } from 'src/hooks/governance/useProposalsSearch';
 
 import { ProposalListHeader } from './ProposalListHeader';
 import { ProposalV3ListItem } from './ProposalV3ListItem';
+import { stringToState } from './StateBadge';
 import { VoteBar } from './VoteBar';
 
 export const ProposalsV3List = () => {
-  // TODO
   const [proposalFilter, setProposalFilter] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const { results: searchResults, loading: loadingSearchResults } = useProposalsSearch(searchTerm);
 
   const { data: totalCount, isFetching: fetchingProposalCount } = useGetProposalCount();
   const { data, isFetching: fetchingProposals, fetchNextPage } = useProposals(totalCount);
@@ -20,49 +23,46 @@ export const ProposalsV3List = () => {
     0
   );
 
-  const loading = fetchingProposalCount || fetchingProposals;
+  const loadingProposals = fetchingProposalCount || fetchingProposals;
+
+  let listItems: Proposal[] = [];
+  if (searchTerm && searchResults.length > 0) {
+    listItems = searchResults;
+  }
+
+  if (!searchTerm && data) {
+    data.pages.forEach((page) => listItems.push(...page.proposals));
+  }
+
+  if (proposalFilter !== 'all') {
+    listItems = listItems.filter((proposal) => proposal.state === stringToState(proposalFilter));
+  }
 
   return (
     <Paper>
       <ProposalListHeader
         proposalFilter={proposalFilter}
         handleProposalFilterChange={setProposalFilter}
-        handleSearchQueryChange={(value: string) => console.log(value)}
+        handleSearchQueryChange={setSearchTerm}
       />
-      {data ? (
+      {listItems.length > 0 ? (
         <InfiniteScroll
           loadMore={() => fetchNextPage()}
           hasMore={
             totalNumberOfProposalsLoaded === undefined || totalNumberOfProposalsLoaded < totalCount
           }
         >
-          {data.pages.map((group, i) => (
-            <Fragment key={i}>
-              {group.proposals.map((proposal) => (
-                <ProposalV3ListItem key={proposal.id} proposal={proposal} />
-              ))}
-            </Fragment>
+          {listItems.map((proposal) => (
+            <ProposalV3ListItem key={proposal.id} proposal={proposal} />
           ))}
-          {loading && Array.from({ length: 5 }).map((_, i) => <ProposalListSkeleton key={i} />)}
+          {loadingProposals &&
+            Array.from({ length: 5 }).map((_, i) => <ProposalListSkeleton key={i} />)}
         </InfiniteScroll>
-      ) : loading ? (
-        Array.from({ length: 5 }).map((_, i) => <ProposalListSkeleton key={i} />)
+      ) : ((!loadingSearchResults && searchTerm) || proposalFilter !== 'all') &&
+        listItems.length === 0 ? (
+        <NoSearchResults searchTerm={searchTerm} />
       ) : (
-        <Box p={4}>
-          <Typography variant="subheader1">
-            <Trans>
-              Governance V3 is now live but there are no new proposals yet. Check back soon or visit{' '}
-              <Link
-                variant="subheader1"
-                sx={{ textDecoration: 'underline' }}
-                href="https://governance-v2.aave.com/"
-              >
-                Governance V2
-              </Link>{' '}
-              to see proposals on V2.
-            </Trans>
-          </Typography>
-        </Box>
+        Array.from({ length: 4 }).map((_, i) => <ProposalListSkeleton key={i} />)
       )}
     </Paper>
   );
@@ -80,7 +80,6 @@ const ProposalListSkeleton = () => {
       }}
     >
       <Stack
-        gap={2}
         direction="row"
         sx={{
           width: {
@@ -95,7 +94,6 @@ const ProposalListSkeleton = () => {
       >
         <Stack
           direction="column"
-          gap={2}
           sx={{
             width: {
               xs: '100%',
@@ -104,12 +102,11 @@ const ProposalListSkeleton = () => {
             pr: { xs: 0, lg: 8 },
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
+            gap: { xs: 3, lg: 6 },
           }}
         >
           <Skeleton variant="rectangular" height={22} width={220} />
-          <Skeleton variant="rectangular" height={28} width={350} />
-          <Skeleton variant="rectangular" height={40} width={500} />
+          <Skeleton variant="rectangular" height={24} width={350} />
         </Stack>
       </Stack>
       <Stack
