@@ -97,7 +97,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
     coreChainId: ChainId.mainnet,
     votingChainIds: [ChainId.polygon, ChainId.avalanche],
     governanceCoreSubgraphUrl:
-      'https://api.thegraph.com/subgraphs/name/joaquinbattilana/governance-v3',
+      'https://api.thegraph.com/subgraphs/name/grothem/gov-v3-full-text-search',
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {
