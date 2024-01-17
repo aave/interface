@@ -7,8 +7,13 @@ import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 
-export const STK_AAVE_ORACLE = '0x6Df09E975c830ECae5bd4eD9d90f3A95a4f88012'; //NOTE ITS AAVE ORACLE
-const STK_BPT_ORACLE = '0x0De156f178a20114eeec0eBF71d7772064476b0D';
+const {
+  tokens: {
+    aave: { TOKEN_ORACLE: STK_AAVE_ORACLE },
+    bpt: { TOKEN_ORACLE: STK_BPT_ORACLE },
+    // gho: { TOKEN_ORACLE: STK_GHO_ORACLE },
+  },
+} = stakeConfig;
 
 export interface StakingPanelNoWalletProps {
   description?: React.ReactNode;

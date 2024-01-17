@@ -23,9 +23,6 @@ import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from 'src/utils/markets
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
-export const STK_AAVE_ORACLE = '0x6Df09E975c830ECae5bd4eD9d90f3A95a4f88012'; //NOTE ITS AAVE ORACLE
-const STK_BPT_ORACLE = '0x0De156f178a20114eeec0eBF71d7772064476b0D';
-
 const StakeModal = dynamic(() =>
   import('../src/components/transactions/Stake/StakeModal').then((module) => module.StakeModal)
 );
@@ -55,8 +52,8 @@ export default function Staking() {
 
   const {
     tokens: {
-      aave: { TOKEN_STAKING: STK_AAVE },
-      bpt: { TOKEN_STAKING: STK_BPT },
+      aave: { TOKEN_STAKING: STK_AAVE, TOKEN_ORACLE: STK_AAVE_ORACLE },
+      bpt: { TOKEN_STAKING: STK_BPT, TOKEN_ORACLE: STK_BPT_ORACLE },
       gho: { TOKEN_STAKING: STK_GHO, TOKEN_ORACLE: STK_GHO_ORACLE },
     },
   } = stakeConfig;
@@ -83,8 +80,6 @@ export default function Staking() {
   if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
     [stkAaveUserData, stkBptUserData, stkGhoUserData] = stakeUserResult.stakeUserData;
   }
-  console.log('stkGho', stkGho);
-  console.log('stkGhoUserData', stkGhoUserData);
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 
@@ -107,15 +102,16 @@ export default function Staking() {
     });
   }, [trackEvent]);
 
-  // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
   const tvl = formatUnits(
-    BigNumber.from(stkAave?.stakeTokenTotalSupply || '0')
-      .mul(stkAave?.stakeTokenPriceEth || '0')
+    BigNumber.from(stkAave?.stakeTokenTotalSupply || '0') // "2777604234504415221458905"
+      .mul(stkAave?.stakeTokenPriceEth || '0') // "11054028865"
       .add(
-        BigNumber.from(stkBpt?.stakeTokenTotalSupply || '0').mul(stkBpt?.stakeTokenPriceEth || '0')
+        BigNumber.from(stkBpt?.stakeTokenTotalSupply || '0').mul(stkBpt?.stakeTokenPriceEth || '0') // "852121035264242276235387711" "59783535975702"
       )
-      .mul(stakeGeneralResult?.ethPriceUsd || 1),
-    18 + 18 + 8 // 2x total supply (18 decimals), 1x ethPriceUSD (8 decimals)
+      .add(
+        BigNumber.from(stkGho?.stakeTokenTotalSupply || '0').mul(stkGho?.stakeTokenPriceEth || '0')
+      ), // "0"
+    18 + 8
   );
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
@@ -227,8 +223,8 @@ export default function Staking() {
                   stakedToken="GHO"
                   maxSlash="1" // 100%
                   icon="gho"
-                  stakeData={stakeGeneralResult?.gho} // todo GHO
-                  stakeUserData={stakeUserResult?.gho}
+                  stakeData={stkGho} // todo GHO
+                  stakeUserData={stkGhoUserData}
                   ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake('gho', 'gho')}
                   onCooldownAction={() => openStakeCooldown('gho')}

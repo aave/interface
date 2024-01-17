@@ -1328,10 +1328,10 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@^2.10.0":
-  version "2.14.0"
-  resolved "https://registry.npmjs.org/@bgd-labs/aave-address-book/-/aave-address-book-2.14.0.tgz"
-  integrity sha512-FFlfxOByUclzb6tY7LuA4rVRY6lRv3U6+FFXOegV6wxwYrsZEP9v3g0gQK0PTnbo3+Ua3kl+TlvySMQU7Klalw==
+"@bgd-labs/aave-address-book@^2.15.0":
+  version "2.15.2"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-2.15.2.tgz#9742da4118c5e02181a6d4e2606825c2b5c4473c"
+  integrity sha512-OrKzdc2y5QIKqviQD/AI3cugGNOuYsGF/mJ5Uo2E77mmCxF/lcNnupfOthednVEfkCvUadDeOAR2wst0Fj3/Jw==
 
 "@coinbase/wallet-sdk@3.1.0", "@coinbase/wallet-sdk@^3.0.4":
   version "3.1.0"
