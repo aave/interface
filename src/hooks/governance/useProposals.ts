@@ -173,8 +173,16 @@ const getProposalsByIdQuery = gql`
   }
 `;
 
+const getProposalsByStateQuery = gql`
+  query getProposals($first: Int!, $skip: Int!, $stateFilter: Int!) {
+    proposals(orderBy: proposalId, orderDirection: desc, first: $first, skip: $skip, where: { state: $stateFilter }) {
+      ${queryFields}
+    }
+  }
+`;
+
 const getProposalsQuery = gql`
-  query getProposals($first: Int!, $skip: Int!) {
+  query getProposals($first: Int!, $skip: Int!, $stateFilter: Int) {
     proposals(orderBy: proposalId, orderDirection: desc, first: $first, skip: $skip) {
       ${queryFields}
     }
@@ -207,6 +215,17 @@ export const getProposals = (first: number, skip: number) =>
     }
   );
 
+export const getProposalsByState = (first: number, skip: number, stateFilter: ProposalV3State) =>
+  request<{ proposals: SubgraphProposal[] }>(
+    governanceV3Config.governanceCoreSubgraphUrl,
+    getProposalsByStateQuery,
+    {
+      first,
+      skip,
+      stateFilter,
+    }
+  );
+
 export const getProposalsByIds = (ids: string[]) =>
   request<{ proposals: SubgraphProposal[] }>(
     governanceV3Config.governanceCoreSubgraphUrl,
@@ -223,7 +242,12 @@ export async function fetchSubgraphProposalsByIds(ids: string[]) {
   return result.proposals;
 }
 
-async function fetchSubgraphProposals(pageParam: number) {
+async function fetchSubgraphProposals(pageParam: number, proposalStateFilter?: ProposalV3State) {
+  if (proposalStateFilter) {
+    const result = await getProposalsByState(PAGE_SIZE, pageParam * PAGE_SIZE, proposalStateFilter);
+    return result.proposals;
+  }
+
   const result = await getProposals(PAGE_SIZE, pageParam * PAGE_SIZE);
   return result.proposals;
 }
@@ -286,15 +310,20 @@ export async function fetchProposals(
   };
 }
 
-export const useProposals = (totalCount: number) => {
+export const useProposals = (proposalStateFilter?: ProposalV3State) => {
   const { votingMachineSerivce } = useSharedDependencies();
   return useInfiniteQuery({
     queryFn: async ({ pageParam = 0 }) => {
-      const proposals = await fetchSubgraphProposals(pageParam);
+      let proposals: SubgraphProposal[] = [];
+      if (proposalStateFilter) {
+        proposals = await fetchSubgraphProposals(pageParam, proposalStateFilter);
+      } else {
+        proposals = await fetchSubgraphProposals(pageParam);
+      }
+
       return fetchProposals(proposals, votingMachineSerivce);
     },
-    queryKey: ['proposals'],
-    enabled: totalCount > 0,
+    queryKey: ['proposals', proposalStateFilter],
     refetchOnMount: false,
     refetchOnReconnect: false,
     getNextPageParam: (lastPage, allPages) => {

@@ -32,7 +32,7 @@ export const useProposalsSearch = (query: string) => {
 
   const { data: ids, isFetching } = useQuery({
     queryFn: () => searchProposals(formattedQuery),
-    enabled: query !== '' && query.length > 2,
+    enabled: query !== '',
     queryKey: ['searchProposals', formattedQuery],
     select: (data) => {
       return data.proposalSearch.map((prop) => prop.proposalId);

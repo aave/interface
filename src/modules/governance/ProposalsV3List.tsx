@@ -2,7 +2,7 @@ import { Box, Paper, Skeleton, Stack } from '@mui/material';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { NoSearchResults } from 'src/components/NoSearchResults';
-import { Proposal, useGetProposalCount, useProposals } from 'src/hooks/governance/useProposals';
+import { Proposal, useProposals } from 'src/hooks/governance/useProposals';
 import { useProposalsSearch } from 'src/hooks/governance/useProposalsSearch';
 
 import { ProposalListHeader } from './ProposalListHeader';
@@ -12,18 +12,18 @@ import { VoteBar } from './VoteBar';
 
 export const ProposalsV3List = () => {
   const [proposalFilter, setProposalFilter] = useState<string>('all');
+  const filterState = stringToState(proposalFilter);
+
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const { results: searchResults, loading: loadingSearchResults } = useProposalsSearch(searchTerm);
 
-  const { data: totalCount, isFetching: fetchingProposalCount } = useGetProposalCount();
-  const { data, isFetching: fetchingProposals, fetchNextPage } = useProposals(totalCount);
-  const totalNumberOfProposalsLoaded = data?.pages.reduce(
-    (acc, page) => acc + page.proposals.length,
-    0
-  );
-
-  const loadingProposals = fetchingProposalCount || fetchingProposals;
+  const {
+    data,
+    isFetching: loadingProposals,
+    fetchNextPage,
+    hasNextPage,
+  } = useProposals(filterState);
 
   let listItems: Proposal[] = [];
   if (searchTerm && searchResults.length > 0) {
@@ -35,7 +35,7 @@ export const ProposalsV3List = () => {
   }
 
   if (proposalFilter !== 'all') {
-    listItems = listItems.filter((proposal) => proposal.state === stringToState(proposalFilter));
+    listItems = listItems.filter((proposal) => proposal.state === filterState);
   }
 
   return (
@@ -46,19 +46,15 @@ export const ProposalsV3List = () => {
         handleSearchQueryChange={setSearchTerm}
       />
       {listItems.length > 0 ? (
-        <InfiniteScroll
-          loadMore={() => fetchNextPage()}
-          hasMore={
-            totalNumberOfProposalsLoaded === undefined || totalNumberOfProposalsLoaded < totalCount
-          }
-        >
+        <InfiniteScroll loadMore={() => fetchNextPage()} hasMore={hasNextPage}>
           {listItems.map((proposal) => (
             <ProposalV3ListItem key={proposal.id} proposal={proposal} />
           ))}
           {loadingProposals &&
             Array.from({ length: 5 }).map((_, i) => <ProposalListSkeleton key={i} />)}
         </InfiniteScroll>
-      ) : ((!loadingSearchResults && searchTerm) || proposalFilter !== 'all') &&
+      ) : ((!loadingSearchResults && searchTerm) ||
+          (!loadingProposals && proposalFilter !== 'all')) &&
         listItems.length === 0 ? (
         <NoSearchResults searchTerm={searchTerm} />
       ) : (
