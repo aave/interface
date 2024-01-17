@@ -11,7 +11,7 @@ const {
   tokens: {
     aave: { TOKEN_ORACLE: STK_AAVE_ORACLE },
     bpt: { TOKEN_ORACLE: STK_BPT_ORACLE },
-    // gho: { TOKEN_ORACLE: STK_GHO_ORACLE },
+    gho: { TOKEN_ORACLE: STK_GHO_ORACLE },
   },
 } = stakeConfig;
 
@@ -34,22 +34,24 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
     tokens: {
       aave: { TOKEN_STAKING: STK_AAVE },
       bpt: { TOKEN_STAKING: STK_BPT },
+      gho: { TOKEN_STAKING: STK_GHO },
     },
   } = stakeConfig;
 
   const { data: stakeGeneralResult } = useGeneralStakeUiData(
     currentMarketData,
-    [STK_AAVE, STK_BPT],
-    [STK_AAVE_ORACLE, STK_BPT_ORACLE]
+    [STK_AAVE, STK_BPT, STK_GHO],
+    [STK_AAVE_ORACLE, STK_BPT_ORACLE, STK_GHO_ORACLE]
   );
 
-  let stkAave, stkBpt;
+  let stkAave, stkBpt, stkGho;
   if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stkAave, stkBpt] = stakeGeneralResult.stakeData;
+    [stkAave, stkBpt, stkGho] = stakeGeneralResult.stakeData;
   }
 
   if (stakedToken == 'AAVE') stakingAPY = stkAave?.stakeApy || '0';
   if (stakedToken == 'ABPT') stakingAPY = stkBpt?.stakeApy || '0';
+  if (stakedToken == 'GHO') stakingAPY = stkGho?.stakeApy || '0';
   return (
     <Box
       sx={(theme) => ({

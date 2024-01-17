@@ -104,12 +104,12 @@ export default function Staking() {
 
   const tvl = formatUnits(
     BigNumber.from(stkAave?.stakeTokenTotalSupply || '0') // "2777604234504415221458905"
-      .mul(stkAave?.stakeTokenPriceEth || '0') // "11054028865"
+      .mul(stkAave?.stakeTokenPriceUSD || '0') // "11054028865"
       .add(
-        BigNumber.from(stkBpt?.stakeTokenTotalSupply || '0').mul(stkBpt?.stakeTokenPriceEth || '0') // "852121035264242276235387711" "59783535975702"
+        BigNumber.from(stkBpt?.stakeTokenTotalSupply || '0').mul(stkBpt?.stakeTokenPriceUSD || '0') // "852121035264242276235387711" "59783535975702"
       )
       .add(
-        BigNumber.from(stkGho?.stakeTokenTotalSupply || '0').mul(stkGho?.stakeTokenPriceEth || '0')
+        BigNumber.from(stkGho?.stakeTokenTotalSupply || '0').mul(stkGho?.stakeTokenPriceUSD || '0')
       ), // "0"
     18 + 8
   );

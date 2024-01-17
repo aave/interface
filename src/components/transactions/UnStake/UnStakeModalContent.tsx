@@ -69,6 +69,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
+  // TODO does this need to change?
   const walletBalance = normalize(stakeUserData?.userCooldownAmount || '0', 18);
 
   const isMaxSelected = _amount === '-1';
@@ -81,10 +82,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   };
 
   // staking token usd value
-  const amountInUsd =
-    Number(amount) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
-      Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
+  const amountInUsd = Number(amount) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 18));
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
