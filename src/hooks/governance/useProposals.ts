@@ -85,170 +85,98 @@ export interface Proposal extends Omit<SubgraphProposal, 'proposalMetadata' | 'v
   };
 }
 
+const queryFields = `
+  id
+  creator
+  accessLevel
+  ipfsHash
+  proposalMetadata {
+    id
+    title
+    rawContent
+  }
+  state
+  votingPortal {
+    id
+    votingMachineChainId
+    votingMachine
+    enabled
+  }
+  votingConfig {
+    id
+    cooldownBeforeVotingStart
+    votingDuration
+    yesThreshold
+    yesNoDifferential
+    minPropositionPower
+  }
+  payloads {
+    id
+    chainId
+    accessLevel
+    payloadsController
+  }
+  transactions {
+    id
+    created {
+      id
+      blockNumber
+      timestamp
+    }
+    active {
+      id
+      blockNumber
+      timestamp
+    }
+    queued {
+      id
+      blockNumber
+      timestamp
+    }
+    failed {
+      id
+      blockNumber
+      timestamp
+    }
+    executed {
+      id
+      blockNumber
+      timestamp
+    }
+    canceled {
+      id
+      blockNumber
+      timestamp
+    }
+  }
+  votingDuration
+  snapshotBlockHash
+  votes {
+    id
+    forVotes
+    againstVotes
+  }
+  constants {
+    id
+    precisionDivider
+    cooldownPeriod
+    expirationTime
+    cancellationFee
+  }
+`;
+
 const getProposalsByIdQuery = gql`
   query getProposalsById($ids: [String!]!) {
     proposals(where: { id_in: $ids }) {
-      id
-      creator
-      accessLevel
-      ipfsHash
-      proposalMetadata {
-        id
-        title
-        rawContent
-      }
-      state
-      votingPortal {
-        id
-        votingMachineChainId
-        votingMachine
-        enabled
-      }
-      votingConfig {
-        id
-        cooldownBeforeVotingStart
-        votingDuration
-        yesThreshold
-        yesNoDifferential
-        minPropositionPower
-      }
-      payloads {
-        id
-        chainId
-        accessLevel
-        payloadsController
-      }
-      transactions {
-        id
-        created {
-          id
-          blockNumber
-          timestamp
-        }
-        active {
-          id
-          blockNumber
-          timestamp
-        }
-        queued {
-          id
-          blockNumber
-          timestamp
-        }
-        failed {
-          id
-          blockNumber
-          timestamp
-        }
-        executed {
-          id
-          blockNumber
-          timestamp
-        }
-        canceled {
-          id
-          blockNumber
-          timestamp
-        }
-      }
-      votingDuration
-      snapshotBlockHash
-      votes {
-        id
-        forVotes
-        againstVotes
-      }
-      constants {
-        id
-        precisionDivider
-        cooldownPeriod
-        expirationTime
-        cancellationFee
-      }
+      ${queryFields}
     }
   }
 `;
 
 const getProposalsQuery = gql`
   query getProposals($first: Int!, $skip: Int!) {
-    proposals(orderBy: id, orderDirection: desc, first: $first, skip: $skip) {
-      id
-      creator
-      accessLevel
-      ipfsHash
-      proposalMetadata {
-        id
-        title
-        rawContent
-      }
-      state
-      votingPortal {
-        id
-        votingMachineChainId
-        votingMachine
-        enabled
-      }
-      votingConfig {
-        id
-        cooldownBeforeVotingStart
-        votingDuration
-        yesThreshold
-        yesNoDifferential
-        minPropositionPower
-      }
-      payloads {
-        id
-        chainId
-        accessLevel
-        payloadsController
-      }
-      transactions {
-        id
-        created {
-          id
-          blockNumber
-          timestamp
-        }
-        active {
-          id
-          blockNumber
-          timestamp
-        }
-        queued {
-          id
-          blockNumber
-          timestamp
-        }
-        failed {
-          id
-          blockNumber
-          timestamp
-        }
-        executed {
-          id
-          blockNumber
-          timestamp
-        }
-        canceled {
-          id
-          blockNumber
-          timestamp
-        }
-      }
-      votingDuration
-      snapshotBlockHash
-      votes {
-        id
-        forVotes
-        againstVotes
-      }
-      constants {
-        id
-        precisionDivider
-        cooldownPeriod
-        expirationTime
-        cancellationFee
-      }
+    proposals(orderBy: proposalId, orderDirection: desc, first: $first, skip: $skip) {
+      ${queryFields}
     }
   }
 `;
@@ -319,8 +247,6 @@ export async function fetchProposals(
       })) ?? [];
 
   const votingMachingData = await votingMachineSerivce.getProposalsData(votingMachineParams);
-
-  console.log(proposalsWithMetadata);
 
   const proposalsWithVotes = proposalsWithMetadata.map<Proposal>((elem) => {
     if (elem.votes) {

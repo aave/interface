@@ -70,8 +70,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
   [ChainId.sepolia]: {
     coreChainId: ChainId.sepolia,
     votingChainIds: [ChainId.sepolia, ChainId.fuji],
-    governanceCoreSubgraphUrl:
-      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/governance-v3/v2.0.1/gn',
+    governanceCoreSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/grothem/gov-v3-sepolia',
     votingChainConfig: {
       [ChainId.sepolia]: sepoliaVotingMachineConfig,
       [ChainId.fuji]: fujiVotingMachineConfig,
@@ -152,5 +151,5 @@ export const governanceChainConfig: GovernanceChainConfig = {
   },
 };
 
-const coreNetwork = ChainId.mainnet;
+const coreNetwork = ChainId.sepolia;
 export const governanceV3Config = governanceChainConfig[coreNetwork];

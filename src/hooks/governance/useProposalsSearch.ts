@@ -5,9 +5,11 @@ import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider'
 
 import { fetchProposals, fetchSubgraphProposalsByIds } from './useProposals';
 
+const SEARCH_RESULTS_LIMIT = 10;
+
 const searchProposalsQuery = gql`
-  query search($query: String!) {
-    proposalSearch(text: $query) {
+  query search($query: String!, $first: Int!) {
+    proposalSearch(text: $query, first: $first) {
       proposalId
     }
   }
@@ -19,6 +21,7 @@ export const searchProposals = (query: string) =>
     searchProposalsQuery,
     {
       query,
+      first: SEARCH_RESULTS_LIMIT,
     }
   );
 
@@ -32,7 +35,6 @@ export const useProposalsSearch = (query: string) => {
     enabled: query !== '' && query.length > 2,
     queryKey: ['searchProposals', formattedQuery],
     select: (data) => {
-      console.log('data', data);
       return data.proposalSearch.map((prop) => prop.proposalId);
     },
   });
@@ -42,7 +44,8 @@ export const useProposalsSearch = (query: string) => {
       const proposals = await fetchSubgraphProposalsByIds(ids || []);
       return fetchProposals(proposals, votingMachineSerivce);
     },
-    queryKey: ['proposals_by_id', ids], // TODO
+    queryKey: ['proposals_by_id', ids],
+    cacheTime: 0,
     enabled: ids !== undefined && ids.length > 0,
   });
 
