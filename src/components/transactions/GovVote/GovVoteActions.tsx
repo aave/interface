@@ -98,7 +98,6 @@ const generateSubmitVoteSignature = (
 
 const getBaseVotingPowerSlot = (asset: string, withDelegation: boolean) => {
   if (asset === governanceV3Config.votingAssets.aAaveTokenAddress) {
-    // aAave CHANGE_BEFORE_PROD
     if (withDelegation) return 64;
     return 52;
   }
@@ -196,7 +195,7 @@ export const GovVoteActions = ({
       if (withGelatoRelayer && signature) {
         const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
           user,
-          +proposalId,
+          proposalId,
           support,
           proofs,
           signature.toString()
@@ -227,7 +226,7 @@ export const GovVoteActions = ({
       } else {
         const tx = await votingMachineService.generateSubmitVoteTxData(
           user,
-          +proposalId,
+          proposalId,
           support,
           proofs
         );
@@ -256,7 +255,7 @@ export const GovVoteActions = ({
       const toSign = generateSubmitVoteSignature(
         votingChainId,
         votingMachineAddress,
-        +proposalId,
+        proposalId,
         user,
         support,
         assets.map((elem) => ({
