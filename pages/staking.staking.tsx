@@ -197,28 +197,6 @@ export default function Staking() {
                 sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
-                  stakeTitle="ABPT"
-                  stakedToken="ABPT"
-                  maxSlash="0.3"
-                  icon="stkbpt"
-                  stakeData={stkBpt}
-                  stakeUserData={stkBptUserData}
-                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
-                  onStakeAction={() => openStake('bpt', 'stkBPT')}
-                  onCooldownAction={() => openStakeCooldown('bpt')}
-                  onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt', 'AAVE')}
-                  headerAction={<GetABPToken />}
-                />
-              </Grid>
-
-              <Grid
-                item
-                xs={12}
-                lg={6}
-                sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
-              >
-                <StakingPanel
                   stakeTitle="GHO"
                   stakedToken="GHO"
                   maxSlash="1" // 100%
@@ -231,6 +209,28 @@ export default function Staking() {
                   onUnstakeAction={() => openUnstake('gho', 'gho')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('gho', 'AAVE')}
                   headerAction={<GetGhoToken />}
+                />
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                lg={6}
+                sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
+              >
+                <StakingPanel
+                  stakeTitle="ABPT"
+                  stakedToken="ABPT"
+                  maxSlash="0.3"
+                  icon="stkbpt"
+                  stakeData={stkBpt}
+                  stakeUserData={stkBptUserData}
+                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
+                  onStakeAction={() => openStake('bpt', 'stkBPT')}
+                  onCooldownAction={() => openStakeCooldown('bpt')}
+                  onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt', 'AAVE')}
+                  headerAction={<GetABPToken />}
                 />
               </Grid>
             </Grid>
