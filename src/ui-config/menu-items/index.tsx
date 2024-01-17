@@ -17,11 +17,11 @@ interface Navigation {
 }
 
 export const navigation: Navigation[] = [
-  {
-    link: ROUTES.leverage,
-    title: t`Leverage`,
-    dataCy: 'menuLeverage',
-  },
+  // {
+  //   link: ROUTES.leverage,
+  //   title: t`Leverage`,
+  //   dataCy: 'menuLeverage',
+  // },
   {
     link: ROUTES.markets,
     title: t`Markets`,

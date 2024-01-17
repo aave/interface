@@ -50,10 +50,6 @@ msgid "Governance"
 msgstr "Governance"
 
 #: src/ui-config/menu-items/index.tsx
-msgid "Leverage"
-msgstr "Leverage"
-
-#: src/ui-config/menu-items/index.tsx
 msgid "Manage PAW"
 msgstr "Manage PAW"
 
