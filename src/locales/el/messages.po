@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-02 18:05\n"
+"PO-Revision-Date: 2024-01-18 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -858,6 +858,10 @@ msgid "Disable E-Mode"
 msgstr "Απενεργοποίηση E-Mode"
 
 #: src/layouts/AppHeader.tsx
+msgid "Disable fork"
+msgstr ""
+
+#: src/layouts/AppHeader.tsx
 msgid "Disable testnet"
 msgstr ""
 
@@ -1076,6 +1080,10 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "Για την αποπληρωμή ενός συγκεκριμένου τύπου χρέους, ο χρήστης πρέπει να έχει χρέος αυτού του τύπου"
+
+#: src/layouts/AppHeader.tsx
+msgid "Fork mode is ON"
+msgstr ""
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
@@ -2370,6 +2378,10 @@ msgstr "Η Σταθερή Ισοτιμία δεν είναι ενεργοποι�
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
 msgstr "Η διεύθυνση του παρόχου διευθύνσεων κοινόχρηστου ταμείου είναι άκυρη"
+
+#: src/layouts/AppHeader.tsx
+msgid "The app is running in fork mode."
+msgstr ""
 
 #: src/layouts/AppHeader.tsx
 msgid "The app is running in testnet mode. Learn how it works in"
