@@ -66,8 +66,8 @@ export default function Staking() {
   );
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } = useGeneralStakeUiData(
     currentMarketData,
-    [STK_AAVE, STK_BPT],
-    [STK_AAVE_ORACLE, STK_BPT_ORACLE]
+    [STK_AAVE, STK_BPT, STK_GHO],
+    [STK_AAVE_ORACLE, STK_BPT_ORACLE, STK_GHO_ORACLE]
   );
 
   let stkAave, stkBpt, stkGho;
@@ -201,7 +201,7 @@ export default function Staking() {
                   stakedToken="GHO"
                   maxSlash="1" // 100%
                   icon="gho"
-                  stakeData={stkGho} // todo GHO
+                  stakeData={stkGho}
                   stakeUserData={stkGhoUserData}
                   ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake('gho', 'gho')}
