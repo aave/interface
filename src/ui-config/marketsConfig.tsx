@@ -11,6 +11,7 @@ import {
   AaveV3ArbitrumGoerli,
   AaveV3Avalanche,
   AaveV3Base,
+  AaveV3BNB,
   AaveV3Ethereum,
   AaveV3Fantom,
   AaveV3FantomTestnet,
@@ -100,6 +101,7 @@ export enum CustomMarket {
   proto_metis_v3 = 'proto_metis_v3',
   proto_base_v3 = 'proto_base_v3',
   proto_gnosis_v3 = 'proto_gnosis_v3',
+  proto_bnb_v3 = 'proto_bnb_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -720,6 +722,22 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Gnosis.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Gnosis.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Gnosis.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_bnb_v3]: {
+    marketTitle: 'Binance Smart Chain',
+    market: CustomMarket.proto_bnb_v3,
+    chainId: 56, // TODO ChainId.bnb,
+    v3: true,
+    // subgraphUrl: '',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3BNB.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3BNB.POOL,
+      WETH_GATEWAY: AaveV3BNB.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3BNB.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3BNB.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3BNB.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3BNB.COLLECTOR,
     },
   },
 } as const;
