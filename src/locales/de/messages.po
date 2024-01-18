@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-02 18:05\n"
+"PO-Revision-Date: 2024-01-18 12:06\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -858,6 +858,10 @@ msgid "Disable E-Mode"
 msgstr "E-Modus deaktivieren"
 
 #: src/layouts/AppHeader.tsx
+msgid "Disable fork"
+msgstr ""
+
+#: src/layouts/AppHeader.tsx
 msgid "Disable testnet"
 msgstr "Testnetz deaktivieren"
 
@@ -1076,6 +1080,10 @@ msgstr "Flashloan ist für diesen Vermögenswert deaktiviert, daher kann diese P
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "Für die Rückzahlung einer bestimmten Art von Schulden muss der Benutzer Schulden dieser Art haben"
+
+#: src/layouts/AppHeader.tsx
+msgid "Fork mode is ON"
+msgstr ""
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
@@ -2369,6 +2377,10 @@ msgstr "Der stabile Kurs ist für diese Währung nicht aktiviert"
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
 msgstr "Die Adresse des Anbieters der Pooladressen ist ungültig"
+
+#: src/layouts/AppHeader.tsx
+msgid "The app is running in fork mode."
+msgstr ""
 
 #: src/layouts/AppHeader.tsx
 msgid "The app is running in testnet mode. Learn how it works in"
