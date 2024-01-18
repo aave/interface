@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-18 12:06\n"
+"PO-Revision-Date: 2024-01-18 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -859,7 +859,7 @@ msgstr "Desactivar el E-Mode"
 
 #: src/layouts/AppHeader.tsx
 msgid "Disable fork"
-msgstr ""
+msgstr "Deshabilitar fork"
 
 #: src/layouts/AppHeader.tsx
 msgid "Disable testnet"
@@ -1083,7 +1083,7 @@ msgstr "Para el pago de un tipo específico de deuda, el usuario necesita tener 
 
 #: src/layouts/AppHeader.tsx
 msgid "Fork mode is ON"
-msgstr ""
+msgstr "El fork mode está activado"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
@@ -2380,7 +2380,7 @@ msgstr "La dirección del proveedor del grupo de direcciones no es válida"
 
 #: src/layouts/AppHeader.tsx
 msgid "The app is running in fork mode."
-msgstr ""
+msgstr "La aplicación se ejecuta en fork mode."
 
 #: src/layouts/AppHeader.tsx
 msgid "The app is running in testnet mode. Learn how it works in"
