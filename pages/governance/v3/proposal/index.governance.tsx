@@ -22,12 +22,12 @@ const GovVoteModal = dynamic(() =>
 
 export default function ProposalPage() {
   const { query } = useRouter();
-  const proposalId = (query.proposalId as string) || '0';
+  const proposalId = Number(query.proposalId);
   const {
     data: proposal,
     isLoading: newProposalLoading,
     error: newProposalError,
-  } = useProposal(+proposalId);
+  } = useProposal(proposalId);
 
   const payloadParams =
     proposal?.proposal.payloads.map((p) => {

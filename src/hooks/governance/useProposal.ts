@@ -1,12 +1,18 @@
 import { VotingMachineProposal } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
+import { constants } from 'ethers';
 import request, { gql } from 'graphql-request';
 import { VotingMachineService } from 'src/services/VotingMachineService';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-import { enhanceProposalWithMetadata, Proposal, SubgraphProposal } from './useProposals';
+import {
+  enhanceProposalWithMetadata,
+  Proposal,
+  proposalQueryFields,
+  SubgraphProposal,
+} from './useProposals';
 
 export interface EnhancedProposal {
   proposal: Proposal;
@@ -16,83 +22,7 @@ export interface EnhancedProposal {
 const getProposalQuery = gql`
   query getProposal($id: Int!) {
     proposal(id: $id) {
-      id
-      creator
-      accessLevel
-      ipfsHash
-      proposalMetadata {
-        id
-        title
-        rawContent
-      }
-      state
-      votingPortal {
-        id
-        votingMachineChainId
-        votingMachine
-        enabled
-      }
-      votingConfig {
-        id
-        cooldownBeforeVotingStart
-        votingDuration
-        yesThreshold
-        yesNoDifferential
-        minPropositionPower
-      }
-      payloads {
-        id
-        chainId
-        accessLevel
-        payloadsController
-      }
-      transactions {
-        id
-        created {
-          id
-          blockNumber
-          timestamp
-        }
-        active {
-          id
-          blockNumber
-          timestamp
-        }
-        queued {
-          id
-          blockNumber
-          timestamp
-        }
-        failed {
-          id
-          blockNumber
-          timestamp
-        }
-        executed {
-          id
-          blockNumber
-          timestamp
-        }
-        canceled {
-          id
-          blockNumber
-          timestamp
-        }
-      }
-      votingDuration
-      snapshotBlockHash
-      votes {
-        id
-        forVotes
-        againstVotes
-      }
-      constants {
-        id
-        precisionDivider
-        cooldownPeriod
-        expirationTime
-        cancellationFee
-      }
+      ${proposalQueryFields}
     }
   }
 `;
@@ -113,6 +43,7 @@ async function fetchProposal(
   votingMachineService: VotingMachineService,
   user?: string
 ): Promise<EnhancedProposal> {
+  console.log('getting proposal', proposalId);
   const proposal = await getProposal(proposalId);
 
   const proposalWithMetadata = await enhanceProposalWithMetadata(proposal);
@@ -122,7 +53,7 @@ async function fetchProposal(
       [
         {
           id: +proposal.id,
-          snapshotBlockHash: proposal.snapshotBlockHash || '',
+          snapshotBlockHash: proposal.snapshotBlockHash || constants.HashZero,
           chainId: +proposal.votingPortal.votingMachineChainId,
           votingMachineAddress: proposal.votingPortal.votingMachine,
         },
@@ -153,5 +84,6 @@ export const useProposal = (proposalId: number) => {
     queryKey: ['governance_proposal', proposalId, user],
     refetchOnMount: false,
     refetchOnReconnect: false,
+    enabled: !isNaN(proposalId),
   });
 };

@@ -1,5 +1,6 @@
 import { ProposalMetadata, ProposalV3State } from '@aave/contract-helpers';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { constants } from 'ethers';
 import request, { gql } from 'graphql-request';
 import {
   getProposalMetadata,
@@ -72,7 +73,7 @@ export interface SubgraphProposal {
   payloads: SubgraphPayload[];
   transactions: SubgraphProposalTransactions;
   votingDuration: string | null;
-  snapshotBlockHash: string | null;
+  snapshotBlockHash: string;
   votes: SubgraphProposalVotes | null;
   constants: SubgraphConstants;
 }
@@ -85,7 +86,7 @@ export interface Proposal extends Omit<SubgraphProposal, 'proposalMetadata' | 'v
   };
 }
 
-const queryFields = `
+export const proposalQueryFields = `
   id
   creator
   accessLevel
@@ -168,7 +169,7 @@ const queryFields = `
 const getProposalsByIdQuery = gql`
   query getProposalsById($ids: [String!]!) {
     proposals(where: { id_in: $ids }) {
-      ${queryFields}
+      ${proposalQueryFields}
     }
   }
 `;
@@ -176,7 +177,7 @@ const getProposalsByIdQuery = gql`
 const getProposalsByStateQuery = gql`
   query getProposals($first: Int!, $skip: Int!, $stateFilter: Int!) {
     proposals(orderBy: proposalId, orderDirection: desc, first: $first, skip: $skip, where: { state: $stateFilter }) {
-      ${queryFields}
+      ${proposalQueryFields}
     }
   }
 `;
@@ -184,7 +185,7 @@ const getProposalsByStateQuery = gql`
 const getProposalsQuery = gql`
   query getProposals($first: Int!, $skip: Int!, $stateFilter: Int) {
     proposals(orderBy: proposalId, orderDirection: desc, first: $first, skip: $skip) {
-      ${queryFields}
+      ${proposalQueryFields}
     }
   }
 `;
@@ -265,7 +266,7 @@ export async function fetchProposals(
       .filter((elem) => elem.state === ProposalV3State.Active)
       .map((p) => ({
         id: +p.id,
-        snapshotBlockHash: p.snapshotBlockHash || '',
+        snapshotBlockHash: p.snapshotBlockHash || constants.HashZero,
         chainId: +p.votingPortal.votingMachineChainId,
         votingMachineAddress: p.votingPortal.votingMachine,
       })) ?? [];

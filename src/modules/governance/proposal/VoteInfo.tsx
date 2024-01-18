@@ -22,8 +22,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
   const voteOnProposal = proposal.votingMachineData.votedInfo;
 
   const blockHash =
-    proposal.proposal.snapshotBlockHash === constants.HashZero ||
-    proposal.proposal.snapshotBlockHash === null
+    proposal.proposal.snapshotBlockHash === constants.HashZero
       ? 'latest'
       : proposal.proposal.snapshotBlockHash;
 

@@ -158,7 +158,7 @@ export const GovVoteActions = ({
   const tokenPowers = useGovernanceTokensAndPowers();
   const [signature, setSignature] = useState<string | undefined>(undefined);
   const proposalId = +proposal.proposal.id;
-  const blockHash = proposal.proposal.snapshotBlockHash || '';
+  const blockHash = proposal.proposal.snapshotBlockHash;
   const votingChainId = +proposal.proposal.votingPortal.votingMachineChainId;
   const votingMachineAddress =
     governanceV3Config.votingChainConfig[votingChainId].votingMachineAddress;
