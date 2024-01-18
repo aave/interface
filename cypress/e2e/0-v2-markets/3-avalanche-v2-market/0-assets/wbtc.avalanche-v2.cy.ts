@@ -63,8 +63,8 @@ const testData = {
     ],
   },
 };
-
-describe('WBTC INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
+//asset frozen
+describe.skip('WBTC INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.testCases.borrow, skipTestState, true);
