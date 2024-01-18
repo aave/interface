@@ -111,6 +111,7 @@
     "axios": "^1.6.2",
     "babel-plugin-macros": "^3.1.0",
     "cypress": "10.9.0",
+    "cypress-repeat": "^2.3.3",
     "cypress-wait-until": "^1.7.2",
     "dotenv": "^16.0.3",
     "eslint": "^8.29.0",
