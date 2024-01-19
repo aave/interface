@@ -63,7 +63,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                 }}
               >
                 <Typography variant="caption">
-                  <Trans>This vote is free on</Trans>
+                  <Trans>Voting is on</Trans>
                 </Typography>
                 <Box
                   sx={{
