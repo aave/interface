@@ -2837,6 +2837,10 @@ msgstr "Voting"
 msgid "Voting closed"
 msgstr "Voting closed"
 
+#: src/modules/governance/proposal/VoteInfo.tsx
+msgid "Voting is on"
+msgstr "Voting is on"
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"

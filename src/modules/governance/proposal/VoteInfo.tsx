@@ -1,6 +1,6 @@
 import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Button, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -12,6 +12,8 @@ import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
+import { networkConfigs } from '../../../ui-config/networksConfig';
+
 interface VoteInfoProps {
   proposal: EnhancedProposal;
 }
@@ -20,6 +22,9 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
   const { openGovVote } = useModalContext();
   const user = useRootStore((state) => state.account);
   const voteOnProposal = proposal.votingMachineData.votedInfo;
+  const network = proposal?.proposalData?.votingChainId
+    ? networkConfigs[proposal.proposalData.votingChainId]
+    : undefined;
 
   const blockHash =
     proposal.proposal.snapshotBlockHash === constants.HashZero
@@ -42,9 +47,45 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
 
   return (
     <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-      <Typography variant="h3" sx={{ mb: 8 }}>
-        <Trans>Your voting info</Trans>
-      </Typography>
+      <Row
+        sx={{ mb: 8 }}
+        caption={
+          <>
+            <Typography variant="h3">
+              <Trans>Your voting info</Trans>
+            </Typography>
+            {network && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: 'text.secondary',
+                }}
+              >
+                <Typography variant="caption">
+                  <Trans>Voting is on</Trans>
+                </Typography>
+                <Box
+                  sx={{
+                    height: 16,
+                    width: 16,
+                    ml: 1,
+                    mr: 1,
+                    mb: 1,
+                  }}
+                >
+                  <img
+                    src={network.networkLogoPath}
+                    alt="network logo"
+                    style={{ height: '100%', width: '100%' }}
+                  />
+                </Box>
+                <Typography variant="caption">{network?.displayName}</Typography>
+              </Box>
+            )}
+          </>
+        }
+      />
       {user ? (
         <>
           {user && !didVote && !voteOngoing && (
