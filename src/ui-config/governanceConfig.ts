@@ -5,6 +5,7 @@ import {
   GovernanceV3Arbitrum,
   GovernanceV3Avalanche,
   GovernanceV3Base,
+  GovernanceV3BNB,
   GovernanceV3Ethereum,
   GovernanceV3Gnosis,
   GovernanceV3Metis,
@@ -95,8 +96,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
   [ChainId.mainnet]: {
     coreChainId: ChainId.mainnet,
     votingChainIds: [ChainId.polygon, ChainId.avalanche],
-    governanceCoreSubgraphUrl:
-      'https://api.thegraph.com/subgraphs/name/grothem/gov-v3-full-text-search',
+    governanceCoreSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/governance-v3',
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {
@@ -135,6 +135,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.arbitrum_one]: GovernanceV3Arbitrum.PC_DATA_HELPER,
       [ChainId.base]: GovernanceV3Base.PC_DATA_HELPER,
       [ChainId.metis_andromeda]: GovernanceV3Metis.PC_DATA_HELPER,
+      [ChainId.bnb]: GovernanceV3BNB.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
