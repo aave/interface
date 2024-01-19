@@ -22,9 +22,8 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
   const { openGovVote } = useModalContext();
   const user = useRootStore((state) => state.account);
   const voteOnProposal = proposal.votingMachineData.votedInfo;
-  const network = proposal?.proposalData?.votingChainId
-    ? networkConfigs[proposal.proposalData.votingChainId]
-    : undefined;
+  const votingChainId = proposal.proposal.votingPortal.votingMachineChainId;
+  const network = networkConfigs[votingChainId];
 
   const blockHash =
     proposal.proposal.snapshotBlockHash === constants.HashZero
