@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-03 12:06\n"
+"PO-Revision-Date: 2024-01-18 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -858,6 +858,10 @@ msgid "Disable E-Mode"
 msgstr "Desactivar el E-Mode"
 
 #: src/layouts/AppHeader.tsx
+msgid "Disable fork"
+msgstr "Deshabilitar fork"
+
+#: src/layouts/AppHeader.tsx
 msgid "Disable testnet"
 msgstr "Deshabilitar testnet"
 
@@ -1076,6 +1080,10 @@ msgstr "El préstamo flash está deshabilitado para este activo, por lo tanto, e
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "Para el pago de un tipo específico de deuda, el usuario necesita tener una deuda de ese tipo"
+
+#: src/layouts/AppHeader.tsx
+msgid "Fork mode is ON"
+msgstr "El fork mode está activado"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
@@ -2369,6 +2377,10 @@ msgstr "La tasa estable no está habilitada para este activo"
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
 msgstr "La dirección del proveedor del grupo de direcciones no es válida"
+
+#: src/layouts/AppHeader.tsx
+msgid "The app is running in fork mode."
+msgstr "La aplicación se ejecuta en fork mode."
 
 #: src/layouts/AppHeader.tsx
 msgid "The app is running in testnet mode. Learn how it works in"
