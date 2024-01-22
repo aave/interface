@@ -36,8 +36,15 @@ export function StateBadge({ state, loading }: StateBadgeProps) {
   return <Badge state={state}>{stateToString(state)}</Badge>;
 }
 
-// TODO: maybe move this to utils
-const stateToString = (state: ProposalV3State) => {
+export const getProposalStates = () => {
+  return Object.keys(ProposalV3State)
+    .map((key) => ProposalV3State[key as keyof typeof ProposalV3State])
+    .filter((key) => !isNaN(Number(key)))
+    .map(stateToString)
+    .filter((state) => state !== 'Null'); // not a valid state for proposals that exist
+};
+
+export const stateToString = (state: ProposalV3State) => {
   switch (state) {
     case ProposalV3State.Null:
       return 'Null';
@@ -55,5 +62,26 @@ const stateToString = (state: ProposalV3State) => {
       return 'Expired';
     case ProposalV3State.Failed:
       return 'Failed';
+  }
+};
+
+export const stringToState = (state: string) => {
+  switch (state) {
+    case 'Null':
+      return ProposalV3State.Null;
+    case 'Created':
+      return ProposalV3State.Created;
+    case 'Active':
+      return ProposalV3State.Active;
+    case 'Queued':
+      return ProposalV3State.Queued;
+    case 'Executed':
+      return ProposalV3State.Executed;
+    case 'Cancelled':
+      return ProposalV3State.Cancelled;
+    case 'Expired':
+      return ProposalV3State.Expired;
+    case 'Failed':
+      return ProposalV3State.Failed;
   }
 };

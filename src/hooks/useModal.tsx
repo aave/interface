@@ -299,7 +299,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openGovVote: (proposal, support, power) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Vote',
-            proposalId: proposal.proposalData.id,
+            proposalId: proposal.proposal.id,
             voteSide: support,
           });
           setType(ModalType.GovVote);

@@ -51,6 +51,31 @@ export async function getProposalMetadata(
   }
 }
 
+export async function parseRawIpfs(rawIpfsContent: string, hash: string) {
+  const ipfsHash = hash.startsWith('0x')
+    ? base58.encode(Buffer.from(`1220${hash.slice(2)}`, 'hex'))
+    : hash;
+  if (MEMORIZE[ipfsHash]) return MEMORIZE[ipfsHash];
+  try {
+    const response: ProposalMetadata = await JSON.parse(rawIpfsContent);
+    const { content, data } = matter(response.description);
+    MEMORIZE[ipfsHash] = {
+      ...response,
+      ipfsHash,
+      description: content,
+      ...data,
+    };
+  } catch (e) {
+    const { content, data } = matter(rawIpfsContent);
+    MEMORIZE[ipfsHash] = {
+      ...(data as ProposalMetadata),
+      ipfsHash,
+      description: content,
+    };
+  }
+  return MEMORIZE[ipfsHash];
+}
+
 /**
  * Fetches data from a provided IPFS gateway with a simple caching mechanism.
  * Cache keys are the hashes, values are ProposalMetadata objects.

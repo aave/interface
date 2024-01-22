@@ -6,12 +6,12 @@ import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
 import { useRootStore } from 'src/store/root';
 import { AIP } from 'src/utils/mixPanelEvents';
 
-import { FormattedProposalV3 } from '../utils/formatProposal';
+import { ProposalVoteInfo } from '../utils/formatProposal';
 import { VotersList } from './VotersList';
 import { VotersListModal } from './VotersListModal';
 
 type VotersListProps = {
-  proposal: FormattedProposalV3;
+  proposal: ProposalVoteInfo;
   proposalVotes: ProposalVotes;
 };
 

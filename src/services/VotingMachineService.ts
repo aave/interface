@@ -9,7 +9,7 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 type VotingChainProposal = {
   [chainId: number]: {
-    [votingPortalAddress: string]: Array<{
+    [votingMachineAddress: string]: Array<{
       id: number;
       snapshotBlockHash: string;
     }>;
@@ -30,23 +30,23 @@ export class VotingMachineService {
       id: number;
       snapshotBlockHash: string;
       chainId: number;
-      votingPortalAddress: string;
+      votingMachineAddress: string;
     }>,
     user?: string
   ) {
     const proposalsByVotingChainId: VotingChainProposal = proposals.reduce((acc, proposal) => {
       const chainId = proposal.chainId;
-      const votingPortalAddress = proposal.votingPortalAddress;
+      const votingMachineAddress = proposal.votingMachineAddress;
 
       if (!acc[chainId]) {
         acc[chainId] = {};
       }
 
-      if (!acc[chainId][votingPortalAddress]) {
-        acc[chainId][votingPortalAddress] = [];
+      if (!acc[chainId][votingMachineAddress]) {
+        acc[chainId][votingMachineAddress] = [];
       }
 
-      acc[chainId][votingPortalAddress].push({
+      acc[chainId][votingMachineAddress].push({
         id: proposal.id,
         snapshotBlockHash: proposal.snapshotBlockHash,
       });
@@ -57,15 +57,9 @@ export class VotingMachineService {
     Object.entries(proposalsByVotingChainId).forEach(([chainId, proposals]) => {
       const chainIdKey = +chainId;
       const dataHelperService = this.getDataHelperService(chainIdKey);
-      Object.entries(proposals).forEach(([votingPortalAddress, proposals]) => {
+      Object.entries(proposals).forEach(([votingMachineAddress, proposals]) => {
         promises.push(
-          dataHelperService.getProposalsData(
-            governanceV3Config.votingChainConfig[chainIdKey].portalToMachineMap[
-              votingPortalAddress
-            ],
-            proposals,
-            user || ZERO_ADDRESS
-          )
+          dataHelperService.getProposalsData(votingMachineAddress, proposals, user || ZERO_ADDRESS)
         );
       });
     });

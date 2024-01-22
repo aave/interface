@@ -63,7 +63,7 @@ export const GovVoteModalContent = ({
     }
   };
 
-  const proposalVotingChain = proposal.proposalData.votingChainId;
+  const proposalVotingChain = +proposal.proposal.votingPortal.votingMachineChainId;
 
   const isWrongNetwork = connectedChainId !== proposalVotingChain;
 
