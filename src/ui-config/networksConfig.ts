@@ -446,7 +446,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://bscscan.com/',
     networkLogoPath: '/icons/networks/binance.svg',
     bridge: {
-      icon: '', // TODO bridge icon?
+      icon: '/icons/networks/binance.svg',
       name: 'BNB Bridge',
       url: 'https://www.bnbchain.org/en/bnb-chain-bridges',
     },
