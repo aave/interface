@@ -440,7 +440,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     privateJsonRPCUrl: 'https://bsc-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://bsc.publicnode.com	', 'wss://bsc.publicnode.com'],
     publicJsonRPCWSUrl: 'wss://bsc.publicnode.com',
-    baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'BNB',
     wrappedBaseAssetSymbol: 'WBNB',
     baseAssetDecimals: 18,
