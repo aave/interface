@@ -730,6 +730,13 @@ export const marketsData: {
     chainId: ChainId.bnb,
     v3: true,
     // subgraphUrl: '',
+    enabledFeatures: {
+      liquiditySwap: true,
+      collateralRepay: true,
+      debtSwitch: true,
+      withdrawAndSwitch: true,
+      switch: true,
+    },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3BNB.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3BNB.POOL,
