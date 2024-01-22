@@ -7,14 +7,6 @@ import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 
-const {
-  tokens: {
-    aave: { TOKEN_ORACLE: STK_AAVE_ORACLE },
-    bpt: { TOKEN_ORACLE: STK_BPT_ORACLE },
-    gho: { TOKEN_ORACLE: STK_GHO_ORACLE },
-  },
-} = stakeConfig;
-
 export interface StakingPanelNoWalletProps {
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
@@ -32,9 +24,9 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
 
   const {
     tokens: {
-      aave: { TOKEN_STAKING: STK_AAVE },
-      bpt: { TOKEN_STAKING: STK_BPT },
-      gho: { TOKEN_STAKING: STK_GHO },
+      aave: { TOKEN_STAKING: STK_AAVE, TOKEN_ORACLE: STK_AAVE_ORACLE },
+      bpt: { TOKEN_STAKING: STK_BPT, TOKEN_ORACLE: STK_BPT_ORACLE },
+      gho: { TOKEN_STAKING: STK_GHO, TOKEN_ORACLE: STK_GHO_ORACLE },
     },
   } = stakeConfig;
 

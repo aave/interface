@@ -30,8 +30,8 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.21.2-a10c1117d33dd0829b7ab2c1c5931e24c7c527a0.0+e86d9e4",
-    "@aave/math-utils": "1.21.2-a10c1117d33dd0829b7ab2c1c5931e24c7c527a0.0+e86d9e4",
+    "@aave/contract-helpers": "1.23.1-f208ba3bb58a3f6b4133c7b29848bb85fb532691.0+c8438b5",
+    "@aave/math-utils": "1.23.1-f208ba3bb58a3f6b4133c7b29848bb85fb532691.0+c8438b5",
     "@bgd-labs/aave-address-book": "^2.15.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",

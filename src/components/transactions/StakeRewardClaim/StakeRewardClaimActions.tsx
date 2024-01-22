@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
+import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -23,14 +24,22 @@ export const StakeRewardClaimActions = ({
   selectedToken,
   ...props
 }: StakeRewardClaimActionProps) => {
-  const claimStakeRewards = useRootStore((state) => state.claimStakeRewards);
+  const { uiStakeDataService } = useSharedDependencies();
+  const [currentMarketData, user] = useRootStore((state) => [
+    state.currentMarketData,
+    state.account,
+  ]);
+
+  // const claimStakeRewards = useRootStore((state) => state.claimStakeRewards);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return claimStakeRewards({
+      return uiStakeDataService.claimStakeRewards({
         token: selectedToken,
         amount: amountToClaim,
+        marketData: currentMarketData,
+        user,
       });
     },
     skip: !amountToClaim || parseFloat(amountToClaim) === 0 || blocked,

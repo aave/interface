@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
+import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -24,12 +25,22 @@ export const UnStakeActions = ({
   selectedToken,
   ...props
 }: UnStakeActionProps) => {
-  const redeem = useRootStore((state) => state.redeem);
+  // const redeem = useRootStore((state) => state.redeem);
+
+  const { uiStakeDataService } = useSharedDependencies();
+  const [currentMarketData, user] = useRootStore((state) => [
+    state.currentMarketData,
+    state.account,
+  ]);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return redeem(selectedToken)(amountToUnStake.toString());
+      return uiStakeDataService.redeem(
+        selectedToken,
+        currentMarketData,
+        user
+      )(amountToUnStake.toString());
     },
     skip: !amountToUnStake || parseFloat(amountToUnStake) === 0 || blocked,
     deps: [amountToUnStake],
