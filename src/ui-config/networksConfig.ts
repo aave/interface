@@ -416,7 +416,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     networkLogoPath: '/icons/networks/metis.svg',
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
-
   [ChainId.xdai]: {
     name: 'Gnosis Chain',
     privateJsonRPCUrl: 'https://gnosischain-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
@@ -434,6 +433,23 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       icon: '/icons/networks/gnosis.svg',
       name: 'xDai Bridge',
       url: 'https://bridge.gnosischain.com/',
+    },
+  },
+  [ChainId.bnb]: {
+    name: 'Binance Smart Chain',
+    privateJsonRPCUrl: 'https://bsc-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    publicJsonRPCUrl: ['https://bsc.publicnode.com	', 'wss://bsc.publicnode.com'],
+    publicJsonRPCWSUrl: 'wss://bsc.publicnode.com',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'BNB',
+    wrappedBaseAssetSymbol: 'WBNB',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://bscscan.com/',
+    networkLogoPath: '/icons/networks/binance.svg',
+    bridge: {
+      icon: '', // TODO bridge icon?
+      name: 'BNB Bridge',
+      url: 'https://www.bnbchain.org/en/bnb-chain-bridges',
     },
   },
 } as const;

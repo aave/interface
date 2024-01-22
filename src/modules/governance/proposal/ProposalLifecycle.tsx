@@ -2,7 +2,6 @@ import {
   Payload,
   PayloadState,
   ProposalV3State,
-  VotingConfig,
   VotingMachineProposalState,
 } from '@aave/contract-helpers';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
@@ -37,15 +36,13 @@ enum ProposalLifecycleStep {
 export const ProposalLifecycle = ({
   proposal,
   payloads,
-  votingConfig,
 }: {
   proposal: EnhancedProposal | undefined;
   payloads: Payload[] | undefined;
-  votingConfig: VotingConfig | undefined;
 }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  if (payloads === undefined || proposal === undefined || votingConfig === undefined) {
+  if (payloads === undefined || proposal === undefined) {
     return <></>; // TODO: skeleton
   }
 
@@ -64,7 +61,7 @@ export const ProposalLifecycle = ({
   // }
 
   const urlRegex = /https?:\/\/[^\s"]+/g;
-  const discussionUrl = proposal.proposal.discussions.match(urlRegex);
+  const discussionUrl = proposal.proposal.proposalMetadata.discussions.match(urlRegex);
 
   return (
     <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
@@ -84,27 +81,25 @@ export const ProposalLifecycle = ({
           completed={proposalState > ProposalLifecycleStep.Created}
           active={proposalState === ProposalLifecycleStep.Created}
           stepName={<Trans>Created</Trans>}
-          timestamp={formatTime(proposal.proposalData.proposalData.creationTime)}
+          timestamp={formatTime(+proposal.proposal.transactions.created.timestamp)}
         />
         <ProposalStep
           completed={proposalState > ProposalLifecycleStep.OpenForVoting}
           active={proposalState === ProposalLifecycleStep.OpenForVoting}
           stepName={<Trans>Open for voting</Trans>}
-          timestamp={formatTime(getOpenForVotingTimestamp(proposalState, proposal, votingConfig))}
+          timestamp={formatTime(getOpenForVotingTimestamp(proposalState, proposal))}
         />
         <ProposalStep
           completed={proposalState > ProposalLifecycleStep.VotingClosed}
           active={proposalState === ProposalLifecycleStep.VotingClosed}
           stepName={votingClosedStepLabel}
-          timestamp={formatTime(getVotingClosedTimestamp(proposalState, proposal, votingConfig))}
+          timestamp={formatTime(getVotingClosedTimestamp(proposalState, proposal))}
         />
         <ProposalStep
           completed={proposalState > ProposalLifecycleStep.PayloadsExecuted}
           active={proposalState === ProposalLifecycleStep.PayloadsExecuted}
           stepName={<Trans>Payloads executed</Trans>}
-          timestamp={formatTime(
-            getPayloadsExecutedTimestamp(proposalState, proposal, votingConfig, payloads)
-          )}
+          timestamp={formatTime(getPayloadsExecutedTimestamp(proposalState, proposal, payloads))}
           lastStep
         />
       </Timeline>
@@ -115,7 +110,7 @@ export const ProposalLifecycle = ({
           rel="noopener"
           onClick={() =>
             trackEvent(GENERAL.EXTERNAL_LINK, {
-              AIP: proposal.proposalData.id,
+              AIP: proposal.proposal.id,
               Link: 'Forum Discussion',
             })
           }
@@ -135,22 +130,22 @@ export const ProposalLifecycle = ({
 };
 
 const getLifecycleState = (proposal: EnhancedProposal, payloads: Payload[]) => {
-  if (proposal.proposalData.proposalData.state === ProposalV3State.Created) {
+  if (proposal.proposal.state === ProposalV3State.Created) {
     return ProposalLifecycleStep.Created;
   }
 
-  if (proposal.proposalData.proposalData.state === ProposalV3State.Active) {
+  if (proposal.proposal.state === ProposalV3State.Active) {
     return ProposalLifecycleStep.OpenForVoting;
   }
 
   if (
     proposal.votingMachineData.state === VotingMachineProposalState.Finished ||
-    proposal.proposalData.proposalData.state === ProposalV3State.Queued
+    proposal.proposal.state === ProposalV3State.Queued
   ) {
     return ProposalLifecycleStep.VotingClosed;
   }
 
-  if (proposal.proposalData.proposalData.state === ProposalV3State.Executed) {
+  if (proposal.proposal.state === ProposalV3State.Executed) {
     const payloadsExecuted = payloads.every((payload) => payload.state === PayloadState.Executed);
     if (payloadsExecuted) {
       return ProposalLifecycleStep.Done;
@@ -159,11 +154,11 @@ const getLifecycleState = (proposal: EnhancedProposal, payloads: Payload[]) => {
     }
   }
 
-  if (proposal.proposalData.proposalData.state === ProposalV3State.Cancelled) {
+  if (proposal.proposal.state === ProposalV3State.Cancelled) {
     return ProposalLifecycleStep.Cancelled;
   }
 
-  if (proposal.proposalData.proposalData.state === ProposalV3State.Expired) {
+  if (proposal.proposal.state === ProposalV3State.Expired) {
     return ProposalLifecycleStep.Expired;
   }
 
@@ -172,13 +167,12 @@ const getLifecycleState = (proposal: EnhancedProposal, payloads: Payload[]) => {
 
 const getOpenForVotingTimestamp = (
   currentState: ProposalLifecycleStep,
-  proposal: EnhancedProposal,
-  votingConfig: VotingConfig
+  proposal: EnhancedProposal
 ) => {
   const votingMachineStartTime = proposal.votingMachineData.proposalData.startTime;
   if (currentState === ProposalLifecycleStep.Created || votingMachineStartTime === 0) {
-    const creationTime = proposal.proposalData.proposalData.creationTime;
-    const votingStartDelay = votingConfig.config.coolDownBeforeVotingStart;
+    const creationTime = +proposal.proposal.transactions.created.timestamp;
+    const votingStartDelay = proposal.proposal.votingConfig.cooldownBeforeVotingStart;
     return creationTime + Number(votingStartDelay);
   }
 
@@ -187,13 +181,12 @@ const getOpenForVotingTimestamp = (
 
 const getVotingClosedTimestamp = (
   currentState: ProposalLifecycleStep,
-  proposal: EnhancedProposal,
-  votingConfig: VotingConfig
+  proposal: EnhancedProposal
 ) => {
   const votingMachineEndTime = proposal.votingMachineData.proposalData.endTime;
   if (currentState === ProposalLifecycleStep.Created || votingMachineEndTime === 0) {
-    const votingDuration = votingConfig.config.votingDuration;
-    return getOpenForVotingTimestamp(currentState, proposal, votingConfig) + Number(votingDuration);
+    const votingDuration = proposal.proposal.votingConfig.votingDuration;
+    return getOpenForVotingTimestamp(currentState, proposal) + Number(votingDuration);
   }
 
   return proposal.votingMachineData.proposalData.endTime;
@@ -202,13 +195,12 @@ const getVotingClosedTimestamp = (
 const getPayloadsExecutedTimestamp = (
   currentState: ProposalLifecycleStep,
   proposal: EnhancedProposal,
-  votingConfig: VotingConfig,
   payloads: Payload[]
 ) => {
   const executedAt = payloads.map((p) => p.executedAt).sort((a, b) => b - a)[0];
   if (currentState === ProposalLifecycleStep.Created || executedAt === 0) {
     const executionDelay = payloads[0].delay;
-    return getVotingClosedTimestamp(currentState, proposal, votingConfig) + Number(executionDelay);
+    return getVotingClosedTimestamp(currentState, proposal) + Number(executionDelay);
   }
 
   return executedAt;
