@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-19 18:05\n"
+"PO-Revision-Date: 2024-01-22 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -1129,10 +1129,6 @@ msgstr "Перейдите на панель мониторинга версии
 msgid "Governance"
 msgstr "Управление"
 
-#: src/modules/governance/ProposalsV3List.tsx
-msgid "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
-msgstr ""
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "Греческий"
@@ -1754,8 +1750,6 @@ msgid "Proposal overview"
 msgstr "Обзор предложения"
 
 #: pages/governance/index.governance.tsx
-#: src/modules/governance/ProposalListHeader.tsx
-#: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"

@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-19 18:05\n"
+"PO-Revision-Date: 2024-01-22 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -1129,10 +1129,6 @@ msgstr "转到 V3 仪表板"
 msgid "Governance"
 msgstr "统辖"
 
-#: src/modules/governance/ProposalsV3List.tsx
-msgid "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
-msgstr ""
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "希腊语"
@@ -1754,8 +1750,6 @@ msgid "Proposal overview"
 msgstr "提案概述"
 
 #: pages/governance/index.governance.tsx
-#: src/modules/governance/ProposalListHeader.tsx
-#: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
