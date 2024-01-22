@@ -1124,10 +1124,6 @@ msgstr "Go to V3 Dashboard"
 msgid "Governance"
 msgstr "Governance"
 
-#: src/modules/governance/ProposalsV3List.tsx
-msgid "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
-msgstr "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "Greek"
@@ -1749,8 +1745,6 @@ msgid "Proposal overview"
 msgstr "Proposal overview"
 
 #: pages/governance/index.governance.tsx
-#: src/modules/governance/ProposalListHeader.tsx
-#: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
@@ -2842,6 +2836,10 @@ msgstr "Voting"
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Voting closed"
 msgstr "Voting closed"
+
+#: src/modules/governance/proposal/VoteInfo.tsx
+msgid "Voting is on"
+msgstr "Voting is on"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
