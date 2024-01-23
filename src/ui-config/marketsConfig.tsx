@@ -731,10 +731,10 @@ export const marketsData: {
     v3: true,
     // subgraphUrl: '',
     enabledFeatures: {
-      liquiditySwap: false,
-      collateralRepay: false,
-      debtSwitch: false,
-      withdrawAndSwitch: false,
+      liquiditySwap: true,
+      collateralRepay: true,
+      debtSwitch: true,
+      withdrawAndSwitch: true,
       switch: true,
     },
     addresses: {
