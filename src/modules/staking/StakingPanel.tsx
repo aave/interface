@@ -121,8 +121,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     BigNumber.from(stakeUserData?.underlyingTokenUserBalance || '0')
   );
 
-  console.log('availableToStake', availableToStake);
-
   const availableToReactivateCooldown =
     isCooldownActive &&
     BigNumber.from(stakeUserData?.stakeTokenRedeemableAmount || 0).gt(
@@ -145,14 +143,21 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     18 + 8 // incentivesBalance (18), rewardTokenPriceUSD (8)
   );
 
-  // NOTE do we need to fix this?
-  const aavePerMonth = formatEther(
-    valueToBigNumber(stakeUserData?.stakeTokenRedeemableAmount || '0')
-      .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
-      .multipliedBy(stakeData?.distributionPerSecond || '0')
-      .multipliedBy('2592000') // NOTE: Monthly distribution
-      .toFixed(0)
-  );
+  let aavePerMonth;
+
+  // NOTE do we need to fix this? This now comes undefined
+  if (stakeData) {
+    const totalSupply =
+      stakeData?.stakeTokenTotalSupply === '0' ? '1' : stakeData?.stakeTokenTotalSupply;
+
+    aavePerMonth = formatEther(
+      valueToBigNumber('0')
+        .dividedBy(totalSupply)
+        .multipliedBy(stakeData?.distributionPerSecond || '0')
+        .multipliedBy('2592000') // NOTE: Monthly distribution
+        .toFixed(0)
+    );
+  }
 
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>

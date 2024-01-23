@@ -64,6 +64,7 @@ export default function Staking() {
     [STK_AAVE, STK_BPT, STK_GHO],
     [STK_AAVE_ORACLE, STK_BPT_ORACLE, STK_GHO_ORACLE]
   );
+
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } = useGeneralStakeUiData(
     currentMarketData,
     [STK_AAVE, STK_BPT, STK_GHO],
@@ -103,10 +104,10 @@ export default function Staking() {
   }, [trackEvent]);
 
   const tvl = formatUnits(
-    BigNumber.from(stkAave?.stakeTokenTotalSupply || '0') // "2777604234504415221458905"
-      .mul(stkAave?.stakeTokenPriceUSD || '0') // "11054028865"
+    BigNumber.from(stkAave?.stakeTokenTotalSupply || '0')
+      .mul(stkAave?.stakeTokenPriceUSD || '0')
       .add(
-        BigNumber.from(stkBpt?.stakeTokenTotalSupply || '0').mul(stkBpt?.stakeTokenPriceUSD || '0') // "852121035264242276235387711" "59783535975702"
+        BigNumber.from(stkBpt?.stakeTokenTotalSupply || '0').mul(stkBpt?.stakeTokenPriceUSD || '0')
       )
       .add(
         BigNumber.from(stkGho?.stakeTokenTotalSupply || '0').mul(stkGho?.stakeTokenPriceUSD || '0')
