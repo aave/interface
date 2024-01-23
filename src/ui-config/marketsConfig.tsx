@@ -731,11 +731,11 @@ export const marketsData: {
     v3: true,
     // subgraphUrl: '',
     enabledFeatures: {
-      liquiditySwap: true,
-      collateralRepay: true,
-      debtSwitch: true,
-      withdrawAndSwitch: true,
-      switch: true,
+      liquiditySwap: false,
+      collateralRepay: false,
+      debtSwitch: false,
+      withdrawAndSwitch: false,
+      switch: false,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3BNB.POOL_ADDRESSES_PROVIDER,
