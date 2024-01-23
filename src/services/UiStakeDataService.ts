@@ -86,15 +86,12 @@ export class UiStakeDataService {
     user: string;
   }) {
     const service = this.getStakeServiceV3(marketData, token);
-
     return service.stake(user, amount, onBehalfOf);
   }
 
-  cooldown(tokenName: string, marketData: MarketDataType) {
+  cooldown(tokenName: string, marketData: MarketDataType, user: string) {
     const service = this.getStakeServiceV3(marketData, tokenName);
-
-    // NOTE automatically uses msg.sender
-    return service.cooldown();
+    return service.cooldown(user);
   }
 
   claimStakeRewards({

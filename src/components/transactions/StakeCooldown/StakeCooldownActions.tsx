@@ -26,12 +26,15 @@ export const StakeCooldownActions = ({
 }: StakeCooldownActionsProps) => {
   const { uiStakeDataService } = useSharedDependencies();
 
-  const [currentMarketData] = useRootStore((state) => [state.currentMarketData]);
+  const [currentMarketData, user] = useRootStore((state) => [
+    state.currentMarketData,
+    state.account,
+  ]);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return uiStakeDataService.cooldown(selectedToken, currentMarketData);
+      return uiStakeDataService.cooldown(selectedToken, currentMarketData, user);
     },
     skip: blocked,
     deps: [],
