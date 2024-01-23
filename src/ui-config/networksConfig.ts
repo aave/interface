@@ -440,14 +440,13 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     privateJsonRPCUrl: 'https://bsc-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://bsc.publicnode.com	', 'wss://bsc.publicnode.com'],
     publicJsonRPCWSUrl: 'wss://bsc.publicnode.com',
-    baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'BNB',
     wrappedBaseAssetSymbol: 'WBNB',
     baseAssetDecimals: 18,
     explorerLink: 'https://bscscan.com/',
     networkLogoPath: '/icons/networks/binance.svg',
     bridge: {
-      icon: '', // TODO bridge icon?
+      icon: '/icons/networks/binance.svg',
       name: 'BNB Bridge',
       url: 'https://www.bnbchain.org/en/bnb-chain-bridges',
     },
