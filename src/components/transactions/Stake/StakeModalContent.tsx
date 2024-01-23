@@ -20,7 +20,6 @@ import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeActions } from './StakeActions';
-import { StakeActionsV3 } from './StakeActions-v3';
 
 export type StakeProps = {
   stakeAssetName: string;
@@ -157,28 +156,15 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
 
       {txError && <GasEstimationError txError={txError} />}
 
-      {/* NOTE: StakeActions for stkGHO & BPT are V3 */}
-      {stakeAssetName === 'aave' ? (
-        <StakeActions
-          sx={{ mt: '48px' }}
-          amountToStake={amount}
-          isWrongNetwork={isWrongNetwork}
-          symbol={icon}
-          blocked={blockingError !== undefined}
-          selectedToken={stakeAssetName}
-          event={STAKE.STAKE_TOKEN}
-        />
-      ) : (
-        <StakeActionsV3
-          sx={{ mt: '48px' }}
-          amountToStake={amount}
-          isWrongNetwork={isWrongNetwork}
-          symbol={icon}
-          blocked={blockingError !== undefined}
-          selectedToken={stakeAssetName}
-          event={STAKE.STAKE_TOKEN}
-        />
-      )}
+      <StakeActions
+        sx={{ mt: '48px' }}
+        amountToStake={amount}
+        isWrongNetwork={isWrongNetwork}
+        symbol={icon}
+        blocked={blockingError !== undefined}
+        selectedToken={stakeAssetName}
+        event={STAKE.STAKE_TOKEN}
+      />
     </>
   );
 };

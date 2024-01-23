@@ -2,8 +2,6 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
-// import { useRootStore } from 'src/store/root';
-import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -24,17 +22,12 @@ export const StakeCooldownActions = ({
   amountToCooldown,
   ...props
 }: StakeCooldownActionsProps) => {
-  const { uiStakeDataService } = useSharedDependencies();
-
-  const [currentMarketData, user] = useRootStore((state) => [
-    state.currentMarketData,
-    state.account,
-  ]);
+  const cooldown = useRootStore((state) => state.cooldown);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return uiStakeDataService.cooldown(selectedToken, currentMarketData, user);
+      return cooldown(selectedToken);
     },
     skip: blocked,
     deps: [],
