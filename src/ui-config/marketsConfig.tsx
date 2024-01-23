@@ -735,7 +735,7 @@ export const marketsData: {
       collateralRepay: false,
       debtSwitch: false,
       withdrawAndSwitch: false,
-      switch: false,
+      switch: true,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3BNB.POOL_ADDRESSES_PROVIDER,
