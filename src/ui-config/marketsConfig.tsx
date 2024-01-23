@@ -725,7 +725,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_bnb_v3]: {
-    marketTitle: 'Binance Smart Chain',
+    marketTitle: 'BNB Chain',
     market: CustomMarket.proto_bnb_v3,
     chainId: ChainId.bnb,
     v3: true,
