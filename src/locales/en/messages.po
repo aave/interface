@@ -2138,7 +2138,6 @@ msgstr "Stable interest rate will <0>stay the same</0> for the duration of your 
 msgid "Stablecoin"
 msgstr "Stablecoin"
 
-#: src/components/transactions/Stake/StakeActions-v3.tsx
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -2167,7 +2166,6 @@ msgstr "Stake cooldown activated"
 msgid "Staked"
 msgstr "Staked"
 
-#: src/components/transactions/Stake/StakeActions-v3.tsx
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingHeader.tsx
 msgid "Staking"
