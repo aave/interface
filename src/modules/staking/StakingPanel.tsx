@@ -151,7 +151,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
       stakeData?.stakeTokenTotalSupply === '0' ? '1' : stakeData?.stakeTokenTotalSupply;
 
     aavePerMonth = formatEther(
-      valueToBigNumber('0')
+      valueToBigNumber(stakeUserData?.stakeTokenRedeemableAmount || '0')
         .dividedBy(totalSupply)
         .multipliedBy(stakeData?.distributionPerSecond || '0')
         .multipliedBy('2592000') // NOTE: Monthly distribution
