@@ -58,7 +58,8 @@ export const StakeActionsV3 = ({
           marketData: currentMarketData,
           token: selectedToken,
           amount: amountToStake.toString(),
-          signature: signature[0],
+          // TODO CHECK SIG TYPE
+          signature: signature[0].toString(),
           deadline,
           user,
         });

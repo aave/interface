@@ -1,6 +1,6 @@
 import { StakingServiceV3, UiStakeDataProviderV3 } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
-import { MarketDataType, marketsData } from 'src/ui-config/marketsConfig';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 
 export class UiStakeDataService {
@@ -44,12 +44,13 @@ export class UiStakeDataService {
     return uiStakeDataService.getUserStakeUIDataHumanized({ user, stakedAssets, oracles });
   }
 
-  async signStakingApproval({ token, amount, deadline, user }) {
-    const service = this.getStakeServiceV3(marketsData, token);
+  // todo do we want to use this?
+  // async signStakingApproval({ token, amount, deadline, user }) {
+  //   const service = this.getStakeServiceV3(marketsData, token);
 
-    // const currentUser = get().account;
-    return service.signStaking(user, amount, deadline);
-  }
+  //   // const currentUser = get().account;
+  //   return service.signStaking(user, amount, deadline);
+  // }
 
   async stakeWithPermit({
     marketData,
