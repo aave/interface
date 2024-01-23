@@ -7,14 +7,14 @@ import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
 
 import { BasicModal } from '../../../components/primitives/BasicModal';
-import { FormattedProposalV3 } from '../utils/formatProposal';
+import { ProposalVoteInfo } from '../utils/formatProposal';
 import { VoteBar } from '../VoteBar';
 import { VotersList } from './VotersList';
 
 type VotersListModalProps = {
   open: boolean;
   close: () => void;
-  proposal: FormattedProposalV3;
+  proposal: ProposalVoteInfo;
   voters: ProposalVotes;
 };
 

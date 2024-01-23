@@ -853,6 +853,10 @@ msgid "Disable E-Mode"
 msgstr "Disable E-Mode"
 
 #: src/layouts/AppHeader.tsx
+msgid "Disable fork"
+msgstr "Disable fork"
+
+#: src/layouts/AppHeader.tsx
 msgid "Disable testnet"
 msgstr "Disable testnet"
 
@@ -1072,6 +1076,10 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
 
+#: src/layouts/AppHeader.tsx
+msgid "Fork mode is ON"
+msgstr "Fork mode is ON"
+
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"
@@ -1119,10 +1127,6 @@ msgstr "Go to V3 Dashboard"
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
-
-#: src/modules/governance/ProposalsV3List.tsx
-msgid "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
-msgstr "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -1745,8 +1749,6 @@ msgid "Proposal overview"
 msgstr "Proposal overview"
 
 #: pages/governance/index.governance.tsx
-#: src/modules/governance/ProposalListHeader.tsx
-#: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
@@ -2376,6 +2378,10 @@ msgid "The address of the pool addresses provider is invalid"
 msgstr "The address of the pool addresses provider is invalid"
 
 #: src/layouts/AppHeader.tsx
+msgid "The app is running in fork mode."
+msgstr "The app is running in fork mode."
+
+#: src/layouts/AppHeader.tsx
 msgid "The app is running in testnet mode. Learn how it works in"
 msgstr "The app is running in testnet mode. Learn how it works in"
 
@@ -2840,6 +2846,10 @@ msgstr "Voting"
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Voting closed"
 msgstr "Voting closed"
+
+#: src/modules/governance/proposal/VoteInfo.tsx
+msgid "Voting is on"
+msgstr "Voting is on"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
