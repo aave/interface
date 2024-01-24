@@ -5,7 +5,6 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useRootStore } from 'src/store/root';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
 
 export interface StakingPanelNoWalletProps {
   description?: React.ReactNode;
@@ -21,19 +20,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   let stakingAPY = '';
 
-  const {
-    tokens: {
-      aave: { TOKEN_STAKING: STK_AAVE, TOKEN_ORACLE: STK_AAVE_ORACLE },
-      bpt: { TOKEN_STAKING: STK_BPT, TOKEN_ORACLE: STK_BPT_ORACLE },
-      gho: { TOKEN_STAKING: STK_GHO, TOKEN_ORACLE: STK_GHO_ORACLE },
-    },
-  } = stakeConfig;
-
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(
-    currentMarketData,
-    [STK_AAVE, STK_BPT, STK_GHO],
-    [STK_AAVE_ORACLE, STK_BPT_ORACLE, STK_GHO_ORACLE]
-  );
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
 
   let stkAave, stkBpt, stkGho;
   if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {

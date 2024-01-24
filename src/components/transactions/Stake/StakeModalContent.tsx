@@ -1,3 +1,4 @@
+import { Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -22,15 +23,13 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeActions } from './StakeActions';
 
 export type StakeProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
   icon: string;
 };
 
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
-
-// type StakingType = 'aave' | 'bpt';
 
 export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
@@ -39,19 +38,8 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const TOKEN_STAKING_ADDRESS = stakeConfig.tokens[stakeAssetName].TOKEN_STAKING;
-  const TOKEN_STAKING_ORACLE = stakeConfig.tokens[stakeAssetName].TOKEN_ORACLE;
-
-  const { data: stakeUserResult } = useUserStakeUiData(
-    currentMarketData,
-    [TOKEN_STAKING_ADDRESS],
-    [TOKEN_STAKING_ORACLE]
-  );
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(
-    currentMarketData,
-    [TOKEN_STAKING_ADDRESS],
-    [TOKEN_STAKING_ORACLE]
-  );
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
   let stakeData;
   if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
