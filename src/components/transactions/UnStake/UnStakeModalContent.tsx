@@ -1,3 +1,4 @@
+import { Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -21,7 +22,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { UnStakeActions } from './UnStakeActions';
 
 export type UnStakeProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
   icon: string;
 };
 
@@ -36,19 +37,8 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const TOKEN_STAKING_ADDRESS = stakeConfig.tokens[stakeAssetName].TOKEN_STAKING;
-  const TOKEN_STAKING_ORACLE = stakeConfig.tokens[stakeAssetName].TOKEN_ORACLE;
-
-  const { data: stakeUserResult } = useUserStakeUiData(
-    currentMarketData,
-    [TOKEN_STAKING_ADDRESS],
-    [TOKEN_STAKING_ORACLE]
-  );
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(
-    currentMarketData,
-    [TOKEN_STAKING_ADDRESS],
-    [TOKEN_STAKING_ORACLE]
-  );
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
   let stakeData;
   if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {

@@ -1,3 +1,4 @@
+import { Stake } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -27,7 +28,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeCooldownActions } from './StakeCooldownActions';
 
 export type StakeCooldownProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
 };
 
 export enum ErrorType {
@@ -43,19 +44,8 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const TOKEN_STAKING_ADDRESS = stakeConfig.tokens[stakeAssetName].TOKEN_STAKING;
-  const TOKEN_STAKING_ORACLE = stakeConfig.tokens[stakeAssetName].TOKEN_ORACLE;
-
-  const { data: stakeUserResult } = useUserStakeUiData(
-    currentMarketData,
-    [TOKEN_STAKING_ADDRESS],
-    [TOKEN_STAKING_ORACLE]
-  );
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(
-    currentMarketData,
-    [TOKEN_STAKING_ADDRESS],
-    [TOKEN_STAKING_ORACLE]
-  );
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
