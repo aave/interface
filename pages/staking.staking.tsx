@@ -124,6 +124,8 @@ export default function Staking() {
   );
 
   const isStakeAAVE = mode === 'aave';
+  const isStkGho = mode === 'gho';
+  const isStkBpt = mode === 'bpt';
 
   return (
     <>
@@ -151,14 +153,14 @@ export default function Staking() {
                     <Trans>Stake AAVE</Trans>
                   </Typography>
                 </StyledToggleButton>
-                <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
-                  <Typography variant="subheader1">
-                    <Trans>Stake ABPT</Trans>
-                  </Typography>
-                </StyledToggleButton>
                 <StyledToggleButton value="gho" disabled={mode === 'gho'}>
                   <Typography variant="subheader1">
                     <Trans>Stake GHO</Trans>
+                  </Typography>
+                </StyledToggleButton>
+                <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
+                  <Typography variant="subheader1">
+                    <Trans>Stake ABPT</Trans>
                   </Typography>
                 </StyledToggleButton>
               </StyledToggleButtonGroup>
@@ -195,7 +197,7 @@ export default function Staking() {
                 item
                 xs={12}
                 lg={6}
-                sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
+                sx={{ display: { xs: !isStkGho ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
                   stakeTitle="GHO"
@@ -217,7 +219,7 @@ export default function Staking() {
                 item
                 xs={12}
                 lg={6}
-                sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
+                sx={{ display: { xs: !isStkBpt ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
                   stakeTitle="ABPT"
