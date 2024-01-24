@@ -41,7 +41,7 @@
     "@heroicons/react": "^1.0.6",
     "@lingui/react": "^3.14.0",
     "@mui/icons-material": "^5.10.6",
-    "@mui/material": "^5.10.9",
+    "@mui/material": "^5.11.4",
     "@paraswap/sdk": "5.6.0-alpha.3",
     "@visx/axis": "^2.14.0",
     "@visx/curve": "^2.1.0",
