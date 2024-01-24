@@ -41,7 +41,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
         border: `1px solid ${theme.palette.divider}`,
         p: 4,
         background: theme.palette.background.paper,
-        width: '263px',
+        width: '250px',
         height: '68px',
         margin: '0 auto',
         position: 'relative',
