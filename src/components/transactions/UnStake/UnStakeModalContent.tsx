@@ -29,8 +29,6 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-// type StakingType = 'aave' | 'bpt';
-
 export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
@@ -61,9 +59,6 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
     [stakeUserData] = stakeUserResult.stakeUserData;
   }
-
-  // const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
-  // const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
 
   // states
   const [_amount, setAmount] = useState('');

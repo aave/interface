@@ -19,7 +19,6 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   icon,
 }) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  // const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
   let stakingAPY = '';
 
   const {

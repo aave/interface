@@ -14,7 +14,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
-import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
+// import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
@@ -119,6 +119,7 @@ export default function Staking() {
   const stkEmission = formatEther(
     BigNumber.from(stkAave?.distributionPerSecond || '0')
       .add(stkBpt?.distributionPerSecond || '0')
+      .add(stkGho?.distributionPerSecond || '0')
       .mul('86400')
   );
 
@@ -179,7 +180,6 @@ export default function Staking() {
                   icon="aave"
                   stakeData={stkAave}
                   stakeUserData={stkAaveUserData} // todo change?
-                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake('aave', 'AAVE')}
                   onCooldownAction={() => openStakeCooldown('aave')}
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
@@ -205,11 +205,11 @@ export default function Staking() {
                   stakeData={stkGho}
                   stakeUserData={stkGhoUserData}
                   ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
-                  onStakeAction={() => openStake('gho', 'gho')}
+                  onStakeAction={() => openStake('gho', 'GHO')}
                   onCooldownAction={() => openStakeCooldown('gho')}
-                  onUnstakeAction={() => openUnstake('gho', 'gho')}
+                  onUnstakeAction={() => openUnstake('gho', 'GHO')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('gho', 'AAVE')}
-                  headerAction={<GetGhoToken />}
+                  // headerAction={<GetGhoToken />}
                 />
               </Grid>
 

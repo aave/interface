@@ -29,8 +29,6 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-// type StakingType = 'aave' | 'bpt';
-
 export const StakeRewardClaimRestakeModalContent = ({
   stakeAssetName,
   icon,
@@ -64,10 +62,6 @@ export const StakeRewardClaimRestakeModalContent = ({
   if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
     [stakeUserData] = stakeUserResult.stakeUserData;
   }
-
-  // const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
-  // const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
-  // const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';

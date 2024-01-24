@@ -96,7 +96,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   icon,
   stakeData,
   stakeUserData,
-  // ethPriceUsd,
   maxSlash,
   hasDiscountProgram,
 }) => {
@@ -131,7 +130,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     BigNumber.from(stakeUserData?.stakeTokenRedeemableAmount || '0').mul(
       stakeData?.stakeTokenPriceUSD || '0'
     ),
-    // .mul(ethPriceUsd || '1'),
     18 + 8 // userBalance (18), stakedTokenPriceUSD (8)
   );
 
@@ -139,7 +137,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     BigNumber.from(stakeUserData?.userIncentivesToClaim || '0').mul(
       stakeData?.rewardTokenPriceUSD || '0'
     ),
-    // .mul(ethPriceUsd || '1'),
     18 + 8 // incentivesBalance (18), rewardTokenPriceUSD (8)
   );
 
