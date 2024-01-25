@@ -572,6 +572,10 @@ msgstr "Buy Crypto With Fiat"
 msgid "Buy Crypto with Fiat"
 msgstr "Buy Crypto with Fiat"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Buy GHO"
+msgstr "Buy GHO"
+
 #: src/modules/staking/BuyWithFiat.tsx
 msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Buy {cryptoSymbol} with Fiat"
