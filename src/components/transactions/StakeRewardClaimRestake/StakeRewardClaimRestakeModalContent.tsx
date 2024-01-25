@@ -70,7 +70,7 @@ export const StakeRewardClaimRestakeModalContent = ({
 
   // staking token usd value
   const amountInUsd =
-    Number(maxAmountToClaim) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 18));
+    Number(maxAmountToClaim) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 8));
   // error handler
   let blockingError: ErrorType | undefined = undefined;
   if (maxAmountToClaim === '0') {

@@ -67,7 +67,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   };
 
   // staking token usd value
-  const amountInUsd = Number(amount) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 18));
+  const amountInUsd = Number(amount) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 8));
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
