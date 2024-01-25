@@ -344,7 +344,6 @@ export const useGetProposalCount = () => {
     queryKey: ['proposalCount'],
     enabled: true,
     initialData: 0,
-    // staleTime: Infinity, ????
   });
 };
 
@@ -367,7 +366,6 @@ export const useGetProposalsData = ({
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    // staleTime: Infinity, ????
   });
 };
 
@@ -379,6 +377,5 @@ export const useGetVotingConfig = () => {
     queryKey: ['votingConfig'],
     refetchOnMount: false,
     refetchOnReconnect: false,
-    staleTime: Infinity,
   });
 };
