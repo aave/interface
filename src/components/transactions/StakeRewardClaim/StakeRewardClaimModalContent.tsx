@@ -1,3 +1,4 @@
+import { Stake } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -21,7 +22,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeRewardClaimActions } from './StakeRewardClaimActions';
 
 export type StakeRewardClaimProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
   icon: string;
 };
 
@@ -29,7 +30,7 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-type StakingType = 'aave' | 'bpt';
+// type StakingType = 'aave' | 'bpt';
 
 export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewardClaimProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
@@ -40,17 +41,27 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
-  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
+
+  let stakeData;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
+    [stakeData] = stakeGeneralResult.stakeData;
+  }
+
+  let stakeUserData;
+  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
+    [stakeUserData] = stakeUserResult.stakeUserData;
+  }
+
+  // const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
+  // const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
+  // const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
 
-  const maxAmountToClaim = normalize(
-    stakeUserResult?.[stakeAssetName as StakingType].userIncentivesToClaim || '0',
-    18
-  );
+  const maxAmountToClaim = normalize(stakeUserData?.userIncentivesToClaim || '0', 18);
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToClaim : _amount;
   const handleChange = (value: string) => {
@@ -60,9 +71,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
   };
   // staking token usd value
   const amountInUsd =
-    Number(maxAmountToClaim) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
-      Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
+    Number(maxAmountToClaim) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 18));
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;

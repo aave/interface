@@ -1,7 +1,7 @@
 import {
   GeneralStakeUIDataHumanized,
   GetUserStakeUIDataHumanized,
-} from '@aave/contract-helpers/dist/esm/uiStakeDataProvider-contract/types';
+} from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -71,8 +71,8 @@ export interface StakingPanelProps {
   onStakeRewardClaimRestakeAction?: () => void;
   onCooldownAction?: () => void;
   onUnstakeAction?: () => void;
-  stakeData?: GeneralStakeUIDataHumanized['aave'];
-  stakeUserData?: GetUserStakeUIDataHumanized['aave'];
+  stakeData?: GeneralStakeUIDataHumanized['stakeData'][0];
+  stakeUserData?: GetUserStakeUIDataHumanized['stakeUserData'][0];
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
   ethPriceUsd?: string;
@@ -96,7 +96,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   icon,
   stakeData,
   stakeUserData,
-  ethPriceUsd,
   maxSlash,
   hasDiscountProgram,
 }) => {
@@ -128,24 +127,24 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     );
 
   const stakedUSD = formatUnits(
-    BigNumber.from(stakeUserData?.stakeTokenRedeemableAmount || '0')
-      .mul(stakeData?.stakeTokenPriceEth || '0')
-      .mul(ethPriceUsd || '1'),
-    18 + 18 + 8 // userBalance (18), stakedTokenPriceEth (18), ethPriceUsd (8)
+    BigNumber.from(stakeUserData?.stakeTokenRedeemableAmount || '0').mul(
+      stakeData?.stakeTokenPriceUSD || '0'
+    ),
+    18 + 8 // userBalance (18), stakedTokenPriceUSD (8)
   );
 
   const claimableUSD = formatUnits(
-    BigNumber.from(stakeUserData?.userIncentivesToClaim || '0')
-      .mul(stakeData?.rewardTokenPriceEth || '0')
-      .mul(ethPriceUsd || '1'),
-    18 + 18 + 8 // incentivesBalance (18), rewardTokenPriceEth (18), ethPriceUsd (8)
+    BigNumber.from(stakeUserData?.userIncentivesToClaim || '0').mul(
+      stakeData?.rewardTokenPriceUSD || '0'
+    ),
+    18 + 8 // incentivesBalance (18), rewardTokenPriceUSD (8)
   );
 
   const aavePerMonth = formatEther(
     valueToBigNumber(stakeUserData?.stakeTokenRedeemableAmount || '0')
       .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
       .multipliedBy(stakeData?.distributionPerSecond || '0')
-      .multipliedBy('2592000')
+      .multipliedBy('2592000') // NOTE: Monthly distribution
       .toFixed(0)
   );
 

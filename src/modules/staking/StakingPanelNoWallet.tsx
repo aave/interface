@@ -18,11 +18,18 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   icon,
 }) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
   let stakingAPY = '';
 
-  if (stakedToken == 'AAVE') stakingAPY = stakeGeneralResult?.aave.stakeApy || '0';
-  if (stakedToken == 'ABPT') stakingAPY = stakeGeneralResult?.bpt.stakeApy || '0';
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
+
+  let stkAave, stkBpt, stkGho;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
+    [stkAave, stkBpt, stkGho] = stakeGeneralResult.stakeData;
+  }
+
+  if (stakedToken == 'AAVE') stakingAPY = stkAave?.stakeApy || '0';
+  if (stakedToken == 'ABPT') stakingAPY = stkBpt?.stakeApy || '0';
+  if (stakedToken == 'GHO') stakingAPY = stkGho?.stakeApy || '0';
   return (
     <Box
       sx={(theme) => ({
@@ -34,7 +41,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
         border: `1px solid ${theme.palette.divider}`,
         p: 4,
         background: theme.palette.background.paper,
-        width: '263px',
+        width: '250px',
         height: '68px',
         margin: '0 auto',
         position: 'relative',

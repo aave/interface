@@ -28,9 +28,11 @@ export const StakeActions = ({
 }: StakeActionProps) => {
   const { stake, stakeWithPermit } = useRootStore();
 
+  const tryPermit = selectedToken === 'aave' || selectedToken === 'gho';
+
   const { action, approval, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      tryPermit: selectedToken === 'aave',
+      tryPermit,
       permitAction: ProtocolAction.stakeWithPermit,
       protocolAction: ProtocolAction.stake,
       handleGetTxns: async () => {
@@ -70,7 +72,7 @@ export const StakeActions = ({
       symbol={symbol}
       requiresAmount
       actionText={<Trans>Stake</Trans>}
-      tryPermit={selectedToken === 'aave'}
+      tryPermit={tryPermit}
       actionInProgressText={<Trans>Staking</Trans>}
       sx={sx}
       // event={STAKE.STAKE_BUTTON_MODAL}

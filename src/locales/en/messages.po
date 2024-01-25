@@ -1101,6 +1101,10 @@ msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
 
+#: src/modules/staking/GetGhoToken.tsx
+msgid "Get GHO"
+msgstr "Get GHO"
+
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Global settings"
@@ -2148,6 +2152,10 @@ msgstr "Stake AAVE"
 #: pages/staking.staking.tsx
 msgid "Stake ABPT"
 msgstr "Stake ABPT"
+
+#: pages/staking.staking.tsx
+msgid "Stake GHO"
+msgstr "Stake GHO"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"

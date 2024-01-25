@@ -1,4 +1,8 @@
-import { EthereumTransactionTypeExtended, StakingService } from '@aave/contract-helpers';
+import {
+  EthereumTransactionTypeExtended,
+  StakingService,
+  StakingServiceV3,
+} from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -48,48 +52,47 @@ export const createStakeSlice: StateCreator<
 
     return isStakeFork ? get().jsonRpcProvider() : getProvider(stakeConfig.chainId);
   }
+  function getStakingService(stakeToken: string) {
+    const provider = getCorrectProvider();
+    const tokenStakingAddress = stakeConfig.tokens[stakeToken].TOKEN_STAKING;
+    if (stakeToken === 'aave' || stakeToken === 'bpt') {
+      return new StakingService(provider, {
+        TOKEN_STAKING_ADDRESS: tokenStakingAddress,
+      });
+    } else {
+      return new StakingServiceV3(provider, {
+        TOKEN_STAKING_ADDRESS: tokenStakingAddress,
+      });
+    }
+  }
   return {
     signStakingApproval({ token, amount, deadline }) {
-      const provider = getCorrectProvider();
-      const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
-      });
+      const service = getStakingService(token);
       const currentUser = get().account;
       return service.signStaking(currentUser, amount, deadline);
     },
     stakeWithPermit({ token, amount, signature, deadline }) {
-      const provider = getCorrectProvider();
-      const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
-      });
+      const service = getStakingService(token);
       const currentUser = get().account;
       return service.stakeWithPermit(currentUser, amount, signature, deadline);
     },
     stake({ token, amount, onBehalfOf }) {
-      const provider = getCorrectProvider();
-      const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
-      });
+      const service = getStakingService(token);
       const currentUser = get().account;
       return service.stake(currentUser, amount, onBehalfOf);
     },
     async cooldown(tokenName) {
-      const provider = getCorrectProvider();
+      const service = getStakingService(tokenName);
       const currentAccount = get().account;
-      const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
-      });
       return service.cooldown(currentAccount);
     },
     claimStakeRewards({ token, amount }) {
+      const service = getStakingService(token);
       const currentAccount = get().account;
-      const provider = getCorrectProvider();
-      const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
-      });
       return service.claimRewards(currentAccount, amount);
     },
     claimRewardsAndStake({ token, amount }) {
+      // Note: only available for stkAAVE
       const currentAccount = get().account;
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
@@ -98,11 +101,8 @@ export const createStakeSlice: StateCreator<
       return service.claimRewardsAndStake(currentAccount, amount);
     },
     redeem(tokenName) {
-      const provider = getCorrectProvider();
+      const service = getStakingService(tokenName);
       const currentAccount = get().account;
-      const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
-      });
       return (amount) => service.redeem(currentAccount, amount);
     },
   };
