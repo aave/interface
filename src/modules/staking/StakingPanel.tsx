@@ -77,6 +77,7 @@ export interface StakingPanelProps {
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
   ethPriceUsd?: string;
+  stakeTitle: string;
   stakedToken: string;
   maxSlash: string;
   icon: string;
