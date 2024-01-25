@@ -634,8 +634,8 @@
       "wrapped": false
     },
     "USDC": {
-      "fullName": "USD Coin",
-      "shortName": "USDC",
+      "fullName": "Bridged USDC",
+      "shortName": "USDC.E",
       "collateral": true,
       "wrapped": false
     },
@@ -1052,6 +1052,44 @@
     "aUSDbC": {
       "fullName": "aUSDbC",
       "shortName": "aUSDbC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "cbETH": {
+      "fullName": "Coinbase Wrapped Staked ETH (cbETH)",
+      "shortName": "cbETH",
+      "collateral": true,
+      "wrapped": false
+    }
+  },
+  "gnosisV3Market": {
+    "xDAI": {
+      "fullName": "xDAI",
+      "shortName": "xDAI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "aWXDAI": {
+      "fullName": "aWXDAI",
+      "shortName": "aWXDAI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "USDC": {
+      "fullName": "USDC",
+      "shortName": "USDC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "aUSDC": {
+      "fullName": "aUSDC",
+      "shortName": "aUSDC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "wstETH": {
+      "fullName": "wstETH",
+      "shortName": "wstETH",
       "collateral": true,
       "wrapped": false
     }

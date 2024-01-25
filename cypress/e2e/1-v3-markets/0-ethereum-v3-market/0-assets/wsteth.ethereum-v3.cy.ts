@@ -4,6 +4,11 @@ import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyAEthereumV3Fork } from '../../../../support/steps/configuration.steps';
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHEthereumV3: 900,
+};
 
 const testData = {
   depositBaseAmount: {
@@ -77,9 +82,11 @@ const testData = {
 //due caps
 describe.skip('wstETH INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAEthereumV3Fork({ v3: true });
+  configEnvWithTenderlyAEthereumV3Fork({
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
 
-  supply(testData.depositBaseAmount, skipTestState, true);
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });

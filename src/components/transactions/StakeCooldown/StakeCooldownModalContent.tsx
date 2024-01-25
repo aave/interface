@@ -1,3 +1,4 @@
+import { Stake } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -10,7 +11,6 @@ import { Warning } from 'src/components/primitives/Warning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
@@ -28,7 +28,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeCooldownActions } from './StakeCooldownActions';
 
 export type StakeCooldownProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
 };
 
 export enum ErrorType {
@@ -36,22 +36,29 @@ export enum ErrorType {
   ALREADY_ON_COOLDOWN,
 }
 
-type StakingType = 'aave' | 'bpt';
-
 export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData();
-  const { data: stakeGeneralResult } = useGeneralStakeUiData();
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
 
-  const userStakeData = stakeUserResult?.[stakeAssetName as StakingType];
-  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  let stakeData;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
+    [stakeData] = stakeGeneralResult.stakeData;
+  }
+
+  let stakeUserData;
+  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
+    [stakeUserData] = stakeUserResult.stakeUserData;
+  }
 
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
@@ -70,7 +77,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const unstakeWindowLineWidth =
     unstakeWindowPercent < 15 ? 15 : unstakeWindowPercent > 85 ? 85 : unstakeWindowPercent;
 
-  const stakedAmount = stakeUserResult?.[stakeAssetName as StakingType].stakeTokenRedeemableAmount;
+  const stakedAmount = stakeUserData?.stakeTokenRedeemableAmount;
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
@@ -112,7 +119,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
     });
     setCooldownCheck(!cooldownCheck);
   };
-  const amountToCooldown = formatEther(userStakeData?.stakeTokenRedeemableAmount || 0);
+  const amountToCooldown = formatEther(stakeUserData?.stakeTokenRedeemableAmount || 0);
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />

@@ -1,10 +1,12 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { ChainId, InterestRate, Stake } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
 import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+
+import { EnhancedProposal } from './governance/useProposal';
 
 export enum ModalType {
   Supply,
@@ -29,18 +31,20 @@ export enum ModalType {
   StakeRewardsClaimRestake,
   Switch,
   StakingMigrate,
+  GovRepresentatives,
 }
 
 export interface ModalArgsType {
   underlyingAsset?: string;
-  proposalId?: number;
+  proposal?: EnhancedProposal;
   support?: boolean;
   power?: string;
   icon?: string;
-  stakeAssetName?: string;
+  stakeAssetName?: Stake;
   currentRateMode?: InterestRate;
   emode?: EmodeModalType;
   isFrozen?: boolean;
+  representatives?: Array<{ chainId: ChainId; representative: string }>;
 }
 
 export type TxStateType = {
@@ -87,11 +91,11 @@ export interface ModalContextType<T extends ModalArgsType> {
     usageAsCollateralEnabledOnUser: boolean
   ) => void;
   openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
-  openStake: (stakeAssetName: string, icon: string) => void;
-  openUnstake: (stakeAssetName: string, icon: string) => void;
-  openStakeCooldown: (stakeAssetName: string) => void;
-  openStakeRewardsClaim: (stakeAssetName: string, icon: string) => void;
-  openStakeRewardsRestakeClaim: (stakeAssetName: string, icon: string) => void;
+  openStake: (stakeAssetName: Stake, icon: string) => void;
+  openUnstake: (stakeAssetName: Stake, icon: string) => void;
+  openStakeCooldown: (stakeAssetName: Stake) => void;
+  openStakeRewardsClaim: (stakeAssetName: Stake, icon: string) => void;
+  openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
   openClaimRewards: () => void;
   openEmode: (mode: EmodeModalType) => void;
   openFaucet: (underlyingAsset: string) => void;
@@ -100,9 +104,12 @@ export interface ModalContextType<T extends ModalArgsType> {
   openGovDelegation: () => void;
   openRevokeGovDelegation: () => void;
   openV3Migration: () => void;
-  openGovVote: (proposalId: number, support: boolean, power: string) => void;
+  openGovVote: (proposal: EnhancedProposal, support: boolean, power: string) => void;
   openSwitch: (underlyingAsset?: string) => void;
   openStakingMigrate: () => void;
+  openGovRepresentatives: (
+    representatives: Array<{ chainId: ChainId; representative: string }>
+  ) => void;
   close: () => void;
   type?: ModalType;
   args: T;
@@ -291,14 +298,19 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Revoke Governance Delegation' });
           setType(ModalType.RevokeGovDelegation);
         },
-        openGovVote: (proposalId, support, power) => {
+        openGovVote: (proposal, support, power) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Vote',
-            proposalId: proposalId,
+            proposalId: proposal.proposal.id,
             voteSide: support,
           });
           setType(ModalType.GovVote);
-          setArgs({ proposalId, support, power });
+          setArgs({ proposal, support, power });
+        },
+        openGovRepresentatives: (representatives) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Representatives' });
+          setType(ModalType.GovRepresentatives);
+          setArgs({ representatives });
         },
         openV3Migration: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });

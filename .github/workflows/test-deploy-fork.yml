@@ -91,6 +91,7 @@ jobs:
           - ethereum
           - base
           - gho
+          - gnosis
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -146,30 +147,6 @@ jobs:
           IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
           BUILD_PATH: 'out'
 
-      - name: Pin to secondary IPFS server
-        id: ipfs-secondary
-        uses: ./.github/actions/dev-ipfs-pin
-        with:
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
-          BUILD_PATH: 'out'
-
-      - name: Pin to tertiary IPFS server
-        id: ipfs-tertiary
-        uses: ./.github/actions/dev-ipfs-pin
-        with:
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_TERTIARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
-          BUILD_PATH: 'out'
-
       - name: 'Comment on PR'
         uses: actions/github-script@100527700e8b29ca817ac0e0dfbfc5e8ff38edda # v6.1.1
         with:
@@ -212,6 +189,7 @@ jobs:
           - optimism
           - ethereum
           - gho
+          - base
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
