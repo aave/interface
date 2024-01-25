@@ -1,3 +1,4 @@
+import { Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -21,15 +22,13 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { UnStakeActions } from './UnStakeActions';
 
 export type UnStakeProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
   icon: string;
 };
 
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
-
-type StakingType = 'aave' | 'bpt';
 
 export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
@@ -38,18 +37,25 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
-  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
+
+  let stakeData;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
+    [stakeData] = stakeGeneralResult.stakeData;
+  }
+
+  let stakeUserData;
+  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
+    [stakeUserData] = stakeUserResult.stakeUserData;
+  }
 
   // states
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  const walletBalance = normalize(
-    stakeUserResult?.[stakeAssetName as StakingType].userCooldownAmount || '0',
-    18
-  );
+  // TODO does this need to change?
+  const walletBalance = normalize(stakeUserData?.userCooldownAmount || '0', 18);
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? walletBalance : _amount;
@@ -61,10 +67,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   };
 
   // staking token usd value
-  const amountInUsd =
-    Number(amount) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
-      Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
+  const amountInUsd = Number(amount) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 18));
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;

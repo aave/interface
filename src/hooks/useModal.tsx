@@ -1,4 +1,4 @@
-import { ChainId, InterestRate } from '@aave/contract-helpers';
+import { ChainId, InterestRate, Stake } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
 import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -39,7 +39,7 @@ export interface ModalArgsType {
   support?: boolean;
   power?: string;
   icon?: string;
-  stakeAssetName?: string;
+  stakeAssetName?: Stake;
   currentRateMode?: InterestRate;
   emode?: EmodeModalType;
   isFrozen?: boolean;
@@ -90,11 +90,11 @@ export interface ModalContextType<T extends ModalArgsType> {
     usageAsCollateralEnabledOnUser: boolean
   ) => void;
   openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
-  openStake: (stakeAssetName: string, icon: string) => void;
-  openUnstake: (stakeAssetName: string, icon: string) => void;
-  openStakeCooldown: (stakeAssetName: string) => void;
-  openStakeRewardsClaim: (stakeAssetName: string, icon: string) => void;
-  openStakeRewardsRestakeClaim: (stakeAssetName: string, icon: string) => void;
+  openStake: (stakeAssetName: Stake, icon: string) => void;
+  openUnstake: (stakeAssetName: Stake, icon: string) => void;
+  openStakeCooldown: (stakeAssetName: Stake) => void;
+  openStakeRewardsClaim: (stakeAssetName: Stake, icon: string) => void;
+  openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
   openClaimRewards: () => void;
   openEmode: (mode: EmodeModalType) => void;
   openFaucet: (underlyingAsset: string) => void;
@@ -299,7 +299,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openGovVote: (proposal, support, power) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Vote',
-            proposalId: proposal.proposalData.id,
+            proposalId: proposal.proposal.id,
             voteSide: support,
           });
           setType(ModalType.GovVote);

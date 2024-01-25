@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-02 18:05\n"
+"PO-Revision-Date: 2024-01-22 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -858,6 +858,10 @@ msgid "Disable E-Mode"
 msgstr "Απενεργοποίηση E-Mode"
 
 #: src/layouts/AppHeader.tsx
+msgid "Disable fork"
+msgstr ""
+
+#: src/layouts/AppHeader.tsx
 msgid "Disable testnet"
 msgstr ""
 
@@ -1077,6 +1081,10 @@ msgstr ""
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "Για την αποπληρωμή ενός συγκεκριμένου τύπου χρέους, ο χρήστης πρέπει να έχει χρέος αυτού του τύπου"
 
+#: src/layouts/AppHeader.tsx
+msgid "Fork mode is ON"
+msgstr ""
+
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
 msgstr "Συζήτηση φόρουμ"
@@ -1120,10 +1128,6 @@ msgstr ""
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Διακυβέρνηση"
-
-#: src/modules/governance/ProposalsV3List.tsx
-msgid "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
-msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -1748,8 +1752,6 @@ msgstr "Επισκόπηση πρότασης"
 #: pages/governance/index.governance.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
-#: src/modules/governance/ProposalListHeader.tsx
-#: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
 msgstr "Προτάσεις"
 
@@ -2372,6 +2374,10 @@ msgid "The address of the pool addresses provider is invalid"
 msgstr "Η διεύθυνση του παρόχου διευθύνσεων κοινόχρηστου ταμείου είναι άκυρη"
 
 #: src/layouts/AppHeader.tsx
+msgid "The app is running in fork mode."
+msgstr ""
+
+#: src/layouts/AppHeader.tsx
 msgid "The app is running in testnet mode. Learn how it works in"
 msgstr ""
 
@@ -2835,6 +2841,10 @@ msgstr ""
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Voting closed"
+msgstr ""
+
+#: src/modules/governance/proposal/VoteInfo.tsx
+msgid "Voting is on"
 msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx

@@ -1,3 +1,4 @@
+import { Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Grid, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
@@ -14,6 +15,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
+// import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
@@ -49,11 +51,22 @@ export default function Staking() {
   const { currentAccount, loading, chainId } = useWeb3Context();
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-
   const { data: stakeUserResult, isLoading: stakeUserResultLoading } =
     useUserStakeUiData(currentMarketData);
+
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
     useGeneralStakeUiData(currentMarketData);
+
+  let stkAave, stkBpt, stkGho;
+
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
+    [stkAave, stkBpt, stkGho] = stakeGeneralResult.stakeData;
+  }
+
+  let stkAaveUserData, stkBptUserData, stkGhoUserData;
+  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
+    [stkAaveUserData, stkBptUserData, stkGhoUserData] = stakeUserResult.stakeUserData;
+  }
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 
@@ -65,7 +78,7 @@ export default function Staking() {
     openStakeRewardsRestakeClaim,
   } = useModalContext();
 
-  const [mode, setMode] = useState<'aave' | 'bpt' | ''>('aave');
+  const [mode, setMode] = useState<Stake>(Stake.aave);
 
   const { name: network } = getNetworkConfig(chainId);
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -76,27 +89,29 @@ export default function Staking() {
     });
   }, [trackEvent]);
 
-  // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
   const tvl = formatUnits(
-    BigNumber.from(stakeGeneralResult?.aave.stakeTokenTotalSupply || '0')
-      .mul(stakeGeneralResult?.aave.stakeTokenPriceEth || '0')
+    BigNumber.from(stkAave?.stakeTokenTotalSupply || '0')
+      .mul(stkAave?.stakeTokenPriceUSD || '0')
       .add(
-        BigNumber.from(stakeGeneralResult?.bpt.stakeTokenTotalSupply || '0').mul(
-          stakeGeneralResult?.bpt.stakeTokenPriceEth || '0'
-        )
+        BigNumber.from(stkBpt?.stakeTokenTotalSupply || '0').mul(stkBpt?.stakeTokenPriceUSD || '0')
       )
-      .mul(stakeGeneralResult?.ethPriceUsd || 1),
-    18 + 18 + 8 // 2x total supply (18 decimals), 1x ethPriceUSD (8 decimals)
+      .add(
+        BigNumber.from(stkGho?.stakeTokenTotalSupply || '0').mul(stkGho?.stakeTokenPriceUSD || '0')
+      ), // "0"
+    18 + 8
   );
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
   const stkEmission = formatEther(
-    BigNumber.from(stakeGeneralResult?.aave.distributionPerSecond || '0')
-      .add(stakeGeneralResult?.bpt.distributionPerSecond || '0')
+    BigNumber.from(stkAave?.distributionPerSecond || '0')
+      .add(stkBpt?.distributionPerSecond || '0')
+      .add(stkGho?.distributionPerSecond || '0')
       .mul('86400')
   );
 
   const isStakeAAVE = mode === 'aave';
+  const isStkGho = mode === 'gho';
+  const isStkBpt = mode === 'bpt';
 
   return (
     <>
@@ -124,6 +139,11 @@ export default function Staking() {
                     <Trans>Stake AAVE</Trans>
                   </Typography>
                 </StyledToggleButton>
+                <StyledToggleButton value="gho" disabled={mode === 'gho'}>
+                  <Typography variant="subheader1">
+                    <Trans>Stake GHO</Trans>
+                  </Typography>
+                </StyledToggleButton>
                 <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
                     <Trans>Stake ABPT</Trans>
@@ -146,15 +166,14 @@ export default function Staking() {
                   stakedToken="AAVE"
                   maxSlash="0.3"
                   icon="aave"
-                  stakeData={stakeGeneralResult?.aave}
-                  stakeUserData={stakeUserResult?.aave}
-                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
-                  onStakeAction={() => openStake('aave', 'AAVE')}
-                  onCooldownAction={() => openStakeCooldown('aave')}
-                  onUnstakeAction={() => openUnstake('aave', 'AAVE')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim('aave', 'AAVE')}
+                  stakeData={stkAave}
+                  stakeUserData={stkAaveUserData} // todo change?
+                  onStakeAction={() => openStake(Stake.aave, 'AAVE')}
+                  onCooldownAction={() => openStakeCooldown(Stake.aave)}
+                  onUnstakeAction={() => openUnstake(Stake.aave, 'AAVE')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.aave, 'AAVE')}
                   onStakeRewardClaimRestakeAction={() =>
-                    openStakeRewardsRestakeClaim('aave', 'AAVE')
+                    openStakeRewardsRestakeClaim(Stake.aave, 'AAVE')
                   }
                   headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
                   hasDiscountProgram={true}
@@ -164,20 +183,42 @@ export default function Staking() {
                 item
                 xs={12}
                 lg={6}
-                sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
+                sx={{ display: { xs: !isStkGho ? 'none' : 'block', lg: 'block' } }}
+              >
+                <StakingPanel
+                  stakeTitle="GHO"
+                  stakedToken="GHO"
+                  maxSlash="0.99" // TODO fetch from contracts
+                  icon="gho"
+                  stakeData={stkGho}
+                  stakeUserData={stkGhoUserData}
+                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
+                  onStakeAction={() => openStake(Stake.gho, 'GHO')}
+                  onCooldownAction={() => openStakeCooldown(Stake.gho)}
+                  onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.gho, 'AAVE')}
+                  // headerAction={<GetGhoToken />}
+                />
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                lg={6}
+                sx={{ display: { xs: !isStkBpt ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
                   stakeTitle="ABPT"
                   stakedToken="ABPT"
                   maxSlash="0.3"
                   icon="stkbpt"
-                  stakeData={stakeGeneralResult?.bpt}
-                  stakeUserData={stakeUserResult?.bpt}
+                  stakeData={stkBpt}
+                  stakeUserData={stkBptUserData}
                   ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
-                  onStakeAction={() => openStake('bpt', 'stkBPT')}
-                  onCooldownAction={() => openStakeCooldown('bpt')}
-                  onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt', 'AAVE')}
+                  onStakeAction={() => openStake(Stake.bpt, 'stkBPT')}
+                  onCooldownAction={() => openStakeCooldown(Stake.bpt)}
+                  onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
                   headerAction={<GetABPToken />}
                 />
               </Grid>

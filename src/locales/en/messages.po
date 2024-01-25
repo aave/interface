@@ -853,6 +853,10 @@ msgid "Disable E-Mode"
 msgstr "Disable E-Mode"
 
 #: src/layouts/AppHeader.tsx
+msgid "Disable fork"
+msgstr "Disable fork"
+
+#: src/layouts/AppHeader.tsx
 msgid "Disable testnet"
 msgstr "Disable testnet"
 
@@ -1072,6 +1076,10 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
 
+#: src/layouts/AppHeader.tsx
+msgid "Fork mode is ON"
+msgstr "Fork mode is ON"
+
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"
@@ -1092,6 +1100,10 @@ msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
+
+#: src/modules/staking/GetGhoToken.tsx
+msgid "Get GHO"
+msgstr "Get GHO"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
@@ -1115,10 +1127,6 @@ msgstr "Go to V3 Dashboard"
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
-
-#: src/modules/governance/ProposalsV3List.tsx
-msgid "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
-msgstr "Governance V3 is now live but there are no new proposals yet. Check back soon or visit <0>Governance V2</0> to see proposals on V2."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -1260,10 +1268,6 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 msgid "Join the community discussion"
 msgstr "Join the community discussion"
 
-#: src/layouts/TopBarNotify.tsx
-msgid "LEARN MORE"
-msgstr "LEARN MORE"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "Language"
@@ -1278,7 +1282,6 @@ msgstr "Language"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
-#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1743,8 +1746,6 @@ msgstr "Proposal overview"
 #: pages/governance/index.governance.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
-#: src/modules/governance/ProposalListHeader.tsx
-#: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
 msgstr "Proposals"
 
@@ -2147,6 +2148,10 @@ msgstr "Stake AAVE"
 msgid "Stake ABPT"
 msgstr "Stake ABPT"
 
+#: pages/staking.staking.tsx
+msgid "Stake GHO"
+msgstr "Stake GHO"
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
 msgstr "Stake cooldown activated"
@@ -2364,6 +2369,10 @@ msgstr "The Stable Rate is not enabled for this currency"
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
 msgstr "The address of the pool addresses provider is invalid"
+
+#: src/layouts/AppHeader.tsx
+msgid "The app is running in fork mode."
+msgstr "The app is running in fork mode."
 
 #: src/layouts/AppHeader.tsx
 msgid "The app is running in testnet mode. Learn how it works in"
@@ -2831,6 +2840,10 @@ msgstr "Voting"
 msgid "Voting closed"
 msgstr "Voting closed"
 
+#: src/modules/governance/proposal/VoteInfo.tsx
+msgid "Voting is on"
+msgstr "Voting is on"
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
@@ -3219,6 +3232,8 @@ msgstr "withdrew"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/layouts/TopBarNotify.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx

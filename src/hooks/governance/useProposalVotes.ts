@@ -19,7 +19,7 @@ export interface ProposalVotes {
 }
 
 const getProposalVotes = gql`
-  query getProposalVotes($proposalId: String!) {
+  query getProposalVotes($proposalId: Int!) {
     voteEmitteds(where: { proposalId: $proposalId }) {
       proposalId
       support
@@ -33,7 +33,7 @@ export const useProposalVotesQuery = ({
   proposalId,
   votingChainId,
 }: {
-  proposalId: string;
+  proposalId: number;
   votingChainId: ChainId | undefined;
 }) => {
   return useQuery({
@@ -46,7 +46,7 @@ export const useProposalVotesQuery = ({
         }
       ),
     queryKey: ['proposalVotes', proposalId],
-    enabled: votingChainId !== undefined,
+    enabled: votingChainId !== undefined && !isNaN(proposalId),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -66,7 +66,7 @@ export const useProposalVotes = ({
   proposalId,
   votingChainId,
 }: {
-  proposalId: string;
+  proposalId: number;
   votingChainId: ChainId | undefined;
 }): ProposalVotes => {
   const { data, isFetching } = useProposalVotesQuery({ proposalId, votingChainId });
