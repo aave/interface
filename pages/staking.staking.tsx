@@ -230,6 +230,27 @@ export default function Staking() {
                 sx={{ display: { xs: !isStkBpt ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
+                  stakeTitle="ABPTV2"
+                  stakedToken="ABPTV2"
+                  maxSlash="0.3"
+                  icon="stkbpt"
+                  stakeData={stkBpt}
+                  stakeUserData={stkBptUserData}
+                  onStakeAction={() => openStake(Stake.bpt, 'stkBPT')}
+                  onCooldownAction={() => openStakeCooldown(Stake.bpt)}
+                  onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
+                  headerAction={<GetABPToken />}
+                />
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                lg={6}
+                sx={{ display: { xs: !isStkBpt ? 'none' : 'block', lg: 'block' } }}
+              >
+                <StakingPanel
                   stakeTitle="ABPT"
                   stakedToken="ABPT"
                   maxSlash="0.3"
