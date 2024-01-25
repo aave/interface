@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-22 18:05\n"
+"PO-Revision-Date: 2024-01-25 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -1106,6 +1106,10 @@ msgstr "GHO 是一种与美元挂钩的原生去中心化、抵押品支持的�
 msgid "Get ABP Token"
 msgstr "获取ABP代币"
 
+#: src/modules/staking/GetGhoToken.tsx
+msgid "Get GHO"
+msgstr ""
+
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Global settings"
@@ -1269,10 +1273,6 @@ msgstr "孤立资产的借贷能力有限，其他资产不能作为抵押品。
 msgid "Join the community discussion"
 msgstr "加入社区讨论"
 
-#: src/layouts/TopBarNotify.tsx
-msgid "LEARN MORE"
-msgstr "了解更多信息"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "语言"
@@ -1287,7 +1287,6 @@ msgstr "语言"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
-#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -2153,6 +2152,10 @@ msgstr "质押 AAVE"
 #: pages/staking.staking.tsx
 msgid "Stake ABPT"
 msgstr "质押 ABPT"
+
+#: pages/staking.staking.tsx
+msgid "Stake GHO"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
@@ -3234,6 +3237,8 @@ msgstr "撤回"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/layouts/TopBarNotify.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
