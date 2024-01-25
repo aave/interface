@@ -30,7 +30,7 @@ export const stakeConfig: StakeConfig = {
     [Stake.gho]: {
       TOKEN_STAKING: AaveSafetyModule.STK_GHO,
       STAKING_REWARD_TOKEN: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
-      TOKEN_ORACLE: AaveV3Ethereum.ASSETS.GHO.ORACLE,
+      TOKEN_ORACLE: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc', // CL Feed
     },
   },
 };

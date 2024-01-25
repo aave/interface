@@ -188,7 +188,7 @@ export default function Staking() {
                 <StakingPanel
                   stakeTitle="GHO"
                   stakedToken="GHO"
-                  maxSlash="1" // 100%
+                  maxSlash="0.99" // TODO fetch from contracts
                   icon="gho"
                   stakeData={stkGho}
                   stakeUserData={stkGhoUserData}
