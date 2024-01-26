@@ -28,6 +28,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { StakeActionBox } from './StakeActionBox';
+import { StakingPanelSkeleton } from './StakingPanelSkeleton';
 
 function secondsToDHMS(seconds: number) {
   const d = Math.floor(seconds / (3600 * 24));
@@ -105,6 +106,10 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
   const { openSwitch } = useModalContext();
+
+  if (!stakeData || !stakeUserData) {
+    return <StakingPanelSkeleton />;
+  }
 
   const handleSwitchClick = () => {
     openSwitch('', ChainId.mainnet);

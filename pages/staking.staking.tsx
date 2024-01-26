@@ -242,6 +242,7 @@ export default function Staking() {
                 />
               </Grid>
 
+              {/* {stkBptUserData?.stakeTokenUserBalance !== '0' && ( */}
               <Grid
                 item
                 xs={12}
@@ -292,6 +293,7 @@ export default function Staking() {
                   </Box>
                 </StakingPanel>
               </Grid>
+              {/* )} */}
             </Grid>
           </>
         ) : (
