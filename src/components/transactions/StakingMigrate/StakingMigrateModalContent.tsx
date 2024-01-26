@@ -14,7 +14,7 @@ import { GasStation } from '../GasStation/GasStation';
 import { StakingMigrateActions } from './StakingMigrateActions';
 
 export const StakingMigrateModalContent = () => {
-  const { gasLimit, mainTxState: txState, txError } = useModalContext();
+  const { gasLimit } = useModalContext();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.bpt);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, Stake.bpt);
@@ -32,12 +32,9 @@ export const StakingMigrateModalContent = () => {
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  const walletBalance = normalize(stakeUserData?.underlyingTokenUserBalance || '0', 18);
+  // const walletBalance = normalize(stakeUserData?.underlyingTokenUserBalance || '0', 18);
 
-  const maxAmountToMigrate = normalize(
-    stakeUserResult?.stakeUserData[0].underlyingTokenUserBalance || '0',
-    18
-  );
+  const maxAmountToMigrate = normalize(stakeUserData?.underlyingTokenUserBalance || '0', 18);
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToMigrate : _amount;
   const handleChange = (value: string) => {
@@ -69,7 +66,7 @@ export const StakingMigrateModalContent = () => {
         balanceText={<Trans>Wallet balance</Trans>}
       />
       <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
-      <StakingMigrateActions />
+      <StakingMigrateActions amountToMigrate={amount} />
     </>
   );
 };

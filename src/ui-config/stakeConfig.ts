@@ -32,5 +32,10 @@ export const stakeConfig: StakeConfig = {
       STAKING_REWARD_TOKEN: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
       TOKEN_ORACLE: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc', // CL Feed
     },
+    [Stake.bptv2]: {
+      TOKEN_STAKING: AaveSafetyModule.STK_AAVE_WSTETH_BPTV2,
+      STAKING_REWARD_TOKEN: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
+      TOKEN_ORACLE: AaveSafetyModule.STK_AAVE_WSTETH_BPTV2_ORACLE,
+    },
   },
 };

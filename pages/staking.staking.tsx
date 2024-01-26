@@ -58,15 +58,16 @@ export default function Staking() {
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
     useGeneralStakeUiData(currentMarketData);
 
-  let stkAave, stkBpt, stkGho;
+  let stkAave, stkBpt, stkGho, stkBptV2;
 
   if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stkAave, stkBpt, stkGho] = stakeGeneralResult.stakeData;
+    [stkAave, stkBpt, stkGho, stkBptV2] = stakeGeneralResult.stakeData;
   }
 
-  let stkAaveUserData, stkBptUserData, stkGhoUserData;
+  let stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData;
   if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stkAaveUserData, stkBptUserData, stkGhoUserData] = stakeUserResult.stakeUserData;
+    [stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData] =
+      stakeUserResult.stakeUserData;
   }
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
@@ -234,12 +235,12 @@ export default function Staking() {
                   stakedToken="ABPTV2"
                   maxSlash="0.3"
                   icon="stkbpt"
-                  stakeData={stkBpt}
-                  stakeUserData={stkBptUserData}
-                  onStakeAction={() => openStake(Stake.bpt, 'stkBPT')}
-                  onCooldownAction={() => openStakeCooldown(Stake.bpt)}
-                  onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
+                  stakeData={stkBptV2}
+                  stakeUserData={stkBptV2UserData}
+                  onStakeAction={() => openStake(Stake.bptv2, 'stkBPT v2')}
+                  onCooldownAction={() => openStakeCooldown(Stake.bptv2)}
+                  onUnstakeAction={() => openUnstake(Stake.bptv2, 'stkBPT v2')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bptv2, 'AAVE')}
                   headerAction={<GetABPToken />}
                 />
               </Grid>

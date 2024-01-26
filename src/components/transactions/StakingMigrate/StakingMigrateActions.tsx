@@ -4,36 +4,27 @@ import { useState } from 'react';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+// import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
-import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
+// import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { checkRequiresApproval } from '../utils';
 
 export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: string }) => {
-  const { stkAbptMigrationService, approvedAmountService } = useSharedDependencies();
+  // const { stkAbptMigrationService, approvedAmountService } = useSharedDependencies();
   const [walletApprovalMethodPreference, currentMarketData, user] = useRootStore((store) => [
     store.walletApprovalMethodPreference,
     store.currentMarketData,
     store.account,
   ]);
-  const { sendTx } = useWeb3Context();
+  // const { sendTx } = useWeb3Context();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-  const {
-    approvalTxState,
-    mainTxState,
-    loadingTxns,
-    setMainTxState,
-    setTxError,
-    setGasLimit,
-    setLoadingTxns,
-    setApprovalTxState,
-  } = useModalContext();
+  const { approvalTxState, mainTxState, loadingTxns, setApprovalTxState } = useModalContext();
 
   const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-
+  console.log(usePermit);
   const {
     data: approvedAmount,
     refetch: fetchApprovedAmount,
@@ -44,6 +35,8 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
     token: AaveSafetyModule.STK_ABPT,
     spender: AaveSafetyModule.STK_ABPT_STK_AAVE_WSTETH_BPTV2_MIGRATOR,
   });
+
+  console.log(fetchingApprovedAmount, isFetchedAfterMount);
 
   const requiresApproval =
     Number(amountToMigrate) !== 0 &&

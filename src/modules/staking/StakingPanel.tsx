@@ -197,13 +197,16 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     18 + 8 // incentivesBalance (18), rewardTokenPriceUSD (8)
   );
 
-  const aavePerMonth = formatEther(
-    valueToBigNumber(stakeUserData?.stakeTokenRedeemableAmount || '0')
-      .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
-      .multipliedBy(stakeData?.distributionPerSecond || '0')
-      .multipliedBy('2592000') // NOTE: Monthly distribution
-      .toFixed(0)
-  );
+  let aavePerMonth = '0';
+  if (stakeData?.stakeTokenTotalSupply !== '0') {
+    aavePerMonth = formatEther(
+      valueToBigNumber(stakeUserData?.stakeTokenRedeemableAmount || '0')
+        .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
+        .multipliedBy(stakeData?.distributionPerSecond || '0')
+        .multipliedBy('2592000') // NOTE: Monthly distribution
+        .toFixed(0)
+    );
+  }
 
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
