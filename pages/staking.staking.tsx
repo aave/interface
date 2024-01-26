@@ -215,7 +215,6 @@ export default function Staking() {
                   icon="gho"
                   stakeData={stkGho}
                   stakeUserData={stkGhoUserData}
-                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake(Stake.gho, 'GHO')}
                   onCooldownAction={() => openStakeCooldown(Stake.gho)}
                   onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
@@ -258,13 +257,13 @@ export default function Staking() {
                   icon="stkbpt"
                   stakeData={stkBpt}
                   stakeUserData={stkBptUserData}
-                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake(Stake.bpt, 'stkBPT')}
                   onCooldownAction={() => openStakeCooldown(Stake.bpt)}
                   onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
+                  onMigrateAction={() => openStakingMigrate()}
                   headerAction={<GetABPToken />}
-                  onMigrateAction={() => openStakingMigrate(Stake.bpt, 'stkBPT')}
+                  inPostSlashing
                 />
               </Grid>
             </Grid>

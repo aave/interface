@@ -20,5 +20,7 @@ export function getStakeIndex(stake: Stake) {
       return 1;
     case Stake.gho:
       return 2;
+    case Stake.bptv2:
+      return 3;
   }
 }

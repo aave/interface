@@ -76,7 +76,6 @@ export interface StakingPanelProps {
   stakeUserData?: GetUserStakeUIDataHumanized['stakeUserData'][0];
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
-  ethPriceUsd?: string;
   stakeTitle: string;
   stakedToken: string;
   maxSlash: string;
