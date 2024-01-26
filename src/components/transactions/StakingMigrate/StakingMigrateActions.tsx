@@ -44,7 +44,7 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
   } = useModalContext();
 
   const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-  console.log(usePermit);
+
   const {
     data: approvedAmount,
     refetch: fetchApprovedAmount,
@@ -58,8 +58,6 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
 
   setLoadingTxns(fetchingApprovedAmount);
 
-  console.log('amount to migrate', amountToMigrate);
-  console.log('approved amount', approvedAmount);
   const requiresApproval =
     Number(amountToMigrate) !== 0 &&
     checkRequiresApproval({
@@ -97,8 +95,6 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
 
-  console.log('requires approval', requiresApproval);
-
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
@@ -107,7 +103,6 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
       // TODO: figure out slippage value
       const amount = valueToWei(amountToMigrate, 18);
       const minOutputAmount = valueToBigNumber(amount).multipliedBy(0.999).toString();
-      console.log('min output amount', minOutputAmount);
 
       if (usePermit && signatureParams) {
         let txData = await stkAbptMigrationService.migrateWithPermit(
