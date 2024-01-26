@@ -242,6 +242,7 @@ export default function Staking() {
                 />
               </Grid>
 
+              {/* TODO: Only show v1 panel if user has unclaimed rewards or they have a stk balance */}
               {/* {stkBptUserData?.stakeTokenUserBalance !== '0' && ( */}
               <Grid
                 item
@@ -286,8 +287,8 @@ export default function Staking() {
                     <Warning severity="warning" sx={{ mb: 0 }}>
                       <Trans>
                         As a result of governance decisions, the existing ABPT staking pool is now
-                        deprecated. You have the flexibility to either migrate all of your tokens or
-                        unstake them without any cooldown period. Learn more
+                        deprecated. You have the flexibility to either migrate all of your tokens to
+                        v2 or unstake them without any cooldown period. Learn more
                       </Trans>
                     </Warning>
                   </Box>
