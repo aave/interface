@@ -14,14 +14,13 @@ import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
 // import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
-import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
+import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -50,7 +49,7 @@ const UnStakeModal = dynamic(() =>
 );
 
 export default function Staking() {
-  const { currentAccount, loading, chainId } = useWeb3Context();
+  const { currentAccount, loading } = useWeb3Context();
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: stakeUserResult, isLoading: stakeUserResultLoading } =
@@ -84,7 +83,6 @@ export default function Staking() {
 
   const [mode, setMode] = useState<Stake>(Stake.aave);
 
-  const { name: network } = getNetworkConfig(chainId);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
@@ -179,7 +177,6 @@ export default function Staking() {
                   onStakeRewardClaimRestakeAction={() =>
                     openStakeRewardsRestakeClaim(Stake.aave, 'AAVE')
                   }
-                  headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
                 >
                   <Box
                     sx={{
@@ -221,7 +218,6 @@ export default function Staking() {
                   onCooldownAction={() => openStakeCooldown(Stake.gho)}
                   onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.gho, 'AAVE')}
-                  // headerAction={<GetGhoToken />}
                 />
               </Grid>
 
@@ -271,6 +267,7 @@ export default function Staking() {
                         borderRadius: 12,
                         height: '16px',
                         width: '84px',
+                        marginLeft: 'auto',
                       })}
                     >
                       <Typography sx={{ px: 2 }} color="white" variant="caption">
