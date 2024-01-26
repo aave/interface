@@ -98,6 +98,12 @@ const StakingPanelHeader = ({
         <Typography variant="h3">AAVE</Typography>
       </>
     ),
+    GHO: (
+      <>
+        {downToXsm && <TokenIcon symbol="aave" sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />}
+        <Typography variant="h3">GHO</Typography>
+      </>
+    ),
     ABPT: (
       <Stack direction="column" gap={3}>
         <Stack direction="row" alignItems="center" gap={2}>

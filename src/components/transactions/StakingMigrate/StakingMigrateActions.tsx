@@ -1,27 +1,47 @@
+import { valueToWei } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
+import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
-// import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
+import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-// import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { checkRequiresApproval } from '../utils';
 
 export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: string }) => {
-  // const { stkAbptMigrationService, approvedAmountService } = useSharedDependencies();
-  const [walletApprovalMethodPreference, currentMarketData, user] = useRootStore((store) => [
+  const { stkAbptMigrationService } = useSharedDependencies();
+  const [
+    walletApprovalMethodPreference,
+    currentMarketData,
+    user,
+    estimateGasLimit,
+    addTransaction,
+  ] = useRootStore((store) => [
     store.walletApprovalMethodPreference,
     store.currentMarketData,
     store.account,
+    store.estimateGasLimit,
+    store.addTransaction,
   ]);
-  // const { sendTx } = useWeb3Context();
+  const { sendTx } = useWeb3Context();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-  const { approvalTxState, mainTxState, loadingTxns, setApprovalTxState } = useModalContext();
+  const {
+    approvalTxState,
+    mainTxState,
+    loadingTxns,
+    setApprovalTxState,
+    setMainTxState,
+    setLoadingTxns,
+    setTxError,
+  } = useModalContext();
 
   const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
   console.log(usePermit);
@@ -36,8 +56,10 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
     spender: AaveSafetyModule.STK_ABPT_STK_AAVE_WSTETH_BPTV2_MIGRATOR,
   });
 
-  console.log(fetchingApprovedAmount, isFetchedAfterMount);
+  setLoadingTxns(fetchingApprovedAmount);
 
+  console.log('amount to migrate', amountToMigrate);
+  console.log('approved amount', approvedAmount);
   const requiresApproval =
     Number(amountToMigrate) !== 0 &&
     checkRequiresApproval({
@@ -52,8 +74,14 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
     setApprovalTxState({});
   }
 
+  useEffect(() => {
+    if (!isFetchedAfterMount) {
+      fetchApprovedAmount();
+    }
+  }, [fetchApprovedAmount, isFetchedAfterMount]);
+
   const { approval } = useApprovalTx({
-    usePermit: false,
+    usePermit,
     approvedAmount: {
       user,
       token: AaveSafetyModule.STK_ABPT,
@@ -62,16 +90,64 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
     },
     requiresApproval,
     assetAddress: AaveSafetyModule.STK_ABPT,
-    symbol: 'STK_ABPT',
+    symbol: 'stkABPT',
     decimals: 18,
     signatureAmount: amountToMigrate,
     onApprovalTxConfirmed: fetchApprovedAmount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
 
-  console.log(requiresApproval);
+  console.log('requires approval', requiresApproval);
+
   const action = async () => {
-    console.log('todo');
+    try {
+      setMainTxState({ ...mainTxState, loading: true });
+      let response: TransactionResponse;
+
+      // TODO: figure out slippage value
+      const amount = valueToWei(amountToMigrate, 18);
+      const minOutputAmount = valueToBigNumber(amount).multipliedBy(0.999).toString();
+      console.log('min output amount', minOutputAmount);
+
+      if (usePermit && signatureParams) {
+        let txData = await stkAbptMigrationService.migrateWithPermit(
+          user,
+          amount,
+          minOutputAmount,
+          signatureParams.signature,
+          signatureParams.deadline
+        );
+
+        txData = await estimateGasLimit(txData);
+        response = await sendTx(txData);
+        await response.wait(1);
+      } else {
+        let txData = await stkAbptMigrationService.migrate(user, amount, minOutputAmount);
+        txData = await estimateGasLimit(txData);
+        response = await sendTx(txData);
+        await response.wait(1);
+      }
+
+      setMainTxState({
+        txHash: response.hash,
+        loading: false,
+        success: true,
+      });
+      addTransaction(response.hash, {
+        action: 'todo',
+        txState: 'success',
+        asset: AaveSafetyModule.STK_ABPT,
+        amount: amountToMigrate,
+        assetName: 'stkABPT',
+      });
+    } catch (e) {
+      const parsedError = getErrorTextFromError(e, TxAction.GAS_ESTIMATION, false);
+      setTxError(parsedError);
+      setMainTxState({
+        txHash: undefined,
+        loading: false,
+      });
+    }
   };
 
   return (
@@ -88,6 +164,7 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
       requiresAmount
       handleApproval={approval}
       approvalTxState={approvalTxState}
+      tryPermit
     />
   );
 };
