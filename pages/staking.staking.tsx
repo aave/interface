@@ -234,7 +234,7 @@ export default function Staking() {
                   stakeTitle="ABPTV2"
                   stakedToken="ABPTV2"
                   maxSlash="0.3"
-                  icon="stkbpt"
+                  icon="stkbptv2"
                   stakeData={stkBptV2}
                   stakeUserData={stkBptV2UserData}
                   onStakeAction={() => openStake(Stake.bptv2, 'stkBPT v2')}
