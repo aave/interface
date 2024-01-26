@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-25 18:05\n"
+"PO-Revision-Date: 2024-01-26 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -53,8 +53,8 @@ msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Tolérance de glissement </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "Les détenteurs d’AAVE (réseau Ethereum uniquement) peuvent staker leur AAVE dans le module de sécurité pour ajouter plus de sécurité au protocole et gagner des incitations à la sécurité. Dans le cas d’un événement de déficit, jusqu’à 30 % de votre mise peut être réduite pour couvrir le déficit, offrant ainsi une couche de protection supplémentaire au protocole."
+msgid "AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
@@ -1107,6 +1107,7 @@ msgid "Get ABP Token"
 msgstr "Obtenir le jeton ABP"
 
 #: src/modules/staking/GetGhoToken.tsx
+#: src/modules/staking/StakingPanel.tsx
 msgid "Get GHO"
 msgstr ""
 
