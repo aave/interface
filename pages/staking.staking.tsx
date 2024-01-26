@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
@@ -231,7 +232,7 @@ export default function Staking() {
                 sx={{ display: { xs: !isStkBpt ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
-                  stakeTitle="ABPTV2"
+                  stakeTitle="ABPT V2"
                   stakedToken="ABPTV2"
                   maxSlash="0.3"
                   icon="stkbptv2"
@@ -263,9 +264,36 @@ export default function Staking() {
                   onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
                   onMigrateAction={() => openStakingMigrate()}
-                  headerAction={<GetABPToken />}
+                  headerAction={
+                    <Box
+                      sx={(theme) => ({
+                        backgroundColor: theme.palette.warning.main,
+                        borderRadius: 12,
+                        height: '16px',
+                        width: '84px',
+                      })}
+                    >
+                      <Typography sx={{ px: 2 }} color="white" variant="caption">
+                        Deprecated
+                      </Typography>
+                    </Box>
+                  }
                   inPostSlashing
-                />
+                >
+                  <Box
+                    sx={{
+                      mt: 4,
+                    }}
+                  >
+                    <Warning severity="warning" sx={{ mb: 0 }}>
+                      <Trans>
+                        As a result of governance decisions, the existing ABPT staking pool is now
+                        deprecated. You have the flexibility to either migrate all of your tokens or
+                        unstake them without any cooldown period. Learn more
+                      </Trans>
+                    </Warning>
+                  </Box>
+                </StakingPanel>
               </Grid>
             </Grid>
           </>

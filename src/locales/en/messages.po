@@ -264,7 +264,7 @@ msgstr "Approving {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
 
-#: src/modules/staking/StakingPanel.tsx
+#: pages/staking.staking.tsx
 msgid "As a result of governance decisions, the existing ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens or unstake them without any cooldown period. Learn more"
 msgstr "As a result of governance decisions, the existing ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens or unstake them without any cooldown period. Learn more"
 
@@ -2148,6 +2148,7 @@ msgid "Stablecoin"
 msgstr "Stablecoin"
 
 #: src/components/transactions/Stake/StakeActions.tsx
+#: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Stake"

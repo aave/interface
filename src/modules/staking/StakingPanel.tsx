@@ -22,13 +22,11 @@ import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
-import { GetABPToken } from './GetABPToken';
 import { StakeActionBox } from './StakeActionBox';
 
 function secondsToDHMS(seconds: number) {
@@ -86,69 +84,6 @@ export interface StakingPanelProps {
   children?: React.ReactNode;
 }
 
-const StakingPanelHeader = ({
-  stakedToken,
-  downToXsm,
-}: {
-  stakedToken: string;
-  downToXsm: boolean;
-}) => {
-  const headers: { [stakedToken: string]: React.ReactNode } = {
-    AAVE: (
-      <>
-        {downToXsm && <TokenIcon symbol="aave" sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />}
-        <Typography variant="h3">AAVE</Typography>
-      </>
-    ),
-    GHO: (
-      <>
-        {downToXsm && <TokenIcon symbol="aave" sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />}
-        <Typography variant="h3">GHO</Typography>
-      </>
-    ),
-    ABPT: (
-      <Stack direction="column" gap={3}>
-        <Stack direction="row" alignItems="center" gap={2}>
-          {downToXsm && (
-            <TokenIcon symbol="stkbpt" sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
-          )}
-          <Typography variant="h3">ABPT v1</Typography>
-          <Box
-            sx={(theme) => ({
-              backgroundColor: theme.palette.warning.main,
-              borderRadius: 12,
-              height: '16px',
-              width: '84px',
-            })}
-          >
-            <Typography sx={{ px: 2 }} color="white" variant="caption">
-              Deprecated
-            </Typography>
-          </Box>
-        </Stack>
-        <Warning severity="warning" sx={{ mb: 0 }}>
-          <Trans>
-            As a result of governance decisions, the existing ABPT staking pool is now deprecated.
-            You have the flexibility to either migrate all of your tokens or unstake them without
-            any cooldown period. Learn more
-          </Trans>
-        </Warning>
-      </Stack>
-    ),
-    ABPTV2: (
-      <>
-        {downToXsm && <TokenIcon symbol="stkbpt" sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />}
-        <Typography variant="h3">ABPT v2</Typography>
-        <Box sx={{ ml: 3 }}>
-          <GetABPToken />
-        </Box>
-      </>
-    ),
-  };
-
-  return headers[stakedToken];
-};
-
 export const StakingPanel: React.FC<StakingPanelProps> = ({
   onStakeAction,
   onStakeRewardClaimAction,
@@ -156,7 +91,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   onCooldownAction,
   onUnstakeAction,
   onMigrateAction,
+  headerAction,
   stakedToken,
+  stakeTitle,
   icon,
   stakeData,
   stakeUserData,
@@ -225,12 +162,15 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
       <Box
         sx={{
-          display: 'flex',
+          display: { xs: 'none', xsm: 'flex' },
           alignItems: 'center',
           mb: 8,
         }}
       >
-        {StakingPanelHeader({ stakedToken, downToXsm: !xsm })}
+        <Typography variant="h3">
+          <Trans>Stake</Trans> {stakeTitle}
+        </Typography>
+        {headerAction && <Box sx={{ ml: 3 }}>{headerAction}</Box>}
       </Box>
 
       <Box
@@ -271,7 +211,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           >
             <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
             <Typography variant={xsm ? 'subheader1' : 'h4'} ml={2}>
-              {stakedToken}
+              {stakeTitle}
             </Typography>
           </Box>
         )}
@@ -374,7 +314,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             valueUSD={stakedUSD}
             dataCy={`stakedBox_${stakedToken}`}
             bottomLineTitle={<></>}
-            bottomLineComponent={<></>}
+            bottomLineComponent={<Box sx={{ height: '20px' }} />}
           >
             <Stack direction="row" gap={2} alignItems="center">
               <Button variant="outlined" fullWidth onClick={onMigrateAction}>
