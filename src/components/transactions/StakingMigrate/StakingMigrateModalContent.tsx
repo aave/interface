@@ -54,11 +54,11 @@ export const StakingMigrateModalContent = () => {
         value={amount}
         onChange={handleChange}
         usdValue={amountInUsd.toString()}
-        symbol={Stake.bpt}
+        symbol="stkBPT"
         assets={[
           {
             balance: maxAmountToMigrate.toString(),
-            symbol: Stake.bpt,
+            symbol: 'stkBPT',
           },
         ]}
         isMaxSelected={isMaxSelected}

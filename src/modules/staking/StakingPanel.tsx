@@ -25,6 +25,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { useModalContext } from 'src/hooks/useModal';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { GetABPToken } from './GetABPToken';
