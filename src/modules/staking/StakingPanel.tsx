@@ -282,7 +282,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             fullWidth={!xsm}
             data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
           >
-            <Trans>Buy GHO</Trans>
+            <Trans>Get GHO</Trans>
           </Button>
         ) : (
           <Button
