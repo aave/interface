@@ -108,7 +108,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                       Link: 'Raw Ipfs',
                     })
                   }
-                  href={`${ipfsGateway}/${proposal.proposal.ipfsHash}`}
+                  href={`${ipfsGateway}/${proposal.proposal.proposalMetadata.ipfsHash}`}
                   startIcon={
                     <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
                       <DownloadIcon />
