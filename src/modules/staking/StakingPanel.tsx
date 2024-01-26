@@ -199,22 +199,25 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           },
         })}
       >
-        {xsm && (
-          <Box
-            sx={{
-              display: 'flex',
-              width: { xs: '100%', xsm: 'unset' },
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mb: { xs: 3, xsm: 0 },
-            }}
-          >
-            <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
-            <Typography variant={xsm ? 'subheader1' : 'h4'} ml={2}>
-              {stakeTitle}
-            </Typography>
-          </Box>
-        )}
+        <Box
+          sx={{
+            display: 'flex',
+            width: { xs: '100%', xsm: 'unset' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: { xs: 3, xsm: 0 },
+          }}
+        >
+          <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
+          <Typography variant={xsm ? 'subheader1' : 'h4'} ml={2}>
+            {stakedToken}
+          </Typography>
+          {headerAction && (
+            <Box sx={{ display: { xs: 'block', xsm: 'none' }, textAlign: 'right', flexGrow: 1 }}>
+              {headerAction}
+            </Box>
+          )}
+        </Box>
 
         <Box
           sx={{
