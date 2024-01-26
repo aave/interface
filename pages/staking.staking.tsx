@@ -77,6 +77,7 @@ export default function Staking() {
     openUnstake,
     openStakeRewardsClaim,
     openStakeRewardsRestakeClaim,
+    openStakingMigrate,
   } = useModalContext();
 
   const [mode, setMode] = useState<Stake>(Stake.aave);
@@ -263,6 +264,7 @@ export default function Staking() {
                   onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
                   headerAction={<GetABPToken />}
+                  onMigrateAction={() => openStakingMigrate(Stake.bpt, 'stkBPT')}
                 />
               </Grid>
             </Grid>
