@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import {
   GeneralStakeUIDataHumanized,
   GetUserStakeUIDataHumanized,
@@ -165,6 +166,11 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
+  const { openSwitch } = useModalContext();
+
+  const handleSwitchClick = () => {
+    openSwitch('', ChainId.mainnet);
+  };
 
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
@@ -326,7 +332,18 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </Box>
 
         {/**Stake action */}
-        {!inPostSlashing && stakedToken !== 'ABPT' && (
+
+        {stakedToken === 'GHO' && +availableToStake === 0 ? (
+          <Button
+            variant="contained"
+            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+            onClick={handleSwitchClick}
+            fullWidth={!xsm}
+            data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
+          >
+            <Trans>Get GHO</Trans>
+          </Button>
+        ) : (
           <Button
             variant="contained"
             sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}

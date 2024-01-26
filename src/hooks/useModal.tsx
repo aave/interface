@@ -45,6 +45,7 @@ export interface ModalArgsType {
   emode?: EmodeModalType;
   isFrozen?: boolean;
   representatives?: Array<{ chainId: ChainId; representative: string }>;
+  chainId?: number;
 }
 
 export type TxStateType = {
@@ -105,7 +106,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openRevokeGovDelegation: () => void;
   openV3Migration: () => void;
   openGovVote: (proposal: EnhancedProposal, support: boolean, power: string) => void;
-  openSwitch: (underlyingAsset?: string) => void;
+  openSwitch: (underlyingAsset?: string, chainId?: number) => void;
   openStakingMigrate: () => void;
   openGovRepresentatives: (
     representatives: Array<{ chainId: ChainId; representative: string }>
@@ -316,10 +317,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });
           setType(ModalType.V3Migration);
         },
-        openSwitch: (underlyingAsset) => {
+        openSwitch: (underlyingAsset, chainId) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Switch' });
           setType(ModalType.Switch);
-          setArgs({ underlyingAsset });
+          setArgs({ underlyingAsset, chainId });
         },
         openStakingMigrate: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Staking V1->V2 Migration' });
