@@ -25,7 +25,7 @@ export const SwitchModal = () => {
   const {
     type,
     close,
-    args: { underlyingAsset },
+    args: { underlyingAsset, chainId },
   } = useModalContext();
 
   const currentChainId = useRootStore((store) => store.currentChainId);
@@ -40,12 +40,15 @@ export const SwitchModal = () => {
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
 
   useEffect(() => {
-    if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === currentChainId))
+    // Passing chainId as prop will set default network for switch modal
+    if (chainId && supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === chainId)) {
+      setSelectedChainId(chainId);
+    } else if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === currentChainId)) {
       setSelectedChainId(currentChainId);
-    else {
+    } else {
       setSelectedChainId(defaultNetwork.chainId);
     }
-  }, [currentChainId]);
+  }, [currentChainId, chainId]);
 
   const marketsBySupportedNetwork = useMemo(
     () =>

@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import {
   GeneralStakeUIDataHumanized,
   GetUserStakeUIDataHumanized,
@@ -106,7 +107,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const { openSwitch } = useModalContext();
 
   const handleSwitchClick = () => {
-    openSwitch();
+    openSwitch('', ChainId.mainnet);
   };
 
   // Cooldown logic
