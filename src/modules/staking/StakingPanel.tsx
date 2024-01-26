@@ -318,7 +318,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </Box>
 
         {/**Stake action */}
-        {!inPostSlashing && (
+        {!inPostSlashing && stakedToken !== 'ABPT' && (
           <Button
             variant="contained"
             sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
@@ -541,7 +541,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               </Box>
             )}
 
-            {!isCooldownActive && (
+            {!isCooldownActive && stakedToken !== 'ABPT' && (
               <Button
                 variant="outlined"
                 fullWidth
@@ -550,6 +550,18 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 data-cy={`coolDownBtn_${stakedToken}`}
               >
                 <Trans>Cooldown to unstake</Trans>
+              </Button>
+            )}
+
+            {!isCooldownActive && stakedToken == 'ABPT' && (
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={onMigrateAction}
+                disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}
+                data-cy={`coolDownBtn_${stakedToken}`}
+              >
+                <Trans>Migrate to V2</Trans>
               </Button>
             )}
           </StakeActionBox>
