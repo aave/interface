@@ -152,6 +152,13 @@ export const SwapModalContent = ({
             collateral to perform this action
           </Trans>
         );
+      case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
+        return (
+          <Trans>
+            A flash loan is required to perform the repay, but this asset is not availalbe to use
+            with a flash loan. Try lowering the amount or supplying more collateral.
+          </Trans>
+        );
       default:
         return null;
     }

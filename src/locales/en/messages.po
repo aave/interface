@@ -47,6 +47,10 @@ msgstr "<0>Attention:</0> Parameter changes via governance can alter your accoun
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "A flash loan is required to perform the repay, but this asset is not availalbe to use with a flash loan. Try lowering the amount or supplying more collateral."
+msgstr "A flash loan is required to perform the repay, but this asset is not availalbe to use with a flash loan. Try lowering the amount or supplying more collateral."
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "A flash loan is required to perform the repay, but this asset is not availalbe to use with a flash loan. Try lowering the repay amount or supplying more collateral."
 msgstr "A flash loan is required to perform the repay, but this asset is not availalbe to use with a flash loan. Try lowering the repay amount or supplying more collateral."
