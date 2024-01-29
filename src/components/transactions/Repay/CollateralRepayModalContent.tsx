@@ -208,7 +208,7 @@ export function CollateralRepayModalContent({
         return (
           <Trans>
             A flash loan is required to perform the repay, but this asset is not availalbe to use
-            with a flash loan. Try lowering the repay amount or supplying more collateral.
+            with a flash loan. Try lowering the amount or supplying more collateral.
           </Trans>
         );
       default:
