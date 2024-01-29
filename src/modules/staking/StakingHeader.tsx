@@ -43,10 +43,10 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
-              AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add
-              more security to the protocol and earn Safety Incentives. In the case of a shortfall
-              event, up to 30% of your stake can be slashed to cover the deficit, providing an
-              additional layer of protection for the protocol.
+              AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the
+              Safety Module to add more security to the protocol and earn Safety Incentives. In the
+              case of a shortfall event, your stake can be slashed to cover the deficit, providing
+              an additional layer of protection for the protocol.
             </Trans>{' '}
             <Link
               href="https://docs.aave.com/faq/migration-and-staking"
