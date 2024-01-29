@@ -41,15 +41,8 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
-  let stakeData;
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stakeData] = stakeGeneralResult.stakeData;
-  }
-
-  let stakeUserData;
-  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stakeUserData] = stakeUserResult.stakeUserData;
-  }
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // states
   const [_amount, setAmount] = useState('');
@@ -67,7 +60,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   };
 
   // staking token usd value
-  const amountInUsd = Number(amount) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 8));
+  const amountInUsd = Number(amount) * Number(stakeData?.stakeTokenPriceUSDFormatted);
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;

@@ -1,4 +1,5 @@
 import { Stake } from '@aave/contract-helpers';
+import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { Trans } from '@lingui/macro';
 import { Box, Grid, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
@@ -10,13 +11,12 @@ import { ContentContainer } from 'src/components/ContentContainer';
 import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
-// import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
@@ -58,16 +58,21 @@ export default function Staking() {
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
     useGeneralStakeUiData(currentMarketData);
 
-  let stkAave, stkBpt, stkGho, stkBptV2;
+  let stkAave: StakeTokenFormatted | undefined;
+  let stkBpt: StakeTokenFormatted | undefined;
+  let stkGho: StakeTokenFormatted | undefined;
+  let stkBptV2: StakeTokenFormatted | undefined;
 
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stkAave, stkBpt, stkGho, stkBptV2] = stakeGeneralResult.stakeData;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult)) {
+    [stkAave, stkBpt, stkGho, stkBptV2] = stakeGeneralResult;
   }
 
-  let stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData;
-  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData] =
-      stakeUserResult.stakeUserData;
+  let stkAaveUserData: StakeUIUserData | undefined;
+  let stkBptUserData: StakeUIUserData | undefined;
+  let stkGhoUserData: StakeUIUserData | undefined;
+  let stkBptV2UserData: StakeUIUserData | undefined;
+  if (stakeUserResult && Array.isArray(stakeUserResult)) {
+    [stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData] = stakeUserResult;
   }
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
@@ -166,10 +171,10 @@ export default function Staking() {
                 <StakingPanel
                   stakeTitle="AAVE"
                   stakedToken="AAVE"
-                  maxSlash="0.3"
+                  maxSlash={stkAave?.maxSlashablePercentageFormatted || '0'}
                   icon="aave"
                   stakeData={stkAave}
-                  stakeUserData={stkAaveUserData} // todo change?
+                  stakeUserData={stkAaveUserData}
                   onStakeAction={() => openStake(Stake.aave, 'AAVE')}
                   onCooldownAction={() => openStakeCooldown(Stake.aave)}
                   onUnstakeAction={() => openUnstake(Stake.aave, 'AAVE')}
@@ -210,7 +215,7 @@ export default function Staking() {
                 <StakingPanel
                   stakeTitle="GHO"
                   stakedToken="GHO"
-                  maxSlash="0.99" // TODO fetch from contracts
+                  maxSlash={stkGho?.maxSlashablePercentageFormatted || '0'}
                   icon="gho"
                   stakeData={stkGho}
                   stakeUserData={stkGhoUserData}
@@ -230,7 +235,7 @@ export default function Staking() {
                 <StakingPanel
                   stakeTitle="ABPT V2"
                   stakedToken="ABPTV2"
-                  maxSlash="0.3"
+                  maxSlash={stkBptV2?.maxSlashablePercentageFormatted || '0'}
                   icon="stkbptv2"
                   stakeData={stkBptV2}
                   stakeUserData={stkBptV2UserData}
@@ -253,7 +258,7 @@ export default function Staking() {
                 <StakingPanel
                   stakeTitle="ABPT"
                   stakedToken="ABPT"
-                  maxSlash="0.3"
+                  maxSlash={stkBpt?.maxSlashablePercentageFormatted || '0'}
                   icon="stkbpt"
                   stakeData={stkBpt}
                   stakeUserData={stkBptUserData}

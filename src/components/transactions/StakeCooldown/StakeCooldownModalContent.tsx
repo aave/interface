@@ -50,15 +50,8 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
 
-  let stakeData;
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stakeData] = stakeGeneralResult.stakeData;
-  }
-
-  let stakeUserData;
-  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stakeUserData] = stakeUserResult.stakeUserData;
-  }
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;

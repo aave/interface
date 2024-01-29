@@ -19,15 +19,8 @@ export const StakingMigrateModalContent = () => {
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.bpt);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, Stake.bpt);
 
-  let stakeData;
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stakeData] = stakeGeneralResult.stakeData;
-  }
-
-  let stakeUserData;
-  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stakeUserData] = stakeUserResult.stakeUserData;
-  }
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
@@ -44,9 +37,8 @@ export const StakingMigrateModalContent = () => {
   };
 
   // staking token usd value
-  const amountInUsd = Number(amount) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 8));
+  const amountInUsd = Number(amount) * Number(stakeData?.stakeTokenPriceUSDFormatted);
 
-  console.log(stakeData);
   return (
     <>
       <TxModalTitle title="Migrate to ABPT v2" />

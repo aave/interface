@@ -1,8 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import {
-  GeneralStakeUIDataHumanized,
-  GetUserStakeUIDataHumanized,
-} from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
+import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -23,6 +20,7 @@ import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -73,7 +71,7 @@ export interface StakingPanelProps {
   onCooldownAction?: () => void;
   onUnstakeAction?: () => void;
   onMigrateAction?: () => void;
-  stakeData?: GeneralStakeUIDataHumanized['stakeData'][0];
+  stakeData?: StakeTokenFormatted;
   stakeUserData?: GetUserStakeUIDataHumanized['stakeUserData'][0];
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
@@ -239,11 +237,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           >
             <Trans>Staking APR</Trans>
           </Typography>
-          <FormattedNumber
-            value={parseFloat(stakeData?.stakeApy || '0') / 10000}
-            percent
-            variant="secondary14"
-          />
+          <FormattedNumber value={stakeData.stakeApyFormatted} percent variant="secondary14" />
         </Box>
         <Box
           sx={{
