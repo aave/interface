@@ -2,7 +2,7 @@ import { defineConfig } from 'cypress';
 
 import { defaultConfig } from '../base.cypress';
 
-const folder = `./cypress/e2e/1-v3-markets/6-bnb-v3-market/`;
+const folder = `./cypress/e2e/1-v3-markets/8-bnb-v3-market/`;
 
 export default defineConfig({
   ...defaultConfig,
