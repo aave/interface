@@ -61,6 +61,11 @@ const donors: Donors = {
     donorWalletAddress: '0x458cd345b4c05e8df39d0a07220feb4ec19f5e6f',
     tokenAddress: '0xd0Dd6cEF72143E22cCED4867eb0d5F2328715533',
   },
+  aBNBBnbV3: {
+    name: 'aBNB',
+    donorWalletAddress: '0x2F064D92e862F30041DEA4667eF8899E07Bb4Edf',
+    tokenAddress: '0x9B00a09492a626678E5A3009982191586C444Df9',
+  },
   aETHEthereumV2: {
     name: 'aETH',
     donorWalletAddress: '0x1111567E0954E74f6bA7c4732D534e75B81DC42E',
