@@ -11,6 +11,14 @@ import {
 
 const testCases = [
   {
+    asset: assets.staking.GHO,
+    amount: 5,
+    checkAmount: '5.00',
+    checkAmountFinal: '10.00',
+    tabValue: 'gho',
+    changeApproval: false,
+  },
+  {
     asset: assets.staking.AAVE,
     amount: 5,
     checkAmount: '5.00',
@@ -18,14 +26,14 @@ const testCases = [
     tabValue: 'aave',
     changeApproval: true,
   },
-  // {
-  //   asset: assets.staking.ABPT,
-  //   amount: 5,
-  //   checkAmount: '5.00',
-  //   checkAmountFinal: '10.00',
-  //   tabValue: 'bpt',
-  //   changeApproval: false,
-  // },
+  {
+    asset: assets.staking.ABPT,
+    amount: 5,
+    checkAmount: '5.00',
+    checkAmountFinal: '10.00',
+    tabValue: 'bpt',
+    changeApproval: false,
+  },
 ];
 
 testCases.forEach(
@@ -83,7 +91,7 @@ testCases.forEach(
           amount: testCase.amount,
           checkAmount: testCase.checkAmountFinal,
           tabValue: testCase.tabValue,
-          hasApproval: true,
+          hasApproval: testCase.asset.shortName === 'GHO' ? false : true,
           changeApproval: testCase.changeApproval,
         },
         skipTestState,

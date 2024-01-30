@@ -59,7 +59,7 @@ export const stake = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open staking page`, () => {
       cy.get('[data-cy="menuStake"]').click();
-
+      if (asset.shortName === 'GHO') cy.wait(5000);
       cy.get(`button[value="${tabValue}"]`).then(($clickable) => {
         if ($clickable.prop('disabled')) return;
         $clickable.click();
