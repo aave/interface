@@ -6,6 +6,7 @@ import {
 } from '@aave/contract-helpers';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import {
   Timeline,
   TimelineConnector,
@@ -15,9 +16,9 @@ import {
   timelineItemClasses,
   TimelineSeparator,
 } from '@mui/lab';
-import { Button, Paper, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, Button, IconButton, Paper, SvgIcon, Typography, useTheme } from '@mui/material';
 import dayjs from 'dayjs';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
 import { EnhancedProposal } from 'src/hooks/governance/useProposal';
 import { useRootStore } from 'src/store/root';
@@ -47,6 +48,25 @@ export const ProposalLifecycle = ({
   }
 
   const proposalState = getLifecycleState(proposal, payloads);
+
+  const createdPayloadOrder = payloads.sort((a, b) => a.createdAt - b.createdAt);
+
+  const proposalCreatedSubsteps = createdPayloadOrder
+    .map<ProposalStepProps>((payload) => ({
+      completed: true,
+      active: proposalState === ProposalLifecycleStep.Created,
+      stepName: `Payload ${payload.id} was created`,
+      timestamp: formatTime(payload.createdAt),
+    }))
+    .concat([
+      {
+        completed: true,
+        active: proposalState === ProposalLifecycleStep.Created,
+        stepName: `Proposal ${proposal.proposal.id} was created`,
+        timestamp: formatTime(+proposal.proposal.transactions.created.timestamp),
+        lastStep: true,
+      },
+    ]);
 
   const votingClosedStepLabel = <Trans>Voting closed</Trans>;
   // TODO: show if passed/failed
@@ -82,6 +102,7 @@ export const ProposalLifecycle = ({
           active={proposalState === ProposalLifecycleStep.Created}
           stepName={<Trans>Created</Trans>}
           timestamp={formatTime(+proposal.proposal.transactions.created.timestamp)}
+          substeps={proposalCreatedSubsteps}
         />
         <ProposalStep
           completed={proposalState > ProposalLifecycleStep.OpenForVoting}
@@ -210,20 +231,29 @@ const formatTime = (timestamp: number) => {
   return dayjs.unix(timestamp).format('MMM D, YYYY h:mm A');
 };
 
+interface ProposalStepProps {
+  stepName: ReactNode;
+  timestamp: string;
+  lastStep?: boolean;
+  completed?: boolean;
+  active?: boolean;
+  substeps?: ProposalStepProps[];
+}
+
 const ProposalStep = ({
   stepName,
   timestamp,
   lastStep,
   completed,
   active,
-}: {
-  stepName: ReactNode;
-  timestamp: string;
-  lastStep?: boolean;
-  completed?: boolean;
-  active?: boolean;
-}) => {
+  substeps,
+}: ProposalStepProps) => {
   const theme = useTheme();
+  const [subtimelineOpen, setSubtimelineOpen] = useState(false);
+
+  const toggleSubtimeline = () => {
+    setSubtimelineOpen((open) => !open);
+  };
 
   return (
     <TimelineItem>
@@ -250,12 +280,28 @@ const ProposalStep = ({
         )}
       </TimelineSeparator>
       <TimelineContent>
-        <Typography sx={{ mt: -1.5 }} variant="main14">
-          {stepName}
-        </Typography>
-        <Typography variant="tooltip" color="text.muted">
-          {timestamp}
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box>
+            <Typography sx={{ mt: -1.5 }} variant="main14">
+              {stepName}
+            </Typography>
+            <Typography variant="tooltip" color="text.muted">
+              {timestamp}
+            </Typography>
+          </Box>
+          {substeps && (
+            <IconButton onClick={toggleSubtimeline}>
+              {subtimelineOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            </IconButton>
+          )}
+        </Box>
+        {substeps && subtimelineOpen && (
+          <Timeline>
+            {substeps.map((elem) => (
+              <ProposalStep key={elem.timestamp} {...elem} />
+            ))}
+          </Timeline>
+        )}
       </TimelineContent>
     </TimelineItem>
   );
