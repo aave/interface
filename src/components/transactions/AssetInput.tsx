@@ -64,6 +64,7 @@ export interface Asset {
   aToken?: boolean;
   priceInUsd?: string;
   decimals?: number;
+  logoURI: string;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
@@ -290,6 +291,7 @@ export const AssetInput = <T extends Asset = Asset>({
                           <ExternalTokenIcon
                             symbol={asset.iconSymbol || asset.symbol}
                             // aToken={asset.aToken}
+                            // eslint-disable-next-line
                             logoURI={asset.logoURI}
                             sx={{ mr: 2, ml: 4 }}
                           />
