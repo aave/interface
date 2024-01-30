@@ -79,7 +79,6 @@ export interface StakingPanelProps {
   stakedToken: string;
   maxSlash: string;
   icon: string;
-  inPostSlashing?: boolean; // if true, no cooldown, users can unstake immediately
   children?: React.ReactNode;
 }
 
@@ -97,7 +96,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   stakeData,
   stakeUserData,
   maxSlash,
-  inPostSlashing,
   children,
 }) => {
   const { breakpoints } = useTheme();
@@ -305,7 +303,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         direction={{ xs: 'column', xsm: 'row' }}
         sx={{ mt: 4, alignItems: { xsm: 'start' } }}
       >
-        {inPostSlashing && (
+        {stakeData.inPostSlashingPeriod && (
           <StakeActionBox
             title={
               <>
@@ -329,7 +327,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           </StakeActionBox>
         )}
         {/** Cooldown action */}
-        {!inPostSlashing && (
+        {!stakeData.inPostSlashingPeriod && (
           <StakeActionBox
             title={
               <>

@@ -9,12 +9,13 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
 import { AssetInput } from '../AssetInput';
+import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { GasStation } from '../GasStation/GasStation';
 import { StakingMigrateActions } from './StakingMigrateActions';
 
 export const StakingMigrateModalContent = () => {
-  const { gasLimit } = useModalContext();
+  const { gasLimit, mainTxState } = useModalContext();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.bpt);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, Stake.bpt);
@@ -27,7 +28,7 @@ export const StakingMigrateModalContent = () => {
 
   // const walletBalance = normalize(stakeUserData?.underlyingTokenUserBalance || '0', 18);
 
-  const maxAmountToMigrate = normalize(stakeUserData?.underlyingTokenUserBalance || '0', 18);
+  const maxAmountToMigrate = normalize(stakeUserData?.stakeTokenUserBalance || '0', 18);
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToMigrate : _amount;
   const handleChange = (value: string) => {
@@ -38,6 +39,15 @@ export const StakingMigrateModalContent = () => {
 
   // staking token usd value
   const amountInUsd = Number(amount) * Number(stakeData?.stakeTokenPriceUSDFormatted);
+
+  if (mainTxState.success)
+    return (
+      <TxSuccessView
+        action={<Trans>Migrated</Trans>}
+        amount={amountRef.current}
+        symbol={'stkbptv2'}
+      />
+    );
 
   return (
     <>

@@ -1471,6 +1471,7 @@ msgid "Migrate to {0} v3 Market"
 msgstr "Migrate to {0} v3 Market"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Migrated"
 msgstr "Migrated"
 

@@ -1,9 +1,11 @@
-import { valueToWei } from '@aave/contract-helpers';
-import { valueToBigNumber } from '@aave/math-utils';
+import { Stake, valueToWei } from '@aave/contract-helpers';
 import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
+import { BigNumber } from 'ethers';
+import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
+import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -11,6 +13,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -42,6 +45,8 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
     setLoadingTxns,
     setTxError,
   } = useModalContext();
+  const { data: stkBpt } = useGeneralStakeUiData(currentMarketData, Stake.bpt);
+  const { data: stkBptV2 } = useGeneralStakeUiData(currentMarketData, Stake.bptv2);
 
   const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
@@ -100,28 +105,35 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
       setMainTxState({ ...mainTxState, loading: true });
       let response: TransactionResponse;
 
-      // TODO: figure out slippage value
+      if (!stkBpt || !stkBptV2) return;
+
       const amount = valueToWei(amountToMigrate, 18);
-      const minOutputAmount = valueToBigNumber(amount).multipliedBy(0.999).toString();
+
+      const expectedBptOut = BigNumber.from(amount)
+        .mul(BigNumber.from(stkBpt[0].stakeTokenPriceUSD))
+        .div(BigNumber.from(stkBptV2[0].stakeTokenPriceUSD));
+
+      const minBptOutWithSlippage = expectedBptOut.mul(9999).div(10000).toString();
 
       if (usePermit && signatureParams) {
         let txData = await stkAbptMigrationService.migrateWithPermit(
           user,
           amount,
-          minOutputAmount,
+          minBptOutWithSlippage,
           signatureParams.signature,
           signatureParams.deadline
         );
-
         txData = await estimateGasLimit(txData);
         response = await sendTx(txData);
         await response.wait(1);
       } else {
-        let txData = await stkAbptMigrationService.migrate(user, amount, minOutputAmount);
+        let txData = await stkAbptMigrationService.migrate(user, amount, minBptOutWithSlippage);
         txData = await estimateGasLimit(txData);
         response = await sendTx(txData);
         await response.wait(1);
       }
+
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.staking });
 
       setMainTxState({
         txHash: response.hash,

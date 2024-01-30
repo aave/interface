@@ -282,7 +282,6 @@ export default function Staking() {
                       </Typography>
                     </Box>
                   }
-                  inPostSlashing
                 >
                   <Box
                     sx={{
