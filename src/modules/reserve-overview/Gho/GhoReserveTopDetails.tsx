@@ -37,7 +37,11 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ComputedReserveData
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem title={<Trans>Available to borrow</Trans>} loading={loading} hideIcon>
+      <TopInfoPanelItem
+        title={<Trans>Maximum available to borrow</Trans>}
+        loading={loading}
+        hideIcon
+      >
         <FormattedNumber
           value={reserve.borrowCap}
           symbol="USD"
