@@ -131,8 +131,6 @@ export const SwapModalContent = ({
     blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
   } else if (!remainingSupplyCap.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
-  } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
-    blockingError = ErrorType.HF_BELOW_ONE;
   } else if (shouldUseFlashloan && !poolReserve.flashLoanEnabled) {
     blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
@@ -141,12 +139,6 @@ export const SwapModalContent = ({
     switch (blockingError) {
       case ErrorType.SUPPLY_CAP_REACHED:
         return <Trans>Supply cap on target reserve reached. Try lowering the amount.</Trans>;
-      case ErrorType.HF_BELOW_ONE:
-        return (
-          <Trans>
-            The effects on the health factor would cause liquidation. Try lowering the amount.
-          </Trans>
-        );
       case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
         return (
           <Trans>
