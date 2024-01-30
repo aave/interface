@@ -9,7 +9,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 // import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
-import TOKEN_LIST from 'src/ui-config/tokenList.json';
+import TOKEN_LIST from 'src/ui-config/TokenList.json';
 // import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
   CustomMarket,
