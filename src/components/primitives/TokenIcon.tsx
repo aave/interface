@@ -164,6 +164,26 @@ function SingleTokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
   );
 }
 
+/**
+ * Renders a tokenIcon specified by url.
+ * TokenIcons are expected to be non protocol related assets for swaps
+ * @param param0
+ * @returns
+ */
+
+interface ExternalTokenIconProps extends IconProps {
+  symbol: string;
+  logoURI: string;
+}
+
+export function ExternalTokenIcon({ symbol, logoURI, ...rest }: ExternalTokenIconProps) {
+  return (
+    <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
+      <img src={logoURI} width="100%" height="100%" alt={`${symbol} icon`} />
+    </Icon>
+  );
+}
+
 interface MultiTokenIconProps extends IconProps {
   symbols: string[];
   badgeSymbol?: string;

@@ -23,7 +23,7 @@ import { useRootStore } from 'src/store/root';
 import { CapType } from '../caps/helper';
 import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
-import { TokenIcon } from '../primitives/TokenIcon';
+import { ExternalTokenIcon, TokenIcon } from '../primitives/TokenIcon';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -85,6 +85,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   selectOptionHeader?: ReactNode;
   selectOption?: (asset: T) => ReactNode;
   sx?: BoxProps;
+  swapAssets: boolean;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -105,6 +106,7 @@ export const AssetInput = <T extends Asset = Asset>({
   event,
   selectOptionHeader,
   selectOption,
+  swapAssets = false,
   sx = {},
 }: AssetInputProps<T>) => {
   const theme = useTheme();
@@ -245,11 +247,21 @@ export const AssetInput = <T extends Asset = Asset>({
                       sx={{ display: 'flex', alignItems: 'center' }}
                       data-cy={`assetsSelectedOption_${asset.symbol.toUpperCase()}`}
                     >
-                      <TokenIcon
-                        symbol={asset.iconSymbol || asset.symbol}
-                        aToken={asset.aToken}
-                        sx={{ mr: 2, ml: 4 }}
-                      />
+                      {!swapAssets ? (
+                        <TokenIcon
+                          symbol={asset.iconSymbol || asset.symbol}
+                          aToken={asset.aToken}
+                          sx={{ mr: 2, ml: 4 }}
+                        />
+                      ) : (
+                        <ExternalTokenIcon
+                          symbol={asset.iconSymbol || asset.symbol}
+                          // aToken={asset.aToken}
+                          logoURI={asset.logoURI}
+                          sx={{ mr: 2, ml: 4 }}
+                        />
+                      )}
+
                       <Typography variant="main16" color="text.primary">
                         {symbol}
                       </Typography>
@@ -268,11 +280,21 @@ export const AssetInput = <T extends Asset = Asset>({
                       selectOption(asset)
                     ) : (
                       <>
-                        <TokenIcon
-                          aToken={asset.aToken}
-                          symbol={asset.iconSymbol || asset.symbol}
-                          sx={{ fontSize: '22px', mr: 1 }}
-                        />
+                        {!swapAssets ? (
+                          <TokenIcon
+                            aToken={asset.aToken}
+                            symbol={asset.iconSymbol || asset.symbol}
+                            sx={{ fontSize: '22px', mr: 1 }}
+                          />
+                        ) : (
+                          <ExternalTokenIcon
+                            symbol={asset.iconSymbol || asset.symbol}
+                            // aToken={asset.aToken}
+                            logoURI={asset.logoURI}
+                            sx={{ mr: 2, ml: 4 }}
+                          />
+                        )}
+
                         <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
                         {asset.balance && <FormattedNumber value={asset.balance} compact />}
                       </>

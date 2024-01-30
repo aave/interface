@@ -2,7 +2,7 @@ import { ArrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 
 import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 
@@ -14,6 +14,8 @@ export type SwitchTxSuccessViewProps = {
   outAmount?: string;
   outSymbol: string;
   outIconSymbol: string;
+  iconUri: string;
+  outIconUri: string;
 };
 
 export const SwitchTxSuccessView = ({
@@ -24,6 +26,8 @@ export const SwitchTxSuccessView = ({
   outAmount,
   outSymbol,
   outIconSymbol,
+  iconUri,
+  outIconUri,
 }: SwitchTxSuccessViewProps) => {
   return (
     <BaseSuccessView txHash={txHash}>
@@ -48,13 +52,17 @@ export const SwitchTxSuccessView = ({
             mt: 3,
           }}
         >
-          <TokenIcon sx={{ fontSize: '20px' }} symbol={iconSymbol} />
+          <ExternalTokenIcon sx={{ fontSize: '20px' }} logoURI={iconUri} symbol={iconSymbol} />
           <FormattedNumber value={Number(amount)} compact variant="main14" />
           <Typography variant="secondary14">{symbol}</Typography>
           <SvgIcon sx={{ fontSize: '14px' }}>
             <ArrowRightIcon fontSize="14px" />
           </SvgIcon>
-          <TokenIcon sx={{ fontSize: '20px' }} symbol={outIconSymbol} />
+          <ExternalTokenIcon
+            sx={{ fontSize: '20px' }}
+            logoURI={outIconUri}
+            symbol={outIconSymbol}
+          />
           <FormattedNumber value={Number(outAmount)} variant="main14" />
           <Typography variant="secondary14">{outSymbol}</Typography>
         </Box>
