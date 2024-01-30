@@ -207,8 +207,9 @@ export function CollateralRepayModalContent({
       case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
         return (
           <Trans>
-            A flash loan is required to perform the repay, but this asset is not availalbe to use
-            with a flash loan. Try lowering the amount or supplying more collateral.
+            Due to health factor impact, a flashloan is required to perform this transaction, but
+            Aave Governance has disabled flashloan availability for this asset. Try lowering the
+            amount or supplying additional collateral.
           </Trans>
         );
       default:

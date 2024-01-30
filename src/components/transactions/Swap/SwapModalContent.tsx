@@ -133,6 +133,8 @@ export const SwapModalContent = ({
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
   } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
     blockingError = ErrorType.HF_BELOW_ONE;
+  } else if (shouldUseFlashloan && !poolReserve.flashLoanEnabled) {
+    blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
 
   const BlockingError: React.FC = () => {
@@ -155,8 +157,9 @@ export const SwapModalContent = ({
       case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
         return (
           <Trans>
-            A flash loan is required to perform the repay, but this asset is not availalbe to use
-            with a flash loan. Try lowering the amount or supplying more collateral.
+            Due to health factor impact, a flashloan is required to perform this transaction, but
+            Aave Governance has disabled flashloan availability for this asset. Try lowering the
+            amount or supplying additional collateral.
           </Trans>
         );
       default:
