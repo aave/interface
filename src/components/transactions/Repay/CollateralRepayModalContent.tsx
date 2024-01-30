@@ -189,6 +189,8 @@ export function CollateralRepayModalContent({
     blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
   } else if (valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount)) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
+  } else if (shouldUseFlashloan && !collateralReserveData.flashLoanEnabled) {
+    blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
 
   const BlockingError: React.FC = () => {
@@ -200,6 +202,14 @@ export function CollateralRepayModalContent({
           <Trans>
             Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
             collateral to perform this action
+          </Trans>
+        );
+      case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
+        return (
+          <Trans>
+            Due to health factor impact, a flashloan is required to perform this transaction, but
+            Aave Governance has disabled flashloan availability for this asset. Try lowering the
+            amount or supplying additional collateral.
           </Trans>
         );
       default:
