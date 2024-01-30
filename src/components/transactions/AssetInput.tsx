@@ -64,7 +64,7 @@ export interface Asset {
   aToken?: boolean;
   priceInUsd?: string;
   decimals?: number;
-  logoURI: string;
+  logoURI?: string;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
@@ -86,7 +86,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   selectOptionHeader?: ReactNode;
   selectOption?: (asset: T) => ReactNode;
   sx?: BoxProps;
-  swapAssets: boolean;
+  swapAssets?: boolean;
 }
 
 export const AssetInput = <T extends Asset = Asset>({

@@ -173,7 +173,7 @@ function SingleTokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
 
 interface ExternalTokenIconProps extends IconProps {
   symbol: string;
-  logoURI: string;
+  logoURI?: string;
 }
 
 export function ExternalTokenIcon({ symbol, logoURI, ...rest }: ExternalTokenIconProps) {
