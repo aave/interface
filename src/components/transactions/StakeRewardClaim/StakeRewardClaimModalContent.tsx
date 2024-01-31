@@ -30,8 +30,6 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-// type StakingType = 'aave' | 'bpt';
-
 export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewardClaimProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
@@ -58,8 +56,8 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
     amountRef.current = maxSelected ? maxAmountToClaim : value;
     setAmount(value);
   };
-  // staking token usd value
-  const amountInUsd = Number(maxAmountToClaim) * Number(stakeData?.stakeTokenPriceUSDFormatted);
+
+  const amountInUsd = Number(amount) * Number(stakeData?.rewardTokenPriceUSDFormatted);
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;

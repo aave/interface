@@ -11,6 +11,7 @@ import { getStakeIndex, oracles, stakedTokens } from './common';
 export type StakeTokenFormatted = StakeTokenUIData & {
   stakeApyFormatted: string;
   stakeTokenPriceUSDFormatted: string;
+  rewardTokenPriceUSDFormatted: string;
   maxSlashablePercentageFormatted: string;
 };
 
@@ -40,5 +41,6 @@ function formatData(data: StakeTokenUIData[]): StakeTokenFormatted[] {
     maxSlashablePercentageFormatted: (Number(stakeData.maxSlashablePercentage) / 10000).toString(),
     stakeApyFormatted: (Number(stakeData.stakeApy) / 10000).toString(),
     stakeTokenPriceUSDFormatted: normalize(stakeData.stakeTokenPriceUSD, 8),
+    rewardTokenPriceUSDFormatted: normalize(stakeData.rewardTokenPriceUSD, 8),
   }));
 }
