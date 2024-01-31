@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-31 00:16\n"
+"PO-Revision-Date: 2024-01-31 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -920,7 +920,7 @@ msgstr "Descargar"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Due to health factor impact, a flashloan is required to perform this transaction, but Aave Governance has disabled flashloan availability for this asset. Try lowering the amount or supplying additional collateral."
-msgstr ""
+msgstr "Debido al impacto del factor de salud, se requiere un préstamo flash para realizar esta transacción, pero el Gobierno de Aave ha inhabilitado la disponibilidad de préstamos flash para este activo. Intenta reducir la cantidad o suministrar garantía adicional."
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
@@ -1440,7 +1440,7 @@ msgstr "La cantidad máxima disponible para suministrar está limitada porque el
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
-msgstr ""
+msgstr "Máximo disponible para tomar prestado"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Maximum loan to value"
