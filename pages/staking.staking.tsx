@@ -120,6 +120,11 @@ export default function Staking() {
   const isStkGho = mode === 'gho';
   const isStkBpt = mode === 'bpt';
 
+  const showAbptPanel =
+    !stkBpt?.inPostSlashingPeriod ||
+    stkBptUserData?.stakeTokenUserBalance !== '0' ||
+    stkBptUserData.userIncentivesToClaim !== '0';
+
   return (
     <>
       <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeDataLoading} />
@@ -253,8 +258,7 @@ export default function Staking() {
                 lg={6}
                 sx={{ display: { xs: !isStkBpt ? 'none' : 'block', lg: 'block' } }}
               >
-                {(stkBptUserData?.stakeTokenUserBalance !== '0' ||
-                  stkBptUserData.userIncentivesToClaim !== '0') && (
+                {showAbptPanel && (
                   <StakingPanel
                     stakeTitle="ABPT"
                     stakedToken="ABPT"
