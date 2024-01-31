@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-30 18:05\n"
+"PO-Revision-Date: 2024-01-31 00:16\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -915,6 +915,11 @@ msgstr ""
 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "Download"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to health factor impact, a flashloan is required to perform this transaction, but Aave Governance has disabled flashloan availability for this asset. Try lowering the amount or supplying additional collateral."
 msgstr ""
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
@@ -2411,10 +2416,6 @@ msgstr ""
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 msgstr "Η περίοδος ψύξης είναι {0}. Μετά την {1} περίοδο ψύξης, θα εισέλθετε στο παράθυρο ξεκλειδώματος {2}. Θα συνεχίσετε να λαμβάνετε ανταμοιβές κατά τη διάρκεια της ψύξης και του παραθύρου ξεκλειδώματος."
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
-msgstr "Οι επιπτώσεις στον συντελεστή υγείας θα προκαλούσαν ρευστοποίηση. Προσπαθήστε να μειώσετε το ποσό."
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
