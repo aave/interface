@@ -507,7 +507,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               </Box>
             )}
 
-            {!isCooldownActive && stakedToken !== 'ABPT' && (
+            {!isCooldownActive && (
               <Button
                 variant="outlined"
                 fullWidth
@@ -516,18 +516,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 data-cy={`coolDownBtn_${stakedToken}`}
               >
                 <Trans>Cooldown to unstake</Trans>
-              </Button>
-            )}
-
-            {!isCooldownActive && stakedToken == 'ABPT' && (
-              <Button
-                variant="outlined"
-                fullWidth
-                onClick={onMigrateAction}
-                disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}
-                data-cy={`coolDownBtn_${stakedToken}`}
-              >
-                <Trans>Migrate to V2</Trans>
               </Button>
             )}
           </StakeActionBox>

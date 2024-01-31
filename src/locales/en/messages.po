@@ -1461,10 +1461,6 @@ msgstr "Menu"
 msgid "Migrate"
 msgstr "Migrate"
 
-#: src/modules/staking/StakingPanel.tsx
-msgid "Migrate to V2"
-msgstr "Migrate to V2"
-
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"

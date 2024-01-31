@@ -268,34 +268,38 @@ export default function Staking() {
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
                   onMigrateAction={() => openStakingMigrate()}
                   headerAction={
-                    <Box
-                      sx={(theme) => ({
-                        backgroundColor: theme.palette.warning.main,
-                        borderRadius: 12,
-                        height: '16px',
-                        width: '84px',
-                        marginLeft: 'auto',
-                      })}
-                    >
-                      <Typography sx={{ px: 2 }} color="white" variant="caption">
-                        Deprecated
-                      </Typography>
-                    </Box>
+                    stkBpt?.inPostSlashingPeriod ? (
+                      <Box
+                        sx={(theme) => ({
+                          backgroundColor: theme.palette.warning.main,
+                          borderRadius: 12,
+                          height: '16px',
+                          width: '84px',
+                          marginLeft: 'auto',
+                        })}
+                      >
+                        <Typography sx={{ px: 2 }} color="white" variant="caption">
+                          Deprecated
+                        </Typography>
+                      </Box>
+                    ) : null
                   }
                 >
-                  <Box
-                    sx={{
-                      mt: 4,
-                    }}
-                  >
-                    <Warning severity="warning" sx={{ mb: 0 }}>
-                      <Trans>
-                        As a result of governance decisions, the existing ABPT staking pool is now
-                        deprecated. You have the flexibility to either migrate all of your tokens to
-                        v2 or unstake them without any cooldown period. Learn more
-                      </Trans>
-                    </Warning>
-                  </Box>
+                  {stkBpt?.inPostSlashingPeriod && (
+                    <Box
+                      sx={{
+                        mt: 4,
+                      }}
+                    >
+                      <Warning severity="warning" sx={{ mb: 0 }}>
+                        <Trans>
+                          As a result of governance decisions, the existing ABPT staking pool is now
+                          deprecated. You have the flexibility to either migrate all of your tokens
+                          to v2 or unstake them without any cooldown period. Learn more
+                        </Trans>
+                      </Warning>
+                    </Box>
+                  )}
                 </StakingPanel>
               </Grid>
               {/* )} */}
