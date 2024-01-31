@@ -289,7 +289,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             variant="contained"
             sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
             onClick={onStakeAction}
-            disabled={+availableToStake === 0}
+            disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
             fullWidth={!xsm}
             data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
           >
