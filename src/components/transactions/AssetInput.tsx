@@ -15,7 +15,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
@@ -113,6 +113,33 @@ export const AssetInput = <T extends Asset = Asset>({
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
     onSelect && onSelect(newAsset);
     onChange && onChange('');
+    handleCleanSearch();
+  };
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredAssets, setFilteredAssets] = useState(assets);
+
+  const handleSearchAssetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    const matchingAssets: T[] = [];
+    const nonMatchingAssets: T[] = [];
+    assets.forEach((asset) => {
+      const searchTerm = value.trim().toLowerCase();
+      const assetSymbol = asset.symbol.toLowerCase();
+      if (assetSymbol.includes(searchTerm)) {
+        matchingAssets.push(asset);
+      } else {
+        nonMatchingAssets.push(asset);
+      }
+    });
+    const filteredAndSortedAssets = [...matchingAssets, ...nonMatchingAssets];
+
+    setFilteredAssets(filteredAndSortedAssets);
+  };
+
+  const handleCleanSearch = () => {
+    setSearchTerm('');
+    setFilteredAssets(assets);
   };
 
   const asset =
@@ -210,16 +237,37 @@ export const AssetInput = <T extends Asset = Asset>({
                 disabled={disabled}
                 value={asset.symbol}
                 onChange={handleSelect}
+                onClose={handleCleanSearch}
                 variant="outlined"
                 className="AssetInput__select"
                 data-cy={'assetSelect'}
                 MenuProps={{
+                  autoFocus: false,
                   sx: {
                     maxHeight: '240px',
                     '.MuiPaper-root': {
                       border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
                       boxShadow: '0px 2px 10px 0px #0000001A',
                     },
+                  },
+                  MenuListProps: {
+                    subheader: (
+                      <Box sx={{ width: '144px' }}>
+                        <InputBase
+                          fullWidth
+                          placeholder="Search..."
+                          value={searchTerm}
+                          onChange={handleSearchAssetChange}
+                          onKeyDown={(event) => {
+                            event.stopPropagation();
+                          }}
+                          sx={{
+                            py: 2,
+                            px: 4,
+                          }}
+                        />
+                      </Box>
+                    ),
                   },
                 }}
                 sx={{
@@ -258,11 +306,12 @@ export const AssetInput = <T extends Asset = Asset>({
                 }}
               >
                 {selectOptionHeader ? selectOptionHeader : undefined}
-                {assets.map((asset) => (
+                {filteredAssets.map((asset) => (
                   <MenuItem
                     key={asset.symbol}
                     value={asset.symbol}
                     data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
+                    onClick={handleCleanSearch}
                   >
                     {selectOption ? (
                       selectOption(asset)
