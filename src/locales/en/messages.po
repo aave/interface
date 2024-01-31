@@ -236,6 +236,10 @@ msgstr "Amount in cooldown"
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
 
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Amount to migrate"
+msgstr "Amount to migrate"
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Amount to unstake"
 msgstr "Amount to unstake"
@@ -265,8 +269,8 @@ msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
 
 #: pages/staking.staking.tsx
-msgid "As a result of governance decisions, the existing ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period. Learn more"
-msgstr "As a result of governance decisions, the existing ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period. Learn more"
+msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period. Learn more"
+msgstr "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period. Learn more"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -1461,6 +1465,10 @@ msgstr "Menu"
 msgid "Migrate"
 msgstr "Migrate"
 
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Migrate to ABPT v2"
+msgstr "Migrate to ABPT v2"
+
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
@@ -1499,6 +1507,10 @@ msgstr "Minimum GHO borrow amount"
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Minimum USD value received"
 msgstr "Minimum USD value received"
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Minimum amount received"
+msgstr "Minimum amount received"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum staked Aave amount"

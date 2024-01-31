@@ -1,11 +1,9 @@
-import { Stake, valueToWei } from '@aave/contract-helpers';
+import { gasLimitRecommendations, ProtocolAction, valueToWei } from '@aave/contract-helpers';
 import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
-import { BigNumber } from 'ethers';
 import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
-import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -17,9 +15,15 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
-import { checkRequiresApproval } from '../utils';
+import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 
-export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: string }) => {
+export const StakingMigrateActions = ({
+  amountToMigrate,
+  minOutWithSlippage,
+}: {
+  amountToMigrate: string;
+  minOutWithSlippage: string;
+}) => {
   const { stkAbptMigrationService } = useSharedDependencies();
   const [
     walletApprovalMethodPreference,
@@ -44,10 +48,8 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
     setMainTxState,
     setLoadingTxns,
     setTxError,
+    setGasLimit,
   } = useModalContext();
-  const { data: stkBpt } = useGeneralStakeUiData(currentMarketData, Stake.bpt);
-  const { data: stkBptV2 } = useGeneralStakeUiData(currentMarketData, Stake.bptv2);
-
   const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   const {
@@ -83,6 +85,15 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
     }
   }, [fetchApprovedAmount, isFetchedAfterMount]);
 
+  useEffect(() => {
+    let migrateGasLimit = 0;
+    migrateGasLimit = Number(gasLimitRecommendations[ProtocolAction.default].recommended);
+    if (requiresApproval && !approvalTxState.success) {
+      migrateGasLimit += Number(APPROVAL_GAS_LIMIT);
+    }
+    setGasLimit(migrateGasLimit.toString());
+  }, [requiresApproval, approvalTxState, setGasLimit]);
+
   const { approval } = useApprovalTx({
     usePermit,
     approvedAmount: {
@@ -105,21 +116,13 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
       setMainTxState({ ...mainTxState, loading: true });
       let response: TransactionResponse;
 
-      if (!stkBpt || !stkBptV2) return;
-
       const amount = valueToWei(amountToMigrate, 18);
-
-      const expectedBptOut = BigNumber.from(amount)
-        .mul(BigNumber.from(stkBpt[0].stakeTokenPriceUSD))
-        .div(BigNumber.from(stkBptV2[0].stakeTokenPriceUSD));
-
-      const minBptOutWithSlippage = expectedBptOut.mul(9999).div(10000).toString();
 
       if (usePermit && signatureParams) {
         let txData = await stkAbptMigrationService.migrateWithPermit(
           user,
           amount,
-          minBptOutWithSlippage,
+          minOutWithSlippage,
           signatureParams.signature,
           signatureParams.deadline
         );
@@ -127,7 +130,7 @@ export const StakingMigrateActions = ({ amountToMigrate }: { amountToMigrate: st
         response = await sendTx(txData);
         await response.wait(1);
       } else {
-        let txData = await stkAbptMigrationService.migrate(user, amount, minBptOutWithSlippage);
+        let txData = await stkAbptMigrationService.migrate(user, amount, minOutWithSlippage);
         txData = await estimateGasLimit(txData);
         response = await sendTx(txData);
         await response.wait(1);
