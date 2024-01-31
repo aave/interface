@@ -1,4 +1,5 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
@@ -38,6 +39,8 @@ interface SwitchModalContentProps {
   defaultAsset?: string;
 }
 
+const GHO_TOKEN_ADDRESS = AaveV3Ethereum.ASSETS.GHO.UNDERLYING;
+
 export const SwitchModalContent = ({
   supportedNetworks,
   selectedChainId,
@@ -54,16 +57,14 @@ export const SwitchModalContent = ({
   const [selectedInputReserve, setSelectedInputReserve] = useState(() => {
     const defaultReserve = reserves.find((elem) => elem.address === defaultAsset);
     if (defaultReserve) return defaultReserve;
-    if (reserves[0].address === '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f') {
+    if (reserves[0].address === GHO_TOKEN_ADDRESS) {
       return reserves[1];
     }
     return reserves[0];
   });
   const { readOnlyModeAddress } = useWeb3Context();
   const [selectedOutputReserve, setSelectedOutputReserve] = useState(() => {
-    const gho = reserves.find(
-      (reserve) => reserve.address === '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f'
-    );
+    const gho = reserves.find((reserve) => reserve.address === GHO_TOKEN_ADDRESS);
     if (gho) return gho;
     return (
       reserves.find(
@@ -158,10 +159,6 @@ export const SwitchModalContent = ({
     setTxError(undefined);
     setSelectedChainId(value);
   };
-
-  console.log('RESERVES', reserves);
-
-  console.log('selectedInputReserve', selectedInputReserve);
 
   return (
     <>

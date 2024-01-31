@@ -1,17 +1,14 @@
 import { ReserveDataHumanized } from '@aave/contract-helpers';
-// import { normalize } from '@aave/math-utils';
-import { Box, CircularProgress } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { ContractCallContext, ContractCallResults, Multicall } from 'ethereum-multicall';
 import { providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { useEffect, useMemo, useState } from 'react';
-// import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
-// import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
+import React, { useEffect, useState } from 'react';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
-// import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
 import TOKEN_LIST from 'src/ui-config/TokenList.json';
-// import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
   CustomMarket,
   getNetworkConfig,
@@ -74,7 +71,6 @@ export const SwitchModal = () => {
     }
   }, [currentChainId, chainId]);
 
-  // fetch and filter by chainId
   const filteredTokens = TOKEN_LIST.tokens.filter((token) => token.chainId === selectedChainId);
 
   const contractCallContext: ContractCallContext[] = filteredTokens.map((token) => {
@@ -107,7 +103,6 @@ export const SwitchModal = () => {
         console.error('Invalid user address:', user);
         return;
       }
-      console.log('filteredTokens', filteredTokens);
       try {
         const { results }: ContractCallResults = await multicall.call(contractCallContext);
         const updatedTokens = filteredTokens.map((token) => {
@@ -139,84 +134,6 @@ export const SwitchModal = () => {
     fetchData();
   }, [user, provider, selectedChainId]);
 
-  const marketsBySupportedNetwork = useMemo(
-    () =>
-      Object.values(marketsData).filter(
-        (elem) => elem.chainId === selectedChainId && elem.enabledFeatures?.switch
-      ),
-    [selectedChainId]
-  );
-
-  console.log('marketsBySupportedNetwork', marketsBySupportedNetwork);
-
-  // const poolReservesDataQueries = usePoolsReservesHumanized(marketsBySupportedNetwork, {
-  //   refetchInterval: 0,
-  // });
-
-  // const networkReserves = poolReservesDataQueries.reduce((acum, elem) => {
-  //   if (elem.data) {
-  //     const wrappedBaseAsset = elem.data.reservesData.find(
-  //       (reserveData) => reserveData.symbol === selectedNetworkConfig.wrappedBaseAssetSymbol
-  //     );
-  //     const acumWithoutBaseAsset = acum.concat(
-  //       elem.data.reservesData.filter(
-  //         (reserveDataElem) =>
-  //           !acum.find((acumElem) => acumElem.underlyingAsset === reserveDataElem.underlyingAsset)
-  //       )
-  //     );
-  //     if (
-  //       wrappedBaseAsset &&
-  //       !acum.find((acumElem) => acumElem.underlyingAsset === API_ETH_MOCK_ADDRESS)
-  //     )
-  //       return acumWithoutBaseAsset.concat({
-  //         ...wrappedBaseAsset,
-  //         underlyingAsset: API_ETH_MOCK_ADDRESS,
-  //         decimals: selectedNetworkConfig.baseAssetDecimals,
-  //         ...fetchIconSymbolAndName({
-  //           underlyingAsset: API_ETH_MOCK_ADDRESS,
-  //           symbol: selectedNetworkConfig.baseAssetSymbol,
-  //         }),
-  //       });
-  //     return acumWithoutBaseAsset;
-  //   }
-  //   return acum;
-  // }, [] as ReserveDataHumanized[]);
-
-  // const poolBalancesDataQueries = usePoolsTokensBalance(marketsBySupportedNetwork, user, {
-  //   refetchInterval: 0,
-  // });
-
-  // const poolsBalances = poolBalancesDataQueries.reduce((acum, elem) => {
-  //   if (elem.data) return acum.concat(elem.data);
-  //   return acum;
-  // }, [] as UserPoolTokensBalances[]);
-
-  // const reservesWithBalance: ReserveWithBalance[] = useMemo(() => {
-  //   return networkReserves.map((elem) => {
-  //     return {
-  //       ...elem,
-  //       ...fetchIconSymbolAndName({
-  //         underlyingAsset: elem.underlyingAsset,
-  //         symbol: elem.symbol,
-  //         name: elem.name,
-  //       }),
-  //       balance: normalize(
-  //         poolsBalances
-  //           .find(
-  //             (balance) =>
-  //               balance.address.toLocaleLowerCase() === elem.underlyingAsset.toLocaleLowerCase()
-  //           )
-  //           ?.amount.toString() || '0',
-  //         elem.decimals
-  //       ),
-  //     };
-  //   });
-  // }, [networkReserves, poolsBalances]);
-
-  // const reserversWithBalanceSortedByBalance = reservesWithBalance.sort(
-  //   (a, b) => Number(b.balance) - Number(a.balance)
-  // );
-
   const tokenListSortedByBalace = tokenListWithBalance.sort(
     (a, b) => Number(b.balance) - Number(a.balance)
   );
@@ -233,6 +150,13 @@ export const SwitchModal = () => {
           selectedNetworkConfig={selectedNetworkConfig}
           defaultAsset={underlyingAsset}
         />
+      ) : !user ? (
+        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
+          <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
+            <Trans>Please connect your wallet to be able to switch your tokens.</Trans>
+          </Typography>
+          <ConnectWalletButton />
+        </Box>
       ) : (
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
           <CircularProgress />
