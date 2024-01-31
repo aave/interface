@@ -120,7 +120,6 @@ export default function Staking() {
   const isStkGho = mode === 'gho';
   const isStkBpt = mode === 'bpt';
 
-  console.log(stkBptUserData);
   return (
     <>
       <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeDataLoading} />
