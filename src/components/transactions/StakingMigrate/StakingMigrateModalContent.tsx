@@ -40,7 +40,7 @@ export const StakingMigrateModalContent = () => {
   // staking token usd value
   const amountInUsd = Number(amount) * Number(stakeData?.stakeTokenPriceUSDFormatted);
 
-  if (!mainTxState.success)
+  if (mainTxState.success)
     return (
       <TxSuccessView
         action={<Trans>Migrated</Trans>}

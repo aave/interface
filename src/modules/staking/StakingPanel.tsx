@@ -317,10 +317,20 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             bottomLineComponent={<Box sx={{ height: '20px' }} />}
           >
             <Stack direction="row" gap={2} alignItems="center">
-              <Button variant="outlined" fullWidth onClick={onMigrateAction}>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={onMigrateAction}
+                disabled={stakeUserData.stakeTokenUserBalance === '0'}
+              >
                 Migrate
               </Button>
-              <Button variant="contained" fullWidth onClick={onUnstakeAction}>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={onUnstakeAction}
+                disabled={stakeUserData.stakeTokenUserBalance === '0'}
+              >
                 <Trans>Unstake</Trans>
               </Button>
             </Stack>
