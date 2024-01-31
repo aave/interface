@@ -2,6 +2,7 @@ import { ReserveDataHumanized } from '@aave/contract-helpers';
 // import { normalize } from '@aave/math-utils';
 import { Box, CircularProgress } from '@mui/material';
 import { ContractCallContext, ContractCallResults, Multicall } from 'ethereum-multicall';
+import { providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useMemo, useState } from 'react';
 // import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
@@ -26,12 +27,6 @@ export interface ReserveWithBalance extends ReserveDataHumanized {
   balance: string;
   iconSymbol: string;
 }
-
-// interface BridgeInfo {
-//   [chainId: string]: {
-//     tokenAddress: string;
-//   };
-// }
 
 export interface TokenInterface {
   chainId: number;
@@ -101,10 +96,13 @@ export const SwitchModal = () => {
   const provider = getProvider(currentChainId);
 
   useEffect(() => {
-    console.log('fetch --->');
-
     const fetchData = async () => {
-      const multicall = new Multicall({ ethersProvider: provider, tryAggregate: true });
+      const multicall = new Multicall({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        ethersProvider: provider as unknown as providers.Provider,
+        tryAggregate: true,
+      });
       if (!user || user.length !== 42 || !user.startsWith('0x')) {
         console.error('Invalid user address:', user);
         return;
@@ -112,7 +110,7 @@ export const SwitchModal = () => {
       console.log('filteredTokens', filteredTokens);
       try {
         const { results }: ContractCallResults = await multicall.call(contractCallContext);
-        const updatedTokens = filteredTokens.map((token: TokenInterface) => {
+        const updatedTokens = filteredTokens.map((token) => {
           let balance = '0';
           Object.values(results).forEach((contract) => {
             if (
