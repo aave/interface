@@ -120,6 +120,7 @@ export default function Staking() {
   const isStkGho = mode === 'gho';
   const isStkBpt = mode === 'bpt';
 
+  console.log(stkBptUserData);
   return (
     <>
       <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeDataLoading} />
@@ -247,62 +248,62 @@ export default function Staking() {
                 />
               </Grid>
 
-              {/* TODO: Only show v1 panel if user has unclaimed rewards or they have a stk balance */}
-              {/* {stkBptUserData?.stakeTokenUserBalance !== '0' && ( */}
-              <Grid
-                item
-                xs={12}
-                lg={6}
-                sx={{ display: { xs: !isStkBpt ? 'none' : 'block', lg: 'block' } }}
-              >
-                <StakingPanel
-                  stakeTitle="ABPT"
-                  stakedToken="ABPT"
-                  maxSlash={stkBpt?.maxSlashablePercentageFormatted || '0'}
-                  icon="stkbpt"
-                  stakeData={stkBpt}
-                  stakeUserData={stkBptUserData}
-                  onStakeAction={() => openStake(Stake.bpt, 'stkBPT')}
-                  onCooldownAction={() => openStakeCooldown(Stake.bpt)}
-                  onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
-                  onMigrateAction={() => openStakingMigrate()}
-                  headerAction={
-                    stkBpt?.inPostSlashingPeriod ? (
-                      <Box
-                        sx={(theme) => ({
-                          backgroundColor: theme.palette.warning.main,
-                          borderRadius: 12,
-                          height: '16px',
-                          width: '84px',
-                          marginLeft: 'auto',
-                        })}
-                      >
-                        <Typography sx={{ px: 2 }} color="white" variant="caption">
-                          Deprecated
-                        </Typography>
-                      </Box>
-                    ) : null
-                  }
-                >
-                  {stkBpt?.inPostSlashingPeriod && (
-                    <Box
-                      sx={{
-                        mt: 4,
-                      }}
+              {stkBptUserData?.stakeTokenUserBalance !== '0' ||
+                (stkBptUserData.userIncentivesToClaim !== '0' && (
+                  <Grid
+                    item
+                    xs={12}
+                    lg={6}
+                    sx={{ display: { xs: !isStkBpt ? 'none' : 'block', lg: 'block' } }}
+                  >
+                    <StakingPanel
+                      stakeTitle="ABPT"
+                      stakedToken="ABPT"
+                      maxSlash={stkBpt?.maxSlashablePercentageFormatted || '0'}
+                      icon="stkbpt"
+                      stakeData={stkBpt}
+                      stakeUserData={stkBptUserData}
+                      onStakeAction={() => openStake(Stake.bpt, 'stkBPT')}
+                      onCooldownAction={() => openStakeCooldown(Stake.bpt)}
+                      onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
+                      onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
+                      onMigrateAction={() => openStakingMigrate()}
+                      headerAction={
+                        stkBpt?.inPostSlashingPeriod ? (
+                          <Box
+                            sx={(theme) => ({
+                              backgroundColor: theme.palette.warning.main,
+                              borderRadius: 12,
+                              height: '16px',
+                              width: '84px',
+                              marginLeft: 'auto',
+                            })}
+                          >
+                            <Typography sx={{ px: 2 }} color="white" variant="caption">
+                              Deprecated
+                            </Typography>
+                          </Box>
+                        ) : null
+                      }
                     >
-                      <Warning severity="warning" sx={{ mb: 0 }}>
-                        <Trans>
-                          As a result of governance decisions, the existing ABPT staking pool is now
-                          deprecated. You have the flexibility to either migrate all of your tokens
-                          to v2 or unstake them without any cooldown period. Learn more
-                        </Trans>
-                      </Warning>
-                    </Box>
-                  )}
-                </StakingPanel>
-              </Grid>
-              {/* )} */}
+                      {stkBpt?.inPostSlashingPeriod && (
+                        <Box
+                          sx={{
+                            mt: 4,
+                          }}
+                        >
+                          <Warning severity="warning" sx={{ mb: 0 }}>
+                            <Trans>
+                              As a result of governance decisions, the existing ABPT staking pool is
+                              now deprecated. You have the flexibility to either migrate all of your
+                              tokens to v2 or unstake them without any cooldown period. Learn more
+                            </Trans>
+                          </Warning>
+                        </Box>
+                      )}
+                    </StakingPanel>
+                  </Grid>
+                ))}
             </Grid>
           </>
         ) : (
