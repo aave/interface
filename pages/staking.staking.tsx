@@ -244,9 +244,9 @@ export default function Staking() {
                   icon="stkbptv2"
                   stakeData={stkBptV2}
                   stakeUserData={stkBptV2UserData}
-                  onStakeAction={() => openStake(Stake.bptv2, 'stkBPT v2')}
+                  onStakeAction={() => openStake(Stake.bptv2, 'stkbptv2')}
                   onCooldownAction={() => openStakeCooldown(Stake.bptv2)}
-                  onUnstakeAction={() => openUnstake(Stake.bptv2, 'stkBPT v2')}
+                  onUnstakeAction={() => openUnstake(Stake.bptv2, 'stkbpt2')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bptv2, 'AAVE')}
                   headerAction={<GetABPToken />}
                 />
