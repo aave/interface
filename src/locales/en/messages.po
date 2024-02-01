@@ -1465,13 +1465,13 @@ msgstr "Menu"
 msgid "Migrate"
 msgstr "Migrate"
 
-#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
-msgid "Migrate to ABPT v2"
-msgstr "Migrate to ABPT v2"
-
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Migrate to stkABPT v2"
+msgstr "Migrate to stkABPT v2"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to v3"

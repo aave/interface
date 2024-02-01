@@ -181,7 +181,7 @@ export default function Staking() {
                   stakeData={stkAave}
                   stakeUserData={stkAaveUserData}
                   onStakeAction={() => openStake(Stake.aave, 'AAVE')}
-                  onCooldownAction={() => openStakeCooldown(Stake.aave)}
+                  onCooldownAction={() => openStakeCooldown(Stake.aave, 'AAVE')}
                   onUnstakeAction={() => openUnstake(Stake.aave, 'AAVE')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.aave, 'AAVE')}
                   onStakeRewardClaimRestakeAction={() =>
@@ -225,7 +225,7 @@ export default function Staking() {
                   stakeData={stkGho}
                   stakeUserData={stkGhoUserData}
                   onStakeAction={() => openStake(Stake.gho, 'GHO')}
-                  onCooldownAction={() => openStakeCooldown(Stake.gho)}
+                  onCooldownAction={() => openStakeCooldown(Stake.gho, 'GHO')}
                   onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.gho, 'AAVE')}
                 />
@@ -245,8 +245,8 @@ export default function Staking() {
                   stakeData={stkBptV2}
                   stakeUserData={stkBptV2UserData}
                   onStakeAction={() => openStake(Stake.bptv2, 'stkbptv2')}
-                  onCooldownAction={() => openStakeCooldown(Stake.bptv2)}
-                  onUnstakeAction={() => openUnstake(Stake.bptv2, 'stkbpt2')}
+                  onCooldownAction={() => openStakeCooldown(Stake.bptv2, 'stkbptv2')}
+                  onUnstakeAction={() => openUnstake(Stake.bptv2, 'stkbptv2')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bptv2, 'AAVE')}
                   headerAction={<GetABPToken />}
                 />
@@ -267,7 +267,7 @@ export default function Staking() {
                     stakeData={stkBpt}
                     stakeUserData={stkBptUserData}
                     onStakeAction={() => openStake(Stake.bpt, 'stkBPT')}
-                    onCooldownAction={() => openStakeCooldown(Stake.bpt)}
+                    onCooldownAction={() => openStakeCooldown(Stake.bpt, 'stkbpt')}
                     onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
                     onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
                     onMigrateAction={() => openStakingMigrate()}

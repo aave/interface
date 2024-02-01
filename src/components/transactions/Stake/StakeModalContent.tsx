@@ -8,7 +8,7 @@ import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { STAKE } from 'src/utils/mixPanelEvents';
 
@@ -77,6 +77,8 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
     }
   };
 
+  const nameFormatted = stakeAssetNameFormatted(stakeAssetName);
+
   // is Network mismatched
   const stakingChain =
     currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
@@ -91,12 +93,16 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   }
   if (txState.success)
     return (
-      <TxSuccessView action={<Trans>Staked</Trans>} amount={amountRef.current} symbol={icon} />
+      <TxSuccessView
+        action={<Trans>Staked</Trans>}
+        amount={amountRef.current}
+        symbol={nameFormatted}
+      />
     );
 
   return (
     <>
-      <TxModalTitle title="Stake" symbol={icon} />
+      <TxModalTitle title="Stake" symbol={nameFormatted} />
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={networkConfig.name}
@@ -111,7 +117,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         value={amount}
         onChange={handleChange}
         usdValue={amountInUsd.toString()}
-        symbol={icon}
+        symbol={nameFormatted}
         assets={[
           {
             balance: walletBalance.toString(),
@@ -141,7 +147,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         sx={{ mt: '48px' }}
         amountToStake={amount}
         isWrongNetwork={isWrongNetwork}
-        symbol={icon}
+        symbol={nameFormatted}
         blocked={blockingError !== undefined}
         selectedToken={stakeAssetName}
         event={STAKE.STAKE_TOKEN}

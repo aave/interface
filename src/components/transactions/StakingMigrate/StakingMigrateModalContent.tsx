@@ -11,6 +11,7 @@ import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
+import { stakeAssetNameFormatted } from 'src/ui-config/stakeConfig';
 
 import { AssetInput } from '../AssetInput';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -63,14 +64,16 @@ export const StakingMigrateModalContent = () => {
   const minOutFormatted = formatEther(minBptOutWithSlippage);
   const minOutUSD = Number(minOutFormatted) * Number(stakeBptV2Data?.stakeTokenPriceUSDFormatted);
 
+  const nameFormatted = stakeAssetNameFormatted(Stake.bpt);
+
   return (
     <>
-      <TxModalTitle title={<Trans>Migrate to ABPT v2</Trans>} />
+      <TxModalTitle title={<Trans>Migrate to stkABPT v2</Trans>} />
       <AssetInput
         value={amount}
         onChange={handleChange}
         usdValue={amountInUsd.toString()}
-        symbol="stkBPT"
+        symbol={nameFormatted}
         assets={[
           {
             balance: maxAmountToMigrate.toString(),
