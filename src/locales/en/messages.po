@@ -219,6 +219,7 @@ msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest 
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Amount"
@@ -395,6 +396,7 @@ msgstr "Back to Dashboard"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -1389,6 +1391,7 @@ msgid "Markets"
 msgstr "Markets"
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "Max"
 msgstr "Max"
 
