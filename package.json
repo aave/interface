@@ -81,6 +81,7 @@
     "react-cookie-consent": "^8.0.1",
     "react-dom": "latest",
     "react-infinite-scroller": "^1.2.6",
+    "react-lazy-load": "^4.0.1",
     "react-markdown": "^8.0.7",
     "react-number-format": "^4.9.1",
     "reflect-metadata": "^0.1.13",

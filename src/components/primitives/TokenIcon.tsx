@@ -1,5 +1,6 @@
 import { Badge, Box, Icon, IconProps } from '@mui/material';
 import { forwardRef, useEffect, useRef, useState } from 'react';
+import LazyLoad from 'react-lazy-load';
 
 interface ATokenIconProps {
   symbol?: string;
@@ -179,7 +180,9 @@ interface ExternalTokenIconProps extends IconProps {
 export function ExternalTokenIcon({ symbol, logoURI, ...rest }: ExternalTokenIconProps) {
   return (
     <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
-      <img src={logoURI} width="100%" height="100%" alt={`${symbol} icon`} />
+      <LazyLoad>
+        <img src={logoURI} width="100%" height="100%" alt={`${symbol} icon`} />
+      </LazyLoad>
     </Icon>
   );
 }
