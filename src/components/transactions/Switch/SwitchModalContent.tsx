@@ -16,7 +16,6 @@ import { useRootStore } from 'src/store/root';
 import { getNetworkConfig, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
-import { AssetInput } from '../AssetInput';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
@@ -24,6 +23,7 @@ import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SupportedNetworkWithChainId } from './common';
 import { NetworkSelector } from './NetworkSelector';
 import { SwitchActions } from './SwitchActions';
+import { SwitchAssetInput } from './SwitchAssetInput';
 import { SwitchErrors } from './SwitchErrors';
 import { TokenInterface } from './SwitchModal';
 import { SwitchRates } from './SwitchRates';
@@ -194,7 +194,7 @@ export const SwitchModalContent = ({
               position: 'relative',
             }}
           >
-            <AssetInput
+            <SwitchAssetInput
               assets={reserves.filter((elem) => elem.address !== selectedOutputReserve.address)}
               value={inputAmount}
               onChange={handleInputChange}
@@ -218,7 +218,7 @@ export const SwitchModalContent = ({
                 <SwitchVerticalIcon />
               </SvgIcon>
             </IconButton>
-            <AssetInput
+            <SwitchAssetInput
               assets={reserves.filter((elem) => elem.address !== selectedInputReserve.address)}
               value={
                 sellRates

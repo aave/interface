@@ -15,15 +15,16 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 
-import { CapType } from '../caps/helper';
-import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
-import { FormattedNumber } from '../primitives/FormattedNumber';
-import { TokenIcon } from '../primitives/TokenIcon';
+import { CapType } from '../../caps/helper';
+import { AvailableTooltip } from '../../infoTooltips/AvailableTooltip';
+import { FormattedNumber } from '../../primitives/FormattedNumber';
+import { ExternalTokenIcon, TokenIcon } from '../../primitives/TokenIcon';
+import { SearchInput } from '../../SearchInput';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -64,6 +65,7 @@ export interface Asset {
   aToken?: boolean;
   priceInUsd?: string;
   decimals?: number;
+  logoURI?: string;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
@@ -85,9 +87,10 @@ export interface AssetInputProps<T extends Asset = Asset> {
   selectOptionHeader?: ReactNode;
   selectOption?: (asset: T) => ReactNode;
   sx?: BoxProps;
+  swapAssets?: boolean;
 }
 
-export const AssetInput = <T extends Asset = Asset>({
+export const SwitchAssetInput = <T extends Asset = Asset>({
   value,
   usdValue,
   symbol,
@@ -105,6 +108,7 @@ export const AssetInput = <T extends Asset = Asset>({
   event,
   selectOptionHeader,
   selectOption,
+  swapAssets = false,
   sx = {},
 }: AssetInputProps<T>) => {
   const theme = useTheme();
@@ -113,7 +117,40 @@ export const AssetInput = <T extends Asset = Asset>({
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
     onSelect && onSelect(newAsset);
     onChange && onChange('');
+    handleCleanSearch();
   };
+
+  const [filteredAssets, setFilteredAssets] = useState(assets);
+
+  const handleSearchAssetChange = (value: string) => {
+    const searchQuery = value.trim().toLowerCase();
+    const matchingAssets: T[] = [];
+    const nonMatchingAssets: T[] = [];
+    assets.forEach((asset) => {
+      const assetSymbol = asset.symbol.toLowerCase();
+      if (assetSymbol.includes(searchQuery)) {
+        matchingAssets.push(asset);
+      } else {
+        nonMatchingAssets.push(asset);
+      }
+    });
+    const filteredAndSortedAssets = [...matchingAssets, ...nonMatchingAssets];
+
+    setFilteredAssets(filteredAndSortedAssets);
+  };
+
+  const handleCleanSearch = () => {
+    setFilteredAssets(assets);
+  };
+
+  const inputBoxRef = useRef<HTMLDivElement>(null);
+  const [inputBoxWidth, setInputBoxWidth] = useState<number>(0);
+
+  useEffect(() => {
+    if (inputBoxRef.current) {
+      setInputBoxWidth(inputBoxRef.current.offsetWidth);
+    }
+  }, []);
 
   const asset =
     assets.length === 1
@@ -130,6 +167,7 @@ export const AssetInput = <T extends Asset = Asset>({
       </Box>
 
       <Box
+        ref={inputBoxRef}
         sx={(theme) => ({
           p: '8px 12px',
           border: `1px solid ${theme.palette.divider}`,
@@ -214,12 +252,47 @@ export const AssetInput = <T extends Asset = Asset>({
                 className="AssetInput__select"
                 data-cy={'assetSelect'}
                 MenuProps={{
+                  autoFocus: false,
+                  anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  },
+                  transformOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                  },
+                  PaperProps: {
+                    style: {
+                      width: inputBoxWidth,
+                      transform: 'translateX(13px)',
+                    },
+                  },
                   sx: {
                     maxHeight: '240px',
                     '.MuiPaper-root': {
                       border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
                       boxShadow: '0px 2px 10px 0px #0000001A',
                     },
+                  },
+                  MenuListProps: {
+                    subheader: (
+                      <Box
+                        sx={{
+                          p: 2,
+                          borderBottom: `1px solid ${theme.palette.divider}`,
+                          position: 'sticky',
+                          top: 0,
+                          zIndex: 2,
+                          backgroundColor: theme.palette.background.paper,
+                        }}
+                      >
+                        <SearchInput
+                          onSearchTermChange={handleSearchAssetChange}
+                          placeholder="Search assets..."
+                          disableFocus={true}
+                        />
+                      </Box>
+                    ),
                   },
                 }}
                 sx={{
@@ -245,11 +318,21 @@ export const AssetInput = <T extends Asset = Asset>({
                       sx={{ display: 'flex', alignItems: 'center' }}
                       data-cy={`assetsSelectedOption_${asset.symbol.toUpperCase()}`}
                     >
-                      <TokenIcon
-                        symbol={asset.iconSymbol || asset.symbol}
-                        aToken={asset.aToken}
-                        sx={{ mr: 2, ml: 4 }}
-                      />
+                      {!swapAssets ? (
+                        <TokenIcon
+                          symbol={asset.iconSymbol || asset.symbol}
+                          aToken={asset.aToken}
+                          sx={{ mr: 2, ml: 4 }}
+                        />
+                      ) : (
+                        <ExternalTokenIcon
+                          symbol={asset.iconSymbol || asset.symbol}
+                          // aToken={asset.aToken}
+                          logoURI={asset.logoURI}
+                          sx={{ mr: 2, ml: 4 }}
+                        />
+                      )}
+
                       <Typography variant="main16" color="text.primary">
                         {symbol}
                       </Typography>
@@ -258,7 +341,7 @@ export const AssetInput = <T extends Asset = Asset>({
                 }}
               >
                 {selectOptionHeader ? selectOptionHeader : undefined}
-                {assets.map((asset) => (
+                {filteredAssets.map((asset) => (
                   <MenuItem
                     key={asset.symbol}
                     value={asset.symbol}
@@ -268,11 +351,22 @@ export const AssetInput = <T extends Asset = Asset>({
                       selectOption(asset)
                     ) : (
                       <>
-                        <TokenIcon
-                          aToken={asset.aToken}
-                          symbol={asset.iconSymbol || asset.symbol}
-                          sx={{ fontSize: '22px', mr: 1 }}
-                        />
+                        {!swapAssets ? (
+                          <TokenIcon
+                            aToken={asset.aToken}
+                            symbol={asset.iconSymbol || asset.symbol}
+                            sx={{ fontSize: '22px', mr: 1 }}
+                          />
+                        ) : (
+                          <ExternalTokenIcon
+                            symbol={asset.iconSymbol || asset.symbol}
+                            // aToken={asset.aToken}
+                            // eslint-disable-next-line
+                            logoURI={asset.logoURI}
+                            sx={{ mr: 2, ml: 4 }}
+                          />
+                        )}
+
                         <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
                         {asset.balance && <FormattedNumber value={asset.balance} compact />}
                       </>
