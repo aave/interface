@@ -1,14 +1,14 @@
-import { ReserveDataHumanized } from '@aave/contract-helpers';
+import { ChainId, ReserveDataHumanized } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ContractCallContext, ContractCallResults, Multicall } from 'ethereum-multicall';
 import { providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import TOKEN_LIST from 'src/ui-config/TokenList.json';
+import { TOKEN_LIST } from 'src/ui-config/TokenList';
 import {
   CustomMarket,
   getNetworkConfig,
@@ -34,7 +34,12 @@ export interface TokenInterface {
   logoURI: string;
   balance: string;
   // extensions?: {
-  //   bridgeInfo: BridgeInfo;
+  //   bridgeInfo: {
+  //     [chainId: string]: {
+  //       tokenAddress: string;
+  //     };
+  //   };
+  //   isNative?: boolean;
   // };
 }
 
@@ -71,7 +76,20 @@ export const SwitchModal = () => {
     }
   }, [currentChainId, chainId]);
 
-  const filteredTokens = TOKEN_LIST.tokens.filter((token) => token.chainId === selectedChainId);
+  const filteredTokens = useMemo(() => {
+    const transformedTokens = TOKEN_LIST.tokens.map((token) => {
+      return { ...token, balance: '0' };
+    });
+
+    let tokens = transformedTokens.filter((token) => token.chainId === selectedChainId);
+
+    if (tokens.length === 0) {
+      tokens = transformedTokens.filter((token) => token.chainId === 1);
+      setSelectedChainId(ChainId.mainnet); // Defaults to Ethereum if no tokens are found on some networks
+    }
+
+    return tokens;
+  }, [selectedChainId]);
 
   const contractCallContext: ContractCallContext[] = filteredTokens.map((token) => {
     return {
@@ -81,8 +99,8 @@ export const SwitchModal = () => {
         {
           name: 'balanceOf',
           type: 'function',
-          stateMutability: 'view', // Adding the stateMutability field
-          inputs: [{ name: 'account', type: 'address' }], // Corrected input type to 'address'
+          stateMutability: 'view',
+          inputs: [{ name: 'account', type: 'address' }],
           outputs: [{ name: 'balance', type: 'uint256' }],
         },
       ],
@@ -90,8 +108,16 @@ export const SwitchModal = () => {
     };
   });
   const provider = getProvider(currentChainId);
+  // const marketsBySupportedNetwork = useMemo(
+  //   () =>
+  //     Object.values(marketsData).filter(
+  //       (elem) => elem.chainId === selectedChainId && elem.enabledFeatures?.switch
+  //     ),
+  //   [selectedChainId]
+  // );
 
   useEffect(() => {
+    console.log('FETCH TOKENS');
     const fetchData = async () => {
       const multicall = new Multicall({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -100,24 +126,34 @@ export const SwitchModal = () => {
         tryAggregate: true,
       });
       if (!user || user.length !== 42 || !user.startsWith('0x')) {
+        console.log('Invalid user address --->', user);
         console.error('Invalid user address:', user);
         return;
       }
       try {
+        const ethBalance = await provider.getBalance(user);
         const { results }: ContractCallResults = await multicall.call(contractCallContext);
+
         const updatedTokens = filteredTokens.map((token) => {
           let balance = '0';
-          Object.values(results).forEach((contract) => {
-            if (
-              contract.originalContractCallContext.contractAddress.toLowerCase() ===
-              token.address.toLowerCase()
-            ) {
-              const balanceData = contract.callsReturnContext[0].returnValues[0];
 
-              balance = formatUnits(balanceData, token.decimals);
-            }
-          });
-
+          // NOTE just for deploy
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (token.extensions && token.extensions.isNative) {
+            // Network Asset (ETH, MATIC, etc)
+            balance = formatUnits(ethBalance, token.decimals);
+          } else {
+            Object.values(results).forEach((contract) => {
+              if (
+                contract.originalContractCallContext.contractAddress.toLowerCase() ===
+                token.address.toLowerCase()
+              ) {
+                const balanceData = contract.callsReturnContext[0].returnValues[0];
+                balance = formatUnits(balanceData, token.decimals);
+              }
+            });
+          }
           return {
             ...token,
             balance,
@@ -158,9 +194,15 @@ export const SwitchModal = () => {
           <ConnectWalletButton />
         </Box>
       ) : (
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
-          <CircularProgress />
-        </Box>
+        <SwitchModalContent
+          key={selectedChainId}
+          selectedChainId={selectedChainId}
+          setSelectedChainId={setSelectedChainId}
+          supportedNetworks={supportedNetworksWithEnabledMarket}
+          reserves={filteredTokens}
+          selectedNetworkConfig={selectedNetworkConfig}
+          defaultAsset={underlyingAsset}
+        />
       )}
     </BasicModal>
   );
