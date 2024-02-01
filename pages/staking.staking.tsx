@@ -299,7 +299,7 @@ export default function Staking() {
                           <Trans>
                             As a result of governance decisions, this ABPT staking pool is now
                             deprecated. You have the flexibility to either migrate all of your
-                            tokens to v2 or unstake them without any cooldown period. Learn more
+                            tokens to v2 or unstake them without any cooldown period.
                           </Trans>
                         </Warning>
                       </Box>
