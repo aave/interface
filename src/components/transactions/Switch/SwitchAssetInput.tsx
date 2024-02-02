@@ -124,19 +124,11 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
 
   const handleSearchAssetChange = (value: string) => {
     const searchQuery = value.trim().toLowerCase();
-    const matchingAssets: T[] = [];
-    const nonMatchingAssets: T[] = [];
-    assets.forEach((asset) => {
-      const assetSymbol = asset.symbol.toLowerCase();
-      if (assetSymbol.includes(searchQuery)) {
-        matchingAssets.push(asset);
-      } else {
-        nonMatchingAssets.push(asset);
-      }
-    });
-    const filteredAndSortedAssets = [...matchingAssets, ...nonMatchingAssets];
+    const matchingAssets: T[] = assets.filter((asset) =>
+      asset.symbol.toLowerCase().includes(searchQuery)
+    );
 
-    setFilteredAssets(filteredAndSortedAssets);
+    setFilteredAssets(matchingAssets);
   };
 
   const handleCleanSearch = () => {
@@ -248,6 +240,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                 disabled={disabled}
                 value={asset.symbol}
                 onChange={handleSelect}
+                onClose={handleCleanSearch}
                 variant="outlined"
                 className="AssetInput__select"
                 data-cy={'assetSelect'}
@@ -264,11 +257,11 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                   PaperProps: {
                     style: {
                       width: inputBoxWidth,
-                      transform: 'translateX(13px)',
+                      transform: 'translateX(13px) translateY(22px)',
                     },
                   },
                   sx: {
-                    maxHeight: '240px',
+                    maxHeight: '340px',
                     '.MuiPaper-root': {
                       border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
                       boxShadow: '0px 2px 10px 0px #0000001A',
@@ -341,38 +334,47 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                 }}
               >
                 {selectOptionHeader ? selectOptionHeader : undefined}
-                {filteredAssets.map((asset) => (
-                  <MenuItem
-                    key={asset.symbol}
-                    value={asset.symbol}
-                    data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
-                  >
-                    {selectOption ? (
-                      selectOption(asset)
-                    ) : (
-                      <>
-                        {!swapAssets ? (
-                          <TokenIcon
-                            aToken={asset.aToken}
-                            symbol={asset.iconSymbol || asset.symbol}
-                            sx={{ fontSize: '22px', mr: 1 }}
-                          />
-                        ) : (
-                          <ExternalTokenIcon
-                            symbol={asset.iconSymbol || asset.symbol}
-                            // aToken={asset.aToken}
-                            // eslint-disable-next-line
-                            logoURI={asset.logoURI}
-                            sx={{ mr: 2, ml: 4 }}
-                          />
-                        )}
-
-                        <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-                        {asset.balance && <FormattedNumber value={asset.balance} compact />}
-                      </>
-                    )}
-                  </MenuItem>
-                ))}
+                {filteredAssets.length > 0 ? (
+                  filteredAssets.map((asset) => (
+                    <MenuItem
+                      key={asset.symbol}
+                      value={asset.symbol}
+                      data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
+                    >
+                      {selectOption ? (
+                        selectOption(asset)
+                      ) : (
+                        <>
+                          {!swapAssets ? (
+                            <TokenIcon
+                              aToken={asset.aToken}
+                              symbol={asset.iconSymbol || asset.symbol}
+                              sx={{ fontSize: '22px', mr: 1 }}
+                            />
+                          ) : (
+                            <ExternalTokenIcon
+                              symbol={asset.iconSymbol || asset.symbol}
+                              logoURI={asset.logoURI}
+                              sx={{ mr: 2, ml: 4 }}
+                            />
+                          )}
+                          <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
+                          {asset.balance && <FormattedNumber value={asset.balance} compact />}
+                        </>
+                      )}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <Box>
+                    <Typography
+                      variant="main14"
+                      color="text.primary"
+                      sx={{ width: '100%', textAlign: 'center', mt: 4, mb: 4 }}
+                    >
+                      <Trans>No results found.</Trans>
+                    </Typography>
+                  </Box>
+                )}
               </Select>
             </FormControl>
           )}

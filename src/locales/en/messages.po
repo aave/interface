@@ -1537,6 +1537,10 @@ msgstr "New APY"
 msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
 
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
+msgid "No results found."
+msgstr "No results found."
+
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "No rewards to claim"
