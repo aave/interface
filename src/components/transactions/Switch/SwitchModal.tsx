@@ -108,13 +108,6 @@ export const SwitchModal = () => {
     };
   });
   const provider = getProvider(currentChainId);
-  // const marketsBySupportedNetwork = useMemo(
-  //   () =>
-  //     Object.values(marketsData).filter(
-  //       (elem) => elem.chainId === selectedChainId && elem.enabledFeatures?.switch
-  //     ),
-  //   [selectedChainId]
-  // );
 
   useEffect(() => {
     console.log('FETCH TOKENS');
