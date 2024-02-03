@@ -12,8 +12,8 @@ interface ContentWithTooltipProps {
   offset?: [number, number];
 }
 
-export const PopperComponent = styled(Popper)(
-  experimental_sx({
+export const PopperComponent = styled(Popper)(({ theme }) =>
+  theme.unstable_sx({
     '.MuiTooltip-tooltip': {
       color: 'text.primary',
       backgroundColor: 'background.paper',
