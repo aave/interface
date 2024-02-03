@@ -1,5 +1,5 @@
 import { ProposalV3State } from '@aave/contract-helpers';
-import { alpha, experimental_sx, Skeleton, styled } from '@mui/material';
+import { alpha, Skeleton, styled } from '@mui/material';
 
 interface StateBadgeProps {
   state: ProposalV3State;
@@ -18,17 +18,18 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
     [ProposalV3State.Failed]: theme.palette.error.main,
   };
   const color = COLOR_MAP[state] || '#000';
-  return experimental_sx({
-    ...theme.typography.subheader2,
-    color,
-    border: '1px solid',
-    borderColor: alpha(color, 0.5),
-    py: 0.5,
-    px: 2,
-    borderRadius: 1,
-    display: 'inline-flex',
-    alignItems: 'center',
-  });
+  return ({ theme }) =>
+    theme.unstable_sx({
+      ...theme.typography.subheader2,
+      color,
+      border: '1px solid',
+      borderColor: alpha(color, 0.5),
+      py: 0.5,
+      px: 2,
+      borderRadius: 1,
+      display: 'inline-flex',
+      alignItems: 'center',
+    });
 });
 
 export function StateBadge({ state, loading }: StateBadgeProps) {

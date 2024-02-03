@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, experimental_sx, Skeleton, styled, Typography } from '@mui/material';
+import { Box, BoxProps, Skeleton, styled, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
-const OuterBar = styled('div')(
-  experimental_sx({
+const OuterBar = styled('div')(({ theme }) =>
+  theme.unstable_sx({
     position: 'relative',
     width: '100%',
     height: '8px',
@@ -15,18 +15,20 @@ const OuterBar = styled('div')(
 
 const InnerBar = styled('span', {
   shouldForwardProp: (prop) => prop !== 'yae' && prop !== 'percent',
-})<{ percent: number; yae?: boolean }>(({ percent, yae }) =>
-  experimental_sx({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: `${percent * 100}%`,
-    maxWidth: '100%',
-    height: '8px',
-    bgcolor: yae ? 'success.main' : 'error.light',
-    display: 'block',
-    borderRadius: '6px',
-  })
+})<{ percent: number; yae?: boolean }>(
+  ({ percent, yae }) =>
+    ({ theme }) =>
+      theme.unstable_sx({
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: `${percent * 100}%`,
+        maxWidth: '100%',
+        height: '8px',
+        bgcolor: yae ? 'success.main' : 'error.light',
+        display: 'block',
+        borderRadius: '6px',
+      })
 );
 
 interface VoteBarProps extends BoxProps {
