@@ -15,6 +15,10 @@ type PayloadData = {
   };
 };
 
+export type EnhancedPayload = Payload & {
+  chainId: number;
+};
+
 export const usePayloadsData = (params: PayloadParams[]) => {
   const { governanceV3Service } = useSharedDependencies();
   return useQuery({
@@ -42,11 +46,15 @@ async function fetchPayloadsData(params: PayloadParams[], service: GovernanceV3S
     {} as PayloadData
   );
 
-  const promises: Promise<Payload[]>[] = [];
+  const promises: Promise<EnhancedPayload[]>[] = [];
   Object.entries(payloadsByChainId).forEach(([chainId, payloads]) => {
     const chainIdKey = +chainId;
     Object.entries(payloads).forEach(([payloadControllerAddress, payloadIds]) => {
-      promises.push(service.getPayloadsData(payloadControllerAddress, payloadIds, chainIdKey));
+      promises.push(
+        service
+          .getPayloadsData(payloadControllerAddress, payloadIds, chainIdKey)
+          .then((data) => data.map((payload) => ({ ...payload, chainId: chainIdKey })))
+      );
     });
   });
 
