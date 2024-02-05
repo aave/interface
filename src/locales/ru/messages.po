@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-22 18:05\n"
+"PO-Revision-Date: 2024-01-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -53,8 +53,8 @@ msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Допуск проскальзывания </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "Держатели AAVE (только в сети Ethereum) могут разместить свои AAVE в модуле безопасности, чтобы повысить безопасность протокола и заработать поощрения за безопасность. В случае недостачи до 30% вашей ставки может быть урезано, чтобы покрыть дефицит, обеспечивая дополнительный уровень защиты протокола."
+msgid "AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
@@ -384,7 +384,6 @@ msgstr "Доступные награды"
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
 msgstr "Доступно для заимствования"
@@ -1106,6 +1105,11 @@ msgstr "GHO — это собственный децентрализованны
 msgid "Get ABP Token"
 msgstr "Получить токен ABP"
 
+#: src/modules/staking/GetGhoToken.tsx
+#: src/modules/staking/StakingPanel.tsx
+msgid "Get GHO"
+msgstr ""
+
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Global settings"
@@ -1269,10 +1273,6 @@ msgstr "Изолированные активы имеют ограниченн�
 msgid "Join the community discussion"
 msgstr "Присоединяйтесь к обсуждению в сообществе"
 
-#: src/layouts/TopBarNotify.tsx
-msgid "LEARN MORE"
-msgstr "ПОДРОБНЕЕ"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "Язык"
@@ -1287,7 +1287,6 @@ msgstr "Язык"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
-#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1433,6 +1432,10 @@ msgstr "Максимальное количество, доступное для
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Максимальное количество, доступное для поставки, ограничено, так как протокольный лимит предложения составляет {0}%."
+
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+msgid "Maximum available to borrow"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Maximum loan to value"
@@ -2153,6 +2156,10 @@ msgstr "Стейкинг AAVE"
 #: pages/staking.staking.tsx
 msgid "Stake ABPT"
 msgstr "Стейкинг ABPT"
+
+#: pages/staking.staking.tsx
+msgid "Stake GHO"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
@@ -3234,6 +3241,8 @@ msgstr "брать назад"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/layouts/TopBarNotify.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx

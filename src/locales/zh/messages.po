@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-22 18:05\n"
+"PO-Revision-Date: 2024-01-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -53,8 +53,8 @@ msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>滑点容差 </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "AAVE持有者（仅限以太坊网络）可以将他们的AAVE质押在安全模块中，为协议增加更多安全性并获得安全奖励。在发生短缺事件的情况下，您的股份最多可以被削减 30% 以弥补赤字，为协议提供额外的保护层。"
+msgid "AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
@@ -384,7 +384,6 @@ msgstr "可用奖励"
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
 msgstr "可借用"
@@ -1106,6 +1105,11 @@ msgstr "GHO 是一种与美元挂钩的原生去中心化、抵押品支持的�
 msgid "Get ABP Token"
 msgstr "获取ABP代币"
 
+#: src/modules/staking/GetGhoToken.tsx
+#: src/modules/staking/StakingPanel.tsx
+msgid "Get GHO"
+msgstr ""
+
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Global settings"
@@ -1269,10 +1273,6 @@ msgstr "孤立资产的借贷能力有限，其他资产不能作为抵押品。
 msgid "Join the community discussion"
 msgstr "加入社区讨论"
 
-#: src/layouts/TopBarNotify.tsx
-msgid "LEARN MORE"
-msgstr "了解更多信息"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "语言"
@@ -1287,7 +1287,6 @@ msgstr "语言"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
-#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1433,6 +1432,10 @@ msgstr "可供应的最大数量为 <0/> {0} (<1/>)."
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "最大可用供应量是有限的，因为协议供应上限 {0}%."
+
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+msgid "Maximum available to borrow"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Maximum loan to value"
@@ -2153,6 +2156,10 @@ msgstr "质押 AAVE"
 #: pages/staking.staking.tsx
 msgid "Stake ABPT"
 msgstr "质押 ABPT"
+
+#: pages/staking.staking.tsx
+msgid "Stake GHO"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
@@ -3234,6 +3241,8 @@ msgstr "撤回"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/layouts/TopBarNotify.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx

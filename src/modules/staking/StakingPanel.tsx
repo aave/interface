@@ -1,7 +1,5 @@
-import {
-  GeneralStakeUIDataHumanized,
-  GetUserStakeUIDataHumanized,
-} from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
+import { ChainId } from '@aave/contract-helpers';
+import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -21,13 +19,14 @@ import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { useModalContext } from 'src/hooks/useModal';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
-import { GetABPToken } from './GetABPToken';
 import { StakeActionBox } from './StakeActionBox';
+import { StakingPanelSkeleton } from './StakingPanelSkeleton';
 
 function secondsToDHMS(seconds: number) {
   const d = Math.floor(seconds / (3600 * 24));
@@ -72,75 +71,16 @@ export interface StakingPanelProps {
   onCooldownAction?: () => void;
   onUnstakeAction?: () => void;
   onMigrateAction?: () => void;
-  stakeData?: GeneralStakeUIDataHumanized['stakeData'][0];
+  stakeData?: StakeTokenFormatted;
   stakeUserData?: GetUserStakeUIDataHumanized['stakeUserData'][0];
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
-  ethPriceUsd?: string;
   stakeTitle: string;
   stakedToken: string;
   maxSlash: string;
   icon: string;
-  inPostSlashing?: boolean; // if true, no cooldown, users can unstake immediately
   children?: React.ReactNode;
 }
-
-const StakingPanelHeader = ({
-  stakedToken,
-  downToXsm,
-}: {
-  stakedToken: string;
-  downToXsm: boolean;
-}) => {
-  const headers: { [stakedToken: string]: React.ReactNode } = {
-    AAVE: (
-      <>
-        {downToXsm && <TokenIcon symbol="aave" sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />}
-        <Typography variant="h3">AAVE</Typography>
-      </>
-    ),
-    ABPT: (
-      <Stack direction="column" gap={3}>
-        <Stack direction="row" alignItems="center" gap={2}>
-          {downToXsm && (
-            <TokenIcon symbol="stkbpt" sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
-          )}
-          <Typography variant="h3">ABPT v1</Typography>
-          <Box
-            sx={(theme) => ({
-              backgroundColor: theme.palette.warning.main,
-              borderRadius: 12,
-              height: '16px',
-              width: '84px',
-            })}
-          >
-            <Typography sx={{ px: 2 }} color="white" variant="caption">
-              Deprecated
-            </Typography>
-          </Box>
-        </Stack>
-        <Warning severity="warning" sx={{ mb: 0 }}>
-          <Trans>
-            As a result of governance decisions, the existing ABPT staking pool is now deprecated.
-            You have the flexibility to either migrate all of your tokens or unstake them without
-            any cooldown period. Learn more
-          </Trans>
-        </Warning>
-      </Stack>
-    ),
-    ABPTV2: (
-      <>
-        {downToXsm && <TokenIcon symbol="stkbpt" sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />}
-        <Typography variant="h3">ABPT v2</Typography>
-        <Box sx={{ ml: 3 }}>
-          <GetABPToken />
-        </Box>
-      </>
-    ),
-  };
-
-  return headers[stakedToken];
-};
 
 export const StakingPanel: React.FC<StakingPanelProps> = ({
   onStakeAction,
@@ -149,17 +89,27 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   onCooldownAction,
   onUnstakeAction,
   onMigrateAction,
+  headerAction,
   stakedToken,
+  stakeTitle,
   icon,
   stakeData,
   stakeUserData,
   maxSlash,
-  inPostSlashing,
   children,
 }) => {
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
+  const { openSwitch } = useModalContext();
+
+  if (!stakeData || !stakeUserData) {
+    return <StakingPanelSkeleton />;
+  }
+
+  const handleSwitchClick = () => {
+    openSwitch('', ChainId.mainnet);
+  };
 
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
@@ -198,24 +148,30 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     18 + 8 // incentivesBalance (18), rewardTokenPriceUSD (8)
   );
 
-  const aavePerMonth = formatEther(
-    valueToBigNumber(stakeUserData?.stakeTokenRedeemableAmount || '0')
-      .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
-      .multipliedBy(stakeData?.distributionPerSecond || '0')
-      .multipliedBy('2592000') // NOTE: Monthly distribution
-      .toFixed(0)
-  );
+  let aavePerMonth = '0';
+  if (stakeData?.stakeTokenTotalSupply !== '0') {
+    aavePerMonth = formatEther(
+      valueToBigNumber(stakeUserData?.stakeTokenRedeemableAmount || '0')
+        .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
+        .multipliedBy(stakeData?.distributionPerSecond || '0')
+        .multipliedBy('2592000') // NOTE: Monthly distribution
+        .toFixed(0)
+    );
+  }
 
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
       <Box
         sx={{
-          display: 'flex',
+          display: { xs: 'none', xsm: 'flex' },
           alignItems: 'center',
           mb: 8,
         }}
       >
-        {StakingPanelHeader({ stakedToken, downToXsm: !xsm })}
+        <Typography variant="h3">
+          <Trans>Stake</Trans> {stakeTitle}
+        </Typography>
+        {headerAction && <Box sx={{ ml: 3 }}>{headerAction}</Box>}
       </Box>
 
       <Box
@@ -244,22 +200,25 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           },
         })}
       >
-        {xsm && (
-          <Box
-            sx={{
-              display: 'flex',
-              width: { xs: '100%', xsm: 'unset' },
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mb: { xs: 3, xsm: 0 },
-            }}
-          >
-            <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
-            <Typography variant={xsm ? 'subheader1' : 'h4'} ml={2}>
-              {stakedToken}
-            </Typography>
-          </Box>
-        )}
+        <Box
+          sx={{
+            display: 'flex',
+            width: { xs: '100%', xsm: 'unset' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: { xs: 3, xsm: 0 },
+          }}
+        >
+          <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
+          <Typography variant={xsm ? 'subheader1' : 'h4'} ml={2}>
+            {stakedToken}
+          </Typography>
+          {headerAction && (
+            <Box sx={{ display: { xs: 'block', xsm: 'none' }, textAlign: 'right', flexGrow: 1 }}>
+              {headerAction}
+            </Box>
+          )}
+        </Box>
 
         <Box
           sx={{
@@ -276,11 +235,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           >
             <Trans>Staking APR</Trans>
           </Typography>
-          <FormattedNumber
-            value={parseFloat(stakeData?.stakeApy || '0') / 10000}
-            percent
-            variant="secondary14"
-          />
+          <FormattedNumber value={stakeData.stakeApyFormatted} percent variant="secondary14" />
         </Box>
         <Box
           sx={{
@@ -318,12 +273,23 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </Box>
 
         {/**Stake action */}
-        {!inPostSlashing && (
+
+        {stakedToken === 'GHO' && +availableToStake === 0 ? (
+          <Button
+            variant="contained"
+            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+            onClick={handleSwitchClick}
+            fullWidth={!xsm}
+            data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
+          >
+            <Trans>Get GHO</Trans>
+          </Button>
+        ) : (
           <Button
             variant="contained"
             sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
             onClick={onStakeAction}
-            disabled={+availableToStake === 0}
+            disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
             fullWidth={!xsm}
             data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
           >
@@ -337,7 +303,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         direction={{ xs: 'column', xsm: 'row' }}
         sx={{ mt: 4, alignItems: { xsm: 'start' } }}
       >
-        {inPostSlashing && (
+        {stakeData.inPostSlashingPeriod && (
           <StakeActionBox
             title={
               <>
@@ -348,20 +314,30 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             valueUSD={stakedUSD}
             dataCy={`stakedBox_${stakedToken}`}
             bottomLineTitle={<></>}
-            bottomLineComponent={<></>}
+            bottomLineComponent={<Box sx={{ height: '20px' }} />}
           >
             <Stack direction="row" gap={2} alignItems="center">
-              <Button variant="outlined" fullWidth onClick={onMigrateAction}>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={onMigrateAction}
+                disabled={stakeUserData.stakeTokenUserBalance === '0'}
+              >
                 Migrate
               </Button>
-              <Button variant="contained" fullWidth onClick={onUnstakeAction}>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={onUnstakeAction}
+                disabled={stakeUserData.stakeTokenUserBalance === '0'}
+              >
                 <Trans>Unstake</Trans>
               </Button>
             </Stack>
           </StakeActionBox>
         )}
         {/** Cooldown action */}
-        {!inPostSlashing && (
+        {!stakeData.inPostSlashingPeriod && (
           <StakeActionBox
             title={
               <>

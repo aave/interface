@@ -30,8 +30,6 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-// type StakingType = 'aave' | 'bpt';
-
 export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewardClaimProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
@@ -44,19 +42,8 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
-  let stakeData;
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stakeData] = stakeGeneralResult.stakeData;
-  }
-
-  let stakeUserData;
-  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stakeUserData] = stakeUserResult.stakeUserData;
-  }
-
-  // const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
-  // const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
-  // const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
@@ -69,9 +56,8 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
     amountRef.current = maxSelected ? maxAmountToClaim : value;
     setAmount(value);
   };
-  // staking token usd value
-  const amountInUsd =
-    Number(maxAmountToClaim) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 18));
+
+  const amountInUsd = Number(amount) * Number(stakeData?.rewardTokenPriceUSDFormatted);
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;

@@ -9,7 +9,7 @@ import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { AssetInput } from '../AssetInput';
@@ -40,38 +40,35 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
-  let stakeData;
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stakeData] = stakeGeneralResult.stakeData;
-  }
-
-  let stakeUserData;
-  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stakeUserData] = stakeUserResult.stakeUserData;
-  }
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // states
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  // TODO does this need to change?
-  const walletBalance = normalize(stakeUserData?.userCooldownAmount || '0', 18);
+  let amountToUnstake = stakeUserData?.userCooldownAmount;
+  if (stakeData?.inPostSlashingPeriod) {
+    amountToUnstake = stakeUserData?.stakeTokenUserBalance;
+  }
+
+  const balance = normalize(amountToUnstake || '0', 18);
 
   const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? walletBalance : _amount;
+  const amount = isMaxSelected ? balance : _amount;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? walletBalance : value;
+    amountRef.current = maxSelected ? balance : value;
     setAmount(value);
   };
 
   // staking token usd value
-  const amountInUsd = Number(amount) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 18));
+  const amountInUsd = Number(amount) * Number(stakeData?.stakeTokenPriceUSDFormatted);
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
-  if (valueToBigNumber(amount).gt(walletBalance)) {
+  if (valueToBigNumber(amount).gt(balance)) {
     blockingError = ErrorType.NOT_ENOUGH_BALANCE;
   }
 
@@ -83,6 +80,8 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
         return null;
     }
   };
+
+  const nameFormatted = stakeAssetNameFormatted(stakeAssetName);
 
   // is Network mismatched
   const stakingChain =
@@ -98,12 +97,17 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   }
   if (txState.success)
     return (
-      <TxSuccessView action={<Trans>Unstaked</Trans>} amount={amountRef.current} symbol={icon} />
+      <TxSuccessView
+        action={<Trans>Unstaked</Trans>}
+        amount={amountRef.current}
+        symbol={nameFormatted}
+      />
     );
 
+  console.log(icon);
   return (
     <>
-      <TxModalTitle title="Unstake" symbol={icon} />
+      <TxModalTitle title="Unstake" symbol={nameFormatted} />
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
@@ -111,15 +115,15 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
         value={amount}
         onChange={handleChange}
         usdValue={amountInUsd.toString()}
-        symbol={icon}
+        symbol={nameFormatted}
         assets={[
           {
-            balance: walletBalance,
+            balance: balance,
             symbol: icon,
           },
         ]}
         isMaxSelected={isMaxSelected}
-        maxValue={walletBalance}
+        maxValue={balance}
         balanceText={<Trans>Staking balance</Trans>}
       />
       {blockingError !== undefined && (
@@ -135,7 +139,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
         sx={{ mt: '48px' }}
         amountToUnStake={amount}
         isWrongNetwork={isWrongNetwork}
-        symbol={icon}
+        symbol={nameFormatted}
         blocked={blockingError !== undefined}
         selectedToken={stakeAssetName}
       />

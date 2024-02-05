@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-22 18:05\n"
+"PO-Revision-Date: 2024-01-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -53,7 +53,7 @@ msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgid "AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
@@ -384,7 +384,6 @@ msgstr "Διαθέσιμες ανταμοιβές"
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
 msgstr "Διαθέσιμο για δανεισμό"
@@ -1106,6 +1105,11 @@ msgstr ""
 msgid "Get ABP Token"
 msgstr ""
 
+#: src/modules/staking/GetGhoToken.tsx
+#: src/modules/staking/StakingPanel.tsx
+msgid "Get GHO"
+msgstr ""
+
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Global settings"
@@ -1269,10 +1273,6 @@ msgstr "Τα απομονωμένα περιουσιακά στοιχεία έχ
 msgid "Join the community discussion"
 msgstr ""
 
-#: src/layouts/TopBarNotify.tsx
-msgid "LEARN MORE"
-msgstr ""
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "Γλώσσα"
@@ -1287,7 +1287,6 @@ msgstr "Γλώσσα"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
-#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1432,6 +1431,10 @@ msgstr ""
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
+msgstr ""
+
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+msgid "Maximum available to borrow"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -2152,6 +2155,10 @@ msgstr ""
 
 #: pages/staking.staking.tsx
 msgid "Stake ABPT"
+msgstr ""
+
+#: pages/staking.staking.tsx
+msgid "Stake GHO"
 msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
@@ -3235,6 +3242,8 @@ msgstr ""
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/layouts/TopBarNotify.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx

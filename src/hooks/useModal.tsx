@@ -45,6 +45,7 @@ export interface ModalArgsType {
   emode?: EmodeModalType;
   isFrozen?: boolean;
   representatives?: Array<{ chainId: ChainId; representative: string }>;
+  chainId?: number;
 }
 
 export type TxStateType = {
@@ -93,7 +94,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
   openStake: (stakeAssetName: Stake, icon: string) => void;
   openUnstake: (stakeAssetName: Stake, icon: string) => void;
-  openStakeCooldown: (stakeAssetName: Stake) => void;
+  openStakeCooldown: (stakeAssetName: Stake, icon: string) => void;
   openStakeRewardsClaim: (stakeAssetName: Stake, icon: string) => void;
   openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
   openClaimRewards: () => void;
@@ -105,7 +106,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openRevokeGovDelegation: () => void;
   openV3Migration: () => void;
   openGovVote: (proposal: EnhancedProposal, support: boolean, power: string) => void;
-  openSwitch: (underlyingAsset?: string) => void;
+  openSwitch: (underlyingAsset?: string, chainId?: number) => void;
   openStakingMigrate: () => void;
   openGovRepresentatives: (
     representatives: Array<{ chainId: ChainId; representative: string }>
@@ -245,10 +246,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Unstake);
           setArgs({ stakeAssetName, icon });
         },
-        openStakeCooldown: (stakeAssetName) => {
+        openStakeCooldown: (stakeAssetName, icon) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Cooldown', assetName: stakeAssetName });
           setType(ModalType.StakeCooldown);
-          setArgs({ stakeAssetName });
+          setArgs({ stakeAssetName, icon });
         },
         openStakeRewardsClaim: (stakeAssetName, icon) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Stake Rewards', assetName: stakeAssetName });
@@ -316,10 +317,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });
           setType(ModalType.V3Migration);
         },
-        openSwitch: (underlyingAsset) => {
+        openSwitch: (underlyingAsset, chainId) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Switch' });
           setType(ModalType.Switch);
-          setArgs({ underlyingAsset });
+          setArgs({ underlyingAsset, chainId });
         },
         openStakingMigrate: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Staking V1->V2 Migration' });

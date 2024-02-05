@@ -10,32 +10,35 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 import { textCenterEllipsis } from '../../../helpers/text-center-ellipsis';
 // import type { GovernanceVoter } from './VotersListContainer';
 
+type EnhancedProposalVote = ProposalVote & {
+  ensName?: string;
+};
+
 type VotersListItemProps = {
   compact: boolean;
-  voter: ProposalVote;
+  voter: EnhancedProposalVote;
 };
 
 export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Element | null => {
-  // const { address, ensName, votingPower: proposalVotingPower, twitterAvatar } = voter;
-  const { voter: address } = voter;
+  const { voter: address, ensName } = voter;
   const blockieAvatar = blo(address !== '' ? (address as `0x${string}`) : '0x');
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   // This function helps determine how to display either the address or ENS name, in a way where the list looks good and names are about equal length.
   // This takes into account if the list should be compact or not, and adjusts accordingly to keep items of about equal length.
-  const displayName = (name: string) => {
+  const displayName = (name?: string) => {
     if (compact) {
       // Addresses when compact
-      if (name === address) {
-        return textCenterEllipsis(name, 3, 3);
+      if (!name) {
+        return textCenterEllipsis(address, 3, 3);
       }
       // ENS names when compact
       const compactName = name.length <= 10 ? name : textCenterEllipsis(name, 4, 3);
       return compactName;
     }
     // Addresses
-    if (name === address) {
-      return textCenterEllipsis(name, 9, 3);
+    if (!name) {
+      return textCenterEllipsis(address, 9, 3);
     }
     // ENS names
     return name.length < 16 ? name : textCenterEllipsis(name, 12, 3);
@@ -78,7 +81,7 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
               color="primary"
               sx={{ display: 'flex', alignItems: 'center' }}
             >
-              {displayName(address)}
+              {displayName(ensName)}
               <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
                 <ExternalLinkIcon />
               </SvgIcon>

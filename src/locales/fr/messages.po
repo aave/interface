@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-22 18:05\n"
+"PO-Revision-Date: 2024-01-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -53,8 +53,8 @@ msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Tolérance de glissement </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "Les détenteurs d’AAVE (réseau Ethereum uniquement) peuvent staker leur AAVE dans le module de sécurité pour ajouter plus de sécurité au protocole et gagner des incitations à la sécurité. Dans le cas d’un événement de déficit, jusqu’à 30 % de votre mise peut être réduite pour couvrir le déficit, offrant ainsi une couche de protection supplémentaire au protocole."
+msgid "AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
@@ -384,7 +384,6 @@ msgstr "Récompenses disponibles"
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
 msgstr "Disponible à emprunter"
@@ -1106,6 +1105,11 @@ msgstr "GHO est un actif numérique natif décentralisé et adossé à des garan
 msgid "Get ABP Token"
 msgstr "Obtenir le jeton ABP"
 
+#: src/modules/staking/GetGhoToken.tsx
+#: src/modules/staking/StakingPanel.tsx
+msgid "Get GHO"
+msgstr ""
+
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Global settings"
@@ -1269,10 +1273,6 @@ msgstr "Les actifs isolés ont un pouvoir d'emprunt limité et les autres actifs
 msgid "Join the community discussion"
 msgstr "Rejoignez la discussion de la communauté"
 
-#: src/layouts/TopBarNotify.tsx
-msgid "LEARN MORE"
-msgstr "POUR EN SAVOIR PLUS"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "Language"
@@ -1287,7 +1287,6 @@ msgstr "Language"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
-#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1433,6 +1432,10 @@ msgstr "La quantité maximale disponible pour la fourniture est de <0/> {0} (<1/
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "La quantité maximale disponible pour l’approvisionnement est limitée parce que le plafond d’approvisionnement du protocole est à {0}%."
+
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+msgid "Maximum available to borrow"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Maximum loan to value"
@@ -2153,6 +2156,10 @@ msgstr "Mise en jeu AAVE"
 #: pages/staking.staking.tsx
 msgid "Stake ABPT"
 msgstr "Mise en jeu ABPT"
+
+#: pages/staking.staking.tsx
+msgid "Stake GHO"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
@@ -3234,6 +3241,8 @@ msgstr "Retiré"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/layouts/TopBarNotify.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
