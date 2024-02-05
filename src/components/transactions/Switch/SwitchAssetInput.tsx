@@ -90,6 +90,8 @@ export interface AssetInputProps<T extends Asset = Asset> {
   swapAssets?: boolean;
 }
 
+const popularAssetsSymbols = ['ETH', 'DAI', 'USDC', 'USDT', 'WBTC', 'WETH'];
+
 export const SwitchAssetInput = <T extends Asset = Asset>({
   value,
   usdValue,
@@ -121,6 +123,17 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
   };
 
   const [filteredAssets, setFilteredAssets] = useState(assets);
+
+  const popularAssets = assets.filter((asset) => popularAssetsSymbols.includes(asset.symbol));
+
+  const selectPopularAsset = (symbol) => {
+    const asset = assets.find((asset) => asset.symbol === symbol);
+    if (asset) {
+      onSelect && onSelect(asset);
+      onChange && onChange('');
+      handleCleanSearch();
+    }
+  };
 
   const handleSearchAssetChange = (value: string) => {
     const searchQuery = value.trim().toLowerCase();
@@ -284,6 +297,47 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                           placeholder="Search assets..."
                           disableFocus={true}
                         />
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'space-around',
+                            flexWrap: 'wrap',
+                            p: 2,
+                          }}
+                        >
+                          {popularAssets.map((asset) => (
+                            <Box
+                              key={asset.symbol}
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row', // Изменено с column на row
+                                alignItems: 'center',
+                                p: 1,
+                                borderRadius: '16px', // Измените радиус границы, чтобы соответствовать вашему дизайну
+                                border: '1px solid',
+                                borderColor: theme.palette.divider,
+                                cursor: 'pointer',
+                                m: 0.5,
+                                '&:hover': {
+                                  borderColor: theme.palette.primary.main,
+                                },
+                                '&:not(:last-child)': {
+                                  mr: 2, // Добавьте отступ справа, если не последний элемент
+                                },
+                              }}
+                              onClick={() => selectPopularAsset(asset.symbol)}
+                            >
+                              <TokenIcon
+                                symbol={asset.iconSymbol || asset.symbol}
+                                aToken={asset.aToken}
+                                sx={{ width: 24, height: 24 }} // Подгоните размеры под ваш дизайн
+                              />
+                              <Typography variant="caption" sx={{ ml: 1 }}>
+                                {asset.symbol}
+                              </Typography>
+                            </Box>
+                          ))}
+                        </Box>
                       </Box>
                     ),
                   },
