@@ -123,15 +123,17 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
   };
 
   const [filteredAssets, setFilteredAssets] = useState(assets);
+  const [selectKey, setSelectKey] = useState(0);
 
   const popularAssets = assets.filter((asset) => popularAssetsSymbols.includes(asset.symbol));
 
-  const selectPopularAsset = (symbol) => {
+  const selectPopularAsset = (symbol: string) => {
     const asset = assets.find((asset) => asset.symbol === symbol);
     if (asset) {
       onSelect && onSelect(asset);
       onChange && onChange('');
       handleCleanSearch();
+      setSelectKey((prevKey) => prevKey + 1);
     }
   };
 
@@ -250,6 +252,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
           ) : (
             <FormControl>
               <Select
+                key={selectKey}
                 disabled={disabled}
                 value={asset.symbol}
                 onChange={handleSelect}
@@ -300,9 +303,11 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                         <Box
                           sx={{
                             display: 'flex',
-                            justifyContent: 'space-around',
+                            justifyContent: 'flex-start',
+                            alignItems: 'flex-start',
                             flexWrap: 'wrap',
-                            p: 2,
+                            mt: 2,
+                            gap: 2,
                           }}
                         >
                           {popularAssets.map((asset) => (
@@ -310,19 +315,15 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                               key={asset.symbol}
                               sx={{
                                 display: 'flex',
-                                flexDirection: 'row', // Изменено с column на row
+                                flexDirection: 'row',
                                 alignItems: 'center',
                                 p: 1,
-                                borderRadius: '16px', // Измените радиус границы, чтобы соответствовать вашему дизайну
+                                borderRadius: '16px',
                                 border: '1px solid',
                                 borderColor: theme.palette.divider,
                                 cursor: 'pointer',
-                                m: 0.5,
                                 '&:hover': {
-                                  borderColor: theme.palette.primary.main,
-                                },
-                                '&:not(:last-child)': {
-                                  mr: 2, // Добавьте отступ справа, если не последний элемент
+                                  backgroundColor: theme.palette.divider,
                                 },
                               }}
                               onClick={() => selectPopularAsset(asset.symbol)}
@@ -330,9 +331,9 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                               <TokenIcon
                                 symbol={asset.iconSymbol || asset.symbol}
                                 aToken={asset.aToken}
-                                sx={{ width: 24, height: 24 }} // Подгоните размеры под ваш дизайн
+                                sx={{ width: 24, height: 24, mr: 1 }}
                               />
-                              <Typography variant="caption" sx={{ ml: 1 }}>
+                              <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
                                 {asset.symbol}
                               </Typography>
                             </Box>
@@ -409,7 +410,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                             <ExternalTokenIcon
                               symbol={asset.iconSymbol || asset.symbol}
                               logoURI={asset.logoURI}
-                              sx={{ mr: 2, ml: 4 }}
+                              sx={{ mr: 2 }}
                             />
                           )}
                           <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>

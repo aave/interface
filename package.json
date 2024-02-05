@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "license": "BSD-3-Clause",
-  "scripts": {
+    "scripts": {
     "dev": "next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
