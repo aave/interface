@@ -288,6 +288,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                       <Box
                         sx={{
                           p: 2,
+                          px: 3,
                           borderBottom: `1px solid ${theme.palette.divider}`,
                           position: 'sticky',
                           top: 0,
