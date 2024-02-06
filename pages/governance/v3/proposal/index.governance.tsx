@@ -33,7 +33,7 @@ export default function ProposalPage() {
     proposal?.proposal.payloads.map((p) => {
       return {
         payloadControllerAddress: p.payloadsController,
-        payloadId: +p.id,
+        payloadId: +p.id.split('_')[1],
         chainId: +p.chainId,
       };
     }) || [];
