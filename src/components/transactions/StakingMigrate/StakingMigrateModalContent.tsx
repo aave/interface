@@ -2,9 +2,9 @@ import { Stake, valueToWei } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
-import { BigNumber } from 'ethers';
-import { formatEther } from 'ethers/lib/utils';
-import { ReactNode, useRef, useState } from 'react';
+import { BigNumber, Contract } from 'ethers';
+import { formatEther, formatUnits } from 'ethers/lib/utils';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
@@ -18,6 +18,9 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { StakingMigrateActions } from './StakingMigrateActions';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 
 export const StakingMigrateModalContent = () => {
   const { gasLimit, mainTxState } = useModalContext();
@@ -32,7 +35,53 @@ export const StakingMigrateModalContent = () => {
   const stakeBptV2Data = stkBptV2Data?.[0];
 
   const [_amount, setAmount] = useState('');
+  const [wethPrice, setWethPrice] = useState('1');
+  const [wstETHPrice, setWstETHPrice] = useState('1');
+  const [aavePrice, setAavePrice] = useState('1');
   const amountRef = useRef<string>();
+
+  useEffect(() => {
+    const ethProvider = getProvider(1);
+    const aaveOracleAbi = [
+      {
+        inputs: [
+          { internalType: 'contract IPoolAddressesProvider', name: 'provider', type: 'address' },
+          { internalType: 'address[]', name: 'assets', type: 'address[]' },
+          { internalType: 'address[]', name: 'sources', type: 'address[]' },
+          { internalType: 'address', name: 'fallbackOracle', type: 'address' },
+          { internalType: 'address', name: 'baseCurrency', type: 'address' },
+          { internalType: 'uint256', name: 'baseCurrencyUnit', type: 'uint256' },
+        ],
+        stateMutability: 'nonpayable',
+        type: 'constructor',
+      },
+      {
+        inputs: [{ internalType: 'address', name: 'asset', type: 'address' }],
+        name: 'getAssetPrice',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ];
+    const aaveOracle = new Contract(AaveV3Ethereum.ORACLE, aaveOracleAbi, ethProvider);
+    const queryPairTokenPrices = async () => {
+      const wethPriceOracle = await aaveOracle.getAssetPrice(AaveV3Ethereum.ASSETS.WETH.UNDERLYING);
+      if (wethPriceOracle) {
+        setWethPrice(formatUnits(wethPriceOracle, 8));
+      }
+      const wstETHPriceOracle = await aaveOracle.getAssetPrice(
+        AaveV3Ethereum.ASSETS.wstETH.UNDERLYING
+      );
+      if (wstETHPriceOracle) {
+        setWstETHPrice(formatUnits(wstETHPriceOracle, 8));
+      }
+      const aavePriceOracle = await aaveOracle.getAssetPrice(AaveV3Ethereum.ASSETS.AAVE.UNDERLYING);
+      if (aavePriceOracle) {
+        setAavePrice(formatUnits(aavePriceOracle, 8));
+      }
+    };
+    queryPairTokenPrices();
+  }, []);
 
   const maxAmountToMigrate = normalize(stakeUserData?.stakeTokenUserBalance || '0', 18);
   const isMaxSelected = _amount === '-1';
@@ -63,7 +112,6 @@ export const StakingMigrateModalContent = () => {
 
   const minOutFormatted = formatEther(minBptOutWithSlippage);
   const minOutUSD = Number(minOutFormatted) * Number(stakeBptV2Data?.stakeTokenPriceUSDFormatted);
-
   const nameFormatted = stakeAssetNameFormatted(Stake.bpt);
 
   return (
@@ -87,13 +135,21 @@ export const StakingMigrateModalContent = () => {
       <TxModalDetails gasLimit={gasLimit}>
         <TxDetailsRow
           caption={<Trans>Amount to migrate</Trans>}
-          value={amount}
-          valueUSD={amountInUsd.toString()}
+          value={(amountInUsd * 0.8) / Number(aavePrice)}
+          valueToken={'AAVE'}
+          valueUSD={amountInUsd * 0.8}
+          secondaryValue={(amountInUsd * 0.2) / Number(wethPrice)}
+          secondaryValueUSD={amountInUsd * 0.2}
+          secondaryValueToken={'WETH'}
         />
         <TxDetailsRow
           caption={<Trans>Minimum amount received</Trans>}
-          value={formatEther(minBptOutWithSlippage)}
-          valueUSD={minOutUSD.toString()}
+          value={(minOutUSD * 0.8) / Number(aavePrice)}
+          valueToken={'AAVE'}
+          valueUSD={minOutUSD * 0.8}
+          secondaryValue={(minOutUSD * 0.2) / Number(wstETHPrice)}
+          secondaryValueUSD={minOutUSD * 0.2}
+          secondaryValueToken={'wstETH'}
         />
       </TxModalDetails>
       <StakingMigrateActions amountToMigrate={amount} minOutWithSlippage={minBptOutWithSlippage} />
@@ -103,23 +159,62 @@ export const StakingMigrateModalContent = () => {
 
 type TxDetailsRowProps = {
   caption: ReactNode;
-  value: string;
-  valueUSD: string;
+  value: Number;
+  valueToken: string;
+  valueUSD: Number;
+  secondaryValue: Number;
+  secondaryValueToken: string;
+  secondaryValueUSD: Number;
 };
 
-const TxDetailsRow = ({ caption, value, valueUSD }: TxDetailsRowProps) => {
+const TxDetailsRow = ({
+  caption,
+  value,
+  valueToken,
+  valueUSD,
+  secondaryValue,
+  secondaryValueToken,
+  secondaryValueUSD,
+}: TxDetailsRowProps) => {
   return (
-    <Row caption={caption} captionVariant="description" mb={4}>
+    <Row caption={caption} captionVariant="description" mb={4} sx={{ alignItems: 'top' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <FormattedNumber value={value} variant="secondary14" compact />
+          <FormattedNumber
+            value={value.toString()}
+            variant="secondary14"
+            symbol={valueToken}
+            visibleDecimals={4}
+            compact
+          />
+          <TokenIcon symbol={valueToken} sx={{ width: 16, height: 16, ml: 0.5 }} />
         </Box>
         <FormattedNumber
-          value={valueUSD}
+          value={valueUSD.toString()}
           variant="helperText"
           compact
           symbol="USD"
           symbolsColor="text.secondary"
+          color="text.secondary"
+          visibleDecimals={2}
+        />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <FormattedNumber
+            value={secondaryValue.toString()}
+            variant="secondary14"
+            symbol={secondaryValueToken}
+            visibleDecimals={4}
+            compact
+          />
+          <TokenIcon symbol={secondaryValueToken} sx={{ width: 16, height: 16, ml: 0.5 }} />
+        </Box>
+        <FormattedNumber
+          value={secondaryValueUSD.toString()}
+          variant="helperText"
+          compact
+          symbol="USD"
+          symbolsColor="text.secondary"
+          visibleDecimals={2}
           color="text.secondary"
         />
       </Box>
