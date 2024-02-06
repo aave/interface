@@ -20,6 +20,7 @@ import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 
+import { COMMON_SWAPS } from '../../../ui-config/TokenList';
 import { CapType } from '../../caps/helper';
 import { AvailableTooltip } from '../../infoTooltips/AvailableTooltip';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
@@ -90,8 +91,6 @@ export interface AssetInputProps<T extends Asset = Asset> {
   swapAssets?: boolean;
 }
 
-const popularAssetsSymbols = ['ETH', 'DAI', 'USDC', 'USDT', 'WBTC', 'WETH'];
-
 export const SwitchAssetInput = <T extends Asset = Asset>({
   value,
   usdValue,
@@ -125,7 +124,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
   const [filteredAssets, setFilteredAssets] = useState(assets);
   const [selectKey, setSelectKey] = useState(0);
 
-  const popularAssets = assets.filter((asset) => popularAssetsSymbols.includes(asset.symbol));
+  const popularAssets = assets.filter((asset) => COMMON_SWAPS.includes(asset.symbol));
 
   const selectPopularAsset = (symbol: string) => {
     const asset = assets.find((asset) => asset.symbol === symbol);

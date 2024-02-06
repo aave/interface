@@ -76,17 +76,17 @@ const NETWORK_ASSETS = [
       isNative: true,
     },
   },
-  {
-    name: 'Polygon',
-    symbol: 'Polygon',
-    decimals: 18,
-    address: API_ETH_MOCK_ADDRESS,
-    chainId: 137,
-    logoURI: 'https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png?1624446912',
-    extensions: {
-      isNative: true,
-    },
-  },
+  // {
+  //   name: 'Polygon',
+  //   symbol: 'Polygon',
+  //   decimals: 18,
+  //   address: API_ETH_MOCK_ADDRESS,
+  //   chainId: 137,
+  //   logoURI: 'https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png?1624446912',
+  //   extensions: {
+  //     isNative: true,
+  //   },
+  // },
 
   // NOTE L2 ETH
   {
@@ -12426,3 +12426,16 @@ export const TOKEN_LIST = {
     },
   ],
 };
+
+export const COMMON_SWAPS = [
+  'ETH',
+  'DAI',
+  'USDC',
+  'USDT',
+  'WBTC',
+  'WETH',
+  'DAI.e',
+  'USDC.e',
+  'USDT.e',
+  'GHO',
+];
