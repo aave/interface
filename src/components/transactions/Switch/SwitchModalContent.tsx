@@ -24,7 +24,6 @@ import { SupportedNetworkWithChainId } from './common';
 import { NetworkSelector } from './NetworkSelector';
 import { SwitchActions } from './SwitchActions';
 import { SwitchAssetInput } from './SwitchAssetInput';
-// import { AssetInput } from 'src/components/transactions/AssetInput';
 import { SwitchErrors } from './SwitchErrors';
 import { TokenInterface } from './SwitchModal';
 import { SwitchRates } from './SwitchRates';

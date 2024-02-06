@@ -20,6 +20,7 @@ import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 
+import { COMMON_SWAPS } from '../../../ui-config/TokenList';
 import { CapType } from '../../caps/helper';
 import { AvailableTooltip } from '../../infoTooltips/AvailableTooltip';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
@@ -121,22 +122,27 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
   };
 
   const [filteredAssets, setFilteredAssets] = useState(assets);
+  const [selectKey, setSelectKey] = useState(0);
+
+  const popularAssets = assets.filter((asset) => COMMON_SWAPS.includes(asset.symbol));
+
+  const selectPopularAsset = (symbol: string) => {
+    const asset = assets.find((asset) => asset.symbol === symbol);
+    if (asset) {
+      onSelect && onSelect(asset);
+      onChange && onChange('');
+      handleCleanSearch();
+      setSelectKey((prevKey) => prevKey + 1);
+    }
+  };
 
   const handleSearchAssetChange = (value: string) => {
     const searchQuery = value.trim().toLowerCase();
-    const matchingAssets: T[] = [];
-    const nonMatchingAssets: T[] = [];
-    assets.forEach((asset) => {
-      const assetSymbol = asset.symbol.toLowerCase();
-      if (assetSymbol.includes(searchQuery)) {
-        matchingAssets.push(asset);
-      } else {
-        nonMatchingAssets.push(asset);
-      }
-    });
-    const filteredAndSortedAssets = [...matchingAssets, ...nonMatchingAssets];
+    const matchingAssets: T[] = assets.filter((asset) =>
+      asset.symbol.toLowerCase().includes(searchQuery)
+    );
 
-    setFilteredAssets(filteredAndSortedAssets);
+    setFilteredAssets(matchingAssets);
   };
 
   const handleCleanSearch = () => {
@@ -245,9 +251,11 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
           ) : (
             <FormControl>
               <Select
+                key={selectKey}
                 disabled={disabled}
                 value={asset.symbol}
                 onChange={handleSelect}
+                onClose={handleCleanSearch}
                 variant="outlined"
                 className="AssetInput__select"
                 data-cy={'assetSelect'}
@@ -264,11 +272,11 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                   PaperProps: {
                     style: {
                       width: inputBoxWidth,
-                      transform: 'translateX(13px)',
+                      transform: 'translateX(0.8rem) translateY(22px)',
                     },
                   },
                   sx: {
-                    maxHeight: '240px',
+                    maxHeight: '340px',
                     '.MuiPaper-root': {
                       border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
                       boxShadow: '0px 2px 10px 0px #0000001A',
@@ -279,6 +287,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                       <Box
                         sx={{
                           p: 2,
+                          px: 3,
                           borderBottom: `1px solid ${theme.palette.divider}`,
                           position: 'sticky',
                           top: 0,
@@ -291,6 +300,45 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                           placeholder="Search assets..."
                           disableFocus={true}
                         />
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            alignItems: 'flex-start',
+                            flexWrap: 'wrap',
+                            mt: 2,
+                            gap: 2,
+                          }}
+                        >
+                          {popularAssets.map((asset) => (
+                            <Box
+                              key={asset.symbol}
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                p: 1,
+                                borderRadius: '16px',
+                                border: '1px solid',
+                                borderColor: theme.palette.divider,
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  backgroundColor: theme.palette.divider,
+                                },
+                              }}
+                              onClick={() => selectPopularAsset(asset.symbol)}
+                            >
+                              <TokenIcon
+                                symbol={asset.iconSymbol || asset.symbol}
+                                aToken={asset.aToken}
+                                sx={{ width: 24, height: 24, mr: 1 }}
+                              />
+                              <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
+                                {asset.symbol}
+                              </Typography>
+                            </Box>
+                          ))}
+                        </Box>
                       </Box>
                     ),
                   },
@@ -341,38 +389,47 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                 }}
               >
                 {selectOptionHeader ? selectOptionHeader : undefined}
-                {filteredAssets.map((asset) => (
-                  <MenuItem
-                    key={asset.symbol}
-                    value={asset.symbol}
-                    data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
-                  >
-                    {selectOption ? (
-                      selectOption(asset)
-                    ) : (
-                      <>
-                        {!swapAssets ? (
-                          <TokenIcon
-                            aToken={asset.aToken}
-                            symbol={asset.iconSymbol || asset.symbol}
-                            sx={{ fontSize: '22px', mr: 1 }}
-                          />
-                        ) : (
-                          <ExternalTokenIcon
-                            symbol={asset.iconSymbol || asset.symbol}
-                            // aToken={asset.aToken}
-                            // eslint-disable-next-line
-                            logoURI={asset.logoURI}
-                            sx={{ mr: 2, ml: 4 }}
-                          />
-                        )}
-
-                        <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-                        {asset.balance && <FormattedNumber value={asset.balance} compact />}
-                      </>
-                    )}
-                  </MenuItem>
-                ))}
+                {filteredAssets.length > 0 ? (
+                  filteredAssets.map((asset) => (
+                    <MenuItem
+                      key={asset.symbol}
+                      value={asset.symbol}
+                      data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
+                    >
+                      {selectOption ? (
+                        selectOption(asset)
+                      ) : (
+                        <>
+                          {!swapAssets ? (
+                            <TokenIcon
+                              aToken={asset.aToken}
+                              symbol={asset.iconSymbol || asset.symbol}
+                              sx={{ fontSize: '22px', mr: 1 }}
+                            />
+                          ) : (
+                            <ExternalTokenIcon
+                              symbol={asset.iconSymbol || asset.symbol}
+                              logoURI={asset.logoURI}
+                              sx={{ mr: 2 }}
+                            />
+                          )}
+                          <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
+                          {asset.balance && <FormattedNumber value={asset.balance} compact />}
+                        </>
+                      )}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <Box>
+                    <Typography
+                      variant="main14"
+                      color="text.primary"
+                      sx={{ width: '100%', textAlign: 'center', mt: 4, mb: 4 }}
+                    >
+                      <Trans>No results found.</Trans>
+                    </Typography>
+                  </Box>
+                )}
               </Select>
             </FormControl>
           )}
