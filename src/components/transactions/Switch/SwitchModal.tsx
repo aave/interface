@@ -109,9 +109,16 @@ export const SwitchModal = () => {
         ethersProvider: provider as unknown as providers.Provider,
         tryAggregate: true,
       });
-      if (!user || user.length !== 42 || !user.startsWith('0x')) {
+      if (
+        !type ||
+        type !== ModalType.Switch ||
+        !user ||
+        user.length !== 42 ||
+        !user.startsWith('0x')
+      ) {
         return;
       }
+
       try {
         const ethBalance = await provider.getBalance(user);
         const { results }: ContractCallResults = await multicall.call(contractCallContext);
@@ -153,7 +160,7 @@ export const SwitchModal = () => {
     };
 
     fetchData();
-  }, [user, provider, selectedChainId]);
+  }, [user, provider, selectedChainId, type]);
 
   const tokenListSortedByBalace = tokenListWithBalance.sort(
     (a, b) => Number(b.balance) - Number(a.balance)
