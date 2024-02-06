@@ -272,7 +272,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                   PaperProps: {
                     style: {
                       width: inputBoxWidth,
-                      transform: 'translateX(13px) translateY(22px)',
+                      transform: 'translateX(0.8rem) translateY(22px)',
                     },
                   },
                   sx: {
