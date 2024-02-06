@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-26 18:05\n"
+"PO-Revision-Date: 2024-01-31 00:16\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -384,7 +384,6 @@ msgstr "Verfügbare Belohnungen"
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
 msgstr "Verfügbar zum Ausleihen"
@@ -918,6 +917,11 @@ msgstr "Doktoren"
 msgid "Download"
 msgstr "Herunterladen"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to health factor impact, a flashloan is required to perform this transaction, but Aave Governance has disabled flashloan availability for this asset. Try lowering the amount or supplying additional collateral."
+msgstr ""
+
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
 msgstr "Aufgrund interner stETH-Mechanismen, die für die Rebasing-Unterstützung erforderlich sind, ist es nicht möglich, einen Sicherheitenwechsel durchzuführen, bei dem stETH der Quell-Token ist."
@@ -1433,6 +1437,10 @@ msgstr "Die maximale Menge, die zur Verfügung steht, beträgt <0/> {0} (<1/>)."
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Die maximal für die Bereitstellung verfügbare Menge ist begrenzt, da die Obergrenze für das Protokollangebot bei {0}%."
+
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+msgid "Maximum available to borrow"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Maximum loan to value"
@@ -2407,10 +2415,6 @@ msgstr "Die Abklingzeit ist die Zeit, die benötigt wird, bevor Sie Ihre Token a
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 msgstr "Die Abklingzeit beträgt {0}. Nach {1} der Abklingzeit, gelangen Sie in das Unstake-Fenster von {2}. Ihr erhaltet weiterhin Belohnungen während der Abklingzeit und während des Zeitfensters zum Aufheben des Einsatzes."
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
-msgstr "Die Auswirkungen auf den Gesundheitsfaktor würden zu einer Liquidation führen. Versuchen Sie, den Betrag zu verringern."
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
