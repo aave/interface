@@ -4,7 +4,7 @@ import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
 import { debounce } from 'lodash';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
@@ -24,6 +24,7 @@ import { SupportedNetworkWithChainId } from './common';
 import { NetworkSelector } from './NetworkSelector';
 import { SwitchActions } from './SwitchActions';
 import { SwitchAssetInput } from './SwitchAssetInput';
+// import { AssetInput } from 'src/components/transactions/AssetInput';
 import { SwitchErrors } from './SwitchErrors';
 import { TokenInterface } from './SwitchModal';
 import { SwitchRates } from './SwitchRates';
@@ -47,33 +48,41 @@ export const SwitchModalContent = ({
   setSelectedChainId,
   reserves,
   selectedNetworkConfig,
-  defaultAsset,
-}: SwitchModalContentProps) => {
+}: // defaultAsset,
+SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
   const [inputAmount, setInputAmount] = useState('');
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const { mainTxState: switchTxState, gasLimit, txError, setTxError } = useModalContext();
   const user = useRootStore((store) => store.account);
-  const [selectedInputReserve, setSelectedInputReserve] = useState(() => {
-    const defaultReserve = reserves.find((elem) => elem.address === defaultAsset);
-    if (defaultReserve) return defaultReserve;
+
+  const getDefaultInputReserve = () => {
     if (reserves[0].address === GHO_TOKEN_ADDRESS) {
       return reserves[1];
     }
     return reserves[0];
-  });
-  const { readOnlyModeAddress } = useWeb3Context();
-  const [selectedOutputReserve, setSelectedOutputReserve] = useState(() => {
-    const gho = reserves.find((reserve) => reserve.address === GHO_TOKEN_ADDRESS);
-    if (gho) return gho;
-    return (
-      reserves.find(
-        (elem) => elem.address !== defaultAsset && elem.address !== reserves[0].address
-      ) || reserves[1]
-    );
-  });
+  };
 
-  console.log('selectedOutputReserve', selectedOutputReserve);
+  const getDefaultOutputReserve = () => {
+    const gho = reserves.find((reserve) => reserve.address === GHO_TOKEN_ADDRESS);
+    const aave = reserves.find((elem) => elem.symbol == 'AAVE');
+    if (gho) return gho;
+    if (aave) return aave;
+    return reserves[1];
+  };
+
+  useEffect(() => {
+    setSelectedInputReserve(getDefaultInputReserve());
+    setSelectedOutputReserve(getDefaultOutputReserve());
+  }, [reserves]);
+
+  const [selectedInputReserve, setSelectedInputReserve] = useState(() => getDefaultInputReserve());
+  const [selectedOutputReserve, setSelectedOutputReserve] = useState(() =>
+    getDefaultOutputReserve()
+  );
+
+  const { readOnlyModeAddress } = useWeb3Context();
+
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
   const handleInputChange = (value: string) => {

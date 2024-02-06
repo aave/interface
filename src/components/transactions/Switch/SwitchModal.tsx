@@ -1,11 +1,9 @@
 import { ChainId, ReserveDataHumanized } from '@aave/contract-helpers';
-import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { ContractCallContext, ContractCallResults, Multicall } from 'ethereum-multicall';
 import { providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useMemo, useState } from 'react';
-import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { TOKEN_LIST } from 'src/ui-config/TokenList';
@@ -33,14 +31,6 @@ export interface TokenInterface {
   decimals: number;
   logoURI: string;
   balance: string;
-  // extensions?: {
-  //   bridgeInfo: {
-  //     [chainId: string]: {
-  //       tokenAddress: string;
-  //     };
-  //   };
-  //   isNative?: boolean;
-  // };
 }
 
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
@@ -49,7 +39,7 @@ export const SwitchModal = () => {
   const {
     type,
     close,
-    args: { underlyingAsset, chainId },
+    args: { chainId },
   } = useModalContext();
 
   const currentChainId = useRootStore((store) => store.currentChainId);
@@ -107,11 +97,12 @@ export const SwitchModal = () => {
       calls: [{ reference: 'balanceOfCall', methodName: 'balanceOf', methodParameters: [user] }],
     };
   });
-  const provider = getProvider(currentChainId);
+  const provider = getProvider(selectedChainId);
 
   useEffect(() => {
-    console.log('FETCH TOKENS');
     const fetchData = async () => {
+      setTokensListBalance([]);
+
       const multicall = new Multicall({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -119,8 +110,6 @@ export const SwitchModal = () => {
         tryAggregate: true,
       });
       if (!user || user.length !== 42 || !user.startsWith('0x')) {
-        console.log('Invalid user address --->', user);
-        console.error('Invalid user address:', user);
         return;
       }
       try {
@@ -143,7 +132,10 @@ export const SwitchModal = () => {
                 token.address.toLowerCase()
               ) {
                 const balanceData = contract.callsReturnContext[0].returnValues[0];
-                balance = formatUnits(balanceData, token.decimals);
+
+                if (balanceData) {
+                  balance = formatUnits(balanceData, token.decimals);
+                }
               }
             });
           }
@@ -177,25 +169,12 @@ export const SwitchModal = () => {
           supportedNetworks={supportedNetworksWithEnabledMarket}
           reserves={tokenListSortedByBalace}
           selectedNetworkConfig={selectedNetworkConfig}
-          defaultAsset={underlyingAsset}
+          // defaultAsset={underlyingAsset}
         />
-      ) : !user ? (
-        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
-          <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
-            <Trans>Please connect your wallet to be able to switch your tokens.</Trans>
-          </Typography>
-          <ConnectWalletButton />
-        </Box>
       ) : (
-        <SwitchModalContent
-          key={selectedChainId}
-          selectedChainId={selectedChainId}
-          setSelectedChainId={setSelectedChainId}
-          supportedNetworks={supportedNetworksWithEnabledMarket}
-          reserves={filteredTokens}
-          selectedNetworkConfig={selectedNetworkConfig}
-          defaultAsset={underlyingAsset}
-        />
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
+          <CircularProgress />
+        </Box>
       )}
     </BasicModal>
   );

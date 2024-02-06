@@ -1669,7 +1669,6 @@ msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially 
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
-#: src/components/transactions/Switch/SwitchModal.tsx
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Please connect your wallet to be able to switch your tokens."
 msgstr "Please connect your wallet to be able to switch your tokens."
