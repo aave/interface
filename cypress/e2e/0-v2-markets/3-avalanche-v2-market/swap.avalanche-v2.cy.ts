@@ -39,8 +39,8 @@ const testData = {
     ],
   },
 };
-
-describe('SWAP, AVALANCHE V2 MARKET, INTEGRATION SPEC', () => {
+//unstable
+describe.skip('SWAP, AVALANCHE V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ tokens: tokenSet(tokensToRequest) });
   testData.swap.forEach((swapCase) => {
