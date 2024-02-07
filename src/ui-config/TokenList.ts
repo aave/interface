@@ -25,17 +25,17 @@ const NETWORK_ASSETS = [
       isNative: true,
     },
   },
-  // {
-  //   name: 'Polygon',
-  //   symbol: 'Polygon',
-  //   decimals: 18,
-  //   address: API_ETH_MOCK_ADDRESS,
-  //   chainId: 137,
-  //   logoURI: 'https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png?1624446912',
-  //   extensions: {
-  //     isNative: true,
-  //   },
-  // },
+  {
+    name: 'Polygon',
+    symbol: 'Matic',
+    decimals: 18,
+    address: API_ETH_MOCK_ADDRESS,
+    chainId: 137,
+    logoURI: 'https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png?1624446912',
+    extensions: {
+      isNative: true,
+    },
+  },
 
   // NOTE L2 ETH
   {
@@ -7923,22 +7923,22 @@ export const TOKEN_LIST = {
         },
       },
     },
-    {
-      chainId: 137,
-      address: '0x0000000000000000000000000000000000001010',
-      name: 'Polygon',
-      symbol: 'MATIC',
-      decimals: 18,
-      logoURI:
-        'https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png?1624446912',
-      extensions: {
-        bridgeInfo: {
-          '1': {
-            tokenAddress: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
-          },
-        },
-      },
-    },
+    // {
+    //   chainId: 137,
+    //   address: '0x0000000000000000000000000000000000001010',
+    //   name: 'Polygon',
+    //   symbol: 'MATIC',
+    //   decimals: 18,
+    //   logoURI:
+    //     'https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png?1624446912',
+    //   extensions: {
+    //     bridgeInfo: {
+    //       '1': {
+    //         tokenAddress: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
+    //       },
+    //     },
+    //   },
+    // },
     {
       chainId: 137,
       address: '0xAa7DbD1598251f856C12f63557A4C4397c253Cea',
