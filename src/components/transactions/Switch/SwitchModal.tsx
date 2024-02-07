@@ -1,9 +1,11 @@
 import { ChainId, ReserveDataHumanized } from '@aave/contract-helpers';
-import { Box, CircularProgress } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { ContractCallContext, ContractCallResults, Multicall } from 'ethereum-multicall';
 import { providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useMemo, useState } from 'react';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { TOKEN_LIST } from 'src/ui-config/TokenList';
@@ -109,9 +111,16 @@ export const SwitchModal = () => {
         ethersProvider: provider as unknown as providers.Provider,
         tryAggregate: true,
       });
-      if (!user || user.length !== 42 || !user.startsWith('0x')) {
+      if (
+        !type ||
+        type !== ModalType.Switch ||
+        !user ||
+        user.length !== 42 ||
+        !user.startsWith('0x')
+      ) {
         return;
       }
+
       try {
         const ethBalance = await provider.getBalance(user);
         const { results }: ContractCallResults = await multicall.call(contractCallContext);
@@ -153,7 +162,7 @@ export const SwitchModal = () => {
     };
 
     fetchData();
-  }, [user, provider, selectedChainId]);
+  }, [user, provider, selectedChainId, type]);
 
   const tokenListSortedByBalace = tokenListWithBalance.sort(
     (a, b) => Number(b.balance) - Number(a.balance)
@@ -171,6 +180,13 @@ export const SwitchModal = () => {
           selectedNetworkConfig={selectedNetworkConfig}
           // defaultAsset={underlyingAsset}
         />
+      ) : !user ? (
+        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
+          <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
+            <Trans>Please connect your wallet to be able to switch your tokens.</Trans>
+          </Typography>
+          <ConnectWalletButton />
+        </Box>
       ) : (
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
           <CircularProgress />
