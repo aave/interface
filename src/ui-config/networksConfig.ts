@@ -452,8 +452,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
   },
 
-  // TODO Utils
-  [534352]: {
+  [ChainId.scroll]: {
     name: 'Scroll',
     privateJsonRPCUrl: 'https://scroll-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://rpc.scroll.io', 'https://rpc.ankr.com/scroll'],
