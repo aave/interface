@@ -73,7 +73,9 @@ export const SwitchModal = () => {
       return { ...token, balance: '0' };
     });
 
-    let tokens = transformedTokens.filter((token) => token.chainId === selectedChainId);
+    const realChainId = selectedNetworkConfig.underlyingChainId ?? selectedChainId;
+
+    let tokens = transformedTokens.filter((token) => token.chainId === realChainId);
 
     if (tokens.length === 0) {
       tokens = transformedTokens.filter((token) => token.chainId === 1);
@@ -110,6 +112,7 @@ export const SwitchModal = () => {
         // @ts-ignore
         ethersProvider: provider as unknown as providers.Provider,
         tryAggregate: true,
+        multicallCustomContractAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
       });
       if (
         !type ||
