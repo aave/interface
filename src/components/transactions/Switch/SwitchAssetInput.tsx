@@ -11,7 +11,6 @@ import {
   ListItemText,
   MenuItem,
   Select,
-  SelectChangeEvent,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -114,28 +113,17 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
 }: AssetInputProps<T>) => {
   const theme = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const handleSelect = (event: SelectChangeEvent) => {
-    const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
-    onSelect && onSelect(newAsset);
+  const handleSelect = (asset: T) => {
+    onSelect && onSelect(asset);
     onChange && onChange('');
     handleCleanSearch();
+    setSelectKey((prevKey) => prevKey + 1);
   };
 
   const [filteredAssets, setFilteredAssets] = useState(assets);
   const [selectKey, setSelectKey] = useState(0);
 
   const popularAssets = assets.filter((asset) => COMMON_SWAPS.includes(asset.symbol));
-
-  const selectPopularAsset = (symbol: string) => {
-    const asset = assets.find((asset) => asset.symbol === symbol);
-    if (asset) {
-      onSelect && onSelect(asset);
-      onChange && onChange('');
-      handleCleanSearch();
-      setSelectKey((prevKey) => prevKey + 1);
-    }
-  };
-
   const handleSearchAssetChange = (value: string) => {
     const searchQuery = value.trim().toLowerCase();
     const matchingAssets: T[] = assets.filter((asset) =>
@@ -254,7 +242,6 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                 key={selectKey}
                 disabled={disabled}
                 value={asset.symbol}
-                onChange={handleSelect}
                 onClose={handleCleanSearch}
                 variant="outlined"
                 className="AssetInput__select"
@@ -327,7 +314,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                                   backgroundColor: theme.palette.divider,
                                 },
                               }}
-                              onClick={() => selectPopularAsset(asset.symbol)}
+                              onClick={() => handleSelect(asset)}
                             >
                               <TokenIcon
                                 symbol={asset.iconSymbol || asset.symbol}
@@ -402,6 +389,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                         key={asset.symbol}
                         value={asset.symbol}
                         data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
+                        onClick={() => handleSelect(asset)}
                       >
                         {selectOption ? (
                           selectOption(asset)
