@@ -451,4 +451,22 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://www.bnbchain.org/en/bnb-chain-bridges',
     },
   },
+
+  // TODO Utils
+  [534352]: {
+    name: 'Scroll',
+    privateJsonRPCUrl: 'https://scroll-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    publicJsonRPCUrl: ['https://rpc.scroll.io', 'https://rpc.ankr.com/scroll'],
+    publicJsonRPCWSUrl: 'wss://bsc.publicnode.com',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://scrollscan.com/',
+    networkLogoPath: '/icons/networks/scroll.svg',
+    bridge: {
+      icon: '/icons/networks/scroll.svg',
+      name: 'Scroll Bridge',
+      url: 'https://scroll.io/bridge',
+    },
+  },
 } as const;
