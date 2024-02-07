@@ -73,9 +73,9 @@ export const SwitchModal = () => {
       return { ...token, balance: '0' };
     });
 
-    let tokens = transformedTokens.filter(
-      (token) => token.chainId === selectedNetworkConfig.underlyingChainId ?? selectedChainId
-    );
+    const realChainId = selectedNetworkConfig.underlyingChainId ?? selectedChainId;
+
+    let tokens = transformedTokens.filter((token) => token.chainId === realChainId);
 
     if (tokens.length === 0) {
       tokens = transformedTokens.filter((token) => token.chainId === 1);
