@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-31 00:16\n"
+"PO-Revision-Date: 2024-02-07 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -224,6 +224,7 @@ msgstr "允许您在浮动利率和稳定利率之间切换，其中 <0>浮</0> 
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "量"
@@ -399,6 +400,7 @@ msgstr "返回仪表板"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -1398,6 +1400,7 @@ msgid "Markets"
 msgstr "市场"
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "Max"
 msgstr "麦克斯"
 
@@ -1547,6 +1550,10 @@ msgstr "新 APY"
 msgid "No assets selected to migrate."
 msgstr "未选择要迁移的资产。"
 
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
+msgid "No results found."
+msgstr ""
+
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "No rewards to claim"
@@ -1679,6 +1686,7 @@ msgstr "在部分迁移头寸时，请始终注意您的 <0>健康因素 （HF�
 msgid "Please connect a wallet to view your personal information here."
 msgstr "请在此处连接钱包以查看您的个人信息。"
 
+#: src/components/transactions/Switch/SwitchModal.tsx
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Please connect your wallet to be able to switch your tokens."
 msgstr "请连接您的钱包以便能够切换您的代币。"

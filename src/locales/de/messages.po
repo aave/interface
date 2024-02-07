@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-31 00:16\n"
+"PO-Revision-Date: 2024-02-07 18:04\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -224,6 +224,7 @@ msgstr "Ermöglicht es Ihnen, zwischen <0>variablen</0> und <1>stabilen</1> Zins
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Menge"
@@ -399,6 +400,7 @@ msgstr "Zurück zum Dashboard"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -1398,6 +1400,7 @@ msgid "Markets"
 msgstr "Märkte"
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "Max"
 msgstr "Max"
 
@@ -1547,6 +1550,10 @@ msgstr "Neuer APY"
 msgid "No assets selected to migrate."
 msgstr "Es wurden keine Assets für die Migration ausgewählt."
 
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
+msgid "No results found."
+msgstr ""
+
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "No rewards to claim"
@@ -1679,6 +1686,7 @@ msgstr "Bitte beachten Sie immer Ihren <0>Gesundheitsfaktor (HF),</0> wenn Sie e
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Bitte verbinden Sie hier eine Wallet, um Ihre persönlichen Daten einzusehen."
 
+#: src/components/transactions/Switch/SwitchModal.tsx
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Please connect your wallet to be able to switch your tokens."
 msgstr "Bitte verbinden Sie Ihre Wallet, um Ihre Token wechseln zu können."
