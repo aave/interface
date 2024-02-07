@@ -27,7 +27,7 @@ const NETWORK_ASSETS = [
   },
   {
     name: 'Polygon',
-    symbol: 'Matic',
+    symbol: 'MATIC',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
     chainId: 137,
