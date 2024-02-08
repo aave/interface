@@ -273,7 +273,7 @@ export const SwitchAssetInput = ({
                       >
                         <SearchInput
                           onSearchTermChange={handleSearchAssetChange}
-                          placeholder="Search assets..."
+                          placeholder="Search name or paste address"
                           disableFocus={true}
                         />
                         <Box
