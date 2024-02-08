@@ -219,6 +219,7 @@ msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest 
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Amount"
@@ -402,6 +403,7 @@ msgstr "Back to Dashboard"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -1404,6 +1406,7 @@ msgid "Markets"
 msgstr "Markets"
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "Max"
 msgstr "Max"
 
@@ -1564,6 +1567,10 @@ msgstr "New APY"
 msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
 
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
+msgid "No results found."
+msgstr "No results found."
+
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "No rewards to claim"
@@ -1696,6 +1703,7 @@ msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially 
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
+#: src/components/transactions/Switch/SwitchModal.tsx
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Please connect your wallet to be able to switch your tokens."
 msgstr "Please connect your wallet to be able to switch your tokens."
