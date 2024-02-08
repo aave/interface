@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-07 18:04\n"
+"PO-Revision-Date: 2024-02-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -242,6 +242,10 @@ msgstr ""
 msgid "Amount must be greater than 0"
 msgstr "Το ποσό πρέπει να είναι μεγαλύτερο από 0"
 
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Amount to migrate"
+msgstr ""
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Amount to unstake"
 msgstr ""
@@ -269,6 +273,10 @@ msgstr "Έγκριση του {symbol}..."
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
 msgstr "Οι παράμετροι της συστοιχίας που θα έπρεπε να είναι ίσου μήκους δεν είναι"
+
+#: pages/staking.staking.tsx
+msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
+msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -1108,8 +1116,11 @@ msgid "GHO is a native decentralized, collateral-backed digital asset pegged to 
 msgstr ""
 
 #: src/modules/staking/GetABPToken.tsx
-#: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
+msgstr ""
+
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Get ABP v2 Token"
 msgstr ""
 
 #: src/modules/staking/GetGhoToken.tsx
@@ -1458,11 +1469,16 @@ msgid "Menu"
 msgstr "Μενού"
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrate"
 msgstr ""
 
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
+msgstr ""
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Migrate to stkABPT v2"
 msgstr ""
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
@@ -1475,10 +1491,12 @@ msgid "Migrate to {0} v3 Market"
 msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Migrated"
 msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrating"
 msgstr ""
 
@@ -1496,6 +1514,10 @@ msgstr ""
 
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Minimum USD value received"
+msgstr ""
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Minimum amount received"
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
@@ -2180,6 +2202,7 @@ msgstr ""
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "Κλειδωμένο"
 
@@ -2373,7 +2396,7 @@ msgid "The % of your total borrowing power used. This is based on the amount of 
 msgstr "Το % της συνολικής δανειοληπτικής σας δύναμης που χρησιμοποιείται. Αυτό βασίζεται στο ποσό της παρεχόμενης εξασφάλισής σας και στο συνολικό ποσό που μπορείτε να δανειστείτε."
 
 #: src/modules/staking/GetABPTokenModal.tsx
-msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
+msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
@@ -2665,10 +2688,6 @@ msgstr "Επισκόπηση συναλλαγής"
 msgid "Transactions"
 msgstr ""
 
-#: src/components/transactions/UnStake/UnStakeActions.tsx
-msgid "UNSTAKE {symbol}"
-msgstr "ΞΕΚΛΕΙΔΩΜΑ {symbol}"
-
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
@@ -2693,12 +2712,20 @@ msgid "Underlying token"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
+msgid "Unstake"
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Ξεκλειδώστε τώρα"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "Παράθυρο ξεκλειδώματος"
+
+#: src/components/transactions/UnStake/UnStakeActions.tsx
+msgid "Unstake {symbol}"
+msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
@@ -2879,6 +2906,7 @@ msgstr ""
 #: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx

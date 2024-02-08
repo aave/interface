@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-07 18:04\n"
+"PO-Revision-Date: 2024-02-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -242,6 +242,10 @@ msgstr "Количество в кулдауне"
 msgid "Amount must be greater than 0"
 msgstr "Сумма должна быть больше 0"
 
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Amount to migrate"
+msgstr ""
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Amount to unstake"
 msgstr "Сумма для вывода из стейкинга"
@@ -269,6 +273,10 @@ msgstr "Одобрительный {symbol}..."
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
 msgstr "Параметры массива, которые должны быть равной длины, не являются"
+
+#: pages/staking.staking.tsx
+msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
+msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -1108,9 +1116,12 @@ msgid "GHO is a native decentralized, collateral-backed digital asset pegged to 
 msgstr "GHO — это собственный децентрализованный цифровой актив, обеспеченный залогом, привязанный к доллару США. Он создается пользователями путем заимствования под множественное обеспечение. Когда пользователь погашает свою позицию по займу GHO, протокол сжигает GHO этого пользователя. Все процентные платежи, начисленные минтерами GHO, будут напрямую перечисляться в казначейство AaveDAO."
 
 #: src/modules/staking/GetABPToken.tsx
-#: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
 msgstr "Получить токен ABP"
+
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Get ABP v2 Token"
+msgstr ""
 
 #: src/modules/staking/GetGhoToken.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1458,12 +1469,17 @@ msgid "Menu"
 msgstr "Меню"
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrate"
 msgstr "Мигрировать"
 
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Переход на версию 3"
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Migrate to stkABPT v2"
+msgstr ""
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to v3"
@@ -1475,10 +1491,12 @@ msgid "Migrate to {0} v3 Market"
 msgstr "Миграция в {0} v3 Маркет"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Migrated"
 msgstr "Перенесены"
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrating"
 msgstr "Перенос"
 
@@ -1497,6 +1515,10 @@ msgstr "Минимальная сумма займа GHO"
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Minimum USD value received"
 msgstr "Минимальная полученная сумма в долларах США"
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Minimum amount received"
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum staked Aave amount"
@@ -2180,6 +2202,7 @@ msgstr "Активирована перезарядка Stake"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "Поставил"
 
@@ -2372,8 +2395,8 @@ msgid "The % of your total borrowing power used. This is based on the amount of 
 msgstr "Процент от общей использованной заемной способности. Это зависит от суммы предоставленного вами залога и общей суммы, которую вы можете занять."
 
 #: src/modules/staking/GetABPTokenModal.tsx
-msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
-msgstr "Токен пула Aave Balancer (ABPT) — это токен пула ликвидности. Вы можете получить ABPT, внеся комбинацию AAVE + ETH в пул ликвидности Balancer. Затем вы можете разместить свои BPT в модуле безопасности, чтобы защитить протокол и заработать поощрения за безопасность."
+msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is different from using market pricing via oracles for other crypto assets. This creates stabilizing arbitrage opportunities when the price of GHO fluctuates."
@@ -2664,10 +2687,6 @@ msgstr "Общие сведения о сделке"
 msgid "Transactions"
 msgstr "Операций"
 
-#: src/components/transactions/UnStake/UnStakeActions.tsx
-msgid "UNSTAKE {symbol}"
-msgstr "НЕСТЕЙКИНГ {symbol}"
-
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
@@ -2692,12 +2711,20 @@ msgid "Underlying token"
 msgstr "Базовый токен"
 
 #: src/modules/staking/StakingPanel.tsx
+msgid "Unstake"
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Вывести из стейкинга сейчас"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "Окно вывода из стейкинга"
+
+#: src/components/transactions/UnStake/UnStakeActions.tsx
+msgid "Unstake {symbol}"
+msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
@@ -2878,6 +2905,7 @@ msgstr "Баланс кошелька"
 #: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
