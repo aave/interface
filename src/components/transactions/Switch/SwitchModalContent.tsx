@@ -86,7 +86,7 @@ SwitchModalContentProps) => {
     setTxError(undefined);
     if (value === '-1') {
       setInputAmount(selectedInputToken.balance);
-      debouncedInputChange(selectedOutputToken.balance);
+      debouncedInputChange(selectedInputToken.balance);
     } else {
       setInputAmount(value);
       debouncedInputChange(value);
@@ -209,7 +209,6 @@ SwitchModalContentProps) => {
               onSelect={handleSelectedInputToken}
               inputTitle={' '}
               sx={{ width: '100%' }}
-              swapAssets={true}
             />
             <IconButton
               onClick={onSwitchReserves}
@@ -243,7 +242,6 @@ SwitchModalContentProps) => {
               disableInput={true}
               inputTitle={' '}
               sx={{ width: '100%' }}
-              swapAssets={true}
             />
           </Box>
           {sellRates && (

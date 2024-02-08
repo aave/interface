@@ -78,7 +78,6 @@ export interface AssetInputProps {
   selectOptionHeader?: ReactNode;
   selectOption?: (asset: TokenInfoWithBalance) => ReactNode;
   sx?: BoxProps;
-  swapAssets?: boolean;
 }
 
 export const SwitchAssetInput = ({
@@ -99,7 +98,6 @@ export const SwitchAssetInput = ({
   event,
   selectOptionHeader,
   selectOption,
-  swapAssets = false,
   sx = {},
 }: AssetInputProps) => {
   const theme = useTheme();
@@ -344,17 +342,12 @@ export const SwitchAssetInput = ({
                       sx={{ display: 'flex', alignItems: 'center' }}
                       data-cy={`assetsSelectedOption_${asset.symbol.toUpperCase()}`}
                     >
-                      {!swapAssets ? (
-                        <TokenIcon symbol={asset.symbol} sx={{ mr: 2, ml: 4 }} />
-                      ) : (
-                        <ExternalTokenIcon
-                          symbol={asset.symbol}
-                          // aToken={asset.aToken}
-                          logoURI={asset.logoURI}
-                          sx={{ mr: 2, ml: 4 }}
-                        />
-                      )}
-
+                      <ExternalTokenIcon
+                        symbol={asset.symbol}
+                        // aToken={asset.aToken}
+                        logoURI={asset.logoURI}
+                        sx={{ mr: 2, ml: 4 }}
+                      />
                       <Typography variant="main16" color="text.primary">
                         {symbol}
                       </Typography>
@@ -381,15 +374,11 @@ export const SwitchAssetInput = ({
                           selectOption(asset)
                         ) : (
                           <>
-                            {!swapAssets ? (
-                              <TokenIcon symbol={asset.symbol} sx={{ fontSize: '22px', mr: 1 }} />
-                            ) : (
-                              <ExternalTokenIcon
-                                symbol={asset.symbol}
-                                logoURI={asset.logoURI}
-                                sx={{ mr: 2 }}
-                              />
-                            )}
+                            <ExternalTokenIcon
+                              symbol={asset.symbol}
+                              logoURI={asset.logoURI}
+                              sx={{ mr: 2 }}
+                            />
                             <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
                             {asset.balance && <FormattedNumber value={asset.balance} compact />}
                           </>
