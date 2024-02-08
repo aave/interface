@@ -209,6 +209,251 @@ export const TOKEN_LIST: TokenList = {
       },
     },
     {
+      name: 'Liquid staked Ether 2.0',
+      address: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
+      symbol: 'stETH',
+      decimals: 18,
+      chainId: 1,
+      logoURI: 'https://assets.coingecko.com/coins/images/13442/standard/steth_logo.png?1696513206',
+    },
+    {
+      name: 'Wrapped liquid staked Ether 2.0',
+      address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+      symbol: 'wstETH',
+      decimals: 18,
+      chainId: 1,
+      logoURI: 'https://assets.coingecko.com/coins/images/18834/standard/wstETH.png?1696518295',
+      extensions: {
+        bridgeInfo: {
+          '10': {
+            tokenAddress: '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb',
+          },
+          '8453': {
+            tokenAddress: '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452',
+          },
+          '42161': {
+            tokenAddress: '0x5979D7b546E38E414F7E9822514be443A4800529',
+          },
+        },
+      },
+    },
+    {
+      name: 'Wrapped liquid staked Ether 2.0',
+      address: '0x5979D7b546E38E414F7E9822514be443A4800529',
+      symbol: 'wstETH',
+      decimals: 18,
+      chainId: 42161,
+      logoURI: 'https://assets.coingecko.com/coins/images/18834/standard/wstETH.png?1696518295',
+      extensions: {
+        bridgeInfo: {
+          '1': {
+            tokenAddress: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+          },
+          '10': {
+            tokenAddress: '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb',
+          },
+          '137': {
+            tokenAddress: '0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd',
+          },
+          '8453': {
+            tokenAddress: '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452',
+          },
+        },
+      },
+    },
+    {
+      name: 'Wrapped liquid staked Ether 2.0',
+      address: '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb',
+      symbol: 'wstETH',
+      decimals: 18,
+      chainId: 10,
+      logoURI: 'https://assets.coingecko.com/coins/images/18834/standard/wstETH.png?1696518295',
+      extensions: {
+        bridgeInfo: {
+          '1': {
+            tokenAddress: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+          },
+          '137': {
+            tokenAddress: '0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd',
+          },
+          '8453': {
+            tokenAddress: '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452',
+          },
+          '42161': {
+            tokenAddress: '0x5979D7b546E38E414F7E9822514be443A4800529',
+          },
+        },
+      },
+    },
+    {
+      name: 'Wrapped liquid staked Ether 2.0',
+      address: '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452',
+      symbol: 'wstETH',
+      decimals: 18,
+      chainId: 8453,
+      logoURI: 'https://assets.coingecko.com/coins/images/18834/standard/wstETH.png?1696518295',
+      extensions: {
+        bridgeInfo: {
+          '1': {
+            tokenAddress: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+          },
+          '10': {
+            tokenAddress: '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb',
+          },
+          '137': {
+            tokenAddress: '0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd',
+          },
+          '42161': {
+            tokenAddress: '0x5979D7b546E38E414F7E9822514be443A4800529',
+          },
+        },
+      },
+    },
+    {
+      name: 'Wrapped liquid staked Ether 2.0',
+      address: '0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd',
+      symbol: 'wstETH',
+      decimals: 18,
+      chainId: 137,
+      logoURI: 'https://assets.coingecko.com/coins/images/18834/standard/wstETH.png?1696518295',
+      extensions: {
+        bridgeInfo: {
+          '1': {
+            tokenAddress: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+          },
+          '10': {
+            tokenAddress: '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb',
+          },
+          '8453': {
+            tokenAddress: '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452',
+          },
+          '42161': {
+            tokenAddress: '0x5979D7b546E38E414F7E9822514be443A4800529',
+          },
+        },
+      },
+    },
+    {
+      name: 'Rocket Pool ETH',
+      address: '0xae78736Cd615f374D3085123A210448E74Fc6393',
+      symbol: 'rETH',
+      decimals: 18,
+      chainId: 1,
+      logoURI: 'https://assets.coingecko.com/coins/images/20764/standard/reth.png?1696520159',
+      extensions: {
+        bridgeInfo: {
+          '10': {
+            tokenAddress: '0x9bcef72be871e61ed4fbbc7630889bee758eb81d',
+          },
+          '137': {
+            tokenAddress: '0x0266f4f08d82372cf0fcbccc0ff74309089c74d1',
+          },
+          '8453': {
+            tokenAddress: '0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c',
+          },
+          '42161': {
+            tokenAddress: '0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8',
+          },
+        },
+      },
+    },
+    {
+      name: 'Rocket Pool ETH',
+      address: '0x9bcef72be871e61ed4fbbc7630889bee758eb81d',
+      symbol: 'rETH',
+      decimals: 18,
+      chainId: 10,
+      logoURI: 'https://assets.coingecko.com/coins/images/20764/standard/reth.png?1696520159',
+      extensions: {
+        bridgeInfo: {
+          '1': {
+            tokenAddress: '0xae78736Cd615f374D3085123A210448E74Fc6393',
+          },
+          '137': {
+            tokenAddress: '0x0266f4f08d82372cf0fcbccc0ff74309089c74d1',
+          },
+          '8453': {
+            tokenAddress: '0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c',
+          },
+          '42161': {
+            tokenAddress: '0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8',
+          },
+        },
+      },
+    },
+    {
+      name: 'Rocket Pool ETH',
+      address: '0x0266f4f08d82372cf0fcbccc0ff74309089c74d1',
+      symbol: 'rETH',
+      decimals: 18,
+      chainId: 137,
+      logoURI: 'https://assets.coingecko.com/coins/images/20764/standard/reth.png?1696520159',
+      extensions: {
+        bridgeInfo: {
+          '1': {
+            tokenAddress: '0xae78736Cd615f374D3085123A210448E74Fc6393',
+          },
+          '10': {
+            tokenAddress: '0x9bcef72be871e61ed4fbbc7630889bee758eb81d',
+          },
+          '8453': {
+            tokenAddress: '0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c',
+          },
+          '42161': {
+            tokenAddress: '0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8',
+          },
+        },
+      },
+    },
+    {
+      name: 'Rocket Pool ETH',
+      address: '0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c',
+      symbol: 'rETH',
+      decimals: 18,
+      chainId: 8453,
+      logoURI: 'https://assets.coingecko.com/coins/images/20764/standard/reth.png?1696520159',
+      extensions: {
+        bridgeInfo: {
+          '1': {
+            tokenAddress: '0xae78736Cd615f374D3085123A210448E74Fc6393',
+          },
+          '10': {
+            tokenAddress: '0x9bcef72be871e61ed4fbbc7630889bee758eb81d',
+          },
+          '137': {
+            tokenAddress: '0x0266f4f08d82372cf0fcbccc0ff74309089c74d1',
+          },
+          '42161': {
+            tokenAddress: '0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8',
+          },
+        },
+      },
+    },
+    {
+      name: 'Rocket Pool ETH',
+      address: '0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8',
+      symbol: 'rETH',
+      decimals: 18,
+      chainId: 42161,
+      logoURI: 'https://assets.coingecko.com/coins/images/20764/standard/reth.png?1696520159',
+      extensions: {
+        bridgeInfo: {
+          '1': {
+            tokenAddress: '0xae78736Cd615f374D3085123A210448E74Fc6393',
+          },
+          '10': {
+            tokenAddress: '0x9bcef72be871e61ed4fbbc7630889bee758eb81d',
+          },
+          '137': {
+            tokenAddress: '0x0266f4f08d82372cf0fcbccc0ff74309089c74d1',
+          },
+          '8453': {
+            tokenAddress: '0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c',
+          },
+        },
+      },
+    },
+    {
       chainId: 1,
       address: '0xB98d4C97425d9908E66E53A6fDf673ACcA0BE986',
       name: 'Arcblock',
