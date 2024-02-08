@@ -1,4 +1,4 @@
-import { ProtocolAction } from '@aave/contract-helpers';
+import { ProtocolAction, Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
@@ -28,7 +28,8 @@ export const StakeActions = ({
 }: StakeActionProps) => {
   const { stake, stakeWithPermit } = useRootStore();
 
-  const tryPermit = selectedToken === 'aave' || selectedToken === 'gho';
+  // once stk abpt v1 is deprecated, this check can be removed and we can always try permit
+  const tryPermit = selectedToken !== Stake.bpt;
 
   const { action, approval, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({

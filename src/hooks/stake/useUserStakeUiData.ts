@@ -15,16 +15,12 @@ export const useUserStakeUiData = (marketData: MarketDataType, select?: Stake) =
       uiStakeDataService.getUserStakeUIDataHumanized(marketData, user, stakedTokens, oracles),
     queryKey: queryKeysFactory.userStakeUiData(user, marketData, stakedTokens, oracles),
     enabled: !!user,
-    initialData: null,
     refetchInterval: POLLING_INTERVAL,
     select: (data) => {
-      if (data && select) {
-        return {
-          ...data,
-          stakeUserData: [data.stakeUserData[getStakeIndex(select)]],
-        };
+      if (select) {
+        return [data.stakeUserData[getStakeIndex(select)]];
       }
-      return data;
+      return data.stakeUserData;
     },
   });
 };

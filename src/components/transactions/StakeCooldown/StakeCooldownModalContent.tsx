@@ -29,6 +29,7 @@ import { StakeCooldownActions } from './StakeCooldownActions';
 
 export type StakeCooldownProps = {
   stakeAssetName: Stake;
+  icon: string;
 };
 
 export enum ErrorType {
@@ -36,7 +37,7 @@ export enum ErrorType {
   ALREADY_ON_COOLDOWN,
 }
 
-export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps) => {
+export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldownProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -50,15 +51,8 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
 
-  let stakeData;
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stakeData] = stakeGeneralResult.stakeData;
-  }
-
-  let stakeUserData;
-  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stakeUserData] = stakeUserResult.stakeUserData;
-  }
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
@@ -163,7 +157,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
           <Trans>Amount to unstake</Trans>
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <TokenIcon symbol={stakeAssetName} sx={{ mr: 1, width: 14, height: 14 }} />
+          <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
           <FormattedNumber value={amountToCooldown} variant="secondary14" color="text.primary" />
         </Box>
       </Box>

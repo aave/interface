@@ -10,7 +10,6 @@ export const useApprovedAmount = ({
   spender,
 }: {
   marketData: MarketDataType;
-  user: string;
   token: string;
   spender: string;
 }) => {
