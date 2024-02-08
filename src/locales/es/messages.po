@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-07 18:04\n"
+"PO-Revision-Date: 2024-02-08 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1552,7 +1552,7 @@ msgstr "No hay activos seleccionados para migrar."
 
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "No results found."
-msgstr ""
+msgstr "No se encontraron resultados."
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
