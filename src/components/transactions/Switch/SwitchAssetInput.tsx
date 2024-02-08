@@ -248,7 +248,7 @@ export const SwitchAssetInput = ({
                     style: {
                       overflow: 'hidden',
                       width: inputBoxWidth,
-                      transform: 'translateX(0.8rem) translateY(22px)',
+                      transform: 'translateX(0.8rem) translateY(-32px)',
                     },
                   },
                   sx: {

@@ -8,6 +8,7 @@ export interface BasicModalProps {
   setOpen: (value: boolean) => void;
   withCloseButton?: boolean;
   contentMaxWidth?: number;
+  borderRadius?: string;
 }
 
 export const BasicModal = ({
@@ -16,6 +17,7 @@ export const BasicModal = ({
   withCloseButton = true,
   contentMaxWidth = 420,
   children,
+  borderRadius,
   ...props
 }: BasicModalProps) => {
   const handleClose = () => setOpen(false);
@@ -48,6 +50,7 @@ export const BasicModal = ({
           maxWidth: { xs: '359px', xsm: `${contentMaxWidth}px` },
           maxHeight: 'calc(100vh - 20px)',
           p: 6,
+          borderRadius: borderRadius ?? borderRadius,
         }}
       >
         {children}

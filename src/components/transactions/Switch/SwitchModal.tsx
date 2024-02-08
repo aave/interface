@@ -161,7 +161,7 @@ export const SwitchModal = () => {
   );
 
   return (
-    <BasicModal open={type === ModalType.Switch} setOpen={close}>
+    <BasicModal borderRadius="20px" open={type === ModalType.Switch} setOpen={close}>
       {tokenListSortedByBalace.length > 1 ? (
         <SwitchModalContent
           key={selectedChainId}
