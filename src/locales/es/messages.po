@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-08 18:05\n"
+"PO-Revision-Date: 2024-02-09 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -244,7 +244,7 @@ msgstr "La cantidad debe ser mayor que 0"
 
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Amount to migrate"
-msgstr ""
+msgstr "Cantidad para migrar"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Amount to unstake"
@@ -276,7 +276,7 @@ msgstr "Los parámetros del array que deberían ser iguales en longitud no lo so
 
 #: pages/staking.staking.tsx
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
-msgstr ""
+msgstr "Como resultado de las decisiones del gobierno, este pool de stakeo de ABPT está obsoleto. Tienes la flexibilidad de migrar todos tus tokens a v2 o unstakearlos sin ningún periodo de cooldown."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -1121,7 +1121,7 @@ msgstr "Obtener Token ABP"
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
-msgstr ""
+msgstr "Obtener Token ABP v2"
 
 #: src/modules/staking/GetGhoToken.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1479,7 +1479,7 @@ msgstr "Migrar a V3"
 
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Migrate to stkABPT v2"
-msgstr ""
+msgstr "Migrar a stkABPT v2"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to v3"
@@ -1518,7 +1518,7 @@ msgstr "Valor mínimo en USD recibido"
 
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Minimum amount received"
-msgstr ""
+msgstr "Cantidad mínima recibida"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum staked Aave amount"
@@ -2396,7 +2396,7 @@ msgstr "El % de tu poder de préstamo total utilizado. Esto se basa en la cantid
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
-msgstr ""
+msgstr "El Aave Balancer Pool Token (ABPT) es un token de pool de liquidez. Puedes recibir ABPT depositando una combinación de AAVE + wstETH en el pool de liquidez de Balancer. Luego puedes stakear tu BPT en el módulo de seguridad para asegurar el protocolo y ganar incentivos de seguridad."
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is different from using market pricing via oracles for other crypto assets. This creates stabilizing arbitrage opportunities when the price of GHO fluctuates."
@@ -2712,7 +2712,7 @@ msgstr "Token subyacente"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake"
-msgstr ""
+msgstr "Unstakear"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
@@ -2724,7 +2724,7 @@ msgstr "Ventana de unstakeo"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "Unstake {symbol}"
-msgstr ""
+msgstr "Unstakear {symbol}"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
