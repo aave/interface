@@ -104,7 +104,12 @@ export default function Staking() {
       )
       .add(
         BigNumber.from(stkGho?.stakeTokenTotalSupply || '0').mul(stkGho?.stakeTokenPriceUSD || '0')
-      ), // "0"
+      )
+      .add(
+        BigNumber.from(stkBptV2?.stakeTokenTotalSupply || '0').mul(
+          stkBptV2?.stakeTokenPriceUSD || '0'
+        )
+      ),
     18 + 8
   );
 
