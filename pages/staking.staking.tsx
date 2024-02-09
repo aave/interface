@@ -118,6 +118,7 @@ export default function Staking() {
     BigNumber.from(stkAave?.distributionPerSecond || '0')
       .add(stkBpt?.distributionPerSecond || '0')
       .add(stkGho?.distributionPerSecond || '0')
+      .add(stkBptV2?.distributionPerSecond || '0')
       .mul('86400')
   );
 
