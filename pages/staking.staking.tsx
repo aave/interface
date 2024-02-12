@@ -104,7 +104,12 @@ export default function Staking() {
       )
       .add(
         BigNumber.from(stkGho?.stakeTokenTotalSupply || '0').mul(stkGho?.stakeTokenPriceUSD || '0')
-      ), // "0"
+      )
+      .add(
+        BigNumber.from(stkBptV2?.stakeTokenTotalSupply || '0').mul(
+          stkBptV2?.stakeTokenPriceUSD || '0'
+        )
+      ),
     18 + 8
   );
 
@@ -113,6 +118,7 @@ export default function Staking() {
     BigNumber.from(stkAave?.distributionPerSecond || '0')
       .add(stkBpt?.distributionPerSecond || '0')
       .add(stkGho?.distributionPerSecond || '0')
+      .add(stkBptV2?.distributionPerSecond || '0')
       .mul('86400')
   );
 
