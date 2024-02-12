@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-30 18:05\n"
+"PO-Revision-Date: 2024-02-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -224,6 +224,7 @@ msgstr "Ermöglicht es Ihnen, zwischen <0>variablen</0> und <1>stabilen</1> Zins
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Menge"
@@ -240,6 +241,10 @@ msgstr "Betrag in der Abklingzeit"
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "Der Betrag muss größer als 0 sein."
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Amount to migrate"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Amount to unstake"
@@ -268,6 +273,10 @@ msgstr "Beifällig {symbol}..."
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
 msgstr "Array-Parameter, die gleich lang sein sollten, sind nicht"
+
+#: pages/staking.staking.tsx
+msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
+msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -399,6 +408,7 @@ msgstr "Zurück zum Dashboard"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -917,6 +927,11 @@ msgstr "Doktoren"
 msgid "Download"
 msgstr "Herunterladen"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to health factor impact, a flashloan is required to perform this transaction, but Aave Governance has disabled flashloan availability for this asset. Try lowering the amount or supplying additional collateral."
+msgstr ""
+
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
 msgstr "Aufgrund interner stETH-Mechanismen, die für die Rebasing-Unterstützung erforderlich sind, ist es nicht möglich, einen Sicherheitenwechsel durchzuführen, bei dem stETH der Quell-Token ist."
@@ -1101,9 +1116,12 @@ msgid "GHO is a native decentralized, collateral-backed digital asset pegged to 
 msgstr "GHO ist ein nativer dezentraler, durch Sicherheiten besicherter digitaler Vermögenswert, der an den US-Dollar gekoppelt ist. Es wird von Benutzern durch Ausleihe gegen mehrere Sicherheiten erstellt. Wenn der Benutzer seine GHO-Kreditposition zurückzahlt, verbrennt das Protokoll die GHO dieses Benutzers. Alle Zinszahlungen, die von den Minern von GHO angefallen sind, würden direkt an die AaveDAO-Kasse überwiesen."
 
 #: src/modules/staking/GetABPToken.tsx
-#: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
 msgstr "Abrufen des ABP-Tokens"
+
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Get ABP v2 Token"
+msgstr ""
 
 #: src/modules/staking/GetGhoToken.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1393,6 +1411,7 @@ msgid "Markets"
 msgstr "Märkte"
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "Max"
 msgstr "Max"
 
@@ -1450,12 +1469,17 @@ msgid "Menu"
 msgstr "Menü"
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrate"
 msgstr "Wandern"
 
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrieren zu V3"
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Migrate to stkABPT v2"
+msgstr ""
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to v3"
@@ -1467,10 +1491,12 @@ msgid "Migrate to {0} v3 Market"
 msgstr "Migrieren Sie zu {0} v3-Markt"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Migrated"
 msgstr "Abgewandert"
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrating"
 msgstr "Wandernd"
 
@@ -1489,6 +1515,10 @@ msgstr "Minimaler GHO-Kreditbetrag"
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Minimum USD value received"
 msgstr "Erhaltener Mindestwert in USD"
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Minimum amount received"
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum staked Aave amount"
@@ -1541,6 +1571,10 @@ msgstr "Neuer APY"
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
 msgstr "Es wurden keine Assets für die Migration ausgewählt."
+
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
+msgid "No results found."
+msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
@@ -1674,6 +1708,7 @@ msgstr "Bitte beachten Sie immer Ihren <0>Gesundheitsfaktor (HF),</0> wenn Sie e
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Bitte verbinden Sie hier eine Wallet, um Ihre persönlichen Daten einzusehen."
 
+#: src/components/transactions/Switch/SwitchModal.tsx
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Please connect your wallet to be able to switch your tokens."
 msgstr "Bitte verbinden Sie Ihre Wallet, um Ihre Token wechseln zu können."
@@ -2167,6 +2202,7 @@ msgstr "Abklingzeit des Pfahls aktiviert"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "Abgesteckt"
 
@@ -2359,8 +2395,8 @@ msgid "The % of your total borrowing power used. This is based on the amount of 
 msgstr "Der Prozentsatz Ihrer gesamten Kreditkraft, der in Anspruch genommen wurde. Dies basiert auf der Höhe Ihrer bereitgestellten Sicherheiten und dem Gesamtbetrag, den Sie ausleihen können."
 
 #: src/modules/staking/GetABPTokenModal.tsx
-msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
-msgstr "Der Aave Balancer Pool Token (ABPT) ist ein Liquiditätspool-Token. Sie können ABPT erhalten, indem Sie eine Kombination aus AAVE + ETH in den Balancer-Liquiditätspool einzahlen. Sie können dann Ihre BPT im Sicherheitsmodul einsetzen, um das Protokoll zu sichern und Sicherheitsanreize zu verdienen."
+msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is different from using market pricing via oracles for other crypto assets. This creates stabilizing arbitrage opportunities when the price of GHO fluctuates."
@@ -2410,10 +2446,6 @@ msgstr "Die Abklingzeit ist die Zeit, die benötigt wird, bevor Sie Ihre Token a
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 msgstr "Die Abklingzeit beträgt {0}. Nach {1} der Abklingzeit, gelangen Sie in das Unstake-Fenster von {2}. Ihr erhaltet weiterhin Belohnungen während der Abklingzeit und während des Zeitfensters zum Aufheben des Einsatzes."
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
-msgstr "Die Auswirkungen auf den Gesundheitsfaktor würden zu einer Liquidation führen. Versuchen Sie, den Betrag zu verringern."
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
@@ -2655,10 +2687,6 @@ msgstr "Transaktionsübersicht"
 msgid "Transactions"
 msgstr "Transaktionen"
 
-#: src/components/transactions/UnStake/UnStakeActions.tsx
-msgid "UNSTAKE {symbol}"
-msgstr "UNEINSATZ {symbol}"
-
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
@@ -2683,12 +2711,20 @@ msgid "Underlying token"
 msgstr "Zugrunde liegendes Token"
 
 #: src/modules/staking/StakingPanel.tsx
+msgid "Unstake"
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Jetzt absetzen"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "Fenster \"Unsstake\""
+
+#: src/components/transactions/UnStake/UnStakeActions.tsx
+msgid "Unstake {symbol}"
+msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
@@ -2869,6 +2905,7 @@ msgstr "Wallet-Guthaben"
 #: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx

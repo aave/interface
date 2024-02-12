@@ -1,9 +1,10 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
 import { debounce } from 'lodash';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
@@ -15,7 +16,6 @@ import { useRootStore } from 'src/store/root';
 import { getNetworkConfig, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
-import { AssetInput } from '../AssetInput';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
@@ -23,8 +23,9 @@ import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SupportedNetworkWithChainId } from './common';
 import { NetworkSelector } from './NetworkSelector';
 import { SwitchActions } from './SwitchActions';
+import { SwitchAssetInput } from './SwitchAssetInput';
 import { SwitchErrors } from './SwitchErrors';
-import { ReserveWithBalance } from './SwitchModal';
+import { TokenInterface } from './SwitchModal';
 import { SwitchRates } from './SwitchRates';
 import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import { SwitchTxSuccessView } from './SwitchTxSuccessView';
@@ -33,10 +34,12 @@ interface SwitchModalContentProps {
   selectedChainId: number;
   setSelectedChainId: (value: number) => void;
   supportedNetworks: SupportedNetworkWithChainId[];
-  reserves: ReserveWithBalance[];
+  reserves: TokenInterface[];
   selectedNetworkConfig: NetworkConfig;
   defaultAsset?: string;
 }
+
+const GHO_TOKEN_ADDRESS = AaveV3Ethereum.ASSETS.GHO.UNDERLYING;
 
 export const SwitchModalContent = ({
   supportedNetworks,
@@ -44,33 +47,41 @@ export const SwitchModalContent = ({
   setSelectedChainId,
   reserves,
   selectedNetworkConfig,
-  defaultAsset,
-}: SwitchModalContentProps) => {
+}: // defaultAsset,
+SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
   const [inputAmount, setInputAmount] = useState('');
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const { mainTxState: switchTxState, gasLimit, txError, setTxError } = useModalContext();
   const user = useRootStore((store) => store.account);
-  const [selectedInputReserve, setSelectedInputReserve] = useState(() => {
-    const defaultReserve = reserves.find((elem) => elem.underlyingAsset === defaultAsset);
-    if (defaultReserve) return defaultReserve;
-    if (reserves[0].symbol === 'GHO') {
+
+  const getDefaultInputReserve = () => {
+    if (reserves[0].address === GHO_TOKEN_ADDRESS) {
       return reserves[1];
     }
     return reserves[0];
-  });
-  const { readOnlyModeAddress } = useWeb3Context();
-  const [selectedOutputReserve, setSelectedOutputReserve] = useState(() => {
-    const gho = reserves.find((reserve) => reserve.symbol === 'GHO');
+  };
+
+  const getDefaultOutputReserve = () => {
+    const gho = reserves.find((reserve) => reserve.address === GHO_TOKEN_ADDRESS);
+    const aave = reserves.find((elem) => elem.symbol == 'AAVE');
     if (gho) return gho;
-    return (
-      reserves.find(
-        (elem) =>
-          elem.underlyingAsset !== defaultAsset &&
-          elem.underlyingAsset !== reserves[0].underlyingAsset
-      ) || reserves[1]
-    );
-  });
+    if (aave) return aave;
+    return reserves[1];
+  };
+
+  useEffect(() => {
+    setSelectedInputReserve(getDefaultInputReserve());
+    setSelectedOutputReserve(getDefaultOutputReserve());
+  }, [reserves]);
+
+  const [selectedInputReserve, setSelectedInputReserve] = useState(() => getDefaultInputReserve());
+  const [selectedOutputReserve, setSelectedOutputReserve] = useState(() =>
+    getDefaultOutputReserve()
+  );
+
+  const { readOnlyModeAddress } = useWeb3Context();
+
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
   const handleInputChange = (value: string) => {
@@ -100,9 +111,9 @@ export const SwitchModalContent = ({
       debounceInputAmount === ''
         ? '0'
         : normalizeBN(debounceInputAmount, -1 * selectedInputReserve.decimals).toFixed(0),
-    srcToken: selectedInputReserve.underlyingAsset,
+    srcToken: selectedInputReserve.address,
     srcDecimals: selectedInputReserve.decimals,
-    destToken: selectedOutputReserve.underlyingAsset,
+    destToken: selectedOutputReserve.address,
     destDecimals: selectedOutputReserve.decimals,
     user,
     options: {
@@ -116,9 +127,11 @@ export const SwitchModalContent = ({
         txHash={switchTxState.txHash}
         amount={debounceInputAmount}
         symbol={selectedInputReserve.symbol}
-        iconSymbol={selectedInputReserve.iconSymbol}
+        iconSymbol={selectedInputReserve.symbol}
+        iconUri={selectedInputReserve.logoURI}
         outSymbol={selectedOutputReserve.symbol}
-        outIconSymbol={selectedOutputReserve.iconSymbol}
+        outIconSymbol={selectedOutputReserve.symbol}
+        outIconUri={selectedOutputReserve.logoURI}
         outAmount={(
           Number(normalize(sellRates.destAmount, sellRates.destDecimals)) *
           (1 - Number(slippage))
@@ -140,12 +153,12 @@ export const SwitchModalContent = ({
     setTxError(undefined);
   };
 
-  const handleSelectedInputReserve = (reserve: ReserveWithBalance) => {
+  const handleSelectedInputReserve = (reserve: TokenInterface) => {
     setTxError(undefined);
     setSelectedInputReserve(reserve);
   };
 
-  const handleSelectedOutputReserve = (reserve: ReserveWithBalance) => {
+  const handleSelectedOutputReserve = (reserve: TokenInterface) => {
     setTxError(undefined);
     setSelectedOutputReserve(reserve);
   };
@@ -189,10 +202,8 @@ export const SwitchModalContent = ({
               position: 'relative',
             }}
           >
-            <AssetInput
-              assets={reserves.filter(
-                (elem) => elem.underlyingAsset !== selectedOutputReserve.underlyingAsset
-              )}
+            <SwitchAssetInput
+              assets={reserves.filter((elem) => elem.address !== selectedOutputReserve.address)}
               value={inputAmount}
               onChange={handleInputChange}
               usdValue={sellRates?.srcUSD || '0'}
@@ -200,6 +211,7 @@ export const SwitchModalContent = ({
               onSelect={handleSelectedInputReserve}
               inputTitle={' '}
               sx={{ width: '100%' }}
+              swapAssets={true}
             />
             <IconButton
               onClick={onSwitchReserves}
@@ -214,10 +226,8 @@ export const SwitchModalContent = ({
                 <SwitchVerticalIcon />
               </SvgIcon>
             </IconButton>
-            <AssetInput
-              assets={reserves.filter(
-                (elem) => elem.underlyingAsset !== selectedInputReserve.underlyingAsset
-              )}
+            <SwitchAssetInput
+              assets={reserves.filter((elem) => elem.address !== selectedInputReserve.address)}
               value={
                 sellRates
                   ? normalizeBN(sellRates.destAmount, sellRates.destDecimals).toString()
@@ -235,6 +245,7 @@ export const SwitchModalContent = ({
               disableInput={true}
               inputTitle={' '}
               sx={{ width: '100%' }}
+              swapAssets={true}
             />
           </Box>
           {sellRates && (
@@ -287,8 +298,8 @@ export const SwitchModalContent = ({
               <SwitchActions
                 isWrongNetwork={isWrongNetwork.isWrongNetwork}
                 inputAmount={debounceInputAmount}
-                inputToken={selectedInputReserve.underlyingAsset}
-                outputToken={selectedOutputReserve.underlyingAsset}
+                inputToken={selectedInputReserve.address}
+                outputToken={selectedOutputReserve.address}
                 inputName={selectedInputReserve.name}
                 outputName={selectedOutputReserve.name}
                 slippage={slippage}
