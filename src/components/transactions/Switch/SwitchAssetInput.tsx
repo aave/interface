@@ -18,6 +18,7 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
+import invariant from 'tiny-invariant';
 
 import { COMMON_SWAPS } from '../../../ui-config/TokenList';
 import { CapType } from '../../caps/helper';
@@ -25,6 +26,7 @@ import { AvailableTooltip } from '../../infoTooltips/AvailableTooltip';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { ExternalTokenIcon, TokenIcon } from '../../primitives/TokenIcon';
 import { SearchInput } from '../../SearchInput';
+import { TokenInfoWithBalance } from './SwitchModal';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -57,26 +59,15 @@ export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProp
   }
 );
 
-export interface Asset {
-  balance?: string;
-  symbol: string;
-  iconSymbol?: string;
-  address?: string;
-  aToken?: boolean;
-  priceInUsd?: string;
-  decimals?: number;
-  logoURI?: string;
-}
-
-export interface AssetInputProps<T extends Asset = Asset> {
+export interface AssetInputProps {
   value: string;
   usdValue: string;
   symbol: string;
   onChange?: (value: string) => void;
   disabled?: boolean;
   disableInput?: boolean;
-  onSelect?: (asset: T) => void;
-  assets: T[];
+  onSelect?: (asset: TokenInfoWithBalance) => void;
+  assets: TokenInfoWithBalance[];
   capType?: CapType;
   maxValue?: string;
   isMaxSelected?: boolean;
@@ -85,12 +76,11 @@ export interface AssetInputProps<T extends Asset = Asset> {
   loading?: boolean;
   event?: TrackEventProps;
   selectOptionHeader?: ReactNode;
-  selectOption?: (asset: T) => ReactNode;
+  selectOption?: (asset: TokenInfoWithBalance) => ReactNode;
   sx?: BoxProps;
-  swapAssets?: boolean;
 }
 
-export const SwitchAssetInput = <T extends Asset = Asset>({
+export const SwitchAssetInput = ({
   value,
   usdValue,
   symbol,
@@ -108,12 +98,11 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
   event,
   selectOptionHeader,
   selectOption,
-  swapAssets = false,
   sx = {},
-}: AssetInputProps<T>) => {
+}: AssetInputProps) => {
   const theme = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const handleSelect = (asset: T) => {
+  const handleSelect = (asset: TokenInfoWithBalance) => {
     onSelect && onSelect(asset);
     onChange && onChange('');
     handleCleanSearch();
@@ -126,8 +115,11 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
   const popularAssets = assets.filter((asset) => COMMON_SWAPS.includes(asset.symbol));
   const handleSearchAssetChange = (value: string) => {
     const searchQuery = value.trim().toLowerCase();
-    const matchingAssets: T[] = assets.filter((asset) =>
-      asset.symbol.toLowerCase().includes(searchQuery)
+    const matchingAssets = assets.filter(
+      (asset) =>
+        asset.symbol.toLowerCase().includes(searchQuery) ||
+        asset.name.toLowerCase().includes(searchQuery) ||
+        asset.address.toLowerCase() === searchQuery
     );
 
     setFilteredAssets(matchingAssets);
@@ -147,9 +139,9 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
   }, []);
 
   const asset =
-    assets.length === 1
-      ? assets[0]
-      : assets && (assets.find((asset) => asset.symbol === symbol) as T);
+    assets.length === 1 ? assets[0] : assets && assets.find((asset) => asset.symbol === symbol);
+
+  invariant(asset, 'Asset not found');
 
   return (
     <Box {...sx}>
@@ -227,11 +219,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
           )}
           {!onSelect || assets.length === 1 ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <TokenIcon
-                aToken={asset.aToken}
-                symbol={asset.iconSymbol || asset.symbol}
-                sx={{ mr: 2, ml: 4 }}
-              />
+              <TokenIcon symbol={asset.symbol} sx={{ mr: 2, ml: 4 }} />
               <Typography variant="h3" sx={{ lineHeight: '28px' }} data-cy={'inputAsset'}>
                 {symbol}
               </Typography>
@@ -285,7 +273,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                       >
                         <SearchInput
                           onSearchTermChange={handleSearchAssetChange}
-                          placeholder="Search assets..."
+                          placeholder="Search name or paste address"
                           disableFocus={true}
                         />
                         <Box
@@ -317,8 +305,7 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                               onClick={() => handleSelect(asset)}
                             >
                               <TokenIcon
-                                symbol={asset.iconSymbol || asset.symbol}
-                                aToken={asset.aToken}
+                                symbol={asset.symbol}
                                 sx={{ width: 24, height: 24, mr: 1 }}
                               />
                               <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
@@ -348,27 +335,19 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                   const asset =
                     assets.length === 1
                       ? assets[0]
-                      : assets && (assets.find((asset) => asset.symbol === symbol) as T);
+                      : assets && assets.find((asset) => asset.symbol === symbol);
+                  invariant(asset, 'Asset not found');
                   return (
                     <Box
                       sx={{ display: 'flex', alignItems: 'center' }}
                       data-cy={`assetsSelectedOption_${asset.symbol.toUpperCase()}`}
                     >
-                      {!swapAssets ? (
-                        <TokenIcon
-                          symbol={asset.iconSymbol || asset.symbol}
-                          aToken={asset.aToken}
-                          sx={{ mr: 2, ml: 4 }}
-                        />
-                      ) : (
-                        <ExternalTokenIcon
-                          symbol={asset.iconSymbol || asset.symbol}
-                          // aToken={asset.aToken}
-                          logoURI={asset.logoURI}
-                          sx={{ mr: 2, ml: 4 }}
-                        />
-                      )}
-
+                      <ExternalTokenIcon
+                        symbol={asset.symbol}
+                        // aToken={asset.aToken}
+                        logoURI={asset.logoURI}
+                        sx={{ mr: 2, ml: 4 }}
+                      />
                       <Typography variant="main16" color="text.primary">
                         {symbol}
                       </Typography>
@@ -395,19 +374,11 @@ export const SwitchAssetInput = <T extends Asset = Asset>({
                           selectOption(asset)
                         ) : (
                           <>
-                            {!swapAssets ? (
-                              <TokenIcon
-                                aToken={asset.aToken}
-                                symbol={asset.iconSymbol || asset.symbol}
-                                sx={{ fontSize: '22px', mr: 1 }}
-                              />
-                            ) : (
-                              <ExternalTokenIcon
-                                symbol={asset.iconSymbol || asset.symbol}
-                                logoURI={asset.logoURI}
-                                sx={{ mr: 2 }}
-                              />
-                            )}
+                            <ExternalTokenIcon
+                              symbol={asset.symbol}
+                              logoURI={asset.logoURI}
+                              sx={{ mr: 2 }}
+                            />
                             <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
                             {asset.balance && <FormattedNumber value={asset.balance} compact />}
                           </>

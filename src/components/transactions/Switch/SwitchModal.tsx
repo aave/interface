@@ -1,4 +1,4 @@
-import { ChainId, ReserveDataHumanized } from '@aave/contract-helpers';
+import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { ContractCallContext, ContractCallResults, Multicall } from 'ethereum-multicall';
@@ -8,7 +8,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { TOKEN_LIST } from 'src/ui-config/TokenList';
+import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import {
   CustomMarket,
   getNetworkConfig,
@@ -20,22 +20,11 @@ import { BasicModal } from '../../primitives/BasicModal';
 import { supportedNetworksWithEnabledMarket } from './common';
 import { SwitchModalContent } from './SwitchModalContent';
 
-export interface ReserveWithBalance extends ReserveDataHumanized {
-  balance: string;
-  iconSymbol: string;
-}
-
-export interface TokenInterface {
-  chainId: number;
-  address: string;
-  name: string;
-  symbol: string;
-  decimals: number;
-  logoURI: string;
-  balance: string;
-}
-
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
+
+export interface TokenInfoWithBalance extends TokenInfo {
+  balance: string;
+}
 
 export const SwitchModal = () => {
   const {
@@ -53,7 +42,7 @@ export const SwitchModal = () => {
     return defaultNetwork.chainId;
   });
 
-  const [tokenListWithBalance, setTokensListBalance] = useState<TokenInterface[]>([]);
+  const [tokenListWithBalance, setTokensListBalance] = useState<TokenInfoWithBalance[]>([]);
 
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
 
@@ -179,7 +168,7 @@ export const SwitchModal = () => {
           selectedChainId={selectedChainId}
           setSelectedChainId={setSelectedChainId}
           supportedNetworks={supportedNetworksWithEnabledMarket}
-          reserves={tokenListSortedByBalace}
+          tokens={tokenListSortedByBalace}
           selectedNetworkConfig={selectedNetworkConfig}
           // defaultAsset={underlyingAsset}
         />
