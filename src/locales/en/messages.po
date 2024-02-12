@@ -2111,6 +2111,7 @@ msgstr "Since this asset is frozen, the only available actions are withdraw and 
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 #: src/components/transactions/Switch/SwitchSlippageSelector.tsx
 msgid "Slippage"
 msgstr "Slippage"
@@ -2606,6 +2607,11 @@ msgstr "To request access for this permissioned market, please visit: <0>Acces P
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 msgstr "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Tokens breakdown"
+msgstr "Tokens breakdown"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"
