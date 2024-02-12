@@ -52,8 +52,7 @@ export default function Staking() {
   const { currentAccount, loading } = useWeb3Context();
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: stakeUserResult, isLoading: stakeUserResultLoading } =
-    useUserStakeUiData(currentMarketData);
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
 
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
     useGeneralStakeUiData(currentMarketData);
@@ -74,8 +73,6 @@ export default function Staking() {
   if (stakeUserResult && Array.isArray(stakeUserResult)) {
     [stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData] = stakeUserResult;
   }
-
-  const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 
   const {
     openStake,
@@ -133,7 +130,7 @@ export default function Staking() {
 
   return (
     <>
-      <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeDataLoading} />
+      <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeGeneralResultLoading} />
 
       <ContentContainer>
         {currentAccount ? (
