@@ -8,14 +8,14 @@ import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 
 export type SwitchTxSuccessViewProps = {
   txHash?: string;
-  amount?: string;
+  amount: string;
   symbol: string;
   iconSymbol: string;
-  outAmount?: string;
+  outAmount: string;
   outSymbol: string;
   outIconSymbol: string;
-  iconUri: string;
-  outIconUri: string;
+  iconUri?: string;
+  outIconUri?: string;
 };
 
 export const SwitchTxSuccessView = ({
