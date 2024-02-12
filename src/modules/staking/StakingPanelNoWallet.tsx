@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useRootStore } from 'src/store/root';
 
 export interface StakingPanelNoWalletProps {
@@ -22,14 +22,18 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
 
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
 
-  let stkAave, stkBpt, stkGho;
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stkAave, stkBpt, stkGho] = stakeGeneralResult.stakeData;
+  let stkAave: StakeTokenFormatted | undefined;
+  let stkBpt: StakeTokenFormatted | undefined;
+  let stkGho: StakeTokenFormatted | undefined;
+  let stkBptV2: StakeTokenFormatted | undefined;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult)) {
+    [stkAave, stkBpt, stkGho, stkBptV2] = stakeGeneralResult;
   }
 
   if (stakedToken == 'AAVE') stakingAPY = stkAave?.stakeApy || '0';
   if (stakedToken == 'ABPT') stakingAPY = stkBpt?.stakeApy || '0';
   if (stakedToken == 'GHO') stakingAPY = stkGho?.stakeApy || '0';
+  if (stakedToken == 'ABPT V2') stakingAPY = stkBptV2?.stakeApy || '0';
   return (
     <Box
       sx={(theme) => ({

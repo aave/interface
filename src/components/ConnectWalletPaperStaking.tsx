@@ -54,7 +54,7 @@ export const ConnectWalletPaperStaking = ({
                 <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} />
               </Grid>
               <Grid item xs={12} md={4}>
-                <StakingPanelNoWallet stakedToken={'ABPT'} icon={'bpt'} />
+                <StakingPanelNoWallet stakedToken={'ABPT V2'} icon={'stkbptv2'} />
               </Grid>
             </Grid>
           </>
