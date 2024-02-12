@@ -2,13 +2,7 @@ import assets from '../../../../fixtures/assets.json';
 import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyPolygonFork } from '../../../../support/steps/configuration.steps';
-import {
-  borrow,
-  changeBorrowType,
-  repay,
-  supply,
-  withdraw,
-} from '../../../../support/steps/main.steps';
+import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import {
   dashboardAssetValuesVerification,
   switchCollateralBlocked,
@@ -24,28 +18,8 @@ const testData = {
     borrow: [
       {
         asset: assets.polygonV3Market.EURS,
-        amount: 25.1,
-        apyType: constants.borrowAPYType.variable,
-        hasApproval: true,
-      },
-      {
-        asset: assets.polygonV3Market.EURS,
-        amount: 25,
-        apyType: constants.borrowAPYType.stable,
-        hasApproval: true,
-      },
-    ],
-    changeBorrowType: [
-      {
-        asset: assets.polygonV3Market.EURS,
-        apyType: constants.borrowAPYType.stable,
-        newAPY: constants.borrowAPYType.variable,
-        hasApproval: true,
-      },
-      {
-        asset: assets.polygonV3Market.EURS,
-        apyType: constants.borrowAPYType.variable,
-        newAPY: constants.borrowAPYType.stable,
+        amount: 50.1,
+        apyType: constants.borrowAPYType.default,
         hasApproval: true,
       },
     ],
@@ -57,14 +31,14 @@ const testData = {
     repay: [
       {
         asset: assets.polygonV3Market.EURS,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
         asset: assets.polygonV3Market.EURS,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         repayableAsset: assets.polygonV3Market.aEURS,
         amount: 2,
         hasApproval: true,
@@ -95,15 +69,13 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.polygonV3Market.EURS.shortName,
         amount: 46.0,
-        apyType: constants.borrowAPYType.stable,
+        apyType: constants.borrowAPYType.variable,
       },
     ],
   },
 };
 
-//skip while caps is full
-//TODO: make adaptive skip if caps is full
-describe.skip('EURS INTEGRATION SPEC, POLYGON V3 MARKET', () => {
+describe('EURS INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({
     market: 'fork_proto_polygon_v3',
@@ -112,9 +84,6 @@ describe.skip('EURS INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
-  });
-  testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
-    changeBorrowType(changeAPRCase, skipTestState, true);
   });
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {

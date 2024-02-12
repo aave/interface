@@ -1,14 +1,20 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { Contract } from 'ethers';
 import request, { gql } from 'graphql-request';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 export type ProposalVote = {
   proposalId: string;
   support: boolean;
   voter: string;
   votingPower: string;
+};
+
+export type EnhancedProposalVote = ProposalVote & {
+  ensName?: string;
 };
 
 export interface ProposalVotes {
@@ -18,8 +24,23 @@ export interface ProposalVotes {
   isFetching: boolean;
 }
 
+const abi = [
+  {
+    inputs: [{ internalType: 'contract ENS', name: '_ens', type: 'address' }],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    inputs: [{ internalType: 'address[]', name: 'addresses', type: 'address[]' }],
+    name: 'getNames',
+    outputs: [{ internalType: 'string[]', name: 'r', type: 'string[]' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
+
 const getProposalVotes = gql`
-  query getProposalVotes($proposalId: String!) {
+  query getProposalVotes($proposalId: Int!) {
     voteEmitteds(where: { proposalId: $proposalId }) {
       proposalId
       support
@@ -29,44 +50,60 @@ const getProposalVotes = gql`
   }
 `;
 
+const fetchProposalVotes = async (
+  proposalId: number,
+  votingChainId: ChainId
+): Promise<ProposalVote[]> => {
+  const data = await request<{ voteEmitteds: ProposalVote[] }>(
+    governanceV3Config.votingChainConfig[votingChainId as ChainId].subgraphUrl,
+    getProposalVotes,
+    {
+      proposalId,
+    }
+  );
+  return data.voteEmitteds.map((vote) => ({
+    ...vote,
+    votingPower: normalizeBN(vote.votingPower, 18).toString(),
+  }));
+};
+
+const fetchProposalVotesEnsNames = async (addresses: string[]) => {
+  const provider = getProvider(governanceV3Config.coreChainId);
+  const contract = new Contract('0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', abi);
+  const connectedContract = contract.connect(provider);
+  return connectedContract.getNames(addresses) as Promise<string[]>;
+};
+
 export const useProposalVotesQuery = ({
   proposalId,
   votingChainId,
 }: {
-  proposalId: string;
+  proposalId: number;
   votingChainId: ChainId | undefined;
-}) => {
+}): UseQueryResult<EnhancedProposalVote[]> => {
   return useQuery({
-    queryFn: () =>
-      request<{ voteEmitteds: ProposalVote[] }>(
-        governanceV3Config.votingChainConfig[votingChainId as ChainId].subgraphUrl,
-        getProposalVotes,
-        {
-          proposalId,
-        }
-      ),
+    queryFn: async () => {
+      const votes = await fetchProposalVotes(proposalId, votingChainId as ChainId);
+      const votesEnsNames = await fetchProposalVotesEnsNames(votes.map((vote) => vote.voter));
+      return votes.map((vote, index) => ({ ...vote, ensName: votesEnsNames[index] }));
+    },
     queryKey: ['proposalVotes', proposalId],
-    enabled: votingChainId !== undefined,
+    enabled: votingChainId !== undefined && !isNaN(proposalId),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    select: (data) =>
-      data.voteEmitteds.map((vote) => ({
-        ...vote,
-        votingPower: normalizeBN(vote.votingPower, 18).toString(),
-      })),
   });
 };
 
 const sortByVotingPower = (a: ProposalVote, b: ProposalVote) => {
-  return a.votingPower < b.votingPower ? 1 : a.votingPower > b.votingPower ? -1 : 0;
+  return +a.votingPower < +b.votingPower ? 1 : +a.votingPower > +b.votingPower ? -1 : 0;
 };
 
 export const useProposalVotes = ({
   proposalId,
   votingChainId,
 }: {
-  proposalId: string;
+  proposalId: number;
   votingChainId: ChainId | undefined;
 }): ProposalVotes => {
   const { data, isFetching } = useProposalVotesQuery({ proposalId, votingChainId });
