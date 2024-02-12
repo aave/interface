@@ -1,5 +1,6 @@
 import { Stake, valueToWei } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import { BigNumber, Contract } from 'ethers';
@@ -7,20 +8,19 @@ import { formatEther, formatUnits } from 'ethers/lib/utils';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { stakeAssetNameFormatted } from 'src/ui-config/stakeConfig';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { AssetInput } from '../AssetInput';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { StakingMigrateActions } from './StakingMigrateActions';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
 
 export const StakingMigrateModalContent = () => {
   const { gasLimit, mainTxState } = useModalContext();
@@ -159,12 +159,12 @@ export const StakingMigrateModalContent = () => {
 
 type TxDetailsRowProps = {
   caption: ReactNode;
-  value: Number;
+  value: number;
   valueToken: string;
-  valueUSD: Number;
-  secondaryValue: Number;
+  valueUSD: number;
+  secondaryValue: number;
   secondaryValueToken: string;
-  secondaryValueUSD: Number;
+  secondaryValueUSD: number;
 };
 
 const TxDetailsRow = ({
