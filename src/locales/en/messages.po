@@ -414,6 +414,10 @@ msgstr "Balance"
 msgid "Balance to revoke"
 msgstr "Balance to revoke"
 
+#: pages/staking.staking.tsx
+msgid "Balancer Pool"
+msgstr "Balancer Pool"
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
