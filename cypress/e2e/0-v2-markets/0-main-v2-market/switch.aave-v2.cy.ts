@@ -2,8 +2,13 @@ import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyMainnetFork } from '../../../support/steps/configuration.steps';
-import { borrow, supply, swap } from '../../../support/steps/main.steps';
+import { borrow, swap } from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHEthereumV2: 0.5,
+};
 
 const testData = {
   deposit: {
@@ -40,9 +45,7 @@ const testData = {
 
 describe('SWITCH BORROWED, AAVE V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMainnetFork({});
-
-  supply(testData.deposit, skipTestState, true);
+  configEnvWithTenderlyMainnetFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.borrow, skipTestState, true);
   swap(testData.swap, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);

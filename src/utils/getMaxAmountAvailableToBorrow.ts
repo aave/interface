@@ -119,7 +119,10 @@ export function getMaxGhoMintAmount(
           valueToBigNumber(poolReserve.totalDebt)
         );
 
-  const maxAmountUserCanMint = BigNumber.min(userAvailableBorrows, availableBorrowCap);
+  const maxAmountUserCanMint = BigNumber.max(
+    BigNumber.min(userAvailableBorrows, availableBorrowCap),
+    0
+  );
 
   const shouldAddMargin =
     /**

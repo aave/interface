@@ -1,9 +1,9 @@
+import { DelegationType } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { DelegationType } from 'src/helpers/types';
 
 export type DelegationTypeSelectorProps = {
   delegationType: DelegationType;
@@ -15,7 +15,7 @@ export const DelegationTypeSelector = ({
   setDelegationType,
 }: DelegationTypeSelectorProps) => {
   useEffect(() => {
-    setDelegationType(DelegationType.BOTH);
+    setDelegationType(DelegationType.ALL);
   }, [setDelegationType]);
 
   return (
@@ -25,8 +25,8 @@ export const DelegationTypeSelector = ({
       onChange={(_, value) => setDelegationType(value)}
     >
       <StyledTxModalToggleButton
-        value={DelegationType.BOTH}
-        disabled={delegationType === DelegationType.BOTH}
+        value={DelegationType.ALL}
+        disabled={delegationType === DelegationType.ALL}
       >
         <Typography variant="buttonM">
           <Trans>Both</Trans>
@@ -43,8 +43,8 @@ export const DelegationTypeSelector = ({
       </StyledTxModalToggleButton>
 
       <StyledTxModalToggleButton
-        value={DelegationType.PROPOSITION_POWER}
-        disabled={delegationType === DelegationType.PROPOSITION_POWER}
+        value={DelegationType.PROPOSITION}
+        disabled={delegationType === DelegationType.PROPOSITION}
       >
         <Typography variant="buttonM">
           <Trans>Proposition</Trans>

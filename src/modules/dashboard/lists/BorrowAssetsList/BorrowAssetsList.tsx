@@ -147,15 +147,13 @@ export const BorrowAssetsList = () => {
   const borrowReserves =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
-      : tokensToBorrow.filter(
-          ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
-            availableBorrowsInUSD !== '0.00' &&
-            (totalLiquidityUSD !== '0' ||
-              displayGho({
-                symbol,
-                currentMarket,
-              }))
-        );
+      : tokensToBorrow.filter(({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) => {
+          if (displayGho({ symbol, currentMarket })) {
+            return true;
+          }
+
+          return availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0';
+        });
 
   const { value: ghoReserve, filtered: filteredReserves } = findAndFilterGhoReserve(borrowReserves);
   const sortedReserves = handleSortDashboardReserves(
@@ -225,7 +223,7 @@ export const BorrowAssetsList = () => {
               <MarketWarning marketName="Ethereum AMM" />
             )}
 
-            {+collateralUsagePercent >= 0.98 && (
+            {user.healthFactor !== '-1' && Number(user.healthFactor) <= 1.1 && (
               <Warning severity="error">
                 <Trans>
                   Be careful - You are very close to liquidation. Consider depositing more

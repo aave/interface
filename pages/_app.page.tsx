@@ -79,6 +79,11 @@ const WithdrawModal = dynamic(() =>
     (module) => module.WithdrawModal
   )
 );
+const StakingMigrateModal = dynamic(() =>
+  import('src/components/transactions/StakingMigrate/StakingMigrateModal').then(
+    (module) => module.StakingMigrateModal
+  )
+);
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -94,7 +99,13 @@ function getWeb3Library(provider: any): providers.Web3Provider {
   return library;
 }
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -153,6 +164,7 @@ export default function MyApp(props: MyAppProps) {
                               <MigrateV3Modal />
                               <TransactionEventHandler />
                               <SwitchModal />
+                              <StakingMigrateModal />
                             </SharedDependenciesProvider>
                           </GasStationProvider>
                         </AppDataProvider>

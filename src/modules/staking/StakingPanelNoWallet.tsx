@@ -3,7 +3,8 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { useRootStore } from 'src/store/root';
 
 export interface StakingPanelNoWalletProps {
   description?: React.ReactNode;
@@ -16,11 +17,23 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   stakedToken,
   icon,
 }) => {
-  const { data: stakeGeneralResult } = useGeneralStakeUiData();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   let stakingAPY = '';
 
-  if (stakedToken == 'AAVE') stakingAPY = stakeGeneralResult?.aave.stakeApy || '0';
-  if (stakedToken == 'ABPT') stakingAPY = stakeGeneralResult?.bpt.stakeApy || '0';
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
+
+  let stkAave: StakeTokenFormatted | undefined;
+  let stkBpt: StakeTokenFormatted | undefined;
+  let stkGho: StakeTokenFormatted | undefined;
+  let stkBptV2: StakeTokenFormatted | undefined;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult)) {
+    [stkAave, stkBpt, stkGho, stkBptV2] = stakeGeneralResult;
+  }
+
+  if (stakedToken == 'AAVE') stakingAPY = stkAave?.stakeApy || '0';
+  if (stakedToken == 'ABPT') stakingAPY = stkBpt?.stakeApy || '0';
+  if (stakedToken == 'GHO') stakingAPY = stkGho?.stakeApy || '0';
+  if (stakedToken == 'ABPT V2') stakingAPY = stkBptV2?.stakeApy || '0';
   return (
     <Box
       sx={(theme) => ({
@@ -32,7 +45,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
         border: `1px solid ${theme.palette.divider}`,
         p: 4,
         background: theme.palette.background.paper,
-        width: '263px',
+        width: '250px',
         height: '68px',
         margin: '0 auto',
         position: 'relative',

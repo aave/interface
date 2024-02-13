@@ -1,3 +1,4 @@
+import { Stake } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -6,8 +7,8 @@ import React, { useRef, useState } from 'react';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -21,7 +22,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeRewardClaimActions } from './StakeRewardClaimActions';
 
 export type StakeRewardClaimProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
   icon: string;
 };
 
@@ -29,26 +30,25 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-type StakingType = 'aave' | 'bpt';
-
 export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewardClaimProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  const { data: stakeUserResult } = useUserStakeUiData();
-  const { data: stakeGeneralResult } = useGeneralStakeUiData();
-  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
+
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
 
-  const maxAmountToClaim = normalize(
-    stakeUserResult?.[stakeAssetName as StakingType].userIncentivesToClaim || '0',
-    18
-  );
+  const maxAmountToClaim = normalize(stakeUserData?.userIncentivesToClaim || '0', 18);
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToClaim : _amount;
   const handleChange = (value: string) => {
@@ -56,11 +56,8 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
     amountRef.current = maxSelected ? maxAmountToClaim : value;
     setAmount(value);
   };
-  // staking token usd value
-  const amountInUsd =
-    Number(maxAmountToClaim) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
-      Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
+
+  const amountInUsd = Number(amount) * Number(stakeData?.rewardTokenPriceUSDFormatted);
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;

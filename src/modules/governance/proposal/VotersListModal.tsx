@@ -4,18 +4,18 @@ import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
 
 import { BasicModal } from '../../../components/primitives/BasicModal';
-import { FormattedProposal } from '../utils/formatProposal';
+import { ProposalVoteInfo } from '../utils/formatProposal';
 import { VoteBar } from '../VoteBar';
 import { VotersList } from './VotersList';
-import { VotersData } from './VotersListContainer';
 
 type VotersListModalProps = {
   open: boolean;
   close: () => void;
-  proposal: FormattedProposal;
-  voters: VotersData;
+  proposal: ProposalVoteInfo;
+  voters: ProposalVotes;
 };
 
 export const VotersListModal = ({
@@ -39,8 +39,8 @@ export const VotersListModal = ({
     <>
       <VoteBar
         yae
-        percent={proposal.yaePercent}
-        votes={proposal.yaeVotes}
+        percent={proposal.forPercent}
+        votes={proposal.forPercent}
         sx={{
           ...borderBaseStyle,
           px: 4,
@@ -57,14 +57,14 @@ export const VotersListModal = ({
           }}
         >
           <Typography variant="subheader2" color="text.secondary">
-            <Trans>Addresses ({voters.yaes.length})</Trans>
+            <Trans>Addresses ({voters.yaeVotes.length})</Trans>
           </Typography>
           <Typography variant="subheader2" color="text.secondary">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
         <VotersList
-          voters={voters.yaes}
+          voters={voters.yaeVotes}
           sx={{
             p: 4,
             mb: 0,
@@ -78,8 +78,8 @@ export const VotersListModal = ({
   const noVotesUI = (
     <>
       <VoteBar
-        percent={proposal.nayPercent}
-        votes={proposal.nayVotes}
+        percent={proposal.againstPercent}
+        votes={proposal.againstPercent}
         sx={{
           ...borderBaseStyle,
           px: 4,
@@ -96,14 +96,14 @@ export const VotersListModal = ({
           }}
         >
           <Typography variant="subheader2" color="text.secondary">
-            <Trans>Addresses ({voters.nays.length})</Trans>
+            <Trans>Addresses ({voters.nayVotes.length})</Trans>
           </Typography>
           <Typography variant="subheader2" color="text.secondary">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
         <VotersList
-          voters={voters.nays}
+          voters={voters.nayVotes}
           sx={{
             p: 4,
             mb: 0,

@@ -140,6 +140,10 @@ export const configEnvWithTenderlyArbitrumFork = createConfigWithTenderlyFork(
   ChainId.arbitrum_one,
   'fork_proto_arbitrum_v3'
 );
+export const configEnvWithTenderlyBnbFork = createConfigWithTenderlyFork(
+  ChainId.bnb,
+  'fork_proto_bnb_v3'
+);
 export const configEnvWithTenderlyAEthereumV3Fork = createConfigWithTenderlyFork(
   ChainId.mainnet,
   'fork_proto_mainnet_v3'
