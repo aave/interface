@@ -14,7 +14,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -39,14 +39,14 @@ export const WithdrawAndUnwrapAction = ({
   isWrongNetwork,
   tokenWrapperAddress,
 }: WithdrawAndUnwrapActionProps) => {
-  const [account, estimateGasLimit, walletApprovalMethodPreference, user] = useRootStore(
-    (state) => [
+  const [account, estimateGasLimit, walletApprovalMethodPreference, user, marketData] =
+    useRootStore((state) => [
       state.account,
       state.estimateGasLimit,
       state.walletApprovalMethodPreference,
       state.account,
-    ]
-  );
+      state.currentMarketData,
+    ]);
 
   const { sendTx } = useWeb3Context();
 
@@ -69,7 +69,11 @@ export const WithdrawAndUnwrapAction = ({
     data: approvedAmount,
     isFetching: fetchingApprovedAmount,
     refetch: fetchApprovedAmount,
-  } = useApprovedAmount(poolReserve.aTokenAddress, tokenWrapperAddress);
+  } = useApprovedAmount({
+    marketData,
+    token: poolReserve.aTokenAddress,
+    spender: tokenWrapperAddress,
+  });
 
   setLoadingTxns(fetchingApprovedAmount);
 
@@ -141,7 +145,7 @@ export const WithdrawAndUnwrapAction = ({
         success: true,
       });
 
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       refetchPoolData && refetchPoolData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
