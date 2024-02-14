@@ -72,6 +72,9 @@ export const SupplyWrappedTokenActions = ({
     refetch: fetchApprovedAmount,
   } = useApprovedAmount({ marketData, token: tokenIn, spender: tokenWrapperAddress });
 
+  console.log('approved amount', approvedAmount);
+  console.log('fetching', isFetching);
+
   let requiresApproval = false;
   if (approvedAmount !== undefined) {
     requiresApproval = checkRequiresApproval({
@@ -171,6 +174,9 @@ export const SupplyWrappedTokenActions = ({
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+      queryClient.invalidateQueries({
+        queryKey: queryKeysFactory.approvedAmount(user, tokenIn, tokenWrapperAddress, marketData),
+      });
       refetchPoolData && refetchPoolData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -184,7 +190,7 @@ export const SupplyWrappedTokenActions = ({
 
   return (
     <TxActionsWrapper
-      blocked={false} // TODO
+      blocked={false}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={isWrongNetwork}
@@ -197,7 +203,7 @@ export const SupplyWrappedTokenActions = ({
       handleApproval={() => approvalAction()}
       handleAction={action}
       requiresApproval={requiresApproval}
-      tryPermit={false} // TODO
+      tryPermit={usePermit}
       sx={sx}
       {...props}
     />

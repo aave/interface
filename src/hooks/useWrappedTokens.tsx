@@ -1,7 +1,8 @@
+import { ChainId } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { selectCurrentReserves } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
-import { wrappedTokenConfig } from 'src/ui-config/wrappedTokenConfig';
 import { amountToUsd } from 'src/utils/utils';
 
 import { useAppDataContext } from './app-data-provider/useAppDataProvider';
@@ -20,6 +21,22 @@ export type WrappedTokenConfig = {
   tokenWrapperAddress: string;
 };
 
+const wrappedTokenConfig: {
+  [chainId: number]: Array<{
+    tokenIn: string;
+    tokenOut: string;
+    tokenWrapperContractAddress: string;
+  }>;
+} = {
+  [ChainId.mainnet]: [
+    {
+      tokenIn: AaveV3Ethereum.ASSETS.DAI.UNDERLYING.toLowerCase(),
+      tokenOut: AaveV3Ethereum.ASSETS.sDAI.UNDERLYING.toLowerCase(),
+      tokenWrapperContractAddress: AaveV3Ethereum.SAVINGS_DAI_TOKEN_WRAPPER,
+    },
+  ],
+};
+
 export const useWrappedTokens = () => {
   const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals } = useAppDataContext();
   const [reserves, currentChainId] = useRootStore((state) => [
@@ -34,16 +51,9 @@ export const useWrappedTokens = () => {
   const wrappedTokens = wrappedTokenConfig[currentChainId] ?? [];
   let wrappedTokenReserves: WrappedTokenConfig[] = [];
 
-  console.log(reserves);
-
   wrappedTokenReserves = wrappedTokens.map<WrappedTokenConfig>((config) => {
-    const tokenInReserve = reserves.find(
-      (userReserve) => userReserve.underlyingAsset === config.tokenIn.underlyingAsset
-    );
-
-    const tokenOutReserve = reserves.find(
-      (userReserve) => userReserve.underlyingAsset === config.tokenOut.underlyingAsset
-    );
+    const tokenInReserve = reserves.find((reserve) => reserve.underlyingAsset === config.tokenIn);
+    const tokenOutReserve = reserves.find((reserve) => reserve.underlyingAsset === config.tokenOut);
 
     if (!tokenInReserve || !tokenOutReserve) {
       throw new Error('wrapped token reserves not found');
@@ -61,8 +71,8 @@ export const useWrappedTokens = () => {
 
     return {
       tokenIn: {
-        symbol: config.tokenIn.symbol,
-        underlyingAsset: config.tokenIn.underlyingAsset,
+        symbol: tokenInReserve.symbol,
+        underlyingAsset: tokenInReserve.underlyingAsset,
         decimals: tokenInReserve.decimals,
         priceInUSD: amountToUsd(
           1,

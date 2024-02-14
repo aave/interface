@@ -146,6 +146,14 @@ export const WithdrawAndUnwrapAction = ({
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+      queryClient.invalidateQueries({
+        queryKey: queryKeysFactory.approvedAmount(
+          user,
+          poolReserve.aTokenAddress,
+          tokenWrapperAddress,
+          marketData
+        ),
+      });
       refetchPoolData && refetchPoolData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
