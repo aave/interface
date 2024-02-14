@@ -83,7 +83,7 @@ export const WithdrawAndSwitchModalContent = ({
 
   let withdrawAndUnwrap = false;
   const wrappedTokenConfig = wrappedTokenReserves.find(
-    (config) => config.tokenIn.underlyingAsset === poolReserve.underlyingAsset
+    (config) => config.tokenOut.underlyingAsset === poolReserve.underlyingAsset
   );
   if (wrappedTokenConfig) {
     withdrawAndUnwrap = targetReserve.address === wrappedTokenConfig.tokenIn.underlyingAsset;
@@ -319,6 +319,8 @@ export const WithdrawAndSwitchModalContent = ({
           amountToWithdraw={amountRef.current}
           isWrongNetwork={isWrongNetwork}
           tokenWrapperAddress={wrappedTokenConfig?.tokenWrapperAddress || ''}
+          sx={displayRiskCheckbox ? { mt: 0 } : {}}
+          blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
         />
       ) : (
         <WithdrawAndSwitchActions

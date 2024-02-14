@@ -2,6 +2,7 @@ import { gasLimitRecommendations, ProtocolAction, valueToWei } from '@aave/contr
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
+import { BoxProps } from '@mui/material';
 import { constants } from 'ethers';
 import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
@@ -26,11 +27,12 @@ interface SignedParams {
   amount: string;
 }
 
-interface WithdrawAndUnwrapActionProps {
+interface WithdrawAndUnwrapActionProps extends BoxProps {
   poolReserve: ComputedReserveData;
   amountToWithdraw: string;
   isWrongNetwork: boolean;
   tokenWrapperAddress: string;
+  blocked: boolean;
 }
 
 export const WithdrawAndUnwrapAction = ({
@@ -38,6 +40,8 @@ export const WithdrawAndUnwrapAction = ({
   amountToWithdraw,
   isWrongNetwork,
   tokenWrapperAddress,
+  sx,
+  blocked,
 }: WithdrawAndUnwrapActionProps) => {
   const [account, estimateGasLimit, walletApprovalMethodPreference, user, marketData] =
     useRootStore((state) => [
@@ -166,18 +170,18 @@ export const WithdrawAndUnwrapAction = ({
   };
 
   useEffect(() => {
-    let supplyGasLimit = 0;
-    supplyGasLimit = Number(gasLimitRecommendations[ProtocolAction.withdraw].recommended);
+    let gasLimit = 0;
+    gasLimit = Number(gasLimitRecommendations[ProtocolAction.withdraw].recommended);
     if (requiresApproval && !approvalTxState.success) {
-      supplyGasLimit += Number(APPROVAL_GAS_LIMIT);
+      gasLimit += Number(APPROVAL_GAS_LIMIT);
     }
 
-    setGasLimit(supplyGasLimit.toString());
+    setGasLimit(gasLimit.toString());
   }, [requiresApproval, approvalTxState, usePermit, setGasLimit]);
 
   return (
     <TxActionsWrapper
-      blocked={false}
+      blocked={blocked}
       preparingTransactions={loadingTxns}
       approvalTxState={approvalTxState}
       mainTxState={mainTxState}
@@ -189,6 +193,8 @@ export const WithdrawAndUnwrapAction = ({
       handleAction={action}
       requiresApproval={requiresApproval}
       handleApproval={approvalAction}
+      sx={sx}
+      tryPermit
     />
   );
 };
