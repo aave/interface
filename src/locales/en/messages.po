@@ -3195,7 +3195,6 @@ msgid "enabled"
 msgstr "enabled"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "ends"
 
@@ -3241,7 +3240,6 @@ msgid "staking view"
 msgstr "staking view"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr "starts"
 

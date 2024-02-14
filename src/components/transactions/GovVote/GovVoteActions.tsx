@@ -5,7 +5,7 @@ import { AbiCoder, keccak256, RLP } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useGovernanceTokensAndPowers } from 'src/hooks/governance/useGovernanceTokensAndPowers';
-import { EnhancedProposal } from 'src/hooks/governance/useProposal';
+import { Proposal } from 'src/hooks/governance/useProposals';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -31,7 +31,7 @@ interface GetProofResponse {
 export type GovVoteActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
-  proposal: EnhancedProposal;
+  proposal: Proposal;
   support: boolean;
 };
 
@@ -157,9 +157,9 @@ export const GovVoteActions = ({
   const { sendTx, signTxData } = useWeb3Context();
   const tokenPowers = useGovernanceTokensAndPowers();
   const [signature, setSignature] = useState<string | undefined>(undefined);
-  const proposalId = +proposal.proposal.id;
-  const blockHash = proposal.proposal.snapshotBlockHash;
-  const votingChainId = +proposal.proposal.votingPortal.votingMachineChainId;
+  const proposalId = +proposal.subgraphProposal.id;
+  const blockHash = proposal.subgraphProposal.snapshotBlockHash;
+  const votingChainId = +proposal.subgraphProposal.votingPortal.votingMachineChainId;
   const votingMachineAddress =
     governanceV3Config.votingChainConfig[votingChainId].votingMachineAddress;
 
