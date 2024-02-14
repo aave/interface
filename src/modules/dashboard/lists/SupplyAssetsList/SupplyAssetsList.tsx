@@ -10,6 +10,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -51,8 +52,8 @@ export const SupplyAssetsList = () => {
     reserves,
     marketReferencePriceInUsd,
     loading: loadingReserves,
-    wrappedTokenReserves,
   } = useAppDataContext();
+  const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances, loading } = useWalletBalances(currentMarketData);
   const [displayGho] = useRootStore((store) => [store.displayGho]);
   const theme = useTheme();

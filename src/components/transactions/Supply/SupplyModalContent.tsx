@@ -19,6 +19,7 @@ import {
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWrappedTokens, WrappedTokenConfig } from 'src/hooks/useWrappedTokens';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import {
@@ -55,8 +56,9 @@ export enum ErrorType {
 }
 
 export const SupplyModalContentWrapper = (params: ModalWrapperProps) => {
-  const { user, wrappedTokenReserves } = useAppDataContext();
+  const { user } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
+  const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances } = useWalletBalances(currentMarketData);
   const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCaps();
 
@@ -101,6 +103,9 @@ export const SupplyModalContentWrapper = (params: ModalWrapperProps) => {
     ),
     supplyCapWarning: supplyCapUsage.determineWarningDisplay({ supplyCap: supplyCapUsage }),
     debtCeilingWarning: debtCeilingUsage.determineWarningDisplay({ debtCeiling: debtCeilingUsage }),
+    wrappedTokenConfig: wrappedTokenReserves.find(
+      (r) => r.tokenOut.underlyingAsset === params.underlyingAsset
+    ),
   };
 
   return canSupplyAsWrappedToken ? (
@@ -116,6 +121,7 @@ interface SupplyModalContentProps extends ModalWrapperProps {
   isolationModeWarning: React.ReactNode;
   supplyCapWarning: React.ReactNode;
   debtCeilingWarning: React.ReactNode;
+  wrappedTokenConfig?: WrappedTokenConfig;
 }
 
 export const SupplyModalContent = React.memo(

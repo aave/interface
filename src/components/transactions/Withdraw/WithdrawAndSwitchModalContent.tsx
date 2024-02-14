@@ -13,6 +13,7 @@ import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useTokenInForTokenOut } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
@@ -42,12 +43,12 @@ export const WithdrawAndSwitchModalContent = ({
   userReserve,
   symbol,
   isWrongNetwork,
-  wrappedTokenConfig,
 }: ModalWrapperProps) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { currentAccount } = useWeb3Context();
   const { user, reserves } = useAppDataContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const wrappedTokenReserves = useWrappedTokens();
 
   const [_amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
@@ -81,6 +82,9 @@ export const WithdrawAndSwitchModalContent = ({
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
 
   let withdrawAndUnwrap = false;
+  const wrappedTokenConfig = wrappedTokenReserves.find(
+    (config) => config.tokenIn.underlyingAsset === poolReserve.underlyingAsset
+  );
   if (wrappedTokenConfig) {
     withdrawAndUnwrap = targetReserve.address === wrappedTokenConfig.tokenIn.underlyingAsset;
   }

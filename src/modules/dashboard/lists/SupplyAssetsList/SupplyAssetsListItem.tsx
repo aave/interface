@@ -20,11 +20,11 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
@@ -46,7 +46,7 @@ export const SupplyAssetsListItem = (params: DashboardReserve) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const { supplyCap } = useAssetCaps();
-  const { wrappedTokenReserves } = useAppDataContext();
+  const wrappedTokenReserves = useWrappedTokens();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { walletBalances } = useWalletBalances(currentMarketData);
 
@@ -103,7 +103,7 @@ export const SupplyAssetsListItemDesktop = ({
 }: SupplyAssetsListItemProps) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentMarket = useRootStore((store) => store.currentMarket);
-  const { wrappedTokenReserves } = useAppDataContext();
+  const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances } = useWalletBalances(currentMarketData);
 
   const { openSupply, openSwitch } = useModalContext();
@@ -309,7 +309,7 @@ export const SupplyAssetsListItemMobile = ({
 }: SupplyAssetsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
-  const { wrappedTokenReserves } = useAppDataContext();
+  const wrappedTokenReserves = useWrappedTokens();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { walletBalances } = useWalletBalances(currentMarketData);
 

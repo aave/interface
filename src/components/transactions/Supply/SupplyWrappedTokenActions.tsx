@@ -12,7 +12,6 @@ import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
@@ -44,14 +43,12 @@ export const SupplyWrappedTokenActions = ({
   sx,
   ...props
 }: SupplyWrappedTokenActionProps) => {
-  const [user, walletApprovalMethodPreference, estimateGasLimit, addTransaction, marketData] =
-    useRootStore((state) => [
-      state.account,
-      state.walletApprovalMethodPreference,
-      state.estimateGasLimit,
-      state.addTransaction,
-      state.currentMarketData,
-    ]);
+  const [user, estimateGasLimit, addTransaction, marketData] = useRootStore((state) => [
+    state.account,
+    state.estimateGasLimit,
+    state.addTransaction,
+    state.currentMarketData,
+  ]);
 
   const { refetchPoolData } = useBackgroundDataProvider();
   const { tokenWrapperService } = useSharedDependencies();
@@ -84,7 +81,8 @@ export const SupplyWrappedTokenActions = ({
     });
   }
 
-  const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+  // Since the only wrapped token right now is sDAI/DAI, disable permit since it is not supported
+  const usePermit = false; // walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   // Update gas estimation
   let supplyGasLimit = 0;
