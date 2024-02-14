@@ -1,4 +1,3 @@
-import { VotingMachineProposal } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
 import { constants } from 'ethers';
 import request, { gql } from 'graphql-request';
@@ -19,11 +18,6 @@ import {
   proposalQueryFields,
   SubgraphProposal,
 } from './useProposals';
-
-export interface EnhancedProposal {
-  proposal: Proposal;
-  votingMachineData: VotingMachineProposal;
-}
 
 const getProposalQuery = gql`
   query getProposal($id: Int!) {
