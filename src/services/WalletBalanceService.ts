@@ -1,4 +1,4 @@
-import { BatchBalanceOfResponse, ChainId, WalletBalanceProvider } from '@aave/contract-helpers';
+import { ChainId, WalletBalanceProvider } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
@@ -68,20 +68,5 @@ export class WalletBalanceService {
       amount: balances[ix].toString(),
     }));
     return mappedBalances;
-  }
-
-  async getWrappedTokenInBalances(
-    tokenInAddresses: string[],
-    marketData: MarketDataType,
-    user: string
-  ): Promise<BatchBalanceOfResponse> {
-    console.log('token in', tokenInAddresses);
-    const walletBalanceService = this.getWalletBalanceService(
-      marketData.chainId,
-      marketData.addresses.WALLET_BALANCE_PROVIDER
-    );
-    const balances = await walletBalanceService.batchBalanceOf([user], tokenInAddresses);
-    console.log('balances', balances);
-    return balances;
   }
 }
