@@ -386,7 +386,7 @@ export const SupplyWrappedTokenModalContent = ({
   if (supplyTxState.success) {
     const successModalAmount = supplyingWrappedToken
       ? BigNumber(amount)
-          .multipliedBy(exchangeRate || '1')
+          .dividedBy(exchangeRate || '1')
           .toString()
       : amount;
 
