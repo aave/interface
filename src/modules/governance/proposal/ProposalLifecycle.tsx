@@ -11,7 +11,16 @@ import {
   timelineItemClasses,
   TimelineSeparator,
 } from '@mui/lab';
-import { Box, Button, IconButton, Paper, SvgIcon, Typography, useTheme } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  Paper,
+  SvgIcon,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import dayjs from 'dayjs';
 import { ReactNode, useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
@@ -40,14 +49,21 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
   const createdPayloadOrder = proposal.payloadsData.sort((a, b) => a.createdAt - b.createdAt);
 
   const coreNetworkConfig = getNetworkConfig(governanceV3Config.coreChainId);
+  const votingNetworkConfig = getNetworkConfig(
+    +proposal.subgraphProposal.votingPortal.votingMachineChainId
+  );
 
   const proposalCreatedSubsteps = createdPayloadOrder
-    .map<ProposalStepProps>((payload) => ({
-      completed: true,
-      active: proposal.lifecycleState === ProposalLifecycleStep.Created,
-      stepName: `Payload ${payload.id} was created`,
-      timestamp: formatTime(payload.createdAt),
-    }))
+    .map<ProposalStepProps>((payload) => {
+      const networkConfig = getNetworkConfig(payload.chainId);
+      return {
+        completed: true,
+        active: proposal.lifecycleState === ProposalLifecycleStep.Created,
+        stepName: `Payload ${payload.id} was created`,
+        timestamp: formatTime(payload.createdAt),
+        networkLogo: networkConfig.networkLogoPath,
+      };
+    })
     .concat([
       {
         completed: true,
@@ -58,6 +74,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
         transactionHash: coreNetworkConfig.explorerLinkBuilder({
           tx: proposal.subgraphProposal.transactions.created.id,
         }),
+        networkLogo: coreNetworkConfig.networkLogoPath,
       },
     ]);
 
@@ -72,6 +89,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
             tx: proposal.subgraphProposal.transactions.active?.id,
           })
         : undefined,
+      networkLogo: coreNetworkConfig.networkLogoPath,
     },
     {
       completed: proposal.votingMachineData.state >= VotingMachineProposalState.Active,
@@ -81,6 +99,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
         getVotingMachineProposalStateTimestamp(VotingMachineProposalState.Active, proposal)
       ),
       lastStep: true,
+      networkLogo: votingNetworkConfig.networkLogoPath,
     },
   ];
 
@@ -90,34 +109,44 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
       active: proposal.subgraphProposal.state === ProposalV3State.Queued,
       stepName: `Proposal queued`,
       timestamp: formatTime(getProposalStateTimestamp(ProposalV3State.Queued, proposal)),
+      networkLogo: coreNetworkConfig.networkLogoPath,
     },
     {
       completed: proposal.subgraphProposal.state >= ProposalV3State.Executed,
       active: proposal.subgraphProposal.state === ProposalV3State.Queued,
       stepName: `Proposal executed`,
       timestamp: formatTime(getProposalStateTimestamp(ProposalV3State.Executed, proposal)),
+      networkLogo: coreNetworkConfig.networkLogoPath,
     },
   ]
     .concat(
-      proposal.payloadsData.map((payload) => ({
-        completed: payload.state >= PayloadState.Queued,
-        active: proposal.subgraphProposal.state === ProposalV3State.Executed,
-        stepName: `Payload ${payload.id} queued`,
-        timestamp: payload.queuedAt
-          ? formatTime(payload.queuedAt)
-          : formatTime(getPayloadStateTimestamp(PayloadState.Queued, payload, proposal)),
-      }))
+      proposal.payloadsData.map((payload) => {
+        const networkConfig = getNetworkConfig(payload.chainId);
+        return {
+          completed: payload.state >= PayloadState.Queued,
+          active: proposal.subgraphProposal.state === ProposalV3State.Executed,
+          stepName: `Payload ${payload.id} queued`,
+          timestamp: payload.queuedAt
+            ? formatTime(payload.queuedAt)
+            : formatTime(getPayloadStateTimestamp(PayloadState.Queued, payload, proposal)),
+          networkLogo: networkConfig.networkLogoPath,
+        };
+      })
     )
     .concat(
-      proposal.payloadsData.map((payload, index) => ({
-        completed: payload.state >= PayloadState.Executed,
-        active: payload.state === PayloadState.Queued,
-        stepName: `Payload ${payload.id} executed`,
-        timestamp: payload.executedAt
-          ? formatTime(payload.executedAt)
-          : formatTime(getPayloadStateTimestamp(PayloadState.Executed, payload, proposal)),
-        lastStep: index === proposal.payloadsData.length - 1,
-      }))
+      proposal.payloadsData.map((payload, index) => {
+        const networkConfig = getNetworkConfig(payload.chainId);
+        return {
+          completed: payload.state >= PayloadState.Executed,
+          active: payload.state === PayloadState.Queued,
+          stepName: `Payload ${payload.id} executed`,
+          timestamp: payload.executedAt
+            ? formatTime(payload.executedAt)
+            : formatTime(getPayloadStateTimestamp(PayloadState.Executed, payload, proposal)),
+          lastStep: index === proposal.payloadsData.length - 1,
+          networkLogo: networkConfig.networkLogoPath,
+        };
+      })
     );
 
   const votingClosedStepLabel = <Trans>Voting closed</Trans>;
@@ -223,6 +252,7 @@ interface ProposalStepProps {
   active?: boolean;
   substeps?: ProposalStepProps[];
   transactionHash?: string;
+  networkLogo?: string;
 }
 
 const ProposalStep = ({
@@ -233,6 +263,7 @@ const ProposalStep = ({
   active,
   substeps,
   transactionHash,
+  networkLogo,
 }: ProposalStepProps) => {
   const theme = useTheme();
   const [subtimelineOpen, setSubtimelineOpen] = useState(false);
@@ -265,12 +296,13 @@ const ProposalStep = ({
           />
         )}
       </TimelineSeparator>
-      <TimelineContent>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <TimelineContent sx={{ pt: 0 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', pt: 0 }}>
           <Box>
-            <Typography sx={{ mt: -1.5 }} variant="main14">
-              {stepName}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {networkLogo && <Avatar sx={{ width: 16, height: 16, mr: 2 }} src={networkLogo} />}
+              <Typography variant="main14">{stepName}</Typography>
+            </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Typography variant="tooltip" color="text.muted">
                 {timestamp}
@@ -287,7 +319,7 @@ const ProposalStep = ({
             </Box>
           </Box>
           {substeps && (
-            <IconButton sx={{ p: 0 }} onClick={toggleSubtimeline}>
+            <IconButton sx={{ p: 0, ml: 'auto' }} onClick={toggleSubtimeline}>
               {subtimelineOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
             </IconButton>
           )}
