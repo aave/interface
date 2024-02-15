@@ -1,4 +1,8 @@
-import { InformationCircleIcon, SwitchHorizontalIcon } from '@heroicons/react/outline';
+import {
+  InformationCircleIcon,
+  SwitchHorizontalIcon,
+  SparklesIcon,
+} from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Badge,
@@ -94,7 +98,7 @@ export function AppHeader() {
     state.setMobileDrawerOpen,
   ]);
 
-  const { openSwitch } = useModalContext();
+  const { openSwitch, openBridge } = useModalContext();
 
   const { currentMarketData } = useProtocolDataContext();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
@@ -142,6 +146,11 @@ export function AppHeader() {
     localStorage.setItem(SWITCH_VISITED_KEY, 'true');
     setVisitedSwitch(true);
     openSwitch();
+  };
+
+  const handleBridgeClick = () => {
+    console.log('OPEN');
+    openBridge();
   };
 
   const testnetTooltip = (
@@ -261,6 +270,33 @@ export function AppHeader() {
         </Box>
 
         <Box sx={{ flexGrow: 1 }} />
+
+        <NoSsr>
+          <StyledBadge
+            invisible={visitedSwitch}
+            variant="dot"
+            badgeContent=""
+            color="secondary"
+            sx={{ mr: 2 }}
+          >
+            <Button
+              onClick={handleBridgeClick}
+              variant="surface"
+              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
+              aria-label="Switch tool"
+            >
+              {!md && (
+                <Typography component="span" typography="subheader1">
+                  Bridge GHO
+                </Typography>
+              )}
+              <SvgIcon fontSize="small">
+                <SparklesIcon />
+              </SvgIcon>
+            </Button>
+          </StyledBadge>
+        </NoSsr>
+
         <NoSsr>
           <StyledBadge
             invisible={visitedSwitch}

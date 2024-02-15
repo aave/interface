@@ -48,6 +48,7 @@ export type MarketDataType = {
     debtSwitch?: boolean;
     withdrawAndSwitch?: boolean;
     switch?: boolean;
+    bridge?: boolean;
   };
   isFork?: boolean;
   permissionComponent?: ReactNode;
@@ -133,6 +134,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       debtSwitch: true,
       switch: true,
+      bridge: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
     addresses: {

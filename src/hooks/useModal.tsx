@@ -32,6 +32,7 @@ export enum ModalType {
   Switch,
   StakingMigrate,
   GovRepresentatives,
+  Bridge,
 }
 
 export interface ModalArgsType {
@@ -107,6 +108,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openV3Migration: () => void;
   openGovVote: (proposal: EnhancedProposal, support: boolean, power: string) => void;
   openSwitch: (underlyingAsset?: string, chainId?: number) => void;
+  openBridge: () => void;
   openStakingMigrate: () => void;
   openGovRepresentatives: (
     representatives: Array<{ chainId: ChainId; representative: string }>
@@ -282,6 +284,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Swap' });
           setType(ModalType.Swap);
           setArgs({ underlyingAsset });
+        },
+        openBridge: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Bridge' });
+          setType(ModalType.Bridge);
         },
         openDebtSwitch: (underlyingAsset, currentRateMode) => {
           trackEvent(GENERAL.OPEN_MODAL, {
