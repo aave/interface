@@ -16,7 +16,7 @@ export const WrappedTokenTooltipContent = ({
   tokenInSymbol: string;
   tokenOutSymbol: string;
 }) => {
-  const { isFetching: loadingExchangeRate, data: exchangeRate } = useTokenOutForTokenIn(
+  const { isLoading: loadingExchangeRate, data: exchangeRate } = useTokenOutForTokenIn(
     '1',
     decimals,
     tokenWrapperAddress

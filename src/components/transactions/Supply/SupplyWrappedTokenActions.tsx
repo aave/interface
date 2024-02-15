@@ -72,9 +72,6 @@ export const SupplyWrappedTokenActions = ({
     refetch: fetchApprovedAmount,
   } = useApprovedAmount({ marketData, token: tokenIn, spender: tokenWrapperAddress });
 
-  console.log('approved amount', approvedAmount);
-  console.log('fetching', isFetching);
-
   let requiresApproval = false;
   if (approvedAmount !== undefined) {
     requiresApproval = checkRequiresApproval({

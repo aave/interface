@@ -346,6 +346,11 @@ export const SupplyWrappedTokenModalContent = ({
     maxAmountOfTokenInToSupply = BigNumber(tokenOutRemainingSupplyCap)
       .dividedBy(exchangeRate || '0')
       .toString();
+
+    maxAmountOfTokenInToSupply = roundToTokenDecimals(
+      maxAmountOfTokenInToSupply,
+      poolReserve.decimals
+    );
   }
 
   let supplyingWrappedToken = false;
