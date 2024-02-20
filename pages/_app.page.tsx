@@ -15,7 +15,6 @@ import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
-import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
@@ -146,28 +145,26 @@ export default function MyApp(props: MyAppProps) {
                   <PermissionProvider>
                     <ModalContextProvider>
                       <SharedDependenciesProvider>
-                        <BackgroundDataProvider>
-                          <AppDataProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <MigrateV3Modal />
-                              <TransactionEventHandler />
-                              <SwitchModal />
-                              <StakingMigrateModal />
-                            </GasStationProvider>
-                          </AppDataProvider>
-                        </BackgroundDataProvider>
+                        <AppDataProvider>
+                          <GasStationProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                            <SupplyModal />
+                            <WithdrawModal />
+                            <BorrowModal />
+                            <RepayModal />
+                            <CollateralChangeModal />
+                            <RateSwitchModal />
+                            <DebtSwitchModal />
+                            <ClaimRewardsModal />
+                            <EmodeModal />
+                            <SwapModal />
+                            <FaucetModal />
+                            <MigrateV3Modal />
+                            <TransactionEventHandler />
+                            <SwitchModal />
+                            <StakingMigrateModal />
+                          </GasStationProvider>
+                        </AppDataProvider>
                       </SharedDependenciesProvider>
                     </ModalContextProvider>
                   </PermissionProvider>
