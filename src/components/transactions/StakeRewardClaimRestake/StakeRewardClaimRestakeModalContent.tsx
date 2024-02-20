@@ -1,3 +1,4 @@
+import { Stake } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -21,15 +22,13 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeRewardClaimRestakeActions } from './StakeRewardClaimRestakeActions';
 
 export type StakeRewardClaimRestakeProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
   icon: string;
 };
 
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
-
-type StakingType = 'aave' | 'bpt';
 
 export const StakeRewardClaimRestakeModalContent = ({
   stakeAssetName,
@@ -41,19 +40,18 @@ export const StakeRewardClaimRestakeModalContent = ({
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
-  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
+
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  const maxAmountToClaim = normalize(
-    stakeUserResult?.[stakeAssetName as StakingType].userIncentivesToClaim || '0',
-    18
-  );
+  const maxAmountToClaim = normalize(stakeUserData?.userIncentivesToClaim || '0', 18);
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToClaim : _amount;
 
@@ -64,11 +62,7 @@ export const StakeRewardClaimRestakeModalContent = ({
   };
 
   // staking token usd value
-  const amountInUsd =
-    Number(maxAmountToClaim) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
-      Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
-
+  const amountInUsd = Number(maxAmountToClaim) * Number(stakeData?.stakeTokenPriceUSDFormatted);
   // error handler
   let blockingError: ErrorType | undefined = undefined;
   if (maxAmountToClaim === '0') {

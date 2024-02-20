@@ -1,4 +1,3 @@
-import { ProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -14,6 +13,7 @@ import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 import { SearchInput } from '../../components/SearchInput';
 import { TitleWithSearchBar } from '../../components/TitleWithSearchBar';
+import { getProposalStates } from './StateBadge';
 
 type ProposalListHeaderProps = {
   proposalFilter: string;
@@ -22,9 +22,9 @@ type ProposalListHeaderProps = {
 };
 
 type ProposalListHeaderElementProps = {
-  proposalFilter: string;
+  proposalFilter?: string;
   handleSearchQueryChange: (value: string) => void;
-  handleChange: (event: SelectChangeEvent) => void;
+  handleChange?: (event: SelectChangeEvent) => void;
 };
 
 export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps> = ({
@@ -44,7 +44,7 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
         <MenuItem value="all">
           <Trans>All proposals</Trans>
         </MenuItem>
-        {Object.keys(ProposalState).map((key) => (
+        {getProposalStates().map((key) => (
           <MenuItem key={key} value={key}>
             {key}
           </MenuItem>
@@ -82,7 +82,7 @@ export const ProposalListHeaderMobile: React.FC<ProposalListHeaderElementProps> 
           <MenuItem value="all">
             <Trans>All proposals</Trans>
           </MenuItem>
-          {Object.keys(ProposalState).map((key) => (
+          {getProposalStates().map((key) => (
             <MenuItem key={key} value={key}>
               {key}
             </MenuItem>

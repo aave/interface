@@ -64,6 +64,7 @@ export interface AppDataContextType {
   ghoReserveData: FormattedGhoReserveData;
   ghoUserData: FormattedGhoUserData;
   ghoLoadingData: boolean;
+  ghoUserLoadingData: boolean;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -168,7 +169,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
         // ghoLoadingData for now is just propagated through to reduce changes to other components.
         ghoReserveData: formattedGhoReserveDataWithDefault,
         ghoUserData: formattedGhoUserDataWithDefault,
-        ghoLoadingData: ghoReserveDataLoading || (!!currentAccount && isGhoUserDataLoading),
+        ghoLoadingData: ghoReserveDataLoading,
+        ghoUserLoadingData: !!currentAccount && isGhoUserDataLoading,
       }}
     >
       {children}

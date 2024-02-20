@@ -1,7 +1,5 @@
-import {
-  GeneralStakeUIDataHumanized,
-  GetUserStakeUIDataHumanized,
-} from '@aave/contract-helpers/dist/esm/uiStakeDataProvider-contract/types';
+import { ChainId } from '@aave/contract-helpers';
+import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -22,12 +20,13 @@ import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
-import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
+import { useModalContext } from 'src/hooks/useModal';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
-import { GhoDiscountProgram } from './GhoDiscountProgram';
 import { StakeActionBox } from './StakeActionBox';
+import { StakingPanelSkeleton } from './StakingPanelSkeleton';
 
 function secondsToDHMS(seconds: number) {
   const d = Math.floor(seconds / (3600 * 24));
@@ -71,16 +70,16 @@ export interface StakingPanelProps {
   onStakeRewardClaimRestakeAction?: () => void;
   onCooldownAction?: () => void;
   onUnstakeAction?: () => void;
-  stakeData?: GeneralStakeUIDataHumanized['aave'];
-  stakeUserData?: GetUserStakeUIDataHumanized['aave'];
+  onMigrateAction?: () => void;
+  stakeData?: StakeTokenFormatted;
+  stakeUserData?: GetUserStakeUIDataHumanized['stakeUserData'][0];
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
-  ethPriceUsd?: string;
   stakeTitle: string;
   stakedToken: string;
   maxSlash: string;
   icon: string;
-  hasDiscountProgram?: boolean;
+  children?: React.ReactNode;
 }
 
 export const StakingPanel: React.FC<StakingPanelProps> = ({
@@ -89,20 +88,28 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   onStakeRewardClaimRestakeAction,
   onCooldownAction,
   onUnstakeAction,
-  stakeTitle,
-  stakedToken,
-  description,
+  onMigrateAction,
   headerAction,
+  stakedToken,
+  stakeTitle,
   icon,
   stakeData,
   stakeUserData,
-  ethPriceUsd,
   maxSlash,
-  hasDiscountProgram,
+  children,
 }) => {
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
+  const { openSwitch } = useModalContext();
+
+  if (!stakeData || !stakeUserData) {
+    return <StakingPanelSkeleton />;
+  }
+
+  const handleSwitchClick = () => {
+    openSwitch('', ChainId.mainnet);
+  };
 
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
@@ -128,26 +135,29 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     );
 
   const stakedUSD = formatUnits(
-    BigNumber.from(stakeUserData?.stakeTokenRedeemableAmount || '0')
-      .mul(stakeData?.stakeTokenPriceEth || '0')
-      .mul(ethPriceUsd || '1'),
-    18 + 18 + 8 // userBalance (18), stakedTokenPriceEth (18), ethPriceUsd (8)
+    BigNumber.from(stakeUserData?.stakeTokenRedeemableAmount || '0').mul(
+      stakeData?.stakeTokenPriceUSD || '0'
+    ),
+    18 + 8 // userBalance (18), stakedTokenPriceUSD (8)
   );
 
   const claimableUSD = formatUnits(
-    BigNumber.from(stakeUserData?.userIncentivesToClaim || '0')
-      .mul(stakeData?.rewardTokenPriceEth || '0')
-      .mul(ethPriceUsd || '1'),
-    18 + 18 + 8 // incentivesBalance (18), rewardTokenPriceEth (18), ethPriceUsd (8)
+    BigNumber.from(stakeUserData?.userIncentivesToClaim || '0').mul(
+      stakeData?.rewardTokenPriceUSD || '0'
+    ),
+    18 + 8 // incentivesBalance (18), rewardTokenPriceUSD (8)
   );
 
-  const aavePerMonth = formatEther(
-    valueToBigNumber(stakeUserData?.stakeTokenRedeemableAmount || '0')
-      .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
-      .multipliedBy(stakeData?.distributionPerSecond || '0')
-      .multipliedBy('2592000')
-      .toFixed(0)
-  );
+  let aavePerMonth = '0';
+  if (stakeData?.stakeTokenTotalSupply !== '0') {
+    aavePerMonth = formatEther(
+      valueToBigNumber(stakeUserData?.stakeTokenRedeemableAmount || '0')
+        .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
+        .multipliedBy(stakeData?.distributionPerSecond || '0')
+        .multipliedBy('2592000') // NOTE: Monthly distribution
+        .toFixed(0)
+    );
+  }
 
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
@@ -225,11 +235,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           >
             <Trans>Staking APR</Trans>
           </Typography>
-          <FormattedNumber
-            value={parseFloat(stakeData?.stakeApy || '0') / 10000}
-            percent
-            variant="secondary14"
-          />
+          <FormattedNumber value={stakeData.stakeApyFormatted} percent variant="secondary14" />
         </Box>
         <Box
           sx={{
@@ -267,16 +273,29 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </Box>
 
         {/**Stake action */}
-        <Button
-          variant="contained"
-          sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
-          onClick={onStakeAction}
-          disabled={+availableToStake === 0}
-          fullWidth={!xsm}
-          data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
-        >
-          <Trans>Stake</Trans>
-        </Button>
+
+        {stakedToken === 'GHO' && +availableToStake === 0 ? (
+          <Button
+            variant="contained"
+            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+            onClick={handleSwitchClick}
+            fullWidth={!xsm}
+            data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
+          >
+            <Trans>Get GHO</Trans>
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+            onClick={onStakeAction}
+            disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
+            fullWidth={!xsm}
+            data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
+          >
+            <Trans>Stake</Trans>
+          </Button>
+        )}
       </Box>
 
       <Stack
@@ -284,198 +303,233 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         direction={{ xs: 'column', xsm: 'row' }}
         sx={{ mt: 4, alignItems: { xsm: 'start' } }}
       >
-        {/** Cooldown action */}
-        <StakeActionBox
-          title={
-            <>
-              <Trans>Staked</Trans> {stakedToken}
-            </>
-          }
-          value={formatEther(stakeUserData?.stakeTokenRedeemableAmount || '0')}
-          valueUSD={stakedUSD}
-          dataCy={`stakedBox_${stakedToken}`}
-          bottomLineTitle={
-            <TextWithTooltip
-              variant="caption"
-              text={
-                isCooldownActive && !isUnstakeWindowActive ? (
-                  <Trans>Cooldown time left</Trans>
-                ) : isUnstakeWindowActive ? (
-                  <Trans>Time left to unstake</Trans>
-                ) : (
-                  <Trans>Cooldown period</Trans>
-                )
-              }
-              event={{
-                eventName: GENERAL.TOOL_TIP,
-                eventParams: {
-                  tooltip: 'Staking cooldown',
-                  funnel: 'Staking Page',
-                  assetName: stakedToken,
-                },
-              }}
-            >
+        {stakeData.inPostSlashingPeriod && (
+          <StakeActionBox
+            title={
               <>
-                {isCooldownActive && !isUnstakeWindowActive ? (
-                  <Trans>Time left to be able to withdraw your staked asset.</Trans>
-                ) : isUnstakeWindowActive ? (
-                  <Trans>Time left until the withdrawal window closes.</Trans>
-                ) : (
-                  <Trans>
-                    You can only withdraw your assets from the Security Module after the cooldown
-                    period ends and the unstake window is active.
-                  </Trans>
-                )}
+                <Trans>Staked</Trans> {stakedToken}
               </>
-            </TextWithTooltip>
-          }
-          bottomLineComponent={
-            <>
-              {isCooldownActive && !isUnstakeWindowActive ? (
-                <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
-                  <SecondsToString seconds={stakeCooldownSeconds - userCooldownDelta} />
-                </Typography>
-              ) : isUnstakeWindowActive ? (
-                <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
-                  <SecondsToString
-                    seconds={stakeUnstakeWindow + stakeCooldownSeconds - userCooldownDelta}
-                  />
-                </Typography>
-              ) : (
-                <Typography variant="secondary14">
-                  <SecondsToString seconds={stakeCooldownSeconds} />
-                </Typography>
-              )}
-            </>
-          }
-          cooldownAmount={
-            isCooldownActive || isUnstakeWindowActive ? (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  pt: 2,
-                }}
-              >
-                <Typography variant="caption" color="text.secondary">
-                  <Trans>Amount in cooldown</Trans>
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
-                  <FormattedNumber
-                    value={formatEther(stakeUserData?.userCooldownAmount || 0)}
-                    variant="secondary14"
-                    color="text.primary"
-                  />
-                </Box>
-              </Box>
-            ) : (
-              <></>
-            )
-          }
-          gradientBorder={isUnstakeWindowActive}
-        >
-          {isUnstakeWindowActive && (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Button
-                variant="gradient"
-                fullWidth
-                onClick={onUnstakeAction}
-                data-cy={`unstakeBtn_${stakedToken}`}
-              >
-                <Trans>Unstake now</Trans>
-              </Button>
-              {availableToReactivateCooldown && (
-                <DarkTooltip
-                  title={
-                    <Typography
-                      variant="caption"
-                      color="common.white"
-                      sx={{ textAlign: 'center', width: '162px' }}
-                    >
-                      <Trans>
-                        Reactivate cooldown period to unstake{' '}
-                        {Number(
-                          formatEther(stakeUserData?.stakeTokenRedeemableAmount || 0)
-                        ).toFixed(2)}{' '}
-                        {stakedToken}
-                      </Trans>
-                    </Typography>
-                  }
-                >
-                  <Button
-                    variant="outlined"
-                    data-cy={`reCoolDownBtn_${stakedToken}`}
-                    sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
-                    onClick={onCooldownAction}
-                  >
-                    <SvgIcon sx={{ width: 20, height: 20 }}>
-                      <RefreshIcon />
-                    </SvgIcon>
-                  </Button>
-                </DarkTooltip>
-              )}
-            </Box>
-          )}
-
-          {isCooldownActive && !isUnstakeWindowActive && (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            }
+            value={formatEther(stakeUserData?.stakeTokenRedeemableAmount || '0')}
+            valueUSD={stakedUSD}
+            dataCy={`stakedBox_${stakedToken}`}
+            bottomLineTitle={<></>}
+            bottomLineComponent={<Box sx={{ height: '20px' }} />}
+          >
+            <Stack direction="row" gap={2} alignItems="center">
               <Button
                 variant="outlined"
                 fullWidth
-                disabled
-                data-cy={`awaitCoolDownBtn_${stakedToken}`}
-                sx={{ height: '36px' }}
+                onClick={onMigrateAction}
+                disabled={stakeUserData.stakeTokenUserBalance === '0'}
               >
-                <Trans>Cooling down...</Trans>
+                Migrate
               </Button>
-              {availableToReactivateCooldown && (
-                <DarkTooltip
-                  title={
-                    <Typography
-                      variant="caption"
-                      color="common.white"
-                      sx={{ textAlign: 'center', width: '162px' }}
-                    >
-                      <Trans>
-                        Reactivate cooldown period to unstake{' '}
-                        {Number(
-                          formatEther(stakeUserData?.stakeTokenRedeemableAmount || 0)
-                        ).toFixed(2)}{' '}
-                        {stakedToken}
-                      </Trans>
-                    </Typography>
-                  }
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={onUnstakeAction}
+                disabled={stakeUserData.stakeTokenUserBalance === '0'}
+              >
+                <Trans>Unstake</Trans>
+              </Button>
+            </Stack>
+          </StakeActionBox>
+        )}
+        {/** Cooldown action */}
+        {!stakeData.inPostSlashingPeriod && (
+          <StakeActionBox
+            title={
+              <>
+                <Trans>Staked</Trans> {stakedToken}
+              </>
+            }
+            value={formatEther(stakeUserData?.stakeTokenRedeemableAmount || '0')}
+            valueUSD={stakedUSD}
+            dataCy={`stakedBox_${stakedToken}`}
+            bottomLineTitle={
+              <TextWithTooltip
+                variant="caption"
+                text={
+                  isCooldownActive && !isUnstakeWindowActive ? (
+                    <Trans>Cooldown time left</Trans>
+                  ) : isUnstakeWindowActive ? (
+                    <Trans>Time left to unstake</Trans>
+                  ) : (
+                    <Trans>Cooldown period</Trans>
+                  )
+                }
+                event={{
+                  eventName: GENERAL.TOOL_TIP,
+                  eventParams: {
+                    tooltip: 'Staking cooldown',
+                    funnel: 'Staking Page',
+                    assetName: stakedToken,
+                  },
+                }}
+              >
+                <>
+                  {isCooldownActive && !isUnstakeWindowActive ? (
+                    <Trans>Time left to be able to withdraw your staked asset.</Trans>
+                  ) : isUnstakeWindowActive ? (
+                    <Trans>Time left until the withdrawal window closes.</Trans>
+                  ) : (
+                    <Trans>
+                      You can only withdraw your assets from the Security Module after the cooldown
+                      period ends and the unstake window is active.
+                    </Trans>
+                  )}
+                </>
+              </TextWithTooltip>
+            }
+            bottomLineComponent={
+              <>
+                {isCooldownActive && !isUnstakeWindowActive ? (
+                  <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                    <SecondsToString seconds={stakeCooldownSeconds - userCooldownDelta} />
+                  </Typography>
+                ) : isUnstakeWindowActive ? (
+                  <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                    <SecondsToString
+                      seconds={stakeUnstakeWindow + stakeCooldownSeconds - userCooldownDelta}
+                    />
+                  </Typography>
+                ) : (
+                  <Typography variant="secondary14">
+                    <SecondsToString seconds={stakeCooldownSeconds} />
+                  </Typography>
+                )}
+              </>
+            }
+            cooldownAmount={
+              isCooldownActive || isUnstakeWindowActive ? (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    width: '100%',
+                    justifyContent: 'space-between',
+                    pt: 2,
+                  }}
                 >
-                  <Button
-                    variant="outlined"
-                    data-cy={`reCoolDownBtn_${stakedToken}`}
-                    sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
-                    onClick={onCooldownAction}
+                  <Typography variant="caption" color="text.secondary">
+                    <Trans>Amount in cooldown</Trans>
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
+                    <FormattedNumber
+                      value={formatEther(stakeUserData?.userCooldownAmount || 0)}
+                      variant="secondary14"
+                      color="text.primary"
+                    />
+                  </Box>
+                </Box>
+              ) : (
+                <></>
+              )
+            }
+            gradientBorder={isUnstakeWindowActive}
+          >
+            {isUnstakeWindowActive && (
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Button
+                  variant="gradient"
+                  fullWidth
+                  onClick={onUnstakeAction}
+                  data-cy={`unstakeBtn_${stakedToken}`}
+                >
+                  <Trans>Unstake now</Trans>
+                </Button>
+                {availableToReactivateCooldown && (
+                  <DarkTooltip
+                    title={
+                      <Typography
+                        variant="caption"
+                        color="common.white"
+                        sx={{ textAlign: 'center', width: '162px' }}
+                      >
+                        <Trans>
+                          Reactivate cooldown period to unstake{' '}
+                          {Number(
+                            formatEther(stakeUserData?.stakeTokenRedeemableAmount || 0)
+                          ).toFixed(2)}{' '}
+                          {stakedToken}
+                        </Trans>
+                      </Typography>
+                    }
                   >
-                    <SvgIcon sx={{ width: 20, height: 20 }}>
-                      <RefreshIcon />
-                    </SvgIcon>
-                  </Button>
-                </DarkTooltip>
-              )}
-            </Box>
-          )}
+                    <Button
+                      variant="outlined"
+                      data-cy={`reCoolDownBtn_${stakedToken}`}
+                      sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
+                      onClick={onCooldownAction}
+                    >
+                      <SvgIcon sx={{ width: 20, height: 20 }}>
+                        <RefreshIcon />
+                      </SvgIcon>
+                    </Button>
+                  </DarkTooltip>
+                )}
+              </Box>
+            )}
 
-          {!isCooldownActive && (
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={onCooldownAction}
-              disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}
-              data-cy={`coolDownBtn_${stakedToken}`}
-            >
-              <Trans>Cooldown to unstake</Trans>
-            </Button>
-          )}
-        </StakeActionBox>
+            {isCooldownActive && !isUnstakeWindowActive && (
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  disabled
+                  data-cy={`awaitCoolDownBtn_${stakedToken}`}
+                  sx={{ height: '36px' }}
+                >
+                  <Trans>Cooling down...</Trans>
+                </Button>
+                {availableToReactivateCooldown && (
+                  <DarkTooltip
+                    title={
+                      <Typography
+                        variant="caption"
+                        color="common.white"
+                        sx={{ textAlign: 'center', width: '162px' }}
+                      >
+                        <Trans>
+                          Reactivate cooldown period to unstake{' '}
+                          {Number(
+                            formatEther(stakeUserData?.stakeTokenRedeemableAmount || 0)
+                          ).toFixed(2)}{' '}
+                          {stakedToken}
+                        </Trans>
+                      </Typography>
+                    }
+                  >
+                    <Button
+                      variant="outlined"
+                      data-cy={`reCoolDownBtn_${stakedToken}`}
+                      sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
+                      onClick={onCooldownAction}
+                    >
+                      <SvgIcon sx={{ width: 20, height: 20 }}>
+                        <RefreshIcon />
+                      </SvgIcon>
+                    </Button>
+                  </DarkTooltip>
+                )}
+              </Box>
+            )}
+
+            {!isCooldownActive && (
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={onCooldownAction}
+                disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}
+                data-cy={`coolDownBtn_${stakedToken}`}
+              >
+                <Trans>Cooldown to unstake</Trans>
+              </Button>
+            )}
+          </StakeActionBox>
+        )}
 
         <StakeActionBox
           title={<Trans>Claimable AAVE</Trans>}
@@ -526,32 +580,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           </Box>
         </StakeActionBox>
       </Stack>
-
-      {!!description && description}
-
-      {hasDiscountProgram && (
-        <Box
-          sx={{
-            mt: {
-              xs: '20px',
-              xsm: '36px',
-            },
-            px: {
-              xsm: 6,
-            },
-            width:
-              STAGING_ENV || ENABLE_TESTNET
-                ? {
-                    xs: '100%',
-                    lg: '50%',
-                  }
-                : '100%',
-            marginX: 'auto',
-          }}
-        >
-          <GhoDiscountProgram />
-        </Box>
-      )}
+      {children}
     </Paper>
   );
 };

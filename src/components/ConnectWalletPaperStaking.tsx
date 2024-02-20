@@ -46,12 +46,15 @@ export const ConnectWalletPaperStaking = ({
               )}
             </Typography>
             <ConnectWalletButton funnel={'Staking page'} />
-            <Grid container spacing={1} pt={6} sx={{ maxWidth: '543px', textAlign: 'right' }}>
-              <Grid item xs={12} sm={6}>
+            <Grid container spacing={1} pt={6} sx={{ maxWidth: '758px', textAlign: 'right' }}>
+              <Grid item xs={12} md={4}>
+                <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} />
+              </Grid>
+              <Grid item xs={12} md={4}>
                 <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <StakingPanelNoWallet stakedToken={'ABPT'} icon={'bpt'} />
+              <Grid item xs={12} md={4}>
+                <StakingPanelNoWallet stakedToken={'ABPT V2'} icon={'stkbptv2'} />
               </Grid>
             </Grid>
           </>

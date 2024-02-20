@@ -6,10 +6,8 @@ import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
-import { ProposalsList } from 'src/modules/governance/ProposalsList';
+import { ProposalsV3List } from 'src/modules/governance/ProposalsV3List';
 import { UserGovernanceInfo } from 'src/modules/governance/UserGovernanceInfo';
-import { Ipfs, IpfsType } from 'src/static-build/ipfs';
-import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../../src/components/ContentContainer';
@@ -20,42 +18,18 @@ const GovDelegationModal = dynamic(() =>
   )
 );
 
-export const getStaticProps = async () => {
-  const IpfsFetcher = new Ipfs();
-  const ProposalFetcher = new Proposal();
-
-  const proposals = [...Array(ProposalFetcher.count()).keys()].map((id) => {
-    const ipfs = IpfsFetcher.get(id);
-    const proposal = ProposalFetcher.get(id);
-    return {
-      ipfs: {
-        title: ipfs.title,
-        id: ipfs.id,
-        originalHash: ipfs.originalHash,
-        shortDescription: ipfs.shortDescription || '',
-      },
-      proposal,
-      prerendered: true,
-    };
-  });
-
-  return { props: { proposals: proposals.slice().reverse() } };
-};
+const GovRepresentativesModal = dynamic(() =>
+  import('../../src/components/transactions/GovRepresentatives/GovRepresentativesModal').then(
+    (module) => module.GovRepresentativesModal
+  )
+);
 
 enum Tabs {
   PROPOSALS,
   INFORMATION,
 }
 
-export type GovernancePageProps = {
-  proposals: {
-    ipfs: Pick<IpfsType, 'title' | 'id' | 'originalHash' | 'shortDescription'>;
-    proposal: CustomProposalType;
-    prerendered: boolean;
-  }[];
-};
-
-export default function Governance(props: GovernancePageProps) {
+export default function Governance() {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('lg'));
   const [mode, setMode] = useState(Tabs.PROPOSALS);
@@ -95,14 +69,14 @@ export default function Governance(props: GovernancePageProps) {
         </StyledToggleButtonGroup>
         {isMobile ? (
           mode === Tabs.PROPOSALS ? (
-            <ProposalsList {...props} />
+            <ProposalsV3List />
           ) : (
             <UserGovernanceInfo />
           )
         ) : (
           <Grid container spacing={4}>
             <Grid item md={8}>
-              <ProposalsList {...props} />
+              <ProposalsV3List />
             </Grid>
             <Grid item md={4}>
               <UserGovernanceInfo />
@@ -119,6 +93,7 @@ Governance.getLayout = function getLayout(page: React.ReactElement) {
     <MainLayout>
       {page}
       <GovDelegationModal />
+      <GovRepresentativesModal />
     </MainLayout>
   );
 };

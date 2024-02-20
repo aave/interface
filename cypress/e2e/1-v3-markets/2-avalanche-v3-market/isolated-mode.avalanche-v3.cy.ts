@@ -10,6 +10,11 @@ import {
   switchCollateralBlockedInModal,
   verifyCountOfBorrowAssets,
 } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aAVAXAvalancheV3: 10,
+};
 
 const testData = {
   testCases: {
@@ -85,7 +90,11 @@ const testData = {
 
 describe.skip('ISOLATED MODE SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
+  configEnvWithTenderlyAvalancheFork({
+    market: 'fork_proto_avalanche_v3',
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   describe('Get isolated asset', () => {
     supply(testData.testCases.depositAVAX, skipTestState, true);
     swap(testData.testCases.swapAVAX, skipTestState, true);

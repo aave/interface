@@ -1,98 +1,97 @@
-import { ChainId, Proposal, ProposalState } from '@aave/contract-helpers';
-import { normalizeBN } from '@aave/math-utils';
+import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { Proposal } from 'src/hooks/governance/useProposals';
 
-export type FormattedProposal = {
-  id?: string;
-  totalVotes: number;
-  yaePercent: number;
-  yaeVotes: number;
-  nayPercent: number;
-  nayVotes: number;
-  minQuorumVotes: number;
+import { isDifferentialReached, isQuorumReached } from '../helpers';
+
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
+export type ProposalVoteInfo = {
+  forVotes: number;
+  againstVotes: number;
+  forPercent: number;
+  againstPercent: number;
+  quorum: string;
   quorumReached: boolean;
-  diff: number;
-  requiredDiff: number;
-  diffReached: boolean;
+  currentDifferential: string;
+  requiredDifferential: string;
+  differentialReached: boolean;
 };
 
-// The implementation replicates the validation in https://github.com/aave/governance-v2/blob/master/contracts/governance/ProposalValidator.sol#L17
-// 10000 in % calculations corresponds to 100 with 2 decimals precision
-export function formatProposal(proposal: Omit<Proposal, 'values'>): FormattedProposal {
-  const allVotes = new BigNumber(proposal.forVotes).plus(proposal.againstVotes);
-  const yaePercent = allVotes.gt(0)
-    ? new BigNumber(proposal.forVotes).dividedBy(allVotes).toNumber()
-    : 0;
-  const yaeVotes = normalizeBN(proposal.forVotes, 18).toNumber();
-  const nayPercent = allVotes.gt(0)
-    ? new BigNumber(proposal.againstVotes).dividedBy(allVotes).toNumber()
-    : 0;
-  const nayVotes = normalizeBN(proposal.againstVotes, 18).toNumber();
-
-  const minQuorumVotes = new BigNumber(proposal.totalVotingSupply).multipliedBy(
-    new BigNumber(proposal.minimumQuorum).div(10000)
+export const getProposalVoteInfo = (proposal: Proposal): ProposalVoteInfo => {
+  const votingConfig = proposal.votingConfig;
+  const quorum = votingConfig.yesThreshold;
+  const quorumReached = isQuorumReached(
+    proposal.votes.forVotes,
+    quorum,
+    proposal.constants.precisionDivider
   );
-  let quorumReached = false;
-  if (new BigNumber(proposal.forVotes).gte(minQuorumVotes)) {
-    quorumReached = true;
-  }
 
-  const diff = new BigNumber(proposal.forVotes).minus(proposal.againstVotes);
-  const voteSum = new BigNumber(proposal.forVotes).plus(proposal.againstVotes);
+  const forVotesBN = valueToBigNumber(proposal.votes.forVotes);
+  const againstVotesBN = valueToBigNumber(proposal.votes.againstVotes);
+  const currentDifferential = normalizeBN(forVotesBN.minus(againstVotesBN), 18).toString();
 
-  const requiredDiff = new BigNumber(proposal.totalVotingSupply)
-    .multipliedBy(proposal.minimumDiff)
-    .dividedBy(10000);
+  const requiredDifferential = votingConfig.yesNoDifferential;
+  const differentialReached = isDifferentialReached(
+    proposal.votes.forVotes,
+    proposal.votes.againstVotes,
+    requiredDifferential,
+    proposal.constants.precisionDivider
+  );
 
-  // Differential reached if difference between yea and nay votes exceeds min threshold, and proposal has at least one voter
-  const diffReached = requiredDiff.lte(diff) && !voteSum.eq(0);
+  const allVotes = new BigNumber(proposal.votes.forVotes).plus(proposal.votes.againstVotes);
+  const forPercent = allVotes.gt(0)
+    ? new BigNumber(proposal.votes.forVotes).dividedBy(allVotes).toNumber()
+    : 0;
+  const forVotes = normalizeBN(proposal.votes.forVotes, 18).toNumber();
+
+  const againstPercent = allVotes.gt(0)
+    ? new BigNumber(proposal.votes.againstVotes).dividedBy(allVotes).toNumber()
+    : 0;
+  const againstVotes = normalizeBN(proposal.votes.againstVotes, 18).toNumber();
+
+  // getProposalState(proposalData.proposalData, votingMachineData);
 
   return {
-    totalVotes: normalizeBN(allVotes, 18).toNumber(),
-    yaePercent,
-    yaeVotes,
-    nayPercent,
-    nayVotes,
-    minQuorumVotes: normalizeBN(minQuorumVotes, 18).toNumber(),
+    forVotes,
+    againstVotes,
+    forPercent,
+    againstPercent,
+    quorum,
     quorumReached,
-    diff: normalizeBN(diff, 18).toNumber(),
-    requiredDiff: normalizeBN(requiredDiff, 18).toNumber(),
-    diffReached,
+    currentDifferential,
+    requiredDifferential,
+    differentialReached,
   };
+};
+
+export enum ProposalUIState {
+  PROPOSAL_CREATED,
+  VOTING_STARTED,
+  VOTING_FINISHED,
+  PAYLOADS_EXECUTED,
 }
 
-const averageBlockTime = 12;
-
-export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'>) {
-  const provider = getProvider(ChainId.mainnet);
-  if (proposal.state === ProposalState.Pending) {
-    const { timestamp: creationTimestamp } = await provider.getBlock(proposal.proposalCreated);
-    const currentBlock = await provider.getBlock('latest');
-    return {
-      ...proposal,
-      creationTimestamp,
-      startTimestamp:
-        currentBlock.timestamp + (proposal.startBlock - currentBlock.number) * averageBlockTime,
-      expirationTimestamp:
-        currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime,
-    };
-  }
-  const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = await Promise.all([
-    provider.getBlock(proposal.startBlock),
-    provider.getBlock(proposal.proposalCreated),
-  ]);
-  if (proposal.state === ProposalState.Active) {
-    const currentBlock = await provider.getBlock('latest');
-    return {
-      ...proposal,
-      startTimestamp,
-      creationTimestamp,
-      expirationTimestamp:
-        currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime,
-    };
-  }
-  const expirationTimestamp =
-    startTimestamp + (proposal.endBlock - proposal.startBlock) * averageBlockTime;
-  return { ...proposal, startTimestamp, creationTimestamp, expirationTimestamp };
-}
+// const getProposalState = (proposal: ProposalV3, votingMachineData: VotingMachineProposal) => {
+//   if (proposal.state === ProposalV3State.Created) {
+//     // voting start on ...
+//   }
+//   if (proposal.state === ProposalV3State.Active) {
+//     // voting ends on ...
+//   }
+//   if (proposal.state === ProposalV3State.Queued) {
+//     // can be executed on ...
+//   }
+//   if (proposal.state === ProposalV3State.Executed) {
+//     // executed on ...
+//   }
+//   if (proposal.state === ProposalV3State.Cancelled) {
+//     // canceled on ...
+//   }
+//   if (proposal.state === ProposalV3State.Failed) {
+//     // failed on ...
+//   }
+//   if (proposal.state === ProposalV3State.Expired) {
+//     // expired on ...
+//   }
+// };

@@ -127,7 +127,7 @@ export const TxActionsWrapper = ({
   const approvalParams = getApprovalParams();
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
-      {requiresApproval && !readOnlyModeAddress && (
+      {approvalParams && !readOnlyModeAddress && (
         <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
           <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
         </Box>

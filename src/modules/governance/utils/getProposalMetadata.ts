@@ -2,7 +2,7 @@ import { ProposalMetadata } from '@aave/contract-helpers';
 import { base58 } from 'ethers/lib/utils';
 import matter from 'gray-matter';
 import fetch from 'isomorphic-unfetch';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { fallbackIpfsGateway, ipfsGateway } from 'src/ui-config/governanceConfig';
 
 type MemorizeMetadata = Record<string, ProposalMetadata>;
 const MEMORIZE: MemorizeMetadata = {};
@@ -36,11 +36,11 @@ export async function getProposalMetadata(
     console.info('failed with', gateway);
 
     // Primary gateway failed, retry with fallback
-    if (gateway === governanceConfig.ipfsGateway) {
-      console.info('retrying with', governanceConfig.fallbackIpfsGateway);
+    if (gateway === ipfsGateway) {
+      console.info('retrying with', fallbackIpfsGateway);
       console.error(e);
       console.groupEnd();
-      return getProposalMetadata(hash, governanceConfig.fallbackIpfsGateway);
+      return getProposalMetadata(hash, fallbackIpfsGateway);
     }
 
     // Fallback gateway failed, exit
@@ -49,6 +49,31 @@ export async function getProposalMetadata(
     console.groupEnd();
     throw e;
   }
+}
+
+export async function parseRawIpfs(rawIpfsContent: string, hash: string) {
+  const ipfsHash = hash.startsWith('0x')
+    ? base58.encode(Buffer.from(`1220${hash.slice(2)}`, 'hex'))
+    : hash;
+  if (MEMORIZE[ipfsHash]) return MEMORIZE[ipfsHash];
+  try {
+    const response: ProposalMetadata = await JSON.parse(rawIpfsContent);
+    const { content, data } = matter(response.description);
+    MEMORIZE[ipfsHash] = {
+      ...response,
+      ipfsHash,
+      description: content,
+      ...data,
+    };
+  } catch (e) {
+    const { content, data } = matter(rawIpfsContent);
+    MEMORIZE[ipfsHash] = {
+      ...(data as ProposalMetadata),
+      ipfsHash,
+      description: content,
+    };
+  }
+  return MEMORIZE[ipfsHash];
 }
 
 /**

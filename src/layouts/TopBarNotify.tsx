@@ -13,9 +13,10 @@ import { useRootStore } from 'src/store/root';
 interface TopBarNotifyProps {
   notifyText: ReactNode;
   learnMoreLink?: string;
+  buttonText?: string;
 }
 
-export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotifyProps) {
+export default function TopBarNotify({ notifyText, learnMoreLink, buttonText }: TopBarNotifyProps) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
 
@@ -69,10 +70,10 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
               {learnMoreLink && md ? (
                 <Link
                   sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
-                  target={'_blank'}
+                  // target={'_blank'} Todo option to pass as prop
                   href={learnMoreLink}
                 >
-                  <Trans>Learn more</Trans>
+                  <Trans>{buttonText ? buttonText : `Learn more`}</Trans>
                 </Link>
               ) : null}
             </Typography>
@@ -81,7 +82,7 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
             {!md && learnMoreLink ? (
               <Button
                 component="a"
-                target={'_blank'}
+                // target={'_blank'} Todo option to pass as prop
                 size="small"
                 href={learnMoreLink}
                 sx={{
@@ -92,7 +93,7 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
                   color: '#EAEBEF',
                 }}
               >
-                <Trans>LEARN MORE</Trans>
+                <Trans> {buttonText ? buttonText.toUpperCase() : `LEARN MORE`}</Trans>
               </Button>
             ) : null}
           </Box>
