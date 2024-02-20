@@ -7,9 +7,9 @@ import {
 
 export enum ErrorType {
   SUPPLY_CAP_REACHED,
-  HF_BELOW_ONE,
   NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH,
   ZERO_LTV_WITHDRAW_BLOCKED,
+  FLASH_LOAN_NOT_AVAILABLE,
 }
 
 export const useFlashloan = (healthFactor: string, hfEffectOfFromAmount: string) => {
@@ -34,6 +34,7 @@ export const checkRequiresApproval = ({
   // Returns false if the user has a max approval, an approval > amountToSupply, or a valid signature for amountToSupply
   if (
     approvedAmount === '-1' ||
+    signedAmount === '-1' ||
     (approvedAmount !== '0' && Number(approvedAmount) >= Number(amount)) ||
     Number(signedAmount) >= Number(amount)
   ) {

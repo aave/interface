@@ -1,5 +1,6 @@
 import { Badge, Box, Icon, IconProps } from '@mui/material';
 import { forwardRef, useEffect, useRef, useState } from 'react';
+import LazyLoad from 'react-lazy-load';
 
 interface ATokenIconProps {
   symbol?: string;
@@ -160,6 +161,28 @@ function SingleTokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
           alt={`${symbol} icon`}
         />
       )}
+    </Icon>
+  );
+}
+
+/**
+ * Renders a tokenIcon specified by url.
+ * TokenIcons are expected to be non protocol related assets for swaps
+ * @param param0
+ * @returns
+ */
+
+interface ExternalTokenIconProps extends IconProps {
+  symbol: string;
+  logoURI?: string;
+}
+
+export function ExternalTokenIcon({ symbol, logoURI, ...rest }: ExternalTokenIconProps) {
+  return (
+    <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
+      <LazyLoad>
+        <img src={logoURI} width="100%" height="100%" alt={`${symbol} icon`} />
+      </LazyLoad>
     </Icon>
   );
 }

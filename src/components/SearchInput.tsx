@@ -8,9 +8,15 @@ interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
   wrapperSx?: BoxProps;
   placeholder: string;
+  disableFocus?: boolean;
 }
 
-export const SearchInput = ({ onSearchTermChange, wrapperSx, placeholder }: SearchInputProps) => {
+export const SearchInput = ({
+  onSearchTermChange,
+  wrapperSx,
+  placeholder,
+  disableFocus,
+}: SearchInputProps) => {
   const inputEl = useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -52,6 +58,9 @@ export const SearchInput = ({ onSearchTermChange, wrapperSx, placeholder }: Sear
         onChange={(e) => {
           setSearchTerm(e.target.value);
           debounchedChangeHandler(e.target.value);
+        }}
+        onKeyDown={(event) => {
+          if (disableFocus) event.stopPropagation();
         }}
       />
       <IconButton

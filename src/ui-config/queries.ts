@@ -12,10 +12,10 @@ export const queryKeysFactory = {
     marketData.market,
   ],
   user: (user: string) => [user],
-  powers: (user: string, marketData: MarketDataType) => [
+  powers: (user: string, chainId: number) => [
     ...queryKeysFactory.governance,
     ...queryKeysFactory.user(user),
-    ...queryKeysFactory.market(marketData),
+    chainId,
     'powers',
   ],
   voteOnProposal: (user: string, proposalId: number, marketData: MarketDataType) => [
@@ -25,18 +25,17 @@ export const queryKeysFactory = {
     proposalId,
     'voteOnProposal',
   ],
-  votingPowerAt: (
-    user: string,
-    strategy: string,
-    blockNumber: number,
-    marketData: MarketDataType
-  ) => [
+  votingPowerAt: (user: string, blockHash: string, votingAssets: string[]) => [
     ...queryKeysFactory.governance,
     ...queryKeysFactory.user(user),
-    ...queryKeysFactory.market(marketData),
-    strategy,
-    blockNumber,
+    ...votingAssets,
+    blockHash,
     'votingPowerAt',
+  ],
+  governanceRepresentatives: (user: string) => [
+    ...queryKeysFactory.governance,
+    ...queryKeysFactory.user(user),
+    'representatives',
   ],
   governanceTokens: (user: string, marketData: MarketDataType) => [
     ...queryKeysFactory.governance,
@@ -60,21 +59,30 @@ export const queryKeysFactory = {
     ...queryKeysFactory.market(marketData),
     'poolReservesDataHumanized',
   ],
-  generalStakeUiData: (marketData: MarketDataType) => [
-    ...queryKeysFactory.staking,
-    ...queryKeysFactory.market(marketData),
-    'generalStakeUiData',
-  ],
   userPoolReservesDataHumanized: (user: string, marketData: MarketDataType) => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
     'userPoolReservesDataHumanized',
   ],
-  userStakeUiData: (user: string, marketData: MarketDataType) => [
+  generalStakeUiData: (marketData: MarketDataType, stakedTokens: string[], oracles: string[]) => [
+    ...queryKeysFactory.staking,
+    ...queryKeysFactory.market(marketData),
+    stakedTokens,
+    oracles,
+    'generalStakeUiData',
+  ],
+  userStakeUiData: (
+    user: string,
+    marketData: MarketDataType,
+    stakedAssets: string[],
+    oracles: string[]
+  ) => [
     ...queryKeysFactory.staking,
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
+    stakedAssets,
+    oracles,
     'userStakeUiData',
   ],
   paraswapRates: (
@@ -108,6 +116,32 @@ export const queryKeysFactory = {
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
     'ghoUserReserveData',
+  ],
+  poolApprovedAmount: (user: string, token: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.pool,
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    token,
+    'poolApprovedAmount',
+  ],
+  approvedAmount: (user: string, token: string, spender: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    token,
+    spender,
+    'approvedAmount',
+  ],
+  tokenPowers: (user: string, token: string, chainId: number) => [
+    ...queryKeysFactory.user(user),
+    token,
+    chainId,
+    'tokenPowers',
+  ],
+  tokenDelegatees: (user: string, token: string, chainId: number) => [
+    ...queryKeysFactory.user(user),
+    token,
+    chainId,
+    'tokenDelegatees',
   ],
 };
 

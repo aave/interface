@@ -1,10 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useTheme } from '@mui/material';
+import { EnhancedProposal } from 'src/hooks/governance/useProposal';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { AIP } from 'src/utils/mixPanelEvents';
 
@@ -18,7 +17,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovVoteActions } from './GovVoteActions';
 
 export type GovVoteModalContentProps = {
-  proposalId: number;
+  proposal: EnhancedProposal;
   support: boolean;
   power: string;
 };
@@ -35,13 +34,12 @@ export enum ErrorType {
 }
 
 export const GovVoteModalContent = ({
-  proposalId,
+  proposal,
   support,
   power: votingPower,
 }: GovVoteModalContentProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const { palette } = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -65,15 +63,11 @@ export const GovVoteModalContent = ({
     }
   };
 
-  // is Network mismatched
-  const govChain =
-    currentNetworkConfig.isFork &&
-    currentNetworkConfig.underlyingChainId === governanceConfig.chainId
-      ? currentChainId
-      : governanceConfig.chainId;
-  const isWrongNetwork = connectedChainId !== govChain;
+  const proposalVotingChain = +proposal.proposal.votingPortal.votingMachineChainId;
 
-  const networkConfig = getNetworkConfig(govChain);
+  const isWrongNetwork = connectedChainId !== proposalVotingChain;
+
+  const networkConfig = getNetworkConfig(proposalVotingChain);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
@@ -110,21 +104,21 @@ export const GovVoteModalContent = ({
     <>
       <TxModalTitle title="Governance vote" />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={proposalVotingChain} />
       )}
       {blockingError !== undefined && (
         <Typography variant="helperText" color="red">
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
+      <TxModalDetails gasLimit={gasLimit} chainId={proposalVotingChain}>
         <DetailsNumberLine description={<Trans>Voting power</Trans>} value={votingPower} />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
 
       <GovVoteActions
-        proposalId={proposalId}
+        proposal={proposal}
         support={support}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
