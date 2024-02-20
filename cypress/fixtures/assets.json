@@ -309,6 +309,11 @@
       "fullName": "AAVE",
       "shortName": "AAVE",
       "address": "0x8D38414592AC67dc42F32a00D322F2319990e8Ac"
+    },
+    "GHO": {
+      "fullName": "GHO",
+      "shortName": "GHO",
+      "address": "0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f"
     }
   },
   "fantomMarket": {
@@ -1054,6 +1059,12 @@
       "shortName": "aUSDbC",
       "collateral": true,
       "wrapped": false
+    },
+    "cbETH": {
+      "fullName": "Coinbase Wrapped Staked ETH (cbETH)",
+      "shortName": "cbETH",
+      "collateral": true,
+      "wrapped": false
     }
   },
   "gnosisV3Market": {
@@ -1074,6 +1085,42 @@
       "shortName": "USDC",
       "collateral": true,
       "wrapped": false
+    },
+    "aUSDC": {
+      "fullName": "aUSDC",
+      "shortName": "aUSDC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "wstETH": {
+      "fullName": "wstETH",
+      "shortName": "wstETH",
+      "collateral": true,
+      "wrapped": false
+    }
+  },
+  "bnbV3Market": {
+    "BNB": {
+      "fullName": "BNB",
+      "shortName": "BNB",
+      "collateral": true,
+      "wrapped": false
+    },
+    "WBNB": {
+      "fullName": "WBNB",
+      "shortName": "WBNB",
+      "wrapped": true
+    },
+    "aWBNB": {
+      "fullName": "aWBNB",
+      "shortName": "aWBNB",
+      "wrapped": true
+    },
+    "USDC": {
+      "fullName": "USDC",
+      "shortName": "USDC",
+      "collateral": true,
+      "wrapped": true
     },
     "aUSDC": {
       "fullName": "aUSDC",

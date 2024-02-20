@@ -1,4 +1,4 @@
-import { DelegationType } from 'src/helpers/types';
+import { DelegationType } from '@aave/contract-helpers';
 import { useGovernanceDelegate } from 'src/helpers/useGovernanceDelegate';
 
 import { DelegationTxsWrapper } from '../DelegationTxsWrapper';
@@ -37,7 +37,7 @@ export const GovDelegationActions = ({
       handleSignatures={signMetaTxs}
       handleAction={action}
       isWrongNetwork={isWrongNetwork}
-      requiresSignature={delegationTokenType === DelegationTokenType.BOTH}
+      requiresSignature={delegationTokenType === DelegationTokenType.ALL}
       blocked={blocked}
       approvalTxState={approvalTxState}
     />

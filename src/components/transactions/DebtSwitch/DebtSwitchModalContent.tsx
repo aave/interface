@@ -16,6 +16,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useDebtSwitch } from 'src/hooks/paraswap/useDebtSwitch';
+import { useGhoPoolReserve } from 'src/hooks/pool/useGhoPoolReserve';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -82,6 +83,7 @@ export const DebtSwitchModalContent = ({
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
+  const { data: _ghoReserveData } = useGhoPoolReserve(currentMarketData);
 
   let switchTargets = reserves
     .filter(
@@ -238,9 +240,10 @@ export const DebtSwitchModalContent = ({
     const ghoApyRange: [number, number] | undefined = !ghoUserLoadingData
       ? [userCurrentBorrowApy, userBorrowApyAfterMaxSwitchTo]
       : undefined;
-    qualifiesForDiscount = _ghoUserData
-      ? ghoUserQualifiesForDiscount(ghoReserveData, _ghoUserData, maxAmountToSwitch)
-      : false;
+    qualifiesForDiscount =
+      _ghoUserData && _ghoReserveData
+        ? ghoUserQualifiesForDiscount(_ghoReserveData, _ghoUserData, maxAmountToSwitch)
+        : false;
     ghoTargetData = {
       qualifiesForDiscount,
       ghoApyRange,

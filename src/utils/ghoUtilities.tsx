@@ -1,4 +1,4 @@
-import { FormattedGhoReserveData, GhoReserveData, GhoUserData, normalize } from '@aave/math-utils';
+import { GhoReserveData, GhoUserData, normalize } from '@aave/math-utils';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export const GHO_SYMBOL = 'GHO';
@@ -9,7 +9,12 @@ export const GHO_SYMBOL = 'GHO';
  * @returns {bool} - If the GHO token is available for minting
  */
 
-export const GHO_SUPPORTED_MARKETS = ['proto_mainnet_v3', 'fork_proto_mainnet_v3'];
+export const GHO_SUPPORTED_MARKETS = [
+  'proto_mainnet_v3',
+  'fork_proto_mainnet_v3',
+  'proto_sepolia_v3',
+  'fork_proto_sepolia_v3',
+];
 
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
   return reserves.find((reserve) => reserve.symbol === GHO_SYMBOL);
@@ -105,7 +110,7 @@ interface GhoUtilMintingAvailableParams {
 }
 
 export const ghoUserQualifiesForDiscount = (
-  ghoReserveData: GhoReserveData | FormattedGhoReserveData,
+  ghoReserveData: GhoReserveData,
   ghoUserData: GhoUserData,
   futureBorrowAmount = '0'
 ) => {

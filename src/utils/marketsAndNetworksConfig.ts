@@ -1,6 +1,6 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
-import { providers as ethersProviders } from 'ethers';
+import { ProviderWithSend } from 'src/components/transactions/GovVote/temporary/VotingMachineService';
 
 import {
   CustomMarket,
@@ -159,14 +159,14 @@ export const isFeatureEnabled = {
   switch: (data: MarketDataType) => data.enabledFeatures?.switch,
 };
 
-const providers: { [network: string]: ethersProviders.Provider } = {};
+const providers: { [network: string]: ProviderWithSend } = {};
 
 /**
  * Created a fallback rpc provider in which providers are prioritized from private to public and in case there are multiple public ones, from top to bottom.
  * @param chainId
  * @returns provider or fallbackprovider in case multiple rpcs are configured
  */
-export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
+export const getProvider = (chainId: ChainId): ProviderWithSend => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
     const chainProviders: string[] = [];
@@ -194,12 +194,12 @@ export const getENSProvider = () => {
   return new StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
 };
 
-const ammDisableProposal = 'https://app.aave.com/governance/proposal/44';
-const ustDisableProposal = 'https://app.aave.com/governance/proposal/75';
-const kncDisableProposal = 'https://app.aave.com/governance/proposal/69';
-const v2MainnetDisableProposal = 'https://app.aave.com/governance/proposal/111';
-const v2MainnetDisableProposal2 = 'https://app.aave.com/governance/proposal/125';
-const v2PolygonDisableProposal = 'https://app.aave.com/governance/proposal/124';
+const ammDisableProposal = 'https://governance-v2.aave.com/governance/proposal/44';
+const ustDisableProposal = 'https://governance-v2.aave.com/governance/proposal/75';
+const kncDisableProposal = 'https://governance-v2.aave.com/governance/proposal/69';
+const v2MainnetDisableProposal = 'https://governance-v2.aave.com/governance/proposal/111';
+const v2MainnetDisableProposal2 = 'https://governance-v2.aave.com/governance/proposal/125';
+const v2PolygonDisableProposal = 'https://governance-v2.aave.com/governance/proposal/124';
 
 export const frozenProposalMap: Record<string, string> = {
   ['UST' + CustomMarket.proto_mainnet]: ustDisableProposal,
