@@ -68,7 +68,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
           {proposal ? (
             <>
               <Typography variant="h2" sx={{ mb: 6 }}>
-                {proposal.proposal.title || <Skeleton />}
+                {proposal.proposal.proposalMetadata.title || <Skeleton />}
               </Typography>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Box
@@ -80,10 +80,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   }}
                 >
                   <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
-                    <StateBadge
-                      state={proposal.proposalData.proposalData.state}
-                      loading={loading}
-                    />
+                    <StateBadge state={proposal.proposal.state} loading={loading} />
                   </Box>
 
                   {/*
@@ -107,11 +104,11 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   rel="noopener"
                   onClick={() =>
                     trackEvent(GENERAL.EXTERNAL_LINK, {
-                      AIP: proposal.proposal.proposalId,
+                      AIP: proposal.proposal.id,
                       Link: 'Raw Ipfs',
                     })
                   }
-                  href={`${ipfsGateway}/${proposal.proposal.ipfsHash}`}
+                  href={`${ipfsGateway}/${proposal.proposal.proposalMetadata.ipfsHash}`}
                   startIcon={
                     <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
                       <DownloadIcon />
@@ -127,12 +124,12 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   rel="noopener noreferrer"
                   onClick={() =>
                     trackEvent(GENERAL.EXTERNAL_LINK, {
-                      AIP: proposal.proposal.proposalId,
+                      AIP: proposal.proposal.id,
                       Link: 'Share on twitter',
                     })
                   }
                   href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                    proposal.proposal.title
+                    proposal.proposal.proposalMetadata.title
                   )}&url=${window.location.href}`}
                   startIcon={<Twitter />}
                 >
@@ -145,11 +142,11 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   rel="noopener noreferrer"
                   onClick={() =>
                     trackEvent(GENERAL.EXTERNAL_LINK, {
-                      AIP: proposal.proposal.proposalId,
+                      AIP: proposal.proposal.id,
                       Link: 'Share on lens',
                     })
                   }
-                  href={`https://hey.xyz/?url=${window.location.href}&text=Check out this proposal on aave governance 👻👻 - ${proposal.proposal.title}&hashtags=Aave&preview=true`}
+                  href={`https://hey.xyz/?url=${window.location.href}&text=Check out this proposal on aave governance 👻👻 - ${proposal.proposal.proposalMetadata.title}&hashtags=Aave&preview=true`}
                   startIcon={
                     <LensIcon
                       color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}
@@ -217,7 +214,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 },
               }}
             >
-              {proposal.proposal.description}
+              {proposal.proposal.proposalMetadata.description}
             </ReactMarkdown>
           ) : (
             <>

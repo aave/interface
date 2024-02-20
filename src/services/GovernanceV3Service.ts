@@ -27,7 +27,7 @@ export class GovernanceV3Service {
   }
 
   private getPayloadDataHelperService(chainId: ChainId) {
-    const provider = getProvider(governanceV3Config.coreChainId);
+    const provider = getProvider(chainId);
     return new PayloadsDataHelperService(
       governanceV3Config.payloadsControllerDataHelpers[chainId],
       provider

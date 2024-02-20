@@ -97,8 +97,7 @@ const generateSubmitVoteSignature = (
 };
 
 const getBaseVotingPowerSlot = (asset: string, withDelegation: boolean) => {
-  if (asset === '0x26aAB2aE39897338c2d91491C46c14a8c2a67919') {
-    // aAave CHANGE_BEFORE_PROD
+  if (asset === governanceV3Config.votingAssets.aAaveTokenAddress) {
     if (withDelegation) return 64;
     return 52;
   }
@@ -158,48 +157,57 @@ export const GovVoteActions = ({
   const { sendTx, signTxData } = useWeb3Context();
   const tokenPowers = useGovernanceTokensAndPowers();
   const [signature, setSignature] = useState<string | undefined>(undefined);
-  const proposalId = proposal.proposal.proposalId;
-  const blockHash = proposal.proposalData.proposalData.snapshotBlockHash;
-  const votingChainId = proposal.proposalData.votingChainId;
+  const proposalId = +proposal.proposal.id;
+  const blockHash = proposal.proposal.snapshotBlockHash;
+  const votingChainId = +proposal.proposal.votingPortal.votingMachineChainId;
   const votingMachineAddress =
     governanceV3Config.votingChainConfig[votingChainId].votingMachineAddress;
 
   const withGelatoRelayer = false;
 
-  const assets = [
-    {
+  const assets: Array<{ underlyingAsset: string; isWithDelegatedPower: boolean }> = [];
+  if (tokenPowers?.aAave !== '0') {
+    assets.push({
+      underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
+      isWithDelegatedPower: tokenPowers?.isAAaveTokenWithDelegatedPower || false,
+    });
+  }
+  if (tokenPowers?.stkAave !== '0') {
+    assets.push({
       underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
       isWithDelegatedPower: tokenPowers?.isStkAaveTokenWithDelegatedPower || false,
-    },
-    {
+    });
+  }
+  if (tokenPowers?.aave !== '0') {
+    assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
       isWithDelegatedPower: tokenPowers?.isAaveTokenWithDelegatedPower || false,
-    },
-    {
-      underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
-      isWithDelegatedPower: true,
-    },
-  ]; // CHANGE_BEFORE_PROD
+    });
+  }
 
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
     try {
       const proofs = await getVotingBalanceProofs(user, assets, ChainId.mainnet, blockHash);
+
       const votingMachineService = new VotingMachineService(votingMachineAddress);
+
       if (withGelatoRelayer && signature) {
         const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
           user,
-          +proposalId,
+          proposalId,
           support,
           proofs,
           signature.toString()
         );
+
         const gelatoRelay = new GelatoRelay();
         const gelatoRequest = {
           chainId: BigInt(votingChainId),
           target: votingMachineAddress,
           data: tx.data || '',
         };
+
         const response = await gelatoRelay.sponsoredCall(gelatoRequest, '');
         setTimeout(async function checkForStatus() {
           const status = await gelatoRelay.getTaskStatus(response.taskId);
@@ -218,11 +226,13 @@ export const GovVoteActions = ({
       } else {
         const tx = await votingMachineService.generateSubmitVoteTxData(
           user,
-          +proposalId,
+          proposalId,
           support,
           proofs
         );
+
         const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
+
         const response = await sendTx(txWithEstimatedGas);
         await response.wait(1);
         setMainTxState({
@@ -245,7 +255,7 @@ export const GovVoteActions = ({
       const toSign = generateSubmitVoteSignature(
         votingChainId,
         votingMachineAddress,
-        +proposalId,
+        proposalId,
         user,
         support,
         assets.map((elem) => ({

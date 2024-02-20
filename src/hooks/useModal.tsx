@@ -1,4 +1,4 @@
-import { ChainId, InterestRate } from '@aave/contract-helpers';
+import { ChainId, InterestRate, Stake } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
 import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -30,6 +30,7 @@ export enum ModalType {
   RevokeGovDelegation,
   StakeRewardsClaimRestake,
   Switch,
+  StakingMigrate,
   GovRepresentatives,
 }
 
@@ -39,11 +40,12 @@ export interface ModalArgsType {
   support?: boolean;
   power?: string;
   icon?: string;
-  stakeAssetName?: string;
+  stakeAssetName?: Stake;
   currentRateMode?: InterestRate;
   emode?: EmodeModalType;
   isFrozen?: boolean;
   representatives?: Array<{ chainId: ChainId; representative: string }>;
+  chainId?: number;
 }
 
 export type TxStateType = {
@@ -90,11 +92,11 @@ export interface ModalContextType<T extends ModalArgsType> {
     usageAsCollateralEnabledOnUser: boolean
   ) => void;
   openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
-  openStake: (stakeAssetName: string, icon: string) => void;
-  openUnstake: (stakeAssetName: string, icon: string) => void;
-  openStakeCooldown: (stakeAssetName: string) => void;
-  openStakeRewardsClaim: (stakeAssetName: string, icon: string) => void;
-  openStakeRewardsRestakeClaim: (stakeAssetName: string, icon: string) => void;
+  openStake: (stakeAssetName: Stake, icon: string) => void;
+  openUnstake: (stakeAssetName: Stake, icon: string) => void;
+  openStakeCooldown: (stakeAssetName: Stake, icon: string) => void;
+  openStakeRewardsClaim: (stakeAssetName: Stake, icon: string) => void;
+  openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
   openClaimRewards: () => void;
   openEmode: (mode: EmodeModalType) => void;
   openFaucet: (underlyingAsset: string) => void;
@@ -104,7 +106,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   openRevokeGovDelegation: () => void;
   openV3Migration: () => void;
   openGovVote: (proposal: EnhancedProposal, support: boolean, power: string) => void;
-  openSwitch: (underlyingAsset?: string) => void;
+  openSwitch: (underlyingAsset?: string, chainId?: number) => void;
+  openStakingMigrate: () => void;
   openGovRepresentatives: (
     representatives: Array<{ chainId: ChainId; representative: string }>
   ) => void;
@@ -243,10 +246,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Unstake);
           setArgs({ stakeAssetName, icon });
         },
-        openStakeCooldown: (stakeAssetName) => {
+        openStakeCooldown: (stakeAssetName, icon) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Cooldown', assetName: stakeAssetName });
           setType(ModalType.StakeCooldown);
-          setArgs({ stakeAssetName });
+          setArgs({ stakeAssetName, icon });
         },
         openStakeRewardsClaim: (stakeAssetName, icon) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Stake Rewards', assetName: stakeAssetName });
@@ -299,7 +302,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openGovVote: (proposal, support, power) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Vote',
-            proposalId: proposal.proposalData.id,
+            proposalId: proposal.proposal.id,
             voteSide: support,
           });
           setType(ModalType.GovVote);
@@ -314,10 +317,14 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });
           setType(ModalType.V3Migration);
         },
-        openSwitch: (underlyingAsset) => {
+        openSwitch: (underlyingAsset, chainId) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Switch' });
           setType(ModalType.Switch);
-          setArgs({ underlyingAsset });
+          setArgs({ underlyingAsset, chainId });
+        },
+        openStakingMigrate: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Staking V1->V2 Migration' });
+          setType(ModalType.StakingMigrate);
         },
         close: () => {
           setType(undefined);

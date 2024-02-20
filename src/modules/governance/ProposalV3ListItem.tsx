@@ -1,54 +1,23 @@
-import {
-  ProposalData,
-  ProposalV3State,
-  VotingConfig,
-  VotingMachineProposal,
-} from '@aave/contract-helpers';
+import { ProposalV3State } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+import { Proposal } from 'src/hooks/governance/useProposals';
 import { useRootStore } from 'src/store/root';
-import { networkConfigs } from 'src/ui-config/networksConfig';
 import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 import { StateBadge } from './StateBadge';
+import { getProposalVoteInfo } from './utils/formatProposal';
 import { VoteBar } from './VoteBar';
 
 dayjs.extend(relativeTime);
 
-export const ProposalV3ListItem = ({
-  id,
-  title,
-  shortDescription,
-  proposalState,
-  forVotes,
-  againstVotes,
-  forPercent,
-  againstPercent,
-  votingChainId,
-  proposalData,
-  votingMachineData,
-  votingConfig,
-}: {
-  id: string;
-  title: string;
-  shortDescription: string;
-  proposalState: ProposalV3State;
-  forVotes: number;
-  againstVotes: number;
-  forPercent: number;
-  againstPercent: number;
-  votingChainId: number;
-  proposalData: ProposalData;
-  votingMachineData: VotingMachineProposal;
-  votingConfig: VotingConfig;
-}) => {
+export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const network = networkConfigs[votingChainId];
-
-  const timestamp = getProposalTimestamp(proposalData, votingMachineData, votingConfig);
+  const timestamp = getProposalTimestamp(proposal);
+  const votingInfo = getProposalVoteInfo(proposal);
 
   return (
     <Box
@@ -60,8 +29,8 @@ export const ProposalV3ListItem = ({
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
       component={Link}
-      onClick={() => trackEvent(GOVERNANCE_PAGE.VIEW_AIP, { AIP: id })}
-      href={ROUTES.dynamicRenderedProposal(+id)}
+      onClick={() => trackEvent(GOVERNANCE_PAGE.VIEW_AIP, { AIP: proposal.id })}
+      href={ROUTES.dynamicRenderedProposal(+proposal.id)}
     >
       <Stack
         direction="column"
@@ -78,23 +47,16 @@ export const ProposalV3ListItem = ({
         }}
       >
         <Stack direction="row" gap={3} alignItems="center">
-          <StateBadge state={proposalState} loading={false} />
-          <Box
-            sx={{
-              height: 16,
-              width: 16,
-            }}
-          >
-            <img src={network.networkLogoPath} height="100%" width="100%" alt="network logo" />
-          </Box>
-          {proposalState === ProposalV3State.Created && (
+          <StateBadge state={proposal.state} loading={false} />
+
+          {proposal.state === ProposalV3State.Created && (
             <>
               <Typography variant="description" color="text.secondary">
                 <Trans>starts</Trans> {timestamp}
               </Typography>
             </>
           )}
-          {proposalState === ProposalV3State.Active && (
+          {proposal.state === ProposalV3State.Active && (
             <>
               <Typography variant="description" color="text.secondary">
                 <Trans>ends</Trans> {timestamp}
@@ -103,20 +65,7 @@ export const ProposalV3ListItem = ({
           )}
         </Stack>
         <Typography variant="h3" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {title}
-        </Typography>
-        <Typography
-          variant="description"
-          color="text.secondary"
-          sx={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: '2',
-            WebkitBoxOrient: 'vertical',
-          }}
-        >
-          {shortDescription}
+          {proposal.proposalMetadata.title}
         </Typography>
       </Stack>
       <Stack
@@ -128,28 +77,30 @@ export const ProposalV3ListItem = ({
           mt: { xs: 7, lg: 0 },
         }}
       >
-        <VoteBar yae percent={forPercent} votes={forVotes} sx={{ mb: 4 }} compact />
-        <VoteBar percent={againstPercent} votes={againstVotes} compact />
+        <VoteBar
+          yae
+          percent={votingInfo.forPercent}
+          votes={votingInfo.forVotes}
+          sx={{ mb: 4 }}
+          compact
+        />
+        <VoteBar percent={votingInfo.againstPercent} votes={votingInfo.againstVotes} compact />
       </Stack>
     </Box>
   );
 };
 
-const getProposalTimestamp = (
-  proposalData: ProposalData,
-  votingMachineData: VotingMachineProposal,
-  votingConfig: VotingConfig
-) => {
-  const state = proposalData.proposalData.state;
-  const creationTime = proposalData.proposalData.creationTime;
-  const votingMachineStartTime = votingMachineData.proposalData.startTime;
+const getProposalTimestamp = (proposal: Proposal) => {
+  const state = proposal.state;
+  const creationTime = Number(proposal.transactions.created.timestamp);
+  const votingMachineStartTime = Number(proposal.transactions.active?.timestamp || 0);
   if (state === ProposalV3State.Created || votingMachineStartTime === 0) {
-    const votingStartDelay = votingConfig.config.coolDownBeforeVotingStart;
+    const votingStartDelay = proposal.votingConfig.cooldownBeforeVotingStart;
     return dayjs.unix(creationTime + Number(votingStartDelay)).fromNow();
   }
 
   if (state === ProposalV3State.Active) {
-    const votingDuration = votingConfig.config.votingDuration;
+    const votingDuration = proposal.votingConfig.votingDuration;
     return dayjs.unix(votingMachineStartTime + Number(votingDuration)).fromNow();
   }
 

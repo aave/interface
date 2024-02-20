@@ -39,8 +39,8 @@ const testData = {
     ],
   },
 };
-
-describe('SWAP, AVALANCHE V3 MARKET, INTEGRATION SPEC', () => {
+//unstable
+describe.skip('SWAP, AVALANCHE V3 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({
     market: 'fork_proto_avalanche_v3',

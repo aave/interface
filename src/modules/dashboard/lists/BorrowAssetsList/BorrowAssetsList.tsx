@@ -221,7 +221,7 @@ export const BorrowAssetsList = () => {
               <MarketWarning marketName="Ethereum AMM" />
             )}
 
-            {+collateralUsagePercent >= 0.98 && (
+            {user.healthFactor !== '-1' && Number(user.healthFactor) <= 1.1 && (
               <Warning severity="error">
                 <Trans>
                   Be careful - You are very close to liquidation. Consider depositing more

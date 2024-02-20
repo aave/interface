@@ -43,7 +43,7 @@ const donors: Donors = {
   },
   aMATICPolygonV3: {
     name: 'aMATIC',
-    donorWalletAddress: '0x790c9422839FD93a3A4E31e531f96cC87F397c00',
+    donorWalletAddress: '0x42C8e43048f6Ff3586945A1fD23e0bEc540dcD07',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
   },
   aETHOptimismV3: {
@@ -60,6 +60,11 @@ const donors: Donors = {
     name: 'axDAI',
     donorWalletAddress: '0x458cd345b4c05e8df39d0a07220feb4ec19f5e6f',
     tokenAddress: '0xd0Dd6cEF72143E22cCED4867eb0d5F2328715533',
+  },
+  aBNBBnbV3: {
+    name: 'aBNB',
+    donorWalletAddress: '0x2F064D92e862F30041DEA4667eF8899E07Bb4Edf',
+    tokenAddress: '0x9B00a09492a626678E5A3009982191586C444Df9',
   },
   aETHEthereumV2: {
     name: 'aETH',

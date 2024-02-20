@@ -19,8 +19,9 @@ export const usePayloadsData = (params: PayloadParams[]) => {
   const { governanceV3Service } = useSharedDependencies();
   return useQuery({
     queryFn: () => fetchPayloadsData(params, governanceV3Service),
-    queryKey: ['payloadsData'], // TODO
-    enabled: !!params.length,
+    queryKey: ['payloadsData'],
+    cacheTime: 0,
+    enabled: params.length > 0,
   });
 };
 
