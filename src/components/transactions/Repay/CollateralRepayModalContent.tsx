@@ -6,6 +6,8 @@ import { Box, Stack, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -222,14 +224,27 @@ export function CollateralRepayModalContent({
     }
   };
 
+  const inputAmountWithSlippage = maxInputAmountWithSlippage(
+    inputAmount,
+    maxSlippage,
+    tokenToRepayWith.decimals || 18
+  );
+
+  const outputAmountWithSlippage = minimumReceivedAfterSlippage(
+    outputAmount,
+    maxSlippage,
+    poolReserve.decimals
+  );
+
   if (mainTxState.success)
     return (
       <TxSuccessView
         action={<Trans>Repaid</Trans>}
-        amount={outputAmount}
+        amount={swapVariant === 'exactOut' ? outputAmount : outputAmountWithSlippage}
         symbol={poolReserve.symbol}
       />
     );
+
   return (
     <>
       <AssetInput
@@ -247,18 +262,7 @@ export function CollateralRepayModalContent({
         ]}
         isMaxSelected={isMaxSelected}
         maxValue={debt}
-        inputTitle={
-          <Stack direction="row" gap={2}>
-            <Trans>Expected amount to repay</Trans>
-            {swapVariant === 'exactIn' && exactOutputAmount !== '' && exactOutputAmount !== '0' && (
-              <div>
-                (min of{' '}
-                {minimumReceivedAfterSlippage(exactOutputAmount, maxSlippage, poolReserve.decimals)}
-                )
-              </div>
-            )}
-          </Stack>
-        }
+        inputTitle={<Trans>Expected amount to repay</Trans>}
         balanceText={<Trans>Borrow balance</Trans>}
       />
       <Box sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}>
@@ -279,22 +283,7 @@ export function CollateralRepayModalContent({
         assets={repayTokens}
         onSelect={setTokenToRepayWith}
         onChange={handleRepayAmountChange}
-        inputTitle={
-          <Stack direction="row" gap={2}>
-            <Trans>Collateral to repay with</Trans>
-            {swapVariant === 'exactOut' && inputAmount !== '0' && (
-              <div>
-                (max of{' '}
-                {maxInputAmountWithSlippage(
-                  inputAmount,
-                  maxSlippage,
-                  tokenToRepayWith.decimals || 18
-                )}
-                )
-              </div>
-            )}
-          </Stack>
-        }
+        inputTitle={<Trans>Collateral to repay with</Trans>}
         balanceText={<Trans>Borrow balance</Trans>}
         maxValue={tokenToRepayWithBalance}
         loading={loadingSkeleton}
@@ -314,7 +303,41 @@ export function CollateralRepayModalContent({
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
-          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+          <ListSlippageButton
+            selectedSlippage={maxSlippage}
+            setSlippage={setMaxSlippage}
+            slippageTooltipHeader={
+              <Stack direction="row" alignItems="center">
+                {swapVariant === 'exactIn' ? (
+                  <>
+                    <Trans>Minimum amount of debt to be repaid</Trans>
+                    <Stack alignItems="end">
+                      <Stack direction="row">
+                        <TokenIcon
+                          symbol={poolReserve.iconSymbol}
+                          sx={{ mr: 1, fontSize: '14px' }}
+                        />
+                        <FormattedNumber value={outputAmountWithSlippage} variant="secondary12" />
+                      </Stack>
+                    </Stack>
+                  </>
+                ) : (
+                  <>
+                    <Trans>Maximum collateral amount to use</Trans>
+                    <Stack alignItems="end">
+                      <Stack direction="row">
+                        <TokenIcon
+                          symbol={tokenToRepayWith.iconSymbol || ''}
+                          sx={{ mr: 1, fontSize: '14px' }}
+                        />
+                        <FormattedNumber value={inputAmountWithSlippage} variant="secondary12" />
+                      </Stack>
+                    </Stack>
+                  </>
+                )}
+              </Stack>
+            }
+          />
         }
       >
         <DetailsHFLine
@@ -348,16 +371,8 @@ export function CollateralRepayModalContent({
       <CollateralRepayActions
         poolReserve={poolReserve}
         fromAssetData={collateralReserveData}
-        repayAmount={
-          swapVariant === 'exactIn'
-            ? minimumReceivedAfterSlippage(outputAmount, maxSlippage, poolReserve.decimals)
-            : outputAmount
-        }
-        repayWithAmount={
-          swapVariant === 'exactOut'
-            ? maxInputAmountWithSlippage(inputAmount, maxSlippage, tokenToRepayWith.decimals || 18)
-            : inputAmount
-        }
+        repayAmount={swapVariant === 'exactIn' ? outputAmountWithSlippage : outputAmount}
+        repayWithAmount={swapVariant === 'exactOut' ? inputAmountWithSlippage : inputAmount}
         repayAllDebt={repayAllDebt}
         useFlashLoan={shouldUseFlashloan}
         isWrongNetwork={isWrongNetwork}

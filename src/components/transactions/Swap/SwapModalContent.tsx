@@ -1,9 +1,11 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Stack, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
@@ -226,6 +228,12 @@ export const SwapModalContent = ({
     }
   }
 
+  const minimumReceived = minimumReceivedAfterSlippage(
+    outputAmount,
+    maxSlippage,
+    swapTarget.reserve.decimals
+  );
+
   return (
     <>
       {/* {showIsolationWarning && (
@@ -291,7 +299,24 @@ export const SwapModalContent = ({
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
-          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+          <ListSlippageButton
+            selectedSlippage={maxSlippage}
+            setSlippage={setMaxSlippage}
+            slippageTooltipHeader={
+              <Stack direction="row" gap={2} alignItems="center" justifyContent="space-between">
+                <Trans>Minimum amount received</Trans>
+                <Stack alignItems="end">
+                  <Stack direction="row">
+                    <TokenIcon
+                      symbol={swapTarget.reserve.iconSymbol}
+                      sx={{ mr: 1, fontSize: '14px' }}
+                    />
+                    <FormattedNumber value={minimumReceived} variant="secondary12" />
+                  </Stack>
+                </Stack>
+              </Stack>
+            }
+          />
         }
       >
         <SwapModalDetails
@@ -312,11 +337,7 @@ export const SwapModalContent = ({
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
         amountToSwap={inputAmount}
-        amountToReceive={minimumReceivedAfterSlippage(
-          outputAmount,
-          maxSlippage,
-          swapTarget.reserve.decimals
-        )}
+        amountToReceive={minimumReceived}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}

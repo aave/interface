@@ -193,6 +193,12 @@ export const DebtSwitchModalContent = ({
     }
   };
 
+  const maxAmountToReceiveWithSlippage = maxInputAmountWithSlippage(
+    inputAmount,
+    maxSlippage,
+    targetReserve.decimals || 18
+  );
+
   if (mainTxState.success)
     return (
       <TxSuccessView
@@ -209,7 +215,11 @@ export const DebtSwitchModalContent = ({
                 <ArrowNarrowRightIcon />
               </SvgIcon>
               <TokenIcon symbol={switchTarget.reserve.iconSymbol} sx={{ mx: 1 }} />
-              <FormattedNumber value={inputAmount} compact variant="subheader1" />
+              <FormattedNumber
+                value={maxAmountToReceiveWithSlippage}
+                compact
+                variant="subheader1"
+              />
               {switchTarget.reserve.symbol}
             </Stack>
           </Stack>
@@ -335,6 +345,20 @@ export const DebtSwitchModalContent = ({
               setTxError(undefined);
               setMaxSlippage(newMaxSlippage);
             }}
+            slippageTooltipHeader={
+              <Stack direction="row" gap={2} alignItems="center" justifyContent="space-between">
+                <Trans>Maximum amount received</Trans>
+                <Stack alignItems="end">
+                  <Stack direction="row">
+                    <TokenIcon
+                      symbol={switchTarget.reserve.iconSymbol}
+                      sx={{ mr: 1, fontSize: '14px' }}
+                    />
+                    <FormattedNumber value={maxAmountToReceiveWithSlippage} variant="secondary12" />
+                  </Stack>
+                </Stack>
+              </Stack>
+            }
           />
         }
       >
@@ -378,11 +402,7 @@ export const DebtSwitchModalContent = ({
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
         amountToSwap={outputAmount}
-        amountToReceive={maxInputAmountWithSlippage(
-          inputAmount,
-          maxSlippage,
-          targetReserve.decimals || 18
-        )}
+        amountToReceive={maxAmountToReceiveWithSlippage}
         isWrongNetwork={isWrongNetwork}
         targetReserve={switchTarget.reserve}
         symbol={poolReserve.symbol}
