@@ -9,7 +9,7 @@ import {
   FormatUserSummaryAndIncentivesResponse,
 } from '@aave/math-utils';
 import dayjs from 'dayjs';
-import { memoize } from 'lodash';
+import memoize from 'micro-memoize';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 

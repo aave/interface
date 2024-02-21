@@ -4,7 +4,7 @@ import {
   FormatUserSummaryAndIncentivesResponse,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
-import { memoize } from 'lodash';
+import memoize from 'micro-memoize';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { displayGho, weightedAverageAPY } from 'src/utils/ghoUtilities';
 

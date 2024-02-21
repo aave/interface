@@ -1,5 +1,5 @@
 import { FormatUserSummaryAndIncentivesResponse } from '@aave/math-utils';
-import { memoize } from 'lodash';
+import memoize from 'micro-memoize';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { reserveSortFn } from 'src/store/poolSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
