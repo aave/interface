@@ -9,6 +9,7 @@ import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
 import { CollateralType } from 'src/helpers/types';
+import { minimumReceivedAfterSlippage } from 'src/hooks/paraswap/common';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -311,7 +312,7 @@ export const SwapModalContent = ({
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
         amountToSwap={inputAmount}
-        amountToReceive={outputAmount}
+        amountToReceive={minimumReceivedAfterSlippage(outputAmount, maxSlippage)}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}

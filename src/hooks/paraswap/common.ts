@@ -1,5 +1,5 @@
 import { ChainId, valueToWei } from '@aave/contract-helpers';
-import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { MiscBase, MiscEthereum } from '@bgd-labs/aave-address-book';
 import {
   BuildTxFunctions,
@@ -137,7 +137,7 @@ export async function fetchExactInTxParams(
   maxSlippage: number
 ): Promise<SwapTransactionParams> {
   const swapper = ExactInSwapper(chainId);
-  const { swapCallData, augustus, destAmountWithSlippage } = await swapper.getTransactionParams(
+  const { swapCallData, augustus } = await swapper.getTransactionParams(
     swapIn.underlyingAsset,
     swapIn.decimals,
     swapOut.underlyingAsset,
@@ -151,7 +151,7 @@ export async function fetchExactInTxParams(
     swapCallData,
     augustus,
     inputAmount: normalize(route.srcAmount, swapIn.decimals),
-    outputAmount: normalize(destAmountWithSlippage, swapOut.decimals),
+    outputAmount: normalize(route.destAmount, swapOut.decimals),
     inputAmountUSD: route.srcUSD,
     outputAmountUSD: route.destUSD,
   };
@@ -230,7 +230,7 @@ export async function fetchExactOutTxParams(
   maxSlippage: number
 ): Promise<SwapTransactionParams> {
   const swapper = ExactOutSwapper(chainId);
-  const { swapCallData, augustus, srcAmountWithSlippage } = await swapper.getTransactionParams(
+  const { swapCallData, augustus } = await swapper.getTransactionParams(
     swapIn.underlyingAsset,
     swapIn.decimals,
     swapOut.underlyingAsset,
@@ -243,7 +243,7 @@ export async function fetchExactOutTxParams(
   return {
     swapCallData,
     augustus,
-    inputAmount: normalize(srcAmountWithSlippage, swapIn.decimals),
+    inputAmount: normalize(route.srcAmount, swapIn.decimals),
     outputAmount: normalize(route.destAmount, swapOut.decimals),
     inputAmountUSD: route.srcUSD,
     outputAmountUSD: route.destUSD,
@@ -338,11 +338,6 @@ export const ExactInSwapper = (chainId: ChainId) => {
     route: OptimalRate,
     maxSlippage: number
   ) => {
-    const destAmountWithSlippage = new BigNumberZeroDecimal(route.destAmount)
-      .multipliedBy(100 - maxSlippage)
-      .dividedBy(100)
-      .toFixed(0);
-
     try {
       const params = await paraSwap.buildTx(
         {
@@ -351,7 +346,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
           srcAmount: route.srcAmount,
           destToken,
           destDecimals,
-          destAmount: destAmountWithSlippage,
+          slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
           partnerAddress: FEE_CLAIMER_ADDRESS,
@@ -363,7 +358,6 @@ export const ExactInSwapper = (chainId: ChainId) => {
       return {
         swapCallData: (params as TransactionParams).data,
         augustus: (params as TransactionParams).to,
-        destAmountWithSlippage,
       };
     } catch (e) {
       console.error(e);
@@ -412,10 +406,6 @@ const ExactOutSwapper = (chainId: ChainId) => {
     route: OptimalRate,
     maxSlippage: number
   ) => {
-    const srcAmountWithSlippage = new BigNumberZeroDecimal(route.srcAmount)
-      .multipliedBy(100 + maxSlippage)
-      .dividedBy(100)
-      .toFixed(0);
     const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
 
     try {
@@ -423,8 +413,8 @@ const ExactOutSwapper = (chainId: ChainId) => {
         {
           srcToken,
           destToken,
-          srcAmount: srcAmountWithSlippage,
           destAmount: route.destAmount,
+          slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
           partnerAddress: FEE_CLAIMER_ADDRESS,
@@ -438,7 +428,6 @@ const ExactOutSwapper = (chainId: ChainId) => {
       return {
         swapCallData: (params as TransactionParams).data,
         augustus: (params as TransactionParams).to,
-        srcAmountWithSlippage,
       };
     } catch (e) {
       console.log(e);
@@ -460,4 +449,23 @@ export const calculateSignedAmount = (amount: string, decimals: number, margin?:
   const amountWithMargin = Number(amount) + Number(amount) * (margin ?? SIGNATURE_AMOUNT_MARGIN); // 10% margin for aToken interest accrual, custom amount for actions where output amount is variable
   const formattedAmountWithMargin = valueToWei(amountWithMargin.toString(), decimals);
   return formattedAmountWithMargin;
+};
+
+export const maxInputAmountWithSlippage = (
+  inputAmount: string,
+  slippage: string,
+  decimals: number
+) => {
+  console.log('inputAmount', inputAmount);
+  const foo = valueToBigNumber(inputAmount)
+    .multipliedBy(1 + Number(slippage) / 100)
+    .toFixed(decimals);
+  console.log('foo', foo);
+  return foo;
+};
+
+export const minimumReceivedAfterSlippage = (outputAmount: string, slippage: string) => {
+  return valueToBigNumber(outputAmount)
+    .multipliedBy(1 - Number(slippage) / 100)
+    .toString(10);
 };

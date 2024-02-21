@@ -61,8 +61,8 @@ export const SwapActions = ({
       handleGetTxns: async (signature, deadline) => {
         const route = await buildTxFn();
         return swapCollateral({
-          amountToSwap: route.inputAmount,
-          amountToReceive: route.outputAmount,
+          amountToSwap,
+          amountToReceive,
           poolReserve,
           targetReserve,
           isWrongNetwork,

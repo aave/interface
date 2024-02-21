@@ -15,6 +15,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { maxInputAmountWithSlippage } from 'src/hooks/paraswap/common';
 import { useDebtSwitch } from 'src/hooks/paraswap/useDebtSwitch';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -376,7 +377,11 @@ export const DebtSwitchModalContent = ({
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
         amountToSwap={outputAmount}
-        amountToReceive={inputAmount}
+        amountToReceive={maxInputAmountWithSlippage(
+          inputAmount,
+          maxSlippage,
+          targetReserve.decimals || 18
+        )}
         isWrongNetwork={isWrongNetwork}
         targetReserve={switchTarget.reserve}
         symbol={poolReserve.symbol}

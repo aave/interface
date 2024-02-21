@@ -9,6 +9,7 @@ import {
   ComputedUserReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { minimumReceivedAfterSlippage } from 'src/hooks/paraswap/common';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -276,7 +277,7 @@ export const WithdrawAndSwitchModalContent = ({
         poolReserve={poolReserve}
         targetReserve={swapTarget.reserve}
         amountToSwap={inputAmount}
-        amountToReceive={outputAmount}
+        amountToReceive={minimumReceivedAfterSlippage(outputAmount, maxSlippage)}
         isMaxSelected={isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance)}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
