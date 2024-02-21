@@ -456,16 +456,17 @@ export const maxInputAmountWithSlippage = (
   slippage: string,
   decimals: number
 ) => {
-  console.log('inputAmount', inputAmount);
-  const foo = valueToBigNumber(inputAmount)
+  return valueToBigNumber(inputAmount)
     .multipliedBy(1 + Number(slippage) / 100)
     .toFixed(decimals);
-  console.log('foo', foo);
-  return foo;
 };
 
-export const minimumReceivedAfterSlippage = (outputAmount: string, slippage: string) => {
+export const minimumReceivedAfterSlippage = (
+  outputAmount: string,
+  slippage: string,
+  decimals: number
+) => {
   return valueToBigNumber(outputAmount)
     .multipliedBy(1 - Number(slippage) / 100)
-    .toString(10);
+    .toFixed(decimals);
 };

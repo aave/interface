@@ -277,7 +277,11 @@ export const WithdrawAndSwitchModalContent = ({
         poolReserve={poolReserve}
         targetReserve={swapTarget.reserve}
         amountToSwap={inputAmount}
-        amountToReceive={minimumReceivedAfterSlippage(outputAmount, maxSlippage)}
+        amountToReceive={minimumReceivedAfterSlippage(
+          outputAmount,
+          maxSlippage,
+          swapTarget.reserve.decimals
+        )}
         isMaxSelected={isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance)}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}

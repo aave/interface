@@ -94,6 +94,7 @@ export const DebtSwitchModalContent = ({
       iconSymbol: reserve.iconSymbol,
       variableApy: reserve.variableBorrowAPY,
       priceInUsd: reserve.priceInUSD,
+      decimals: reserve.decimals,
     }));
 
   switchTargets = [

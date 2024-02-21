@@ -312,7 +312,11 @@ export const SwapModalContent = ({
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
         amountToSwap={inputAmount}
-        amountToReceive={minimumReceivedAfterSlippage(outputAmount, maxSlippage)}
+        amountToReceive={minimumReceivedAfterSlippage(
+          outputAmount,
+          maxSlippage,
+          swapTarget.reserve.decimals
+        )}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}

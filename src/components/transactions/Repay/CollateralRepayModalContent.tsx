@@ -60,6 +60,7 @@ export function CollateralRepayModalContent({
       balanceUSD: userReserve.underlyingBalanceUSD,
       symbol: userReserve.reserve.symbol,
       iconSymbol: userReserve.reserve.iconSymbol,
+      decimals: userReserve.reserve.decimals,
     }))
     .sort((a, b) => Number(b.balanceUSD) - Number(a.balanceUSD));
   const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>(repayTokens[0]);
@@ -250,7 +251,11 @@ export function CollateralRepayModalContent({
           <Stack direction="row" gap={2}>
             <Trans>Expected amount to repay</Trans>
             {swapVariant === 'exactIn' && exactOutputAmount !== '' && exactOutputAmount !== '0' && (
-              <div>(min of {minimumReceivedAfterSlippage(exactOutputAmount, maxSlippage)})</div>
+              <div>
+                (min of{' '}
+                {minimumReceivedAfterSlippage(exactOutputAmount, maxSlippage, poolReserve.decimals)}
+                )
+              </div>
             )}
           </Stack>
         }
@@ -345,7 +350,7 @@ export function CollateralRepayModalContent({
         fromAssetData={collateralReserveData}
         repayAmount={
           swapVariant === 'exactIn'
-            ? minimumReceivedAfterSlippage(outputAmount, maxSlippage)
+            ? minimumReceivedAfterSlippage(outputAmount, maxSlippage, poolReserve.decimals)
             : outputAmount
         }
         repayWithAmount={
