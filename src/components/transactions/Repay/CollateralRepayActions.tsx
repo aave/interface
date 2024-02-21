@@ -113,6 +113,7 @@ export const CollateralRepayActions = ({
       amount={repayAmount}
       requiresApproval={requiresApproval}
       isWrongNetwork={isWrongNetwork}
+      blocked={blocked}
       sx={sx}
       {...props}
       handleAction={action}
