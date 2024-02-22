@@ -1,3 +1,4 @@
+import { GhoReserveData, GhoUserData, normalize } from '@aave/math-utils';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export const GHO_SYMBOL = 'GHO';
@@ -96,5 +97,35 @@ export const findAndFilterGhoReserve = <T extends ReserveWithSymbol>(reserves: A
       value: undefined,
       filtered: [],
     }
+  );
+};
+
+export const displayGho = ({ symbol, currentMarket }: GhoUtilMintingAvailableParams): boolean => {
+  return symbol === 'GHO' && GHO_SUPPORTED_MARKETS.includes(currentMarket);
+};
+
+interface GhoUtilMintingAvailableParams {
+  symbol: string;
+  currentMarket: string;
+}
+
+export const ghoUserQualifiesForDiscount = (
+  ghoReserveData: GhoReserveData,
+  ghoUserData: GhoUserData,
+  futureBorrowAmount = '0'
+) => {
+  const borrowBalance = Number(normalize(ghoUserData.userGhoScaledBorrowBalance, 18));
+  const minBorrowBalanceForDiscount = Number(
+    normalize(ghoReserveData.ghoMinDebtTokenBalanceForDiscount, 18)
+  );
+
+  const stkAaveBalance = Number(normalize(ghoUserData.userDiscountTokenBalance, 18));
+  const minStkAaveBalanceForDiscount = Number(
+    normalize(ghoReserveData.ghoMinDiscountTokenBalanceForDiscount, 18)
+  );
+
+  return (
+    borrowBalance + Number(futureBorrowAmount) >= minBorrowBalanceForDiscount &&
+    stkAaveBalance >= minStkAaveBalanceForDiscount
   );
 };

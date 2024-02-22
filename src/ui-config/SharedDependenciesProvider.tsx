@@ -4,6 +4,7 @@ import { DelegationTokenService } from 'src/services/DelegationTokenService';
 import { GovernanceService } from 'src/services/GovernanceService';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { StkAbptMigrationService } from 'src/services/StkAbptMigrationService';
+import { UiGhoService } from 'src/services/UiGhoService';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
@@ -25,6 +26,7 @@ interface SharedDependenciesContext {
   approvedAmountService: ApprovedAmountService;
   uiIncentivesService: UiIncentivesService;
   uiPoolService: UiPoolService;
+  uiGhoService: UiGhoService;
   delegationTokenService: DelegationTokenService;
   stkAbptMigrationService: StkAbptMigrationService;
 }
@@ -59,6 +61,8 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const uiPoolService = new UiPoolService(getProvider);
   const uiIncentivesService = new UiIncentivesService(getProvider);
 
+  const uiGhoService = new UiGhoService(getProvider);
+
   return (
     <SharedDependenciesContext.Provider
       value={{
@@ -71,6 +75,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         approvedAmountService,
         uiPoolService,
         uiIncentivesService,
+        uiGhoService,
         delegationTokenService,
         stkAbptMigrationService,
       }}

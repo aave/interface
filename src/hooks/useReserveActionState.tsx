@@ -11,6 +11,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { WalletEmptyInfo } from 'src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo';
 import { useRootStore } from 'src/store/root';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { displayGho } from 'src/utils/ghoUtilities';
 
 import { useModalContext } from './useModal';
 
@@ -29,14 +30,11 @@ export const useReserveActionState = ({
 }: ReserveActionStateProps) => {
   const { user, eModes } = useAppDataContext();
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const [currentMarket, currentNetworkConfig, currentChainId, displayGho] = useRootStore(
-    (store) => [
-      store.currentMarket,
-      store.currentNetworkConfig,
-      store.currentChainId,
-      store.displayGho,
-    ]
-  );
+  const [currentMarket, currentNetworkConfig, currentChainId] = useRootStore((store) => [
+    store.currentMarket,
+    store.currentNetworkConfig,
+    store.currentChainId,
+  ]);
   const { openFaucet } = useModalContext();
 
   const { bridge, name: networkName } = currentNetworkConfig;

@@ -69,7 +69,7 @@ export const RepayActions = ({
     store.currentMarketData,
   ]);
   const { sendTx } = useWeb3Context();
-  const { refetchGhoData, refetchIncentiveData, refetchPoolData } = useBackgroundDataProvider();
+  const { refetchIncentiveData, refetchPoolData } = useBackgroundDataProvider();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   const {
     approvalTxState,
@@ -202,9 +202,9 @@ export const RepayActions = ({
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
       refetchPoolData && refetchPoolData();
       refetchIncentiveData && refetchIncentiveData();
-      refetchGhoData && refetchGhoData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);

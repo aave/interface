@@ -87,6 +87,17 @@ export const queryKeysFactory = {
     user: string
   ) => [...queryKeysFactory.user(user), chainId, amount, srcToken, destToken, 'paraswapRates'],
   gasPrices: (chainId: number) => [chainId, 'gasPrices'],
+  ghoReserveData: (marketData: MarketDataType) => [
+    ...queryKeysFactory.gho,
+    ...queryKeysFactory.market(marketData),
+    'ghoReserveData',
+  ],
+  ghoUserReserveData: (user: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.gho,
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    'ghoUserReserveData',
+  ],
   poolApprovedAmount: (user: string, token: string, marketData: MarketDataType) => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.user(user),

@@ -7,12 +7,13 @@ import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { FixedAPYTooltipText } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
+import { useGhoPoolReserve } from 'src/hooks/pool/useGhoPoolReserve';
+import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { ghoUserQualifiesForDiscount, weightedAverageAPY } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -32,12 +33,12 @@ export const GhoBorrowedPositionsListItem = ({
   borrowRateMode,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
-  const { currentMarket, currentMarketData } = useProtocolDataContext();
-  const { ghoLoadingData, ghoReserveData, ghoUserData, user } = useAppDataContext();
-  const [ghoUserDataFetched, ghoUserQualifiesForDiscount] = useRootStore((store) => [
-    store.ghoUserDataFetched,
-    store.ghoUserQualifiesForDiscount,
-  ]);
+  const currentMarket = useRootStore((store) => store.currentMarket);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const { ghoLoadingData, ghoReserveData, ghoUserData, ghoUserLoadingData, user } =
+    useAppDataContext();
+  const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
+  const { data: _ghoReserveData } = useGhoPoolReserve(currentMarketData);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -52,7 +53,10 @@ export const GhoBorrowedPositionsListItem = ({
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
-  const hasDiscount = ghoUserQualifiesForDiscount();
+  const hasDiscount =
+    _ghoUserData && _ghoReserveData
+      ? ghoUserQualifiesForDiscount(_ghoReserveData, _ghoUserData)
+      : false;
 
   const { isActive, isFrozen, isPaused, borrowingEnabled } = reserve;
   const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user, reserve));
@@ -67,7 +71,7 @@ export const GhoBorrowedPositionsListItem = ({
     userGhoBorrowBalance: ghoUserData.userGhoBorrowBalance,
     hasDiscount,
     ghoLoadingData,
-    ghoUserDataFetched,
+    ghoUserDataFetched: !ghoUserLoadingData,
     borrowRateAfterDiscount,
     currentMarket,
     userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
