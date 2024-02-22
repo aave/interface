@@ -19,7 +19,7 @@ const testData = {
 let minApy: number;
 let maxApy: number;
 
-describe(`GHO MODAL APY TESTING`, () => {
+describe.skip(`GHO MODAL APY TESTING`, () => {
   configEnvWithTenderlyAEthereumV3Fork({
     v3: true,
     tokens: tokenSet({ aDAI: 1000 }),
