@@ -4,7 +4,6 @@ import create from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
 import { AnalyticsSlice, createAnalyticsSlice } from './analyticsSlice';
-import { createGhoSlice, GhoSlice } from './ghoSlice';
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
 import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
 import { createLayoutSlice, LayoutSlice } from './layoutSlice';
@@ -27,7 +26,6 @@ export type RootStore = StakeSlice &
   IncentiveSlice &
   GovernanceSlice &
   V3MigrationSlice &
-  GhoSlice &
   WalletDomainsSlice &
   AnalyticsSlice &
   TransactionsSlice &
@@ -44,7 +42,6 @@ export const useRootStore = create<RootStore>()(
         ...createIncentiveSlice(...args),
         ...createGovernanceSlice(...args),
         ...createV3MigrationSlice(...args),
-        ...createGhoSlice(...args),
         ...createWalletDomainsSlice(...args),
         ...createAnalyticsSlice(...args),
         ...createTransactionsSlice(...args),
@@ -82,10 +79,6 @@ export const usePoolDataV3Subscription = createSingletonSubscriber(() => {
 
 export const useIncentiveDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshIncentiveData();
-}, 60000);
-
-export const useGhoDataSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshGhoData();
 }, 60000);
 
 useRootStore.subscribe(

@@ -12,6 +12,7 @@ import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarnin
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { displayGho } from 'src/utils/ghoUtilities';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -54,7 +55,6 @@ export const SupplyAssetsList = () => {
     loading: loadingReserves,
   } = useAppDataContext();
   const { walletBalances, loading } = useWalletBalances(currentMarketData);
-  const [displayGho] = useRootStore((store) => [store.displayGho]);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 

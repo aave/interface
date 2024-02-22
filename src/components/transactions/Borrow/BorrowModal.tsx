@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { displayGho } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { BasicModal } from '../../primitives/BasicModal';
@@ -18,7 +19,7 @@ export const BorrowModal = () => {
   const { currentMarket } = useProtocolDataContext();
 
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
-  const [trackEvent, displayGho] = useRootStore((store) => [store.trackEvent, store.displayGho]);
+  const [trackEvent] = useRootStore((store) => [store.trackEvent]);
 
   const handleBorrowUnwrapped = (borrowUnWrapped: boolean) => {
     trackEvent(GENERAL.OPEN_MODAL, {
