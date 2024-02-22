@@ -189,14 +189,7 @@ export async function fetchExactInRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [
-      ContractMethod.simpleSwap,
-      ContractMethod.directUniV3Swap,
-      ContractMethod.directBalancerV2GivenInSwap,
-      ContractMethod.directBalancerV2GivenOutSwap,
-      ContractMethod.directCurveV1Swap,
-      ContractMethod.directCurveV2Swap,
-    ];
+    options.includeContractMethods = [ContractMethod.multiSwap, ContractMethod.megaSwap];
   }
 
   const swapper = ExactInSwapper(chainId);
@@ -282,11 +275,7 @@ export async function fetchExactOutRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [
-      ContractMethod.simpleBuy,
-      ContractMethod.directUniV3Buy,
-      ContractMethod.directBalancerV2GivenOutSwap,
-    ];
+    options.includeContractMethods = [ContractMethod.buy];
   }
 
   const swapper = ExactOutSwapper(chainId);
