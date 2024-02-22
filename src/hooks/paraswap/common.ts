@@ -456,6 +456,7 @@ export const maxInputAmountWithSlippage = (
   slippage: string,
   decimals: number
 ) => {
+  if (inputAmount === '0') return '0';
   return valueToBigNumber(inputAmount)
     .multipliedBy(1 + Number(slippage) / 100)
     .toFixed(decimals);
@@ -466,6 +467,7 @@ export const minimumReceivedAfterSlippage = (
   slippage: string,
   decimals: number
 ) => {
+  if (outputAmount === '0') return '0';
   return valueToBigNumber(outputAmount)
     .multipliedBy(1 - Number(slippage) / 100)
     .toFixed(decimals);

@@ -107,6 +107,7 @@ export const SwapActions = ({
       handleAction={action}
       requiresAmount
       amount={amountToSwap}
+      blocked={blocked}
       handleApproval={() =>
         approval({
           amount: calculateSignedAmount(amountToSwap, poolReserve.decimals),
