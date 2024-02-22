@@ -5,7 +5,7 @@ import {
 } from '@aave/contract-helpers';
 import { formatReservesAndIncentives } from '@aave/math-utils';
 import dayjs from 'dayjs';
-import { memoize } from 'lodash';
+import memoize from 'micro-memoize';
 import { reserveSortFn } from 'src/store/poolSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { fetchIconSymbolAndName, IconMapInterface } from 'src/ui-config/reservePatches';

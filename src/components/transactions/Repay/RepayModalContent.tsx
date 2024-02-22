@@ -83,7 +83,9 @@ export const RepayModalContent = ({
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
 
-  const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
+  const safeAmountToRepayAll = valueToBigNumber(debt)
+    .multipliedBy('1.0025')
+    .decimalPlaces(poolReserve.decimals, BigNumber.ROUND_UP);
 
   // calculate max amount abailable to repay
   let maxAmountToRepay: BigNumber;
@@ -227,7 +229,7 @@ export const RepayModalContent = ({
       <TxSuccessView
         action={<Trans>repaid</Trans>}
         amount={amountRef.current}
-        symbol={tokenToRepayWith.symbol}
+        symbol={repayWithATokens ? poolReserve.symbol : tokenToRepayWith.symbol}
       />
     );
 
@@ -278,6 +280,7 @@ export const RepayModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       <RepayActions
+        maxApproveNeeded={safeAmountToRepayAll.toString()}
         poolReserve={poolReserve}
         amountToRepay={isMaxSelected ? repayMax : amount}
         poolAddress={

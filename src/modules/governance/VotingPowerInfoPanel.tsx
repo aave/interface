@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Skeleton, Typography } from '@mui/material';
 import { AvatarSize } from 'src/components/Avatar';
 import { CompactMode } from 'src/components/CompactableTypography';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -7,13 +7,10 @@ import { Link } from 'src/components/primitives/Link';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { usePowers } from 'src/hooks/governance/usePowers';
-import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 export function VotingPowerInfoPanel() {
-  const user = useRootStore((store) => store.account);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: powers } = usePowers(currentMarketData);
+  const { data: powers } = usePowers();
   return (
     <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
       <Typography
@@ -33,7 +30,7 @@ export function VotingPowerInfoPanel() {
         }}
         funnel={'Your info: Governance'}
       />
-      {user && (
+      {powers ? (
         <Box sx={{ display: 'flex', mt: 6 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', mr: '25%' }}>
             <TextWithTooltip
@@ -62,7 +59,7 @@ export function VotingPowerInfoPanel() {
             </TextWithTooltip>
             <FormattedNumber
               data-cy={`voting-power`}
-              value={powers?.votingPower || 0}
+              value={powers.votingPower}
               variant="h2"
               visibleDecimals={2}
             />
@@ -106,12 +103,14 @@ export function VotingPowerInfoPanel() {
             </TextWithTooltip>
             <FormattedNumber
               data-cy={`proposition-power`}
-              value={powers?.propositionPower || 0}
+              value={powers.propositionPower}
               variant="h2"
               visibleDecimals={2}
             />
           </Box>
         </Box>
+      ) : (
+        <Skeleton />
       )}
     </Paper>
   );

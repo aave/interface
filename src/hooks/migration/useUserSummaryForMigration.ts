@@ -1,6 +1,6 @@
 import { ReservesDataHumanized, ReservesIncentiveDataHumanized } from '@aave/contract-helpers';
 import dayjs from 'dayjs';
-import { memoize } from 'lodash';
+import memoize from 'micro-memoize';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { selectFormatUserSummaryForMigration } from 'src/store/v3MigrationSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';

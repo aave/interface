@@ -206,7 +206,11 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           />
         </>
       )}
-      {isGho ? <GhoReserveTopDetails /> : <ReserveTopDetails underlyingAsset={underlyingAsset} />}
+      {isGho ? (
+        <GhoReserveTopDetails reserve={poolReserve} />
+      ) : (
+        <ReserveTopDetails underlyingAsset={underlyingAsset} />
+      )}
     </TopInfoPanel>
   );
 };

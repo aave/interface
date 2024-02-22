@@ -48,7 +48,7 @@ export const UnStakeActions = ({
       handleAction={action}
       requiresAmount
       amount={amountToUnStake}
-      actionText={<Trans>UNSTAKE {symbol}</Trans>}
+      actionText={<Trans>Unstake {symbol}</Trans>}
       actionInProgressText={<Trans>Unstaking {symbol}</Trans>}
       mainTxState={mainTxState}
       isWrongNetwork={isWrongNetwork}
