@@ -221,7 +221,7 @@ export const BorrowAssetsList = () => {
               <MarketWarning marketName="Ethereum AMM" />
             )}
 
-            {user.healthFactor !== '-1' && Number(user.healthFactor) <= 1.1 && (
+            {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
               <Warning severity="error">
                 <Trans>
                   Be careful - You are very close to liquidation. Consider depositing more
