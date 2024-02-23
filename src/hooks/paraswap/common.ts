@@ -178,7 +178,7 @@ export async function fetchExactInRate(
   let swapInAmount = valueToBigNumber(swapIn.amount);
   if (max && swapIn.supplyAPY !== '0') {
     swapInAmount = swapInAmount.plus(
-      swapInAmount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24)
+      swapInAmount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24 * 2)
     );
   }
 
@@ -261,13 +261,8 @@ export async function fetchExactOutRate(
   userAddress: string,
   max: boolean
 ): Promise<OptimalRate> {
-  let swapOutAmount = valueToBigNumber(swapOut.amount);
-  if (max) {
-    // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
-    swapOutAmount = swapOutAmount.plus(
-      swapOutAmount.multipliedBy(swapIn.variableBorrowAPY).dividedBy(360 * 24)
-    );
-  }
+  const swapOutAmount = valueToBigNumber(swapOut.amount);
+
   const amount = normalizeBN(swapOutAmount, swapOut.decimals * -1);
 
   const options: RateOptions = {

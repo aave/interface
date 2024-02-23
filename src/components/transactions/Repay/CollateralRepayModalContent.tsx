@@ -82,7 +82,12 @@ export function CollateralRepayModalContent({
     debtType === InterestRate.Stable
       ? userReserve?.stableBorrows || '0'
       : userReserve?.variableBorrows || '0';
-  const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
+
+  let safeAmountToRepayAll = valueToBigNumber(debt);
+  // Add in the approximate interest accrued over the next 30 minutes
+  safeAmountToRepayAll = safeAmountToRepayAll.plus(
+    safeAmountToRepayAll.multipliedBy(poolReserve.variableBorrowAPY).dividedBy(360 * 24 * 2)
+  );
 
   const isMaxSelected = amount === '-1';
   const repayAmount = isMaxSelected ? safeAmountToRepayAll.toString() : amount;
