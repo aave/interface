@@ -66,9 +66,9 @@ export const CollateralRepayActions = ({
         const route = await buildTxFn();
         return paraswapRepayWithCollateral({
           repayAllDebt,
-          repayAmount: route.outputAmount,
+          repayAmount,
           rateMode,
-          repayWithAmount: route.inputAmount,
+          repayWithAmount,
           fromAssetData,
           poolReserve,
           isWrongNetwork,
