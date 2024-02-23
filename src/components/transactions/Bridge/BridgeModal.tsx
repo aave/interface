@@ -1,16 +1,24 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography, Button } from '@mui/material';
 import { ContractCallContext, ContractCallResults, Multicall } from 'ethereum-multicall';
+import { API_ETH_MOCK_ADDRESS, ReserveDataHumanized } from '@aave/contract-helpers';
 import { providers } from 'ethers';
+import BigNumber from 'bignumber.js';
+
 import { formatUnits } from 'ethers/lib/utils';
+import { normalize, normalizeBN } from '@aave/math-utils';
+import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
-
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { NetworkSelect } from 'src/components/transactions/NetworkSelect';
+import { ReserveWithBalance } from './SwitchModal';
 import { useRootStore } from 'src/store/root';
+import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
+import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import {
   CustomMarket,
@@ -19,22 +27,17 @@ import {
   marketsData,
 } from 'src/utils/marketsAndNetworksConfig';
 import { NetworkSelector } from '../Switch/NetworkSelector';
-// import { supportedNetworksWithEnabledMarket } from './common';
+import { supportedNetworksWithBridgeMarket } from './common';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { SwitchModalContent } from './SwitchModalContent';
+import { AssetInput } from '../AssetInput';
 
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
-
+import NetworkConfiguration from '../NetworkSelect';
 export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
 }
-
-// const supportedNetworksWithEnabledMarket = supportedNetworksConfig.filter((elem) =>
-//   Object.values(marketsData).find(
-//     (market) => market.chainId === elem.chainId && market.enabledFeatures?.bridge
-//   )
-// );
 
 export const BridgeModal = () => {
   const {
@@ -45,9 +48,18 @@ export const BridgeModal = () => {
 
   const currentChainId = useRootStore((store) => store.currentChainId);
   const user = useRootStore((store) => store.account);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('0');
+  const [inputAmountUSD, setInputAmount] = useState('');
+  const [sourceToken, setSourceToken] = useState('');
+  const [destinationToken, setDestinationToken] = useState('');
+  const [sourceNetwork, setSourceNetwork] = useState('');
+  const [destinationNetwork, setDestinationNetwork] = useState('');
 
-  console.log('type -->', type);
+  const [selectedChainId, setSelectedChainId] = useState(() => {
+    if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId))
+      return currentChainId;
+    return defaultNetwork.chainId;
+  });
 
   //   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
 
@@ -66,6 +78,124 @@ export const BridgeModal = () => {
 
   const handleChange = (value: string) => {};
 
+  const handleSelectedNetworkChange =
+    (networkAction: string) => (network: NetworkConfiguration) => {
+      if (networkAction === 'sourceNetwork') {
+        setSourceNetwork(network);
+      } else {
+        setDestinationNetwork(network);
+      }
+    };
+
+  const marketsBySupportedNetwork = useMemo(
+    () =>
+      Object.values(marketsData).filter(
+        (elem) => elem.chainId === selectedChainId && elem.enabledFeatures?.bridge
+      ),
+    [selectedChainId]
+  );
+
+  const poolReservesDataQueries = usePoolsReservesHumanized(marketsBySupportedNetwork, {
+    refetchInterval: 0,
+  });
+
+  const selectedNetworkConfig = getNetworkConfig(selectedChainId);
+
+  const networkReserves = poolReservesDataQueries.reduce((acum, elem) => {
+    if (elem.data) {
+      const wrappedBaseAsset = elem.data.reservesData.find(
+        (reserveData) => reserveData.symbol === selectedNetworkConfig.wrappedBaseAssetSymbol
+      );
+      const acumWithoutBaseAsset = acum.concat(
+        elem.data.reservesData.filter(
+          (reserveDataElem) =>
+            !acum.find((acumElem) => acumElem.underlyingAsset === reserveDataElem.underlyingAsset)
+        )
+      );
+      if (
+        wrappedBaseAsset &&
+        !acum.find((acumElem) => acumElem.underlyingAsset === API_ETH_MOCK_ADDRESS)
+      )
+        return acumWithoutBaseAsset.concat({
+          ...wrappedBaseAsset,
+          underlyingAsset: API_ETH_MOCK_ADDRESS,
+          decimals: selectedNetworkConfig.baseAssetDecimals,
+          ...fetchIconSymbolAndName({
+            underlyingAsset: API_ETH_MOCK_ADDRESS,
+            symbol: selectedNetworkConfig.baseAssetSymbol,
+          }),
+        });
+      return acumWithoutBaseAsset;
+    }
+    return acum;
+  }, [] as ReserveDataHumanized[]);
+
+  const poolBalancesDataQueries = usePoolsTokensBalance(marketsBySupportedNetwork, user, {
+    refetchInterval: 0,
+  });
+
+  const poolsBalances = poolBalancesDataQueries.reduce((acum, elem) => {
+    if (elem.data) return acum.concat(elem.data);
+    return acum;
+  }, [] as UserPoolTokensBalances[]);
+
+  const reservesWithBalance: ReserveWithBalance[] = useMemo(() => {
+    return networkReserves.map((elem) => {
+      return {
+        ...elem,
+        ...fetchIconSymbolAndName({
+          underlyingAsset: elem.underlyingAsset,
+          symbol: elem.symbol,
+          name: elem.name,
+        }),
+        balance: normalize(
+          poolsBalances
+            .find(
+              (balance) =>
+                balance.address.toLocaleLowerCase() === elem.underlyingAsset.toLocaleLowerCase()
+            )
+            ?.amount.toString() || '0',
+          elem.decimals
+        ),
+      };
+    });
+  }, [networkReserves, poolsBalances]);
+
+  const handleInputChange = (value: string) => {
+    if (value === '-1') {
+      setInputAmount(selectedInputToken.balance);
+    } else {
+      setInputAmount(value);
+    }
+  };
+  const GHO = reservesWithBalance.find((reserve) => reserve.symbol === 'GHO');
+
+  if (!GHO) return null;
+
+  const maxAmountToSwap = BigNumber.min(GHO.underlyingBalance).toString(10);
+
+  const handleBridgeArguments = () => {
+    const sourceChain = process.argv[2];
+    const destinationChain = process.argv[3];
+    const destinationAccount = process.argv[4];
+    const tokenAddress = process.argv[5];
+    const amount = BigNumber.from(process.argv[6]);
+    const feeTokenAddress = process.argv[7];
+
+    return {
+      sourceChain,
+      destinationChain,
+      destinationAccount,
+      tokenAddress,
+      amount,
+      feeTokenAddress,
+    };
+  };
+
+  const handleBridge = () => {
+    alert('Bridge');
+  };
+
   return (
     <BasicModal open={type === ModalType.Bridge} setOpen={close}>
       <TxModalTitle title="Bridge tokens" />
@@ -80,29 +210,71 @@ export const BridgeModal = () => {
         }}
       >
         Hola
+        {/* // TODO check correct network */}
         {/* <NetworkSelector
-          networks={supportedNetworks}
+          networks={supportedNetworksWithBridgeMarket}
           selectedNetwork={selectedChainId}
           setSelectedNetwork={handleSelectedNetworkChange}
         /> */}
-        {/* <AssetInput
+        <NetworkSelect
           value={amount}
-          onChange={handleChange}
+          onChange={handleInputChange}
           usdValue={inputAmountUSD}
-          symbol={poolReserve.iconSymbol}
+          symbol={GHO.iconSymbol}
           assets={[
             {
-              balance: maxAmountToSwap,
-              address: poolReserve.underlyingAsset,
-              symbol: poolReserve.symbol,
-              iconSymbol: poolReserve.iconSymbol,
+              balance: GHO.balance,
+              address: GHO.underlyingAsset,
+              symbol: GHO.symbol,
+              iconSymbol: GHO.iconSymbol,
             },
           ]}
           maxValue={maxAmountToSwap}
-          inputTitle={<Trans>Supplied asset amount</Trans>}
-          balanceText={<Trans>Supply balance</Trans>}
-          isMaxSelected={isMaxSelected}
-        /> */}
+          inputTitle={<Trans>Amount to Bridge</Trans>}
+          balanceText={<Trans>GHO balance</Trans>}
+          supportedBridgeMarkets={supportedNetworksWithBridgeMarket}
+          onNetworkChange={handleSelectedNetworkChange('sourceNetwork')}
+
+          //   isMaxSelected={isMaxSelected}
+        />
+        <NetworkSelect
+          value={amount}
+          onChange={handleInputChange}
+          usdValue={inputAmountUSD}
+          symbol={GHO.iconSymbol}
+          assets={[
+            {
+              balance: GHO.balance,
+              address: GHO.underlyingAsset,
+              symbol: GHO.symbol,
+              iconSymbol: GHO.iconSymbol,
+            },
+          ]}
+          maxValue={maxAmountToSwap}
+          inputTitle={<Trans>Amount to Bridge</Trans>}
+          balanceText={<Trans>GHO balance</Trans>}
+          supportedBridgeMarkets={supportedNetworksWithBridgeMarket}
+          onNetworkChange={handleSelectedNetworkChange('destinationNetwork')}
+          //   isMaxSelected={isMaxSelected}
+        />
+        <AssetInput
+          value={amount}
+          onChange={handleInputChange}
+          usdValue={inputAmountUSD}
+          symbol={GHO.iconSymbol}
+          assets={[
+            {
+              balance: GHO.balance,
+              address: GHO.underlyingAsset,
+              symbol: GHO.symbol,
+              iconSymbol: GHO.iconSymbol,
+            },
+          ]}
+          maxValue={maxAmountToSwap}
+          inputTitle={<Trans>Amount to Bridge</Trans>}
+          balanceText={<Trans>GHO balance</Trans>}
+          //   isMaxSelected={isMaxSelected}
+        />
         {/* <SwitchAssetInput
           assets={tokens.filter((token) => token.address !== selectedOutputToken.address)}
           value={inputAmount}
@@ -141,6 +313,9 @@ export const BridgeModal = () => {
           inputTitle={' '}
           sx={{ width: '100%' }}
         /> */}
+        <Button onClick={handleBridge} variant="contained">
+          Bridge
+        </Button>
       </Box>
       {/* {tokenListSortedByBalace.length > 1 ? (
         <SwitchModalContent

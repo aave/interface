@@ -15,7 +15,7 @@ export const supportedNetworksConfig: SupportedNetworkWithChainId[] = getSupport
     chainId,
   })
 );
-export const supportedNetworksWithEnabledMarket = supportedNetworksConfig.filter((elem) =>
+export const supportedNetworksWithBridgeMarket = supportedNetworksConfig.filter((elem) =>
   Object.values(marketsData).find(
     (market) => market.chainId === elem.chainId && market.enabledFeatures?.bridge
   )

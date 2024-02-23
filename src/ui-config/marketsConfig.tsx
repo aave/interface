@@ -92,6 +92,7 @@ export enum CustomMarket {
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
   proto_scroll_sepolia_v3 = 'proto_scroll_sepolia_v3',
   proto_sepolia_v3 = 'proto_sepolia_v3',
+  // proto_arbitrum_sepolia_v3 = 'proto_arbitrum_sepolia_v3',
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',
   proto_optimism_v3 = 'proto_optimism_v3',
@@ -294,6 +295,7 @@ export const marketsData: {
     chainId: ChainId.sepolia,
     enabledFeatures: {
       faucet: true,
+      bridge: true,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
@@ -393,6 +395,30 @@ export const marketsData: {
       L2_ENCODER: AaveV3ArbitrumGoerli.L2_ENCODER,
     },
   },
+
+  // [CustomMarket.proto_arbitrum_sepolia_v3]: {
+  //   marketTitle: 'Arbitrum Sepolia',
+  //   market: CustomMarket.proto_arbitrum_sepolia_v3,
+  //   v3: true,
+  //   chainId: ChainId.arbitrum_goerli,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //     bridge: true,
+  //   },
+  //   //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: AaveV3Sepolia.POOL,
+  //     WETH_GATEWAY: AaveV3Sepolia.WETH_GATEWAY,
+  //     FAUCET: AaveV3Sepolia.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: AaveV3Sepolia.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
+  //     L2_ENCODER: AaveV3Sepolia.L2_ENCODER,
+  //   },
+  // },
+
   [CustomMarket.proto_avalanche_v3]: {
     marketTitle: 'Avalanche',
     market: CustomMarket.proto_avalanche_v3,
@@ -620,6 +646,7 @@ export const marketsData: {
     enabledFeatures: {
       incentives: true,
       faucet: true,
+      bridge: true,
     },
     //  subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-mumbai',  needs re-deployment
     addresses: {
