@@ -5,6 +5,7 @@ import { GovernanceService } from 'src/services/GovernanceService';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { StkAbptMigrationService } from 'src/services/StkAbptMigrationService';
 import { TokenWrapperService } from 'src/services/TokenWrapperService';
+import { UiGhoService } from 'src/services/UiGhoService';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
@@ -28,6 +29,7 @@ interface SharedDependenciesContext {
   uiIncentivesService: UiIncentivesService;
   uiPoolService: UiPoolService;
   tokenWrapperService: TokenWrapperService;
+  uiGhoService: UiGhoService;
   delegationTokenService: DelegationTokenService;
   stkAbptMigrationService: StkAbptMigrationService;
 }
@@ -68,6 +70,8 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
     getProvider(currentMarketData.chainId)
   );
 
+  const uiGhoService = new UiGhoService(getProvider);
+
   return (
     <SharedDependenciesContext.Provider
       value={{
@@ -81,6 +85,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         uiPoolService,
         uiIncentivesService,
         tokenWrapperService,
+        uiGhoService,
         delegationTokenService,
         stkAbptMigrationService,
       }}
