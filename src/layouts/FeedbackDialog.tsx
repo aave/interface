@@ -51,8 +51,6 @@ export const FeedbackModal = () => {
       setIsLoading(false);
       setValue('');
       setError(true);
-
-      return alert('Submission did not work, please try again later or contact wecare@avara.xyz');
     }
   };
 
