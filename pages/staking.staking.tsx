@@ -1,13 +1,15 @@
 import { Stake } from '@aave/contract-helpers';
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
@@ -126,7 +128,8 @@ export default function Staking() {
   const showAbptPanel =
     !stkBpt?.inPostSlashingPeriod ||
     stkBptUserData?.stakeTokenUserBalance !== '0' ||
-    stkBptUserData.userIncentivesToClaim !== '0';
+    stkBptUserData.userIncentivesToClaim !== '0' ||
+    stkBptUserData.underlyingTokenUserBalance !== '0';
 
   return (
     <>
@@ -276,19 +279,34 @@ export default function Staking() {
                     onMigrateAction={() => openStakingMigrate()}
                     headerAction={
                       stkBpt?.inPostSlashingPeriod ? (
-                        <Box
-                          sx={(theme) => ({
-                            backgroundColor: theme.palette.warning.main,
-                            borderRadius: 12,
-                            height: '16px',
-                            width: '84px',
-                            marginLeft: 'auto',
-                          })}
-                        >
-                          <Typography sx={{ px: 2 }} color="white" variant="caption">
-                            Deprecated
-                          </Typography>
-                        </Box>
+                        <Stack direction="row" alignItems="center" gap={3}>
+                          <Box
+                            sx={(theme) => ({
+                              backgroundColor: theme.palette.warning.main,
+                              borderRadius: 12,
+                              height: '16px',
+                              width: '84px',
+                              marginLeft: 'auto',
+                            })}
+                          >
+                            <Typography sx={{ px: 2 }} color="white" variant="caption">
+                              Deprecated
+                            </Typography>
+                          </Box>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            component={Link}
+                            endIcon={
+                              <SvgIcon sx={{ width: 14, height: 14 }}>
+                                <ExternalLinkIcon />
+                              </SvgIcon>
+                            }
+                            href="https://pools.balancer.exchange/#/pool/0xc697051d1c6296c24ae3bcef39aca743861d9a81/"
+                          >
+                            <Trans>Balancer Pool</Trans>
+                          </Button>
+                        </Stack>
                       ) : null
                     }
                   >
