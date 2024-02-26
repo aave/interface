@@ -5,7 +5,7 @@ import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
-import { SupplyModalContent } from './SupplyModalContent';
+import { SupplyModalContentWrapper } from './SupplyModalContent';
 
 export const SupplyModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
@@ -20,7 +20,7 @@ export const SupplyModal = () => {
         underlyingAsset={args.underlyingAsset}
         requiredPermission={PERMISSION.DEPOSITOR}
       >
-        {(params) => <SupplyModalContent {...params} />}
+        {(params) => <SupplyModalContentWrapper {...params} />}
       </ModalWrapper>
     </BasicModal>
   );

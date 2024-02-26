@@ -4,12 +4,14 @@ import { DelegationTokenService } from 'src/services/DelegationTokenService';
 import { GovernanceService } from 'src/services/GovernanceService';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { StkAbptMigrationService } from 'src/services/StkAbptMigrationService';
+import { TokenWrapperService } from 'src/services/TokenWrapperService';
 import { UiGhoService } from 'src/services/UiGhoService';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
 import { VotingMachineService } from 'src/services/VotingMachineService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
 
@@ -26,6 +28,7 @@ interface SharedDependenciesContext {
   approvedAmountService: ApprovedAmountService;
   uiIncentivesService: UiIncentivesService;
   uiPoolService: UiPoolService;
+  tokenWrapperService: TokenWrapperService;
   uiGhoService: UiGhoService;
   delegationTokenService: DelegationTokenService;
   stkAbptMigrationService: StkAbptMigrationService;
@@ -34,6 +37,8 @@ interface SharedDependenciesContext {
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
 
 export const SharedDependenciesProvider: React.FC = ({ children }) => {
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
+
   const getGovernanceProvider = (chainId: number) => {
     const networkConfig = getNetworkConfig(chainId);
     const isGovernanceFork =
@@ -60,6 +65,10 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
 
   const uiPoolService = new UiPoolService(getProvider);
   const uiIncentivesService = new UiIncentivesService(getProvider);
+  const tokenWrapperService = new TokenWrapperService(
+    currentMarketData.chainId,
+    getProvider(currentMarketData.chainId)
+  );
 
   const uiGhoService = new UiGhoService(getProvider);
 
@@ -75,6 +84,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         approvedAmountService,
         uiPoolService,
         uiIncentivesService,
+        tokenWrapperService,
         uiGhoService,
         delegationTokenService,
         stkAbptMigrationService,
