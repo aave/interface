@@ -1,5 +1,6 @@
+import { XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, SvgIcon, TextField, Typography } from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { BaseSuccessView } from 'src/components/transactions/FlowCommons/BaseSuccess';
@@ -14,18 +15,17 @@ export const FeedbackModal = () => {
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (feedbackDialogOpen) {
       setSuccess(false);
+      setError(false);
     }
   }, [feedbackDialogOpen]);
 
   const handleFeedbackSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!value) {
-      return alert('Please add feedback');
-    }
 
     setIsLoading(true);
 
@@ -50,6 +50,7 @@ export const FeedbackModal = () => {
     } catch (error) {
       setIsLoading(false);
       setValue('');
+      setError(true);
 
       return alert('Submission did not work, please try again later or contact wecare@avara.xyz');
     }
@@ -74,6 +75,41 @@ export const FeedbackModal = () => {
               <Trans>Thank you for submitting feedback!</Trans>
             </Box>
           </BaseSuccessView>
+        ) : error ? (
+          <div>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                mb: '92px',
+              }}
+            >
+              <Box
+                sx={{
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: 'error.200',
+                  borderRadius: '50%',
+                  mt: 14,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <SvgIcon sx={{ color: 'error.main', fontSize: '32px' }}>
+                  <XIcon />
+                </SvgIcon>
+              </Box>
+
+              <Typography sx={{ mt: 8 }} variant="h4">
+                <Trans>
+                  Submission did not work, please try again later or contact wecare@avara.xyz
+                </Trans>
+              </Typography>
+            </Box>
+          </div>
         ) : (
           <>
             <Typography variant="h2">
@@ -95,7 +131,7 @@ export const FeedbackModal = () => {
                   onChange={(e) => setValue(e.target.value)}
                 />
                 <Box display="flex" flexDirection={'row-reverse'} mt={3}>
-                  <Button variant="contained" type="submit">
+                  <Button disabled={!value} variant="contained" type="submit">
                     <Trans>Send Feedback</Trans>
                   </Button>
                 </Box>
