@@ -1,10 +1,9 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, Typography, Button } from '@mui/material';
-import { ContractCallContext, ContractCallResults, Multicall } from 'ethereum-multicall';
 import { API_ETH_MOCK_ADDRESS, ReserveDataHumanized } from '@aave/contract-helpers';
-import { providers } from 'ethers';
+import { providers, Contract, utils, constants } from 'ethers';
 import BigNumber from 'bignumber.js';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { formatUnits } from 'ethers/lib/utils';
 import { normalize, normalizeBN } from '@aave/math-utils';
@@ -20,6 +19,10 @@ import { useRootStore } from 'src/store/root';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
+import { AaveV3Ethereum, AaveV3Sepolia } from '@bgd-labs/aave-address-book';
+import { getRouterConfig } from './Router';
+import routerAbi from './Router-abi.json';
+import erc20Abi from './IERC20Meta.json';
 import {
   CustomMarket,
   getNetworkConfig,
@@ -61,6 +64,10 @@ export const BridgeModal = () => {
     return defaultNetwork.chainId;
   });
 
+  console.log('supportedNetworksWithBridgeMarket', supportedNetworksWithBridgeMarket);
+
+  const { sendTx } = useWeb3Context();
+
   //   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
 
   //   useEffect(() => {
@@ -73,8 +80,6 @@ export const BridgeModal = () => {
   //       setSelectedChainId(defaultNetwork.chainId);
   //     }
   //   }, [currentChainId, chainId]);
-
-  //   const provider = getProvider(selectedChainId);
 
   const handleChange = (value: string) => {};
 
@@ -163,9 +168,9 @@ export const BridgeModal = () => {
 
   const handleInputChange = (value: string) => {
     if (value === '-1') {
-      setInputAmount(selectedInputToken.balance);
+      setAmount(selectedInputToken.balance);
     } else {
-      setInputAmount(value);
+      setAmount(value);
     }
   };
   const GHO = reservesWithBalance.find((reserve) => reserve.symbol === 'GHO');
@@ -175,25 +180,233 @@ export const BridgeModal = () => {
   const maxAmountToSwap = BigNumber.min(GHO.underlyingBalance).toString(10);
 
   const handleBridgeArguments = () => {
-    const sourceChain = process.argv[2];
-    const destinationChain = process.argv[3];
-    const destinationAccount = process.argv[4];
-    const tokenAddress = process.argv[5];
-    const amount = BigNumber.from(process.argv[6]);
-    const feeTokenAddress = process.argv[7];
-
+    const sourceChain = sourceNetwork;
+    const destinationChain = { chainId: 421614 }; // destinationNetwork;
+    const destinationAccount = user;
+    const tokenAddress = GHO.underlyingAsset;
+    // Note for now leaving out
+    // const feeTokenAddress = process.argv[7];
     return {
       sourceChain,
       destinationChain,
       destinationAccount,
       tokenAddress,
       amount,
-      feeTokenAddress,
+      //   feeTokenAddress,
     };
   };
 
-  const handleBridge = () => {
-    alert('Bridge');
+  const handleBridge = async () => {
+    const {
+      sourceChain,
+      destinationChain,
+      destinationAccount,
+      tokenAddress,
+      amount,
+      // feeTokenAddress,
+    } = handleBridgeArguments();
+
+    console.log('sourceChain', sourceChain);
+    console.log('destinationChain', destinationChain);
+    console.log('destinationAccount', destinationAccount);
+    console.log('tokenAddress', tokenAddress);
+    console.log('amount', amount);
+    const provider = getProvider(selectedChainId);
+
+    console.log('provider', provider);
+
+    const providerIndex = provider.currentProviderIndex;
+
+    const signer = provider.providers[providerIndex].getSigner(user);
+
+    // Get the router's address for the specified chain
+    const sourceRouterAddress = getRouterConfig(sourceChain.chainId).address;
+    const sourceChainSelector = getRouterConfig(sourceChain.chainId).chainSelector;
+    // Get the chain selector for the target chain
+    const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
+
+    // Create a contract instance for the router using its ABI and address
+
+    console.log('sourceRouterAddress', sourceRouterAddress);
+
+    const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
+
+    /* 
+  ==================================================
+      Section: Check token validity
+      Check first if the token you would like to 
+      transfer is supported.
+  ==================================================
+  */
+
+    // Fetch the list of supported tokens
+
+    console.log('destinationChainSelector', destinationChainSelector);
+
+    const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
+
+    const tokenAddressLower = tokenAddress.toLowerCase();
+
+    // Convert each supported token to lowercase and check if the list includes the lowercase token address
+    const isSupported = supportedTokens
+      .map((token) => token.toLowerCase())
+      .includes(tokenAddressLower);
+
+    if (!isSupported) {
+      throw Error(
+        `Token address ${tokenAddress} not in the list of supportedTokens ${supportedTokens}`
+      );
+    }
+
+    console.log('WE GOOOD');
+
+    /* 
+  ==================================================
+      Section: BUILD CCIP MESSAGE
+      build CCIP message that you will send to the
+      Router contract.
+  ==================================================
+  */
+
+    // build message
+    const tokenAmounts = [
+      {
+        token: tokenAddress,
+        amount: amount,
+      },
+    ];
+
+    // Encoding the data
+
+    const functionSelector = utils.id('CCIP EVMExtraArgsV1').slice(0, 10);
+    //  "extraArgs" is a structure that can be represented as [ 'uint256']
+    // extraArgs are { gasLimit: 0 }
+    // we set gasLimit specifically to 0 because we are not sending any data so we are not expecting a receiving contract to handle data
+
+    const extraArgs = utils.defaultAbiCoder.encode(['uint256'], [0]);
+
+    const encodedExtraArgs = functionSelector + extraArgs.slice(2);
+
+    const message = {
+      receiver: utils.defaultAbiCoder.encode(['address'], [destinationAccount]),
+      data: '0x', // no data
+      tokenAmounts: tokenAmounts,
+      feeToken: constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
+      // feeToken: feeTokenAddress ? feeTokenAddress : ethers.constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
+
+      extraArgs: encodedExtraArgs,
+    };
+
+    /* 
+  ==================================================
+      Section: CALCULATE THE FEES
+      Call the Router to estimate the fees for sending tokens.
+  ==================================================
+  */
+
+    const fees = await sourceRouter.getFee(destinationChainSelector, message);
+    console.log(`Estimated fees (wei): ${fees}`);
+
+    /* 
+  ==================================================
+      Section: SEND tokens
+      This code block initializes an ERC20 token contract for token transfer across chains. It handles three cases:
+      1. If the fee token is the native blockchain token, it makes one approval for the transfer amount. The fees are included in the msg.value field.
+      2. If the fee token is different from both the native blockchain token and the transfer token, it makes two approvals: one for the transfer amount and another for the fees. The fees are part of the message.
+      3. If the fee token is the same as the transfer token but not the native blockchain token, it makes a single approval for the sum of the transfer amount and fees. The fees are part of the message.
+      The code waits for the transaction to be mined and stores the transaction receipt.
+  ==================================================
+  */
+
+    // Create a contract instance for the token using its ABI and address
+    const erc20 = new Contract(tokenAddress, erc20Abi, signer);
+
+    try {
+      let sendTx, approvalTx;
+
+      // if (!feeTokenAddress) {
+      // Pay native
+      // First approve the router to spend tokens
+
+      console.log('FOOOOOO', erc20);
+
+      try {
+        // START HERE, approval is not working
+
+        approvalTx = await erc20.approve(sourceRouterAddress, amount);
+      } catch (err) {
+        console.log('error approving tx', err);
+      }
+
+      console.log('here =====');
+      await approvalTx.wait(); // wait for the transaction to be mined
+      console.log(
+        `approved router ${sourceRouterAddress} to spend ${amount} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
+      );
+
+      //   sendTx = await sourceRouter.ccipSend(destinationChainSelector, message, {
+      //     value: fees,
+      //   }); // fees are send as value since we are paying the fees in native
+      // }
+
+      // else {
+      //   if (tokenAddress.toUpperCase() === feeTokenAddress.toUpperCase()) {
+      //     // fee token is the same as the token to transfer
+      //     // Amount tokens to approve are transfer amount + fees
+      //     approvalTx = await erc20.approve(sourceRouterAddress, amount + fees);
+      //     await approvalTx.wait(); // wait for the transaction to be mined
+      //     console.log(
+      //       `approved router ${sourceRouterAddress} to spend ${amount} and fees ${fees} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
+      //     );
+      //   }
+      //   else {
+      //     // fee token is different than the token to transfer
+      //     // 2 approvals
+      //     approvalTx = await erc20.approve(sourceRouterAddress, amount); // 1 approval for the tokens to transfer
+      //     await approvalTx.wait(); // wait for the transaction to be mined
+      //     console.log(
+      //       `approved router ${sourceRouterAddress} to spend ${amount} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
+      //     );
+      //     const erc20Fees = new ethers.Contract(feeTokenAddress, erc20Abi, signer);
+      //     approvalTx = await erc20Fees.approve(sourceRouterAddress, fees); // 1 approval for the fees token
+      //     await approvalTx.wait();
+      //     console.log(
+      //       `approved router ${sourceRouterAddress} to spend  fees ${fees} of token ${feeTokenAddress}. Transaction: ${approvalTx.hash}`
+      //     );
+      //   }
+      //   sendTx = await sourceRouter.ccipSend(destinationChainSelector, message);
+      // }
+
+      const receipt = await sendTx.wait(); // wait for the transaction to be mined
+
+      /* 
+      ==================================================
+          Section: Fetch message ID
+          The Router ccipSend function returns the messageId.
+          This section makes a call (simulation) to the blockchain
+          to fetch the messageId that was returned by the Router.
+      ==================================================
+      */
+
+      // Simulate a call to the router to fetch the messageID
+      const call = {
+        from: sendTx.from,
+        to: sendTx.to,
+        data: sendTx.data,
+        gasLimit: sendTx.gasLimit,
+        gasPrice: sendTx.gasPrice,
+        value: sendTx.value,
+      };
+
+      // Simulate a contract call with the transaction data at the block before the transaction
+      const messageId = await provider.call(call, receipt.blockNumber - 1);
+
+      console.log(
+        `\n✅ ${amount} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
+      );
+    } catch (error) {
+      console.log('ERRRR', error);
+    }
   };
 
   return (

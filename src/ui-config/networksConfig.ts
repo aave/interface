@@ -224,6 +224,27 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://bridge.arbitrum.io',
     },
   },
+  // [421614]: {
+  //   name: 'Arbitrum Sepolia',
+  //   publicJsonRPCUrl: [
+  //     'https://arbitrum-sepolia.blockpi.network/v1/rpc/public',
+  //     'https://sepolia-rollup.arbitrum.io/rpc	',
+  //   ],
+  //   // publicJsonRPCWSUrl: 'wss://goerli-rollup.arbitrum.io/rpc',
+  //   baseUniswapAdapter: '0x0',
+  //   baseAssetSymbol: 'ETH',
+  //   wrappedBaseAssetSymbol: 'WETH',
+  //   baseAssetDecimals: 18,
+  //   explorerLink: 'https://sepolia.arbiscan.io',
+  //   // usdMarket: true,
+  //   isTestnet: true,
+  //   networkLogoPath: '/icons/networks/arbitrum.svg',
+  //   bridge: {
+  //     icon: '/icons/bridge/arbitrum.svg',
+  //     name: 'Arbitrum Bridge',
+  //     url: 'https://bridge.arbitrum.io',
+  //   },
+  // },
   [ChainId.arbitrum_one]: {
     name: 'Arbitrum',
     privateJsonRPCUrl: 'https://arbitrum-one.rpc.grove.city/v1/62b3314e123e6f00397f19ca',

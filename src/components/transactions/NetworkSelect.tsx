@@ -7,9 +7,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
 
-const networks = ['Ethereum', 'Polygon'];
+const networks = ['Ethereum', 'Polygon', 'Arbitrum Sepolia'];
 
-interface NetworkConfiguration {
+export interface NetworkConfiguration {
   baseAssetDecimals: number;
   baseAssetSymbol: string;
   chainId: number;
