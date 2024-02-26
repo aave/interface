@@ -18,10 +18,6 @@ export const useApprovedAmount = ({
   return useQuery({
     queryFn: () => approvedAmountService.getApprovedAmount(marketData, user, token, spender),
     queryKey: queryKeysFactory.approvedAmount(user, token, spender, marketData),
-    enabled: !!user,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
   });
 };
 
@@ -31,9 +27,5 @@ export const usePoolApprovedAmount = (marketData: MarketDataType, token: string)
   return useQuery({
     queryFn: () => approvedAmountService.getPoolApprovedAmount(marketData, user, token),
     queryKey: queryKeysFactory.poolApprovedAmount(user, token, marketData),
-    enabled: !!user,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
   });
 };
