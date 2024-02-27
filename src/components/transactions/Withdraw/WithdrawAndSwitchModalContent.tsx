@@ -98,8 +98,6 @@ export const WithdrawAndSwitchModalContent = ({
     wrappedTokenConfig?.tokenWrapperAddress || ''
   );
 
-  console.log('unwrappedAmount', unwrappedAmount);
-
   const {
     inputAmountUSD,
     inputAmount,
