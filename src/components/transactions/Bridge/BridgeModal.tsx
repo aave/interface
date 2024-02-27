@@ -21,6 +21,9 @@ import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { AaveV3Ethereum, AaveV3Sepolia } from '@bgd-labs/aave-address-book';
 import { getRouterConfig } from './Router';
+import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
+import { ApprovalMethod } from 'src/store/walletSlice';
+
 import routerAbi from './Router-abi.json';
 import erc20Abi from './IERC20Meta.json';
 import {
@@ -42,6 +45,13 @@ export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
 }
 
+interface SignedParams {
+  signature: string;
+  deadline: string;
+  amount: string;
+  approvedToken: string;
+}
+
 export const BridgeModal = () => {
   const {
     type,
@@ -50,7 +60,6 @@ export const BridgeModal = () => {
   } = useModalContext();
 
   const currentChainId = useRootStore((store) => store.currentChainId);
-  const user = useRootStore((store) => store.account);
   const [amount, setAmount] = useState('0');
   const [inputAmountUSD, setInputAmount] = useState('');
   const [sourceToken, setSourceToken] = useState('');
@@ -64,6 +73,40 @@ export const BridgeModal = () => {
       return currentChainId;
     return defaultNetwork.chainId;
   });
+
+  const [
+    user,
+    generateApproval,
+    estimateGasLimit,
+    walletApprovalMethodPreference,
+    generateSignatureRequest,
+    addTransaction,
+    currentMarketData,
+  ] = useRootStore((state) => [
+    state.account,
+    state.generateApproval,
+    state.estimateGasLimit,
+    state.walletApprovalMethodPreference,
+    state.generateSignatureRequest,
+    state.addTransaction,
+    state.currentMarketData,
+  ]);
+
+  const {
+    approvalTxState,
+    mainTxState,
+    loadingTxns,
+    setMainTxState,
+    setTxError,
+    setGasLimit,
+    setLoadingTxns,
+    setApprovalTxState,
+  } = useModalContext();
+
+  const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+
+  const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
+  // const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
 
   console.log('supportedNetworksWithBridgeMarket', supportedNetworksWithBridgeMarket);
 
@@ -224,6 +267,19 @@ export const BridgeModal = () => {
     // Get the chain selector for the target chain
     const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
 
+    // const {
+    //   data: approvedAmount,
+    //   refetch: fetchApprovedAmount,
+    //   isFetching: fetchingApprovedAmount,
+    //   isFetchedAfterMount,
+    // } = useApprovedAmount({
+    //   marketData: currentMarketData,
+    //   token: GHO,
+    //   spender: sourceRouterAddress,
+    // });
+
+    console.log('approvedAmount 000', approvedAmount);
+
     // Create a contract instance for the router using its ABI and address
 
     console.log('sourceRouterAddress', sourceRouterAddress);
@@ -331,6 +387,8 @@ export const BridgeModal = () => {
 
       try {
         // START HERE, approval is not working
+
+        useApprovedAmount;
 
         approvalTx = await erc20.approve(sourceRouterAddress, amount);
       } catch (err) {
