@@ -1,8 +1,8 @@
-import { ChainId } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { selectCurrentReserves } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { amountToUsd } from 'src/utils/utils';
 
 import { useAppDataContext } from './app-data-provider/useAppDataProvider';
@@ -22,13 +22,13 @@ export type WrappedTokenConfig = {
 };
 
 const wrappedTokenConfig: {
-  [chainId: number]: Array<{
+  [market: string]: Array<{
     tokenIn: string;
     tokenOut: string;
     tokenWrapperContractAddress: string;
   }>;
 } = {
-  [ChainId.mainnet]: [
+  [CustomMarket.proto_mainnet_v3]: [
     {
       tokenIn: AaveV3Ethereum.ASSETS.DAI.UNDERLYING.toLowerCase(),
       tokenOut: AaveV3Ethereum.ASSETS.sDAI.UNDERLYING.toLowerCase(),
@@ -39,16 +39,16 @@ const wrappedTokenConfig: {
 
 export const useWrappedTokens = () => {
   const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals } = useAppDataContext();
-  const [reserves, currentChainId] = useRootStore((state) => [
+  const [reserves, currentMarket] = useRootStore((state) => [
     selectCurrentReserves(state),
-    state.currentChainId,
+    state.currentMarket,
   ]);
 
   if (!reserves || reserves.length === 0) {
     return [];
   }
 
-  const wrappedTokens = wrappedTokenConfig[currentChainId] ?? [];
+  const wrappedTokens = wrappedTokenConfig[currentMarket] ?? [];
   let wrappedTokenReserves: WrappedTokenConfig[] = [];
 
   wrappedTokenReserves = wrappedTokens.map<WrappedTokenConfig>((config) => {
