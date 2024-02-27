@@ -57,6 +57,7 @@ export const BridgeModal = () => {
   const [destinationToken, setDestinationToken] = useState('');
   const [sourceNetwork, setSourceNetwork] = useState('');
   const [destinationNetwork, setDestinationNetwork] = useState('');
+  const { provider } = useWeb3Context();
 
   const [selectedChainId, setSelectedChainId] = useState(() => {
     if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId))
@@ -211,13 +212,11 @@ export const BridgeModal = () => {
     console.log('destinationAccount', destinationAccount);
     console.log('tokenAddress', tokenAddress);
     console.log('amount', amount);
-    const provider = getProvider(selectedChainId);
+    // const provider = getProvider(selectedChainId);
 
     console.log('provider', provider);
 
-    const providerIndex = provider.currentProviderIndex;
-
-    const signer = provider.providers[providerIndex].getSigner(user);
+    const signer = await provider.getSigner();
 
     // Get the router's address for the specified chain
     const sourceRouterAddress = getRouterConfig(sourceChain.chainId).address;
@@ -344,10 +343,10 @@ export const BridgeModal = () => {
         `approved router ${sourceRouterAddress} to spend ${amount} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
       );
 
-      //   sendTx = await sourceRouter.ccipSend(destinationChainSelector, message, {
-      //     value: fees,
-      //   }); // fees are send as value since we are paying the fees in native
-      // }
+      sendTx = await sourceRouter.ccipSend(destinationChainSelector, message, {
+        value: fees,
+      }); // fees are send as value since we are paying the fees in native
+      //}
 
       // else {
       //   if (tokenAddress.toUpperCase() === feeTokenAddress.toUpperCase()) {
@@ -404,6 +403,8 @@ export const BridgeModal = () => {
       console.log(
         `\n✅ ${amount} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
       );
+
+      // 100 of Tokens(0xc4bf5cbdabe595361438f8c6a187bdc330539c60) Sent to account 0x3f1cf2c4ed96554b76763c8b38d66b66cc48e841 on destination chain [object Object] using CCIP. Transaction hash 0x847bcb76cc5ced74d8a869d5d057cdd314079c507cec57c3be76c7b2efb1e6ec -  Message id is 0x5efe6982ec39c9eba60819284e05bd1691c0903aaec7d12f4e30925b69e6c5f5
     } catch (error) {
       console.log('ERRRR', error);
     }
