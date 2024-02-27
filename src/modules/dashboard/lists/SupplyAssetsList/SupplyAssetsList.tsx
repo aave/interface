@@ -10,6 +10,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { displayGho } from 'src/utils/ghoUtilities';
@@ -30,7 +31,6 @@ import { DashboardListTopPanel } from '../../DashboardListTopPanel';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
-import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 import { WalletEmptyInfo } from './WalletEmptyInfo';
 
 const head = [
@@ -54,6 +54,7 @@ export const SupplyAssetsList = () => {
     marketReferencePriceInUsd,
     loading: loadingReserves,
   } = useAppDataContext();
+  const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances, loading } = useWalletBalances(currentMarketData);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -167,9 +168,23 @@ export const SupplyAssetsList = () => {
   const sortedSupplyReserves = tokensToSupply.sort((a, b) =>
     +a.walletBalanceUSD > +b.walletBalanceUSD ? -1 : 1
   );
-  const filteredSupplyReserves = sortedSupplyReserves.filter(
-    (reserve) => reserve.availableToDepositUSD !== '0'
-  );
+
+  const filteredSupplyReserves = sortedSupplyReserves.filter((reserve) => {
+    if (reserve.availableToDepositUSD !== '0') {
+      return true;
+    }
+
+    const wrappedTokenConfig = wrappedTokenReserves.find(
+      (r) => r.tokenOut.underlyingAsset === reserve.underlyingAsset
+    );
+
+    if (!wrappedTokenConfig) {
+      return false;
+    }
+
+    // The asset can be supplied if the user has a 'token in' balance, (DAI as sDAI for example)
+    return walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset]?.amount !== '0';
+  });
 
   // Filter out reserves
   const supplyReserves: unknown = isShowZeroAssets
@@ -284,11 +299,7 @@ export const SupplyAssetsList = () => {
         {sortedReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
-              {downToXSM ? (
-                <SupplyAssetsListMobileItem {...item} key={item.id} />
-              ) : (
-                <SupplyAssetsListItem {...item} key={item.id} />
-              )}
+              <SupplyAssetsListItem {...item} key={item.id} />
             </AssetCapsProvider>
           </Fragment>
         ))}
