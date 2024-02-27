@@ -1,7 +1,7 @@
 import { InterestRate, valueToWei } from '@aave/contract-helpers';
 import { rayDiv, valueToBigNumber } from '@aave/math-utils';
 import dayjs from 'dayjs';
-import { memoize } from 'lodash';
+import memoize from 'micro-memoize';
 import { selectFormatBaseCurrencyData } from 'src/store/poolSelectors';
 import { PoolReserve } from 'src/store/poolSlice';
 import { useRootStore } from 'src/store/root';

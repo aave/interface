@@ -9,14 +9,14 @@ import {
   checkEmodeActivatingDisabled,
   verifyCountOfBorrowAssets,
 } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHOptimismV3: 100,
+};
 
 const testData = {
   testCases: {
-    deposit1: {
-      asset: assets.optimismMarket.ETH,
-      amount: 100,
-      hasApproval: true,
-    },
     borrow: {
       asset: assets.optimismMarket.DAI,
       amount: 9999,
@@ -49,9 +49,11 @@ const testData = {
 //due frozen assets
 describe.skip('E-MODE SPEC, OPTIMISM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyOptimismFork({ v3: true });
+  configEnvWithTenderlyOptimismFork({
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   describe('Prepare min health factor state, with stable coins', () => {
-    supply(testData.testCases.deposit1, skipTestState, true);
     borrow(testData.testCases.borrow, skipTestState, true);
     supply(testData.testCases.deposit2, skipTestState, true);
     borrow(testData.testCases.borrow, skipTestState, true);

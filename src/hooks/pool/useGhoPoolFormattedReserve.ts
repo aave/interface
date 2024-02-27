@@ -1,6 +1,5 @@
 import { ReservesDataHumanized } from '@aave/contract-helpers';
 import { formatGhoReserveData, GhoReserveData } from '@aave/math-utils';
-import { memoize } from 'lodash';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
@@ -8,7 +7,7 @@ import { useGhoPoolsReserve } from './useGhoPoolReserve';
 import { usePoolsReservesHumanized } from './usePoolReserves';
 import { combineQueries } from './utils';
 
-const selector = memoize((ghoReserveData: GhoReserveData, reservesData: ReservesDataHumanized) => {
+const selector = (ghoReserveData: GhoReserveData, reservesData: ReservesDataHumanized) => {
   const formattedGhoReserveData = formatGhoReserveData({ ghoReserveData });
   let aaveFacilitatorRemainingCapacity = Math.max(
     formattedGhoReserveData.aaveFacilitatorRemainingCapacity - 0.000001,
@@ -24,11 +23,12 @@ const selector = memoize((ghoReserveData: GhoReserveData, reservesData: Reserves
     ...formattedGhoReserveData,
     aaveFacilitatorRemainingCapacity,
   };
-});
+};
 
 export const useGhoPoolsFormattedReserve = (marketsData: MarketDataType[]) => {
   const ghoReservesQueries = useGhoPoolsReserve(marketsData);
   const reservesQueries = usePoolsReservesHumanized(marketsData);
+
   return ghoReservesQueries.map((elem, index) => {
     return combineQueries([elem, reservesQueries[index]] as const, selector);
   });

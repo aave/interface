@@ -24,6 +24,7 @@ import {
   ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useGhoPoolReserve } from 'src/hooks/pool/useGhoPoolReserve';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -122,6 +123,7 @@ export const GhoBorrowModalContent = ({
   const { marketReferencePriceInUsd, ghoReserveData, ghoUserData, ghoLoadingData } =
     useAppDataContext();
   const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
+  const { data: _ghoReserveData } = useGhoPoolReserve(currentMarketData);
   const { borrowCap } = useAssetCaps();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
@@ -132,9 +134,10 @@ export const GhoBorrowModalContent = ({
   // Check if user can borrow at a discount
   const hasGhoBorrowPositions = ghoUserData.userGhoBorrowBalance > 0;
   const userStakedAaveBalance: number = ghoUserData.userDiscountTokenBalance;
-  const discountAvailable = _ghoUserData
-    ? ghoUserQualifiesForDiscount(ghoReserveData, _ghoUserData, amount)
-    : false;
+  const discountAvailable =
+    _ghoUserData && _ghoReserveData
+      ? ghoUserQualifiesForDiscount(_ghoReserveData, _ghoUserData, amount)
+      : false;
 
   // amount calculations
   let maxAmountToBorrow = getMaxGhoMintAmount(user, poolReserve);

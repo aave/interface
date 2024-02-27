@@ -1,3 +1,9 @@
+import {
+  AaveV3Arbitrum,
+  AaveV3Gnosis,
+  AaveV3Optimism,
+  AaveV3Polygon,
+} from '@bgd-labs/aave-address-book';
 import { unPrefixSymbol } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 /**
@@ -103,15 +109,30 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       symbol: 'KNCL',
       iconSymbol: 'KNCL',
     },
-    '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8': {
+    [AaveV3Arbitrum.ASSETS.USDC.UNDERLYING.toLowerCase()]: {
       name: 'Bridged USDC',
       symbol: 'USDC.e',
       iconSymbol: 'USDC',
     },
-    '0xaf204776c7245bf4147c2612bf6e5972ee483701': {
+    [AaveV3Optimism.ASSETS.USDC.UNDERLYING.toLowerCase()]: {
+      name: 'Bridged USDC',
+      symbol: 'USDC.e',
+      iconSymbol: 'USDC',
+    },
+    [AaveV3Polygon.ASSETS.USDC.UNDERLYING.toLowerCase()]: {
+      name: 'Bridged USDC',
+      symbol: 'USDC.e',
+      iconSymbol: 'USDC',
+    },
+    [AaveV3Gnosis.ASSETS.sDAI.UNDERLYING.toLowerCase()]: {
       name: 'Savings xDAI',
       symbol: 'sDAI',
       iconSymbol: 'gnosissdai',
+    },
+    '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c': {
+      name: 'BTCB Token',
+      symbol: 'BTCB',
+      iconSymbol: 'btc',
     },
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },

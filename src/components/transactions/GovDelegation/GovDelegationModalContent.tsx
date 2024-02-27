@@ -1,17 +1,16 @@
-import { canBeEnsAddress } from '@aave/contract-helpers';
+import { DelegationType } from '@aave/contract-helpers';
 import { t, Trans } from '@lingui/macro';
 import { FormControl, TextField, Typography } from '@mui/material';
-import { utils } from 'ethers';
+import { constants, utils } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { DelegationType } from 'src/helpers/types';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -46,16 +45,15 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
-    data: { aave, stkAave },
+    data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
-  const { data: powers, refetch } = usePowers(currentMarketData);
+  const { data: powers, refetch } = usePowers();
   // error states
 
   // selector states
-  const [delegationTokenType, setDelegationTokenType] = useState(DelegationTokenType.BOTH);
-  const [delegationType, setDelegationType] = useState(DelegationType.BOTH);
+  const [delegationTokenType, setDelegationTokenType] = useState(DelegationTokenType.ALL);
+  const [delegationType, setDelegationType] = useState(DelegationType.ALL);
   const [delegate, setDelegate] = useState('');
 
   const isRevokeModal = type === ModalType.RevokeGovDelegation;
@@ -63,13 +61,18 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const onlyOnePowerToRevoke =
     isRevokeModal &&
     !!powers &&
-    ((powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '') ||
-      (powers.aavePropositionDelegatee === '' && powers.stkAavePropositionDelegatee === ''));
+    ((powers.aaveVotingDelegatee === constants.AddressZero &&
+      powers.stkAaveVotingDelegatee === constants.AddressZero) ||
+      (powers.aavePropositionDelegatee === constants.AddressZero &&
+        powers.stkAavePropositionDelegatee === constants.AddressZero));
 
   useEffect(() => {
     if (onlyOnePowerToRevoke) {
-      if (powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '')
-        setDelegationType(DelegationType.PROPOSITION_POWER);
+      if (
+        powers.aaveVotingDelegatee === constants.AddressZero &&
+        powers.stkAaveVotingDelegatee === constants.AddressZero
+      )
+        setDelegationType(DelegationType.PROPOSITION);
       else setDelegationType(DelegationType.VOTING);
     }
   }, [onlyOnePowerToRevoke, powers]);
@@ -80,7 +83,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
 
   const tokens = [
     {
-      address: governanceConfig.stkAaveTokenAddress,
+      address: governanceV3Config.votingAssets.stkAaveTokenAddress,
       symbol: 'stkAAVE',
       name: 'Staked AAVE',
       amount: stkAave,
@@ -89,7 +92,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       type: DelegationTokenType.STKAAVE,
     },
     {
-      address: governanceConfig.aaveTokenAddress,
+      address: governanceV3Config.votingAssets.aaveTokenAddress,
       symbol: 'AAVE',
       name: 'AAVE',
       amount: aave,
@@ -97,11 +100,20 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       propositionDelegatee: powers?.aavePropositionDelegatee,
       type: DelegationTokenType.AAVE,
     },
+    {
+      address: governanceV3Config.votingAssets.aAaveTokenAddress,
+      symbol: 'aAAVE',
+      name: 'aAAVE',
+      amount: aAave,
+      votingDelegatee: powers?.aAaveVotingDelegatee,
+      propositionDelegatee: powers?.aAavePropositionDelegatee,
+      type: DelegationTokenType.aAave,
+    },
   ];
 
   // handle delegate address errors
   let delegateAddressBlockingError: ErrorType | undefined = undefined;
-  if (delegate !== '' && !utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
+  if (delegate !== '' && !utils.isAddress(delegate)) {
     delegateAddressBlockingError = ErrorType.NOT_AN_ADDRESS;
   }
 
@@ -125,9 +137,9 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   // is Network mismatched
   const govChain =
     currentNetworkConfig.isFork &&
-    currentNetworkConfig.underlyingChainId === governanceConfig.chainId
+    currentNetworkConfig.underlyingChainId === governanceV3Config.coreChainId
       ? currentChainId
-      : governanceConfig.chainId;
+      : governanceV3Config.coreChainId;
   const isWrongNetwork = connectedChainId !== govChain;
 
   const networkConfig = getNetworkConfig(govChain);
@@ -145,9 +157,10 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       )}
       {(isRevokeModal &&
         !!powers &&
-        ((powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '') ||
-          (powers.aavePropositionDelegatee === '' &&
-            powers.stkAavePropositionDelegatee === ''))) || (
+        ((powers.aaveVotingDelegatee === constants.AddressZero &&
+          powers.stkAaveVotingDelegatee === constants.AddressZero) ||
+          (powers.aavePropositionDelegatee === constants.AddressZero &&
+            powers.stkAavePropositionDelegatee === constants.AddressZero))) || (
         <>
           <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
             <Trans>{isRevokeModal ? 'Power to revoke' : 'Power to delegate'}</Trans>
@@ -179,9 +192,10 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
         >
           <Trans>
             Choose how much voting/proposition power to give to someone else by delegating some of
-            your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate
-            will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes,
-            your delegate&apos;s voting/proposition power will be automatically adjusted.
+            your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your
+            delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave
+            balance changes, your delegate&apos;s voting/proposition power will be automatically
+            adjusted.
           </Trans>
         </TextWithTooltip>
       )}
@@ -216,7 +230,10 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
           </FormControl>
         </>
       )}
-      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      <GasStation
+        gasLimit={parseUnits(gasLimit || '0', 'wei')}
+        chainId={governanceV3Config.coreChainId}
+      />
 
       {txError && <GasEstimationError txError={txError} />}
 
@@ -225,7 +242,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
         delegationTokenType={delegationTokenType}
         delegatee={delegate}
         isWrongNetwork={isWrongNetwork}
-        blocked={delegateAddressBlockingError !== undefined || delegate === '' || !delegationType}
+        blocked={delegateAddressBlockingError !== undefined || delegate === ''}
         isRevoke={isRevokeModal}
       />
     </>

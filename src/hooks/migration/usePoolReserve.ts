@@ -1,5 +1,5 @@
 import { ReservesDataHumanized, ReservesIncentiveDataHumanized } from '@aave/contract-helpers';
-import { memoize } from 'lodash';
+import memoize from 'micro-memoize';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { PoolReserve } from 'src/store/poolSlice';
 import { MarketDataType } from 'src/ui-config/marketsConfig';

@@ -1,5 +1,7 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
 import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -23,6 +25,14 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
     isLoading: ghoReserveDataLoading,
     error: ghoReserveDataError,
   } = useGhoPoolFormattedReserve(currentMarketData);
+
+  let totalBorrowed = Number(reserve?.totalDebt);
+  if (Number(reserve?.borrowCap) > 0) {
+    totalBorrowed = BigNumber.min(
+      valueToBigNumber(reserve?.totalDebt || 0),
+      valueToBigNumber(reserve?.borrowCap || 0)
+    ).toNumber();
+  }
 
   return (
     <Box
@@ -209,14 +219,17 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   alignItems: 'flex-start',
                 }}
               >
-                {ghoReserveDataLoading || ghoReserveDataError || !ghoReserveData ? (
+                {ghoReserveDataLoading ||
+                ghoReserveDataError ||
+                !ghoReserveData ||
+                totalBorrowed === 0 ? (
                   <Skeleton width={70} height={25} />
                 ) : (
                   <FormattedNumber
                     symbol="USD"
                     compact
                     variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                    value={ghoReserveData.aaveFacilitatorBucketLevel}
+                    value={totalBorrowed}
                   />
                 )}
                 <Typography

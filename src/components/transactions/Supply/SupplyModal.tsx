@@ -6,7 +6,7 @@ import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
-import { SupplyModalContent } from './SupplyModalContent';
+import { SupplyModalContentWrapper } from './SupplyModalContent';
 
 export const SupplyModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
@@ -23,7 +23,7 @@ export const SupplyModal = () => {
       >
         {(params) => (
           <UserAuthenticated>
-            {(user) => <SupplyModalContent {...params} user={user} />}
+            {(user) => <SupplyModalContentWrapper {...params} user={user} />}
           </UserAuthenticated>
         )}
       </ModalWrapper>

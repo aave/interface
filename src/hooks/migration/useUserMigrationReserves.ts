@@ -5,7 +5,7 @@ import {
 } from '@aave/contract-helpers';
 import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
 import dayjs from 'dayjs';
-import { memoize } from 'lodash';
+import memoize from 'micro-memoize';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { useRootStore } from 'src/store/root';
 import {

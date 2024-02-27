@@ -18,9 +18,10 @@ import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
+import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
+import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
@@ -95,6 +96,7 @@ export function AppHeader() {
 
   const { openSwitch } = useModalContext();
 
+  const { currentMarketData } = useProtocolDataContext();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -126,6 +128,16 @@ export function AppHeader() {
     window.location.href = '/';
   };
 
+  const disableFork = () => {
+    localStorage.setItem('testnetsEnabled', 'false');
+    localStorage.removeItem('forkEnabled');
+    localStorage.removeItem('forkBaseChainId');
+    localStorage.removeItem('forkNetworkId');
+    localStorage.removeItem('forkRPCUrl');
+    // Set window.location to trigger a page reload when navigating to the the dashboard
+    window.location.href = '/';
+  };
+
   const handleSwitchClick = () => {
     localStorage.setItem(SWITCH_VISITED_KEY, 'true');
     setVisitedSwitch(true);
@@ -148,6 +160,20 @@ export function AppHeader() {
       </Typography>
       <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableTestnet}>
         <Trans>Disable testnet</Trans>
+      </Button>
+    </Box>
+  );
+
+  const forkTooltip = (
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 1 }}>
+      <Typography variant="subheader1">
+        <Trans>Fork mode is ON</Trans>
+      </Typography>
+      <Typography variant="description">
+        <Trans>The app is running in fork mode.</Trans>
+      </Typography>
+      <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableFork}>
+        <Trans>Disable fork</Trans>
       </Button>
     </Box>
   );
@@ -202,6 +228,26 @@ export function AppHeader() {
                 }}
               >
                 TESTNET
+                <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
+                  <InformationCircleIcon />
+                </SvgIcon>
+              </Button>
+            </ContentWithTooltip>
+          )}
+        </Box>
+        <Box sx={{ mr: sm ? 1 : 3 }}>
+          {FORK_ENABLED && currentMarketData?.isFork && (
+            <ContentWithTooltip tooltipContent={forkTooltip} offset={[0, -4]} withoutHover>
+              <Button
+                variant="surface"
+                size="small"
+                color="primary"
+                sx={{
+                  backgroundColor: '#B6509E',
+                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
+                }}
+              >
+                FORK
                 <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
                   <InformationCircleIcon />
                 </SvgIcon>
