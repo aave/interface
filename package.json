@@ -4,7 +4,7 @@
   "private": true,
   "license": "BSD-3-Clause",
     "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='--inspect --max_old_space_size=8192' next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
     "build:static": "next build && next export",
