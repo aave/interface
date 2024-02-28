@@ -5,6 +5,8 @@ import { RootStore } from './root';
 export type LayoutSlice = {
   setMobileDrawerOpen: (eventName: boolean) => void;
   mobileDrawerOpen: boolean;
+  feedbackDialogOpen: boolean;
+  setFeedbackOpen: (eventName: boolean) => void;
 };
 
 export const createLayoutSlice: StateCreator<
@@ -15,8 +17,12 @@ export const createLayoutSlice: StateCreator<
 > = (set) => {
   return {
     mobileDrawerOpen: false,
+    feedbackDialogOpen: false,
     setMobileDrawerOpen: (value: boolean) => {
       set({ mobileDrawerOpen: value });
+    },
+    setFeedbackOpen: (value: boolean) => {
+      set({ feedbackDialogOpen: value });
     },
   };
 };
