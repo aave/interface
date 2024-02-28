@@ -44,13 +44,12 @@ export const FeedbackModal = () => {
         },
       });
 
-      setIsLoading(false);
       setSuccess(true);
-      setValue('');
     } catch (error) {
+      setError(true);
+    } finally {
       setIsLoading(false);
       setValue('');
-      setError(true);
     }
   };
 
