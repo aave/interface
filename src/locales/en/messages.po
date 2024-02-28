@@ -1078,6 +1078,10 @@ msgstr "Faucet"
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr "Feedback"
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
 msgstr "Fetching data..."
@@ -1829,10 +1833,6 @@ msgstr "Protocol supply cap at 100% for this asset. Further supply unavailable."
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailable."
-
-#: src/layouts/FeedbackDialog.tsx
-msgid "Provide App Feedback"
-msgstr "Provide App Feedback"
 
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Quorum"

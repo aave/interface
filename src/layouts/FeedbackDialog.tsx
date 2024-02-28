@@ -62,6 +62,7 @@ export const FeedbackModal = () => {
           justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
+          height: '280px',
         }}
       >
         {isLoading ? (
@@ -100,7 +101,7 @@ export const FeedbackModal = () => {
                 </SvgIcon>
               </Box>
 
-              <Typography sx={{ mt: 8 }} variant="h4">
+              <Typography variant="subheader1" sx={{ mt: 2 }}>
                 <Trans>
                   Submission did not work, please try again later or contact wecare@avara.xyz
                 </Trans>
@@ -108,24 +109,37 @@ export const FeedbackModal = () => {
             </Box>
           </div>
         ) : (
-          <>
-            <Typography variant="h2">
-              <Trans>Provide App Feedback </Trans>
+          <Box width={'100%'}>
+            <Typography variant="h3" display="flex" justifyContent="flex-start">
+              <Trans>Feedback </Trans>
             </Typography>
 
-            <Typography variant="description" sx={{ textAlign: 'center', mb: 2, mt: 2 }}>
+            <Typography
+              variant="subheader1"
+              color="text.secondary"
+              sx={{ textAlign: 'center', mb: 2, mt: 4 }}
+            >
               <Trans>Let us know how we can make the app better for you</Trans>
               {'.'}
             </Typography>
             <Box width={'100%'}>
-              <form onSubmit={handleFeedbackSubmit}>
+              <form style={{ width: '100%' }} onSubmit={handleFeedbackSubmit}>
                 <TextField
                   multiline
-                  rows={6}
+                  rows={4}
                   placeholder="Can you add this new feature"
                   fullWidth
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
+                  sx={{
+                    '& .MuiInputBase-inputMultiline': {
+                      overflow: 'auto !important',
+                      padding: '8px !important',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      padding: '0 !important',
+                    },
+                  }}
                 />
                 <Box display="flex" flexDirection={'row-reverse'} mt={3}>
                   <Button disabled={!value} variant="contained" type="submit">
@@ -134,7 +148,7 @@ export const FeedbackModal = () => {
                 </Box>
               </form>
             </Box>
-          </>
+          </Box>
         )}
       </Box>
     </BasicModal>
