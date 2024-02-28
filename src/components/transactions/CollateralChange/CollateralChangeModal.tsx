@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import React from 'react';
+import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 
 import { BasicModal } from '../../primitives/BasicModal';
@@ -13,7 +14,11 @@ export const CollateralChangeModal = () => {
   return (
     <BasicModal open={type === ModalType.CollateralChange} setOpen={close}>
       <ModalWrapper title={<Trans>Review tx</Trans>} underlyingAsset={args.underlyingAsset}>
-        {(params) => <CollateralChangeModalContent {...params} />}
+        {(params) => (
+          <UserAuthenticated>
+            {(user) => <CollateralChangeModalContent {...params} user={user} />}
+          </UserAuthenticated>
+        )}
       </ModalWrapper>
     </BasicModal>
   );

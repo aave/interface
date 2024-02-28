@@ -100,7 +100,7 @@ export const BorrowAssetsList = () => {
   const { baseAssetSymbol } = currentNetworkConfig;
 
   const tokensToBorrow = reserves
-    .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
+    .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
     .map((reserve: ComputedReserveData) => {
       const availableBorrows = user
         ? Number(getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable))
@@ -221,7 +221,7 @@ export const BorrowAssetsList = () => {
               <MarketWarning marketName="Ethereum AMM" />
             )}
 
-            {user.healthFactor !== '-1' && Number(user.healthFactor) <= 1.1 && (
+            {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
               <Warning severity="error">
                 <Trans>
                   Be careful - You are very close to liquidation. Consider depositing more

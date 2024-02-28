@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import React from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
+import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
@@ -13,7 +14,11 @@ export const SwapModal = () => {
   return (
     <BasicModal open={type === ModalType.Swap} setOpen={close}>
       <ModalWrapper title={<Trans>Switch</Trans>} underlyingAsset={args.underlyingAsset}>
-        {(params) => <SwapModalContent {...params} />}
+        {(params) => (
+          <UserAuthenticated>
+            {(user) => <SwapModalContent {...params} user={user} />}
+          </UserAuthenticated>
+        )}
       </ModalWrapper>
     </BasicModal>
   );

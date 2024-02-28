@@ -20,7 +20,10 @@ import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGhoPoolReserve } from 'src/hooks/pool/useGhoPoolReserve';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -112,11 +115,12 @@ export const GhoBorrowModalContent = ({
   poolReserve,
   userReserve,
   symbol,
-}: ModalWrapperProps) => {
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { mainTxState: borrowTxState, gasLimit, txError, close: closeModal } = useModalContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
-  const { user, marketReferencePriceInUsd, ghoReserveData, ghoUserData, ghoLoadingData } =
+  const { marketReferencePriceInUsd, ghoReserveData, ghoUserData, ghoLoadingData } =
     useAppDataContext();
   const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
   const { data: _ghoReserveData } = useGhoPoolReserve(currentMarketData);

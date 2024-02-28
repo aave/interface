@@ -91,14 +91,14 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   let maxAmountToSupply = '0';
   const isGho = displayGho({ symbol: reserve.symbol, currentMarket });
 
-  if (isGho) {
+  if (isGho && user) {
     const maxMintAmount = getMaxGhoMintAmount(user, reserve);
     maxAmountToBorrow = BigNumber.min(
       maxMintAmount,
       valueToBigNumber(ghoReserveData.aaveFacilitatorRemainingCapacity)
     ).toString();
     maxAmountToSupply = '0';
-  } else {
+  } else if (user) {
     maxAmountToBorrow = getMaxAmountAvailableToBorrow(
       reserve,
       user,

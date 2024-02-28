@@ -1,4 +1,5 @@
 import React from 'react';
+import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 
 import { BasicModal } from '../../primitives/BasicModal';
@@ -10,7 +11,9 @@ export const EmodeModal = () => {
   }>;
   return (
     <BasicModal open={type === ModalType.Emode} setOpen={close}>
-      <EmodeModalContent mode={args.emode} />
+      <UserAuthenticated>
+        {(user) => <EmodeModalContent user={user} mode={args.emode} />}
+      </UserAuthenticated>
     </BasicModal>
   );
 };
