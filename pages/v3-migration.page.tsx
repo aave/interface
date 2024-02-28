@@ -1,10 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Divider, useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -32,11 +31,22 @@ const MigrateV3Modal = dynamic(() =>
 );
 
 export default function V3Migration() {
-  const { loading } = useAppDataContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const [loading, setLoading] = useState(true);
+
+  const refreshPoolData = useRootStore((store) => store.refreshPoolData);
+  const refreshPoolV3Data = useRootStore((store) => store.refreshPoolV3Data);
+  const refreshIncentiveData = useRootStore((store) => store.refreshIncentiveData);
+
+  useEffect(() => {
+    Promise.all([refreshPoolData(), refreshPoolV3Data(), refreshIncentiveData()]).finally(() =>
+      setLoading(false)
+    );
+  }, [refreshPoolData, refreshPoolV3Data, refreshIncentiveData]);
 
   const currentTimeStamp = useCurrentTimestamp(10);
 

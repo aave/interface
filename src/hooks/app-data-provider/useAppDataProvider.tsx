@@ -55,7 +55,6 @@ export interface AppDataContextType {
   loading: boolean;
   reserves: ComputedReserveData[];
   eModes: Record<number, EmodeCategory>;
-  isUserHasDeposits: boolean;
   user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
@@ -148,10 +147,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     }
   }
 
-  const isUserHasDeposits = user
-    ? user.userReservesData.some((userReserve) => userReserve.scaledATokenBalance !== '0')
-    : false;
-
   return (
     <AppDataContext.Provider
       value={{
@@ -160,7 +155,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
         eModes,
         user,
         userReserves: userReserves || [],
-        isUserHasDeposits,
         marketReferencePriceInUsd: baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0',
         marketReferenceCurrencyDecimals: baseCurrencyData?.marketReferenceCurrencyDecimals || 0,
         // TODO: we should consider removing this from the context and use zustand instead. If we had a selector that would return the formatted gho data, I think that
