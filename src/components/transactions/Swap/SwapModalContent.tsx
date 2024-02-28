@@ -25,6 +25,7 @@ import { amountToUsd } from 'src/utils/utils';
 
 import {
   ComputedUserReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -42,8 +43,9 @@ export const SwapModalContent = ({
   poolReserve,
   userReserve,
   isWrongNetwork,
-}: ModalWrapperProps) => {
-  const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
+  const { reserves, marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId, currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();

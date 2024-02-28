@@ -9,6 +9,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import {
   ComputedUserReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { minimumReceivedAfterSlippage } from 'src/hooks/paraswap/common';
@@ -46,10 +47,11 @@ export const WithdrawAndSwitchModalContent = ({
   userReserve,
   symbol,
   isWrongNetwork,
-}: ModalWrapperProps) => {
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { currentAccount } = useWeb3Context();
-  const { user, reserves } = useAppDataContext();
+  const { reserves } = useAppDataContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const wrappedTokenReserves = useWrappedTokens();
 
@@ -144,6 +146,7 @@ export const WithdrawAndSwitchModalContent = ({
     poolReserve,
     healthFactorAfterWithdraw,
     withdrawAmount,
+    user,
   });
 
   const handleChange = (value: string) => {

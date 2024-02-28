@@ -12,7 +12,10 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -109,9 +112,14 @@ export const BorrowModalContent = ({
   unwrap: borrowUnWrapped,
   setUnwrap: setBorrowUnWrapped,
   symbol,
-}: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
+  user,
+}: ModalWrapperProps & {
+  unwrap: boolean;
+  setUnwrap: (unwrap: boolean) => void;
+  user: ExtendedFormattedUser;
+}) => {
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
-  const { user, marketReferencePriceInUsd } = useAppDataContext();
+  const { marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
   const { borrowCap } = useAssetCaps();
 

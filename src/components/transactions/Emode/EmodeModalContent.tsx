@@ -9,6 +9,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { EmodeCategory } from 'src/helpers/types';
 import {
   AppDataContextType,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
@@ -62,9 +63,11 @@ function getInitialEmode(
   return eModes[0];
 }
 
-export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
+export const EmodeModalContent = ({
+  mode,
+  user,
+}: EmodeModalContentProps & { user: ExtendedFormattedUser }) => {
   const {
-    user,
     reserves,
     eModes,
     marketReferenceCurrencyDecimals,

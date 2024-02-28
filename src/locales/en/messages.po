@@ -1078,6 +1078,10 @@ msgstr "Faucet"
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr "Feedback"
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
 msgstr "Fetching data..."
@@ -1332,6 +1336,10 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Learn more."
 msgstr "Learn more."
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr "Let us know how we can make the app better for you"
 
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
@@ -1676,10 +1684,6 @@ msgstr "Notify"
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Ok, Close"
-
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "Ok, I got it"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Open for voting"
@@ -2086,6 +2090,10 @@ msgstr "Selected borrow assets"
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr "Send Feedback"
+
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
 msgstr "Send feedback"
@@ -2258,6 +2266,10 @@ msgstr "Staking discount"
 msgid "State"
 msgstr "State"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr "Submission did not work, please try again later or contact wecare@avara.xyz"
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2416,6 +2428,10 @@ msgstr "Testnet mode"
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
 msgstr "Testnet mode is ON"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
+msgstr "Thank you for submitting feedback!"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting!!"

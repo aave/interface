@@ -39,7 +39,7 @@ export const useReserveActionState = ({
 
   const { bridge, name: networkName } = currentNetworkConfig;
 
-  const assetCanBeBorrowedFromPool = assetCanBeBorrowedByUser(reserve, user);
+  const assetCanBeBorrowedFromPool = user ? assetCanBeBorrowedByUser(reserve, user) : false;
   const userHasNoCollateralSupplied = user?.totalCollateralMarketReferenceCurrency === '0';
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !reserve.borrowableInIsolation;
   const eModeBorrowDisabled =

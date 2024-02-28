@@ -10,6 +10,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import {
   ComputedReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import {
@@ -42,8 +43,9 @@ export function CollateralRepayModalContent({
   debtType,
   userReserve,
   isWrongNetwork,
-}: ModalWrapperProps & { debtType: InterestRate }) {
-  const { user, reserves, userReserves } = useAppDataContext();
+  user,
+}: ModalWrapperProps & { debtType: InterestRate; user: ExtendedFormattedUser }) {
+  const { reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
