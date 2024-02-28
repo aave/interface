@@ -6,7 +6,6 @@ import { BoxProps } from '@mui/material';
 import { constants } from 'ethers';
 import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -55,7 +54,6 @@ export const WithdrawAndUnwrapAction = ({
   const { sendTx } = useWeb3Context();
 
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-  const { refetchPoolData } = useBackgroundDataProvider();
   const {
     approvalTxState,
     mainTxState,
@@ -158,7 +156,6 @@ export const WithdrawAndUnwrapAction = ({
           marketData
         ),
       });
-      refetchPoolData && refetchPoolData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
