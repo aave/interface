@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import BigNumber from 'bignumber.js';
 import {
   ComputedReserveData,
-  useAppDataContext,
+  ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 
@@ -18,15 +18,16 @@ interface WithdrawErrorProps {
   poolReserve: ComputedReserveData;
   healthFactorAfterWithdraw: BigNumber;
   withdrawAmount: string;
+  user: ExtendedFormattedUser;
 }
 export const useWithdrawError = ({
   assetsBlockingWithdraw,
   poolReserve,
   healthFactorAfterWithdraw,
   withdrawAmount,
+  user,
 }: WithdrawErrorProps) => {
   const { mainTxState: withdrawTxState } = useModalContext();
-  const { user } = useAppDataContext();
 
   let blockingError: ErrorType | undefined = undefined;
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);

@@ -31,7 +31,10 @@ import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
-import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from '../../../hooks/app-data-provider/useAppDataProvider';
 import { CapType } from '../../caps/helper';
 import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -55,8 +58,10 @@ export enum ErrorType {
   CAP_REACHED,
 }
 
-export const SupplyModalContentWrapper = (params: ModalWrapperProps) => {
-  const { user } = useAppDataContext();
+export const SupplyModalContentWrapper = (
+  params: ModalWrapperProps & { user: ExtendedFormattedUser }
+) => {
+  const user = params.user;
   const { currentMarketData } = useProtocolDataContext();
   const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances } = useWalletBalances(currentMarketData);
@@ -122,6 +127,7 @@ interface SupplyModalContentProps extends ModalWrapperProps {
   supplyCapWarning: React.ReactNode;
   debtCeilingWarning: React.ReactNode;
   wrappedTokenConfig?: WrappedTokenConfig;
+  user: ExtendedFormattedUser;
 }
 
 export const SupplyModalContent = React.memo(
@@ -136,8 +142,9 @@ export const SupplyModalContent = React.memo(
     collateralType,
     supplyCapWarning,
     debtCeilingWarning,
+    user,
   }: SupplyModalContentProps) => {
-    const { marketReferencePriceInUsd, user } = useAppDataContext();
+    const { marketReferencePriceInUsd } = useAppDataContext();
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
     const minRemainingBaseTokenBalance = useRootStore(
@@ -277,8 +284,9 @@ export const SupplyWrappedTokenModalContent = ({
   addTokenProps,
   collateralType,
   isWrongNetwork,
+  user,
 }: SupplyModalContentProps) => {
-  const { marketReferencePriceInUsd, user } = useAppDataContext();
+  const { marketReferencePriceInUsd } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
   const { walletBalances } = useWalletBalances(currentMarketData);

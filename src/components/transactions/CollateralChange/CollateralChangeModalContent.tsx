@@ -2,7 +2,7 @@ import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aa
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 
@@ -30,9 +30,9 @@ export const CollateralChangeModalContent = ({
   userReserve,
   isWrongNetwork,
   symbol,
-}: ModalWrapperProps) => {
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
-  const { user } = useAppDataContext();
   const { debtCeiling } = useAssetCaps();
 
   // Health factor calculations
