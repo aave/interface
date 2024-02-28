@@ -57,7 +57,6 @@ export interface AppDataContextType {
   eModes: Record<number, EmodeCategory>;
   isUserHasDeposits: boolean;
   user?: ExtendedFormattedUser;
-
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
   userReserves: UserReserveData[];
