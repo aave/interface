@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-27 00:16\n"
+"PO-Revision-Date: 2024-02-28 18:04\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1083,6 +1083,10 @@ msgstr "Hahn"
 msgid "Faucet {0}"
 msgstr "Hahn {0}"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr ""
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
 msgstr "Daten werden abgerufen..."
@@ -1337,6 +1341,10 @@ msgstr "Erfahren Sie mehr in unserem <0>FAQ-Leitfaden</0>"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Learn more."
 msgstr "Weitere Informationen."
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr ""
 
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
@@ -1667,10 +1675,6 @@ msgstr "Benachrichtigen"
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Ok, schließen"
-
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "Ok, ich hab's verstanden"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Open for voting"
@@ -2077,6 +2081,10 @@ msgstr "Ausgewählte Kredite"
 msgid "Selected supply assets"
 msgstr "Ausgewählte Versorgungsanlagen"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr ""
+
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
 msgstr "Feedback senden"
@@ -2249,6 +2257,10 @@ msgstr "Staking-Rabatt"
 msgid "State"
 msgstr "Zustand"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2407,6 +2419,10 @@ msgstr "Testnet-Modus"
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
 msgstr "Der Testnet-Modus ist aktiviert."
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
+msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting!!"
