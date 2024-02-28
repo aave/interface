@@ -30,8 +30,8 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.24.0",
-    "@aave/math-utils": "1.24.0",
+    "@aave/contract-helpers": "1.25.0",
+    "@aave/math-utils": "1.25.0",
     "@bgd-labs/aave-address-book": "^2.19.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
@@ -75,6 +75,7 @@
     "graphql-request": "^6.1.0",
     "gray-matter": "^4.0.3",
     "immer": "^9.0.15",
+    "micro-memoize": "^4.1.2",
     "mixpanel-browser": "^2.45.0",
     "next": "12.1.1",
     "react": "latest",

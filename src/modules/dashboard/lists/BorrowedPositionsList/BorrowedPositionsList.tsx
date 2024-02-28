@@ -171,7 +171,7 @@ export const BorrowedPositionsList = () => {
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
         showEModeButton ? (
-          <DashboardEModeButton userEmodeCategoryId={user.userEmodeCategoryId} />
+          <DashboardEModeButton userEmodeCategoryId={user ? user.userEmodeCategoryId : 0} />
         ) : undefined
       }
       noData={!sortedReserves.length}

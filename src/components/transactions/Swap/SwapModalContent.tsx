@@ -15,13 +15,14 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
-import { useRootStore } from 'src/store/root';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
+import { displayGho } from 'src/utils/ghoUtilities';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { amountToUsd } from 'src/utils/utils';
 
 import {
   ComputedUserReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -39,15 +40,15 @@ export const SwapModalContent = ({
   poolReserve,
   userReserve,
   isWrongNetwork,
-}: ModalWrapperProps) => {
-  const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
+  const { reserves, marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId, currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
-  const isGho = useRootStore((store) => store.displayGho);
 
   const swapTargets = reserves
-    .filter((r) => !isGho({ symbol: r.symbol, currentMarket }))
+    .filter((r) => !displayGho({ symbol: r.symbol, currentMarket }))
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset && !r.isFrozen)
     .map((reserve) => ({
       address: reserve.underlyingAsset,

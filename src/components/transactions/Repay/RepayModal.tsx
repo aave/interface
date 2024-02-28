@@ -1,6 +1,7 @@
 import { InterestRate, PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
+import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -51,17 +52,25 @@ export const RepayModal = () => {
       >
         {(params) => {
           return (
-            <>
-              {collateralRepayPossible && !mainTxState.txHash && (
-                <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
+            <UserAuthenticated>
+              {(user) => (
+                <>
+                  {collateralRepayPossible && !mainTxState.txHash && (
+                    <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
+                  )}
+                  {repayType === RepayType.BALANCE && (
+                    <RepayModalContent {...params} debtType={args.currentRateMode} user={user} />
+                  )}
+                  {repayType === RepayType.COLLATERAL && (
+                    <CollateralRepayModalContent
+                      {...params}
+                      debtType={args.currentRateMode}
+                      user={user}
+                    />
+                  )}
+                </>
               )}
-              {repayType === RepayType.BALANCE && (
-                <RepayModalContent {...params} debtType={args.currentRateMode} />
-              )}
-              {repayType === RepayType.COLLATERAL && (
-                <CollateralRepayModalContent {...params} debtType={args.currentRateMode} />
-              )}
-            </>
+            </UserAuthenticated>
           );
         }}
       </ModalWrapper>
