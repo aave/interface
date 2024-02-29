@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import {
   JsonRpcProvider,
@@ -404,13 +404,20 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const injectedProvider = (window as any).ethereum;
     if (provider && account && window && injectedProvider) {
       if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
+        let tokenSymbol = symbol;
+        if (!tokenSymbol) {
+          const { getTokenData } = new ERC20Service(provider);
+          const { symbol } = await getTokenData(address);
+          tokenSymbol = symbol;
+        }
+
         await injectedProvider.request({
           method: 'wallet_watchAsset',
           params: {
             type: 'ERC20',
             options: {
               address,
-              symbol,
+              symbol: tokenSymbol,
               decimals,
               image,
             },

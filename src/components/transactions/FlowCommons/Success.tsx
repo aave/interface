@@ -108,7 +108,7 @@ export const TxSuccessView = ({
                 addERC20Token({
                   address: addToken.address,
                   decimals: addToken.decimals,
-                  symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
+                  symbol: addToken.aToken ? '' : addToken.symbol,
                   image: !/_/.test(addToken.symbol) ? base64 : undefined,
                 });
               }}
