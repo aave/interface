@@ -21,9 +21,14 @@ import Paraswap from '/public/icons/other/paraswap.svg';
 interface ListSlippageButtonProps {
   setSlippage: (value: string) => void;
   selectedSlippage: string;
+  slippageTooltipHeader?: React.ReactNode;
 }
 
-export const ListSlippageButton = ({ setSlippage, selectedSlippage }: ListSlippageButtonProps) => {
+export const ListSlippageButton = ({
+  setSlippage,
+  selectedSlippage,
+  slippageTooltipHeader,
+}: ListSlippageButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -45,6 +50,7 @@ export const ListSlippageButton = ({ setSlippage, selectedSlippage }: ListSlippa
         size="medium"
         endIcon={
           <SlippageTooltip
+            headerContent={slippageTooltipHeader}
             text={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Trans>

@@ -1,4 +1,4 @@
-import { BigNumberZeroDecimal, normalize } from '@aave/math-utils';
+import { normalize } from '@aave/math-utils';
 import { OptimalRate } from '@paraswap/sdk';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -120,22 +120,8 @@ export const useCollateralRepaySwap = ({
 
         setError('');
         setRoute(route);
-
-        if (swapVariant === 'exactIn') {
-          const minAmount = new BigNumberZeroDecimal(route.destAmount)
-            .multipliedBy(1 - maxSlippage / 100)
-            .toFixed(0);
-          setInputAmount(normalize(route.srcAmount, route.srcDecimals));
-          setOutputAmount(normalize(minAmount, route.destDecimals));
-        } else {
-          const srcAmount = new BigNumberZeroDecimal(route.srcAmount)
-            .multipliedBy(1 - maxSlippage / 100)
-            .toFixed(0);
-
-          setInputAmount(normalize(srcAmount, route.srcDecimals));
-          setOutputAmount(normalize(route.destAmount, route.destDecimals));
-        }
-
+        setInputAmount(normalize(route.srcAmount, route.srcDecimals));
+        setOutputAmount(normalize(route.destAmount, route.destDecimals));
         setInputAmountUSD(route.srcUSD);
         setOutputAmountUSD(route.destUSD);
       } catch (e) {
