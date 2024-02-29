@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-28 18:04\n"
+"PO-Revision-Date: 2024-02-29 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -1474,8 +1474,16 @@ msgstr "Максимальное количество, доступное для
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Максимальное количество, доступное для поставки, ограничено, так как протокольный лимит предложения составляет {0}%."
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1538,7 +1546,13 @@ msgstr "Минимальная сумма займа GHO"
 msgid "Minimum USD value received"
 msgstr "Минимальная полученная сумма в долларах США"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr ""
+
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr ""
 
