@@ -49,6 +49,7 @@ interface SignedParams {
 
 export const WithdrawAndSwitchActions = ({
   amountToSwap,
+  amountToReceive,
   isWrongNetwork,
   sx,
   poolReserve,
@@ -119,8 +120,8 @@ export const WithdrawAndSwitchActions = ({
         poolReserve,
         targetReserve,
         isMaxSelected,
-        amountToSwap: parseUnits(route.inputAmount, poolReserve.decimals).toString(),
-        amountToReceive: parseUnits(route.outputAmount, targetReserve.decimals).toString(),
+        amountToSwap: parseUnits(amountToSwap, poolReserve.decimals).toString(),
+        amountToReceive: parseUnits(amountToReceive, targetReserve.decimals).toString(),
         augustus: route.augustus,
         txCalldata: route.swapCallData,
         signatureParams,

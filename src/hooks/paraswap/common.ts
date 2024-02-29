@@ -1,5 +1,5 @@
 import { ChainId, valueToWei } from '@aave/contract-helpers';
-import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { MiscBase, MiscEthereum } from '@bgd-labs/aave-address-book';
 import {
   BuildTxFunctions,
@@ -137,7 +137,7 @@ export async function fetchExactInTxParams(
   maxSlippage: number
 ): Promise<SwapTransactionParams> {
   const swapper = ExactInSwapper(chainId);
-  const { swapCallData, augustus, destAmountWithSlippage } = await swapper.getTransactionParams(
+  const { swapCallData, augustus } = await swapper.getTransactionParams(
     swapIn.underlyingAsset,
     swapIn.decimals,
     swapOut.underlyingAsset,
@@ -151,7 +151,7 @@ export async function fetchExactInTxParams(
     swapCallData,
     augustus,
     inputAmount: normalize(route.srcAmount, swapIn.decimals),
-    outputAmount: normalize(destAmountWithSlippage, swapOut.decimals),
+    outputAmount: normalize(route.destAmount, swapOut.decimals),
     inputAmountUSD: route.srcUSD,
     outputAmountUSD: route.destUSD,
   };
@@ -178,7 +178,7 @@ export async function fetchExactInRate(
   let swapInAmount = valueToBigNumber(swapIn.amount);
   if (max && swapIn.supplyAPY !== '0') {
     swapInAmount = swapInAmount.plus(
-      swapInAmount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24)
+      swapInAmount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24 * 2)
     );
   }
 
@@ -189,14 +189,7 @@ export async function fetchExactInRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [
-      ContractMethod.simpleSwap,
-      ContractMethod.directUniV3Swap,
-      ContractMethod.directBalancerV2GivenInSwap,
-      ContractMethod.directBalancerV2GivenOutSwap,
-      ContractMethod.directCurveV1Swap,
-      ContractMethod.directCurveV2Swap,
-    ];
+    options.includeContractMethods = [ContractMethod.multiSwap, ContractMethod.megaSwap];
   }
 
   const swapper = ExactInSwapper(chainId);
@@ -230,7 +223,7 @@ export async function fetchExactOutTxParams(
   maxSlippage: number
 ): Promise<SwapTransactionParams> {
   const swapper = ExactOutSwapper(chainId);
-  const { swapCallData, augustus, srcAmountWithSlippage } = await swapper.getTransactionParams(
+  const { swapCallData, augustus } = await swapper.getTransactionParams(
     swapIn.underlyingAsset,
     swapIn.decimals,
     swapOut.underlyingAsset,
@@ -243,7 +236,7 @@ export async function fetchExactOutTxParams(
   return {
     swapCallData,
     augustus,
-    inputAmount: normalize(srcAmountWithSlippage, swapIn.decimals),
+    inputAmount: normalize(route.srcAmount, swapIn.decimals),
     outputAmount: normalize(route.destAmount, swapOut.decimals),
     inputAmountUSD: route.srcUSD,
     outputAmountUSD: route.destUSD,
@@ -268,13 +261,8 @@ export async function fetchExactOutRate(
   userAddress: string,
   max: boolean
 ): Promise<OptimalRate> {
-  let swapOutAmount = valueToBigNumber(swapOut.amount);
-  if (max) {
-    // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
-    swapOutAmount = swapOutAmount.plus(
-      swapOutAmount.multipliedBy(swapIn.variableBorrowAPY).dividedBy(360 * 24)
-    );
-  }
+  const swapOutAmount = valueToBigNumber(swapOut.amount);
+
   const amount = normalizeBN(swapOutAmount, swapOut.decimals * -1);
 
   const options: RateOptions = {
@@ -282,11 +270,7 @@ export async function fetchExactOutRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [
-      ContractMethod.simpleBuy,
-      ContractMethod.directUniV3Buy,
-      ContractMethod.directBalancerV2GivenOutSwap,
-    ];
+    options.includeContractMethods = [ContractMethod.buy];
   }
 
   const swapper = ExactOutSwapper(chainId);
@@ -338,11 +322,6 @@ export const ExactInSwapper = (chainId: ChainId) => {
     route: OptimalRate,
     maxSlippage: number
   ) => {
-    const destAmountWithSlippage = new BigNumberZeroDecimal(route.destAmount)
-      .multipliedBy(100 - maxSlippage)
-      .dividedBy(100)
-      .toFixed(0);
-
     try {
       const params = await paraSwap.buildTx(
         {
@@ -351,7 +330,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
           srcAmount: route.srcAmount,
           destToken,
           destDecimals,
-          destAmount: destAmountWithSlippage,
+          slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
           partnerAddress: FEE_CLAIMER_ADDRESS,
@@ -363,7 +342,6 @@ export const ExactInSwapper = (chainId: ChainId) => {
       return {
         swapCallData: (params as TransactionParams).data,
         augustus: (params as TransactionParams).to,
-        destAmountWithSlippage,
       };
     } catch (e) {
       console.error(e);
@@ -412,10 +390,6 @@ const ExactOutSwapper = (chainId: ChainId) => {
     route: OptimalRate,
     maxSlippage: number
   ) => {
-    const srcAmountWithSlippage = new BigNumberZeroDecimal(route.srcAmount)
-      .multipliedBy(100 + maxSlippage)
-      .dividedBy(100)
-      .toFixed(0);
     const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
 
     try {
@@ -423,8 +397,8 @@ const ExactOutSwapper = (chainId: ChainId) => {
         {
           srcToken,
           destToken,
-          srcAmount: srcAmountWithSlippage,
           destAmount: route.destAmount,
+          slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
           partnerAddress: FEE_CLAIMER_ADDRESS,
@@ -438,7 +412,6 @@ const ExactOutSwapper = (chainId: ChainId) => {
       return {
         swapCallData: (params as TransactionParams).data,
         augustus: (params as TransactionParams).to,
-        srcAmountWithSlippage,
       };
     } catch (e) {
       console.log(e);
@@ -460,4 +433,26 @@ export const calculateSignedAmount = (amount: string, decimals: number, margin?:
   const amountWithMargin = Number(amount) + Number(amount) * (margin ?? SIGNATURE_AMOUNT_MARGIN); // 10% margin for aToken interest accrual, custom amount for actions where output amount is variable
   const formattedAmountWithMargin = valueToWei(amountWithMargin.toString(), decimals);
   return formattedAmountWithMargin;
+};
+
+export const maxInputAmountWithSlippage = (
+  inputAmount: string,
+  slippage: string,
+  decimals: number
+) => {
+  if (inputAmount === '0') return '0';
+  return valueToBigNumber(inputAmount)
+    .multipliedBy(1 + Number(slippage) / 100)
+    .toFixed(decimals);
+};
+
+export const minimumReceivedAfterSlippage = (
+  outputAmount: string,
+  slippage: string,
+  decimals: number
+) => {
+  if (outputAmount === '0') return '0';
+  return valueToBigNumber(outputAmount)
+    .multipliedBy(1 - Number(slippage) / 100)
+    .toFixed(decimals);
 };

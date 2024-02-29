@@ -172,9 +172,9 @@ export const DebtSwitchActions = ({
       let debtSwitchTxData = debtSwitch({
         poolReserve,
         targetReserve,
-        currentRateMode: currentRateMode,
-        amountToReceive: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
-        amountToSwap: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
+        currentRateMode,
+        amountToReceive: parseUnits(amountToReceive, targetReserve.decimals).toString(),
+        amountToSwap: parseUnits(amountToSwap, poolReserve.decimals).toString(),
         isMaxSelected,
         txCalldata: route.swapCallData,
         augustus: route.augustus,
