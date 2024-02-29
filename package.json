@@ -5,7 +5,7 @@
   "license": "BSD-3-Clause",
     "scripts": {
     "dev": "next dev",
-    "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8192' next dev",
+    "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8000' next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
     "build:static": "next build && next export",

@@ -3,8 +3,8 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import { useState } from 'react';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -63,6 +63,7 @@ export const SupplyWrappedTokenActions = ({
   } = useModalContext();
 
   const { sendTx } = useWeb3Context();
+  const queryClient = useQueryClient();
 
   const {
     data: approvedAmount,

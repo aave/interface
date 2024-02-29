@@ -1,7 +1,7 @@
 import { EthereumTransactionTypeExtended, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { queryClient } from 'pages/_app.page';
+import { useQueryClient } from '@tanstack/react-query';
 import { DependencyList, useEffect, useRef, useState } from 'react';
 import { SIGNATURE_AMOUNT_MARGIN } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
@@ -80,6 +80,7 @@ export const useParaSwapTransactionHandler = ({
   const [previousDeps, setPreviousDeps] = useState<Dependency>({ asset: deps[0], amount: deps[1] });
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...

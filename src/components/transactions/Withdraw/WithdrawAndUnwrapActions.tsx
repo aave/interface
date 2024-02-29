@@ -3,8 +3,8 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { constants } from 'ethers';
-import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
@@ -52,6 +52,7 @@ export const WithdrawAndUnwrapAction = ({
     ]);
 
   const { sendTx } = useWeb3Context();
+  const queryClient = useQueryClient();
 
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   const {
