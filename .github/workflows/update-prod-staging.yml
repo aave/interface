@@ -39,7 +39,7 @@ jobs:
 
       - name: Pin to secondary IPFS server
         id: ipfs-secondary
-        uses: crustio/ipfs-crust-action@v2.0.7
+        uses: crustio/ipfs-crust-action@main
         continue-on-error: true
         with:
           cid: ${{ inputs.PINATA_HASH }}
