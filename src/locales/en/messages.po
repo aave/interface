@@ -784,10 +784,6 @@ msgstr "Copy error text"
 msgid "Covered debt"
 msgstr "Covered debt"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Created"
-msgstr "Created"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Current LTV"
@@ -1685,10 +1681,6 @@ msgstr "Notify"
 msgid "Ok, Close"
 msgstr "Ok, Close"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Open for voting"
-msgstr "Open for voting"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Operation not supported"
@@ -1708,10 +1700,6 @@ msgstr "Page not found"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Participating in this {symbol} reserve gives annualized rewards."
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Payloads executed"
-msgstr "Payloads executed"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -2928,10 +2916,6 @@ msgstr "Votes"
 msgid "Voting"
 msgstr "Voting"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Voting closed"
-msgstr "Voting closed"
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting is on"
 msgstr "Voting is on"
@@ -3382,6 +3366,10 @@ msgstr "{notifyText}"
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} assets selected"
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "{stepName}"
+msgstr "{stepName}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"

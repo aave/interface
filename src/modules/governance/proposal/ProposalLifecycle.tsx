@@ -22,7 +22,7 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { Link } from 'src/components/primitives/Link';
 import { Proposal } from 'src/hooks/governance/useProposals';
@@ -53,6 +53,20 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
     +proposal.subgraphProposal.votingPortal.votingMachineChainId
   );
 
+  const filterProposalNotCancelled = (step: ProposalStepProps) => {
+    return !(
+      proposal.subgraphProposal.transactions.canceled &&
+      +step.timestamp >= +proposal.subgraphProposal.transactions.canceled.timestamp
+    );
+  };
+
+  const filterProposalNotFailed = (step: ProposalStepProps) => {
+    return !(
+      proposal.subgraphProposal.transactions.failed &&
+      +step.timestamp >= +proposal.subgraphProposal.transactions.failed.timestamp
+    );
+  };
+
   const proposalCreatedSubsteps = createdPayloadOrder
     .map<ProposalStepProps>((payload) => {
       const networkConfig = getNetworkConfig(payload.chainId);
@@ -60,7 +74,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
         completed: true,
         active: proposal.lifecycleState === ProposalLifecycleStep.Created,
         stepName: `Payload ${payload.id} was created`,
-        timestamp: formatTime(payload.createdAt),
+        timestamp: payload.createdAt,
         networkLogo: networkConfig.networkLogoPath,
       };
     })
@@ -69,7 +83,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
         completed: true,
         active: proposal.lifecycleState === ProposalLifecycleStep.Created,
         stepName: `Proposal was created`,
-        timestamp: formatTime(getProposalStateTimestamp(ProposalV3State.Created, proposal)),
+        timestamp: getProposalStateTimestamp(ProposalV3State.Created, proposal),
         lastStep: true,
         transactionHash: coreNetworkConfig.explorerLinkBuilder({
           tx: proposal.subgraphProposal.transactions.created.id,
@@ -83,7 +97,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
       completed: proposal.subgraphProposal.state >= ProposalV3State.Active,
       active: proposal.lifecycleState === ProposalLifecycleStep.OpenForVoting,
       stepName: `Proposal was activated for voting`,
-      timestamp: formatTime(getProposalStateTimestamp(ProposalV3State.Active, proposal)),
+      timestamp: getProposalStateTimestamp(ProposalV3State.Active, proposal),
       transactionHash: proposal.subgraphProposal.transactions.active
         ? coreNetworkConfig.explorerLinkBuilder({
             tx: proposal.subgraphProposal.transactions.active?.id,
@@ -95,8 +109,9 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
       completed: proposal.votingMachineData.state >= VotingMachineProposalState.Active,
       active: proposal.lifecycleState === ProposalLifecycleStep.OpenForVoting,
       stepName: `Voting started`,
-      timestamp: formatTime(
-        getVotingMachineProposalStateTimestamp(VotingMachineProposalState.Active, proposal)
+      timestamp: getVotingMachineProposalStateTimestamp(
+        VotingMachineProposalState.Active,
+        proposal
       ),
       lastStep: true,
       networkLogo: votingNetworkConfig.networkLogoPath,
@@ -108,14 +123,14 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
       completed: proposal.subgraphProposal.state > ProposalV3State.Queued,
       active: proposal.subgraphProposal.state === ProposalV3State.Queued,
       stepName: `Proposal queued`,
-      timestamp: formatTime(getProposalStateTimestamp(ProposalV3State.Queued, proposal)),
+      timestamp: getProposalStateTimestamp(ProposalV3State.Queued, proposal),
       networkLogo: coreNetworkConfig.networkLogoPath,
     },
     {
       completed: proposal.subgraphProposal.state >= ProposalV3State.Executed,
       active: proposal.subgraphProposal.state === ProposalV3State.Queued,
       stepName: `Proposal executed`,
-      timestamp: formatTime(getProposalStateTimestamp(ProposalV3State.Executed, proposal)),
+      timestamp: getProposalStateTimestamp(ProposalV3State.Executed, proposal),
       networkLogo: coreNetworkConfig.networkLogoPath,
     },
   ]
@@ -124,11 +139,13 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
         const networkConfig = getNetworkConfig(payload.chainId);
         return {
           completed: payload.state >= PayloadState.Queued,
-          active: proposal.subgraphProposal.state === ProposalV3State.Executed,
+          active:
+            proposal.subgraphProposal.state === ProposalV3State.Executed &&
+            payload.state === PayloadState.Queued,
           stepName: `Payload ${payload.id} queued`,
           timestamp: payload.queuedAt
-            ? formatTime(payload.queuedAt)
-            : formatTime(getPayloadStateTimestamp(PayloadState.Queued, payload, proposal)),
+            ? payload.queuedAt
+            : getPayloadStateTimestamp(PayloadState.Queued, payload, proposal),
           networkLogo: networkConfig.networkLogoPath,
         };
       })
@@ -141,28 +158,59 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
           active: payload.state === PayloadState.Queued,
           stepName: `Payload ${payload.id} executed`,
           timestamp: payload.executedAt
-            ? formatTime(payload.executedAt)
-            : formatTime(getPayloadStateTimestamp(PayloadState.Executed, payload, proposal)),
+            ? payload.executedAt
+            : getPayloadStateTimestamp(PayloadState.Executed, payload, proposal),
           lastStep: index === proposal.payloadsData.length - 1,
           networkLogo: networkConfig.networkLogoPath,
         };
       })
     );
 
-  const votingClosedStepLabel = <Trans>Voting closed</Trans>;
-  // TODO: show if passed/failed
-  // if (proposalState >= ProposalLifecycleStep.VotingClosed) {
-  // proposal.votingMachineData.
-  // votingClosedStepLabel = (
-  //   <>
-  //     <Trans>Voting closed</Trans>
-  //     {'Passed'}
-  //   </>
-  // );
-  // }
-
   const urlRegex = /https?:\/\/[^\s"]+/g;
   const discussionUrl = proposal.subgraphProposal.proposalMetadata.discussions.match(urlRegex);
+
+  const proposalSteps: ProposalStepProps[] = [
+    {
+      completed: proposal.lifecycleState > ProposalLifecycleStep.Created,
+      active: proposal.lifecycleState === ProposalLifecycleStep.Created,
+      stepName: 'Created',
+      timestamp: getLifecycleStateTimestamp(ProposalLifecycleStep.Created, proposal),
+      substeps: proposalCreatedSubsteps,
+    },
+    {
+      completed: proposal.lifecycleState > ProposalLifecycleStep.OpenForVoting,
+      active: proposal.lifecycleState === ProposalLifecycleStep.OpenForVoting,
+      stepName: 'Open for voting',
+      timestamp: getLifecycleStateTimestamp(ProposalLifecycleStep.OpenForVoting, proposal),
+      substeps: proposalOpenForVotingSubstates,
+    },
+    {
+      completed: proposal.subgraphProposal.state >= ProposalV3State.Queued,
+      active: proposal.lifecycleState === ProposalLifecycleStep.VotingClosed,
+      stepName: 'Voting closed',
+      timestamp: getLifecycleStateTimestamp(ProposalLifecycleStep.VotingClosed, proposal),
+    },
+    {
+      completed: proposal.lifecycleState === ProposalLifecycleStep.Executed,
+      active: proposal.lifecycleState >= ProposalLifecycleStep.VotingClosed,
+      stepName: 'Payloads executed',
+      timestamp: getLifecycleStateTimestamp(ProposalLifecycleStep.Executed, proposal),
+      substeps: payloadsExecutedSubstates,
+      lastStep: true,
+    },
+  ]
+    .filter(filterProposalNotCancelled)
+    .filter(filterProposalNotFailed);
+
+  if (proposal.subgraphProposal.transactions.canceled) {
+    proposalSteps.push({
+      completed: true,
+      active: false,
+      stepName: 'Cancelled',
+      timestamp: +proposal.subgraphProposal.transactions.canceled.timestamp,
+      lastStep: true,
+    });
+  }
 
   return (
     <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
@@ -178,42 +226,9 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
           },
         }}
       >
-        <ProposalStep
-          completed={proposal.lifecycleState > ProposalLifecycleStep.Created}
-          active={proposal.lifecycleState === ProposalLifecycleStep.Created}
-          stepName={<Trans>Created</Trans>}
-          timestamp={formatTime(
-            getLifecycleStateTimestamp(ProposalLifecycleStep.Created, proposal)
-          )}
-          substeps={proposalCreatedSubsteps}
-        />
-        <ProposalStep
-          completed={proposal.lifecycleState > ProposalLifecycleStep.OpenForVoting}
-          active={proposal.lifecycleState === ProposalLifecycleStep.OpenForVoting}
-          stepName={<Trans>Open for voting</Trans>}
-          timestamp={formatTime(
-            getLifecycleStateTimestamp(ProposalLifecycleStep.OpenForVoting, proposal)
-          )}
-          substeps={proposalOpenForVotingSubstates}
-        />
-        <ProposalStep
-          completed={proposal.lifecycleState > ProposalLifecycleStep.VotingClosed}
-          active={proposal.lifecycleState === ProposalLifecycleStep.VotingClosed}
-          stepName={votingClosedStepLabel}
-          timestamp={formatTime(
-            getLifecycleStateTimestamp(ProposalLifecycleStep.VotingClosed, proposal)
-          )}
-        />
-        <ProposalStep
-          completed={proposal.lifecycleState >= ProposalLifecycleStep.Executed}
-          active={proposal.lifecycleState === ProposalLifecycleStep.Executed}
-          stepName={<Trans>Payloads executed</Trans>}
-          timestamp={formatTime(
-            getLifecycleStateTimestamp(ProposalLifecycleStep.Executed, proposal)
-          )}
-          substeps={payloadsExecutedSubstates}
-          lastStep
-        />
+        {proposalSteps.map((elem) => (
+          <ProposalStep key={elem.stepName} {...elem} />
+        ))}
       </Timeline>
       {discussionUrl && (
         <Button
@@ -245,8 +260,8 @@ const formatTime = (timestamp: number) => {
 };
 
 interface ProposalStepProps {
-  stepName: ReactNode;
-  timestamp: string;
+  stepName: string;
+  timestamp: number;
   lastStep?: boolean;
   completed?: boolean;
   active?: boolean;
@@ -301,11 +316,13 @@ const ProposalStep = ({
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {networkLogo && <Avatar sx={{ width: 16, height: 16, mr: 2 }} src={networkLogo} />}
-              <Typography variant="main14">{stepName}</Typography>
+              <Typography variant="main14">
+                <Trans>{stepName}</Trans>
+              </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Typography variant="tooltip" color="text.muted">
-                {timestamp}
+                {formatTime(timestamp)}
               </Typography>
               {transactionHash && (
                 <DarkTooltip title="View on explorer">
