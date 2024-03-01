@@ -72,7 +72,7 @@ export const BorrowAssetsListItem = ({
           >
             <Typography variant="secondary14">
               <Trans>
-                Eligible for <strong>2.9M$</strong> GHO Community Program 👻
+                Eligible for <strong>2.1M$</strong> wETH Community Program 👻
               </Trans>
               <TextWithTooltip
                 wrapperProps={{ sx: { display: 'inline-flex', alignItems: 'center' } }}
