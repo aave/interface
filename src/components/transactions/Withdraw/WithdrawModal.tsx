@@ -1,6 +1,7 @@
 import { PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
+import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -42,23 +43,31 @@ export const WithdrawModal = () => {
         requiredPermission={PERMISSION.DEPOSITOR}
       >
         {(params) => (
-          <>
-            {isWithdrawAndSwapPossible && !mainTxState.txHash && (
-              <WithdrawTypeSelector withdrawType={withdrawType} setWithdrawType={setWithdrawType} />
-            )}
-            {withdrawType === WithdrawType.WITHDRAW && (
-              <WithdrawModalContent
-                {...params}
-                unwrap={withdrawUnWrapped}
-                setUnwrap={setWithdrawUnWrapped}
-              />
-            )}
-            {withdrawType === WithdrawType.WITHDRAWSWITCH && (
+          <UserAuthenticated>
+            {(user) => (
               <>
-                <WithdrawAndSwitchModalContent {...params} />
+                {isWithdrawAndSwapPossible && !mainTxState.txHash && (
+                  <WithdrawTypeSelector
+                    withdrawType={withdrawType}
+                    setWithdrawType={setWithdrawType}
+                  />
+                )}
+                {withdrawType === WithdrawType.WITHDRAW && (
+                  <WithdrawModalContent
+                    {...params}
+                    unwrap={withdrawUnWrapped}
+                    setUnwrap={setWithdrawUnWrapped}
+                    user={user}
+                  />
+                )}
+                {withdrawType === WithdrawType.WITHDRAWSWITCH && (
+                  <>
+                    <WithdrawAndSwitchModalContent {...params} user={user} />
+                  </>
+                )}
               </>
             )}
-          </>
+          </UserAuthenticated>
         )}
       </ModalWrapper>
     </BasicModal>

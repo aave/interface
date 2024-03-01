@@ -92,7 +92,7 @@ export const DebtSwitchActions = ({
     setApprovalTxState,
   } = useModalContext();
   const { sendTx, signTxData } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
+  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
   const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
   const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
   const [useSignature, setUseSignature] = useState(false);
@@ -173,9 +173,9 @@ export const DebtSwitchActions = ({
       let debtSwitchTxData = debtSwitch({
         poolReserve,
         targetReserve,
-        currentRateMode: currentRateMode,
-        amountToReceive: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
-        amountToSwap: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
+        currentRateMode,
+        amountToReceive: parseUnits(amountToReceive, targetReserve.decimals).toString(),
+        amountToSwap: parseUnits(amountToSwap, poolReserve.decimals).toString(),
         isMaxSelected,
         txCalldata: route.swapCallData,
         augustus: route.augustus,
@@ -202,7 +202,7 @@ export const DebtSwitchActions = ({
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-      refetchGhoData && refetchGhoData();
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
       refetchPoolData && refetchPoolData();
       refetchIncentiveData && refetchIncentiveData();
     } catch (error) {

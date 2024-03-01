@@ -50,6 +50,7 @@ interface SignedParams {
 
 export const WithdrawAndSwitchActions = ({
   amountToSwap,
+  amountToReceive,
   isWrongNetwork,
   sx,
   poolReserve,
@@ -97,7 +98,7 @@ export const WithdrawAndSwitchActions = ({
 
   const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-  const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
+  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
 
   const requiresApproval = useMemo(() => {
     if (
@@ -120,8 +121,8 @@ export const WithdrawAndSwitchActions = ({
         poolReserve,
         targetReserve,
         isMaxSelected,
-        amountToSwap: parseUnits(route.inputAmount, poolReserve.decimals).toString(),
-        amountToReceive: parseUnits(route.outputAmount, targetReserve.decimals).toString(),
+        amountToSwap: parseUnits(amountToSwap, poolReserve.decimals).toString(),
+        amountToReceive: parseUnits(amountToReceive, targetReserve.decimals).toString(),
         augustus: route.augustus,
         txCalldata: route.swapCallData,
         signatureParams,
@@ -130,7 +131,7 @@ export const WithdrawAndSwitchActions = ({
       const response = await sendTx(txDataWithGasEstimation);
       await response.wait(1);
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-      refetchGhoData && refetchGhoData();
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
       refetchPoolData && refetchPoolData();
       refetchIncentiveData && refetchIncentiveData();
       setMainTxState({

@@ -1,27 +1,31 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Stack, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
 import { CollateralType } from 'src/helpers/types';
+import { minimumReceivedAfterSlippage } from 'src/hooks/paraswap/common';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
-import { useRootStore } from 'src/store/root';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
+import { displayGho } from 'src/utils/ghoUtilities';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { amountToUsd } from 'src/utils/utils';
 
 import {
   ComputedUserReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -39,15 +43,15 @@ export const SwapModalContent = ({
   poolReserve,
   userReserve,
   isWrongNetwork,
-}: ModalWrapperProps) => {
-  const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
+  const { reserves, marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId, currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
-  const isGho = useRootStore((store) => store.displayGho);
 
   const swapTargets = reserves
-    .filter((r) => !isGho({ symbol: r.symbol, currentMarket }))
+    .filter((r) => !displayGho({ symbol: r.symbol, currentMarket }))
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset && !r.isFrozen)
     .map((reserve) => ({
       address: reserve.underlyingAsset,
@@ -225,6 +229,12 @@ export const SwapModalContent = ({
     }
   }
 
+  const minimumReceived = minimumReceivedAfterSlippage(
+    outputAmount,
+    maxSlippage,
+    swapTarget.reserve.decimals
+  );
+
   return (
     <>
       {/* {showIsolationWarning && (
@@ -290,7 +300,24 @@ export const SwapModalContent = ({
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
-          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+          <ListSlippageButton
+            selectedSlippage={maxSlippage}
+            setSlippage={setMaxSlippage}
+            slippageTooltipHeader={
+              <Stack direction="row" gap={2} alignItems="center" justifyContent="space-between">
+                <Trans>Minimum amount received</Trans>
+                <Stack alignItems="end">
+                  <Stack direction="row">
+                    <TokenIcon
+                      symbol={swapTarget.reserve.iconSymbol}
+                      sx={{ mr: 1, fontSize: '14px' }}
+                    />
+                    <FormattedNumber value={minimumReceived} variant="secondary12" />
+                  </Stack>
+                </Stack>
+              </Stack>
+            }
+          />
         }
       >
         <SwapModalDetails
@@ -311,7 +338,7 @@ export const SwapModalContent = ({
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
         amountToSwap={inputAmount}
-        amountToReceive={outputAmount}
+        amountToReceive={minimumReceived}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}

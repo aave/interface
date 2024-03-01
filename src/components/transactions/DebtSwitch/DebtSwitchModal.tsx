@@ -2,6 +2,7 @@ import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
+import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
@@ -19,7 +20,17 @@ export const DebtSwitchModal = () => {
         underlyingAsset={args.underlyingAsset}
         hideTitleSymbol
       >
-        {(params) => <DebtSwitchModalContent {...params} currentRateMode={args.currentRateMode} />}
+        {(params) => (
+          <UserAuthenticated>
+            {(user) => (
+              <DebtSwitchModalContent
+                {...params}
+                currentRateMode={args.currentRateMode}
+                user={user}
+              />
+            )}
+          </UserAuthenticated>
+        )}
       </ModalWrapper>
     </BasicModal>
   );
