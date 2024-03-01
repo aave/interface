@@ -37,6 +37,14 @@ jobs:
           BUILD_PATH: 'out'
           PINATA_HASH: '${{ inputs.PINATA_HASH }}'
 
+      - name: Pin to secondary IPFS server
+        id: ipfs-secondary
+        uses: crustio/ipfs-crust-action@v2.0.7
+        continue-on-error: true
+        with:
+          cid: ${{ inputs.PINATA_HASH }}
+          seeds: ${{ secrets.CRUST_SEEDS }}
+
       - uses: aave/cloudflare-update-action@5c1b528c9c6e0aed18a7dbdd7f957e0b8815a75e
         with:
           CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
