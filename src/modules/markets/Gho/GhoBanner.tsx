@@ -6,11 +6,13 @@ import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 interface GhoBannerProps {
   reserve?: ComputedReserveData;
@@ -46,8 +48,9 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       }}
     >
       <Box
-        component={Link}
-        href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
+        // NOTE: temp removed the link to the reserve overview page
+        // component={Link}
+        // href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
         sx={(theme) => ({
           borderRadius: {
             md: 4,
@@ -271,6 +274,31 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 <Trans>Borrow rate APY</Trans>
               </Typography>
             </Box>
+            <Link
+              href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
+              style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
+              target="blank"
+            >
+              <Typography variant="secondary14">
+                <Trans>
+                  Eligible for <strong>2.9M$</strong> GHO Community Program 👻
+                </Trans>
+                <TextWithTooltip
+                  wrapperProps={{ sx: { display: 'inline-flex', alignItems: 'center' } }}
+                  event={{
+                    eventName: GENERAL.TOOL_TIP,
+                    eventParams: {
+                      tooltip: 'Community Rewards',
+                    },
+                  }}
+                >
+                  <Trans>
+                    This is a program initiated and implemented by the decentralised Aave community.
+                    Aave Labs does not guarantee the program and accepts no liability.
+                  </Trans>
+                </TextWithTooltip>
+              </Typography>
+            </Link>
           </Box>
         </Box>
         <Button
