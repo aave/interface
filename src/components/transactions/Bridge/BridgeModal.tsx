@@ -5,11 +5,9 @@ import { providers, Contract, utils, constants } from 'ethers';
 import BigNumber from 'bignumber.js';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import { formatUnits } from 'ethers/lib/utils';
-import { normalize, normalizeBN } from '@aave/math-utils';
+import { normalize } from '@aave/math-utils';
 import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import React, { useEffect, useMemo, useState } from 'react';
-import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -23,6 +21,7 @@ import { AaveV3Ethereum, AaveV3Sepolia } from '@bgd-labs/aave-address-book';
 import { getRouterConfig } from './Router';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { ApprovalMethod } from 'src/store/walletSlice';
+import { BridgeActions } from './BridgeActions';
 
 import routerAbi from './Router-abi.json';
 import erc20Abi from './IERC20Meta.json';
@@ -64,7 +63,7 @@ export const BridgeModal = () => {
   const [inputAmountUSD, setInputAmount] = useState('');
   const [sourceToken, setSourceToken] = useState('');
   const [destinationToken, setDestinationToken] = useState('');
-  const [sourceNetwork, setSourceNetwork] = useState('');
+  const [sourceNetwork, setSourceNetwork] = useState({ chainId: '' });
   const [destinationNetwork, setDestinationNetwork] = useState('');
   const { provider } = useWeb3Context();
 
@@ -74,43 +73,21 @@ export const BridgeModal = () => {
     return defaultNetwork.chainId;
   });
 
-  const [
-    user,
-    generateApproval,
-    estimateGasLimit,
-    walletApprovalMethodPreference,
-    generateSignatureRequest,
-    addTransaction,
-    currentMarketData,
-  ] = useRootStore((state) => [
-    state.account,
-    state.generateApproval,
-    state.estimateGasLimit,
-    state.walletApprovalMethodPreference,
-    state.generateSignatureRequest,
-    state.addTransaction,
-    state.currentMarketData,
-  ]);
+  const [user] = useRootStore((state) => [state.account]);
 
-  const {
-    approvalTxState,
-    mainTxState,
-    loadingTxns,
-    setMainTxState,
-    setTxError,
-    setGasLimit,
-    setLoadingTxns,
-    setApprovalTxState,
-  } = useModalContext();
+  // const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
-  const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-
-  const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
+  // const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
+  const [sourceRouter, setSourceRouter] = useState<Contract>();
   // const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
 
-  console.log('supportedNetworksWithBridgeMarket', supportedNetworksWithBridgeMarket);
-
   const { sendTx } = useWeb3Context();
+
+  // useEffect(() => {
+  //   if (sourceRouter) {
+  //     console.log('sourceRouter foo ---->', sourceRouter);
+  //   }
+  // }, [sourceRouter]);
 
   //   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
 
@@ -223,6 +200,11 @@ export const BridgeModal = () => {
 
   const maxAmountToSwap = BigNumber.min(GHO.underlyingBalance).toString(10);
 
+  const handleBridge = () => {
+    setSourceNetwork(sourceNetwork);
+    setDestinationNetwork({ chainId: 421614 }); // destinationNetwork
+  };
+
   const handleBridgeArguments = () => {
     const sourceChain = sourceNetwork;
     const destinationChain = { chainId: 421614 }; // destinationNetwork;
@@ -240,232 +222,231 @@ export const BridgeModal = () => {
     };
   };
 
-  const handleBridge = async () => {
-    const {
-      sourceChain,
-      destinationChain,
-      destinationAccount,
-      tokenAddress,
-      amount,
-      // feeTokenAddress,
-    } = handleBridgeArguments();
+  // const handleBridge = async () => {
+  //   const {
+  //     sourceChain,
+  //     destinationChain,
+  //     destinationAccount,
+  //     tokenAddress,
+  //     amount,
+  //     // feeTokenAddress,
+  //   } = handleBridgeArguments();
 
-    console.log('sourceChain', sourceChain);
-    console.log('destinationChain', destinationChain);
-    console.log('destinationAccount', destinationAccount);
-    console.log('tokenAddress', tokenAddress);
-    console.log('amount', amount);
-    // const provider = getProvider(selectedChainId);
+  //   console.log('sourceChain', sourceChain);
+  //   console.log('destinationChain', destinationChain);
+  //   console.log('destinationAccount', destinationAccount);
+  //   console.log('tokenAddress', tokenAddress);
+  //   console.log('amount', amount);
+  //   // const provider = getProvider(selectedChainId);
 
-    console.log('provider', provider);
+  //   console.log('provider', provider);
 
-    const signer = await provider.getSigner();
+  //   const signer = await provider.getSigner();
 
-    // Get the router's address for the specified chain
-    const sourceRouterAddress = getRouterConfig(sourceChain.chainId).address;
-    const sourceChainSelector = getRouterConfig(sourceChain.chainId).chainSelector;
-    // Get the chain selector for the target chain
-    const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
+  //   // Get the router's address for the specified chain
+  //   const sourceRouterAddress = getRouterConfig(sourceChain.chainId).address;
+  //   const sourceChainSelector = getRouterConfig(sourceChain.chainId).chainSelector;
+  //   // Get the chain selector for the target chain
+  //   const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
 
-    // const {
-    //   data: approvedAmount,
-    //   refetch: fetchApprovedAmount,
-    //   isFetching: fetchingApprovedAmount,
-    //   isFetchedAfterMount,
-    // } = useApprovedAmount({
-    //   marketData: currentMarketData,
-    //   token: GHO,
-    //   spender: sourceRouterAddress,
-    // });
+  //   // Create a contract instance for the router using its ABI and address
 
-    console.log('approvedAmount 000', approvedAmount);
+  //   console.log('sourceRouterAddress', sourceRouterAddress);
 
-    // Create a contract instance for the router using its ABI and address
+  //   // const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
 
-    console.log('sourceRouterAddress', sourceRouterAddress);
+  //   setSourceRouter(new Contract(sourceRouterAddress, routerAbi, signer));
 
-    const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
+  //   // STOP HERE FOR NOW
+  //   /*
+  // ==================================================
+  //     Section: Check token validity
+  //     Check first if the token you would like to
+  //     transfer is supported.
+  // ==================================================
+  // */
 
-    /* 
-  ==================================================
-      Section: Check token validity
-      Check first if the token you would like to 
-      transfer is supported.
-  ==================================================
-  */
+  //   // Fetch the list of supported tokens
 
-    // Fetch the list of supported tokens
+  //   console.log('destinationChainSelector', destinationChainSelector);
 
-    console.log('destinationChainSelector', destinationChainSelector);
+  //   const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
 
-    const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
+  //   const tokenAddressLower = tokenAddress.toLowerCase();
 
-    const tokenAddressLower = tokenAddress.toLowerCase();
+  //   // Convert each supported token to lowercase and check if the list includes the lowercase token address
+  //   const isSupported = supportedTokens
+  //     .map((token) => token.toLowerCase())
+  //     .includes(tokenAddressLower);
 
-    // Convert each supported token to lowercase and check if the list includes the lowercase token address
-    const isSupported = supportedTokens
-      .map((token) => token.toLowerCase())
-      .includes(tokenAddressLower);
+  //   if (!isSupported) {
+  //     throw Error(
+  //       `Token address ${tokenAddress} not in the list of supportedTokens ${supportedTokens}`
+  //     );
+  //   }
 
-    if (!isSupported) {
-      throw Error(
-        `Token address ${tokenAddress} not in the list of supportedTokens ${supportedTokens}`
-      );
-    }
+  //   console.log('WE GOOOD');
 
-    console.log('WE GOOOD');
+  //   /*
+  // ==================================================
+  //     Section: BUILD CCIP MESSAGE
+  //     build CCIP message that you will send to the
+  //     Router contract.
+  // ==================================================
+  // */
 
-    /* 
-  ==================================================
-      Section: BUILD CCIP MESSAGE
-      build CCIP message that you will send to the
-      Router contract.
-  ==================================================
-  */
+  //   // build message
+  //   const tokenAmounts = [
+  //     {
+  //       token: tokenAddress,
+  //       amount: amount,
+  //     },
+  //   ];
 
-    // build message
-    const tokenAmounts = [
-      {
-        token: tokenAddress,
-        amount: amount,
-      },
-    ];
+  //   // Encoding the data
 
-    // Encoding the data
+  //   const functionSelector = utils.id('CCIP EVMExtraArgsV1').slice(0, 10);
+  //   //  "extraArgs" is a structure that can be represented as [ 'uint256']
+  //   // extraArgs are { gasLimit: 0 }
+  //   // we set gasLimit specifically to 0 because we are not sending any data so we are not expecting a receiving contract to handle data
 
-    const functionSelector = utils.id('CCIP EVMExtraArgsV1').slice(0, 10);
-    //  "extraArgs" is a structure that can be represented as [ 'uint256']
-    // extraArgs are { gasLimit: 0 }
-    // we set gasLimit specifically to 0 because we are not sending any data so we are not expecting a receiving contract to handle data
+  //   const extraArgs = utils.defaultAbiCoder.encode(['uint256'], [0]);
 
-    const extraArgs = utils.defaultAbiCoder.encode(['uint256'], [0]);
+  //   const encodedExtraArgs = functionSelector + extraArgs.slice(2);
 
-    const encodedExtraArgs = functionSelector + extraArgs.slice(2);
+  //   const message = {
+  //     receiver: utils.defaultAbiCoder.encode(['address'], [destinationAccount]),
+  //     data: '0x', // no data
+  //     tokenAmounts: tokenAmounts,
+  //     feeToken: constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
+  //     // feeToken: feeTokenAddress ? feeTokenAddress : ethers.constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
 
-    const message = {
-      receiver: utils.defaultAbiCoder.encode(['address'], [destinationAccount]),
-      data: '0x', // no data
-      tokenAmounts: tokenAmounts,
-      feeToken: constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
-      // feeToken: feeTokenAddress ? feeTokenAddress : ethers.constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
+  //     extraArgs: encodedExtraArgs,
+  //   };
 
-      extraArgs: encodedExtraArgs,
-    };
+  //   /*
+  // ==================================================
+  //     Section: CALCULATE THE FEES
+  //     Call the Router to estimate the fees for sending tokens.
+  // ==================================================
+  // */
 
-    /* 
-  ==================================================
-      Section: CALCULATE THE FEES
-      Call the Router to estimate the fees for sending tokens.
-  ==================================================
-  */
+  //   const fees = await sourceRouter.getFee(destinationChainSelector, message);
+  //   console.log(`Estimated fees (wei): ${fees}`);
 
-    const fees = await sourceRouter.getFee(destinationChainSelector, message);
-    console.log(`Estimated fees (wei): ${fees}`);
+  //   /*
+  // ==================================================
+  //     Section: SEND tokens
+  //     This code block initializes an ERC20 token contract for token transfer across chains. It handles three cases:
+  //     1. If the fee token is the native blockchain token, it makes one approval for the transfer amount. The fees are included in the msg.value field.
+  //     2. If the fee token is different from both the native blockchain token and the transfer token, it makes two approvals: one for the transfer amount and another for the fees. The fees are part of the message.
+  //     3. If the fee token is the same as the transfer token but not the native blockchain token, it makes a single approval for the sum of the transfer amount and fees. The fees are part of the message.
+  //     The code waits for the transaction to be mined and stores the transaction receipt.
+  // ==================================================
+  // */
 
-    /* 
-  ==================================================
-      Section: SEND tokens
-      This code block initializes an ERC20 token contract for token transfer across chains. It handles three cases:
-      1. If the fee token is the native blockchain token, it makes one approval for the transfer amount. The fees are included in the msg.value field.
-      2. If the fee token is different from both the native blockchain token and the transfer token, it makes two approvals: one for the transfer amount and another for the fees. The fees are part of the message.
-      3. If the fee token is the same as the transfer token but not the native blockchain token, it makes a single approval for the sum of the transfer amount and fees. The fees are part of the message.
-      The code waits for the transaction to be mined and stores the transaction receipt.
-  ==================================================
-  */
+  //   // Create a contract instance for the token using its ABI and address
+  //   const erc20 = new Contract(tokenAddress, erc20Abi, signer);
 
-    // Create a contract instance for the token using its ABI and address
-    const erc20 = new Contract(tokenAddress, erc20Abi, signer);
+  //   try {
+  //     let sendTx, approvalTx;
 
-    try {
-      let sendTx, approvalTx;
+  //     // if (!feeTokenAddress) {
+  //     // Pay native
+  //     // First approve the router to spend tokens
 
-      // if (!feeTokenAddress) {
-      // Pay native
-      // First approve the router to spend tokens
+  //     console.log('FOOOOOO', erc20);
 
-      console.log('FOOOOOO', erc20);
+  //     try {
+  //       // START HERE, approval is not working
 
-      try {
-        // START HERE, approval is not working
+  //       approvalTx = await erc20.approve(sourceRouterAddress, amount);
+  //     } catch (err) {
+  //       console.log('error approving tx', err);
+  //     }
 
-        useApprovedAmount;
+  //     console.log('here =====');
+  //     await approvalTx.wait(); // wait for the transaction to be mined
+  //     console.log(
+  //       `approved router ${sourceRouterAddress} to spend ${amount} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
+  //     );
 
-        approvalTx = await erc20.approve(sourceRouterAddress, amount);
-      } catch (err) {
-        console.log('error approving tx', err);
-      }
+  //     sendTx = await sourceRouter.ccipSend(destinationChainSelector, message, {
+  //       value: fees,
+  //     }); // fees are send as value since we are paying the fees in native
+  //     //}
 
-      console.log('here =====');
-      await approvalTx.wait(); // wait for the transaction to be mined
-      console.log(
-        `approved router ${sourceRouterAddress} to spend ${amount} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
-      );
+  //     // else {
+  //     //   if (tokenAddress.toUpperCase() === feeTokenAddress.toUpperCase()) {
+  //     //     // fee token is the same as the token to transfer
+  //     //     // Amount tokens to approve are transfer amount + fees
+  //     //     approvalTx = await erc20.approve(sourceRouterAddress, amount + fees);
+  //     //     await approvalTx.wait(); // wait for the transaction to be mined
+  //     //     console.log(
+  //     //       `approved router ${sourceRouterAddress} to spend ${amount} and fees ${fees} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
+  //     //     );
+  //     //   }
+  //     //   else {
+  //     //     // fee token is different than the token to transfer
+  //     //     // 2 approvals
+  //     //     approvalTx = await erc20.approve(sourceRouterAddress, amount); // 1 approval for the tokens to transfer
+  //     //     await approvalTx.wait(); // wait for the transaction to be mined
+  //     //     console.log(
+  //     //       `approved router ${sourceRouterAddress} to spend ${amount} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
+  //     //     );
+  //     //     const erc20Fees = new ethers.Contract(feeTokenAddress, erc20Abi, signer);
+  //     //     approvalTx = await erc20Fees.approve(sourceRouterAddress, fees); // 1 approval for the fees token
+  //     //     await approvalTx.wait();
+  //     //     console.log(
+  //     //       `approved router ${sourceRouterAddress} to spend  fees ${fees} of token ${feeTokenAddress}. Transaction: ${approvalTx.hash}`
+  //     //     );
+  //     //   }
+  //     //   sendTx = await sourceRouter.ccipSend(destinationChainSelector, message);
+  //     // }
 
-      sendTx = await sourceRouter.ccipSend(destinationChainSelector, message, {
-        value: fees,
-      }); // fees are send as value since we are paying the fees in native
-      //}
+  //     const receipt = await sendTx.wait(); // wait for the transaction to be mined
 
-      // else {
-      //   if (tokenAddress.toUpperCase() === feeTokenAddress.toUpperCase()) {
-      //     // fee token is the same as the token to transfer
-      //     // Amount tokens to approve are transfer amount + fees
-      //     approvalTx = await erc20.approve(sourceRouterAddress, amount + fees);
-      //     await approvalTx.wait(); // wait for the transaction to be mined
-      //     console.log(
-      //       `approved router ${sourceRouterAddress} to spend ${amount} and fees ${fees} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
-      //     );
-      //   }
-      //   else {
-      //     // fee token is different than the token to transfer
-      //     // 2 approvals
-      //     approvalTx = await erc20.approve(sourceRouterAddress, amount); // 1 approval for the tokens to transfer
-      //     await approvalTx.wait(); // wait for the transaction to be mined
-      //     console.log(
-      //       `approved router ${sourceRouterAddress} to spend ${amount} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
-      //     );
-      //     const erc20Fees = new ethers.Contract(feeTokenAddress, erc20Abi, signer);
-      //     approvalTx = await erc20Fees.approve(sourceRouterAddress, fees); // 1 approval for the fees token
-      //     await approvalTx.wait();
-      //     console.log(
-      //       `approved router ${sourceRouterAddress} to spend  fees ${fees} of token ${feeTokenAddress}. Transaction: ${approvalTx.hash}`
-      //     );
-      //   }
-      //   sendTx = await sourceRouter.ccipSend(destinationChainSelector, message);
-      // }
+  //     /*
+  //     ==================================================
+  //         Section: Fetch message ID
+  //         The Router ccipSend function returns the messageId.
+  //         This section makes a call (simulation) to the blockchain
+  //         to fetch the messageId that was returned by the Router.
+  //     ==================================================
+  //     */
 
-      const receipt = await sendTx.wait(); // wait for the transaction to be mined
+  //     // Simulate a call to the router to fetch the messageID
+  //     const call = {
+  //       from: sendTx.from,
+  //       to: sendTx.to,
+  //       data: sendTx.data,
+  //       gasLimit: sendTx.gasLimit,
+  //       gasPrice: sendTx.gasPrice,
+  //       value: sendTx.value,
+  //     };
 
-      /* 
-      ==================================================
-          Section: Fetch message ID
-          The Router ccipSend function returns the messageId.
-          This section makes a call (simulation) to the blockchain
-          to fetch the messageId that was returned by the Router.
-      ==================================================
-      */
+  //     // Simulate a contract call with the transaction data at the block before the transaction
+  //     const messageId = await provider.call(call, receipt.blockNumber - 1);
 
-      // Simulate a call to the router to fetch the messageID
-      const call = {
-        from: sendTx.from,
-        to: sendTx.to,
-        data: sendTx.data,
-        gasLimit: sendTx.gasLimit,
-        gasPrice: sendTx.gasPrice,
-        value: sendTx.value,
-      };
+  //     console.log(
+  //       `\n✅ ${amount} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
+  //     );
 
-      // Simulate a contract call with the transaction data at the block before the transaction
-      const messageId = await provider.call(call, receipt.blockNumber - 1);
+  //     // 100 of Tokens(0xc4bf5cbdabe595361438f8c6a187bdc330539c60) Sent to account 0x3f1cf2c4ed96554b76763c8b38d66b66cc48e841 on destination chain [object Object] using CCIP. Transaction hash 0x847bcb76cc5ced74d8a869d5d057cdd314079c507cec57c3be76c7b2efb1e6ec -  Message id is 0x5efe6982ec39c9eba60819284e05bd1691c0903aaec7d12f4e30925b69e6c5f5
+  //   } catch (error) {
+  //     console.log('ERRRR', error);
+  //   }
+  // };
 
-      console.log(
-        `\n✅ ${amount} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
-      );
-
-      // 100 of Tokens(0xc4bf5cbdabe595361438f8c6a187bdc330539c60) Sent to account 0x3f1cf2c4ed96554b76763c8b38d66b66cc48e841 on destination chain [object Object] using CCIP. Transaction hash 0x847bcb76cc5ced74d8a869d5d057cdd314079c507cec57c3be76c7b2efb1e6ec -  Message id is 0x5efe6982ec39c9eba60819284e05bd1691c0903aaec7d12f4e30925b69e6c5f5
-    } catch (error) {
-      console.log('ERRRR', error);
-    }
+  const bridgeActionsProps = {
+    ...handleBridgeArguments(),
+    amountToBridge: amount,
+    isWrongNetwork: false, // TODO fix
+    poolAddress: GHO.underlying,
+    symbol: 'GHO',
+    blocked: false,
+    decimals: GHO.decimals,
+    isWrappedBaseAsset: false,
   };
 
   return (
@@ -547,70 +528,11 @@ export const BridgeModal = () => {
           balanceText={<Trans>GHO balance</Trans>}
           //   isMaxSelected={isMaxSelected}
         />
-        {/* <SwitchAssetInput
-          assets={tokens.filter((token) => token.address !== selectedOutputToken.address)}
-          value={inputAmount}
-          onChange={handleInputChange}
-          usdValue={sellRates?.srcUSD || '0'}
-          symbol={selectedInputToken.symbol}
-          onSelect={handleSelectedInputToken}
-          inputTitle={' '}
-          sx={{ width: '100%' }}
-        />
-        <IconButton
-          onClick={onSwitchReserves}
-          sx={{
-            border: '1px solid',
-            borderColor: 'divider',
-            position: 'absolute',
-            backgroundColor: 'background.paper',
-          }}
-        >
-          <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
-            <SwitchVerticalIcon />
-          </SvgIcon>
-        </IconButton>
-        <SwitchAssetInput
-          assets={tokens.filter((token) => token.address !== selectedInputToken.address)}
-          value={
-            sellRates ? normalizeBN(sellRates.destAmount, sellRates.destDecimals).toString() : '0'
-          }
-          usdValue={sellRates?.destUSD || '0'}
-          symbol={selectedOutputToken.symbol}
-          loading={
-            debounceInputAmount !== '0' && debounceInputAmount !== '' && ratesLoading && !ratesError
-          }
-          onSelect={handleSelectedOutputToken}
-          disableInput={true}
-          inputTitle={' '}
-          sx={{ width: '100%' }}
-        /> */}
-        <Button onClick={handleBridge} variant="contained">
+        {/* <Button onClick={handleBridge} variant="contained">
           Bridge
-        </Button>
+        </Button> */}
       </Box>
-      {/* {tokenListSortedByBalace.length > 1 ? (
-        <SwitchModalContent
-          key={selectedChainId}
-          selectedChainId={selectedChainId}
-          setSelectedChainId={setSelectedChainId}
-          supportedNetworks={supportedNetworksWithEnabledMarket}
-          tokens={tokenListSortedByBalace}
-          selectedNetworkConfig={selectedNetworkConfig}
-          // defaultAsset={underlyingAsset}
-        />
-      ) : !user ? (
-        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
-          <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
-            <Trans>Please connect your wallet to be able to switch your tokens.</Trans>
-          </Typography>
-          <ConnectWalletButton />
-        </Box>
-      ) : (
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
-          <CircularProgress />
-        </Box>
-      )} */}
+      <BridgeActions {...bridgeActionsProps} />
     </BasicModal>
   );
 };
