@@ -299,7 +299,7 @@ export const SupplyAssetsList = () => {
         {sortedReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
-              <SupplyAssetsListItem {...item} key={item.id} />
+              <SupplyAssetsListItem {...item} key={item.id} walletBalances={walletBalances} />
             </AssetCapsProvider>
           </Fragment>
         ))}
