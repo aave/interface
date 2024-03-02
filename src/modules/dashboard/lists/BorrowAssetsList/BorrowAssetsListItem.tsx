@@ -64,7 +64,7 @@ export const BorrowAssetsListItem = ({
         incentives={vIncentivesData}
         symbol={symbol}
       >
-        {symbol === 'wstETH' && (
+        {symbol === 'ETH' && (
           <Link
             href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
             style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}

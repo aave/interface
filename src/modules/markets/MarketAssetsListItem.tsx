@@ -109,7 +109,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
-        {reserve.symbol === 'wstETH' && (
+        {reserve.symbol === 'ETH' && (
           <Box>
             <Link
               href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
@@ -118,7 +118,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             >
               <Typography variant="secondary14">
                 <Trans>
-                  Eligible for <strong>2.9M$</strong> GHO Community Program 👻
+                  Eligible for <strong>2.1M$</strong> WETH Community Program 👻
                 </Trans>
                 <TextWithTooltip
                   wrapperProps={{ sx: { display: 'inline-flex', alignItems: 'center', ml: 1 } }}
