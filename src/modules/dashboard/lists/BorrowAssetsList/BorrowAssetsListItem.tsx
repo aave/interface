@@ -34,6 +34,7 @@ export const BorrowAssetsListItem = ({
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
   const trackEvent = useRootStore((store) => store.trackEvent);
+  console.log('currentMarket', currentMarket);
 
   return (
     <ListItemWrapper
@@ -64,7 +65,7 @@ export const BorrowAssetsListItem = ({
         incentives={vIncentivesData}
         symbol={symbol}
       >
-        {symbol === 'ETH' && (
+        {symbol === 'ETH' && currentMarket === 'proto_mainnet_v3' && (
           <Link
             href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
             style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}

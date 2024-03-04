@@ -109,7 +109,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
-        {reserve.symbol === 'ETH' && (
+        {reserve.symbol === 'ETH' && currentMarket === 'proto_mainnet_v3' && (
           <Box>
             <Link
               href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
