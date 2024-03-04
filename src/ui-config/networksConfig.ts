@@ -51,6 +51,8 @@ export type NetworkConfig = {
 
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
+const ratesHistoryApiUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/rates-history`;
+
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
@@ -109,7 +111,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://etherscan.io',
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.polygon]: {
@@ -135,7 +137,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Polygon PoS Bridge',
       url: 'https://wallet.polygon.technology/polygon/bridge',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.mumbai]: {
     name: 'Mumbai',
@@ -201,7 +203,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Avalanche Bridge',
       url: 'https://bridge.avax.network/',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.arbitrum_goerli]: {
     name: 'Arbitrum Görli',
@@ -246,7 +248,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.base]: {
     name: 'Base',
@@ -270,7 +272,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Base Bridge',
       url: 'https://bridge.base.org/',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
 
   [ChainId.harmony]: {
@@ -295,7 +297,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.optimism]: {
     name: 'Optimism',
@@ -315,7 +317,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Optimism Bridge',
       url: 'https://app.optimism.io/bridge',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.optimism_goerli]: {
     name: 'Optimism Görli',
@@ -380,7 +382,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.fantom_testnet]: {
     name: 'Fantom Testnet',
@@ -414,7 +416,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 0, // N/A
     explorerLink: 'https://andromeda-explorer.metis.io',
     networkLogoPath: '/icons/networks/metis.svg',
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.xdai]: {
     name: 'Gnosis Chain',
@@ -434,6 +436,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'xDai Bridge',
       url: 'https://bridge.gnosischain.com/',
     },
+    ratesHistoryApiUrl,
   },
   [ChainId.bnb]: {
     name: 'Binance Smart Chain',
@@ -450,6 +453,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'BNB Bridge',
       url: 'https://www.bnbchain.org/en/bnb-chain-bridges',
     },
+    ratesHistoryApiUrl,
   },
 
   [ChainId.scroll]: {
@@ -467,5 +471,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Scroll Bridge',
       url: 'https://scroll.io/bridge',
     },
+    ratesHistoryApiUrl,
   },
 } as const;
