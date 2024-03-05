@@ -90,7 +90,7 @@ export const BridgeActions = React.memo(
     //   reserveAddress: poolAddress,
     //   isWrappedBaseAsset: isWrappedBaseAsset,
     // });
-    const { sendTx } = useWeb3Context();
+    // const { sendTx } = useWeb3Context();
 
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
@@ -124,8 +124,6 @@ export const BridgeActions = React.memo(
     }
 
     const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-
-    console.log('usePermit', usePermit);
 
     useEffect(() => {
       if (!isFetchedAfterMount) {
@@ -261,9 +259,13 @@ export const BridgeActions = React.memo(
         // console.log('ARE WE HERE -----', destinationChainSelector, message, fees);
 
         // console.log('SOURCE ROUTER ADDRESS', sourceRouterAddress);
-
+        let sendTx;
         let approvalTx = await erc20.approve(sourceRouterAddress, amountToBridge);
         await approvalTx.wait();
+
+        console.log(
+          `approved router ${sourceRouterAddress} to spend ${amountToBridge} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
+        );
 
         // let sendTxWithFeeData = sourceRouter.ccipSend(destinationChainSelector, message, {
         //   value: fees,
@@ -271,28 +273,24 @@ export const BridgeActions = React.memo(
 
         // continue here, permit might not be needed
 
-        let preparedTx = sourceRouter.ccipSend(destinationChainSelector, message, {
+        sendTx = await sourceRouter.ccipSend(destinationChainSelector, message, {
           value: fees,
         });
 
-        console.log('1', preparedTx);
+        console.log('1', sendTx);
         // preparedTx = await estimateGasLimit(preparedTx);
         console.log('2');
 
-        response = await preparedTx(preparedTx);
-
-        console.log('3');
-
-        await response.wait();
+        const receipt = await sendTx.wait();
         console.log('4');
 
         setMainTxState({
-          txHash: response.hash,
+          txHash: receipt.hash,
           loading: false,
           success: true,
         });
 
-        addTransaction(response.hash, {
+        addTransaction(receipt.hash, {
           action: 'Bridge',
           txState: 'success',
           asset: tokenAddress,
@@ -330,12 +328,12 @@ export const BridgeActions = React.memo(
         // }
 
         setMainTxState({
-          txHash: response.hash,
+          txHash: sendTx.hash,
           loading: false,
           success: true,
         });
 
-        addTransaction(response.hash, {
+        addTransaction(sendTx.hash, {
           action,
           txState: 'success',
           asset: tokenAddress,
@@ -347,6 +345,8 @@ export const BridgeActions = React.memo(
         // refetchPoolData && refetchPoolData();
         // refetchIncentiveData && refetchIncentiveData();
       } catch (error) {
+        console.log('DO WE ERROR --->', error);
+
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
         setMainTxState({
@@ -376,7 +376,7 @@ export const BridgeActions = React.memo(
         handleApproval={approval}
         handleAction={action}
         requiresApproval={requiresApproval}
-        tryPermit={true} // how to check permitAvailable for gho?
+        tryPermit={false} // how to check permitAvailable for gho?
         sx={sx}
         {...props}
       />
