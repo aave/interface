@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-27 00:16\n"
+"PO-Revision-Date: 2024-02-29 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1083,6 +1083,10 @@ msgstr "Βρύση"
 msgid "Faucet {0}"
 msgstr "Βρύση {0}"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr ""
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
 msgstr ""
@@ -1338,6 +1342,10 @@ msgstr "Μάθετε περισσότερα στον οδηγό <0>Συχνών 
 msgid "Learn more."
 msgstr "Μάθετε περισσότερα."
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1466,8 +1474,16 @@ msgstr ""
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr ""
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1530,7 +1546,13 @@ msgstr ""
 msgid "Minimum USD value received"
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr ""
+
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr ""
 
@@ -1667,10 +1689,6 @@ msgstr ""
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Εντάξει, Κλείσιμο"
-
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "Εντάξει, το κατάλαβα"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Open for voting"
@@ -2077,6 +2095,10 @@ msgstr ""
 msgid "Selected supply assets"
 msgstr ""
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr ""
+
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
 msgstr ""
@@ -2249,6 +2271,10 @@ msgstr ""
 msgid "State"
 msgstr "Κατάσταση"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2407,6 +2433,10 @@ msgstr "Λειτουργία Testnet"
 
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
+msgstr ""
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
 msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx

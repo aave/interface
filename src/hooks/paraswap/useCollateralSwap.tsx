@@ -1,4 +1,4 @@
-import { BigNumberZeroDecimal, normalize } from '@aave/math-utils';
+import { normalize } from '@aave/math-utils';
 import { OptimalRate } from '@paraswap/sdk';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -101,15 +101,9 @@ export const useCollateralSwap = ({
         const route = await exactInRate();
         setError('');
         setRoute(route);
-
         setInputAmount(normalize(route.srcAmount, route.srcDecimals));
         setInputAmountUSD(route.srcUSD);
-
-        const minAmount = new BigNumberZeroDecimal(route.destAmount)
-          .multipliedBy(1 - maxSlippage / 100)
-          .toFixed(0);
-
-        setOutputAmount(normalize(minAmount, route.destDecimals));
+        setOutputAmount(normalize(route.destAmount, route.destDecimals));
         setOutputAmountUSD(route.destUSD);
       } catch (e) {
         console.error(e);

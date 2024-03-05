@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-27 00:16\n"
+"PO-Revision-Date: 2024-02-29 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1083,6 +1083,10 @@ msgstr "Hahn"
 msgid "Faucet {0}"
 msgstr "Hahn {0}"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr ""
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
 msgstr "Daten werden abgerufen..."
@@ -1338,6 +1342,10 @@ msgstr "Erfahren Sie mehr in unserem <0>FAQ-Leitfaden</0>"
 msgid "Learn more."
 msgstr "Weitere Informationen."
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1466,8 +1474,16 @@ msgstr "Die maximale Menge, die zur Verfügung steht, beträgt <0/> {0} (<1/>)."
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Die maximal für die Bereitstellung verfügbare Menge ist begrenzt, da die Obergrenze für das Protokollangebot bei {0}%."
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1530,7 +1546,13 @@ msgstr "Minimaler GHO-Kreditbetrag"
 msgid "Minimum USD value received"
 msgstr "Erhaltener Mindestwert in USD"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr ""
+
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr ""
 
@@ -1667,10 +1689,6 @@ msgstr "Benachrichtigen"
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Ok, schließen"
-
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "Ok, ich hab's verstanden"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Open for voting"
@@ -2077,6 +2095,10 @@ msgstr "Ausgewählte Kredite"
 msgid "Selected supply assets"
 msgstr "Ausgewählte Versorgungsanlagen"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr ""
+
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
 msgstr "Feedback senden"
@@ -2249,6 +2271,10 @@ msgstr "Staking-Rabatt"
 msgid "State"
 msgstr "Zustand"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2407,6 +2433,10 @@ msgstr "Testnet-Modus"
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
 msgstr "Der Testnet-Modus ist aktiviert."
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
+msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting!!"

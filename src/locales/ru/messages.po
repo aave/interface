@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-27 00:16\n"
+"PO-Revision-Date: 2024-02-29 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -1083,6 +1083,10 @@ msgstr "Водопроводный кран"
 msgid "Faucet {0}"
 msgstr "Водопроводный кран {0}"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr ""
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
 msgstr "Получение данных..."
@@ -1338,6 +1342,10 @@ msgstr "Узнайте больше в нашем <0>руководстве по
 msgid "Learn more."
 msgstr "Подробнее."
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1466,8 +1474,16 @@ msgstr "Максимальное количество, доступное для
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Максимальное количество, доступное для поставки, ограничено, так как протокольный лимит предложения составляет {0}%."
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1530,7 +1546,13 @@ msgstr "Минимальная сумма займа GHO"
 msgid "Minimum USD value received"
 msgstr "Минимальная полученная сумма в долларах США"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr ""
+
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr ""
 
@@ -1667,10 +1689,6 @@ msgstr "Извещать"
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Хорошо, Закрыть"
-
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "Хорошо, я понял"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Open for voting"
@@ -2077,6 +2095,10 @@ msgstr "Выбранные заемные активы"
 msgid "Selected supply assets"
 msgstr "Избранные активы снабжения"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr ""
+
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
 msgstr "Отправить отзыв"
@@ -2249,6 +2271,10 @@ msgstr "Скидка на стейкинг"
 msgid "State"
 msgstr "Государство"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2407,6 +2433,10 @@ msgstr "Режим тестовой сети"
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
 msgstr "Режим тестовой сети включен"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
+msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting!!"
