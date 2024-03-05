@@ -279,7 +279,18 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
               style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
               target="blank"
             >
-              <Typography variant="secondary14">
+              <Typography
+                sx={{
+                  ['@media screen and (min-width: 1125px)']: {
+                    typography: 'description',
+                  },
+                  typography: {
+                    xs: 'caption',
+                  },
+                }}
+                variant="secondary14"
+                color="text.secondary"
+              >
                 <Trans>
                   Eligible for <strong>2.9M$</strong> GHO Community Program 👻
                 </Trans>
