@@ -1,8 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -53,7 +55,6 @@ export const BorrowAssetsListMobileItem = ({
           />
         }
       />
-
       <Row
         caption={
           <VariableAPYTooltip
@@ -73,7 +74,6 @@ export const BorrowAssetsListMobileItem = ({
           variant="secondary14"
         />
       </Row>
-
       {/* <Row
         caption={
           <StableAPYTooltip
@@ -93,7 +93,35 @@ export const BorrowAssetsListMobileItem = ({
           variant="secondary14"
         />
       </Row> */}
-
+      {symbol === 'ETH' && currentMarket === 'proto_mainnet_v3' && (
+        <Row>
+          <Link
+            href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
+            style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
+            target="blank"
+          >
+            <Typography variant="description">
+              <Trans>
+                Eligible for <strong>2.1M$</strong> wETH Community Program 👻
+              </Trans>
+              <TextWithTooltip
+                wrapperProps={{ sx: { display: 'inline-flex', alignItems: 'center' } }}
+                event={{
+                  eventName: GENERAL.TOOL_TIP,
+                  eventParams: {
+                    tooltip: 'Community Rewards',
+                  },
+                }}
+              >
+                <Trans>
+                  This is a program initiated and implemented by the decentralised Aave community.
+                  Aave Labs does not guarantee the program and accepts no liability.
+                </Trans>
+              </TextWithTooltip>
+            </Typography>
+          </Link>
+        </Row>
+      )}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
           disabled={disableBorrow}

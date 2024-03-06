@@ -6,9 +6,11 @@ import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { GENERAL, MARKETS } from 'src/utils/mixPanelEvents';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -18,7 +20,6 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
-import { MARKETS } from '../../utils/mixPanelEvents';
 
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
@@ -108,6 +109,35 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
+        {reserve.symbol === 'ETH' && currentMarket === 'proto_mainnet_v3' && (
+          <Box>
+            <Link
+              href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
+              style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
+              target="blank"
+            >
+              <Typography variant="secondary14">
+                <Trans>
+                  Eligible for <strong>2.1M$</strong> WETH Community Program 👻
+                </Trans>
+                <TextWithTooltip
+                  wrapperProps={{ sx: { display: 'inline-flex', alignItems: 'center', ml: 1 } }}
+                  event={{
+                    eventName: GENERAL.TOOL_TIP,
+                    eventParams: {
+                      tooltip: 'Community Rewards',
+                    },
+                  }}
+                >
+                  <Trans>
+                    This is a program initiated and implemented by the decentralised Aave community.
+                    Aave Labs does not guarantee the program and accepts no liability.
+                  </Trans>
+                </TextWithTooltip>
+              </Typography>
+            </Link>
+          </Box>
+        )}
       </ListColumn>
       {/* 
       <ListColumn>
