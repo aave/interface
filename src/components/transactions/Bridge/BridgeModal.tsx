@@ -1,42 +1,44 @@
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography, Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { API_ETH_MOCK_ADDRESS, ReserveDataHumanized } from '@aave/contract-helpers';
-import { providers, Contract, utils, constants } from 'ethers';
 import BigNumber from 'bignumber.js';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { debounce } from 'lodash';
+import { providers, Contract, utils, constants } from 'ethers';
+import { formatEther } from 'ethers/lib/utils';
 
 import { normalize } from '@aave/math-utils';
 import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { NetworkSelect } from 'src/components/transactions/NetworkSelect';
-import { ReserveWithBalance } from './SwitchModal';
+import { ReserveWithBalance } from '../SwitchModal';
 import { useRootStore } from 'src/store/root';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
-import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
-import { AaveV3Ethereum, AaveV3Sepolia } from '@bgd-labs/aave-address-book';
+import { TokenInfo } from 'src/ui-config/TokenList';
+import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 import { getRouterConfig } from './Router';
-import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
-import { ApprovalMethod } from 'src/store/walletSlice';
+import routerAbi from './Router-abi.json';
+import erc20Abi from './IERC20Meta.json';
+
+import {
+  TxModalDetails,
+  DetailsNumberLine,
+} from 'src/components/transactions/FlowCommons/TxModalDetails';
+
+import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+
 import { BridgeActions } from './BridgeActions';
 import { TxSuccessView } from '../FlowCommons/Success';
 
-import routerAbi from './Router-abi.json';
-import erc20Abi from './IERC20Meta.json';
-import {
-  CustomMarket,
-  getNetworkConfig,
-  getProvider,
-  marketsData,
-} from 'src/utils/marketsAndNetworksConfig';
-import { NetworkSelector } from '../Switch/NetworkSelector';
+import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { supportedNetworksWithBridgeMarket } from './common';
 
 import { BasicModal } from '../../primitives/BasicModal';
-import { SwitchModalContent } from './SwitchModalContent';
 import { AssetInput } from '../AssetInput';
 
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
@@ -67,13 +69,21 @@ export const BridgeModal = () => {
   const [destinationToken, setDestinationToken] = useState('');
   const [sourceNetwork, setSourceNetwork] = useState({ chainId: '' });
   const [destinationNetwork, setDestinationNetwork] = useState('');
-  const { provider } = useWeb3Context();
+  const [debounceInputAmount, setDebounceInputAmount] = useState('');
+  const [message, setMessage] = useState({});
+
+  const [fees, setFees] = useState('');
+
+  const [bridgeFeeFormatted, setBridgeFeeFormatted] = useState('');
+
+  const { readOnlyModeAddress, provider } = useWeb3Context();
 
   const [selectedChainId, setSelectedChainId] = useState(() => {
     if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId))
       return currentChainId;
     return defaultNetwork.chainId;
   });
+  const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
   const [user] = useRootStore((state) => [state.account]);
 
@@ -100,8 +110,6 @@ export const BridgeModal = () => {
   //       setSelectedChainId(defaultNetwork.chainId);
   //     }
   //   }, [currentChainId, chainId]);
-
-  const handleChange = (value: string) => {};
 
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: NetworkConfiguration) => {
@@ -186,13 +194,130 @@ export const BridgeModal = () => {
     });
   }, [networkReserves, poolsBalances]);
 
+  const debouncedInputChange = useMemo(() => {
+    return debounce((value: string) => {
+      setDebounceInputAmount(value);
+      getBridgeFee(value);
+    }, 2000);
+  }, [setDebounceInputAmount]);
+
   const handleInputChange = (value: string) => {
     if (value === '-1') {
       setAmount(selectedInputToken.balance);
+      debouncedInputChange(selectedInputToken.balance);
     } else {
       setAmount(value);
+      debouncedInputChange(value);
     }
   };
+
+  const getBridgeFee = async (value: string) => {
+    console.log(`API called with value: ${value}`);
+    // Your API call logic here
+    const destinationChain = { chainId: 421614 }; // destinationNetwork;
+
+    console.log('provider', provider);
+    let signer;
+    try {
+      signer = await provider.getSigner();
+    } catch (err) {
+      console.log('error on signer', err);
+    }
+
+    if (!provider || !destinationChain || !sourceNetwork) return;
+
+    console.log('are we in here');
+
+    // let response: TransactionResponse;
+    // let action = ProtocolAction.default;
+    const tokenAddress = GHO.underlyingAsset;
+
+    const erc20 = new Contract(tokenAddress, erc20Abi, signer);
+
+    //   // Get the router's address for the specified chain
+    const sourceRouterAddress = getRouterConfig(sourceNetwork.chainId).address;
+    const sourceChainSelector = getRouterConfig(sourceNetwork.chainId).chainSelector;
+    // Get the chain selector for the target chain
+    const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
+    const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
+
+    // ==================================================
+    //     Section: Check token validity
+    //     Check first if the token you would like to
+    //     transfer is supported.
+    // ==================================================
+    // */
+
+    //   // Fetch the list of supported tokens
+
+    //   console.log('destinationChainSelector', destinationChainSelector);
+
+    const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
+
+    const tokenAddressLower = tokenAddress.toLowerCase();
+
+    // Convert each supported token to lowercase and check if the list includes the lowercase token address
+    const isSupported = supportedTokens
+      .map((token) => token.toLowerCase())
+      .includes(tokenAddressLower);
+
+    if (!isSupported) {
+      throw Error(
+        `Token address ${tokenAddress} not in the list of supportedTokens ${supportedTokens}`
+      );
+    }
+    /*
+==================================================
+  Section: BUILD CCIP MESSAGE
+  build CCIP message that you will send to the
+  Router contract.
+==================================================
+*/
+
+    // build message
+    const tokenAmounts = [
+      {
+        token: tokenAddress,
+        amount: amount,
+      },
+    ];
+
+    // Encoding the data
+
+    const functionSelector = utils.id('CCIP EVMExtraArgsV1').slice(0, 10);
+    //  "extraArgs" is a structure that can be represented as [ 'uint256']
+    // extraArgs are { gasLimit: 0 }
+    // we set gasLimit specifically to 0 because we are not sending any data so we are not expecting a receiving contract to handle data
+
+    const extraArgs = utils.defaultAbiCoder.encode(['uint256'], [0]);
+
+    const encodedExtraArgs = functionSelector + extraArgs.slice(2);
+
+    const message = {
+      receiver: utils.defaultAbiCoder.encode(['address'], [user]),
+      data: '0x', // no data
+      tokenAmounts: tokenAmounts,
+      feeToken: constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
+      // feeToken: feeTokenAddress ? feeTokenAddress : ethers.constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
+
+      extraArgs: encodedExtraArgs,
+    };
+
+    setMessage(message);
+
+    /*
+==================================================
+  Section: CALCULATE THE FEES
+  Call the Router to estimate the fees for sending tokens.
+==================================================
+*/
+    const fees = await sourceRouter.getFee(destinationChainSelector, message);
+    setBridgeFeeFormatted(formatEther(fees));
+    setFees(fees);
+
+    console.log('FEEES', fees);
+  };
+
   const GHO = reservesWithBalance.find((reserve) => reserve.symbol === 'GHO');
 
   if (!GHO) return null;
@@ -230,19 +355,52 @@ export const BridgeModal = () => {
     blocked: false,
     decimals: GHO.decimals,
     isWrappedBaseAsset: false,
+    message,
+    fees,
   };
 
-  if (bridgeTxState.success)
+  if (bridgeTxState.success) {
     return (
       <BasicModal open={type === ModalType.Bridge} setOpen={close}>
         <TxModalTitle title="Bridge tokens" />
-        <TxSuccessView action={<Trans>Bridged!</Trans>} amount={amount} symbol={'GHO'} />;
+        {/* <TxSuccessView action={<Trans>Bridged!</Trans>} amount={amount} symbol={'GHO'} />; */}
+        <TxSuccessView
+          customAction={
+            <Box mt={5}>
+              <Button
+                component="a"
+                target="_blank"
+                href={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
+                variant="gradient"
+                size="medium"
+              >
+                <Trans>See Transaction status on CCIP</Trans>
+              </Button>
+            </Box>
+          }
+          customText={
+            <Trans>
+              Asset has been successfully sent to router contract. You can check the status of the
+              transaction above
+            </Trans>
+          }
+          action={<Trans>Brided Via CCIP</Trans>}
+        />
       </BasicModal>
     );
-
+  }
   return (
     <BasicModal open={type === ModalType.Bridge} setOpen={close}>
       <TxModalTitle title="Bridge tokens" />
+      {isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
+        <ChangeNetworkWarning
+          networkName={getNetworkConfig(selectedChainId).name}
+          chainId={selectedChainId}
+          event={{
+            eventName: GENERAL.SWITCH_NETWORK,
+          }}
+        />
+      )}
       <Box
         sx={{
           display: 'flex',
@@ -251,9 +409,9 @@ export const BridgeModal = () => {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
+          width: '100%',
         }}
       >
-        Hola
         {/* // TODO check correct network */}
         {/* <NetworkSelector
           networks={supportedNetworksWithBridgeMarket}
@@ -319,9 +477,22 @@ export const BridgeModal = () => {
           balanceText={<Trans>GHO balance</Trans>}
           //   isMaxSelected={isMaxSelected}
         />
-        {/* <Button onClick={handleBridge} variant="contained">
-          Bridge
-        </Button> */}
+        <Box width="100%">
+          <TxModalDetails gasLimit={'100'}>
+            <DetailsNumberLine
+              description={<Trans>Amount</Trans>}
+              iconSymbol={'GHO'}
+              symbol={'GHO'}
+              value={amount}
+            />
+            <DetailsNumberLine
+              description={<Trans>Fee</Trans>}
+              iconSymbol={'ETH'}
+              symbol={'ETH'}
+              value={bridgeFeeFormatted}
+            />
+          </TxModalDetails>
+        </Box>
       </Box>
       <BridgeActions {...bridgeActionsProps} />
     </BasicModal>

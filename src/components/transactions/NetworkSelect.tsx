@@ -66,7 +66,6 @@ export const NetworkSelect = ({ supportedBridgeMarkets, onNetworkChange }): Netw
               // },
               MenuListProps: {
                 sx: {
-                  background: 'red',
                   borderRadius: '8px',
                   padding: '7.5px 0px 8.5px 0px',
                 },

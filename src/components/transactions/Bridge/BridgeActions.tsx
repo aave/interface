@@ -36,6 +36,7 @@ export interface BridgeActionProps extends BoxProps {
   };
   destinationAccount: string;
   tokenAddress: any;
+  setBridgeFee: (fee: string) => void;
 }
 
 export const BridgeActions = React.memo(
@@ -52,6 +53,9 @@ export const BridgeActions = React.memo(
     sourceChain,
     destinationChain,
     destinationAccount, // user
+    setBridgeFee,
+    message,
+    fees,
     ...props
   }: BridgeActionProps) => {
     const { provider } = useWeb3Context();
@@ -84,6 +88,9 @@ export const BridgeActions = React.memo(
       setTxError,
     } = useModalContext();
     const [user] = useRootStore((state) => [state.account]);
+
+    console.log('fees --->', fees);
+    console.log('message ---<', message);
 
     // const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
     // const permitAvailable = tryPermit({
@@ -132,7 +139,7 @@ export const BridgeActions = React.memo(
     }, [fetchApprovedAmount, isFetchedAfterMount]);
 
     const { approval } = useApprovalTx({
-      usePermit,
+      usePermit: false,
       approvedAmount: {
         amount: approvedAmount?.toString() || '0',
         user: user,
@@ -217,54 +224,41 @@ export const BridgeActions = React.memo(
   ==================================================
   */
 
-        // build message
-        const tokenAmounts = [
-          {
-            token: tokenAddress,
-            amount: amountToBridge,
-          },
-        ];
+        // // build message
+        // const tokenAmounts = [
+        //   {
+        //     token: tokenAddress,
+        //     amount: amountToBridge,
+        //   },
+        // ];
 
-        // Encoding the data
+        // // Encoding the data
 
-        const functionSelector = utils.id('CCIP EVMExtraArgsV1').slice(0, 10);
-        //  "extraArgs" is a structure that can be represented as [ 'uint256']
-        // extraArgs are { gasLimit: 0 }
-        // we set gasLimit specifically to 0 because we are not sending any data so we are not expecting a receiving contract to handle data
+        // const functionSelector = utils.id('CCIP EVMExtraArgsV1').slice(0, 10);
+        // //  "extraArgs" is a structure that can be represented as [ 'uint256']
+        // // extraArgs are { gasLimit: 0 }
+        // // we set gasLimit specifically to 0 because we are not sending any data so we are not expecting a receiving contract to handle data
 
-        const extraArgs = utils.defaultAbiCoder.encode(['uint256'], [0]);
+        // const extraArgs = utils.defaultAbiCoder.encode(['uint256'], [0]);
 
-        const encodedExtraArgs = functionSelector + extraArgs.slice(2);
+        // const encodedExtraArgs = functionSelector + extraArgs.slice(2);
 
-        const message = {
-          receiver: utils.defaultAbiCoder.encode(['address'], [destinationAccount]),
-          data: '0x', // no data
-          tokenAmounts: tokenAmounts,
-          feeToken: constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
-          // feeToken: feeTokenAddress ? feeTokenAddress : ethers.constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
+        // const message = {
+        //   receiver: utils.defaultAbiCoder.encode(['address'], [destinationAccount]),
+        //   data: '0x', // no data
+        //   tokenAmounts: tokenAmounts,
+        //   feeToken: constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
+        //   // feeToken: feeTokenAddress ? feeTokenAddress : ethers.constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
 
-          extraArgs: encodedExtraArgs,
-        };
+        //   extraArgs: encodedExtraArgs,
+        // };
 
-        /*
-  ==================================================
-      Section: CALCULATE THE FEES
-      Call the Router to estimate the fees for sending tokens.
-  ==================================================
-  */
-
-        const fees = await sourceRouter.getFee(destinationChainSelector, message);
-        console.log(`Estimated fees (wei): ${fees}`);
-
-        // console.log('ARE WE HERE -----', destinationChainSelector, message, fees);
-
-        // console.log('SOURCE ROUTER ADDRESS', sourceRouterAddress);
         let sendTx;
-        let approvalTx = await erc20.approve(sourceRouterAddress, amountToBridge);
-        await approvalTx.wait();
+        // let approvalTx = await erc20.approve(sourceRouterAddress, amountToBridge);
+        // await approvalTx.wait();
 
         console.log(
-          `approved router ${sourceRouterAddress} to spend ${amountToBridge} of token ${tokenAddress}. Transaction: ${approvalTx.hash}`
+          `approved router ${sourceRouterAddress} to spend ${amountToBridge} of token ${tokenAddress}.`
         );
 
         // let sendTxWithFeeData = sourceRouter.ccipSend(destinationChainSelector, message, {
@@ -284,48 +278,22 @@ export const BridgeActions = React.memo(
         const receipt = await sendTx.wait();
         console.log('4');
 
-        setMainTxState({
-          txHash: receipt.hash,
-          loading: false,
-          success: true,
-        });
+        // Simulate a call to the router to fetch the messageID
+        const call = {
+          from: sendTx.from,
+          to: sendTx.to,
+          data: sendTx.data,
+          gasLimit: sendTx.gasLimit,
+          gasPrice: sendTx.gasPrice,
+          value: sendTx.value,
+        };
 
-        addTransaction(receipt.hash, {
-          action: 'Bridge',
-          txState: 'success',
-          asset: tokenAddress,
-          amount: amountToBridge,
-          assetName: symbol,
-        });
+        // Simulate a contract call with the transaction data at the block before the transaction
+        const messageId = await provider.call(call, receipt.blockNumber - 1);
 
-        alert('success');
-
-        // determine if approval is signature or transaction
-        // checking user preference is not sufficient because permit may be available but the user has an existing approval
-        // if (usePermit && signatureParams) {
-        //   action = ProtocolAction.supplyWithPermit;
-        //   let signedSupplyWithPermitTxData = supplyWithPermit({
-        //     signature: signatureParams.signature,
-        //     amount: parseUnits(amountToBridge, decimals).toString(),
-        //     reserve: poolAddress,
-        //     deadline: signatureParams.deadline,
-        //   });
-
-        //   signedSupplyWithPermitTxData = await estimateGasLimit(signedSupplyWithPermitTxData);
-        //   response = await sendTx(signedSupplyWithPermitTxData);
-
-        //   await response.wait(1);
-        // } else {
-        //   action = ProtocolAction.supply;
-        //   let supplyTxData = supply({
-        //     amount: parseUnits(amountToBridge, decimals).toString(),
-        //     reserve: poolAddress,
-        //   });
-        //   supplyTxData = await estimateGasLimit(supplyTxData);
-        //   response = await sendTx(supplyTxData);
-
-        //   await response.wait(1);
-        // }
+        console.log(
+          `\n✅ ${amountToBridge} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
+        );
 
         setMainTxState({
           txHash: sendTx.hash,
@@ -355,10 +323,6 @@ export const BridgeActions = React.memo(
         });
       }
     };
-
-    // Check PROPS work correctly
-    // Check apporval works
-    // Handle action
 
     return (
       <TxActionsWrapper
