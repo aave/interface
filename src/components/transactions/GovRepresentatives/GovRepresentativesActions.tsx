@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { queryClient } from 'pages/_app.page';
+import { useQueryClient } from '@tanstack/react-query';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
@@ -23,6 +23,7 @@ export const GovRepresentativesActions = ({
   const { mainTxState, setMainTxState, setTxError, setGasLimit } = useModalContext();
   const { governanceV3Service } = useSharedDependencies();
   const { sendTx } = useWeb3Context();
+  const queryClient = useQueryClient();
   const [account, estimateGasLimit, addTransaction] = useRootStore((state) => [
     state.account,
     state.estimateGasLimit,

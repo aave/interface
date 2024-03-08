@@ -53,7 +53,7 @@ export const RepayModal = () => {
         {(params) => {
           return (
             <UserAuthenticated>
-              {(user) => {
+              {(user) => (
                 <>
                   {collateralRepayPossible && !mainTxState.txHash && (
                     <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
@@ -68,8 +68,8 @@ export const RepayModal = () => {
                       user={user}
                     />
                   )}
-                </>;
-              }}
+                </>
+              )}
             </UserAuthenticated>
           );
         }}

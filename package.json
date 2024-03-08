@@ -5,6 +5,7 @@
   "license": "BSD-3-Clause",
     "scripts": {
     "dev": "next dev",
+    "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8000' next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
     "build:static": "next build && next export",
@@ -30,8 +31,8 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.24.0",
-    "@aave/math-utils": "1.24.0",
+    "@aave/contract-helpers": "1.25.0",
+    "@aave/math-utils": "1.25.0",
     "@bgd-labs/aave-address-book": "^2.19.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",

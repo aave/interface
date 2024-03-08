@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-14 12:06\n"
+"PO-Revision-Date: 2024-03-06 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -603,6 +603,7 @@ msgid "COPY IMAGE"
 msgstr ""
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Can be collateral"
@@ -813,6 +814,10 @@ msgstr ""
 msgid "Current votes"
 msgstr "Τρέχουσες ψήφοι"
 
+#: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
+msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
+msgstr ""
+
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
 msgstr "Σκοτεινή λειτουργία"
@@ -852,6 +857,7 @@ msgstr ""
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/MarketAssetsListItem.tsx
 msgid "Details"
@@ -980,6 +986,21 @@ msgstr ""
 msgid "Efficiency mode (E-Mode)"
 msgstr "Λειτουργία αποδοτικότητας (E-Mode)"
 
+#: src/modules/markets/MarketAssetsListItem.tsx
+msgid "Eligible for <0>2.1M$</0> WETH Community Program 👻"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "Eligible for <0>2.1M$</0> wETH Community Program 👻"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr ""
@@ -1035,6 +1056,10 @@ msgstr ""
 msgid "Exceeds the discount"
 msgstr ""
 
+#: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
+msgid "Exchange rate"
+msgstr ""
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Expected amount to repay"
 msgstr ""
@@ -1072,6 +1097,10 @@ msgstr "Βρύση"
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Βρύση {0}"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
@@ -1328,6 +1357,10 @@ msgstr "Μάθετε περισσότερα στον οδηγό <0>Συχνών 
 msgid "Learn more."
 msgstr "Μάθετε περισσότερα."
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1456,8 +1489,16 @@ msgstr ""
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr ""
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1520,7 +1561,13 @@ msgstr ""
 msgid "Minimum USD value received"
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr ""
+
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr ""
 
@@ -1657,10 +1704,6 @@ msgstr ""
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Εντάξει, Κλείσιμο"
-
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "Εντάξει, το κατάλαβα"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Open for voting"
@@ -2067,6 +2110,10 @@ msgstr ""
 msgid "Selected supply assets"
 msgstr ""
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr ""
+
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
 msgstr ""
@@ -2239,6 +2286,11 @@ msgstr ""
 msgid "State"
 msgstr "Κατάσταση"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr ""
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
 msgstr ""
@@ -2252,6 +2304,7 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -2260,7 +2313,9 @@ msgid "Supply"
 msgstr "Προσφορά"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -2279,6 +2334,8 @@ msgstr "Προσφορά apy"
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
 msgstr "Υπόλοιπο προσφοράς"
@@ -2297,6 +2354,7 @@ msgstr "Επίτευξη του ανώτατου ορίου εφοδιασμού
 "μειώσετε την ποσότητα."
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 msgid "Supply {symbol}"
 msgstr "Προσφορά {symbol}"
 
@@ -2305,6 +2363,7 @@ msgid "Supplying your"
 msgstr "Προμηθεύοντας το"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 msgid "Supplying {symbol}"
 msgstr "Παροχή {symbol}"
 
@@ -2389,6 +2448,10 @@ msgstr "Λειτουργία Testnet"
 
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
+msgstr ""
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
 msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
@@ -2562,6 +2625,15 @@ msgstr "Αυτός ο υπολογισμός gas είναι μόνο μια εκ
 
 #: src/components/HALLink.tsx
 msgid "This integration was<0>proposed and approved</0>by the community."
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
@@ -2912,6 +2984,7 @@ msgstr ""
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Wallet balance"
@@ -2959,6 +3032,7 @@ msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Ma
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -2980,6 +3054,10 @@ msgstr ""
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
 msgstr "Ανάληψη {symbol}"
+
+#: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
+msgid "Withdrawing"
+msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 msgid "Withdrawing and Switching"

@@ -6,8 +6,8 @@ import {
 import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -91,6 +91,7 @@ export const DebtSwitchActions = ({
     setApprovalTxState,
   } = useModalContext();
   const { sendTx, signTxData } = useWeb3Context();
+  const queryClient = useQueryClient();
   const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
   const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
   const [useSignature, setUseSignature] = useState(false);
@@ -171,9 +172,9 @@ export const DebtSwitchActions = ({
       let debtSwitchTxData = debtSwitch({
         poolReserve,
         targetReserve,
-        currentRateMode: currentRateMode,
-        amountToReceive: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
-        amountToSwap: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
+        currentRateMode,
+        amountToReceive: parseUnits(amountToReceive, targetReserve.decimals).toString(),
+        amountToSwap: parseUnits(amountToSwap, poolReserve.decimals).toString(),
         isMaxSelected,
         txCalldata: route.swapCallData,
         augustus: route.augustus,

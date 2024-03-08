@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-14 12:06\n"
+"PO-Revision-Date: 2024-03-06 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -603,6 +603,7 @@ msgid "COPY IMAGE"
 msgstr "COPIER L’IMAGE"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Can be collateral"
@@ -813,6 +814,10 @@ msgstr "Solde actuel de la v2"
 msgid "Current votes"
 msgstr "Votes actuels"
 
+#: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
+msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
+msgstr ""
+
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
 msgstr "Mode Sombre"
@@ -852,6 +857,7 @@ msgstr "Délégation de pouvoirs"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/MarketAssetsListItem.tsx
 msgid "Details"
@@ -980,6 +986,21 @@ msgstr "Taux d’intérêt effectif"
 msgid "Efficiency mode (E-Mode)"
 msgstr "Mode efficacité (E-Mode)"
 
+#: src/modules/markets/MarketAssetsListItem.tsx
+msgid "Eligible for <0>2.1M$</0> WETH Community Program 👻"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "Eligible for <0>2.1M$</0> wETH Community Program 👻"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr "Emode"
@@ -1035,6 +1056,10 @@ msgstr "Intérêts composés estimés, y compris l’escompte pour le jalonnemen
 msgid "Exceeds the discount"
 msgstr "Dépasse la remise"
 
+#: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
+msgid "Exchange rate"
+msgstr ""
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Expected amount to repay"
 msgstr "Montant prévu à rembourser"
@@ -1072,6 +1097,10 @@ msgstr "Faucet"
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
@@ -1328,6 +1357,10 @@ msgstr "En savoir plus dans notre <0>guide FAQ</0>"
 msgid "Learn more."
 msgstr "Pour en savoir plus."
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1456,8 +1489,16 @@ msgstr "La quantité maximale disponible pour la fourniture est de <0/> {0} (<1/
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "La quantité maximale disponible pour l’approvisionnement est limitée parce que le plafond d’approvisionnement du protocole est à {0}%."
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1520,7 +1561,13 @@ msgstr "Montant minimum d’emprunt GHO"
 msgid "Minimum USD value received"
 msgstr "Valeur minimale en USD reçue"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr ""
+
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr ""
 
@@ -1657,10 +1704,6 @@ msgstr "Notifier"
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "D'accord, fermer"
-
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "OK j'ai compris"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Open for voting"
@@ -2067,6 +2110,10 @@ msgstr "Sélection d’actifs d’emprunt"
 msgid "Selected supply assets"
 msgstr "Sélection d’actifs d’approvisionnement"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr ""
+
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
 msgstr "Envoyer des commentaires"
@@ -2239,6 +2286,11 @@ msgstr "Remise sur le staking"
 msgid "State"
 msgstr "État"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr ""
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
 msgstr "Fourni"
@@ -2252,6 +2304,7 @@ msgstr "Montant de l’actif fourni"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -2260,7 +2313,9 @@ msgid "Supply"
 msgstr "Fournir"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -2279,6 +2334,8 @@ msgstr "Fournir apy"
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
 msgstr "Bilan d'approvisionnement"
@@ -2296,6 +2353,7 @@ msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Plafond d'approvisionnement sur la réserve cible atteint. Essayez de réduire le montant."
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 msgid "Supply {symbol}"
 msgstr "Fournir {symbole}"
 
@@ -2304,6 +2362,7 @@ msgid "Supplying your"
 msgstr "Fournir votre"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 msgid "Supplying {symbol}"
 msgstr "Fournir {symbole}"
 
@@ -2389,6 +2448,10 @@ msgstr "Mode réseau test"
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
 msgstr "Le mode réseau de test est activé"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
+msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting!!"
@@ -2562,6 +2625,15 @@ msgstr "Ce calcul de gaz n'est qu'une estimation. Votre portefeuille fixera le p
 #: src/components/HALLink.tsx
 msgid "This integration was<0>proposed and approved</0>by the community."
 msgstr "Cette intégration a été<0>proposée et approuvée</0>par la communauté."
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
@@ -2911,6 +2983,7 @@ msgstr "Solde du portefeuille"
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Wallet balance"
@@ -2958,6 +3031,7 @@ msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Ma
 msgstr "Avec testnet Faucet, vous pouvez obtenir des ressources gratuites pour tester le protocole Aave. Assurez-vous de changer votre fournisseur de portefeuille pour le réseau de test approprié, sélectionnez l’actif souhaité et cliquez sur « Faucet » pour obtenir des jetons transférés vers votre portefeuille. Les actifs d’un réseau de test ne sont pas « réels », ce qui signifie qu’ils n’ont aucune valeur monétaire. <0>Pour en savoir plus</0>"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -2979,6 +3053,10 @@ msgstr "Retrait et échange"
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
 msgstr "Retirer {symbole}"
+
+#: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
+msgid "Withdrawing"
+msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 msgid "Withdrawing and Switching"

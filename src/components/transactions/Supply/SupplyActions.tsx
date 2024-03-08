@@ -2,8 +2,8 @@ import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers'
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import React, { useEffect, useState } from 'react';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -69,6 +69,7 @@ export const SupplyActions = React.memo(
     } = useModalContext();
     const permitAvailable = tryPermit({ reserveAddress: poolAddress, isWrappedBaseAsset });
     const { sendTx } = useWeb3Context();
+    const queryClient = useQueryClient();
 
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 

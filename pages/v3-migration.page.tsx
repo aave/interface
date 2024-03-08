@@ -29,8 +29,8 @@ const MigrateV3Modal = dynamic(() =>
 );
 
 export default function V3Migration() {
-  const { loading } = useAppDataContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { loading } = useAppDataContext();
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentMarketData = useRootStore((store) => store.currentMarketData);

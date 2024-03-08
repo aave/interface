@@ -1,5 +1,4 @@
 import { FormatUserSummaryAndIncentivesResponse } from '@aave/math-utils';
-import memoize from 'micro-memoize';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { reserveSortFn } from 'src/store/poolSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -22,25 +21,23 @@ export type ExtendedFormattedUser =
     userEmodeCategoryId: number;
   };
 
-const formatExtendedUserAndIncentives = memoize(
-  (
-    userSummariesAndIncentives: UserSummaryAndIncentives,
-    userYield: UserYield,
-    userReserves: UserReservesDataHumanized
-  ) => {
-    return {
-      ...userSummariesAndIncentives,
-      userEmodeCategoryId: userReserves.userEmodeCategoryId,
-      isInEmode: userReserves.userEmodeCategoryId !== 0,
-      userReservesData: userSummariesAndIncentives.userReservesData.sort((a, b) =>
-        reserveSortFn(a.reserve, b.reserve)
-      ),
-      earnedAPY: userYield.earnedAPY,
-      debtAPY: userYield.debtAPY,
-      netAPY: userYield.netAPY,
-    };
-  }
-);
+const formatExtendedUserAndIncentives = (
+  userSummariesAndIncentives: UserSummaryAndIncentives,
+  userYield: UserYield,
+  userReserves: UserReservesDataHumanized
+) => {
+  return {
+    ...userSummariesAndIncentives,
+    userEmodeCategoryId: userReserves.userEmodeCategoryId,
+    isInEmode: userReserves.userEmodeCategoryId !== 0,
+    userReservesData: userSummariesAndIncentives.userReservesData.sort((a, b) =>
+      reserveSortFn(a.reserve, b.reserve)
+    ),
+    earnedAPY: userYield.earnedAPY,
+    debtAPY: userYield.debtAPY,
+    netAPY: userYield.netAPY,
+  };
+};
 
 export const useExtendedUserSummariesAndIncentives = (
   marketsData: MarketDataType[]

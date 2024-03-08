@@ -2,8 +2,8 @@ import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/con
 import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -49,6 +49,7 @@ interface SignedParams {
 
 export const WithdrawAndSwitchActions = ({
   amountToSwap,
+  amountToReceive,
   isWrongNetwork,
   sx,
   poolReserve,
@@ -93,6 +94,7 @@ export const WithdrawAndSwitchActions = ({
   } = useModalContext();
 
   const { sendTx, signTxData } = useWeb3Context();
+  const queryClient = useQueryClient();
 
   const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
@@ -118,8 +120,8 @@ export const WithdrawAndSwitchActions = ({
         poolReserve,
         targetReserve,
         isMaxSelected,
-        amountToSwap: parseUnits(route.inputAmount, poolReserve.decimals).toString(),
-        amountToReceive: parseUnits(route.outputAmount, targetReserve.decimals).toString(),
+        amountToSwap: parseUnits(amountToSwap, poolReserve.decimals).toString(),
+        amountToReceive: parseUnits(amountToReceive, targetReserve.decimals).toString(),
         augustus: route.augustus,
         txCalldata: route.swapCallData,
         signatureParams,
