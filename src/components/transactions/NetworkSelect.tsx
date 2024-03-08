@@ -27,8 +27,6 @@ interface NetworkProps {
   onNetworkChange: (network: NetworkConfiguration) => void;
 }
 
-// If this is for a React component prop, for example:
-
 export const NetworkSelect = ({ supportedBridgeMarkets, onNetworkChange }): NetworkProps => {
   const theme = useTheme();
 

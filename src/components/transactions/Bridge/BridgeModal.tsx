@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { API_ETH_MOCK_ADDRESS, ReserveDataHumanized } from '@aave/contract-helpers';
@@ -67,10 +68,21 @@ export const BridgeModal = () => {
   const [inputAmountUSD, setInputAmount] = useState('');
   const [sourceToken, setSourceToken] = useState('');
   const [destinationToken, setDestinationToken] = useState('');
-  const [sourceNetwork, setSourceNetwork] = useState({ chainId: '' });
-  const [destinationNetwork, setDestinationNetwork] = useState('');
+  const [sourceNetwork, setSourceNetwork] = useState({ chainId: 11155111 });
+  const [destinationNetwork, setDestinationNetwork] = useState({ chainId: 421614 });
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
-  const [message, setMessage] = useState({});
+  const [message, setMessage] = useState({
+    receiver: '',
+    data: '',
+    tokenAmounts: [
+      {
+        token: '',
+        amount: '',
+      },
+    ],
+    feeToken: '',
+    extraArgs: '',
+  });
 
   const [fees, setFees] = useState('');
 
@@ -86,6 +98,12 @@ export const BridgeModal = () => {
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
   const [user] = useRootStore((state) => [state.account]);
+
+  useEffect(() => {
+    if (provider && debounceInputAmount) {
+      getBridgeFee(debounceInputAmount);
+    }
+  }, [provider, debounceInputAmount]);
 
   // const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
@@ -197,36 +215,38 @@ export const BridgeModal = () => {
   const debouncedInputChange = useMemo(() => {
     return debounce((value: string) => {
       setDebounceInputAmount(value);
-      getBridgeFee(value);
-    }, 2000);
+    }, 1000);
   }, [setDebounceInputAmount]);
 
   const handleInputChange = (value: string) => {
     if (value === '-1') {
-      setAmount(selectedInputToken.balance);
-      debouncedInputChange(selectedInputToken.balance);
+      setAmount(GHO.balance);
+      debouncedInputChange(GHO.balance);
     } else {
       setAmount(value);
       debouncedInputChange(value);
     }
   };
 
-  const getBridgeFee = async (value: string) => {
-    console.log(`API called with value: ${value}`);
-    // Your API call logic here
-    const destinationChain = { chainId: 421614 }; // destinationNetwork;
+  const resetState = () => {
+    console.log('RESET STATE');
+    setAmount('0');
+    setInputAmount('');
+    setSourceToken('');
+    setDestinationToken('');
+    setSourceNetwork({ chainId: 11155111 });
+    setDestinationNetwork('');
+    setDebounceInputAmount('');
+    setMessage({});
+    setFees('');
+    setBridgeFeeFormatted('');
+  };
 
-    console.log('provider', provider);
-    let signer;
-    try {
-      signer = await provider.getSigner();
-    } catch (err) {
-      console.log('error on signer', err);
-    }
+  const getBridgeFee = async (value: string) => {
+    const destinationChain = { chainId: 421614 }; // destinationNetwork;
+    const signer = await provider.getSigner();
 
     if (!provider || !destinationChain || !sourceNetwork) return;
-
-    console.log('are we in here');
 
     // let response: TransactionResponse;
     // let action = ProtocolAction.default;
@@ -258,7 +278,7 @@ export const BridgeModal = () => {
 
     // Convert each supported token to lowercase and check if the list includes the lowercase token address
     const isSupported = supportedTokens
-      .map((token) => token.toLowerCase())
+      .map((token: string) => token.toLowerCase())
       .includes(tokenAddressLower);
 
     if (!isSupported) {
@@ -267,13 +287,12 @@ export const BridgeModal = () => {
       );
     }
     /*
-==================================================
-  Section: BUILD CCIP MESSAGE
-  build CCIP message that you will send to the
-  Router contract.
-==================================================
-*/
-
+      ==================================================
+        Section: BUILD CCIP MESSAGE
+        build CCIP message that you will send to the
+        Router contract.
+      ==================================================
+    */
     // build message
     const tokenAmounts = [
       {
@@ -283,7 +302,6 @@ export const BridgeModal = () => {
     ];
 
     // Encoding the data
-
     const functionSelector = utils.id('CCIP EVMExtraArgsV1').slice(0, 10);
     //  "extraArgs" is a structure that can be represented as [ 'uint256']
     // extraArgs are { gasLimit: 0 }
@@ -306,31 +324,25 @@ export const BridgeModal = () => {
     setMessage(message);
 
     /*
-==================================================
-  Section: CALCULATE THE FEES
-  Call the Router to estimate the fees for sending tokens.
-==================================================
-*/
+       ==================================================
+      Section: CALCULATE THE FEES
+      Call the Router to estimate the fees for sending tokens.
+      ==================================================
+    */
     const fees = await sourceRouter.getFee(destinationChainSelector, message);
     setBridgeFeeFormatted(formatEther(fees));
     setFees(fees);
-
-    console.log('FEEES', fees);
   };
 
   const GHO = reservesWithBalance.find((reserve) => reserve.symbol === 'GHO');
+  console.log('GHO', GHO);
 
   if (!GHO) return null;
 
   const maxAmountToSwap = BigNumber.min(GHO.underlyingBalance).toString(10);
 
-  const handleBridge = () => {
-    setSourceNetwork(sourceNetwork);
-    setDestinationNetwork({ chainId: 421614 }); // destinationNetwork
-  };
-
   const handleBridgeArguments = () => {
-    const sourceChain = sourceNetwork;
+    const sourceChain = sourceNetwork.chainId;
     const destinationChain = { chainId: 421614 }; // destinationNetwork;
     const destinationAccount = user;
     const tokenAddress = GHO.underlyingAsset;
@@ -358,6 +370,10 @@ export const BridgeModal = () => {
     message,
     fees,
   };
+
+  //TODO handle transaction failed
+  // TODO networks dynamically
+  // TODO Fix types
 
   if (bridgeTxState.success) {
     return (
@@ -389,8 +405,14 @@ export const BridgeModal = () => {
       </BasicModal>
     );
   }
+
+  const handleClose = () => {
+    resetState();
+    close();
+  };
+
   return (
-    <BasicModal open={type === ModalType.Bridge} setOpen={close}>
+    <BasicModal open={type === ModalType.Bridge} setOpen={handleClose}>
       <TxModalTitle title="Bridge tokens" />
       {isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning

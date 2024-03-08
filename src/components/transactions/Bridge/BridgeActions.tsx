@@ -20,6 +20,12 @@ import routerAbi from './Router-abi.json';
 import erc20Abi from './IERC20Meta.json';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
+import { NetworkConfiguration } from '../NetworkSelect';
+
+interface TokenAmount {
+  token: string;
+  amount: string;
+}
 
 export interface BridgeActionProps extends BoxProps {
   amountToBridge: string;
@@ -30,13 +36,21 @@ export interface BridgeActionProps extends BoxProps {
   blocked: boolean;
   decimals: number;
   isWrappedBaseAsset: boolean;
-  sourceChain: string;
+  sourceChain: number;
   destinationChain: {
     chainId: number;
   };
   destinationAccount: string;
   tokenAddress: any;
-  setBridgeFee: (fee: string) => void;
+  fees: string;
+  // setBridgeFee: (fee: string) => void;
+  message: {
+    receiver: string;
+    data: string;
+    tokenAmounts: TokenAmount[];
+    feeToken: string;
+    extraArgs: string;
+  };
 }
 
 export const BridgeActions = React.memo(
@@ -53,13 +67,12 @@ export const BridgeActions = React.memo(
     sourceChain,
     destinationChain,
     destinationAccount, // user
-    setBridgeFee,
+    // setBridgeFee,
     message,
     fees,
     ...props
   }: BridgeActionProps) => {
     const { provider } = useWeb3Context();
-
     const [
       tryPermit,
       supply,
@@ -89,16 +102,6 @@ export const BridgeActions = React.memo(
     } = useModalContext();
     const [user] = useRootStore((state) => [state.account]);
 
-    console.log('fees --->', fees);
-    console.log('message ---<', message);
-
-    // const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
-    // const permitAvailable = tryPermit({
-    //   reserveAddress: poolAddress,
-    //   isWrappedBaseAsset: isWrappedBaseAsset,
-    // });
-    // const { sendTx } = useWeb3Context();
-
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
     const {
@@ -109,7 +112,7 @@ export const BridgeActions = React.memo(
     } = useApprovedAmount({
       marketData: currentMarketData,
       token: tokenAddress,
-      spender: '0x0bf3de8c5d3e8a2b34d2beeb17abfcebaf363a59', // ETH SEPOLIA ROUTER
+      spender: getRouterConfig(sourceChain).address, // ETH SEPOLIA ROUTER
     });
 
     setLoadingTxns(fetchingApprovedAmount);
@@ -144,7 +147,7 @@ export const BridgeActions = React.memo(
         amount: approvedAmount?.toString() || '0',
         user: user,
         token: tokenAddress,
-        spender: '0x0bf3de8c5d3e8a2b34d2beeb17abfcebaf363a59', // ETH SEPOLIA ROUTER
+        spender: getRouterConfig(sourceChain).address,
       },
       requiresApproval,
       assetAddress: tokenAddress,
@@ -182,8 +185,8 @@ export const BridgeActions = React.memo(
         const erc20 = new Contract(tokenAddress, erc20Abi, signer);
 
         //   // Get the router's address for the specified chain
-        const sourceRouterAddress = getRouterConfig(sourceChain.chainId).address;
-        const sourceChainSelector = getRouterConfig(sourceChain.chainId).chainSelector;
+        const sourceRouterAddress = getRouterConfig(sourceChain).address;
+        const sourceChainSelector = getRouterConfig(sourceChain).chainSelector;
         // Get the chain selector for the target chain
         const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
         const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
@@ -205,7 +208,7 @@ export const BridgeActions = React.memo(
 
         // Convert each supported token to lowercase and check if the list includes the lowercase token address
         const isSupported = supportedTokens
-          .map((token) => token.toLowerCase())
+          .map((token: string) => token.toLowerCase())
           .includes(tokenAddressLower);
 
         if (!isSupported) {
@@ -213,8 +216,6 @@ export const BridgeActions = React.memo(
             `Token address ${tokenAddress} not in the list of supportedTokens ${supportedTokens}`
           );
         }
-
-        console.log('WE GET HERE');
 
         /*
   ==================================================
