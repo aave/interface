@@ -7,13 +7,15 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { useGhoPoolFormattedReserve } from 'src/hooks/pool/useGhoPoolFormattedReserve';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 interface GhoBannerProps {
-  reserve?: FormattedReservesAndIncentives;
+  reserve?: ComputedReserveData;
 }
 
 export const GhoBanner = ({ reserve }: GhoBannerProps) => {
@@ -21,12 +23,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isCustomBreakpoint = useMediaQuery('(min-width:1125px)');
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const currentMarket = useRootStore((store) => store.currentMarket);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const {
-    data: ghoReserveData,
-    isLoading: ghoReserveDataLoading,
-    error: ghoReserveDataError,
-  } = useGhoPoolFormattedReserve(currentMarketData);
+  const { ghoReserveData, ghoLoadingData } = useAppDataContext();
 
   let totalBorrowed = Number(reserve?.totalDebt);
   if (Number(reserve?.borrowCap) > 0) {
@@ -222,10 +219,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   alignItems: 'flex-start',
                 }}
               >
-                {ghoReserveDataLoading ||
-                ghoReserveDataError ||
-                !ghoReserveData ||
-                totalBorrowed === 0 ? (
+                {ghoLoadingData || totalBorrowed === 0 ? (
                   <Skeleton width={70} height={25} />
                 ) : (
                   <FormattedNumber
@@ -259,8 +253,8 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
               }}
             >
               <GhoBorrowApyRange
-                minVal={ghoReserveData?.ghoBorrowAPYWithMaxDiscount}
-                maxVal={ghoReserveData?.ghoVariableBorrowAPY}
+                minVal={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
+                maxVal={ghoReserveData.ghoVariableBorrowAPY}
                 variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 percentVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 hyphenVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
