@@ -10,12 +10,11 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
-import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
@@ -99,14 +98,6 @@ function getWeb3Library(provider: any): providers.Web3Provider {
   return library;
 }
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-});
-
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
@@ -115,6 +106,16 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
   const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
 
   const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
   useEffect(() => {
@@ -146,28 +147,26 @@ export default function MyApp(props: MyAppProps) {
                   <PermissionProvider>
                     <ModalContextProvider>
                       <SharedDependenciesProvider>
-                        <BackgroundDataProvider>
-                          <AppDataProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <MigrateV3Modal />
-                              <TransactionEventHandler />
-                              <SwitchModal />
-                              <StakingMigrateModal />
-                            </GasStationProvider>
-                          </AppDataProvider>
-                        </BackgroundDataProvider>
+                        <AppDataProvider>
+                          <GasStationProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                            <SupplyModal />
+                            <WithdrawModal />
+                            <BorrowModal />
+                            <RepayModal />
+                            <CollateralChangeModal />
+                            <RateSwitchModal />
+                            <DebtSwitchModal />
+                            <ClaimRewardsModal />
+                            <EmodeModal />
+                            <SwapModal />
+                            <FaucetModal />
+                            <MigrateV3Modal />
+                            <TransactionEventHandler />
+                            <SwitchModal />
+                            <StakingMigrateModal />
+                          </GasStationProvider>
+                        </AppDataProvider>
                       </SharedDependenciesProvider>
                     </ModalContextProvider>
                   </PermissionProvider>

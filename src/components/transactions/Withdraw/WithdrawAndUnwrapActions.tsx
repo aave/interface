@@ -3,10 +3,9 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { constants } from 'ethers';
-import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -53,9 +52,9 @@ export const WithdrawAndUnwrapAction = ({
     ]);
 
   const { sendTx } = useWeb3Context();
+  const queryClient = useQueryClient();
 
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-  const { refetchPoolData } = useBackgroundDataProvider();
   const {
     approvalTxState,
     mainTxState,
@@ -158,7 +157,6 @@ export const WithdrawAndUnwrapAction = ({
           marketData
         ),
       });
-      refetchPoolData && refetchPoolData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);

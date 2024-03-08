@@ -2,10 +2,9 @@ import { gasLimitRecommendations, InterestRate, ProtocolAction } from '@aave/con
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -69,7 +68,7 @@ export const RepayActions = ({
     store.currentMarketData,
   ]);
   const { sendTx } = useWeb3Context();
-  const { refetchIncentiveData, refetchPoolData } = useBackgroundDataProvider();
+  const queryClient = useQueryClient();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   const {
     approvalTxState,
@@ -203,8 +202,6 @@ export const RepayActions = ({
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
-      refetchPoolData && refetchPoolData();
-      refetchIncentiveData && refetchIncentiveData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);

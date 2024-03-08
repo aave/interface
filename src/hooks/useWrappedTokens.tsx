@@ -1,6 +1,5 @@
 import { normalize } from '@aave/math-utils';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
-import { selectCurrentReserves } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { amountToUsd } from 'src/utils/utils';
@@ -38,11 +37,9 @@ const wrappedTokenConfig: {
 };
 
 export const useWrappedTokens = () => {
-  const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals } = useAppDataContext();
-  const [reserves, currentMarket] = useRootStore((state) => [
-    selectCurrentReserves(state),
-    state.currentMarket,
-  ]);
+  const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals, reserves } =
+    useAppDataContext();
+  const currentMarket = useRootStore((store) => store.currentMarket);
 
   if (!reserves || reserves.length === 0) {
     return [];

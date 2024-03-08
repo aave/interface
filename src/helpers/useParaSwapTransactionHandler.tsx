@@ -1,9 +1,8 @@
 import { EthereumTransactionTypeExtended, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { queryClient } from 'pages/_app.page';
+import { useQueryClient } from '@tanstack/react-query';
 import { DependencyList, useEffect, useRef, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { SIGNATURE_AMOUNT_MARGIN } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -67,7 +66,6 @@ export const useParaSwapTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { sendTx, getTxError, signTxData } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
   const { walletApprovalMethodPreference, generateSignatureRequest, addTransaction } =
     useRootStore();
 
@@ -82,6 +80,7 @@ export const useParaSwapTransactionHandler = ({
   const [previousDeps, setPreviousDeps] = useState<Dependency>({ asset: deps[0], amount: deps[1] });
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -116,8 +115,6 @@ export const useParaSwapTransactionHandler = ({
           action: protocolAction || ProtocolAction.default,
         });
         queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-        refetchPoolData && refetchPoolData();
-        refetchIncentiveData && refetchIncentiveData();
       } catch (e) {
         // TODO: what to do with this error?
         try {
