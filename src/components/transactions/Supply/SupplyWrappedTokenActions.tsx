@@ -3,10 +3,9 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import { useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -50,7 +49,6 @@ export const SupplyWrappedTokenActions = ({
     state.currentMarketData,
   ]);
 
-  const { refetchPoolData } = useBackgroundDataProvider();
   const { tokenWrapperService } = useSharedDependencies();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
@@ -65,6 +63,7 @@ export const SupplyWrappedTokenActions = ({
   } = useModalContext();
 
   const { sendTx } = useWeb3Context();
+  const queryClient = useQueryClient();
 
   const {
     data: approvedAmount,
@@ -174,7 +173,6 @@ export const SupplyWrappedTokenActions = ({
       queryClient.invalidateQueries({
         queryKey: queryKeysFactory.approvedAmount(user, tokenIn, tokenWrapperAddress, marketData),
       });
-      refetchPoolData && refetchPoolData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);

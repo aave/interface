@@ -7,8 +7,8 @@ import {
 } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
+import { useQueryClient } from '@tanstack/react-query';
 import { utils } from 'ethers';
-import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
 import { DelegationTokenType } from 'src/components/transactions/GovDelegation/DelegationTokenSelector';
 import { useModalContext } from 'src/hooks/useModal';
@@ -61,6 +61,7 @@ export const useGovernanceDelegate = (
   } = useModalContext();
 
   const { delegationTokenService } = useSharedDependencies();
+  const queryClient = useQueryClient();
 
   const processTx = async ({
     tx,

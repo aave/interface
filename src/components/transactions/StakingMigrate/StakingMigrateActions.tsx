@@ -2,7 +2,7 @@ import { gasLimitRecommendations, ProtocolAction, valueToWei } from '@aave/contr
 import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
-import { queryClient } from 'pages/_app.page';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -39,6 +39,7 @@ export const StakingMigrateActions = ({
     store.addTransaction,
   ]);
   const { sendTx } = useWeb3Context();
+  const queryClient = useQueryClient();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   const {
     approvalTxState,
