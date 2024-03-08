@@ -1,13 +1,5 @@
+import { Box, BoxProps, FormControl, MenuItem, Select, Typography, useTheme } from '@mui/material';
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Box from '@mui/material/Box';
-
-const networks = ['Ethereum', 'Polygon', 'Arbitrum Sepolia'];
 
 export interface NetworkConfiguration {
   baseAssetDecimals: number;
@@ -25,11 +17,16 @@ export interface NetworkConfiguration {
 interface NetworkProps {
   supportedBridgeMarkets: NetworkConfiguration[];
   onNetworkChange: (network: NetworkConfiguration) => void;
+  defaultNetwork: NetworkConfiguration;
+  sx?: BoxProps;
 }
 
-export const NetworkSelect = ({ supportedBridgeMarkets, onNetworkChange }): NetworkProps => {
-  const theme = useTheme();
-
+export const NetworkSelect = ({
+  supportedBridgeMarkets,
+  onNetworkChange,
+  defaultNetwork,
+  sx = {},
+}: NetworkProps) => {
   const [network, setNetwork] = React.useState<NetworkConfiguration | ''>('');
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -39,45 +36,73 @@ export const NetworkSelect = ({ supportedBridgeMarkets, onNetworkChange }): Netw
   };
 
   return (
-    <Box>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="network-select-label">Network</InputLabel>
-        <Select
-          // labelId="network-select-label"
-          id="network-select"
-          value={network}
-          onChange={handleChange}
-          input={<OutlinedInput label="Network" />}
-          // sx={{
-          //   borderRadius: '8px',
-          //   border: '1px solid var(--Light-Other-Outlined-Border, rgba(56, 61, 81, 0.12))',
-          //   background:
-          //     theme.palette.mode === 'dark'
-          //       ? 'var(--Dark-Other-Outlined-Background, #1E2026)'
-          //       : 'var(--Light-Other-Outlined-Background, #F7F7F9)',
-          // }}
-
-          inputProps={{
-            MenuProps: {
-              // sx: {
-              //   background: 'green',
-              // },
-              MenuListProps: {
-                sx: {
-                  borderRadius: '8px',
-                  padding: '7.5px 0px 8.5px 0px',
+    <Box sx={{ width: '100%', ...sx }}>
+      <Box
+        sx={(theme) => ({
+          p: '8px 0px',
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: '6px',
+          mb: 1,
+        })}
+      >
+        <Typography color="text.secondary" sx={{ p: '0px 12px' }}>
+          Network
+        </Typography>
+        <FormControl fullWidth>
+          <Select
+            id="network-select"
+            value={defaultNetwork.chainId}
+            onChange={handleChange}
+            variant="outlined"
+            sx={{
+              '.MuiSelect-select': {
+                background: 'transparent',
+              },
+              '& .MuiOutlinedInput-root': {
+                background: 'transparent',
+                '&:hover': {
+                  '.MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'currentColor',
+                  },
+                },
+                '&.Mui-focused': {
+                  '.MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
                 },
               },
-            },
-          }}
-        >
-          {supportedBridgeMarkets.map((network: NetworkConfiguration) => (
-            <MenuItem key={network.chainId} value={network}>
-              {network.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+              '& .MuiOutlinedInput-notchedOutline': {
+                border: 'none',
+              },
+              '& .MuiSelect-icon': {
+                marginRight: '12px',
+              },
+            }}
+            inputProps={{
+              MenuProps: {
+                MenuListProps: {
+                  sx: {},
+                },
+              },
+            }}
+          >
+            {supportedBridgeMarkets.map((network: NetworkConfiguration) => (
+              <MenuItem key={network.chainId} value={network.chainId}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <img
+                    src={network.networkLogoPath}
+                    alt={network.name}
+                    style={{ marginRight: 8, width: 18, height: 18 }}
+                  />
+                  <Typography variant="h3" color="primary">
+                    {network.name}
+                  </Typography>
+                </Box>
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
     </Box>
   );
 };
