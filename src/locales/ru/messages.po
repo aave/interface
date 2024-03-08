@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-03-06 18:04\n"
+"PO-Revision-Date: 2024-03-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -789,10 +789,6 @@ msgstr "Копирование текста ошибки"
 msgid "Covered debt"
 msgstr "Покрытая задолженность"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Created"
-msgstr "Созданный"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Текущий LTV"
@@ -1001,6 +997,10 @@ msgstr ""
 msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
 msgstr ""
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Email"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr "Режим"
@@ -1098,6 +1098,7 @@ msgstr "Водопроводный кран"
 msgid "Faucet {0}"
 msgstr "Водопроводный кран {0}"
 
+#: src/layouts/FeedbackDialog.tsx
 #: src/layouts/FeedbackDialog.tsx
 msgid "Feedback"
 msgstr ""
@@ -1705,10 +1706,6 @@ msgstr "Извещать"
 msgid "Ok, Close"
 msgstr "Хорошо, Закрыть"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Open for voting"
-msgstr ""
-
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Операция не поддерживается"
@@ -1728,10 +1725,6 @@ msgstr "Страница не найдена"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Участвуя в этом {symbol} Резерв дает ежегодное вознаграждение."
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Payloads executed"
-msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -2957,10 +2950,6 @@ msgstr "Голосов"
 msgid "Voting"
 msgstr "Голосование"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Voting closed"
-msgstr ""
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting is on"
 msgstr ""
@@ -3278,7 +3267,6 @@ msgid "enabled"
 msgstr "Включен"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "концы"
 
@@ -3324,7 +3312,6 @@ msgid "staking view"
 msgstr "Представление разбивки"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr "Начинается"
 
@@ -3413,6 +3400,10 @@ msgstr "{notifyText}"
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} Выбранные активы"
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "{stepName}"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
