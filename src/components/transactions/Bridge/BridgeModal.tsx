@@ -322,6 +322,8 @@ export const BridgeModal = () => {
     setFees(fees);
   };
 
+  if (!GHO) return null;
+
   const maxAmountToSwap = BigNumber.min(GHO.underlyingBalance).toString(10);
 
   const handleBridgeArguments = () => {
@@ -392,8 +394,6 @@ export const BridgeModal = () => {
     resetState();
     close();
   };
-
-  if (!GHO) return null;
 
   return (
     <BasicModal open={type === ModalType.Bridge} setOpen={handleClose}>
