@@ -8,6 +8,7 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -16,7 +17,7 @@ import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
+
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
