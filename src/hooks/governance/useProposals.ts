@@ -1,14 +1,23 @@
-import { ProposalMetadata, ProposalV3State } from '@aave/contract-helpers';
+import { ProposalMetadata, ProposalV3State, VotingMachineProposal } from '@aave/contract-helpers';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { constants } from 'ethers';
 import request, { gql } from 'graphql-request';
+import { lifecycleToBadge, ProposalBadgeState } from 'src/modules/governance/StateBadge';
+import {
+  getLifecycleState,
+  getProposalVoteInfo,
+  ProposalLifecycleStep,
+  ProposalVoteInfo,
+} from 'src/modules/governance/utils/formatProposal';
 import {
   getProposalMetadata,
   parseRawIpfs,
 } from 'src/modules/governance/utils/getProposalMetadata';
+import { EnhancedPayload, GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { VotingMachineService } from 'src/services/VotingMachineService';
 import { governanceV3Config, ipfsGateway } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import invariant from 'tiny-invariant';
 
 export interface SubgraphConstants {
   id: string;
@@ -78,12 +87,22 @@ export interface SubgraphProposal {
   constants: SubgraphConstants;
 }
 
-export interface Proposal extends Omit<SubgraphProposal, 'proposalMetadata' | 'votes'> {
+export interface EnhancedSubgraphProposal
+  extends Omit<SubgraphProposal, 'proposalMetadata' | 'votes'> {
   proposalMetadata: ProposalMetadata;
   votes: {
     forVotes: string;
     againstVotes: string;
   };
+}
+
+export interface Proposal {
+  subgraphProposal: EnhancedSubgraphProposal;
+  votingMachineData: VotingMachineProposal;
+  payloadsData: EnhancedPayload[];
+  lifecycleState: ProposalLifecycleStep;
+  badgeState: ProposalBadgeState;
+  votingInfo: ProposalVoteInfo;
 }
 
 export const proposalQueryFields = `
@@ -190,19 +209,11 @@ const getProposalsQuery = gql`
   }
 `;
 
-export const enhanceProposalWithMetadata = async (proposal: SubgraphProposal) => {
+export const getSubgraphProposalMetadata = async (proposal: SubgraphProposal) => {
   if (!proposal.proposalMetadata) {
-    const metadata = await getProposalMetadata(proposal.ipfsHash, ipfsGateway);
-    return {
-      ...proposal,
-      proposalMetadata: metadata,
-    };
+    return getProposalMetadata(proposal.ipfsHash, ipfsGateway);
   } else {
-    const metadata = await parseRawIpfs(proposal.proposalMetadata.rawContent, proposal.ipfsHash);
-    return {
-      ...proposal,
-      proposalMetadata: metadata,
-    };
+    return parseRawIpfs(proposal.proposalMetadata.rawContent, proposal.ipfsHash);
   }
 };
 
@@ -255,64 +266,73 @@ async function fetchSubgraphProposals(pageParam: number, proposalStateFilter?: P
 
 export async function fetchProposals(
   proposals: SubgraphProposal[],
-  votingMachineSerivce: VotingMachineService
+  votingMachineSerivce: VotingMachineService,
+  governanceV3Service: GovernanceV3Service
 ) {
-  const proposalsWithMetadata = await Promise.all(
-    proposals.map((proposal) => enhanceProposalWithMetadata(proposal))
-  );
-
   const votingMachineParams =
-    proposalsWithMetadata
-      .filter((elem) => elem.state === ProposalV3State.Active)
-      .map((p) => ({
-        id: +p.id,
-        snapshotBlockHash: p.snapshotBlockHash || constants.HashZero,
-        chainId: +p.votingPortal.votingMachineChainId,
-        votingMachineAddress: p.votingPortal.votingMachine,
-      })) ?? [];
+    proposals.map((p) => ({
+      id: +p.id,
+      snapshotBlockHash: p.snapshotBlockHash || constants.HashZero,
+      chainId: +p.votingPortal.votingMachineChainId,
+      votingMachineAddress: p.votingPortal.votingMachine,
+    })) ?? [];
 
-  const votingMachingData = await votingMachineSerivce.getProposalsData(votingMachineParams);
+  const payloadParams = proposals
+    .map(
+      (proposal) =>
+        proposal.payloads.map((p) => {
+          return {
+            payloadControllerAddress: p.payloadsController,
+            payloadId: +p.id.split('_')[1],
+            chainId: +p.chainId,
+          };
+        }) || []
+    )
+    .flat();
 
-  const proposalsWithVotes = proposalsWithMetadata.map<Proposal>((elem) => {
-    if (elem.votes) {
-      return {
-        ...elem,
-        votes: {
-          forVotes: elem.votes.forVotes,
-          againstVotes: elem.votes.againstVotes,
-        },
-      };
-    }
-    if (elem.state === ProposalV3State.Active) {
-      const votingInfo = votingMachingData.find(
-        (votingElem) => votingElem.proposalData.id === elem.id
-      );
-      if (votingInfo) {
-        return {
-          ...elem,
-          votes: {
-            forVotes: votingInfo.proposalData.forVotes,
-            againstVotes: votingInfo.proposalData.againstVotes,
-          },
-        };
-      }
-    }
-    return {
-      ...elem,
+  const [proposalsMetadata, votingMachineDataes, payloadsDataes] = await Promise.all([
+    Promise.all(proposals.map(getSubgraphProposalMetadata)),
+    votingMachineSerivce.getProposalsData(votingMachineParams),
+    governanceV3Service.getMultiChainPayloadsData(payloadParams),
+  ]);
+  const enhancedProposals = proposals.map<Proposal>((proposal, index) => {
+    const votingMachineData = votingMachineDataes.find(
+      (proposalData) => proposalData.proposalData.id === proposal.id
+    );
+    const payloadsData = payloadsDataes.filter((payloadData) =>
+      proposal.payloads.find(
+        (p) => p.id.split('_')[1] === payloadData.id && +p.chainId === payloadData.chainId
+      )
+    );
+    invariant(votingMachineData, 'Voting machine data not found');
+    const lifecycleState = getLifecycleState(proposal, votingMachineData, payloadsData);
+    const enhancedSubgraphProposal = {
+      ...proposal,
       votes: {
-        forVotes: '0',
-        againstVotes: '0',
+        forVotes: votingMachineData.proposalData.forVotes,
+        againstVotes: votingMachineData.proposalData.againstVotes,
       },
+      proposalMetadata: proposalsMetadata[index],
+    };
+    const votingInfo = getProposalVoteInfo(enhancedSubgraphProposal);
+    const badgeState = lifecycleToBadge(lifecycleState, votingInfo);
+    return {
+      subgraphProposal: enhancedSubgraphProposal,
+      lifecycleState,
+      badgeState,
+      votingMachineData,
+      payloadsData,
+      votingInfo,
     };
   });
 
   return {
-    proposals: proposalsWithVotes,
+    proposals: enhancedProposals,
   };
 }
 
 export const useProposals = (proposalStateFilter?: ProposalV3State) => {
-  const { votingMachineSerivce } = useSharedDependencies();
+  const { votingMachineSerivce, governanceV3Service } = useSharedDependencies();
   return useInfiniteQuery({
     queryFn: async ({ pageParam = 0 }) => {
       let proposals: SubgraphProposal[] = [];
@@ -322,7 +342,7 @@ export const useProposals = (proposalStateFilter?: ProposalV3State) => {
         proposals = await fetchSubgraphProposals(pageParam);
       }
 
-      return fetchProposals(proposals, votingMachineSerivce);
+      return fetchProposals(proposals, votingMachineSerivce, governanceV3Service);
     },
     queryKey: ['proposals', proposalStateFilter],
     refetchOnMount: false,

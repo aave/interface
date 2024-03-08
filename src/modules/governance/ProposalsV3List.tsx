@@ -18,12 +18,7 @@ export const ProposalsV3List = () => {
 
   const { results: searchResults, loading: loadingSearchResults } = useProposalsSearch(searchTerm);
 
-  const {
-    data,
-    isFetching: loadingProposals,
-    fetchNextPage,
-    hasNextPage,
-  } = useProposals(filterState);
+  const { data, isFetching: loadingProposals, fetchNextPage, hasNextPage } = useProposals();
 
   let listItems: Proposal[] = [];
   if (searchTerm && searchResults.length > 0) {
@@ -35,7 +30,7 @@ export const ProposalsV3List = () => {
   }
 
   if (proposalFilter !== 'all') {
-    listItems = listItems.filter((proposal) => proposal.state === filterState);
+    listItems = listItems.filter((proposal) => proposal.badgeState === filterState);
   }
 
   return (
@@ -48,7 +43,7 @@ export const ProposalsV3List = () => {
       {listItems.length > 0 ? (
         <InfiniteScroll loadMore={() => fetchNextPage()} hasMore={hasNextPage}>
           {listItems.map((proposal) => (
-            <ProposalV3ListItem key={proposal.id} proposal={proposal} />
+            <ProposalV3ListItem key={proposal.subgraphProposal.id} proposal={proposal} />
           ))}
           {loadingProposals &&
             Array.from({ length: 5 }).map((_, i) => <ProposalListSkeleton key={i} />)}

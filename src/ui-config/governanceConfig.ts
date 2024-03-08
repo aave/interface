@@ -11,6 +11,7 @@ import {
   GovernanceV3Metis,
   GovernanceV3Optimism,
   GovernanceV3Polygon,
+  GovernanceV3Scroll,
 } from '@bgd-labs/aave-address-book';
 
 export const ipfsGateway = 'https://cloudflare-ipfs.com/ipfs';
@@ -136,6 +137,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.base]: GovernanceV3Base.PC_DATA_HELPER,
       [ChainId.metis_andromeda]: GovernanceV3Metis.PC_DATA_HELPER,
       [ChainId.bnb]: GovernanceV3BNB.PC_DATA_HELPER,
+      [ChainId.scroll]: GovernanceV3Scroll.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,

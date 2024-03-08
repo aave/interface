@@ -3,17 +3,19 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { Meta } from 'src/components/Meta';
-import { EnhancedProposal } from 'src/hooks/governance/useProposal';
+import { Proposal } from 'src/hooks/governance/useProposals';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ProposalOverview } from 'src/modules/governance/proposal/ProposalOverview';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
+import { ProposalBadgeState } from 'src/modules/governance/StateBadge';
+import { ProposalLifecycleStep } from 'src/modules/governance/utils/formatProposal';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { ipfsGateway } from 'src/ui-config/governanceConfig';
 
 // proposal metadata is fetched using the ipfs hash,
 // but all other data is mocked so the page can be rendered
-const mockProposal: EnhancedProposal = {
-  proposal: {
+const mockProposal: Proposal = {
+  subgraphProposal: {
     id: '',
     creator: '',
     accessLevel: '',
@@ -103,13 +105,28 @@ const mockProposal: EnhancedProposal = {
     },
     state: 0,
   },
+  payloadsData: [],
+  lifecycleState: ProposalLifecycleStep.Created,
+  badgeState: ProposalBadgeState.Created,
+  votingInfo: {
+    forVotes: 0,
+    againstVotes: 0,
+    forPercent: 0,
+    againstPercent: 0,
+    quorum: '80000',
+    quorumReached: false,
+    currentDifferential: '0',
+    requiredDifferential: '320000',
+    differentialReached: false,
+    isPassing: false,
+  },
 };
 
 export default function IpfsPreview() {
   const router = useRouter();
   const ipfsHash = router.query.ipfsHash as string;
   const [loading, setLoading] = useState(true);
-  const [proposal, setProposal] = useState<EnhancedProposal>(mockProposal);
+  const [proposal, setProposal] = useState<Proposal>(mockProposal);
   const [error, setError] = useState(false);
 
   async function fetchIpfs() {
@@ -119,8 +136,8 @@ export default function IpfsPreview() {
       setProposal((prev) => {
         return {
           ...prev,
-          proposal: {
-            ...prev.proposal,
+          subgraphProposalb: {
+            ...prev.subgraphProposal,
             proposalMetadata,
           },
         };
@@ -144,8 +161,8 @@ export default function IpfsPreview() {
       {!loading && (
         <Meta
           imageUrl="https://app.aave.com/aaveMetaLogo-min.jpg"
-          title={proposal.proposal.proposalMetadata.title}
-          description={proposal.proposal.proposalMetadata.shortDescription}
+          title={proposal.subgraphProposal.proposalMetadata.title}
+          description={proposal.subgraphProposal.proposalMetadata.shortDescription}
         />
       )}
       <ProposalTopPanel />
