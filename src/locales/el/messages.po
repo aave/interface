@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-03-06 18:04\n"
+"PO-Revision-Date: 2024-03-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -789,10 +789,6 @@ msgstr "Κείμενο σφάλματος αντιγραφής"
 msgid "Covered debt"
 msgstr ""
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Created"
-msgstr "Δημιουργήθηκε"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Τρέχον LTV"
@@ -1001,6 +997,10 @@ msgstr ""
 msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
 msgstr ""
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Email"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr ""
@@ -1098,6 +1098,7 @@ msgstr "Βρύση"
 msgid "Faucet {0}"
 msgstr "Βρύση {0}"
 
+#: src/layouts/FeedbackDialog.tsx
 #: src/layouts/FeedbackDialog.tsx
 msgid "Feedback"
 msgstr ""
@@ -1705,10 +1706,6 @@ msgstr ""
 msgid "Ok, Close"
 msgstr "Εντάξει, Κλείσιμο"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Open for voting"
-msgstr ""
-
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Η λειτουργία δεν υποστηρίζεται"
@@ -1728,10 +1725,6 @@ msgstr ""
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Η συμμετοχή σε αυτό το αποθεματικό {symbol} δίνει ετήσιες ανταμοιβές."
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Payloads executed"
-msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -2958,10 +2951,6 @@ msgstr ""
 msgid "Voting"
 msgstr ""
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Voting closed"
-msgstr ""
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting is on"
 msgstr ""
@@ -3279,7 +3268,6 @@ msgid "enabled"
 msgstr "ενεργοποιημένο"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "τελειώνει"
 
@@ -3325,7 +3313,6 @@ msgid "staking view"
 msgstr "προβολή κλειδώματος"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr ""
 
@@ -3413,6 +3400,10 @@ msgstr ""
 
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
+msgstr ""
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "{stepName}"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
