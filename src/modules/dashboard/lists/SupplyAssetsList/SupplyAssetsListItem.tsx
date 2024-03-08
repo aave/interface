@@ -20,7 +20,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { WalletBalancesMap } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -42,13 +42,13 @@ import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { ListValueRow } from '../ListValueRow';
 
-export const SupplyAssetsListItem = (params: DashboardReserve) => {
+export const SupplyAssetsListItem = (
+  params: DashboardReserve & { walletBalances: WalletBalancesMap }
+) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const { supplyCap } = useAssetCaps();
   const wrappedTokenReserves = useWrappedTokens();
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { walletBalances } = useWalletBalances(currentMarketData);
 
   const { isActive, isFreezed, walletBalance, underlyingAsset } = params;
 
@@ -58,7 +58,7 @@ export const SupplyAssetsListItem = (params: DashboardReserve) => {
 
   const canSupplyAsWrappedToken =
     wrappedToken &&
-    walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
+    params.walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
 
   const disableSupply =
     !isActive ||
@@ -70,6 +70,7 @@ export const SupplyAssetsListItem = (params: DashboardReserve) => {
     ...params,
     disableSupply,
     canSupplyAsWrappedToken: canSupplyAsWrappedToken ?? false,
+    walletBalancesMap: params.walletBalances,
   };
 
   if (downToXSM) {
@@ -82,6 +83,7 @@ export const SupplyAssetsListItem = (params: DashboardReserve) => {
 interface SupplyAssetsListItemProps extends DashboardReserve {
   disableSupply: boolean;
   canSupplyAsWrappedToken: boolean;
+  walletBalancesMap: WalletBalancesMap;
 }
 
 export const SupplyAssetsListItemDesktop = ({
@@ -100,11 +102,11 @@ export const SupplyAssetsListItemDesktop = ({
   detailsAddress,
   disableSupply,
   canSupplyAsWrappedToken,
+  walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentMarket = useRootStore((store) => store.currentMarket);
   const wrappedTokenReserves = useWrappedTokens();
-  const { walletBalances } = useWalletBalances(currentMarketData);
 
   const { openSupply, openSwitch } = useModalContext();
 
@@ -180,7 +182,9 @@ export const SupplyAssetsListItemDesktop = ({
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
                 <FormattedNumber
-                  value={walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount}
+                  value={
+                    walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
+                  }
                   visibleDecimals={2}
                   variant="secondary12"
                   color="text.secondary"
@@ -306,12 +310,11 @@ export const SupplyAssetsListItemMobile = ({
   detailsAddress,
   disableSupply,
   canSupplyAsWrappedToken,
+  walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
   const wrappedTokenReserves = useWrappedTokens();
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { walletBalances } = useWalletBalances(currentMarketData);
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage } = useAssetCaps();
@@ -364,7 +367,9 @@ export const SupplyAssetsListItemMobile = ({
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
                 <FormattedNumber
-                  value={walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount}
+                  value={
+                    walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
+                  }
                   visibleDecimals={2}
                   variant="secondary12"
                   color="text.secondary"

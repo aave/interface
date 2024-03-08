@@ -1,6 +1,15 @@
-import { ReservesDataHumanized, UiPoolDataProvider } from '@aave/contract-helpers';
+import {
+  ReservesDataHumanized,
+  UiPoolDataProvider,
+  UserReserveDataHumanized,
+} from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
+
+export type UserReservesDataHumanized = {
+  userReserves: UserReserveDataHumanized[];
+  userEmodeCategoryId: number;
+};
 
 export class UiPoolService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
@@ -21,7 +30,10 @@ export class UiPoolService {
     });
   }
 
-  async getUserReservesHumanized(marketData: MarketDataType, user: string) {
+  async getUserReservesHumanized(
+    marketData: MarketDataType,
+    user: string
+  ): Promise<UserReservesDataHumanized> {
     const uiPoolDataProvider = this.getUiPoolDataService(marketData);
     return uiPoolDataProvider.getUserReservesHumanized({
       user,

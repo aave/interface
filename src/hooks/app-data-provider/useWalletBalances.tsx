@@ -9,8 +9,12 @@ import { usePoolsReservesHumanized } from '../pool/usePoolReserves';
 import { usePoolsTokensBalance } from '../pool/usePoolTokensBalance';
 
 export interface WalletBalance {
-  address: string;
   amount: string;
+  amountUSD: string;
+}
+
+export interface WalletBalancesMap {
+  [address: string]: WalletBalance;
 }
 
 type FormatAggregatedBalanceParams = {
@@ -62,7 +66,7 @@ const formatAggregatedBalance = ({
       };
     }
     return acc;
-  }, {} as { [address: string]: { amount: string; amountUSD: string } });
+  }, {} as WalletBalancesMap);
   return {
     walletBalances: aggregatedBalance,
     hasEmptyWallet,
@@ -74,8 +78,8 @@ export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
   const tokensBalanceQueries = usePoolsTokensBalance(marketDatas, user);
   const poolsBalancesQueries = usePoolsReservesHumanized(marketDatas);
   const isLoading =
-    tokensBalanceQueries.find((elem) => elem.isLoading) ||
-    poolsBalancesQueries.find((elem) => elem.isLoading);
+    tokensBalanceQueries.some((elem) => elem.isLoading) ||
+    poolsBalancesQueries.some((elem) => elem.isLoading);
   const walletBalances = poolsBalancesQueries.map((query, index) =>
     formatAggregatedBalance({
       reservesHumanized: query.data,
@@ -89,7 +93,13 @@ export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
   };
 };
 
-export const useWalletBalances = (marketData: MarketDataType) => {
+export interface WalletBalances {
+  walletBalances: WalletBalancesMap;
+  hasEmptyWallet: boolean;
+  loading: boolean;
+}
+
+export const useWalletBalances = (marketData: MarketDataType): WalletBalances => {
   const { walletBalances, isLoading } = usePoolsWalletBalances([marketData]);
   return {
     walletBalances: walletBalances[0].walletBalances,

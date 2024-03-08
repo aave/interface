@@ -163,28 +163,6 @@ export const selectUserSummaryAndIncentives = (state: RootStore, currentTimestam
   });
 };
 
-export const selectUserNonEmtpySummaryAndIncentive = (
-  state: RootStore,
-  currentTimestamp: number
-) => {
-  const user = selectUserSummaryAndIncentives(state, currentTimestamp);
-  const userReservesData = user.userReservesData.filter(
-    (userReserve) => userReserve.underlyingBalance !== '0'
-  );
-  return {
-    ...user,
-    userReservesData,
-  };
-};
-
-export const selectNonEmptyUserBorrowPositions = (state: RootStore, currentTimestamp: number) => {
-  const user = selectUserSummaryAndIncentives(state, currentTimestamp);
-  const borrowedPositions = user.userReservesData.filter(
-    (reserve) => reserve.variableBorrows != '0' || reserve.stableBorrows != '0'
-  );
-  return borrowedPositions;
-};
-
 export const formatEmodes = (reserves: ReserveDataHumanized[]) => {
   const eModes = reserves?.reduce((acc, r) => {
     if (!acc[r.eModeCategoryId])
@@ -202,14 +180,4 @@ export const formatEmodes = (reserves: ReserveDataHumanized[]) => {
   }, {} as Record<number, EmodeCategory>);
 
   return eModes;
-};
-
-export const selectEmodes = (state: RootStore) => {
-  const reserves = selectCurrentReserves(state);
-  return formatEmodes(reserves);
-};
-
-export const selectEmodesV3 = (state: RootStore) => {
-  const reserves = selectFormatReserves(selectCurrentChainIdV3PoolReserve(state));
-  return formatEmodes(reserves);
 };
