@@ -992,6 +992,10 @@ msgstr "Eligible for <0>2.1M$</0> wETH Community Program 👻"
 msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
 msgstr "Eligible for <0>2.9M$</0> GHO Community Program 👻"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Email"
+msgstr "Email"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr "Emode"
@@ -1089,6 +1093,7 @@ msgstr "Faucet"
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
+#: src/layouts/FeedbackDialog.tsx
 #: src/layouts/FeedbackDialog.tsx
 msgid "Feedback"
 msgstr "Feedback"
