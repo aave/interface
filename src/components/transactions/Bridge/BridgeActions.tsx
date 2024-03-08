@@ -73,23 +73,13 @@ export const BridgeActions = React.memo(
     ...props
   }: BridgeActionProps) => {
     const { provider } = useWeb3Context();
-    const [
-      tryPermit,
-      supply,
-      supplyWithPermit,
-      walletApprovalMethodPreference,
-      estimateGasLimit,
-      addTransaction,
-      currentMarketData,
-    ] = useRootStore((state) => [
-      state.tryPermit,
-      state.supply,
-      state.supplyWithPermit,
-      state.walletApprovalMethodPreference,
-      state.estimateGasLimit,
-      state.addTransaction,
-      state.currentMarketData,
-    ]);
+    const [walletApprovalMethodPreference, estimateGasLimit, addTransaction, currentMarketData] =
+      useRootStore((state) => [
+        state.walletApprovalMethodPreference,
+        state.estimateGasLimit,
+        state.addTransaction,
+        state.currentMarketData,
+      ]);
     const {
       approvalTxState,
       mainTxState,
@@ -190,69 +180,6 @@ export const BridgeActions = React.memo(
         // Get the chain selector for the target chain
         const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
         const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
-
-        // ==================================================
-        //     Section: Check token validity
-        //     Check first if the token you would like to
-        //     transfer is supported.
-        // ==================================================
-        // */
-
-        //   // Fetch the list of supported tokens
-
-        //   console.log('destinationChainSelector', destinationChainSelector);
-
-        const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
-
-        const tokenAddressLower = tokenAddress.toLowerCase();
-
-        // Convert each supported token to lowercase and check if the list includes the lowercase token address
-        const isSupported = supportedTokens
-          .map((token: string) => token.toLowerCase())
-          .includes(tokenAddressLower);
-
-        if (!isSupported) {
-          throw Error(
-            `Token address ${tokenAddress} not in the list of supportedTokens ${supportedTokens}`
-          );
-        }
-
-        /*
-  ==================================================
-      Section: BUILD CCIP MESSAGE
-      build CCIP message that you will send to the
-      Router contract.
-  ==================================================
-  */
-
-        // // build message
-        // const tokenAmounts = [
-        //   {
-        //     token: tokenAddress,
-        //     amount: amountToBridge,
-        //   },
-        // ];
-
-        // // Encoding the data
-
-        // const functionSelector = utils.id('CCIP EVMExtraArgsV1').slice(0, 10);
-        // //  "extraArgs" is a structure that can be represented as [ 'uint256']
-        // // extraArgs are { gasLimit: 0 }
-        // // we set gasLimit specifically to 0 because we are not sending any data so we are not expecting a receiving contract to handle data
-
-        // const extraArgs = utils.defaultAbiCoder.encode(['uint256'], [0]);
-
-        // const encodedExtraArgs = functionSelector + extraArgs.slice(2);
-
-        // const message = {
-        //   receiver: utils.defaultAbiCoder.encode(['address'], [destinationAccount]),
-        //   data: '0x', // no data
-        //   tokenAmounts: tokenAmounts,
-        //   feeToken: constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
-        //   // feeToken: feeTokenAddress ? feeTokenAddress : ethers.constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
-
-        //   extraArgs: encodedExtraArgs,
-        // };
 
         let sendTx;
         // let approvalTx = await erc20.approve(sourceRouterAddress, amountToBridge);

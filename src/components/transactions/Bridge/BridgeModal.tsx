@@ -49,6 +49,7 @@ export interface TokenInfoWithBalance extends TokenInfo {
 interface ReserveWithBalance extends ReserveDataHumanized {
   iconSymbol: string;
   balance: string;
+  underlyingBalance: string;
 }
 
 export const BridgeModal = () => {
@@ -242,9 +243,9 @@ export const BridgeModal = () => {
 
   const getBridgeFee = async (value: string) => {
     const destinationChain = { chainId: 421614 }; // destinationNetwork;
-    const signer = await provider.getSigner();
 
-    if (!provider || !destinationChain || !sourceNetwork) return;
+    if (!provider || !destinationChain || !sourceNetwork || !GHO) return;
+    const signer = await provider.getSigner();
 
     const tokenAddress = GHO.underlyingAsset;
 
