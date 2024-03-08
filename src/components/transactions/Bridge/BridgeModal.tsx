@@ -5,7 +5,7 @@ import { API_ETH_MOCK_ADDRESS, ReserveDataHumanized } from '@aave/contract-helpe
 import BigNumber from 'bignumber.js';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { debounce } from 'lodash';
-import { providers, Contract, utils, constants } from 'ethers';
+import { Contract, utils, constants } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
 
 import { normalize } from '@aave/math-utils';
@@ -15,7 +15,6 @@ import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { NetworkSelect } from 'src/components/transactions/NetworkSelect';
-import { ReserveWithBalance } from '../SwitchModal';
 import { useRootStore } from 'src/store/root';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
@@ -24,7 +23,7 @@ import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { getRouterConfig } from './Router';
 import routerAbi from './Router-abi.json';
-import erc20Abi from './IERC20Meta.json';
+import { NetworkConfiguration } from '../NetworkSelect';
 
 import {
   TxModalDetails,
@@ -43,23 +42,20 @@ import { BasicModal } from '../../primitives/BasicModal';
 import { AssetInput } from '../AssetInput';
 
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
-import NetworkConfiguration from '../NetworkSelect';
 export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
 }
 
-interface SignedParams {
-  signature: string;
-  deadline: string;
-  amount: string;
-  approvedToken: string;
+interface ReserveWithBalance extends ReserveDataHumanized {
+  iconSymbol: string;
+  balance: string;
 }
 
 export const BridgeModal = () => {
   const {
     type,
     close,
-    args: { chainId },
+    // args: { chainId },
     mainTxState: bridgeTxState,
   } = useModalContext();
 
@@ -212,6 +208,8 @@ export const BridgeModal = () => {
     });
   }, [networkReserves, poolsBalances]);
 
+  const GHO = reservesWithBalance.find((reserve) => reserve.symbol === 'GHO');
+
   const debouncedInputChange = useMemo(() => {
     return debounce((value: string) => {
       setDebounceInputAmount(value);
@@ -248,15 +246,10 @@ export const BridgeModal = () => {
 
     if (!provider || !destinationChain || !sourceNetwork) return;
 
-    // let response: TransactionResponse;
-    // let action = ProtocolAction.default;
     const tokenAddress = GHO.underlyingAsset;
 
-    const erc20 = new Contract(tokenAddress, erc20Abi, signer);
-
-    //   // Get the router's address for the specified chain
+    // Get the router's address for the specified chain
     const sourceRouterAddress = getRouterConfig(sourceNetwork.chainId).address;
-    const sourceChainSelector = getRouterConfig(sourceNetwork.chainId).chainSelector;
     // Get the chain selector for the target chain
     const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
     const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
@@ -267,10 +260,6 @@ export const BridgeModal = () => {
     //     transfer is supported.
     // ==================================================
     // */
-
-    //   // Fetch the list of supported tokens
-
-    //   console.log('destinationChainSelector', destinationChainSelector);
 
     const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
 
@@ -293,7 +282,6 @@ export const BridgeModal = () => {
         Router contract.
       ==================================================
     */
-    // build message
     const tokenAmounts = [
       {
         token: tokenAddress,
@@ -334,11 +322,6 @@ export const BridgeModal = () => {
     setFees(fees);
   };
 
-  const GHO = reservesWithBalance.find((reserve) => reserve.symbol === 'GHO');
-  console.log('GHO', GHO);
-
-  if (!GHO) return null;
-
   const maxAmountToSwap = BigNumber.min(GHO.underlyingBalance).toString(10);
 
   const handleBridgeArguments = () => {
@@ -373,7 +356,6 @@ export const BridgeModal = () => {
 
   //TODO handle transaction failed
   // TODO networks dynamically
-  // TODO Fix types
 
   if (bridgeTxState.success) {
     return (
@@ -410,6 +392,8 @@ export const BridgeModal = () => {
     resetState();
     close();
   };
+
+  if (!GHO) return null;
 
   return (
     <BasicModal open={type === ModalType.Bridge} setOpen={handleClose}>

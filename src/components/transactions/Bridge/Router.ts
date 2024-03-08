@@ -2,7 +2,7 @@
 // https://github.com/smartcontractkit/smart-contract-examples/blob/main/ccip-offchain/javascript/src/config/router.js
 import { ChainId } from '@aave/contract-helpers';
 
-const supportedNetworks = [
+export const supportedNetworks = [
   'ethereumSepolia',
   'optimismGoerli',
   'avalancheFuji',
@@ -77,7 +77,7 @@ const arbitrumTestnet = {
 //   bnb = 56,
 // }
 
-const getRouterConfig = (network: number) => {
+export const getRouterConfig = (network: number) => {
   switch (network) {
     case ChainId.sepolia:
       return ethereumSepolia;
@@ -96,9 +96,4 @@ const getRouterConfig = (network: number) => {
     default:
       throw new Error('Unknown network: ' + network);
   }
-};
-
-module.exports = {
-  getRouterConfig,
-  supportedNetworks,
 };
