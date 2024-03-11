@@ -218,6 +218,7 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Bridge/BridgeModal.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
@@ -236,6 +237,10 @@ msgstr "Amount in cooldown"
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "Amount to Bridge"
+msgstr "Amount to Bridge"
 
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Amount to migrate"
@@ -317,6 +322,10 @@ msgstr "Asset cannot be used as collateral."
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
 msgstr "Asset category"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "Asset has been successfully sent to router contract. You can check the status of the transaction above"
+msgstr "Asset has been successfully sent to router contract. You can check the status of the transaction above"
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset is frozen in {marketName} v3 market, hence this position cannot be migrated."
@@ -576,6 +585,18 @@ msgstr "Borrowing {symbol}"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
 msgstr "Both"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "Brided Via CCIP"
+msgstr "Brided Via CCIP"
+
+#: src/components/transactions/Bridge/BridgeActions.tsx
+msgid "Bridge {symbol}"
+msgstr "Bridge {symbol}"
+
+#: src/components/transactions/Bridge/BridgeActions.tsx
+msgid "Bridging {symbol}"
+msgstr "Bridging {symbol}"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
@@ -1078,6 +1099,10 @@ msgstr "Faucet"
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "Fee"
+msgstr "Fee"
+
 #: src/layouts/FeedbackDialog.tsx
 msgid "Feedback"
 msgstr "Feedback"
@@ -1123,6 +1148,10 @@ msgstr "French"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "GHO balance"
+msgstr "GHO balance"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -2045,6 +2074,10 @@ msgstr "Safety of your deposited collateral against the borrowed assets and its 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "Save and share"
 msgstr "Save and share"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "See Transaction status on CCIP"
+msgstr "See Transaction status on CCIP"
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."

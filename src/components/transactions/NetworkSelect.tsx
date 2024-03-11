@@ -1,4 +1,4 @@
-import { Box, BoxProps, FormControl, MenuItem, Select, Typography, useTheme } from '@mui/material';
+import { Box, BoxProps, FormControl, MenuItem, Select, Typography } from '@mui/material';
 import * as React from 'react';
 
 export interface NetworkConfiguration {
@@ -27,11 +27,8 @@ export const NetworkSelect = ({
   defaultNetwork,
   sx = {},
 }: NetworkProps) => {
-  const [network, setNetwork] = React.useState<NetworkConfiguration | ''>('');
-
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const selectedNetwork = event.target.value as NetworkConfiguration;
-    setNetwork(selectedNetwork);
     onNetworkChange(selectedNetwork);
   };
 
@@ -52,6 +49,9 @@ export const NetworkSelect = ({
           <Select
             id="network-select"
             value={defaultNetwork.chainId}
+            // TODO: NETWORK CONFIGURED
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             onChange={handleChange}
             variant="outlined"
             sx={{

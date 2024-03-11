@@ -2,25 +2,21 @@ import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers'
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
+import { Contract } from 'ethers';
 import React, { useEffect, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
-import { usePoolApprovedAmount, useApprovedAmount } from 'src/hooks/useApprovedAmount';
+import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { queryKeysFactory } from 'src/ui-config/queries';
-import { providers, Contract, utils, constants } from 'ethers';
-import { getRouterConfig } from './Router';
-import routerAbi from './Router-abi.json';
-import erc20Abi from './IERC20Meta.json';
+
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
-import { NetworkConfiguration } from '../NetworkSelect';
+import { getRouterConfig } from './Router';
+import routerAbi from './Router-abi.json';
+// import { NetworkConfiguration } from '../NetworkSelect';
 
 interface TokenAmount {
   token: string;
@@ -31,7 +27,6 @@ export interface BridgeActionProps extends BoxProps {
   amountToBridge: string;
   isWrongNetwork: boolean;
   customGasPrice?: string;
-  poolAddress: string;
   symbol: string;
   blocked: boolean;
   decimals: number;
@@ -41,7 +36,7 @@ export interface BridgeActionProps extends BoxProps {
     chainId: number;
   };
   destinationAccount: string;
-  tokenAddress: any;
+  tokenAddress: string;
   fees: string;
   // setBridgeFee: (fee: string) => void;
   message: {
@@ -56,7 +51,6 @@ export interface BridgeActionProps extends BoxProps {
 export const BridgeActions = React.memo(
   ({
     amountToBridge,
-    poolAddress,
     isWrongNetwork,
     sx,
     symbol,
@@ -73,13 +67,13 @@ export const BridgeActions = React.memo(
     ...props
   }: BridgeActionProps) => {
     const { provider } = useWeb3Context();
-    const [walletApprovalMethodPreference, estimateGasLimit, addTransaction, currentMarketData] =
-      useRootStore((state) => [
+    const [walletApprovalMethodPreference, addTransaction, currentMarketData] = useRootStore(
+      (state) => [
         state.walletApprovalMethodPreference,
-        state.estimateGasLimit,
         state.addTransaction,
         state.currentMarketData,
-      ]);
+      ]
+    );
     const {
       approvalTxState,
       mainTxState,
@@ -167,21 +161,17 @@ export const BridgeActions = React.memo(
     const action = async () => {
       try {
         setMainTxState({ ...mainTxState, loading: true });
+        if (!provider) return;
+
         const signer = await provider.getSigner();
-
-        let response: TransactionResponse;
-        let action = ProtocolAction.default;
-
-        const erc20 = new Contract(tokenAddress, erc20Abi, signer);
 
         //   // Get the router's address for the specified chain
         const sourceRouterAddress = getRouterConfig(sourceChain).address;
-        const sourceChainSelector = getRouterConfig(sourceChain).chainSelector;
         // Get the chain selector for the target chain
         const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
         const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
 
-        let sendTx;
+        // let sendTx;
         // let approvalTx = await erc20.approve(sourceRouterAddress, amountToBridge);
         // await approvalTx.wait();
 
@@ -189,22 +179,15 @@ export const BridgeActions = React.memo(
           `approved router ${sourceRouterAddress} to spend ${amountToBridge} of token ${tokenAddress}.`
         );
 
-        // let sendTxWithFeeData = sourceRouter.ccipSend(destinationChainSelector, message, {
-        //   value: fees,
-        // }); //
-
-        // continue here, permit might not be needed
-
-        sendTx = await sourceRouter.ccipSend(destinationChainSelector, message, {
-          value: fees,
-        });
-
-        console.log('1', sendTx);
-        // preparedTx = await estimateGasLimit(preparedTx);
-        console.log('2');
+        const sendTx: TransactionResponse = await sourceRouter.ccipSend(
+          destinationChainSelector,
+          message,
+          {
+            value: fees,
+          }
+        );
 
         const receipt = await sendTx.wait();
-        console.log('4');
 
         // Simulate a call to the router to fetch the messageID
         const call = {
@@ -230,11 +213,11 @@ export const BridgeActions = React.memo(
         });
 
         addTransaction(sendTx.hash, {
-          action,
+          action: ProtocolAction.default, // TODO bridge action
           txState: 'success',
           asset: tokenAddress,
           amount: amountToBridge,
-          assetName: symbol,
+          assetName: 'GHO',
         });
 
         // queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });

@@ -32,15 +32,15 @@ const polygonMumbai = {
   chainSelector: '12532609583862916517',
 };
 
-const bnbTestnet = {
-  address: '0xe1053ae1857476f36a3c62580ff9b016e8ee8f6f',
-  chainSelector: '13264668187771770619',
-};
+// const bnbTestnet = {
+//   address: '0xe1053ae1857476f36a3c62580ff9b016e8ee8f6f',
+//   chainSelector: '13264668187771770619',
+// };
 
-const baseGoerli = {
-  address: '0x80af2f44ed0469018922c9f483dc5a909862fdc2',
-  chainSelector: '5790810961207155433',
-};
+// const baseGoerli = {
+//   address: '0x80af2f44ed0469018922c9f483dc5a909862fdc2',
+//   chainSelector: '5790810961207155433',
+// };
 
 const arbitrumTestnet = {
   address: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165',

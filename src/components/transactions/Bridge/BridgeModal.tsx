@@ -44,7 +44,6 @@ export interface TokenInfoWithBalance extends TokenInfo {
 interface ReserveWithBalance extends ReserveDataHumanized {
   iconSymbol: string;
   balance: string;
-  underlyingBalance: string;
 }
 
 export const BridgeModal = () => {
@@ -58,8 +57,6 @@ export const BridgeModal = () => {
   const currentChainId = useRootStore((store) => store.currentChainId);
   const [amount, setAmount] = useState('0');
   const [inputAmountUSD, setInputAmount] = useState('');
-  const [sourceToken, setSourceToken] = useState('');
-  const [destinationToken, setDestinationToken] = useState('');
   const [sourceNetwork, setSourceNetwork] = useState({ chainId: 11155111 });
   const [destinationNetwork, setDestinationNetwork] = useState({ chainId: 421614 });
   const [sourceNetworkObj, setSourceNetworkObj] = useState(() => {
@@ -94,7 +91,8 @@ export const BridgeModal = () => {
 
   const { readOnlyModeAddress, provider } = useWeb3Context();
 
-  const [selectedChainId, setSelectedChainId] = useState(() => {
+  // setSelectedChainId
+  const [selectedChainId] = useState(() => {
     if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId))
       return currentChainId;
     return defaultNetwork.chainId;
@@ -240,6 +238,8 @@ export const BridgeModal = () => {
     }, 1000);
   }, [setDebounceInputAmount]);
 
+  if (!GHO) return null;
+
   const handleInputChange = (value: string) => {
     if (value === '-1') {
       setAmount(GHO.balance);
@@ -251,20 +251,27 @@ export const BridgeModal = () => {
   };
 
   const resetState = () => {
-    console.log('RESET STATE');
     setAmount('0');
     setInputAmount('');
-    setSourceToken('');
-    setDestinationToken('');
     setSourceNetwork({ chainId: 11155111 });
-    setDestinationNetwork('');
     setDebounceInputAmount('');
-    setMessage({});
+    setMessage({
+      receiver: '',
+      data: '',
+      tokenAmounts: [
+        {
+          token: '',
+          amount: '',
+        },
+      ],
+      feeToken: '',
+      extraArgs: '',
+    });
     setFees('');
     setBridgeFeeFormatted('');
   };
 
-  const getBridgeFee = async (value: string) => {
+  const getBridgeFee = async () => {
     const destinationChain = { chainId: 421614 }; // destinationNetwork;
 
     if (!provider || !destinationChain || !sourceNetwork || !GHO) return;
@@ -346,9 +353,9 @@ export const BridgeModal = () => {
     setFees(fees);
   };
 
-  if (!GHO) return null;
+  // const maxAmountToSwap = BigNumber.min(GHO.underlyingBalance).toString(10);
 
-  const maxAmountToSwap = BigNumber.min(GHO.underlyingBalance).toString(10);
+  const maxAmountToSwap = BigNumber.min(GHO.balance).toString(10);
 
   const handleBridgeArguments = () => {
     const sourceChain = sourceNetwork.chainId;
@@ -377,7 +384,7 @@ export const BridgeModal = () => {
     ...handleBridgeArguments(),
     amountToBridge: amount,
     isWrongNetwork: false, // TODO fix
-    poolAddress: GHO.underlying,
+    // poolAddress: GHO.underlying,
     symbol: 'GHO',
     blocked: false,
     decimals: GHO.decimals,
@@ -385,9 +392,6 @@ export const BridgeModal = () => {
     message,
     fees,
   };
-
-  //TODO handle transaction failed
-  // TODO networks dynamically
 
   if (bridgeTxState.success) {
     return (
@@ -425,6 +429,11 @@ export const BridgeModal = () => {
     close();
   };
 
+  // TODO: Handle wallet not connected
+  // TODO: TYPES
+  // TODO handle transaction failed
+  // TODO networks dynamically
+
   return (
     <BasicModal open={type === ModalType.Bridge} setOpen={handleClose}>
       <TxModalTitle title="Bridge tokens" />
@@ -437,6 +446,7 @@ export const BridgeModal = () => {
           }}
         />
       )}
+
       <Box
         sx={{
           display: 'flex',
@@ -466,10 +476,15 @@ export const BridgeModal = () => {
           }}
         >
           <NetworkSelect
+            // TODO: TYPES
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             supportedBridgeMarkets={supportedNetworksWithBridgeMarket.filter(
               (net) => net.chainId !== destinationNetworkObj.chainId
             )}
             onNetworkChange={handleSelectedNetworkChange('sourceNetwork')}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             defaultNetwork={sourceNetworkObj}
           />
           <IconButton
@@ -486,10 +501,14 @@ export const BridgeModal = () => {
             </SvgIcon>
           </IconButton>
           <NetworkSelect
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             supportedBridgeMarkets={supportedNetworksWithBridgeMarket.filter(
               (net) => net.chainId !== sourceNetworkObj.chainId
             )}
             onNetworkChange={handleSelectedNetworkChange('destinationNetwork')}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             defaultNetwork={destinationNetworkObj}
           />
         </Box>
