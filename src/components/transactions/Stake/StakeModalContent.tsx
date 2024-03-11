@@ -133,7 +133,11 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
+      <TxModalDetails
+        chainId={connectedChainId}
+        hideGasStation={!!readOnlyModeAddress}
+        gasLimit={gasLimit}
+      >
         <DetailsNumberLine
           description={<Trans>Staking APR</Trans>}
           value={Number(stakeData?.stakeApy || '0') / 10000}
