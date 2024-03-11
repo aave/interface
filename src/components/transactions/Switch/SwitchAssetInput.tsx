@@ -304,7 +304,8 @@ export const SwitchAssetInput = ({
                               }}
                               onClick={() => handleSelect(asset)}
                             >
-                              <TokenIcon
+                              <ExternalTokenIcon
+                                logoURI={asset.logoURI}
                                 symbol={asset.symbol}
                                 sx={{ width: 24, height: 24, mr: 1 }}
                               />
@@ -337,6 +338,7 @@ export const SwitchAssetInput = ({
                       ? assets[0]
                       : assets && assets.find((asset) => asset.symbol === symbol);
                   invariant(asset, 'Asset not found');
+
                   return (
                     <Box
                       sx={{ display: 'flex', alignItems: 'center' }}
