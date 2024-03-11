@@ -17,6 +17,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
@@ -83,6 +84,7 @@ export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
+  const { chainId: connectedChainId } = useWeb3Context();
 
   const [visitedSwitch, setVisitedSwitch] = useState(() => {
     if (typeof window === 'undefined') return true;
@@ -141,7 +143,7 @@ export function AppHeader() {
   const handleSwitchClick = () => {
     localStorage.setItem(SWITCH_VISITED_KEY, 'true');
     setVisitedSwitch(true);
-    openSwitch();
+    openSwitch('', connectedChainId);
   };
 
   const testnetTooltip = (
