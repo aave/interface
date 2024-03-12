@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
 import { useUserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
 import { useUserPoolReservesHumanized } from 'src/hooks/pool/useUserPoolReserves';
@@ -30,7 +29,6 @@ const MigrateV3Modal = dynamic(() =>
 
 export default function V3Migration() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { loading } = useAppDataContext();
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
@@ -53,7 +51,8 @@ export default function V3Migration() {
   const toMarketData = selectCurrentChainIdV3MarketData(currentChainId, currentNetworkConfig);
   const fromMarketData = currentMarketData;
 
-  const { data: userMigrationReserves } = useUserMigrationReserves(currentMarketData, toMarketData);
+  const { data: userMigrationReserves, isLoading: userMigrationReservesLoading } =
+    useUserMigrationReserves(currentMarketData, toMarketData);
 
   const supplyReserves = useMemo(
     () => userMigrationReserves?.supplyReserves || [],
@@ -62,17 +61,25 @@ export default function V3Migration() {
   const borrowReserves = userMigrationReserves?.borrowReserves || [];
   const isolatedReserveV3 = userMigrationReserves?.isolatedReserveV3;
 
-  const { data: fromUserSummaryAndIncentives } = useUserSummaryAndIncentives(fromMarketData);
+  const { data: fromUserSummaryAndIncentives, isLoading: fromUserSummaryAndIncentivesLoading } =
+    useUserSummaryAndIncentives(fromMarketData);
   const fromHealthFactor = fromUserSummaryAndIncentives?.healthFactor || '0';
 
-  const { data: toUserReservesData } = useUserPoolReservesHumanized(toMarketData);
-  const { data: toUserSummaryForMigration } = useUserSummaryAndIncentives(toMarketData);
+  const { data: toUserReservesData, isLoading: toUserReservesDataLoading } =
+    useUserPoolReservesHumanized(toMarketData);
+  const { data: toUserSummaryForMigration, isLoading: toUserSummaryForMigrationLoading } =
+    useUserSummaryAndIncentives(toMarketData);
   const toUserEModeCategoryId = toUserReservesData?.userEmodeCategoryId || 0;
 
-  const { data: userSummaryAfterMigration } = useUserSummaryAfterMigration(
-    fromMarketData,
-    toMarketData
-  );
+  const { data: userSummaryAfterMigration, isLoading: userSummaryAfterMigrationLoading } =
+    useUserSummaryAfterMigration(fromMarketData, toMarketData);
+
+  const loading =
+    userMigrationReservesLoading ||
+    fromUserSummaryAndIncentivesLoading ||
+    toUserReservesDataLoading ||
+    toUserSummaryForMigrationLoading ||
+    userSummaryAfterMigrationLoading;
 
   useEffect(() => {
     if (getMigrationExceptionSupplyBalances && supplyReserves.length > 0) {
