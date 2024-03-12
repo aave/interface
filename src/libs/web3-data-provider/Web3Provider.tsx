@@ -183,6 +183,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       return activate(connector, undefined, true);
     }
 
+    const activatePromise = activate(connector, undefined, true);
+
     const activateRetryAttempts = 2;
 
     const activateFn = async (connector: AbstractConnector, attempt: number) => {
@@ -199,8 +201,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           if (attempt <= activateRetryAttempts) {
             return activateFn(connector, attempt + 1);
           }
+          throw reason;
         }
-        throw reason;
+        return activatePromise;
       });
     };
 
