@@ -203,6 +203,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           }
           throw reason;
         }
+        // If the promise was rejected with a different error, then return the original instance.
+        // This handles cases where we are waiting for user input, such as giving the dapp permissions.
         return activatePromise;
       });
     };
