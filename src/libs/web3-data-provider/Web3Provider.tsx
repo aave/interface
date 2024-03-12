@@ -175,6 +175,14 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     // There are no errors thrown that we can handle in this state, so just retry activating
     // the connector. If it still fails after the backoff retry, then throw an error.
     // See this issue for more details: https://github.com/MetaMask/metamask-extension/issues/23329
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const unlocked = await (window as any)?.ethereum._metamask.isUnlocked();
+    if (!unlocked) {
+      // if the extension is locked, just do the normal activation
+      return activate(connector, undefined, true);
+    }
+
     const activateRetryAttempts = 2;
 
     const activateFn = async (connector: AbstractConnector, attempt: number) => {
