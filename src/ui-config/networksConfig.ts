@@ -379,25 +379,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     //   url: 'https://bridge.arbitrum.io',
     // },
   },
-  [ChainId.optimism_goerli]: {
-    name: 'Optimism Görli',
-    publicJsonRPCUrl: ['https://goerli.optimism.io', 'https://opt-goerli.g.alchemy.com/v2/demo'],
-    publicJsonRPCWSUrl: 'wss://goerli.optimism.io',
-    // protocolDataUrl: '',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://l2-explorer.surge.sh',
-    // usdMarket: true,
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/optimism.svg',
-    // bridge: {
-    //   icon: '/icons/bridge/optimism.svg',
-    //   name: 'Optimism Bridge',
-    //   url: 'https://app.optimism.io/bridge',
-    // },
-  },
   [ChainId.scroll_sepolia]: {
     name: 'Scroll Sepolia',
     publicJsonRPCUrl: [

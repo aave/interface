@@ -42,6 +42,7 @@ export type MarketDataType = {
     staking?: boolean;
     governance?: boolean;
     faucet?: boolean;
+    external_faucet?: boolean;
     collateralRepay?: boolean;
     incentives?: boolean;
     permissions?: boolean;
@@ -112,7 +113,6 @@ export enum CustomMarket {
   proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
-  // proto_goerli = 'proto_goerli',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -345,6 +345,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: false,
       incentives: true,
+      external_faucet: true,
     },
     //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
@@ -400,6 +401,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: false,
       incentives: true,
+      external_faucet: true,
     },
     //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
@@ -473,6 +475,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
       incentives: true,
+      external_faucet: true,
     },
     // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism-goerli',  needs re-deployment
     addresses: {
@@ -653,24 +656,6 @@ export const marketsData: {
     },
     v3: true,
   },
-  // [CustomMarket.proto_goerli]: {
-  //   marketTitle: 'Ethereum Görli',
-  //   market: CustomMarket.proto_goerli,
-  //   chainId: ChainId.goerli,
-  //   enabledFeatures: {
-  //     faucet: true,
-  //   },
-  //   subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-goerli',
-  //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: AaveV2Goerli.POOL_ADDRESSES_PROVIDER,
-  //     LENDING_POOL: AaveV2Goerli.POOL,
-  //     WETH_GATEWAY: AaveV2Goerli.WETH_GATEWAY,
-  //     WALLET_BALANCE_PROVIDER: AaveV2Goerli.WALLET_BALANCE_PROVIDER,
-  //     UI_POOL_DATA_PROVIDER: AaveV2Goerli.UI_POOL_DATA_PROVIDER,
-  //     UI_INCENTIVE_DATA_PROVIDER: AaveV2Goerli.UI_INCENTIVE_DATA_PROVIDER,
-  //     FAUCET: AaveV2Goerli.FAUCET,
-  //   },
-  // },
   [CustomMarket.proto_mumbai]: {
     marketTitle: 'Polygon Mumbai',
     market: CustomMarket.proto_mumbai,

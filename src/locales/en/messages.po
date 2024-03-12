@@ -1701,6 +1701,10 @@ msgstr "Notify"
 msgid "Ok, Close"
 msgstr "Ok, Close"
 
+#: src/modules/faucet/FaucetAssetsList.tsx
+msgid "Open Faucet"
+msgstr "Open Faucet"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Operation not supported"

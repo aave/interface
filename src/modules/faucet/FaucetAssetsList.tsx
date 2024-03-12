@@ -45,12 +45,33 @@ export default function FaucetAssetsList() {
       };
     });
 
+  console.log('currentMarket', currentMarket);
+  console.log('currentMarketData', currentMarketData);
+
+  const handleOpenExternalFaucet = () => {
+    window.open('https://faucet.circle.com/', 'Circle Faucet');
+  };
+
   if (!currentAccount || web3Loading) {
     return (
       <ConnectWalletPaper
         loading={web3Loading}
         description={<Trans>Please connect your wallet to get free testnet assets.</Trans>}
       />
+    );
+  }
+
+  if (currentMarketData.enabledFeatures?.external_faucet) {
+    return (
+      <ListWrapper titleComponent={''}>
+        <Box display="flex" justifyContent="center" alignItems="center" marginBottom="39px">
+          <Button color="primary" variant="contained" onClick={handleOpenExternalFaucet}>
+            <Typography variant="subheader1">
+              <Trans>Open Faucet</Trans>
+            </Typography>
+          </Button>
+        </Box>
+      </ListWrapper>
     );
   }
 
