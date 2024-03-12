@@ -2778,6 +2778,10 @@ msgstr "Underlying token"
 msgid "Unstake"
 msgstr "Unstake"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Unstake Dates"
+msgstr "Unstake Dates"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Unstake now"
