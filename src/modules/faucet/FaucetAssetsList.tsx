@@ -45,9 +45,6 @@ export default function FaucetAssetsList() {
       };
     });
 
-  console.log('currentMarket', currentMarket);
-  console.log('currentMarketData', currentMarketData);
-
   const handleOpenExternalFaucet = () => {
     window.open('https://faucet.circle.com/', 'Circle Faucet');
   };
