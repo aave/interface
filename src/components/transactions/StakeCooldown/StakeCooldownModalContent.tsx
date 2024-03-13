@@ -234,7 +234,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
             rel="noopener noreferrer"
             sx={{ display: 'flex', alignItems: 'center', mt: 1 }}
           >
-            Remind me
+            <Trans>Remind me</Trans>
             <SvgIcon sx={{ fontSize: '16px', ml: 1 }}>
               <CalendarIcon />
             </SvgIcon>
