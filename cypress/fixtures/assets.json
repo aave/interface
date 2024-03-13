@@ -968,6 +968,12 @@
       "collateral": true,
       "wrapped": false
     },
+    "USDT": {
+      "fullName": "USDT",
+      "shortName": "USDT",
+      "collateral": false,
+      "wrapped": false
+    },
     "WBTC": {
       "fullName": "WBTC Coin",
       "shortName": "WBTC",
