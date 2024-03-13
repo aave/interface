@@ -132,7 +132,7 @@ export default function FaucetAssetsList() {
             )}
 
             <ListColumn maxWidth={280} align="right">
-              {!currentMarketData.enabledFeatures ? (
+              {!currentMarketData.addresses.FAUCET ? (
                 <Link href={`https://faucet.circle.com/`}>
                   <Button variant="contained">
                     <Trans>Faucet</Trans>
