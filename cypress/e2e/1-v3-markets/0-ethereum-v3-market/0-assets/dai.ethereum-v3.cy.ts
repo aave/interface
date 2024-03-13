@@ -63,7 +63,7 @@ const testData = {
     },
     withdrawAndSwitch: {
       fromAsset: assets.ethereumV3Market.DAI,
-      toAsset: assets.ethereumV3Market.USDC,
+      toAsset: assets.ethereumV3Market.USDT,
       isCollateralFromAsset: true,
       amount: 5,
       hasApproval: false,
