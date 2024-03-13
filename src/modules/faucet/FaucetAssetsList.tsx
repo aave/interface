@@ -133,7 +133,18 @@ export default function FaucetAssetsList() {
 
             <ListColumn maxWidth={280} align="right">
               {!currentMarketData.addresses.FAUCET ? (
-                <Link href={`https://faucet.circle.com/`}>
+                <Button
+                    href="https://faucet.circle.com/"
+                    component={Link}
+                    variant="contained"
+                    endIcon={
+                      <SvgIcon sx={{ width: 14, height: 14 }}>
+                        <ExternalLinkIcon />
+                      </SvgIcon>
+                    }
+                  >
+                    <Trans>Faucet</Trans>
+                  </Button>
                   <Button variant="contained">
                     <Trans>Faucet</Trans>
                   </Button>
