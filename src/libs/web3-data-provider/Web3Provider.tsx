@@ -177,7 +177,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     // See this issue for more details: https://github.com/MetaMask/metamask-extension/issues/23329
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const unlocked = await (window as any)?.ethereum._metamask.isUnlocked();
+    const unlocked = (await (window as any)?.ethereum?._metamask?.isUnlocked()) ?? false;
     if (!unlocked) {
       // if the extension is locked, just do the normal activation
       return activate(connector, undefined, true);
