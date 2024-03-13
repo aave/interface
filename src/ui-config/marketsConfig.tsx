@@ -342,11 +342,6 @@ export const marketsData: {
     market: CustomMarket.proto_arbitrum_sepolia_v3,
     v3: true,
     chainId: ChainId.arbitrum_sepolia,
-    enabledFeatures: {
-      faucet: false,
-      incentives: true,
-      external_faucet: true,
-    },
     //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3ArbitrumSepolia.POOL_ADDRESSES_PROVIDER,
@@ -398,11 +393,6 @@ export const marketsData: {
     market: CustomMarket.proto_arbitrum_sepolia_v3,
     v3: true,
     chainId: ChainId.base_sepolia,
-    enabledFeatures: {
-      faucet: false,
-      incentives: true,
-      external_faucet: true,
-    },
     //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3BaseSepolia.POOL_ADDRESSES_PROVIDER,
@@ -472,11 +462,6 @@ export const marketsData: {
     market: CustomMarket.proto_optimism_sepolia_v3,
     v3: true,
     chainId: ChainId.optimism_sepolia,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true,
-      external_faucet: true,
-    },
     // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3OptimismSepolia.POOL_ADDRESSES_PROVIDER,

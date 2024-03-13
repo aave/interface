@@ -45,30 +45,12 @@ export default function FaucetAssetsList() {
       };
     });
 
-  const handleOpenExternalFaucet = () => {
-    window.open('https://faucet.circle.com/', 'Circle Faucet');
-  };
-
   if (!currentAccount || web3Loading) {
     return (
       <ConnectWalletPaper
         loading={web3Loading}
         description={<Trans>Please connect your wallet to get free testnet assets.</Trans>}
       />
-    );
-  }
-
-  if (currentMarketData.enabledFeatures?.external_faucet) {
-    return (
-      <ListWrapper titleComponent={''}>
-        <Box display="flex" justifyContent="center" alignItems="center" marginBottom="39px">
-          <Button color="primary" variant="contained" onClick={handleOpenExternalFaucet}>
-            <Typography variant="subheader1">
-              <Trans>Open Faucet</Trans>
-            </Typography>
-          </Button>
-        </Box>
-      </ListWrapper>
     );
   }
 
@@ -150,9 +132,17 @@ export default function FaucetAssetsList() {
             )}
 
             <ListColumn maxWidth={280} align="right">
-              <Button variant="contained" onClick={() => openFaucet(reserve.underlyingAsset)}>
-                <Trans>Faucet</Trans>
-              </Button>
+              {!currentMarketData.enabledFeatures ? (
+                <Link href={`https://faucet.circle.com/`}>
+                  <Button variant="contained">
+                    <Trans>Faucet</Trans>
+                  </Button>
+                </Link>
+              ) : (
+                <Button variant="contained" onClick={() => openFaucet(reserve.underlyingAsset)}>
+                  <Trans>Faucet</Trans>
+                </Button>
+              )}
             </ListColumn>
           </ListItem>
         ))

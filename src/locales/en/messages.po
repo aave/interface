@@ -1083,6 +1083,7 @@ msgstr "Failed to load proposal voters. Please refresh the page."
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/faucet/FaucetItemLoader.tsx
 #: src/modules/faucet/FaucetMobileItemLoader.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1700,10 +1701,6 @@ msgstr "Notify"
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Ok, Close"
-
-#: src/modules/faucet/FaucetAssetsList.tsx
-msgid "Open Faucet"
-msgstr "Open Faucet"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
