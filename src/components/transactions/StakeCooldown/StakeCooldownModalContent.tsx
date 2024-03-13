@@ -214,21 +214,28 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         }}
       >
         <Typography variant="description" color="text.primary">
-          <Trans>Unstake Dates</Trans>
+          <Trans>Unstake window</Trans>
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant="secondary14" component="span">
-            {dateMessage(stakeCooldownSeconds)}
-          </Typography>
-          {/* {' - '} */}
-          <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
-            <ArrowNarrowRightIcon />
-          </SvgIcon>
-          <Typography variant="secondary14" component="span">
-            {dateMessage(stakeCooldownSeconds + stakeUnstakeWindow)}
-          </Typography>
-          <Link href={googleCalendarUrl} target="_blank" rel="noopener noreferrer">
-            <SvgIcon sx={{ fontSize: '16px', mx: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="secondary14" component="span">
+              {dateMessage(stakeCooldownSeconds)}
+            </Typography>
+            <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
+              <ArrowNarrowRightIcon />
+            </SvgIcon>
+            <Typography variant="secondary14" component="span">
+              {dateMessage(stakeCooldownSeconds + stakeUnstakeWindow)}
+            </Typography>
+          </Box>
+          <Link
+            href={googleCalendarUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ display: 'flex', alignItems: 'center', mt: 1 }}
+          >
+            Remind me
+            <SvgIcon sx={{ fontSize: '16px', ml: 1 }}>
               <CalendarIcon />
             </SvgIcon>
           </Link>
