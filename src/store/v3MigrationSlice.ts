@@ -268,7 +268,8 @@ export const createV3MigrationSlice: StateCreator<
       const borrowPermitPayloads = selectMigrationBorrowPermitPayloads(
         get(),
         toUserSummary,
-        userMigrationReserves.borrowReserves
+        userMigrationReserves.borrowReserves,
+        true
       );
 
       const supplyPermitPayloads = selectUserSupplyIncreasedReservesForMigrationPermits(
