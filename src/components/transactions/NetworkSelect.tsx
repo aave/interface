@@ -28,8 +28,12 @@ export const NetworkSelect = ({
   sx = {},
 }: NetworkProps) => {
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const selectedNetwork = event.target.value as NetworkConfiguration;
-    onNetworkChange(selectedNetwork);
+    const chainId = event.target.value as number;
+    const selectedNetwork = supportedBridgeMarkets.find((network) => network.chainId === chainId);
+
+    if (selectedNetwork) {
+      onNetworkChange(selectedNetwork);
+    }
   };
 
   return (

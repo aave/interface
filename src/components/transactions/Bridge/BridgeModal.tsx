@@ -57,20 +57,30 @@ export const BridgeModal = () => {
   const currentChainId = useRootStore((store) => store.currentChainId);
   const [amount, setAmount] = useState('0');
   const [inputAmountUSD, setInputAmount] = useState('');
-  const [sourceNetwork, setSourceNetwork] = useState({ chainId: 11155111 });
-  const [destinationNetwork, setDestinationNetwork] = useState({ chainId: 421614 });
+  const [defaultDestinationChain] = useState(421614); // NOTE this is the chainId for the destination network
+
+  // setSelectedChainId
+  const [selectedChainId] = useState(() => {
+    if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId))
+      return currentChainId;
+    return defaultNetwork.chainId;
+  });
+
   const [sourceNetworkObj, setSourceNetworkObj] = useState(() => {
     return (
-      supportedNetworksWithBridgeMarket.find((net) => net.chainId === sourceNetwork.chainId) ||
+      supportedNetworksWithBridgeMarket.find((net) => net.chainId === selectedChainId) ||
       supportedNetworksWithBridgeMarket[0]
     );
   });
+
+  // sets destinationNetworkObj  based on destinationNetwork.chainId or defaultNetwork.chainId
   const [destinationNetworkObj, setDestinationNetworkObj] = useState(() => {
     return (
-      supportedNetworksWithBridgeMarket.find((net) => net.chainId === destinationNetwork.chainId) ||
+      supportedNetworksWithBridgeMarket.find((net) => net.chainId === defaultDestinationChain) ||
       supportedNetworksWithBridgeMarket[1]
     );
   });
+
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const [message, setMessage] = useState({
     receiver: '',
@@ -91,12 +101,6 @@ export const BridgeModal = () => {
 
   const { readOnlyModeAddress, provider } = useWeb3Context();
 
-  // setSelectedChainId
-  const [selectedChainId] = useState(() => {
-    if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId))
-      return currentChainId;
-    return defaultNetwork.chainId;
-  });
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
   const [user] = useRootStore((state) => [state.account]);
@@ -104,38 +108,25 @@ export const BridgeModal = () => {
   useEffect(() => {
     setSourceNetworkObj(() => {
       return (
-        supportedNetworksWithBridgeMarket.find((net) => net.chainId === sourceNetwork.chainId) ||
+        supportedNetworksWithBridgeMarket.find((net) => net.chainId === selectedChainId) ||
         supportedNetworksWithBridgeMarket[0]
       );
     });
     setDestinationNetworkObj(() => {
       return (
         supportedNetworksWithBridgeMarket.find(
-          (net) => net.chainId === destinationNetwork.chainId
+          (net) => net.chainId === destinationNetworkObj.chainId
         ) || supportedNetworksWithBridgeMarket[1]
       );
     });
-  }, [sourceNetwork, destinationNetwork]);
+  }, [selectedChainId]);
 
   useEffect(() => {
     if (provider && debounceInputAmount) {
       getBridgeFee(debounceInputAmount);
     }
   }, [provider, debounceInputAmount]);
-
-  // const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-
-  // const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-  // const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
-
-  // useEffect(() => {
-  //   if (sourceRouter) {
-  //     console.log('sourceRouter foo ---->', sourceRouter);
-  //   }
-  // }, [sourceRouter]);
-
-  //   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
-
+  // NOTE: do we need something similar below?
   //   useEffect(() => {
   //     // Passing chainId as prop will set default network for switch modal
   //     if (chainId && supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === chainId)) {
@@ -146,13 +137,12 @@ export const BridgeModal = () => {
   //       setSelectedChainId(defaultNetwork.chainId);
   //     }
   //   }, [currentChainId, chainId]);
-
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: NetworkConfiguration) => {
       if (networkAction === 'sourceNetwork') {
-        setSourceNetwork(network);
+        setSourceNetworkObj(network);
       } else {
-        setDestinationNetwork(network);
+        setDestinationNetworkObj(network);
       }
     };
 
@@ -253,7 +243,6 @@ export const BridgeModal = () => {
   const resetState = () => {
     setAmount('0');
     setInputAmount('');
-    setSourceNetwork({ chainId: 11155111 });
     setDebounceInputAmount('');
     setMessage({
       receiver: '',
@@ -272,15 +261,15 @@ export const BridgeModal = () => {
   };
 
   const getBridgeFee = async () => {
-    const destinationChain = { chainId: 421614 }; // destinationNetwork;
+    const destinationChain = destinationNetworkObj; // destinationNetwork;
 
-    if (!provider || !destinationChain || !sourceNetwork || !GHO) return;
+    if (!provider || !destinationChain || !sourceNetworkObj.chainId || !GHO) return;
     const signer = await provider.getSigner();
 
     const tokenAddress = GHO.underlyingAsset;
 
     // Get the router's address for the specified chain
-    const sourceRouterAddress = getRouterConfig(sourceNetwork.chainId).address;
+    const sourceRouterAddress = getRouterConfig(sourceNetworkObj.chainId).address;
     // Get the chain selector for the target chain
     const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
     const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
@@ -358,12 +347,13 @@ export const BridgeModal = () => {
   const maxAmountToSwap = BigNumber.min(GHO.balance).toString(10);
 
   const handleBridgeArguments = () => {
-    const sourceChain = sourceNetwork.chainId;
-    const destinationChain = { chainId: 421614 }; // destinationNetwork;
+    const sourceChain = sourceNetworkObj;
+    const destinationChain = destinationNetworkObj; // destinationNetwork;
     const destinationAccount = user;
     const tokenAddress = GHO.underlyingAsset;
     // Note for now leaving out
     // const feeTokenAddress = process.argv[7];
+
     return {
       sourceChain,
       destinationChain,
@@ -378,6 +368,9 @@ export const BridgeModal = () => {
     const currentSourceNetworkObj = sourceNetworkObj;
     setSourceNetworkObj(destinationNetworkObj);
     setDestinationNetworkObj(currentSourceNetworkObj);
+    // console.log('sourceNetworkObj', sourceNetworkObj);
+
+    // setSelectedChainId(destinationNetworkObj.chainId);
   };
 
   const bridgeActionsProps = {

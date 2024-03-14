@@ -31,7 +31,9 @@ export interface BridgeActionProps extends BoxProps {
   blocked: boolean;
   decimals: number;
   isWrappedBaseAsset: boolean;
-  sourceChain: number;
+  sourceChain: {
+    chainId: number;
+  };
   destinationChain: {
     chainId: number;
   };
@@ -96,7 +98,7 @@ export const BridgeActions = React.memo(
     } = useApprovedAmount({
       marketData: currentMarketData,
       token: tokenAddress,
-      spender: getRouterConfig(sourceChain).address, // ETH SEPOLIA ROUTER
+      spender: getRouterConfig(sourceChain.chainId).address,
     });
 
     setLoadingTxns(fetchingApprovedAmount);
@@ -131,7 +133,7 @@ export const BridgeActions = React.memo(
         amount: approvedAmount?.toString() || '0',
         user: user,
         token: tokenAddress,
-        spender: getRouterConfig(sourceChain).address,
+        spender: getRouterConfig(sourceChain.chainId).address,
       },
       requiresApproval,
       assetAddress: tokenAddress,
@@ -166,7 +168,7 @@ export const BridgeActions = React.memo(
         const signer = await provider.getSigner();
 
         //   // Get the router's address for the specified chain
-        const sourceRouterAddress = getRouterConfig(sourceChain).address;
+        const sourceRouterAddress = getRouterConfig(sourceChain.chainId).address;
         // Get the chain selector for the target chain
         const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
         const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);

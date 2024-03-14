@@ -494,4 +494,19 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
   },
+  [421614]: {
+    name: 'Arbitrum Sepolia',
+    publicJsonRPCUrl: [
+      'https://sepolia-rollup.arbitrum.io/rpc',
+      'https://public.stackup.sh/api/v1/node/arbitrum-sepolia',
+    ],
+    publicJsonRPCWSUrl: 'https://sepolia-rollup.arbitrum.io/rpc',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.arbiscan.io',
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/arbitrum.svg',
+  },
 } as const;
