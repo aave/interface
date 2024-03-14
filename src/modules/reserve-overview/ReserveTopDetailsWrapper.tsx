@@ -11,6 +11,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -45,6 +46,8 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
+  const [tokenSymbol, setTokenSymbol] = useState(poolReserve.iconSymbol.toLowerCase());
+
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
 
   const ReserveIcon = () => {
@@ -54,7 +57,8 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
         ) : (
           <img
-            src={`/icons/tokens/${poolReserve.iconSymbol.toLowerCase()}.svg`}
+            src={`/icons/tokens/${tokenSymbol}.svg`}
+            onError={() => setTokenSymbol('default')}
             width="40px"
             height="40px"
             alt=""
