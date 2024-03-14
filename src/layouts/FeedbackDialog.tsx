@@ -16,6 +16,7 @@ export const FeedbackModal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     if (feedbackDialogOpen) {
@@ -33,6 +34,7 @@ export const FeedbackModal = () => {
 
     const payload = {
       text: value,
+      email: email,
     };
 
     try {
@@ -62,7 +64,7 @@ export const FeedbackModal = () => {
           justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
-          height: '280px',
+          height: 'auto',
         }}
       >
         {isLoading ? (
@@ -124,6 +126,24 @@ export const FeedbackModal = () => {
             </Typography>
             <Box width={'100%'}>
               <form style={{ width: '100%' }} onSubmit={handleFeedbackSubmit}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <Typography color="text.secondary">
+                    <Trans>Email</Trans>
+                  </Typography>
+                </Box>
+
+                <TextField
+                  // label="Email"
+                  fullWidth
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  sx={{ mb: 2 }}
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <Typography color="text.secondary">
+                    <Trans>Feedback</Trans>
+                  </Typography>
+                </Box>
                 <TextField
                   multiline
                   rows={4}

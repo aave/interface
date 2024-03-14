@@ -7,7 +7,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { EnhancedProposal } from 'src/hooks/governance/useProposal';
+import { Proposal } from 'src/hooks/governance/useProposals';
 import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
@@ -15,20 +15,20 @@ import { useRootStore } from 'src/store/root';
 import { networkConfigs } from '../../../ui-config/networksConfig';
 
 interface VoteInfoProps {
-  proposal: EnhancedProposal;
+  proposal: Proposal;
 }
 
 export function VoteInfo({ proposal }: VoteInfoProps) {
   const { openGovVote } = useModalContext();
   const user = useRootStore((state) => state.account);
   const voteOnProposal = proposal.votingMachineData.votedInfo;
-  const votingChainId = proposal.proposal.votingPortal.votingMachineChainId;
+  const votingChainId = proposal.subgraphProposal.votingPortal.votingMachineChainId;
   const network = networkConfigs[votingChainId];
 
   const blockHash =
-    proposal.proposal.snapshotBlockHash === constants.HashZero
+    proposal.subgraphProposal.snapshotBlockHash === constants.HashZero
       ? 'latest'
-      : proposal.proposal.snapshotBlockHash;
+      : proposal.subgraphProposal.snapshotBlockHash;
 
   const { data: powerAtProposalStart } = useVotingPowerAt(
     blockHash,

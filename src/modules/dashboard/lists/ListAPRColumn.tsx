@@ -10,15 +10,23 @@ interface ListAPRColumnProps {
   incentives?: ReserveIncentiveResponse[];
   symbol: string;
   tooltip?: ReactNode;
+  children?: ReactNode;
 }
 
-export const ListAPRColumn = ({ value, incentives, symbol, tooltip }: ListAPRColumnProps) => {
+export const ListAPRColumn = ({
+  value,
+  incentives,
+  symbol,
+  tooltip,
+  children,
+}: ListAPRColumnProps) => {
   return (
     <ListColumn>
       <Box sx={{ display: 'flex' }}>
         <IncentivesCard value={value} incentives={incentives} symbol={symbol} />
         {tooltip}
       </Box>
+      {children}
     </ListColumn>
   );
 };

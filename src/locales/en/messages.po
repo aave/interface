@@ -805,10 +805,6 @@ msgstr "Copy error text"
 msgid "Covered debt"
 msgstr "Covered debt"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Created"
-msgstr "Created"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Current LTV"
@@ -1002,6 +998,25 @@ msgstr "Effective interest rate"
 msgid "Efficiency mode (E-Mode)"
 msgstr "Efficiency mode (E-Mode)"
 
+#: src/modules/markets/MarketAssetsListItem.tsx
+msgid "Eligible for <0>2.1M$</0> WETH Community Program 👻"
+msgstr "Eligible for <0>2.1M$</0> WETH Community Program 👻"
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "Eligible for <0>2.1M$</0> wETH Community Program 👻"
+msgstr "Eligible for <0>2.1M$</0> wETH Community Program 👻"
+
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+msgstr "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Email"
+msgstr "Email"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr "Emode"
@@ -1103,6 +1118,7 @@ msgstr "Faucet {0}"
 msgid "Fee"
 msgstr "Fee"
 
+#: src/layouts/FeedbackDialog.tsx
 #: src/layouts/FeedbackDialog.tsx
 msgid "Feedback"
 msgstr "Feedback"
@@ -1714,10 +1730,6 @@ msgstr "Notify"
 msgid "Ok, Close"
 msgstr "Ok, Close"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Open for voting"
-msgstr "Open for voting"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Operation not supported"
@@ -1737,10 +1749,6 @@ msgstr "Page not found"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Participating in this {symbol} reserve gives annualized rewards."
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Payloads executed"
-msgstr "Payloads executed"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -2639,6 +2647,15 @@ msgstr "This gas calculation is only an estimation. Your wallet will set the pri
 msgid "This integration was<0>proposed and approved</0>by the community."
 msgstr "This integration was<0>proposed and approved</0>by the community."
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
 msgstr "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
@@ -2961,10 +2978,6 @@ msgstr "Votes"
 msgid "Voting"
 msgstr "Voting"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Voting closed"
-msgstr "Voting closed"
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting is on"
 msgstr "Voting is on"
@@ -3282,7 +3295,6 @@ msgid "enabled"
 msgstr "enabled"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "ends"
 
@@ -3328,7 +3340,6 @@ msgid "staking view"
 msgstr "staking view"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr "starts"
 
@@ -3417,6 +3428,10 @@ msgstr "{notifyText}"
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} assets selected"
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "{stepName}"
+msgstr "{stepName}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
