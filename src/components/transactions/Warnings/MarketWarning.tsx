@@ -15,6 +15,12 @@ const WarningMessage = ({ market }: { market: string }) => {
     return <Trans>Per the community, the Fantom market has been frozen.</Trans>;
   } else if (market === 'Ethereum AMM') {
     return <Trans>Per the community, the V2 AMM market has been deprecated.</Trans>;
+  } else if (market === 'Metis Andromeda') {
+    return (
+      <Trans>
+        Borrowing is temporarily unavailable due to a recent upgrade on the Metis network.
+      </Trans>
+    );
   } else {
     return null;
   }
@@ -35,6 +41,8 @@ const getLink = (market: string, forum: boolean | undefined): string => {
     }
   } else if (market === 'Ethereum AMM') {
     return 'https://governance-v2.aave.com/governance/proposal/239';
+  } else if (market === 'Metis Andromeda') {
+    return 'https://governance.aave.com/t/metis-price-oracle-sentinel-using-deprecated-sequencer-issue/16985';
   } else {
     return '';
   }
