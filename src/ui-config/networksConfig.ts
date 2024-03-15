@@ -319,7 +319,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
   },
-  [ChainId.optimism_goerli]: {
+  [ChainId.optimism_sepolia]: {
     name: 'Optimism Görli',
     publicJsonRPCUrl: ['https://goerli.optimism.io', 'https://opt-goerli.g.alchemy.com/v2/demo'],
     publicJsonRPCWSUrl: 'wss://goerli.optimism.io',

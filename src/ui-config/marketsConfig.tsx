@@ -447,7 +447,7 @@ export const marketsData: {
     marketTitle: 'Optimism Görli',
     market: CustomMarket.proto_optimism_goerli_v3,
     v3: true,
-    chainId: ChainId.optimism_goerli,
+    chainId: ChainId.optimism_sepolia, // TODO: remove
     enabledFeatures: {
       faucet: true,
       incentives: true,
