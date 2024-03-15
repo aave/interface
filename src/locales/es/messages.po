@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-03-08 18:05\n"
+"PO-Revision-Date: 2024-03-15 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1933,6 +1933,10 @@ msgstr "Deuda restante"
 msgid "Remaining supply"
 msgstr "Suministro restante"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Remind me"
+msgstr ""
+
 #: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Remove"
 msgstr "Eliminar"
@@ -2787,6 +2791,7 @@ msgstr "Unstakear"
 msgid "Unstake now"
 msgstr "Unstakea ahora"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "Ventana de unstakeo"
