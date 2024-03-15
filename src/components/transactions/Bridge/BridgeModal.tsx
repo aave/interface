@@ -88,17 +88,16 @@ export const BridgeModal = () => {
 
   // chainID to market
   // error
-  const { data: sourceTokenBalance } = useBridgeTokens(
+  const { data: sourceTokenInfo } = useBridgeTokens(
     sourceNetworkObj.chainId,
-    marketsData[CustomMarket.proto_arbitrum_sepolia_v3]
+    // marketsData[CustomMarket.proto_arbitrum_sepolia_v3]
+    Object.values(marketsData).find((elem) => elem.chainId === sourceNetworkObj.chainId)
   );
 
-  const { data: destinationTokenBalance } = useBridgeTokens(
+  const { data: destinationTokenInfo } = useBridgeTokens(
     destinationNetworkObj.chainId,
-    marketsData[CustomMarket.proto_arbitrum_sepolia_v3]
+    Object.values(marketsData).find((elem) => elem.chainId === destinationNetworkObj.chainId)
   );
-
-  console.log('sourceTokenBalance', sourceTokenBalance);
 
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const [message, setMessage] = useState({
@@ -241,20 +240,18 @@ export const BridgeModal = () => {
 
   const GHO = reservesWithBalance.find((reserve) => reserve.symbol === 'GHO');
 
-  console.log('GHO BALANCE', GHO?.balance);
-
   const debouncedInputChange = useMemo(() => {
     return debounce((value: string) => {
       setDebounceInputAmount(value);
     }, 1000);
   }, [setDebounceInputAmount]);
 
-  if (!GHO) return null;
+  // if (!GHO) return null;
 
   const handleInputChange = (value: string) => {
     if (value === '-1') {
-      setAmount(GHO.balance);
-      debouncedInputChange(GHO.balance);
+      setAmount(sourceTokenInfo.bridgeTokenBalance);
+      debouncedInputChange(sourceTokenInfo.bridgeTokenBalance);
     } else {
       setAmount(value);
       debouncedInputChange(value);
@@ -284,10 +281,16 @@ export const BridgeModal = () => {
   const getBridgeFee = async () => {
     const destinationChain = destinationNetworkObj; // destinationNetwork;
 
-    if (!provider || !destinationChain || !sourceNetworkObj.chainId || !GHO) return;
+    if (
+      !provider ||
+      !destinationChain ||
+      !sourceNetworkObj.chainId ||
+      !sourceTokenInfo.bridgeTokenBalance
+    )
+      return;
     const signer = await provider.getSigner();
 
-    const tokenAddress = GHO.underlyingAsset;
+    const tokenAddress = sourceTokenInfo.address;
 
     // Get the router's address for the specified chain
     const sourceRouterAddress = getRouterConfig(sourceNetworkObj.chainId).address;
@@ -365,13 +368,13 @@ export const BridgeModal = () => {
 
   // const maxAmountToSwap = BigNumber.min(GHO.underlyingBalance).toString(10);
 
-  const maxAmountToSwap = BigNumber.min(GHO.balance).toString(10);
+  const maxAmountToSwap = BigNumber.min(sourceTokenInfo.bridgeTokenBalance).toString(10);
 
   const handleBridgeArguments = () => {
     const sourceChain = sourceNetworkObj;
     const destinationChain = destinationNetworkObj; // destinationNetwork;
     const destinationAccount = user;
-    const tokenAddress = GHO.underlyingAsset;
+    const tokenAddress = sourceTokenInfo.address;
     // Note for now leaving out
     // const feeTokenAddress = process.argv[7];
 
@@ -401,7 +404,7 @@ export const BridgeModal = () => {
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
     blocked: false,
-    decimals: GHO.decimals,
+    decimals: 18,
     isWrappedBaseAsset: false,
     message,
     fees,
@@ -530,13 +533,13 @@ export const BridgeModal = () => {
           value={amount}
           onChange={handleInputChange}
           usdValue={inputAmountUSD}
-          symbol={GHO.iconSymbol}
+          symbol={'GHO'} // TODO Dynamic later
           assets={[
             {
-              balance: GHO.balance,
-              address: GHO.underlyingAsset,
-              symbol: GHO.symbol,
-              iconSymbol: GHO.iconSymbol,
+              balance: sourceTokenInfo.bridgeTokenBalance,
+              address: sourceTokenInfo.address,
+              symbol: 'GHO',
+              iconSymbol: 'GHO',
             },
           ]}
           maxValue={maxAmountToSwap}

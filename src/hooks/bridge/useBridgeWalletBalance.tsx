@@ -16,6 +16,7 @@ export const useBridgeTokens = (chainId: number, currentMarketData) => {
     refetchInterval: POLLING_INTERVAL,
     initialData: {
       bridgeTokenBalance: '0',
+      address: currentMarketData.addresses.GHO_TOKEN_ADDRESS,
     },
   });
 };

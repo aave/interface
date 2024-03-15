@@ -74,7 +74,7 @@ export class WalletBalanceService {
   async getGhoBridgeBalancesTokenBalances(
     marketData: MarketDataType,
     user: string
-  ): Promise<{ bridgeTokenBalance: string }> {
+  ): Promise<{ bridgeTokenBalance: string; address: string }> {
     const walletBalanceService = this.getWalletBalanceService(
       marketData.chainId,
       marketData.addresses.WALLET_BALANCE_PROVIDER
@@ -83,9 +83,9 @@ export class WalletBalanceService {
       [user],
       [marketData.addresses.GHO_TOKEN_ADDRESS?.toLowerCase() as string] // GHO UNDERLYING
     );
-    console.log('balances', balances);
     return {
       bridgeTokenBalance: formatUnits(balances[0].toString(), 18),
+      address: marketData.addresses.GHO_TOKEN_ADDRESS as string,
     };
   }
 }
