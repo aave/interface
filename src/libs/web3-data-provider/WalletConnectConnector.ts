@@ -9,6 +9,8 @@ import invariant from 'tiny-invariant';
 
 export const URI_AVAILABLE = 'URI_AVAILABLE';
 
+export const test = 'test';
+
 export class UserRejectedRequestError extends Error {
   public constructor() {
     super();
