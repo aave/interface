@@ -143,6 +143,12 @@ export const queryKeysFactory = {
     chainId,
     'tokenDelegatees',
   ],
+  getGhoBridgeBalances: (user: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.gho,
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    'getGhoBridgeBalances',
+  ],
 };
 
 export const POLLING_INTERVAL = 60000;

@@ -391,6 +391,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3ArbitrumSepolia.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3ArbitrumSepolia.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: AaveV3ArbitrumSepolia.L2_ENCODER,
+      GHO_TOKEN_ADDRESS: '0xb13Cfa6f8B2Eed2C37fB00fF0c1A59807C585810', // https://docs.chain.link/ccip/supported-networks/v1_2_0/testnet#arbitrum-sepolia-ethereum-sepolia
     },
     enabledFeatures: {
       faucet: true,

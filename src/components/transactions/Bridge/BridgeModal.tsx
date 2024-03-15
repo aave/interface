@@ -5,7 +5,8 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, IconButton, SvgIcon } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants, Contract, utils } from 'ethers';
-import { formatEther } from 'ethers/lib/utils';
+import { formatEther, parseUnits } from 'ethers/lib/utils';
+
 import { debounce } from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
@@ -19,6 +20,7 @@ import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
+import { useBridgeTokens } from 'src/hooks/bridge/useBridgeWalletBalance';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { TokenInfo } from 'src/ui-config/TokenList';
@@ -59,10 +61,13 @@ export const BridgeModal = () => {
   const [inputAmountUSD, setInputAmount] = useState('');
   const [defaultDestinationChain] = useState(421614); // NOTE this is the chainId for the destination network
 
+  // console.log('sourceTokenBalance ------->', sourceTokenBalance);
+
   // setSelectedChainId
-  const [selectedChainId] = useState(() => {
-    if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId))
+  const [selectedChainId, setSelectedChainId] = useState(() => {
+    if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId)) {
       return currentChainId;
+    }
     return defaultNetwork.chainId;
   });
 
@@ -80,6 +85,20 @@ export const BridgeModal = () => {
       supportedNetworksWithBridgeMarket[1]
     );
   });
+
+  // chainID to market
+  // error
+  const { data: sourceTokenBalance } = useBridgeTokens(
+    sourceNetworkObj.chainId,
+    marketsData[CustomMarket.proto_arbitrum_sepolia_v3]
+  );
+
+  const { data: destinationTokenBalance } = useBridgeTokens(
+    destinationNetworkObj.chainId,
+    marketsData[CustomMarket.proto_arbitrum_sepolia_v3]
+  );
+
+  console.log('sourceTokenBalance', sourceTokenBalance);
 
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const [message, setMessage] = useState({
@@ -222,6 +241,8 @@ export const BridgeModal = () => {
 
   const GHO = reservesWithBalance.find((reserve) => reserve.symbol === 'GHO');
 
+  console.log('GHO BALANCE', GHO?.balance);
+
   const debouncedInputChange = useMemo(() => {
     return debounce((value: string) => {
       setDebounceInputAmount(value);
@@ -305,7 +326,7 @@ export const BridgeModal = () => {
     const tokenAmounts = [
       {
         token: tokenAddress,
-        amount: amount,
+        amount: parseUnits(amount, 18).toString() || '0',
       },
     ];
 
@@ -370,12 +391,12 @@ export const BridgeModal = () => {
     setDestinationNetworkObj(currentSourceNetworkObj);
     // console.log('sourceNetworkObj', sourceNetworkObj);
 
-    // setSelectedChainId(destinationNetworkObj.chainId);
+    setSelectedChainId(destinationNetworkObj.chainId);
   };
 
   const bridgeActionsProps = {
     ...handleBridgeArguments(),
-    amountToBridge: amount,
+    amountToBridge: parseUnits(amount, 18).toString() || '0',
     isWrongNetwork: false, // TODO fix
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
@@ -422,8 +443,8 @@ export const BridgeModal = () => {
     close();
   };
 
+  // TODO: Handle dynamic market select for fetching balance
   // TODO: Handle wallet not connected
-  // TODO: TYPES
   // TODO handle transaction failed
   // TODO networks dynamically
 
