@@ -1,5 +1,4 @@
-import { API_ETH_MOCK_ADDRESS, ReserveDataHumanized } from '@aave/contract-helpers';
-import { normalize } from '@aave/math-utils';
+import { ReserveDataHumanized } from '@aave/contract-helpers';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, IconButton, SvgIcon } from '@mui/material';
@@ -14,15 +13,12 @@ import {
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { NetworkConfiguration, NetworkSelect } from 'src/components/transactions/NetworkSelect';
-import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
-import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
+
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useBridgeTokens } from 'src/hooks/bridge/useBridgeWalletBalance';
 import { useRootStore } from 'src/store/root';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { TokenInfo } from 'src/ui-config/TokenList';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -163,82 +159,6 @@ export const BridgeModal = () => {
         setDestinationNetworkObj(network);
       }
     };
-
-  const marketsBySupportedNetwork = useMemo(
-    () =>
-      Object.values(marketsData).filter(
-        (elem) => elem.chainId === selectedChainId && elem.enabledFeatures?.bridge
-      ),
-    [selectedChainId]
-  );
-
-  const poolReservesDataQueries = usePoolsReservesHumanized(marketsBySupportedNetwork, {
-    refetchInterval: 0,
-  });
-
-  const selectedNetworkConfig = getNetworkConfig(selectedChainId);
-
-  const networkReserves = poolReservesDataQueries.reduce((acum, elem) => {
-    if (elem.data) {
-      const wrappedBaseAsset = elem.data.reservesData.find(
-        (reserveData) => reserveData.symbol === selectedNetworkConfig.wrappedBaseAssetSymbol
-      );
-      const acumWithoutBaseAsset = acum.concat(
-        elem.data.reservesData.filter(
-          (reserveDataElem) =>
-            !acum.find((acumElem) => acumElem.underlyingAsset === reserveDataElem.underlyingAsset)
-        )
-      );
-      if (
-        wrappedBaseAsset &&
-        !acum.find((acumElem) => acumElem.underlyingAsset === API_ETH_MOCK_ADDRESS)
-      )
-        return acumWithoutBaseAsset.concat({
-          ...wrappedBaseAsset,
-          underlyingAsset: API_ETH_MOCK_ADDRESS,
-          decimals: selectedNetworkConfig.baseAssetDecimals,
-          ...fetchIconSymbolAndName({
-            underlyingAsset: API_ETH_MOCK_ADDRESS,
-            symbol: selectedNetworkConfig.baseAssetSymbol,
-          }),
-        });
-      return acumWithoutBaseAsset;
-    }
-    return acum;
-  }, [] as ReserveDataHumanized[]);
-
-  const poolBalancesDataQueries = usePoolsTokensBalance(marketsBySupportedNetwork, user, {
-    refetchInterval: 0,
-  });
-
-  const poolsBalances = poolBalancesDataQueries.reduce((acum, elem) => {
-    if (elem.data) return acum.concat(elem.data);
-    return acum;
-  }, [] as UserPoolTokensBalances[]);
-
-  const reservesWithBalance: ReserveWithBalance[] = useMemo(() => {
-    return networkReserves.map((elem) => {
-      return {
-        ...elem,
-        ...fetchIconSymbolAndName({
-          underlyingAsset: elem.underlyingAsset,
-          symbol: elem.symbol,
-          name: elem.name,
-        }),
-        balance: normalize(
-          poolsBalances
-            .find(
-              (balance) =>
-                balance.address.toLocaleLowerCase() === elem.underlyingAsset.toLocaleLowerCase()
-            )
-            ?.amount.toString() || '0',
-          elem.decimals
-        ),
-      };
-    });
-  }, [networkReserves, poolsBalances]);
-
-  const GHO = reservesWithBalance.find((reserve) => reserve.symbol === 'GHO');
 
   const debouncedInputChange = useMemo(() => {
     return debounce((value: string) => {
