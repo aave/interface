@@ -34,7 +34,6 @@ export const BorrowAssetsListItem = ({
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
   const trackEvent = useRootStore((store) => store.trackEvent);
-  console.log('currentMarket', currentMarket);
 
   return (
     <ListItemWrapper
