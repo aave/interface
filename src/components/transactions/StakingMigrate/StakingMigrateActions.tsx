@@ -1,8 +1,13 @@
-import { gasLimitRecommendations, ProtocolAction, valueToWei } from '@aave/contract-helpers';
+import {
+  ChainId,
+  gasLimitRecommendations,
+  ProtocolAction,
+  valueToWei,
+} from '@aave/contract-helpers';
 import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
-import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
+import { PopulatedTransaction } from 'ethers';
 import { useEffect, useState } from 'react';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -88,7 +93,7 @@ export const StakingMigrateActions = ({
 
   useEffect(() => {
     let migrateGasLimit = 0;
-    migrateGasLimit = Number(gasLimitRecommendations[ProtocolAction.default].recommended);
+    migrateGasLimit = Number(gasLimitRecommendations[ProtocolAction.migrateABPT].recommended);
     if (requiresApproval && !approvalTxState.success) {
       migrateGasLimit += Number(APPROVAL_GAS_LIMIT);
     }
@@ -115,12 +120,11 @@ export const StakingMigrateActions = ({
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
-      let response: TransactionResponse;
-
       const amount = valueToWei(amountToMigrate, 18);
+      let txData: PopulatedTransaction;
 
       if (usePermit && signatureParams) {
-        let txData = await stkAbptMigrationService.migrateWithPermit(
+        txData = await stkAbptMigrationService.migrateWithPermit(
           user,
           amount,
           minOutWithSlippage,
@@ -128,14 +132,13 @@ export const StakingMigrateActions = ({
           signatureParams.deadline
         );
         txData = await estimateGasLimit(txData);
-        response = await sendTx(txData);
-        await response.wait(1);
       } else {
-        let txData = await stkAbptMigrationService.migrate(user, amount, minOutWithSlippage);
-        txData = await estimateGasLimit(txData);
-        response = await sendTx(txData);
-        await response.wait(1);
+        txData = await stkAbptMigrationService.migrate(user, amount, minOutWithSlippage);
       }
+
+      txData = await estimateGasLimit(txData, ChainId.mainnet);
+      const response = await sendTx(txData);
+      await response.wait(1);
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.staking });
 
