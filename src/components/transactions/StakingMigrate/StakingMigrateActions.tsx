@@ -131,7 +131,6 @@ export const StakingMigrateActions = ({
           signatureParams.signature,
           signatureParams.deadline
         );
-        txData = await estimateGasLimit(txData);
       } else {
         txData = await stkAbptMigrationService.migrate(user, amount, minOutWithSlippage);
       }
