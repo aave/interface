@@ -160,7 +160,8 @@ export const BorrowAssetsList = () => {
     'asset',
     filteredReserves as unknown as DashboardReserve[]
   );
-  const borrowDisabled = !sortedReserves.length && !ghoReserve;
+  const borrowDisabled =
+    (!sortedReserves.length && !ghoReserve) || currentNetworkConfig.name === 'Metis Andromeda';
 
   const RenderHeader: React.FC = () => {
     return (
@@ -210,6 +211,9 @@ export const BorrowAssetsList = () => {
       subChildrenComponent={
         <>
           <Box sx={{ px: 6, mb: 4 }}>
+            {currentNetworkConfig.name === 'Metis Andromeda' && (
+              <MarketWarning marketName="Metis Andromeda" />
+            )}
             {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
               <MarketWarning marketName="Harmony" />
             )}
