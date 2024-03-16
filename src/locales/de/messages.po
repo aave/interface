@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-03-15 18:05\n"
+"PO-Revision-Date: 2024-03-16 00:15\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -549,6 +549,10 @@ msgstr "Die Ausleihe ist aufgrund einer Entscheidung der Aave-Community deaktivi
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
 msgstr "Die Ausleihe ist nicht aktiviert"
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Borrowing is temporarily unavailable due to a recent upgrade on the Metis network."
+msgstr ""
 
 #: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
