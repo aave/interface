@@ -545,10 +545,6 @@ msgstr "Borrowing is disabled due to an Aave community decision. <0>More details
 msgid "Borrowing is not enabled"
 msgstr "Borrowing is not enabled"
 
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Borrowing is temporarily unavailable due to a recent upgrade on the Metis network."
-msgstr "Borrowing is temporarily unavailable due to a recent upgrade on the Metis network."
-
 #: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
