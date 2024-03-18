@@ -164,7 +164,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const TokenContractTooltip = (
     <DarkTooltip title="View token contract" sx={{ display: { xsm: 'none' } }}>
       <IconButton
-        sx={{ pt: 1 }}
         LinkComponent={Link}
         href={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
       >
@@ -187,7 +186,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
       >
         <Stack>
           <Typography variant="h3">
-            <Stack direction="row">
+            <Stack direction="row" alignItems="center" gap={1}>
               <Trans>Stake</Trans> {stakeTitle}
               {TokenContractTooltip}
             </Stack>

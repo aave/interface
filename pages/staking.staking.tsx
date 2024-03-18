@@ -95,12 +95,12 @@ export default function Staking() {
     });
   }, [trackEvent]);
 
-  const tvl = (
-    Number(stkAave?.totalSupplyUSDFormatted || '0') +
-    Number(stkBpt?.totalSupplyUSDFormatted || '0') +
-    Number(stkGho?.totalSupplyUSDFormatted || '0') +
-    Number(stkBptV2?.totalSupplyUSDFormatted || '0')
-  ).toString();
+  const tvl = {
+    'Staked Aave': Number(stkAave?.totalSupplyUSDFormatted || '0'),
+    'Staked GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
+    'Staked ABPT': Number(stkBpt?.totalSupplyUSDFormatted || '0'),
+    'Staked ABPT V2': Number(stkBptV2?.totalSupplyUSDFormatted || '0'),
+  };
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
   const stkEmission = formatEther(
