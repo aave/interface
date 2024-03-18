@@ -1,10 +1,13 @@
 import { Trans } from '@lingui/macro';
 import { Box, Divider, useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
+import { useUserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
+import { useUserPoolReservesHumanized } from 'src/hooks/pool/useUserPoolReserves';
+import { useUserSummaryAndIncentives } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -15,14 +18,8 @@ import { MigrationListItem } from 'src/modules/migration/MigrationListItem';
 import { MigrationListItemLoader } from 'src/modules/migration/MigrationListItemLoader';
 import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
-import { selectCurrentChainIdV3PoolReserve } from 'src/store/poolSelectors';
+import { selectCurrentChainIdV3MarketData } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
-import {
-  selectUserReservesForMigration,
-  selectV2UserSummaryAfterMigration,
-  selectV3UserSummary,
-  selectV3UserSummaryAfterMigration,
-} from 'src/store/v3MigrationSelectors';
 
 const MigrateV3Modal = dynamic(() =>
   import('src/components/transactions/MigrateV3/MigrateV3Modal').then(
@@ -32,53 +29,9 @@ const MigrateV3Modal = dynamic(() =>
 
 export default function V3Migration() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { isPermissionsLoading } = usePermissions();
-  const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const [loading, setLoading] = useState(true);
-
-  const refreshPoolData = useRootStore((store) => store.refreshPoolData);
-  const refreshPoolV3Data = useRootStore((store) => store.refreshPoolV3Data);
-  const refreshIncentiveData = useRootStore((store) => store.refreshIncentiveData);
-
-  useEffect(() => {
-    Promise.all([refreshPoolData(), refreshPoolV3Data(), refreshIncentiveData()]).finally(() =>
-      setLoading(false)
-    );
-  }, [refreshPoolData, refreshPoolV3Data, refreshIncentiveData]);
-
-  const currentTimeStamp = useCurrentTimestamp(10);
-
-  const {
-    supplyReserves,
-    borrowReserves,
-    healthFactor: v2HealthFactorBeforeMigration,
-    isolatedReserveV3,
-  } = useRootStore(
-    useCallback(
-      (state) => selectUserReservesForMigration(state, currentTimeStamp),
-      [currentTimeStamp]
-    )
-  );
-
-  // health factor calculation
-  const { v3UserSummaryBeforeMigration, v2UserSummaryAfterMigration, poolReserveV3 } = useRootStore(
-    (state) => ({
-      v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
-      v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
-      poolReserveV3: selectCurrentChainIdV3PoolReserve(state),
-    })
-  );
-
-  const v3UserSummaryAfterMigration = useRootStore(
-    useCallback(
-      (state) => selectV3UserSummaryAfterMigration(state, currentTimeStamp),
-      [currentTimeStamp]
-    )
-  );
-
-  // actions
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
     selectAllSupply,
     selectAllBorrow,
@@ -90,6 +43,43 @@ export default function V3Migration() {
     enforceAsCollateral,
     getMigrationExceptionSupplyBalances,
   } = useRootStore();
+
+  const { isPermissionsLoading } = usePermissions();
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const toMarketData = selectCurrentChainIdV3MarketData(currentChainId, currentNetworkConfig);
+  const fromMarketData = currentMarketData;
+
+  const { data: userMigrationReserves, isLoading: userMigrationReservesLoading } =
+    useUserMigrationReserves(currentMarketData, toMarketData);
+
+  const supplyReserves = useMemo(
+    () => userMigrationReserves?.supplyReserves || [],
+    [userMigrationReserves]
+  );
+  const borrowReserves = userMigrationReserves?.borrowReserves || [];
+  const isolatedReserveV3 = userMigrationReserves?.isolatedReserveV3;
+
+  const { data: fromUserSummaryAndIncentives, isLoading: fromUserSummaryAndIncentivesLoading } =
+    useUserSummaryAndIncentives(fromMarketData);
+  const fromHealthFactor = fromUserSummaryAndIncentives?.healthFactor || '0';
+
+  const { data: toUserReservesData, isLoading: toUserReservesDataLoading } =
+    useUserPoolReservesHumanized(toMarketData);
+  const { data: toUserSummaryForMigration, isLoading: toUserSummaryForMigrationLoading } =
+    useUserSummaryAndIncentives(toMarketData);
+  const toUserEModeCategoryId = toUserReservesData?.userEmodeCategoryId || 0;
+
+  const { data: userSummaryAfterMigration, isLoading: userSummaryAfterMigrationLoading } =
+    useUserSummaryAfterMigration(fromMarketData, toMarketData);
+
+  const loading =
+    userMigrationReservesLoading ||
+    fromUserSummaryAndIncentivesLoading ||
+    toUserReservesDataLoading ||
+    toUserSummaryForMigrationLoading ||
+    userSummaryAfterMigrationLoading;
 
   useEffect(() => {
     if (getMigrationExceptionSupplyBalances && supplyReserves.length > 0) {
@@ -110,16 +100,17 @@ export default function V3Migration() {
   };
 
   const handleToggleAllSupply = () => {
-    selectAllSupply(currentTimeStamp);
+    selectAllSupply(supplyReserves);
   };
 
   const handleToggleAllBorrow = () => {
-    selectAllBorrow(currentTimeStamp);
+    selectAllBorrow(borrowReserves);
   };
 
   const userControlledCollateral =
     Object.keys(selectedSupplyAssets).length > 1 &&
-    v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency == '0';
+    toUserSummaryForMigration &&
+    toUserSummaryForMigration.totalCollateralMarketReferenceCurrency == '0';
 
   return (
     <>
@@ -132,8 +123,10 @@ export default function V3Migration() {
             isBorrowPositionsAvailable={borrowReserves.length > 0}
             onSelectAllSupplies={handleToggleAllSupply}
             onSelectAllBorrows={handleToggleAllBorrow}
-            emodeCategoryId={poolReserveV3?.userEmodeCategoryId}
+            emodeCategoryId={toUserEModeCategoryId}
             isolatedReserveV3={isolatedReserveV3}
+            supplyReserves={supplyReserves}
+            borrowReserves={borrowReserves}
             suppliesPositions={
               <>
                 {loading ? (
@@ -156,8 +149,9 @@ export default function V3Migration() {
                       }
                       userControlledCollateral={userControlledCollateral}
                       canBeEnforced={
-                        v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency ==
-                          '0' && reserve.canBeEnforced
+                        toUserSummaryForMigration &&
+                        toUserSummaryForMigration.totalCollateralMarketReferenceCurrency == '0' &&
+                        reserve.canBeEnforced
                       }
                       userReserve={reserve}
                       amount={reserve.underlyingBalance}
@@ -209,17 +203,20 @@ export default function V3Migration() {
 
           {!downToSM && <Divider sx={{ my: 10 }} />}
 
-          <MigrationBottomPanel
-            hfV2Current={v2HealthFactorBeforeMigration}
-            hfV2AfterChange={v2UserSummaryAfterMigration.healthFactor}
-            hfV3Current={v3UserSummaryBeforeMigration.healthFactor}
-            v3SummaryAfterMigration={v3UserSummaryAfterMigration}
-            disableButton={
-              !Object.keys(selectedSupplyAssets).length && !Object.keys(selectedBorrowAssets).length
-            }
-            enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
-            loading={loading}
-          />
+          {userSummaryAfterMigration && (
+            <MigrationBottomPanel
+              hfV2Current={fromHealthFactor}
+              hfV2AfterChange={userSummaryAfterMigration.fromUserSummaryAfterMigration.healthFactor}
+              hfV3Current={toUserSummaryForMigration?.healthFactor || '0'}
+              v3SummaryAfterMigration={userSummaryAfterMigration.toUserSummaryAfterMigration}
+              disableButton={
+                !Object.keys(selectedSupplyAssets).length &&
+                !Object.keys(selectedBorrowAssets).length
+              }
+              enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
+              loading={loading}
+            />
+          )}
         </ContentContainer>
       ) : (
         <ConnectWalletPaper
