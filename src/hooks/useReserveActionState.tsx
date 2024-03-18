@@ -1,5 +1,6 @@
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, SvgIcon, Typography } from '@mui/material';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
@@ -30,11 +31,14 @@ export const useReserveActionState = ({
 }: ReserveActionStateProps) => {
   const { user, eModes } = useAppDataContext();
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const [currentMarket, currentNetworkConfig, currentChainId] = useRootStore((store) => [
-    store.currentMarket,
-    store.currentNetworkConfig,
-    store.currentChainId,
-  ]);
+  const [currentMarket, currentNetworkConfig, currentChainId, currentMarketData] = useRootStore(
+    (store) => [
+      store.currentMarket,
+      store.currentNetworkConfig,
+      store.currentChainId,
+      store.currentMarketData,
+    ]
+  );
   const { openFaucet } = useModalContext();
 
   const { bridge, name: networkName } = currentNetworkConfig;
@@ -46,6 +50,8 @@ export const useReserveActionState = ({
     user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
 
   const isGho = displayGho({ symbol: reserve.symbol, currentMarket });
+
+  console.log('currentMarketData', currentMarketData);
 
   return {
     disableSupplyButton: balance === '0' || maxAmountToSupply === '0' || isGho,
@@ -64,16 +70,35 @@ export const useReserveActionState = ({
                 <Trans>
                   Your {networkName} wallet is empty. Get free test {reserve.name} at
                 </Trans>{' '}
-                <Button
-                  variant="text"
-                  sx={{ verticalAlign: 'top' }}
-                  onClick={() => openFaucet(reserve.underlyingAsset)}
-                  disableRipple
-                >
-                  <Typography variant="caption">
-                    <Trans>{networkName} Faucet</Trans>
-                  </Typography>
-                </Button>
+                {!currentMarketData.addresses.FAUCET ? (
+                  <Button
+                    variant="text"
+                    href="https://faucet.circle.com/"
+                    component={Link}
+                    sx={{ verticalAlign: 'top' }}
+                    disableRipple
+                    endIcon={
+                      <SvgIcon sx={{ width: 14, height: 14 }}>
+                        <ExternalLinkIcon />
+                      </SvgIcon>
+                    }
+                  >
+                    <Typography variant="caption">
+                      <Trans>{networkName} Faucet</Trans>
+                    </Typography>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="text"
+                    sx={{ verticalAlign: 'top' }}
+                    onClick={() => openFaucet(reserve.underlyingAsset)}
+                    disableRipple
+                  >
+                    <Typography variant="caption">
+                      <Trans>{networkName} Faucet</Trans>
+                    </Typography>
+                  </Button>
+                )}
               </Warning>
             ) : (
               <WalletEmptyInfo
