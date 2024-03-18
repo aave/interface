@@ -1,6 +1,8 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
+import { UserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
+import { UserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMigration';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -8,9 +10,16 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 export type MigrateV3ActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
+  userMigrationReserves: UserMigrationReserves;
+  toUserSummaryForMigration: UserSummaryForMigration;
 };
 
-export const MigrateV3Actions = ({ isWrongNetwork, blocked }: MigrateV3ActionsProps) => {
+export const MigrateV3Actions = ({
+  isWrongNetwork,
+  blocked,
+  userMigrationReserves,
+  toUserSummaryForMigration,
+}: MigrateV3ActionsProps) => {
   const migrateWithPermits = useRootStore((store) => store.migrateWithPermits);
   const migrateWithoutPermits = useRootStore((store) => store.migrateWithoutPermits);
   const getApprovePermitsForSelectedAssets = useRootStore(
@@ -18,15 +27,24 @@ export const MigrateV3Actions = ({ isWrongNetwork, blocked }: MigrateV3ActionsPr
   );
   const { approval, action, loadingTxns, requiresApproval, mainTxState, approvalTxState } =
     useTransactionHandler({
-      handleGetTxns: async () => await migrateWithoutPermits(),
+      handleGetTxns: async () =>
+        await migrateWithoutPermits(toUserSummaryForMigration, userMigrationReserves),
       handleGetPermitTxns: async (signatures, deadline) =>
-        await migrateWithPermits(signatures, deadline),
+        await migrateWithPermits(
+          signatures,
+          deadline,
+          toUserSummaryForMigration,
+          userMigrationReserves
+        ),
       tryPermit: true,
       permitAction: ProtocolAction.migrateV3,
     });
 
   const handleApproval = async () => {
-    const approvePermitsForSelectedAssets = await getApprovePermitsForSelectedAssets();
+    const approvePermitsForSelectedAssets = await getApprovePermitsForSelectedAssets(
+      toUserSummaryForMigration,
+      userMigrationReserves
+    );
     approval(approvePermitsForSelectedAssets);
   };
 

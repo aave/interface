@@ -106,7 +106,7 @@ const testData = {
   },
 };
 //due frozen Matic
-describe.skip('MATIC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
+describe('MATIC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
 

@@ -1,17 +1,18 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { UserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
+import { UserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMigration';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import {
   selectedUserSupplyReservesForMigration,
   selectSelectedBorrowReservesForMigrationV3,
 } from 'src/store/v3MigrationSelectors';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -22,22 +23,40 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { MigrateV3Actions } from './MigrateV3Actions';
 import { MigrateV3ModalAssetsList } from './MigrateV3ModalAssetsList';
 
-export const MigrateV3ModalContent = () => {
-  const currentTimeStamp = useCurrentTimestamp(10);
+interface MigrationV3ModalContentProps {
+  toUserSummaryForMigration: UserSummaryForMigration;
+  userMigrationReserves: UserMigrationReserves;
+}
 
+export const MigrateV3ModalContent = ({
+  toUserSummaryForMigration,
+  userMigrationReserves,
+}: MigrationV3ModalContentProps) => {
   const { supplyPositions, borrowPositions } = useRootStore(
     useCallback(
       (state) => ({
-        supplyPositions: selectedUserSupplyReservesForMigration(state, currentTimeStamp),
-        borrowPositions: selectSelectedBorrowReservesForMigrationV3(state, currentTimeStamp),
+        supplyPositions: selectedUserSupplyReservesForMigration(
+          state.selectedMigrationSupplyAssets,
+          userMigrationReserves.supplyReserves,
+          userMigrationReserves.isolatedReserveV3
+        ),
+        borrowPositions: selectSelectedBorrowReservesForMigrationV3(
+          state.selectedMigrationBorrowAssets,
+          toUserSummaryForMigration,
+          userMigrationReserves
+        ),
       }),
-      [currentTimeStamp]
+      [userMigrationReserves, toUserSummaryForMigration]
     )
   );
 
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const setCurrentMarket = useRootStore((store) => store.setCurrentMarket);
+  const currentMarket = useRootStore((store) => store.currentMarket);
+
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
-  const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const router = useRouter();
   const networkConfig = getNetworkConfig(currentChainId);
 
   const supplyAssets = supplyPositions.map((supplyAsset) => {
@@ -72,18 +91,16 @@ export const MigrateV3ModalContent = () => {
   }
 
   const handleRoute = () => {
-    /* 
-TO-DO: re-enable in merge
-if (currentMarket === CustomMarket.proto_polygon) {
+    if (currentMarket === CustomMarket.proto_polygon) {
       setCurrentMarket('proto_polygon_v3' as CustomMarket);
-      window.location.href = `/?marketName=${CustomMarket.proto_polygon_v3}`;
+      router.push(`/?marketName=${CustomMarket.proto_polygon_v3}`);
     } else if (currentMarket === CustomMarket.proto_avalanche) {
       setCurrentMarket('proto_avalanche_v3' as CustomMarket);
-      window.location.href = `/?marketName=${CustomMarket.proto_avalanche_v3}`;
+      router.push(`/?marketName=${CustomMarket.proto_avalanche_v3}`);
     } else {
       setCurrentMarket('proto_mainnet_v3' as CustomMarket);
-      window.location.href = `/?marketName=${CustomMarket.proto_mainnet_v3}`;
-    } */
+      router.push(`/?marketName=${CustomMarket.proto_mainnet_v3}`);
+    }
   };
 
   if (migrateTxState.success) {
@@ -126,7 +143,14 @@ if (currentMarket === CustomMarket.proto_polygon) {
 
       {txError && <GasEstimationError txError={txError} />}
 
-      <MigrateV3Actions isWrongNetwork={isWrongNetwork} blocked={false} />
+      {userMigrationReserves && toUserSummaryForMigration && (
+        <MigrateV3Actions
+          isWrongNetwork={isWrongNetwork}
+          blocked={false}
+          userMigrationReserves={userMigrationReserves}
+          toUserSummaryForMigration={toUserSummaryForMigration}
+        />
+      )}
     </>
   );
 };

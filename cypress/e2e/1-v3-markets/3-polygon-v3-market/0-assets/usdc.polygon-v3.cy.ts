@@ -102,7 +102,7 @@ const testData = {
 };
 
 //due asset frozen
-describe.skip('USDC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
+describe('USDC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({
     market: 'fork_proto_polygon_v3',

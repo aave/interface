@@ -1,12 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
-import { ReactNode, useCallback } from 'react';
-import { useRootStore } from 'src/store/root';
+import { ReactNode } from 'react';
 import {
-  computeSelections,
-  IsolatedReserve,
-  selectUserReservesForMigration,
-} from 'src/store/v3MigrationSelectors';
+  BorrowMigrationReserve,
+  SupplyMigrationReserve,
+} from 'src/hooks/migration/useUserMigrationReserves';
+import { useRootStore } from 'src/store/root';
+import { computeSelections, IsolatedReserve } from 'src/store/v3MigrationSelectors';
 
 import { MigrationList } from './MigrationList';
 
@@ -20,6 +20,8 @@ interface MigrationListsProps {
   isBorrowPositionsAvailable: boolean;
   emodeCategoryId?: number;
   isolatedReserveV3?: IsolatedReserve;
+  supplyReserves: SupplyMigrationReserve[];
+  borrowReserves: BorrowMigrationReserve[];
 }
 
 export const MigrationLists = ({
@@ -32,15 +34,13 @@ export const MigrationLists = ({
   isSupplyPositionsAvailable,
   isBorrowPositionsAvailable,
   emodeCategoryId,
+  supplyReserves,
+  borrowReserves,
 }: MigrationListsProps) => {
   const {
     selectedMigrationSupplyAssets: selectedSupplyAssets,
     selectedMigrationBorrowAssets: selectedBorrowAssets,
   } = useRootStore();
-
-  const { supplyReserves, borrowReserves } = useRootStore(
-    useCallback((state) => selectUserReservesForMigration(state, 0), [])
-  );
 
   const allSuppliesDisabled =
     supplyReserves.find((reserve) => reserve.migrationDisabled === undefined) === undefined;
