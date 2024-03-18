@@ -1,11 +1,9 @@
-import { ReserveDataHumanized } from '@aave/contract-helpers';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, IconButton, SvgIcon } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants, Contract, utils } from 'ethers';
 import { formatEther, parseUnits } from 'ethers/lib/utils';
-
 import { debounce } from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
@@ -13,11 +11,10 @@ import {
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { NetworkConfiguration, NetworkSelect } from 'src/components/transactions/NetworkSelect';
-
+import { useBridgeTokens } from 'src/hooks/bridge/useBridgeWalletBalance';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useBridgeTokens } from 'src/hooks/bridge/useBridgeWalletBalance';
 import { useRootStore } from 'src/store/root';
 import { TokenInfo } from 'src/ui-config/TokenList';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
@@ -39,11 +36,6 @@ export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
 }
 
-interface ReserveWithBalance extends ReserveDataHumanized {
-  iconSymbol: string;
-  balance: string;
-}
-
 export const BridgeModal = () => {
   const {
     type,
@@ -52,48 +44,9 @@ export const BridgeModal = () => {
     mainTxState: bridgeTxState,
   } = useModalContext();
 
-  const currentChainId = useRootStore((store) => store.currentChainId);
   const [amount, setAmount] = useState('0');
   const [inputAmountUSD, setInputAmount] = useState('');
-  const [defaultDestinationChain] = useState(421614); // NOTE this is the chainId for the destination network
-
-  // console.log('sourceTokenBalance ------->', sourceTokenBalance);
-
-  // setSelectedChainId
-  const [selectedChainId, setSelectedChainId] = useState(() => {
-    if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId)) {
-      return currentChainId;
-    }
-    return defaultNetwork.chainId;
-  });
-
-  const [sourceNetworkObj, setSourceNetworkObj] = useState(() => {
-    return (
-      supportedNetworksWithBridgeMarket.find((net) => net.chainId === selectedChainId) ||
-      supportedNetworksWithBridgeMarket[0]
-    );
-  });
-
-  // sets destinationNetworkObj  based on destinationNetwork.chainId or defaultNetwork.chainId
-  const [destinationNetworkObj, setDestinationNetworkObj] = useState(() => {
-    return (
-      supportedNetworksWithBridgeMarket.find((net) => net.chainId === defaultDestinationChain) ||
-      supportedNetworksWithBridgeMarket[1]
-    );
-  });
-
-  // chainID to market
-  // error
-  const { data: sourceTokenInfo } = useBridgeTokens(
-    sourceNetworkObj.chainId,
-    // marketsData[CustomMarket.proto_arbitrum_sepolia_v3]
-    Object.values(marketsData).find((elem) => elem.chainId === sourceNetworkObj.chainId)
-  );
-
-  const { data: destinationTokenInfo } = useBridgeTokens(
-    destinationNetworkObj.chainId,
-    Object.values(marketsData).find((elem) => elem.chainId === destinationNetworkObj.chainId)
-  );
+  const { readOnlyModeAddress, provider, chainId: currentChainId } = useWeb3Context();
 
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const [message, setMessage] = useState({
@@ -113,11 +66,50 @@ export const BridgeModal = () => {
 
   const [bridgeFeeFormatted, setBridgeFeeFormatted] = useState('');
 
-  const { readOnlyModeAddress, provider } = useWeb3Context();
+  const [selectedChainId, setSelectedChainId] = useState(() => {
+    if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId)) {
+      return currentChainId;
+    }
 
-  const isWrongNetwork = useIsWrongNetwork(selectedChainId);
+    return defaultNetwork.chainId;
+  });
 
-  const [user] = useRootStore((state) => [state.account]);
+  const [sourceNetworkObj, setSourceNetworkObj] = useState(() => {
+    return (
+      supportedNetworksWithBridgeMarket.find((net) => net.chainId === selectedChainId) ||
+      supportedNetworksWithBridgeMarket[0]
+    );
+  });
+
+  useEffect(() => {
+    // Check if the current chain ID is supported. If so, update selectedChainId to currentChainId.
+    // Otherwise, fallback to the default network's chain ID.
+    const isNewChainSupported = supportedNetworksWithBridgeMarket.some(
+      (elem) => elem.chainId === currentChainId
+    );
+    setSelectedChainId(isNewChainSupported ? currentChainId : defaultNetwork.chainId);
+  }, [currentChainId]);
+
+  useEffect(() => {
+    const updateDestinationNetwork = () => {
+      let initialDestination = supportedNetworksWithBridgeMarket.find(
+        (net) => net.chainId === selectedChainId
+      );
+
+      // If the initial destination is the same as the source, or if no initial destination is found,
+      // select an alternative destination that is not the source network
+      if (!initialDestination || initialDestination.chainId === sourceNetworkObj.chainId) {
+        const alternativeDestinations = supportedNetworksWithBridgeMarket.filter(
+          (net) => net.chainId !== sourceNetworkObj.chainId
+        );
+
+        initialDestination = alternativeDestinations[0];
+      }
+      setDestinationNetworkObj(initialDestination);
+    };
+
+    updateDestinationNetwork();
+  }, [sourceNetworkObj, selectedChainId]);
 
   useEffect(() => {
     setSourceNetworkObj(() => {
@@ -140,17 +132,23 @@ export const BridgeModal = () => {
       getBridgeFee(debounceInputAmount);
     }
   }, [provider, debounceInputAmount]);
-  // NOTE: do we need something similar below?
-  //   useEffect(() => {
-  //     // Passing chainId as prop will set default network for switch modal
-  //     if (chainId && supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === chainId)) {
-  //       setSelectedChainId(chainId);
-  //     } else if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === currentChainId)) {
-  //       setSelectedChainId(currentChainId);
-  //     } else {
-  //       setSelectedChainId(defaultNetwork.chainId);
-  //     }
-  //   }, [currentChainId, chainId]);
+
+  const [destinationNetworkObj, setDestinationNetworkObj] = useState({ chainId: currentChainId });
+
+  const { data: sourceTokenInfo } = useBridgeTokens(
+    sourceNetworkObj.chainId,
+    Object.values(marketsData).find((elem) => elem.chainId === sourceNetworkObj.chainId)
+  );
+
+  // const { data: destinationTokenInfo } = useBridgeTokens(
+  //   destinationNetworkObj.chainId,
+  //   Object.values(marketsData).find((elem) => elem.chainId === destinationNetworkObj.chainId)
+  // );
+
+  const isWrongNetwork = useIsWrongNetwork(selectedChainId);
+
+  const [user] = useRootStore((state) => [state.account]);
+
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: NetworkConfiguration) => {
       if (networkAction === 'sourceNetwork') {
@@ -312,7 +310,6 @@ export const BridgeModal = () => {
     const currentSourceNetworkObj = sourceNetworkObj;
     setSourceNetworkObj(destinationNetworkObj);
     setDestinationNetworkObj(currentSourceNetworkObj);
-    // console.log('sourceNetworkObj', sourceNetworkObj);
 
     setSelectedChainId(destinationNetworkObj.chainId);
   };
@@ -366,7 +363,6 @@ export const BridgeModal = () => {
     close();
   };
 
-  // TODO: Handle dynamic market select for fetching balance
   // TODO: Handle wallet not connected
   // TODO handle transaction failed
   // TODO networks dynamically
