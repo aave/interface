@@ -1,23 +1,12 @@
 import { Box, BoxProps, FormControl, MenuItem, Select, Typography } from '@mui/material';
 import * as React from 'react';
 
-export interface NetworkConfiguration {
-  baseAssetDecimals: number;
-  baseAssetSymbol: string;
-  chainId: number;
-  explorerLink: string;
-  isTestnet: boolean;
-  name: string;
-  networkLogoPath: string;
-  publicJsonRPCUrl: string[];
-  publicJsonRPCWSUrl: string;
-  wrappedBaseAssetSymbol: string;
-}
+import { SupportedNetworkWithChainId } from '../transactions/Bridge/common';
 
 interface NetworkProps {
-  supportedBridgeMarkets: NetworkConfiguration[];
-  onNetworkChange: (network: NetworkConfiguration) => void;
-  defaultNetwork: NetworkConfiguration;
+  supportedBridgeMarkets: SupportedNetworkWithChainId[];
+  onNetworkChange: (network: SupportedNetworkWithChainId) => void;
+  defaultNetwork: SupportedNetworkWithChainId;
   sx?: BoxProps;
 }
 
@@ -90,7 +79,7 @@ export const NetworkSelect = ({
               },
             }}
           >
-            {supportedBridgeMarkets.map((network: NetworkConfiguration) => (
+            {supportedBridgeMarkets.map((network: SupportedNetworkWithChainId) => (
               <MenuItem key={network.chainId} value={network.chainId}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <img

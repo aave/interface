@@ -1,6 +1,6 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, IconButton, SvgIcon } from '@mui/material';
+import { Box, Button, IconButton, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants, Contract, utils } from 'ethers';
 import { formatEther, parseUnits } from 'ethers/lib/utils';
@@ -10,7 +10,8 @@ import {
   DetailsNumberLine,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { NetworkConfiguration, NetworkSelect } from 'src/components/transactions/NetworkSelect';
+import { NetworkSelect } from 'src/components/transactions/NetworkSelect';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useBridgeTokens } from 'src/hooks/bridge/useBridgeWalletBalance';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
@@ -22,11 +23,12 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { AssetInput } from '../AssetInput';
+import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActions } from './BridgeActions';
-import { supportedNetworksWithBridgeMarket } from './common';
+import { supportedNetworksWithBridgeMarket, SupportedNetworkWithChainId } from './common';
 import { getRouterConfig } from './Router';
 import routerAbi from './Router-abi.json';
 
@@ -42,6 +44,7 @@ export const BridgeModal = () => {
     close,
     // args: { chainId },
     mainTxState: bridgeTxState,
+    txError,
   } = useModalContext();
 
   const [amount, setAmount] = useState('0');
@@ -110,7 +113,6 @@ export const BridgeModal = () => {
 
     updateDestinationNetwork();
   }, [sourceNetworkObj, selectedChainId]);
-
   useEffect(() => {
     setSourceNetworkObj(() => {
       return (
@@ -129,28 +131,27 @@ export const BridgeModal = () => {
 
   useEffect(() => {
     if (provider && debounceInputAmount) {
-      getBridgeFee(debounceInputAmount);
+      getBridgeFee();
     }
   }, [provider, debounceInputAmount]);
 
-  const [destinationNetworkObj, setDestinationNetworkObj] = useState({ chainId: currentChainId });
+  const [destinationNetworkObj, setDestinationNetworkObj] = useState<SupportedNetworkWithChainId>(
+    {} as SupportedNetworkWithChainId
+  );
+
+  // const [tokenListWithBalance, setTokensListBalance] = useState<TokenInfoWithBalance[]>([]);
 
   const { data: sourceTokenInfo } = useBridgeTokens(
     sourceNetworkObj.chainId,
     Object.values(marketsData).find((elem) => elem.chainId === sourceNetworkObj.chainId)
   );
 
-  // const { data: destinationTokenInfo } = useBridgeTokens(
-  //   destinationNetworkObj.chainId,
-  //   Object.values(marketsData).find((elem) => elem.chainId === destinationNetworkObj.chainId)
-  // );
-
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
   const [user] = useRootStore((state) => [state.account]);
 
   const handleSelectedNetworkChange =
-    (networkAction: string) => (network: NetworkConfiguration) => {
+    (networkAction: string) => (network: SupportedNetworkWithChainId) => {
       if (networkAction === 'sourceNetwork') {
         setSourceNetworkObj(network);
       } else {
@@ -163,8 +164,6 @@ export const BridgeModal = () => {
       setDebounceInputAmount(value);
     }, 1000);
   }, [setDebounceInputAmount]);
-
-  // if (!GHO) return null;
 
   const handleInputChange = (value: string) => {
     if (value === '-1') {
@@ -352,8 +351,16 @@ export const BridgeModal = () => {
               transaction above
             </Trans>
           }
-          action={<Trans>Brided Via CCIP</Trans>}
+          action={<Trans>Bridged Via CCIP</Trans>}
         />
+      </BasicModal>
+    );
+  }
+
+  if (txError) {
+    return (
+      <BasicModal open={type === ModalType.Bridge} setOpen={close}>
+        <TxErrorView txError={txError} />
       </BasicModal>
     );
   }
@@ -362,10 +369,6 @@ export const BridgeModal = () => {
     resetState();
     close();
   };
-
-  // TODO: Handle wallet not connected
-  // TODO handle transaction failed
-  // TODO networks dynamically
 
   return (
     <BasicModal open={type === ModalType.Bridge} setOpen={handleClose}>
@@ -380,108 +383,104 @@ export const BridgeModal = () => {
         />
       )}
 
-      <Box
-        sx={{
-          display: 'flex',
-          gap: '15px',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-          width: '100%',
-        }}
-      >
-        {/* // TODO check correct network */}
-        {/* <NetworkSelector
-          networks={supportedNetworksWithBridgeMarket}
-          selectedNetwork={selectedChainId}
-          setSelectedNetwork={handleSelectedNetworkChange}
-        /> */}
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            gap: '15px',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-          }}
-        >
-          <NetworkSelect
-            // TODO: TYPES
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            supportedBridgeMarkets={supportedNetworksWithBridgeMarket.filter(
-              (net) => net.chainId !== destinationNetworkObj.chainId
-            )}
-            onNetworkChange={handleSelectedNetworkChange('sourceNetwork')}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            defaultNetwork={sourceNetworkObj}
-          />
-          <IconButton
-            onClick={handleSwapNetworks}
+      {!user ? (
+        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
+          <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
+            <Trans>Please connect your wallet to be able to bridge your tokens.</Trans>
+          </Typography>
+          <ConnectWalletButton />
+        </Box>
+      ) : (
+        <>
+          <Box
             sx={{
-              border: '1px solid',
-              borderColor: 'divider',
-              position: 'absolute',
-              backgroundColor: 'background.paper',
+              display: 'flex',
+              gap: '15px',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              width: '100%',
             }}
           >
-            <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
-              <SwitchVerticalIcon />
-            </SvgIcon>
-          </IconButton>
-          <NetworkSelect
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            supportedBridgeMarkets={supportedNetworksWithBridgeMarket.filter(
-              (net) => net.chainId !== sourceNetworkObj.chainId
-            )}
-            onNetworkChange={handleSelectedNetworkChange('destinationNetwork')}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            defaultNetwork={destinationNetworkObj}
-          />
-        </Box>
-        <AssetInput
-          value={amount}
-          onChange={handleInputChange}
-          usdValue={inputAmountUSD}
-          symbol={'GHO'} // TODO Dynamic later
-          assets={[
-            {
-              balance: sourceTokenInfo.bridgeTokenBalance,
-              address: sourceTokenInfo.address,
-              symbol: 'GHO',
-              iconSymbol: 'GHO',
-            },
-          ]}
-          maxValue={maxAmountToSwap}
-          inputTitle={<Trans>Amount to Bridge</Trans>}
-          balanceText={<Trans>GHO balance</Trans>}
-          sx={{ width: '100%' }}
-          //   isMaxSelected={isMaxSelected}
-        />
-        <Box width="100%">
-          <TxModalDetails gasLimit={'100'}>
-            <DetailsNumberLine
-              description={<Trans>Amount</Trans>}
-              iconSymbol={'GHO'}
-              symbol={'GHO'}
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                gap: '15px',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative',
+              }}
+            >
+              <NetworkSelect
+                supportedBridgeMarkets={supportedNetworksWithBridgeMarket.filter(
+                  (net) => net.chainId !== destinationNetworkObj.chainId
+                )}
+                onNetworkChange={handleSelectedNetworkChange('sourceNetwork')}
+                defaultNetwork={sourceNetworkObj}
+              />
+              <IconButton
+                onClick={handleSwapNetworks}
+                sx={{
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  position: 'absolute',
+                  backgroundColor: 'background.paper',
+                }}
+              >
+                <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
+                  <SwitchVerticalIcon />
+                </SvgIcon>
+              </IconButton>
+              <NetworkSelect
+                supportedBridgeMarkets={supportedNetworksWithBridgeMarket.filter(
+                  (net) => net.chainId !== sourceNetworkObj.chainId
+                )}
+                onNetworkChange={handleSelectedNetworkChange('destinationNetwork')}
+                defaultNetwork={destinationNetworkObj}
+              />
+            </Box>
+            <AssetInput
               value={amount}
+              onChange={handleInputChange}
+              usdValue={inputAmountUSD}
+              symbol={'GHO'} // TODO Dynamic later
+              assets={[
+                {
+                  balance: sourceTokenInfo.bridgeTokenBalance,
+                  address: sourceTokenInfo.address,
+                  symbol: 'GHO',
+                  iconSymbol: 'GHO',
+                },
+              ]}
+              maxValue={maxAmountToSwap}
+              inputTitle={<Trans>Amount to Bridge</Trans>}
+              balanceText={<Trans>GHO balance</Trans>}
+              sx={{ width: '100%' }}
+              //   isMaxSelected={isMaxSelected}
             />
-            <DetailsNumberLine
-              description={<Trans>Fee</Trans>}
-              iconSymbol={'ETH'}
-              symbol={'ETH'}
-              value={bridgeFeeFormatted}
-            />
-          </TxModalDetails>
-        </Box>
-      </Box>
-      <BridgeActions {...bridgeActionsProps} />
+            <Box width="100%">
+              <TxModalDetails gasLimit={'100'}>
+                <DetailsNumberLine
+                  description={<Trans>Amount</Trans>}
+                  iconSymbol={'GHO'}
+                  symbol={'GHO'}
+                  value={amount}
+                />
+                <DetailsNumberLine
+                  description={<Trans>Fee</Trans>}
+                  iconSymbol={'ETH'}
+                  symbol={'ETH'}
+                  value={bridgeFeeFormatted}
+                />
+              </TxModalDetails>
+            </Box>
+          </Box>
+          <BridgeActions {...bridgeActionsProps} />
+        </>
+      )}
     </BasicModal>
   );
 };

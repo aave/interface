@@ -16,7 +16,6 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 import { getRouterConfig } from './Router';
 import routerAbi from './Router-abi.json';
-// import { NetworkConfiguration } from '../NetworkSelect';
 
 interface TokenAmount {
   token: string;
@@ -222,12 +221,12 @@ export const BridgeActions = React.memo(
           assetName: 'GHO',
         });
 
+        setTxError(undefined);
+
         // queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
         // refetchPoolData && refetchPoolData();
         // refetchIncentiveData && refetchIncentiveData();
       } catch (error) {
-        console.log('DO WE ERROR --->', error);
-
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
         setMainTxState({
