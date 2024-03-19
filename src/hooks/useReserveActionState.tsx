@@ -51,8 +51,6 @@ export const useReserveActionState = ({
 
   const isGho = displayGho({ symbol: reserve.symbol, currentMarket });
 
-  console.log('currentMarketData', currentMarketData);
-
   return {
     disableSupplyButton: balance === '0' || maxAmountToSupply === '0' || isGho,
     disableBorrowButton:
