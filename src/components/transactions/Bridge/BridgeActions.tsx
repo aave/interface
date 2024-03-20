@@ -14,6 +14,7 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
+import { supportedNetworksWithBridgeMarket } from './common';
 import { getRouterConfig } from './Router';
 import routerAbi from './Router-abi.json';
 
@@ -66,13 +67,15 @@ export const BridgeActions = React.memo(
     ...props
   }: BridgeActionProps) => {
     const { provider } = useWeb3Context();
-    const [walletApprovalMethodPreference, addTransaction, currentMarketData] = useRootStore(
-      (state) => [
-        state.walletApprovalMethodPreference,
-        state.addTransaction,
-        state.currentMarketData,
-      ]
-    );
+    const [walletApprovalMethodPreference, addTransaction] = useRootStore((state) => [
+      state.walletApprovalMethodPreference,
+      state.addTransaction,
+    ]);
+
+    const currentMarketData = supportedNetworksWithBridgeMarket.find((m) => {
+      return sourceChain.chainId === m.chainId;
+    });
+
     const {
       approvalTxState,
       mainTxState,
@@ -227,6 +230,8 @@ export const BridgeActions = React.memo(
         });
       }
     };
+
+    console.log('requiresApproval', requiresApproval);
 
     return (
       <TxActionsWrapper
