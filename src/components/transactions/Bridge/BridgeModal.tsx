@@ -13,7 +13,6 @@ import {
 import { NetworkSelect } from 'src/components/transactions/NetworkSelect';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useBridgeTokens } from 'src/hooks/bridge/useBridgeWalletBalance';
-import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -32,7 +31,8 @@ import { supportedNetworksWithBridgeMarket, SupportedNetworkWithChainId } from '
 import { getRouterConfig } from './Router';
 import routerAbi from './Router-abi.json';
 
-const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
+// const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
+const defaultNetwork = marketsData[CustomMarket.proto_sepolia_v3];
 
 export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
@@ -145,8 +145,7 @@ export const BridgeModal = () => {
     sourceNetworkObj.chainId,
     Object.values(marketsData).find((elem) => elem.chainId === sourceNetworkObj.chainId)
   );
-
-  const isWrongNetwork = useIsWrongNetwork(selectedChainId);
+  const isWrongNetwork = currentChainId !== selectedChainId;
 
   const [user] = useRootStore((state) => [state.account]);
 
@@ -315,7 +314,7 @@ export const BridgeModal = () => {
 
   const bridgeActionsProps = {
     ...handleBridgeArguments(),
-    amountToBridge: parseUnits(amount, 18).toString() || '0',
+    amountToBridge: parseUnits(amount ? amount : '0', 18).toString() || '0',
     isWrongNetwork: false, // TODO fix
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
@@ -373,7 +372,7 @@ export const BridgeModal = () => {
   return (
     <BasicModal open={type === ModalType.Bridge} setOpen={handleClose}>
       <TxModalTitle title="Bridge tokens" />
-      {isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={getNetworkConfig(selectedChainId).name}
           chainId={selectedChainId}
