@@ -148,14 +148,17 @@ interface TokenIconProps extends IconProps {
  * @returns
  */
 function SingleTokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
+  const [tokenSymbol, setTokenSymbol] = useState(symbol.toLowerCase());
+
   return (
     <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
       {aToken ? (
-        <ATokenIcon symbol={symbol} />
+        <ATokenIcon symbol={tokenSymbol} />
       ) : (
         // eslint-disable-next-line
         <img
-          src={`/icons/tokens/${symbol.toLowerCase()}.svg`}
+          src={`/icons/tokens/${tokenSymbol}.svg`}
+          onError={() => setTokenSymbol('default')}
           width="100%"
           height="100%"
           alt={`${symbol} icon`}
