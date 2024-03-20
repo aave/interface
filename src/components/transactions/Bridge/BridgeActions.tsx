@@ -39,7 +39,6 @@ export interface BridgeActionProps extends BoxProps {
   destinationAccount: string;
   tokenAddress: string;
   fees: string;
-  // setBridgeFee: (fee: string) => void;
   message: {
     receiver: string;
     data: string;
@@ -62,7 +61,6 @@ export const BridgeActions = React.memo(
     sourceChain,
     destinationChain,
     destinationAccount, // user
-    // setBridgeFee,
     message,
     fees,
     ...props
@@ -101,8 +99,6 @@ export const BridgeActions = React.memo(
     });
 
     setLoadingTxns(fetchingApprovedAmount);
-
-    // setLoadingTxns(fetchingApprovedAmount);
 
     const requiresApproval =
       Number(amountToBridge) !== 0 &&
@@ -166,15 +162,10 @@ export const BridgeActions = React.memo(
 
         const signer = await provider.getSigner();
 
-        //   // Get the router's address for the specified chain
         const sourceRouterAddress = getRouterConfig(sourceChain.chainId).address;
-        // Get the chain selector for the target chain
-        const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
         const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
 
-        // let sendTx;
-        // let approvalTx = await erc20.approve(sourceRouterAddress, amountToBridge);
-        // await approvalTx.wait();
+        const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
 
         console.log(
           `approved router ${sourceRouterAddress} to spend ${amountToBridge} of token ${tokenAddress}.`
@@ -206,6 +197,7 @@ export const BridgeActions = React.memo(
         console.log(
           `\n✅ ${amountToBridge} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
         );
+        // TODO add transaction to the localstorage
 
         setMainTxState({
           txHash: sendTx.hash,
