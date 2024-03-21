@@ -24,6 +24,7 @@ export interface TxModalDetailsProps {
   skipLoad?: boolean;
   disabled?: boolean;
   chainId?: number;
+  children?: ReactNode;
 }
 
 const ArrowRightIcon = (
@@ -32,14 +33,14 @@ const ArrowRightIcon = (
   </SvgIcon>
 );
 
-export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
+export const TxModalDetails = ({
   gasLimit,
   slippageSelector,
   skipLoad,
   disabled,
   children,
   chainId,
-}) => {
+}: TxModalDetailsProps) => {
   return (
     <Box sx={{ pt: 5 }}>
       <Typography sx={{ mb: 1 }} color="text.secondary">

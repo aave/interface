@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 export enum GasOption {
   Slow = 'slow',
@@ -30,7 +30,11 @@ function gasStationReducer(state: State, action: Action) {
   }
 }
 
-export const GasStationProvider: React.FC = ({ children }) => {
+interface GasStationProviderProps {
+  children?: ReactNode;
+}
+
+export const GasStationProvider = ({ children }: GasStationProviderProps) => {
   const [state, dispatch] = React.useReducer(gasStationReducer, {
     gasOption: GasOption.Normal,
     customGas: '100',

@@ -23,9 +23,10 @@ export const PanelTitle: React.FC<TypographyProps> = (props) => (
 interface PanelItemProps {
   title: ReactNode;
   className?: string;
+  children?: ReactNode;
 }
 
-export const PanelItem: React.FC<PanelItemProps> = ({ title, children, className }) => {
+export const PanelItem = ({ title, children, className }: PanelItemProps) => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
 
