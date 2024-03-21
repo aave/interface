@@ -37,7 +37,7 @@ export const MigrateV3ModalContent = () => {
 
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
   const { currentChainId } = useProtocolDataContext();
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyMode } = useWeb3Context();
   const networkConfig = getNetworkConfig(currentChainId);
 
   const supplyAssets = supplyPositions.map((supplyAsset) => {
@@ -109,7 +109,7 @@ if (currentMarket === CustomMarket.proto_polygon) {
   return (
     <>
       <TxModalTitle title="Migrate to V3" />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 

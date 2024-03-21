@@ -78,7 +78,7 @@ SwitchModalContentProps) => {
     setSelectedOutputToken(getDefaultOutputToken());
   }, [tokens]);
 
-  const { readOnlyModeAddress } = useWeb3Context();
+  const { readOnlyMode } = useWeb3Context();
 
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
@@ -169,7 +169,7 @@ SwitchModalContentProps) => {
   return (
     <>
       <TxModalTitle title="Switch tokens" />
-      {isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork.isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning
           networkName={getNetworkConfig(selectedChainId).name}
           chainId={selectedChainId}

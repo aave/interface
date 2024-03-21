@@ -5,7 +5,6 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Web3ReactProvider } from '@web3-react/core';
-import { providers } from 'ethers';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -18,6 +17,7 @@ import { GasStationProvider } from 'src/components/transactions/GasStation/GasSt
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
+import { connectors } from 'src/libs/web3-data-provider/connectors';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
@@ -91,13 +91,6 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getWeb3Library(provider: any): providers.Web3Provider {
-  const library = new providers.Web3Provider(provider);
-  library.pollingInterval = 12000;
-  return library;
-}
-
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
@@ -140,7 +133,7 @@ export default function MyApp(props: MyAppProps) {
       />
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
-          <Web3ReactProvider getLibrary={getWeb3Library}>
+          <Web3ReactProvider connectors={connectors}>
             <Web3ContextProvider>
               <AppGlobalStyles>
                 <AddressBlocked>

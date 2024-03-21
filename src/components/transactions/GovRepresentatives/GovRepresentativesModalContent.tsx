@@ -31,7 +31,7 @@ export const GovRepresentativesContent = ({
   representatives: Array<{ chainId: ChainId; representative: string }>;
 }) => {
   const { mainTxState, txError } = useModalContext();
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyMode } = useWeb3Context();
   const [currentNetworkConfig, currentChainId] = useRootStore((state) => [
     state.currentNetworkConfig,
     state.currentChainId,
@@ -95,7 +95,7 @@ export const GovRepresentativesContent = ({
       <Box sx={{ p: 3 }}>
         <TxModalTitle title="Edit address" />
       </Box>
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
       <Stack direction="column" gap={2}>

@@ -50,7 +50,7 @@ export const ModalWrapper: React.FC<{
   requiredPermission,
   keepWrappedSymbol,
 }) => {
-  const { readOnlyModeAddress } = useWeb3Context();
+  const { readOnlyMode } = useWeb3Context();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { walletBalances } = useWalletBalances(currentMarketData);
@@ -95,7 +95,7 @@ export const ModalWrapper: React.FC<{
       {!mainTxState.success && (
         <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
       )}
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning
           networkName={getNetworkConfig(requiredChainId).name}
           chainId={requiredChainId}

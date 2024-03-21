@@ -31,7 +31,7 @@ export enum ErrorType {
 }
 
 export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewardClaimProps) => {
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyMode } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
@@ -98,7 +98,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
   return (
     <>
       <TxModalTitle title="Claim" symbol={rewardsSymbol} />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       {blockingError !== undefined && (

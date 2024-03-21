@@ -41,7 +41,7 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
-  const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
+  const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyMode } =
     useWeb3Context();
 
   const { setWalletModalOpen } = useWalletModalContext();
@@ -102,7 +102,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     handleClose();
   };
 
-  const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
+  const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyMode);
 
   const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
@@ -131,7 +131,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               typography: 'caption',
             }}
           />
-          {readOnlyModeAddress && (
+          {readOnlyMode && (
             <Warning
               icon={false}
               severity="warning"
