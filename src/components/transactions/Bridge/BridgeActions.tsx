@@ -2,7 +2,7 @@ import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers'
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { Contract } from 'ethers';
+import { Contract, utils } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -15,12 +15,21 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 import { supportedNetworksWithBridgeMarket } from './common';
+import onRampAbi from './OnnRamp-abi.json';
 import { getRouterConfig } from './Router';
 import routerAbi from './Router-abi.json';
 
-interface TokenAmount {
+export interface TokenAmount {
   token: string;
   amount: string;
+}
+
+export interface MessageDetails {
+  receiver: string;
+  data: string;
+  tokenAmounts: TokenAmount[];
+  feeToken: string;
+  extraArgs: string;
 }
 
 export interface BridgeActionProps extends BoxProps {
@@ -40,13 +49,7 @@ export interface BridgeActionProps extends BoxProps {
   destinationAccount: string;
   tokenAddress: string;
   fees: string;
-  message: {
-    receiver: string;
-    data: string;
-    tokenAmounts: TokenAmount[];
-    feeToken: string;
-    extraArgs: string;
-  };
+  message: MessageDetails;
 }
 
 export const BridgeActions = React.memo(
@@ -75,6 +78,8 @@ export const BridgeActions = React.memo(
     const currentMarketData = supportedNetworksWithBridgeMarket.find((m) => {
       return sourceChain.chainId === m.chainId;
     });
+
+    console.log('currentMarket', currentMarketData);
 
     const {
       approvalTxState,
@@ -182,25 +187,43 @@ export const BridgeActions = React.memo(
           }
         );
 
-        const receipt = await sendTx.wait();
+        const onRampInterface = new utils.Interface(onRampAbi);
 
-        // Simulate a call to the router to fetch the messageID
-        const call = {
-          from: sendTx.from,
-          to: sendTx.to,
-          data: sendTx.data,
-          gasLimit: sendTx.gasLimit,
-          gasPrice: sendTx.gasPrice,
-          value: sendTx.value,
-        };
+        const receipt = await sendTx.wait(1);
 
-        // Simulate a contract call with the transaction data at the block before the transaction
-        const messageId = await provider.call(call, receipt.blockNumber - 1);
+        const parsedLog = onRampInterface.parseLog(receipt.logs[receipt.logs.length - 1]);
+        const messageId = parsedLog.args.message.messageId;
 
         console.log(
-          `\n✅ ${amountToBridge} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
+          `\n✅ ${amountToBridge} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain.chainId} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
         );
-        // TODO add transaction to the localstorage
+
+        const bridgedTransactionsString = localStorage.getItem('bridgedTransactions');
+
+        const bridgedTransactions = bridgedTransactionsString
+          ? JSON.parse(bridgedTransactionsString)
+          : [];
+
+        const timestamp = (await provider.getBlock(receipt.blockNumber)).timestamp;
+
+        // Assuming `timestamp` is the Unix timestamp from the block
+
+        bridgedTransactions.push({
+          amount: amountToBridge,
+          token: tokenAddress,
+          destinationAccount,
+          destinationChain,
+          sourceChain,
+          message,
+          fees,
+          txHash: sendTx.hash,
+          messageId,
+          gasPrice: sendTx.gasPrice,
+          timestamp,
+        });
+
+        // Used for reading bridged tx history
+        localStorage.setItem('bridgedTransactions', JSON.stringify(bridgedTransactions));
 
         setMainTxState({
           txHash: sendTx.hash,
@@ -230,8 +253,6 @@ export const BridgeActions = React.memo(
         });
       }
     };
-
-    console.log('requiresApproval', requiresApproval);
 
     return (
       <TxActionsWrapper

@@ -185,6 +185,10 @@ msgstr "Addresses"
 msgid "Addresses ({0})"
 msgstr "Addresses ({0})"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Age"
+msgstr "Age"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All Assets"
@@ -221,6 +225,7 @@ msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest 
 #: src/components/transactions/Bridge/BridgeModal.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
+#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Amount"
@@ -278,6 +283,7 @@ msgstr "Array parameters that should be equal length are not"
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
 msgstr "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
 
+#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -586,6 +592,14 @@ msgstr "Borrowing {symbol}"
 msgid "Both"
 msgstr "Both"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Bridge Transactions"
+msgstr "Bridge Transactions"
+
+#: src/modules/bridge/BridgeTopPanel.tsx
+msgid "Bridge history"
+msgstr "Bridge history"
+
 #: src/components/transactions/Bridge/BridgeActions.tsx
 msgid "Bridge {symbol}"
 msgstr "Bridge {symbol}"
@@ -865,6 +879,10 @@ msgstr "Debt ceiling limits the amount possible to borrow against this asset by 
 msgid "Delegated power"
 msgstr "Delegated power"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Destination Tx"
+msgstr "Destination Tx"
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
@@ -1083,6 +1101,10 @@ msgstr "Expected amount to repay"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
 msgstr "Expires"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Explorer"
+msgstr "Explorer"
 
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Export data to"
@@ -2221,6 +2243,10 @@ msgstr "Sorry, an unexpected error happened. In the meantime you may try reloadi
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Source Tx"
+msgstr "Source Tx"
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
 msgstr "Spanish"
@@ -2314,6 +2340,10 @@ msgstr "Staking discount"
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "State"
 msgstr "State"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Status"
+msgstr "Status"
 
 #: src/layouts/FeedbackDialog.tsx
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
@@ -2815,6 +2845,10 @@ msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this po
 msgid "Underlying token"
 msgstr "Underlying token"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Unknown"
+msgstr "Unknown"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake"
 msgstr "Unstake"
@@ -2935,6 +2969,10 @@ msgstr "Version 3"
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
 msgstr "View"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "View Transaction"
+msgstr "View Transaction"
 
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 #: src/modules/dashboard/DashboardContentWrapper.tsx
