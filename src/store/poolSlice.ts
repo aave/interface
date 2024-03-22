@@ -74,6 +74,7 @@ type RepayArgs = {
 
 type GenerateApprovalOpts = {
   chainId?: number;
+  amount?: string;
 };
 
 type GenerateSignatureRequestOpts = {
@@ -186,10 +187,11 @@ export const createPoolSlice: StateCreator<
         });
       }
     },
-    generateApproval: (args: ApproveType, ops = {}) => {
-      const provider = get().jsonRpcProvider(ops.chainId);
+    generateApproval: (args: ApproveType, opts = {}) => {
+      const provider = get().jsonRpcProvider(opts.chainId);
       const tokenERC20Service = new ERC20Service(provider);
-      return tokenERC20Service.approveTxData({ ...args, amount: MAX_UINT_AMOUNT });
+      const amount = opts.amount ?? MAX_UINT_AMOUNT;
+      return tokenERC20Service.approveTxData({ ...args, amount });
     },
     supply: (args: Omit<LPSupplyParamsType, 'user'>) => {
       const poolBundle = get().getCorrectPoolBundle();
