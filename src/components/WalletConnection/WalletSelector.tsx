@@ -61,6 +61,15 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
+      case WalletType.XDEFI:
+        return (
+          <img
+            src={`/icons/wallets/xdefi.svg`}
+            width="24px"
+            height="24px"
+            alt={`xdefi wallet icon`}
+          />
+        );
       // case WalletType.FRAME:
       //   return (
       //     <img
@@ -219,6 +228,7 @@ export const WalletSelector = () => {
         walletName="Coinbase Wallet"
         walletType={WalletType.WALLET_LINK}
       />
+      <WalletRow key="xdefi_wallet" walletName="XDEFI Wallet" walletType={WalletType.XDEFI} />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       {/* <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} /> */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
