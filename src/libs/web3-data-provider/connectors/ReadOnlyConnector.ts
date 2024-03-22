@@ -26,18 +26,7 @@ export class ReadOnlyConnector extends Connector {
   async activate(address: string): Promise<void> {
     this.actions.startActivation();
     const accounts = [address];
-    localStorage.setItem('readOnlyModeAddress', address);
     this.actions.update({ chainId: ChainId.mainnet, accounts });
-  }
-
-  connectEagerly(): void | Promise<void> {
-    const address = localStorage.getItem('readOnlyModeAddress');
-    if (!address) return;
-    this.activate(address);
-  }
-
-  deactivate(): void | Promise<void> {
-    localStorage.removeItem('readOnlyModeAddress');
   }
 }
 

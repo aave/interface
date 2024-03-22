@@ -26,8 +26,7 @@ export type ERC20TokenType = {
 };
 
 export type Web3Data = {
-  connectWallet: (wallet: WalletType) => Promise<void>;
-  connectReadOnlyMode: (address: string) => Promise<void>;
+  connectWallet: (wallet: WalletType, address?: string) => Promise<void>;
   disconnectWallet: () => void;
   currentAccount: string;
   connected: boolean;
@@ -37,7 +36,6 @@ export type Web3Data = {
   getTxError: (txHash: string) => Promise<string>;
   sendTx: (txData: transactionType | PopulatedTransaction) => Promise<TransactionResponse>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
   error: Error | undefined;
   switchNetworkError: Error | undefined;
@@ -56,6 +54,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const disconnectWallet = useCallback(async () => {
     localStorage.removeItem('walletProvider');
+    localStorage.removeItem('readOnlyModeAddress');
     connector.resetState();
     if (connector.deactivate) {
       connector.deactivate();
@@ -64,23 +63,24 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setSwitchNetworkError(undefined);
   }, [connector, setWalletType]);
 
-  const connectReadOnlyMode = (address: string): Promise<void> => {
-    localStorage.setItem('readOnlyModeAddress', address);
-    return connectWallet(WalletType.READ_ONLY_MODE);
-  };
-
   // connect to the wallet specified by wallet type
   const connectWallet = useCallback(
-    async (wallet: WalletType) => {
+    async (wallet: WalletType, address?: string) => {
       try {
         const connector: Connector = getWallet(wallet);
-        connector.activate();
+        await connector.activate(address);
+        if (wallet === WalletType.READ_ONLY_MODE && address) {
+          localStorage.setItem('readOnlyModeAddress', address);
+        } else {
+          localStorage.removeItem('readOnlyModeAddress');
+        }
         setSwitchNetworkError(undefined);
         setWalletType(wallet);
         localStorage.setItem('walletProvider', wallet.toString());
       } catch (e) {
         console.log('error on activation', e);
         setError(e);
+        localStorage.removeItem('readOnlyModeAddress');
         localStorage.removeItem('walletProvider');
         setWalletType(undefined);
       }
@@ -242,15 +242,32 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // handle logic to eagerly connect to the injected ethereum provider,
   // if it exists and has granted access already
-  useEffect(() => {
-    const lastWalletProvider = localStorage.getItem('walletProvider');
-    if (lastWalletProvider) {
-      connectWallet(lastWalletProvider as WalletType);
-    } else {
-      connectWallet(WalletType.GNOSIS);
-    }
-  }, [connectWallet]);
 
+  useEffect(() => {
+    const tryAppWalletsSilently = async () => {
+      await connectWallet(WalletType.GNOSIS)
+        .catch(async () => {
+          const provider = window.ethereum;
+          if (provider && provider.isCoinbaseBrowser) {
+            await connectWallet(WalletType.INJECTED);
+          } else {
+            throw new Error('No provider detected');
+          }
+        })
+        .catch();
+    };
+    try {
+      const lastWalletProvider = localStorage.getItem('walletProvider');
+      if (lastWalletProvider) {
+        connectWallet(lastWalletProvider as WalletType);
+      } else {
+        tryAppWalletsSilently();
+      }
+    } catch {
+      localStorage.removeItem('walletProvider');
+      localStorage.removeItem('readOnlyModeAddress');
+    }
+  }, [connectWallet, disconnectWallet]);
   /*
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
@@ -398,7 +415,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       value={{
         web3ProviderData: {
           connectWallet,
-          connectReadOnlyMode,
           disconnectWallet,
           connected: isActive,
           loading: isActivating,

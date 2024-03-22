@@ -88,7 +88,7 @@ export enum ErrorType {
 }
 
 export const WalletSelector = () => {
-  const { error, connectReadOnlyMode } = useWeb3Context();
+  const { error, connectWallet } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
   const { breakpoints } = useTheme();
@@ -144,14 +144,14 @@ export const WalletSelector = () => {
   const handleReadAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
-      connectReadOnlyMode(inputMockWalletAddress);
+      connectWallet(WalletType.READ_ONLY_MODE, inputMockWalletAddress);
     } else {
       // Check if address could be valid ENS before trying to resolve
       if (inputMockWalletAddress.slice(-4) === '.eth') {
         // Attempt to resolve ENS name and use resolved address if valid
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          connectReadOnlyMode(resolvedAddress);
+          connectWallet(WalletType.READ_ONLY_MODE, resolvedAddress);
         } else {
           setValidAddressError(true);
         }
@@ -166,7 +166,7 @@ export const WalletSelector = () => {
         const data = await response.json();
         const resolvedAddress = data['meta']['owner'];
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          connectReadOnlyMode(resolvedAddress);
+          connectWallet(WalletType.READ_ONLY_MODE, resolvedAddress);
         } else {
           setValidAddressError(true);
         }
