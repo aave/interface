@@ -142,7 +142,7 @@ jobs:
 
       - name: pinata
         id: pinata
-        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
+        uses: aave/pinata-action@bb6923f7362b855cf9d605af7f59fdbb809b47cf
         with:
           PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
           PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
