@@ -14,7 +14,7 @@ import { hexToAscii } from 'src/utils/utils';
 
 // import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 import { Web3Context } from '../hooks/useWeb3Context';
-import { ReadOnlyConnector } from './connectors/ReadOnlyConnector';
+import { ReadOnly } from './connectors/ReadOnlyConnector';
 import { getWallet, WalletType } from './WalletOptions';
 
 export type ERC20TokenType = {
@@ -45,7 +45,7 @@ export type Web3Data = {
 
 interface ConnectWalletOpts {
   silently?: boolean;
-  address?: string;
+  address?: string | null;
 }
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -265,8 +265,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     };
     try {
       const lastWalletProvider = localStorage.getItem('walletProvider');
+      const lastReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
       if (lastWalletProvider) {
-        connectWallet(lastWalletProvider as WalletType);
+        connectWallet(lastWalletProvider as WalletType, {
+          address: lastReadOnlyAddress,
+          silently: true,
+        });
       } else {
         tryAppWalletsSilently();
       }
@@ -435,7 +439,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           error,
           switchNetworkError,
           setSwitchNetworkError,
-          readOnlyMode: connector instanceof ReadOnlyConnector,
+          readOnlyMode: connector instanceof ReadOnly,
         },
       }}
     >

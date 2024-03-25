@@ -18,7 +18,7 @@ interface ReadOnlyConnectorConstructorArgs {
   actions: Actions;
 }
 
-export class ReadOnlyConnector extends Connector {
+export class ReadOnly extends Connector {
   constructor({ actions }: ReadOnlyConnectorConstructorArgs) {
     super(actions);
   }
@@ -30,6 +30,6 @@ export class ReadOnlyConnector extends Connector {
   }
 }
 
-export const [readOnly, hooks] = initializeConnector<ReadOnlyConnector>(
-  (actions) => new ReadOnlyConnector({ actions })
+export const [readOnly, hooks] = initializeConnector<ReadOnly>(
+  (actions) => new ReadOnly({ actions })
 );
