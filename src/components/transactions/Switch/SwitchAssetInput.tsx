@@ -1,3 +1,4 @@
+import { ExclamationIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
@@ -11,6 +12,7 @@ import {
   ListItemText,
   MenuItem,
   Select,
+  SvgIcon,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -18,6 +20,7 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
+import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 import invariant from 'tiny-invariant';
 
 import { COMMON_SWAPS } from '../../../ui-config/TokenList';
@@ -63,6 +66,7 @@ export interface AssetInputProps {
   value: string;
   usdValue: string;
   symbol: string;
+  chainId: number;
   onChange?: (value: string) => void;
   disabled?: boolean;
   disableInput?: boolean;
@@ -98,6 +102,7 @@ export const SwitchAssetInput = ({
   event,
   selectOptionHeader,
   selectOption,
+  chainId,
   sx = {},
 }: AssetInputProps) => {
   const theme = useTheme();
@@ -109,8 +114,12 @@ export const SwitchAssetInput = ({
     setSelectKey((prevKey) => prevKey + 1);
   };
 
+  const { erc20Service } = useSharedDependencies();
+
   const [filteredAssets, setFilteredAssets] = useState(assets);
+  const [loadingNewAsset, setLoadingNewAsset] = useState(false);
   const [selectKey, setSelectKey] = useState(0);
+  const user = useRootStore((store) => store.account);
 
   const popularAssets = assets.filter((asset) => COMMON_SWAPS.includes(asset.symbol));
   const handleSearchAssetChange = (value: string) => {
@@ -122,11 +131,34 @@ export const SwitchAssetInput = ({
         asset.address.toLowerCase() === searchQuery
     );
 
-    setFilteredAssets(matchingAssets);
+    const isEthAddress = /^(0x)?[0-9a-fA-F]{40}$/.test(value);
+    if (matchingAssets.length === 0 && isEthAddress) {
+      setLoadingNewAsset(true);
+      Promise.all([
+        erc20Service.getTokenInfo(value, chainId),
+        erc20Service.getBalance(value, user, chainId),
+      ])
+        .then(([tokenMetadata, userBalance]) => {
+          const tokenInfo = {
+            chainId: chainId,
+            balance: userBalance.toString(),
+            extensions: {
+              isUserCustom: true,
+            },
+            ...tokenMetadata,
+          };
+          setFilteredAssets([tokenInfo]);
+        })
+        .catch(() => setFilteredAssets([]))
+        .finally(() => setLoadingNewAsset(false));
+    } else {
+      setFilteredAssets(matchingAssets);
+    }
   };
 
   const handleCleanSearch = () => {
     setFilteredAssets(assets);
+    setLoadingNewAsset(false);
   };
 
   const inputBoxRef = useRef<HTMLDivElement>(null);
@@ -353,6 +385,11 @@ export const SwitchAssetInput = ({
                       <Typography variant="main16" color="text.primary">
                         {symbol}
                       </Typography>
+                      {asset.extensions?.isUserCustom && (
+                        <SvgIcon sx={{ fontSize: 14, ml: 1 }} color="warning">
+                          <ExclamationIcon />
+                        </SvgIcon>
+                      )}
                     </Box>
                   );
                 }}
@@ -361,10 +398,15 @@ export const SwitchAssetInput = ({
                   sx={{
                     maxHeight: '178px',
                     overflowY: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minHeight: '60px',
                   }}
                 >
                   {selectOptionHeader ? selectOptionHeader : undefined}
-                  {filteredAssets.length > 0 ? (
+                  {loadingNewAsset ? (
+                    <CircularProgress sx={{ mx: 'auto', my: 'auto' }} />
+                  ) : filteredAssets.length > 0 ? (
                     filteredAssets.map((asset) => (
                       <MenuItem
                         key={asset.symbol}
@@ -381,8 +423,15 @@ export const SwitchAssetInput = ({
                               logoURI={asset.logoURI}
                               sx={{ mr: 2 }}
                             />
-                            <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-                            {asset.balance && <FormattedNumber value={asset.balance} compact />}
+                            <ListItemText sx={{ flexGrow: 0 }}>{asset.symbol}</ListItemText>
+                            {asset.extensions?.isUserCustom && (
+                              <SvgIcon sx={{ fontSize: 14, ml: 1 }} color="warning">
+                                <ExclamationIcon />
+                              </SvgIcon>
+                            )}
+                            {asset.balance && (
+                              <FormattedNumber sx={{ ml: 'auto' }} value={asset.balance} compact />
+                            )}
                           </>
                         )}
                       </MenuItem>
