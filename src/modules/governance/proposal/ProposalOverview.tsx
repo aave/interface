@@ -1,6 +1,6 @@
 import { DownloadIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Twitter } from '@mui/icons-material';
+import { X } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -131,7 +131,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                     proposal.subgraphProposal.proposalMetadata.title
                   )}&url=${window.location.href}`}
-                  startIcon={<Twitter />}
+                  startIcon={<X />}
                 >
                   {lgUp && <Trans>Share on twitter</Trans>}
                 </Button>
