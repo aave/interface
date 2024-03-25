@@ -26,7 +26,7 @@ export type ERC20TokenType = {
 };
 
 export type Web3Data = {
-  connectWallet: (wallet: WalletType, address?: string) => Promise<void>;
+  connectWallet: (wallet: WalletType, opts?: ConnectWalletOpts) => Promise<void>;
   disconnectWallet: () => void;
   currentAccount: string;
   connected: boolean;
@@ -42,6 +42,11 @@ export type Web3Data = {
   setSwitchNetworkError: (err: Error | undefined) => void;
   readOnlyMode: boolean;
 };
+
+interface ConnectWalletOpts {
+  silently?: boolean;
+  address?: string;
+}
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const { account, chainId, connector, provider, isActivating, isActive } = useWeb3React();
@@ -65,12 +70,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // connect to the wallet specified by wallet type
   const connectWallet = useCallback(
-    async (wallet: WalletType, address?: string) => {
+    async (wallet: WalletType, opts?: ConnectWalletOpts) => {
       try {
         const connector: Connector = getWallet(wallet);
-        await connector.activate(address);
-        if (wallet === WalletType.READ_ONLY_MODE && address) {
-          localStorage.setItem('readOnlyModeAddress', address);
+        await connector.activate(opts?.address);
+        if (wallet === WalletType.READ_ONLY_MODE && opts?.address) {
+          localStorage.setItem('readOnlyModeAddress', opts.address);
         } else {
           localStorage.removeItem('readOnlyModeAddress');
         }
@@ -78,8 +83,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         setWalletType(wallet);
         localStorage.setItem('walletProvider', wallet.toString());
       } catch (e) {
-        console.log('error on activation', e);
-        setError(e);
+        if (!opts?.silently) {
+          console.log('error on activation', e);
+          setError(e);
+        }
         localStorage.removeItem('readOnlyModeAddress');
         localStorage.removeItem('walletProvider');
         setWalletType(undefined);
@@ -245,7 +252,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   useEffect(() => {
     const tryAppWalletsSilently = async () => {
-      await connectWallet(WalletType.GNOSIS)
+      await connectWallet(WalletType.GNOSIS, { silently: true })
         .catch(async () => {
           const provider = window.ethereum;
           if (provider && provider.isCoinbaseBrowser) {

@@ -144,14 +144,14 @@ export const WalletSelector = () => {
   const handleReadAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
-      connectWallet(WalletType.READ_ONLY_MODE, inputMockWalletAddress);
+      connectWallet(WalletType.READ_ONLY_MODE, { address: inputMockWalletAddress });
     } else {
       // Check if address could be valid ENS before trying to resolve
       if (inputMockWalletAddress.slice(-4) === '.eth') {
         // Attempt to resolve ENS name and use resolved address if valid
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          connectWallet(WalletType.READ_ONLY_MODE, resolvedAddress);
+          connectWallet(WalletType.READ_ONLY_MODE, { address: resolvedAddress });
         } else {
           setValidAddressError(true);
         }
