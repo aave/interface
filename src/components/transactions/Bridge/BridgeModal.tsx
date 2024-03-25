@@ -38,6 +38,19 @@ export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
 }
 
+type TokenAmount = {
+  token: string;
+  amount: string;
+};
+
+type Message = {
+  receiver: string;
+  data: string;
+  tokenAmounts: TokenAmount[];
+  feeToken: string;
+  extraArgs: string;
+};
+
 export const BridgeModal = () => {
   const {
     type,
@@ -52,7 +65,7 @@ export const BridgeModal = () => {
   const { readOnlyModeAddress, provider, chainId: currentChainId } = useWeb3Context();
 
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
-  const [message, setMessage] = useState({
+  const [message, setMessage] = useState<Message>({
     receiver: '',
     data: '',
     tokenAmounts: [
@@ -142,8 +155,8 @@ export const BridgeModal = () => {
   // const [tokenListWithBalance, setTokensListBalance] = useState<TokenInfoWithBalance[]>([]);
 
   const { data: sourceTokenInfo } = useBridgeTokens(
-    sourceNetworkObj.chainId,
-    Object.values(marketsData).find((elem) => elem.chainId === sourceNetworkObj.chainId)
+    Object.values(marketsData).find((elem) => elem.chainId === sourceNetworkObj.chainId) ||
+      defaultNetwork
   );
   const isWrongNetwork = currentChainId !== selectedChainId;
 
@@ -201,7 +214,8 @@ export const BridgeModal = () => {
       !provider ||
       !destinationChain ||
       !sourceNetworkObj.chainId ||
-      !sourceTokenInfo.bridgeTokenBalance
+      !sourceTokenInfo.bridgeTokenBalance ||
+      !sourceTokenInfo.address
     )
       return;
     const signer = await provider.getSigner();
@@ -222,7 +236,6 @@ export const BridgeModal = () => {
     // */
 
     const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
-
     const tokenAddressLower = tokenAddress.toLowerCase();
 
     // Convert each supported token to lowercase and check if the list includes the lowercase token address
@@ -242,7 +255,8 @@ export const BridgeModal = () => {
         Router contract.
       ==================================================
     */
-    const tokenAmounts = [
+
+    const tokenAmounts: TokenAmount[] = [
       {
         token: tokenAddress,
         amount: parseUnits(amount, 18).toString() || '0',
@@ -259,7 +273,7 @@ export const BridgeModal = () => {
 
     const encodedExtraArgs = functionSelector + extraArgs.slice(2);
 
-    const message = {
+    const message: Message = {
       receiver: utils.defaultAbiCoder.encode(['address'], [user]),
       data: '0x', // no data
       tokenAmounts: tokenAmounts,
@@ -291,6 +305,10 @@ export const BridgeModal = () => {
     const destinationChain = destinationNetworkObj;
     const destinationAccount = user;
     const tokenAddress = sourceTokenInfo.address;
+
+    if (!sourceChain || !destinationChain || !destinationAccount || !tokenAddress) {
+      throw Error('Missing required arguments');
+    }
     return {
       sourceChain,
       destinationChain,

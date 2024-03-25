@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { POLLING_INTERVAL, queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-export const useBridgeTokens = (chainId: number, currentMarketData) => {
+export const useBridgeTokens = (currentMarketData: MarketDataType) => {
   const { poolTokensBalanceService } = useSharedDependencies();
   //   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const user = useRootStore((store) => store.account);

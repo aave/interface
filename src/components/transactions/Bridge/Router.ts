@@ -8,10 +8,10 @@ const ethereumSepolia = {
   //   chainSelector: '3478487238524512106',
 };
 
-const optimismGoerli = {
-  address: '0xcc5a0b910d9e9504a7561934bed294c51285a78d',
-  chainSelector: '2664363617261496610',
-};
+// const optimismGoerli = {
+//   address: '0xcc5a0b910d9e9504a7561934bed294c51285a78d',
+//   chainSelector: '2664363617261496610',
+// };
 
 const avalancheFuji = {
   address: '0xf694e193200268f9a4868e4aa017a0118c9a8177',
@@ -42,8 +42,8 @@ export const getRouterConfig = (network: number) => {
   switch (network) {
     case ChainId.sepolia:
       return ethereumSepolia;
-    case ChainId.optimism_goerli:
-      return optimismGoerli;
+    // case ChainId.optimism_goerli:
+    //   return optimismGoerli;
     case 421614:
       return arbitrumTestnet;
     case ChainId.fuji:
