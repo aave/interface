@@ -21,7 +21,7 @@ interface GhoBannerProps {
 export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const theme = useTheme();
   const isCustomBreakpoint = useMediaQuery('(min-width:1125px)');
-  const isMd = useMediaQuery(theme.breakpoints.up('md'));
+  const isMd = useMediaQuery(theme.breakpoints.up('xs'));
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData, ghoLoadingData } = useAppDataContext();
 
@@ -310,14 +310,39 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 </TextWithTooltip>
               </Typography>
             </Link>
+            <Button
+              variant="contained"
+              component={Link}
+              size={'medium'}
+              href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
+              sx={{
+                display: {
+                  xs: 'none',
+                  sm: 'flex',
+                },
+                marginLeft: {
+                  xs: 'none',
+                  xsm: 'auto',
+                },
+                whiteSpace: 'no-wrap',
+                minWidth: 'max-content',
+                alignSelf: 'center',
+              }}
+            >
+              <Trans>View details</Trans>
+            </Button>
           </Box>
         </Box>
         <Button
           variant="contained"
           component={Link}
-          size={isCustomBreakpoint ? 'medium' : 'large'}
+          size={'medium'}
           href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
           sx={{
+            display: {
+              xs: 'flex',
+              sm: 'none',
+            },
             marginLeft: {
               xs: 'none',
               xsm: 'auto',

@@ -2913,6 +2913,7 @@ msgid "View contract"
 msgstr "View contract"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "View details"
