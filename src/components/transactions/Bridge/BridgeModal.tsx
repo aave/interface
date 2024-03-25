@@ -304,11 +304,8 @@ export const BridgeModal = () => {
     const sourceChain = sourceNetworkObj;
     const destinationChain = destinationNetworkObj;
     const destinationAccount = user;
-    const tokenAddress = sourceTokenInfo.address;
+    const tokenAddress = sourceTokenInfo.address || constants.AddressZero;
 
-    if (!sourceChain || !destinationChain || !destinationAccount || !tokenAddress) {
-      throw Error('Missing required arguments');
-    }
     return {
       sourceChain,
       destinationChain,
