@@ -129,7 +129,9 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
             },
             flexDirection: {
               xs: 'column',
-              md: 'row',
+              '@media screen and (min-width: 1025px)': {
+                flexDirection: 'row',
+              },
             },
             gap: {
               xs: 3,
