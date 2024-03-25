@@ -228,7 +228,12 @@ export const WalletSelector = () => {
         walletName="Coinbase Wallet"
         walletType={WalletType.WALLET_LINK}
       />
-      <WalletRow key="xdefi_wallet" walletName="XDEFI Wallet" walletType={WalletType.XDEFI} />
+      {
+        // @ts-expect-error ethereum doesn't necessarily exist
+        window.ethereum._XDEFI && (
+          <WalletRow key="xdefi_wallet" walletName="XDEFI Wallet" walletType={WalletType.XDEFI} />
+        )
+      }
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       {/* <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} /> */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
