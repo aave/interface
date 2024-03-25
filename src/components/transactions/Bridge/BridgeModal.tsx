@@ -26,7 +26,7 @@ import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { BridgeActions } from './BridgeActions';
+import { BridgeActions, MessageDetails, TokenAmount } from './BridgeActions';
 import { supportedNetworksWithBridgeMarket, SupportedNetworkWithChainId } from './common';
 import { getRouterConfig } from './Router';
 import routerAbi from './Router-abi.json';
@@ -37,19 +37,6 @@ const defaultNetwork = marketsData[CustomMarket.proto_sepolia_v3];
 export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
 }
-
-type TokenAmount = {
-  token: string;
-  amount: string;
-};
-
-type Message = {
-  receiver: string;
-  data: string;
-  tokenAmounts: TokenAmount[];
-  feeToken: string;
-  extraArgs: string;
-};
 
 export const BridgeModal = () => {
   const {
@@ -65,7 +52,7 @@ export const BridgeModal = () => {
   const { readOnlyModeAddress, provider, chainId: currentChainId } = useWeb3Context();
 
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
-  const [message, setMessage] = useState<Message>({
+  const [message, setMessage] = useState<MessageDetails>({
     receiver: '',
     data: '',
     tokenAmounts: [
