@@ -22,7 +22,7 @@ const StyledLink = styled(Link)<StyledLinkProps>(({ theme }) => ({
 
 const FOOTER_ICONS = [
   {
-    href: 'https://hey.xyz/u/aaveaave',
+    href: 'https://hey.xyz/u/aave',
     icon: <LensLogoIcon />,
     title: 'Aave',
   },
