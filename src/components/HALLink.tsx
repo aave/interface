@@ -1,16 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import {
-  Button,
-  experimental_sx,
-  Link,
-  Popper,
-  Stack,
-  styled,
-  SvgIcon,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Button, Link, Popper, Stack, styled, SvgIcon, Tooltip, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useMemo } from 'react';
 import { useRootStore } from 'src/store/root';
@@ -21,8 +11,8 @@ import HalHover from '/public/icons/healthFactor/HALHover.svg';
 
 import { useWeb3Context } from '../libs/hooks/useWeb3Context';
 
-const PopperComponent = styled(Popper)(
-  experimental_sx({
+const PopperComponent = styled(Popper)(({ theme }) =>
+  theme.unstable_sx({
     '.MuiTooltip-tooltip': {
       color: 'text.primary',
       backgroundColor: 'background.paper',
