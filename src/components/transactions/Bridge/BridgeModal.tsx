@@ -288,12 +288,9 @@ export const BridgeModal = () => {
 
   const handleBridgeArguments = () => {
     const sourceChain = sourceNetworkObj;
-    const destinationChain = destinationNetworkObj; // destinationNetwork;
+    const destinationChain = destinationNetworkObj;
     const destinationAccount = user;
     const tokenAddress = sourceTokenInfo.address;
-    // Note for now leaving out
-    // const feeTokenAddress = process.argv[7];
-
     return {
       sourceChain,
       destinationChain,

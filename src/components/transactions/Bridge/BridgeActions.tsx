@@ -11,11 +11,12 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
-import { supportedNetworksWithBridgeMarket } from './common';
-import onRampAbi from './OnnRamp-abi.json';
+import { getMarketByChainIdWithBridge } from './common';
+import onRampAbi from './OnRamp-abi.json';
 import { getRouterConfig } from './Router';
 import routerAbi from './Router-abi.json';
 
@@ -75,12 +76,6 @@ export const BridgeActions = React.memo(
       state.addTransaction,
     ]);
 
-    const currentMarketData = supportedNetworksWithBridgeMarket.find((m) => {
-      return sourceChain.chainId === m.chainId;
-    });
-
-    console.log('currentMarket', currentMarketData);
-
     const {
       approvalTxState,
       mainTxState,
@@ -95,13 +90,15 @@ export const BridgeActions = React.memo(
 
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
+    const currentMarket = getMarketByChainIdWithBridge(sourceChain.chainId);
+
     const {
       data: approvedAmount,
       refetch: fetchApprovedAmount,
       isFetching: fetchingApprovedAmount,
       isFetchedAfterMount,
     } = useApprovedAmount({
-      marketData: currentMarketData,
+      marketData: currentMarket as MarketDataType,
       token: tokenAddress,
       spender: getRouterConfig(sourceChain.chainId).address,
     });

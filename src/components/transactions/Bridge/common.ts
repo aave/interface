@@ -20,3 +20,14 @@ export const supportedNetworksWithBridgeMarket = supportedNetworksConfig.filter(
     (market) => market.chainId === elem.chainId && market.enabledFeatures?.bridge
   )
 );
+
+export const getMarketByChainIdWithBridge = (chainId: number) => {
+  for (const key in marketsData) {
+    const market = marketsData[key];
+    if (market.chainId === chainId && market.enabledFeatures && market.enabledFeatures.bridge) {
+      return market;
+    }
+  }
+  // Return null if no matching market is found
+  return null;
+};

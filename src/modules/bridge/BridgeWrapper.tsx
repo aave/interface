@@ -3,6 +3,7 @@ import { Box, Button, Skeleton, Typography, useMediaQuery, useTheme } from '@mui
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Contract } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -16,6 +17,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { MessageDetails } from 'src/components/transactions/Bridge/BridgeActions';
 import { SupportedNetworkWithChainId } from 'src/components/transactions/Bridge/common';
 import offRampAbi from 'src/components/transactions/Bridge/OffRamp-abi.json';
+// import onRampAbi from 'src/components/transactions/Bridge/OnRamp-abi.json';
 import { getRouterConfig } from 'src/components/transactions/Bridge/Router';
 import routerAbi from 'src/components/transactions/Bridge/Router-abi.json';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -56,6 +58,8 @@ const messageExecutionState = {
 };
 
 const getMessageStatus = (status: bigint): string => {
+  console.log('Status: --->', status);
+
   const statusKey = status.toString() as keyof typeof messageExecutionState;
   if (statusKey in messageExecutionState) {
     return messageExecutionState[statusKey];
@@ -64,7 +68,7 @@ const getMessageStatus = (status: bigint): string => {
 };
 
 export function BridgeWrapper() {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<TransactionDetails[]>([]);
   const [statusLoading, setStatusLoading] = useState(false);
 
   const theme = useTheme();
@@ -97,10 +101,18 @@ export function BridgeWrapper() {
         transactions.map(async (tx: TransactionDetails) => {
           try {
             const destinationRpcUrl = getProvider(tx.destinationChain.chainId);
+            const sourceRpcUrl = getProvider(tx.sourceChain.chainId);
 
             const destinationRouterAddress = getRouterConfig(tx.destinationChain.chainId).address;
+            const sourceRouterAddress = getRouterConfig(tx.sourceChain.chainId).address;
 
-            if (!destinationRouterAddress || !destinationRpcUrl || !tx.messageId) {
+            if (
+              !destinationRouterAddress ||
+              !destinationRpcUrl ||
+              !sourceRouterAddress ||
+              !sourceRpcUrl ||
+              !tx.messageId
+            ) {
               throw new Error('Required information for transaction fetching is missing.');
             }
 
@@ -109,6 +121,7 @@ export function BridgeWrapper() {
               routerAbi,
               destinationRpcUrl
             );
+
             const offRamps = await destinationRouterContract.getOffRamps();
 
             for (const offRamp of offRamps) {
@@ -121,6 +134,7 @@ export function BridgeWrapper() {
                   offRampAbi,
                   destinationRpcUrl
                 );
+
                 const executionStateChangeEvent = offRampContract.filters.ExecutionStateChanged(
                   undefined,
                   tx.messageId,
@@ -140,19 +154,42 @@ export function BridgeWrapper() {
                 }
               }
             }
+            // const sourceRouterContract = new Contract(sourceRouterAddress, routerAbi, sourceRpcUrl);
+
+            // try {
+            //   const onRampContractAddress = await sourceRouterContract.getOnRamp(
+            //     getRouterConfig(tx.destinationChain.chainId).chainSelector.toString()
+            //   );
+            //   console.log(
+            //     'onRampContractAddress -------------------------------',
+            //     onRampContractAddress
+            //   );
+            //   const result = await sourceRpcUrl.send('eth_getLogs', [
+            //     {
+            //       address: [onRampContractAddress],
+            //       fromBlock: '0x54cc28',
+            //       toBlock: 'latest',
+            //       topics: ['0xd0c3c799bf9e2639de44391e7f524d229b2b55f5b1ea94b2bf7da42f7243dddd'], // ccip send
+            //     },
+            //   ]);
+
+            //   console.log('Result: ---->', result);
+            // } catch (err) {
+            //   console.error('something broke here', err);
+            // }
           } catch (error) {
             console.error(`Error fetching status for transaction ${tx.messageId}:`, error);
           }
-          return tx; // Return the original transaction if no updates were made
+          return tx;
         })
       );
 
-      setTransactions(tempTransactions); // Update the state once with all updates
-      setStatusLoading(false); // Update loading state after processing all transactions
+      setTransactions(tempTransactions);
+      setStatusLoading(false);
     };
 
     fetchStatuses();
-  }, [transactions.length]); // Add transactions to the dependency array if the fetchStatuses logic should run when transactions change
+  }, [transactions.length]);
 
   return (
     <ListWrapper
@@ -266,7 +303,12 @@ export function BridgeWrapper() {
 
             {!downToXSM && (
               <ListColumn align="left">
-                <FormattedNumber compact value={tx.amount.toString()} variant="main16" />
+                <FormattedNumber
+                  visibleDecimals={2}
+                  symbol={'USD'}
+                  value={formatUnits(tx.amount, 18)}
+                  variant="main16"
+                />
               </ListColumn>
             )}
 
@@ -281,7 +323,7 @@ export function BridgeWrapper() {
             ) : (
               <ListColumn align="left">
                 <Typography variant="main16">
-                  <Trans>Unknown</Trans>
+                  <Trans>Processing...</Trans>
                 </Typography>
               </ListColumn>
             )}

@@ -1869,6 +1869,10 @@ msgstr "Price impact {0}%"
 msgid "Privacy"
 msgstr "Privacy"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Processing..."
+msgstr "Processing..."
+
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
@@ -2844,10 +2848,6 @@ msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this po
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Underlying token"
 msgstr "Underlying token"
-
-#: src/modules/bridge/BridgeWrapper.tsx
-msgid "Unknown"
-msgstr "Unknown"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake"
