@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { GitHub, Twitter } from '@mui/icons-material';
+import { GitHub, X } from '@mui/icons-material';
 import { Box, styled, SvgIcon, Typography } from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
@@ -22,13 +22,13 @@ const StyledLink = styled(Link)<StyledLinkProps>(({ theme }) => ({
 
 const FOOTER_ICONS = [
   {
-    href: 'https://hey.xyz/u/aaveaave',
+    href: 'https://hey.xyz/u/aave',
     icon: <LensLogoIcon />,
     title: 'Aave',
   },
   {
     href: 'https://twitter.com/aave',
-    icon: <Twitter />,
+    icon: <X />,
     title: 'Lens',
   },
   {
