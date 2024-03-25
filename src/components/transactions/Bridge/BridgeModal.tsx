@@ -260,7 +260,7 @@ export const BridgeModal = () => {
 
     const encodedExtraArgs = functionSelector + extraArgs.slice(2);
 
-    const message: Message = {
+    const message: MessageDetails = {
       receiver: utils.defaultAbiCoder.encode(['address'], [user]),
       data: '0x', // no data
       tokenAmounts: tokenAmounts,
