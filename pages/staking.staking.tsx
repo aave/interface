@@ -4,7 +4,7 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
-import { formatEther, formatUnits } from 'ethers/lib/utils';
+import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
@@ -95,22 +95,12 @@ export default function Staking() {
     });
   }, [trackEvent]);
 
-  const tvl = formatUnits(
-    BigNumber.from(stkAave?.stakeTokenTotalSupply || '0')
-      .mul(stkAave?.stakeTokenPriceUSD || '0')
-      .add(
-        BigNumber.from(stkBpt?.stakeTokenTotalSupply || '0').mul(stkBpt?.stakeTokenPriceUSD || '0')
-      )
-      .add(
-        BigNumber.from(stkGho?.stakeTokenTotalSupply || '0').mul(stkGho?.stakeTokenPriceUSD || '0')
-      )
-      .add(
-        BigNumber.from(stkBptV2?.stakeTokenTotalSupply || '0').mul(
-          stkBptV2?.stakeTokenPriceUSD || '0'
-        )
-      ),
-    18 + 8
-  );
+  const tvl = {
+    'Staked Aave': Number(stkAave?.totalSupplyUSDFormatted || '0'),
+    'Staked GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
+    'Staked ABPT': Number(stkBpt?.totalSupplyUSDFormatted || '0'),
+    'Staked ABPT V2': Number(stkBptV2?.totalSupplyUSDFormatted || '0'),
+  };
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
   const stkEmission = formatEther(
