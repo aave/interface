@@ -1,7 +1,7 @@
 import {
   InformationCircleIcon,
-  SwitchHorizontalIcon,
   SparklesIcon,
+  SwitchHorizontalIcon,
 } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -272,29 +272,20 @@ export function AppHeader() {
         <Box sx={{ flexGrow: 1 }} />
 
         <NoSsr>
-          <StyledBadge
-            invisible={visitedSwitch}
-            variant="dot"
-            badgeContent=""
-            color="secondary"
-            sx={{ mr: 2 }}
+          <Button
+            onClick={handleBridgeClick}
+            variant="surface"
+            sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
           >
-            <Button
-              onClick={handleBridgeClick}
-              variant="surface"
-              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
-              aria-label="Switch tool"
-            >
-              {!md && (
-                <Typography component="span" typography="subheader1">
-                  Bridge GHO
-                </Typography>
-              )}
-              <SvgIcon fontSize="small">
-                <SparklesIcon />
-              </SvgIcon>
-            </Button>
-          </StyledBadge>
+            {!md && (
+              <Typography component="span" typography="subheader1">
+                Bridge GHO
+              </Typography>
+            )}
+            <SvgIcon fontSize="small">
+              <SparklesIcon />
+            </SvgIcon>
+          </Button>
         </NoSsr>
 
         <NoSsr>
