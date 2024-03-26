@@ -592,6 +592,7 @@ msgstr "Borrowing {symbol}"
 msgid "Both"
 msgstr "Both"
 
+#: src/components/transactions/Bridge/BridgeModal.tsx
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "Bridge Transactions"
 msgstr "Bridge Transactions"
@@ -3208,6 +3209,10 @@ msgstr "You have no AAVE/stkAAVE/aAave balance to delegate."
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "You have not bridged any transactions"
+msgstr "You have not bridged any transactions"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "You may borrow up to <0/> GHO at <1/> (max discount)"

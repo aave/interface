@@ -2,6 +2,11 @@
 // https://github.com/smartcontractkit/smart-contract-examples/blob/main/ccip-offchain/javascript/src/config/router.js
 import { ChainId } from '@aave/contract-helpers';
 
+const ethMainnet = {
+  address: '0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D',
+  chainSelector: '5009297550715157269',
+};
+
 const ethereumSepolia = {
   address: '0x0bf3de8c5d3e8a2b34d2beeb17abfcebaf363a59',
   chainSelector: '16015286601757825753',
@@ -50,8 +55,8 @@ export const getRouterConfig = (network: number) => {
       return avalancheFuji;
     case ChainId.mumbai:
       return polygonMumbai;
-    // case 'bnbTestnet':
-    //   return bnbTestnet;
+    case ChainId.mainnet:
+      return ethMainnet;
     // case 'baseGoerli':
     //   return baseGoerli;
     default:

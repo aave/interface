@@ -6,6 +6,7 @@ import { constants, Contract, utils } from 'ethers';
 import { formatEther, parseUnits } from 'ethers/lib/utils';
 import { debounce } from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
+import { Link, ROUTES } from 'src/components/primitives/Link';
 import {
   DetailsNumberLine,
   TxModalDetails,
@@ -368,9 +369,31 @@ export const BridgeModal = () => {
     close();
   };
 
+  // Handle more networks for main
+  // QA everything
+
   return (
     <BasicModal open={type === ModalType.Bridge} setOpen={handleClose}>
-      <TxModalTitle title="Bridge tokens" />
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <TxModalTitle title="Bridge tokens" />
+        <Box
+          sx={{
+            right: '0px',
+          }}
+        >
+          <Button
+            component={Link}
+            href={ROUTES.bridge}
+            sx={{ mr: 8, mb: '24px' }}
+            variant="surface"
+            size="small"
+            onClick={handleClose}
+          >
+            <Trans>Bridge Transactions</Trans>
+          </Button>
+        </Box>
+      </Box>
+
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={getNetworkConfig(selectedChainId).name}
@@ -380,7 +403,6 @@ export const BridgeModal = () => {
           }}
         />
       )}
-
       {!user ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
           <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">

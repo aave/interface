@@ -125,4 +125,5 @@ export const ROUTES = {
   reserveOverview: (underlyingAsset: string, marketName: CustomMarket) =>
     `/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${marketName}`,
   history: '/history',
+  bridge: '/bridge',
 };

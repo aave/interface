@@ -695,7 +695,6 @@ export const marketsData: {
     enabledFeatures: {
       incentives: true,
       faucet: true,
-      bridge: true,
     },
     //  subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-mumbai',  needs re-deployment
     addresses: {

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Paper, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Contract } from 'ethers';
@@ -21,6 +21,8 @@ import offRampAbi from 'src/components/transactions/Bridge/OffRamp-abi.json';
 import { getRouterConfig } from 'src/components/transactions/Bridge/Router';
 import routerAbi from 'src/components/transactions/Bridge/Router-abi.json';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+
+import LoveGhost from '/public/loveGhost.svg';
 
 dayjs.extend(relativeTime);
 
@@ -58,8 +60,6 @@ const messageExecutionState = {
 };
 
 const getMessageStatus = (status: bigint): string => {
-  console.log('Status: --->', status);
-
   const statusKey = status.toString() as keyof typeof messageExecutionState;
   if (statusKey in messageExecutionState) {
     return messageExecutionState[statusKey];
@@ -190,6 +190,27 @@ export function BridgeWrapper() {
 
     fetchStatuses();
   }, [transactions.length]);
+
+  if (transactions.length === 0) {
+    return (
+      <Paper
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          p: 4,
+          flex: 1,
+        }}
+      >
+        <LoveGhost style={{ marginBottom: '16px' }} />
+        <Typography variant={'h3'}>
+          <Trans>You have not bridged any transactions</Trans>
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <ListWrapper
