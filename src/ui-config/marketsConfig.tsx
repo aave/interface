@@ -42,7 +42,6 @@ export type MarketDataType = {
     staking?: boolean;
     governance?: boolean;
     faucet?: boolean;
-    external_faucet?: boolean;
     collateralRepay?: boolean;
     incentives?: boolean;
     permissions?: boolean;
@@ -50,6 +49,7 @@ export type MarketDataType = {
     withdrawAndSwitch?: boolean;
     switch?: boolean;
   };
+  permitDisabled?: boolean; // intended to be used for testnets
   isFork?: boolean;
   permissionComponent?: ReactNode;
   disableCharts?: boolean;
@@ -341,6 +341,7 @@ export const marketsData: {
     marketTitle: 'Arbitrum Sepolia',
     market: CustomMarket.proto_arbitrum_sepolia_v3,
     v3: true,
+    permitDisabled: true,
     chainId: ChainId.arbitrum_sepolia,
     //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
@@ -392,6 +393,7 @@ export const marketsData: {
     marketTitle: 'Base Sepolia',
     market: CustomMarket.proto_arbitrum_sepolia_v3,
     v3: true,
+    permitDisabled: true,
     chainId: ChainId.base_sepolia,
     //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
@@ -461,6 +463,7 @@ export const marketsData: {
     marketTitle: 'Optimism Sepolia',
     market: CustomMarket.proto_optimism_sepolia_v3,
     v3: true,
+    permitDisabled: true,
     chainId: ChainId.optimism_sepolia,
     // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism-goerli',  needs re-deployment
     addresses: {
