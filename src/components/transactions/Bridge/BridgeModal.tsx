@@ -325,37 +325,6 @@ export const BridgeModal = () => {
     fees,
   };
 
-  if (bridgeTxState.success) {
-    return (
-      <BasicModal open={type === ModalType.Bridge} setOpen={close}>
-        <TxModalTitle title="Bridge tokens" />
-        {/* <TxSuccessView action={<Trans>Bridged!</Trans>} amount={amount} symbol={'GHO'} />; */}
-        <TxSuccessView
-          customAction={
-            <Box mt={5}>
-              <Button
-                component="a"
-                target="_blank"
-                href={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
-                variant="gradient"
-                size="medium"
-              >
-                <Trans>See Transaction status on CCIP</Trans>
-              </Button>
-            </Box>
-          }
-          customText={
-            <Trans>
-              Asset has been successfully sent to router contract. You can check the status of the
-              transaction above
-            </Trans>
-          }
-          action={<Trans>Bridged Via CCIP</Trans>}
-        />
-      </BasicModal>
-    );
-  }
-
   if (txError) {
     return (
       <BasicModal open={type === ModalType.Bridge} setOpen={close}>
@@ -368,6 +337,48 @@ export const BridgeModal = () => {
     resetState();
     close();
   };
+
+  if (bridgeTxState.success) {
+    return (
+      <BasicModal open={type === ModalType.Bridge} setOpen={close}>
+        <TxModalTitle title="Bridge tokens" />
+        {/* <TxSuccessView action={<Trans>Bridged!</Trans>} amount={amount} symbol={'GHO'} />; */}
+        <TxSuccessView
+          customAction={
+            <Box mt={5}>
+              {/* <Button
+                component="a"
+                target="_blank"
+                href={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
+                variant="gradient"
+                size="medium"
+              >
+                <Trans>See Transaction status on CCIP</Trans>
+              </Button> */}
+
+              <Button
+                component={Link}
+                href={ROUTES.bridge}
+                // sx={{ mr: 8, mb: '24px' }}
+                variant="gradient"
+                size="small"
+                onClick={handleClose}
+              >
+                <Trans>View Bridge Transactions</Trans>
+              </Button>
+            </Box>
+          }
+          customText={
+            <Trans>
+              Asset has been successfully sent to CCIP contract. You can check the status of the
+              transactions below
+            </Trans>
+          }
+          action={<Trans>Bridged Via CCIP</Trans>}
+        />
+      </BasicModal>
+    );
+  }
 
   // Handle more networks for main
   // QA everything

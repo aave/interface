@@ -330,8 +330,8 @@ msgid "Asset category"
 msgstr "Asset category"
 
 #: src/components/transactions/Bridge/BridgeModal.tsx
-msgid "Asset has been successfully sent to router contract. You can check the status of the transaction above"
-msgstr "Asset has been successfully sent to router contract. You can check the status of the transaction above"
+msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
+msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset is frozen in {marketName} v3 market, hence this position cannot be migrated."
@@ -2118,10 +2118,6 @@ msgstr "Safety of your deposited collateral against the borrowed assets and its 
 msgid "Save and share"
 msgstr "Save and share"
 
-#: src/components/transactions/Bridge/BridgeModal.tsx
-msgid "See Transaction status on CCIP"
-msgstr "See Transaction status on CCIP"
-
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
 msgstr "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
@@ -2970,6 +2966,10 @@ msgstr "Version 3"
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
 msgstr "View"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "View Bridge Transactions"
+msgstr "View Bridge Transactions"
 
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "View Transaction"
