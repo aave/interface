@@ -74,8 +74,8 @@ export const useParaSwapTransactionHandler = ({
   const [signature, setSignature] = useState<SignatureLike | undefined>();
   const [signatureDeadline, setSignatureDeadline] = useState<string | undefined>();
   interface Dependency {
-    asset: string;
-    amount: string;
+    asset: unknown;
+    amount: unknown;
   }
   const [previousDeps, setPreviousDeps] = useState<Dependency>({ asset: deps[0], amount: deps[1] });
   const [usePermit, setUsePermit] = useState(false);
