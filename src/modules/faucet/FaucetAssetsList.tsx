@@ -1,6 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -132,9 +133,24 @@ export default function FaucetAssetsList() {
             )}
 
             <ListColumn maxWidth={280} align="right">
-              <Button variant="contained" onClick={() => openFaucet(reserve.underlyingAsset)}>
-                <Trans>Faucet</Trans>
-              </Button>
+              {!currentMarketData.addresses.FAUCET ? (
+                <Button
+                  href="https://faucet.circle.com/"
+                  component={Link}
+                  variant="contained"
+                  endIcon={
+                    <SvgIcon sx={{ width: 14, height: 14 }}>
+                      <ExternalLinkIcon />
+                    </SvgIcon>
+                  }
+                >
+                  <Trans>Faucet</Trans>
+                </Button>
+              ) : (
+                <Button variant="contained" onClick={() => openFaucet(reserve.underlyingAsset)}>
+                  <Trans>Faucet</Trans>
+                </Button>
+              )}
             </ListColumn>
           </ListItem>
         ))
