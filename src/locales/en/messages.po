@@ -185,6 +185,10 @@ msgstr "Addresses"
 msgid "Addresses ({0})"
 msgstr "Addresses ({0})"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Age"
+msgstr "Age"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All Assets"
@@ -218,8 +222,10 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Bridge/BridgeModal.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
+#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Amount"
@@ -236,6 +242,10 @@ msgstr "Amount in cooldown"
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "Amount to Bridge"
+msgstr "Amount to Bridge"
 
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Amount to migrate"
@@ -273,6 +283,7 @@ msgstr "Array parameters that should be equal length are not"
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
 msgstr "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
 
+#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -317,6 +328,10 @@ msgstr "Asset cannot be used as collateral."
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
 msgstr "Asset category"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
+msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset is frozen in {marketName} v3 market, hence this position cannot be migrated."
@@ -576,6 +591,27 @@ msgstr "Borrowing {symbol}"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
 msgstr "Both"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Bridge Transactions"
+msgstr "Bridge Transactions"
+
+#: src/modules/bridge/BridgeTopPanel.tsx
+msgid "Bridge history"
+msgstr "Bridge history"
+
+#: src/components/transactions/Bridge/BridgeActions.tsx
+msgid "Bridge {symbol}"
+msgstr "Bridge {symbol}"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "Bridged Via CCIP"
+msgstr "Bridged Via CCIP"
+
+#: src/components/transactions/Bridge/BridgeActions.tsx
+msgid "Bridging {symbol}"
+msgstr "Bridging {symbol}"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
@@ -844,6 +880,10 @@ msgstr "Debt ceiling limits the amount possible to borrow against this asset by 
 msgid "Delegated power"
 msgstr "Delegated power"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Destination Tx"
+msgstr "Destination Tx"
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
@@ -1063,6 +1103,10 @@ msgstr "Expected amount to repay"
 msgid "Expires"
 msgstr "Expires"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Explorer"
+msgstr "Explorer"
+
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Export data to"
 msgstr "Export data to"
@@ -1092,6 +1136,10 @@ msgstr "Faucet"
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "Fee"
+msgstr "Fee"
 
 #: src/layouts/FeedbackDialog.tsx
 #: src/layouts/FeedbackDialog.tsx
@@ -1139,6 +1187,10 @@ msgstr "French"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
+
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "GHO balance"
+msgstr "GHO balance"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -1743,6 +1795,10 @@ msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially 
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "Please connect your wallet to be able to bridge your tokens."
+msgstr "Please connect your wallet to be able to bridge your tokens."
+
 #: src/components/transactions/Switch/SwitchModal.tsx
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Please connect your wallet to be able to switch your tokens."
@@ -1813,6 +1869,10 @@ msgstr "Price impact {0}%"
 #: src/layouts/AppFooter.tsx
 msgid "Privacy"
 msgstr "Privacy"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Processing..."
+msgstr "Processing..."
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
@@ -2184,6 +2244,10 @@ msgstr "Sorry, an unexpected error happened. In the meantime you may try reloadi
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Source Tx"
+msgstr "Source Tx"
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
 msgstr "Spanish"
@@ -2277,6 +2341,10 @@ msgstr "Staking discount"
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "State"
 msgstr "State"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Status"
+msgstr "Status"
 
 #: src/layouts/FeedbackDialog.tsx
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
@@ -2899,6 +2967,14 @@ msgstr "Version 3"
 msgid "View"
 msgstr "View"
 
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "View Bridge Transactions"
+msgstr "View Bridge Transactions"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "View Transaction"
+msgstr "View Transaction"
+
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 msgid "View Transactions"
@@ -3134,6 +3210,10 @@ msgstr "You have no AAVE/stkAAVE/aAave balance to delegate."
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "You have not bridged any transactions"
+msgstr "You have not bridged any transactions"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "You may borrow up to <0/> GHO at <1/> (max discount)"
