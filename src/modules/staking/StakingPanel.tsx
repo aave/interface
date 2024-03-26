@@ -1,11 +1,12 @@
 import { ChainId } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
-import { RefreshIcon } from '@heroicons/react/outline';
+import { ExternalLinkIcon, RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
+  IconButton,
   Paper,
   Stack,
   SvgIcon,
@@ -18,6 +19,7 @@ import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
@@ -159,18 +161,53 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     );
   }
 
+  const TokenContractTooltip = (
+    <DarkTooltip title="View token contract" sx={{ display: { xsm: 'none' } }}>
+      <IconButton
+        LinkComponent={Link}
+        href={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
+      >
+        <SvgIcon sx={{ fontSize: '14px' }}>
+          <ExternalLinkIcon />
+        </SvgIcon>
+      </IconButton>
+    </DarkTooltip>
+  );
+
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
       <Box
         sx={{
           display: { xs: 'none', xsm: 'flex' },
           alignItems: 'center',
+          justifyContent: 'space-between',
           mb: 8,
         }}
       >
-        <Typography variant="h3">
-          <Trans>Stake</Trans> {stakeTitle}
-        </Typography>
+        <Stack>
+          <Typography variant="h3">
+            <Stack direction="row" alignItems="center" gap={1}>
+              <Trans>Stake</Trans> {stakeTitle}
+              {TokenContractTooltip}
+            </Stack>
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Total staked:{' '}
+            <FormattedNumber
+              variant="caption"
+              value={stakeData.totalSupplyFormatted}
+              visibleDecimals={2}
+            />
+            {' ('}
+            <FormattedNumber
+              variant="caption"
+              value={stakeData.totalSupplyUSDFormatted}
+              visibleDecimals={2}
+              symbol="usd"
+            />
+            {')'}
+          </Typography>
+        </Stack>
         {headerAction && <Box sx={{ ml: 3 }}>{headerAction}</Box>}
       </Box>
 
@@ -209,14 +246,41 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
-          <Typography variant={xsm ? 'subheader1' : 'h4'} ml={2}>
-            {stakedToken}
-          </Typography>
-          {headerAction && (
+          <Stack direction="row">
+            <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
+            <Stack direction="column" ml={2} alignItems="start" justifyContent="center">
+              <Stack direction="row">
+                <Typography variant={xsm ? 'subheader1' : 'h4'}>{stakedToken}</Typography>
+                <Box sx={{ display: { xsm: 'none' } }}>{TokenContractTooltip}</Box>
+              </Stack>
+              <Typography
+                sx={{ display: { xsm: 'none' } }}
+                variant="caption"
+                color="text.secondary"
+              >
+                Total staked{' '}
+                <FormattedNumber
+                  variant="caption"
+                  value={stakeData.totalSupplyFormatted}
+                  visibleDecimals={2}
+                />
+                {' ('}
+                <FormattedNumber
+                  variant="caption"
+                  value={stakeData.totalSupplyUSDFormatted}
+                  visibleDecimals={2}
+                  symbol="usd"
+                />
+                {')'}
+              </Typography>
+            </Stack>
+          </Stack>
+          {headerAction ? (
             <Box sx={{ display: { xs: 'block', xsm: 'none' }, textAlign: 'right', flexGrow: 1 }}>
               {headerAction}
             </Box>
+          ) : (
+            <Box />
           )}
         </Box>
 
