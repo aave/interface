@@ -387,22 +387,24 @@ export const BridgeModal = () => {
     <BasicModal open={type === ModalType.Bridge} setOpen={handleClose}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <TxModalTitle title="Bridge tokens" />
-        <Box
-          sx={{
-            right: '0px',
-          }}
-        >
-          <Button
-            component={Link}
-            href={ROUTES.bridge}
-            sx={{ mr: 8, mb: '24px' }}
-            variant="surface"
-            size="small"
-            onClick={handleClose}
+        {user && (
+          <Box
+            sx={{
+              right: '0px',
+            }}
           >
-            <Trans>Bridge Transactions</Trans>
-          </Button>
-        </Box>
+            <Button
+              component={Link}
+              href={ROUTES.bridge}
+              sx={{ mr: 8, mb: '24px' }}
+              variant="surface"
+              size="small"
+              onClick={handleClose}
+            >
+              <Trans>Bridge Transactions</Trans>
+            </Button>
+          </Box>
+        )}
       </Box>
 
       {isWrongNetwork && !readOnlyModeAddress && (
