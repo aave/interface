@@ -19,10 +19,20 @@ import {
 } from 'src/store/v3MigrationSlice';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
-import { combineQueries } from '../pool/utils';
+import { combineQueries, SimplifiedUseQueryResult } from '../pool/utils';
 import { usePoolReserve } from './usePoolReserve';
 import { UserMigrationReserves, useUserMigrationReserves } from './useUserMigrationReserves';
 import { UserSummaryForMigration, useUserSummaryForMigration } from './useUserSummaryForMigration';
+
+export interface UserSummaryAfterMigration {
+  fromUserSummaryAfterMigration: UserSummaryForMigration;
+  toUserSummaryAfterMigration: {
+    healthFactor: string;
+    currentLoanToValue: string;
+    totalCollateralMarketReferenceCurrency: string;
+    totalBorrowsMarketReferenceCurrency: string;
+  };
+}
 
 const select = memoize(
   (
@@ -200,7 +210,7 @@ const select = memoize(
 export const useUserSummaryAfterMigration = (
   fromMarket: MarketDataType,
   toMarket: MarketDataType
-) => {
+): SimplifiedUseQueryResult<UserSummaryAfterMigration> => {
   const userMigrationReservesQuery = useUserMigrationReserves(fromMarket, toMarket);
   const toUserSummary = useUserSummaryForMigration(toMarket);
   const fromPoolReserve = usePoolReserve(fromMarket);
