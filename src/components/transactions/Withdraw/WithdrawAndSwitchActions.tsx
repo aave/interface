@@ -129,7 +129,6 @@ export const WithdrawAndSwitchActions = ({
       const txDataWithGasEstimation = await estimateGasLimit(tx);
       const response = await sendTx(txDataWithGasEstimation);
       await response.wait(1);
-
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
       setMainTxState({

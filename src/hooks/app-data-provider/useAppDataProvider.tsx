@@ -53,7 +53,7 @@ export type ExtendedFormattedUser = _ExtendedFormattedUser;
 
 export interface AppDataContextType {
   loading: boolean;
-  reserves: FormattedReservesAndIncentives[];
+  reserves: ComputedReserveData[];
   eModes: Record<number, EmodeCategory>;
   user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;
@@ -64,6 +64,7 @@ export interface AppDataContextType {
   ghoLoadingData: boolean;
   ghoUserLoadingData: boolean;
 }
+
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
 
 /**
@@ -72,6 +73,7 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  */
 export const AppDataProvider: React.FC = ({ children }) => {
   const { currentAccount } = useWeb3Context();
+
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
   // pool hooks

@@ -179,6 +179,7 @@ export const SupplyActions = React.memo(
           amount: amountToSupply,
           assetName: symbol,
         });
+
         queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);

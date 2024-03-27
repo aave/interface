@@ -199,6 +199,7 @@ export const DebtSwitchActions = ({
             : ' stable' + poolReserve.symbol),
         newState: route.inputAmount + ' variable' + targetReserve.symbol,
       });
+
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
     } catch (error) {
