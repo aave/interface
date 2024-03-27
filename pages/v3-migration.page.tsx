@@ -123,6 +123,11 @@ export default function V3Migration() {
     toUserSummaryForMigration &&
     toUserSummaryForMigration.totalCollateralMarketReferenceCurrency == '0';
 
+  const changeFromMarketData = (marketData: MarketDataType) => {
+    resetMigrationSelectedAssets();
+    setFromMarketData(marketData);
+  };
+
   return (
     <>
       <MigrationTopPanel />
@@ -153,7 +158,7 @@ export default function V3Migration() {
                   loading={loading}
                   fromMarketData={fromMarketData}
                   toMarketData={toMarketData}
-                  setFromMarketData={setFromMarketData}
+                  setFromMarketData={changeFromMarketData}
                   selectableMarkets={selectableMarkets}
                 />
               )}

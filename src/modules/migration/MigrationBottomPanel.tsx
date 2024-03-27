@@ -24,6 +24,11 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { MigrationMarketCard, SelectableMarkets } from './MigrationMarketCard';
 
+export interface UserSummaryBeforeMigration {
+  fromUserSummaryBeforeMigration: UserSummaryAndIncentives;
+  toUserSummaryBeforeMigration: UserSummaryAndIncentives;
+}
+
 interface MigrationBottomPanelProps {
   disableButton?: boolean;
   loading?: boolean;
@@ -31,10 +36,7 @@ interface MigrationBottomPanelProps {
   fromMarketData: MarketDataType;
   toMarketData: MarketDataType;
   userSummaryAfterMigration: UserSummaryAfterMigration;
-  userSummaryBeforeMigration: {
-    fromUserSummaryBeforeMigration: UserSummaryAndIncentives;
-    toUserSummaryBeforeMigration: UserSummaryAndIncentives;
-  };
+  userSummaryBeforeMigration: UserSummaryBeforeMigration;
   setFromMarketData: (marketData: MarketDataType) => void;
   selectableMarkets: SelectableMarkets;
 }
@@ -45,6 +47,78 @@ enum ErrorType {
   V3_HF_TOO_LOW,
   INSUFFICIENT_LTV,
 }
+
+interface BlockErrorTextProps {
+  blockingError?: ErrorType | null;
+}
+
+const getBlockingError = (
+  userSummaryAfterMigration: UserSummaryAfterMigration,
+  disableButton: boolean,
+  isChecked: boolean
+) => {
+  const {
+    totalCollateralMarketReferenceCurrency,
+    totalBorrowsMarketReferenceCurrency,
+    currentLoanToValue,
+  } = userSummaryAfterMigration.toUserSummaryAfterMigration;
+
+  const maxBorrowAmount = valueToBigNumber(totalCollateralMarketReferenceCurrency).multipliedBy(
+    currentLoanToValue
+  );
+
+  const insufficientLtv = valueToBigNumber(totalBorrowsMarketReferenceCurrency).isGreaterThan(
+    maxBorrowAmount
+  );
+  if (disableButton && isChecked) {
+    return ErrorType.NO_SELECTION;
+  } else if (
+    Number(userSummaryAfterMigration.fromUserSummaryAfterMigration.healthFactor) < 1.005 &&
+    userSummaryAfterMigration.fromUserSummaryAfterMigration.healthFactor !== '-1'
+  ) {
+    return ErrorType.V2_HF_TOO_LOW;
+  } else if (
+    Number(userSummaryAfterMigration.toUserSummaryAfterMigration.healthFactor) < 1.005 &&
+    userSummaryAfterMigration.toUserSummaryAfterMigration.healthFactor !== '-1'
+  ) {
+    return ErrorType.V3_HF_TOO_LOW;
+  } else if (insufficientLtv) {
+    return ErrorType.INSUFFICIENT_LTV;
+  }
+  return null;
+};
+
+const BlockErrorText = ({ blockingError }: BlockErrorTextProps) => {
+  switch (blockingError) {
+    case ErrorType.NO_SELECTION:
+      return <Trans>No assets selected to migrate.</Trans>;
+    case ErrorType.V2_HF_TOO_LOW:
+      return (
+        <Trans>
+          This action will reduce V2 health factor below liquidation threshold. retain collateral or
+          migrate borrow position to continue.
+        </Trans>
+      );
+    case ErrorType.V3_HF_TOO_LOW:
+      return (
+        <>
+          <Trans>
+            This action will reduce health factor of V3 below liquidation threshold. Increase
+            migrated collateral or reduce migrated borrow to continue.
+          </Trans>
+        </>
+      );
+    case ErrorType.INSUFFICIENT_LTV:
+      return (
+        <Trans>
+          The loan to value of the migrated positions would cause liquidation. Increase migrated
+          collateral or reduce migrated borrow to continue.
+        </Trans>
+      );
+    default:
+      return <></>;
+  }
+};
 
 export const MigrationBottomPanel = ({
   disableButton,
@@ -62,70 +136,7 @@ export const MigrationBottomPanel = ({
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const {
-    totalCollateralMarketReferenceCurrency,
-    totalBorrowsMarketReferenceCurrency,
-    currentLoanToValue,
-  } = userSummaryAfterMigration.toUserSummaryAfterMigration;
-
-  const maxBorrowAmount = valueToBigNumber(totalCollateralMarketReferenceCurrency).multipliedBy(
-    currentLoanToValue
-  );
-
-  const insufficientLtv = valueToBigNumber(totalBorrowsMarketReferenceCurrency).isGreaterThan(
-    maxBorrowAmount
-  );
-
-  // error types handling
-  let blockingError: ErrorType | undefined = undefined;
-  if (disableButton && isChecked) {
-    blockingError = ErrorType.NO_SELECTION;
-  } else if (
-    Number(userSummaryAfterMigration.fromUserSummaryAfterMigration.healthFactor) < 1.005 &&
-    userSummaryAfterMigration.fromUserSummaryAfterMigration.healthFactor !== '-1'
-  ) {
-    blockingError = ErrorType.V2_HF_TOO_LOW;
-  } else if (
-    Number(userSummaryAfterMigration.toUserSummaryAfterMigration.healthFactor) < 1.005 &&
-    userSummaryAfterMigration.toUserSummaryAfterMigration.healthFactor !== '-1'
-  ) {
-    blockingError = ErrorType.V3_HF_TOO_LOW;
-  } else if (insufficientLtv) {
-    blockingError = ErrorType.INSUFFICIENT_LTV;
-  }
-
-  // error render handling
-  const Blocked = () => {
-    switch (blockingError) {
-      case ErrorType.NO_SELECTION:
-        return <Trans>No assets selected to migrate.</Trans>;
-      case ErrorType.V2_HF_TOO_LOW:
-        return (
-          <Trans>
-            This action will reduce V2 health factor below liquidation threshold. retain collateral
-            or migrate borrow position to continue.
-          </Trans>
-        );
-      case ErrorType.V3_HF_TOO_LOW:
-        return (
-          <>
-            <Trans>
-              This action will reduce health factor of V3 below liquidation threshold. Increase
-              migrated collateral or reduce migrated borrow to continue.
-            </Trans>
-          </>
-        );
-      case ErrorType.INSUFFICIENT_LTV:
-        return (
-          <Trans>
-            The loan to value of the migrated positions would cause liquidation. Increase migrated
-            collateral or reduce migrated borrow to continue.
-          </Trans>
-        );
-      default:
-        return <></>;
-    }
-  };
+  const blockingError = getBlockingError(userSummaryAfterMigration, !!disableButton, isChecked);
 
   return (
     <Box
@@ -186,9 +197,9 @@ export const MigrationBottomPanel = ({
           />
         </Box>
 
-        {blockingError !== undefined && (
+        {blockingError && (
           <Warning severity="warning">
-            <Blocked />
+            <BlockErrorText blockingError={blockingError} />
           </Warning>
         )}
 
