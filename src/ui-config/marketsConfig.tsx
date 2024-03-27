@@ -550,7 +550,7 @@ export const marketsData: {
     v3: true,
     chainId: ChainId.harmony,
     enabledFeatures: {
-      incentives: true,
+      incentives: false,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-harmony',
     addresses: {
