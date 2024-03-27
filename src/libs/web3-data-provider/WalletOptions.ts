@@ -21,6 +21,7 @@ export enum WalletType {
   GNOSIS = 'gnosis',
   LEDGER = 'ledger',
   READ_ONLY_MODE = 'read_only_mode',
+  XDEFI = 'xdefi_wallet',
 }
 
 const APP_NAME = 'Aave';
@@ -83,6 +84,7 @@ export const getWallet = (
     // case WalletType.LEDGER:
     //   return new LedgerHQFrameConnector({});
     case WalletType.INJECTED:
+    case WalletType.XDEFI:
       return new InjectedConnector({});
     case WalletType.WALLET_LINK:
       const networkConfig = getNetworkConfig(chainId);
