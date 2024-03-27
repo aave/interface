@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
@@ -66,10 +66,7 @@ export default function V3Migration() {
   const { data: userMigrationReserves, isLoading: userMigrationReservesLoading } =
     useUserMigrationReserves(fromMarketData, toMarketData);
 
-  const supplyReserves = useMemo(
-    () => userMigrationReserves?.supplyReserves || [],
-    [userMigrationReserves]
-  );
+  const supplyReserves = userMigrationReserves?.supplyReserves || [];
   const borrowReserves = userMigrationReserves?.borrowReserves || [];
   const isolatedReserveV3 = userMigrationReserves?.isolatedReserveV3;
 
@@ -119,7 +116,7 @@ export default function V3Migration() {
   };
 
   const userControlledCollateral =
-    Object.keys(selectedSupplyAssets).length > 1 &&
+    selectedSupplyAssets.length > 1 &&
     toUserSummaryForMigration &&
     toUserSummaryForMigration.totalCollateralMarketReferenceCurrency == '0';
 
@@ -151,8 +148,7 @@ export default function V3Migration() {
                     toUserSummaryBeforeMigration: toUserSummaryForMigration,
                   }}
                   disableButton={
-                    !Object.keys(selectedSupplyAssets).length &&
-                    !Object.keys(selectedBorrowAssets).length
+                    selectedSupplyAssets.length === 0 && selectedBorrowAssets.length === 0
                   }
                   enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
                   loading={loading}

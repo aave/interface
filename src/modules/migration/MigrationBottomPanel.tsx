@@ -197,7 +197,7 @@ export const MigrationBottomPanel = ({
           />
         </Box>
 
-        {blockingError && (
+        {blockingError !== null && (
           <Warning severity="warning">
             <BlockErrorText blockingError={blockingError} />
           </Warning>
@@ -205,7 +205,7 @@ export const MigrationBottomPanel = ({
 
         {enteringIsolationMode && <IsolationModeWarning severity="warning" />}
 
-        {blockingError === undefined && (
+        {blockingError === null && (
           <Box
             sx={{
               height: '44px',
@@ -238,9 +238,9 @@ export const MigrationBottomPanel = ({
         <Box>
           <Button
             onClick={openV3Migration}
-            disabled={!isChecked || blockingError !== undefined}
+            disabled={!isChecked || blockingError !== null}
             sx={{ width: '100%', height: '44px' }}
-            variant={!isChecked || blockingError !== undefined ? 'contained' : 'gradient'}
+            variant={!isChecked || blockingError !== null ? 'contained' : 'gradient'}
             size="medium"
             data-cy={`migration-button`}
           >
