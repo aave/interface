@@ -226,6 +226,21 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://bridge.arbitrum.io',
     },
   },
+  [ChainId.arbitrum_sepolia]: {
+    name: 'Arbitrum Sepolia',
+    publicJsonRPCUrl: [
+      'https://sepolia-rollup.arbitrum.io/rpc',
+      'https://public.stackup.sh/api/v1/node/arbitrum-sepolia',
+    ],
+    publicJsonRPCWSUrl: 'https://sepolia-rollup.arbitrum.io/rpc',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.arbiscan.io',
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/arbitrum.svg',
+  },
   [ChainId.arbitrum_one]: {
     name: 'Arbitrum',
     privateJsonRPCUrl: 'https://arbitrum-one.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
@@ -274,6 +289,22 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
   },
+  [ChainId.base_sepolia]: {
+    name: 'Base Sepolia',
+    publicJsonRPCUrl: [
+      'https://rpc.notadegen.com/base/sepolia',
+      'https://base-sepolia.blockpi.network/v1/rpc/public',
+      'https://public.stackup.sh/api/v1/node/base-sepolia',
+    ],
+    publicJsonRPCWSUrl: 'wss://base-sepolia-rpc.publicnode.com',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.basescan.org/',
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/base.svg',
+  },
 
   [ChainId.harmony]: {
     name: 'Harmony',
@@ -319,24 +350,16 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
   },
-  [ChainId.optimism_goerli]: {
-    name: 'Optimism Görli',
-    publicJsonRPCUrl: ['https://goerli.optimism.io', 'https://opt-goerli.g.alchemy.com/v2/demo'],
-    publicJsonRPCWSUrl: 'wss://goerli.optimism.io',
-    // protocolDataUrl: '',
+  [ChainId.optimism_sepolia]: {
+    name: 'Optimism Sepolia',
+    publicJsonRPCUrl: ['https://sepolia.optimism.io'],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://l2-explorer.surge.sh',
-    // usdMarket: true,
+    explorerLink: 'https://sepolia-optimistic.etherscan.io',
     isTestnet: true,
     networkLogoPath: '/icons/networks/optimism.svg',
-    // bridge: {
-    //   icon: '/icons/bridge/optimism.svg',
-    //   name: 'Optimism Bridge',
-    //   url: 'https://app.optimism.io/bridge',
-    // },
   },
   [ChainId.scroll_sepolia]: {
     name: 'Scroll Sepolia',
@@ -345,20 +368,13 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://scroll-sepolia.blockpi.network/v1/rpc/public',
     ],
     publicJsonRPCWSUrl: 'wss://sepolia-rpc.scroll.io',
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://sepolia.scrollscan.dev',
-    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/scroll.svg',
-    // bridge: {
-    //   icon: '/icons/bridge/scroll.svg',
-    //   name: 'Scroll Sepolia Bridge',
-    //   url: 'https://scroll.io/bridge',
-    // },
   },
   [ChainId.fantom]: {
     name: 'Fantom',
@@ -368,8 +384,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc.ankr.com/fantom',
       'https://fantom-mainnet.public.blastapi.io',
     ],
-    // publicJsonRPCWSUrl: 'wss://wsapi.fantom.network',
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',
     wrappedBaseAssetSymbol: 'WFTM',
@@ -409,7 +423,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.metis_andromeda]: {
     name: 'Metis Andromeda',
-    privateJsonRPCUrl: 'https://metis-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    // privateJsonRPCUrl: 'https://metis-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://andromeda.metis.io/?owner=1088'],
     baseAssetSymbol: '', // N/A
     wrappedBaseAssetSymbol: '', // N/A

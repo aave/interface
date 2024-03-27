@@ -54,11 +54,6 @@ const EmodeModal = dynamic(() =>
 const FaucetModal = dynamic(() =>
   import('src/components/transactions/Faucet/FaucetModal').then((module) => module.FaucetModal)
 );
-const MigrateV3Modal = dynamic(() =>
-  import('src/components/transactions/MigrateV3/MigrateV3Modal').then(
-    (module) => module.MigrateV3Modal
-  )
-);
 const RateSwitchModal = dynamic(() =>
   import('src/components/transactions/RateSwitch/RateSwitchModal').then(
     (module) => module.RateSwitchModal
@@ -161,7 +156,6 @@ export default function MyApp(props: MyAppProps) {
                             <EmodeModal />
                             <SwapModal />
                             <FaucetModal />
-                            <MigrateV3Modal />
                             <TransactionEventHandler />
                             <SwitchModal />
                             <StakingMigrateModal />
