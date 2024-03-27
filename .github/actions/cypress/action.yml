@@ -16,7 +16,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # v3.4.1
+    - uses: actions/setup-node@v4.0.2
       with:
         node-version-file: '.nvmrc'
         cache: 'yarn'
@@ -29,7 +29,7 @@ runs:
 
     - name: download build
       if: github.event_name != 'workflow_run'
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      uses: actions/download-artifact@v4.1.4
       with:
         name: out
         path: out
@@ -60,7 +60,7 @@ runs:
         CYPRESS_TENDERLY_PROJECT: ${{ inputs.CYPRESS_TENDERLY_PROJECT }}
 
     - name: upload screenshots
-      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      uses: actions/upload-artifact@v4.3.1
       if: failure()
       with:
         name: cypress-fail-screenshots-${{ github.job }}-${{ matrix.market }}
