@@ -3,7 +3,7 @@ import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataP
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
-import { BigNumber } from 'ethers/lib/ethers';
+import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
