@@ -10,7 +10,7 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
@@ -54,11 +54,6 @@ const EmodeModal = dynamic(() =>
 const FaucetModal = dynamic(() =>
   import('src/components/transactions/Faucet/FaucetModal').then((module) => module.FaucetModal)
 );
-const MigrateV3Modal = dynamic(() =>
-  import('src/components/transactions/MigrateV3/MigrateV3Modal').then(
-    (module) => module.MigrateV3Modal
-  )
-);
 const RateSwitchModal = dynamic(() =>
   import('src/components/transactions/RateSwitch/RateSwitchModal').then(
     (module) => module.RateSwitchModal
@@ -98,14 +93,6 @@ function getWeb3Library(provider: any): providers.Web3Provider {
   return library;
 }
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-});
-
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
@@ -114,6 +101,16 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
   const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
 
   const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
   useEffect(() => {
@@ -159,7 +156,6 @@ export default function MyApp(props: MyAppProps) {
                             <EmodeModal />
                             <SwapModal />
                             <FaucetModal />
-                            <MigrateV3Modal />
                             <TransactionEventHandler />
                             <SwitchModal />
                             <StakingMigrateModal />

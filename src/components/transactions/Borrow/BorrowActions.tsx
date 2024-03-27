@@ -8,8 +8,8 @@ import {
 } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
@@ -68,6 +68,7 @@ export const BorrowActions = React.memo(
       setApprovalTxState,
     } = useModalContext();
     const { sendTx } = useWeb3Context();
+    const queryClient = useQueryClient();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
 

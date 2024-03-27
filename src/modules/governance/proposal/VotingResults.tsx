@@ -3,44 +3,42 @@ import { Box, Paper, Skeleton, Typography } from '@mui/material';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
-import { EnhancedProposal } from 'src/hooks/governance/useProposal';
+import { Proposal } from 'src/hooks/governance/useProposals';
 import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
 
 import { StateBadge } from '../StateBadge';
-import { getProposalVoteInfo } from '../utils/formatProposal';
 import { VoteBar } from '../VoteBar';
 import { VotersListContainer } from './VotersListContainer';
 
 interface VotingResultsPros {
-  proposal?: EnhancedProposal;
+  proposal?: Proposal;
   proposalVotes?: ProposalVotes;
   loading: boolean;
 }
 
 export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResultsPros) => {
-  const voteInfo = proposal ? getProposalVoteInfo(proposal?.proposal) : undefined;
   return (
     <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
       <Typography variant="h3">
         <Trans>Voting results</Trans>
       </Typography>
-      {proposal && voteInfo ? (
+      {proposal ? (
         <>
           <VoteBar
             yae
-            percent={voteInfo.forPercent}
-            votes={voteInfo.forVotes}
+            percent={proposal.votingInfo.forPercent}
+            votes={proposal.votingInfo.forVotes}
             sx={{ mt: 8 }}
             loading={loading}
           />
           <VoteBar
-            percent={voteInfo.againstPercent}
-            votes={voteInfo.againstVotes}
+            percent={proposal.votingInfo.againstPercent}
+            votes={proposal.votingInfo.againstVotes}
             sx={{ mt: 3 }}
             loading={loading}
           />
           {proposalVotes && (
-            <VotersListContainer proposal={voteInfo} proposalVotes={proposalVotes} />
+            <VotersListContainer proposal={proposal.votingInfo} proposalVotes={proposalVotes} />
           )}
           <Row caption={<Trans>State</Trans>} sx={{ height: 48 }} captionVariant="description">
             <Box
@@ -50,7 +48,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
                 alignItems: 'flex-end',
               }}
             >
-              <StateBadge state={proposal.proposal.state} loading={loading} />
+              <StateBadge state={proposal.badgeState} loading={loading} />
               {/*
               <Box sx={{ mt: 0.5 }}>
                 <FormattedProposalTime
@@ -67,8 +65,14 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
           <Row caption={<Trans>Quorum</Trans>} sx={{ height: 48 }} captionVariant="description">
             <CheckBadge
               loading={loading}
-              text={voteInfo.quorumReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>}
-              checked={voteInfo.quorumReached}
+              text={
+                proposal.votingInfo.quorumReached ? (
+                  <Trans>Reached</Trans>
+                ) : (
+                  <Trans>Not reached</Trans>
+                )
+              }
+              checked={proposal.votingInfo.quorumReached}
               sx={{ height: 48 }}
               variant="description"
             />
@@ -87,7 +91,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
           >
             <Box sx={{ textAlign: 'right' }}>
               <FormattedNumber
-                value={voteInfo.forVotes}
+                value={proposal.votingInfo.forVotes}
                 visibleDecimals={2}
                 roundDown
                 sx={{ display: 'block' }}
@@ -95,7 +99,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
 
               <FormattedNumber
                 variant="caption"
-                value={voteInfo.quorum}
+                value={proposal.votingInfo.quorum}
                 visibleDecimals={2}
                 roundDown
                 color="text.muted"
@@ -110,9 +114,13 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
             <CheckBadge
               loading={loading}
               text={
-                voteInfo.differentialReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>
+                proposal.votingInfo.differentialReached ? (
+                  <Trans>Reached</Trans>
+                ) : (
+                  <Trans>Not reached</Trans>
+                )
               }
-              checked={voteInfo.differentialReached}
+              checked={proposal.votingInfo.differentialReached}
               sx={{ height: 48 }}
               variant="description"
             />
@@ -131,14 +139,14 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
           >
             <Box sx={{ textAlign: 'right' }}>
               <FormattedNumber
-                value={voteInfo.currentDifferential}
+                value={proposal.votingInfo.currentDifferential}
                 visibleDecimals={2}
                 roundDown
                 sx={{ display: 'block' }}
               />
               <FormattedNumber
                 variant="caption"
-                value={voteInfo.requiredDifferential}
+                value={proposal.votingInfo.requiredDifferential}
                 visibleDecimals={2}
                 roundDown
                 color="text.muted"

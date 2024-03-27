@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.25.0":
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.25.0.tgz#7f196d9418fc55a9503045a1c179f2d2af01c606"
-  integrity sha512-EejPEa53px0qFo0QgmRwRUge8zEE0iYuS7B9OfYC3gE4/DGSvsRB8fdwkZxpi4r2gH0mFDol6VigpcIZrBYtHQ==
+"@aave/contract-helpers@1.28.0":
+  version "1.28.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.28.0.tgz#e5e0a9d530c1ac85a37efb3772374589f4dfc83b"
+  integrity sha512-S66hMTYvFpftn7Ro6wjTDNaoL+rCxy1rAzVl4MV62RQjcT9C7VsH1h18qEHuwv7prh0bCTNyj7YudZwlzefeMw==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.25.0":
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.25.0.tgz#8c6e112a7d96d7c687c2f106ccac2a16300913ca"
-  integrity sha512-KCXiujO2Xi3X74GqmrDOtEGpho3VKDts+/dVWFpBoCtWpI35qAI8IxgrmWVfR1/4qzDNDVX0R4QmVjqgTkRF7w==
+"@aave/math-utils@1.28.0":
+  version "1.28.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.28.0.tgz#58da220dab653e5776948093096e5a096f590088"
+  integrity sha512-cGNt8u+IUsfrY9hz7JKVVn43VY1OWxuIJ/oHmESxhuiJieVsF2O6ogkkWxNdvqcLM8b/8c/27sTi317aE7Tw8w==
 
 "@adobe/css-tools@^4.0.1":
   version "4.0.1"
@@ -1317,10 +1317,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@^2.19.0":
-  version "2.19.0"
-  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-2.19.0.tgz#5278bd4c8645b4ee783680c1b9d3df489f571060"
-  integrity sha512-JrZOZqzunJqFe4+/ZpL3vD7ddtGjjlBRCnMeQ68egNBAB2CYXvkXj6pSZLJBWklkoLgh17or1IdAQHTMYtBSsg==
+"@bgd-labs/aave-address-book@^2.24.1":
+  version "2.24.2"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-2.24.2.tgz#9e5c4b72db54bc4bf931dd69a7680fd5cdaa2966"
+  integrity sha512-2lz2R9OfXOq1aRqt1cMO/RbExgOHq4ueItvEVDI7bVl/iRxk8EDq5JonUZl0EUhjC+Xr+NgfehIOP6h3Qs1CIw==
 
 "@coinbase/wallet-sdk@3.1.0", "@coinbase/wallet-sdk@^3.0.4":
   version "3.1.0"

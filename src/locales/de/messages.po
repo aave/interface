@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-27 00:16\n"
+"PO-Revision-Date: 2024-03-26 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -789,10 +789,6 @@ msgstr "Fehlertext kopieren"
 msgid "Covered debt"
 msgstr "Gedeckte Schuldverschreibungen"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Created"
-msgstr "Erstellt"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Aktueller LTV"
@@ -986,6 +982,25 @@ msgstr "Effektivzins"
 msgid "Efficiency mode (E-Mode)"
 msgstr "Effizienz-Modus (E-Modus)"
 
+#: src/modules/markets/MarketAssetsListItem.tsx
+msgid "Eligible for <0>2.1M$</0> WETH Community Program 👻"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "Eligible for <0>2.1M$</0> wETH Community Program 👻"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+msgstr ""
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Email"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr "Emode"
@@ -1073,6 +1088,7 @@ msgstr "Vorschlagswähler konnten nicht geladen werden. Bitte aktualisieren Sie 
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/faucet/FaucetItemLoader.tsx
 #: src/modules/faucet/FaucetMobileItemLoader.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1082,6 +1098,11 @@ msgstr "Hahn"
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Hahn {0}"
+
+#: src/layouts/FeedbackDialog.tsx
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
@@ -1338,6 +1359,10 @@ msgstr "Erfahren Sie mehr in unserem <0>FAQ-Leitfaden</0>"
 msgid "Learn more."
 msgstr "Weitere Informationen."
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1466,8 +1491,16 @@ msgstr "Die maximale Menge, die zur Verfügung steht, beträgt <0/> {0} (<1/>)."
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Die maximal für die Bereitstellung verfügbare Menge ist begrenzt, da die Obergrenze für das Protokollangebot bei {0}%."
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1530,7 +1563,13 @@ msgstr "Minimaler GHO-Kreditbetrag"
 msgid "Minimum USD value received"
 msgstr "Erhaltener Mindestwert in USD"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr ""
+
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr ""
 
@@ -1668,14 +1707,6 @@ msgstr "Benachrichtigen"
 msgid "Ok, Close"
 msgstr "Ok, schließen"
 
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "Ok, ich hab's verstanden"
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Open for voting"
-msgstr ""
-
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Vorgang wird nicht unterstützt"
@@ -1695,10 +1726,6 @@ msgstr "Seite nicht gefunden"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Die Teilnahme an dieser {symbol} Reserve gibt annualisierte Belohnungen."
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Payloads executed"
-msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1907,6 +1934,10 @@ msgstr "Restschuld"
 msgid "Remaining supply"
 msgstr "Verbleibendes Angebot"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Remind me"
+msgstr ""
+
 #: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Remove"
 msgstr ""
@@ -2076,6 +2107,10 @@ msgstr "Ausgewählte Kredite"
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
 msgstr "Ausgewählte Versorgungsanlagen"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr ""
 
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
@@ -2249,6 +2284,10 @@ msgstr "Staking-Rabatt"
 msgid "State"
 msgstr "Zustand"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2407,6 +2446,10 @@ msgstr "Testnet-Modus"
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
 msgstr "Der Testnet-Modus ist aktiviert."
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
+msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting!!"
@@ -2581,6 +2624,15 @@ msgstr "Bei dieser Gasberechnung handelt es sich nur um eine Schätzung. Ihre Br
 msgid "This integration was<0>proposed and approved</0>by the community."
 msgstr "Diese Integration wurde von der Community<0>vorgeschlagen und genehmigt</0>."
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
 msgstr "Dies ist der Gesamtbetrag, der Ihnen zum Ausleihen zur Verfügung steht. Sie können auf der Grundlage Ihrer Sicherheiten und bis zum Erreichen der Kreditobergrenze einen Kredit aufnehmen."
@@ -2741,6 +2793,7 @@ msgid "Unstake now"
 msgstr "Jetzt absetzen"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "Fenster \"Unsstake\""
 
@@ -2866,6 +2919,7 @@ msgid "View contract"
 msgstr "Vertrag ansehen"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "Details anzeigen"
@@ -2902,10 +2956,6 @@ msgstr "Abstimmungen"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Voting"
 msgstr "Stimmabgabe"
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Voting closed"
-msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting is on"
@@ -3224,7 +3274,6 @@ msgid "enabled"
 msgstr "ermöglichte"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "enden"
 
@@ -3270,7 +3319,6 @@ msgid "staking view"
 msgstr "Stakening-Ansicht"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr "Beginnt"
 
@@ -3348,6 +3396,7 @@ msgid "{m}m"
 msgstr "{m}m"
 
 #: src/hooks/useReserveActionState.tsx
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Hahn"
@@ -3359,6 +3408,10 @@ msgstr "{notifyText}"
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} Ausgewählte Assets"
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "{stepName}"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"

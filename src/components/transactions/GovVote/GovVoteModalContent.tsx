@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useTheme } from '@mui/material';
-import { EnhancedProposal } from 'src/hooks/governance/useProposal';
+import { Proposal } from 'src/hooks/governance/useProposals';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -17,7 +17,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovVoteActions } from './GovVoteActions';
 
 export type GovVoteModalContentProps = {
-  proposal: EnhancedProposal;
+  proposal: Proposal;
   support: boolean;
   power: string;
 };
@@ -63,7 +63,7 @@ export const GovVoteModalContent = ({
     }
   };
 
-  const proposalVotingChain = +proposal.proposal.votingPortal.votingMachineChainId;
+  const proposalVotingChain = +proposal.subgraphProposal.votingPortal.votingMachineChainId;
 
   const isWrongNetwork = connectedChainId !== proposalVotingChain;
 

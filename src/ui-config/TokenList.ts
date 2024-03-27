@@ -5103,6 +5103,36 @@ export const TOKEN_LIST: TokenList = {
       },
     },
     {
+      chainId: 1,
+      address: '0xc5f0f7b66764F6ec8C8Dff7BA683102295E16409',
+      name: 'First Digital USD',
+      symbol: 'FDUSD',
+      decimals: 18,
+      logoURI: 'https://assets.coingecko.com/coins/images/31079/thumb/firstfigital.jpeg?1696529912',
+      extensions: {
+        bridgeInfo: {
+          '56': {
+            tokenAddress: '0xc5f0f7b66764F6ec8C8Dff7BA683102295E16409',
+          },
+        },
+      },
+    },
+    {
+      chainId: 56,
+      address: '0xc5f0f7b66764F6ec8C8Dff7BA683102295E16409',
+      name: 'First Digital USD',
+      symbol: 'FDUSD',
+      decimals: 18,
+      logoURI: 'https://assets.coingecko.com/coins/images/31079/thumb/firstfigital.jpeg?1696529912',
+      extensions: {
+        bridgeInfo: {
+          '1': {
+            tokenAddress: '0xc5f0f7b66764F6ec8C8Dff7BA683102295E16409',
+          },
+        },
+      },
+    },
+    {
       chainId: 10,
       address: '0x2E3D870790dC77A83DD1d18184Acc7439A53f475',
       name: 'Frax',

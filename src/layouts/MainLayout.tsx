@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import React, { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
+import { FeedbackModal } from 'src/layouts/FeedbackDialog';
 import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
 import { AppFooter } from './AppFooter';
@@ -13,7 +14,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
       <TopBarNotify
         notifyText="Users can now stake GHO in the safety module 🎉"
         learnMoreLink="https://app.aave.com/staking"
-        buttonText="Stake Now"
+        buttonText="Learn More"
       />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
@@ -21,6 +22,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
       </Box>
 
       <AppFooter />
+      <FeedbackModal />
       {FORK_ENABLED ? null : <AnalyticsConsent />}
     </>
   );

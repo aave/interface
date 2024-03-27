@@ -26,7 +26,7 @@ export const searchProposals = (query: string) =>
   );
 
 export const useProposalsSearch = (query: string) => {
-  const { votingMachineSerivce } = useSharedDependencies();
+  const { votingMachineSerivce, governanceV3Service } = useSharedDependencies();
 
   const formattedQuery = query.trim().split(' ').join(' & ');
 
@@ -42,7 +42,7 @@ export const useProposalsSearch = (query: string) => {
   const { data: proposals, isFetching: fetchingProposals } = useQuery({
     queryFn: async () => {
       const proposals = await fetchSubgraphProposalsByIds(ids || []);
-      return fetchProposals(proposals, votingMachineSerivce);
+      return fetchProposals(proposals, votingMachineSerivce, governanceV3Service);
     },
     queryKey: ['proposals_by_id', ids],
     cacheTime: 0,

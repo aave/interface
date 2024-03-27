@@ -1,21 +1,58 @@
-import { ProposalV3State } from '@aave/contract-helpers';
 import { alpha, experimental_sx, Skeleton, styled } from '@mui/material';
+import invariant from 'tiny-invariant';
+
+import { ProposalLifecycleStep, ProposalVoteInfo } from './utils/formatProposal';
 
 interface StateBadgeProps {
-  state: ProposalV3State;
+  state?: ProposalBadgeState;
   loading?: boolean;
 }
 
-const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
+export enum ProposalBadgeState {
+  Created = 'Created',
+  OpenForVoting = 'Open for voting',
+  Passed = 'Passed',
+  Failed = 'Failed',
+  Executed = 'Executed',
+  Cancelled = 'Cancelled',
+  Expired = 'Expired',
+}
+
+type BadgeProps = {
+  state: ProposalBadgeState;
+};
+
+export const lifecycleToBadge = (
+  step: ProposalLifecycleStep,
+  votingInfo: ProposalVoteInfo
+): ProposalBadgeState => {
+  switch (step) {
+    case ProposalLifecycleStep.Null:
+      invariant(false, 'Proposal state is null');
+    case ProposalLifecycleStep.Created:
+      return ProposalBadgeState.Created;
+    case ProposalLifecycleStep.OpenForVoting:
+      return ProposalBadgeState.OpenForVoting;
+    case ProposalLifecycleStep.VotingClosed:
+      return votingInfo.isPassing ? ProposalBadgeState.Passed : ProposalBadgeState.Failed;
+    case ProposalLifecycleStep.Executed:
+      return ProposalBadgeState.Executed;
+    case ProposalLifecycleStep.Cancelled:
+      return ProposalBadgeState.Cancelled;
+    case ProposalLifecycleStep.Expired:
+      return ProposalBadgeState.Expired;
+  }
+};
+
+const Badge = styled('span')<BadgeProps>(({ theme, state }) => {
   const COLOR_MAP = {
-    [ProposalV3State.Null]: theme.palette.secondary.main,
-    [ProposalV3State.Created]: theme.palette.primary.light,
-    [ProposalV3State.Active]: theme.palette.success.main,
-    [ProposalV3State.Queued]: theme.palette.primary.light,
-    [ProposalV3State.Executed]: theme.palette.success.main,
-    [ProposalV3State.Cancelled]: theme.palette.error.main,
-    [ProposalV3State.Expired]: theme.palette.error.main,
-    [ProposalV3State.Failed]: theme.palette.error.main,
+    [ProposalBadgeState.Created]: theme.palette.primary.light,
+    [ProposalBadgeState.OpenForVoting]: theme.palette.success.main,
+    [ProposalBadgeState.Passed]: theme.palette.success.main,
+    [ProposalBadgeState.Executed]: theme.palette.success.main,
+    [ProposalBadgeState.Cancelled]: theme.palette.error.main,
+    [ProposalBadgeState.Expired]: theme.palette.error.main,
+    [ProposalBadgeState.Failed]: theme.palette.error.main,
   };
   const color = COLOR_MAP[state] || '#000';
   return experimental_sx({
@@ -32,56 +69,48 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
 });
 
 export function StateBadge({ state, loading }: StateBadgeProps) {
-  if (loading) return <Skeleton width={70} />;
-  return <Badge state={state}>{stateToString(state)}</Badge>;
+  if (loading || !state) return <Skeleton width={70} />;
+  return <Badge state={state}>{state}</Badge>;
 }
 
 export const getProposalStates = () => {
-  return Object.keys(ProposalV3State)
-    .map((key) => ProposalV3State[key as keyof typeof ProposalV3State])
-    .filter((key) => !isNaN(Number(key)))
-    .map(stateToString)
-    .filter((state) => state !== 'Null'); // not a valid state for proposals that exist
+  return Object.values(ProposalBadgeState);
 };
 
-export const stateToString = (state: ProposalV3State) => {
-  switch (state) {
-    case ProposalV3State.Null:
-      return 'Null';
-    case ProposalV3State.Created:
+export const stateToString = (stateToString: ProposalBadgeState) => {
+  switch (stateToString) {
+    case ProposalBadgeState.Created:
       return 'Created';
-    case ProposalV3State.Active:
-      return 'Active';
-    case ProposalV3State.Queued:
-      return 'Queued';
-    case ProposalV3State.Executed:
+    case ProposalBadgeState.OpenForVoting:
+      return 'Open for voting';
+    case ProposalBadgeState.Passed:
+      return 'Success';
+    case ProposalBadgeState.Executed:
       return 'Executed';
-    case ProposalV3State.Cancelled:
+    case ProposalBadgeState.Cancelled:
       return 'Cancelled';
-    case ProposalV3State.Expired:
+    case ProposalBadgeState.Expired:
       return 'Expired';
-    case ProposalV3State.Failed:
+    case ProposalBadgeState.Failed:
       return 'Failed';
   }
 };
 
 export const stringToState = (state: string) => {
   switch (state) {
-    case 'Null':
-      return ProposalV3State.Null;
     case 'Created':
-      return ProposalV3State.Created;
-    case 'Active':
-      return ProposalV3State.Active;
-    case 'Queued':
-      return ProposalV3State.Queued;
+      return ProposalBadgeState.Created;
+    case 'Open for voting':
+      return ProposalBadgeState.OpenForVoting;
+    case 'Success':
+      return ProposalBadgeState.Passed;
     case 'Executed':
-      return ProposalV3State.Executed;
+      return ProposalBadgeState.Executed;
     case 'Cancelled':
-      return ProposalV3State.Cancelled;
+      return ProposalBadgeState.Cancelled;
     case 'Expired':
-      return ProposalV3State.Expired;
+      return ProposalBadgeState.Expired;
     case 'Failed':
-      return ProposalV3State.Failed;
+      return ProposalBadgeState.Failed;
   }
 };

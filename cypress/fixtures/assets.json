@@ -956,10 +956,22 @@
       "collateral": true,
       "wrapped": false
     },
+    "USDT": {
+      "fullName": "USDT",
+      "shortName": "USDT",
+      "collateral": false,
+      "wrapped": false
+    },
     "aUSDC": {
       "fullName": "aUSD",
       "shortName": "aUSDC",
       "collateral": true,
+      "wrapped": false
+    },
+    "USDT": {
+      "fullName": "USDT",
+      "shortName": "USDT",
+      "collateral": false,
       "wrapped": false
     },
     "WBTC": {

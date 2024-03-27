@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import {
   JsonRpcProvider,
@@ -143,7 +143,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         if (connector instanceof WalletConnectConnector) {
           connector.walletConnectProvider = undefined;
         }
-        await activate(connector, undefined, true);
+
+        if (wallet === WalletType.INJECTED) {
+          await activateMetaMask(connector);
+        } else {
+          await activate(connector, undefined, true);
+        }
+
         setConnector(connector);
         setSwitchNetworkError(undefined);
         setWalletType(wallet);
@@ -160,6 +166,51 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     },
     [disconnectWallet, currentChainId]
   );
+
+  const activateMetaMask = async (connector: AbstractConnector) => {
+    // This is a workaround for an issue that happens with chrome and metamask.
+    // If the app was preloaded in chrome, there's a case where the extension can be
+    // unresponsive if the app was switched from preloading to active at the wrong time.
+    // This produces an infinite loading spinner on app load.
+    // There are no errors thrown that we can handle in this state, so just retry activating
+    // the connector. If it still fails after the backoff retry, then throw an error.
+    // See this issue for more details: https://github.com/MetaMask/metamask-extension/issues/23329
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const unlocked = (await (window as any)?.ethereum?._metamask?.isUnlocked()) ?? false;
+    if (!unlocked) {
+      // if the extension is locked, just do the normal activation
+      return activate(connector, undefined, true);
+    }
+
+    const activatePromise = activate(connector, undefined, true);
+
+    const activateRetryAttempts = 2;
+
+    const activateFn = async (connector: AbstractConnector, attempt: number) => {
+      await Promise.race([
+        activate(connector, undefined, true),
+        new Promise((_resolve, reject) => {
+          setTimeout(() => {
+            reject(new Error('MetaMask activation timeout'));
+          }, 2000);
+        }),
+      ]).catch((reason: unknown) => {
+        console.error(reason);
+        if (reason instanceof Error && reason.message === 'MetaMask activation timeout') {
+          if (attempt <= activateRetryAttempts) {
+            return activateFn(connector, attempt + 1);
+          }
+          throw reason;
+        }
+        // If the promise was rejected with a different error, then return the original instance.
+        // This handles cases where we are waiting for user input, such as giving the dapp permissions.
+        return activatePromise;
+      });
+    };
+
+    await activateFn(connector, 1);
+  };
 
   const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
     // @ts-expect-error ethereum doesn't necessarily exist
@@ -404,13 +455,20 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const injectedProvider = (window as any).ethereum;
     if (provider && account && window && injectedProvider) {
       if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
+        let tokenSymbol = symbol;
+        if (!tokenSymbol) {
+          const { getTokenData } = new ERC20Service(provider);
+          const { symbol } = await getTokenData(address);
+          tokenSymbol = symbol;
+        }
+
         await injectedProvider.request({
           method: 'wallet_watchAsset',
           params: {
             type: 'ERC20',
             options: {
               address,
-              symbol,
+              symbol: tokenSymbol,
               decimals,
               image,
             },

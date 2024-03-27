@@ -51,6 +51,8 @@ export type NetworkConfig = {
 
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
+const ratesHistoryApiUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/rates-history`;
+
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
@@ -109,7 +111,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://etherscan.io',
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.polygon]: {
@@ -135,7 +137,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Polygon PoS Bridge',
       url: 'https://wallet.polygon.technology/polygon/bridge',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.mumbai]: {
     name: 'Mumbai',
@@ -201,7 +203,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Avalanche Bridge',
       url: 'https://bridge.avax.network/',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.arbitrum_goerli]: {
     name: 'Arbitrum Görli',
@@ -223,6 +225,21 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
+  },
+  [ChainId.arbitrum_sepolia]: {
+    name: 'Arbitrum Sepolia',
+    publicJsonRPCUrl: [
+      'https://sepolia-rollup.arbitrum.io/rpc',
+      'https://public.stackup.sh/api/v1/node/arbitrum-sepolia',
+    ],
+    publicJsonRPCWSUrl: 'https://sepolia-rollup.arbitrum.io/rpc',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.arbiscan.io',
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/arbitrum.svg',
   },
   [ChainId.arbitrum_one]: {
     name: 'Arbitrum',
@@ -246,7 +263,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.base]: {
     name: 'Base',
@@ -270,7 +287,23 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Base Bridge',
       url: 'https://bridge.base.org/',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
+  },
+  [ChainId.base_sepolia]: {
+    name: 'Base Sepolia',
+    publicJsonRPCUrl: [
+      'https://rpc.notadegen.com/base/sepolia',
+      'https://base-sepolia.blockpi.network/v1/rpc/public',
+      'https://public.stackup.sh/api/v1/node/base-sepolia',
+    ],
+    publicJsonRPCWSUrl: 'wss://base-sepolia-rpc.publicnode.com',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.basescan.org/',
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/base.svg',
   },
 
   [ChainId.harmony]: {
@@ -295,7 +328,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.optimism]: {
     name: 'Optimism',
@@ -315,26 +348,18 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Optimism Bridge',
       url: 'https://app.optimism.io/bridge',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
-  [ChainId.optimism_goerli]: {
-    name: 'Optimism Görli',
-    publicJsonRPCUrl: ['https://goerli.optimism.io', 'https://opt-goerli.g.alchemy.com/v2/demo'],
-    publicJsonRPCWSUrl: 'wss://goerli.optimism.io',
-    // protocolDataUrl: '',
+  [ChainId.optimism_sepolia]: {
+    name: 'Optimism Sepolia',
+    publicJsonRPCUrl: ['https://sepolia.optimism.io'],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://l2-explorer.surge.sh',
-    // usdMarket: true,
+    explorerLink: 'https://sepolia-optimistic.etherscan.io',
     isTestnet: true,
     networkLogoPath: '/icons/networks/optimism.svg',
-    // bridge: {
-    //   icon: '/icons/bridge/optimism.svg',
-    //   name: 'Optimism Bridge',
-    //   url: 'https://app.optimism.io/bridge',
-    // },
   },
   [ChainId.scroll_sepolia]: {
     name: 'Scroll Sepolia',
@@ -343,20 +368,13 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://scroll-sepolia.blockpi.network/v1/rpc/public',
     ],
     publicJsonRPCWSUrl: 'wss://sepolia-rpc.scroll.io',
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://sepolia.scrollscan.dev',
-    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/scroll.svg',
-    // bridge: {
-    //   icon: '/icons/bridge/scroll.svg',
-    //   name: 'Scroll Sepolia Bridge',
-    //   url: 'https://scroll.io/bridge',
-    // },
   },
   [ChainId.fantom]: {
     name: 'Fantom',
@@ -366,8 +384,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc.ankr.com/fantom',
       'https://fantom-mainnet.public.blastapi.io',
     ],
-    // publicJsonRPCWSUrl: 'wss://wsapi.fantom.network',
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',
     wrappedBaseAssetSymbol: 'WFTM',
@@ -380,7 +396,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.fantom_testnet]: {
     name: 'Fantom Testnet',
@@ -407,14 +423,14 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.metis_andromeda]: {
     name: 'Metis Andromeda',
-    privateJsonRPCUrl: 'https://metis-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    // privateJsonRPCUrl: 'https://metis-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://andromeda.metis.io/?owner=1088'],
     baseAssetSymbol: '', // N/A
     wrappedBaseAssetSymbol: '', // N/A
     baseAssetDecimals: 0, // N/A
     explorerLink: 'https://andromeda-explorer.metis.io',
     networkLogoPath: '/icons/networks/metis.svg',
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl,
   },
   [ChainId.xdai]: {
     name: 'Gnosis Chain',
@@ -434,6 +450,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'xDai Bridge',
       url: 'https://bridge.gnosischain.com/',
     },
+    ratesHistoryApiUrl,
   },
   [ChainId.bnb]: {
     name: 'Binance Smart Chain',
@@ -450,6 +467,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'BNB Bridge',
       url: 'https://www.bnbchain.org/en/bnb-chain-bridges',
     },
+    ratesHistoryApiUrl,
   },
 
   [ChainId.scroll]: {
@@ -467,5 +485,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Scroll Bridge',
       url: 'https://scroll.io/bridge',
     },
+    ratesHistoryApiUrl,
   },
 } as const;

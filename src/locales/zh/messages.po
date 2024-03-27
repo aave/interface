@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-27 00:16\n"
+"PO-Revision-Date: 2024-03-26 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -789,10 +789,6 @@ msgstr "复制错误文本"
 msgid "Covered debt"
 msgstr "担保债务"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Created"
-msgstr "创建"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "当前 LTV"
@@ -986,6 +982,25 @@ msgstr "实际利率"
 msgid "Efficiency mode (E-Mode)"
 msgstr "效率模式（E-Mode）"
 
+#: src/modules/markets/MarketAssetsListItem.tsx
+msgid "Eligible for <0>2.1M$</0> WETH Community Program 👻"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "Eligible for <0>2.1M$</0> wETH Community Program 👻"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+msgstr ""
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Email"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr "电动模式"
@@ -1073,6 +1088,7 @@ msgstr "无法加载提案投票者。请刷新页面。"
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/faucet/FaucetItemLoader.tsx
 #: src/modules/faucet/FaucetMobileItemLoader.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1082,6 +1098,11 @@ msgstr "龙头"
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "龙头 {0}"
+
+#: src/layouts/FeedbackDialog.tsx
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
@@ -1338,6 +1359,10 @@ msgstr "在我们的<0>常见问题解答指南</0>中了解更多信息"
 msgid "Learn more."
 msgstr "了解更多信息。"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1466,8 +1491,16 @@ msgstr "可供应的最大数量为 <0/> {0} (<1/>)."
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "最大可用供应量是有限的，因为协议供应上限 {0}%."
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1530,7 +1563,13 @@ msgstr "最低GHO借款金额"
 msgid "Minimum USD value received"
 msgstr "收到的最低美元价值"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr ""
+
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr ""
 
@@ -1668,14 +1707,6 @@ msgstr "通知"
 msgid "Ok, Close"
 msgstr "好的，关闭"
 
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "好的，我明白了"
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Open for voting"
-msgstr ""
-
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "不支持操作"
@@ -1695,10 +1726,6 @@ msgstr "页面未找到"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "参与其中 {symbol} Reserve 提供年度奖励。"
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Payloads executed"
-msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1907,6 +1934,10 @@ msgstr "剩余债务"
 msgid "Remaining supply"
 msgstr "剩余供应量"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Remind me"
+msgstr ""
+
 #: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Remove"
 msgstr ""
@@ -2076,6 +2107,10 @@ msgstr "选定的借入资产"
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
 msgstr "选定的供应资产"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr ""
 
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
@@ -2249,6 +2284,10 @@ msgstr "质押折扣"
 msgid "State"
 msgstr "州"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2407,6 +2446,10 @@ msgstr "测试网模式"
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
 msgstr "测试网模式开启"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
+msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting!!"
@@ -2581,6 +2624,15 @@ msgstr "此气体计算只是一个估计值。您的钱包将设定交易价格
 msgid "This integration was<0>proposed and approved</0>by the community."
 msgstr "这种整合是由社区<0>提出并批准的</0>。"
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
 msgstr "这是您可以借入的总金额。您可以根据您的抵押品借款，直到达到借款上限。"
@@ -2741,6 +2793,7 @@ msgid "Unstake now"
 msgstr "立即取消质押"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "解质押窗口"
 
@@ -2866,6 +2919,7 @@ msgid "View contract"
 msgstr "查看合同"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "查看详情"
@@ -2902,10 +2956,6 @@ msgstr "票"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Voting"
 msgstr "投票"
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Voting closed"
-msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting is on"
@@ -3224,7 +3274,6 @@ msgid "enabled"
 msgstr "启用"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "结束"
 
@@ -3270,7 +3319,6 @@ msgid "staking view"
 msgstr "质押视图"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr "开始"
 
@@ -3348,6 +3396,7 @@ msgid "{m}m"
 msgstr "{m}m"
 
 #: src/hooks/useReserveActionState.tsx
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} 龙头"
@@ -3359,6 +3408,10 @@ msgstr "{notifyText}"
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} 所选资产"
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "{stepName}"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"

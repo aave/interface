@@ -784,10 +784,6 @@ msgstr "Copy error text"
 msgid "Covered debt"
 msgstr "Covered debt"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Created"
-msgstr "Created"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Current LTV"
@@ -981,6 +977,25 @@ msgstr "Effective interest rate"
 msgid "Efficiency mode (E-Mode)"
 msgstr "Efficiency mode (E-Mode)"
 
+#: src/modules/markets/MarketAssetsListItem.tsx
+msgid "Eligible for <0>2.1M$</0> WETH Community Program 👻"
+msgstr "Eligible for <0>2.1M$</0> WETH Community Program 👻"
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "Eligible for <0>2.1M$</0> wETH Community Program 👻"
+msgstr "Eligible for <0>2.1M$</0> wETH Community Program 👻"
+
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+msgstr "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Email"
+msgstr "Email"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr "Emode"
@@ -1068,6 +1083,7 @@ msgstr "Failed to load proposal voters. Please refresh the page."
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/faucet/FaucetItemLoader.tsx
 #: src/modules/faucet/FaucetMobileItemLoader.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1077,6 +1093,11 @@ msgstr "Faucet"
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
+
+#: src/layouts/FeedbackDialog.tsx
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr "Feedback"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
@@ -1325,6 +1346,10 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 msgid "Learn more."
 msgstr "Learn more."
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr "Let us know how we can make the app better for you"
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr "Linked addresses"
@@ -1453,9 +1478,17 @@ msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr "Maximum amount received"
+
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
 msgstr "Maximum available to borrow"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
+msgstr "Maximum collateral amount to use"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Maximum loan to value"
@@ -1517,7 +1550,13 @@ msgstr "Minimum GHO borrow amount"
 msgid "Minimum USD value received"
 msgstr "Minimum USD value received"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr "Minimum amount of debt to be repaid"
+
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr "Minimum amount received"
 
@@ -1655,14 +1694,6 @@ msgstr "Notify"
 msgid "Ok, Close"
 msgstr "Ok, Close"
 
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "Ok, I got it"
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Open for voting"
-msgstr "Open for voting"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Operation not supported"
@@ -1682,10 +1713,6 @@ msgstr "Page not found"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Participating in this {symbol} reserve gives annualized rewards."
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Payloads executed"
-msgstr "Payloads executed"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1890,6 +1917,10 @@ msgstr "Remaining debt"
 msgid "Remaining supply"
 msgstr "Remaining supply"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Remind me"
+msgstr "Remind me"
+
 #: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Remove"
 msgstr "Remove"
@@ -2047,6 +2078,10 @@ msgstr "Selected borrow assets"
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr "Send Feedback"
 
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
@@ -2220,6 +2255,10 @@ msgstr "Staking discount"
 msgid "State"
 msgstr "State"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr "Submission did not work, please try again later or contact wecare@avara.xyz"
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2382,6 +2421,10 @@ msgstr "Testnet mode"
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
 msgstr "Testnet mode is ON"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
+msgstr "Thank you for submitting feedback!"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting!!"
@@ -2556,6 +2599,15 @@ msgstr "This gas calculation is only an estimation. Your wallet will set the pri
 msgid "This integration was<0>proposed and approved</0>by the community."
 msgstr "This integration was<0>proposed and approved</0>by the community."
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
 msgstr "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
@@ -2716,6 +2768,7 @@ msgid "Unstake now"
 msgstr "Unstake now"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "Unstake window"
 
@@ -2841,6 +2894,7 @@ msgid "View contract"
 msgstr "View contract"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "View details"
@@ -2877,10 +2931,6 @@ msgstr "Votes"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Voting"
 msgstr "Voting"
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Voting closed"
-msgstr "Voting closed"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting is on"
@@ -3199,7 +3249,6 @@ msgid "enabled"
 msgstr "enabled"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "ends"
 
@@ -3245,7 +3294,6 @@ msgid "staking view"
 msgstr "staking view"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr "starts"
 
@@ -3323,6 +3371,7 @@ msgid "{m}m"
 msgstr "{m}m"
 
 #: src/hooks/useReserveActionState.tsx
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
@@ -3334,6 +3383,10 @@ msgstr "{notifyText}"
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} assets selected"
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "{stepName}"
+msgstr "{stepName}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"

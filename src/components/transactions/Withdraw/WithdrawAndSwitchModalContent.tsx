@@ -1,15 +1,18 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, SvgIcon, Typography } from '@mui/material';
+import { Box, Checkbox, Stack, SvgIcon, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import {
   ComputedUserReserveData,
   ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { minimumReceivedAfterSlippage } from 'src/hooks/paraswap/common';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useTokenInForTokenOut } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { useModalContext } from 'src/hooks/useModal';
@@ -166,9 +169,15 @@ export const WithdrawAndSwitchModalContent = ({
     userReserve?.reserve.priceInUSD || 0
   );
 
+  const minimumAmountReceived = minimumReceivedAfterSlippage(
+    outputAmount,
+    maxSlippage,
+    swapTarget.reserve.decimals
+  );
+
   if (withdrawTxState.success) {
     let amount = inputAmount;
-    let outAmount = outputAmount;
+    let outAmount = minimumAmountReceived;
     if (withdrawAndUnwrap) {
       amount = amountRef.current;
       outAmount = unwrappedAmount || '0';
@@ -255,7 +264,24 @@ export const WithdrawAndSwitchModalContent = ({
         gasLimit={gasLimit}
         slippageSelector={
           withdrawAndUnwrap ? null : (
-            <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+            <ListSlippageButton
+              selectedSlippage={maxSlippage}
+              setSlippage={setMaxSlippage}
+              slippageTooltipHeader={
+                <Stack direction="row" gap={2} alignItems="center" justifyContent="space-between">
+                  <Trans>Minimum amount received</Trans>
+                  <Stack alignItems="end">
+                    <Stack direction="row">
+                      <TokenIcon
+                        symbol={swapTarget.reserve.iconSymbol}
+                        sx={{ mr: 1, fontSize: '14px' }}
+                      />
+                      <FormattedNumber value={minimumAmountReceived} variant="secondary12" />
+                    </Stack>
+                  </Stack>
+                </Stack>
+              }
+            />
           )
         }
       >
@@ -328,7 +354,7 @@ export const WithdrawAndSwitchModalContent = ({
           poolReserve={poolReserve}
           targetReserve={swapTarget.reserve}
           amountToSwap={inputAmount}
-          amountToReceive={outputAmount}
+          amountToReceive={minimumAmountReceived}
           isMaxSelected={isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance)}
           isWrongNetwork={isWrongNetwork}
           blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}

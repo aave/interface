@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-27 00:16\n"
+"PO-Revision-Date: 2024-03-26 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -789,10 +789,6 @@ msgstr "Κείμενο σφάλματος αντιγραφής"
 msgid "Covered debt"
 msgstr ""
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Created"
-msgstr "Δημιουργήθηκε"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Τρέχον LTV"
@@ -986,6 +982,25 @@ msgstr ""
 msgid "Efficiency mode (E-Mode)"
 msgstr "Λειτουργία αποδοτικότητας (E-Mode)"
 
+#: src/modules/markets/MarketAssetsListItem.tsx
+msgid "Eligible for <0>2.1M$</0> WETH Community Program 👻"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "Eligible for <0>2.1M$</0> wETH Community Program 👻"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+msgstr ""
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Email"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr ""
@@ -1073,6 +1088,7 @@ msgstr ""
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/faucet/FaucetItemLoader.tsx
 #: src/modules/faucet/FaucetMobileItemLoader.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1082,6 +1098,11 @@ msgstr "Βρύση"
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Βρύση {0}"
+
+#: src/layouts/FeedbackDialog.tsx
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
@@ -1338,6 +1359,10 @@ msgstr "Μάθετε περισσότερα στον οδηγό <0>Συχνών 
 msgid "Learn more."
 msgstr "Μάθετε περισσότερα."
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1466,8 +1491,16 @@ msgstr ""
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr ""
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Maximum available to borrow"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1530,7 +1563,13 @@ msgstr ""
 msgid "Minimum USD value received"
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr ""
+
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr ""
 
@@ -1668,14 +1707,6 @@ msgstr ""
 msgid "Ok, Close"
 msgstr "Εντάξει, Κλείσιμο"
 
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "Εντάξει, το κατάλαβα"
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Open for voting"
-msgstr ""
-
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Η λειτουργία δεν υποστηρίζεται"
@@ -1695,10 +1726,6 @@ msgstr ""
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Η συμμετοχή σε αυτό το αποθεματικό {symbol} δίνει ετήσιες ανταμοιβές."
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Payloads executed"
-msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1907,6 +1934,10 @@ msgstr "Υπολειπόμενο χρέος"
 msgid "Remaining supply"
 msgstr "Υπολειπόμενη προσφορά"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Remind me"
+msgstr ""
+
 #: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Remove"
 msgstr ""
@@ -2075,6 +2106,10 @@ msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
+msgstr ""
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
 msgstr ""
 
 #: src/layouts/AppFooter.tsx
@@ -2249,6 +2284,10 @@ msgstr ""
 msgid "State"
 msgstr "Κατάσταση"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2407,6 +2446,10 @@ msgstr "Λειτουργία Testnet"
 
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
+msgstr ""
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
 msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
@@ -2582,6 +2625,15 @@ msgstr "Αυτός ο υπολογισμός gas είναι μόνο μια εκ
 msgid "This integration was<0>proposed and approved</0>by the community."
 msgstr ""
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
 msgstr "Αυτό είναι το συνολικό ποσό που μπορείτε να δανειστείτε. Μπορείτε να δανειστείτε με βάση την εξασφάλισή σας και μέχρι να επιτευχθεί το ανώτατο όριο δανεισμού."
@@ -2742,6 +2794,7 @@ msgid "Unstake now"
 msgstr "Ξεκλειδώστε τώρα"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "Παράθυρο ξεκλειδώματος"
 
@@ -2867,6 +2920,7 @@ msgid "View contract"
 msgstr ""
 
 #: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "Προβολή λεπτομερειών"
@@ -2902,10 +2956,6 @@ msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Voting"
-msgstr ""
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Voting closed"
 msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
@@ -3225,7 +3275,6 @@ msgid "enabled"
 msgstr "ενεργοποιημένο"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "τελειώνει"
 
@@ -3271,7 +3320,6 @@ msgid "staking view"
 msgstr "προβολή κλειδώματος"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr ""
 
@@ -3349,6 +3397,7 @@ msgid "{m}m"
 msgstr "{m}λ"
 
 #: src/hooks/useReserveActionState.tsx
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Βρύση"
@@ -3359,6 +3408,10 @@ msgstr ""
 
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
+msgstr ""
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "{stepName}"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
