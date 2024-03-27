@@ -17,6 +17,10 @@ import { HealthFactorNumber } from 'src/components/HealthFactorNumber';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+const formatMarketName = (market: MarketDataType) => {
+  return `Aave ${market.v3 ? 'V3' : 'V2'} - ${market.marketTitle}${market.isFork ? ' Fork' : ''}`;
+};
+
 type MigrationMarketCardProps = {
   marketData: MarketDataType;
   userSummaryAfterMigration: {
@@ -78,7 +82,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
           <Avatar src="/aave.svg" sx={{ width: 36, height: 36 }} />
         </Badge>
         <Typography variant="subheader1" sx={{ ml: 5 }}>
-          {`Aave V2 - ${marketData.marketTitle} Market`}
+          {formatMarketName(marketData)}
         </Typography>
         {selectableMarkets && setFromMarketData && (
           <>
@@ -125,7 +129,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
                           <Avatar src="/aave.svg" sx={{ width: 24, height: 24 }} />
                         </Badge>
                         <Typography variant="secondary14" sx={{ ml: 3 }}>
-                          {market.marketTitle}
+                          {`${market.marketTitle}${market.isFork ? ' Fork' : ''}`}
                         </Typography>
                       </MenuItem>
                     );

@@ -82,7 +82,12 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             </MenuItemsWrapper>
             <MenuItemsWrapper title={<Trans>Links</Trans>}>
               <List>
-                <ListItem sx={{ color: '#F1F1F3' }} component={Link} href={'/v3-migration'}>
+                <ListItem
+                  sx={{ color: '#F1F1F3' }}
+                  component={Link}
+                  href={'/v3-migration'}
+                  onClick={() => setOpen(false)}
+                >
                   <ListItemText>
                     <Trans>Migrate to Aave V3</Trans>
                   </ListItemText>

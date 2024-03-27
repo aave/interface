@@ -1,7 +1,18 @@
 import { valueToBigNumber } from '@aave/math-utils';
+import { ExclamationIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { ArrowDownward } from '@mui/icons-material';
-import { Box, Button, Checkbox, FormControlLabel, Paper, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Paper,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
@@ -47,6 +58,9 @@ export const MigrationBottomPanel = ({
 }: MigrationBottomPanelProps) => {
   const { openV3Migration } = useModalContext();
   const [isChecked, setIsChecked] = useState(false);
+
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const {
     totalCollateralMarketReferenceCurrency,
@@ -222,44 +236,42 @@ export const MigrationBottomPanel = ({
             <Trans>Preview tx and migrate</Trans>
           </Button>
         </Box>
-      </Paper>
-      {/*
-          <Box
-            sx={{
-              p: downToSM ? '20px 16px' : '20px 30px',
-              mt: downToSM ? 4 : 0,
-            }}
+        <Box
+          sx={{
+            p: downToSM ? '20px 16px' : '20px 30px',
+            mt: downToSM ? 4 : 0,
+          }}
+        >
+          <Typography
+            variant="h3"
+            sx={{ fontWeight: 700, mb: { xs: 4, lg: 6 }, display: 'flex', alignItems: 'center' }}
           >
-            <Typography
-              variant="h3"
-              sx={{ fontWeight: 700, mb: { xs: 4, lg: 6 }, display: 'flex', alignItems: 'center' }}
-            >
-              <SvgIcon sx={{ fontSize: '24px', color: 'warning.main', mr: 2 }}>
-                <ExclamationIcon />
-              </SvgIcon>
-              <Trans>Migration risks</Trans>
-            </Typography>
-            <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
-              <Trans>
-                Please always be aware of your <b>Health Factor (HF)</b> when partially migrating a
-                position and that your rates will be updated to V3 rates.
-              </Trans>
-            </Typography>
-            <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
-              <Trans>
-                Migrating multiple collaterals and borrowed assets at the same time can be an expensive
-                operation and might fail in certain situations.
-                <b>
-                  Therefore it’s not recommended to migrate positions with more than 5 assets (deposited
-                  + borrowed) at the same time.
-                </b>
-              </Trans>
-            </Typography>
-            <Typography sx={{ mb: { xs: 4, lg: 6 } }}>
-              <Trans>Be mindful of the network congestion and gas prices.</Trans>
-            </Typography>
-          </Box>
-        */}
+            <SvgIcon sx={{ fontSize: '24px', color: 'warning.main', mr: 2 }}>
+              <ExclamationIcon />
+            </SvgIcon>
+            <Trans>Migration risks</Trans>
+          </Typography>
+          <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
+            <Trans>
+              Please always be aware of your <b>Health Factor (HF)</b> when partially migrating a
+              position and that your rates will be updated to V3 rates.
+            </Trans>
+          </Typography>
+          <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
+            <Trans>
+              Migrating multiple collaterals and borrowed assets at the same time can be an
+              expensive operation and might fail in certain situations.
+              <b>
+                Therefore it’s not recommended to migrate positions with more than 5 assets
+                (deposited + borrowed) at the same time.
+              </b>
+            </Trans>
+          </Typography>
+          <Typography sx={{ mb: { xs: 4, lg: 6 } }}>
+            <Trans>Be mindful of the network congestion and gas prices.</Trans>
+          </Typography>
+        </Box>
+      </Paper>
     </Box>
   );
 };

@@ -8,7 +8,6 @@ import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationRe
 import { useUserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
 import { useUserPoolReservesHumanized } from 'src/hooks/pool/useUserPoolReserves';
 import { useUserSummaryAndIncentives } from 'src/hooks/pool/useUserSummaryAndIncentives';
-import { usePermissions } from 'src/hooks/usePermissions';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { DashboardContentNoData } from 'src/modules/dashboard/DashboardContentNoData';
@@ -58,8 +57,6 @@ export default function V3Migration() {
     enforceAsCollateral,
     getMigrationExceptionSupplyBalances,
   } = useRootStore();
-
-  const { isPermissionsLoading } = usePermissions();
 
   const toMarketData = selectCurrentChainIdV3MarketData(
     fromMarketData.chainId,
@@ -129,7 +126,7 @@ export default function V3Migration() {
   return (
     <>
       <MigrationTopPanel />
-      {currentAccount && !isPermissionsLoading ? (
+      {currentAccount ? (
         <ContentContainer>
           <Box
             sx={{
