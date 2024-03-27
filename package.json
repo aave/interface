@@ -31,9 +31,9 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.25.0",
-    "@aave/math-utils": "1.25.0",
-    "@bgd-labs/aave-address-book": "^2.19.0",
+    "@aave/contract-helpers": "1.28.0",
+    "@aave/math-utils": "1.28.0",
+    "@bgd-labs/aave-address-book": "^2.24.1",
     "@coinbase/wallet-sdk": "^3.7.2",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",

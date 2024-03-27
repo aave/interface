@@ -1,4 +1,4 @@
-import { Stake } from '@aave/contract-helpers';
+import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -133,7 +133,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
+      <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
         <DetailsNumberLine
           description={<Trans>Staking APR</Trans>}
           value={Number(stakeData?.stakeApy || '0') / 10000}
