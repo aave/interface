@@ -12,7 +12,7 @@ runs:
   using: 'composite'
   steps:
     - name: Find Comment
-      uses: peter-evans/find-comment@1769778a0c5bd330272d749d12c036d65e70d39d # v2.0.0
+      uses: peter-evans/find-comment@d5fe37641ad8451bdd80312415672ba26c86575e
       id: fc
       with:
         issue-number: '${{ inputs.PULL_REQUEST_NUMBER }}'
