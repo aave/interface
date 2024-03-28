@@ -1,10 +1,9 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { ContractCallContext, ContractCallResults, Multicall } from 'ethereum-multicall';
 import { providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
@@ -57,42 +56,61 @@ export const SwitchModal = () => {
     }
   }, [currentChainId, chainId]);
 
-  const filteredTokens = useMemo(() => {
-    const transformedTokens = TOKEN_LIST.tokens.map((token) => {
-      return { ...token, balance: '0' };
-    });
-
-    const realChainId = selectedNetworkConfig.underlyingChainId ?? selectedChainId;
-
-    let tokens = transformedTokens.filter((token) => token.chainId === realChainId);
-
-    if (tokens.length === 0) {
-      tokens = transformedTokens.filter((token) => token.chainId === 1);
-      setSelectedChainId(ChainId.mainnet); // Defaults to Ethereum if no tokens are found on some networks
-    }
-
-    return tokens;
-  }, [selectedChainId]);
-
-  const contractCallContext: ContractCallContext[] = filteredTokens.map((token) => {
-    return {
-      reference: token.address,
-      contractAddress: token.address,
-      abi: [
-        {
-          name: 'balanceOf',
-          type: 'function',
-          stateMutability: 'view',
-          inputs: [{ name: 'account', type: 'address' }],
-          outputs: [{ name: 'balance', type: 'uint256' }],
-        },
-      ],
-      calls: [{ reference: 'balanceOfCall', methodName: 'balanceOf', methodParameters: [user] }],
-    };
-  });
   const provider = getProvider(selectedChainId);
 
+  const addNewToken = async (token: TokenInfoWithBalance) => {
+    setTokensListBalance(tokenListWithBalance.concat(token));
+    const customTokens = localStorage.getItem('customTokens');
+    const newTokenInfo = {
+      address: token.address,
+      symbol: token.symbol,
+      decimals: token.decimals,
+      chainId: token.chainId,
+      name: token.name,
+      logoURI: token.logoURI,
+      extensions: {
+        isUserCustom: true,
+      },
+    };
+    if (customTokens) {
+      const parsedCustomTokens: TokenInfo[] = JSON.parse(customTokens);
+      parsedCustomTokens.push(newTokenInfo);
+      localStorage.setItem('customTokens', JSON.stringify(parsedCustomTokens));
+    } else {
+      localStorage.setItem('customTokens', JSON.stringify([newTokenInfo]));
+    }
+  };
+
   useEffect(() => {
+    const getFilteredTokens = () => {
+      let customTokenList = TOKEN_LIST.tokens;
+      const savedCustomTokens = localStorage.getItem('customTokens');
+      if (savedCustomTokens) {
+        customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
+      }
+      const transformedTokens = customTokenList.map((token) => {
+        return { ...token, balance: '0' };
+      });
+      const realChainId = selectedNetworkConfig.underlyingChainId ?? selectedChainId;
+      return transformedTokens.filter((token) => token.chainId === realChainId);
+    };
+    const filteredTokens = getFilteredTokens();
+    const contractCallContext: ContractCallContext[] = filteredTokens.map((token) => {
+      return {
+        reference: token.address,
+        contractAddress: token.address,
+        abi: [
+          {
+            name: 'balanceOf',
+            type: 'function',
+            stateMutability: 'view',
+            inputs: [{ name: 'account', type: 'address' }],
+            outputs: [{ name: 'balance', type: 'uint256' }],
+          },
+        ],
+        calls: [{ reference: 'balanceOfCall', methodName: 'balanceOf', methodParameters: [user] }],
+      };
+    });
     const fetchData = async () => {
       setTokensListBalance([]);
 
@@ -170,6 +188,7 @@ export const SwitchModal = () => {
           supportedNetworks={supportedNetworksWithEnabledMarket}
           tokens={tokenListSortedByBalace}
           selectedNetworkConfig={selectedNetworkConfig}
+          addNewToken={addNewToken}
           // defaultAsset={underlyingAsset}
         />
       ) : !user ? (

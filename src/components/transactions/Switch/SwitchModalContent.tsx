@@ -7,6 +7,7 @@ import { debounce } from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useParaswapSellRates } from 'src/hooks/paraswap/useParaswapRates';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
@@ -37,6 +38,7 @@ interface SwitchModalContentProps {
   tokens: TokenInfoWithBalance[];
   selectedNetworkConfig: NetworkConfig;
   defaultAsset?: string;
+  addNewToken: (token: TokenInfoWithBalance) => Promise<void>;
 }
 
 const GHO_TOKEN_ADDRESS = AaveV3Ethereum.ASSETS.GHO.UNDERLYING;
@@ -47,6 +49,7 @@ export const SwitchModalContent = ({
   setSelectedChainId,
   tokens,
   selectedNetworkConfig,
+  addNewToken,
 }: // defaultAsset,
 SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
@@ -152,13 +155,31 @@ SwitchModalContentProps) => {
   };
 
   const handleSelectedInputToken = (token: TokenInfoWithBalance) => {
-    setTxError(undefined);
-    setSelectedInputToken(token);
+    if (!tokens.find((t) => t.address === token.address)) {
+      addNewToken(token).then(() => {
+        setSelectedInputToken(token);
+        setTxError(undefined);
+      });
+    } else {
+      setSelectedInputToken(token);
+      setTxError(undefined);
+    }
   };
 
+  console.log(
+    selectedInputToken.extensions?.isUserCustom || selectedOutputToken.extensions?.isUserCustom
+  );
+
   const handleSelectedOutputToken = (token: TokenInfoWithBalance) => {
-    setTxError(undefined);
-    setSelectedOutputToken(token);
+    if (!tokens.find((t) => t.address === token.address)) {
+      addNewToken(token).then(() => {
+        setSelectedOutputToken(token);
+        setTxError(undefined);
+      });
+    } else {
+      setSelectedOutputToken(token);
+      setTxError(undefined);
+    }
   };
 
   const handleSelectedNetworkChange = (value: number) => {
@@ -201,6 +222,7 @@ SwitchModalContentProps) => {
             }}
           >
             <SwitchAssetInput
+              chainId={selectedChainId}
               assets={tokens.filter((token) => token.address !== selectedOutputToken.address)}
               value={inputAmount}
               onChange={handleInputChange}
@@ -224,6 +246,7 @@ SwitchModalContentProps) => {
               </SvgIcon>
             </IconButton>
             <SwitchAssetInput
+              chainId={selectedChainId}
               assets={tokens.filter((token) => token.address !== selectedInputToken.address)}
               value={
                 sellRates
@@ -285,6 +308,14 @@ SwitchModalContentProps) => {
           )}
           {user ? (
             <>
+              {(selectedInputToken.extensions?.isUserCustom ||
+                selectedOutputToken.extensions?.isUserCustom) && (
+                <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
+                  <Typography variant="caption">
+                    You have selected a custom imported token.
+                  </Typography>
+                </Warning>
+              )}
               <SwitchErrors
                 ratesError={ratesError}
                 balance={selectedInputToken.balance}
