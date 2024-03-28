@@ -1355,8 +1355,8 @@ msgid "Learn more."
 msgstr "Learn more."
 
 #: src/layouts/FeedbackDialog.tsx
-msgid "Let us know how we can make the app better for you"
-msgstr "Let us know how we can make the app better for you"
+msgid "Let us know how we can make the app better for you. For customer support related inquiries please reach out on"
+msgstr "Let us know how we can make the app better for you. For customer support related inquiries please reach out on"
 
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
