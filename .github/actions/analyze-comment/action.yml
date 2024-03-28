@@ -55,7 +55,7 @@ runs:
         echo ::set-output name=body::$body
 
     - name: Find Comment
-      uses: peter-evans/find-comment@d5fe37641ad8451bdd80312415672ba26c86575e
+      uses: peter-evans/find-comment@d5fe37641ad8451bdd80312415672ba26c86575e # v3.0.0
       if: github.event_name != 'push'
       id: fc
       with:
