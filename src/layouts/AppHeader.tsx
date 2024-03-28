@@ -87,6 +87,7 @@ export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
+  const smd = useMediaQuery('(max-width:1120px)');
 
   const [visitedSwitch, setVisitedSwitch] = useState(() => {
     if (typeof window === 'undefined') return true;
@@ -272,20 +273,28 @@ export function AppHeader() {
         <Box sx={{ flexGrow: 1 }} />
 
         <NoSsr>
-          <Button
-            onClick={handleBridgeClick}
-            variant="surface"
-            sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
+          <StyledBadge
+            invisible={visitedSwitch}
+            variant="dot"
+            badgeContent=""
+            color="secondary"
+            sx={{ mr: 2 }}
           >
-            {!md && (
-              <Typography component="span" typography="subheader1">
-                Bridge GHO
-              </Typography>
-            )}
-            <SvgIcon fontSize="small">
-              <SparklesIcon />
-            </SvgIcon>
-          </Button>
+            <Button
+              onClick={handleBridgeClick}
+              variant="surface"
+              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
+            >
+              {!smd && (
+                <Typography component="span" typography="subheader1">
+                  Bridge GHO
+                </Typography>
+              )}
+              <SvgIcon fontSize="small">
+                <SparklesIcon />
+              </SvgIcon>
+            </Button>
+          </StyledBadge>
         </NoSsr>
 
         <NoSsr>
@@ -302,7 +311,7 @@ export function AppHeader() {
               sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
               aria-label="Switch tool"
             >
-              {!md && (
+              {!smd && (
                 <Typography component="span" typography="subheader1">
                   Switch tokens
                 </Typography>
