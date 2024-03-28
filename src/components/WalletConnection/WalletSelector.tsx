@@ -1,12 +1,11 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { UnsupportedChainIdError } from '@web3-react/core';
-import { NoEthereumProviderError } from '@web3-react/injected-connector';
+import { NoMetaMaskError } from '@web3-react/metamask';
 import { utils } from 'ethers';
 import { useEffect, useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { UserRejectedRequestError } from 'src/libs/web3-data-provider/WalletConnectConnector';
+import { UserRejectedRequestError } from 'src/libs/web3-data-provider/connectors/WalletConnectConnector';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { useRootStore } from 'src/store/root';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -43,7 +42,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
-      case WalletType.WALLET_LINK:
+      case WalletType.COINBASE_WALLET:
         return (
           <img
             src={`/icons/wallets/coinbase.svg`}
@@ -52,24 +51,6 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
-      case WalletType.TORUS:
-        return (
-          <img
-            src={`/icons/wallets/torus.svg`}
-            width="24px"
-            height="24px"
-            alt={`browser wallet icon`}
-          />
-        );
-      // case WalletType.FRAME:
-      //   return (
-      //     <img
-      //       src={`/icons/wallets/frame.svg`}
-      //       width="24px"
-      //       height="24px"
-      //       alt={`browser wallet icon`}
-      //     />
-      //   );
       default:
         return null;
     }
@@ -107,7 +88,7 @@ export enum ErrorType {
 }
 
 export const WalletSelector = () => {
-  const { error, connectReadOnlyMode } = useWeb3Context();
+  const { error, connectWallet } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
   const { breakpoints } = useTheme();
@@ -118,11 +99,11 @@ export const WalletSelector = () => {
 
   let blockingError: ErrorType | undefined = undefined;
   if (error) {
-    if (error instanceof UnsupportedChainIdError) {
+    if (error instanceof UserRejectedRequestError) {
       blockingError = ErrorType.UNSUPORTED_CHAIN;
     } else if (error instanceof UserRejectedRequestError) {
       blockingError = ErrorType.USER_REJECTED_REQUEST;
-    } else if (error instanceof NoEthereumProviderError) {
+    } else if (error instanceof NoMetaMaskError) {
       blockingError = ErrorType.NO_WALLET_DETECTED;
     } else {
       blockingError = ErrorType.UNDETERMINED_ERROR;
@@ -163,14 +144,14 @@ export const WalletSelector = () => {
   const handleReadAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
-      connectReadOnlyMode(inputMockWalletAddress);
+      connectWallet(WalletType.READ_ONLY_MODE, { address: inputMockWalletAddress });
     } else {
       // Check if address could be valid ENS before trying to resolve
       if (inputMockWalletAddress.slice(-4) === '.eth') {
         // Attempt to resolve ENS name and use resolved address if valid
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          connectReadOnlyMode(resolvedAddress);
+          connectWallet(WalletType.READ_ONLY_MODE, { address: resolvedAddress });
         } else {
           setValidAddressError(true);
         }
@@ -185,7 +166,7 @@ export const WalletSelector = () => {
         const data = await response.json();
         const resolvedAddress = data['meta']['owner'];
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          connectReadOnlyMode(resolvedAddress);
+          connectWallet(WalletType.READ_ONLY_MODE, resolvedAddress);
         } else {
           setValidAddressError(true);
         }
@@ -215,12 +196,10 @@ export const WalletSelector = () => {
         walletType={WalletType.WALLET_CONNECT}
       />
       <WalletRow
-        key="walletlink_wallet"
+        key="coinbase_wallet"
         walletName="Coinbase Wallet"
-        walletType={WalletType.WALLET_LINK}
+        walletType={WalletType.COINBASE_WALLET}
       />
-      <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
-      {/* <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} /> */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
         <Typography variant="subheader1" color="text.secondary">
           <Trans>Track wallet balance in read-only mode</Trans>

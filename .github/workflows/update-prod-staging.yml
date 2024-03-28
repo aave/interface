@@ -15,10 +15,10 @@ jobs:
       name: Production
       url: 'https://app.aave.com'
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      - uses: actions/checkout@v4 
 
       - name: download build
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        uses: actions/download-artifact@v4.1.4
         with:
           name: out
           path: out
@@ -65,17 +65,17 @@ jobs:
       name: Staging
       url: 'https://staging.aave.com'
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      - uses: actions/checkout@v4 
 
       - name: download build
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        uses: actions/download-artifact@v4.1.4
         with:
           name: out_staging
           path: out_staging
 
       - name: pinata
         id: pinata
-        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
+        uses: aave/pinata-action@f142c26f286e53fc2df99bb5b8c3bff117f75de2
         with:
           PINATA_API_KEY: '${{ secrets.PINATA_API_KEY }}'
           PINATA_SECRET_KEY: '${{ secrets.PINATA_SECRET_KEY }}'

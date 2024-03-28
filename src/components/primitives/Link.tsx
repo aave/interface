@@ -1,13 +1,9 @@
 import MuiLink, { LinkProps as MuiLinkProps } from '@mui/material/Link';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-
-// Add support for the sx prop for consistency with the other branches.
-const Anchor = styled('a')({});
 
 interface NextLinkComposedProps
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
@@ -23,17 +19,16 @@ export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComp
 
     return (
       <NextLink
+        ref={ref}
         href={to}
         prefetch={prefetch}
         as={linkAs}
         replace={replace}
         scroll={scroll}
         shallow={shallow}
-        passHref
         locale={locale}
-      >
-        <Anchor ref={ref} {...other} />
-      </NextLink>
+        {...other}
+      />
     );
   }
 );
@@ -42,7 +37,6 @@ export type LinkProps = {
   as?: NextLinkProps['as'];
   href: NextLinkProps['href'];
   linkAs?: NextLinkProps['as']; // Useful when the as prop is shallow by styled().
-  noLinkStyle?: boolean;
 } & Omit<NextLinkComposedProps, 'to' | 'linkAs' | 'href'> &
   Omit<MuiLinkProps, 'href'>;
 
@@ -53,7 +47,6 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
     as: linkAs,
     className: classNameProps,
     href,
-    noLinkStyle,
     role, // Link don't have roles.
     ...other
   } = props;
@@ -67,20 +60,6 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
     active: router?.pathname === pathname,
   });
   if (isExternal) {
-    if (noLinkStyle) {
-      return (
-        <Anchor
-          className={className}
-          href={href}
-          ref={ref}
-          target="_blank"
-          rel="noopener"
-          underline="none"
-          {...other}
-        />
-      );
-    }
-
     return (
       <MuiLink
         className={className}
@@ -91,12 +70,6 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
         underline="none"
         {...other}
       />
-    );
-  }
-
-  if (noLinkStyle) {
-    return (
-      <NextLinkComposed className={className} ref={ref} to={href} underline="none" {...other} />
     );
   }
 

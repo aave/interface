@@ -75,7 +75,7 @@ export const EmodeModalContent = ({
     userReserves,
   } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyMode } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
 
@@ -181,7 +181,7 @@ export const EmodeModalContent = ({
   return (
     <>
       <TxModalTitle title={`${mode} E-Mode`} />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 

@@ -9,9 +9,10 @@ type MetaProps = {
 };
 
 export function Meta({ title, description, imageUrl, timestamp }: MetaProps) {
+  const formattedTitle = `Aave - ${title}`;
   return (
     <Head>
-      <title>Aave - {title}</title>
+      <title>{formattedTitle}</title>
       <meta name="description" content={description} key="description" />
       <meta property="og:title" content={`Aave - ${title}`} key="title" />
       <meta property="og:description" content={description} key="ogdescription" />

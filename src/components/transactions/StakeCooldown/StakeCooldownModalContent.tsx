@@ -47,7 +47,7 @@ type CalendarEvent = {
 };
 
 export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldownProps) => {
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyMode } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
@@ -158,7 +158,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       <Typography variant="description" sx={{ mb: 6 }}>

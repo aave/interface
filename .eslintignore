@@ -4,6 +4,7 @@
 .eslintcache
 node_modules/
 public/
+.nvmrc
 
 # Artifacts
 .next/

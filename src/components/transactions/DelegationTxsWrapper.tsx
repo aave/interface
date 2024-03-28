@@ -38,7 +38,7 @@ export const DelegationTxsWrapper = ({
   blocked,
 }: TxActionsWrapperProps) => {
   const { txError } = useModalContext();
-  const { readOnlyModeAddress } = useWeb3Context();
+  const { readOnlyMode } = useWeb3Context();
 
   function getMainParams() {
     if (blocked)
@@ -97,7 +97,7 @@ export const DelegationTxsWrapper = ({
   const approvalParams = getSignatureParams();
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }}>
-      {approvalParams && !readOnlyModeAddress && (
+      {approvalParams && !readOnlyMode && (
         <Button
           variant="contained"
           disabled={approvalParams.disabled || blocked}
@@ -115,7 +115,7 @@ export const DelegationTxsWrapper = ({
 
       <Button
         variant="contained"
-        disabled={disabled || blocked || readOnlyModeAddress !== undefined}
+        disabled={disabled || blocked || readOnlyMode}
         onClick={handleClick}
         size="large"
         sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
@@ -124,7 +124,7 @@ export const DelegationTxsWrapper = ({
         {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
         {content}
       </Button>
-      {readOnlyModeAddress && (
+      {readOnlyMode && (
         <Typography variant="helperText" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
           <Trans>Read-only mode. Connect to a wallet to perform transactions.</Trans>
         </Typography>

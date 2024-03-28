@@ -38,7 +38,7 @@ export const GovVoteModalContent = ({
   support,
   power: votingPower,
 }: GovVoteModalContentProps) => {
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyMode } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { palette } = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -103,7 +103,7 @@ export const GovVoteModalContent = ({
   return (
     <>
       <TxModalTitle title="Governance vote" />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={proposalVotingChain} />
       )}
       {blockingError !== undefined && (

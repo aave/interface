@@ -55,7 +55,7 @@ export const MigrateV3ModalContent = ({
   const currentMarket = useRootStore((store) => store.currentMarket);
 
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyMode } = useWeb3Context();
   const router = useRouter();
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -126,7 +126,7 @@ export const MigrateV3ModalContent = ({
   return (
     <>
       <TxModalTitle title="Migrate to V3" />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 

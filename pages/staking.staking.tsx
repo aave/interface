@@ -1,10 +1,10 @@
 import { Stake } from '@aave/contract-helpers';
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
+import { formatEther } from '@ethersproject/units';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
-import { BigNumber } from 'ethers/lib/ethers';
-import { formatEther } from 'ethers/lib/utils';
+import { BigNumber } from 'ethers';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';

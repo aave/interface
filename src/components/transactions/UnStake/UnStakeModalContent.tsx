@@ -31,7 +31,7 @@ export enum ErrorType {
 }
 
 export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyMode } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
@@ -108,7 +108,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   return (
     <>
       <TxModalTitle title="Unstake" symbol={nameFormatted} />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       <AssetInput

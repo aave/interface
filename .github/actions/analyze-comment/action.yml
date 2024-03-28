@@ -10,7 +10,7 @@ runs:
   steps:
     - name: Download PR bundle stats
       if: github.event.workflow_run.id
-      uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
+      uses: dawidd6/action-download-artifact@v3.1.4
       with:
         workflow: build-fork.yml
         run_id: ${{ github.event.workflow_run.id }}
@@ -24,13 +24,13 @@ runs:
 
     - name: Upload bundle
       if: github.event_name == 'push'
-      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      uses: actions/upload-artifact@v4.3.1
       with:
         name: bundle
         path: .next/analyze/__bundle_analysis.json
 
     - name: Download base branch bundle stats
-      uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
+      uses: dawidd6/action-download-artifact@v3.1.4
       if: github.event_name != 'push'
       with:
         workflow: build-test-deploy.yml
@@ -55,7 +55,7 @@ runs:
         echo ::set-output name=body::$body
 
     - name: Find Comment
-      uses: peter-evans/find-comment@1769778a0c5bd330272d749d12c036d65e70d39d # v2.0.0
+      uses: peter-evans/find-comment@d5fe37641ad8451bdd80312415672ba26c86575e # v3.0.0
       if: github.event_name != 'push'
       id: fc
       with:
@@ -63,14 +63,14 @@ runs:
         body-includes: '<!-- __NEXTJS_BUNDLE -->'
 
     - name: Create Comment
-      uses: peter-evans/create-or-update-comment@c9fcb64660bc90ec1cc535646af190c992007c32 # v2.0.0
+      uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
       if: github.event_name != 'push' && steps.fc.outputs.comment-id == 0
       with:
         issue-number: '${{ inputs.PULL_REQUEST_NUMBER }}'
         body: ${{ steps.get-comment-body.outputs.body }}
 
     - name: Update Comment
-      uses: peter-evans/create-or-update-comment@c9fcb64660bc90ec1cc535646af190c992007c32 # v2.0.0
+      uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
       if: github.event_name != 'push' && steps.fc.outputs.comment-id != 0
       with:
         issue-number: '${{ inputs.PULL_REQUEST_NUMBER }}'

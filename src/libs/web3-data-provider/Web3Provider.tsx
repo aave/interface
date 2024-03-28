@@ -1,15 +1,12 @@
 import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import {
-  JsonRpcProvider,
   TransactionResponse,
   // Web3Provider,
 } from '@ethersproject/providers';
-import { AbstractConnector } from '@web3-react/abstract-connector';
 import { useWeb3React } from '@web3-react/core';
-import { TorusConnector } from '@web3-react/torus-connector';
-import { WalletLinkConnector } from '@web3-react/walletlink-connector';
-import { BigNumber, PopulatedTransaction, providers } from 'ethers';
+import { Connector } from '@web3-react/types';
+import { BigNumber, PopulatedTransaction } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -17,8 +14,8 @@ import { hexToAscii } from 'src/utils/utils';
 
 // import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 import { Web3Context } from '../hooks/useWeb3Context';
-import { WalletConnectConnector } from './WalletConnectConnector';
-import { getWallet, ReadOnlyModeConnector, WalletType } from './WalletOptions';
+import { ReadOnly } from './connectors/ReadOnlyConnector';
+import { getWallet, WalletType } from './WalletOptions';
 
 export type ERC20TokenType = {
   address: string;
@@ -29,144 +26,76 @@ export type ERC20TokenType = {
 };
 
 export type Web3Data = {
-  connectWallet: (wallet: WalletType) => Promise<void>;
-  connectReadOnlyMode: (address: string) => Promise<void>;
+  connectWallet: (wallet: WalletType, opts?: ConnectWalletOpts) => Promise<void>;
   disconnectWallet: () => void;
   currentAccount: string;
   connected: boolean;
   loading: boolean;
-  provider: JsonRpcProvider | undefined;
   chainId: number;
   switchNetwork: (chainId: number) => Promise<void>;
   getTxError: (txHash: string) => Promise<string>;
   sendTx: (txData: transactionType | PopulatedTransaction) => Promise<TransactionResponse>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
   error: Error | undefined;
   switchNetworkError: Error | undefined;
   setSwitchNetworkError: (err: Error | undefined) => void;
-  readOnlyModeAddress: string | undefined;
   readOnlyMode: boolean;
 };
 
-export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
-  const {
-    account,
-    chainId,
-    library: provider,
-    activate,
-    active,
-    error,
-    deactivate,
-    setError,
-  } = useWeb3React<providers.Web3Provider>();
+interface ConnectWalletOpts {
+  silently?: boolean;
+  address?: string | null;
+}
 
-  // const [provider, setProvider] = useState<JsonRpcProvider>();
-  const [connector, setConnector] = useState<AbstractConnector>();
-  const [loading, setLoading] = useState(false);
-  const [tried, setTried] = useState(false);
-  const [deactivated, setDeactivated] = useState(false);
-  const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
-  const [triedCoinbase, setTriedCoinbase] = useState(false);
-  const [readOnlyMode, setReadOnlyMode] = useState(false);
-  const [triedLedger, setTriedLedger] = useState(false);
+export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
+  const { account, chainId, connector, provider, isActivating, isActive } = useWeb3React();
+
+  const [error, setError] = useState<Error>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-  const [setAccount, currentChainId] = useRootStore((store) => [
-    store.setAccount,
-    store.currentChainId,
-  ]);
+  const setAccount = useRootStore((store) => store.setAccount);
   const setAccountLoading = useRootStore((store) => store.setAccountLoading);
   const setWalletType = useRootStore((store) => store.setWalletType);
-  // for now we use network changed as it returns the chain string instead of hex
-  // const handleChainChanged = (chainId: number) => {
-  //   console.log('chainChanged', chainId);
-  //   if (selectedWallet) {
-  //     connectWallet(selectedWallet);
-  //   }
-  // };
-
-  // Wallet connection and disconnection
-  // clean local storage
-  const cleanConnectorStorage = useCallback((): void => {
-    if (connector instanceof WalletConnectConnector) {
-      localStorage.removeItem('walletconnect');
-    } else if (connector instanceof WalletLinkConnector) {
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:version');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:session:id');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:session:secret');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:session:linked');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:AppVersion');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:Addresses');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:walletUsername');
-    } else if (connector instanceof TorusConnector) {
-      localStorage.removeItem('loglevel:torus.js');
-      localStorage.removeItem('loglevel:torus-embed');
-      localStorage.removeItem('loglevel:http-helpers');
-    }
-  }, [connector]);
 
   const disconnectWallet = useCallback(async () => {
-    cleanConnectorStorage();
     localStorage.removeItem('walletProvider');
-    deactivate();
-    // @ts-expect-error close can be returned by wallet
-    if (connector && connector.close) {
-      // @ts-expect-error close can be returned by wallet
-      // close will remove wallet from DOM if provided by wallet
-      await connector.close();
+    localStorage.removeItem('readOnlyModeAddress');
+    connector.resetState();
+    if (connector.deactivate) {
+      connector.deactivate();
     }
     setWalletType(undefined);
-    setLoading(false);
-    setDeactivated(true);
     setSwitchNetworkError(undefined);
-  }, [provider, connector]);
-
-  const connectReadOnlyMode = (address: string): Promise<void> => {
-    localStorage.setItem('readOnlyModeAddress', address);
-    return connectWallet(WalletType.READ_ONLY_MODE);
-  };
+  }, [connector, setWalletType]);
 
   // connect to the wallet specified by wallet type
   const connectWallet = useCallback(
-    async (wallet: WalletType) => {
-      setLoading(true);
+    async (wallet: WalletType, opts?: ConnectWalletOpts) => {
       try {
-        const connector: AbstractConnector = getWallet(wallet, chainId, currentChainId);
-
-        if (connector instanceof ReadOnlyModeConnector) {
-          setReadOnlyMode(true);
+        const connector: Connector = getWallet(wallet);
+        await connector.activate(opts?.address);
+        if (wallet === WalletType.READ_ONLY_MODE && opts?.address) {
+          localStorage.setItem('readOnlyModeAddress', opts.address);
         } else {
-          setReadOnlyMode(false);
+          localStorage.removeItem('readOnlyModeAddress');
         }
-
-        if (connector instanceof WalletConnectConnector) {
-          connector.walletConnectProvider = undefined;
-        }
-
-        if (wallet === WalletType.INJECTED) {
-          await activateMetaMask(connector);
-        } else {
-          await activate(connector, undefined, true);
-        }
-
-        setConnector(connector);
         setSwitchNetworkError(undefined);
         setWalletType(wallet);
         localStorage.setItem('walletProvider', wallet.toString());
-        setDeactivated(false);
-        setLoading(false);
       } catch (e) {
-        console.log('error on activation', e);
-        setError(e);
+        if (!opts?.silently) {
+          console.log('error on activation', e);
+          setError(e);
+        }
+        localStorage.removeItem('readOnlyModeAddress');
+        localStorage.removeItem('walletProvider');
         setWalletType(undefined);
-        // disconnectWallet();
-        setLoading(false);
       }
     },
-    [disconnectWallet, currentChainId]
+    [setWalletType]
   );
 
+  /*
   const activateMetaMask = async (connector: AbstractConnector) => {
     // This is a workaround for an issue that happens with chrome and metamask.
     // If the app was preloaded in chrome, there's a case where the extension can be
@@ -243,7 +172,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
     return false;
   };
+  */
 
+  /*
   // third, try connecting to ledger
   useEffect(() => {
     if (!triedLedger && triedGnosisSafe && triedCoinbase) {
@@ -314,49 +245,49 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }
   }, [connectWallet, setTriedGnosisSafe, triedGnosisSafe]);
 
+  */
+
   // handle logic to eagerly connect to the injected ethereum provider,
   // if it exists and has granted access already
+
   useEffect(() => {
-    const lastWalletProvider = localStorage.getItem('walletProvider');
-    if (!active && !deactivated && triedGnosisSafe && triedCoinbase && triedLedger) {
-      if (!!lastWalletProvider) {
-        connectWallet(lastWalletProvider as WalletType).catch(() => {
-          setTried(true);
+    const tryAppWalletsSilently = async () => {
+      await connectWallet(WalletType.GNOSIS, { silently: true })
+        .catch(async () => {
+          const provider = window.ethereum;
+          if (provider && provider.isCoinbaseBrowser) {
+            await connectWallet(WalletType.INJECTED);
+          } else {
+            throw new Error('No provider detected');
+          }
+        })
+        .catch();
+    };
+    try {
+      const lastWalletProvider = localStorage.getItem('walletProvider');
+      const lastReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
+      if (lastWalletProvider) {
+        connectWallet(lastWalletProvider as WalletType, {
+          address: lastReadOnlyAddress,
+          silently: true,
         });
       } else {
-        setTried(true);
-        // For now we will not eagerly connect to injected provider
-        // const injected = getWallet(WalletType.INJECTED);
-        // // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
-        // // injected provider
-        // injected.isAuthorized().then((isAuthorized: boolean) => {
-        //   if (isAuthorized) {
-        //     connectWallet(WalletType.INJECTED).catch(() => {
-        //       setTried(true);
-        //     });
-        //   } else {
-        //     setTried(true);
-        //   }
-        // });
+        tryAppWalletsSilently();
       }
+    } catch {
+      localStorage.removeItem('walletProvider');
+      localStorage.removeItem('readOnlyModeAddress');
     }
-  }, [
-    activate,
-    setTried,
-    active,
-    connectWallet,
-    deactivated,
-    triedGnosisSafe,
-    triedCoinbase,
-    triedLedger,
-  ]);
-
+  }, [connectWallet, disconnectWallet]);
+  /*
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
     if (!tried && active) {
       setTried(true);
     }
   }, [tried, active]);
+
+  */
 
   // Tx methods
 
@@ -484,22 +415,20 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // inject account into zustand as long as aave itnerface is using old web3 providers
   useEffect(() => {
     setAccount(account?.toLowerCase());
-  }, [account]);
+  }, [account, setAccount]);
 
   useEffect(() => {
-    setAccountLoading(loading);
-  }, [loading]);
+    setAccountLoading(isActivating);
+  }, [isActivating, setAccountLoading]);
 
   return (
     <Web3Context.Provider
       value={{
         web3ProviderData: {
           connectWallet,
-          connectReadOnlyMode,
           disconnectWallet,
-          provider,
-          connected: active,
-          loading,
+          connected: isActive,
+          loading: isActivating,
           chainId: chainId || 1,
           switchNetwork,
           getTxError,
@@ -510,8 +439,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           error,
           switchNetworkError,
           setSwitchNetworkError,
-          readOnlyModeAddress: readOnlyMode ? account?.toLowerCase() : undefined,
-          readOnlyMode,
+          readOnlyMode: connector instanceof ReadOnly,
         },
       }}
     >

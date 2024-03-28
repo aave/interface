@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
 import { ApprovedAmountService } from 'src/services/ApprovedAmountService';
 import { DelegationTokenService } from 'src/services/DelegationTokenService';
 import { GovernanceService } from 'src/services/GovernanceService';
@@ -36,7 +36,11 @@ interface SharedDependenciesContext {
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
 
-export const SharedDependenciesProvider: React.FC = ({ children }) => {
+interface SharedDependenciesProviderProps {
+  children?: ReactNode;
+}
+
+export const SharedDependenciesProvider = ({ children }: SharedDependenciesProviderProps) => {
   const currentMarketData = useRootStore((state) => state.currentMarketData);
 
   const getGovernanceProvider = (chainId: number) => {

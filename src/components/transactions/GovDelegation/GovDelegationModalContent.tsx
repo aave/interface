@@ -41,7 +41,7 @@ type GovDelegationModalContentProps = {
 };
 
 export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps> = ({ type }) => {
-  const { chainId: connectedChainId, readOnlyModeAddress, currentAccount } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyMode, currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
@@ -152,7 +152,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   return (
     <>
       <TxModalTitle title={isRevokeModal ? 'Revoke power' : 'Set up delegation'} />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyMode && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
       {(isRevokeModal &&

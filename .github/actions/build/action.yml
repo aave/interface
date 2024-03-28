@@ -41,7 +41,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # v3.4.1
+    - uses: actions/setup-node@v4.0.2
       with:
         node-version-file: '.nvmrc'
         cache: 'yarn'
@@ -51,7 +51,7 @@ runs:
       run: yarn --frozen-lockfile --prefer-offline
 
     - name: Restore next cache
-      uses: actions/cache@4b0cf6cc4619e737324ddfcec08fff2413359514 # v3.0.0
+      uses: actions/cache@v4.0.2
       if: inputs.USE_NEXT_CACHE == 'true'
       id: restore-build-cache
       env:

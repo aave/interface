@@ -1,7 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { FormatUserSummaryAndIncentivesResponse, valueToBigNumber } from '@aave/math-utils';
+import { MaxUint256 } from '@ethersproject/constants';
 import BigNumber from 'bignumber.js';
-import { ethers } from 'ethers';
 
 import {
   ComputedReserveData,
@@ -37,7 +37,7 @@ export function getMaxAmountAvailableToBorrow(
 
   const availableBorrowCap =
     poolReserve.borrowCap === '0'
-      ? valueToBigNumber(ethers.constants.MaxUint256.toString())
+      ? valueToBigNumber(MaxUint256.toString())
       : valueToBigNumber(Number(poolReserve.borrowCap)).minus(
           valueToBigNumber(poolReserve.totalDebt)
         );
@@ -114,7 +114,7 @@ export function getMaxGhoMintAmount(
 
   const availableBorrowCap =
     poolReserve.borrowCap === '0'
-      ? valueToBigNumber(ethers.constants.MaxUint256.toString())
+      ? valueToBigNumber(MaxUint256.toString())
       : valueToBigNumber(Number(poolReserve.borrowCap)).minus(
           valueToBigNumber(poolReserve.totalDebt)
         );

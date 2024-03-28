@@ -2,7 +2,7 @@
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { el, en, es, fr } from 'make-plural/plurals';
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 
 import { messages } from '../locales/en/messages.js';
 
@@ -36,7 +36,11 @@ export async function dynamicActivateLanguage(locale: string) {
   localStorage.setItem('LOCALE', locale);
 }
 
-export const LanguageProvider: React.FunctionComponent = (props) => {
+interface LanguageProviderProps {
+  children: ReactNode;
+}
+
+export const LanguageProvider = (props: LanguageProviderProps) => {
   useEffect(() => {
     // With this method we dynamically load the catalogs
     const savedLocale = localStorage.getItem('LOCALE') || DEFAULT_LOCALE;
