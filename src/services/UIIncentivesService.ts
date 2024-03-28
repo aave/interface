@@ -20,6 +20,8 @@ export class UiIncentivesService {
   }
 
   async getReservesIncentivesDataHumanized(marketData: MarketDataType) {
+    if (!marketData.enabledFeatures?.incentives) return [];
+
     const uiIncentiveDataProvider = this.getUiIncentiveDataProvider(marketData);
     return uiIncentiveDataProvider.getReservesIncentivesDataHumanized({
       lendingPoolAddressProvider: marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
