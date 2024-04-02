@@ -123,7 +123,7 @@ export const FeedbackModal = () => {
               sx={{ textAlign: 'center', mb: 2, mt: 4 }}
             >
               <Trans>
-                Let us know how we can make the app better for you. For customer support related
+                Let us know how we can make the app better for you. For user support related
                 inquiries please reach out on
               </Trans>{' '}
               <Link
