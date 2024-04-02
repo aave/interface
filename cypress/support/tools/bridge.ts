@@ -77,11 +77,14 @@ export class CustomizedBridge extends Eip1193Bridge {
       return tx;
     }
     if (method === 'eth_chainId') {
+      const result = await this.provider.getNetwork();
+      const chainId = utils.hexValue(result.chainId);
+
       if (isCallbackForm) {
         // @ts-ignore
-        callback(null, { result: this.chainId });
+        callback(null, { result: chainId });
       } else {
-        return Promise.resolve(this.chainId);
+        return Promise.resolve(chainId);
       }
     }
     if (method === 'eth_sendTransaction') {
