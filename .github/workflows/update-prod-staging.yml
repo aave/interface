@@ -15,7 +15,7 @@ jobs:
       name: Production
       url: 'https://app.aave.com'
     steps:
-      - uses: actions/checkout@v4 
+      - uses: actions/checkout@v4
 
       - name: download build
         uses: actions/download-artifact@v4.1.4
@@ -65,7 +65,7 @@ jobs:
       name: Staging
       url: 'https://staging.aave.com'
     steps:
-      - uses: actions/checkout@v4 
+      - uses: actions/checkout@v4
 
       - name: download build
         uses: actions/download-artifact@v4.1.4
