@@ -691,7 +691,7 @@ export const marketsData: {
     enabledFeatures: {
       incentives: true,
     },
-    subgraphUrl: 'https://andromeda.thegraph.metis.io/subgraphs/name/aave/protocol-v3-metis',
+    subgraphUrl: 'https://metisapi.0xgraph.xyz/subgraphs/name/aave/protocol-v3-metis',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Metis.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Metis.POOL,
