@@ -62,7 +62,6 @@ const select = memoize(
     toReservesIncentivesData: ReservesIncentiveDataHumanized[],
     fromUserSummaryAndIncentives: UserSummaryAndIncentives,
     migrationExceptions: Record<string, MigrationException>,
-    exceptionsBalancesLoading: boolean,
     selectedMigrationSupplyAssets: MigrationSelectedAsset[]
   ): UserMigrationReserves => {
     const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } =
@@ -89,13 +88,11 @@ const select = memoize(
       const definitiveAssets = selectDefinitiveSupplyAssetForMigration(
         selectedMigrationSupplyAssets,
         migrationExceptions,
-        exceptionsBalancesLoading,
         v3ReservesMap
       );
       if (definitiveAssets.length > 0) {
         const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(
           migrationExceptions,
-          exceptionsBalancesLoading,
           definitiveAssets[0]
         );
         const definitiveAsset = v3ReservesMap[underlyingAssetAddress];
@@ -119,7 +116,6 @@ const select = memoize(
       let migrationDisabled: MigrationDisabled | undefined;
       const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(
         migrationExceptions,
-        exceptionsBalancesLoading,
         userReserve
       );
 
@@ -254,7 +250,6 @@ export const useUserMigrationReserves = (
   const fromUserSummaryAndIncentives = useUserSummaryAndIncentives(migrationFrom);
 
   const migrationExceptions = useRootStore((store) => store.migrationExceptions);
-  const exceptionsBalancesLoading = useRootStore((store) => store.exceptionsBalancesLoading);
   const selectedMigrationSupplyAssets = useRootStore(
     (store) => store.selectedMigrationSupplyAssets
   );
@@ -271,7 +266,6 @@ export const useUserMigrationReserves = (
       toReservesIncentivesData,
       fromUserSummaryAndIncentives,
       migrationExceptions,
-      exceptionsBalancesLoading,
       selectedMigrationSupplyAssets
     );
   };

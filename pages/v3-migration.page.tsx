@@ -55,7 +55,6 @@ export default function V3Migration() {
     selectedMigrationBorrowAssets: selectedBorrowAssets,
     resetMigrationSelectedAssets,
     enforceAsCollateral,
-    getMigrationExceptionSupplyBalances,
   } = useRootStore();
 
   const toMarketData = selectCurrentChainIdV3MarketData(
@@ -88,12 +87,6 @@ export default function V3Migration() {
     toUserReservesDataLoading ||
     toUserSummaryForMigrationLoading ||
     userSummaryAfterMigrationLoading;
-
-  useEffect(() => {
-    if (getMigrationExceptionSupplyBalances && supplyReserves.length > 0) {
-      getMigrationExceptionSupplyBalances(supplyReserves);
-    }
-  }, [getMigrationExceptionSupplyBalances, supplyReserves]);
 
   useEffect(() => {
     if (resetMigrationSelectedAssets) {

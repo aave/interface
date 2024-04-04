@@ -20,6 +20,7 @@ import {
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { combineQueries, SimplifiedUseQueryResult } from '../pool/utils';
+import { useMigrationExceptionsSupplyBalance } from './useMigrationExceptionsSupplyBalance';
 import { usePoolReserve } from './usePoolReserve';
 import { UserMigrationReserves, useUserMigrationReserves } from './useUserMigrationReserves';
 import { UserSummaryForMigration, useUserSummaryForMigration } from './useUserSummaryForMigration';
@@ -215,6 +216,11 @@ export const useUserSummaryAfterMigration = (
   const toUserSummary = useUserSummaryForMigration(toMarket);
   const fromPoolReserve = usePoolReserve(fromMarket);
   const toPoolReserve = usePoolReserve(toMarket);
+  const migrationExceptionsQuery = useMigrationExceptionsSupplyBalance(
+    fromMarket,
+    toMarket,
+    userMigrationReservesQuery.data?.supplyReserves
+  );
 
   const selectedMigrationBorrowAssets = useRootStore(
     (store) => store.selectedMigrationBorrowAssets
@@ -222,13 +228,13 @@ export const useUserSummaryAfterMigration = (
   const selectedMigrationSupplyAssets = useRootStore(
     (store) => store.selectedMigrationSupplyAssets
   );
-  const migrationExceptions = useRootStore((store) => store.migrationExceptions);
 
   const selector = (
     userMigrationReserves: UserMigrationReserves,
     fromPoolReserve: PoolReserve,
     toPoolReserve: PoolReserve,
-    toUserSummary: UserSummaryForMigration
+    toUserSummary: UserSummaryForMigration,
+    migrationExceptions: Record<string, MigrationException>
   ) => {
     return select(
       userMigrationReserves,
@@ -242,7 +248,13 @@ export const useUserSummaryAfterMigration = (
   };
 
   return combineQueries(
-    [userMigrationReservesQuery, fromPoolReserve, toPoolReserve, toUserSummary] as const,
+    [
+      userMigrationReservesQuery,
+      fromPoolReserve,
+      toPoolReserve,
+      toUserSummary,
+      migrationExceptionsQuery,
+    ] as const,
     selector
   );
 };
