@@ -34,8 +34,11 @@ describe('Manipulation on the wallet connect', () => {
       cy.get(walletButtonlocator).click();
       cy.wait(3000);
       optionOnConnectionModal('Coinbase');
-      checkElementsOnModal('.-cbwsdk-extension-dialog-box', 'Try the Coinbase Wallet extension');
-      closeModal('.-cbwsdk-extension-dialog-box-cancel');
+      checkElementsOnModal(
+        '.-cbwsdk-connect-content-header',
+        'Scan to connect with one of our mobile apps'
+      );
+      closeModal('.-cbwsdk-cancel-button');
     });
   });
 });
