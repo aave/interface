@@ -38,6 +38,11 @@ const polygonMumbai = {
 //   chainSelector: '5790810961207155433',
 // };
 
+const baseSepolia = {
+  address: '0xD3b06cEbF099CE7DA4AcCf578aaebFDBd6e88a93',
+  chainSelector: '10344971235874465080',
+};
+
 const arbitrumTestnet = {
   address: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165',
   chainSelector: '3478487238524512106',
@@ -57,8 +62,8 @@ export const getRouterConfig = (network: number) => {
       return polygonMumbai;
     case ChainId.mainnet:
       return ethMainnet;
-    // case 'baseGoerli':
-    //   return baseGoerli;
+    case ChainId.base_sepolia:
+      return baseSepolia;
     default:
       throw new Error('Unknown network: ' + network);
   }

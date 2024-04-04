@@ -1127,6 +1127,7 @@ msgstr "Failed to load proposal voters. Please refresh the page."
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/faucet/FaucetItemLoader.tsx
 #: src/modules/faucet/FaucetMobileItemLoader.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1406,8 +1407,8 @@ msgid "Learn more."
 msgstr "Learn more."
 
 #: src/layouts/FeedbackDialog.tsx
-msgid "Let us know how we can make the app better for you"
-msgstr "Let us know how we can make the app better for you"
+msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
+msgstr "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
@@ -2989,6 +2990,7 @@ msgid "View contract"
 msgstr "View contract"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "View details"
@@ -3468,6 +3470,7 @@ msgstr "{h}h"
 msgid "{m}m"
 msgstr "{m}m"
 
+#: src/hooks/useReserveActionState.tsx
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"

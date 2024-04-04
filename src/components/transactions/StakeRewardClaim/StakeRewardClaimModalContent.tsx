@@ -1,4 +1,4 @@
-import { Stake } from '@aave/contract-helpers';
+import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -121,7 +121,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
         maxValue={maxAmountToClaim.toString()}
         balanceText={<Trans>Amount claimable</Trans>}
       />
-      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} chainId={ChainId.mainnet} />
 
       {txError && <GasEstimationError txError={txError} />}
 

@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-03-17 18:04\n"
+"PO-Revision-Date: 2024-04-02 12:07\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1088,6 +1088,7 @@ msgstr "Impossible de charger les votants de proposition. Veuillez rafraîchir l
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/faucet/FaucetItemLoader.tsx
 #: src/modules/faucet/FaucetMobileItemLoader.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1359,7 +1360,7 @@ msgid "Learn more."
 msgstr "Pour en savoir plus."
 
 #: src/layouts/FeedbackDialog.tsx
-msgid "Let us know how we can make the app better for you"
+msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
 
 #: src/modules/governance/RepresentativesInfoPanel.tsx
@@ -2918,6 +2919,7 @@ msgid "View contract"
 msgstr "Voir le contrat"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "Voir détails"
@@ -3393,6 +3395,7 @@ msgstr "{h}h"
 msgid "{m}m"
 msgstr "{m}m"
 
+#: src/hooks/useReserveActionState.tsx
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"

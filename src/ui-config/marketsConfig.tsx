@@ -4,14 +4,13 @@ import {
   AaveV2Ethereum,
   AaveV2EthereumAMM,
   AaveV2Fuji,
-  // AaveV2Goerli,
   AaveV2Mumbai,
   AaveV2Polygon,
   AaveV3Arbitrum,
   AaveV3ArbitrumSepolia,
-  // AaveV3ArbitrumGoerli,
   AaveV3Avalanche,
   AaveV3Base,
+  AaveV3BaseSepolia,
   AaveV3BNB,
   AaveV3Ethereum,
   AaveV3Fantom,
@@ -22,7 +21,7 @@ import {
   AaveV3Metis,
   AaveV3Mumbai,
   AaveV3Optimism,
-  // AaveV3OptimismGoerli,
+  AaveV3OptimismSepolia,
   AaveV3Polygon,
   AaveV3Scroll,
   AaveV3ScrollSepolia,
@@ -51,6 +50,7 @@ export type MarketDataType = {
     switch?: boolean;
     bridge?: boolean;
   };
+  permitDisabled?: boolean; // intended to be used for testnets
   isFork?: boolean;
   permissionComponent?: ReactNode;
   disableCharts?: boolean;
@@ -86,14 +86,14 @@ export type MarketDataType = {
 };
 export enum CustomMarket {
   // v3 test networks, all v3.0.1
-  // proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
+  proto_arbitrum_sepolia_v3 = 'proto_arbitrum_sepolia_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
-  // proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
+  proto_optimism_sepolia_v3 = 'proto_optimism_sepolia_v3',
   proto_scroll_sepolia_v3 = 'proto_scroll_sepolia_v3',
   proto_sepolia_v3 = 'proto_sepolia_v3',
-  proto_arbitrum_sepolia_v3 = 'proto_arbitrum_sepolia_v3',
+  proto_base_sepolia_v3 = 'proto_base_sepolia_v3',
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',
   proto_optimism_v3 = 'proto_optimism_v3',
@@ -114,7 +114,6 @@ export enum CustomMarket {
   proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
-  // proto_goerli = 'proto_goerli',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -191,28 +190,7 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
-  // [CustomMarket.permissioned_market]: {
-  //   marketTitle: 'Ethereum Permissioned Market example',
-  //   chainId: ChainId.mainnet,
-  //   enabledFeatures: {
-  //     // liquiditySwap: true,
-  //     // collateralRepay: true,
-  //     // incentives: true,
-  //     permissions: true,
-  //   },
-  //   permissionComponent: <PermissionView />,
-  //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: markets..POOL_ADDRESSES_PROVIDER,
-  //     LENDING_POOL: markets..POOL,
-  //     WETH_GATEWAY: markets..WETH_GATEWAY,
-  //     // REPAY_WITH_COLLATERAL_ADAPTER: markets..REPAY_WITH_COLLATERAL_ADAPTER,
-  //     // SWAP_COLLATERAL_ADAPTER: markets..SWAP_COLLATERAL_ADAPTER,
-  //     WALLET_BALANCE_PROVIDER: markets..WALLET_BALANCE_PROVIDER,
-  //     UI_POOL_DATA_PROVIDER: markets..UI_POOL_DATA_PROVIDER,
-  //     // UI_INCENTIVE_DATA_PROVIDER: markets..UI_INCENTIVE_DATA_PROVIDER,
-  //     PERMISSION_MANAGER: '<address here>',
-  //   },
-  // },
+
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     market: CustomMarket.amm_mainnet,
@@ -381,7 +359,8 @@ export const marketsData: {
     marketTitle: 'Arbitrum Sepolia',
     market: CustomMarket.proto_arbitrum_sepolia_v3,
     v3: true,
-    chainId: 421614,
+    chainId: ChainId.arbitrum_sepolia,
+    permitDisabled: true,
     //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3ArbitrumSepolia.POOL_ADDRESSES_PROVIDER,
@@ -392,11 +371,32 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3ArbitrumSepolia.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3ArbitrumSepolia.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: AaveV3ArbitrumSepolia.L2_ENCODER,
-      GHO_TOKEN_ADDRESS: '0xb13Cfa6f8B2Eed2C37fB00fF0c1A59807C585810', // https://docs.chain.link/ccip/supported-networks/v1_2_0/testnet#arbitrum-sepolia-ethereum-sepolia
+      GHO_TOKEN_ADDRESS: '0xb13Cfa6f8B2Eed2C37fB00fF0c1A59807C585810', // TODO Address Book
     },
     enabledFeatures: {
       faucet: true,
       incentives: true,
+      bridge: true,
+    },
+  },
+  [CustomMarket.proto_base_sepolia_v3]: {
+    marketTitle: 'Base Sepolia',
+    market: CustomMarket.proto_base_sepolia_v3,
+    v3: true,
+    permitDisabled: true,
+    chainId: ChainId.base_sepolia,
+    //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3BaseSepolia.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3BaseSepolia.POOL,
+      WETH_GATEWAY: AaveV3BaseSepolia.WETH_GATEWAY,
+      // FAUCET: AaveV3ArbitrumSepolia.FAUCET,
+      WALLET_BALANCE_PROVIDER: AaveV3BaseSepolia.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3BaseSepolia.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3BaseSepolia.UI_INCENTIVE_DATA_PROVIDER,
+      L2_ENCODER: AaveV3BaseSepolia.L2_ENCODER,
+    },
+    enabledFeatures: {
       bridge: true,
     },
   },
@@ -509,6 +509,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
       incentives: true,
+      bridge: true,
     },
     //  subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fuji',  needs re-deployment
     addresses: {
@@ -521,27 +522,24 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Fuji.UI_INCENTIVE_DATA_PROVIDER,
     },
   },
-  // [CustomMarket.proto_optimism_goerli_v3]: {
-  //   marketTitle: 'Optimism Görli',
-  //   market: CustomMarket.proto_optimism_goerli_v3,
-  //   v3: true,
-  //   chainId: ChainId.optimism_goerli,
-  //   enabledFeatures: {
-  //     faucet: true,
-  //     incentives: true,
-  //   },
-  //   // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism-goerli',  needs re-deployment
-  //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: AaveV3OptimismGoerli.POOL_ADDRESSES_PROVIDER,
-  //     LENDING_POOL: AaveV3OptimismGoerli.POOL,
-  //     WETH_GATEWAY: AaveV3OptimismGoerli.WETH_GATEWAY,
-  //     FAUCET: AaveV3OptimismGoerli.FAUCET,
-  //     WALLET_BALANCE_PROVIDER: AaveV3OptimismGoerli.WALLET_BALANCE_PROVIDER,
-  //     UI_POOL_DATA_PROVIDER: AaveV3OptimismGoerli.UI_POOL_DATA_PROVIDER,
-  //     UI_INCENTIVE_DATA_PROVIDER: AaveV3OptimismGoerli.UI_INCENTIVE_DATA_PROVIDER,
-  //     L2_ENCODER: AaveV3OptimismGoerli.L2_ENCODER,
-  //   },
-  // },
+  [CustomMarket.proto_optimism_sepolia_v3]: {
+    marketTitle: 'Optimism Sepolia',
+    market: CustomMarket.proto_optimism_sepolia_v3,
+    v3: true,
+    permitDisabled: true,
+    chainId: ChainId.optimism_sepolia,
+    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism-goerli',  needs re-deployment
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3OptimismSepolia.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3OptimismSepolia.POOL,
+      WETH_GATEWAY: AaveV3OptimismSepolia.WETH_GATEWAY,
+      // FAUCET: AaveV3OptimismSepolia.FAUCET,
+      WALLET_BALANCE_PROVIDER: AaveV3OptimismSepolia.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3OptimismSepolia.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3OptimismSepolia.UI_INCENTIVE_DATA_PROVIDER,
+      L2_ENCODER: AaveV3OptimismSepolia.L2_ENCODER,
+    },
+  },
   [CustomMarket.proto_scroll_sepolia_v3]: {
     marketTitle: 'Scroll Sepolia',
     market: CustomMarket.proto_scroll_sepolia_v3,
@@ -615,7 +613,7 @@ export const marketsData: {
     v3: true,
     chainId: ChainId.harmony,
     enabledFeatures: {
-      incentives: true,
+      incentives: false,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-harmony',
     addresses: {
@@ -623,7 +621,8 @@ export const marketsData: {
       LENDING_POOL: AaveV3Harmony.POOL,
       WETH_GATEWAY: AaveV3Harmony.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: AaveV3Harmony.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3Harmony.UI_POOL_DATA_PROVIDER,
+      UI_POOL_DATA_PROVIDER: '0xeC6118C69af50660231108059ab98CD0cF9a6eA1',
+      // UI_POOL_DATA_PROVIDER: AaveV3Harmony.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Harmony.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Harmony.COLLECTOR,
     },
@@ -709,24 +708,6 @@ export const marketsData: {
     },
     v3: true,
   },
-  // [CustomMarket.proto_goerli]: {
-  //   marketTitle: 'Ethereum Görli',
-  //   market: CustomMarket.proto_goerli,
-  //   chainId: ChainId.goerli,
-  //   enabledFeatures: {
-  //     faucet: true,
-  //   },
-  //   subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-goerli',
-  //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: AaveV2Goerli.POOL_ADDRESSES_PROVIDER,
-  //     LENDING_POOL: AaveV2Goerli.POOL,
-  //     WETH_GATEWAY: AaveV2Goerli.WETH_GATEWAY,
-  //     WALLET_BALANCE_PROVIDER: AaveV2Goerli.WALLET_BALANCE_PROVIDER,
-  //     UI_POOL_DATA_PROVIDER: AaveV2Goerli.UI_POOL_DATA_PROVIDER,
-  //     UI_INCENTIVE_DATA_PROVIDER: AaveV2Goerli.UI_INCENTIVE_DATA_PROVIDER,
-  //     FAUCET: AaveV2Goerli.FAUCET,
-  //   },
-  // },
   [CustomMarket.proto_mumbai]: {
     marketTitle: 'Polygon Mumbai',
     market: CustomMarket.proto_mumbai,
@@ -773,7 +754,7 @@ export const marketsData: {
     enabledFeatures: {
       incentives: true,
     },
-    subgraphUrl: 'https://andromeda.thegraph.metis.io/subgraphs/name/aave/protocol-v3-metis',
+    subgraphUrl: 'https://metisapi.0xgraph.xyz/subgraphs/name/aave/protocol-v3-metis',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Metis.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Metis.POOL,

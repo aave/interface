@@ -35,9 +35,7 @@ export const makeCancelable = <T>(promise: Promise<T>) => {
 
 export const optimizedPath = (currentChainId: ChainId) => {
   return (
-    currentChainId === ChainId.arbitrum_one ||
-    // currentChainId === ChainId.arbitrum_rinkeby ||
-    currentChainId === ChainId.optimism
+    currentChainId === ChainId.arbitrum_one || currentChainId === ChainId.optimism
     // ||
     // currentChainId === ChainId.optimism_kovan
   );
