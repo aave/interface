@@ -43,12 +43,12 @@ export type MigrationSelectedBorrowAsset = {
   interestRate: InterestRate;
 };
 
-type MigrationSupplyException = {
+export type MigrationSupplyException = {
   underlyingAsset: string;
   scaledATokenBalance: string;
 };
 
-const MIGRATION_ASSETS_EXCEPTIONS: Record<number, string[]> = {
+export const MIGRATION_ASSETS_EXCEPTIONS: Record<number, string[]> = {
   [1]: ['0xae7ab96520de3a18e5e111b5eaab095312d7fe84'],
 };
 
