@@ -2,11 +2,16 @@ import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useCallback } from 'react';
 import { UserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
 import { UserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMigration';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import {
+  selectedUserSupplyReservesForMigration,
+  selectSelectedBorrowReservesForMigrationV3,
+} from 'src/store/v3MigrationSelectors';
 import { CustomMarket, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
@@ -36,7 +41,25 @@ export const MigrateV3ModalContent = ({
   const router = useRouter();
   const networkConfig = getNetworkConfig(currentChainId);
 
-  const supplyAssets = userMigrationReserves.supplyReserves.map((supplyAsset) => {
+  const { supplyPositions, borrowPositions } = useRootStore(
+    useCallback(
+      (state) => ({
+        supplyPositions: selectedUserSupplyReservesForMigration(
+          state.selectedMigrationSupplyAssets,
+          userMigrationReserves.supplyReserves,
+          userMigrationReserves.isolatedReserveV3
+        ),
+        borrowPositions: selectSelectedBorrowReservesForMigrationV3(
+          state.selectedMigrationBorrowAssets,
+          toUserSummaryForMigration,
+          userMigrationReserves
+        ),
+      }),
+      [userMigrationReserves, toUserSummaryForMigration]
+    )
+  );
+
+  const supplyAssets = supplyPositions.map((supplyAsset) => {
     return {
       underlyingAsset: supplyAsset.underlyingAsset,
       iconSymbol: supplyAsset.reserve.iconSymbol,
@@ -46,7 +69,7 @@ export const MigrateV3ModalContent = ({
     };
   });
 
-  const borrowsAssets = userMigrationReserves.borrowReserves.map((asset) => {
+  const borrowsAssets = borrowPositions.map((asset) => {
     return {
       underlyingAsset: asset.debtKey,
       iconSymbol: asset.reserve.iconSymbol,
