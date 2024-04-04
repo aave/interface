@@ -32,6 +32,7 @@ import {
   useUserSummaryAndIncentives,
 } from '../pool/useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from '../pool/utils';
+import { useMigrationExceptionsSupplyBalance } from './useMigrationExceptionsSupplyBalance';
 
 export type SupplyMigrationReserve = ComputedUserReserve<FormattedReservesAndIncentives> & {
   usageAsCollateralEnabledOnUserV3: boolean;
@@ -249,7 +250,18 @@ export const useUserMigrationReserves = (
   const toReservesIncentivesDataQuery = usePoolReservesIncentivesHumanized(migrationTo);
   const fromUserSummaryAndIncentives = useUserSummaryAndIncentives(migrationFrom);
 
-  const migrationExceptions = useRootStore((store) => store.migrationExceptions);
+  const userReservesV2Data = fromUserSummaryAndIncentives.data?.userReservesData;
+
+  const supplyReserves = userReservesV2Data?.filter(
+    (userReserve) => userReserve.underlyingBalance !== '0'
+  );
+
+  const migrationsExceptionsQuery = useMigrationExceptionsSupplyBalance(
+    migrationFrom,
+    migrationTo,
+    supplyReserves
+  );
+
   const selectedMigrationSupplyAssets = useRootStore(
     (store) => store.selectedMigrationSupplyAssets
   );
@@ -258,14 +270,15 @@ export const useUserMigrationReserves = (
     toReservesData: ReservesDataHumanized,
     toUserReservesData: UserReservesDataHumanized,
     toReservesIncentivesData: ReservesIncentiveDataHumanized[],
-    fromUserSummaryAndIncentives: UserSummaryAndIncentives
+    fromUserSummaryAndIncentives: UserSummaryAndIncentives,
+    migrationsExceptions: Record<string, MigrationException>
   ) => {
     return select(
       toReservesData,
       toUserReservesData,
       toReservesIncentivesData,
       fromUserSummaryAndIncentives,
-      migrationExceptions,
+      migrationsExceptions,
       selectedMigrationSupplyAssets
     );
   };
@@ -276,6 +289,7 @@ export const useUserMigrationReserves = (
       toUserReservesDataQuery,
       toReservesIncentivesDataQuery,
       fromUserSummaryAndIncentives,
+      migrationsExceptionsQuery,
     ] as const,
     selector
   );

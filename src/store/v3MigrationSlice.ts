@@ -63,7 +63,6 @@ export type V3MigrationSlice = {
   selectedMigrationSupplyAssets: MigrationSelectedAsset[];
   selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[];
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
-  migrationExceptions: Record<string, MigrationException>;
   timestamp: number;
   approvalPermitsForMigrationAssets: Array<Approval>;
   // ACTIONS
@@ -106,7 +105,6 @@ export const createV3MigrationSlice: StateCreator<
     selectedMigrationSupplyAssets: [],
     selectedMigrationBorrowAssets: [],
     migrationServiceInstances: {},
-    migrationExceptions: {},
     timestamp: 0,
     approvalPermitsForMigrationAssets: [],
     generatePermitPayloadForMigrationSupplyAsset: async ({ amount, underlyingAsset, deadline }) => {
