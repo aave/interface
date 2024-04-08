@@ -441,7 +441,7 @@ export const SwitchAssetInput = ({
                       <Typography
                         variant="main14"
                         color="text.primary"
-                        sx={{ width: '100%', textAlign: 'center', mt: 4, mb: 4 }}
+                        sx={{ width: 'auto', textAlign: 'center', m: 4 }}
                       >
                         <Trans>
                           No results found. You can import a custom token with a contract address
