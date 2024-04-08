@@ -434,9 +434,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               >
                 <>
                   {isCooldownActive && !isUnstakeWindowActive ? (
-                    <Trans>Time left to be able to withdraw your staked asset.</Trans>
+                    <Trans>Time remaining until the 48 hour withdraw period starts.</Trans>
                   ) : isUnstakeWindowActive ? (
-                    <Trans>Time left until the withdrawal window closes.</Trans>
+                    <Trans>Time remaining until the withdraw period ends.</Trans>
                   ) : (
                     <Trans>
                       You can only withdraw your assets from the Security Module after the cooldown

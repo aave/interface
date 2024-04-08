@@ -2641,16 +2641,16 @@ msgid "This represents the threshold at which a borrow position will be consider
 msgstr "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "Time left to be able to withdraw your staked asset."
-msgstr "Time left to be able to withdraw your staked asset."
-
-#: src/modules/staking/StakingPanel.tsx
 msgid "Time left to unstake"
 msgstr "Time left to unstake"
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "Time left until the withdrawal window closes."
-msgstr "Time left until the withdrawal window closes."
+msgid "Time remaining until the 48 hour withdraw period starts."
+msgstr "Time remaining until the 48 hour withdraw period starts."
+
+#: src/modules/staking/StakingPanel.tsx
+msgid "Time remaining until the withdraw period ends."
+msgstr "Time remaining until the withdraw period ends."
 
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"
