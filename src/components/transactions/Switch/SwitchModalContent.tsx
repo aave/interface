@@ -166,10 +166,6 @@ SwitchModalContentProps) => {
     }
   };
 
-  console.log(
-    selectedInputToken.extensions?.isUserCustom || selectedOutputToken.extensions?.isUserCustom
-  );
-
   const handleSelectedOutputToken = (token: TokenInfoWithBalance) => {
     if (!tokens.find((t) => t.address === token.address)) {
       addNewToken(token).then(() => {

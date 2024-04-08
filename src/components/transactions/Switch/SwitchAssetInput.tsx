@@ -443,7 +443,9 @@ export const SwitchAssetInput = ({
                         color="text.primary"
                         sx={{ width: '100%', textAlign: 'center', mt: 4, mb: 4 }}
                       >
-                        <Trans>No results found.</Trans>
+                        <Trans>
+                          No results found. You can import a custom token with a contract address
+                        </Trans>
                       </Typography>
                     </Box>
                   )}

@@ -1621,8 +1621,8 @@ msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
 
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
-msgid "No results found."
-msgstr "No results found."
+msgid "No results found. You can import a custom token with a contract address"
+msgstr "No results found. You can import a custom token with a contract address"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
