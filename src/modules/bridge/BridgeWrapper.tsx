@@ -1,10 +1,21 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { ArrowRightAltOutlined } from '@mui/icons-material';
+import ArrowOutward from '@mui/icons-material/ArrowOutward';
+import {
+  Box,
+  Button,
+  Paper,
+  Skeleton,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Contract } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -12,7 +23,6 @@ import { ListItem } from 'src/components/lists/ListItem';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { MessageDetails } from 'src/components/transactions/Bridge/BridgeActions';
 import { SupportedNetworkWithChainId } from 'src/components/transactions/Bridge/common';
@@ -23,6 +33,8 @@ import routerAbi from 'src/components/transactions/Bridge/Router-abi.json';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import LoveGhost from '/public/loveGhost.svg';
+
+import { BridgeHistoryItemLoader } from '../bridge/BridgeHistoryItemLoader';
 
 dayjs.extend(relativeTime);
 
@@ -191,7 +203,7 @@ export function BridgeWrapper() {
     fetchStatuses();
   }, [transactions.length]);
 
-  if (transactions.length === 0) {
+  if (transactions.length === 0 && !statusLoading) {
     return (
       <Paper
         sx={{
@@ -229,13 +241,7 @@ export function BridgeWrapper() {
 
         <ListColumn isRow maxWidth={280}>
           <ListHeaderTitle>
-            <Trans>Source Tx</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
-
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Destination Tx</Trans>
+            <Trans>Destination</Trans>
           </ListHeaderTitle>
         </ListColumn>
 
@@ -244,14 +250,6 @@ export function BridgeWrapper() {
             <Trans>Age</Trans>
           </ListHeaderTitle>
         </ListColumn>
-
-        {!downToXSM && (
-          <ListColumn isRow>
-            <ListHeaderTitle>
-              <Trans>Amount</Trans>
-            </ListHeaderTitle>
-          </ListColumn>
-        )}
 
         <ListColumn isRow maxWidth={280}>
           <ListHeaderTitle>
@@ -266,101 +264,122 @@ export function BridgeWrapper() {
         </ListColumn>
       </ListHeaderWrapper>
 
-      {false ? (
-        downToXSM ? (
-          <>
-            {/* <FaucetMobileItemLoader />
-            <FaucetMobileItemLoader />
-            <FaucetMobileItemLoader /> */}
-          </>
-        ) : (
-          <>
-            {/* <FaucetItemLoader />
-            <FaucetItemLoader />
-            <FaucetItemLoader />
-            <FaucetItemLoader />
-            <FaucetItemLoader /> */}
-          </>
-        )
+      {statusLoading ? (
+        <>
+          <BridgeHistoryItemLoader />
+          <BridgeHistoryItemLoader />
+          <BridgeHistoryItemLoader />
+          <BridgeHistoryItemLoader />
+          <BridgeHistoryItemLoader />
+        </>
       ) : (
         transactions &&
         transactions.length > 0 &&
-        transactions.map((tx: TransactionDetails) => (
-          <ListItem
-            px={downToXSM ? 4 : 6}
-            key={tx.txHash}
-            // data-cy={`faucetListItem_${reserve.symbol.toUpperCase()}`}
-          >
-            <ListColumn isRow maxWidth={280}>
-              <Link
-                href={'https://arbiscan.io/tx/' + tx.txHash}
-                // href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
-                noWrap
-                sx={{ display: 'inline-flex', alignItems: 'center' }}
-              >
-                <TokenIcon symbol={'GHO'} fontSize="large" />
-                <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
-                  <Typography variant="h4" noWrap>
-                    GHO
-                  </Typography>
-                  <Typography variant="subheader2" color="text.muted" noWrap>
-                    GHO
-                  </Typography>
+        transactions
+          .slice()
+          .reverse()
+          .map((tx: TransactionDetails) => (
+            <ListItem px={downToXSM ? 4 : 6} key={tx.txHash}>
+              <ListColumn isRow maxWidth={280}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'left',
+                    gap: '4px',
+                    mr: 18,
+                  }}
+                >
+                  <Box display="flex" alignItems="center" gap={2}>
+                    <TokenIcon symbol={'GHO'} fontSize="medium" />
+                    <FormattedNumber
+                      visibleDecimals={2}
+                      value={formatUnits(tx.amount, 18)}
+                      variant={downToXSM ? 'main14' : 'main16'}
+                    />
+                  </Box>
                 </Box>
-              </Link>
-            </ListColumn>
-
-            <ListColumn align="left">
-              <MarketLogo size={28} logo={tx.sourceChain.networkLogoPath} />
-            </ListColumn>
-            <ListColumn align="left">
-              <MarketLogo size={28} logo={tx.destinationChain.networkLogoPath} />
-            </ListColumn>
-            <ListColumn align="left">
-              <Typography color="text.secondary" variant="main16">
-                {dayjs.unix(tx.timestamp).fromNow()}
-              </Typography>
-            </ListColumn>
-
-            {!downToXSM && (
-              <ListColumn align="left">
-                <FormattedNumber
-                  visibleDecimals={2}
-                  symbol={'USD'}
-                  value={formatUnits(tx.amount, 18)}
-                  variant="main16"
-                />
               </ListColumn>
-            )}
 
-            {tx.messageStatus ? (
               <ListColumn align="left">
-                <Typography variant="main16">{tx.messageStatus}</Typography>
+                <Box display="flex" alignItems="center" gap={downToXSM ? 0 : 2}>
+                  <MarketLogo size={24} logo={tx.sourceChain.networkLogoPath} />
+                  {!downToXSM && (
+                    <SvgIcon
+                      sx={{
+                        marginLeft: '5px',
+                        marginRight: '10px',
+                        fontSize: '20px',
+                        color: 'text.secondary',
+                      }}
+                    >
+                      <ArrowRightAltOutlined />
+                    </SvgIcon>
+                  )}
+                  <MarketLogo size={24} logo={tx.destinationChain.networkLogoPath} />
+                </Box>
               </ListColumn>
-            ) : statusLoading ? (
               <ListColumn align="left">
-                <Skeleton width={40} height={40} />
-              </ListColumn>
-            ) : (
-              <ListColumn align="left">
-                <Typography variant="main16">
-                  <Trans>Processing...</Trans>
+                <Typography variant={downToXSM ? 'main12' : 'main14'}>
+                  {dayjs.unix(tx.timestamp).fromNow()}
                 </Typography>
+                {!downToXSM && (
+                  <Typography variant="subheader2" color="text.muted">
+                    {dayjs.unix(tx.timestamp).format('MM.DD.YYYY HH:mm UTC')}
+                  </Typography>
+                )}
               </ListColumn>
-            )}
 
-            <ListColumn maxWidth={280} align="right">
-              <Button
-                component="a"
-                target="_blank"
-                href={`https://ccip.chain.link/tx/${tx.txHash}`}
-                variant="contained"
-              >
-                <Trans>View Transaction</Trans>
-              </Button>
-            </ListColumn>
-          </ListItem>
-        ))
+              <ListColumn align="left">
+                {tx.messageStatus ? (
+                  <Typography
+                    variant={downToXSM ? 'subheader2' : 'h4'}
+                    style={{
+                      color:
+                        tx.messageStatus.toLowerCase() === 'success'
+                          ? theme.palette.success.main
+                          : tx.messageStatus.toLowerCase() === 'failed'
+                          ? 'red'
+                          : theme.palette.error.main,
+                    }}
+                  >
+                    {tx.messageStatus.charAt(0).toUpperCase() +
+                      tx.messageStatus.slice(1).toLowerCase()}
+                  </Typography>
+                ) : statusLoading ? (
+                  <Skeleton width={80} height={20} />
+                ) : (
+                  <Typography
+                    variant={downToXSM ? 'subheader2' : 'h4'}
+                    style={{ color: theme.palette.warning.main }}
+                  >
+                    <Trans>Processing...</Trans>
+                  </Typography>
+                )}
+              </ListColumn>
+
+              <ListColumn maxWidth={280} align="center">
+                <Button
+                  variant="outlined"
+                  href={`https://ccip.chain.link/tx/${tx.txHash}`}
+                  target="_blank"
+                  size={downToXSM ? 'small' : 'medium'}
+                >
+                  <Trans>View</Trans>{' '}
+                  <SvgIcon
+                    sx={{
+                      marginLeft: '5px',
+                      fontSize: '20px',
+                      color: 'text.secondary',
+                    }}
+                  >
+                    <ArrowOutward />
+                  </SvgIcon>
+                </Button>
+              </ListColumn>
+            </ListItem>
+          ))
       )}
     </ListWrapper>
   );

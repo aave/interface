@@ -225,7 +225,6 @@ msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest 
 #: src/components/transactions/Bridge/BridgeModal.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
-#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Amount"
@@ -881,8 +880,8 @@ msgid "Delegated power"
 msgstr "Delegated power"
 
 #: src/modules/bridge/BridgeWrapper.tsx
-msgid "Destination Tx"
-msgstr "Destination Tx"
+msgid "Destination"
+msgstr "Destination"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -2245,10 +2244,6 @@ msgstr "Sorry, an unexpected error happened. In the meantime you may try reloadi
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
-#: src/modules/bridge/BridgeWrapper.tsx
-msgid "Source Tx"
-msgstr "Source Tx"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
 msgstr "Spanish"
@@ -2964,6 +2959,7 @@ msgstr "Version 2"
 msgid "Version 3"
 msgstr "Version 3"
 
+#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
 msgstr "View"
@@ -2971,10 +2967,6 @@ msgstr "View"
 #: src/components/transactions/Bridge/BridgeModal.tsx
 msgid "View Bridge Transactions"
 msgstr "View Bridge Transactions"
-
-#: src/modules/bridge/BridgeWrapper.tsx
-msgid "View Transaction"
-msgstr "View Transaction"
 
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 #: src/modules/dashboard/DashboardContentWrapper.tsx
