@@ -18,7 +18,7 @@ export const BridgeHistoryItemLoader = () => {
         </Box>
       </ListColumn>
 
-      <ListColumn isRow maxWidth={280} gap={downToXSM ? 0 : 2}>
+      <ListColumn isRow maxWidth={280}>
         <Skeleton variant="circular" width={24} height={24} />
         {!downToXSM && (
           <SvgIcon
