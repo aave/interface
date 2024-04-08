@@ -395,6 +395,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3BaseSepolia.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3BaseSepolia.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: AaveV3BaseSepolia.L2_ENCODER,
+      GHO_TOKEN_ADDRESS: '0x7CFa3f3d1cded0Da930881c609D4Dbf0012c14Bb', // TODO Address Book
     },
     enabledFeatures: {
       bridge: true,
@@ -520,6 +521,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: AaveV3Fuji.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Fuji.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Fuji.UI_INCENTIVE_DATA_PROVIDER,
+      GHO_TOKEN_ADDRESS: '0x9c04928Cc678776eC1C1C0E46ecC03a5F47A7723',
     },
   },
   [CustomMarket.proto_optimism_sepolia_v3]: {
