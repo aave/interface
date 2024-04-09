@@ -1,3 +1,4 @@
+import { isAddress } from '@ethersproject/address';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
@@ -130,9 +131,7 @@ export const SwitchAssetInput = ({
         asset.name.toLowerCase().includes(searchQuery) ||
         asset.address.toLowerCase() === searchQuery
     );
-
-    const isEthAddress = /^(0x)?[0-9a-fA-F]{40}$/.test(value);
-    if (matchingAssets.length === 0 && isEthAddress) {
+    if (matchingAssets.length === 0 && isAddress(value)) {
       setLoadingNewAsset(true);
       Promise.all([
         erc20Service.getTokenInfo(value, chainId),
