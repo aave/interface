@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
+import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
@@ -30,7 +31,6 @@ import { AvailableTooltip } from '../../infoTooltips/AvailableTooltip';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { ExternalTokenIcon, TokenIcon } from '../../primitives/TokenIcon';
 import { SearchInput } from '../../SearchInput';
-import { TokenInfoWithBalance } from './SwitchModal';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;

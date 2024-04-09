@@ -9,12 +9,13 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { useParaswapSellRates } from 'src/hooks/paraswap/useParaswapRates';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { getNetworkConfig, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
@@ -26,7 +27,6 @@ import { NetworkSelector } from './NetworkSelector';
 import { SwitchActions } from './SwitchActions';
 import { SwitchAssetInput } from './SwitchAssetInput';
 import { SwitchErrors } from './SwitchErrors';
-import { TokenInfoWithBalance } from './SwitchModal';
 import { SwitchRates } from './SwitchRates';
 import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import { SwitchTxSuccessView } from './SwitchTxSuccessView';
@@ -36,7 +36,6 @@ interface SwitchModalContentProps {
   setSelectedChainId: (value: number) => void;
   supportedNetworks: SupportedNetworkWithChainId[];
   tokens: TokenInfoWithBalance[];
-  selectedNetworkConfig: NetworkConfig;
   defaultAsset?: string;
   addNewToken: (token: TokenInfoWithBalance) => Promise<void>;
 }
@@ -48,7 +47,6 @@ export const SwitchModalContent = ({
   selectedChainId,
   setSelectedChainId,
   tokens,
-  selectedNetworkConfig,
   addNewToken,
 }: // defaultAsset,
 SwitchModalContentProps) => {
@@ -57,6 +55,8 @@ SwitchModalContentProps) => {
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const { mainTxState: switchTxState, gasLimit, txError, setTxError } = useModalContext();
   const user = useRootStore((store) => store.account);
+
+  const selectedNetworkConfig = getNetworkConfig(selectedChainId);
 
   const getDefaultToken = () => {
     if (tokens[0].address === GHO_TOKEN_ADDRESS) {
@@ -188,7 +188,7 @@ SwitchModalContentProps) => {
       <TxModalTitle title="Switch tokens" />
       {isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
-          networkName={getNetworkConfig(selectedChainId).name}
+          networkName={selectedNetworkConfig.name}
           chainId={selectedChainId}
           event={{
             eventName: GENERAL.SWITCH_NETWORK,
