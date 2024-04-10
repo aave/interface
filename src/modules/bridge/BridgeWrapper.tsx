@@ -68,30 +68,28 @@ const getMessageStatus = (status: bigint): string => {
 };
 
 export function BridgeWrapper() {
-  const [transactions, setTransactions] = useState<TransactionDetails[]>([]);
+  const [transactions, setTransactions] = useState(() => {
+    const bridgedTransactions =
+      typeof window !== 'undefined' && localStorage.getItem('bridgedTransactions');
+    if (bridgedTransactions) {
+      try {
+        return JSON.parse(bridgedTransactions);
+      } catch (error) {
+        console.error('Failed to parse transactions from localStorage:', error);
+        return [];
+      }
+    }
+    return [];
+  });
+
   const [statusLoading, setStatusLoading] = useState(false);
 
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const bridgedTransactions =
-    typeof window !== 'undefined' && localStorage.getItem('bridgedTransactions');
 
   useEffect(() => {
     console.log('Transactions State Updated:', transactions);
   }, [transactions]);
-
-  useEffect(() => {
-    console.log('Before loading from localStorage', transactions);
-
-    const loadTransactions = () => {
-      if (bridgedTransactions) {
-        const parsedBridgeTx = JSON.parse(bridgedTransactions);
-        setTransactions(parsedBridgeTx);
-      }
-    };
-
-    loadTransactions();
-  }, []);
 
   useEffect(() => {
     setStatusLoading(true);
@@ -178,7 +176,7 @@ export function BridgeWrapper() {
             //   console.error('something broke here', err);
             // }
           } catch (error) {
-            console.error(`Error fetching status for transaction ${tx.messageId}:`, error);
+            return { ...tx, messageStatus: 'unknown' };
           }
           return tx;
         })
@@ -191,7 +189,7 @@ export function BridgeWrapper() {
     fetchStatuses();
   }, [transactions.length]);
 
-  if (transactions.length === 0) {
+  if (transactions && transactions.length === 0) {
     return (
       <Paper
         sx={{
@@ -207,7 +205,7 @@ export function BridgeWrapper() {
         <LoveGhost style={{ marginBottom: '16px' }} />
         <Typography variant={'h3'}>
           <Trans>You have not bridged any transactions</Trans>
-        </Typography>
+        </Typography>{' '}
       </Paper>
     );
   }
@@ -270,16 +268,16 @@ export function BridgeWrapper() {
         downToXSM ? (
           <>
             {/* <FaucetMobileItemLoader />
-            <FaucetMobileItemLoader />
-            <FaucetMobileItemLoader /> */}
+              <FaucetMobileItemLoader />
+              <FaucetMobileItemLoader /> */}
           </>
         ) : (
           <>
             {/* <FaucetItemLoader />
-            <FaucetItemLoader />
-            <FaucetItemLoader />
-            <FaucetItemLoader />
-            <FaucetItemLoader /> */}
+              <FaucetItemLoader />
+              <FaucetItemLoader />
+              <FaucetItemLoader />
+              <FaucetItemLoader /> */}
           </>
         )
       ) : (
@@ -289,6 +287,7 @@ export function BridgeWrapper() {
           <ListItem
             px={downToXSM ? 4 : 6}
             key={tx.txHash}
+            sx={{ width: '100%' }}
             // data-cy={`faucetListItem_${reserve.symbol.toUpperCase()}`}
           >
             <ListColumn isRow maxWidth={280}>
