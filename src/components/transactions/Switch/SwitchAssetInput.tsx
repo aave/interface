@@ -1,4 +1,5 @@
 import { isAddress } from '@ethersproject/address';
+import { formatUnits } from '@ethersproject/units';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
@@ -130,7 +131,7 @@ export const SwitchAssetInput = ({
         .then(([tokenMetadata, userBalance]) => {
           const tokenInfo = {
             chainId: chainId,
-            balance: userBalance.toString(),
+            balance: formatUnits(userBalance, tokenMetadata.decimals),
             extensions: {
               isUserCustom: true,
             },
