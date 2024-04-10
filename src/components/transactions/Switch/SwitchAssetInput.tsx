@@ -221,6 +221,7 @@ export const SwitchAssetInput = ({
         <Button
           disableRipple
           onClick={handleClick}
+          data-cy={'assetSelect'}
           sx={{ p: 0, '&:hover': { backgroundColor: 'transparent' } }}
           endIcon={open ? <ExpandLess /> : <ExpandMore />}
         >
