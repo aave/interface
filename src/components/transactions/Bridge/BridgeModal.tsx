@@ -22,6 +22,7 @@ import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAn
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { BasicModal } from '../../primitives/BasicModal';
+import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -342,25 +343,14 @@ export const BridgeModal = () => {
     return (
       <BasicModal open={type === ModalType.Bridge} setOpen={close}>
         <TxModalTitle title="Bridge tokens" />
-        {/* <TxSuccessView action={<Trans>Bridged!</Trans>} amount={amount} symbol={'GHO'} />; */}
         <TxSuccessView
           customAction={
-            <Box mt={5}>
-              {/* <Button
-                component="a"
-                target="_blank"
-                href={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
-                variant="gradient"
-                size="medium"
-              >
-                <Trans>See Transaction status on CCIP</Trans>
-              </Button> */}
-
+            <Box mt={6} mb={2}>
               <Button
                 component={Link}
                 href={ROUTES.bridge}
                 // sx={{ mr: 8, mb: '24px' }}
-                variant="gradient"
+                variant="outlined"
                 size="small"
                 onClick={handleClose}
               >
@@ -370,8 +360,11 @@ export const BridgeModal = () => {
           }
           customText={
             <Trans>
-              Asset has been successfully sent to CCIP contract. You can check the status of the
-              transactions below
+              You bridget{' '}
+              <b>
+                <FormattedNumber value={Number(amount)} compact variant="secondary14" />
+              </b>{' '}
+              GHO on {sourceNetworkObj.name} to {destinationNetworkObj.name}.
             </Trans>
           }
           action={<Trans>Bridged Via CCIP</Trans>}
