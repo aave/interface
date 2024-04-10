@@ -1,10 +1,9 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
 import { debounce } from 'lodash';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
@@ -36,16 +35,17 @@ interface SwitchModalContentProps {
   setSelectedChainId: (value: number) => void;
   supportedNetworks: SupportedNetworkWithChainId[];
   tokens: TokenInfoWithBalance[];
-  defaultAsset?: string;
+  defaultInputToken: TokenInfoWithBalance;
+  defaultOutputToken: TokenInfoWithBalance;
   addNewToken: (token: TokenInfoWithBalance) => Promise<void>;
 }
-
-const GHO_TOKEN_ADDRESS = AaveV3Ethereum.ASSETS.GHO.UNDERLYING;
 
 export const SwitchModalContent = ({
   supportedNetworks,
   selectedChainId,
   setSelectedChainId,
+  defaultInputToken,
+  defaultOutputToken,
   tokens,
   addNewToken,
 }: SwitchModalContentProps) => {
@@ -57,28 +57,8 @@ export const SwitchModalContent = ({
 
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
 
-  const getDefaultToken = () => {
-    if (tokens[0].address === GHO_TOKEN_ADDRESS) {
-      return tokens[1];
-    }
-    return tokens[0];
-  };
-
-  const getDefaultOutputToken = () => {
-    const gho = tokens.find((token) => token.address === GHO_TOKEN_ADDRESS);
-    const aave = tokens.find((token) => token.symbol == 'AAVE');
-    if (gho) return gho;
-    if (aave) return aave;
-    return tokens[1];
-  };
-
-  const [selectedInputToken, setSelectedInputToken] = useState(() => getDefaultToken());
-  const [selectedOutputToken, setSelectedOutputToken] = useState(() => getDefaultOutputToken());
-
-  useEffect(() => {
-    setSelectedInputToken(getDefaultToken());
-    setSelectedOutputToken(getDefaultOutputToken());
-  }, [tokens]);
+  const [selectedInputToken, setSelectedInputToken] = useState(defaultInputToken);
+  const [selectedOutputToken, setSelectedOutputToken] = useState(defaultOutputToken);
 
   const { readOnlyModeAddress } = useWeb3Context();
 

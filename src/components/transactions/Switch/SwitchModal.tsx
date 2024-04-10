@@ -1,7 +1,8 @@
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
@@ -40,17 +41,33 @@ const SwitchModalContentWrapper = ({
   chainId,
   setSelectedChainId,
 }: SwitchModalContentWrapperProps) => {
-  const filteredTokens = getFilteredTokens(chainId);
+  const filteredTokens = useMemo(() => getFilteredTokens(chainId), [chainId]);
 
   const { data: baseTokenList } = useTokensBalance(filteredTokens, chainId, user);
+
+  const { defaultInputToken, defaultOutputToken } = useMemo(() => {
+    if (baseTokenList) {
+      const defaultInputToken =
+        baseTokenList.find((token) => token.extensions?.isNative) || baseTokenList[0];
+      const defaultOutputToken =
+        baseTokenList.find(
+          (token) =>
+            (token.address === AaveV3Ethereum.ASSETS.GHO.UNDERLYING || token.symbol == 'AAVE') &&
+            token.address !== defaultInputToken.address
+        ) || baseTokenList[0];
+      return { defaultInputToken, defaultOutputToken };
+    }
+    return { defaultInputToken: filteredTokens[0], defaultOutputToken: filteredTokens[1] };
+  }, [baseTokenList, filteredTokens]);
 
   const queryClient = useQueryClient();
 
   const addNewToken = async (token: TokenInfoWithBalance) => {
     queryClient.setQueryData<TokenInfoWithBalance[]>(
-      queryKeysFactory.tokensBalance(filteredTokens.concat(token), chainId, user),
+      queryKeysFactory.tokensBalance(filteredTokens, chainId, user),
       (oldData) => {
-        if (oldData) return [...oldData, token];
+        if (oldData)
+          return [...oldData, token].sort((a, b) => Number(b.balance) - Number(a.balance));
         return [token];
       }
     );
@@ -89,6 +106,8 @@ const SwitchModalContentWrapper = ({
       selectedChainId={chainId}
       setSelectedChainId={setSelectedChainId}
       supportedNetworks={supportedNetworksWithEnabledMarket}
+      defaultInputToken={defaultInputToken}
+      defaultOutputToken={defaultOutputToken}
       tokens={baseTokenList}
       addNewToken={addNewToken}
     />
