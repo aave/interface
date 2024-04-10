@@ -48,8 +48,7 @@ export const SwitchModalContent = ({
   setSelectedChainId,
   tokens,
   addNewToken,
-}: // defaultAsset,
-SwitchModalContentProps) => {
+}: SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
   const [inputAmount, setInputAmount] = useState('');
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
@@ -223,10 +222,8 @@ SwitchModalContentProps) => {
               value={inputAmount}
               onChange={handleInputChange}
               usdValue={sellRates?.srcUSD || '0'}
-              symbol={selectedInputToken.symbol}
               onSelect={handleSelectedInputToken}
-              inputTitle={' '}
-              sx={{ width: '100%' }}
+              selectedAsset={selectedInputToken}
             />
             <IconButton
               onClick={onSwitchReserves}
@@ -250,7 +247,6 @@ SwitchModalContentProps) => {
                   : '0'
               }
               usdValue={sellRates?.destUSD || '0'}
-              symbol={selectedOutputToken.symbol}
               loading={
                 debounceInputAmount !== '0' &&
                 debounceInputAmount !== '' &&
@@ -259,8 +255,7 @@ SwitchModalContentProps) => {
               }
               onSelect={handleSelectedOutputToken}
               disableInput={true}
-              inputTitle={' '}
-              sx={{ width: '100%' }}
+              selectedAsset={selectedOutputToken}
             />
           </Box>
           {sellRates && (

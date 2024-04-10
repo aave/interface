@@ -85,6 +85,7 @@ const SwitchModalContentWrapper = ({
 
   return (
     <SwitchModalContent
+      key={chainId}
       selectedChainId={chainId}
       setSelectedChainId={setSelectedChainId}
       supportedNetworks={supportedNetworksWithEnabledMarket}
