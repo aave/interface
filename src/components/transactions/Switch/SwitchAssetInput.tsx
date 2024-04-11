@@ -221,7 +221,7 @@ export const SwitchAssetInput = ({
         <Button
           disableRipple
           onClick={handleClick}
-          data-cy={`assetsSelectedOption_${selectedAsset.symbol.toUpperCase()}`}
+          data-cy={`assetSelect`}
           sx={{ p: 0, '&:hover': { backgroundColor: 'transparent' } }}
           endIcon={open ? <ExpandLess /> : <ExpandMore />}
         >
@@ -230,7 +230,11 @@ export const SwitchAssetInput = ({
             logoURI={selectedAsset.logoURI}
             sx={{ mr: 2, ml: 3 }}
           />
-          <Typography variant="main16" color="text.primary">
+          <Typography
+            data-cy={`assetsSelectedOption_${selectedAsset.symbol.toUpperCase()}`}
+            variant="main16"
+            color="text.primary"
+          >
             {selectedAsset.symbol}
           </Typography>
           {selectedAsset.extensions?.isUserCustom && (
