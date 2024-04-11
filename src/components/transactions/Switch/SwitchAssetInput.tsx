@@ -221,7 +221,7 @@ export const SwitchAssetInput = ({
         <Button
           disableRipple
           onClick={handleClick}
-          data-cy={'assetSelect'}
+          data-cy={`assetsSelectedOption_${selectedAsset.symbol.toUpperCase()}`}
           sx={{ p: 0, '&:hover': { backgroundColor: 'transparent' } }}
           endIcon={open ? <ExpandLess /> : <ExpandMore />}
         >
