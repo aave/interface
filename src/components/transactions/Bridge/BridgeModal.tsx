@@ -326,7 +326,7 @@ export const BridgeModal = () => {
 
   const bridgeActionsProps = {
     ...handleBridgeArguments(),
-    amountToBridge: parseUnits(amount ? amount : '0', 18).toString() || '0',
+    amountToBridge: amount,
     isWrongNetwork,
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
