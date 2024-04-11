@@ -217,6 +217,7 @@ export const BridgeActions = React.memo(
           messageId,
           gasPrice: sendTx.gasPrice,
           timestamp,
+          sourceAccount: user,
         });
 
         // Used for reading bridged tx history

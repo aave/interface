@@ -33,7 +33,7 @@ import { getRouterConfig } from './Router';
 import routerAbi from './Router-abi.json';
 
 // const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
-const defaultNetwork = marketsData[CustomMarket.proto_sepolia_v3];
+const defaultNetwork = marketsData[CustomMarket.proto_sepolia_v3]; // TODO Remove for Production
 
 export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
@@ -154,6 +154,7 @@ export const BridgeModal = () => {
     (networkAction: string) => (network: SupportedNetworkWithChainId) => {
       if (networkAction === 'sourceNetwork') {
         setSourceNetworkObj(network);
+        setSelectedChainId(network.chainId);
       } else {
         setDestinationNetworkObj(network);
       }
@@ -315,7 +316,7 @@ export const BridgeModal = () => {
   const bridgeActionsProps = {
     ...handleBridgeArguments(),
     amountToBridge: parseUnits(amount ? amount : '0', 18).toString() || '0',
-    isWrongNetwork: false, // TODO fix
+    isWrongNetwork,
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
     blocked: false,
@@ -360,7 +361,7 @@ export const BridgeModal = () => {
                 component={Link}
                 href={ROUTES.bridge}
                 // sx={{ mr: 8, mb: '24px' }}
-                variant="gradient"
+                variant="outlined"
                 size="small"
                 onClick={handleClose}
               >
@@ -382,6 +383,12 @@ export const BridgeModal = () => {
 
   // Handle more networks for main
   // QA everything
+
+  // console.log('isWrongNetwork', isWrongNetwork);
+  // console.log('currentChainId', currentChainId);
+  // console.log('selectedChainId', selectedChainId);
+  // console.log('sourceNetworkObj', sourceNetworkObj);
+  // console.log('destinationNetworkObj', destinationNetworkObj);
 
   return (
     <BasicModal open={type === ModalType.Bridge} setOpen={handleClose}>

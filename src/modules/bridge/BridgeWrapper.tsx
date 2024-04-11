@@ -1,5 +1,14 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Paper,
+  Skeleton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Contract } from 'ethers';
@@ -20,6 +29,7 @@ import offRampAbi from 'src/components/transactions/Bridge/OffRamp-abi.json';
 // import onRampAbi from 'src/components/transactions/Bridge/OnRamp-abi.json';
 import { getRouterConfig } from 'src/components/transactions/Bridge/Router';
 import routerAbi from 'src/components/transactions/Bridge/Router-abi.json';
+import { useRootStore } from 'src/store/root';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import LoveGhost from '/public/loveGhost.svg';
@@ -45,6 +55,7 @@ interface TransactionDetails {
   gasPrice: BigNumberDetails;
   timestamp: number;
   messageStatus: string;
+  sourceAccount: string;
 }
 
 // interface ExecutionStateChangedEventArgs {
@@ -68,24 +79,50 @@ const getMessageStatus = (status: bigint): string => {
 };
 
 export function BridgeWrapper() {
-  const [transactions, setTransactions] = useState(() => {
-    const bridgedTransactions =
-      typeof window !== 'undefined' && localStorage.getItem('bridgedTransactions');
-    if (bridgedTransactions) {
-      try {
-        return JSON.parse(bridgedTransactions);
-      } catch (error) {
-        console.error('Failed to parse transactions from localStorage:', error);
-        return [];
+  const [isLoading, setIsLoading] = useState(true); // Add a loading state
+  const [user] = useRootStore((state) => [state.account]);
+
+  const theme = useTheme();
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+
+  const [statusLoading, setStatusLoading] = useState(false);
+
+  // const [transactions, setTransactions] = useState([] as TransactionDetails[]);
+
+  const [transactions, setTransactions] = useState<TransactionDetails[]>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const storedTransactions = localStorage.getItem('bridgedTransactions');
+        if (storedTransactions) {
+          const transactions: TransactionDetails[] = JSON.parse(storedTransactions);
+          return transactions.filter((tx) => tx.sourceAccount === user);
+        }
       }
+    } catch (err) {
+      console.error('Error loading transactions from localStorage:', err);
     }
     return [];
   });
 
-  const [statusLoading, setStatusLoading] = useState(false);
+  useEffect(() => {
+    setIsLoading(true);
 
-  const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+    try {
+      const bridgedTransactions =
+        typeof window !== 'undefined' ? localStorage.getItem('bridgedTransactions') : null;
+      if (bridgedTransactions) {
+        const filteredTransactions = JSON.parse(bridgedTransactions).filter(
+          (tx: TransactionDetails) => tx.sourceAccount === user
+        );
+
+        setTransactions(filteredTransactions);
+      }
+    } catch (error) {
+      console.error('Failed to parse transactions from localStorage:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     console.log('Transactions State Updated:', transactions);
@@ -93,6 +130,7 @@ export function BridgeWrapper() {
 
   useEffect(() => {
     setStatusLoading(true);
+    setIsLoading(false);
 
     const fetchStatuses = async () => {
       const tempTransactions = await Promise.all(
@@ -189,7 +227,15 @@ export function BridgeWrapper() {
     fetchStatuses();
   }, [transactions.length]);
 
-  if (transactions && transactions.length === 0) {
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (transactions.length === 0) {
     return (
       <Paper
         sx={{
