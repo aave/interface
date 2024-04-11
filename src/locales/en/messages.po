@@ -1139,6 +1139,7 @@ msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
 #: src/components/transactions/Bridge/BridgeModal.tsx
+#: src/components/transactions/Bridge/BridgeModal.tsx
 msgid "Fee"
 msgstr "Fee"
 

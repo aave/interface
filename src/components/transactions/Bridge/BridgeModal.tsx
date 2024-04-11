@@ -2,11 +2,11 @@ import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, IconButton, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { constants, Contract, utils } from 'ethers';
-import { formatEther, parseUnits } from 'ethers/lib/utils';
-import { debounce } from 'lodash';
-import React, { useEffect, useMemo, useState } from 'react';
+import { constants } from 'ethers';
+import React, { useEffect, useState } from 'react';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+import { NoData } from 'src/components/primitives/NoData';
+import { Row } from 'src/components/primitives/Row';
 import {
   DetailsNumberLine,
   TxModalDetails,
@@ -18,24 +18,19 @@ import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TokenInfo } from 'src/ui-config/TokenList';
-import {
-  CustomMarket,
-  getNetworkConfig,
-  getProvider,
-  marketsData,
-} from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { BridgeActions, MessageDetails, TokenAmount } from './BridgeActions';
+import { BridgeActions } from './BridgeActions';
 import { supportedNetworksWithBridgeMarket, SupportedNetworkWithChainId } from './common';
-import { getRouterConfig } from './Router';
-import routerAbi from './Router-abi.json';
+import { useGetBridgeMessage } from './useGetBridgeMessage';
 
 // const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
 const defaultNetwork = marketsData[CustomMarket.proto_sepolia_v3]; // TODO Remove for Production
@@ -53,27 +48,9 @@ export const BridgeModal = () => {
     txError,
   } = useModalContext();
 
-  const [amount, setAmount] = useState('0');
+  const [amount, setAmount] = useState('');
   const [inputAmountUSD, setInputAmount] = useState('');
-  const { readOnlyModeAddress, provider, chainId: currentChainId } = useWeb3Context();
-
-  const [debounceInputAmount, setDebounceInputAmount] = useState('');
-  const [message, setMessage] = useState<MessageDetails>({
-    receiver: '',
-    data: '',
-    tokenAmounts: [
-      {
-        token: '',
-        amount: '',
-      },
-    ],
-    feeToken: '',
-    extraArgs: '',
-  });
-
-  const [fees, setFees] = useState('');
-
-  const [bridgeFeeFormatted, setBridgeFeeFormatted] = useState('');
+  const { readOnlyModeAddress, chainId: currentChainId } = useWeb3Context();
 
   const [selectedChainId, setSelectedChainId] = useState(() => {
     if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId)) {
@@ -135,12 +112,6 @@ export const BridgeModal = () => {
     });
   }, [selectedChainId]);
 
-  useEffect(() => {
-    if (provider && debounceInputAmount) {
-      getBridgeFee();
-    }
-  }, [provider, debounceInputAmount]);
-
   const [destinationNetworkObj, setDestinationNetworkObj] = useState<SupportedNetworkWithChainId>(
     {} as SupportedNetworkWithChainId
   );
@@ -155,6 +126,18 @@ export const BridgeModal = () => {
 
   const [user] = useRootStore((state) => [state.account]);
 
+  const {
+    message,
+    bridgeFee,
+    bridgeFeeFormatted,
+    loading: loadingBridgeMessage,
+  } = useGetBridgeMessage({
+    sourceChainId: sourceNetworkObj.chainId,
+    destinationChainId: destinationNetworkObj.chainId,
+    amount,
+    sourceTokenAddress: sourceTokenInfo.address || '',
+  });
+
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: SupportedNetworkWithChainId) => {
       if (networkAction === 'sourceNetwork') {
@@ -165,140 +148,24 @@ export const BridgeModal = () => {
       }
     };
 
-  const debouncedInputChange = useMemo(() => {
-    return debounce((value: string) => {
-      setDebounceInputAmount(value);
-    }, 1000);
-  }, [setDebounceInputAmount]);
-
   const handleInputChange = (value: string) => {
     if (value === '-1') {
       setAmount(sourceTokenInfo.bridgeTokenBalance);
-      debouncedInputChange(sourceTokenInfo.bridgeTokenBalance);
     } else {
       setAmount(value);
-      debouncedInputChange(value);
     }
   };
 
   const resetState = () => {
-    setAmount('0');
+    setAmount('');
     setInputAmount('');
-    setDebounceInputAmount('');
-    setMessage({
-      receiver: '',
-      data: '',
-      tokenAmounts: [
-        {
-          token: '',
-          amount: '',
-        },
-      ],
-      feeToken: '',
-      extraArgs: '',
-    });
-    setFees('');
-    setBridgeFeeFormatted('');
   };
-
-  const getBridgeFee = async () => {
-    const destinationChain = destinationNetworkObj; // destinationNetwork;
-
-    if (
-      !provider ||
-      !destinationChain ||
-      !sourceNetworkObj.chainId ||
-      !sourceTokenInfo.bridgeTokenBalance ||
-      !sourceTokenInfo.address
-    )
-      return;
-
-    const providerWithSend = getProvider(sourceNetworkObj.chainId);
-
-    const tokenAddress = sourceTokenInfo.address;
-
-    // Get the router's address for the specified chain
-    const sourceRouterAddress = getRouterConfig(sourceNetworkObj.chainId).address;
-    // Get the chain selector for the target chain
-    const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
-
-    const sourceRouter = new Contract(sourceRouterAddress, routerAbi, providerWithSend);
-
-    // ==================================================
-    //     Section: Check token validity
-    //     Check first if the token you would like to
-    //     transfer is supported.
-    // ==================================================
-    // */
-
-    const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
-
-    if (supportedTokens.length <= 0) throw 'No supported tokens';
-
-    const tokenAddressLower = tokenAddress.toLowerCase();
-
-    // Convert each supported token to lowercase and check if the list includes the lowercase token address
-    const isSupported = supportedTokens
-      .map((token: string) => token.toLowerCase())
-      .includes(tokenAddressLower);
-
-    if (!isSupported) {
-      throw Error(
-        `Token address ${tokenAddress} not in the list of supportedTokens ${supportedTokens}`
-      );
-    }
-    /*
-      ==================================================
-        Section: BUILD CCIP MESSAGE
-        build CCIP message that you will send to the
-        Router contract.
-      ==================================================
-    */
-
-    const tokenAmounts: TokenAmount[] = [
-      {
-        token: tokenAddress,
-        amount: parseUnits(amount, 18).toString() || '0',
-      },
-    ];
-
-    // Encoding the data
-    const functionSelector = utils.id('CCIP EVMExtraArgsV1').slice(0, 10);
-    //  "extraArgs" is a structure that can be represented as [ 'uint256']
-    // extraArgs are { gasLimit: 0 }
-    // we set gasLimit specifically to 0 because we are not sending any data so we are not expecting a receiving contract to handle data
-
-    const extraArgs = utils.defaultAbiCoder.encode(['uint256'], [0]);
-
-    const encodedExtraArgs = functionSelector + extraArgs.slice(2);
-
-    const message: MessageDetails = {
-      receiver: utils.defaultAbiCoder.encode(['address'], [user]),
-      data: '0x', // no data
-      tokenAmounts: tokenAmounts,
-      feeToken: constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
-      // feeToken: feeTokenAddress ? feeTokenAddress : ethers.constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
-
-      extraArgs: encodedExtraArgs,
-    };
-
-    setMessage(message);
-
-    /*
-       ==================================================
-      Section: CALCULATE THE FEES
-      Call the Router to estimate the fees for sending tokens.
-      ==================================================
-    */
-    const fees = await sourceRouter.getFee(destinationChainSelector, message);
-
-    setBridgeFeeFormatted(formatEther(fees));
-    setFees(fees);
-  };
-
-  // const maxAmountToSwap = BigNumber.min(GHO.underlyingBalance).toString(10);
 
   const maxAmountToSwap = BigNumber.min(sourceTokenInfo.bridgeTokenBalance).toString(10);
+  // when switching networks, max amounts could be different so make sure amount is not higher than max
+  if (Number(amount) > Number(maxAmountToSwap)) {
+    setAmount(maxAmountToSwap);
+  }
 
   const handleBridgeArguments = () => {
     const sourceChain = sourceNetworkObj;
@@ -330,14 +197,14 @@ export const BridgeModal = () => {
     isWrongNetwork,
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
-    blocked: false,
+    blocked: loadingBridgeMessage,
     decimals: 18,
     isWrappedBaseAsset: false,
     message,
-    fees,
+    fees: bridgeFee,
   };
 
-  if (txError) {
+  if (txError && txError.blocking) {
     return (
       <BasicModal open={type === ModalType.Bridge} setOpen={close}>
         <TxErrorView txError={txError} />
@@ -504,22 +371,32 @@ export const BridgeModal = () => {
               //   isMaxSelected={isMaxSelected}
             />
             <Box width="100%">
-              <TxModalDetails gasLimit={'100'}>
+              <TxModalDetails gasLimit={'100'} chainId={sourceNetworkObj.chainId}>
                 <DetailsNumberLine
                   description={<Trans>Amount</Trans>}
                   iconSymbol={'GHO'}
                   symbol={'GHO'}
                   value={amount}
                 />
-                <DetailsNumberLine
-                  description={<Trans>Fee</Trans>}
-                  iconSymbol={'ETH'}
-                  symbol={'ETH'}
-                  value={bridgeFeeFormatted}
-                />
+                {message || loadingBridgeMessage ? (
+                  <DetailsNumberLine
+                    description={<Trans>Fee</Trans>}
+                    iconSymbol={'ETH'}
+                    symbol={'ETH'}
+                    value={bridgeFeeFormatted}
+                    loading={loadingBridgeMessage}
+                  />
+                ) : (
+                  <Row caption={<Trans>Fee</Trans>} captionVariant="description" mb={4}>
+                    <NoData variant="secondary14" color="text.secondary" />
+                  </Row>
+                )}
               </TxModalDetails>
             </Box>
           </Box>
+
+          {txError && <GasEstimationError txError={txError} />}
+
           <BridgeActions {...bridgeActionsProps} />
         </>
       )}

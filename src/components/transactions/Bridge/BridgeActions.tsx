@@ -50,7 +50,7 @@ export interface BridgeActionProps extends BoxProps {
   destinationAccount: string;
   tokenAddress: string;
   fees: string;
-  message: MessageDetails;
+  message: MessageDetails | undefined;
 }
 
 export const BridgeActions = React.memo(
