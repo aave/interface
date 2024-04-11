@@ -109,8 +109,6 @@ export const BridgeModalContent = () => {
     });
   }, [selectedChainId]);
 
-  console.log('selectedChainId', selectedChainId);
-  console.log('destinationNetworkObj', destinationNetworkObj?.chainId);
   // const [tokenListWithBalance, setTokensListBalance] = useState<TokenInfoWithBalance[]>([]);
 
   const { data: sourceTokenInfo, isFetching: fetchingBridgeTokenBalance } = useBridgeTokens(
