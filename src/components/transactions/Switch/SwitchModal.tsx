@@ -11,6 +11,7 @@ import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import invariant from 'tiny-invariant';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { supportedNetworksWithEnabledMarket } from './common';
@@ -55,7 +56,11 @@ const SwitchModalContentWrapper = ({
           (token) =>
             (token.address === AaveV3Ethereum.ASSETS.GHO.UNDERLYING || token.symbol == 'AAVE') &&
             token.address !== defaultInputToken.address
-        ) || baseTokenList[0];
+        ) || baseTokenList.find((token) => token.address !== defaultInputToken.address);
+      invariant(
+        defaultInputToken && defaultOutputToken,
+        'token list should have at least 2 assets'
+      );
       return { defaultInputToken, defaultOutputToken };
     }
     return { defaultInputToken: filteredTokens[0], defaultOutputToken: filteredTokens[1] };
