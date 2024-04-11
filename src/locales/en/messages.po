@@ -329,6 +329,10 @@ msgstr "Asset cannot be used as collateral."
 msgid "Asset category"
 msgstr "Asset category"
 
+#: src/components/transactions/Bridge/BridgeModal.tsx
+msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
+msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
+
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset is frozen in {marketName} v3 market, hence this position cannot be migrated."
 msgstr "Asset is frozen in {marketName} v3 market, hence this position cannot be migrated."
@@ -3146,10 +3150,6 @@ msgstr "YAE"
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
-
-#: src/components/transactions/Bridge/BridgeModal.tsx
-msgid "You bridget <0><1/></0> GHO on {0} to {1}."
-msgstr "You bridget <0><1/></0> GHO on {0} to {1}."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
