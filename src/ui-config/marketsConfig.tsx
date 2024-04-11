@@ -510,7 +510,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
       incentives: true,
-      bridge: true,
+      // bridge: true,
     },
     //  subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fuji',  needs re-deployment
     addresses: {

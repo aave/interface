@@ -18,7 +18,12 @@ import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TokenInfo } from 'src/ui-config/TokenList';
-import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import {
+  CustomMarket,
+  getNetworkConfig,
+  getProvider,
+  marketsData,
+} from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { BasicModal } from '../../primitives/BasicModal';
@@ -207,7 +212,8 @@ export const BridgeModal = () => {
       !sourceTokenInfo.address
     )
       return;
-    const signer = await provider.getSigner();
+
+    const providerWithSend = getProvider(sourceNetworkObj.chainId);
 
     const tokenAddress = sourceTokenInfo.address;
 
@@ -215,7 +221,8 @@ export const BridgeModal = () => {
     const sourceRouterAddress = getRouterConfig(sourceNetworkObj.chainId).address;
     // Get the chain selector for the target chain
     const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
-    const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
+
+    const sourceRouter = new Contract(sourceRouterAddress, routerAbi, providerWithSend);
 
     // ==================================================
     //     Section: Check token validity
@@ -225,6 +232,9 @@ export const BridgeModal = () => {
     // */
 
     const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
+
+    if (supportedTokens.length <= 0) throw 'No supported tokens';
+
     const tokenAddressLower = tokenAddress.toLowerCase();
 
     // Convert each supported token to lowercase and check if the list includes the lowercase token address
@@ -281,6 +291,7 @@ export const BridgeModal = () => {
       ==================================================
     */
     const fees = await sourceRouter.getFee(destinationChainSelector, message);
+
     setBridgeFeeFormatted(formatEther(fees));
     setFees(fees);
   };
@@ -380,15 +391,6 @@ export const BridgeModal = () => {
       </BasicModal>
     );
   }
-
-  // Handle more networks for main
-  // QA everything
-
-  // console.log('isWrongNetwork', isWrongNetwork);
-  // console.log('currentChainId', currentChainId);
-  // console.log('selectedChainId', selectedChainId);
-  // console.log('sourceNetworkObj', sourceNetworkObj);
-  // console.log('destinationNetworkObj', destinationNetworkObj);
 
   return (
     <BasicModal open={type === ModalType.Bridge} setOpen={handleClose}>
