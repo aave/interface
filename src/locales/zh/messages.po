@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-04-08 12:06\n"
+"PO-Revision-Date: 2024-04-12 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -224,7 +224,6 @@ msgstr "允许您在浮动利率和稳定利率之间切换，其中 <0>浮</0> 
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
-#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "量"
@@ -1626,7 +1625,7 @@ msgid "No assets selected to migrate."
 msgstr "未选择要迁移的资产。"
 
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
-msgid "No results found."
+msgid "No results found. You can import a custom token with a contract address"
 msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx

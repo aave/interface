@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-04-08 12:06\n"
+"PO-Revision-Date: 2024-04-12 18:04\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -224,7 +224,6 @@ msgstr "Ermöglicht es Ihnen, zwischen <0>variablen</0> und <1>stabilen</1> Zins
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
-#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Menge"
@@ -1626,7 +1625,7 @@ msgid "No assets selected to migrate."
 msgstr "Es wurden keine Assets für die Migration ausgewählt."
 
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
-msgid "No results found."
+msgid "No results found. You can import a custom token with a contract address"
 msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
