@@ -50,7 +50,7 @@ export interface BridgeActionProps extends BoxProps {
   destinationAccount: string;
   tokenAddress: string;
   fees: string;
-  message: MessageDetails;
+  message: MessageDetails | undefined;
 }
 
 export const BridgeActions = React.memo(
@@ -142,6 +142,7 @@ export const BridgeActions = React.memo(
       signatureAmount: amountToBridge,
       onApprovalTxConfirmed: fetchApprovedAmount,
       onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
+      chainId: sourceChain.chainId,
     });
 
     // Update gas estimation
@@ -217,6 +218,7 @@ export const BridgeActions = React.memo(
           messageId,
           gasPrice: sendTx.gasPrice,
           timestamp,
+          sourceAccount: user,
         });
 
         // Used for reading bridged tx history

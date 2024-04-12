@@ -25,6 +25,7 @@ export const useApprovalTx = ({
   signatureAmount,
   onApprovalTxConfirmed,
   onSignTxCompleted,
+  chainId,
 }: {
   usePermit: boolean;
   approvedAmount: ApproveType | undefined;
@@ -35,6 +36,7 @@ export const useApprovalTx = ({
   signatureAmount: string;
   onApprovalTxConfirmed?: () => void;
   onSignTxCompleted?: (signedParams: SignedParams) => void;
+  chainId?: number;
 }) => {
   const [generateApproval, generateSignatureRequest, estimateGasLimit, addTransaction] =
     useRootStore((store) => [
@@ -76,7 +78,7 @@ export const useApprovalTx = ({
         } else {
           let approveTxData = generateApproval(approvedAmount);
           setApprovalTxState({ ...approvalTxState, loading: true });
-          approveTxData = await estimateGasLimit(approveTxData);
+          approveTxData = await estimateGasLimit(approveTxData, chainId);
           const response = await sendTx(approveTxData);
           await response.wait(1);
           setApprovalTxState({

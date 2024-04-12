@@ -4,6 +4,7 @@ import ArrowOutward from '@mui/icons-material/ArrowOutward';
 import {
   Box,
   Button,
+  CircularProgress,
   Paper,
   Skeleton,
   SvgIcon,
@@ -30,6 +31,7 @@ import offRampAbi from 'src/components/transactions/Bridge/OffRamp-abi.json';
 // import onRampAbi from 'src/components/transactions/Bridge/OnRamp-abi.json';
 import { getRouterConfig } from 'src/components/transactions/Bridge/Router';
 import routerAbi from 'src/components/transactions/Bridge/Router-abi.json';
+import { useRootStore } from 'src/store/root';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import LoveGhost from '/public/loveGhost.svg';
@@ -57,6 +59,7 @@ interface TransactionDetails {
   gasPrice: BigNumberDetails;
   timestamp: number;
   messageStatus: string;
+  sourceAccount: string;
 }
 
 // interface ExecutionStateChangedEventArgs {
@@ -80,33 +83,58 @@ const getMessageStatus = (status: bigint): string => {
 };
 
 export function BridgeWrapper() {
-  const [transactions, setTransactions] = useState<TransactionDetails[]>([]);
-  const [statusLoading, setStatusLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Add a loading state
+  const [user] = useRootStore((state) => [state.account]);
 
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const bridgedTransactions =
-    typeof window !== 'undefined' && localStorage.getItem('bridgedTransactions');
+
+  const [statusLoading, setStatusLoading] = useState(false);
+
+  // const [transactions, setTransactions] = useState([] as TransactionDetails[]);
+
+  const [transactions, setTransactions] = useState<TransactionDetails[]>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const storedTransactions = localStorage.getItem('bridgedTransactions');
+        if (storedTransactions) {
+          const transactions: TransactionDetails[] = JSON.parse(storedTransactions);
+          return transactions.filter((tx) => tx.sourceAccount === user);
+        }
+      }
+    } catch (err) {
+      console.error('Error loading transactions from localStorage:', err);
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    try {
+      const bridgedTransactions =
+        typeof window !== 'undefined' ? localStorage.getItem('bridgedTransactions') : null;
+      if (bridgedTransactions) {
+        const filteredTransactions = JSON.parse(bridgedTransactions).filter(
+          (tx: TransactionDetails) => tx.sourceAccount === user
+        );
+
+        setTransactions(filteredTransactions);
+      }
+    } catch (error) {
+      console.error('Failed to parse transactions from localStorage:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     console.log('Transactions State Updated:', transactions);
   }, [transactions]);
 
   useEffect(() => {
-    console.log('Before loading from localStorage', transactions);
-
-    const loadTransactions = () => {
-      if (bridgedTransactions) {
-        const parsedBridgeTx = JSON.parse(bridgedTransactions);
-        setTransactions(parsedBridgeTx);
-      }
-    };
-
-    loadTransactions();
-  }, []);
-
-  useEffect(() => {
     setStatusLoading(true);
+    setIsLoading(false);
 
     const fetchStatuses = async () => {
       const tempTransactions = await Promise.all(
@@ -190,7 +218,7 @@ export function BridgeWrapper() {
             //   console.error('something broke here', err);
             // }
           } catch (error) {
-            console.error(`Error fetching status for transaction ${tx.messageId}:`, error);
+            return { ...tx, messageStatus: 'unknown' };
           }
           return tx;
         })
@@ -202,6 +230,14 @@ export function BridgeWrapper() {
 
     fetchStatuses();
   }, [transactions.length]);
+
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   if (transactions.length === 0 && !statusLoading) {
     return (
@@ -219,7 +255,7 @@ export function BridgeWrapper() {
         <LoveGhost style={{ marginBottom: '16px' }} />
         <Typography variant={'h3'}>
           <Trans>You have not bridged any transactions</Trans>
-        </Typography>
+        </Typography>{' '}
       </Paper>
     );
   }
