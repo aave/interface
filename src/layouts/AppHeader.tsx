@@ -274,7 +274,7 @@ export function AppHeader() {
 
         <NoSsr>
           <StyledBadge
-            invisible={visitedSwitch}
+            invisible={visitedSwitch} // TODO: Remove for production
             variant="dot"
             badgeContent=""
             color="secondary"
@@ -299,7 +299,7 @@ export function AppHeader() {
 
         <NoSsr>
           <StyledBadge
-            invisible={visitedSwitch}
+            invisible={true}
             variant="dot"
             badgeContent=""
             color="secondary"
