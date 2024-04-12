@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, SvgIcon, TextField, Typography } from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
+import { Link } from 'src/components/primitives/Link';
 import { BaseSuccessView } from 'src/components/transactions/FlowCommons/BaseSuccess';
 import { useRootStore } from 'src/store/root';
 
@@ -121,7 +122,19 @@ export const FeedbackModal = () => {
               color="text.secondary"
               sx={{ textAlign: 'center', mb: 2, mt: 4 }}
             >
-              <Trans>Let us know how we can make the app better for you</Trans>
+              <Trans>
+                Let us know how we can make the app better for you. For user support related
+                inquiries please reach out on
+              </Trans>{' '}
+              <Link
+                target="_blank"
+                variant="subheader1"
+                color="text.secondary"
+                href="https://discord.com/invite/aave"
+                underline="always"
+              >
+                discord
+              </Link>
               {'.'}
             </Typography>
             <Box width={'100%'}>

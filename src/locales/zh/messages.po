@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-03-26 18:05\n"
+"PO-Revision-Date: 2024-04-08 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -1360,7 +1360,7 @@ msgid "Learn more."
 msgstr "了解更多信息。"
 
 #: src/layouts/FeedbackDialog.tsx
-msgid "Let us know how we can make the app better for you"
+msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
 
 #: src/modules/governance/RepresentativesInfoPanel.tsx
@@ -2646,16 +2646,16 @@ msgid "This represents the threshold at which a borrow position will be consider
 msgstr "这代表了借款头寸将被视为抵押品不足的门槛，并可对每笔抵押品进行清算。例如，如果抵押品的清算门槛为 80%，则意味着当债务价值为抵押品价值的 80% 时，该头寸将被清算。"
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "Time left to be able to withdraw your staked asset."
-msgstr "剩余时间可以提取您的质押资产。"
-
-#: src/modules/staking/StakingPanel.tsx
 msgid "Time left to unstake"
 msgstr "还剩下时间去质押"
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "Time left until the withdrawal window closes."
-msgstr "提款窗口关闭前的剩余时间。"
+msgid "Time remaining until the 48 hour withdraw period starts."
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
+msgid "Time remaining until the withdraw period ends."
+msgstr ""
 
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"

@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
 import { ApprovedAmountService } from 'src/services/ApprovedAmountService';
 import { DelegationTokenService } from 'src/services/DelegationTokenService';
+import { ERC20Service } from 'src/services/Erc20Service';
 import { GovernanceService } from 'src/services/GovernanceService';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { MigrationService } from 'src/services/MigrationService';
@@ -34,6 +35,7 @@ interface SharedDependenciesContext {
   delegationTokenService: DelegationTokenService;
   stkAbptMigrationService: StkAbptMigrationService;
   migrationService: MigrationService;
+  erc20Service: ERC20Service;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -72,6 +74,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
     currentMarketData.chainId,
     getProvider(currentMarketData.chainId)
   );
+  const erc20Service = new ERC20Service(getProvider);
 
   const uiGhoService = new UiGhoService(getProvider);
 
@@ -92,6 +95,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         delegationTokenService,
         stkAbptMigrationService,
         migrationService,
+        erc20Service,
       }}
     >
       {children}
