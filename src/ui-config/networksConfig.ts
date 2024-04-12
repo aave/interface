@@ -158,6 +158,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.fuji]: {
     name: 'Avalanche Fuji',
+    privateJsonRPCUrl: 'https://avalanche-fuji.infura.io/v3/88e2b5f0ea3146e9b60c4adb26390544',
     publicJsonRPCUrl: [
       'https://api.avax-test.network/ext/bc/C/rpc',
       'https://rpc.ankr.com/avalanche_fuji',
@@ -291,6 +292,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.base_sepolia]: {
     name: 'Base Sepolia',
+    privateJsonRPCUrl: 'https://base-sepolia.g.alchemy.com/v2/2W_rEMYyqAQ9YHk4NNlE3JuQAOtabwZr',
     publicJsonRPCUrl: [
       'https://rpc.notadegen.com/base/sepolia',
       'https://base-sepolia.blockpi.network/v1/rpc/public',
