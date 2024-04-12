@@ -1,4 +1,5 @@
 import { MarketDataType } from './marketsConfig';
+import { TokenInfo } from './TokenList';
 
 export const queryKeysFactory = {
   governance: ['governance'] as const,
@@ -142,6 +143,12 @@ export const queryKeysFactory = {
     token,
     chainId,
     'tokenDelegatees',
+  ],
+  tokensBalance: (tokenList: TokenInfo[], chainId: number, user: string) => [
+    ...queryKeysFactory.user(user),
+    tokenList.map((elem) => elem.address),
+    chainId,
+    'tokensBalance',
   ],
 };
 

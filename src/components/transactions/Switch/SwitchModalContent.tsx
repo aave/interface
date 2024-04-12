@@ -1,19 +1,20 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
 import { debounce } from 'lodash';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { useParaswapSellRates } from 'src/hooks/paraswap/useParaswapRates';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { getNetworkConfig, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
@@ -25,7 +26,6 @@ import { NetworkSelector } from './NetworkSelector';
 import { SwitchActions } from './SwitchActions';
 import { SwitchAssetInput } from './SwitchAssetInput';
 import { SwitchErrors } from './SwitchErrors';
-import { TokenInfoWithBalance } from './SwitchModal';
 import { SwitchRates } from './SwitchRates';
 import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import { SwitchTxSuccessView } from './SwitchTxSuccessView';
@@ -35,48 +35,30 @@ interface SwitchModalContentProps {
   setSelectedChainId: (value: number) => void;
   supportedNetworks: SupportedNetworkWithChainId[];
   tokens: TokenInfoWithBalance[];
-  selectedNetworkConfig: NetworkConfig;
-  defaultAsset?: string;
+  defaultInputToken: TokenInfoWithBalance;
+  defaultOutputToken: TokenInfoWithBalance;
+  addNewToken: (token: TokenInfoWithBalance) => Promise<void>;
 }
-
-const GHO_TOKEN_ADDRESS = AaveV3Ethereum.ASSETS.GHO.UNDERLYING;
 
 export const SwitchModalContent = ({
   supportedNetworks,
   selectedChainId,
   setSelectedChainId,
+  defaultInputToken,
+  defaultOutputToken,
   tokens,
-  selectedNetworkConfig,
-}: // defaultAsset,
-SwitchModalContentProps) => {
+  addNewToken,
+}: SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
   const [inputAmount, setInputAmount] = useState('');
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const { mainTxState: switchTxState, gasLimit, txError, setTxError } = useModalContext();
   const user = useRootStore((store) => store.account);
 
-  const getDefaultToken = () => {
-    if (tokens[0].address === GHO_TOKEN_ADDRESS) {
-      return tokens[1];
-    }
-    return tokens[0];
-  };
+  const selectedNetworkConfig = getNetworkConfig(selectedChainId);
 
-  const getDefaultOutputToken = () => {
-    const gho = tokens.find((token) => token.address === GHO_TOKEN_ADDRESS);
-    const aave = tokens.find((token) => token.symbol == 'AAVE');
-    if (gho) return gho;
-    if (aave) return aave;
-    return tokens[1];
-  };
-
-  const [selectedInputToken, setSelectedInputToken] = useState(() => getDefaultToken());
-  const [selectedOutputToken, setSelectedOutputToken] = useState(() => getDefaultOutputToken());
-
-  useEffect(() => {
-    setSelectedInputToken(getDefaultToken());
-    setSelectedOutputToken(getDefaultOutputToken());
-  }, [tokens]);
+  const [selectedInputToken, setSelectedInputToken] = useState(defaultInputToken);
+  const [selectedOutputToken, setSelectedOutputToken] = useState(defaultOutputToken);
 
   const { readOnlyModeAddress } = useWeb3Context();
 
@@ -152,13 +134,27 @@ SwitchModalContentProps) => {
   };
 
   const handleSelectedInputToken = (token: TokenInfoWithBalance) => {
-    setTxError(undefined);
-    setSelectedInputToken(token);
+    if (!tokens.find((t) => t.address === token.address)) {
+      addNewToken(token).then(() => {
+        setSelectedInputToken(token);
+        setTxError(undefined);
+      });
+    } else {
+      setSelectedInputToken(token);
+      setTxError(undefined);
+    }
   };
 
   const handleSelectedOutputToken = (token: TokenInfoWithBalance) => {
-    setTxError(undefined);
-    setSelectedOutputToken(token);
+    if (!tokens.find((t) => t.address === token.address)) {
+      addNewToken(token).then(() => {
+        setSelectedOutputToken(token);
+        setTxError(undefined);
+      });
+    } else {
+      setSelectedOutputToken(token);
+      setTxError(undefined);
+    }
   };
 
   const handleSelectedNetworkChange = (value: number) => {
@@ -171,7 +167,7 @@ SwitchModalContentProps) => {
       <TxModalTitle title="Switch tokens" />
       {isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
-          networkName={getNetworkConfig(selectedChainId).name}
+          networkName={selectedNetworkConfig.name}
           chainId={selectedChainId}
           event={{
             eventName: GENERAL.SWITCH_NETWORK,
@@ -201,14 +197,13 @@ SwitchModalContentProps) => {
             }}
           >
             <SwitchAssetInput
+              chainId={selectedChainId}
               assets={tokens.filter((token) => token.address !== selectedOutputToken.address)}
               value={inputAmount}
               onChange={handleInputChange}
               usdValue={sellRates?.srcUSD || '0'}
-              symbol={selectedInputToken.symbol}
               onSelect={handleSelectedInputToken}
-              inputTitle={' '}
-              sx={{ width: '100%' }}
+              selectedAsset={selectedInputToken}
             />
             <IconButton
               onClick={onSwitchReserves}
@@ -224,6 +219,7 @@ SwitchModalContentProps) => {
               </SvgIcon>
             </IconButton>
             <SwitchAssetInput
+              chainId={selectedChainId}
               assets={tokens.filter((token) => token.address !== selectedInputToken.address)}
               value={
                 sellRates
@@ -231,7 +227,6 @@ SwitchModalContentProps) => {
                   : '0'
               }
               usdValue={sellRates?.destUSD || '0'}
-              symbol={selectedOutputToken.symbol}
               loading={
                 debounceInputAmount !== '0' &&
                 debounceInputAmount !== '' &&
@@ -240,8 +235,7 @@ SwitchModalContentProps) => {
               }
               onSelect={handleSelectedOutputToken}
               disableInput={true}
-              inputTitle={' '}
-              sx={{ width: '100%' }}
+              selectedAsset={selectedOutputToken}
             />
           </Box>
           {sellRates && (
@@ -285,6 +279,14 @@ SwitchModalContentProps) => {
           )}
           {user ? (
             <>
+              {(selectedInputToken.extensions?.isUserCustom ||
+                selectedOutputToken.extensions?.isUserCustom) && (
+                <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
+                  <Typography variant="caption">
+                    You have selected a custom imported token.
+                  </Typography>
+                </Warning>
+              )}
               <SwitchErrors
                 ratesError={ratesError}
                 balance={selectedInputToken.balance}
