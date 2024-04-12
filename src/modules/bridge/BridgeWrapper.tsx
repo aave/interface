@@ -12,7 +12,6 @@ import {
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Contract } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -372,7 +371,8 @@ export function BridgeWrapper() {
                 <FormattedNumber
                   visibleDecimals={2}
                   symbol={'USD'}
-                  value={formatUnits(tx.amount, 18)}
+                  // value={formatUnits(tx.amount, 18)}
+                  value={tx.amount}
                   variant="main16"
                 />
               </ListColumn>
