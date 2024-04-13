@@ -12,7 +12,7 @@ export const GENERAL = {
   SWITCH_NETWORK: 'Switch network',
   BUY_WITH_FIAT: 'Navigate to fiat onramp', //done
   TOOL_TIP: 'Tool Tip', //done
-  EXTERNAL_LINK: 'External Link Navigaton',
+  EXTERNAL_LINK: 'External Link Navigation',
   SET_SLIPPAGE: 'Set slippage',
   TOKEN_APPROVAL: 'Token Approval',
   ACCEPT_RISK: 'Accept Risk',
