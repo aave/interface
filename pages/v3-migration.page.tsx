@@ -1,9 +1,11 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
 import { useUserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
 import { useUserPoolReservesHumanized } from 'src/hooks/pool/useUserPoolReserves';
@@ -19,7 +21,12 @@ import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
 import { selectCurrentChainIdV3MarketData } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
-import { getNetworkConfig, MarketDataType, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import {
+  CustomMarket,
+  getNetworkConfig,
+  MarketDataType,
+  marketsData,
+} from 'src/utils/marketsAndNetworksConfig';
 
 const MigrateV3Modal = dynamic(() =>
   import('src/components/transactions/MigrateV3/MigrateV3Modal').then(
@@ -45,7 +52,20 @@ const selectableMarkets = [
 
 export default function V3Migration() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const [fromMarketData, setFromMarketData] = useState<MarketDataType>(AAVE_MARKETS_TO_MIGRATE[0]);
+  const router = useRouter();
+  const [fromMarketData, setFromMarketData] = useState<MarketDataType>(() => {
+    if (router.query.market) {
+      const { market } = getMarketInfoById(router.query.market as CustomMarket);
+      const migrationMarket = AAVE_MARKETS_TO_MIGRATE.find(
+        (migrationMarket) =>
+          migrationMarket.isFork === market.isFork && migrationMarket.chainId === market.chainId
+      );
+      if (migrationMarket) {
+        return market;
+      }
+    }
+    return AAVE_MARKETS_TO_MIGRATE[0];
+  });
   const {
     selectAllSupply,
     selectAllBorrow,

@@ -37,7 +37,6 @@ export class MigrationService {
     const networkConfig = getNetworkConfig(fromMarketData.chainId);
     const chainId = networkConfig.underlyingChainId || fromMarketData.chainId;
     const exceptions = MIGRATION_ASSETS_EXCEPTIONS[chainId] || [];
-    console.log(migrationSupplyException);
     const filteredSuppliesForExceptions = migrationSupplyException.filter(
       (supply) =>
         exceptions.indexOf(supply.underlyingAsset) >= 0 && supply.scaledATokenBalance !== '0'
