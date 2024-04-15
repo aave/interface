@@ -37,7 +37,6 @@ export const ModalWrapper: React.FC<{
   // if true wETH will stay wETH otherwise wETH will be returned as ETH
   keepWrappedSymbol?: boolean;
   hideTitleSymbol?: boolean;
-  // requiredPermission?: PERMISSION;
   children: (props: ModalWrapperProps) => React.ReactNode;
   action?: string;
 }> = ({
@@ -60,19 +59,6 @@ export const ModalWrapper: React.FC<{
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-
-  /*
-
-  if (
-    requiredPermission &&
-    isFeatureEnabled.permissions(currentMarketData) &&
-    !permissions.includes(requiredPermission) &&
-    currentMarketData.permissionComponent
-  ) {
-    return <>{currentMarketData.permissionComponent}</>;
-  }
-
-  */
 
   const poolReserve = reserves.find((reserve) => {
     if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
