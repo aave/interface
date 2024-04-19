@@ -1,6 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
 import { GelatoRelay } from '@gelatonetwork/relay-sdk';
 import { Trans } from '@lingui/macro';
+import { useQueryClient } from '@tanstack/react-query';
 import { AbiCoder, keccak256, RLP } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
@@ -155,6 +156,7 @@ export const GovVoteActions = ({
   const user = useRootStore((store) => store.account);
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx, signTxData } = useWeb3Context();
+  const queryClient = useQueryClient();
   const tokenPowers = useGovernanceTokensAndPowers();
   const [signature, setSignature] = useState<string | undefined>(undefined);
   const proposalId = +proposal.subgraphProposal.id;
@@ -217,6 +219,7 @@ export const GovVoteActions = ({
               loading: false,
               success: true,
             });
+            queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
             return;
           } else {
             setTimeout(checkForStatus, 5000);
@@ -240,6 +243,8 @@ export const GovVoteActions = ({
           loading: false,
           success: true,
         });
+
+        queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
       }
     } catch {
       setMainTxState({
