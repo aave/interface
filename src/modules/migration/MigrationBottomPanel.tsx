@@ -35,8 +35,8 @@ interface MigrationBottomPanelProps {
   enteringIsolationMode: boolean;
   fromMarketData: MarketDataType;
   toMarketData: MarketDataType;
-  userSummaryAfterMigration: UserSummaryAfterMigration;
-  userSummaryBeforeMigration: UserSummaryBeforeMigration;
+  userSummaryAfterMigration?: UserSummaryAfterMigration;
+  userSummaryBeforeMigration?: UserSummaryBeforeMigration;
   setFromMarketData: (marketData: MarketDataType) => void;
   selectableMarkets: SelectableMarkets;
 }
@@ -129,6 +129,7 @@ export const MigrationBottomPanel = ({
   userSummaryBeforeMigration,
   setFromMarketData,
   selectableMarkets,
+  loading,
 }: MigrationBottomPanelProps) => {
   const { openV3Migration } = useModalContext();
   const [isChecked, setIsChecked] = useState(false);
@@ -136,7 +137,9 @@ export const MigrationBottomPanel = ({
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const blockingError = getBlockingError(userSummaryAfterMigration, !!disableButton, isChecked);
+  const blockingError = userSummaryAfterMigration
+    ? getBlockingError(userSummaryAfterMigration, !!disableButton, isChecked)
+    : null;
 
   return (
     <Box
@@ -169,10 +172,11 @@ export const MigrationBottomPanel = ({
         >
           <MigrationMarketCard
             marketData={fromMarketData}
-            userSummaryBeforeMigration={userSummaryBeforeMigration.fromUserSummaryBeforeMigration}
-            userSummaryAfterMigration={userSummaryAfterMigration.fromUserSummaryAfterMigration}
+            userSummaryBeforeMigration={userSummaryBeforeMigration?.fromUserSummaryBeforeMigration}
+            userSummaryAfterMigration={userSummaryAfterMigration?.fromUserSummaryAfterMigration}
             selectableMarkets={selectableMarkets}
             setFromMarketData={setFromMarketData}
+            loading={loading}
           />
           <Box
             border={1}
@@ -192,8 +196,9 @@ export const MigrationBottomPanel = ({
           </Box>
           <MigrationMarketCard
             marketData={toMarketData}
-            userSummaryBeforeMigration={userSummaryBeforeMigration.toUserSummaryBeforeMigration}
-            userSummaryAfterMigration={userSummaryAfterMigration.toUserSummaryAfterMigration}
+            userSummaryBeforeMigration={userSummaryBeforeMigration?.toUserSummaryBeforeMigration}
+            userSummaryAfterMigration={userSummaryAfterMigration?.toUserSummaryAfterMigration}
+            loading={loading}
           />
         </Box>
 
@@ -238,7 +243,7 @@ export const MigrationBottomPanel = ({
         <Box>
           <Button
             onClick={openV3Migration}
-            disabled={!isChecked || blockingError !== null}
+            disabled={loading || !isChecked || blockingError !== null}
             sx={{ width: '100%', height: '44px' }}
             variant={!isChecked || blockingError !== null ? 'contained' : 'gradient'}
             size="medium"

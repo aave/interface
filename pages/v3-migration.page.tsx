@@ -138,6 +138,12 @@ export default function V3Migration() {
     setFromMarketData(marketData);
   };
 
+  const bottomPanelProps = fromUserSummaryAndIncentives &&
+    toUserSummaryForMigration && {
+      fromUserSummaryBeforeMigration: fromUserSummaryAndIncentives,
+      toUserSummaryBeforeMigration: toUserSummaryForMigration,
+    };
+
   return (
     <>
       <MigrationTopPanel />
@@ -151,26 +157,17 @@ export default function V3Migration() {
               flexDirection: { xs: 'column', lg: 'row' },
             }}
           >
-            {userSummaryAfterMigration &&
-              fromUserSummaryAndIncentives &&
-              toUserSummaryForMigration && (
-                <MigrationBottomPanel
-                  userSummaryAfterMigration={userSummaryAfterMigration}
-                  userSummaryBeforeMigration={{
-                    fromUserSummaryBeforeMigration: fromUserSummaryAndIncentives,
-                    toUserSummaryBeforeMigration: toUserSummaryForMigration,
-                  }}
-                  disableButton={
-                    selectedSupplyAssets.length === 0 && selectedBorrowAssets.length === 0
-                  }
-                  enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
-                  loading={loading}
-                  fromMarketData={fromMarketData}
-                  toMarketData={toMarketData}
-                  setFromMarketData={changeFromMarketData}
-                  selectableMarkets={selectableMarkets}
-                />
-              )}
+            <MigrationBottomPanel
+              userSummaryAfterMigration={userSummaryAfterMigration}
+              userSummaryBeforeMigration={bottomPanelProps}
+              disableButton={selectedSupplyAssets.length === 0 && selectedBorrowAssets.length === 0}
+              enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
+              loading={loading}
+              fromMarketData={fromMarketData}
+              toMarketData={toMarketData}
+              setFromMarketData={changeFromMarketData}
+              selectableMarkets={selectableMarkets}
+            />
             <MigrationLists
               loading={loading}
               isSupplyPositionsAvailable={supplyReserves.length > 0}

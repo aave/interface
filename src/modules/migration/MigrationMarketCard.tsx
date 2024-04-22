@@ -23,14 +23,15 @@ const formatMarketName = (market: MarketDataType) => {
 
 type MigrationMarketCardProps = {
   marketData: MarketDataType;
-  userSummaryAfterMigration: {
+  userSummaryAfterMigration?: {
     healthFactor: string;
   };
-  userSummaryBeforeMigration: {
+  userSummaryBeforeMigration?: {
     healthFactor: string;
   };
   selectableMarkets?: SelectableMarkets;
   setFromMarketData?: (marketData: MarketDataType) => void;
+  loading?: boolean;
 };
 
 export type SelectableMarkets = Array<{
@@ -44,6 +45,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
   userSummaryBeforeMigration,
   selectableMarkets,
   setFromMarketData,
+  loading,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -145,7 +147,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
         <Typography>Health Factor</Typography>
         <Box sx={{ textAlign: 'right' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-            {!false ? (
+            {!loading && userSummaryBeforeMigration ? (
               <HealthFactorNumber value={userSummaryBeforeMigration.healthFactor} />
             ) : (
               <Skeleton width={50} />
@@ -153,7 +155,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
             <SvgIcon sx={{ fontSize: '16px', color: 'text.primary', mx: 1 }}>
               <ArrowNarrowRightIcon />
             </SvgIcon>
-            {!false ? (
+            {!loading && userSummaryAfterMigration ? (
               <HealthFactorNumber value={userSummaryAfterMigration.healthFactor} />
             ) : (
               <Skeleton width={50} />
