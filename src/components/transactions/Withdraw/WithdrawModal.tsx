@@ -1,4 +1,3 @@
-import { PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
@@ -40,7 +39,6 @@ export const WithdrawModal = () => {
         title={<Trans>Withdraw</Trans>}
         underlyingAsset={args.underlyingAsset}
         keepWrappedSymbol={!withdrawUnWrapped}
-        requiredPermission={PERMISSION.DEPOSITOR}
       >
         {(params) => (
           <UserAuthenticated>

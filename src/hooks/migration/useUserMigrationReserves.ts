@@ -32,6 +32,7 @@ import {
   useUserSummaryAndIncentives,
 } from '../pool/useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from '../pool/utils';
+import { useMigrationExceptionsSupplyBalance } from './useMigrationExceptionsSupplyBalance';
 
 export type SupplyMigrationReserve = ComputedUserReserve<FormattedReservesAndIncentives> & {
   usageAsCollateralEnabledOnUserV3: boolean;
@@ -62,7 +63,6 @@ const select = memoize(
     toReservesIncentivesData: ReservesIncentiveDataHumanized[],
     fromUserSummaryAndIncentives: UserSummaryAndIncentives,
     migrationExceptions: Record<string, MigrationException>,
-    exceptionsBalancesLoading: boolean,
     selectedMigrationSupplyAssets: MigrationSelectedAsset[]
   ): UserMigrationReserves => {
     const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } =
@@ -89,13 +89,11 @@ const select = memoize(
       const definitiveAssets = selectDefinitiveSupplyAssetForMigration(
         selectedMigrationSupplyAssets,
         migrationExceptions,
-        exceptionsBalancesLoading,
         v3ReservesMap
       );
       if (definitiveAssets.length > 0) {
         const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(
           migrationExceptions,
-          exceptionsBalancesLoading,
           definitiveAssets[0]
         );
         const definitiveAsset = v3ReservesMap[underlyingAssetAddress];
@@ -119,7 +117,6 @@ const select = memoize(
       let migrationDisabled: MigrationDisabled | undefined;
       const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(
         migrationExceptions,
-        exceptionsBalancesLoading,
         userReserve
       );
 
@@ -253,8 +250,18 @@ export const useUserMigrationReserves = (
   const toReservesIncentivesDataQuery = usePoolReservesIncentivesHumanized(migrationTo);
   const fromUserSummaryAndIncentives = useUserSummaryAndIncentives(migrationFrom);
 
-  const migrationExceptions = useRootStore((store) => store.migrationExceptions);
-  const exceptionsBalancesLoading = useRootStore((store) => store.exceptionsBalancesLoading);
+  const userReservesV2Data = fromUserSummaryAndIncentives.data?.userReservesData;
+
+  const supplyReserves = userReservesV2Data?.filter(
+    (userReserve) => userReserve.underlyingBalance !== '0'
+  );
+
+  const migrationsExceptionsQuery = useMigrationExceptionsSupplyBalance(
+    migrationFrom,
+    migrationTo,
+    supplyReserves
+  );
+
   const selectedMigrationSupplyAssets = useRootStore(
     (store) => store.selectedMigrationSupplyAssets
   );
@@ -263,15 +270,15 @@ export const useUserMigrationReserves = (
     toReservesData: ReservesDataHumanized,
     toUserReservesData: UserReservesDataHumanized,
     toReservesIncentivesData: ReservesIncentiveDataHumanized[],
-    fromUserSummaryAndIncentives: UserSummaryAndIncentives
+    fromUserSummaryAndIncentives: UserSummaryAndIncentives,
+    migrationsExceptions: Record<string, MigrationException>
   ) => {
     return select(
       toReservesData,
       toUserReservesData,
       toReservesIncentivesData,
       fromUserSummaryAndIncentives,
-      migrationExceptions,
-      exceptionsBalancesLoading,
+      migrationsExceptions,
       selectedMigrationSupplyAssets
     );
   };
@@ -282,6 +289,7 @@ export const useUserMigrationReserves = (
       toUserReservesDataQuery,
       toReservesIncentivesDataQuery,
       fromUserSummaryAndIncentives,
+      migrationsExceptionsQuery,
     ] as const,
     selector
   );

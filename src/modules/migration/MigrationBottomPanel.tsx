@@ -1,6 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import { ExclamationIcon } from '@heroicons/react/outline';
+import { ExclamationIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
+import { ArrowDownward } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -13,28 +14,31 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { IsolationModeWarning } from 'src/components/transactions/Warnings/IsolationModeWarning';
+import { UserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
+import { UserSummaryAndIncentives } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 
-import { HFChange } from './HFChange';
+import { MigrationMarketCard, SelectableMarkets } from './MigrationMarketCard';
+
+export interface UserSummaryBeforeMigration {
+  fromUserSummaryBeforeMigration: UserSummaryAndIncentives;
+  toUserSummaryBeforeMigration: UserSummaryAndIncentives;
+}
 
 interface MigrationBottomPanelProps {
-  hfV2Current: string;
-  hfV2AfterChange: string;
-  hfV3Current: string;
-  v3SummaryAfterMigration: {
-    healthFactor: string;
-    currentLoanToValue: string;
-    totalCollateralMarketReferenceCurrency: string;
-    totalBorrowsMarketReferenceCurrency: string;
-  };
   disableButton?: boolean;
   loading?: boolean;
   enteringIsolationMode: boolean;
+  fromMarketData: MarketDataType;
+  toMarketData: MarketDataType;
+  userSummaryAfterMigration?: UserSummaryAfterMigration;
+  userSummaryBeforeMigration?: UserSummaryBeforeMigration;
+  setFromMarketData: (marketData: MarketDataType) => void;
+  selectableMarkets: SelectableMarkets;
 }
 
 enum ErrorType {
@@ -44,29 +48,20 @@ enum ErrorType {
   INSUFFICIENT_LTV,
 }
 
-export const MigrationBottomPanel = ({
-  hfV2Current,
-  hfV2AfterChange,
-  hfV3Current,
-  v3SummaryAfterMigration,
-  disableButton,
-  enteringIsolationMode,
-  loading,
-}: MigrationBottomPanelProps) => {
-  const { breakpoints } = useTheme();
-  const downToSM = useMediaQuery(breakpoints.down('sm'));
-  const { currentMarket } = useProtocolDataContext();
-  const { market } = getMarketInfoById(currentMarket);
+interface BlockErrorTextProps {
+  blockingError?: ErrorType | null;
+}
 
-  const { openV3Migration } = useModalContext();
-  const [isChecked, setIsChecked] = useState(false);
-
+const getBlockingError = (
+  userSummaryAfterMigration: UserSummaryAfterMigration,
+  disableButton: boolean,
+  isChecked: boolean
+) => {
   const {
-    healthFactor: hfV3AfterChange,
     totalCollateralMarketReferenceCurrency,
     totalBorrowsMarketReferenceCurrency,
     currentLoanToValue,
-  } = v3SummaryAfterMigration;
+  } = userSummaryAfterMigration.toUserSummaryAfterMigration;
 
   const maxBorrowAmount = valueToBigNumber(totalCollateralMarketReferenceCurrency).multipliedBy(
     currentLoanToValue
@@ -75,102 +70,147 @@ export const MigrationBottomPanel = ({
   const insufficientLtv = valueToBigNumber(totalBorrowsMarketReferenceCurrency).isGreaterThan(
     maxBorrowAmount
   );
-
-  // error types handling
-  let blockingError: ErrorType | undefined = undefined;
   if (disableButton && isChecked) {
-    blockingError = ErrorType.NO_SELECTION;
-  } else if (Number(hfV2AfterChange) < 1.005 && hfV2AfterChange !== '-1') {
-    blockingError = ErrorType.V2_HF_TOO_LOW;
-  } else if (Number(hfV3AfterChange) < 1.005 && hfV3AfterChange !== '-1') {
-    blockingError = ErrorType.V3_HF_TOO_LOW;
+    return ErrorType.NO_SELECTION;
+  } else if (
+    Number(userSummaryAfterMigration.fromUserSummaryAfterMigration.healthFactor) < 1.005 &&
+    userSummaryAfterMigration.fromUserSummaryAfterMigration.healthFactor !== '-1'
+  ) {
+    return ErrorType.V2_HF_TOO_LOW;
+  } else if (
+    Number(userSummaryAfterMigration.toUserSummaryAfterMigration.healthFactor) < 1.005 &&
+    userSummaryAfterMigration.toUserSummaryAfterMigration.healthFactor !== '-1'
+  ) {
+    return ErrorType.V3_HF_TOO_LOW;
   } else if (insufficientLtv) {
-    blockingError = ErrorType.INSUFFICIENT_LTV;
+    return ErrorType.INSUFFICIENT_LTV;
   }
+  return null;
+};
 
-  // error render handling
-  const Blocked = () => {
-    switch (blockingError) {
-      case ErrorType.NO_SELECTION:
-        return <Trans>No assets selected to migrate.</Trans>;
-      case ErrorType.V2_HF_TOO_LOW:
-        return (
+const BlockErrorText = ({ blockingError }: BlockErrorTextProps) => {
+  switch (blockingError) {
+    case ErrorType.NO_SELECTION:
+      return <Trans>No assets selected to migrate.</Trans>;
+    case ErrorType.V2_HF_TOO_LOW:
+      return (
+        <Trans>
+          This action will reduce V2 health factor below liquidation threshold. retain collateral or
+          migrate borrow position to continue.
+        </Trans>
+      );
+    case ErrorType.V3_HF_TOO_LOW:
+      return (
+        <>
           <Trans>
-            This action will reduce V2 health factor below liquidation threshold. retain collateral
-            or migrate borrow position to continue.
+            This action will reduce health factor of V3 below liquidation threshold. Increase
+            migrated collateral or reduce migrated borrow to continue.
           </Trans>
-        );
-      case ErrorType.V3_HF_TOO_LOW:
-        return (
-          <>
-            <Trans>
-              This action will reduce health factor of V3 below liquidation threshold. Increase
-              migrated collateral or reduce migrated borrow to continue.
-            </Trans>
-          </>
-        );
-      case ErrorType.INSUFFICIENT_LTV:
-        return (
-          <Trans>
-            The loan to value of the migrated positions would cause liquidation. Increase migrated
-            collateral or reduce migrated borrow to continue.
-          </Trans>
-        );
-      default:
-        return <></>;
-    }
-  };
+        </>
+      );
+    case ErrorType.INSUFFICIENT_LTV:
+      return (
+        <Trans>
+          The loan to value of the migrated positions would cause liquidation. Increase migrated
+          collateral or reduce migrated borrow to continue.
+        </Trans>
+      );
+    default:
+      return <></>;
+  }
+};
+
+export const MigrationBottomPanel = ({
+  disableButton,
+  enteringIsolationMode,
+  fromMarketData,
+  toMarketData,
+  userSummaryAfterMigration,
+  userSummaryBeforeMigration,
+  setFromMarketData,
+  selectableMarkets,
+  loading,
+}: MigrationBottomPanelProps) => {
+  const { openV3Migration } = useModalContext();
+  const [isChecked, setIsChecked] = useState(false);
+
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const blockingError = userSummaryAfterMigration
+    ? getBlockingError(userSummaryAfterMigration, !!disableButton, isChecked)
+    : null;
 
   return (
     <Box
       sx={{
         display: 'flex',
-        flexDirection: { xs: 'column-reverse', md: 'row' },
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
+        flexDirection: 'column',
+        width: { xs: '100%', lg: '40%' },
       }}
     >
       <Paper
         sx={{
-          p: downToSM ? '20px 16px' : '20px 30px',
+          p: {
+            xs: '16px 24px 24px 24px',
+          },
           mb: { xs: 6, md: 0 },
-          width: { xs: '100%', md: '45%', lg: '35%' },
         }}
       >
-        <Row
-          caption={<Trans>Review changes to continue</Trans>}
-          captionVariant="h3"
-          sx={{ mb: 6 }}
-        />
+        <Row caption={<Trans>Migrate your assets</Trans>} captionVariant="h3" sx={{ mb: 6 }} />
 
-        <HFChange
-          caption={<Trans>Health Factor ({market.marketTitle} v2)</Trans>}
-          hfCurrent={hfV2Current}
-          hfAfter={hfV2AfterChange}
-          loading={loading}
-        />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: 2,
+            mb: 12,
+            position: 'relative',
+            alignItems: 'center',
+          }}
+        >
+          <MigrationMarketCard
+            marketData={fromMarketData}
+            userSummaryBeforeMigration={userSummaryBeforeMigration?.fromUserSummaryBeforeMigration}
+            userSummaryAfterMigration={userSummaryAfterMigration?.fromUserSummaryAfterMigration}
+            selectableMarkets={selectableMarkets}
+            setFromMarketData={setFromMarketData}
+            loading={loading}
+          />
+          <Box
+            border={1}
+            borderColor="divider"
+            bgcolor="background.paper"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'absolute',
+              borderRadius: '12px',
+              width: 36,
+              height: 36,
+            }}
+          >
+            <ArrowDownward />
+          </Box>
+          <MigrationMarketCard
+            marketData={toMarketData}
+            userSummaryBeforeMigration={userSummaryBeforeMigration?.toUserSummaryBeforeMigration}
+            userSummaryAfterMigration={userSummaryAfterMigration?.toUserSummaryAfterMigration}
+            loading={loading}
+          />
+        </Box>
 
-        <HFChange
-          caption={
-            <Trans>
-              Health Factor (
-              {market.marketTitle === 'Ethereum AMM' ? 'Ethereum' : market.marketTitle} v3)
-            </Trans>
-          }
-          hfCurrent={hfV3Current}
-          hfAfter={hfV3AfterChange}
-          loading={loading}
-        />
-
-        {blockingError !== undefined && (
+        {blockingError !== null && (
           <Warning severity="warning">
-            <Blocked />
+            <BlockErrorText blockingError={blockingError} />
           </Warning>
         )}
 
         {enteringIsolationMode && <IsolationModeWarning severity="warning" />}
 
-        {blockingError === undefined && (
+        {blockingError === null && (
           <Box
             sx={{
               height: '44px',
@@ -203,52 +243,51 @@ export const MigrationBottomPanel = ({
         <Box>
           <Button
             onClick={openV3Migration}
-            disabled={!isChecked || blockingError !== undefined}
+            disabled={loading || !isChecked || blockingError !== null}
             sx={{ width: '100%', height: '44px' }}
-            variant={!isChecked || blockingError !== undefined ? 'contained' : 'gradient'}
+            variant={!isChecked || blockingError !== null ? 'contained' : 'gradient'}
             size="medium"
             data-cy={`migration-button`}
           >
             <Trans>Preview tx and migrate</Trans>
           </Button>
         </Box>
-      </Paper>
-      <Box
-        sx={{
-          width: { xs: '100%', md: '50%', lg: '60%' },
-          p: downToSM ? '20px 16px' : '20px 30px',
-          mt: downToSM ? 4 : 0,
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{ fontWeight: 700, mb: { xs: 4, lg: 6 }, display: 'flex', alignItems: 'center' }}
+        <Box
+          sx={{
+            p: downToSM ? '20px 16px' : '20px 30px',
+            mt: downToSM ? 4 : 0,
+          }}
         >
-          <SvgIcon sx={{ fontSize: '24px', color: 'warning.main', mr: 2 }}>
-            <ExclamationIcon />
-          </SvgIcon>
-          <Trans>Migration risks</Trans>
-        </Typography>
-        <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
-          <Trans>
-            Please always be aware of your <b>Health Factor (HF)</b> when partially migrating a
-            position and that your rates will be updated to V3 rates.
-          </Trans>
-        </Typography>
-        <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
-          <Trans>
-            Migrating multiple collaterals and borrowed assets at the same time can be an expensive
-            operation and might fail in certain situations.
-            <b>
-              Therefore it’s not recommended to migrate positions with more than 5 assets (deposited
-              + borrowed) at the same time.
-            </b>
-          </Trans>
-        </Typography>
-        <Typography sx={{ mb: { xs: 4, lg: 6 } }}>
-          <Trans>Be mindful of the network congestion and gas prices.</Trans>
-        </Typography>
-      </Box>
+          <Typography
+            variant="h3"
+            sx={{ fontWeight: 700, mb: { xs: 4, lg: 6 }, display: 'flex', alignItems: 'center' }}
+          >
+            <SvgIcon sx={{ fontSize: '24px', color: 'warning.main', mr: 2 }}>
+              <ExclamationIcon />
+            </SvgIcon>
+            <Trans>Migration risks</Trans>
+          </Typography>
+          <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
+            <Trans>
+              Please always be aware of your <b>Health Factor (HF)</b> when partially migrating a
+              position and that your rates will be updated to V3 rates.
+            </Trans>
+          </Typography>
+          <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
+            <Trans>
+              Migrating multiple collaterals and borrowed assets at the same time can be an
+              expensive operation and might fail in certain situations.
+              <b>
+                Therefore it’s not recommended to migrate positions with more than 5 assets
+                (deposited + borrowed) at the same time.
+              </b>
+            </Trans>
+          </Typography>
+          <Typography sx={{ mb: { xs: 4, lg: 6 } }}>
+            <Trans>Be mindful of the network congestion and gas prices.</Trans>
+          </Typography>
+        </Box>
+      </Paper>
     </Box>
   );
 };

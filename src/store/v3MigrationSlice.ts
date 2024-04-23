@@ -43,12 +43,12 @@ export type MigrationSelectedBorrowAsset = {
   interestRate: InterestRate;
 };
 
-type MigrationSupplyException = {
+export type MigrationSupplyException = {
   underlyingAsset: string;
   scaledATokenBalance: string;
 };
 
-const MIGRATION_ASSETS_EXCEPTIONS: Record<number, string[]> = {
+export const MIGRATION_ASSETS_EXCEPTIONS: Record<number, string[]> = {
   [1]: ['0xae7ab96520de3a18e5e111b5eaab095312d7fe84'],
 };
 
@@ -60,11 +60,9 @@ export type MigrationException = {
 
 export type V3MigrationSlice = {
   //STATE
-  exceptionsBalancesLoading: boolean;
   selectedMigrationSupplyAssets: MigrationSelectedAsset[];
   selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[];
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
-  migrationExceptions: Record<string, MigrationException>;
   timestamp: number;
   approvalPermitsForMigrationAssets: Array<Approval>;
   // ACTIONS
@@ -95,7 +93,6 @@ export type V3MigrationSlice = {
   enforceAsCollateral: (underlyingAsset: string) => void;
   selectAllBorrow: (borrowReserves: BorrowMigrationReserve[]) => void;
   selectAllSupply: (supplyReserves: SupplyMigrationReserve[]) => void;
-  getMigrationExceptionSupplyBalances: (supplies: MigrationSupplyException[]) => void;
 };
 
 export const createV3MigrationSlice: StateCreator<
@@ -105,11 +102,9 @@ export const createV3MigrationSlice: StateCreator<
   V3MigrationSlice
 > = (set, get) => {
   return {
-    exceptionsBalancesLoading: false,
     selectedMigrationSupplyAssets: [],
     selectedMigrationBorrowAssets: [],
     migrationServiceInstances: {},
-    migrationExceptions: {},
     timestamp: 0,
     approvalPermitsForMigrationAssets: [],
     generatePermitPayloadForMigrationSupplyAsset: async ({ amount, underlyingAsset, deadline }) => {
@@ -383,47 +378,6 @@ export const createV3MigrationSlice: StateCreator<
         migrationServiceInstances: { ...migrationServiceInstances, [address]: newMigratorInstance },
       });
       return newMigratorInstance;
-    },
-    getMigrationExceptionSupplyBalances: async (supplies) => {
-      const chainId = get().currentNetworkConfig.underlyingChainId || get().currentChainId;
-      const currentChainIdExceptions = MIGRATION_ASSETS_EXCEPTIONS[chainId];
-      if (
-        currentChainIdExceptions &&
-        currentChainIdExceptions.length > 0 &&
-        !get().exceptionsBalancesLoading &&
-        Object.keys(get().migrationExceptions).length == 0
-      ) {
-        set({ exceptionsBalancesLoading: true });
-        const filteredSuppliesForExceptions = supplies.filter(
-          (supply) =>
-            currentChainIdExceptions.indexOf(supply.underlyingAsset) >= 0 &&
-            supply.scaledATokenBalance !== '0'
-        );
-        if (filteredSuppliesForExceptions.length > 0) {
-          set({ exceptionsBalancesLoading: true });
-          const mappedSupplies = filteredSuppliesForExceptions.map(
-            ({ scaledATokenBalance, underlyingAsset }) => {
-              return get()
-                .getMigrationServiceInstance()
-                .getMigrationSupply({ amount: scaledATokenBalance, asset: underlyingAsset });
-            }
-          );
-          const supplyBalancesV3 = await Promise.all(mappedSupplies);
-          set((state) =>
-            produce(state, (draft) => {
-              supplyBalancesV3.forEach(([asset, amount], index) => {
-                const v2UnderlyingAsset = filteredSuppliesForExceptions[index].underlyingAsset;
-                draft.migrationExceptions[v2UnderlyingAsset] = {
-                  v2UnderlyingAsset,
-                  v3UnderlyingAsset: asset.toLowerCase(),
-                  amount: amount.toString(),
-                };
-              });
-              draft.exceptionsBalancesLoading = false;
-            })
-          );
-        }
-      }
     },
   };
 };

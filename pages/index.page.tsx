@@ -3,7 +3,6 @@ import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
@@ -17,7 +16,6 @@ import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 export default function Home() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { currentMarket } = useProtocolDataContext();
-  const { isPermissionsLoading } = usePermissions();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [mode, setMode] = useState<'supply' | 'borrow' | ''>('supply');
@@ -33,7 +31,7 @@ export default function Home() {
       <DashboardTopPanel />
 
       <ContentContainer>
-        {currentAccount && !isPermissionsLoading && (
+        {currentAccount && (
           <Box
             sx={{
               display: { xs: 'flex', lg: 'none' },
@@ -62,7 +60,7 @@ export default function Home() {
           </Box>
         )}
 
-        {currentAccount && !isPermissionsLoading ? (
+        {currentAccount ? (
           <DashboardContentWrapper isBorrow={mode === 'borrow'} />
         ) : (
           <ConnectWalletPaper loading={web3Loading} />

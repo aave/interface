@@ -1,4 +1,3 @@
-import { PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
@@ -38,7 +37,6 @@ export const BorrowModal = () => {
         title={<Trans>Borrow</Trans>}
         underlyingAsset={args.underlyingAsset}
         keepWrappedSymbol={!borrowUnWrapped}
-        requiredPermission={PERMISSION.BORROWER}
       >
         {(params) => (
           <UserAuthenticated>

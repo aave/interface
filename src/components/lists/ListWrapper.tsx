@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Paper, Typography } from '@mui/material';
+import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
@@ -17,6 +17,7 @@ interface ListWrapperProps {
   noData?: boolean;
   wrapperSx?: BoxProps['sx'];
   tooltipOpen?: boolean;
+  paperSx?: PaperProps['sx'];
 }
 
 export const ListWrapper = ({
@@ -30,6 +31,7 @@ export const ListWrapper = ({
   noData,
   wrapperSx,
   tooltipOpen,
+  paperSx,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -88,10 +90,12 @@ export const ListWrapper = ({
 
   return (
     <Paper
-      sx={(theme) => ({
+      sx={{
         mt: withTopMargin ? 4 : 0,
-        border: `1px solid ${theme.palette.divider}`,
-      })}
+        border: 1,
+        borderColor: 'divider',
+        ...paperSx,
+      }}
     >
       <Box
         sx={{

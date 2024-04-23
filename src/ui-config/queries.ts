@@ -1,3 +1,5 @@
+import { MigrationSupplyException } from 'src/store/v3MigrationSlice';
+
 import { MarketDataType } from './marketsConfig';
 import { TokenInfo } from './TokenList';
 
@@ -143,6 +145,15 @@ export const queryKeysFactory = {
     token,
     chainId,
     'tokenDelegatees',
+  ],
+  migrationExceptions: (
+    suplies: MigrationSupplyException[],
+    marketFrom: MarketDataType,
+    marketTo: MarketDataType
+  ) => [
+    ...suplies.map((supply) => supply.underlyingAsset),
+    ...queryKeysFactory.market(marketFrom),
+    ...queryKeysFactory.market(marketTo),
   ],
   tokensBalance: (tokenList: TokenInfo[], chainId: number, user: string) => [
     ...queryKeysFactory.user(user),

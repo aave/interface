@@ -1,4 +1,3 @@
-import { PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
@@ -19,7 +18,6 @@ export const SupplyModal = () => {
         action="supply"
         title={<Trans>Supply</Trans>}
         underlyingAsset={args.underlyingAsset}
-        requiredPermission={PERMISSION.DEPOSITOR}
       >
         {(params) => (
           <UserAuthenticated>
