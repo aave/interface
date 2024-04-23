@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import {
   BorrowMigrationReserve,
@@ -53,20 +53,32 @@ export const MigrationLists = ({
     computeSelections(borrowReserves, selectedBorrowAssets);
 
   return (
-    <Box
+    <Paper
       sx={{
         display: 'flex',
         flexDirection: 'column',
         gap: 2,
+        width: '100%',
       }}
     >
+      <Typography
+        variant="h3"
+        sx={{
+          p: {
+            xs: '16px 24px 0 24px',
+          },
+          display: { xs: 'none', lg: 'block' },
+        }}
+      >
+        Assets to migrate
+      </Typography>
       <MigrationList
         isolatedReserveV3={isolatedReserveV3}
         loading={loading}
         onSelectAllClick={onSelectAllSupplies}
         allSelected={activeSupplyUnselected.length === 0}
         isAvailable={isSupplyPositionsAvailable}
-        titleComponent={<Trans>Select v2 supplies to migrate</Trans>}
+        titleComponent={<Trans>Supplied assets</Trans>}
         emodeCategoryId={emodeCategoryId}
         withCollateral
         disabled={allSuppliesDisabled}
@@ -83,12 +95,12 @@ export const MigrationLists = ({
         isAvailable={isBorrowPositionsAvailable}
         withBorrow
         disabled={allBorrowsDisabled}
-        titleComponent={<Trans>Select v2 borrows to migrate</Trans>}
+        titleComponent={<Trans>Borrowed assets</Trans>}
         numSelected={activeBorrowSelections.length || 0}
         numAvailable={borrowReserves.length || 0}
       >
         {borrowsPositions}
       </MigrationList>
-    </Box>
+    </Paper>
   );
 };
