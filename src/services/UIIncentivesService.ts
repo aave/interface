@@ -28,6 +28,7 @@ export class UiIncentivesService {
     });
   }
   async getUserReservesIncentivesData(marketData: MarketDataType, user: string) {
+    if (!marketData.enabledFeatures?.incentives) return [];
     const uiIncentiveDataProvider = this.getUiIncentiveDataProvider(marketData);
     return uiIncentiveDataProvider.getUserReservesIncentivesDataHumanized({
       user,
