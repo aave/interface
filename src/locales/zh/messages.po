@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-04-12 18:04\n"
+"PO-Revision-Date: 2024-04-23 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -535,6 +535,10 @@ msgstr "借"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Borrowed asset amount"
 msgstr "借入资产金额"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Borrowed assets"
+msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
@@ -1189,14 +1193,6 @@ msgstr "统辖"
 msgid "Greek"
 msgstr "希腊语"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v2)"
-msgstr "健康因素 （{0} v2）"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v3)"
-msgstr "健康因素 （{0} v3）"
-
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
@@ -1519,6 +1515,11 @@ msgstr "菜单"
 msgid "Migrate"
 msgstr "迁移"
 
+#: src/layouts/MobileMenu.tsx
+#: src/layouts/MoreMenu.tsx
+msgid "Migrate to Aave V3"
+msgstr ""
+
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "迁移到 V3"
@@ -1532,9 +1533,12 @@ msgid "Migrate to v3"
 msgstr "迁移到 v3"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
-#: src/modules/migration/MigrationTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
 msgstr "迁移到 {0} v3 市场"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migrate your assets"
+msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
@@ -2022,10 +2026,6 @@ msgstr "重新质押 {symbol}"
 msgid "Review approval tx details"
 msgstr "查看审批 tx 详细信息"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Review changes to continue"
-msgstr "查看更改以继续"
-
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
 msgstr "评论 tx"
@@ -2086,14 +2086,6 @@ msgstr "选择语言"
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
 msgstr "选择滑点容差"
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 borrows to migrate"
-msgstr "选择要迁移的 v2 借用"
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 supplies to migrate"
-msgstr "选择要迁移的 v2 供应"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
@@ -2295,6 +2287,10 @@ msgstr "提供"
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supplied asset amount"
 msgstr "提供的资产金额"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Supplied assets"
+msgstr ""
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx

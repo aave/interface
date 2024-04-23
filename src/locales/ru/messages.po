@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-04-12 18:04\n"
+"PO-Revision-Date: 2024-04-23 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -535,6 +535,10 @@ msgstr "Заимствованный"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Borrowed asset amount"
 msgstr "Сумма заемных средств"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Borrowed assets"
+msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
@@ -1189,14 +1193,6 @@ msgstr "Управление"
 msgid "Greek"
 msgstr "Греческий"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v2)"
-msgstr "Фактор здоровья ({0} Т2)"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v3)"
-msgstr "Фактор здоровья ({0} v3)"
-
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
@@ -1519,6 +1515,11 @@ msgstr "Меню"
 msgid "Migrate"
 msgstr "Мигрировать"
 
+#: src/layouts/MobileMenu.tsx
+#: src/layouts/MoreMenu.tsx
+msgid "Migrate to Aave V3"
+msgstr ""
+
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Переход на версию 3"
@@ -1532,9 +1533,12 @@ msgid "Migrate to v3"
 msgstr "Переход на версию 3"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
-#: src/modules/migration/MigrationTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
 msgstr "Миграция в {0} v3 Маркет"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migrate your assets"
+msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
@@ -2022,10 +2026,6 @@ msgstr "Рестейкинг {symbol}"
 msgid "Review approval tx details"
 msgstr "Просмотр сведений об утверждении"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Review changes to continue"
-msgstr "Просмотрите изменения, чтобы продолжить"
-
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
 msgstr "Отзыв tx"
@@ -2086,14 +2086,6 @@ msgstr "Выбрать язык"
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
 msgstr "Выберите допуск проскальзывания"
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 borrows to migrate"
-msgstr "Выбор заимствований версии 2 для переноса"
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 supplies to migrate"
-msgstr "Выбор расходных материалов версии 2 для переноса"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
@@ -2295,6 +2287,10 @@ msgstr "Поставляется"
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supplied asset amount"
 msgstr "Количество поставленных активов"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Supplied assets"
+msgstr ""
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx

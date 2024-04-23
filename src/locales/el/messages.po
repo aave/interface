@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-04-12 18:04\n"
+"PO-Revision-Date: 2024-04-23 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -534,6 +534,10 @@ msgstr ""
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Borrowed asset amount"
+msgstr ""
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Borrowed assets"
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
@@ -1189,14 +1193,6 @@ msgstr "Διακυβέρνηση"
 msgid "Greek"
 msgstr ""
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v2)"
-msgstr ""
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v3)"
-msgstr ""
-
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
@@ -1519,6 +1515,11 @@ msgstr "Μενού"
 msgid "Migrate"
 msgstr ""
 
+#: src/layouts/MobileMenu.tsx
+#: src/layouts/MoreMenu.tsx
+msgid "Migrate to Aave V3"
+msgstr ""
+
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr ""
@@ -1532,8 +1533,11 @@ msgid "Migrate to v3"
 msgstr ""
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
-#: src/modules/migration/MigrationTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
+msgstr ""
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migrate your assets"
 msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
@@ -2022,10 +2026,6 @@ msgstr ""
 msgid "Review approval tx details"
 msgstr "Αναθεώρηση λεπτομερειών έγκρισης συναλλαγής"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Review changes to continue"
-msgstr ""
-
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
 msgstr "Αναθεώρηση συναλλαγής"
@@ -2085,14 +2085,6 @@ msgstr "Επιλέξτε γλώσσα"
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
-msgstr ""
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 borrows to migrate"
-msgstr ""
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 supplies to migrate"
 msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
@@ -2294,6 +2286,10 @@ msgstr ""
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supplied asset amount"
+msgstr ""
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Supplied assets"
 msgstr ""
 
 #: pages/index.page.tsx
