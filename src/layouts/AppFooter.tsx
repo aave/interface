@@ -80,7 +80,7 @@ export function AppFooter() {
       },
     },
     {
-      href: '',
+      href: '/',
       label: <Trans>Manage analytics</Trans>,
       key: 'Manage analytics',
       onClick: (event: React.MouseEvent) => {

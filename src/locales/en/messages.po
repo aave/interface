@@ -531,6 +531,10 @@ msgstr "Borrowed"
 msgid "Borrowed asset amount"
 msgstr "Borrowed asset amount"
 
+#: src/modules/migration/MigrationLists.tsx
+msgid "Borrowed assets"
+msgstr "Borrowed assets"
+
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
@@ -1184,14 +1188,6 @@ msgstr "Governance"
 msgid "Greek"
 msgstr "Greek"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v2)"
-msgstr "Health Factor ({0} v2)"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v3)"
-msgstr "Health Factor ({0} v3)"
-
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
@@ -1514,6 +1510,11 @@ msgstr "Menu"
 msgid "Migrate"
 msgstr "Migrate"
 
+#: src/layouts/MobileMenu.tsx
+#: src/layouts/MoreMenu.tsx
+msgid "Migrate to Aave V3"
+msgstr "Migrate to Aave V3"
+
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
@@ -1527,9 +1528,12 @@ msgid "Migrate to v3"
 msgstr "Migrate to v3"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
-#: src/modules/migration/MigrationTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
 msgstr "Migrate to {0} v3 Market"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migrate your assets"
+msgstr "Migrate your assets"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
@@ -2017,10 +2021,6 @@ msgstr "Restaking {symbol}"
 msgid "Review approval tx details"
 msgstr "Review approval tx details"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Review changes to continue"
-msgstr "Review changes to continue"
-
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
 msgstr "Review tx"
@@ -2081,14 +2081,6 @@ msgstr "Select language"
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
 msgstr "Select slippage tolerance"
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 borrows to migrate"
-msgstr "Select v2 borrows to migrate"
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 supplies to migrate"
-msgstr "Select v2 supplies to migrate"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
@@ -2290,6 +2282,10 @@ msgstr "Supplied"
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supplied asset amount"
 msgstr "Supplied asset amount"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Supplied assets"
+msgstr "Supplied assets"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
