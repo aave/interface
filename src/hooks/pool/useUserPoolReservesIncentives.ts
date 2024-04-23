@@ -17,6 +17,7 @@ export const useUserPoolsReservesIncentivesHumanized = <T = UserReservesIncentiv
     queries: marketsData.map((marketData) => ({
       queryKey: queryKeysFactory.userPoolReservesIncentiveDataHumanized(user, marketData),
       queryFn: () => uiIncentivesService.getUserReservesIncentivesData(marketData, user),
+
       enabled: !!user,
       refetchInterval: POLLING_INTERVAL,
       ...opts,
