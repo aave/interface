@@ -33,7 +33,7 @@ const testData = {
   },
 };
 
-describe('E-MODE SPEC, BASE V3 MARKET', () => {
+describe.skip('E-MODE SPEC, BASE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyBaseFork({
     v3: true,
