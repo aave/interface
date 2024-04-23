@@ -36,7 +36,7 @@ export const MigrateV3ModalContent = ({
   const setCurrentMarket = useRootStore((store) => store.setCurrentMarket);
   const currentMarket = useRootStore((store) => store.currentMarket);
 
-  const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
+  const { gasLimit, mainTxState: migrateTxState, txError, closeWithCb } = useModalContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const router = useRouter();
   const networkConfig = getNetworkConfig(currentChainId);
@@ -90,11 +90,11 @@ export const MigrateV3ModalContent = ({
     return <TxErrorView txError={txError} />;
   }
 
-  const handleRoute = () => {
-    if (currentMarket === CustomMarket.proto_polygon) {
+  const handleRoute = (market: CustomMarket) => {
+    if (market === CustomMarket.proto_polygon) {
       setCurrentMarket('proto_polygon_v3' as CustomMarket);
       router.push(`/?marketName=${CustomMarket.proto_polygon_v3}`);
-    } else if (currentMarket === CustomMarket.proto_avalanche) {
+    } else if (market === CustomMarket.proto_avalanche) {
       setCurrentMarket('proto_avalanche_v3' as CustomMarket);
       router.push(`/?marketName=${CustomMarket.proto_avalanche_v3}`);
     } else {
@@ -103,12 +103,16 @@ export const MigrateV3ModalContent = ({
     }
   };
 
+  const handleGoToDashboard = () => {
+    closeWithCb(() => handleRoute(currentMarket));
+  };
+
   if (migrateTxState.success) {
     return (
       <TxSuccessView
         customAction={
           <Box mt={5}>
-            <Button variant="gradient" size="medium" onClick={handleRoute}>
+            <Button variant="gradient" size="medium" onClick={handleGoToDashboard}>
               <Trans>Go to V3 Dashboard</Trans>
             </Button>
           </Box>
