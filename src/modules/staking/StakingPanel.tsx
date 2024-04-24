@@ -161,6 +161,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     );
   }
 
+  const distributionEnded = Date.now() / 1000 > Number(stakeData.distributionEnd);
+
   const TokenContractTooltip = (
     <DarkTooltip title="View token contract" sx={{ display: { xsm: 'none' } }}>
       <IconButton
@@ -293,12 +295,30 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography
-            variant={xsm ? 'subheader2' : 'description'}
-            color={xsm ? 'text.secondary' : 'text.primary'}
-          >
-            <Trans>Staking APR</Trans>
-          </Typography>
+          <Stack direction="row">
+            <Typography
+              variant={xsm ? 'subheader2' : 'description'}
+              color={xsm ? 'text.secondary' : 'text.primary'}
+            >
+              <Trans>Staking APR</Trans>
+            </Typography>
+            {distributionEnded && (
+              <TextWithTooltip iconColor="warning.main">
+                <Trans>
+                  The current incentives period, decided on by the Aave community, has ended. Check
+                  Governance for updates.{' '}
+                  <Link
+                    href="https://governance.aave.com"
+                    sx={{ textDecoration: 'underline' }}
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    Learn more
+                  </Link>
+                </Trans>
+              </TextWithTooltip>
+            )}
+          </Stack>
           <FormattedNumber value={stakeData.stakeApyFormatted} percent variant="secondary14" />
         </Box>
         <Box
