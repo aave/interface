@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-04-23 18:05\n"
+"PO-Revision-Date: 2024-04-25 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2507,6 +2507,10 @@ msgstr ""
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 msgstr "Η περίοδος ψύξης είναι {0}. Μετά την {1} περίοδο ψύξης, θα εισέλθετε στο παράθυρο ξεκλειδώματος {2}. Θα συνεχίσετε να λαμβάνετε ανταμοιβές κατά τη διάρκεια της ψύξης και του παραθύρου ξεκλειδώματος."
+
+#: src/modules/staking/StakingPanel.tsx
+msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>"
+msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
