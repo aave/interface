@@ -2503,8 +2503,8 @@ msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake
 msgstr "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "The current incentives period, decided on by the Aave community, has ended. Check Governance for updates. <0>Learn more</0>"
-msgstr "The current incentives period, decided on by the Aave community, has ended. Check Governance for updates. <0>Learn more</0>"
+msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>"
+msgstr "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>"
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
