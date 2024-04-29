@@ -213,7 +213,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // };
 
   const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
-    // @ts-expect-error ethereum doesn't necessarily exist
     const { ethereum } = window;
 
     if (!ethereum?.providers) {
@@ -276,7 +275,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
                 setTriedCoinbase(true);
               });
           } else {
-            // @ts-expect-error ethereum might not be in window
             const { ethereum } = window;
 
             if (ethereum) {
