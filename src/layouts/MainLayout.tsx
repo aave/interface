@@ -12,8 +12,8 @@ export function MainLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <TopBarNotify
-        notifyText="Users can now stake GHO in the safety module 🎉"
-        learnMoreLink="https://app.aave.com/staking"
+        notifyText="GHO emissions for staking will soon be renewed"
+        learnMoreLink="https://app.aave.com/governance/v3/proposal/?proposalId=91"
         buttonText="Learn More"
       />
       <AppHeader />
