@@ -306,15 +306,16 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               <TextWithTooltip iconColor="warning.main">
                 <Trans>
                   The current incentives period, decided on by the Aave community, has ended.
-                  Governance is in the process on renewing, check for updates.{' '}
+                  Governance is in the process on renewing,{' '}
                   <Link
-                    href="https://governance.aave.com"
+                    href="https://app.aave.com/governance/v3/proposal/?proposalId=91"
                     sx={{ textDecoration: 'underline' }}
                     variant="caption"
                     color="text.secondary"
                   >
-                    Learn more
+                    see this proposal
                   </Link>
+                  .
                 </Trans>
               </TextWithTooltip>
             )}
