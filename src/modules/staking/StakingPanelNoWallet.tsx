@@ -2,7 +2,9 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useRootStore } from 'src/store/root';
 
@@ -34,6 +36,9 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   if (stakedToken == 'ABPT') stakingAPY = stkBpt?.stakeApy || '0';
   if (stakedToken == 'GHO') stakingAPY = stkGho?.stakeApy || '0';
   if (stakedToken == 'ABPT V2') stakingAPY = stkBptV2?.stakeApy || '0';
+
+  const distributionEnded = Date.now() / 1000 > Number(stkGho?.distributionEnd);
+
   return (
     <Box
       sx={(theme) => ({
@@ -80,9 +85,29 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           alignItems: 'center',
         }}
       >
-        <Typography variant="subheader2" color="text.secondary">
-          <Trans>Staking APR</Trans>
-        </Typography>
+        <Box display={'flex'} alignItems={'center'}>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Staking APR</Trans>
+          </Typography>
+
+          {distributionEnded && stakedToken === 'GHO' && (
+            <TextWithTooltip wrapperProps={{ marginBottom: '1px' }} iconColor="warning.main">
+              <Trans>
+                The current incentives period, decided on by the Aave community, has ended.
+                Governance is in the process on renewing,{' '}
+                <Link
+                  href="https://app.aave.com/governance/v3/proposal/?proposalId=91"
+                  sx={{ textDecoration: 'underline' }}
+                  variant="caption"
+                  color="text.secondary"
+                >
+                  see this proposal
+                </Link>
+                .
+              </Trans>
+            </TextWithTooltip>
+          )}
+        </Box>
 
         <FormattedNumber
           value={parseFloat(stakingAPY || '0') / 10000}
