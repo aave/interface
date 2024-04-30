@@ -15,6 +15,7 @@ export interface Powers {
   stkAavePropositionDelegatee: string;
   aAaveVotingDelegatee: string;
   aAavePropositionDelegatee: string;
+  aAaveTokenPower: Power;
 }
 
 // interface VoteOnProposalData {

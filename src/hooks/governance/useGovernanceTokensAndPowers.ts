@@ -28,12 +28,13 @@ export const useGovernanceTokensAndPowers = (): GovernanceTokensAndPowers | unde
   const convertToBigNumber = (value: string, decimals = 18) =>
     value ? ethers.utils.parseUnits(value.toString(), decimals) : BigNumber.from(0);
 
-  const aAavePower = powers.aaveTokenPower.votingPower;
+  const aAavePower = powers.aAaveTokenPower.votingPower;
   const aAaveToken = convertToBigNumber(governanceTokens.aAave);
   const aavePower = powers.aaveTokenPower.votingPower;
   const aaveToken = convertToBigNumber(governanceTokens.aave);
   const stkAavePower = powers.stkAaveTokenPower.votingPower;
   const stkAaveToken = convertToBigNumber(governanceTokens.stkAave);
+
   return {
     ...powers,
     ...governanceTokens,

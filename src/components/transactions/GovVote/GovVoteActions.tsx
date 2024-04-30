@@ -12,10 +12,22 @@ import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
-import { hexZeroPad } from 'ethers/lib/utils';
-
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { VotingMachineService } from './temporary/VotingMachineService';
+
+export const baseSlots = {
+  [governanceV3Config.votingAssets.stkAaveTokenAddress.toLowerCase()]: {
+    balance: 0,
+    exchangeRate: 81,
+  },
+  [governanceV3Config.votingAssets.aAaveTokenAddress.toLowerCase()]: {
+    balance: 52,
+    delegation: 64,
+  },
+  [governanceV3Config.votingAssets.aaveTokenAddress.toLowerCase()]: {
+    balance: 0,
+  },
+};
 
 interface GetProofResponse {
   balance: string;
@@ -29,6 +41,15 @@ interface GetProofResponse {
     proof: string[];
   }>;
 }
+
+export type AssetsBalanceSlots = Record<
+  string,
+  {
+    balance: number;
+    delegation?: number;
+    exchangeRate?: number;
+  }
+>;
 
 export type GovVoteActionsProps = {
   isWrongNetwork: boolean;
@@ -98,21 +119,27 @@ const generateSubmitVoteSignature = (
   return JSON.stringify(typedData);
 };
 
-const getBaseVotingPowerSlot = (asset: string, withDelegation: boolean) => {
-  if (asset === governanceV3Config.votingAssets.aAaveTokenAddress) {
-    if (withDelegation) return 64;
-    return 52;
-  }
+export const assetsBalanceSlots = {
+  [governanceV3Config.votingAssets.stkAaveTokenAddress.toLowerCase()]: {
+    ...baseSlots[governanceV3Config.votingAssets.stkAaveTokenAddress.toLowerCase()],
+  },
+  [governanceV3Config.votingAssets.aAaveTokenAddress.toLowerCase()]: {
+    ...baseSlots[governanceV3Config.votingAssets.aAaveTokenAddress.toLowerCase()],
+  },
+  [governanceV3Config.votingAssets.aaveTokenAddress.toLowerCase()]: {
+    ...baseSlots[governanceV3Config.votingAssets.aaveTokenAddress.toLowerCase()],
+  },
+};
 
-  if (asset === governanceV3Config.votingAssets.stkAaveTokenAddress) {
-    const exchangeRateSlot = hexZeroPad('0x51', 32);
-    const delegatedStateSlot = hexZeroPad('0x40', 32);
-    if (withDelegation) return delegatedStateSlot;
-
-    return exchangeRateSlot;
-  }
-
-  return 0;
+const getVoteBalanceSlot = (
+  underlyingAsset: string,
+  isWithDelegatedPower: boolean,
+  aAaveAddress: string,
+  slots: AssetsBalanceSlots
+) => {
+  return underlyingAsset.toLowerCase() === aAaveAddress.toLowerCase() && isWithDelegatedPower
+    ? slots[underlyingAsset.toLowerCase()].delegation || 64
+    : slots[underlyingAsset.toLowerCase()].balance || 0;
 };
 
 const getVotingBalanceProofs = (
@@ -123,15 +150,19 @@ const getVotingBalanceProofs = (
 ) => {
   const provider = getProvider(chainId);
   const abiCoder = new AbiCoder();
+
   return Promise.all(
     assets.map((asset) => {
-      const baseVotingSlot = getBaseVotingPowerSlot(
+      const baseVotingSlot = getVoteBalanceSlot(
         asset.underlyingAsset,
-        asset.isWithDelegatedPower
+        asset.isWithDelegatedPower,
+        governanceV3Config.votingAssets.aAaveTokenAddress,
+        assetsBalanceSlots
       );
       const votingPowerSlot = keccak256(
         abiCoder.encode(['address', 'uint256'], [user, baseVotingSlot])
       );
+
       return provider
         .send<unknown, GetProofResponse>('eth_getProof', [
           asset.underlyingAsset,
@@ -164,7 +195,6 @@ export const GovVoteActions = ({
     setTxError,
   } = useModalContext();
   const user = useRootStore((store) => store.account);
-  const currentChainId = useRootStore((store) => store.currentChainId);
 
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx, signTxData } = useWeb3Context();
@@ -179,6 +209,7 @@ export const GovVoteActions = ({
   const withGelatoRelayer = false;
 
   const assets: Array<{ underlyingAsset: string; isWithDelegatedPower: boolean }> = [];
+
   if (tokenPowers?.aAave !== '0') {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
@@ -244,9 +275,9 @@ export const GovVoteActions = ({
           proofs
         );
 
-        // const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
+        const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
 
-        const response = await sendTx(tx);
+        const response = await sendTx(txWithEstimatedGas);
         await response.wait(1);
         setMainTxState({
           txHash: response.hash,
@@ -274,7 +305,13 @@ export const GovVoteActions = ({
         support,
         assets.map((elem) => ({
           underlyingAsset: elem.underlyingAsset,
-          slot: getBaseVotingPowerSlot(elem.underlyingAsset, elem.isWithDelegatedPower),
+          slot: getVoteBalanceSlot(
+            elem.underlyingAsset,
+            elem.isWithDelegatedPower,
+
+            governanceV3Config.votingAssets.aAaveTokenAddress,
+            assetsBalanceSlots
+          ),
         }))
       );
       const signature = await signTxData(toSign);
