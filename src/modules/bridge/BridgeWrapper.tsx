@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -29,6 +30,8 @@ import offRampAbi from 'src/components/transactions/Bridge/OffRamp-abi.json';
 // import onRampAbi from 'src/components/transactions/Bridge/OnRamp-abi.json';
 import { getRouterConfig } from 'src/components/transactions/Bridge/Router';
 import routerAbi from 'src/components/transactions/Bridge/Router-abi.json';
+import { useBridgeTransactionHistory } from 'src/hooks/useBridgeTransactionHistory';
+import { useGetOffRamps, useGetOffRampsForSourceChain } from 'src/hooks/useBridgeTransactionStatus';
 import { useRootStore } from 'src/store/root';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
@@ -88,6 +91,15 @@ export function BridgeWrapper() {
   const [statusLoading, setStatusLoading] = useState(false);
 
   // const [transactions, setTransactions] = useState([] as TransactionDetails[]);
+
+  const foo = useBridgeTransactionHistory('0x1a2a69e3eb1382fe34bc579add5bae39e31d4a2c');
+  console.log('foo', foo);
+
+  const bar = useGetOffRamps();
+  console.log('bar', bar);
+
+  const baz = useGetOffRampsForSourceChain(ChainId.sepolia, ChainId.base_sepolia);
+  console.log('baz', baz);
 
   const [transactions, setTransactions] = useState<TransactionDetails[]>(() => {
     try {
