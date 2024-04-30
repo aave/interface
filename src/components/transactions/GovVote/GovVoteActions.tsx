@@ -12,6 +12,8 @@ import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
+import { hexZeroPad } from 'ethers/lib/utils';
+
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { VotingMachineService } from './temporary/VotingMachineService';
 
@@ -101,6 +103,15 @@ const getBaseVotingPowerSlot = (asset: string, withDelegation: boolean) => {
     if (withDelegation) return 64;
     return 52;
   }
+
+  if (asset === governanceV3Config.votingAssets.stkAaveTokenAddress) {
+    const exchangeRateSlot = hexZeroPad('0x51', 32);
+    const delegatedStateSlot = hexZeroPad('0x40', 32);
+    if (withDelegation) return delegatedStateSlot;
+
+    return exchangeRateSlot;
+  }
+
   return 0;
 };
 
@@ -153,6 +164,8 @@ export const GovVoteActions = ({
     setTxError,
   } = useModalContext();
   const user = useRootStore((store) => store.account);
+  const currentChainId = useRootStore((store) => store.currentChainId);
+
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx, signTxData } = useWeb3Context();
   const tokenPowers = useGovernanceTokensAndPowers();
@@ -231,9 +244,9 @@ export const GovVoteActions = ({
           proofs
         );
 
-        const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
+        // const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
 
-        const response = await sendTx(txWithEstimatedGas);
+        const response = await sendTx(tx);
         await response.wait(1);
         setMainTxState({
           txHash: response.hash,
@@ -241,7 +254,8 @@ export const GovVoteActions = ({
           success: true,
         });
       }
-    } catch {
+    } catch (err) {
+      console.log('ERROR HERE', err);
       setMainTxState({
         txHash: undefined,
         loading: false,
