@@ -316,12 +316,14 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }, [connectWallet, setTriedGnosisSafe, triedFamily, triedGnosisSafe]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const isFamily = (window as any).ethereum.isFamily;
-    if (isFamily) {
-      connectWallet(WalletType.INJECTED).finally(() => setTriedFamily(true));
-    } else {
-      setTriedFamily(true);
+    if (!triedFamily) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const isFamily = (window as any).ethereum.isFamily;
+      if (isFamily) {
+        connectWallet(WalletType.INJECTED).finally(() => setTriedFamily(true));
+      } else {
+        setTriedFamily(true);
+      }
     }
   }, [connectWallet, setTriedFamily, triedFamily]);
 
