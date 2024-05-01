@@ -150,6 +150,10 @@ interface TokenIconProps extends IconProps {
 function SingleTokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
   const [tokenSymbol, setTokenSymbol] = useState(symbol.toLowerCase());
 
+  useEffect(() => {
+    setTokenSymbol(symbol.toLowerCase());
+  }, [symbol]);
+
   return (
     <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
       {aToken ? (
