@@ -667,7 +667,7 @@ export const marketsData: {
     market: CustomMarket.proto_gnosis_v3,
     chainId: ChainId.xdai,
     v3: true,
-    // subgraphUrl: '',
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-gnosis',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Gnosis.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Gnosis.POOL,
@@ -683,7 +683,7 @@ export const marketsData: {
     market: CustomMarket.proto_bnb_v3,
     chainId: ChainId.bnb,
     v3: true,
-    // subgraphUrl: '',
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-bnb',
     enabledFeatures: {
       liquiditySwap: true,
       collateralRepay: true,
@@ -710,6 +710,8 @@ export const marketsData: {
     market: CustomMarket.proto_scroll_v3,
     chainId: ChainId.scroll,
     v3: true,
+    subgraphUrl:
+      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/aave-v3-scroll/1.0.0/gn',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Scroll.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Scroll.POOL,
