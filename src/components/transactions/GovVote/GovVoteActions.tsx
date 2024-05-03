@@ -198,7 +198,7 @@ export const GovVoteActions = ({
 
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx, signTxData } = useWeb3Context();
-  const tokenPowers = useGovernanceTokensAndPowers();
+  const tokenPowers = useGovernanceTokensAndPowers(proposal.subgraphProposal.snapshotBlockHash);
   const [signature, setSignature] = useState<string | undefined>(undefined);
   const proposalId = +proposal.subgraphProposal.id;
   const blockHash = proposal.subgraphProposal.snapshotBlockHash;
@@ -286,7 +286,6 @@ export const GovVoteActions = ({
         });
       }
     } catch (err) {
-      console.log('ERROR HERE', err);
       setMainTxState({
         txHash: undefined,
         loading: false,

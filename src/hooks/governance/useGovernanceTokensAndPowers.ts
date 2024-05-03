@@ -16,9 +16,11 @@ interface GovernanceTokensAndPowers extends Powers, GovernanceTokensBalance {
   ) => Promise<QueryObserverResult<Powers, unknown>>;
 }
 
-export const useGovernanceTokensAndPowers = (): GovernanceTokensAndPowers | undefined => {
-  const { data: powers, refetch: refetchPowers } = usePowers();
-  const { data: governanceTokens } = useGovernanceTokens();
+export const useGovernanceTokensAndPowers = (
+  blockHash?: string
+): GovernanceTokensAndPowers | undefined => {
+  const { data: powers, refetch: refetchPowers } = usePowers(blockHash);
+  const { data: governanceTokens } = useGovernanceTokens(blockHash);
 
   if (!powers || !governanceTokens) {
     return undefined;
