@@ -17,13 +17,23 @@ import {
   MigrationSelectedAsset,
   MigrationSelectedBorrowAsset,
 } from 'src/store/v3MigrationSlice';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { combineQueries, SimplifiedUseQueryResult } from '../pool/utils';
-import { useMigrationExceptionsSupplyBalance } from './useMigrationExceptionsSupplyBalance';
-import { usePoolReserve } from './usePoolReserve';
-import { UserMigrationReserves, useUserMigrationReserves } from './useUserMigrationReserves';
-import { UserSummaryForMigration, useUserSummaryForMigration } from './useUserSummaryForMigration';
+import {
+  useMigrationExceptionsSupplyBalance,
+  UseMigrationExceptionsSupplyBalanceMarketDataType,
+} from './useMigrationExceptionsSupplyBalance';
+import { usePoolReserve, UsePoolReserveMarketDataType } from './usePoolReserve';
+import {
+  UserMigrationReserves,
+  useUserMigrationReserves,
+  UseUserMigrationReservesMarketDataType,
+} from './useUserMigrationReserves';
+import {
+  UserSummaryForMigration,
+  useUserSummaryForMigration,
+  UseUserSummaryForMigrationMarketDataType,
+} from './useUserSummaryForMigration';
 
 export interface UserSummaryAfterMigration {
   fromUserSummaryAfterMigration: UserSummaryForMigration;
@@ -208,9 +218,14 @@ const select = memoize(
   }
 );
 
+export type UseUserSummaryAfterMigrationMarketDataType = UseUserMigrationReservesMarketDataType &
+  UseUserSummaryForMigrationMarketDataType &
+  UsePoolReserveMarketDataType &
+  UseMigrationExceptionsSupplyBalanceMarketDataType;
+
 export const useUserSummaryAfterMigration = (
-  fromMarket: MarketDataType,
-  toMarket: MarketDataType
+  fromMarket: UseUserSummaryAfterMigrationMarketDataType,
+  toMarket: UseUserSummaryAfterMigrationMarketDataType
 ): SimplifiedUseQueryResult<UserSummaryAfterMigration> => {
   const userMigrationReservesQuery = useUserMigrationReserves(fromMarket, toMarket);
   const toUserSummary = useUserSummaryForMigration(toMarket);

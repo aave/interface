@@ -3,13 +3,17 @@ import { MigrationSupplyException } from 'src/store/v3MigrationSlice';
 import { MarketDataType } from './marketsConfig';
 import { TokenInfo } from './TokenList';
 
+export interface QueryMarketDataType extends Pick<MarketDataType, 'chainId' | 'isFork'> {
+  market: string;
+}
+
 export const queryKeysFactory = {
   governance: ['governance'] as const,
   staking: ['staking'] as const,
   pool: ['pool'] as const,
   incentives: ['incentives'] as const,
   gho: ['gho'] as const,
-  market: (marketData: MarketDataType) => [
+  market: (marketData: QueryMarketDataType) => [
     marketData.chainId,
     !!marketData.isFork,
     marketData.market,
@@ -21,7 +25,7 @@ export const queryKeysFactory = {
     chainId,
     'powers',
   ],
-  voteOnProposal: (user: string, proposalId: number, marketData: MarketDataType) => [
+  voteOnProposal: (user: string, proposalId: number, marketData: QueryMarketDataType) => [
     ...queryKeysFactory.governance,
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
@@ -40,35 +44,39 @@ export const queryKeysFactory = {
     ...queryKeysFactory.user(user),
     'representatives',
   ],
-  governanceTokens: (user: string, marketData: MarketDataType) => [
+  governanceTokens: (user: string, marketData: QueryMarketDataType) => [
     ...queryKeysFactory.governance,
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
     'governanceTokens',
   ],
-  transactionHistory: (user: string, marketData: MarketDataType) => [
+  transactionHistory: (user: string, marketData: QueryMarketDataType) => [
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
     'transactionHistory',
   ],
-  poolTokens: (user: string, marketData: MarketDataType) => [
+  poolTokens: (user: string, marketData: QueryMarketDataType) => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
     'poolTokens',
   ],
-  poolReservesDataHumanized: (marketData: MarketDataType) => [
+  poolReservesDataHumanized: (marketData: QueryMarketDataType) => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.market(marketData),
     'poolReservesDataHumanized',
   ],
-  userPoolReservesDataHumanized: (user: string, marketData: MarketDataType) => [
+  userPoolReservesDataHumanized: (user: string, marketData: QueryMarketDataType) => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
     'userPoolReservesDataHumanized',
   ],
-  generalStakeUiData: (marketData: MarketDataType, stakedTokens: string[], oracles: string[]) => [
+  generalStakeUiData: (
+    marketData: QueryMarketDataType,
+    stakedTokens: string[],
+    oracles: string[]
+  ) => [
     ...queryKeysFactory.staking,
     ...queryKeysFactory.market(marketData),
     stakedTokens,
@@ -77,7 +85,7 @@ export const queryKeysFactory = {
   ],
   userStakeUiData: (
     user: string,
-    marketData: MarketDataType,
+    marketData: QueryMarketDataType,
     stakedAssets: string[],
     oracles: string[]
   ) => [
@@ -96,38 +104,43 @@ export const queryKeysFactory = {
     user: string
   ) => [...queryKeysFactory.user(user), chainId, amount, srcToken, destToken, 'paraswapRates'],
   gasPrices: (chainId: number) => [chainId, 'gasPrices'],
-  poolReservesIncentiveDataHumanized: (marketData: MarketDataType) => [
+  poolReservesIncentiveDataHumanized: (marketData: QueryMarketDataType) => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.incentives,
     ...queryKeysFactory.market(marketData),
     'poolReservesIncentiveDataHumanized',
   ],
-  userPoolReservesIncentiveDataHumanized: (user: string, marketData: MarketDataType) => [
+  userPoolReservesIncentiveDataHumanized: (user: string, marketData: QueryMarketDataType) => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.incentives,
     ...queryKeysFactory.market(marketData),
     ...queryKeysFactory.user(user),
     'userPoolReservesIncentiveDataHumanized',
   ],
-  ghoReserveData: (marketData: MarketDataType) => [
+  ghoReserveData: (marketData: QueryMarketDataType) => [
     ...queryKeysFactory.gho,
     ...queryKeysFactory.market(marketData),
     'ghoReserveData',
   ],
-  ghoUserReserveData: (user: string, marketData: MarketDataType) => [
+  ghoUserReserveData: (user: string, marketData: QueryMarketDataType) => [
     ...queryKeysFactory.gho,
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
     'ghoUserReserveData',
   ],
-  poolApprovedAmount: (user: string, token: string, marketData: MarketDataType) => [
+  poolApprovedAmount: (user: string, token: string, marketData: QueryMarketDataType) => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
     token,
     'poolApprovedAmount',
   ],
-  approvedAmount: (user: string, token: string, spender: string, marketData: MarketDataType) => [
+  approvedAmount: (
+    user: string,
+    token: string,
+    spender: string,
+    marketData: QueryMarketDataType
+  ) => [
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
     token,
@@ -148,8 +161,8 @@ export const queryKeysFactory = {
   ],
   migrationExceptions: (
     suplies: MigrationSupplyException[],
-    marketFrom: MarketDataType,
-    marketTo: MarketDataType
+    marketFrom: QueryMarketDataType,
+    marketTo: QueryMarketDataType
   ) => [
     ...suplies.map((supply) => supply.underlyingAsset),
     ...queryKeysFactory.market(marketFrom),

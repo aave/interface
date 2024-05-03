@@ -7,14 +7,22 @@ import { formatReservesAndIncentives } from '@aave/math-utils';
 import dayjs from 'dayjs';
 import memoize from 'micro-memoize';
 import { reserveSortFn } from 'src/store/poolSelectors';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { fetchIconSymbolAndName, IconMapInterface } from 'src/ui-config/reservePatches';
 import { getNetworkConfig, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { selectBaseCurrencyData, selectReserves } from './selectors';
-import { usePoolsReservesHumanized } from './usePoolReserves';
-import { usePoolsReservesIncentivesHumanized } from './usePoolReservesIncentives';
+import {
+  usePoolsReservesHumanized,
+  UsePoolsReservesHumanizedMarketDataType,
+} from './usePoolReserves';
+import {
+  usePoolsReservesIncentivesHumanized,
+  UsePoolsReservesIncentivesHumanizedMarketDataType,
+} from './usePoolReservesIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
+
+export type UsePoolsFormattedReservesMarketDataType = UsePoolsReservesHumanizedMarketDataType &
+  UsePoolsReservesIncentivesHumanizedMarketDataType;
 
 export type FormattedReservesAndIncentives = ReturnType<
   typeof formatReservesAndIncentives
@@ -51,7 +59,7 @@ const formatReserves = memoize(
 );
 
 export const usePoolsFormattedReserves = (
-  marketsData: MarketDataType[]
+  marketsData: UsePoolsFormattedReservesMarketDataType[]
 ): SimplifiedUseQueryResult<FormattedReservesAndIncentives[]>[] => {
   const poolsReservesQueries = usePoolsReservesHumanized(marketsData);
   const poolsReservesIncentivesQueries = usePoolsReservesIncentivesHumanized(marketsData);
@@ -70,6 +78,6 @@ export const usePoolsFormattedReserves = (
   });
 };
 
-export const usePoolFormattedReserves = (marketData: MarketDataType) => {
+export const usePoolFormattedReserves = (marketData: UsePoolsFormattedReservesMarketDataType) => {
   return usePoolsFormattedReserves([marketData])[0];
 };

@@ -1,13 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
+import { MigrationServiceMarketDataType } from 'src/services/MigrationService';
 import { MigrationSupplyException } from 'src/store/v3MigrationSlice';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { queryKeysFactory } from 'src/ui-config/queries';
+import { queryKeysFactory, QueryMarketDataType } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 import invariant from 'tiny-invariant';
 
+export type UseMigrationExceptionsSupplyBalanceMarketDataType = QueryMarketDataType &
+  MigrationServiceMarketDataType;
+
 export const useMigrationExceptionsSupplyBalance = (
-  fromMarketData: MarketDataType,
-  toMarketData: MarketDataType,
+  fromMarketData: UseMigrationExceptionsSupplyBalanceMarketDataType,
+  toMarketData: UseMigrationExceptionsSupplyBalanceMarketDataType,
   supplyExceptions?: MigrationSupplyException[]
 ) => {
   const { migrationService } = useSharedDependencies();

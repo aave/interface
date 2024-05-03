@@ -21,8 +21,10 @@ import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
 import { selectCurrentChainIdV3MarketData } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
+import { ExternalMarketDataType } from 'src/ui-config/marketsConfig';
 import {
   CustomMarket,
+  externalMarketsData,
   getNetworkConfig,
   MarketDataType,
   marketsData,
@@ -43,17 +45,30 @@ const AAVE_MARKETS_TO_MIGRATE = Object.keys(marketsData)
   })
   .filter((market) => market.addresses.V3_MIGRATOR);
 
+const EXTERNAL_MARKETS_TO_MIGRATE = Object.keys(externalMarketsData).map((key) => {
+  const market = externalMarketsData[key];
+  return {
+    ...market,
+  };
+});
+
 const selectableMarkets = [
   {
     title: 'Aave V2 Markets',
     markets: AAVE_MARKETS_TO_MIGRATE,
   },
+  {
+    title: 'Spark Markets',
+    markets: EXTERNAL_MARKETS_TO_MIGRATE,
+  },
 ];
+
+export type MigrationMarketDataType = MarketDataType | ExternalMarketDataType;
 
 export default function V3Migration() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const router = useRouter();
-  const [fromMarketData, setFromMarketData] = useState<MarketDataType>(() => {
+  const [fromMarketData, setFromMarketData] = useState<MigrationMarketDataType>(() => {
     if (router.query.market) {
       const { market } = getMarketInfoById(router.query.market as CustomMarket);
       const migrationMarket = AAVE_MARKETS_TO_MIGRATE.find(
@@ -133,7 +148,7 @@ export default function V3Migration() {
     toUserSummaryForMigration &&
     toUserSummaryForMigration.totalCollateralMarketReferenceCurrency == '0';
 
-  const changeFromMarketData = (marketData: MarketDataType) => {
+  const changeFromMarketData = (marketData: MigrationMarketDataType) => {
     resetMigrationSelectedAssets();
     setFromMarketData(marketData);
   };

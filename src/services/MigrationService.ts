@@ -9,10 +9,24 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
 
+export interface MigrationServiceMarketDataType extends Pick<MarketDataType, 'chainId'> {
+  addresses: {
+    V3_MIGRATOR?: string;
+    LENDING_POOL: string;
+    REPAY_WITH_COLLATERAL_ADAPTER?: string;
+    SWAP_COLLATERAL_ADAPTER?: string;
+    WETH_GATEWAY?: string;
+    L2_ENCODER?: string;
+  };
+}
+
 export class MigrationService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-  private getMigrationService(fromMarketData: MarketDataType, toMarketData: MarketDataType) {
+  private getMigrationService(
+    fromMarketData: MigrationServiceMarketDataType,
+    toMarketData: MigrationServiceMarketDataType
+  ) {
     invariant(
       fromMarketData.addresses.V3_MIGRATOR,
       'V3_MIGRATOR address is not defined in fromMarketData'
@@ -31,8 +45,8 @@ export class MigrationService {
 
   async getMigrationExceptionSupplyBalances(
     migrationSupplyException: MigrationSupplyException[],
-    fromMarketData: MarketDataType,
-    toMarketData: MarketDataType
+    fromMarketData: MigrationServiceMarketDataType,
+    toMarketData: MigrationServiceMarketDataType
   ) {
     const networkConfig = getNetworkConfig(fromMarketData.chainId);
     const chainId = networkConfig.underlyingChainId || fromMarketData.chainId;

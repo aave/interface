@@ -13,6 +13,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { MigrationMarketDataType } from 'pages/v3-migration.page';
 import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
@@ -20,7 +21,6 @@ import { IsolationModeWarning } from 'src/components/transactions/Warnings/Isola
 import { UserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
 import { UserSummaryAndIncentives } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { MigrationMarketCard, SelectableMarkets } from './MigrationMarketCard';
 
@@ -33,11 +33,11 @@ interface MigrationBottomPanelProps {
   disableButton?: boolean;
   loading?: boolean;
   enteringIsolationMode: boolean;
-  fromMarketData: MarketDataType;
-  toMarketData: MarketDataType;
+  fromMarketData: MigrationMarketDataType;
+  toMarketData: MigrationMarketDataType;
   userSummaryAfterMigration?: UserSummaryAfterMigration;
   userSummaryBeforeMigration?: UserSummaryBeforeMigration;
-  setFromMarketData: (marketData: MarketDataType) => void;
+  setFromMarketData: (marketData: MigrationMarketDataType) => void;
   selectableMarkets: SelectableMarkets;
 }
 

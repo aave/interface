@@ -12,17 +12,17 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
+import { MigrationMarketDataType } from 'pages/v3-migration.page';
 import { FC, useState } from 'react';
 import { HealthFactorNumber } from 'src/components/HealthFactorNumber';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-const formatMarketName = (market: MarketDataType) => {
+const formatMarketName = (market: MigrationMarketDataType) => {
   return `Aave ${market.v3 ? 'V3' : 'V2'} - ${market.marketTitle}${market.isFork ? ' Fork' : ''}`;
 };
 
 type MigrationMarketCardProps = {
-  marketData: MarketDataType;
+  marketData: MigrationMarketDataType;
   userSummaryAfterMigration?: {
     healthFactor: string;
   };
@@ -30,13 +30,13 @@ type MigrationMarketCardProps = {
     healthFactor: string;
   };
   selectableMarkets?: SelectableMarkets;
-  setFromMarketData?: (marketData: MarketDataType) => void;
+  setFromMarketData?: (marketData: MigrationMarketDataType) => void;
   loading?: boolean;
 };
 
 export type SelectableMarkets = Array<{
   title: string;
-  markets: MarketDataType[];
+  markets: MigrationMarketDataType[];
 }>;
 
 export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
@@ -55,7 +55,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleSelectedMarket = (marketData: MarketDataType) => {
+  const handleSelectedMarket = (marketData: MigrationMarketDataType) => {
     setFromMarketData && setFromMarketData(marketData);
     setAnchorEl(null);
   };

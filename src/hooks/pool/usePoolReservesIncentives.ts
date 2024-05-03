@@ -1,13 +1,16 @@
 import { ReservesIncentiveDataHumanized } from '@aave/contract-helpers';
 import { useQueries, UseQueryOptions } from '@tanstack/react-query';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { POLLING_INTERVAL, queryKeysFactory } from 'src/ui-config/queries';
+import { UiIncentivesServiceMarketDataType } from 'src/services/UIIncentivesService';
+import { POLLING_INTERVAL, queryKeysFactory, QueryMarketDataType } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { HookOpts } from '../commonTypes';
 
+export type UsePoolsReservesIncentivesHumanizedMarketDataType = UiIncentivesServiceMarketDataType &
+  QueryMarketDataType;
+
 export const usePoolsReservesIncentivesHumanized = <T = ReservesIncentiveDataHumanized[]>(
-  marketsData: MarketDataType[],
+  marketsData: UsePoolsReservesIncentivesHumanizedMarketDataType[],
   opts?: HookOpts<ReservesIncentiveDataHumanized[], T>
 ) => {
   const { uiIncentivesService } = useSharedDependencies();
@@ -24,6 +27,8 @@ export const usePoolsReservesIncentivesHumanized = <T = ReservesIncentiveDataHum
   });
 };
 
-export const usePoolReservesIncentivesHumanized = (marketData: MarketDataType) => {
+export const usePoolReservesIncentivesHumanized = (
+  marketData: UsePoolsReservesIncentivesHumanizedMarketDataType
+) => {
   return usePoolsReservesIncentivesHumanized([marketData])[0];
 };

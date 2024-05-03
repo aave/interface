@@ -6,6 +6,7 @@ import {
 import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
 import dayjs from 'dayjs';
 import memoize from 'micro-memoize';
+import { MigrationServiceMarketDataType } from 'src/services/MigrationService';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { useRootStore } from 'src/store/root';
 import {
@@ -21,14 +22,23 @@ import {
   V3Rates,
 } from 'src/store/v3MigrationSelectors';
 import { MigrationException, MigrationSelectedAsset } from 'src/store/v3MigrationSlice';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { FormattedReservesAndIncentives } from '../pool/usePoolFormattedReserves';
-import { usePoolReservesHumanized } from '../pool/usePoolReserves';
-import { usePoolReservesIncentivesHumanized } from '../pool/usePoolReservesIncentives';
-import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
+import {
+  usePoolReservesHumanized,
+  UsePoolsReservesHumanizedMarketDataType,
+} from '../pool/usePoolReserves';
+import {
+  usePoolReservesIncentivesHumanized,
+  UsePoolsReservesIncentivesHumanizedMarketDataType,
+} from '../pool/usePoolReservesIncentives';
+import {
+  useUserPoolReservesHumanized,
+  UseUserPoolsPoolReservesHumanizedMarketDataType,
+} from '../pool/useUserPoolReserves';
 import {
   UserSummaryAndIncentives,
+  UseUserSummariesAndIncentivesMarketDataType,
   useUserSummaryAndIncentives,
 } from '../pool/useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from '../pool/utils';
@@ -241,9 +251,15 @@ const select = memoize(
   }
 );
 
+export type UseUserMigrationReservesMarketDataType = UsePoolsReservesHumanizedMarketDataType &
+  UseUserPoolsPoolReservesHumanizedMarketDataType &
+  UsePoolsReservesIncentivesHumanizedMarketDataType &
+  UseUserSummariesAndIncentivesMarketDataType &
+  MigrationServiceMarketDataType;
+
 export const useUserMigrationReserves = (
-  migrationFrom: MarketDataType,
-  migrationTo: MarketDataType
+  migrationFrom: UseUserMigrationReservesMarketDataType,
+  migrationTo: UseUserMigrationReservesMarketDataType
 ): SimplifiedUseQueryResult<UserMigrationReserves> => {
   const toReservesDataQuery = usePoolReservesHumanized(migrationTo);
   const toUserReservesDataQuery = useUserPoolReservesHumanized(migrationTo);

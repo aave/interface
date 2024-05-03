@@ -3,11 +3,19 @@ import dayjs from 'dayjs';
 import memoize from 'micro-memoize';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { selectFormatUserSummaryForMigration } from 'src/store/v3MigrationSelectors';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 
-import { usePoolReservesHumanized } from '../pool/usePoolReserves';
-import { usePoolReservesIncentivesHumanized } from '../pool/usePoolReservesIncentives';
-import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
+import {
+  usePoolReservesHumanized,
+  UsePoolsReservesHumanizedMarketDataType,
+} from '../pool/usePoolReserves';
+import {
+  usePoolReservesIncentivesHumanized,
+  UsePoolsReservesIncentivesHumanizedMarketDataType,
+} from '../pool/usePoolReservesIncentives';
+import {
+  useUserPoolReservesHumanized,
+  UseUserPoolsPoolReservesHumanizedMarketDataType,
+} from '../pool/useUserPoolReserves';
 import { combineQueries } from '../pool/utils';
 
 export type UserSummaryForMigration = NonNullable<
@@ -31,7 +39,13 @@ const selector = memoize(
   }
 );
 
-export const useUserSummaryForMigration = (marketData: MarketDataType) => {
+export type UseUserSummaryForMigrationMarketDataType = UsePoolsReservesHumanizedMarketDataType &
+  UseUserPoolsPoolReservesHumanizedMarketDataType &
+  UsePoolsReservesIncentivesHumanizedMarketDataType;
+
+export const useUserSummaryForMigration = (
+  marketData: UseUserSummaryForMigrationMarketDataType
+) => {
   const toReservesDataQuery = usePoolReservesHumanized(marketData);
   const toUserReservesDataQuery = useUserPoolReservesHumanized(marketData);
   const toReservesIncentivesDataQuery = usePoolReservesIncentivesHumanized(marketData);

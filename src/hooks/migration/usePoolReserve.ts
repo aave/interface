@@ -2,11 +2,19 @@ import { ReservesDataHumanized, ReservesIncentiveDataHumanized } from '@aave/con
 import memoize from 'micro-memoize';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { PoolReserve } from 'src/store/poolSlice';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 
-import { usePoolReservesHumanized } from '../pool/usePoolReserves';
-import { usePoolReservesIncentivesHumanized } from '../pool/usePoolReservesIncentives';
-import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
+import {
+  usePoolReservesHumanized,
+  UsePoolsReservesHumanizedMarketDataType,
+} from '../pool/usePoolReserves';
+import {
+  usePoolReservesIncentivesHumanized,
+  UsePoolsReservesIncentivesHumanizedMarketDataType,
+} from '../pool/usePoolReservesIncentives';
+import {
+  useUserPoolReservesHumanized,
+  UseUserPoolsPoolReservesHumanizedMarketDataType,
+} from '../pool/useUserPoolReserves';
 import { combineQueries, SimplifiedUseQueryResult } from '../pool/utils';
 
 const selector = memoize(
@@ -25,8 +33,12 @@ const selector = memoize(
   }
 );
 
+export type UsePoolReserveMarketDataType = UsePoolsReservesHumanizedMarketDataType &
+  UseUserPoolsPoolReservesHumanizedMarketDataType &
+  UsePoolsReservesIncentivesHumanizedMarketDataType;
+
 export const usePoolReserve = (
-  marketData: MarketDataType
+  marketData: UsePoolReserveMarketDataType
 ): SimplifiedUseQueryResult<PoolReserve> => {
   const toReservesDataQuery = usePoolReservesHumanized(marketData);
   const toUserReservesDataQuery = useUserPoolReservesHumanized(marketData);

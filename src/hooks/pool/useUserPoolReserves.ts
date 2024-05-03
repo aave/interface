@@ -1,14 +1,16 @@
 import { useQueries } from '@tanstack/react-query';
-import { UserReservesDataHumanized } from 'src/services/UIPoolService';
+import { UiPoolMarketDataType, UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { useRootStore } from 'src/store/root';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { POLLING_INTERVAL, queryKeysFactory } from 'src/ui-config/queries';
+import { POLLING_INTERVAL, queryKeysFactory, QueryMarketDataType } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { HookOpts } from '../commonTypes';
 
+export type UseUserPoolsPoolReservesHumanizedMarketDataType = UiPoolMarketDataType &
+  QueryMarketDataType;
+
 export const useUserPoolsReservesHumanized = <T = UserReservesDataHumanized>(
-  marketsData: MarketDataType[],
+  marketsData: UseUserPoolsPoolReservesHumanizedMarketDataType[],
   opts?: HookOpts<UserReservesDataHumanized, T>
 ) => {
   const { uiPoolService } = useSharedDependencies();
@@ -24,6 +26,8 @@ export const useUserPoolsReservesHumanized = <T = UserReservesDataHumanized>(
   });
 };
 
-export const useUserPoolReservesHumanized = (marketData: MarketDataType) => {
+export const useUserPoolReservesHumanized = (
+  marketData: UseUserPoolsPoolReservesHumanizedMarketDataType
+) => {
   return useUserPoolsReservesHumanized([marketData])[0];
 };

@@ -11,7 +11,6 @@ import {
 import dayjs from 'dayjs';
 import memoize from 'micro-memoize';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import {
   selectBaseCurrencyData,
@@ -21,12 +20,31 @@ import {
 import {
   FormattedReservesAndIncentives,
   usePoolsFormattedReserves,
+  UsePoolsFormattedReservesMarketDataType,
 } from './usePoolFormattedReserves';
-import { usePoolsReservesHumanized } from './usePoolReserves';
-import { usePoolsReservesIncentivesHumanized } from './usePoolReservesIncentives';
-import { useUserPoolsReservesHumanized } from './useUserPoolReserves';
-import { useUserPoolsReservesIncentivesHumanized } from './useUserPoolReservesIncentives';
+import {
+  usePoolsReservesHumanized,
+  UsePoolsReservesHumanizedMarketDataType,
+} from './usePoolReserves';
+import {
+  usePoolsReservesIncentivesHumanized,
+  UsePoolsReservesIncentivesHumanizedMarketDataType,
+} from './usePoolReservesIncentives';
+import {
+  UseUserPoolsPoolReservesHumanizedMarketDataType,
+  useUserPoolsReservesHumanized,
+} from './useUserPoolReserves';
+import {
+  useUserPoolsReservesIncentivesHumanized,
+  UseUserPoolsReservesIncentivesHumanizedMarketDataType,
+} from './useUserPoolReservesIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
+
+export type UseUserSummariesAndIncentivesMarketDataType = UsePoolsReservesHumanizedMarketDataType &
+  UseUserPoolsPoolReservesHumanizedMarketDataType &
+  UsePoolsFormattedReservesMarketDataType &
+  UsePoolsReservesIncentivesHumanizedMarketDataType &
+  UseUserPoolsReservesIncentivesHumanizedMarketDataType;
 
 export type FormattedUserReserves = ComputedUserReserve<FormattedReservesAndIncentives>;
 
@@ -60,7 +78,7 @@ const formatUserSummaryAndIncentivesss = memoize(
 );
 
 export const useUserSummariesAndIncentives = (
-  marketsData: MarketDataType[]
+  marketsData: UseUserSummariesAndIncentivesMarketDataType[]
 ): SimplifiedUseQueryResult<UserSummaryAndIncentives>[] => {
   const poolsReservesQuery = usePoolsReservesHumanized(marketsData);
   const userPoolsReservesQuery = useUserPoolsReservesHumanized(marketsData);
@@ -82,6 +100,8 @@ export const useUserSummariesAndIncentives = (
   });
 };
 
-export const useUserSummaryAndIncentives = (marketData: MarketDataType) => {
+export const useUserSummaryAndIncentives = (
+  marketData: UseUserSummariesAndIncentivesMarketDataType
+) => {
   return useUserSummariesAndIncentives([marketData])[0];
 };
