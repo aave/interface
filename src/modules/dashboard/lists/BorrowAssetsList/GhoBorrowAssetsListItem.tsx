@@ -8,7 +8,6 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -16,7 +15,6 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListButtonsColumn } from '../ListButtonsColumn';
@@ -179,31 +177,6 @@ const GhoBorrowAssetsListItemDesktop = ({
           forceShowTooltip
           userQualifiesForDiscount
         />
-        <Link
-          href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
-          style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
-          target="blank"
-        >
-          <Typography variant="secondary14">
-            <Trans>
-              Eligible for <strong>2.9M$</strong> GHO Community Program 👻
-            </Trans>
-            <TextWithTooltip
-              wrapperProps={{ sx: { display: 'inline-flex', alignItems: 'center' } }}
-              event={{
-                eventName: GENERAL.TOOL_TIP,
-                eventParams: {
-                  tooltip: 'Community Rewards',
-                },
-              }}
-            >
-              <Trans>
-                This is a program initiated and implemented by the decentralised Aave community.
-                Aave Labs does not guarantee the program and accepts no liability.
-              </Trans>
-            </TextWithTooltip>
-          </Typography>
-        </Link>
       </ListColumn>
       <ListButtonsColumn>
         <Button disabled={borrowButtonDisable} variant="contained" onClick={onBorrowClick}>
