@@ -31,11 +31,12 @@ import offRampAbi from 'src/components/transactions/Bridge/OffRamp-abi.json';
 import { getRouterConfig } from 'src/components/transactions/Bridge/Router';
 import routerAbi from 'src/components/transactions/Bridge/Router-abi.json';
 import { useBridgeTransactionHistory } from 'src/hooks/useBridgeTransactionHistory';
-import { useGetOffRamps, useGetOffRampsForSourceChain } from 'src/hooks/useBridgeTransactionStatus';
+import { useGetOffRamps, useGetOffRampForLane, useGetExecutionState } from 'src/hooks/useBridgeTransactionStatus';
 import { useRootStore } from 'src/store/root';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import LoveGhost from '/public/loveGhost.svg';
+import { BridgeTransaction } from './BridgeTransaction';
 
 dayjs.extend(relativeTime);
 
@@ -92,14 +93,12 @@ export function BridgeWrapper() {
 
   // const [transactions, setTransactions] = useState([] as TransactionDetails[]);
 
-  const foo = useBridgeTransactionHistory('0x1a2a69e3eb1382fe34bc579add5bae39e31d4a2c');
-  console.log('foo', foo);
+  const { data: bridgeTransactions, isFetching } = useBridgeTransactionHistory('0x1a2a69e3eb1382fe34bc579add5bae39e31d4a2c');
 
   const bar = useGetOffRamps();
   console.log('bar', bar);
 
-  const baz = useGetOffRampsForSourceChain(ChainId.sepolia, ChainId.base_sepolia);
-  console.log('baz', baz);
+  // const { data: executionState } = useGetExecutionState(ChainId.arbitrum_sepolia, '0x05CA154DaEaC949f175489A8fdb19f85575a689F');
 
   const [transactions, setTransactions] = useState<TransactionDetails[]>(() => {
     try {
@@ -247,178 +246,182 @@ export function BridgeWrapper() {
     );
   }
 
-  if (transactions.length === 0) {
-    return (
-      <Paper
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          p: 4,
-          flex: 1,
-        }}
-      >
-        <LoveGhost style={{ marginBottom: '16px' }} />
-        <Typography variant={'h3'}>
-          <Trans>You have not bridged any transactions</Trans>
-        </Typography>{' '}
-      </Paper>
-    );
-  }
+  // if (bridgeTransactions.length === 0) {
+  //   return (
+  //     <Paper
+  //       sx={{
+  //         display: 'flex',
+  //         flexDirection: 'column',
+  //         alignItems: 'center',
+  //         justifyContent: 'center',
+  //         textAlign: 'center',
+  //         p: 4,
+  //         flex: 1,
+  //       }}
+  //     >
+  //       <LoveGhost style={{ marginBottom: '16px' }} />
+  //       <Typography variant={'h3'}>
+  //         <Trans>You have not bridged any transactions</Trans>
+  //       </Typography>{' '}
+  //     </Paper>
+  //   );
+  // }
 
   return (
-    <ListWrapper
-      titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-          <Trans>Bridge Transactions</Trans>
-        </Typography>
-      }
-    >
-      <ListHeaderWrapper px={downToXSM ? 4 : 6}>
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Asset</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
+    (bridgeTransactions && bridgeTransactions.length > 0 ? (
+      bridgeTransactions?.map((tx) => <BridgeTransaction key={tx.id} transaction={tx} />)
+    ) : <div>loading</div>)
+    // <ListWrapper
+    //   titleComponent={
+    //     <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+    //       <Trans>Bridge Transactions</Trans>
+    //     </Typography>
+    //   }
+    // >
+    //   <ListHeaderWrapper px={downToXSM ? 4 : 6}>
+    //     <ListColumn isRow maxWidth={280}>
+    //       <ListHeaderTitle>
+    //         <Trans>Asset</Trans>
+    //       </ListHeaderTitle>
+    //     </ListColumn>
 
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Source Tx</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
+    //     <ListColumn isRow maxWidth={280}>
+    //       <ListHeaderTitle>
+    //         <Trans>Source Tx</Trans>
+    //       </ListHeaderTitle>
+    //     </ListColumn>
 
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Destination Tx</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
+    //     <ListColumn isRow maxWidth={280}>
+    //       <ListHeaderTitle>
+    //         <Trans>Destination Tx</Trans>
+    //       </ListHeaderTitle>
+    //     </ListColumn>
 
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Age</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
+    //     <ListColumn isRow maxWidth={280}>
+    //       <ListHeaderTitle>
+    //         <Trans>Age</Trans>
+    //       </ListHeaderTitle>
+    //     </ListColumn>
 
-        {!downToXSM && (
-          <ListColumn isRow>
-            <ListHeaderTitle>
-              <Trans>Amount</Trans>
-            </ListHeaderTitle>
-          </ListColumn>
-        )}
+    //     {!downToXSM && (
+    //       <ListColumn isRow>
+    //         <ListHeaderTitle>
+    //           <Trans>Amount</Trans>
+    //         </ListHeaderTitle>
+    //       </ListColumn>
+    //     )}
 
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Status</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
+    //     <ListColumn isRow maxWidth={280}>
+    //       <ListHeaderTitle>
+    //         <Trans>Status</Trans>
+    //       </ListHeaderTitle>
+    //     </ListColumn>
 
-        <ListColumn maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Explorer</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
-      </ListHeaderWrapper>
+    //     <ListColumn maxWidth={280}>
+    //       <ListHeaderTitle>
+    //         <Trans>Explorer</Trans>
+    //       </ListHeaderTitle>
+    //     </ListColumn>
+    //   </ListHeaderWrapper>
 
-      {false ? (
-        downToXSM ? (
-          <>
-            {/* <FaucetMobileItemLoader />
-              <FaucetMobileItemLoader />
-              <FaucetMobileItemLoader /> */}
-          </>
-        ) : (
-          <>
-            {/* <FaucetItemLoader />
-              <FaucetItemLoader />
-              <FaucetItemLoader />
-              <FaucetItemLoader />
-              <FaucetItemLoader /> */}
-          </>
-        )
-      ) : (
-        transactions &&
-        transactions.length > 0 &&
-        transactions.map((tx: TransactionDetails) => (
-          <ListItem
-            px={downToXSM ? 4 : 6}
-            key={tx.txHash}
-            sx={{ width: '100%' }}
-            // data-cy={`faucetListItem_${reserve.symbol.toUpperCase()}`}
-          >
-            <ListColumn isRow maxWidth={280}>
-              <Link
-                href={'https://arbiscan.io/tx/' + tx.txHash}
-                // href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
-                noWrap
-                sx={{ display: 'inline-flex', alignItems: 'center' }}
-              >
-                <TokenIcon symbol={'GHO'} fontSize="large" />
-                <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
-                  <Typography variant="h4" noWrap>
-                    GHO
-                  </Typography>
-                  <Typography variant="subheader2" color="text.muted" noWrap>
-                    GHO
-                  </Typography>
-                </Box>
-              </Link>
-            </ListColumn>
 
-            <ListColumn align="left">
-              <MarketLogo size={28} logo={tx.sourceChain.networkLogoPath} />
-            </ListColumn>
-            <ListColumn align="left">
-              <MarketLogo size={28} logo={tx.destinationChain.networkLogoPath} />
-            </ListColumn>
-            <ListColumn align="left">
-              <Typography color="text.secondary" variant="main16">
-                {dayjs.unix(tx.timestamp).fromNow()}
-              </Typography>
-            </ListColumn>
+    //   {false ? (
+    //     downToXSM ? (
+    //       <>
+    //         {/* <FaucetMobileItemLoader />
+    //           <FaucetMobileItemLoader />
+    //           <FaucetMobileItemLoader /> */}
+    //       </>
+    //     ) : (
+    //       <>
+    //         {/* <FaucetItemLoader />
+    //           <FaucetItemLoader />
+    //           <FaucetItemLoader />
+    //           <FaucetItemLoader />
+    //           <FaucetItemLoader /> */}
+    //       </>
+    //     )
+    //   ) : (
+    //     transactions &&
+    //     transactions.length > 0 &&
+    //     transactions.map((tx: TransactionDetails) => (
+    //       <ListItem
+    //         px={downToXSM ? 4 : 6}
+    //         key={tx.txHash}
+    //         sx={{ width: '100%' }}
+    //       // data-cy={`faucetListItem_${reserve.symbol.toUpperCase()}`}
+    //       >
+    //         <ListColumn isRow maxWidth={280}>
+    //           <Link
+    //             href={'https://arbiscan.io/tx/' + tx.txHash}
+    //             // href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
+    //             noWrap
+    //             sx={{ display: 'inline-flex', alignItems: 'center' }}
+    //           >
+    //             <TokenIcon symbol={'GHO'} fontSize="large" />
+    //             <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
+    //               <Typography variant="h4" noWrap>
+    //                 GHO
+    //               </Typography>
+    //               <Typography variant="subheader2" color="text.muted" noWrap>
+    //                 GHO
+    //               </Typography>
+    //             </Box>
+    //           </Link>
+    //         </ListColumn>
 
-            {!downToXSM && (
-              <ListColumn align="left">
-                <FormattedNumber
-                  visibleDecimals={2}
-                  symbol={'USD'}
-                  value={formatUnits(tx.amount, 18)}
-                  variant="main16"
-                />
-              </ListColumn>
-            )}
+    //         <ListColumn align="left">
+    //           <MarketLogo size={28} logo={tx.sourceChain.networkLogoPath} />
+    //         </ListColumn>
+    //         <ListColumn align="left">
+    //           <MarketLogo size={28} logo={tx.destinationChain.networkLogoPath} />
+    //         </ListColumn>
+    //         <ListColumn align="left">
+    //           <Typography color="text.secondary" variant="main16">
+    //             {dayjs.unix(tx.timestamp).fromNow()}
+    //           </Typography>
+    //         </ListColumn>
 
-            {tx.messageStatus ? (
-              <ListColumn align="left">
-                <Typography variant="main16">{tx.messageStatus}</Typography>
-              </ListColumn>
-            ) : statusLoading ? (
-              <ListColumn align="left">
-                <Skeleton width={40} height={40} />
-              </ListColumn>
-            ) : (
-              <ListColumn align="left">
-                <Typography variant="main16">
-                  <Trans>Processing...</Trans>
-                </Typography>
-              </ListColumn>
-            )}
+    //         {!downToXSM && (
+    //           <ListColumn align="left">
+    //             <FormattedNumber
+    //               visibleDecimals={2}
+    //               symbol={'USD'}
+    //               value={formatUnits(tx.amount, 18)}
+    //               variant="main16"
+    //             />
+    //           </ListColumn>
+    //         )}
 
-            <ListColumn maxWidth={280} align="right">
-              <Button
-                component="a"
-                target="_blank"
-                href={`https://ccip.chain.link/tx/${tx.txHash}`}
-                variant="contained"
-              >
-                <Trans>View Transaction</Trans>
-              </Button>
-            </ListColumn>
-          </ListItem>
-        ))
-      )}
-    </ListWrapper>
+    //         {tx.messageStatus ? (
+    //           <ListColumn align="left">
+    //             <Typography variant="main16">{tx.messageStatus}</Typography>
+    //           </ListColumn>
+    //         ) : statusLoading ? (
+    //           <ListColumn align="left">
+    //             <Skeleton width={40} height={40} />
+    //           </ListColumn>
+    //         ) : (
+    //           <ListColumn align="left">
+    //             <Typography variant="main16">
+    //               <Trans>Processing...</Trans>
+    //             </Typography>
+    //           </ListColumn>
+    //         )}
+
+    //         <ListColumn maxWidth={280} align="right">
+    //           <Button
+    //             component="a"
+    //             target="_blank"
+    //             href={`https://ccip.chain.link/tx/${tx.txHash}`}
+    //             variant="contained"
+    //           >
+    //             <Trans>View Transaction</Trans>
+    //           </Button>
+    //         </ListColumn>
+    //       </ListItem>
+    //     ))
+    //   )}
+    // </ListWrapper>
   );
 }

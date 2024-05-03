@@ -1,7 +1,10 @@
+import { ChainId } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
+import { getDestinationChainFor } from './useBridgeTransactionStatus';
 
 type SubgraphBridgeTransaction = {
+  id: string;
   address: string;
   network: string;
   blockTimestamp: string;
@@ -16,8 +19,11 @@ type SubgraphBridgeTransaction = {
 };
 
 export type BridgeTransaction = {
+  id: string;
   onRampAddress: string;
   sourceNetwork: string;
+  sourceChainId: ChainId;
+  destinationChainId: ChainId;
   blockTimestamp: number;
   sender: string;
   receiver: string;
@@ -33,6 +39,12 @@ const sourceNetworkSubgraphUrls = [
   'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-arb-sepolia/1.0.0/gn',
   'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-sepolia/1.0.0/gn',
 ];
+
+const networkNameToChainId: { [networkName: string]: ChainId } = {
+  'base-sepolia': ChainId.base_sepolia,
+  'arbitrum-sepolia': ChainId.arbitrum_sepolia,
+  sepolia: ChainId.sepolia,
+};
 
 // There should typically only be 1 on-ramp per off-ramp. But, in the case where there is a new off-ramp added,
 // the old one will be kept for a period of time to let old transactions be manually executed. For testnets,
@@ -73,6 +85,7 @@ export const networkRampMap = {
 const sendRequestsQuery = gql`
   query getSendRequests($sender: String!) {
     ccipsendRequests(where: { message_sender: $sender }) {
+      id
       blockTimestamp
       address
       network
@@ -100,15 +113,26 @@ const getSendRequests = async (url: string, sender: string) => {
   console.log(result);
 
   return result.ccipsendRequests
-    .map<BridgeTransaction>((tx) => ({
-      onRampAddress: tx.address,
-      sourceNetwork: tx.network,
-      blockTimestamp: Number(tx.blockTimestamp),
-      sender: tx.message_sender,
-      receiver: tx.message_receiver,
-      sequenceNumber: tx.message_sequenceNumber,
-      tokenAmounts: tx.message_tokenAmounts,
-    }))
+    .map<BridgeTransaction>((tx) => {
+      const sourceChainId = networkNameToChainId[tx.network];
+      const destinationChainId = getDestinationChainFor(sourceChainId, tx.address);
+      if (!destinationChainId) {
+        throw new Error(`No destination chain found`);
+      }
+
+      return {
+        id: tx.id,
+        onRampAddress: tx.address,
+        sourceNetwork: tx.network,
+        sourceChainId,
+        destinationChainId,
+        blockTimestamp: Number(tx.blockTimestamp),
+        sender: tx.message_sender,
+        receiver: tx.message_receiver,
+        sequenceNumber: tx.message_sequenceNumber,
+        tokenAmounts: tx.message_tokenAmounts,
+      }
+    })
     .sort((a, b) => b.blockTimestamp - a.blockTimestamp);
 };
 

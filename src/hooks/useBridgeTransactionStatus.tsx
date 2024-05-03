@@ -17,6 +17,13 @@ type Config = {
   }[];
 };
 
+enum MessageExecutionState {
+  UNTOUCHED = 0,
+  IN_PROGRESS,
+  SUCCESS,
+  FAILURE
+}
+
 export const laneConfig: Config[] = [
   {
     sourceChainId: ChainId.sepolia,
@@ -100,13 +107,45 @@ function getSupportedSourceChains() {
   return laneConfig.map((config) => config.sourceChainId);
 }
 
+export function getDestinationChainFor(sourceChainId: ChainId, onRamp: string) {
+  return laneConfig
+    .find((config) => config.sourceChainId === sourceChainId)
+    ?.destinations.find((dest) => dest.onRamp === onRamp)?.destinationChainId;
+}
+
 // export const useBridgeTransactionStatus = (bridgeTx: BridgeTransaction) => {
 //   return useQuery({
 //     queryFn: async () => { },
 //   });
 // };
 
-export const useGetOffRampsForSourceChain = (destinationChain: ChainId, sourceChain: ChainId) => {
+export const useGetExecutionState = (chainId: ChainId, sequenceNumber: string, offRamps: string[]) => {
+  return useQuery({
+    queryFn: async () => {
+      const provider = getProvider(chainId);
+      console.log('uihhhh', offRamps);
+      for (const offRamp of offRamps) {
+        try {
+          console.log('offramp', offRamp, chainId);
+          const offRampContract = new Contract(offRamp, ['function getExecutionState(uint64 sequenceNumber) public view returns (uint8)'], provider);
+          const result = await offRampContract.getExecutionState(Number(sequenceNumber));
+          console.log('result', result);
+          if (result !== MessageExecutionState.UNTOUCHED) {
+            return result as MessageExecutionState;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      return MessageExecutionState.UNTOUCHED;
+    },
+    queryKey: ['executionState', chainId, ...offRamps],
+    enabled: offRamps?.length > 0,
+  });
+}
+
+export const useGetOffRampForLane = (sourceChain: ChainId, destinationChain: ChainId) => {
   const { data: offRamps, isFetching } = useGetOffRamps();
 
   return {
@@ -116,7 +155,7 @@ export const useGetOffRampsForSourceChain = (destinationChain: ChainId, sourceCh
         ?.find((ramps) => ramps.chainId === destinationChain)
         ?.offRamps?.filter(
           (ramp) => ramp.sourceChainSelector === getChainSelectorFor(sourceChain)
-        ) ?? [],
+        ) ?? [], // there could be multiple off ramps
   };
 };
 
