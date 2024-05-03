@@ -17,14 +17,14 @@ const supplyListHeaders = [
   { title: <Trans>APY change</Trans> },
   { title: <Trans>Collateral change</Trans> },
   { title: <Trans>Max LTV</Trans> },
-  { title: <Trans>Current v2 balance</Trans> },
+  { title: <Trans>Current balance</Trans> },
 ];
 
 const borrowListHeaders = [
   { title: <Trans>APY change</Trans> },
   { title: <Trans>APY type change</Trans> },
   { title: <Trans>Liquidation Threshold</Trans> },
-  { title: <Trans>Current v2 balance</Trans> },
+  { title: <Trans>Current balance</Trans> },
 ];
 
 interface MigrationListProps {

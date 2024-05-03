@@ -787,22 +787,22 @@ msgstr "Copy error text"
 msgid "Covered debt"
 msgstr "Covered debt"
 
+#: src/modules/migration/MigrationListMobileItem.tsx
+msgid "Current Balance"
+msgstr "Current Balance"
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Current LTV"
 
+#: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationList.tsx
+msgid "Current balance"
+msgstr "Current balance"
+
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Current differential"
 msgstr "Current differential"
-
-#: src/modules/migration/MigrationListMobileItem.tsx
-msgid "Current v2 Balance"
-msgstr "Current v2 Balance"
-
-#: src/modules/migration/MigrationList.tsx
-#: src/modules/migration/MigrationList.tsx
-msgid "Current v2 balance"
-msgstr "Current v2 balance"
 
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Current votes"

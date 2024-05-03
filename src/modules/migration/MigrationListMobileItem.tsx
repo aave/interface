@@ -146,7 +146,7 @@ export const MigrationListMobileItem = ({
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2, pb: 4, pl: 12 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="description" color={baseColorSecondary}>
-            <Trans>Current v2 Balance</Trans>
+            <Trans>Current Balance</Trans>
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
             <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 0.5 }}>

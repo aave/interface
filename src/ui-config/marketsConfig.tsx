@@ -27,9 +27,15 @@ import {
 } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
 
+export enum MarketType {
+  Aave = 'Aave',
+  Spark = 'Spark',
+}
+
 // Enable for premissioned market
 // import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
 export type MarketDataType = {
+  type: MarketType.Aave;
   v3?: boolean;
   marketTitle: string;
   market: CustomMarket;
@@ -117,7 +123,8 @@ export enum ExternalCustomMarket {
   proto_spark_ethereum_v3 = 'proto_spark_ethereum_v3',
 }
 
-export interface ExternalMarketDataType extends Omit<MarketDataType, 'market'> {
+export interface ExternalMarketDataType extends Omit<MarketDataType, 'market' | 'type'> {
+  type: MarketType.Spark;
   market: ExternalCustomMarket;
 }
 
@@ -125,6 +132,7 @@ export const externalMarketsData: {
   [key in keyof typeof ExternalCustomMarket]: ExternalMarketDataType;
 } = {
   [ExternalCustomMarket.proto_spark_ethereum_v3]: {
+    type: MarketType.Spark,
     marketTitle: 'Ethereum',
     market: ExternalCustomMarket.proto_spark_ethereum_v3,
     chainId: ChainId.mainnet,
@@ -136,6 +144,7 @@ export const externalMarketsData: {
       WALLET_BALANCE_PROVIDER: '0xd2AeF86F51F92E8e49F42454c287AE4879D1BeDc',
       UI_POOL_DATA_PROVIDER: '0xF028c2F4b19898718fD0F77b9b881CbfdAa5e8Bb',
       UI_INCENTIVE_DATA_PROVIDER: '0xF028c2F4b19898718fD0F77b9b881CbfdAa5e8Bb',
+      V3_MIGRATOR: '0xd5D2E138531fEF36288FF9448C6890fF67f651EB',
     },
   },
 };
@@ -144,6 +153,7 @@ export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
   [CustomMarket.proto_mainnet_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Ethereum',
     market: CustomMarket.proto_mainnet_v3,
     chainId: ChainId.mainnet,
@@ -180,6 +190,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_mainnet]: {
+    type: MarketType.Aave,
     marketTitle: 'Ethereum',
     market: CustomMarket.proto_mainnet,
     chainId: ChainId.mainnet,
@@ -234,6 +245,7 @@ export const marketsData: {
   //   },
   // },
   [CustomMarket.amm_mainnet]: {
+    type: MarketType.Aave,
     marketTitle: 'Ethereum AMM',
     market: CustomMarket.amm_mainnet,
     chainId: ChainId.mainnet,
@@ -250,6 +262,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_polygon]: {
+    type: MarketType.Aave,
     marketTitle: 'Polygon',
     market: CustomMarket.proto_polygon,
     chainId: ChainId.polygon,
@@ -279,6 +292,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_avalanche]: {
+    type: MarketType.Aave,
     marketTitle: 'Avalanche',
     market: CustomMarket.proto_avalanche,
     chainId: ChainId.avalanche,
@@ -310,6 +324,7 @@ export const marketsData: {
   },
   // v3
   [CustomMarket.proto_sepolia_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Ethereum Sepolia',
     market: CustomMarket.proto_sepolia_v3,
     v3: true,
@@ -330,6 +345,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_base_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Base',
     market: CustomMarket.proto_base_v3,
     v3: true,
@@ -361,6 +377,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_arbitrum_sepolia_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Arbitrum Sepolia',
     market: CustomMarket.proto_arbitrum_sepolia_v3,
     v3: true,
@@ -380,6 +397,7 @@ export const marketsData: {
   },
 
   [CustomMarket.proto_arbitrum_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Arbitrum',
     market: CustomMarket.proto_arbitrum_v3,
     v3: true,
@@ -413,6 +431,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_base_sepolia_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Base Sepolia',
     market: CustomMarket.proto_arbitrum_sepolia_v3,
     v3: true,
@@ -431,6 +450,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_avalanche_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Avalanche',
     market: CustomMarket.proto_avalanche_v3,
     v3: true,
@@ -463,6 +483,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_fuji_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Avalanche Fuji',
     market: CustomMarket.proto_fuji_v3,
     v3: true,
@@ -483,6 +504,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_optimism_sepolia_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Optimism Sepolia',
     market: CustomMarket.proto_optimism_sepolia_v3,
     v3: true,
@@ -501,6 +523,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_scroll_sepolia_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Scroll Sepolia',
     market: CustomMarket.proto_scroll_sepolia_v3,
     v3: true,
@@ -521,6 +544,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_fantom_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Fantom',
     market: CustomMarket.proto_fantom_v3,
     v3: true,
@@ -548,6 +572,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_fantom_testnet_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Fantom Testnet',
     market: CustomMarket.proto_fantom_testnet_v3,
     v3: true,
@@ -568,6 +593,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_harmony_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Harmony',
     market: CustomMarket.proto_harmony_v3,
     v3: true,
@@ -587,6 +613,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_optimism_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Optimism',
     market: CustomMarket.proto_optimism_v3,
     v3: true,
@@ -616,6 +643,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_polygon_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Polygon',
     market: CustomMarket.proto_polygon_v3,
     chainId: ChainId.polygon,
@@ -648,6 +676,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_fuji]: {
+    type: MarketType.Aave,
     marketTitle: 'Avalanche Fuji',
     market: CustomMarket.proto_fuji,
     chainId: ChainId.fuji,
@@ -667,6 +696,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_metis_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Metis',
     market: CustomMarket.proto_metis_v3,
     chainId: ChainId.metis_andromeda,
@@ -690,6 +720,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_gnosis_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Gnosis',
     market: CustomMarket.proto_gnosis_v3,
     chainId: ChainId.xdai,
@@ -706,6 +737,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_bnb_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'BNB Chain',
     market: CustomMarket.proto_bnb_v3,
     chainId: ChainId.bnb,
@@ -733,6 +765,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_scroll_v3]: {
+    type: MarketType.Aave,
     marketTitle: 'Scroll',
     market: CustomMarket.proto_scroll_v3,
     chainId: ChainId.scroll,

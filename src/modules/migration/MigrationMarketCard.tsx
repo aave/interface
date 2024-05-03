@@ -15,10 +15,13 @@ import {
 import { MigrationMarketDataType } from 'pages/v3-migration.page';
 import { FC, useState } from 'react';
 import { HealthFactorNumber } from 'src/components/HealthFactorNumber';
+import { MarketType } from 'src/ui-config/marketsConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 const formatMarketName = (market: MigrationMarketDataType) => {
-  return `Aave ${market.v3 ? 'V3' : 'V2'} - ${market.marketTitle}${market.isFork ? ' Fork' : ''}`;
+  return `${market.type === MarketType.Aave ? 'Aave' : 'Spark'} ${market.v3 ? 'V3' : 'V2'} - ${
+    market.marketTitle
+  }${market.isFork ? ' Fork' : ''}`;
 };
 
 type MigrationMarketCardProps = {
