@@ -81,7 +81,6 @@ export const MeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho' }) 
     rewardTokenAddress: '0x', // not used for merit program
   };
 
-  console.log(incentives.incentiveAPR);
   return (
     <ContentWithTooltip
       tooltipContent={

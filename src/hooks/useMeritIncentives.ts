@@ -19,6 +19,7 @@ export const useMeritIncentives = () => {
       return data.currentAPR as MeritIncentives;
     },
     queryKey: ['meritIncentives'],
+    staleTime: 1000 * 60 * 5,
   });
 };
 
@@ -31,5 +32,6 @@ export const useUserMeritIncentives = () => {
       return data.currentAPR as MeritIncentives;
     },
     queryKey: ['meritIncentives', user],
+    staleTime: 1000 * 60 * 5,
   });
 };
