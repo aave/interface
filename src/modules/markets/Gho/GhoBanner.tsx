@@ -3,13 +3,16 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
+import { MeritIncentivesTooltipContent } from 'src/components/incentives/MeritIncentivesTooltipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
 
 interface GhoBannerProps {
@@ -22,6 +25,9 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isMd = useMediaQuery(theme.breakpoints.up('xs'));
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData, ghoLoadingData } = useAppDataContext();
+  const { data: meritIncentives, isFetching: lodaingIncentives } = useMeritIncentives();
+
+  const ghoMeritAPR = meritIncentives?.actionsAPR.gho || 0;
 
   let totalBorrowed = Number(reserve?.totalDebt);
   if (Number(reserve?.borrowCap) > 0) {
@@ -272,6 +278,47 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
               >
                 <Trans>Borrow rate APY</Trans>
               </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+              }}
+            >
+              {lodaingIncentives || ghoMeritAPR === 0 ? (
+                <Skeleton width={70} height={25} />
+              ) : (
+                <FormattedNumber
+                  percent
+                  compact
+                  variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
+                  value={ghoMeritAPR / 100}
+                />
+              )}
+              <TextWithTooltip
+                text={
+                  <Typography
+                    sx={{
+                      ['@media screen and (min-width: 1125px)']: {
+                        typography: 'description',
+                      },
+                      typography: {
+                        xs: 'caption',
+                      },
+                    }}
+                    color="text.secondary"
+                    noWrap
+                  >
+                    <Trans>Merit rewards</Trans>
+                  </Typography>
+                }
+              >
+                <MeritIncentivesTooltipContent
+                  incentiveAPR={(ghoMeritAPR / 100).toString()}
+                  rewardTokenSymbol="GHO"
+                />
+              </TextWithTooltip>
             </Box>
             <Button
               variant="contained"

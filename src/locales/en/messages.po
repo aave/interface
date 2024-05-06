@@ -1495,6 +1495,10 @@ msgstr "Meet GHO"
 msgid "Menu"
 msgstr "Menu"
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Merit rewards"
+msgstr "Merit rewards"
+
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrate"
