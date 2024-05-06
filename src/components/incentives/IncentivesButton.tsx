@@ -3,6 +3,7 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useMeritIncentives, useUserMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
@@ -10,6 +11,7 @@ import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { IncentivesTooltipContent } from './IncentivesTooltipContent';
+import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 
 interface IncentivesButtonProps {
   symbol: string;
@@ -34,9 +36,71 @@ const BlankIncentives = () => {
   );
 };
 
+export const UserMeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho' }) => {
+  const [open, setOpen] = useState(false);
+  const { data: meritIncentives } = useUserMeritIncentives();
+
+  if (!meritIncentives) {
+    return null;
+  }
+
+  const incentives = {
+    incentiveAPR: (meritIncentives.actionsAPR[symbol] / 100).toString(),
+    rewardTokenSymbol: 'GHO', // rewards alwasy in gho, for now
+    rewardTokenAddress: '0x', // not used for merit program
+  };
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={
+        <MeritIncentivesTooltipContent
+          incentiveAPR={incentives.incentiveAPR}
+          rewardTokenSymbol={incentives.rewardTokenSymbol}
+        />
+      }
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} />
+    </ContentWithTooltip>
+  );
+};
+
+export const MeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho' }) => {
+  const [open, setOpen] = useState(false);
+  const { data: meritIncentives } = useMeritIncentives();
+
+  if (!meritIncentives) {
+    return null;
+  }
+
+  const incentives = {
+    incentiveAPR: (meritIncentives.actionsAPR[symbol] / 100).toString(),
+    rewardTokenSymbol: 'GHO', // rewards alwasy in gho, for now
+    rewardTokenAddress: '0x', // not used for merit program
+  };
+
+  console.log(incentives.incentiveAPR);
+  return (
+    <ContentWithTooltip
+      tooltipContent={
+        <MeritIncentivesTooltipContent
+          incentiveAPR={incentives.incentiveAPR}
+          rewardTokenSymbol={incentives.rewardTokenSymbol}
+        />
+      }
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} />
+    </ContentWithTooltip>
+  );
+};
+
 export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
   const [open, setOpen] = useState(false);
-  const trackEvent = useRootStore((store) => store.trackEvent);
 
   if (!(incentives && incentives.length > 0)) {
     if (displayBlank) {
@@ -58,6 +122,48 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
     : incentivesAPRSum !== 'Infinity'
     ? valueToBigNumber(incentivesAPRSum || 0).toNumber()
     : 'Infinity';
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={
+        <IncentivesTooltipContent
+          incentives={incentives}
+          incentivesNetAPR={incentivesNetAPR}
+          symbol={symbol}
+        />
+      }
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <Content
+        incentives={incentives}
+        incentivesNetAPR={incentivesNetAPR}
+        displayBlank={displayBlank}
+      />
+    </ContentWithTooltip>
+  );
+};
+
+const Content = ({
+  incentives,
+  incentivesNetAPR,
+  displayBlank,
+}: {
+  incentives: ReserveIncentiveResponse[];
+  incentivesNetAPR: number | 'Infinity';
+  displayBlank?: boolean;
+}) => {
+  const [open, setOpen] = useState(false);
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  if (!(incentives && incentives.length > 0)) {
+    if (displayBlank) {
+      return <BlankIncentives />;
+    } else {
+      return null;
+    }
+  }
 
   if (incentivesNetAPR === 0) {
     if (displayBlank) {
@@ -99,80 +205,67 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
   const iconSize = 12;
 
   return (
-    <ContentWithTooltip
-      tooltipContent={
-        <IncentivesTooltipContent
-          incentives={incentives}
-          incentivesNetAPR={incentivesNetAPR}
-          symbol={symbol}
-        />
-      }
-      withoutHover
-      setOpen={setOpen}
-      open={open}
+    <Box
+      sx={(theme) => ({
+        p: { xs: '0 4px', xsm: '2px 4px' },
+        border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
+        borderRadius: '4px',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'opacity 0.2s ease',
+        bgcolor: open ? 'action.hover' : 'transparent',
+        '&:hover': {
+          bgcolor: 'action.hover',
+          borderColor: 'action.disabled',
+        },
+      })}
+      onClick={() => {
+        // TODO: How to handle this for event props?
+        trackEvent(DASHBOARD.VIEW_LM_DETAILS_DASHBOARD, {});
+        setOpen(!open);
+      }}
     >
-      <Box
-        sx={(theme) => ({
-          p: { xs: '0 4px', xsm: '2px 4px' },
-          border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
-          borderRadius: '4px',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'opacity 0.2s ease',
-          bgcolor: open ? 'action.hover' : 'transparent',
-          '&:hover': {
-            bgcolor: 'action.hover',
-            borderColor: 'action.disabled',
-          },
-        })}
-        onClick={() => {
-          // TODO: How to handle this for event props?
-          trackEvent(DASHBOARD.VIEW_LM_DETAILS_DASHBOARD, {});
-          setOpen(!open);
-        }}
-      >
-        <Box sx={{ mr: 2 }}>{incentivesButtonValue()}</Box>
+      <Box sx={{ mr: 2 }}>{incentivesButtonValue()}</Box>
 
-        <Box sx={{ display: 'inline-flex' }}>
-          <>
-            {incentives.length < 5 ? (
-              <>
-                {incentives.map((incentive) => (
-                  <TokenIcon
-                    symbol={incentive.rewardTokenSymbol}
-                    sx={{ fontSize: `${iconSize}px`, ml: -1 }}
-                    key={incentive.rewardTokenSymbol}
-                  />
-                ))}
-              </>
-            ) : (
-              <>
-                {incentives.slice(0, 3).map((incentive) => (
-                  <TokenIcon
-                    symbol={incentive.rewardTokenSymbol}
-                    sx={{ fontSize: `${iconSize}px`, ml: -1 }}
-                    key={incentive.rewardTokenSymbol}
-                  />
-                ))}
-                <SvgIcon
-                  sx={{
-                    fontSize: `${iconSize}px`,
-                    borderRadius: '50%',
-                    bgcolor: 'common.white',
-                    color: 'common.black',
-                    ml: -1,
-                    zIndex: 5,
-                  }}
-                >
-                  <DotsHorizontalIcon />
-                </SvgIcon>
-              </>
-            )}
-          </>
-        </Box>
+      <Box sx={{ display: 'inline-flex' }}>
+        <>
+          {incentives.length < 5 ? (
+            <>
+              {incentives.map((incentive) => (
+                <TokenIcon
+                  symbol={incentive.rewardTokenSymbol}
+                  sx={{ fontSize: `${iconSize}px`, ml: -1 }}
+                  key={incentive.rewardTokenSymbol}
+                />
+              ))}
+            </>
+          ) : (
+            <>
+              {incentives.slice(0, 3).map((incentive) => (
+                <TokenIcon
+                  symbol={incentive.rewardTokenSymbol}
+                  sx={{ fontSize: `${iconSize}px`, ml: -1 }}
+                  key={incentive.rewardTokenSymbol}
+                />
+              ))}
+              <SvgIcon
+                sx={{
+                  fontSize: `${iconSize}px`,
+                  borderRadius: '50%',
+                  bgcolor: 'common.white',
+                  color: 'common.black',
+                  ml: -1,
+                  zIndex: 5,
+                }}
+              >
+                <DotsHorizontalIcon />
+              </SvgIcon>
+            </>
+          )}
+        </>
       </Box>
-    </ContentWithTooltip>
+    </Box>
   );
 };
