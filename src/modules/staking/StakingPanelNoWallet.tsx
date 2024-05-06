@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -73,9 +74,16 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
         }}
       >
         <TokenIcon symbol={icon} />
-        <Typography variant="subheader1" color="text.primary" ml={2}>
-          {stakedToken}
-        </Typography>
+        <Stack direction="column" alignItems="start">
+          <Typography variant="subheader1" color="text.primary" ml={2}>
+            {stakedToken}
+          </Typography>
+          {stakedToken === 'GHO' && (
+            <Box sx={{ mx: 2 }}>
+              <MeritIncentivesButton symbol="stkgho" />
+            </Box>
+          )}
+        </Stack>
       </Box>
       <Box
         sx={{
@@ -94,14 +102,14 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
             <TextWithTooltip wrapperProps={{ marginBottom: '1px' }} iconColor="warning.main">
               <Trans>
                 The current incentives period, decided on by the Aave community, has ended.
-                Governance is in the process on renewing,{' '}
+                Governance is in the process on renewing, check for updates.{' '}
                 <Link
-                  href="https://app.aave.com/governance/v3/proposal/?proposalId=91"
+                  href="https://governance.aave.com"
                   sx={{ textDecoration: 'underline' }}
                   variant="caption"
                   color="text.secondary"
                 >
-                  see this proposal
+                  Learn more
                 </Link>
                 .
               </Trans>

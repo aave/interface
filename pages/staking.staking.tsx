@@ -9,6 +9,10 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
+import {
+  MeritIncentivesButton,
+  UserMeritIncentivesButton,
+} from 'src/components/incentives/IncentivesButton';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
@@ -224,6 +228,13 @@ export default function Staking() {
                   onCooldownAction={() => openStakeCooldown(Stake.gho, 'GHO')}
                   onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.gho, 'AAVE')}
+                  headerAction={
+                    stkGhoUserData?.stakeTokenUserBalance !== '0' ? (
+                      <UserMeritIncentivesButton symbol="stkgho" />
+                    ) : (
+                      <MeritIncentivesButton symbol="stkgho" />
+                    )
+                  }
                 />
               </Grid>
 
