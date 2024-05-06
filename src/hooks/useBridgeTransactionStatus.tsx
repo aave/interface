@@ -17,11 +17,11 @@ type Config = {
   }[];
 };
 
-enum MessageExecutionState {
+export enum MessageExecutionState {
   UNTOUCHED = 0,
   IN_PROGRESS,
   SUCCESS,
-  FAILURE
+  FAILURE,
 }
 
 export const laneConfig: Config[] = [
@@ -113,23 +113,24 @@ export function getDestinationChainFor(sourceChainId: ChainId, onRamp: string) {
     ?.destinations.find((dest) => dest.onRamp === onRamp)?.destinationChainId;
 }
 
-// export const useBridgeTransactionStatus = (bridgeTx: BridgeTransaction) => {
-//   return useQuery({
-//     queryFn: async () => { },
-//   });
-// };
-
-export const useGetExecutionState = (chainId: ChainId, sequenceNumber: string, offRamps: string[]) => {
+export const useGetExecutionState = (
+  chainId: ChainId,
+  sequenceNumber: string,
+  offRamps: string[]
+) => {
   return useQuery({
     queryFn: async () => {
       const provider = getProvider(chainId);
-      console.log('uihhhh', offRamps);
+      // Since there could be multiple off ramps for a lane, iterate over all and return the first one that is not untouched
+      // If all are untouched, then the transaction is still in progress.
       for (const offRamp of offRamps) {
         try {
-          console.log('offramp', offRamp, chainId);
-          const offRampContract = new Contract(offRamp, ['function getExecutionState(uint64 sequenceNumber) public view returns (uint8)'], provider);
+          const offRampContract = new Contract(
+            offRamp,
+            ['function getExecutionState(uint64 sequenceNumber) public view returns (uint8)'],
+            provider
+          );
           const result = await offRampContract.getExecutionState(Number(sequenceNumber));
-          console.log('result', result);
           if (result !== MessageExecutionState.UNTOUCHED) {
             return result as MessageExecutionState;
           }
@@ -143,7 +144,7 @@ export const useGetExecutionState = (chainId: ChainId, sequenceNumber: string, o
     queryKey: ['executionState', chainId, ...offRamps],
     enabled: offRamps?.length > 0,
   });
-}
+};
 
 export const useGetOffRampForLane = (sourceChain: ChainId, destinationChain: ChainId) => {
   const { data: offRamps, isFetching } = useGetOffRamps();
@@ -194,7 +195,6 @@ export const useGetOffRamps = () => {
           };
         })
       );
-      console.log('the result', result);
       return result;
     },
     queryKey: ['offRamps'],

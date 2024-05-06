@@ -1872,10 +1872,6 @@ msgstr "Price impact {0}%"
 msgid "Privacy"
 msgstr "Privacy"
 
-#: src/modules/bridge/BridgeWrapper.tsx
-msgid "Processing..."
-msgstr "Processing..."
-
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
@@ -2973,7 +2969,7 @@ msgstr "View"
 msgid "View Bridge Transactions"
 msgstr "View Bridge Transactions"
 
-#: src/modules/bridge/BridgeWrapper.tsx
+#: src/modules/bridge/BridgeTransactionListItem.tsx
 msgid "View Transaction"
 msgstr "View Transaction"
 
