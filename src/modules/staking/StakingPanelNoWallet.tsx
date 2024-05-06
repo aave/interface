@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -73,9 +74,16 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
         }}
       >
         <TokenIcon symbol={icon} />
-        <Typography variant="subheader1" color="text.primary" ml={2}>
-          {stakedToken}
-        </Typography>
+        <Stack direction="column" alignItems="start">
+          <Typography variant="subheader1" color="text.primary" ml={2}>
+            {stakedToken}
+          </Typography>
+          {stakedToken === 'GHO' && (
+            <Box sx={{ mx: 2 }}>
+              <MeritIncentivesButton symbol="stkgho" />
+            </Box>
+          )}
+        </Stack>
       </Box>
       <Box
         sx={{
