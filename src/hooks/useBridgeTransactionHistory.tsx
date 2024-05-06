@@ -1,8 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
-
-import { getDestinationChainFor } from './useBridgeTransactionStatus';
+import { getDestinationChainFor } from 'src/components/transactions/Bridge/BridgeConfig';
 
 type SubgraphBridgeTransaction = {
   id: string;

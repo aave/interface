@@ -8,12 +8,9 @@ import { ListItem } from 'src/components/lists/ListItem';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { MessageExecutionState } from 'src/components/transactions/Bridge/BridgeConfig';
 import { BridgeTransaction as Transaction } from 'src/hooks/useBridgeTransactionHistory';
-import {
-  MessageExecutionState,
-  useGetExecutionState,
-  useGetOffRampForLane,
-} from 'src/hooks/useBridgeTransactionStatus';
+import { useGetExecutionState, useGetOffRampForLane } from 'src/hooks/useBridgeTransactionStatus';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 
 dayjs.extend(relativeTime);
@@ -81,7 +78,7 @@ export const BridgeTransactionListItem = ({ transaction }: { transaction: Transa
       </ListColumn>
       <ListColumn align="left">
         {!executionState ? (
-          <Skeleton width={40} height={100} />
+          <Skeleton width={100} height={40} />
         ) : (
           <Typography variant="main16">{getExecutionStateText(executionState)}</Typography>
         )}

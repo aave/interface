@@ -6,7 +6,7 @@ import { useRootStore } from 'src/store/root';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { MessageDetails, TokenAmount } from './BridgeActions';
-import { getRouterConfig } from './Router';
+import { getChainSelectorFor, getRouterFor } from './BridgeConfig';
 import routerAbi from './Router-abi.json';
 
 export const useGetBridgeMessage = ({
@@ -31,9 +31,9 @@ export const useGetBridgeMessage = ({
       const providerWithSend = getProvider(sourceChainId);
 
       // Get the router's address for the specified chain
-      const sourceRouterAddress = getRouterConfig(sourceChainId).address;
+      const sourceRouterAddress = getRouterFor(sourceChainId);
 
-      const destinationChainSelector = getRouterConfig(destinationChainId).chainSelector;
+      const destinationChainSelector = getChainSelectorFor(destinationChainId);
 
       const sourceRouter = new Contract(sourceRouterAddress, routerAbi, providerWithSend);
 
@@ -43,6 +43,7 @@ export const useGetBridgeMessage = ({
       //     transfer is supported.
       // ==================================================
       // */
+      console.log('sourceRouter', sourceRouter, destinationChainSelector);
       const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
 
       if (supportedTokens.length <= 0) {
