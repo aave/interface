@@ -20,6 +20,7 @@ import { useRootStore } from 'src/store/root';
 import { TokenInfo } from 'src/ui-config/TokenList';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { Warning } from 'src/components/primitives/Warning';
 
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
@@ -38,12 +39,66 @@ export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
 }
 
+interface BridgingValues {
+  currentAmountBridged: number;
+  maxAmountBridged: number;
+}
+
+interface RateLimitValue {
+  rateLimit: number;
+}
+
+function simulateBridgingValuesCall() {
+  return new Promise<BridgingValues>((resolve) => {
+    setTimeout(() => {
+      resolve({ currentAmountBridged: 100, maxAmountBridged: 200 });
+    }, 1000);
+  });
+}
+
+function simulateRateLimitCall() {
+  return new Promise<RateLimitValue>((resolve) => {
+    setTimeout(() => {
+      resolve({ rateLimit: 3000 });
+    }, 1000);
+  });
+}
+
 export const BridgeModalContent = () => {
   const { mainTxState: bridgeTxState, txError, close } = useModalContext();
 
   const [amount, setAmount] = useState('');
   // const [inputAmountUSD, setInputAmount] = useState('');
   const { readOnlyModeAddress, chainId: currentChainId } = useWeb3Context();
+
+  const [bridgingValues, setBridgingValues] = useState<BridgingValues>({
+    currentAmountBridged: 0,
+    maxAmountBridged: 0,
+  });
+  const [rateLimit, setRateLimit] = useState<RateLimitValue>({ rateLimit: 0 });
+
+  useEffect(() => {
+    async function fetchBridgingValues() {
+      try {
+        const result = await simulateBridgingValuesCall();
+        setBridgingValues(result);
+      } catch (error) {
+        console.error('Error fetching bridging values:', error);
+      }
+    }
+
+    async function fetchRateLimit() {
+      try {
+        const result = await simulateRateLimitCall();
+        setRateLimit(result);
+      } catch (error) {
+        console.error('Error fetching rate limit:', error);
+      }
+    }
+
+    fetchBridgingValues();
+    fetchRateLimit();
+  }, []);
 
   const [selectedChainId, setSelectedChainId] = useState(() => {
     if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId)) {
@@ -155,6 +210,12 @@ export const BridgeModalContent = () => {
     setAmount(maxAmountToSwap);
   }
 
+  const checkBridgeLimits = () => {
+    return (
+      bridgingValues.currentAmountBridged + parseInt(amount) >= bridgingValues.maxAmountBridged
+    );
+  };
+
   const handleBridgeArguments = () => {
     const sourceChain = sourceNetworkObj;
     const destinationChain = destinationNetworkObj;
@@ -185,7 +246,7 @@ export const BridgeModalContent = () => {
     isWrongNetwork,
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
-    blocked: loadingBridgeMessage,
+    blocked: loadingBridgeMessage || checkBridgeLimits(),
     decimals: 18,
     isWrappedBaseAsset: false,
     message,
@@ -370,8 +431,18 @@ export const BridgeModalContent = () => {
               </TxModalDetails>
             </Box>
           </Box>
-
           {txError && <GasEstimationError txError={txError} />}
+
+          {checkBridgeLimits() && (
+            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+              <Typography variant="caption">
+                <Trans>
+                  The selected amount is not available to bridge due to the bridge limit. Please try
+                  again later or reduce the amount to bridge
+                </Trans>
+              </Typography>
+            </Warning>
+          )}
 
           <BridgeActions {...bridgeActionsProps} />
         </>
