@@ -1,14 +1,14 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Stack, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { CapType } from 'src/components/caps/helper';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { AvailableTooltip } from 'src/components/infoTooltips/AvailableTooltip';
 import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -16,7 +16,6 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListButtonsColumn } from '../ListButtonsColumn';
@@ -179,31 +178,7 @@ const GhoBorrowAssetsListItemDesktop = ({
           forceShowTooltip
           userQualifiesForDiscount
         />
-        <Link
-          href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
-          style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
-          target="blank"
-        >
-          <Typography variant="secondary14">
-            <Trans>
-              Eligible for <strong>2.9M$</strong> GHO Community Program 👻
-            </Trans>
-            <TextWithTooltip
-              wrapperProps={{ sx: { display: 'inline-flex', alignItems: 'center' } }}
-              event={{
-                eventName: GENERAL.TOOL_TIP,
-                eventParams: {
-                  tooltip: 'Community Rewards',
-                },
-              }}
-            >
-              <Trans>
-                This is a program initiated and implemented by the decentralised Aave community.
-                Aave Labs does not guarantee the program and accepts no liability.
-              </Trans>
-            </TextWithTooltip>
-          </Typography>
-        </Link>
+        <MeritIncentivesButton symbol="gho" />
       </ListColumn>
       <ListButtonsColumn>
         <Button disabled={borrowButtonDisable} variant="contained" onClick={onBorrowClick}>
@@ -262,17 +237,20 @@ const GhoBorrowAssetsListItemMobile = ({
         captionVariant="description"
         mb={2}
       >
-        <GhoIncentivesCard
-          withTokenIcon={true}
-          useApyRange
-          rangeValues={ghoApyRange}
-          value={ghoLoadingData ? -1 : userBorrowApyAfterNewBorrow}
-          data-cy="apyType"
-          stkAaveBalance={userDiscountTokenBalance}
-          ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
-          forceShowTooltip
-          userQualifiesForDiscount
-        />
+        <Stack alignItems="end">
+          <GhoIncentivesCard
+            withTokenIcon={true}
+            useApyRange
+            rangeValues={ghoApyRange}
+            value={ghoLoadingData ? -1 : userBorrowApyAfterNewBorrow}
+            data-cy="apyType"
+            stkAaveBalance={userDiscountTokenBalance}
+            ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
+            forceShowTooltip
+            userQualifiesForDiscount
+          />
+          <MeritIncentivesButton symbol="gho" />
+        </Stack>
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>

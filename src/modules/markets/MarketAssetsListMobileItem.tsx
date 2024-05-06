@@ -1,12 +1,11 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, Typography } from '@mui/material';
+import { Box, Button, Divider } from '@mui/material';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { GENERAL, MARKETS } from 'src/utils/mixPanelEvents';
+import { MARKETS } from 'src/utils/mixPanelEvents';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -104,36 +103,6 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
         </Box>
       </Row>
-
-      {reserve.symbol === 'ETH' && currentMarket === 'proto_mainnet_v3' && (
-        <Row mb={2}>
-          <Link
-            href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
-            style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
-            target="blank"
-          >
-            <Typography variant="secondary14">
-              <Trans>
-                Eligible for <strong>2.1M$</strong> wETH Community Program 👻
-              </Trans>
-              <TextWithTooltip
-                wrapperProps={{ sx: { display: 'inline-flex', alignItems: 'center' } }}
-                event={{
-                  eventName: GENERAL.TOOL_TIP,
-                  eventParams: {
-                    tooltip: 'Community Rewards',
-                  },
-                }}
-              >
-                <Trans>
-                  This is a program initiated and implemented by the decentralised Aave community.
-                  Aave Labs does not guarantee the program and accepts no liability.
-                </Trans>
-              </TextWithTooltip>
-            </Typography>
-          </Link>
-        </Row>
-      )}
       {/* <Row
         caption={
           <StableAPYTooltip
