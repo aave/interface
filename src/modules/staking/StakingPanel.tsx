@@ -17,6 +17,10 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
+import {
+  MeritIncentivesButton,
+  UserMeritIncentivesButton,
+} from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -320,7 +324,21 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               </TextWithTooltip>
             )}
           </Stack>
-          <FormattedNumber value={stakeData.stakeApyFormatted} percent variant="secondary14" />
+          <Stack direction="row" alignItems="center">
+            <FormattedNumber
+              sx={{ mr: 2 }}
+              value={stakeData.stakeApyFormatted}
+              percent
+              variant="secondary14"
+            />
+            {stakedToken === 'GHO' ? (
+              stakeUserData.stakeTokenUserBalance !== '0' ? (
+                <UserMeritIncentivesButton symbol="stkgho" />
+              ) : (
+                <MeritIncentivesButton symbol="stkgho" />
+              )
+            ) : null}
+          </Stack>
         </Box>
         <Box
           sx={{
