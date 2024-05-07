@@ -41,6 +41,13 @@ export const useGetExecutionState = (
     },
     queryKey: ['executionState', chainId, sequenceNumber],
     enabled: offRamps?.length > 0,
+    refetchInterval: (data) => {
+      if (data === MessageExecutionState.SUCCESS) {
+        return false;
+      }
+
+      return 1000 * 60;
+    },
   });
 };
 

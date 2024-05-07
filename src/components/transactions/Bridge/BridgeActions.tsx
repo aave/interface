@@ -2,6 +2,7 @@ import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers'
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { Contract } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
@@ -70,6 +71,7 @@ export const BridgeActions = React.memo(
     ...props
   }: BridgeActionProps) => {
     const { provider } = useWeb3Context();
+    const queryClient = useQueryClient();
     const [walletApprovalMethodPreference, addTransaction] = useRootStore((state) => [
       state.walletApprovalMethodPreference,
       state.addTransaction,
@@ -195,6 +197,8 @@ export const BridgeActions = React.memo(
         // console.log(
         //   `\n✅ ${amountToBridge} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain.chainId} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
         // );
+
+        queryClient.invalidateQueries({ queryKey: ['sendRequests', user] });
 
         setMainTxState({
           txHash: sendTx.hash,
