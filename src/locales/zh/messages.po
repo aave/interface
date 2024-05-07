@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-04-29 12:06\n"
+"PO-Revision-Date: 2024-05-07 00:17\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -58,6 +58,7 @@ msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "APR"
 msgstr "四月"
 
@@ -985,19 +986,8 @@ msgstr "实际利率"
 msgid "Efficiency mode (E-Mode)"
 msgstr "效率模式（E-Mode）"
 
-#: src/modules/markets/MarketAssetsListItem.tsx
-msgid "Eligible for <0>2.1M$</0> WETH Community Program 👻"
-msgstr ""
-
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/markets/MarketAssetsListMobileItem.tsx
-msgid "Eligible for <0>2.1M$</0> wETH Community Program 👻"
-msgstr ""
-
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Eligible for the merit program."
 msgstr ""
 
 #: src/layouts/FeedbackDialog.tsx
@@ -1509,6 +1499,10 @@ msgstr "认识 GHO"
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
 msgstr "菜单"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Merit rewards"
+msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
@@ -2509,7 +2503,7 @@ msgstr "冷却时间是 {0}.后 {1} 冷却时间，您将进入 {2}.您将在冷
 
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanelNoWallet.tsx
-msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, <0>see this proposal</0>."
+msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
@@ -2624,12 +2618,7 @@ msgstr "此气体计算只是一个估计值。您的钱包将设定交易价格
 msgid "This integration was<0>proposed and approved</0>by the community."
 msgstr "这种整合是由社区<0>提出并批准的</0>。"
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
-#: src/modules/markets/MarketAssetsListItem.tsx
-#: src/modules/markets/MarketAssetsListMobileItem.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
