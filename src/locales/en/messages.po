@@ -225,7 +225,6 @@ msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
-#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Amount"
@@ -881,8 +880,8 @@ msgid "Delegated power"
 msgstr "Delegated power"
 
 #: src/modules/bridge/BridgeWrapper.tsx
-msgid "Destination Tx"
-msgstr "Destination Tx"
+msgid "Destination"
+msgstr "Destination"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -1102,10 +1101,6 @@ msgstr "Expected amount to repay"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
 msgstr "Expires"
-
-#: src/modules/bridge/BridgeWrapper.tsx
-msgid "Explorer"
-msgstr "Explorer"
 
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Export data to"
@@ -2243,8 +2238,8 @@ msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
 #: src/modules/bridge/BridgeWrapper.tsx
-msgid "Source Tx"
-msgstr "Source Tx"
+msgid "Source"
+msgstr "Source"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -2968,10 +2963,6 @@ msgstr "View"
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "View Bridge Transactions"
 msgstr "View Bridge Transactions"
-
-#: src/modules/bridge/BridgeTransactionListItem.tsx
-msgid "View Transaction"
-msgstr "View Transaction"
 
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 #: src/modules/dashboard/DashboardContentWrapper.tsx

@@ -1,5 +1,6 @@
+import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Paper, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -62,13 +63,11 @@ export function BridgeWrapper() {
 
         <ListColumn isRow maxWidth={280}>
           <ListHeaderTitle>
-            <Trans>Source Tx</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
-
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Destination Tx</Trans>
+            <Trans>Source</Trans>
+            <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
+              <ArrowNarrowRightIcon />
+            </SvgIcon>
+            <Trans>Destination</Trans>
           </ListHeaderTitle>
         </ListColumn>
 
@@ -78,25 +77,13 @@ export function BridgeWrapper() {
           </ListHeaderTitle>
         </ListColumn>
 
-        {!downToXSM && (
-          <ListColumn isRow>
-            <ListHeaderTitle>
-              <Trans>Amount</Trans>
-            </ListHeaderTitle>
-          </ListColumn>
-        )}
-
         <ListColumn isRow maxWidth={280}>
           <ListHeaderTitle>
             <Trans>Status</Trans>
           </ListHeaderTitle>
         </ListColumn>
 
-        <ListColumn maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Explorer</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
+        <ListColumn maxWidth={95} minWidth={95} />
       </ListHeaderWrapper>
 
       {bridgeTransactions &&
