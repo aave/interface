@@ -2964,6 +2964,10 @@ msgstr "View"
 msgid "View Bridge Transactions"
 msgstr "View Bridge Transactions"
 
+#: src/modules/bridge/BridgeTransactionListItem.tsx
+msgid "View TX"
+msgstr "View TX"
+
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 msgid "View Transactions"
@@ -3188,6 +3192,10 @@ msgstr "You did not participate in this proposal"
 msgid "You do not have supplies in this currency"
 msgstr "You do not have supplies in this currency"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "You don't have any bridge transactions"
+msgstr "You don't have any bridge transactions"
+
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
@@ -3199,10 +3207,6 @@ msgstr "You have no AAVE/stkAAVE/aAave balance to delegate."
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
-
-#: src/modules/bridge/BridgeWrapper.tsx
-msgid "You have not bridged any transactions"
-msgstr "You have not bridged any transactions"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "You may borrow up to <0/> GHO at <1/> (max discount)"

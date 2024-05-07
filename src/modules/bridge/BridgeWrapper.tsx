@@ -10,20 +10,20 @@ import { useRootStore } from 'src/store/root';
 
 import LoveGhost from '/public/loveGhost.svg';
 
-import { BridgeTransactionListItem } from './BridgeTransactionListItem';
+import { BridgeTransactionListItemWrapper } from './BridgeTransactionListItem';
+import {
+  TransactionListItemLoader,
+  TransactionMobileListItemLoader,
+} from './TransactionListItemLoader';
 
 export function BridgeWrapper() {
   const [user] = useRootStore((state) => [state.account]);
 
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const downToSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { data: bridgeTransactions, isLoading: loadingBridgeTransactions } =
     useBridgeTransactionHistory(user);
-
-  if (loadingBridgeTransactions) {
-    return <div>loading...</div>; // TODO: skeleton
-  }
 
   if (!loadingBridgeTransactions && bridgeTransactions?.length === 0) {
     return (
@@ -40,7 +40,7 @@ export function BridgeWrapper() {
       >
         <LoveGhost style={{ marginBottom: '16px' }} />
         <Typography variant={'h3'}>
-          <Trans>You have not bridged any transactions</Trans>
+          <Trans>You don&apos;t have any bridge transactions</Trans>
         </Typography>{' '}
       </Paper>
     );
@@ -54,41 +54,50 @@ export function BridgeWrapper() {
         </Typography>
       }
     >
-      <ListHeaderWrapper px={downToXSM ? 4 : 6}>
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Asset</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
+      {!downToSm && (
+        <ListHeaderWrapper px={downToSm ? 4 : 6}>
+          <ListColumn isRow maxWidth={280}>
+            <ListHeaderTitle>
+              <Trans>Asset</Trans>
+            </ListHeaderTitle>
+          </ListColumn>
 
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Source</Trans>
-            <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
-              <ArrowNarrowRightIcon />
-            </SvgIcon>
-            <Trans>Destination</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
+          <ListColumn isRow maxWidth={280}>
+            <ListHeaderTitle>
+              <Trans>Source</Trans>
+              <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
+                <ArrowNarrowRightIcon />
+              </SvgIcon>
+              <Trans>Destination</Trans>
+            </ListHeaderTitle>
+          </ListColumn>
 
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Age</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
+          <ListColumn isRow maxWidth={280}>
+            <ListHeaderTitle>
+              <Trans>Age</Trans>
+            </ListHeaderTitle>
+          </ListColumn>
 
-        <ListColumn isRow maxWidth={280}>
-          <ListHeaderTitle>
-            <Trans>Status</Trans>
-          </ListHeaderTitle>
-        </ListColumn>
+          <ListColumn isRow maxWidth={280}>
+            <ListHeaderTitle>
+              <Trans>Status</Trans>
+            </ListHeaderTitle>
+          </ListColumn>
 
-        <ListColumn maxWidth={95} minWidth={95} />
-      </ListHeaderWrapper>
+          <ListColumn maxWidth={95} minWidth={95} />
+        </ListHeaderWrapper>
+      )}
+
+      {loadingBridgeTransactions &&
+        (downToSm
+          ? Array.from({ length: 5 }).map((_, i) => <TransactionMobileListItemLoader key={i} />)
+          : Array.from({ length: 5 }).map((_, i) => <TransactionListItemLoader key={i} />))}
 
       {bridgeTransactions &&
         bridgeTransactions.length > 0 &&
-        bridgeTransactions?.map((tx) => <BridgeTransactionListItem key={tx.id} transaction={tx} />)}
+        bridgeTransactions?.map((tx) => (
+          <BridgeTransactionListItemWrapper key={tx.id} transaction={tx} />
+        ))}
     </ListWrapper>
   );
 }

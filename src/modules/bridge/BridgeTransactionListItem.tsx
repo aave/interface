@@ -1,13 +1,17 @@
+import { ChainId } from '@aave/contract-helpers';
 import { ArrowNarrowRightIcon, ExternalLinkIcon, XIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
+import { Trans } from '@lingui/macro';
 import {
   Box,
+  Button,
   CircularProgress,
   IconButton,
   Skeleton,
   Stack,
   SvgIcon,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
@@ -25,9 +29,17 @@ import { BridgeTransaction as Transaction } from 'src/hooks/useBridgeTransaction
 import { useGetExecutionState, useGetOffRampForLane } from 'src/hooks/useBridgeTransactionStatus';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 
+import {
+  TransactionListItemLoader,
+  TransactionMobileListItemLoader,
+} from './TransactionListItemLoader';
+
 dayjs.extend(relativeTime);
 
-export const BridgeTransactionListItem = ({ transaction }: { transaction: Transaction }) => {
+export const BridgeTransactionListItemWrapper = ({ transaction }: { transaction: Transaction }) => {
+  const theme = useTheme();
+  const downToSm = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { offRamps, loading } = useGetOffRampForLane(
     transaction.sourceChainId,
     transaction.destinationChainId
@@ -39,16 +51,47 @@ export const BridgeTransactionListItem = ({ transaction }: { transaction: Transa
     offRamps?.map((offRamp) => offRamp.offRamp)
   );
 
-  if (loading) {
-    return null; // TODO: skeleton
+  const props: ListItemProps = {
+    sourceChainId: transaction.sourceChainId,
+    destinationChainId: transaction.destinationChainId,
+    blockTimestamp: transaction.blockTimestamp,
+    amount: formatUnits(transaction.tokenAmounts[0].amount, 18), // assuming only 1 token transferred
+    executionState,
+    txHash: transaction.transactionHash,
+  };
+
+  if (downToSm) {
+    if (loading) {
+      return <TransactionMobileListItemLoader />;
+    } else {
+      return <BridgeTransactionMobileListItem {...props} />;
+    }
+  } else {
+    if (loading) {
+      return <TransactionListItemLoader />;
+    } else {
+      return <BridgeTransactionListItem {...props} />;
+    }
   }
+};
 
-  const { sourceChainId, destinationChainId, blockTimestamp, tokenAmounts } = transaction;
+type ListItemProps = {
+  sourceChainId: ChainId;
+  destinationChainId: ChainId;
+  blockTimestamp: number;
+  amount: string;
+  executionState: MessageExecutionState | undefined;
+  txHash: string;
+};
 
-  // just assuming 1 token
-  const amount = tokenAmounts[0].amount;
-  const formattedAmount = formatUnits(amount, 18);
-
+export const BridgeTransactionListItem = ({
+  sourceChainId,
+  destinationChainId,
+  blockTimestamp,
+  amount,
+  executionState,
+  txHash,
+}: ListItemProps) => {
   return (
     <ListItem>
       <ListColumn isRow>
@@ -58,10 +101,10 @@ export const BridgeTransactionListItem = ({ transaction }: { transaction: Transa
             sx={{ mb: 1 }}
             variant="secondary14"
             visibleDecimals={2}
-            value={formattedAmount}
+            value={amount}
           />
           <FormattedNumber
-            value={formattedAmount}
+            value={amount}
             symbol="USD"
             variant="secondary12"
             color="text.secondary"
@@ -96,16 +139,104 @@ export const BridgeTransactionListItem = ({ transaction }: { transaction: Transa
       </ListColumn>
       <ListColumn maxWidth={95} minWidth={95} align="left">
         <DarkTooltip title="View in explorer" sx={{ display: { xsm: 'none' } }}>
-          <IconButton
-            LinkComponent={Link}
-            href={`https://ccip.chain.link/tx/${transaction.transactionHash}`}
-          >
+          <IconButton LinkComponent={Link} href={`https://ccip.chain.link/tx/${txHash}`}>
             <SvgIcon sx={{ fontSize: '16px' }}>
               <ExternalLinkIcon />
             </SvgIcon>
           </IconButton>
         </DarkTooltip>
       </ListColumn>
+    </ListItem>
+  );
+};
+
+const BridgeTransactionMobileListItem = ({
+  sourceChainId,
+  destinationChainId,
+  blockTimestamp,
+  amount,
+  executionState,
+  txHash,
+}: ListItemProps) => {
+  return (
+    <ListItem>
+      <Stack direction="row" my={4} justifyContent="space-between" sx={{ width: '100%' }}>
+        <Stack direction="column" gap={2}>
+          <Stack>
+            <Typography variant="main14">{dayjs.unix(blockTimestamp).fromNow()}</Typography>
+            <Typography variant="subheader2" color="text.muted">
+              {dayjs.unix(blockTimestamp).format('MMMM D YYYY HH:mm [UTC]')}
+            </Typography>
+          </Stack>
+          <Stack direction="row">
+            <TokenIcon symbol="GHO" sx={{ fontSize: '40px' }} />
+            <Stack sx={{ ml: 2 }} direction="column" alignItems="center">
+              <FormattedNumber
+                sx={{ mb: 1 }}
+                variant="secondary14"
+                visibleDecimals={2}
+                value={amount}
+              />
+              <FormattedNumber
+                value={amount}
+                symbol="USD"
+                variant="secondary12"
+                color="text.secondary"
+              />
+            </Stack>
+          </Stack>
+        </Stack>
+        <Stack justifyContent="center">
+          <Stack direction="column" gap={3} alignItems="center">
+            <Stack direction="row">
+              {executionState === undefined ? (
+                <Skeleton width={90} height={35} />
+              ) : (
+                <TxStatus state={executionState} />
+              )}
+              <Button
+                sx={{
+                  display: 'flex',
+                  ml: 3,
+                  mr: 1,
+                  width: '69px',
+                  height: '20px',
+                  fontSize: '0.6rem',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  pl: 1,
+                  pr: 1,
+                }}
+                variant="outlined"
+                href={`https://ccip.chain.link/tx/${txHash}`}
+                target="_blank"
+              >
+                <Trans>View TX</Trans>{' '}
+                <SvgIcon
+                  sx={{
+                    fontSize: '15px',
+                    pl: 1,
+                    pb: 0.5,
+                  }}
+                >
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              </Button>
+            </Stack>
+            <Stack direction="row" gap={3} alignItems="center">
+              <MarketLogo
+                sx={{ mr: 0 }}
+                size={28}
+                logo={networkConfigs[sourceChainId].networkLogoPath}
+              />
+              <SvgIcon sx={{ fontSize: '13px' }}>
+                <ArrowNarrowRightIcon />
+              </SvgIcon>
+              <MarketLogo size={28} logo={networkConfigs[destinationChainId].networkLogoPath} />
+            </Stack>
+          </Stack>
+        </Stack>
+      </Stack>
     </ListItem>
   );
 };
