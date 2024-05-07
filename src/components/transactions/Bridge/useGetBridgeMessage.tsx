@@ -43,7 +43,6 @@ export const useGetBridgeMessage = ({
       //     transfer is supported.
       // ==================================================
       // */
-      console.log('sourceRouter', sourceRouter, destinationChainSelector);
       const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
 
       if (supportedTokens.length <= 0) {
