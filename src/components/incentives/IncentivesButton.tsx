@@ -62,7 +62,7 @@ export const UserMeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho'
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} />
+      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} plus />
     </ContentWithTooltip>
   );
 };
@@ -93,7 +93,7 @@ export const MeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho' }) 
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} />
+      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} plus />
     </ContentWithTooltip>
   );
 };
@@ -148,10 +148,12 @@ const Content = ({
   incentives,
   incentivesNetAPR,
   displayBlank,
+  plus,
 }: {
   incentives: ReserveIncentiveResponse[];
   incentivesNetAPR: number | 'Infinity';
   displayBlank?: boolean;
+  plus?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -226,8 +228,9 @@ const Content = ({
         setOpen(!open);
       }}
     >
-      <Box sx={{ mr: 2 }}>{incentivesButtonValue()}</Box>
-
+      <Box sx={{ mr: 2 }}>
+        {plus ? '+' : ''} {incentivesButtonValue()}
+      </Box>
       <Box sx={{ display: 'inline-flex' }}>
         <>
           {incentives.length < 5 ? (
