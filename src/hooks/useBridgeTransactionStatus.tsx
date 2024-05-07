@@ -39,7 +39,7 @@ export const useGetExecutionState = (
 
       return MessageExecutionState.UNTOUCHED;
     },
-    queryKey: ['executionState', chainId, ...offRamps],
+    queryKey: ['executionState', chainId, sequenceNumber],
     enabled: offRamps?.length > 0,
   });
 };

@@ -77,7 +77,7 @@ export const BridgeTransactionListItem = ({ transaction }: { transaction: Transa
         />
       </ListColumn>
       <ListColumn align="left">
-        {!executionState ? (
+        {executionState === undefined ? (
           <Skeleton width={100} height={40} />
         ) : (
           <Typography variant="main16">{getExecutionStateText(executionState)}</Typography>
