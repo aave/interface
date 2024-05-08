@@ -17,6 +17,10 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
+import {
+  MeritIncentivesButton,
+  UserMeritIncentivesButton,
+} from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -161,6 +165,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     );
   }
 
+  const distributionEnded = Date.now() / 1000 > Number(stakeData.distributionEnd);
+
   const TokenContractTooltip = (
     <DarkTooltip title="View token contract" sx={{ display: { xsm: 'none' } }}>
       <IconButton
@@ -293,13 +299,46 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography
-            variant={xsm ? 'subheader2' : 'description'}
-            color={xsm ? 'text.secondary' : 'text.primary'}
-          >
-            <Trans>Staking APR</Trans>
-          </Typography>
-          <FormattedNumber value={stakeData.stakeApyFormatted} percent variant="secondary14" />
+          <Stack direction="row">
+            <Typography
+              variant={xsm ? 'subheader2' : 'description'}
+              color={xsm ? 'text.secondary' : 'text.primary'}
+            >
+              <Trans>Staking APR</Trans>
+            </Typography>
+            {distributionEnded && (
+              <TextWithTooltip iconColor="warning.main">
+                <Trans>
+                  The current incentives period, decided on by the Aave community, has ended.
+                  Governance is in the process on renewing, check for updates.{' '}
+                  <Link
+                    href="https://governance.aave.com"
+                    sx={{ textDecoration: 'underline' }}
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    Learn more
+                  </Link>
+                  .
+                </Trans>
+              </TextWithTooltip>
+            )}
+          </Stack>
+          <Stack direction="row" alignItems="center">
+            <FormattedNumber
+              sx={{ mr: 2 }}
+              value={stakeData.stakeApyFormatted}
+              percent
+              variant="secondary14"
+            />
+            {stakedToken === 'GHO' ? (
+              stakeUserData.stakeTokenUserBalance !== '0' ? (
+                <UserMeritIncentivesButton symbol="stkgho" />
+              ) : (
+                <MeritIncentivesButton symbol="stkgho" />
+              )
+            ) : null}
+          </Stack>
         </Box>
         <Box
           sx={{

@@ -526,8 +526,8 @@
       "wrapped": true
     },
     "DAI": {
-      "fullName": "DAI",
-      "shortName": "DAI",
+      "fullName": "1DAI",
+      "shortName": "1DAI",
       "collateral": true,
       "wrapped": false
     },
@@ -538,8 +538,8 @@
       "wrapped": false
     },
     "USDC": {
-      "fullName": "USD Coin",
-      "shortName": "USDC",
+      "fullName": "1USD Coin",
+      "shortName": "1USDC",
       "collateral": true,
       "wrapped": false
     },
@@ -1139,6 +1139,22 @@
       "shortName": "aUSDC",
       "collateral": true,
       "wrapped": false
+    }
+  },
+  "metisV3Market": {
+    "METIS": {
+      "fullName": "Metis",
+      "shortName": "Metis",
+      "collateral": true,
+      "wrapped": false
+    }
+  },
+  "scrollV3Market": {
+    "ETH": {
+      "fullName": "ETH",
+      "shortName": "ETH",
+      "collateral": true,
+      "wrapped": true
     }
   }
 }

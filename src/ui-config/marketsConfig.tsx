@@ -4,7 +4,6 @@ import {
   AaveV2Ethereum,
   AaveV2EthereumAMM,
   AaveV2Fuji,
-  AaveV2Mumbai,
   AaveV2Polygon,
   AaveV3Arbitrum,
   AaveV3ArbitrumSepolia,
@@ -19,7 +18,6 @@ import {
   AaveV3Gnosis,
   AaveV3Harmony,
   AaveV3Metis,
-  AaveV3Mumbai,
   AaveV3Optimism,
   AaveV3OptimismSepolia,
   AaveV3Polygon,
@@ -86,7 +84,6 @@ export type MarketDataType = {
 export enum CustomMarket {
   // v3 test networks, all v3.0.1
   proto_arbitrum_sepolia_v3 = 'proto_arbitrum_sepolia_v3',
-  proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_optimism_sepolia_v3 = 'proto_optimism_sepolia_v3',
@@ -111,7 +108,6 @@ export enum CustomMarket {
   proto_avalanche = 'proto_avalanche',
   proto_fuji = 'proto_fuji',
   proto_polygon = 'proto_polygon',
-  proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
   // external
   // permissioned_market = 'permissioned_market',
@@ -558,8 +554,7 @@ export const marketsData: {
       LENDING_POOL: AaveV3Harmony.POOL,
       WETH_GATEWAY: AaveV3Harmony.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: AaveV3Harmony.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: '0xeC6118C69af50660231108059ab98CD0cF9a6eA1',
-      // UI_POOL_DATA_PROVIDER: AaveV3Harmony.UI_POOL_DATA_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Harmony.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Harmony.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Harmony.COLLECTOR,
     },
@@ -625,45 +620,6 @@ export const marketsData: {
       marketName: 'polygon',
     },
   },
-  [CustomMarket.proto_mumbai_v3]: {
-    marketTitle: 'Polygon Mumbai',
-    market: CustomMarket.proto_mumbai_v3,
-    chainId: ChainId.mumbai,
-    enabledFeatures: {
-      incentives: true,
-      faucet: true,
-    },
-    //  subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-mumbai',  needs re-deployment
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Mumbai.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3Mumbai.POOL,
-      WETH_GATEWAY: AaveV3Mumbai.WETH_GATEWAY,
-      FAUCET: AaveV3Mumbai.FAUCET,
-      WALLET_BALANCE_PROVIDER: AaveV3Mumbai.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3Mumbai.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3Mumbai.UI_INCENTIVE_DATA_PROVIDER,
-    },
-    v3: true,
-  },
-  [CustomMarket.proto_mumbai]: {
-    marketTitle: 'Polygon Mumbai',
-    market: CustomMarket.proto_mumbai,
-    chainId: ChainId.mumbai,
-    enabledFeatures: {
-      incentives: true,
-      faucet: true,
-    },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-polygon-mumbai',
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV2Mumbai.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV2Mumbai.POOL,
-      WETH_GATEWAY: AaveV2Mumbai.WETH_GATEWAY,
-      FAUCET: AaveV2Mumbai.FAUCET,
-      WALLET_BALANCE_PROVIDER: AaveV2Mumbai.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV2Mumbai.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV2Mumbai.UI_INCENTIVE_DATA_PROVIDER,
-    },
-  },
   [CustomMarket.proto_fuji]: {
     marketTitle: 'Avalanche Fuji',
     market: CustomMarket.proto_fuji,
@@ -711,7 +667,7 @@ export const marketsData: {
     market: CustomMarket.proto_gnosis_v3,
     chainId: ChainId.xdai,
     v3: true,
-    // subgraphUrl: '',
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-gnosis',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Gnosis.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Gnosis.POOL,
@@ -727,7 +683,7 @@ export const marketsData: {
     market: CustomMarket.proto_bnb_v3,
     chainId: ChainId.bnb,
     v3: true,
-    // subgraphUrl: '',
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-bnb',
     enabledFeatures: {
       liquiditySwap: true,
       collateralRepay: true,
@@ -754,6 +710,8 @@ export const marketsData: {
     market: CustomMarket.proto_scroll_v3,
     chainId: ChainId.scroll,
     v3: true,
+    subgraphUrl:
+      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/aave-v3-scroll/1.0.0/gn',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Scroll.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Scroll.POOL,

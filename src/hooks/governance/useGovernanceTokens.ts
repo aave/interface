@@ -4,7 +4,7 @@ import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { POLLING_INTERVAL, queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-export const useGovernanceTokens = () => {
+export const useGovernanceTokens = (blockHash?: string) => {
   const { governanceWalletBalanceService } = useSharedDependencies();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const user = useRootStore((store) => store.account);
@@ -14,7 +14,8 @@ export const useGovernanceTokens = () => {
       governanceWalletBalanceService.getGovernanceTokensBalance(
         governanceV3Config.coreChainId,
         governanceV3Config.addresses.WALLET_BALANCE_PROVIDER,
-        user
+        user,
+        blockHash
       ),
     queryKey: queryKeysFactory.governanceTokens(user, currentMarketData),
     enabled: !!user,

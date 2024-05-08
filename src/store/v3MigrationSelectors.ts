@@ -132,7 +132,6 @@ export const selectSplittedBorrowsForMigration = (userReserves: FormattedUserRes
 export const selectDefinitiveSupplyAssetForMigration = (
   selectedMigrationSupplyAssets: MigrationSelectedAsset[],
   migrationExceptions: Record<string, MigrationException>,
-  exceptionsBalancesLoading: boolean,
   userReservesV3Map: Record<
     string,
     ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>
@@ -149,13 +148,11 @@ export const selectDefinitiveSupplyAssetForMigration = (
   const nonIsolatedAssets = selectedMigrationSupplyAssets.filter((supplyAsset) => {
     const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(
       migrationExceptions,
-      exceptionsBalancesLoading,
       supplyAsset
     );
     const v3UserReserve = userReservesV3Map[underlyingAssetAddress];
     const v3ReserveBalanceWithExceptions = selectMigrationAssetBalanceWithExceptions(
       migrationExceptions,
-      exceptionsBalancesLoading,
       v3UserReserve
     );
     if (v3UserReserve) {
@@ -172,13 +169,11 @@ export const selectDefinitiveSupplyAssetForMigration = (
   const isolatedAssets = selectedMigrationSupplyAssets.filter((supplyAsset) => {
     const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(
       migrationExceptions,
-      exceptionsBalancesLoading,
       supplyAsset
     );
     const v3UserReserve = userReservesV3Map[underlyingAssetAddress];
     const v3ReserveBalanceWithExceptions = selectMigrationAssetBalanceWithExceptions(
       migrationExceptions,
-      exceptionsBalancesLoading,
       v3UserReserve
     );
     return v3ReserveBalanceWithExceptions == '0' && v3UserReserve.reserve.isIsolated;
@@ -212,13 +207,12 @@ export enum MigrationDisabled {
 
 export const selectMigrationUnderlyingAssetWithExceptions = (
   migrationExceptions: Record<string, MigrationException>,
-  exceptionsBalancesLoading: boolean,
   reserve: {
     underlyingAsset: string;
   }
 ): string => {
   const defaultUnderlyingAsset = reserve?.underlyingAsset;
-  if (!exceptionsBalancesLoading && migrationExceptions[defaultUnderlyingAsset]) {
+  if (migrationExceptions[defaultUnderlyingAsset]) {
     return migrationExceptions[defaultUnderlyingAsset].v3UnderlyingAsset;
   }
   return defaultUnderlyingAsset;
@@ -238,7 +232,6 @@ export const selectMigrationUnderluingAssetWithExceptionsByV3Key = (
 
 export const selectMigrationAssetBalanceWithExceptions = (
   migrationExceptions: Record<string, MigrationException>,
-  exceptionsBalancesLoading: boolean,
   reserve: {
     underlyingAsset: string;
     underlyingBalance: string;
@@ -246,15 +239,11 @@ export const selectMigrationAssetBalanceWithExceptions = (
 ) => {
   const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(
     migrationExceptions,
-    exceptionsBalancesLoading,
     reserve
   );
-  if (!exceptionsBalancesLoading) {
-    const exceptionAsset = migrationExceptions[underlyingAssetAddress];
-    if (exceptionAsset) {
-      return exceptionAsset.amount;
-    }
-    return reserve.underlyingBalance;
+  const exceptionAsset = migrationExceptions[underlyingAssetAddress];
+  if (exceptionAsset) {
+    return exceptionAsset.amount;
   }
   return reserve.underlyingBalance;
 };
