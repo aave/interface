@@ -2,7 +2,6 @@ import { constants, Contract, utils } from 'ethers';
 import { formatEther, parseUnits } from 'ethers/lib/utils';
 import debounce from 'lodash/debounce';
 import { useEffect, useMemo, useState } from 'react';
-import { useRootStore } from 'src/store/root';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { MessageDetails, TokenAmount } from './BridgeActions';
@@ -14,17 +13,18 @@ export const useGetBridgeMessage = ({
   destinationChainId,
   amount,
   sourceTokenAddress,
+  destinationAccount,
 }: {
   sourceChainId: number;
   destinationChainId: number;
   amount: string;
   sourceTokenAddress: string;
+  destinationAccount: string;
 }) => {
   const [message, setMessage] = useState<MessageDetails>();
   const [bridgeFee, setBridgeFee] = useState('');
   const [bridgeFeeFormatted, setBridgeFeeFormatted] = useState('');
   const [loading, setLoading] = useState(false);
-  const [user] = useRootStore((state) => [state.account]);
 
   const debounced = useMemo(() => {
     return debounce(async () => {
@@ -90,7 +90,7 @@ export const useGetBridgeMessage = ({
         const encodedExtraArgs = functionSelector + extraArgs.slice(2);
 
         const message: MessageDetails = {
-          receiver: utils.defaultAbiCoder.encode(['address'], [user]),
+          receiver: utils.defaultAbiCoder.encode(['address'], [destinationAccount]),
           data: '0x', // no data
           tokenAmounts: tokenAmounts,
           feeToken: constants.AddressZero, // If fee token address is provided then fees must be paid in fee token.
@@ -116,7 +116,7 @@ export const useGetBridgeMessage = ({
         setLoading(false);
       }
     }, 500);
-  }, [amount, destinationChainId, sourceChainId, sourceTokenAddress, user]);
+  }, [amount, destinationChainId, sourceChainId, sourceTokenAddress, destinationAccount]);
 
   useEffect(() => {
     if (amount && sourceTokenAddress) {

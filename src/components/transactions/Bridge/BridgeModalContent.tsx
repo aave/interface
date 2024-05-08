@@ -28,6 +28,7 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActions } from './BridgeActions';
+import { BridgeDestinationInput } from './BridgeDestinationInput';
 import { supportedNetworksWithBridgeMarket, SupportedNetworkWithChainId } from './common';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
 
@@ -40,7 +41,8 @@ export interface TokenInfoWithBalance extends TokenInfo {
 
 export const BridgeModalContent = () => {
   const { mainTxState: bridgeTxState, txError, close } = useModalContext();
-
+  const [user] = useRootStore((state) => [state.account]);
+  const [destinationAccount, setDestinationAccount] = useState(user);
   const [amount, setAmount] = useState('');
   // const [inputAmountUSD, setInputAmount] = useState('');
   const { readOnlyModeAddress, chainId: currentChainId } = useWeb3Context();
@@ -117,8 +119,6 @@ export const BridgeModalContent = () => {
   );
   const isWrongNetwork = currentChainId !== selectedChainId;
 
-  const [user] = useRootStore((state) => [state.account]);
-
   const {
     message,
     bridgeFee,
@@ -129,6 +129,7 @@ export const BridgeModalContent = () => {
     destinationChainId: destinationNetworkObj?.chainId || 0,
     amount,
     sourceTokenAddress: sourceTokenInfo.address || '',
+    destinationAccount,
   });
 
   const handleSelectedNetworkChange =
@@ -158,13 +159,11 @@ export const BridgeModalContent = () => {
   const handleBridgeArguments = () => {
     const sourceChain = sourceNetworkObj;
     const destinationChain = destinationNetworkObj;
-    const destinationAccount = user;
     const tokenAddress = sourceTokenInfo.address || constants.AddressZero;
 
     return {
       sourceChain,
       destinationChain,
-      destinationAccount,
       tokenAddress,
       amount,
       //   feeTokenAddress,
@@ -185,7 +184,7 @@ export const BridgeModalContent = () => {
     isWrongNetwork,
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
-    blocked: loadingBridgeMessage,
+    blocked: loadingBridgeMessage || !destinationAccount,
     decimals: 18,
     isWrappedBaseAsset: false,
     message,
@@ -345,6 +344,13 @@ export const BridgeModalContent = () => {
               sx={{ width: '100%' }}
               loading={fetchingBridgeTokenBalance}
               //   isMaxSelected={isMaxSelected}
+            />
+            <BridgeDestinationInput
+              connectedAccount={user}
+              onInputValid={(account) => {
+                setDestinationAccount(account);
+              }}
+              onInputError={() => setDestinationAccount('')}
             />
             <Box width="100%">
               <TxModalDetails gasLimit={'100'} chainId={sourceNetworkObj.chainId}>

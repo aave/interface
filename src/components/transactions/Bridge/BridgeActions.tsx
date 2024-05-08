@@ -47,7 +47,6 @@ export interface BridgeActionProps extends BoxProps {
   destinationChain: {
     chainId: number;
   };
-  destinationAccount: string;
   tokenAddress: string;
   fees: string;
   message: MessageDetails | undefined;
@@ -65,7 +64,6 @@ export const BridgeActions = React.memo(
     tokenAddress,
     sourceChain,
     destinationChain,
-    destinationAccount, // user
     message,
     fees,
     ...props
