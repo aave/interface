@@ -29,19 +29,26 @@ export class WalletBalanceService {
   async getGovernanceTokensBalance(
     chainId: ChainId,
     walletBalanceProviderAddress: string,
-    user: string
+    user: string,
+    blockHash?: string
   ): Promise<GovernanceTokensBalance> {
     const walletBalanceService = this.getWalletBalanceService(
       chainId,
       walletBalanceProviderAddress
     );
+
+    const options: { blockTag?: string } = {};
+    if (blockHash) {
+      options.blockTag = blockHash;
+    }
     const balances = await walletBalanceService.batchBalanceOf(
       [user],
       [
         governanceV3Config.votingAssets.aaveTokenAddress,
         governanceV3Config.votingAssets.aAaveTokenAddress,
         governanceV3Config.votingAssets.stkAaveTokenAddress,
-      ]
+      ],
+      options
     );
     return {
       aave: normalize(balances[0].toString(), 18),
