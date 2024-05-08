@@ -6,6 +6,7 @@ type Config = {
   sourceChainId: ChainId;
   router: string;
   chainSelector: string;
+  subgraphUrl: string;
   destinations: {
     destinationChainId: ChainId;
     onRamp: string;
@@ -25,6 +26,8 @@ export const laneConfig: Config[] = [
     sourceChainId: ChainId.sepolia,
     chainSelector: '16015286601757825753',
     router: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59'.toLowerCase(),
+    subgraphUrl:
+      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-sepolia/1.0.0/gn',
     destinations: [
       {
         destinationChainId: ChainId.arbitrum_sepolia,
@@ -44,6 +47,8 @@ export const laneConfig: Config[] = [
     sourceChainId: ChainId.arbitrum_sepolia,
     chainSelector: '3478487238524512106',
     router: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165'.toLowerCase(),
+    subgraphUrl:
+      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-arb-sepolia/1.0.0/gn',
     destinations: [
       {
         destinationChainId: ChainId.sepolia,
@@ -59,6 +64,8 @@ export const laneConfig: Config[] = [
     sourceChainId: ChainId.fuji,
     chainSelector: '14767482510784806043',
     router: '0xF694E193200268f9a4868e4Aa017A0118C9a8177'.toLowerCase(),
+    subgraphUrl:
+      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-fuji/1.0.0/gn',
     destinations: [
       {
         destinationChainId: ChainId.sepolia,
@@ -74,6 +81,8 @@ export const laneConfig: Config[] = [
     sourceChainId: ChainId.base_sepolia,
     chainSelector: '10344971235874465080',
     router: '0xD3b06cEbF099CE7DA4AcCf578aaebFDBd6e88a93'.toLowerCase(),
+    subgraphUrl:
+      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-base-sepolia/1.0.0/gn',
     destinations: [
       {
         destinationChainId: ChainId.sepolia,

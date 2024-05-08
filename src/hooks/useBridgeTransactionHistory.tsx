@@ -1,7 +1,10 @@
 import { ChainId } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
-import { getDestinationChainFor } from 'src/components/transactions/Bridge/BridgeConfig';
+import {
+  getDestinationChainFor,
+  laneConfig,
+} from 'src/components/transactions/Bridge/BridgeConfig';
 
 type SubgraphBridgeTransaction = {
   id: string;
@@ -35,12 +38,6 @@ export type BridgeTransaction = {
   }[];
   transactionHash: string;
 };
-
-const sourceNetworkSubgraphUrls = [
-  'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-base-sepolia/1.0.0/gn',
-  'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-arb-sepolia/1.0.0/gn',
-  'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-sepolia/1.0.0/gn',
-];
 
 const networkNameToChainId: { [networkName: string]: ChainId } = {
   'base-sepolia': ChainId.base_sepolia,
@@ -110,7 +107,7 @@ export const useBridgeTransactionHistory = (sender: string) => {
   return useQuery({
     queryFn: async () => {
       const txs = await Promise.all(
-        sourceNetworkSubgraphUrls.map((url) => getSendRequests(url, sender))
+        laneConfig.map((config) => getSendRequests(config.subgraphUrl, sender))
       );
       return mergeAndSortTransactions(txs);
     },
