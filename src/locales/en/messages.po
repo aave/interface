@@ -225,7 +225,6 @@ msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
-#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Amount"
@@ -881,8 +880,8 @@ msgid "Delegated power"
 msgstr "Delegated power"
 
 #: src/modules/bridge/BridgeWrapper.tsx
-msgid "Destination Tx"
-msgstr "Destination Tx"
+msgid "Destination"
+msgstr "Destination"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -1102,10 +1101,6 @@ msgstr "Expected amount to repay"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
 msgstr "Expires"
-
-#: src/modules/bridge/BridgeWrapper.tsx
-msgid "Explorer"
-msgstr "Explorer"
 
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Export data to"
@@ -1872,10 +1867,6 @@ msgstr "Price impact {0}%"
 msgid "Privacy"
 msgstr "Privacy"
 
-#: src/modules/bridge/BridgeWrapper.tsx
-msgid "Processing..."
-msgstr "Processing..."
-
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
@@ -2247,8 +2238,8 @@ msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
 #: src/modules/bridge/BridgeWrapper.tsx
-msgid "Source Tx"
-msgstr "Source Tx"
+msgid "Source"
+msgstr "Source"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -2973,9 +2964,9 @@ msgstr "View"
 msgid "View Bridge Transactions"
 msgstr "View Bridge Transactions"
 
-#: src/modules/bridge/BridgeWrapper.tsx
-msgid "View Transaction"
-msgstr "View Transaction"
+#: src/modules/bridge/BridgeTransactionListItem.tsx
+msgid "View TX"
+msgstr "View TX"
 
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 #: src/modules/dashboard/DashboardContentWrapper.tsx
@@ -3201,6 +3192,10 @@ msgstr "You did not participate in this proposal"
 msgid "You do not have supplies in this currency"
 msgstr "You do not have supplies in this currency"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "You don't have any bridge transactions"
+msgstr "You don't have any bridge transactions"
+
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
@@ -3212,10 +3207,6 @@ msgstr "You have no AAVE/stkAAVE/aAave balance to delegate."
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
-
-#: src/modules/bridge/BridgeWrapper.tsx
-msgid "You have not bridged any transactions"
-msgstr "You have not bridged any transactions"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "You may borrow up to <0/> GHO at <1/> (max discount)"
