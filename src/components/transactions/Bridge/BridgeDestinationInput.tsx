@@ -21,13 +21,26 @@ export const BridgeDestinationInput = ({
   onInputValid: (destinationAccount: string) => void;
   onInputError: () => void;
 }) => {
-  const { data: isContractAddress } = useIsContractAddress(connectedAccount);
+  const { data: isContractAddress, isFetching: fetchingIsContractAddress } =
+    useIsContractAddress(connectedAccount);
 
-  const [useConnectedAccount, setUseConnectedAccount] = useState(!isContractAddress);
-  const [destinationAccount, setDestinationAccount] = useState(
-    !isContractAddress ? connectedAccount : ''
-  );
+  const [useConnectedAccount, setUseConnectedAccount] = useState(true);
+  const [destinationAccount, setDestinationAccount] = useState('');
   const [validatingENS, setValidatingENS] = useState(false);
+
+  useEffect(() => {
+    if (isContractAddress === undefined) {
+      return;
+    }
+
+    if (isContractAddress) {
+      setUseConnectedAccount(false);
+      setDestinationAccount('');
+    } else {
+      setUseConnectedAccount(true);
+      setDestinationAccount(connectedAccount);
+    }
+  }, [connectedAccount, isContractAddress]);
 
   useEffect(() => {
     const checkENS = async () => {
@@ -93,7 +106,7 @@ export const BridgeDestinationInput = ({
       <InputBase
         fullWidth
         value={destinationAccount}
-        disabled={useConnectedAccount}
+        disabled={useConnectedAccount || fetchingIsContractAddress}
         onChange={(e) => setDestinationAccount(e.target.value)}
         placeholder={t`Enter ETH address or ENS`}
         sx={(theme) => ({
@@ -103,11 +116,20 @@ export const BridgeDestinationInput = ({
           borderRadius: '6px',
           overflow: 'hidden',
         })}
-        endAdornment={validatingENS ? <CircularProgress color="inherit" size="16px" /> : null}
+        endAdornment={
+          validatingENS || fetchingIsContractAddress ? (
+            <CircularProgress color="inherit" size="16px" />
+          ) : null
+        }
       />
       <Typography
         sx={{
-          visibility: useConnectedAccount ? 'hidden' : showWarning ? 'visible' : 'hidden',
+          visibility:
+            useConnectedAccount || fetchingIsContractAddress
+              ? 'hidden'
+              : showWarning
+              ? 'visible'
+              : 'hidden',
         }}
         variant="helperText"
         color="error.main"
