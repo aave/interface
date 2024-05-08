@@ -167,16 +167,12 @@ export const BridgeActions = React.memo(
         setMainTxState({ ...mainTxState, loading: true });
         if (!provider) return;
 
-        const signer = await provider.getSigner();
+        const signer = provider.getSigner();
 
         const sourceRouterAddress = getRouterFor(sourceChain.chainId);
         const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
 
         const destinationChainSelector = getChainSelectorFor(destinationChain.chainId);
-
-        console.log(
-          `approved router ${sourceRouterAddress} to spend ${amountToBridge} of token ${tokenAddress}.`
-        );
 
         const sendTx: TransactionResponse = await sourceRouter.ccipSend(
           destinationChainSelector,
@@ -186,17 +182,7 @@ export const BridgeActions = React.memo(
           }
         );
 
-        // const onRampInterface = new utils.Interface(onRampAbi);
-
-        const receipt = await sendTx.wait(1);
-        console.log('receipt', receipt);
-
-        // const parsedLog = onRampInterface.parseLog(receipt.logs[receipt.logs.length - 1]);
-        // const messageId = parsedLog.args.message.messageId;
-
-        // console.log(
-        //   `\n✅ ${amountToBridge} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain.chainId} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
-        // );
+        await sendTx.wait(1);
 
         queryClient.invalidateQueries({ queryKey: ['sendRequests', user] });
 
@@ -215,10 +201,6 @@ export const BridgeActions = React.memo(
         });
 
         setTxError(undefined);
-
-        // queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-        // refetchPoolData && refetchPoolData();
-        // refetchIncentiveData && refetchIncentiveData();
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);

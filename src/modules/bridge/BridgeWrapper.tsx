@@ -55,14 +55,14 @@ export function BridgeWrapper() {
       }
     >
       {!downToSm && (
-        <ListHeaderWrapper px={downToSm ? 4 : 6}>
-          <ListColumn isRow maxWidth={280}>
+        <ListHeaderWrapper>
+          <ListColumn align="left">
             <ListHeaderTitle>
               <Trans>Asset</Trans>
             </ListHeaderTitle>
           </ListColumn>
 
-          <ListColumn isRow maxWidth={280}>
+          <ListColumn align="left">
             <ListHeaderTitle>
               <Trans>Source</Trans>
               <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
@@ -72,13 +72,13 @@ export function BridgeWrapper() {
             </ListHeaderTitle>
           </ListColumn>
 
-          <ListColumn isRow maxWidth={280}>
+          <ListColumn align="left">
             <ListHeaderTitle>
               <Trans>Age</Trans>
             </ListHeaderTitle>
           </ListColumn>
 
-          <ListColumn isRow maxWidth={280}>
+          <ListColumn align="left">
             <ListHeaderTitle>
               <Trans>Status</Trans>
             </ListHeaderTitle>
