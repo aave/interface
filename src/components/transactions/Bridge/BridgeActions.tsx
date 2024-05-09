@@ -2,7 +2,8 @@ import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers'
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { Contract, utils } from 'ethers';
+import { useQueryClient } from '@tanstack/react-query';
+import { Contract } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -15,9 +16,8 @@ import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
+import { getChainSelectorFor, getRouterFor } from './BridgeConfig';
 import { getMarketByChainIdWithBridge } from './common';
-import onRampAbi from './OnRamp-abi.json';
-import { getRouterConfig } from './Router';
 import routerAbi from './Router-abi.json';
 
 export interface TokenAmount {
@@ -71,6 +71,7 @@ export const BridgeActions = React.memo(
     ...props
   }: BridgeActionProps) => {
     const { provider } = useWeb3Context();
+    const queryClient = useQueryClient();
     const [walletApprovalMethodPreference, addTransaction] = useRootStore((state) => [
       state.walletApprovalMethodPreference,
       state.addTransaction,
@@ -100,7 +101,7 @@ export const BridgeActions = React.memo(
     } = useApprovedAmount({
       marketData: currentMarket as MarketDataType,
       token: tokenAddress,
-      spender: getRouterConfig(sourceChain.chainId).address,
+      spender: getRouterFor(sourceChain.chainId),
     });
 
     setLoadingTxns(fetchingApprovedAmount);
@@ -133,7 +134,7 @@ export const BridgeActions = React.memo(
         amount: approvedAmount?.toString() || '0',
         user: user,
         token: tokenAddress,
-        spender: getRouterConfig(sourceChain.chainId).address,
+        spender: getRouterFor(sourceChain.chainId),
       },
       requiresApproval,
       assetAddress: tokenAddress,
@@ -166,16 +167,12 @@ export const BridgeActions = React.memo(
         setMainTxState({ ...mainTxState, loading: true });
         if (!provider) return;
 
-        const signer = await provider.getSigner();
+        const signer = provider.getSigner();
 
-        const sourceRouterAddress = getRouterConfig(sourceChain.chainId).address;
+        const sourceRouterAddress = getRouterFor(sourceChain.chainId);
         const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
 
-        const destinationChainSelector = getRouterConfig(destinationChain.chainId).chainSelector;
-
-        console.log(
-          `approved router ${sourceRouterAddress} to spend ${amountToBridge} of token ${tokenAddress}.`
-        );
+        const destinationChainSelector = getChainSelectorFor(destinationChain.chainId);
 
         const sendTx: TransactionResponse = await sourceRouter.ccipSend(
           destinationChainSelector,
@@ -185,44 +182,9 @@ export const BridgeActions = React.memo(
           }
         );
 
-        const onRampInterface = new utils.Interface(onRampAbi);
+        await sendTx.wait(1);
 
-        const receipt = await sendTx.wait(1);
-
-        const parsedLog = onRampInterface.parseLog(receipt.logs[receipt.logs.length - 1]);
-        const messageId = parsedLog.args.message.messageId;
-
-        console.log(
-          `\n✅ ${amountToBridge} of Tokens(${tokenAddress}) Sent to account ${destinationAccount} on destination chain ${destinationChain.chainId} using CCIP. Transaction hash ${sendTx.hash} -  Message id is ${messageId}`
-        );
-
-        const bridgedTransactionsString = localStorage.getItem('bridgedTransactions');
-
-        const bridgedTransactions = bridgedTransactionsString
-          ? JSON.parse(bridgedTransactionsString)
-          : [];
-
-        const timestamp = (await provider.getBlock(receipt.blockNumber)).timestamp;
-
-        // Assuming `timestamp` is the Unix timestamp from the block
-
-        bridgedTransactions.push({
-          amount: amountToBridge,
-          token: tokenAddress,
-          destinationAccount,
-          destinationChain,
-          sourceChain,
-          message,
-          fees,
-          txHash: sendTx.hash,
-          messageId,
-          gasPrice: sendTx.gasPrice,
-          timestamp,
-          sourceAccount: user,
-        });
-
-        // Used for reading bridged tx history
-        localStorage.setItem('bridgedTransactions', JSON.stringify(bridgedTransactions));
+        queryClient.invalidateQueries({ queryKey: ['sendRequests', user] });
 
         setMainTxState({
           txHash: sendTx.hash,
@@ -239,10 +201,6 @@ export const BridgeActions = React.memo(
         });
 
         setTxError(undefined);
-
-        // queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-        // refetchPoolData && refetchPoolData();
-        // refetchIncentiveData && refetchIncentiveData();
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
