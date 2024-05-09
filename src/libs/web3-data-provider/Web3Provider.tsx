@@ -406,9 +406,19 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const switchNetwork = async (newChainId: number) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).ethereum.on('chainChanged', (chainId: string | number) => {
+    (window as any).ethereum.on('chainChanged', (chainId: string) => {
       console.log('chainChanged', chainId);
       setOnChainChangedMessage(`Chain changed to ${chainId}`);
+      const parsedChainId = Number.parseInt(
+        chainId,
+        chainId.trim().substring(0, 2) === '0x' ? 16 : 10
+      );
+
+      connector?.emit('Web3ReactUpdate', {
+        chainId: parsedChainId,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        provider: (window as any).ethereum,
+      });
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
