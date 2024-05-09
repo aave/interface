@@ -48,6 +48,7 @@ export type Web3Data = {
   setSwitchNetworkError: (err: Error | undefined) => void;
   readOnlyModeAddress: string | undefined;
   readOnlyMode: boolean;
+  onChainChanged?: string;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -70,6 +71,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
   const [triedCoinbase, setTriedCoinbase] = useState(false);
   const [triedFamily, setTriedFamily] = useState(false);
+  const [onChainChangedMessage, setOnChainChangedMessage] = useState<string>();
   // const [triedLedger, setTriedLedger] = useState(false);
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
@@ -397,6 +399,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   };
 
   const switchNetwork = async (newChainId: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).ethereum.on('chainChanged', (chainId: string | number) => {
+      console.log('chainChanged', chainId);
+      setOnChainChangedMessage(`Chain changed to ${chainId}`);
+    });
+
     if (provider) {
       try {
         await provider.send('wallet_switchEthereumChain', [
@@ -518,6 +526,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           setSwitchNetworkError,
           readOnlyModeAddress: readOnlyMode ? account?.toLowerCase() : undefined,
           readOnlyMode,
+          onChainChanged: onChainChangedMessage,
         },
       }}
     >
