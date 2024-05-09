@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
 import {
   DetailsNumberLine,
   TxModalDetails,
@@ -20,7 +21,6 @@ import { useRootStore } from 'src/store/root';
 import { TokenInfo } from 'src/ui-config/TokenList';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
-import { Warning } from 'src/components/primitives/Warning';
 
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
@@ -30,6 +30,7 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActions } from './BridgeActions';
 import { supportedNetworksWithBridgeMarket, SupportedNetworkWithChainId } from './common';
+import { useBridgingValues, useRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
 
 // const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
@@ -39,66 +40,12 @@ export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
 }
 
-interface BridgingValues {
-  currentAmountBridged: number;
-  maxAmountBridged: number;
-}
-
-interface RateLimitValue {
-  rateLimit: number;
-}
-
-function simulateBridgingValuesCall() {
-  return new Promise<BridgingValues>((resolve) => {
-    setTimeout(() => {
-      resolve({ currentAmountBridged: 100, maxAmountBridged: 200 });
-    }, 1000);
-  });
-}
-
-function simulateRateLimitCall() {
-  return new Promise<RateLimitValue>((resolve) => {
-    setTimeout(() => {
-      resolve({ rateLimit: 3000 });
-    }, 1000);
-  });
-}
-
 export const BridgeModalContent = () => {
   const { mainTxState: bridgeTxState, txError, close } = useModalContext();
 
   const [amount, setAmount] = useState('');
   // const [inputAmountUSD, setInputAmount] = useState('');
   const { readOnlyModeAddress, chainId: currentChainId } = useWeb3Context();
-
-  const [bridgingValues, setBridgingValues] = useState<BridgingValues>({
-    currentAmountBridged: 0,
-    maxAmountBridged: 0,
-  });
-  const [rateLimit, setRateLimit] = useState<RateLimitValue>({ rateLimit: 0 });
-
-  useEffect(() => {
-    async function fetchBridgingValues() {
-      try {
-        const result = await simulateBridgingValuesCall();
-        setBridgingValues(result);
-      } catch (error) {
-        console.error('Error fetching bridging values:', error);
-      }
-    }
-
-    async function fetchRateLimit() {
-      try {
-        const result = await simulateRateLimitCall();
-        setRateLimit(result);
-      } catch (error) {
-        console.error('Error fetching rate limit:', error);
-      }
-    }
-
-    fetchBridgingValues();
-    fetchRateLimit();
-  }, []);
 
   const [selectedChainId, setSelectedChainId] = useState(() => {
     if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId)) {
@@ -186,6 +133,9 @@ export const BridgeModalContent = () => {
     sourceTokenAddress: sourceTokenInfo.address || '',
   });
 
+  const bridgingValues = useBridgingValues();
+  const rateLimit = useRateLimit(destinationNetworkObj?.chainId || 0);
+
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: SupportedNetworkWithChainId) => {
       if (networkAction === 'sourceNetwork') {
@@ -214,6 +164,10 @@ export const BridgeModalContent = () => {
     return (
       bridgingValues.currentAmountBridged + parseInt(amount) >= bridgingValues.maxAmountBridged
     );
+  };
+
+  const checkRateLimits = () => {
+    return parseInt(amount) >= rateLimit;
   };
 
   const handleBridgeArguments = () => {
@@ -437,9 +391,22 @@ export const BridgeModalContent = () => {
             <Warning severity="error" sx={{ mt: 4 }} icon={false}>
               <Typography variant="caption">
                 <Trans>
-                  The selected amount is not available to bridge due to the bridge limit. Please try
-                  again later or reduce the amount to bridge
+                  The selected amount is not available to bridge due to the bridge limit of
+                </Trans>{' '}
+                {bridgingValues.maxAmountBridged - bridgingValues.currentAmountBridged}.{' '}
+                <Trans>Please try again later or reduce the amount to bridge</Trans>
+              </Typography>
+            </Warning>
+          )}
+
+          {checkRateLimits() && (
+            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+              <Typography variant="caption">
+                <Trans>
+                  The selected amount is not available to bridge due to CCIP rate limit of
                 </Trans>
+                <Trans>Please try again later or reduce the amount to bridge to less than</Trans>{' '}
+                {rateLimit}
               </Typography>
             </Warning>
           )}
