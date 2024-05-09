@@ -72,6 +72,19 @@ export class ReadOnlyModeConnector extends AbstractConnector {
   }
 }
 
+// export class CustomInjectedConnector extends InjectedConnector {
+//   constructor(args: AbstractConnectorArguments) {
+//     super(args);
+
+//     // this.handleChainChanged = this.handleChainChanged.bind(this);
+//   }
+
+//   handleChainChanged(chainId: string | number): void {
+//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//     this.emitUpdate({ chainId, provider: (window as any).ethereum });
+//   }
+// }
+
 export const getWallet = (
   wallet: WalletType,
   chainId: ChainId = ChainId.mainnet,

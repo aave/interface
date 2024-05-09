@@ -47,7 +47,7 @@ export const ModalWrapper: React.FC<{
   title,
   keepWrappedSymbol,
 }) => {
-  const { readOnlyModeAddress, onChainChanged, chainId } = useWeb3Context();
+  const { readOnlyModeAddress, onChainChanged, chainId, error } = useWeb3Context();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { walletBalances } = useWalletBalances(currentMarketData);
@@ -99,6 +99,7 @@ export const ModalWrapper: React.FC<{
       <div>
         {onChainChanged} - {chainId}
       </div>
+      <div>{error}</div>
       {children({
         isWrongNetwork,
         nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount || '0',

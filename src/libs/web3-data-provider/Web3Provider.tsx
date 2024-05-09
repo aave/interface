@@ -405,6 +405,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       setOnChainChangedMessage(`Chain changed to ${chainId}`);
     });
 
+    // (window as any).ethereum.on('networkChanged', )
+
     if (provider) {
       try {
         await provider.send('wallet_switchEthereumChain', [
