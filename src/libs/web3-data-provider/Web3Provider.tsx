@@ -49,6 +49,7 @@ export type Web3Data = {
   readOnlyModeAddress: string | undefined;
   readOnlyMode: boolean;
   onChainChanged?: string;
+  onNetworkChanged?: string;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -72,6 +73,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [triedCoinbase, setTriedCoinbase] = useState(false);
   const [triedFamily, setTriedFamily] = useState(false);
   const [onChainChangedMessage, setOnChainChangedMessage] = useState<string>();
+  const [onNetworkChangedMessage, setOnNetworkChangedMessage] = useState<string>();
   // const [triedLedger, setTriedLedger] = useState(false);
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
@@ -152,6 +154,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         } else {
           await activate(connector, undefined, true);
         }
+
+        // connector.on('networkChanged', (chainId: string) => {
+        //   setOnNetworkChangedMessage(`Chain changed to ${chainId}`);
+        // });
 
         setConnector(connector);
         setSwitchNetworkError(undefined);
@@ -405,7 +411,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       setOnChainChangedMessage(`Chain changed to ${chainId}`);
     });
 
-    // (window as any).ethereum.on('networkChanged', )
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).ethereum.on('networkChanged', (chainId: string | number) => {
+      console.log('networkChanged', chainId);
+      setOnNetworkChangedMessage(`Network changed to ${chainId}`);
+    });
 
     if (provider) {
       try {
@@ -529,6 +539,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           readOnlyModeAddress: readOnlyMode ? account?.toLowerCase() : undefined,
           readOnlyMode,
           onChainChanged: onChainChangedMessage,
+          onNetworkChanged: onNetworkChangedMessage,
         },
       }}
     >
