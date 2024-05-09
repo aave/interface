@@ -47,13 +47,15 @@ export const ModalWrapper: React.FC<{
   title,
   keepWrappedSymbol,
 }) => {
-  const { readOnlyModeAddress, onChainChanged } = useWeb3Context();
+  const { readOnlyModeAddress, onChainChanged, chainId } = useWeb3Context();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { walletBalances } = useWalletBalances(currentMarketData);
   const { user, reserves } = useAppDataContext();
   const { txError, mainTxState } = useModalContext();
 
+  console.log('requiredChainId', _requiredChainId);
+  console.log('connectedChainId', chainId);
   const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
 
   if (txError && txError.blocking) {
@@ -94,7 +96,9 @@ export const ModalWrapper: React.FC<{
           }}
         />
       )}
-      {onChainChanged}
+      <div>
+        {onChainChanged} - {chainId}
+      </div>
       {children({
         isWrongNetwork,
         nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount || '0',
