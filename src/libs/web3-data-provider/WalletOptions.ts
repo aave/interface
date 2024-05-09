@@ -30,13 +30,6 @@ const mockProvider = {
   request: Promise.resolve(null),
 };
 
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ethereum: any;
-  }
-}
-
 /**
  *  This is a connector to be used in read-only mode.
  *  On activate, the connector expects a local storage item called `readOnlyModeAddress` to be set, otherwise an error is thrown.
