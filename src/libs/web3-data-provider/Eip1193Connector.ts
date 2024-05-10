@@ -15,7 +15,7 @@ function parseSendReturn(sendReturn: SendReturnResult | SendReturn): any {
 
 export class Eip1193Connector extends AbstractConnector {
   constructor(kwargs: AbstractConnectorArguments) {
-    super(kwargs);
+    super({ ...kwargs, supportedChainIds: [1, 10] });
 
     // this.handleNetworkChanged = this.handleNetworkChanged.bind(this);
     this.handleChainChanged = this.handleChainChanged.bind(this);
@@ -24,6 +24,7 @@ export class Eip1193Connector extends AbstractConnector {
   }
 
   private handleChainChanged(chainId: string | number): void {
+    // this.chainChangedEvent = `${chainId} - ${Number(chainId).toString()}`;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.emitUpdate({ chainId: Number(chainId).toString(), provider: (window as any).ethereum });
   }
@@ -98,40 +99,6 @@ export class Eip1193Connector extends AbstractConnector {
       chainId = await ((window as any).ethereum.send as Send)('eth_chainId').then(parseSendReturn);
     } catch {
       console.error('eth_chainId was unsuccessful, falling back to net_version');
-    }
-
-    if (!chainId) {
-      try {
-        chainId = await ((window as any).ethereum.send as Send)('net_version').then(
-          parseSendReturn
-        );
-      } catch {
-        console.error('net_version was unsuccessful, falling back to net version v2');
-      }
-    }
-
-    if (!chainId) {
-      try {
-        chainId = parseSendReturn(
-          ((window as any).ethereum.send as SendOld)({ method: 'net_version' })
-        );
-      } catch {
-        console.error(
-          'net_version v2 was unsuccessful, falling back to manual matches and static properties'
-        );
-      }
-    }
-
-    if (!chainId) {
-      if (((window as any).ethereum as any).isDapper) {
-        chainId = parseSendReturn(((window as any).ethereum as any).cachedResults.net_version);
-      } else {
-        chainId =
-          ((window as any).ethereum as any).chainId ||
-          ((window as any).ethereum as any).netVersion ||
-          ((window as any).ethereum as any).networkVersion ||
-          ((window as any).ethereum as any)._chainId;
-      }
     }
 
     console.log('get chain id', chainId);
