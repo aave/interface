@@ -7,6 +7,7 @@ import {
 } from '@ethersproject/providers';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { useWeb3React } from '@web3-react/core';
+import { InjectedConnector } from '@web3-react/injected-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { BigNumber, PopulatedTransaction, providers } from 'ethers';
@@ -147,6 +148,17 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
         if (connector instanceof WalletConnectConnector) {
           connector.walletConnectProvider = undefined;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if (connector instanceof InjectedConnector) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (window as any).ethereum.on('chainChanged', (chainId: string) => {
+            setOnChainChangedMessage(`Chain changed to ${chainId}`);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (connector as any).handleNetworkChanged(Number(chainId));
+            setOnNetworkChangedMessage(`Chain changed to ${Number(chainId)}`);
+          });
         }
 
         if (wallet === WalletType.INJECTED) {
@@ -409,23 +421,24 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     (window as any).ethereum.on('chainChanged', (chainId: string) => {
       console.log('chainChanged', chainId);
       setOnChainChangedMessage(`Chain changed to ${chainId}`);
-      const parsedChainId = Number.parseInt(
-        chainId,
-        chainId.trim().substring(0, 2) === '0x' ? 16 : 10
-      );
+      // const parsedChainId = Number.parseInt(
+      //   chainId,
+      //   chainId.trim().substring(0, 2) === '0x' ? 16 : 10
+      // );
 
-      connector?.emit('Web3ReactUpdate', {
-        chainId: parsedChainId,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        provider: (window as any).ethereum,
-      });
+      // console.log('parsedChainId', parsedChainId);
+      // connector?.emit('Web3ReactUpdate', {
+      //   chainId: parsedChainId,
+      //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      //   provider: (window as any).ethereum,
+      // });
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).ethereum.on('networkChanged', (chainId: string | number) => {
-      console.log('networkChanged', chainId);
-      setOnNetworkChangedMessage(`Network changed to ${chainId}`);
-    });
+    // (window as any).ethereum.on('networkChanged', (chainId: string | number) => {
+    //   console.log('networkChanged', chainId);
+    //   setOnNetworkChangedMessage(`Network changed to ${chainId}`);
+    // });
 
     if (provider) {
       try {
