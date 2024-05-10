@@ -3,12 +3,12 @@ import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { FrameConnector } from '@web3-react/frame-connector';
-import { InjectedConnector } from '@web3-react/injected-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
 import { ConnectorUpdate } from '@web3-react/types';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { Eip1193Connector } from './Eip1193Connector';
 // import { LedgerHQFrameConnector } from 'web3-ledgerhq-frame-connector';
 import { WalletConnectConnector } from './WalletConnectConnector';
 
@@ -280,7 +280,7 @@ export const getWallet = (
     // case WalletType.LEDGER:
     //   return new LedgerHQFrameConnector({});
     case WalletType.INJECTED:
-      return new InjectedConnector({});
+      return new Eip1193Connector({});
     case WalletType.WALLET_LINK:
       const networkConfig = getNetworkConfig(chainId);
       return new WalletLinkConnector({

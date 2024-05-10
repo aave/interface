@@ -156,7 +156,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           (window as any).ethereum.on('chainChanged', (chainId: string) => {
             setOnChainChangedMessage(`Chain changed to ${chainId}`);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (connector as any).handleNetworkChanged(Number(chainId));
+            // (connector as any).handleNetworkChanged(Number(chainId));
             setOnNetworkChangedMessage(`Chain changed to ${Number(chainId)}`);
           });
         }
@@ -417,29 +417,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   };
 
   const switchNetwork = async (newChainId: number) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).ethereum.on('chainChanged', (chainId: string) => {
-      console.log('chainChanged', chainId);
-      setOnChainChangedMessage(`Chain changed to ${chainId}`);
-      // const parsedChainId = Number.parseInt(
-      //   chainId,
-      //   chainId.trim().substring(0, 2) === '0x' ? 16 : 10
-      // );
-
-      // console.log('parsedChainId', parsedChainId);
-      // connector?.emit('Web3ReactUpdate', {
-      //   chainId: parsedChainId,
-      //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      //   provider: (window as any).ethereum,
-      // });
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // (window as any).ethereum.on('networkChanged', (chainId: string | number) => {
-    //   console.log('networkChanged', chainId);
-    //   setOnNetworkChangedMessage(`Network changed to ${chainId}`);
-    // });
-
     if (provider) {
       try {
         await provider.send('wallet_switchEthereumChain', [
