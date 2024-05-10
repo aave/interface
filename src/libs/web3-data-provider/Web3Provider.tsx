@@ -49,6 +49,7 @@ export type Web3Data = {
   setSwitchNetworkError: (err: Error | undefined) => void;
   readOnlyModeAddress: string | undefined;
   readOnlyMode: boolean;
+  chainChangedEvent: string;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -71,7 +72,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
   const [triedCoinbase, setTriedCoinbase] = useState(false);
   const [triedFamily, setTriedFamily] = useState(false);
-  // const [onChainChangedMessage, setOnChainChangedMessage] = useState<string>();
+  const [onChainChangedMessage, setOnChainChangedMessage] = useState<string>();
   // const [onNetworkChangedMessage, setOnNetworkChangedMessage] = useState<string>();
   // const [triedLedger, setTriedLedger] = useState(false);
   const [readOnlyMode, setReadOnlyMode] = useState(false);
@@ -86,7 +87,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const handleChainChanged = (chainId: number) => {
     console.log('chainChanged', chainId);
-    connectWallet(WalletType.INJECTED);
+    setOnChainChangedMessage(`Chain changed to ${chainId}`);
+    connectWallet(WalletType.INJECTED, Number(chainId));
   };
 
   // Wallet connection and disconnection
@@ -132,10 +134,14 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // connect to the wallet specified by wallet type
   const connectWallet = useCallback(
-    async (wallet: WalletType) => {
+    async (wallet: WalletType, forcedChainId?: number) => {
       setLoading(true);
       try {
-        const connector: AbstractConnector = getWallet(wallet, chainId, currentChainId);
+        const connector: AbstractConnector = getWallet(
+          wallet,
+          forcedChainId ?? chainId,
+          currentChainId
+        );
 
         if (connector instanceof ReadOnlyModeConnector) {
           setReadOnlyMode(true);
@@ -160,7 +166,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
         await activate(connector, undefined, true);
 
-        connector.on('chainChanged', handleChainChanged);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).ethereum.on('chainChanged', handleChainChanged);
 
         // if (wallet === WalletType.INJECTED) {
         //   await activateMetaMask(connector);
@@ -539,6 +546,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           setSwitchNetworkError,
           readOnlyModeAddress: readOnlyMode ? account?.toLowerCase() : undefined,
           readOnlyMode,
+          chainChangedEvent: onChainChangedMessage || '',
         },
       }}
     >
