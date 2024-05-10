@@ -73,8 +73,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
   const [triedCoinbase, setTriedCoinbase] = useState(false);
   const [triedFamily, setTriedFamily] = useState(false);
-  const [onChainChangedMessage, setOnChainChangedMessage] = useState<string>();
-  const [onNetworkChangedMessage, setOnNetworkChangedMessage] = useState<string>();
+  // const [onChainChangedMessage, setOnChainChangedMessage] = useState<string>();
+  // const [onNetworkChangedMessage, setOnNetworkChangedMessage] = useState<string>();
   // const [triedLedger, setTriedLedger] = useState(false);
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
@@ -91,9 +91,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   //     connectWallet(selectedWallet);
   //   }
   // };
-
-  setOnChainChangedMessage('');
-  setOnNetworkChangedMessage('');
 
   // Wallet connection and disconnection
   // clean local storage
@@ -541,8 +538,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           setSwitchNetworkError,
           readOnlyModeAddress: readOnlyMode ? account?.toLowerCase() : undefined,
           readOnlyMode,
-          onChainChanged: onChainChangedMessage,
-          onNetworkChanged: onNetworkChangedMessage,
+          onChainChanged: '',
+          onNetworkChanged: '',
         },
       }}
     >
