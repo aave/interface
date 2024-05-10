@@ -4,6 +4,7 @@ import { Box, Button, IconButton, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
 import React, { useEffect, useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
@@ -126,6 +127,7 @@ export const BridgeModalContent = () => {
     bridgeFee,
     bridgeFeeFormatted,
     loading: loadingBridgeMessage,
+    latestAnswer: bridgeFeeUSD,
   } = useGetBridgeMessage({
     sourceChainId: sourceNetworkObj.chainId,
     destinationChainId: destinationNetworkObj?.chainId || 0,
@@ -370,13 +372,25 @@ export const BridgeModalContent = () => {
                   value={amount}
                 />
                 {message || loadingBridgeMessage ? (
-                  <DetailsNumberLine
-                    description={<Trans>Fee</Trans>}
-                    iconSymbol={'ETH'}
-                    symbol={'ETH'}
-                    value={bridgeFeeFormatted}
-                    loading={loadingBridgeMessage}
-                  />
+                  <>
+                    <DetailsNumberLine
+                      description={<Trans>Fee</Trans>}
+                      iconSymbol={'ETH'}
+                      symbol={'ETH'}
+                      value={bridgeFeeFormatted}
+                      loading={loadingBridgeMessage}
+                      customMb={0}
+                    />
+                    <Box display={'flex'} justifyContent={'flex-end'}>
+                      <FormattedNumber
+                        value={bridgeFeeUSD}
+                        variant="helperText"
+                        compact
+                        symbol="USD"
+                        color="text.secondary"
+                      />
+                    </Box>
+                  </>
                 ) : (
                   <Row caption={<Trans>Fee</Trans>} captionVariant="description" mb={4}>
                     <NoData variant="secondary14" color="text.secondary" />
