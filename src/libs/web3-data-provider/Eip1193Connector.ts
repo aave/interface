@@ -25,7 +25,7 @@ export class Eip1193Connector extends AbstractConnector {
 
   private handleChainChanged(chainId: string | number): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.emitUpdate({ chainId: Number(chainId), provider: (window as any).ethereum });
+    this.emitUpdate({ chainId: Number(chainId).toString(), provider: (window as any).ethereum });
   }
 
   private handleAccountsChanged(accounts: string[]): void {
