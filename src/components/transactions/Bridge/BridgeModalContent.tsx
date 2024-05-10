@@ -202,7 +202,7 @@ export const BridgeModalContent = () => {
     isWrongNetwork,
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
-    blocked: loadingBridgeMessage || checkBridgeLimits(),
+    blocked: loadingBridgeMessage || checkBridgeLimits() || checkRateLimits(),
     decimals: 18,
     isWrappedBaseAsset: false,
     message,
