@@ -138,6 +138,10 @@ export const BridgeModalContent = () => {
   const bridgingValues = useBridgingValues();
   const rateLimit = useRateLimit(destinationNetworkObj?.chainId || 0);
 
+  const bridgeLimitExceeded =
+    bridgingValues.currentAmountBridged + parseInt(amount) >= bridgingValues.maxAmountBridged;
+  const rateLimitExceeded = parseInt(amount) >= rateLimit;
+
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: SupportedNetworkWithChainId) => {
       if (networkAction === 'sourceNetwork') {
@@ -161,16 +165,6 @@ export const BridgeModalContent = () => {
   if (Number(amount) > Number(maxAmountToSwap) && !fetchingBridgeTokenBalance) {
     setAmount(maxAmountToSwap);
   }
-
-  const checkBridgeLimits = () => {
-    return (
-      bridgingValues.currentAmountBridged + parseInt(amount) >= bridgingValues.maxAmountBridged
-    );
-  };
-
-  const checkRateLimits = () => {
-    return parseInt(amount) >= rateLimit;
-  };
 
   const handleBridgeArguments = () => {
     const sourceChain = sourceNetworkObj;
@@ -202,7 +196,7 @@ export const BridgeModalContent = () => {
     isWrongNetwork,
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
-    blocked: loadingBridgeMessage || checkBridgeLimits() || checkRateLimits(),
+    blocked: loadingBridgeMessage || bridgeLimitExceeded || rateLimitExceeded,
     decimals: 18,
     isWrappedBaseAsset: false,
     message,
@@ -401,7 +395,7 @@ export const BridgeModalContent = () => {
           </Box>
           {txError && <GasEstimationError txError={txError} />}
 
-          {checkBridgeLimits() && (
+          {bridgeLimitExceeded && (
             <Warning severity="error" sx={{ mt: 4 }} icon={false}>
               <Typography variant="caption">
                 <Trans>
@@ -413,7 +407,7 @@ export const BridgeModalContent = () => {
             </Warning>
           )}
 
-          {checkRateLimits() && (
+          {rateLimitExceeded && (
             <Warning severity="error" sx={{ mt: 4 }} icon={false}>
               <Typography variant="caption">
                 <Trans>
