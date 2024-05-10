@@ -49,8 +49,6 @@ export type Web3Data = {
   setSwitchNetworkError: (err: Error | undefined) => void;
   readOnlyModeAddress: string | undefined;
   readOnlyMode: boolean;
-  onChainChanged?: string;
-  onNetworkChanged?: string;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -160,6 +158,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         //     setOnNetworkChangedMessage(`Chain changed to ${Number(chainId)}`);
         //   });
         // }
+
+        await activate(connector, undefined, true);
 
         // if (wallet === WalletType.INJECTED) {
         //   await activateMetaMask(connector);
@@ -538,8 +538,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           setSwitchNetworkError,
           readOnlyModeAddress: readOnlyMode ? account?.toLowerCase() : undefined,
           readOnlyMode,
-          onChainChanged: '',
-          onNetworkChanged: '',
         },
       }}
     >
