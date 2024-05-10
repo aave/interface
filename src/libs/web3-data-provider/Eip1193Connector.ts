@@ -134,6 +134,7 @@ export class Eip1193Connector extends AbstractConnector {
       }
     }
 
+    console.log('get chain id', chainId);
     return chainId;
   }
 

@@ -7,7 +7,7 @@ import {
 } from '@ethersproject/providers';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { useWeb3React } from '@web3-react/core';
-import { InjectedConnector } from '@web3-react/injected-connector';
+// import { InjectedConnector } from '@web3-react/injected-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { BigNumber, PopulatedTransaction, providers } from 'ethers';
@@ -92,6 +92,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   //   }
   // };
 
+  setOnChainChangedMessage('');
+  setOnNetworkChangedMessage('');
+
   // Wallet connection and disconnection
   // clean local storage
   const cleanConnectorStorage = useCallback((): void => {
@@ -151,21 +154,21 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if (connector instanceof InjectedConnector) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (window as any).ethereum.on('chainChanged', (chainId: string) => {
-            setOnChainChangedMessage(`Chain changed to ${chainId}`);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            // (connector as any).handleNetworkChanged(Number(chainId));
-            setOnNetworkChangedMessage(`Chain changed to ${Number(chainId)}`);
-          });
-        }
+        // if (connector instanceof InjectedConnector) {
+        //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        //   (window as any).ethereum.on('chainChanged', (chainId: string) => {
+        //     setOnChainChangedMessage(`Chain changed to ${chainId}`);
+        //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        //     // (connector as any).handleNetworkChanged(Number(chainId));
+        //     setOnNetworkChangedMessage(`Chain changed to ${Number(chainId)}`);
+        //   });
+        // }
 
-        if (wallet === WalletType.INJECTED) {
-          await activateMetaMask(connector);
-        } else {
-          await activate(connector, undefined, true);
-        }
+        // if (wallet === WalletType.INJECTED) {
+        //   await activateMetaMask(connector);
+        // } else {
+        //   await activate(connector, undefined, true);
+        // }
 
         // connector.on('networkChanged', (chainId: string) => {
         //   setOnNetworkChangedMessage(`Chain changed to ${chainId}`);
@@ -188,52 +191,52 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [disconnectWallet, currentChainId]
   );
 
-  const activateMetaMask = async (connector: AbstractConnector) => {
-    // This is a workaround for an issue that happens with chrome and metamask.
-    // If the app was preloaded in chrome, there's a case where the extension can be
-    // unresponsive if the app was switched from preloading to active at the wrong time.
-    // This produces an infinite loading spinner on app load.
-    // There are no errors thrown that we can handle in this state, so just retry activating
-    // the connector. If it still fails after the backoff retry, then throw an error.
-    // See this issue for more details: https://github.com/MetaMask/metamask-extension/issues/23329
+  // const activateMetaMask = async (connector: AbstractConnector) => {
+  //   // This is a workaround for an issue that happens with chrome and metamask.
+  //   // If the app was preloaded in chrome, there's a case where the extension can be
+  //   // unresponsive if the app was switched from preloading to active at the wrong time.
+  //   // This produces an infinite loading spinner on app load.
+  //   // There are no errors thrown that we can handle in this state, so just retry activating
+  //   // the connector. If it still fails after the backoff retry, then throw an error.
+  //   // See this issue for more details: https://github.com/MetaMask/metamask-extension/issues/23329
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const ethereum = (window as any).ethereum;
-    const isUnlocked = ethereum?._metamask?.isUnlocked?.();
-    const unlocked = isUnlocked !== undefined ? await isUnlocked : false;
-    if (!unlocked) {
-      // if the extension is locked, just do the normal activation
-      return activate(connector, undefined, true);
-    }
+  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   const ethereum = (window as any).ethereum;
+  //   const isUnlocked = ethereum?._metamask?.isUnlocked?.();
+  //   const unlocked = isUnlocked !== undefined ? await isUnlocked : false;
+  //   if (!unlocked) {
+  //     // if the extension is locked, just do the normal activation
+  //     return activate(connector, undefined, true);
+  //   }
 
-    const activatePromise = activate(connector, undefined, true);
+  //   const activatePromise = activate(connector, undefined, true);
 
-    const activateRetryAttempts = 2;
+  //   const activateRetryAttempts = 2;
 
-    const activateFn = async (connector: AbstractConnector, attempt: number) => {
-      await Promise.race([
-        activate(connector, undefined, true),
-        new Promise((_resolve, reject) => {
-          setTimeout(() => {
-            reject(new Error('MetaMask activation timeout'));
-          }, 2000);
-        }),
-      ]).catch((reason: unknown) => {
-        console.error(reason);
-        if (reason instanceof Error && reason.message === 'MetaMask activation timeout') {
-          if (attempt <= activateRetryAttempts) {
-            return activateFn(connector, attempt + 1);
-          }
-          throw reason;
-        }
-        // If the promise was rejected with a different error, then return the original instance.
-        // This handles cases where we are waiting for user input, such as giving the dapp permissions.
-        return activatePromise;
-      });
-    };
+  //   const activateFn = async (connector: AbstractConnector, attempt: number) => {
+  //     await Promise.race([
+  //       activate(connector, undefined, true),
+  //       new Promise((_resolve, reject) => {
+  //         setTimeout(() => {
+  //           reject(new Error('MetaMask activation timeout'));
+  //         }, 2000);
+  //       }),
+  //     ]).catch((reason: unknown) => {
+  //       console.error(reason);
+  //       if (reason instanceof Error && reason.message === 'MetaMask activation timeout') {
+  //         if (attempt <= activateRetryAttempts) {
+  //           return activateFn(connector, attempt + 1);
+  //         }
+  //         throw reason;
+  //       }
+  //       // If the promise was rejected with a different error, then return the original instance.
+  //       // This handles cases where we are waiting for user input, such as giving the dapp permissions.
+  //       return activatePromise;
+  //     });
+  //   };
 
-    await activateFn(connector, 1);
-  };
+  //   await activateFn(connector, 1);
+  // };
 
   const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
     // @ts-expect-error ethereum doesn't necessarily exist
