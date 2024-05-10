@@ -83,12 +83,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const setAccountLoading = useRootStore((store) => store.setAccountLoading);
   const setWalletType = useRootStore((store) => store.setWalletType);
   // for now we use network changed as it returns the chain string instead of hex
-  // const handleChainChanged = (chainId: number) => {
-  //   console.log('chainChanged', chainId);
-  //   if (selectedWallet) {
-  //     connectWallet(selectedWallet);
-  //   }
-  // };
+
+  const handleChainChanged = (chainId: number) => {
+    console.log('chainChanged', chainId);
+    connectWallet(WalletType.INJECTED);
+  };
 
   // Wallet connection and disconnection
   // clean local storage
@@ -160,6 +159,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         // }
 
         await activate(connector, undefined, true);
+
+        connector.on('chainChanged', handleChainChanged);
 
         // if (wallet === WalletType.INJECTED) {
         //   await activateMetaMask(connector);
