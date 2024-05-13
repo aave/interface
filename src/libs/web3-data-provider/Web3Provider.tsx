@@ -158,7 +158,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (window as any).ethereum.on('chainChanged', (chainId: string | number) => {
             connector.emit('Web3ReactUpdate', {
-              chaindId: Number(chainId),
+              chainId: Number(chainId),
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               provider: (window as any).ethereum,
             });
