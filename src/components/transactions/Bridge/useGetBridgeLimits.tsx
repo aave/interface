@@ -17,14 +17,12 @@ export const useBridgingValues = (sourceChainId: number) => {
 
   useEffect(() => {
     if (!provider) {
-      console.error('Provider is not available');
-      return; // Early return from the useEffect if provider is not available
+      throw Error('Provider is not available');
     }
 
     const sourceLaneConfig = laneConfig.find((config) => config.sourceChainId === sourceChainId);
     if (!sourceLaneConfig) {
-      console.error('No sourceLaneConfig found');
-      return; // Early return from the useEffect if no config is found
+      throw Error('No sourceLaneConfig found');
     }
 
     const tokenPoolAddress = sourceLaneConfig.tokenPool;
