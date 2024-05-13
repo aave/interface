@@ -135,12 +135,17 @@ export const BridgeModalContent = () => {
     sourceTokenAddress: sourceTokenInfo.address || '',
   });
 
-  const bridgingValues = useBridgingValues();
-  const rateLimit = useRateLimit(destinationNetworkObj?.chainId || 0);
+  const bridgingValues = useBridgingValues(sourceNetworkObj.chainId);
+
+  const rateLimit = useRateLimit({
+    destinationChainId: destinationNetworkObj?.chainId || 0,
+    sourceChainId: sourceNetworkObj.chainId,
+  });
 
   const bridgeLimitExceeded =
-    bridgingValues.currentAmountBridged + parseInt(amount) >= bridgingValues.maxAmountBridged;
-  const rateLimitExceeded = parseInt(amount) >= rateLimit;
+    bridgingValues &&
+    bridgingValues.currentAmountBridged + parseInt(amount, 10) >= bridgingValues.maxAmountBridged;
+  const rateLimitExceeded = rateLimit !== 0 && parseInt(amount, 10) >= (rateLimit || 0);
 
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: SupportedNetworkWithChainId) => {
@@ -212,20 +217,9 @@ export const BridgeModalContent = () => {
       <TxSuccessView
         customAction={
           <Box mt={5}>
-            {/* <Button
-                component="a"
-                target="_blank"
-                href={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
-                variant="gradient"
-                size="medium"
-              >
-                <Trans>See Transaction status on CCIP</Trans>
-              </Button> */}
-
             <Button
               component={Link}
               href={ROUTES.bridge}
-              // sx={{ mr: 8, mb: '24px' }}
               variant="outlined"
               size="small"
               onClick={close}

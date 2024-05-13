@@ -1,65 +1,94 @@
+import { Contract } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import { getChainSelectorFor } from './BridgeConfig';
+import { getChainSelectorFor, laneConfig } from './BridgeConfig';
+// NOTE: lightweight ABI
+import TokenPoolAbi from './Tokenpool-abi.json';
 
-interface BridgingValues {
-  currentAmountBridged: number;
-  maxAmountBridged: number;
-}
+export const useBridgingValues = (sourceChainId: number) => {
+  const { provider } = useWeb3Context();
 
-function simulateBridgingValuesCall() {
-  return new Promise<BridgingValues>((resolve) => {
-    setTimeout(() => {
-      resolve({ currentAmountBridged: 100, maxAmountBridged: 200 });
-    }, 1000);
-  });
-}
-
-export const useBridgingValues = () => {
   const [bridgingValues, setBridgingValues] = useState({
     currentAmountBridged: 0,
     maxAmountBridged: 0,
   });
 
   useEffect(() => {
+    if (!provider) {
+      console.error('Provider is not available');
+      return; // Early return from the useEffect if provider is not available
+    }
+
+    const sourceLaneConfig = laneConfig.find((config) => config.sourceChainId === sourceChainId);
+    if (!sourceLaneConfig) {
+      console.error('No sourceLaneConfig found');
+      return; // Early return from the useEffect if no config is found
+    }
+
+    const tokenPoolAddress = sourceLaneConfig.tokenPool;
+    const signer = provider.getSigner();
+    const tokenPool = new Contract(tokenPoolAddress, TokenPoolAbi, signer);
+
     async function fetchBridgingValues() {
       try {
-        const result = await simulateBridgingValuesCall();
-        setBridgingValues(result);
+        const maxAmountBridged = await tokenPool.getBridgeLimit();
+        const currentAmountBridged = await tokenPool.getCurrentBridgedAmount();
+        setBridgingValues({
+          maxAmountBridged: parseInt(formatUnits(maxAmountBridged, 18), 10),
+          currentAmountBridged: parseInt(formatUnits(currentAmountBridged, 18), 10),
+        });
       } catch (error) {
         console.error('Error fetching bridging values:', error);
       }
     }
+
     fetchBridgingValues();
-  }, []);
+  }, [sourceChainId, provider]);
 
   return bridgingValues;
 };
 
-function simulateGetCurrentOutboundRateLimiterState(remoteChainSelector: string) {
-  return new Promise<number>((resolve) => {
-    setTimeout(() => {
-      console.log(remoteChainSelector);
-      resolve(150);
-    }, 1000);
-  });
+// NOTE: Currently useRateLimit is not set on governance
+interface RateLimitProps {
+  destinationChainId: number;
+  sourceChainId: number;
 }
-
-export const useRateLimit = (destinationChainId: number) => {
+export const useRateLimit = ({ destinationChainId, sourceChainId }: RateLimitProps) => {
   const [rateLimit, setRateLimit] = useState(0);
-  const destinationChainSelector = getChainSelectorFor(destinationChainId);
+
+  const { provider } = useWeb3Context();
 
   useEffect(() => {
+    if (!provider) {
+      console.error('Provider is not available');
+      return;
+    }
+
+    const sourceLaneConfig = laneConfig.find((config) => config.sourceChainId === sourceChainId);
+    if (!sourceLaneConfig) {
+      throw Error('No sourceLaneConfig found');
+    }
+
+    const tokenPoolAddress = sourceLaneConfig.tokenPool;
+    const signer = provider.getSigner();
+    const tokenPool = new Contract(tokenPoolAddress, TokenPoolAbi, signer);
+    const destinationChainSelector = getChainSelectorFor(destinationChainId);
+
     async function fetchRateLimit() {
       try {
-        const result = await simulateGetCurrentOutboundRateLimiterState(destinationChainSelector);
-        setRateLimit(result);
+        const [, , , rate] = await tokenPool.getCurrentOutboundRateLimiterState(
+          destinationChainSelector
+        );
+        setRateLimit(parseInt(rate.toString(), 10));
       } catch (error) {
         console.error('Error fetching rate limit:', error);
       }
     }
+
     fetchRateLimit();
-  }, []);
+  }, [destinationChainId, sourceChainId, provider]);
 
   return rateLimit;
 };
