@@ -75,7 +75,7 @@ const validateSlippage = (slippage: string): ValidationData | undefined => {
       };
     if (numberSlippage < 0.1)
       return {
-        message: 'Slippage lower than 0.1 may result in failed transactions',
+        message: 'Slippage lower than 0.1% may result in failed transactions',
         severity: ValidationSeverity.WARNING,
       };
     return undefined;
