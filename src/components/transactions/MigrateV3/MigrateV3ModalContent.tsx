@@ -2,9 +2,9 @@ import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
-import { UserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
-import { UserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMigration';
+import { MigrationMarketDataType } from 'pages/v3-migration.page';
+import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
+import { useUserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMigration';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -24,64 +24,69 @@ import { MigrateV3Actions } from './MigrateV3Actions';
 import { MigrateV3ModalAssetsList } from './MigrateV3ModalAssetsList';
 
 interface MigrationV3ModalContentProps {
-  toUserSummaryForMigration: UserSummaryForMigration;
-  userMigrationReserves: UserMigrationReserves;
+  fromMarketData: MigrationMarketDataType;
+  toMarketData: MigrationMarketDataType;
 }
 
 export const MigrateV3ModalContent = ({
-  toUserSummaryForMigration,
-  userMigrationReserves,
+  fromMarketData,
+  toMarketData,
 }: MigrationV3ModalContentProps) => {
   const currentChainId = useRootStore((store) => store.currentChainId);
   const setCurrentMarket = useRootStore((store) => store.setCurrentMarket);
   const currentMarket = useRootStore((store) => store.currentMarket);
+  const selectedMigrationSupplyAssets = useRootStore(
+    (store) => store.selectedMigrationSupplyAssets
+  );
+  const selectedMigrationBorrowAssets = useRootStore(
+    (store) => store.selectedMigrationBorrowAssets
+  );
+  const { data: userMigrationReserves } = useUserMigrationReserves(fromMarketData, toMarketData);
+  const { data: toUserSummaryForMigration } = useUserSummaryForMigration(toMarketData);
 
   const { gasLimit, mainTxState: migrateTxState, txError, closeWithCb } = useModalContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const router = useRouter();
   const networkConfig = getNetworkConfig(currentChainId);
 
-  const { supplyPositions, borrowPositions } = useRootStore(
-    useCallback(
-      (state) => ({
-        supplyPositions: selectedUserSupplyReservesForMigration(
-          state.selectedMigrationSupplyAssets,
-          userMigrationReserves.supplyReserves,
-          userMigrationReserves.isolatedReserveV3
-        ),
-        borrowPositions: selectSelectedBorrowReservesForMigrationV3(
-          state.selectedMigrationBorrowAssets,
+  const supplyAssets = userMigrationReserves
+    ? selectedUserSupplyReservesForMigration(
+        selectedMigrationSupplyAssets,
+        userMigrationReserves.supplyReserves,
+        userMigrationReserves?.isolatedReserveV3
+      ).map((supplyAsset) => {
+        return {
+          underlyingAsset: supplyAsset.underlyingAsset,
+          iconSymbol: supplyAsset.reserve.iconSymbol,
+          symbol: supplyAsset.reserve.symbol,
+          amount: supplyAsset.underlyingBalance,
+          amountInUSD: supplyAsset.underlyingBalanceUSD,
+        };
+      })
+    : [];
+
+  const borrowsAssets =
+    toUserSummaryForMigration && userMigrationReserves
+      ? selectSelectedBorrowReservesForMigrationV3(
+          selectedMigrationBorrowAssets,
           toUserSummaryForMigration,
           userMigrationReserves
-        ),
-      }),
-      [userMigrationReserves, toUserSummaryForMigration]
-    )
-  );
-
-  const supplyAssets = supplyPositions.map((supplyAsset) => {
-    return {
-      underlyingAsset: supplyAsset.underlyingAsset,
-      iconSymbol: supplyAsset.reserve.iconSymbol,
-      symbol: supplyAsset.reserve.symbol,
-      amount: supplyAsset.underlyingBalance,
-      amountInUSD: supplyAsset.underlyingBalanceUSD,
-    };
-  });
-
-  const borrowsAssets = borrowPositions.map((asset) => {
-    return {
-      underlyingAsset: asset.debtKey,
-      iconSymbol: asset.reserve.iconSymbol,
-      symbol: asset.reserve.symbol,
-      amount:
-        asset.interestRate == InterestRate.Stable ? asset.stableBorrows : asset.variableBorrows,
-      amountInUSD:
-        asset.interestRate == InterestRate.Stable
-          ? asset.stableBorrowsUSD
-          : asset.variableBorrowsUSD,
-    };
-  });
+        ).map((asset) => {
+          return {
+            underlyingAsset: asset.debtKey,
+            iconSymbol: asset.reserve.iconSymbol,
+            symbol: asset.reserve.symbol,
+            amount:
+              asset.interestRate == InterestRate.Stable
+                ? asset.stableBorrows
+                : asset.variableBorrows,
+            amountInUSD:
+              asset.interestRate == InterestRate.Stable
+                ? asset.stableBorrowsUSD
+                : asset.variableBorrowsUSD,
+          };
+        })
+      : [];
 
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
@@ -149,6 +154,8 @@ export const MigrateV3ModalContent = ({
 
       {userMigrationReserves && toUserSummaryForMigration && (
         <MigrateV3Actions
+          fromMarketData={fromMarketData}
+          toMarketData={toMarketData}
           isWrongNetwork={isWrongNetwork}
           blocked={false}
           userMigrationReserves={userMigrationReserves}

@@ -6,12 +6,15 @@ import { UserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMi
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { MigrationMarketDataType } from 'pages/v3-migration.page';
 
 export type MigrateV3ActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
   userMigrationReserves: UserMigrationReserves;
   toUserSummaryForMigration: UserSummaryForMigration;
+  fromMarketData: MigrationMarketDataType;
+  toMarketData: MigrationMarketDataType;
 };
 
 export const MigrateV3Actions = ({
@@ -19,6 +22,8 @@ export const MigrateV3Actions = ({
   blocked,
   userMigrationReserves,
   toUserSummaryForMigration,
+  fromMarketData,
+  toMarketData
 }: MigrateV3ActionsProps) => {
   const migrateWithPermits = useRootStore((store) => store.migrateWithPermits);
   const migrateWithoutPermits = useRootStore((store) => store.migrateWithoutPermits);

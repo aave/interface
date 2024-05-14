@@ -31,6 +31,7 @@ import {
   selectUserSupplyAssetsForMigrationNoPermit,
   selectUserSupplyIncreasedReservesForMigrationPermits,
 } from './v3MigrationSelectors';
+import { MigrationMarketDataType } from 'pages/v3-migration.page';
 
 export type MigrationSelectedAsset = {
   underlyingAsset: string;
@@ -77,8 +78,8 @@ export type V3MigrationSlice = {
   ) => Approval[];
   toggleMigrationSelectedSupplyAsset: (assetName: string) => void;
   toggleMigrationSelectedBorrowAsset: (asset: MigrationSelectedBorrowAsset) => void;
-  getMigratorAddress: () => string;
-  getMigrationServiceInstance: () => V3MigrationHelperService;
+  getMigratorAddress: (marketData: MigrationMarketDataType) => string;
+  getMigrationServiceInstance: (fromMarketData: MigrationMarketDataType, toMarketData: MigrationMarketDataType) => V3MigrationHelperService;
   migrateWithPermits: (
     signature: SignatureLike[],
     deadline: BigNumberish,
@@ -86,6 +87,8 @@ export type V3MigrationSlice = {
     userMigrationReserves: UserMigrationReserves
   ) => Promise<EthereumTransactionTypeExtended[]>;
   migrateWithoutPermits: (
+    fromMarketData: MigrationMarketDataType,
+    toMarketData: MigrationMarketDataType,
     toUserSummary: UserSummaryForMigration,
     userMigrationReserves: UserMigrationReserves
   ) => Promise<EthereumTransactionTypeExtended[]>;
@@ -283,7 +286,7 @@ export const createV3MigrationSlice: StateCreator<
       set({ approvalPermitsForMigrationAssets: combinedPermitsPayloads });
       return combinedPermitsPayloads;
     },
-    migrateWithoutPermits: (toUserSummary, userMigrationReserves) => {
+    migrateWithoutPermits: (fromMarketData, toMarketData, toUserSummary, userMigrationReserves) => {
       const timestamp = dayjs().unix();
       set({ timestamp });
       const supplyAssets = selectUserSupplyAssetsForMigrationNoPermit(
@@ -303,7 +306,7 @@ export const createV3MigrationSlice: StateCreator<
         ({ underlyingAsset, amount }) => ({ debtTokenAddress: underlyingAsset, amount })
       );
 
-      return get().getMigrationServiceInstance().migrate({
+      return get().getMigrationServiceInstance(fromMarketData, toMarketData).migrate({
         repayAssets,
         supplyAssets,
         user,
@@ -348,34 +351,28 @@ export const createV3MigrationSlice: StateCreator<
         signedSupplyPermits: supplyPermits,
       });
     },
-    getMigratorAddress: () => {
-      return get().currentMarketData.addresses.V3_MIGRATOR || '';
+    getMigratorAddress: (marketData: MigrationMarketDataType) => {
+      return marketData.addresses.V3_MIGRATOR || '';
     },
-    getMigrationServiceInstance: () => {
-      const address = get().getMigratorAddress();
-      const migratorInstance = get().migrationServiceInstances[address];
+    getMigrationServiceInstance: (fromMarketData, toMarketData) => {
+      const migratorAddress = get().getMigratorAddress(fromMarketData);
+      const migratorInstance = get().migrationServiceInstances[migratorAddress];
       if (migratorInstance) {
         return migratorInstance;
       }
-      const provider = get().jsonRpcProvider();
-      const migratorAddress = get().getMigratorAddress();
+      const provider = get().jsonRpcProvider(fromMarketData.chainId);
 
-      // TODO: make it dynamic when network switch will be there
-      const currentMarketV3Data = selectCurrentChainIdV3MarketData(
-        get().currentChainId,
-        get().currentNetworkConfig
-      );
       const pool = new Pool(provider, {
-        POOL: currentMarketV3Data.addresses.LENDING_POOL,
-        REPAY_WITH_COLLATERAL_ADAPTER: currentMarketV3Data.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
-        SWAP_COLLATERAL_ADAPTER: currentMarketV3Data.addresses.SWAP_COLLATERAL_ADAPTER,
-        WETH_GATEWAY: currentMarketV3Data.addresses.WETH_GATEWAY,
-        L2_ENCODER: currentMarketV3Data.addresses.L2_ENCODER,
+        POOL: toMarketData.addresses.LENDING_POOL,
+        REPAY_WITH_COLLATERAL_ADAPTER: toMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
+        SWAP_COLLATERAL_ADAPTER: toMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
+        WETH_GATEWAY: toMarketData.addresses.WETH_GATEWAY,
+        L2_ENCODER: toMarketData.addresses.L2_ENCODER,
       });
       const migrationServiceInstances = get().migrationServiceInstances;
       const newMigratorInstance = new V3MigrationHelperService(provider, migratorAddress, pool);
       set({
-        migrationServiceInstances: { ...migrationServiceInstances, [address]: newMigratorInstance },
+        migrationServiceInstances: { ...migrationServiceInstances, [migratorAddress]: newMigratorInstance },
       });
       return newMigratorInstance;
     },
