@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-05-07 00:17\n"
+"PO-Revision-Date: 2024-05-16 18:04\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -358,8 +358,8 @@ msgstr "Zu liefernde Vermögenswerte"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawError.tsx
-msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
-msgstr "Vermögenswerte mit null LTV ({assetsBlockingWithdraw}) müssen als Sicherheit zurückgezogen oder deaktiviert werden, um diese Aktion durchführen zu können"
+msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "At a discount"
@@ -2831,8 +2831,8 @@ msgid "User does not have outstanding variable rate debt on this reserve"
 msgstr "Der Benutzer hat keine ausstehenden variabel verzinslichen Schulden in dieser Reserve."
 
 #: src/ui-config/errorMapping.tsx
-msgid "User is in isolation mode"
-msgstr "Der Benutzer befindet sich im Isolationsmodus."
+msgid "User is in isolation mode or LTV is zero"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
