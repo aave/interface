@@ -5,12 +5,12 @@ import { Warning } from 'src/components/primitives/Warning';
 import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { zeroLTVBlockingWithdraw } from '../utils';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { CollateralChangeActions } from './CollateralChangeActions';
 
@@ -57,7 +57,7 @@ export const CollateralChangeModalContent = ({
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
 
-  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
@@ -96,8 +96,8 @@ export const CollateralChangeModalContent = ({
       case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
         return (
           <Trans>
-            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
-            collateral to perform this action
+            Assets with zero LTV ({assetsBlockingWithdraw.join(', ')}) must be withdrawn or disabled
+            as collateral to perform this action
           </Trans>
         );
       default:

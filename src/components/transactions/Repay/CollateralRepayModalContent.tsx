@@ -21,6 +21,7 @@ import {
 import { useCollateralRepaySwap } from 'src/hooks/paraswap/useCollateralRepaySwap';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { calculateHFAfterRepay } from 'src/utils/hfUtils';
@@ -33,7 +34,7 @@ import {
   DetailsNumberLineWithSub,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { ErrorType, useFlashloan, zeroLTVBlockingWithdraw } from '../utils';
+import { ErrorType, useFlashloan } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { CollateralRepayActions } from './CollateralRepayActions';
 
@@ -192,7 +193,7 @@ export function CollateralRepayModalContent({
   const exactOutputAmount = swapVariant === 'exactIn' ? outputAmount : repayAmount;
   const exactOutputUsd = swapVariant === 'exactIn' ? outputAmountUSD : repayAmountUsdValue;
 
-  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
   let blockingError: ErrorType | undefined = undefined;
 
@@ -214,8 +215,8 @@ export function CollateralRepayModalContent({
       case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
         return (
           <Trans>
-            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
-            collateral to perform this action
+            Assets with zero LTV ({assetsBlockingWithdraw.join(', ')}) must be withdrawn or disabled
+            as collateral to perform this action
           </Trans>
         );
       case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
