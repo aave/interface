@@ -18,6 +18,7 @@ import { useTokenInForTokenOut } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
@@ -29,7 +30,6 @@ import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { zeroLTVBlockingWithdraw } from '../utils';
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawAndSwitchActions } from './WithdrawAndSwitchActions';
 import { WithdrawAndSwitchTxSuccessView } from './WithdrawAndSwitchSuccess';
@@ -130,7 +130,7 @@ export const WithdrawAndSwitchModalContent = ({
 
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
 
-  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
   const withdrawAmount = isMaxSelected ? maxAmountToWithdraw.toString(10) : _amount;
 

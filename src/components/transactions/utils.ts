@@ -1,9 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 import { CollateralType } from 'src/helpers/types';
-import {
-  ComputedUserReserveData,
-  ExtendedFormattedUser,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export enum ErrorType {
   SUPPLY_CAP_REACHED,
@@ -42,21 +39,6 @@ export const checkRequiresApproval = ({
   } else {
     return true;
   }
-};
-
-export const zeroLTVBlockingWithdraw = (user: ExtendedFormattedUser): string[] => {
-  const zeroLTVBlockingWithdraw: string[] = [];
-  user.userReservesData.forEach((userReserve) => {
-    if (
-      Number(userReserve.scaledATokenBalance) > 0 &&
-      userReserve.reserve.baseLTVasCollateral === '0' &&
-      userReserve.usageAsCollateralEnabledOnUser &&
-      userReserve.reserve.reserveLiquidationThreshold !== '0'
-    ) {
-      zeroLTVBlockingWithdraw.push(userReserve.reserve.symbol);
-    }
-  });
-  return zeroLTVBlockingWithdraw;
 };
 
 export const getAssetCollateralType = (

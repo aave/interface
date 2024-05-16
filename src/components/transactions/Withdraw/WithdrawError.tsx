@@ -60,8 +60,8 @@ export const useWithdrawError = ({
     ),
     [ErrorType.ZERO_LTV_WITHDRAW_BLOCKED]: (
       <Trans>
-        Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral
-        to perform this action
+        Assets with zero LTV ({assetsBlockingWithdraw.join(', ')}) must be withdrawn or disabled as
+        collateral to perform this action
       </Trans>
     ),
   };

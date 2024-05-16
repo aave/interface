@@ -7,6 +7,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useRootStore } from 'src/store/root';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -21,7 +22,6 @@ import {
   DetailsUnwrapSwitch,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { zeroLTVBlockingWithdraw } from '../utils';
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawActions } from './WithdrawActions';
 import { useWithdrawError } from './WithdrawError';
@@ -72,7 +72,7 @@ export const WithdrawModalContent = ({
     }
   };
 
-  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
   const healthFactorAfterWithdraw = calculateHFAfterWithdraw({
     user,

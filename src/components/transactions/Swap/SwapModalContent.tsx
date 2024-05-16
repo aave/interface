@@ -16,6 +16,7 @@ import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
@@ -30,7 +31,7 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { ErrorType, getAssetCollateralType, useFlashloan, zeroLTVBlockingWithdraw } from '../utils';
+import { ErrorType, getAssetCollateralType, useFlashloan } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SwapActions } from './SwapActions';
 import { SwapModalDetails } from './SwapModalDetails';
@@ -128,7 +129,7 @@ export const SwapModalContent = ({
     marketReferencePriceInUsd
   );
 
-  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
   let blockingError: ErrorType | undefined = undefined;
   if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
@@ -146,8 +147,8 @@ export const SwapModalContent = ({
       case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
         return (
           <Trans>
-            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
-            collateral to perform this action
+            Assets with zero LTV ({assetsBlockingWithdraw.join(', ')}) must be withdrawn or disabled
+            as collateral to perform this action
           </Trans>
         );
       case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
