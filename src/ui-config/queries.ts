@@ -127,9 +127,9 @@ export const queryKeysFactory = {
     token,
     'poolApprovedAmount',
   ],
-  approvedAmount: (user: string, token: string, spender: string, marketData: MarketDataType) => [
+  approvedAmount: (user: string, token: string, spender: string, chainId: number) => [
     ...queryKeysFactory.user(user),
-    ...queryKeysFactory.market(marketData),
+    chainId,
     token,
     spender,
     'approvedAmount',
@@ -154,6 +154,7 @@ export const queryKeysFactory = {
     ...suplies.map((supply) => supply.underlyingAsset),
     ...queryKeysFactory.market(marketFrom),
     ...queryKeysFactory.market(marketTo),
+    'migrationExceptions',
   ],
   tokensBalance: (tokenList: TokenInfo[], chainId: number, user: string) => [
     ...queryKeysFactory.user(user),

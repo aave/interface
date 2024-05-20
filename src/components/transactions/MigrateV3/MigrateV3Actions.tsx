@@ -4,14 +4,18 @@ import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { UserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
 import { UserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMigration';
 import { useRootStore } from 'src/store/root';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { useApprovedAmounts } from 'src/hooks/useApprovedAmount';
 
 export type MigrateV3ActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
   userMigrationReserves: UserMigrationReserves;
   toUserSummaryForMigration: UserSummaryForMigration;
+  fromMarket: MarketDataType;
+  toMarket: MarketDataType;
 };
 
 export const MigrateV3Actions = ({
@@ -19,6 +23,8 @@ export const MigrateV3Actions = ({
   blocked,
   userMigrationReserves,
   toUserSummaryForMigration,
+  fromMarket,
+  toMarket,
 }: MigrateV3ActionsProps) => {
   const migrateWithPermits = useRootStore((store) => store.migrateWithPermits);
   const migrateWithoutPermits = useRootStore((store) => store.migrateWithoutPermits);
