@@ -265,7 +265,7 @@ export const MigrateV3Actions = ({
       blocked={blocked}
       actionText={<Trans>Migrate</Trans>}
       actionInProgressText={<Trans>Migrating</Trans>}
-      tryPermit={usePermit}
+      tryPermit
     />
   );
 };
