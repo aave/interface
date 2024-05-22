@@ -57,7 +57,7 @@ const switchByTool = ({
       }
       cy.get('[data-cy=Modal]').as('Modal');
       cy.get('@Modal').find(`#switch-slippage-selector-button`).click();
-      cy.get('[value="0.01"]').click();
+      cy.get('[value="1.00"]').click();
       cy.wait(2000);
       cy.doConfirm(hasApproval, 'Switch');
     });
