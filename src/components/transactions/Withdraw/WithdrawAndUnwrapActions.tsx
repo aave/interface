@@ -73,7 +73,7 @@ export const WithdrawAndUnwrapAction = ({
     isFetching: fetchingApprovedAmount,
     refetch: fetchApprovedAmount,
   } = useApprovedAmount({
-    chainId: marketData.chainId,
+    marketData: marketData,
     token: poolReserve.aTokenAddress,
     spender: tokenWrapperAddress,
   });
@@ -154,7 +154,7 @@ export const WithdrawAndUnwrapAction = ({
           user,
           poolReserve.aTokenAddress,
           tokenWrapperAddress,
-          marketData.chainId
+          marketData
         ),
       });
     } catch (error) {

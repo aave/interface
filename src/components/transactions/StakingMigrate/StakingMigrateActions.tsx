@@ -64,7 +64,7 @@ export const StakingMigrateActions = ({
     isFetching: fetchingApprovedAmount,
     isFetchedAfterMount,
   } = useApprovedAmount({
-    chainId: currentMarketData.chainId,
+    marketData: currentMarketData,
     token: AaveSafetyModule.STK_ABPT,
     spender: AaveSafetyModule.STK_ABPT_STK_AAVE_WSTETH_BPTV2_MIGRATOR,
   });

@@ -127,9 +127,9 @@ export const queryKeysFactory = {
     token,
     'poolApprovedAmount',
   ],
-  approvedAmount: (user: string, token: string, spender: string, chainId: number) => [
+  approvedAmount: (user: string, token: string, spender: string, marketData: MarketDataType) => [
     ...queryKeysFactory.user(user),
-    chainId,
+    ...queryKeysFactory.market(marketData),
     token,
     spender,
     'approvedAmount',

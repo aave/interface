@@ -1,48 +1,23 @@
-import { ChainId } from '@aave/contract-helpers';
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-import { combineQueries } from './pool/utils';
-
-export const useApprovedAmounts = ({
-  chainId,
-  tokens,
-  spender,
-}: {
-  chainId: ChainId;
-  tokens: string[];
-  spender: string;
-}) => {
-  const { approvedAmountService } = useSharedDependencies();
-  const user = useRootStore((store) => store.account);
-  const approvedQueries = useQueries({
-    queries: tokens.map((token) => ({
-      queryFn: () => approvedAmountService.getApprovedAmount(chainId, user, token, spender),
-      queryKey: queryKeysFactory.approvedAmount(user, token, spender, chainId),
-    })),
-  });
-  return combineQueries([...approvedQueries], (...queries) => {
-    return queries;
-  });
-};
-
 export const useApprovedAmount = ({
-  chainId,
+  marketData,
   token,
   spender,
 }: {
-  chainId: ChainId;
+  marketData: MarketDataType;
   token: string;
   spender: string;
 }) => {
   const { approvedAmountService } = useSharedDependencies();
   const user = useRootStore((store) => store.account);
   return useQuery({
-    queryFn: () => approvedAmountService.getApprovedAmount(chainId, user, token, spender),
-    queryKey: queryKeysFactory.approvedAmount(user, token, spender, chainId),
+    queryFn: () => approvedAmountService.getApprovedAmount(marketData, user, token, spender),
+    queryKey: queryKeysFactory.approvedAmount(user, token, spender, marketData),
   });
 };
 
