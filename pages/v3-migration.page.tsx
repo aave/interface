@@ -91,16 +91,15 @@ export default function V3Migration() {
 
   const { data: fromUserSummaryAndIncentives, isLoading: fromUserSummaryAndIncentivesLoading } =
     useUserSummaryAndIncentives(fromMarketData);
+  const { data: toUserSummaryForMigration, isLoading: toUserSummaryForMigrationLoading } =
+    useUserSummaryAndIncentives(toMarketData);
 
   const { data: toUserReservesData, isLoading: toUserReservesDataLoading } =
     useUserPoolReservesHumanized(toMarketData);
-  const { data: toUserSummaryForMigration, isLoading: toUserSummaryForMigrationLoading } =
-    useUserSummaryAndIncentives(toMarketData);
-  const toUserEModeCategoryId = toUserReservesData?.userEmodeCategoryId || 0;
-
   const { data: userSummaryAfterMigration, isLoading: userSummaryAfterMigrationLoading } =
     useUserSummaryAfterMigration(fromMarketData, toMarketData);
 
+  const toUserEModeCategoryId = toUserReservesData?.userEmodeCategoryId || 0;
   const loading =
     userMigrationReservesLoading ||
     fromUserSummaryAndIncentivesLoading ||
@@ -138,7 +137,7 @@ export default function V3Migration() {
     setFromMarketData(marketData);
   };
 
-  const bottomPanelProps = fromUserSummaryAndIncentives &&
+  const userSummaryBeforeMigration = fromUserSummaryAndIncentives &&
     toUserSummaryForMigration && {
       fromUserSummaryBeforeMigration: fromUserSummaryAndIncentives,
       toUserSummaryBeforeMigration: toUserSummaryForMigration,
@@ -159,7 +158,7 @@ export default function V3Migration() {
           >
             <MigrationBottomPanel
               userSummaryAfterMigration={userSummaryAfterMigration}
-              userSummaryBeforeMigration={bottomPanelProps}
+              userSummaryBeforeMigration={userSummaryBeforeMigration}
               disableButton={selectedSupplyAssets.length === 0 && selectedBorrowAssets.length === 0}
               enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
               loading={loading}

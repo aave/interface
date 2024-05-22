@@ -5,6 +5,8 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
+import { combineQueries } from './pool/utils';
+
 export const useApprovedAmounts = ({
   chainId,
   tokens,
@@ -16,11 +18,14 @@ export const useApprovedAmounts = ({
 }) => {
   const { approvedAmountService } = useSharedDependencies();
   const user = useRootStore((store) => store.account);
-  return useQueries({
+  const approvedQueries = useQueries({
     queries: tokens.map((token) => ({
       queryFn: () => approvedAmountService.getApprovedAmount(chainId, user, token, spender),
       queryKey: queryKeysFactory.approvedAmount(user, token, spender, chainId),
     })),
+  });
+  return combineQueries([...approvedQueries], (...queries) => {
+    return queries;
   });
 };
 

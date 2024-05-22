@@ -137,7 +137,8 @@ export interface PoolSlice {
     approval: Approval & {
       deadline: string;
       spender: string;
-    }
+    },
+    opts?: GenerateSignatureRequestOpts
   ) => Promise<string>;
   generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => PopulatedTransaction;
   getCorrectPoolBundle: () => PoolBundleInterface | LendingPoolBundleInterface;
@@ -345,19 +346,18 @@ export const createPoolSlice: StateCreator<
         permitSignature,
       });
     },
-    generateCreditDelegationSignatureRequest: async ({
-      amount,
-      deadline,
-      underlyingAsset,
-      spender,
-    }) => {
+    generateCreditDelegationSignatureRequest: async (
+      { amount, deadline, underlyingAsset, spender },
+      opts = {}
+    ) => {
       const user = get().account;
-      const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
+      const provider = get().jsonRpcProvider(opts.chainId);
+      const { getTokenData } = new ERC20Service(provider);
 
       const { name } = await getTokenData(underlyingAsset);
-      const chainId = get().currentChainId;
+      const { chainId } = await provider.getNetwork();
 
-      const erc20_2612Service = new ERC20_2612Service(get().jsonRpcProvider());
+      const erc20_2612Service = new ERC20_2612Service(provider);
 
       const nonce = await erc20_2612Service.getNonce({
         token: underlyingAsset,
