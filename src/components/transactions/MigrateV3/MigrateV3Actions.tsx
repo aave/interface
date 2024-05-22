@@ -50,20 +50,23 @@ export const MigrateV3Actions = ({
     borrow: [],
   });
   const { signTxData, sendTx } = useWeb3Context();
-  const user = useRootStore((store) => store.account);
-  const walletApprovalMethodPreference = useRootStore(
-    (store) => store.walletApprovalMethodPreference
-  );
-  const selectedMigrationSupplyAssets = useRootStore(
-    (store) => store.selectedMigrationSupplyAssets
-  );
-  const selectedMigrationBorrowAssets = useRootStore(
-    (store) => store.selectedMigrationBorrowAssets
-  );
-  const generateCreditDelegationSignatureRequest = useRootStore(
-    (store) => store.generateCreditDelegationSignatureRequest
-  );
-  const generateSignatureRequest = useRootStore((store) => store.generateSignatureRequest);
+  const [
+    user,
+    walletApprovalMethodPreference,
+    selectedMigrationSupplyAssets,
+    selectedMigrationBorrowAssets,
+    generateCreditDelegationSignatureRequest,
+    generateSignatureRequest,
+    estimateGasLimit,
+  ] = useRootStore((store) => [
+    store.account,
+    store.walletApprovalMethodPreference,
+    store.selectedMigrationSupplyAssets,
+    store.selectedMigrationBorrowAssets,
+    store.generateCreditDelegationSignatureRequest,
+    store.generateSignatureRequest,
+    store.estimateGasLimit,
+  ]);
   const { approvalTxState, mainTxState, setApprovalTxState, setTxError, setMainTxState } =
     useModalContext();
 
@@ -118,12 +121,15 @@ export const MigrateV3Actions = ({
                 (supplyAsset) => supplyAsset.aToken === supplyApproval.to
               );
               invariant(supplyAsset, 'Supply asset not found');
-              const signatureRequest = await generateSignatureRequest({
-                token: supplyAsset.aToken,
-                amount: supplyAsset.amount,
-                deadline: supplyAsset.deadline.toString(),
-                spender: fromMarket.addresses.V3_MIGRATOR || '',
-              });
+              const signatureRequest = await generateSignatureRequest(
+                {
+                  token: supplyAsset.aToken,
+                  amount: supplyAsset.amount,
+                  deadline: supplyAsset.deadline.toString(),
+                  spender: fromMarket.addresses.V3_MIGRATOR || '',
+                },
+                { chainId: fromMarket.chainId }
+              );
               return {
                 deadline: supplyAsset.deadline,
                 aToken: supplyAsset.aToken,
@@ -139,11 +145,14 @@ export const MigrateV3Actions = ({
               );
               invariant(borrowAsset, 'Borrow asset not found');
               const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-              const signatureRequest = await generateCreditDelegationSignatureRequest({
-                ...borrowAsset,
-                deadline,
-                spender: fromMarket.addresses.V3_MIGRATOR || '',
-              });
+              const signatureRequest = await generateCreditDelegationSignatureRequest(
+                {
+                  ...borrowAsset,
+                  deadline,
+                  spender: fromMarket.addresses.V3_MIGRATOR || '',
+                },
+                { chainId: fromMarket.chainId }
+              );
               return {
                 deadline,
                 debtToken: borrowAsset.underlyingAsset,
@@ -217,7 +226,7 @@ export const MigrateV3Actions = ({
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
-      const tx = migrationService.getMigrationTx(
+      let tx = migrationService.getMigrationTx(
         fromMarket,
         toMarket,
         user,
@@ -226,6 +235,7 @@ export const MigrateV3Actions = ({
         signatures.supply,
         signatures.borrow
       );
+      tx = await estimateGasLimit(tx, fromMarket.chainId);
       const response = await sendTx(tx);
       await response.wait(1);
       setMainTxState({
