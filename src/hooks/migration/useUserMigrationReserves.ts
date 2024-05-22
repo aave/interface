@@ -1,19 +1,12 @@
-import {
-  ReservesDataHumanized,
-  ReservesIncentiveDataHumanized,
-  valueToWei,
-} from '@aave/contract-helpers';
+import { valueToWei } from '@aave/contract-helpers';
 import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
-import dayjs from 'dayjs';
 import memoize from 'micro-memoize';
-import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { useRootStore } from 'src/store/root';
 import {
   IsolatedReserve,
   MigrationDisabled,
   MigrationUserReserve,
   selectDefinitiveSupplyAssetForMigration,
-  selectFormatUserSummaryForMigration,
   selectIsolationModeForMigration,
   selectMigrationUnderlyingAssetWithExceptions,
   selectSplittedBorrowsForMigration,
@@ -24,15 +17,13 @@ import { MigrationException, MigrationSelectedAsset } from 'src/store/v3Migratio
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { FormattedReservesAndIncentives } from '../pool/usePoolFormattedReserves';
-import { usePoolReservesHumanized } from '../pool/usePoolReserves';
-import { usePoolReservesIncentivesHumanized } from '../pool/usePoolReservesIncentives';
-import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
 import {
   UserSummaryAndIncentives,
   useUserSummaryAndIncentives,
 } from '../pool/useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from '../pool/utils';
 import { useMigrationExceptionsSupplyBalance } from './useMigrationExceptionsSupplyBalance';
+import { UserSummaryForMigration, useUserSummaryForMigration } from './useUserSummaryForMigration';
 
 export type SupplyMigrationReserve = ComputedUserReserve<FormattedReservesAndIncentives> & {
   usageAsCollateralEnabledOnUserV3: boolean;
@@ -58,27 +49,18 @@ export interface UserMigrationReserves {
 
 const select = memoize(
   (
-    toReservesData: ReservesDataHumanized,
-    toUserReservesData: UserReservesDataHumanized,
-    toReservesIncentivesData: ReservesIncentiveDataHumanized[],
+    toUserSummaryForMigration: UserSummaryForMigration,
     fromUserSummaryAndIncentives: UserSummaryAndIncentives,
     migrationExceptions: Record<string, MigrationException>,
     selectedMigrationSupplyAssets: MigrationSelectedAsset[]
   ): UserMigrationReserves => {
     const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } =
-      selectFormatUserSummaryForMigration(
-        toReservesData.reservesData,
-        toReservesIncentivesData,
-        toUserReservesData.userReserves,
-        toReservesData.baseCurrencyData,
-        dayjs().unix(),
-        toUserReservesData.userEmodeCategoryId
-      );
+      toUserSummaryForMigration;
 
     const { userReservesData: userReservesV2Data, ...v2ReservesUserSummary } =
       fromUserSummaryAndIncentives;
 
-    const userEmodeCategoryId = toUserReservesData.userEmodeCategoryId;
+    const userEmodeCategoryId = toUserSummaryForMigration.userEmodeCategoryId;
 
     let isolatedReserveV3: IsolatedReserve | undefined =
       selectIsolationModeForMigration(v3ReservesUserSummary);
@@ -245,9 +227,7 @@ export const useUserMigrationReserves = (
   migrationFrom: MarketDataType,
   migrationTo: MarketDataType
 ): SimplifiedUseQueryResult<UserMigrationReserves> => {
-  const toReservesDataQuery = usePoolReservesHumanized(migrationTo);
-  const toUserReservesDataQuery = useUserPoolReservesHumanized(migrationTo);
-  const toReservesIncentivesDataQuery = usePoolReservesIncentivesHumanized(migrationTo);
+  const toUserSummaryForMigrationDataQuery = useUserSummaryForMigration(migrationTo);
   const fromUserSummaryAndIncentives = useUserSummaryAndIncentives(migrationFrom);
 
   const userReservesV2Data = fromUserSummaryAndIncentives.data?.userReservesData;
@@ -267,16 +247,12 @@ export const useUserMigrationReserves = (
   );
 
   const selector = (
-    toReservesData: ReservesDataHumanized,
-    toUserReservesData: UserReservesDataHumanized,
-    toReservesIncentivesData: ReservesIncentiveDataHumanized[],
+    toUserSummaryForMigration: UserSummaryForMigration,
     fromUserSummaryAndIncentives: UserSummaryAndIncentives,
     migrationsExceptions: Record<string, MigrationException>
   ) => {
     return select(
-      toReservesData,
-      toUserReservesData,
-      toReservesIncentivesData,
+      toUserSummaryForMigration,
       fromUserSummaryAndIncentives,
       migrationsExceptions,
       selectedMigrationSupplyAssets
@@ -285,9 +261,7 @@ export const useUserMigrationReserves = (
 
   return combineQueries(
     [
-      toReservesDataQuery,
-      toUserReservesDataQuery,
-      toReservesIncentivesDataQuery,
+      toUserSummaryForMigrationDataQuery,
       fromUserSummaryAndIncentives,
       migrationsExceptionsQuery,
     ] as const,

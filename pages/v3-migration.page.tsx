@@ -8,7 +8,6 @@ import { ContentContainer } from 'src/components/ContentContainer';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
 import { useUserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
-import { useUserPoolReservesHumanized } from 'src/hooks/pool/useUserPoolReserves';
 import { useUserSummaryAndIncentives } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -94,16 +93,13 @@ export default function V3Migration() {
   const { data: toUserSummaryForMigration, isLoading: toUserSummaryForMigrationLoading } =
     useUserSummaryAndIncentives(toMarketData);
 
-  const { data: toUserReservesData, isLoading: toUserReservesDataLoading } =
-    useUserPoolReservesHumanized(toMarketData);
   const { data: userSummaryAfterMigration, isLoading: userSummaryAfterMigrationLoading } =
     useUserSummaryAfterMigration(fromMarketData, toMarketData);
 
-  const toUserEModeCategoryId = toUserReservesData?.userEmodeCategoryId || 0;
+  const toUserEModeCategoryId = toUserSummaryForMigration?.userEmodeCategoryId || 0;
   const loading =
     userMigrationReservesLoading ||
     fromUserSummaryAndIncentivesLoading ||
-    toUserReservesDataLoading ||
     toUserSummaryForMigrationLoading ||
     userSummaryAfterMigrationLoading;
 
