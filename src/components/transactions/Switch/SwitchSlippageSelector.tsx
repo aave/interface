@@ -3,6 +3,8 @@ import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
+  InputAdornment,
+  InputBase,
   Menu,
   SvgIcon,
   ToggleButton,
@@ -11,16 +13,25 @@ import {
 } from '@mui/material';
 import { MouseEvent, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Warning } from 'src/components/primitives/Warning';
 
-const DEFAULT_SLIPPAGE_OPTIONS = ['0.001', '0.005', '0.01'];
+import { ValidationData } from './SwitchModalContent';
+
+const DEFAULT_SLIPPAGE_OPTIONS = ['0.10', '0.50', '1.00'];
 
 type SwitchSlippageSelectorProps = {
   slippage: string;
   setSlippage: (value: string) => void;
+  slippageValidation?: ValidationData;
 };
 
-export const SwitchSlippageSelector = ({ slippage, setSlippage }: SwitchSlippageSelectorProps) => {
+export const SwitchSlippageSelector = ({
+  slippage,
+  setSlippage,
+  slippageValidation,
+}: SwitchSlippageSelectorProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+  const [isCustomSlippage, setIsCustomSlippage] = useState(false);
 
   const open = Boolean(anchorEl);
 
@@ -32,11 +43,24 @@ export const SwitchSlippageSelector = ({ slippage, setSlippage }: SwitchSlippage
     setAnchorEl(null);
   };
 
+  const handleCustomSlippageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSlippage(event.target.value);
+    setIsCustomSlippage(true);
+  };
+
+  const handlePresetSlippageChange = (value: string) => {
+    setSlippage(value);
+    setIsCustomSlippage(false);
+  };
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <Typography variant="caption" color="text.secondary">
         <Trans>Slippage</Trans>
         <Menu
+          sx={{
+            maxWidth: '330px',
+          }}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
@@ -57,11 +81,15 @@ export const SwitchSlippageSelector = ({ slippage, setSlippage }: SwitchSlippage
           <Typography variant="subheader2" mb={5}>
             <Trans>Max slippage</Trans>
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: '8px' }}>
             <ToggleButtonGroup
-              sx={{ backgroundColor: 'background.surface', borderRadius: '6px', p: '2px' }}
+              sx={{
+                backgroundColor: 'background.surface',
+                borderRadius: '6px',
+                borderColor: 'background.surface',
+              }}
               exclusive
-              onChange={(_, value) => setSlippage(value)}
+              onChange={(_, value) => handlePresetSlippageChange(value)}
             >
               {DEFAULT_SLIPPAGE_OPTIONS.map((option) => (
                 <ToggleButton
@@ -69,15 +97,17 @@ export const SwitchSlippageSelector = ({ slippage, setSlippage }: SwitchSlippage
                     borderRadius: 1,
                     py: 1,
                     px: 2,
-                    borderColor: 'transparent',
-                    backgroundColor: option === slippage ? 'background.paper' : 'transparent',
+                    borderWidth: 2,
+                    backgroundColor:
+                      option === slippage && !isCustomSlippage ? 'background.paper' : 'transparent',
                   }}
                   value={option}
                   key={option}
                 >
                   <FormattedNumber
                     value={option}
-                    percent
+                    visibleDecimals={2}
+                    symbol="%"
                     variant="subheader2"
                     color="primary.main"
                     symbolsColor="primary.main"
@@ -85,15 +115,45 @@ export const SwitchSlippageSelector = ({ slippage, setSlippage }: SwitchSlippage
                 </ToggleButton>
               ))}
             </ToggleButtonGroup>
+            <InputBase
+              type="percent"
+              value={isCustomSlippage ? slippage : ''}
+              onChange={handleCustomSlippageChange}
+              placeholder="Custom"
+              endAdornment={
+                <InputAdornment position="end">
+                  <Typography variant="caption" color="text.muted">
+                    %
+                  </Typography>
+                </InputAdornment>
+              }
+              sx={{
+                fontSize: '12px',
+                px: 2,
+                width: '120px',
+                border: 1,
+                borderWidth: '1px',
+                backgroundColor: 'background.surface',
+                borderColor: slippageValidation
+                  ? `${slippageValidation.severity}.main`
+                  : 'background.surface',
+                borderRadius: '4px',
+              }}
+            />
           </Box>
+          {slippageValidation && (
+            <Warning sx={{ mb: 0, mt: 2 }} severity={slippageValidation.severity}>
+              {slippageValidation.message}
+            </Warning>
+          )}
         </Menu>
       </Typography>
       <FormattedNumber
         variant="caption"
-        color="text.primary"
+        color={slippageValidation ? `${slippageValidation.severity}.main` : 'text.primary'}
         value={slippage}
         visibleDecimals={2}
-        percent
+        symbol="%"
       />
       <Button
         id="switch-slippage-selector-button"
