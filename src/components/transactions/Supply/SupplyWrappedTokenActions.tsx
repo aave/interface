@@ -70,7 +70,7 @@ export const SupplyWrappedTokenActions = ({
     isFetching,
     refetch: fetchApprovedAmount,
   } = useApprovedAmount({
-    chainId: marketData.chainId,
+    marketData,
     token: tokenIn,
     spender: tokenWrapperAddress,
   });
@@ -175,12 +175,7 @@ export const SupplyWrappedTokenActions = ({
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       queryClient.invalidateQueries({
-        queryKey: queryKeysFactory.approvedAmount(
-          user,
-          tokenIn,
-          tokenWrapperAddress,
-          marketData.chainId
-        ),
+        queryKey: queryKeysFactory.approvedAmount(user, tokenIn, tokenWrapperAddress, marketData),
       });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);

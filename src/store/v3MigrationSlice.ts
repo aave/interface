@@ -1,6 +1,5 @@
 import { InterestRate, V3MigrationHelperService } from '@aave/contract-helpers';
 import { produce } from 'immer';
-import { Approval } from 'src/helpers/useTransactionHandler';
 import {
   BorrowMigrationReserve,
   SupplyMigrationReserve,
@@ -45,7 +44,6 @@ export type V3MigrationSlice = {
   selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[];
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
   timestamp: number;
-  approvalPermitsForMigrationAssets: Array<Approval>;
   // ACTIONS
   toggleMigrationSelectedSupplyAsset: (assetName: string) => void;
   toggleMigrationSelectedBorrowAsset: (asset: MigrationSelectedBorrowAsset) => void;
@@ -66,7 +64,6 @@ export const createV3MigrationSlice: StateCreator<
     selectedMigrationBorrowAssets: [],
     migrationServiceInstances: {},
     timestamp: 0,
-    approvalPermitsForMigrationAssets: [],
     toggleMigrationSelectedSupplyAsset: (underlyingAsset: string) => {
       set((state) =>
         produce(state, (draft) => {
