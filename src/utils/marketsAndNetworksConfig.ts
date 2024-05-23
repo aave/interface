@@ -4,6 +4,8 @@ import { ProviderWithSend } from 'src/components/transactions/GovVote/temporary/
 
 import {
   CustomMarket,
+  ExternalCustomMarket,
+  externalMarketsData as _externalMarketsData,
   MarketDataType,
   marketsData as _marketsData,
 } from '../ui-config/marketsConfig';
@@ -66,6 +68,21 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
   }
   return acc;
 }, {} as { [key: string]: BaseNetworkConfig });
+
+export const externalMarketsData = Object.keys(_externalMarketsData).reduce((acc, value) => {
+  acc[value] = _externalMarketsData[value as keyof typeof ExternalCustomMarket];
+  if (
+    FORK_ENABLED &&
+    _externalMarketsData[value as keyof typeof ExternalCustomMarket].chainId === FORK_BASE_CHAIN_ID
+  ) {
+    acc[`fork_${value}`] = {
+      ..._externalMarketsData[value as keyof typeof ExternalCustomMarket],
+      chainId: FORK_CHAIN_ID,
+      isFork: true,
+    };
+  }
+  return acc;
+}, {} as { [key: string]: MarketDataType });
 
 /**
  * Generates network configs based on marketsData & fork settings.

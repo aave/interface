@@ -14,10 +14,12 @@ import {
 } from '@mui/material';
 import { FC, useState } from 'react';
 import { HealthFactorNumber } from 'src/components/HealthFactorNumber';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { ExternalCustomMarket, MarketDataType } from 'src/ui-config/marketsConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 const formatMarketName = (market: MarketDataType) => {
+  if (market.market === ExternalCustomMarket.proto_spark_ethereum_v3)
+    return `Spark - ${market.marketTitle}${market.isFork ? ' Fork' : ''}`;
   return `Aave ${market.v3 ? 'V3' : 'V2'} - ${market.marketTitle}${market.isFork ? ' Fork' : ''}`;
 };
 

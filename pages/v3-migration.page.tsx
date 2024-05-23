@@ -22,6 +22,7 @@ import { selectCurrentChainIdV3MarketData } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
 import {
   CustomMarket,
+  externalMarketsData,
   getNetworkConfig,
   MarketDataType,
   marketsData,
@@ -32,6 +33,13 @@ const MigrateV3Modal = dynamic(() =>
     (module) => module.MigrateV3Modal
   )
 );
+
+const EXTERNAL_MARKETS_TO_MIGRATE = Object.keys(externalMarketsData).map((key) => {
+  const market = externalMarketsData[key];
+  return {
+    ...market,
+  };
+});
 
 const AAVE_MARKETS_TO_MIGRATE = Object.keys(marketsData)
   .map((key) => {
@@ -46,6 +54,10 @@ const selectableMarkets = [
   {
     title: 'Aave V2 Markets',
     markets: AAVE_MARKETS_TO_MIGRATE,
+  },
+  {
+    title: 'Spark Markets',
+    markets: EXTERNAL_MARKETS_TO_MIGRATE,
   },
 ];
 
