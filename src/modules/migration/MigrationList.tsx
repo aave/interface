@@ -7,8 +7,8 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
-import { useRootStore } from 'src/store/root';
 import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { MigrationMobileList } from './MigrationMobileList';
 import { MigrationSelectionBox } from './MigrationSelectionBox';
@@ -28,6 +28,7 @@ const borrowListHeaders = [
 ];
 
 interface MigrationListProps {
+  toMarket: MarketDataType;
   titleComponent: ReactNode;
   children: ReactNode;
   onSelectAllClick: () => void;
@@ -56,11 +57,10 @@ export const MigrationList = ({
   numAvailable,
   disabled,
   isolatedReserveV3,
+  toMarket,
 }: MigrationListProps) => {
   const theme = useTheme();
-  const { currentMarket, currentMarketData } = useRootStore();
-  const marketName = currentMarketData.marketTitle;
-  const marketLink = ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3';
+  const marketLink = ROUTES.dashboard + '/?marketName=' + toMarket.market;
 
   const isMobile = useMediaQuery(theme.breakpoints.down(1125));
   if (isMobile) {
@@ -95,9 +95,9 @@ export const MigrationList = ({
                   <Typography variant="caption" color={theme.palette.warning[100]}>
                     <Trans>
                       Some migrated assets will not be used as collateral due to enabled isolation
-                      mode in {marketName} V3 Market. Visit{' '}
-                      <Link href={marketLink}>{marketName} V3 Dashboard</Link> to manage isolation
-                      mode.
+                      mode in {toMarket.marketTitle} V3 Market. Visit{' '}
+                      <Link href={marketLink}>{toMarket.marketTitle} V3 Dashboard</Link> to manage
+                      isolation mode.
                     </Trans>
                   </Typography>
                 </Warning>

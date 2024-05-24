@@ -164,6 +164,7 @@ export default function V3Migration() {
               selectableMarkets={selectableMarkets}
             />
             <MigrationLists
+              toMarket={toMarketData}
               loading={loading}
               isSupplyPositionsAvailable={supplyReserves.length > 0}
               isBorrowPositionsAvailable={borrowReserves.length > 0}

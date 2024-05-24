@@ -2154,8 +2154,8 @@ msgid "Slippage is the difference between the quoted and received amounts from c
 msgstr "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
 
 #: src/modules/migration/MigrationList.tsx
-msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
-msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
+msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {0} V3 Market. Visit <0>{1} V3 Dashboard</0> to manage isolation mode."
+msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {0} V3 Market. Visit <0>{1} V3 Dashboard</0> to manage isolation mode."
 
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx

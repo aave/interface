@@ -7,10 +7,12 @@ import {
 } from 'src/hooks/migration/useUserMigrationReserves';
 import { useRootStore } from 'src/store/root';
 import { computeSelections, IsolatedReserve } from 'src/store/v3MigrationSelectors';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { MigrationList } from './MigrationList';
 
 interface MigrationListsProps {
+  toMarket: MarketDataType;
   onSelectAllSupplies: () => void;
   onSelectAllBorrows: () => void;
   suppliesPositions: ReactNode;
@@ -25,6 +27,7 @@ interface MigrationListsProps {
 }
 
 export const MigrationLists = ({
+  toMarket,
   onSelectAllSupplies,
   onSelectAllBorrows,
   suppliesPositions,
@@ -73,6 +76,7 @@ export const MigrationLists = ({
         Assets to migrate
       </Typography>
       <MigrationList
+        toMarket={toMarket}
         isolatedReserveV3={isolatedReserveV3}
         loading={loading}
         onSelectAllClick={onSelectAllSupplies}
@@ -89,6 +93,7 @@ export const MigrationLists = ({
       </MigrationList>
 
       <MigrationList
+        toMarket={toMarket}
         loading={loading}
         onSelectAllClick={onSelectAllBorrows}
         allSelected={activeBorrowUnselected.length === 0}
