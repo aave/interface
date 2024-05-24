@@ -23,6 +23,12 @@ const formatMarketName = (market: MarketDataType) => {
   return `Aave ${market.v3 ? 'V3' : 'V2'} - ${market.marketTitle}${market.isFork ? ' Fork' : ''}`;
 };
 
+const getMarketAvatar = (market: MarketDataType) => {
+  if (market.market === ExternalCustomMarket.proto_spark_ethereum_v3)
+    return '/icons/externalMarkets/spark.png';
+  return '/aave.svg';
+};
+
 type MigrationMarketCardProps = {
   marketData: MarketDataType;
   userSummaryAfterMigration?: {
@@ -83,7 +89,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
             <Avatar src={networkConfig.networkLogoPath} sx={{ width: 20, height: 20 }} />
           }
         >
-          <Avatar src="/aave.svg" sx={{ width: 36, height: 36 }} />
+          <Avatar src={getMarketAvatar(marketData)} sx={{ width: 36, height: 36 }} />
         </Badge>
         <Typography variant="subheader1" sx={{ ml: 5 }}>
           {formatMarketName(marketData)}
@@ -130,7 +136,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
                             />
                           }
                         >
-                          <Avatar src="/aave.svg" sx={{ width: 24, height: 24 }} />
+                          <Avatar src={getMarketAvatar(market)} sx={{ width: 24, height: 24 }} />
                         </Badge>
                         <Typography variant="secondary14" sx={{ ml: 3 }}>
                           {`${market.marketTitle}${market.isFork ? ' Fork' : ''}`}
