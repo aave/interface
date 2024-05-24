@@ -242,7 +242,7 @@ export const MigrationBottomPanel = ({
 
         <Box>
           <Button
-            onClick={openV3Migration}
+            onClick={() => openV3Migration(fromMarketData, toMarketData)}
             disabled={loading || !isChecked || blockingError !== null}
             sx={{ width: '100%', height: '44px' }}
             variant={!isChecked || blockingError !== null ? 'contained' : 'gradient'}

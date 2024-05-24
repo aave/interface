@@ -154,6 +154,7 @@ export const queryKeysFactory = {
     ...suplies.map((supply) => supply.underlyingAsset),
     ...queryKeysFactory.market(marketFrom),
     ...queryKeysFactory.market(marketTo),
+    'migrationExceptions',
   ],
   tokensBalance: (tokenList: TokenInfo[], chainId: number, user: string) => [
     ...queryKeysFactory.user(user),

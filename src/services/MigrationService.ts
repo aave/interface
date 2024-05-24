@@ -1,4 +1,11 @@
 import { Pool, V3MigrationHelperService } from '@aave/contract-helpers';
+import {
+  MigrationDelegationApproval,
+  MigrationRepayAsset,
+  MigrationSupplyAsset,
+  V3MigrationHelperSignedCreditDelegationPermit,
+  V3MigrationHelperSignedPermit,
+} from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import { Provider } from '@ethersproject/providers';
 import {
   MIGRATION_ASSETS_EXCEPTIONS,
@@ -63,5 +70,39 @@ export class MigrationService {
       });
     }
     return migrationExceptions;
+  }
+
+  async getMigrationApprovalTxs(
+    fromMarketData: MarketDataType,
+    toMarketData: MarketDataType,
+    supplyAssets: MigrationSupplyAsset[],
+    creditDelegationApprovals: MigrationDelegationApproval[],
+    user: string
+  ) {
+    const migrationService = this.getMigrationService(fromMarketData, toMarketData);
+    return migrationService.migrationTxBuilder.generateApprovalsTxs({
+      supplyAssets,
+      user,
+      creditDelegationApprovals,
+    });
+  }
+
+  getMigrationTx(
+    fromMarketData: MarketDataType,
+    toMarketData: MarketDataType,
+    user: string,
+    supplyAssets: MigrationSupplyAsset[],
+    repayAssets: MigrationRepayAsset[],
+    signedSupplyPermits: V3MigrationHelperSignedPermit[],
+    signedCreditDelegationPermits: V3MigrationHelperSignedCreditDelegationPermit[]
+  ) {
+    const migrationService = this.getMigrationService(fromMarketData, toMarketData);
+    return migrationService.migrationTxBuilder.generateTxData({
+      supplyAssets,
+      user,
+      repayAssets,
+      signedCreditDelegationPermits,
+      signedSupplyPermits,
+    });
   }
 }

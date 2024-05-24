@@ -69,7 +69,11 @@ export const SupplyWrappedTokenActions = ({
     data: approvedAmount,
     isFetching,
     refetch: fetchApprovedAmount,
-  } = useApprovedAmount({ marketData, token: tokenIn, spender: tokenWrapperAddress });
+  } = useApprovedAmount({
+    marketData,
+    token: tokenIn,
+    spender: tokenWrapperAddress,
+  });
 
   let requiresApproval = false;
   if (approvedAmount !== undefined) {
