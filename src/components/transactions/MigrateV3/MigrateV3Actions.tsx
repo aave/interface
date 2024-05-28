@@ -4,6 +4,7 @@ import {
   V3MigrationHelperSignedPermit,
 } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import { Trans } from '@lingui/macro';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useMigrationApprovalTxs } from 'src/hooks/migration/useMigrationApprovalTxs';
@@ -20,6 +21,7 @@ import {
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 import invariant from 'tiny-invariant';
 
@@ -69,6 +71,7 @@ export const MigrateV3Actions = ({
   ]);
   const { approvalTxState, mainTxState, setApprovalTxState, setTxError, setMainTxState } =
     useModalContext();
+  const queryClient = useQueryClient();
 
   const { migrationService } = useSharedDependencies();
 
@@ -211,6 +214,7 @@ export const MigrateV3Actions = ({
             success: true,
           });
           setTxError(undefined);
+          queryClient.invalidateQueries(queryKeysFactory.pool);
         }
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
