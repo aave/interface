@@ -184,7 +184,6 @@ export const MigrateV3Actions = ({
             success: true,
           });
           setTxError(undefined);
-          queryClient.invalidateQueries(queryKeysFactory.pool);
         }
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -212,6 +211,7 @@ export const MigrateV3Actions = ({
       tx = await estimateGasLimit(tx, fromMarket.chainId);
       const response = await sendTx(tx);
       await response.wait(1);
+      queryClient.invalidateQueries(queryKeysFactory.pool);
       setMainTxState({
         txHash: response.hash,
         loading: false,
