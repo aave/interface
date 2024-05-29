@@ -23,7 +23,6 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
-import invariant from 'tiny-invariant';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -115,73 +114,46 @@ export const MigrateV3Actions = ({
     if (requiresApproval && approvals) {
       try {
         if (usePermit) {
+          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
           setApprovalTxState({ ...approvalTxState, loading: true });
           const supplyApprovals = approvals.supplyApprovalTxs;
           const borrowCreditDelegationApprovals = approvals.borrowCreditDelegationApprovalTxs;
-          const supplySignatures = await Promise.all(
+          const supplySigned = await Promise.all(
             supplyApprovals.map(async (supplyApproval) => {
-              const supplyAsset = supplyAssets.find(
-                (supplyAsset) => supplyAsset.aToken === supplyApproval.to
-              );
-              invariant(supplyAsset, 'Supply asset not found');
               const signatureRequest = await generateSignatureRequest(
                 {
-                  token: supplyAsset.aToken,
-                  amount: supplyAsset.amount,
-                  deadline: supplyAsset.deadline.toString(),
-                  spender: fromMarket.addresses.V3_MIGRATOR || '',
+                  token: supplyApproval.token,
+                  amount: supplyApproval.amount,
+                  deadline: deadline.toString(),
+                  spender: supplyApproval.spender,
                 },
                 { chainId: fromMarket.chainId }
               );
+              const signature = await signTxData(signatureRequest);
               return {
-                deadline: supplyAsset.deadline,
-                aToken: supplyAsset.aToken,
-                value: supplyAsset.amount,
-                signatureRequest,
-              };
-            })
-          );
-          const borrowCreditDelegationSignatures = await Promise.all(
-            borrowCreditDelegationApprovals.map(async (borrowCreditDelegationApproval) => {
-              const borrowAsset = borrowPermitPayloads.find(
-                (borrowAsset) => borrowAsset.underlyingAsset === borrowCreditDelegationApproval.to
-              );
-              invariant(borrowAsset, 'Borrow asset not found');
-              const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-              const signatureRequest = await generateCreditDelegationSignatureRequest(
-                {
-                  ...borrowAsset,
-                  deadline,
-                  spender: fromMarket.addresses.V3_MIGRATOR || '',
-                },
-                { chainId: fromMarket.chainId }
-              );
-              return {
-                deadline,
-                debtToken: borrowAsset.underlyingAsset,
-                value: borrowAsset.amount,
-                signatureRequest,
-              };
-            })
-          );
-          const supplySigned: V3MigrationHelperSignedPermit[] = await Promise.all(
-            supplySignatures.map(async (signatureRequest) => {
-              const signature = await signTxData(signatureRequest.signatureRequest);
-              return {
-                deadline: signatureRequest.deadline,
-                aToken: signatureRequest.aToken,
-                value: signatureRequest.value,
+                deadline: deadline.toString(),
+                aToken: supplyApproval.token,
+                value: supplyApproval.amount,
                 signedPermit: signature,
               };
             })
           );
-          const borrowSigned: V3MigrationHelperSignedCreditDelegationPermit[] = await Promise.all(
-            borrowCreditDelegationSignatures.map(async (signatureRequest) => {
-              const signature = await signTxData(signatureRequest.signatureRequest);
+          const borrowSigned = await Promise.all(
+            borrowCreditDelegationApprovals.map(async (borrowCreditDelegationApproval) => {
+              const signatureRequest = await generateCreditDelegationSignatureRequest(
+                {
+                  amount: borrowCreditDelegationApproval.amount,
+                  underlyingAsset: borrowCreditDelegationApproval.debtTokenAddress,
+                  deadline,
+                  spender: borrowCreditDelegationApproval.delegatee,
+                },
+                { chainId: fromMarket.chainId }
+              );
+              const signature = await signTxData(signatureRequest);
               return {
-                deadline: signatureRequest.deadline,
-                debtToken: signatureRequest.debtToken,
-                value: signatureRequest.value,
+                deadline,
+                debtToken: borrowCreditDelegationApproval.debtTokenAddress,
+                value: borrowCreditDelegationApproval.amount,
                 signedPermit: signature,
               };
             })
@@ -198,18 +170,16 @@ export const MigrateV3Actions = ({
           });
         } else {
           setApprovalTxState({ ...approvalTxState, loading: true });
-          const supplyApprovalsResponse = await Promise.all(
-            approvals.supplyApprovalTxs.map((supplyApproval) => sendTx(supplyApproval))
+          const allTxs = [
+            ...approvals.supplyApprovalTxs,
+            ...approvals.borrowCreditDelegationApprovalTxs,
+          ];
+          const txsApprovalResponse = await Promise.all(
+            allTxs.map((approval) => sendTx(approval.tx))
           );
-          const borrowApprovalsResponse = await Promise.all(
-            approvals.borrowCreditDelegationApprovalTxs.map((borrowCreditDelegationApproval) =>
-              sendTx(borrowCreditDelegationApproval)
-            )
-          );
-          await Promise.all(supplyApprovalsResponse.map((elem) => elem.wait(1)));
-          await Promise.all(borrowApprovalsResponse.map((elem) => elem.wait(1)));
+          await Promise.all(txsApprovalResponse.map((elem) => elem.wait(1)));
           setApprovalTxState({
-            txHash: supplyApprovalsResponse[0]?.hash || borrowApprovalsResponse[0]?.hash,
+            txHash: txsApprovalResponse[0]?.hash,
             loading: false,
             success: true,
           });
