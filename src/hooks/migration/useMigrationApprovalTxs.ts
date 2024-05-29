@@ -5,6 +5,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 export const useMigrationApprovalTxs = (
@@ -25,6 +26,11 @@ export const useMigrationApprovalTxs = (
         user
       ),
     enabled: !!user,
-    queryKey: ['migrationApprovalTxs'],
+    queryKey: queryKeysFactory.migrationApprovalTxs(
+      fromMarketData,
+      toMarketData,
+      supplyAssets,
+      creditDelegationApprovals
+    ),
   });
 };

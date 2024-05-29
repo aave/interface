@@ -1,3 +1,7 @@
+import {
+  MigrationDelegationApproval,
+  MigrationSupplyAsset,
+} from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import { MigrationSupplyException } from 'src/store/v3MigrationSlice';
 
 import { MarketDataType } from './marketsConfig';
@@ -161,6 +165,18 @@ export const queryKeysFactory = {
     tokenList.map((elem) => elem.address),
     chainId,
     'tokensBalance',
+  ],
+  migrationApprovalTxs: (
+    fromMarket: MarketDataType,
+    toMarket: MarketDataType,
+    supplyAssets: MigrationSupplyAsset[],
+    creditDelegationApprovals: MigrationDelegationApproval[]
+  ) => [
+    ...queryKeysFactory.market(fromMarket),
+    ...queryKeysFactory.market(toMarket),
+    ...supplyAssets.map((elem) => elem.aToken),
+    ...creditDelegationApprovals.map((elem) => elem.debtTokenAddress),
+    'migrationApprovalTxs',
   ],
 };
 
