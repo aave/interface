@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-05-16 18:04\n"
+"PO-Revision-Date: 2024-05-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -1696,10 +1696,6 @@ msgstr "没有质押"
 msgid "Nothing supplied yet"
 msgstr "尚未提供任何内容"
 
-#: src/components/HALLink.tsx
-msgid "Notify"
-msgstr "通知"
-
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "好的，关闭"
@@ -2104,10 +2100,6 @@ msgstr "发送反馈"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
 msgstr "设置委派"
-
-#: src/components/HALLink.tsx
-msgid "Setup notifications about your Health Factor using the Hal app."
-msgstr "使用 Hal 应用程序设置有关您的健康因子的通知。"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/ProposalOverview.tsx
@@ -2613,10 +2605,6 @@ msgstr "由于 Aave 协议治理决策，该资产计划被卸载。 <0>更多�
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "此气体计算只是一个估计值。您的钱包将设定交易价格。您可以直接从您的钱包提供商处修改 gas 设置。"
-
-#: src/components/HALLink.tsx
-msgid "This integration was<0>proposed and approved</0>by the community."
-msgstr "这种整合是由社区<0>提出并批准的</0>。"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."

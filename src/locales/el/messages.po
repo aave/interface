@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-05-16 18:04\n"
+"PO-Revision-Date: 2024-05-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1696,10 +1696,6 @@ msgstr "Τίποτα κλειδωμένο"
 msgid "Nothing supplied yet"
 msgstr "Τίποτα δεν έχει παρασχεθεί ακόμη"
 
-#: src/components/HALLink.tsx
-msgid "Notify"
-msgstr ""
-
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Εντάξει, Κλείσιμο"
@@ -2103,10 +2099,6 @@ msgstr ""
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
-msgstr ""
-
-#: src/components/HALLink.tsx
-msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
@@ -2614,10 +2606,6 @@ msgstr ""
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "Αυτός ο υπολογισμός gas είναι μόνο μια εκτίμηση. Το πορτοφόλι σας θα καθορίσει την τιμή της συναλλαγής. Μπορείτε να τροποποιήσετε τις ρυθμίσεις gas απευθείας από τον πάροχο του πορτοφολιού σας."
-
-#: src/components/HALLink.tsx
-msgid "This integration was<0>proposed and approved</0>by the community."
-msgstr ""
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
