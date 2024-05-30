@@ -1,12 +1,20 @@
 // Note taken from
 // https://github.com/smartcontractkit/smart-contract-examples/blob/main/ccip-offchain/javascript/src/config/router.js
 import { ChainId } from '@aave/contract-helpers';
+import {
+  AaveV3ArbitrumSepolia,
+  AaveV3BaseSepolia,
+  AaveV3Fuji,
+  AaveV3Sepolia,
+} from '@bgd-labs/aave-address-book';
 
 type Config = {
   sourceChainId: ChainId;
   router: string;
   chainSelector: string;
   subgraphUrl: string;
+  wrappedNativeOracle: string;
+  tokenPool: string;
   destinations: {
     destinationChainId: ChainId;
     onRamp: string;
@@ -24,8 +32,10 @@ export enum MessageExecutionState {
 export const laneConfig: Config[] = [
   {
     sourceChainId: ChainId.sepolia,
+    tokenPool: '0xA93C9A46bf94752D4b195398B28345cA52fBB748', // TODO: address book
     chainSelector: '16015286601757825753',
     router: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59'.toLowerCase(),
+    wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
     subgraphUrl:
       'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-sepolia/1.0.0/gn',
     destinations: [
@@ -45,8 +55,12 @@ export const laneConfig: Config[] = [
   },
   {
     sourceChainId: ChainId.arbitrum_sepolia,
+    tokenPool: '', // TODO: address book
+
     chainSelector: '3478487238524512106',
     router: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165'.toLowerCase(),
+    wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
+
     subgraphUrl:
       'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-arb-sepolia/1.0.0/gn',
     destinations: [
@@ -63,7 +77,10 @@ export const laneConfig: Config[] = [
   {
     sourceChainId: ChainId.fuji,
     chainSelector: '14767482510784806043',
+    tokenPool: '', // TODO: address book
+
     router: '0xF694E193200268f9a4868e4Aa017A0118C9a8177'.toLowerCase(),
+    wrappedNativeOracle: AaveV3Fuji.ASSETS.WAVAX.ORACLE,
     subgraphUrl:
       'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-fuji/1.0.0/gn',
     destinations: [
@@ -79,8 +96,12 @@ export const laneConfig: Config[] = [
   },
   {
     sourceChainId: ChainId.base_sepolia,
+    tokenPool: '', // TODO: address book
+
     chainSelector: '10344971235874465080',
     router: '0xD3b06cEbF099CE7DA4AcCf578aaebFDBd6e88a93'.toLowerCase(),
+    wrappedNativeOracle: AaveV3BaseSepolia.ASSETS.WETH.ORACLE,
+
     subgraphUrl:
       'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-base-sepolia/1.0.0/gn',
     destinations: [

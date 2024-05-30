@@ -1,11 +1,12 @@
-import { constants, Contract, utils } from 'ethers';
+import { BigNumber, constants, Contract, utils } from 'ethers';
 import { formatEther, parseUnits } from 'ethers/lib/utils';
 import debounce from 'lodash/debounce';
 import { useEffect, useMemo, useState } from 'react';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { MessageDetails, TokenAmount } from './BridgeActions';
-import { getChainSelectorFor, getRouterFor } from './BridgeConfig';
+import { getChainSelectorFor, getRouterFor, laneConfig } from './BridgeConfig';
+import oracleAbi from './Oracle-abi.json';
 import routerAbi from './Router-abi.json';
 
 export const useGetBridgeMessage = ({
@@ -24,6 +25,7 @@ export const useGetBridgeMessage = ({
   const [message, setMessage] = useState<MessageDetails>();
   const [bridgeFee, setBridgeFee] = useState('');
   const [bridgeFeeFormatted, setBridgeFeeFormatted] = useState('');
+  const [latestAnswer, setLatestAnswer] = useState('');
   const [loading, setLoading] = useState(false);
 
   const debounced = useMemo(() => {
@@ -43,6 +45,8 @@ export const useGetBridgeMessage = ({
       //     transfer is supported.
       // ==================================================
       // */
+
+      // TODO: Do we need this? Right now ONLY GHO Supported
       const supportedTokens = await sourceRouter.getSupportedTokens(destinationChainSelector);
 
       if (supportedTokens.length <= 0) {
@@ -107,6 +111,34 @@ export const useGetBridgeMessage = ({
       */
         const fees = await sourceRouter.getFee(destinationChainSelector, message);
 
+        const sourceLaneConfig = laneConfig.find(
+          (config) => config.sourceChainId === sourceChainId
+        );
+
+        if (!sourceLaneConfig) {
+          setLoading(false);
+          throw Error(`No lane config found for chain ${sourceChainId}`);
+        }
+
+        const sourceAssetOracle = new Contract(
+          sourceLaneConfig.wrappedNativeOracle,
+          oracleAbi,
+          providerWithSend
+        );
+
+        const latestPrice = await sourceAssetOracle.latestAnswer();
+
+        const priceFromFeed = BigNumber.from(latestPrice.toString());
+
+        const decimals = await sourceAssetOracle.decimals();
+        const ethUsdPrice = priceFromFeed.div(BigNumber.from(10).pow(decimals));
+
+        const ethFee = utils.parseUnits(formatEther(fees).toString(), 'ether');
+
+        const transactionCostUsd = ethFee.mul(ethUsdPrice).div(BigNumber.from(10).pow(18));
+
+        setLatestAnswer(transactionCostUsd.toString());
+
         setMessage(message);
         setBridgeFeeFormatted(formatEther(fees));
         setBridgeFee(fees);
@@ -139,5 +171,6 @@ export const useGetBridgeMessage = ({
     bridgeFee,
     bridgeFeeFormatted,
     loading,
+    latestAnswer,
   };
 };

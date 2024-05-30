@@ -78,6 +78,7 @@ interface DetailsNumberLineProps extends FormattedNumberProps {
   numberPrefix?: ReactNode;
   iconSymbol?: string;
   loading?: boolean;
+  customMb?: number;
 }
 
 export const DetailsNumberLine = ({
@@ -87,10 +88,15 @@ export const DetailsNumberLine = ({
   numberPrefix,
   iconSymbol,
   loading = false,
+  customMb,
   ...rest
 }: DetailsNumberLineProps) => {
   return (
-    <Row caption={description} captionVariant="description" mb={4}>
+    <Row
+      caption={description}
+      captionVariant="description"
+      mb={customMb !== undefined ? customMb : 4}
+    >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {loading ? (
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />

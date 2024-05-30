@@ -4,9 +4,11 @@ import { Box, Button, IconButton, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
 import React, { useEffect, useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
 import {
   DetailsNumberLine,
   TxModalDetails,
@@ -30,6 +32,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActions } from './BridgeActions';
 import { BridgeDestinationInput } from './BridgeDestinationInput';
 import { supportedNetworksWithBridgeMarket, SupportedNetworkWithChainId } from './common';
+import { useBridgingValues, useRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
 
 // const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
@@ -124,6 +127,7 @@ export const BridgeModalContent = () => {
     bridgeFee,
     bridgeFeeFormatted,
     loading: loadingBridgeMessage,
+    latestAnswer: bridgeFeeUSD,
   } = useGetBridgeMessage({
     sourceChainId: sourceNetworkObj.chainId,
     destinationChainId: destinationNetworkObj?.chainId || 0,
@@ -131,6 +135,18 @@ export const BridgeModalContent = () => {
     sourceTokenAddress: sourceTokenInfo.address || '',
     destinationAccount,
   });
+
+  const bridgingValues = useBridgingValues(sourceNetworkObj.chainId);
+
+  const rateLimit = useRateLimit({
+    destinationChainId: destinationNetworkObj?.chainId || 0,
+    sourceChainId: sourceNetworkObj.chainId,
+  });
+
+  const bridgeLimitExceeded =
+    bridgingValues &&
+    bridgingValues.currentAmountBridged + parseInt(amount, 10) >= bridgingValues.maxAmountBridged;
+  const rateLimitExceeded = rateLimit !== 0 && parseInt(amount, 10) >= (rateLimit || 0);
 
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: SupportedNetworkWithChainId) => {
@@ -184,7 +200,8 @@ export const BridgeModalContent = () => {
     isWrongNetwork,
     // poolAddress: GHO.underlying,
     symbol: 'GHO',
-    blocked: loadingBridgeMessage || !destinationAccount,
+    blocked:
+      loadingBridgeMessage || !destinationAccount || bridgeLimitExceeded || rateLimitExceeded,
     decimals: 18,
     isWrappedBaseAsset: false,
     message,
@@ -200,20 +217,9 @@ export const BridgeModalContent = () => {
       <TxSuccessView
         customAction={
           <Box mt={5}>
-            {/* <Button
-                component="a"
-                target="_blank"
-                href={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
-                variant="gradient"
-                size="medium"
-              >
-                <Trans>See Transaction status on CCIP</Trans>
-              </Button> */}
-
             <Button
               component={Link}
               href={ROUTES.bridge}
-              // sx={{ mr: 8, mb: '24px' }}
               variant="outlined"
               size="small"
               onClick={close}
@@ -361,13 +367,25 @@ export const BridgeModalContent = () => {
                   value={amount}
                 />
                 {message || loadingBridgeMessage ? (
-                  <DetailsNumberLine
-                    description={<Trans>Fee</Trans>}
-                    iconSymbol={'ETH'}
-                    symbol={'ETH'}
-                    value={bridgeFeeFormatted}
-                    loading={loadingBridgeMessage}
-                  />
+                  <>
+                    <DetailsNumberLine
+                      description={<Trans>Fee</Trans>}
+                      iconSymbol={'ETH'}
+                      symbol={'ETH'}
+                      value={bridgeFeeFormatted}
+                      loading={loadingBridgeMessage}
+                      customMb={0}
+                    />
+                    <Box display={'flex'} justifyContent={'flex-end'}>
+                      <FormattedNumber
+                        value={bridgeFeeUSD}
+                        variant="helperText"
+                        compact
+                        symbol="USD"
+                        color="text.secondary"
+                      />
+                    </Box>
+                  </>
                 ) : (
                   <Row caption={<Trans>Fee</Trans>} captionVariant="description" mb={4}>
                     <NoData variant="secondary14" color="text.secondary" />
@@ -376,8 +394,31 @@ export const BridgeModalContent = () => {
               </TxModalDetails>
             </Box>
           </Box>
-
           {txError && <GasEstimationError txError={txError} />}
+
+          {bridgeLimitExceeded && (
+            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+              <Typography variant="caption">
+                <Trans>
+                  The selected amount is not available to bridge due to the bridge limit of
+                </Trans>{' '}
+                {bridgingValues.maxAmountBridged - bridgingValues.currentAmountBridged}.{' '}
+                <Trans>Please try again later or reduce the amount to bridge</Trans>
+              </Typography>
+            </Warning>
+          )}
+
+          {rateLimitExceeded && (
+            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+              <Typography variant="caption">
+                <Trans>
+                  The selected amount is not available to bridge due to CCIP rate limit of
+                </Trans>
+                <Trans>Please try again later or reduce the amount to bridge to less than</Trans>{' '}
+                {rateLimit}
+              </Typography>
+            </Warning>
+          )}
 
           <BridgeActions {...bridgeActionsProps} />
         </>
