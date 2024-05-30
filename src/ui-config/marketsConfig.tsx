@@ -542,6 +542,7 @@ export const marketsData: {
     enabledFeatures: {
       incentives: false,
     },
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/FifJapBdCqT9vgNqJ5axmr6eNyUpUSaRAbbZTfsViNsT`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Harmony.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Harmony.POOL,
