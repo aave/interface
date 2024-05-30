@@ -1826,6 +1826,14 @@ msgstr "Please enter a valid wallet address."
 msgid "Please switch to {networkName}."
 msgstr "Please switch to {networkName}."
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Please try again later or reduce the amount to bridge"
+msgstr "Please try again later or reduce the amount to bridge"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Please try again later or reduce the amount to bridge to less than"
+msgstr "Please try again later or reduce the amount to bridge to less than"
+
 #: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
@@ -2574,6 +2582,14 @@ msgstr "The loan to value of the migrated positions would cause liquidation. Inc
 #: src/ui-config/errorMapping.tsx
 msgid "The requested amount is greater than the max loan size in stable rate mode"
 msgstr "The requested amount is greater than the max loan size in stable rate mode"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The selected amount is not available to bridge due to CCIP rate limit of"
+msgstr "The selected amount is not available to bridge due to CCIP rate limit of"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The selected amount is not available to bridge due to the bridge limit of"
+msgstr "The selected amount is not available to bridge due to the bridge limit of"
 
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
