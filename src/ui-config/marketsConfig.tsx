@@ -71,15 +71,6 @@ export type MarketDataType = {
     GHO_TOKEN_ADDRESS?: string;
     GHO_UI_DATA_PROVIDER?: string;
   };
-  /**
-   * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
-   * the integration doesn't follow aave market naming & only supports a subset of markets.
-   * When a halIntegration is specified a link to hal will be displayed on the ui.
-   */
-  halIntegration?: {
-    URL: string;
-    marketName: string;
-  };
 };
 export enum CustomMarket {
   // v3 test networks, all v3.0.1
@@ -147,10 +138,6 @@ export const marketsData: {
       WITHDRAW_SWITCH_ADAPTER: AaveV3Ethereum.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Ethereum.DEBT_SWAP_ADAPTER,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'aavev3',
-    },
   },
   [CustomMarket.proto_mainnet]: {
     marketTitle: 'Ethereum',
@@ -178,10 +165,6 @@ export const marketsData: {
       COLLECTOR: AaveV2Ethereum.COLLECTOR,
       V3_MIGRATOR: AaveV2Ethereum.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Ethereum.DEBT_SWAP_ADAPTER,
-    },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-      marketName: 'aavev2',
     },
   },
   // [CustomMarket.permissioned_market]: {
@@ -246,10 +229,6 @@ export const marketsData: {
       V3_MIGRATOR: AaveV2Polygon.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Polygon.DEBT_SWAP_ADAPTER,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-      marketName: 'aavepolygon',
-    },
   },
   [CustomMarket.proto_avalanche]: {
     marketTitle: 'Avalanche',
@@ -275,10 +254,6 @@ export const marketsData: {
       COLLECTOR: AaveV2Avalanche.COLLECTOR,
       V3_MIGRATOR: AaveV2Avalanche.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Avalanche.DEBT_SWAP_ADAPTER,
-    },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-      marketName: 'aaveavalanche',
     },
   },
   // v3
@@ -380,10 +355,6 @@ export const marketsData: {
       DEBT_SWITCH_ADAPTER: AaveV3Arbitrum.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Arbitrum.WITHDRAW_SWAP_ADAPTER,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'arbitrum',
-    },
   },
   [CustomMarket.proto_base_sepolia_v3]: {
     marketTitle: 'Base Sepolia',
@@ -429,10 +400,6 @@ export const marketsData: {
       COLLECTOR: AaveV3Avalanche.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Avalanche.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Avalanche.WITHDRAW_SWAP_ADAPTER,
-    },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'avalanche',
     },
   },
   [CustomMarket.proto_fuji_v3]: {
@@ -514,10 +481,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Fantom.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Fantom.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Fantom.COLLECTOR,
-    },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'fantom',
     },
   },
   [CustomMarket.proto_fantom_testnet_v3]: {
@@ -615,10 +578,6 @@ export const marketsData: {
       DEBT_SWITCH_ADAPTER: AaveV3Polygon.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Polygon.WITHDRAW_SWAP_ADAPTER,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'polygon',
-    },
   },
   [CustomMarket.proto_fuji]: {
     marketTitle: 'Avalanche Fuji',
@@ -656,10 +615,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Metis.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Metis.COLLECTOR,
-    },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'polygon',
     },
   },
   [CustomMarket.proto_gnosis_v3]: {

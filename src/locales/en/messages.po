@@ -1691,10 +1691,6 @@ msgstr "Nothing staked"
 msgid "Nothing supplied yet"
 msgstr "Nothing supplied yet"
 
-#: src/components/HALLink.tsx
-msgid "Notify"
-msgstr "Notify"
-
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Ok, Close"
@@ -2099,10 +2095,6 @@ msgstr "Send feedback"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
 msgstr "Set up delegation"
-
-#: src/components/HALLink.tsx
-msgid "Setup notifications about your Health Factor using the Hal app."
-msgstr "Setup notifications about your Health Factor using the Hal app."
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/ProposalOverview.tsx
@@ -2608,10 +2600,6 @@ msgstr "This asset is planned to be offboarded due to an Aave Protocol Governanc
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
-
-#: src/components/HALLink.tsx
-msgid "This integration was<0>proposed and approved</0>by the community."
-msgstr "This integration was<0>proposed and approved</0>by the community."
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."

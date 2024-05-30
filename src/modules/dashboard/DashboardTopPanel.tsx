@@ -7,6 +7,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
@@ -16,9 +17,7 @@ import { useRootStore } from 'src/store/root';
 import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
 import { DASHBOARD, GENERAL } from 'src/utils/mixPanelEvents';
 
-import HALLink from '../../components/HALLink';
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
-import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { NoData } from '../../components/primitives/NoData';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
@@ -195,15 +194,6 @@ export const DashboardTopPanel = () => {
                 trackEvent(DASHBOARD.VIEW_RISK_DETAILS);
                 setOpen(true);
               }}
-              HALIntegrationComponent={
-                currentMarketData.halIntegration && (
-                  <HALLink
-                    healthFactor={user?.healthFactor || '-1'}
-                    marketName={currentMarketData.halIntegration.marketName}
-                    integrationURL={currentMarketData.halIntegration.URL}
-                  />
-                )
-              }
             />
           </TopInfoPanelItem>
         )}
