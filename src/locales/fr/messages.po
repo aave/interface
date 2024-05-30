@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-05-16 18:04\n"
+"PO-Revision-Date: 2024-05-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1696,10 +1696,6 @@ msgstr "Rien staké"
 msgid "Nothing supplied yet"
 msgstr "Rien fourni pour le moment"
 
-#: src/components/HALLink.tsx
-msgid "Notify"
-msgstr "Notifier"
-
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "D'accord, fermer"
@@ -2104,10 +2100,6 @@ msgstr "Envoyer des commentaires"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
 msgstr "Configurer la délégation"
-
-#: src/components/HALLink.tsx
-msgid "Setup notifications about your Health Factor using the Hal app."
-msgstr "Configurez des notifications sur votre facteur de santé à l’aide de l’application Hal."
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/ProposalOverview.tsx
@@ -2613,10 +2605,6 @@ msgstr "Il est prévu que cet actif soit désactivé en raison d’une décision
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "Ce calcul de gaz n'est qu'une estimation. Votre portefeuille fixera le prix de la transaction. Vous pouvez modifier les paramètres de gaz directement depuis votre fournisseur de portefeuille."
-
-#: src/components/HALLink.tsx
-msgid "This integration was<0>proposed and approved</0>by the community."
-msgstr "Cette intégration a été<0>proposée et approuvée</0>par la communauté."
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."

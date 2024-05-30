@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-05-16 18:04\n"
+"PO-Revision-Date: 2024-05-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -1696,10 +1696,6 @@ msgstr "Ничего не поставлено на кон"
 msgid "Nothing supplied yet"
 msgstr "Пока ничего не поставлено"
 
-#: src/components/HALLink.tsx
-msgid "Notify"
-msgstr "Извещать"
-
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Хорошо, Закрыть"
@@ -2104,10 +2100,6 @@ msgstr "Отправить отзыв"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
 msgstr "Настройка делегирования"
-
-#: src/components/HALLink.tsx
-msgid "Setup notifications about your Health Factor using the Hal app."
-msgstr "Настройте уведомления о вашем факторе здоровья с помощью приложения Hal."
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/ProposalOverview.tsx
@@ -2613,10 +2605,6 @@ msgstr "Этот актив планируется вывести из эксп�
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "Этот расчет газа является лишь приблизительным. Ваш кошелек установит цену транзакции. Вы можете изменить настройки газа непосредственно у провайдера вашего кошелька."
-
-#: src/components/HALLink.tsx
-msgid "This integration was<0>proposed and approved</0>by the community."
-msgstr "Эта интеграция была<0>предложена и одобрена</0>сообществом."
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
