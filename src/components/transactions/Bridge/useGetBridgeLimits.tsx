@@ -76,9 +76,10 @@ export const useRateLimit = ({ destinationChainId, sourceChainId }: RateLimitPro
 
     async function fetchRateLimit() {
       try {
-        const [, , , rate] = await tokenPool.getCurrentOutboundRateLimiterState(
+        const [rate, , isEnabled, ,] = await tokenPool.getCurrentOutboundRateLimiterState(
           destinationChainSelector
         );
+        if (!isEnabled) rate = 0;
         setRateLimit(parseInt(rate.toString(), 10));
       } catch (error) {
         console.error('Error fetching rate limit:', error);
