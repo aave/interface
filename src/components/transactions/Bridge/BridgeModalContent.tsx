@@ -149,7 +149,7 @@ export const BridgeModalContent = () => {
   });
 
   let bridgeLimitExceeded = false;
-  if (!fetchingBridgeLimits && bridgeLimits) {
+  if (!fetchingBridgeLimits && bridgeLimits && bridgeLimits.bridgeLimit.gt(0)) {
     bridgeLimitExceeded = bridgeLimits.currentBridgedAmount
       .add(parsedAmount)
       .gt(bridgeLimits.bridgeLimit);
