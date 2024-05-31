@@ -9,7 +9,8 @@ type Config = {
   chainSelector: string;
   subgraphUrl: string;
   wrappedNativeOracle: string;
-  tokenPool: string;
+  lockReleaseTokenPool?: string;
+  burnMintTokenPool?: string;
   destinations: {
     destinationChainId: ChainId;
     onRamp: string;
@@ -27,7 +28,7 @@ export enum MessageExecutionState {
 export const laneConfig: Config[] = [
   {
     sourceChainId: ChainId.sepolia,
-    tokenPool: '0xA93C9A46bf94752D4b195398B28345cA52fBB748', // TODO: address book
+    lockReleaseTokenPool: '0x7768248E1Ff75612c18324bad06bb393c1206980', // TODO: address book
     chainSelector: '16015286601757825753',
     router: '0x11C008349c41fB5c78E544397fb4613605Ec1a74'.toLowerCase(),
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
@@ -49,7 +50,7 @@ export const laneConfig: Config[] = [
   },
   {
     sourceChainId: ChainId.arbitrum_sepolia,
-    tokenPool: '', // TODO: address book
+    burnMintTokenPool: '0x3eC2b6F818B72442fc36561e9F930DD2b60957D2', // TODO: address book
     chainSelector: '3478487238524512106',
     router: '0x22356aec4Cf05ec0EC63daa576C6B2CE1DC64701'.toLowerCase(),
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,

@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, IconButton, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -32,7 +33,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActionProps, BridgeActions } from './BridgeActions';
 import { BridgeDestinationInput } from './BridgeDestinationInput';
 import { supportedNetworksWithBridgeMarket, SupportedNetworkWithChainId } from './common';
-import { useBridgingValues, useRateLimit } from './useGetBridgeLimits';
+import { useGetBridgeLimit, useGetRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
 
 // const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
@@ -136,17 +137,30 @@ export const BridgeModalContent = () => {
     destinationAccount,
   });
 
-  const bridgingValues = useBridgingValues(sourceNetworkObj.chainId);
+  const { data: bridgeLimits, isFetching: fetchingBridgeLimits } = useGetBridgeLimit(
+    sourceNetworkObj.chainId
+  );
 
-  const rateLimit = useRateLimit({
+  const parsedAmount = parseUnits(amount || '0', 18);
+
+  const { data: rateLimit, isFetching: fetchingRateLimit } = useGetRateLimit({
     destinationChainId: destinationNetworkObj?.chainId || 0,
     sourceChainId: sourceNetworkObj.chainId,
   });
 
-  const bridgeLimitExceeded =
-    bridgingValues &&
-    bridgingValues.currentAmountBridged + parseInt(amount, 10) >= bridgingValues.maxAmountBridged;
-  const rateLimitExceeded = rateLimit !== 0 && parseInt(amount, 10) >= (rateLimit || 0);
+  let bridgeLimitExceeded = false;
+  if (!fetchingBridgeLimits && bridgeLimits) {
+    bridgeLimitExceeded = bridgeLimits.currentBridgedAmount
+      .add(parsedAmount)
+      .gt(bridgeLimits.bridgeLimit);
+  }
+
+  let rateLimitExceeded = false;
+  if (!fetchingRateLimit && rateLimit) {
+    rateLimitExceeded = rateLimit.gt(0) && parsedAmount.gt(rateLimit);
+  }
+
+  const loadingLimits = fetchingBridgeLimits || fetchingRateLimit;
 
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: SupportedNetworkWithChainId) => {
@@ -185,7 +199,11 @@ export const BridgeModalContent = () => {
     isWrongNetwork,
     symbol: 'GHO',
     blocked:
-      loadingBridgeMessage || !destinationAccount || bridgeLimitExceeded || rateLimitExceeded,
+      loadingBridgeMessage ||
+      !destinationAccount ||
+      bridgeLimitExceeded ||
+      rateLimitExceeded ||
+      loadingLimits,
     decimals: 18,
     message,
     fees: bridgeFee,
@@ -388,7 +406,7 @@ export const BridgeModalContent = () => {
                 <Trans>
                   The selected amount is not available to bridge due to the bridge limit of
                 </Trans>{' '}
-                {bridgingValues.maxAmountBridged - bridgingValues.currentAmountBridged}.{' '}
+                {formatUnits(bridgeLimits?.bridgeLimit || 0, 18)}.{' '}
                 <Trans>Please try again later or reduce the amount to bridge</Trans>
               </Typography>
             </Warning>
