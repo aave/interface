@@ -18,7 +18,6 @@ export type NetworkConfig = {
   privateJsonRPCWSUrl?: string;
   publicJsonRPCUrl: readonly string[]; // public rpc used if not private found, and used to add specific network to wallets if user don't have them. Normally with slow rates
   publicJsonRPCWSUrl?: string;
-  // protocolDataUrl: string;
   // https://github.com/aave/aave-api
   ratesHistoryApiUrl?: string;
   // cachingServerUrl?: string;
@@ -64,8 +63,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc.sepolia.online',
       'https://www.sepoliarpc.space',
     ],
-    // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -83,7 +80,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://goerli.prylabs.net',
     ],
     publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -103,9 +99,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://cloudflare-eth.com/v1/mainnet',
     ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
-    // cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
-    // cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
-    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
     baseUniswapAdapter: '0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -124,9 +117,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc-mainnet.matic.quiknode.pro',
     ],
     publicJsonRPCWSUrl: 'wss://polygon-rpc.com',
-    // cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
-    // cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
-    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic',
     baseAssetSymbol: 'MATIC',
     wrappedBaseAssetSymbol: 'WMATIC',
     baseAssetDecimals: 18,
@@ -147,7 +137,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://ava-testnet.public.blastapi.io/ext/bc/C/rpc',
     ],
     publicJsonRPCWSUrl: 'wss://api.avax-test.network/ext/bc/C/rpc',
-    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-fuji',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
     wrappedBaseAssetSymbol: 'WAVAX',
@@ -171,9 +160,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc.ankr.com/avalanche',
     ],
     publicJsonRPCWSUrl: 'wss://api.avax.network/ext/bc/C/rpc',
-    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche',
-    // cachingServerUrl: 'https://cache-api-43114.aave.com/graphql',
-    // cachingWSServerUrl: 'wss://cache-api-43114.aave.com/graphql',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
     wrappedBaseAssetSymbol: 'WAVAX',
@@ -233,7 +219,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://1rpc.io/arb',
     ],
     publicJsonRPCWSUrl: 'wss://arb1.arbitrum.io/rpc',
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -257,7 +242,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://base.publicnode.com',
       'https://base-mainnet.public.blastapi.io',
     ],
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -298,7 +282,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc.ankr.com/harmony',
     ],
     publicJsonRPCWSUrl: 'wss://ws.s0.t.hmny.io',
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ONE',
     wrappedBaseAssetSymbol: 'WONE',
@@ -318,7 +301,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     privateJsonRPCUrl: 'https://optimism-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io', 'https://1rpc.io/op'],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH', // OETH
     wrappedBaseAssetSymbol: 'WETH',
@@ -389,7 +371,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc.ankr.com/fantom_testnet',
     ],
     publicJsonRPCWSUrl: '',
-    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',
     wrappedBaseAssetSymbol: 'WFTM',
