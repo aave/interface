@@ -10,7 +10,6 @@ import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
@@ -36,17 +35,11 @@ export interface MessageDetails {
 export interface BridgeActionProps extends BoxProps {
   amountToBridge: string;
   isWrongNetwork: boolean;
-  customGasPrice?: string;
   symbol: string;
   blocked: boolean;
   decimals: number;
-  isWrappedBaseAsset: boolean;
-  sourceChain: {
-    chainId: number;
-  };
-  destinationChain: {
-    chainId: number;
-  };
+  sourceChainId: number;
+  destinationChainId: number;
   tokenAddress: string;
   fees: string;
   message: MessageDetails | undefined;
@@ -60,20 +53,16 @@ export const BridgeActions = React.memo(
     symbol,
     blocked,
     decimals,
-    isWrappedBaseAsset,
     tokenAddress,
-    sourceChain,
-    destinationChain,
+    sourceChainId,
+    destinationChainId,
     message,
     fees,
     ...props
   }: BridgeActionProps) => {
     const { provider } = useWeb3Context();
     const queryClient = useQueryClient();
-    const [walletApprovalMethodPreference, addTransaction] = useRootStore((state) => [
-      state.walletApprovalMethodPreference,
-      state.addTransaction,
-    ]);
+    const [addTransaction] = useRootStore((state) => [state.addTransaction]);
 
     const {
       approvalTxState,
@@ -89,7 +78,7 @@ export const BridgeActions = React.memo(
 
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
-    const currentMarket = getMarketByChainIdWithBridge(sourceChain.chainId);
+    const currentMarket = getMarketByChainIdWithBridge(sourceChainId);
 
     const {
       data: approvedAmount,
@@ -99,7 +88,7 @@ export const BridgeActions = React.memo(
     } = useApprovedAmount({
       marketData: currentMarket as MarketDataType,
       token: tokenAddress,
-      spender: getRouterFor(sourceChain.chainId),
+      spender: getRouterFor(sourceChainId),
     });
 
     setLoadingTxns(fetchingApprovedAmount);
@@ -118,8 +107,6 @@ export const BridgeActions = React.memo(
       setApprovalTxState({});
     }
 
-    const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-
     useEffect(() => {
       if (!isFetchedAfterMount) {
         fetchApprovedAmount();
@@ -132,7 +119,7 @@ export const BridgeActions = React.memo(
         amount: approvedAmount?.toString() || '0',
         user: user,
         token: tokenAddress,
-        spender: getRouterFor(sourceChain.chainId),
+        spender: getRouterFor(sourceChainId),
       },
       requiresApproval,
       assetAddress: tokenAddress,
@@ -141,24 +128,20 @@ export const BridgeActions = React.memo(
       signatureAmount: amountToBridge,
       onApprovalTxConfirmed: fetchApprovedAmount,
       onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
-      chainId: sourceChain.chainId,
+      chainId: sourceChainId,
     });
 
     // Update gas estimation
     useEffect(() => {
+      // TODO
       let supplyGasLimit = 0;
-      if (usePermit) {
-        supplyGasLimit = Number(
-          gasLimitRecommendations[ProtocolAction.supplyWithPermit].recommended
-        );
-      } else {
-        supplyGasLimit = Number(gasLimitRecommendations[ProtocolAction.supply].recommended);
-        if (requiresApproval && !approvalTxState.success) {
-          supplyGasLimit += Number(APPROVAL_GAS_LIMIT);
-        }
+      supplyGasLimit = Number(gasLimitRecommendations[ProtocolAction.supply].recommended);
+      if (requiresApproval && !approvalTxState.success) {
+        supplyGasLimit += Number(APPROVAL_GAS_LIMIT);
       }
+
       setGasLimit(supplyGasLimit.toString());
-    }, [requiresApproval, approvalTxState, usePermit, setGasLimit]);
+    }, [requiresApproval, approvalTxState, setGasLimit]);
 
     const action = async () => {
       try {
@@ -167,10 +150,10 @@ export const BridgeActions = React.memo(
 
         const signer = provider.getSigner();
 
-        const sourceRouterAddress = getRouterFor(sourceChain.chainId);
+        const sourceRouterAddress = getRouterFor(sourceChainId);
         const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
 
-        const destinationChainSelector = getChainSelectorFor(destinationChain.chainId);
+        const destinationChainSelector = getChainSelectorFor(destinationChainId);
 
         const sendTx: TransactionResponse = await sourceRouter.ccipSend(
           destinationChainSelector,
@@ -225,7 +208,7 @@ export const BridgeActions = React.memo(
         handleApproval={approval}
         handleAction={action}
         requiresApproval={requiresApproval}
-        tryPermit={false} // how to check permitAvailable for gho?
+        tryPermit={false} // permit not availabe
         sx={sx}
         {...props}
       />

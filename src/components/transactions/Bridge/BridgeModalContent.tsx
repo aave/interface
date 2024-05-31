@@ -29,7 +29,7 @@ import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { BridgeActions } from './BridgeActions';
+import { BridgeActionProps, BridgeActions } from './BridgeActions';
 import { BridgeDestinationInput } from './BridgeDestinationInput';
 import { supportedNetworksWithBridgeMarket, SupportedNetworkWithChainId } from './common';
 import { useBridgingValues, useRateLimit } from './useGetBridgeLimits';
@@ -172,20 +172,6 @@ export const BridgeModalContent = () => {
     setAmount(maxAmountToSwap);
   }
 
-  const handleBridgeArguments = () => {
-    const sourceChain = sourceNetworkObj;
-    const destinationChain = destinationNetworkObj;
-    const tokenAddress = sourceTokenInfo.address || constants.AddressZero;
-
-    return {
-      sourceChain,
-      destinationChain,
-      tokenAddress,
-      amount,
-      //   feeTokenAddress,
-    };
-  };
-
   const handleSwapNetworks = () => {
     const currentSourceNetworkObj = sourceNetworkObj;
     setSourceNetworkObj(destinationNetworkObj);
@@ -194,18 +180,18 @@ export const BridgeModalContent = () => {
     setSelectedChainId(destinationNetworkObj.chainId);
   };
 
-  const bridgeActionsProps = {
-    ...handleBridgeArguments(),
+  const bridgeActionsProps: BridgeActionProps = {
     amountToBridge: amount,
     isWrongNetwork,
-    // poolAddress: GHO.underlying,
     symbol: 'GHO',
     blocked:
       loadingBridgeMessage || !destinationAccount || bridgeLimitExceeded || rateLimitExceeded,
     decimals: 18,
-    isWrappedBaseAsset: false,
     message,
     fees: bridgeFee,
+    sourceChainId: sourceNetworkObj.chainId,
+    destinationChainId: destinationNetworkObj.chainId,
+    tokenAddress: sourceTokenInfo.address || constants.AddressZero,
   };
 
   if (txError && txError.blocking) {

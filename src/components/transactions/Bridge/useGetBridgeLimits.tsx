@@ -2,32 +2,27 @@ import { Contract } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { getChainSelectorFor, laneConfig } from './BridgeConfig';
 // NOTE: lightweight ABI
 import TokenPoolAbi from './Tokenpool-abi.json';
 
 export const useBridgingValues = (sourceChainId: number) => {
-  const { provider } = useWeb3Context();
-
   const [bridgingValues, setBridgingValues] = useState({
     currentAmountBridged: 0,
     maxAmountBridged: 0,
   });
 
   useEffect(() => {
-    if (!provider) {
-      throw Error('Provider is not available');
-    }
-
     const sourceLaneConfig = laneConfig.find((config) => config.sourceChainId === sourceChainId);
     if (!sourceLaneConfig) {
       throw Error('No sourceLaneConfig found');
     }
 
+    const provider = getProvider(sourceChainId);
     const tokenPoolAddress = sourceLaneConfig.tokenPool;
-    const signer = provider.getSigner();
-    const tokenPool = new Contract(tokenPoolAddress, TokenPoolAbi, signer);
+    const tokenPool = new Contract(tokenPoolAddress, TokenPoolAbi, provider);
 
     async function fetchBridgingValues() {
       try {
@@ -43,7 +38,7 @@ export const useBridgingValues = (sourceChainId: number) => {
     }
 
     fetchBridgingValues();
-  }, [sourceChainId, provider]);
+  }, [sourceChainId]);
 
   return bridgingValues;
 };
@@ -79,8 +74,11 @@ export const useRateLimit = ({ destinationChainId, sourceChainId }: RateLimitPro
         const [rate, , isEnabled, ,] = await tokenPool.getCurrentOutboundRateLimiterState(
           destinationChainSelector
         );
-        if (!isEnabled) rate = 0;
-        setRateLimit(parseInt(rate.toString(), 10));
+        if (!isEnabled) {
+          setRateLimit(0);
+        } else {
+          setRateLimit(parseInt(rate.toString(), 10));
+        }
       } catch (error) {
         console.error('Error fetching rate limit:', error);
       }
