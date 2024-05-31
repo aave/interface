@@ -40,7 +40,7 @@ export const VotersListModal = ({
       <VoteBar
         yae
         percent={proposal.forPercent}
-        votes={proposal.forPercent}
+        votes={proposal.forVotes}
         sx={{
           ...borderBaseStyle,
           px: 4,
@@ -79,7 +79,7 @@ export const VotersListModal = ({
     <>
       <VoteBar
         percent={proposal.againstPercent}
-        votes={proposal.againstPercent}
+        votes={proposal.againstVotes}
         sx={{
           ...borderBaseStyle,
           px: 4,

@@ -16,6 +16,7 @@ import {
 
 export const ipfsGateway = 'https://cloudflare-ipfs.com/ipfs';
 export const fallbackIpfsGateway = 'https://ipfs.io/ipfs';
+const subgraphApiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
 
 export interface VotingMachineConfig {
   portalToMachineMap: { [votingPoralAddress: string]: string };
@@ -50,8 +51,7 @@ const sepoliaVotingMachineConfig: VotingMachineConfig = {
   },
   votingPortalDataHelperAddress: '0x133210F3fe2deEB34e65deB6861ee3dF87393977',
   votingMachineAddress: '0xA1995F1d5A8A247c064a76F336E1C2ecD24Ef0D9',
-  subgraphUrl:
-    'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/votingmachine-sepolia/v1/gn',
+  subgraphUrl: '',
 };
 
 const fujiVotingMachineConfig: VotingMachineConfig = {
@@ -60,8 +60,7 @@ const fujiVotingMachineConfig: VotingMachineConfig = {
   },
   votingPortalDataHelperAddress: '0x133210F3fe2deEB34e65deB6861ee3dF87393977',
   votingMachineAddress: '0x767AA57554690D23D1E0594E8746271C97e1A1e4',
-  subgraphUrl:
-    'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/votingmachine-sepolia-avalanche-testnet/v2/gn',
+  subgraphUrl: '',
 };
 
 type GovernanceChainConfig = {
@@ -72,7 +71,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
   [ChainId.sepolia]: {
     coreChainId: ChainId.sepolia,
     votingChainIds: [ChainId.sepolia, ChainId.fuji],
-    governanceCoreSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/grothem/gov-v3-sepolia',
+    governanceCoreSubgraphUrl: '',
     votingChainConfig: {
       [ChainId.sepolia]: sepoliaVotingMachineConfig,
       [ChainId.fuji]: fujiVotingMachineConfig,
@@ -97,7 +96,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
   [ChainId.mainnet]: {
     coreChainId: ChainId.mainnet,
     votingChainIds: [ChainId.polygon, ChainId.avalanche],
-    governanceCoreSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/governance-v3',
+    governanceCoreSubgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/A7QMszgomC9cnnfpAcqZVLr2DffvkGNfimD8iUSMiurK`,
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {
@@ -105,8 +104,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Ethereum.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Ethereum.VOTING_MACHINE,
-        subgraphUrl:
-          'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gov-v3-voting-machine-mainnet/1/gn',
+        subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/2QPwuCfFtQ8WSCZoN3i9SmdoabMzbq2pmg4kRbrhymBV`,
       },
       [ChainId.polygon]: {
         portalToMachineMap: {
@@ -114,8 +112,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Polygon.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Polygon.VOTING_MACHINE,
-        subgraphUrl:
-          'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gov-v3-voting-machine-matic/1/gn',
+        subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/32WLrLTQctAgfoshbkteHfxLu3DpAeZwh2vUPWXV6Qxu`,
       },
       [ChainId.avalanche]: {
         portalToMachineMap: {
@@ -123,8 +120,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Avalanche.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Avalanche.VOTING_MACHINE,
-        subgraphUrl:
-          'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gov-v3-voting-machine-avalanche/1/gn',
+        subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/FngMWWGJV45McvV7GUBkrta9eoEi3sHZoH7MYnFQfZkr`,
       },
     },
     payloadsControllerDataHelpers: {
