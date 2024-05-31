@@ -290,6 +290,10 @@ export const GhoBorrowModalContent = ({
           healthFactor={user.healthFactor}
           futureHealthFactor={newHealthFactor.toString(10)}
         />
+        <DetailsIncentivesLine
+          incentives={incentives ? [incentives] : []}
+          symbol={poolReserve.symbol}
+        />
         <Row
           caption={
             <Box>
@@ -335,10 +339,6 @@ export const GhoBorrowModalContent = ({
             </Trans>
           </Typography>
         )}
-        <DetailsIncentivesLine
-          incentives={incentives ? [incentives] : []}
-          symbol={poolReserve.symbol}
-        />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}

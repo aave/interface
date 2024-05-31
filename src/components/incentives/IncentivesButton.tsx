@@ -62,7 +62,7 @@ export const UserMeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho'
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} plus />
+      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} />
     </ContentWithTooltip>
   );
 };
@@ -87,11 +87,7 @@ export const MeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho' }) 
       setOpen={setOpen}
       open={open}
     >
-      <Content
-        incentives={[meritIncentives]}
-        incentivesNetAPR={+meritIncentives.incentiveAPR}
-        plus
-      />
+      <Content incentives={[meritIncentives]} incentivesNetAPR={+meritIncentives.incentiveAPR} />
     </ContentWithTooltip>
   );
 };

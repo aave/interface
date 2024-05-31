@@ -338,10 +338,13 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
       )}
 
       <Warning severity="error">
-        {stakeAssetName === 'gho' && usersStkGhoIncentives === 0 && (
+        {stakeAssetName === 'gho' && usersStkGhoIncentives !== 0 && (
           <>
             <Typography variant="caption">
-              <Trans>Entering cooldown will cause you to lose merit incentives for stkGHO.</Trans>
+              <Trans>
+                During the cooldown period, you will not earn any merit rewards. However, rewards
+                earned up to this point will remain unaffected.
+              </Trans>
             </Typography>
             <br />
           </>

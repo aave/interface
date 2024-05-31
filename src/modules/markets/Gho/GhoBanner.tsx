@@ -1,5 +1,7 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
 import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -25,7 +27,11 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const { data: incentives } = useMeritIncentives('gho');
 
   const ghoMeritAPR = incentives?.incentiveAPR || 0;
-  const totalBorrowed = ghoReserveData.aaveFacilitatorBucketLevel;
+
+  const totalBorrowed = BigNumber.min(
+    valueToBigNumber(reserve?.totalDebt || 0),
+    valueToBigNumber(reserve?.borrowCap || 0)
+  ).toNumber();
 
   return (
     <Box
@@ -214,7 +220,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   alignItems: 'flex-start',
                 }}
               >
-                {ghoLoadingData || totalBorrowed === 0 ? (
+                {ghoLoadingData ? (
                   <Skeleton width={70} height={25} />
                 ) : (
                   <Stack direction="row" gap={1} alignItems="center">
@@ -222,15 +228,19 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                       symbol="USD"
                       compact
                       variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                      value={reserve?.totalDebt || 0}
+                      value={totalBorrowed}
                     />
-                    <Trans>of</Trans>
-                    <FormattedNumber
-                      symbol="USD"
-                      compact
-                      variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                      value={reserve?.borrowCap || 0}
-                    />
+                    <Stack direction="row" gap={1} sx={{ marginTop: 0.5 }}>
+                      <Typography variant="caption">
+                        <Trans>of</Trans>
+                      </Typography>
+                      <FormattedNumber
+                        symbol="USD"
+                        compact
+                        variant="caption"
+                        value={reserve?.borrowCap || 0}
+                      />
+                    </Stack>
                   </Stack>
                 )}
                 <Typography
@@ -257,7 +267,10 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
               }}
             >
               <GhoBorrowApyRange
-                minVal={ghoReserveData.ghoBorrowAPYWithMaxDiscount - Number(ghoMeritAPR)}
+                minVal={Math.max(
+                  0,
+                  ghoReserveData.ghoBorrowAPYWithMaxDiscount - Number(ghoMeritAPR)
+                )}
                 maxVal={ghoReserveData.ghoVariableBorrowAPY}
                 variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 percentVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
