@@ -43,6 +43,8 @@ export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
 }
 
+// function getMaxAmountAvailableToBridge() {}
+
 export const BridgeModalContent = () => {
   const { mainTxState: bridgeTxState, txError, close } = useModalContext();
   const [user] = useRootStore((state) => [state.account]);
@@ -148,6 +150,9 @@ export const BridgeModalContent = () => {
     sourceChainId: sourceNetworkObj.chainId,
   });
 
+  console.log(bridgeLimits?.bridgeLimit.toString());
+  console.log(bridgeLimits?.currentBridgedAmount.toString());
+
   let bridgeLimitExceeded = false;
   if (!fetchingBridgeLimits && bridgeLimits && bridgeLimits.bridgeLimit.gt(0)) {
     bridgeLimitExceeded = bridgeLimits.currentBridgedAmount
@@ -172,6 +177,12 @@ export const BridgeModalContent = () => {
       }
     };
 
+  const maxAmountToBridge = BigNumber.min(sourceTokenInfo.bridgeTokenBalance).toString(10);
+  // when switching networks, max amounts could be different so make sure amount is not higher than max
+  if (Number(amount) > Number(maxAmountToBridge) && !fetchingBridgeTokenBalance) {
+    setAmount(maxAmountToBridge);
+  }
+
   const handleInputChange = (value: string) => {
     if (value === '-1') {
       setAmount(sourceTokenInfo.bridgeTokenBalance);
@@ -179,12 +190,6 @@ export const BridgeModalContent = () => {
       setAmount(value);
     }
   };
-
-  const maxAmountToSwap = BigNumber.min(sourceTokenInfo.bridgeTokenBalance).toString(10);
-  // when switching networks, max amounts could be different so make sure amount is not higher than max
-  if (Number(amount) > Number(maxAmountToSwap) && !fetchingBridgeTokenBalance) {
-    setAmount(maxAmountToSwap);
-  }
 
   const handleSwapNetworks = () => {
     const currentSourceNetworkObj = sourceNetworkObj;
@@ -348,11 +353,11 @@ export const BridgeModalContent = () => {
                   iconSymbol: 'GHO',
                 },
               ]}
-              maxValue={maxAmountToSwap}
+              maxValue={maxAmountToBridge}
               inputTitle={<Trans>Amount to Bridge</Trans>}
               balanceText={<Trans>GHO balance</Trans>}
               sx={{ width: '100%' }}
-              loading={fetchingBridgeTokenBalance}
+              loading={fetchingBridgeTokenBalance || loadingLimits}
               //   isMaxSelected={isMaxSelected}
             />
             <BridgeDestinationInput
