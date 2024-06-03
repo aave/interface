@@ -133,17 +133,17 @@ export const WalletSelector = () => {
   // Get UNS Tlds. Grabbing this fron an endpoint since Unstoppable adds new TLDs frequently, so this wills tay updated
   useEffect(() => {
     const unsTlds = async () => {
-      const url = 'https://resolve.unstoppabledomains.com/supported_tlds';
-      const response = await fetch(url);
-      const data = await response.json();
-      setUnsTlds(data['tlds']);
+      try {
+        const url = 'https://resolve.unstoppabledomains.com/supported_tlds';
+        const response = await fetch(url);
+        const data = await response.json();
+        setUnsTlds(data['tlds']);
+      } catch (e) {
+        console.log('Error fetching UNS TLDs: ', e);
+      }
     };
 
-    try {
-      unsTlds();
-    } catch (e) {
-      console.log('Error fetching UNS TLDs: ', e);
-    }
+    unsTlds();
   }, []);
 
   const handleBlocking = () => {

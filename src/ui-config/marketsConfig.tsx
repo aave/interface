@@ -71,15 +71,6 @@ export type MarketDataType = {
     GHO_TOKEN_ADDRESS?: string;
     GHO_UI_DATA_PROVIDER?: string;
   };
-  /**
-   * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
-   * the integration doesn't follow aave market naming & only supports a subset of markets.
-   * When a halIntegration is specified a link to hal will be displayed on the ui.
-   */
-  halIntegration?: {
-    URL: string;
-    marketName: string;
-  };
 };
 export enum CustomMarket {
   // v3 test networks, all v3.0.1
@@ -113,6 +104,8 @@ export enum CustomMarket {
   // permissioned_market = 'permissioned_market',
 }
 
+const apiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
+
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
@@ -131,7 +124,7 @@ export const marketsData: {
       debtSwitch: true,
       switch: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Ethereum.POOL,
@@ -147,10 +140,6 @@ export const marketsData: {
       WITHDRAW_SWITCH_ADAPTER: AaveV3Ethereum.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Ethereum.DEBT_SWAP_ADAPTER,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'aavev3',
-    },
   },
   [CustomMarket.proto_mainnet]: {
     marketTitle: 'Ethereum',
@@ -165,7 +154,7 @@ export const marketsData: {
       debtSwitch: true,
       switch: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/8wR23o1zkS4gpLqLNU4kG3JHYVucqGyopL5utGxP2q1N`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV2Ethereum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV2Ethereum.POOL,
@@ -178,10 +167,6 @@ export const marketsData: {
       COLLECTOR: AaveV2Ethereum.COLLECTOR,
       V3_MIGRATOR: AaveV2Ethereum.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Ethereum.DEBT_SWAP_ADAPTER,
-    },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-      marketName: 'aavev2',
     },
   },
   // [CustomMarket.permissioned_market]: {
@@ -210,7 +195,6 @@ export const marketsData: {
     marketTitle: 'Ethereum AMM',
     market: CustomMarket.amm_mainnet,
     chainId: ChainId.mainnet,
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV2EthereumAMM.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV2EthereumAMM.POOL,
@@ -232,7 +216,7 @@ export const marketsData: {
       collateralRepay: true,
       debtSwitch: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/H1Et77RZh3XEf27vkAmJyzgCME2RSFLtDS2f4PPW6CGp`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV2Polygon.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV2Polygon.POOL,
@@ -246,10 +230,6 @@ export const marketsData: {
       V3_MIGRATOR: AaveV2Polygon.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Polygon.DEBT_SWAP_ADAPTER,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-      marketName: 'aavepolygon',
-    },
   },
   [CustomMarket.proto_avalanche]: {
     marketTitle: 'Avalanche',
@@ -262,7 +242,7 @@ export const marketsData: {
       debtSwitch: true,
       switch: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/EZvK18pMhwiCjxwesRLTg81fP33WnR6BnZe5Cvma3H1C`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV2Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV2Avalanche.POOL,
@@ -275,10 +255,6 @@ export const marketsData: {
       COLLECTOR: AaveV2Avalanche.COLLECTOR,
       V3_MIGRATOR: AaveV2Avalanche.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Avalanche.DEBT_SWAP_ADAPTER,
-    },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-      marketName: 'aaveavalanche',
     },
   },
   // v3
@@ -315,8 +291,7 @@ export const marketsData: {
       debtSwitch: true,
       switch: true,
     },
-    // TODO: Need subgraph, currently not supported
-    // subgraphUrl: '',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/GQFbb95cE6d8mV989mL5figjaGaKCQB3xqYrr1bRyXqF`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Base.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Base.POOL,
@@ -339,7 +314,6 @@ export const marketsData: {
     v3: true,
     permitDisabled: true,
     chainId: ChainId.arbitrum_sepolia,
-    //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3ArbitrumSepolia.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3ArbitrumSepolia.POOL,
@@ -351,7 +325,6 @@ export const marketsData: {
       L2_ENCODER: AaveV3ArbitrumSepolia.L2_ENCODER,
     },
   },
-
   [CustomMarket.proto_arbitrum_v3]: {
     marketTitle: 'Arbitrum',
     market: CustomMarket.proto_arbitrum_v3,
@@ -365,7 +338,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       switch: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Arbitrum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Arbitrum.POOL,
@@ -380,10 +353,6 @@ export const marketsData: {
       DEBT_SWITCH_ADAPTER: AaveV3Arbitrum.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Arbitrum.WITHDRAW_SWAP_ADAPTER,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'arbitrum',
-    },
   },
   [CustomMarket.proto_base_sepolia_v3]: {
     marketTitle: 'Base Sepolia',
@@ -391,7 +360,6 @@ export const marketsData: {
     v3: true,
     permitDisabled: true,
     chainId: ChainId.base_sepolia,
-    //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3BaseSepolia.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3BaseSepolia.POOL,
@@ -416,7 +384,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       switch: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-avalanche',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/2h9woxy8RTjHu1HJsCEnmzpPHFArU33avmUh4f71JpVn`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Avalanche.POOL,
@@ -430,10 +398,6 @@ export const marketsData: {
       DEBT_SWITCH_ADAPTER: AaveV3Avalanche.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Avalanche.WITHDRAW_SWAP_ADAPTER,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'avalanche',
-    },
   },
   [CustomMarket.proto_fuji_v3]: {
     marketTitle: 'Avalanche Fuji',
@@ -444,7 +408,6 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    //  subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fuji',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Fuji.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Fuji.POOL,
@@ -461,7 +424,6 @@ export const marketsData: {
     v3: true,
     permitDisabled: true,
     chainId: ChainId.optimism_sepolia,
-    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3OptimismSepolia.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3OptimismSepolia.POOL,
@@ -503,7 +465,7 @@ export const marketsData: {
       collateralRepay: true,
       liquiditySwap: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fantom',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/6L1vPqyE3xvkzkWjh6wUKc1ABWYYps5HJahoxhrv2PJn`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Fantom.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Fantom.POOL,
@@ -515,10 +477,6 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Fantom.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Fantom.COLLECTOR,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'fantom',
-    },
   },
   [CustomMarket.proto_fantom_testnet_v3]: {
     marketTitle: 'Fantom Testnet',
@@ -529,7 +487,6 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fantom-testnet',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3FantomTestnet.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3FantomTestnet.POOL,
@@ -548,7 +505,7 @@ export const marketsData: {
     enabledFeatures: {
       incentives: false,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-harmony',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/FifJapBdCqT9vgNqJ5axmr6eNyUpUSaRAbbZTfsViNsT`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Harmony.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Harmony.POOL,
@@ -572,7 +529,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       switch: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/DSfLz8oQBUeU5atALgUFQKMTSYV9mZAVYp4noLSXAfvb`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Optimism.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Optimism.POOL,
@@ -601,7 +558,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       switch: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-polygon',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Co2URyXjnxaw8WqxKyVHdirq9Ahhm5vcTs4dMedAq211`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Polygon.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Polygon.POOL,
@@ -615,10 +572,6 @@ export const marketsData: {
       DEBT_SWITCH_ADAPTER: AaveV3Polygon.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Polygon.WITHDRAW_SWAP_ADAPTER,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'polygon',
-    },
   },
   [CustomMarket.proto_fuji]: {
     marketTitle: 'Avalanche Fuji',
@@ -628,7 +581,6 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-fuji',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV2Fuji.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV2Fuji.POOL,
@@ -657,17 +609,13 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Metis.COLLECTOR,
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
-      marketName: 'polygon',
-    },
   },
   [CustomMarket.proto_gnosis_v3]: {
     marketTitle: 'Gnosis',
     market: CustomMarket.proto_gnosis_v3,
     chainId: ChainId.xdai,
     v3: true,
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-gnosis',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/HtcDaL8L8iZ2KQNNS44EBVmLruzxuNAz1RkBYdui1QUT`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Gnosis.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Gnosis.POOL,
@@ -683,7 +631,7 @@ export const marketsData: {
     market: CustomMarket.proto_bnb_v3,
     chainId: ChainId.bnb,
     v3: true,
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-bnb',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/7Jk85XgkV1MQ7u56hD8rr65rfASbayJXopugWkUoBMnZ`,
     enabledFeatures: {
       liquiditySwap: true,
       collateralRepay: true,
@@ -710,8 +658,7 @@ export const marketsData: {
     market: CustomMarket.proto_scroll_v3,
     chainId: ChainId.scroll,
     v3: true,
-    subgraphUrl:
-      'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/aave-v3-scroll/1.0.0/gn',
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/74JwenoHZb2aAYVGCCSdPWzi9mm745dyHyQQVoZ7Sbub`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Scroll.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Scroll.POOL,
