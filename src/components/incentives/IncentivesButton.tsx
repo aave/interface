@@ -62,38 +62,32 @@ export const UserMeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho'
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} plus />
+      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} />
     </ContentWithTooltip>
   );
 };
 
 export const MeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho' }) => {
   const [open, setOpen] = useState(false);
-  const { data: meritIncentives } = useMeritIncentives();
+  const { data: meritIncentives } = useMeritIncentives(symbol);
 
   if (!meritIncentives) {
     return null;
   }
 
-  const incentives = {
-    incentiveAPR: (meritIncentives.actionsAPR[symbol] / 100).toString(),
-    rewardTokenSymbol: 'GHO', // rewards alwasy in gho, for now
-    rewardTokenAddress: '0x', // not used for merit program
-  };
-
   return (
     <ContentWithTooltip
       tooltipContent={
         <MeritIncentivesTooltipContent
-          incentiveAPR={incentives.incentiveAPR}
-          rewardTokenSymbol={incentives.rewardTokenSymbol}
+          incentiveAPR={meritIncentives.incentiveAPR}
+          rewardTokenSymbol={meritIncentives.rewardTokenSymbol}
         />
       }
       withoutHover
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} plus />
+      <Content incentives={[meritIncentives]} incentivesNetAPR={+meritIncentives.incentiveAPR} />
     </ContentWithTooltip>
   );
 };

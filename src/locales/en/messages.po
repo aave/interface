@@ -173,6 +173,10 @@ msgstr "Add to wallet"
 msgid "Add {0} to wallet to track your balance."
 msgstr "Add {0} to wallet to track your balance."
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Additionally, GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "Additionally, GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "Address is not a contract"
@@ -511,10 +515,6 @@ msgstr "Borrow info"
 msgid "Borrow power used"
 msgstr "Borrow power used"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow rate APY"
-msgstr "Borrow rate APY"
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
 msgstr "Borrow rate change"
@@ -796,6 +796,10 @@ msgstr "Current LTV"
 msgid "Current differential"
 msgstr "Current differential"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Current rewards"
+msgstr "Current rewards"
+
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Current v2 Balance"
 msgstr "Current v2 Balance"
@@ -945,6 +949,10 @@ msgstr "Due to internal stETH mechanics required for rebasing support, it is not
 msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
 msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
+msgstr "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -1035,6 +1043,10 @@ msgstr "Enter an amount"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Estimated borrow rate"
+msgstr "Estimated borrow rate"
 
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
@@ -1133,6 +1145,10 @@ msgstr "French"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -1495,9 +1511,9 @@ msgstr "Meet GHO"
 msgid "Menu"
 msgstr "Menu"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Merit rewards"
-msgstr "Merit rewards"
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Merit Program"
+msgstr "Merit Program"
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
@@ -2821,6 +2837,10 @@ msgstr "User is in isolation mode or LTV is zero"
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "User is trying to borrow multiple assets including a siloed one"
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate."
+msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate."
+
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
@@ -3255,6 +3275,7 @@ msgid "for"
 msgstr "for"
 
 #: src/components/caps/DebtCeilingStatus.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
