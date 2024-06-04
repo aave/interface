@@ -48,7 +48,7 @@ export type MarketDataType = {
     debtSwitch?: boolean;
     withdrawAndSwitch?: boolean;
     switch?: boolean;
-    bridge?: boolean;
+    // bridge?: boolean;
   };
   permitDisabled?: boolean; // intended to be used for testnets
   isFork?: boolean;
@@ -135,7 +135,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       debtSwitch: true,
       switch: true,
-      bridge: true,
+      // bridge: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
     addresses: {
@@ -274,7 +274,7 @@ export const marketsData: {
     chainId: ChainId.sepolia,
     enabledFeatures: {
       faucet: true,
-      bridge: true,
+      // bridge: true,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
@@ -332,7 +332,7 @@ export const marketsData: {
       debtSwitch: true,
       withdrawAndSwitch: true,
       switch: true,
-      bridge: true,
+      // bridge: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum',
     addresses: {
@@ -376,7 +376,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
       incentives: true,
-      bridge: true,
+      // bridge: true,
     },
   },
   [CustomMarket.proto_base_sepolia_v3]: {
@@ -398,7 +398,7 @@ export const marketsData: {
       GHO_TOKEN_ADDRESS: '0x7CFa3f3d1cded0Da930881c609D4Dbf0012c14Bb', // TODO Address Book
     },
     enabledFeatures: {
-      bridge: true,
+      // bridge: true,
     },
   },
 

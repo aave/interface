@@ -2,6 +2,7 @@
 // https://github.com/smartcontractkit/smart-contract-examples/blob/main/ccip-offchain/javascript/src/config/router.js
 import { ChainId } from '@aave/contract-helpers';
 import { AaveV3ArbitrumSepolia, AaveV3Sepolia } from '@bgd-labs/aave-address-book';
+import { BaseNetworkConfig, networkConfigs } from 'src/ui-config/networksConfig';
 
 type Config = {
   sourceChainId: ChainId;
@@ -22,6 +23,10 @@ export enum MessageExecutionState {
   IN_PROGRESS,
   SUCCESS,
   FAILURE,
+}
+
+export interface SupportedNetworkWithChainId extends BaseNetworkConfig {
+  chainId: number;
 }
 
 // TODO: make testnet and mainnet config
@@ -144,3 +149,9 @@ export function getDestinationChainFor(sourceChainId: ChainId, onRamp: string) {
   }
   return destinationChainId;
 }
+
+export const supportedNetworksWithBridge: SupportedNetworkWithChainId[] =
+  getSupportedSourceChains().map((chainId) => ({
+    ...networkConfigs[chainId],
+    chainId,
+  }));

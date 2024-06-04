@@ -1,6 +1,6 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, IconButton, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, IconButton, Stack, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
@@ -21,7 +21,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TokenInfo } from 'src/ui-config/TokenList';
-import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { AssetInput } from '../AssetInput';
@@ -31,99 +31,48 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActionProps, BridgeActions } from './BridgeActions';
+import { supportedNetworksWithBridge, SupportedNetworkWithChainId } from './BridgeConfig';
 import { BridgeDestinationInput } from './BridgeDestinationInput';
-import { supportedNetworksWithBridgeMarket, SupportedNetworkWithChainId } from './common';
 import { useGetBridgeLimit, useGetRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
 
-// const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
-const defaultNetwork = marketsData[CustomMarket.proto_sepolia_v3]; // TODO Remove for Production
+const defaultNetwork = supportedNetworksWithBridge[0]; // TODO Remove for Production
+const defaultNetworkMarket = marketsData[defaultNetwork.chainId];
 
 export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
 }
-
-// function getMaxAmountAvailableToBridge() {}
 
 export const BridgeModalContent = () => {
   const { mainTxState: bridgeTxState, txError, close } = useModalContext();
   const [user] = useRootStore((state) => [state.account]);
   const [destinationAccount, setDestinationAccount] = useState(user);
   const [amount, setAmount] = useState('');
+  const [maxSelected, setMaxSelected] = useState(false);
   // const [inputAmountUSD, setInputAmount] = useState('');
   const { readOnlyModeAddress, chainId: currentChainId } = useWeb3Context();
 
-  const [selectedChainId, setSelectedChainId] = useState(() => {
-    if (supportedNetworksWithBridgeMarket.find((elem) => elem.chainId === currentChainId)) {
-      return currentChainId;
-    }
+  const [sourceNetworkObj, setSourceNetworkObj] = useState(
+    supportedNetworksWithBridge.find((net) => net.chainId === currentChainId) ?? defaultNetwork
+  );
 
-    return defaultNetwork.chainId;
-  });
-
-  const defaultSourceNetwork =
-    supportedNetworksWithBridgeMarket.find((net) => net.chainId === selectedChainId) ||
-    supportedNetworksWithBridgeMarket[0];
-
-  const [sourceNetworkObj, setSourceNetworkObj] = useState(defaultSourceNetwork);
-
-  const defaultDestinationNetwork = supportedNetworksWithBridgeMarket.find(
+  const defaultDestinationNetwork = supportedNetworksWithBridge.find(
     (net) => net.chainId !== sourceNetworkObj.chainId
   ) as SupportedNetworkWithChainId;
 
   const [destinationNetworkObj, setDestinationNetworkObj] = useState(defaultDestinationNetwork);
 
   useEffect(() => {
-    // Check if the current chain ID is supported. If so, update selectedChainId to currentChainId.
-    // Otherwise, fallback to the default network's chain ID.
-    const isNewChainSupported = supportedNetworksWithBridgeMarket.some(
-      (elem) => elem.chainId === currentChainId
-    );
-    setSelectedChainId(isNewChainSupported ? currentChainId : defaultNetwork.chainId);
-  }, [currentChainId]);
-
-  // useEffect(() => {
-  //   const updateDestinationNetwork = () => {
-  //     let initialDestination = destinationNetworkObj;
-
-  //     // If the initial destination is the same as the source, or if no initial destination is found,
-  //     // select an alternative destination that is not the source network
-  //     if (!initialDestination || initialDestination.chainId === sourceNetworkObj.chainId) {
-  //       const alternativeDestinations = supportedNetworksWithBridgeMarket.filter(
-  //         (net) => net.chainId !== sourceNetworkObj.chainId
-  //       );
-
-  //       initialDestination = alternativeDestinations[0];
-  //     }
-  //     setDestinationNetworkObj(initialDestination);
-  //   };
-
-  //   updateDestinationNetwork();
-  // }, [sourceNetworkObj]);
-
-  useEffect(() => {
-    setSourceNetworkObj(() => {
-      return (
-        supportedNetworksWithBridgeMarket.find((net) => net.chainId === selectedChainId) ||
-        supportedNetworksWithBridgeMarket[0]
-      );
-    });
-    setDestinationNetworkObj(() => {
-      return (
-        supportedNetworksWithBridgeMarket.find(
-          (net) => net.chainId === destinationNetworkObj?.chainId
-        ) || supportedNetworksWithBridgeMarket[1]
-      );
-    });
-  }, [selectedChainId]);
-
-  // const [tokenListWithBalance, setTokensListBalance] = useState<TokenInfoWithBalance[]>([]);
+    // reset when source network changes
+    setAmount('');
+    setMaxSelected(false);
+  }, [sourceNetworkObj]);
 
   const { data: sourceTokenInfo, isFetching: fetchingBridgeTokenBalance } = useBridgeTokens(
     Object.values(marketsData).find((elem) => elem.chainId === sourceNetworkObj.chainId) ||
-      defaultNetwork
+      defaultNetworkMarket
   );
-  const isWrongNetwork = currentChainId !== selectedChainId;
+  const isWrongNetwork = currentChainId !== sourceNetworkObj.chainId;
 
   const {
     message,
@@ -135,7 +84,7 @@ export const BridgeModalContent = () => {
     sourceChainId: sourceNetworkObj.chainId,
     destinationChainId: destinationNetworkObj?.chainId || 0,
     amount,
-    sourceTokenAddress: sourceTokenInfo.address || '',
+    sourceTokenAddress: sourceTokenInfo?.address || '',
     destinationAccount,
   });
 
@@ -149,9 +98,6 @@ export const BridgeModalContent = () => {
     destinationChainId: destinationNetworkObj?.chainId || 0,
     sourceChainId: sourceNetworkObj.chainId,
   });
-
-  console.log(bridgeLimits?.bridgeLimit.toString());
-  console.log(bridgeLimits?.currentBridgedAmount.toString());
 
   let bridgeLimitExceeded = false;
   if (!fetchingBridgeLimits && bridgeLimits && bridgeLimits.bridgeLimit.gt(0)) {
@@ -171,23 +117,32 @@ export const BridgeModalContent = () => {
     (networkAction: string) => (network: SupportedNetworkWithChainId) => {
       if (networkAction === 'sourceNetwork') {
         setSourceNetworkObj(network);
-        setSelectedChainId(network.chainId);
+        // setSelectedChainId(network.chainId);
       } else {
         setDestinationNetworkObj(network);
       }
     };
 
-  const maxAmountToBridge = BigNumber.min(sourceTokenInfo.bridgeTokenBalance).toString(10);
-  // when switching networks, max amounts could be different so make sure amount is not higher than max
-  if (Number(amount) > Number(maxAmountToBridge) && !fetchingBridgeTokenBalance) {
-    setAmount(maxAmountToBridge);
+  let maxAmountReducedDueToBridgeLimit = false;
+  let maxAmountToBridge = sourceTokenInfo?.bridgeTokenBalance || '0';
+  const remainingBridgeLimit =
+    bridgeLimits?.bridgeLimit.sub(bridgeLimits?.currentBridgedAmount) || BigNumber(0);
+  if (!fetchingBridgeLimits && bridgeLimits && bridgeLimits.bridgeLimit.gt(0)) {
+    if (remainingBridgeLimit.lt(maxAmountToBridge)) {
+      maxAmountToBridge = remainingBridgeLimit.toString();
+      maxAmountReducedDueToBridgeLimit = true;
+    }
   }
+
+  const maxAmountToBridgeFormatted = formatUnits(maxAmountToBridge, 18);
 
   const handleInputChange = (value: string) => {
     if (value === '-1') {
-      setAmount(sourceTokenInfo.bridgeTokenBalance);
+      setAmount(maxAmountToBridgeFormatted);
+      setMaxSelected(true);
     } else {
       setAmount(value);
+      setMaxSelected(false);
     }
   };
 
@@ -195,8 +150,6 @@ export const BridgeModalContent = () => {
     const currentSourceNetworkObj = sourceNetworkObj;
     setSourceNetworkObj(destinationNetworkObj);
     setDestinationNetworkObj(currentSourceNetworkObj);
-
-    setSelectedChainId(destinationNetworkObj.chainId);
   };
 
   const bridgeActionsProps: BridgeActionProps = {
@@ -214,7 +167,7 @@ export const BridgeModalContent = () => {
     fees: bridgeFee,
     sourceChainId: sourceNetworkObj.chainId,
     destinationChainId: destinationNetworkObj.chainId,
-    tokenAddress: sourceTokenInfo.address || constants.AddressZero,
+    tokenAddress: sourceTokenInfo?.address || constants.AddressZero,
   };
 
   if (txError && txError.blocking) {
@@ -274,8 +227,8 @@ export const BridgeModalContent = () => {
 
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
-          networkName={getNetworkConfig(selectedChainId).name}
-          chainId={selectedChainId}
+          networkName={getNetworkConfig(sourceNetworkObj.chainId).name}
+          chainId={sourceNetworkObj.chainId}
           event={{
             eventName: GENERAL.SWITCH_NETWORK,
           }}
@@ -313,7 +266,7 @@ export const BridgeModalContent = () => {
               }}
             >
               <NetworkSelect
-                supportedBridgeMarkets={supportedNetworksWithBridgeMarket.filter(
+                supportedBridgeMarkets={supportedNetworksWithBridge.filter(
                   (net) => net.chainId !== destinationNetworkObj.chainId
                 )}
                 onNetworkChange={handleSelectedNetworkChange('sourceNetwork')}
@@ -333,7 +286,7 @@ export const BridgeModalContent = () => {
                 </SvgIcon>
               </IconButton>
               <NetworkSelect
-                supportedBridgeMarkets={supportedNetworksWithBridgeMarket.filter(
+                supportedBridgeMarkets={supportedNetworksWithBridge.filter(
                   (net) => net.chainId !== sourceNetworkObj.chainId
                 )}
                 onNetworkChange={handleSelectedNetworkChange('destinationNetwork')}
@@ -347,19 +300,33 @@ export const BridgeModalContent = () => {
               symbol={'GHO'} // TODO Dynamic later
               assets={[
                 {
-                  balance: sourceTokenInfo.bridgeTokenBalance,
+                  balance: sourceTokenInfo.bridgeTokenBalanceFormatted,
                   address: sourceTokenInfo.address,
                   symbol: 'GHO',
                   iconSymbol: 'GHO',
                 },
               ]}
-              maxValue={maxAmountToBridge}
+              maxValue={formatUnits(remainingBridgeLimit.toString(), 18)}
               inputTitle={<Trans>Amount to Bridge</Trans>}
               balanceText={<Trans>GHO balance</Trans>}
               sx={{ width: '100%' }}
               loading={fetchingBridgeTokenBalance || loadingLimits}
-              //   isMaxSelected={isMaxSelected}
+              isMaxSelected={maxSelected}
             />
+            {amount !== '' && maxAmountReducedDueToBridgeLimit && maxSelected && (
+              <Warning severity="warning" sx={{ my: 0 }}>
+                <Stack direction="row">
+                  <Typography variant="caption">
+                    Due to bridging limits, the maximum amount currently available to bridge is{' '}
+                    <FormattedNumber
+                      variant="caption"
+                      value={maxAmountToBridgeFormatted}
+                      visibleDecimals={2}
+                    />
+                  </Typography>
+                </Stack>
+              </Warning>
+            )}
             <BridgeDestinationInput
               connectedAccount={user}
               onInputValid={(account) => {

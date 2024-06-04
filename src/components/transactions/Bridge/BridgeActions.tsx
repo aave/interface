@@ -11,12 +11,10 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 import { getChainSelectorFor, getRouterFor } from './BridgeConfig';
-import { getMarketByChainIdWithBridge } from './common';
 import routerAbi from './Router-abi.json';
 
 export interface TokenAmount {
@@ -78,15 +76,13 @@ export const BridgeActions = React.memo(
 
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
-    const currentMarket = getMarketByChainIdWithBridge(sourceChainId);
-
     const {
       data: approvedAmount,
       refetch: fetchApprovedAmount,
       isFetching: fetchingApprovedAmount,
       isFetchedAfterMount,
     } = useApprovedAmount({
-      marketData: currentMarket as MarketDataType,
+      chainId: sourceChainId,
       token: tokenAddress,
       spender: getRouterFor(sourceChainId),
     });

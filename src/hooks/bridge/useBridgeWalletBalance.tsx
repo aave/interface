@@ -17,6 +17,7 @@ export const useBridgeTokens = (currentMarketData: MarketDataType) => {
     refetchInterval: POLLING_INTERVAL,
     initialData: {
       bridgeTokenBalance: '0',
+      bridgeTokenBalanceFormatted: '0',
       address: currentMarketData.addresses.GHO_TOKEN_ADDRESS,
     },
   });
