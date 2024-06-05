@@ -22,7 +22,6 @@ export const useGetBridgeLimit = (sourceChainId: number) => {
         return {
           bridgeLimit: BigNumber.from(-1),
           currentBridgedAmount: BigNumber.from(-1),
-          // amountAvailable: BigNumber.from(-1),
         };
       }
 
@@ -36,7 +35,6 @@ export const useGetBridgeLimit = (sourceChainId: number) => {
       return {
         bridgeLimit,
         currentBridgedAmount,
-        // amountAvailable: BigNumber.from('10000000000000000000'), // bridgeLimit.sub(currentBridgedAmount),
       };
     },
     queryKey: ['getBridgeLimit', sourceChainId],

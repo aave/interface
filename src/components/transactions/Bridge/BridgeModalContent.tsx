@@ -28,7 +28,6 @@ import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActionProps, BridgeActions } from './BridgeActions';
 import { supportedNetworksWithBridge, SupportedNetworkWithChainId } from './BridgeConfig';
@@ -123,11 +122,13 @@ export const BridgeModalContent = () => {
       }
     };
 
+  const hasBridgeLimit = bridgeLimits?.bridgeLimit.gt(-1);
+
   let maxAmountReducedDueToBridgeLimit = false;
   let maxAmountToBridge = sourceTokenInfo?.bridgeTokenBalance || '0';
   const remainingBridgeLimit =
     bridgeLimits?.bridgeLimit.sub(bridgeLimits?.currentBridgedAmount) || BigNumber(0);
-  if (!fetchingBridgeLimits && bridgeLimits && bridgeLimits.bridgeLimit.gt(0)) {
+  if (!fetchingBridgeLimits && hasBridgeLimit) {
     if (remainingBridgeLimit.lt(maxAmountToBridge)) {
       maxAmountToBridge = remainingBridgeLimit.toString();
       maxAmountReducedDueToBridgeLimit = true;
@@ -137,6 +138,7 @@ export const BridgeModalContent = () => {
   const maxAmountToBridgeFormatted = formatUnits(maxAmountToBridge, 18);
 
   const handleInputChange = (value: string) => {
+    console.log(value);
     if (value === '-1') {
       setAmount(maxAmountToBridgeFormatted);
       setMaxSelected(true);
@@ -204,7 +206,9 @@ export const BridgeModalContent = () => {
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <TxModalTitle title="Bridge tokens" />
+        <Typography variant="h2">
+          <Trans>Bridge tokens</Trans>
+        </Typography>
         {user && (
           <Box
             sx={{
@@ -214,7 +218,7 @@ export const BridgeModalContent = () => {
             <Button
               component={Link}
               href={ROUTES.bridge}
-              sx={{ mr: 8, mb: '24px' }}
+              sx={{ mr: 8 }}
               variant="surface"
               size="small"
               onClick={close}
@@ -225,15 +229,14 @@ export const BridgeModalContent = () => {
         )}
       </Box>
 
-      {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning
-          networkName={getNetworkConfig(sourceNetworkObj.chainId).name}
-          chainId={sourceNetworkObj.chainId}
-          event={{
-            eventName: GENERAL.SWITCH_NETWORK,
-          }}
-        />
-      )}
+      <ChangeNetworkWarning
+        networkName={getNetworkConfig(sourceNetworkObj.chainId).name}
+        chainId={sourceNetworkObj.chainId}
+        event={{
+          eventName: GENERAL.SWITCH_NETWORK,
+        }}
+        sx={{ my: 1, visibility: isWrongNetwork && !readOnlyModeAddress ? 'visible' : 'hidden' }}
+      />
       {!user ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
           <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
@@ -306,7 +309,11 @@ export const BridgeModalContent = () => {
                   iconSymbol: 'GHO',
                 },
               ]}
-              maxValue={formatUnits(remainingBridgeLimit.toString(), 18)}
+              maxValue={
+                hasBridgeLimit
+                  ? formatUnits(remainingBridgeLimit.toString(), 18)
+                  : sourceTokenInfo.bridgeTokenBalanceFormatted
+              }
               inputTitle={<Trans>Amount to Bridge</Trans>}
               balanceText={<Trans>GHO balance</Trans>}
               sx={{ width: '100%' }}
@@ -372,7 +379,7 @@ export const BridgeModalContent = () => {
           </Box>
           {txError && <GasEstimationError txError={txError} />}
 
-          {bridgeLimitExceeded && (
+          {/* {bridgeLimitExceeded && (
             <Warning severity="error" sx={{ mt: 4 }} icon={false}>
               <Typography variant="caption">
                 <Trans>
@@ -394,7 +401,7 @@ export const BridgeModalContent = () => {
                 {rateLimit}
               </Typography>
             </Warning>
-          )}
+          )} */}
 
           <BridgeActions {...bridgeActionsProps} />
         </>
