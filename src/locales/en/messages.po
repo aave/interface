@@ -1155,7 +1155,6 @@ msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Fee"
 msgstr "Fee"
 
@@ -2688,6 +2687,10 @@ msgstr "This asset is frozen due to an Aave community decision. <0>More details<
 #: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. <0>Learn more</0>"
+msgstr "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. <0>Learn more</0>"
 
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."

@@ -10,6 +10,7 @@ import { Link, ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
   DetailsNumberLine,
   TxModalDetails,
@@ -208,6 +209,22 @@ export const BridgeModalContent = () => {
     );
   }
 
+  const feeTooltip = (
+    <TextWithTooltip text={<Trans>Fee</Trans>}>
+      <Trans>
+        This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers.{' '}
+        <Link
+          href="https://docs.chain.link/ccip/billing"
+          sx={{ textDecoration: 'underline' }}
+          variant="caption"
+          color="text.secondary"
+        >
+          Learn more
+        </Link>
+      </Trans>
+    </TextWithTooltip>
+  );
+
   return (
     <>
       <Box sx={{ position: 'absolute', backgroundColor: 'background.paper', top: -10 }}>
@@ -364,7 +381,7 @@ export const BridgeModalContent = () => {
             {message || loadingBridgeMessage ? (
               <>
                 <DetailsNumberLine
-                  description={<Trans>Fee</Trans>}
+                  description={feeTooltip}
                   iconSymbol={'ETH'}
                   symbol={'ETH'}
                   value={bridgeFeeFormatted}
@@ -382,7 +399,7 @@ export const BridgeModalContent = () => {
                 </Box>
               </>
             ) : (
-              <Row caption={<Trans>Fee</Trans>} captionVariant="description" sx={{ pb: 3 }}>
+              <Row caption={feeTooltip} captionVariant="description" sx={{ pb: 3 }}>
                 <NoData variant="secondary14" color="text.secondary" />
               </Row>
             )}
