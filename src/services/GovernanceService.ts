@@ -15,6 +15,7 @@ export interface Powers {
   stkAavePropositionDelegatee: string;
   aAaveVotingDelegatee: string;
   aAavePropositionDelegatee: string;
+  aAaveTokenPower: Power;
 }
 
 // interface VoteOnProposalData {
@@ -65,17 +66,26 @@ export class GovernanceService {
   //   };
   // }
 
-  async getPowers(govChainId: ChainId, user: string): Promise<Powers> {
+  async getPowers(govChainId: ChainId, user: string, blockHash?: string): Promise<Powers> {
     const { aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress } =
       governanceV3Config.votingAssets;
 
     const aaveGovernanceService = this.getAaveGovernanceService(govChainId);
 
+    const options: { blockTag?: string } = {};
+    if (blockHash) {
+      options.blockTag = blockHash;
+    }
+
     const [aaveTokenPower, stkAaveTokenPower, aAaveTokenPower] =
-      await aaveGovernanceService.getTokensPower({
-        user: user,
-        tokens: [aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress],
-      });
+      // pass blockhash here as optional
+      await aaveGovernanceService.getTokensPower(
+        {
+          user: user,
+          tokens: [aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress],
+        },
+        options
+      );
     // todo setup powers for aAaveToken
     const powers = {
       votingPower: normalize(

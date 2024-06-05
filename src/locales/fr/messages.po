@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-04-02 12:07\n"
+"PO-Revision-Date: 2024-06-05 14:36\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -58,6 +58,7 @@ msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "APR"
 msgstr "APR"
 
@@ -177,6 +178,10 @@ msgstr "Ajouter au portefeuille"
 msgid "Add {0} to wallet to track your balance."
 msgstr "Ajouter {0} à Wallet pour suivre votre solde."
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Additionally, GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "L'adresse n'est pas un contrat"
@@ -224,7 +229,6 @@ msgstr "Vous permet de basculer entre les taux d'intérêt <0>variable</0> et <1
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
-#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Montant"
@@ -358,8 +362,8 @@ msgstr "Actifs à déposer"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawError.tsx
-msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
-msgstr "Les actifs dont le ratio prêt-valeur est nul ({assetsBlockingWithdraw}) doivent être retirés ou désactivés à titre de garantie pour effectuer cette action"
+msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "At a discount"
@@ -516,10 +520,6 @@ msgstr "Emprunter des informations"
 msgid "Borrow power used"
 msgstr "Puissance d'emprunt utilisée"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow rate APY"
-msgstr ""
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
 msgstr "Modification du taux d’emprunt"
@@ -536,6 +536,10 @@ msgstr "Emprunté"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Borrowed asset amount"
 msgstr "Montant de l’actif emprunté"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Borrowed assets"
+msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
@@ -797,6 +801,10 @@ msgstr "LTV actuelle"
 msgid "Current differential"
 msgstr "Différentiel de courant"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Current rewards"
+msgstr ""
+
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Current v2 Balance"
 msgstr "Solde actuel v2"
@@ -946,6 +954,10 @@ msgstr "En raison de la mécanique interne de stETH requise pour le rebasage de 
 msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
 msgstr "En raison de l’exploit du pont Horizon, certains actifs du réseau Harmony ne sont pas à parité avec Ethereum, ce qui affecte le marché Aave V3 Harmony."
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
+msgstr ""
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -982,19 +994,8 @@ msgstr "Taux d’intérêt effectif"
 msgid "Efficiency mode (E-Mode)"
 msgstr "Mode efficacité (E-Mode)"
 
-#: src/modules/markets/MarketAssetsListItem.tsx
-msgid "Eligible for <0>2.1M$</0> WETH Community Program 👻"
-msgstr ""
-
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/markets/MarketAssetsListMobileItem.tsx
-msgid "Eligible for <0>2.1M$</0> wETH Community Program 👻"
-msgstr ""
-
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Eligible for <0>2.9M$</0> GHO Community Program 👻"
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Eligible for the merit program."
 msgstr ""
 
 #: src/layouts/FeedbackDialog.tsx
@@ -1047,6 +1048,10 @@ msgstr "Entrez un montant"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
 msgstr "Erreur de connexion. Essayez d'actualiser la page."
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Estimated borrow rate"
+msgstr ""
 
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
@@ -1146,6 +1151,10 @@ msgstr "Français"
 msgid "Funds in the Safety Module"
 msgstr "Fonds dans le Safety Module"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 msgstr "GHO est un actif numérique natif décentralisé et adossé à des garanties, indexé sur le dollar américain. Il est créé par les utilisateurs en empruntant contre plusieurs garanties. Lorsque l’utilisateur rembourse sa position d’emprunt de HO, le protocole brûle le GHO de cet utilisateur. Tous les paiements d’intérêts accumulés par les minters de GHO seraient directement transférés à la trésorerie d’AaveDAO."
@@ -1189,14 +1198,6 @@ msgstr "Gouvernance"
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "Grec"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v2)"
-msgstr "Facteur de santé ({0} v2)"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v3)"
-msgstr "Facteur de santé ({0} v3)"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
@@ -1515,10 +1516,19 @@ msgstr "Rencontrez GHO"
 msgid "Menu"
 msgstr "Menu"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Merit Program"
+msgstr ""
+
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrate"
 msgstr "Émigrer"
+
+#: src/layouts/MobileMenu.tsx
+#: src/layouts/MoreMenu.tsx
+msgid "Migrate to Aave V3"
+msgstr ""
 
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
@@ -1533,9 +1543,12 @@ msgid "Migrate to v3"
 msgstr "Migrer vers la v3"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
-#: src/modules/migration/MigrationTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
 msgstr "Migrer vers {0} Marché v3"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migrate your assets"
+msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
@@ -1626,7 +1639,7 @@ msgid "No assets selected to migrate."
 msgstr "Aucune ressource n’a été sélectionnée pour la migration."
 
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
-msgid "No results found."
+msgid "No results found. You can import a custom token with a contract address"
 msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
@@ -1698,10 +1711,6 @@ msgstr "Rien staké"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Nothing supplied yet"
 msgstr "Rien fourni pour le moment"
-
-#: src/components/HALLink.tsx
-msgid "Notify"
-msgstr "Notifier"
 
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
@@ -2023,10 +2032,6 @@ msgstr "Reprise {symbol}"
 msgid "Review approval tx details"
 msgstr "Examiner les détails de la taxe d'approbation"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Review changes to continue"
-msgstr "Passer en revue les modifications pour continuer"
-
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
 msgstr "Réviser tx"
@@ -2088,14 +2093,6 @@ msgstr "Choisir la langue"
 msgid "Select slippage tolerance"
 msgstr "Sélectionner la tolérance de glissement"
 
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 borrows to migrate"
-msgstr "Sélectionner les emprunts v2 à migrer"
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 supplies to migrate"
-msgstr "Sélectionner les consommables v2 à migrer"
-
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 msgstr "Les ressources sélectionnées ont été migrées avec succès. Rendez-vous sur le tableau de bord du marché pour les voir."
@@ -2119,10 +2116,6 @@ msgstr "Envoyer des commentaires"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
 msgstr "Configurer la délégation"
-
-#: src/components/HALLink.tsx
-msgid "Setup notifications about your Health Factor using the Hal app."
-msgstr "Configurez des notifications sur votre facteur de santé à l’aide de l’application Hal."
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/ProposalOverview.tsx
@@ -2296,6 +2289,10 @@ msgstr "Fourni"
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supplied asset amount"
 msgstr "Montant de l’actif fourni"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Supplied assets"
+msgstr ""
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
@@ -2512,6 +2509,11 @@ msgstr "La période de recharge est le temps nécessaire avant de retirer vos je
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 msgstr "La période de recharge est de {0}. Après {1} de temps de recharge, vous entrerez dans la fenêtre de désengagement de {2}. Vous continuerez à recevoir des récompenses pendant le temps de recharge et la fenêtre de retrait."
 
+#: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanelNoWallet.tsx
+msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
+msgstr ""
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
 msgstr "Le ratio prêt/valeur des positions migrées entraînerait la liquidation. Augmenter les garanties migrées ou réduire les emprunts migrés pour continuer."
@@ -2620,16 +2622,7 @@ msgstr "Il est prévu que cet actif soit désactivé en raison d’une décision
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "Ce calcul de gaz n'est qu'une estimation. Votre portefeuille fixera le prix de la transaction. Vous pouvez modifier les paramètres de gaz directement depuis votre fournisseur de portefeuille."
 
-#: src/components/HALLink.tsx
-msgid "This integration was<0>proposed and approved</0>by the community."
-msgstr "Cette intégration a été<0>proposée et approuvée</0>par la communauté."
-
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
-#: src/modules/markets/MarketAssetsListItem.tsx
-#: src/modules/markets/MarketAssetsListMobileItem.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
@@ -2646,16 +2639,16 @@ msgid "This represents the threshold at which a borrow position will be consider
 msgstr "Cela représente le seuil auquel une position d'emprunt sera considérée comme sous-garantie et sujette à liquidation pour chaque garantie. Par exemple, si une garantie a un seuil de liquidation de 80 %, cela signifie que la position sera liquidée lorsque la valeur de la dette vaut 80 % de la valeur de la garantie."
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "Time left to be able to withdraw your staked asset."
-msgstr "Temps restant pour pouvoir retirer votre bien staké."
-
-#: src/modules/staking/StakingPanel.tsx
 msgid "Time left to unstake"
 msgstr "Temps restant pour dépiquer"
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "Time left until the withdrawal window closes."
-msgstr "Temps restant jusqu'à la fermeture de la fenêtre de retrait."
+msgid "Time remaining until the 48 hour withdraw period starts."
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
+msgid "Time remaining until the withdraw period ends."
+msgstr ""
 
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"
@@ -2842,12 +2835,16 @@ msgid "User does not have outstanding variable rate debt on this reserve"
 msgstr "L'utilisateur n'a pas de dette à taux variable impayée sur cette réserve"
 
 #: src/ui-config/errorMapping.tsx
-msgid "User is in isolation mode"
-msgstr "L'utilisateur est en mode d'isolement"
+msgid "User is in isolation mode or LTV is zero"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "L'utilisateur essaie d'emprunter plusieurs actifs, y compris un en silo"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate."
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
@@ -3283,6 +3280,7 @@ msgid "for"
 msgstr "pour"
 
 #: src/components/caps/DebtCeilingStatus.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx

@@ -56,6 +56,8 @@ export type TxStateType = {
   success?: boolean;
 };
 
+type CallbackFn = () => void;
+
 export interface ModalContextType<T extends ModalArgsType> {
   openSupply: (
     underlyingAsset: string,
@@ -114,6 +116,7 @@ export interface ModalContextType<T extends ModalArgsType> {
     representatives: Array<{ chainId: ChainId; representative: string }>
   ) => void;
   close: () => void;
+  closeWithCb: (callback: CallbackFn) => void;
   type?: ModalType;
   args: T;
   mainTxState: TxStateType;
@@ -340,6 +343,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setGasLimit('');
           setTxError(undefined);
           setSwitchNetworkError(undefined);
+        },
+        closeWithCb: (callback) => {
+          close();
+          callback();
         },
         type,
         args,

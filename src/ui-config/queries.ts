@@ -1,4 +1,7 @@
+import { MigrationSupplyException } from 'src/store/v3MigrationSlice';
+
 import { MarketDataType } from './marketsConfig';
+import { TokenInfo } from './TokenList';
 
 export const queryKeysFactory = {
   governance: ['governance'] as const,
@@ -148,6 +151,21 @@ export const queryKeysFactory = {
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),
     'getGhoBridgeBalances',
+  ],
+  migrationExceptions: (
+    suplies: MigrationSupplyException[],
+    marketFrom: MarketDataType,
+    marketTo: MarketDataType
+  ) => [
+    ...suplies.map((supply) => supply.underlyingAsset),
+    ...queryKeysFactory.market(marketFrom),
+    ...queryKeysFactory.market(marketTo),
+  ],
+  tokensBalance: (tokenList: TokenInfo[], chainId: number, user: string) => [
+    ...queryKeysFactory.user(user),
+    tokenList.map((elem) => elem.address),
+    chainId,
+    'tokensBalance',
   ],
 };
 

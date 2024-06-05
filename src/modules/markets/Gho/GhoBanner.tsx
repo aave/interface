@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -11,8 +11,8 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 
 interface GhoBannerProps {
   reserve?: ComputedReserveData;
@@ -24,14 +24,14 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isMd = useMediaQuery(theme.breakpoints.up('xs'));
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData, ghoLoadingData } = useAppDataContext();
+  const { data: incentives } = useMeritIncentives('gho');
 
-  let totalBorrowed = Number(reserve?.totalDebt);
-  if (Number(reserve?.borrowCap) > 0) {
-    totalBorrowed = BigNumber.min(
-      valueToBigNumber(reserve?.totalDebt || 0),
-      valueToBigNumber(reserve?.borrowCap || 0)
-    ).toNumber();
-  }
+  const ghoMeritAPR = incentives?.incentiveAPR || 0;
+
+  const totalBorrowed = BigNumber.min(
+    valueToBigNumber(reserve?.totalDebt || 0),
+    valueToBigNumber(reserve?.borrowCap || 0)
+  ).toNumber();
 
   return (
     <Box
@@ -48,9 +48,8 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       }}
     >
       <Box
-        // NOTE: temp removed the link to the reserve overview page
-        // component={Link}
-        // href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
+        component={Link}
+        href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
         sx={(theme) => ({
           borderRadius: {
             md: 4,
@@ -221,15 +220,28 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   alignItems: 'flex-start',
                 }}
               >
-                {ghoLoadingData || totalBorrowed === 0 ? (
+                {ghoLoadingData ? (
                   <Skeleton width={70} height={25} />
                 ) : (
-                  <FormattedNumber
-                    symbol="USD"
-                    compact
-                    variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                    value={totalBorrowed}
-                  />
+                  <Stack direction="row" gap={1} alignItems="center">
+                    <FormattedNumber
+                      symbol="USD"
+                      compact
+                      variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
+                      value={totalBorrowed}
+                    />
+                    <Stack direction="row" gap={1} sx={{ marginTop: 0.5 }}>
+                      <Typography variant="caption">
+                        <Trans>of</Trans>
+                      </Typography>
+                      <FormattedNumber
+                        symbol="USD"
+                        compact
+                        variant="caption"
+                        value={reserve?.borrowCap || 0}
+                      />
+                    </Stack>
+                  </Stack>
                 )}
                 <Typography
                   sx={{
@@ -255,7 +267,10 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
               }}
             >
               <GhoBorrowApyRange
-                minVal={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
+                minVal={Math.max(
+                  0,
+                  ghoReserveData.ghoBorrowAPYWithMaxDiscount - Number(ghoMeritAPR)
+                )}
                 maxVal={ghoReserveData.ghoVariableBorrowAPY}
                 variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 percentVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
@@ -273,45 +288,39 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 color="text.secondary"
                 noWrap
               >
-                <Trans>Borrow rate APY</Trans>
-              </Typography>
-            </Box>
-            <Link
-              href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
-              style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
-              target="blank"
-            >
-              <Typography
-                sx={{
-                  ['@media screen and (min-width: 1125px)']: {
-                    typography: 'description',
-                  },
-                  typography: {
-                    xs: 'caption',
-                  },
-                }}
-                variant="secondary14"
-                color="text.secondary"
-              >
-                <Trans>
-                  Eligible for <strong>2.9M$</strong> GHO Community Program 👻
-                </Trans>
                 <TextWithTooltip
-                  wrapperProps={{ sx: { display: 'inline-flex', alignItems: 'center' } }}
-                  event={{
-                    eventName: GENERAL.TOOL_TIP,
-                    eventParams: {
-                      tooltip: 'Community Rewards',
+                  sx={{
+                    ['@media screen and (min-width: 1125px)']: {
+                      typography: 'description',
+                    },
+                    typography: {
+                      xs: 'caption',
                     },
                   }}
+                  text={<Trans>Estimated borrow rate</Trans>}
                 >
-                  <Trans>
-                    This is a program initiated and implemented by the decentralised Aave community.
-                    Aave Labs does not guarantee the program and accepts no liability.
-                  </Trans>
+                  <>
+                    <Trans>
+                      Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a
+                      discount on GHO borrow interest rate.
+                    </Trans>{' '}
+                    <Trans>
+                      Additionally, GHO borrowers recieve periodic rewards through the Merit
+                      program. This is a program initiated and implemented by the decentralised Aave
+                      community. Aave Labs does not guarantee the program and accepts no liability.
+                    </Trans>{' '}
+                    <Link
+                      href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
+                      sx={{ textDecoration: 'underline' }}
+                      variant="caption"
+                      color="text.secondary"
+                    >
+                      Learn more about Merit.
+                    </Link>
+                  </>
                 </TextWithTooltip>
               </Typography>
-            </Link>
+            </Box>
             <Button
               variant="contained"
               component={Link}

@@ -48,7 +48,7 @@ const donors: Donors = {
   },
   aETHOptimismV3: {
     name: 'aETH',
-    donorWalletAddress: '0xf7ca1f0ff0995c84fef530f7c74c69fb80331e81',
+    donorWalletAddress: '0x39Be632bfC5A74183FfE124C60e248138e496BC4',
     tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
   },
   aETHBaseV3: {
