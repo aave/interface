@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-05-30 18:05\n"
+"PO-Revision-Date: 2024-06-05 14:36\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -177,6 +177,10 @@ msgstr "Добавить в кошелек"
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to wallet to track your balance."
 msgstr "Добавлять {0} в кошелек для отслеживания баланса."
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Additionally, GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -516,10 +520,6 @@ msgstr "Информация о займе"
 msgid "Borrow power used"
 msgstr "Заимствование использованной мощности"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow rate APY"
-msgstr ""
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
 msgstr "Изменение ставки по займу"
@@ -801,6 +801,10 @@ msgstr "Текущий LTV"
 msgid "Current differential"
 msgstr "Дифференциал тока"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Current rewards"
+msgstr ""
+
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Current v2 Balance"
 msgstr "Текущий баланс v2"
@@ -950,6 +954,10 @@ msgstr "Из-за внутренней механики stETH, необходи�
 msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
 msgstr "Из-за эксплойта моста Horizon некоторые активы в сети Harmony не находятся на паритете с Ethereum, что влияет на рынок Aave V3 Harmony."
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
+msgstr ""
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "Электронный режим"
@@ -1040,6 +1048,10 @@ msgstr "Введите сумму"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
 msgstr "Ошибка подключения. Попробуйте обновить страницу."
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Estimated borrow rate"
+msgstr ""
 
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
@@ -1138,6 +1150,10 @@ msgstr "Французский"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Средства в модуле «Безопасность»"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -1500,8 +1516,8 @@ msgstr "Знакомьтесь, GHO"
 msgid "Menu"
 msgstr "Меню"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Merit rewards"
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Merit Program"
 msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
@@ -2826,6 +2842,10 @@ msgstr ""
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "Пользователь пытается заимствовать несколько активов, в том числе разрозненный"
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate."
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 msgstr "Пользователи, которые размещают AAVE в Safety Module (т.е. держатели stkAAVE), получают скидку на процентную ставку по займу GHO. Скидка распространяется на 100 GHO за каждый 1 проведенный stkAAVE. Используйте калькулятор ниже, чтобы узнать ставку по займу GHO с учетом дисконта."
@@ -3260,6 +3280,7 @@ msgid "for"
 msgstr "для"
 
 #: src/components/caps/DebtCeilingStatus.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
