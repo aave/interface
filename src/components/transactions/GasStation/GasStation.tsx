@@ -88,7 +88,12 @@ export const GasStation: React.FC<GasStationProps> = ({
             <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
           ) : totalGasCostsUsd && !disabled ? (
             <>
-              <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
+              <FormattedNumber
+                value={totalGasCostsUsd}
+                symbol="USD"
+                color="text.secondary"
+                variant="caption"
+              />
               <GasTooltip />
             </>
           ) : (

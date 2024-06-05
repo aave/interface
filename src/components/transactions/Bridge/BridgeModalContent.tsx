@@ -267,6 +267,8 @@ export const BridgeModalContent = () => {
                 borderColor: 'divider',
                 position: 'absolute',
                 backgroundColor: 'background.paper',
+                mt: -1,
+                '&:hover': { backgroundColor: 'background.surface' },
               }}
             >
               <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
@@ -356,7 +358,7 @@ export const BridgeModalContent = () => {
                 </Box>
               </>
             ) : (
-              <Row caption={<Trans>Fee</Trans>} captionVariant="description" mb={4}>
+              <Row caption={<Trans>Fee</Trans>} captionVariant="description" sx={{ pb: 3 }}>
                 <NoData variant="secondary14" color="text.secondary" />
               </Row>
             )}
