@@ -1,6 +1,15 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Checkbox, IconButton, Stack, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  IconButton,
+  Skeleton,
+  Stack,
+  SvgIcon,
+  Typography,
+} from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
@@ -35,6 +44,7 @@ import { supportedNetworksWithBridge, SupportedNetworkWithChainId } from './Brid
 import { BridgeDestinationInput } from './BridgeDestinationInput';
 import { useGetBridgeLimit, useGetRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
+import { useTimeToDestination } from './useGetFinalityTime';
 
 const defaultNetwork = supportedNetworksWithBridge[0]; // TODO Remove for Production
 const defaultNetworkMarket = marketsData[defaultNetwork.chainId];
@@ -64,6 +74,9 @@ export const BridgeModalContent = () => {
   ) as SupportedNetworkWithChainId;
 
   const [destinationNetworkObj, setDestinationNetworkObj] = useState(defaultDestinationNetwork);
+
+  const { data: estimatedTimeToDestination, isFetching: loadingEstimatedTime } =
+    useTimeToDestination(sourceNetworkObj.chainId);
 
   useEffect(() => {
     // reset when source network changes
@@ -378,6 +391,24 @@ export const BridgeModalContent = () => {
               symbol={'GHO'}
               value={amount}
             />
+            <Row
+              caption={<Trans>Estimated time to destination</Trans>}
+              captionVariant="description"
+              mb={4}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {loadingEstimatedTime ? (
+                  <Skeleton
+                    variant="rectangular"
+                    height={20}
+                    width={100}
+                    sx={{ borderRadius: '4px' }}
+                  />
+                ) : (
+                  <Typography variant="secondary14">{estimatedTimeToDestination}</Typography>
+                )}
+              </Box>
+            </Row>
             {message || loadingBridgeMessage ? (
               <>
                 <DetailsNumberLine
