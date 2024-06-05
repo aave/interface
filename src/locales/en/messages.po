@@ -612,6 +612,10 @@ msgstr "Bridge {symbol}"
 msgid "Bridged Via CCIP"
 msgstr "Bridged Via CCIP"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Bridging is currently unavailable due to the rate limit being exceeded. Please try again later or reduce the amount to bridge."
+msgstr "Bridging is currently unavailable due to the rate limit being exceeded. Please try again later or reduce the amount to bridge."
+
 #: src/components/transactions/Bridge/BridgeActions.tsx
 msgid "Bridging {symbol}"
 msgstr "Bridging {symbol}"

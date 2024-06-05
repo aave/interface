@@ -1,6 +1,6 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, IconButton, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Checkbox, IconButton, Stack, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
@@ -48,6 +48,9 @@ export const BridgeModalContent = () => {
   const [destinationAccount, setDestinationAccount] = useState(user);
   const [amount, setAmount] = useState('');
   const [maxSelected, setMaxSelected] = useState(false);
+
+  const [simulateBridgeLimit, setSimulateBridgeLimit] = useState(false);
+  const [simulateRateLimit, setSimulateRateLimit] = useState(false);
   // const [inputAmountUSD, setInputAmount] = useState('');
   const { readOnlyModeAddress, chainId: currentChainId } = useWeb3Context();
 
@@ -97,6 +100,7 @@ export const BridgeModalContent = () => {
     destinationChainId: destinationNetworkObj?.chainId || 0,
     sourceChainId: sourceNetworkObj.chainId,
   });
+  console.log(rateLimit);
 
   let bridgeLimitExceeded = false;
   if (!fetchingBridgeLimits && bridgeLimits && bridgeLimits.bridgeLimit.gt(0)) {
@@ -105,10 +109,10 @@ export const BridgeModalContent = () => {
       .gt(bridgeLimits.bridgeLimit);
   }
 
-  let rateLimitExceeded = false;
-  if (!fetchingRateLimit && rateLimit) {
-    rateLimitExceeded = rateLimit.gt(0) && parsedAmount.gt(rateLimit);
-  }
+  const rateLimitExceeded = simulateRateLimit; // false;
+  // if (!fetchingRateLimit && rateLimit) {
+  //   rateLimitExceeded = rateLimit.gt(0) && parsedAmount.gt(rateLimit);
+  // }
 
   const loadingLimits = fetchingBridgeLimits || fetchingRateLimit;
 
@@ -122,12 +126,13 @@ export const BridgeModalContent = () => {
       }
     };
 
-  const hasBridgeLimit = bridgeLimits?.bridgeLimit.gt(-1);
+  const hasBridgeLimit = simulateBridgeLimit; // bridgeLimits?.bridgeLimit.gt(-1);
 
-  let maxAmountReducedDueToBridgeLimit = false;
+  let maxAmountReducedDueToBridgeLimit = simulateBridgeLimit;
   let maxAmountToBridge = sourceTokenInfo?.bridgeTokenBalance || '0';
-  const remainingBridgeLimit =
-    bridgeLimits?.bridgeLimit.sub(bridgeLimits?.currentBridgedAmount) || BigNumber(0);
+  const remainingBridgeLimit = simulateBridgeLimit
+    ? BigNumber(10000000000000000000)
+    : bridgeLimits?.bridgeLimit.sub(bridgeLimits?.currentBridgedAmount) || BigNumber(0);
   if (!fetchingBridgeLimits && hasBridgeLimit) {
     if (remainingBridgeLimit.lt(maxAmountToBridge)) {
       maxAmountToBridge = remainingBridgeLimit.toString();
@@ -205,6 +210,22 @@ export const BridgeModalContent = () => {
 
   return (
     <>
+      <Box sx={{ position: 'absolute', backgroundColor: 'background.paper', top: -10 }}>
+        <Stack direction="row" alignItems="center">
+          <Checkbox
+            size="small"
+            checked={simulateBridgeLimit}
+            onChange={(e) => setSimulateBridgeLimit(e.target.checked)}
+          />
+          <Box>simulate bridge limit</Box>
+          <Checkbox
+            size="small"
+            checked={simulateRateLimit}
+            onChange={(e) => setSimulateRateLimit(e.target.checked)}
+          />
+          <Box>simulate rate limit</Box>
+        </Stack>
+      </Box>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h2">
           <Trans>Bridge tokens</Trans>
@@ -307,20 +328,23 @@ export const BridgeModalContent = () => {
             loading={fetchingBridgeTokenBalance || loadingLimits}
             isMaxSelected={maxSelected}
           />
-          {amount !== '' && maxAmountReducedDueToBridgeLimit && maxSelected && (
-            <Warning severity="warning" sx={{ my: 2 }}>
-              <Stack direction="row">
-                <Typography variant="caption">
-                  Due to bridging limits, the maximum amount currently available to bridge is{' '}
-                  <FormattedNumber
-                    variant="caption"
-                    value={maxAmountToBridgeFormatted}
-                    visibleDecimals={2}
-                  />
-                </Typography>
-              </Stack>
-            </Warning>
-          )}
+          {amount !== '' &&
+            maxAmountReducedDueToBridgeLimit &&
+            maxSelected &&
+            !rateLimitExceeded && (
+              <Warning severity="warning" sx={{ my: 2 }}>
+                <Stack direction="row">
+                  <Typography variant="caption">
+                    Due to bridging limits, the maximum amount currently available to bridge is{' '}
+                    <FormattedNumber
+                      variant="caption"
+                      value={maxAmountToBridgeFormatted}
+                      visibleDecimals={2}
+                    />
+                  </Typography>
+                </Stack>
+              </Warning>
+            )}
           <Box sx={{ mt: 3 }}>
             <BridgeDestinationInput
               connectedAccount={user}
@@ -388,6 +412,16 @@ export const BridgeModalContent = () => {
               </Typography>
             </Warning>
           )} */}
+          {rateLimitExceeded && (
+            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+              <Typography variant="caption">
+                <Trans>
+                  Bridging is currently unavailable due to the rate limit being exceeded. Please try
+                  again later or reduce the amount to bridge.
+                </Trans>
+              </Typography>
+            </Warning>
+          )}
 
           <BridgeActions {...bridgeActionsProps} />
         </>
