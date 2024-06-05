@@ -246,94 +246,80 @@ export const BridgeModalContent = () => {
         </Box>
       ) : (
         <>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '15px',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              width: '100%',
-            }}
+          <Stack
+            sx={{ mb: 3 }}
+            gap={3}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
           >
-            <Box
+            <NetworkSelect
+              supportedBridgeMarkets={supportedNetworksWithBridge.filter(
+                (net) => net.chainId !== destinationNetworkObj.chainId
+              )}
+              onNetworkChange={handleSelectedNetworkChange('sourceNetwork')}
+              defaultNetwork={sourceNetworkObj}
+            />
+            <IconButton
+              onClick={handleSwapNetworks}
               sx={{
-                width: '100%',
-                display: 'flex',
-                gap: '15px',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'relative',
+                border: '1px solid',
+                borderColor: 'divider',
+                position: 'absolute',
+                backgroundColor: 'background.paper',
               }}
             >
-              <NetworkSelect
-                supportedBridgeMarkets={supportedNetworksWithBridge.filter(
-                  (net) => net.chainId !== destinationNetworkObj.chainId
-                )}
-                onNetworkChange={handleSelectedNetworkChange('sourceNetwork')}
-                defaultNetwork={sourceNetworkObj}
-              />
-              <IconButton
-                onClick={handleSwapNetworks}
-                sx={{
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  position: 'absolute',
-                  backgroundColor: 'background.paper',
-                }}
-              >
-                <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
-                  <SwitchVerticalIcon />
-                </SvgIcon>
-              </IconButton>
-              <NetworkSelect
-                supportedBridgeMarkets={supportedNetworksWithBridge.filter(
-                  (net) => net.chainId !== sourceNetworkObj.chainId
-                )}
-                onNetworkChange={handleSelectedNetworkChange('destinationNetwork')}
-                defaultNetwork={destinationNetworkObj}
-              />
-            </Box>
-            <AssetInput
-              value={amount}
-              onChange={handleInputChange}
-              usdValue={amount} // TODO
-              symbol={'GHO'} // TODO Dynamic later
-              assets={[
-                {
-                  balance: sourceTokenInfo.bridgeTokenBalanceFormatted,
-                  address: sourceTokenInfo.address,
-                  symbol: 'GHO',
-                  iconSymbol: 'GHO',
-                },
-              ]}
-              maxValue={
-                hasBridgeLimit
-                  ? formatUnits(remainingBridgeLimit.toString(), 18)
-                  : sourceTokenInfo.bridgeTokenBalanceFormatted
-              }
-              inputTitle={<Trans>Amount to Bridge</Trans>}
-              balanceText={<Trans>GHO balance</Trans>}
-              sx={{ width: '100%' }}
-              loading={fetchingBridgeTokenBalance || loadingLimits}
-              isMaxSelected={maxSelected}
+              <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
+                <SwitchVerticalIcon />
+              </SvgIcon>
+            </IconButton>
+            <NetworkSelect
+              supportedBridgeMarkets={supportedNetworksWithBridge.filter(
+                (net) => net.chainId !== sourceNetworkObj.chainId
+              )}
+              onNetworkChange={handleSelectedNetworkChange('destinationNetwork')}
+              defaultNetwork={destinationNetworkObj}
             />
-            {amount !== '' && maxAmountReducedDueToBridgeLimit && maxSelected && (
-              <Warning severity="warning" sx={{ my: 0 }}>
-                <Stack direction="row">
-                  <Typography variant="caption">
-                    Due to bridging limits, the maximum amount currently available to bridge is{' '}
-                    <FormattedNumber
-                      variant="caption"
-                      value={maxAmountToBridgeFormatted}
-                      visibleDecimals={2}
-                    />
-                  </Typography>
-                </Stack>
-              </Warning>
-            )}
+          </Stack>
+          <AssetInput
+            value={amount}
+            onChange={handleInputChange}
+            usdValue={amount} // TODO
+            symbol={'GHO'} // TODO Dynamic later
+            assets={[
+              {
+                balance: sourceTokenInfo.bridgeTokenBalanceFormatted,
+                address: sourceTokenInfo.address,
+                symbol: 'GHO',
+                iconSymbol: 'GHO',
+              },
+            ]}
+            maxValue={
+              hasBridgeLimit
+                ? formatUnits(remainingBridgeLimit.toString(), 18)
+                : sourceTokenInfo.bridgeTokenBalanceFormatted
+            }
+            inputTitle={<Trans>Amount to Bridge</Trans>}
+            balanceText={<Trans>GHO balance</Trans>}
+            sx={{ width: '100%' }}
+            loading={fetchingBridgeTokenBalance || loadingLimits}
+            isMaxSelected={maxSelected}
+          />
+          {amount !== '' && maxAmountReducedDueToBridgeLimit && maxSelected && (
+            <Warning severity="warning" sx={{ my: 2 }}>
+              <Stack direction="row">
+                <Typography variant="caption">
+                  Due to bridging limits, the maximum amount currently available to bridge is{' '}
+                  <FormattedNumber
+                    variant="caption"
+                    value={maxAmountToBridgeFormatted}
+                    visibleDecimals={2}
+                  />
+                </Typography>
+              </Stack>
+            </Warning>
+          )}
+          <Box sx={{ mt: 3 }}>
             <BridgeDestinationInput
               connectedAccount={user}
               onInputValid={(account) => {
@@ -341,42 +327,40 @@ export const BridgeModalContent = () => {
               }}
               onInputError={() => setDestinationAccount('')}
             />
-            <Box width="100%">
-              <TxModalDetails gasLimit={'100'} chainId={sourceNetworkObj.chainId}>
-                <DetailsNumberLine
-                  description={<Trans>Amount</Trans>}
-                  iconSymbol={'GHO'}
-                  symbol={'GHO'}
-                  value={amount}
-                />
-                {message || loadingBridgeMessage ? (
-                  <>
-                    <DetailsNumberLine
-                      description={<Trans>Fee</Trans>}
-                      iconSymbol={'ETH'}
-                      symbol={'ETH'}
-                      value={bridgeFeeFormatted}
-                      loading={loadingBridgeMessage}
-                      customMb={0}
-                    />
-                    <Box display={'flex'} justifyContent={'flex-end'}>
-                      <FormattedNumber
-                        value={bridgeFeeUSD}
-                        variant="helperText"
-                        compact
-                        symbol="USD"
-                        color="text.secondary"
-                      />
-                    </Box>
-                  </>
-                ) : (
-                  <Row caption={<Trans>Fee</Trans>} captionVariant="description" mb={4}>
-                    <NoData variant="secondary14" color="text.secondary" />
-                  </Row>
-                )}
-              </TxModalDetails>
-            </Box>
           </Box>
+          <TxModalDetails gasLimit={'100'} chainId={sourceNetworkObj.chainId}>
+            <DetailsNumberLine
+              description={<Trans>Amount</Trans>}
+              iconSymbol={'GHO'}
+              symbol={'GHO'}
+              value={amount}
+            />
+            {message || loadingBridgeMessage ? (
+              <>
+                <DetailsNumberLine
+                  description={<Trans>Fee</Trans>}
+                  iconSymbol={'ETH'}
+                  symbol={'ETH'}
+                  value={bridgeFeeFormatted}
+                  loading={loadingBridgeMessage}
+                  customMb={0}
+                />
+                <Box display={'flex'} justifyContent={'flex-end'}>
+                  <FormattedNumber
+                    value={bridgeFeeUSD}
+                    variant="helperText"
+                    compact
+                    symbol="USD"
+                    color="text.secondary"
+                  />
+                </Box>
+              </>
+            ) : (
+              <Row caption={<Trans>Fee</Trans>} captionVariant="description" mb={4}>
+                <NoData variant="secondary14" color="text.secondary" />
+              </Row>
+            )}
+          </TxModalDetails>
           {txError && <GasEstimationError txError={txError} />}
 
           {/* {bridgeLimitExceeded && (
