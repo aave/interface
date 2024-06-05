@@ -1,7 +1,7 @@
 import { Box, BoxProps, FormControl, MenuItem, Select, Typography } from '@mui/material';
 import * as React from 'react';
 
-import { SupportedNetworkWithChainId } from '../transactions/Bridge/common';
+import { SupportedNetworkWithChainId } from './Bridge/BridgeConfig';
 
 interface NetworkProps {
   supportedBridgeMarkets: SupportedNetworkWithChainId[];
