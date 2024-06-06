@@ -1,15 +1,6 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  Checkbox,
-  IconButton,
-  Skeleton,
-  Stack,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import { Box, Button, IconButton, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
@@ -60,8 +51,6 @@ export const BridgeModalContent = () => {
   const [amount, setAmount] = useState('');
   const [maxSelected, setMaxSelected] = useState(false);
 
-  const [simulateBridgeLimit, setSimulateBridgeLimit] = useState(false);
-  const [simulateRateLimit, setSimulateRateLimit] = useState(false);
   // const [inputAmountUSD, setInputAmount] = useState('');
   const { readOnlyModeAddress, chainId: currentChainId } = useWeb3Context();
 
@@ -114,7 +103,6 @@ export const BridgeModalContent = () => {
     destinationChainId: destinationNetworkObj?.chainId || 0,
     sourceChainId: sourceNetworkObj.chainId,
   });
-  console.log(rateLimit);
 
   let bridgeLimitExceeded = false;
   if (!fetchingBridgeLimits && bridgeLimits && bridgeLimits.bridgeLimit.gt(0)) {
@@ -123,10 +111,10 @@ export const BridgeModalContent = () => {
       .gt(bridgeLimits.bridgeLimit);
   }
 
-  const rateLimitExceeded = simulateRateLimit; // false;
-  // if (!fetchingRateLimit && rateLimit) {
-  //   rateLimitExceeded = rateLimit.gt(0) && parsedAmount.gt(rateLimit);
-  // }
+  let rateLimitExceeded = false;
+  if (!fetchingRateLimit && rateLimit) {
+    rateLimitExceeded = rateLimit.gt(0) && parsedAmount.gt(rateLimit);
+  }
 
   const loadingLimits = fetchingBridgeLimits || fetchingRateLimit;
 
@@ -140,13 +128,12 @@ export const BridgeModalContent = () => {
       }
     };
 
-  const hasBridgeLimit = simulateBridgeLimit; // bridgeLimits?.bridgeLimit.gt(-1);
+  const hasBridgeLimit = bridgeLimits?.bridgeLimit.gt(-1);
 
-  let maxAmountReducedDueToBridgeLimit = simulateBridgeLimit;
+  let maxAmountReducedDueToBridgeLimit = false;
   let maxAmountToBridge = sourceTokenInfo?.bridgeTokenBalance || '0';
-  const remainingBridgeLimit = simulateBridgeLimit
-    ? BigNumber(10000000000000000000)
-    : bridgeLimits?.bridgeLimit.sub(bridgeLimits?.currentBridgedAmount) || BigNumber(0);
+  const remainingBridgeLimit =
+    bridgeLimits?.bridgeLimit.sub(bridgeLimits?.currentBridgedAmount) || BigNumber(0);
   if (!fetchingBridgeLimits && hasBridgeLimit) {
     if (remainingBridgeLimit.lt(maxAmountToBridge)) {
       maxAmountToBridge = remainingBridgeLimit.toString();
@@ -238,24 +225,24 @@ export const BridgeModalContent = () => {
     </TextWithTooltip>
   );
 
+  const estimatedTimeTooltip = (
+    <TextWithTooltip text={<Trans>Estimated time to destination</Trans>}>
+      <Trans>
+        The source chain finality is the main factor that determines the time to destination.{' '}
+        <Link
+          href="https://docs.chain.link/ccip/concepts#finality"
+          sx={{ textDecoration: 'underline' }}
+          variant="caption"
+          color="text.secondary"
+        >
+          Learn more
+        </Link>
+      </Trans>
+    </TextWithTooltip>
+  );
+
   return (
     <>
-      <Box sx={{ position: 'absolute', backgroundColor: 'background.paper', top: -10 }}>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            size="small"
-            checked={simulateBridgeLimit}
-            onChange={(e) => setSimulateBridgeLimit(e.target.checked)}
-          />
-          <Box>simulate bridge limit</Box>
-          <Checkbox
-            size="small"
-            checked={simulateRateLimit}
-            onChange={(e) => setSimulateRateLimit(e.target.checked)}
-          />
-          <Box>simulate rate limit</Box>
-        </Stack>
-      </Box>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h2">
           <Trans>Bridge tokens</Trans>
@@ -391,11 +378,7 @@ export const BridgeModalContent = () => {
               symbol={'GHO'}
               value={amount}
             />
-            <Row
-              caption={<Trans>Estimated time to destination</Trans>}
-              captionVariant="description"
-              mb={4}
-            >
+            <Row caption={estimatedTimeTooltip} captionVariant="description" mb={4}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {loadingEstimatedTime ? (
                   <Skeleton

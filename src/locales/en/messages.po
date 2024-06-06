@@ -2596,6 +2596,10 @@ msgstr "The loan to value of the migrated positions would cause liquidation. Inc
 msgid "The requested amount is greater than the max loan size in stable rate mode"
 msgstr "The requested amount is greater than the max loan size in stable rate mode"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The source chain finality is the main factor that determines the time to destination. <0>Learn more</0>"
+msgstr "The source chain finality is the main factor that determines the time to destination. <0>Learn more</0>"
+
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
