@@ -145,7 +145,6 @@ export const BridgeModalContent = () => {
   const maxAmountToBridgeFormatted = formatUnits(maxAmountToBridge, 18);
 
   const handleInputChange = (value: string) => {
-    console.log(value);
     if (value === '-1') {
       setAmount(maxAmountToBridgeFormatted);
       setMaxSelected(true);

@@ -150,7 +150,6 @@ export function AppHeader() {
   };
 
   const handleBridgeClick = () => {
-    console.log('OPEN');
     openBridge();
   };
 
@@ -274,7 +273,7 @@ export function AppHeader() {
 
         <NoSsr>
           <StyledBadge
-            invisible={visitedSwitch} // TODO: Remove for production
+            invisible={visitedSwitch}
             variant="dot"
             badgeContent=""
             color="secondary"

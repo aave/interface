@@ -1,4 +1,12 @@
-import { Box, BoxProps, FormControl, MenuItem, Select, Typography } from '@mui/material';
+import {
+  Box,
+  BoxProps,
+  FormControl,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from '@mui/material';
 import * as React from 'react';
 
 import { SupportedNetworkWithChainId } from './Bridge/BridgeConfig';
@@ -16,8 +24,8 @@ export const NetworkSelect = ({
   defaultNetwork,
   sx = {},
 }: NetworkProps) => {
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const chainId = event.target.value as number;
+  const handleChange = (event: SelectChangeEvent) => {
+    const chainId = Number(event.target.value);
     const selectedNetwork = supportedBridgeMarkets.find((network) => network.chainId === chainId);
 
     if (selectedNetwork) {
@@ -41,10 +49,7 @@ export const NetworkSelect = ({
         <FormControl fullWidth>
           <Select
             id="network-select"
-            value={defaultNetwork.chainId}
-            // TODO: NETWORK CONFIGURED
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            value={defaultNetwork.chainId.toString()}
             onChange={handleChange}
             variant="outlined"
             sx={{
