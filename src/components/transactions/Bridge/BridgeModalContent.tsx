@@ -229,7 +229,8 @@ export const BridgeModalContent = () => {
   const estimatedTimeTooltip = (
     <TextWithTooltip text={<Trans>Estimated time to destination</Trans>}>
       <Trans>
-        The source chain finality is the main factor that determines the time to destination.{' '}
+        The source chain time to finality is the main factor that determines the time to
+        destination.{' '}
         <Link
           href="https://docs.chain.link/ccip/concepts#finality"
           sx={{ textDecoration: 'underline' }}
