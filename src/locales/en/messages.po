@@ -596,7 +596,6 @@ msgid "Both"
 msgstr "Both"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-#: src/modules/bridge/BridgeWrapper.tsx
 msgid "Bridge Transactions"
 msgstr "Bridge Transactions"
 
@@ -1842,6 +1841,7 @@ msgstr "Please connect your wallet to see migration tool."
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Please connect your wallet to see your supplies, borrowings, and open positions."
 
+#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/history/HistoryWrapper.tsx
 msgid "Please connect your wallet to view transaction history."
 msgstr "Please connect your wallet to view transaction history."
@@ -1983,6 +1983,10 @@ msgstr "Receive (est.)"
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Received"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Recent Transactions"
+msgstr "Recent Transactions"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
@@ -3004,6 +3008,10 @@ msgstr "View TX"
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 msgid "View Transactions"
 msgstr "View Transactions"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "View all"
+msgstr "View all"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"

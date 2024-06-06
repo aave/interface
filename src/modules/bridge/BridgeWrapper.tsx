@@ -1,12 +1,14 @@
-import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
+import { ArrowNarrowRightIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Paper, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Paper, Stack, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { Link } from 'src/components/primitives/Link';
 import { useBridgeTransactionHistory } from 'src/hooks/useBridgeTransactionHistory';
-import { useRootStore } from 'src/store/root';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import LoveGhost from '/public/loveGhost.svg';
 
@@ -17,13 +19,22 @@ import {
 } from './TransactionListItemLoader';
 
 export function BridgeWrapper() {
-  const [user] = useRootStore((state) => [state.account]);
+  const { currentAccount, loading: web3Loading } = useWeb3Context();
 
   const theme = useTheme();
   const downToSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { data: bridgeTransactions, isLoading: loadingBridgeTransactions } =
-    useBridgeTransactionHistory(user);
+    useBridgeTransactionHistory(currentAccount);
+
+  if (!currentAccount) {
+    return (
+      <ConnectWalletPaper
+        loading={web3Loading}
+        description={<Trans> Please connect your wallet to view transaction history.</Trans>}
+      />
+    );
+  }
 
   if (!loadingBridgeTransactions && bridgeTransactions?.length === 0) {
     return (
@@ -49,9 +60,26 @@ export function BridgeWrapper() {
   return (
     <ListWrapper
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-          <Trans>Bridge Transactions</Trans>
-        </Typography>
+        <Stack
+          sx={{ width: '100%' }}
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+            <Trans>Recent Transactions</Trans>
+          </Typography>
+          <Link underline="none" href={`https://ccip.chain.link/address/${currentAccount}`}>
+            <Stack direction="row" alignItems="center" gap={2}>
+              <Typography variant="caption">
+                <Trans>View all</Trans>
+              </Typography>
+              <SvgIcon sx={{ fontSize: '16px' }}>
+                <ExternalLinkIcon />
+              </SvgIcon>
+            </Stack>
+          </Link>
+        </Stack>
       }
     >
       {!downToSm && (

@@ -113,5 +113,6 @@ export const useBridgeTransactionHistory = (sender: string) => {
       return mergeAndSortTransactions(txs);
     },
     queryKey: ['sendRequests', sender],
+    enabled: !!sender,
   });
 };
