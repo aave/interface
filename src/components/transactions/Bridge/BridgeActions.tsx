@@ -11,6 +11,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -117,7 +118,7 @@ export const BridgeActions = React.memo(
       },
       requiresApproval,
       assetAddress: tokenAddress,
-      symbol: 'GHO',
+      symbol: GHO_SYMBOL,
       decimals: 18,
       signatureAmount: amountToBridge,
       onApprovalTxConfirmed: fetchApprovedAmount,
@@ -171,7 +172,7 @@ export const BridgeActions = React.memo(
           txState: 'success',
           asset: tokenAddress,
           amount: amountToBridge,
-          assetName: 'GHO',
+          assetName: GHO_SYMBOL,
         });
 
         setTxError(undefined);

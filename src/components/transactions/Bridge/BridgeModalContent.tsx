@@ -23,6 +23,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TokenInfo } from 'src/ui-config/TokenList';
+import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -163,7 +164,7 @@ export const BridgeModalContent = () => {
   const bridgeActionsProps: BridgeActionProps = {
     amountToBridge: amount,
     isWrongNetwork,
-    symbol: 'GHO',
+    symbol: GHO_SYMBOL,
     blocked:
       loadingBridgeMessage ||
       !destinationAccount ||
@@ -326,13 +327,13 @@ export const BridgeModalContent = () => {
             value={amount}
             onChange={handleInputChange}
             usdValue={amount} // TODO
-            symbol={'GHO'} // TODO Dynamic later
+            symbol={GHO_SYMBOL}
             assets={[
               {
                 balance: sourceTokenInfo.bridgeTokenBalanceFormatted,
                 address: sourceTokenInfo.address,
-                symbol: 'GHO',
-                iconSymbol: 'GHO',
+                symbol: GHO_SYMBOL,
+                iconSymbol: GHO_SYMBOL,
               },
             ]}
             maxValue={
@@ -375,8 +376,8 @@ export const BridgeModalContent = () => {
           <TxModalDetails gasLimit={'100'} chainId={sourceNetworkObj.chainId}>
             <DetailsNumberLine
               description={<Trans>Amount</Trans>}
-              iconSymbol={'GHO'}
-              symbol={'GHO'}
+              iconSymbol={GHO_SYMBOL}
+              symbol={GHO_SYMBOL}
               value={amount}
             />
             <Row caption={estimatedTimeTooltip} captionVariant="description" mb={4}>
