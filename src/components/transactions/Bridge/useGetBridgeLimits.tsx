@@ -18,7 +18,7 @@ export const useGetBridgeLimit = (sourceChainId: number) => {
       const tokenPoolAddress = sourceLaneConfig.lockReleaseTokenPool;
 
       if (!tokenPoolAddress) {
-        // only applies to the lock release token pool on Eth
+        // only applies to the lock release token pool on Ethereum
         return {
           bridgeLimit: BigNumber.from(-1),
           currentBridgedAmount: BigNumber.from(-1),
@@ -44,7 +44,6 @@ export const useGetBridgeLimit = (sourceChainId: number) => {
   });
 };
 
-// NOTE: Currently useRateLimit is not set on governance
 interface RateLimitProps {
   destinationChainId: number;
   sourceChainId: number;

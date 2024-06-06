@@ -9,6 +9,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
@@ -392,35 +393,38 @@ export const BridgeModalContent = () => {
                 )}
               </Box>
             </Row>
-            {message || loadingBridgeMessage ? (
-              <>
-                <DetailsNumberLine
-                  description={feeTooltip}
-                  iconSymbol={'ETH'}
-                  symbol={'ETH'}
-                  value={bridgeFeeFormatted}
-                  loading={loadingBridgeMessage}
-                  customMb={0}
+            <Row caption={feeTooltip} captionVariant="description" mb={4}>
+              {!message && !loadingBridgeMessage ? (
+                <NoData variant="secondary14" color="text.secondary" />
+              ) : loadingBridgeMessage ? (
+                <Skeleton
+                  variant="rectangular"
+                  height={20}
+                  width={100}
+                  sx={{ borderRadius: '4px' }}
                 />
-                <Box
-                  display={'flex'}
-                  justifyContent={'flex-end'}
-                  sx={{ visibility: loadingBridgeMessage ? 'hidden' : 'visible' }}
-                >
+              ) : (
+                <Stack direction="column" alignItems="flex-end" position="relative">
+                  <Stack direction="row" alignItems="center">
+                    <TokenIcon symbol="ETH" sx={{ mr: 1, fontSize: '16px' }} />
+                    <FormattedNumber
+                      value={bridgeFeeFormatted}
+                      symbol="ETH"
+                      variant="secondary14"
+                    />
+                  </Stack>
                   <FormattedNumber
                     value={bridgeFeeUSD}
                     variant="helperText"
                     compact
                     symbol="USD"
                     color="text.secondary"
+                    sx={{ position: 'absolute', top: '20px' }}
                   />
-                </Box>
-              </>
-            ) : (
-              <Row caption={feeTooltip} captionVariant="description" sx={{ pb: 3 }}>
-                <NoData variant="secondary14" color="text.secondary" />
-              </Row>
-            )}
+                </Stack>
+              )}
+            </Row>
+            <Row /> {/* Spacer */}
           </TxModalDetails>
           {txError && <GasEstimationError txError={txError} />}
 

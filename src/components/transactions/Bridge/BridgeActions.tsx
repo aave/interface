@@ -4,8 +4,8 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { Contract } from 'ethers';
-import React, { useEffect, useState } from 'react';
-import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
+import React, { useEffect } from 'react';
+import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -74,8 +74,6 @@ export const BridgeActions = React.memo(
     } = useModalContext();
     const [user] = useRootStore((state) => [state.account]);
 
-    const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-
     const {
       data: approvedAmount,
       refetch: fetchApprovedAmount,
@@ -94,7 +92,7 @@ export const BridgeActions = React.memo(
       checkRequiresApproval({
         approvedAmount: approvedAmount ? approvedAmount.toString() : '0',
         amount: amountToBridge,
-        signedAmount: signatureParams ? signatureParams.amount : '0',
+        signedAmount: '0',
       });
 
     if (requiresApproval && approvalTxState?.success) {
@@ -123,7 +121,6 @@ export const BridgeActions = React.memo(
       decimals: 18,
       signatureAmount: amountToBridge,
       onApprovalTxConfirmed: fetchApprovedAmount,
-      onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
       chainId: sourceChainId,
     });
 
