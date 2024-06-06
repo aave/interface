@@ -1,5 +1,3 @@
-// Note taken from
-// https://github.com/smartcontractkit/smart-contract-examples/blob/main/ccip-offchain/javascript/src/config/router.js
 import { ChainId } from '@aave/contract-helpers';
 import { AaveV3ArbitrumSepolia, AaveV3Sepolia } from '@bgd-labs/aave-address-book';
 import { BaseNetworkConfig, networkConfigs } from 'src/ui-config/networksConfig';
@@ -9,7 +7,7 @@ type Config = {
   router: string;
   chainSelector: string;
   subgraphUrl: string;
-  wrappedNativeOracle: string;
+  wrappedNativeOracle: string; // Used to get the fee price in USD
   lockReleaseTokenPool?: string;
   burnMintTokenPool?: string;
   destinations: {

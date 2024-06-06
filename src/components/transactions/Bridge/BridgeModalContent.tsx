@@ -402,7 +402,11 @@ export const BridgeModalContent = () => {
                   loading={loadingBridgeMessage}
                   customMb={0}
                 />
-                <Box display={'flex'} justifyContent={'flex-end'}>
+                <Box
+                  display={'flex'}
+                  justifyContent={'flex-end'}
+                  sx={{ visibility: loadingBridgeMessage ? 'hidden' : 'visible' }}
+                >
                   <FormattedNumber
                     value={bridgeFeeUSD}
                     variant="helperText"

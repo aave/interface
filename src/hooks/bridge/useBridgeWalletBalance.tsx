@@ -6,7 +6,6 @@ import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider'
 
 export const useBridgeTokens = (currentMarketData: MarketDataType) => {
   const { poolTokensBalanceService } = useSharedDependencies();
-  //   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const user = useRootStore((store) => store.account);
 
   return useQuery({
