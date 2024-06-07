@@ -21,6 +21,7 @@ export const permitByChainAndToken: {
     '0x82af49447d8a07e3bd95bd0d56f35241523fbab1': true,
     '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9': true,
     '0xba5ddd1f9d7f570dc94a51479a000e3bce967196': true,
+    '0x9124bc807e1e9c79b3225b25d8b77bacb65fe622': true, // TODO: update
     '0xd22a58f79e9481d1a88e00c343885a588b34b68b': false, // eurs
   },
   [ChainId.fantom]: {

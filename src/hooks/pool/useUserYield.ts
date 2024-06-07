@@ -6,7 +6,7 @@ import {
 import BigNumber from 'bignumber.js';
 import memoize from 'micro-memoize';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { displayGho, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { displayGhoForMintableMarket, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { useGhoPoolsFormattedReserve } from './useGhoPoolFormattedReserve';
 import {
@@ -53,7 +53,10 @@ const formatUserYield = memoize(
           if (value.variableBorrowsUSD !== '0') {
             // TODO: Export to unified helper function
             if (
-              displayGho({ symbol: reserve.symbol, currentMarket: currentMarket }) &&
+              displayGhoForMintableMarket({
+                symbol: reserve.symbol,
+                currentMarket: currentMarket,
+              }) &&
               formattedGhoUserData &&
               formattedGhoReserveData
             ) {
