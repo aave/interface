@@ -2,6 +2,8 @@ import { ChainId } from '@aave/contract-helpers';
 import { AaveV3ArbitrumSepolia, AaveV3Sepolia } from '@bgd-labs/aave-address-book';
 import { BaseNetworkConfig, networkConfigs } from 'src/ui-config/networksConfig';
 
+export const bridgeGasLimit = '252000';
+
 type Config = {
   sourceChainId: ChainId;
   router: string;

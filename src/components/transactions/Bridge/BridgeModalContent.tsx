@@ -47,7 +47,7 @@ export interface TokenInfoWithBalance extends TokenInfo {
 }
 
 export const BridgeModalContent = () => {
-  const { mainTxState: bridgeTxState, txError, close } = useModalContext();
+  const { mainTxState: bridgeTxState, txError, close, gasLimit } = useModalContext();
   const [user] = useRootStore((state) => [state.account]);
   const [destinationAccount, setDestinationAccount] = useState(user);
   const [amount, setAmount] = useState('');
@@ -373,7 +373,7 @@ export const BridgeModalContent = () => {
               onInputError={() => setDestinationAccount('')}
             />
           </Box>
-          <TxModalDetails gasLimit={'100'} chainId={sourceNetworkObj.chainId}>
+          <TxModalDetails gasLimit={gasLimit} chainId={sourceNetworkObj.chainId}>
             <DetailsNumberLine
               description={<Trans>Amount</Trans>}
               iconSymbol={GHO_SYMBOL}

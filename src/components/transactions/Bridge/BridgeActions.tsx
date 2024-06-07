@@ -1,4 +1,4 @@
-import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { ProtocolAction } from '@aave/contract-helpers';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -15,7 +15,7 @@ import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
-import { getChainSelectorFor, getRouterFor } from './BridgeConfig';
+import { bridgeGasLimit, getChainSelectorFor, getRouterFor } from './BridgeConfig';
 import routerAbi from './Router-abi.json';
 
 export interface TokenAmount {
@@ -86,6 +86,8 @@ export const BridgeActions = React.memo(
       spender: getRouterFor(sourceChainId),
     });
 
+    console.log('sourceChainId', sourceChainId);
+
     setLoadingTxns(fetchingApprovedAmount);
 
     const requiresApproval =
@@ -127,14 +129,13 @@ export const BridgeActions = React.memo(
 
     // Update gas estimation
     useEffect(() => {
-      // TODO
-      let supplyGasLimit = 0;
-      supplyGasLimit = Number(gasLimitRecommendations[ProtocolAction.supply].recommended);
+      let gasLimit = 0;
+      gasLimit = Number(bridgeGasLimit);
       if (requiresApproval && !approvalTxState.success) {
-        supplyGasLimit += Number(APPROVAL_GAS_LIMIT);
+        gasLimit += Number(APPROVAL_GAS_LIMIT);
       }
 
-      setGasLimit(supplyGasLimit.toString());
+      setGasLimit(gasLimit.toString());
     }, [requiresApproval, approvalTxState, setGasLimit]);
 
     const action = async () => {
