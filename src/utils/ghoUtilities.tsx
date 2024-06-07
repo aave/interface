@@ -14,6 +14,12 @@ export const GHO_MINTING_MARKETS = [
   'fork_proto_sepolia_v3',
 ];
 
+/**
+ * The allow-listed markets where the paraswap switch features are enabled.
+ * Use this list to disable GHO switch features until there is enough liqudity available to do so.
+ */
+export const GHO_SWITCH_FEATURE_MARKETS = ['proto_mainnet_v3', 'fork_proto_mainnet_v3'];
+
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
   return reserves.find((reserve) => reserve.symbol === GHO_SYMBOL);
 };
