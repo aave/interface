@@ -10,7 +10,7 @@ export const TransactionListItemLoader = () => {
         <Skeleton variant="circular" width={32} height={32} />
         <Stack direction="column" gap={1}>
           <Skeleton sx={{ ml: 2 }} width={50} height={12} />
-          <Skeleton sx={{ ml: 2 }} width={50} height={12} />
+          {/* <Skeleton sx={{ ml: 2 }} width={50} height={12} /> */}
         </Stack>
       </ListColumn>
 
@@ -49,7 +49,7 @@ export const TransactionMobileListItemLoader = () => {
         <Stack direction="column" gap={2}>
           <Stack direction="column" gap={1}>
             <Skeleton width={90} height={16} />
-            <Skeleton width={140} height={16} />
+            {/* <Skeleton width={140} height={16} /> */}
           </Stack>
           <Stack direction="row" alignItems="center">
             <Skeleton variant="circular" width={40} height={40} />

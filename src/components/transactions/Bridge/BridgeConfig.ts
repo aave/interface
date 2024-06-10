@@ -9,9 +9,10 @@ type Config = {
   router: string;
   chainSelector: string;
   subgraphUrl: string;
+  tokenOracle: string;
   wrappedNativeOracle: string; // Used to get the fee price in USD
-  lockReleaseTokenPool?: string;
-  burnMintTokenPool?: string;
+  lockReleaseTokenPool?: string; // Only exists on Ethereum
+  burnMintTokenPool?: string; // Only exists on non-Ethereum networks
   destinations: {
     destinationChainId: ChainId;
     onRamp: string;
@@ -36,6 +37,7 @@ export const laneConfig: Config[] = [
     lockReleaseTokenPool: '0x7768248E1Ff75612c18324bad06bb393c1206980', // TODO: address book
     chainSelector: '16015286601757825753',
     router: '0x11C008349c41fB5c78E544397fb4613605Ec1a74'.toLowerCase(),
+    tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc', // TODO: this is GHO oracle on Ethereum
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-sepolia/version/latest',
     destinations: [
@@ -58,6 +60,7 @@ export const laneConfig: Config[] = [
     burnMintTokenPool: '0x3eC2b6F818B72442fc36561e9F930DD2b60957D2', // TODO: address book
     chainSelector: '3478487238524512106',
     router: '0x22356aec4Cf05ec0EC63daa576C6B2CE1DC64701'.toLowerCase(),
+    tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc', // TODO: this is GHO oracle on Ethereum
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-arb-sepolia/version/latest',
     destinations: [
@@ -148,6 +151,14 @@ export function getDestinationChainFor(sourceChainId: ChainId, onRamp: string) {
     throw new Error(`No destination chain found for onRamp ${onRamp}`);
   }
   return destinationChainId;
+}
+
+export function getConfigFor(sourceChainId: ChainId) {
+  const config = laneConfig.find((config) => config.sourceChainId === sourceChainId);
+  if (!config) {
+    throw new Error(`No config found for chain ${sourceChainId}`);
+  }
+  return config;
 }
 
 export const supportedNetworksWithBridge: SupportedNetworkWithChainId[] =

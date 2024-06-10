@@ -86,8 +86,6 @@ export const BridgeActions = React.memo(
       spender: getRouterFor(sourceChainId),
     });
 
-    console.log('sourceChainId', sourceChainId);
-
     setLoadingTxns(fetchingApprovedAmount);
 
     const requiresApproval =

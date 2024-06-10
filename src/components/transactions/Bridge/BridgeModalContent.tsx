@@ -33,7 +33,11 @@ import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActionProps, BridgeActions } from './BridgeActions';
-import { supportedNetworksWithBridge, SupportedNetworkWithChainId } from './BridgeConfig';
+import {
+  getConfigFor,
+  supportedNetworksWithBridge,
+  SupportedNetworkWithChainId,
+} from './BridgeConfig';
 import { BridgeDestinationInput } from './BridgeDestinationInput';
 import { useGetBridgeLimit, useGetRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
@@ -53,7 +57,6 @@ export const BridgeModalContent = () => {
   const [amount, setAmount] = useState('');
   const [maxSelected, setMaxSelected] = useState(false);
 
-  // const [inputAmountUSD, setInputAmount] = useState('');
   const { readOnlyModeAddress, chainId: currentChainId } = useWeb3Context();
 
   const [sourceNetworkObj, setSourceNetworkObj] = useState(
@@ -77,8 +80,10 @@ export const BridgeModalContent = () => {
 
   const { data: sourceTokenInfo, isFetching: fetchingBridgeTokenBalance } = useBridgeTokens(
     Object.values(marketsData).find((elem) => elem.chainId === sourceNetworkObj.chainId) ||
-      defaultNetworkMarket
+      defaultNetworkMarket,
+    getConfigFor(sourceNetworkObj.chainId).tokenOracle
   );
+
   const isWrongNetwork = currentChainId !== sourceNetworkObj.chainId;
 
   const {
@@ -243,6 +248,8 @@ export const BridgeModalContent = () => {
     </TextWithTooltip>
   );
 
+  const amountUsd = Number(amount) * sourceTokenInfo.tokenPriceUSD;
+
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -326,7 +333,7 @@ export const BridgeModalContent = () => {
           <AssetInput
             value={amount}
             onChange={handleInputChange}
-            usdValue={amount} // TODO
+            usdValue={amountUsd.toString()}
             symbol={GHO_SYMBOL}
             assets={[
               {

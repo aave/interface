@@ -103,12 +103,12 @@ export const BridgeTransactionListItem = ({
             visibleDecimals={2}
             value={amount}
           />
-          <FormattedNumber
+          {/* <FormattedNumber
             value={amount}
             symbol="USD"
             variant="secondary12"
             color="text.secondary"
-          />
+          /> */}
         </Stack>
       </ListColumn>
       <ListColumn align="left">
@@ -177,12 +177,12 @@ const BridgeTransactionMobileListItem = ({
                 visibleDecimals={2}
                 value={amount}
               />
-              <FormattedNumber
+              {/* <FormattedNumber
                 value={amount}
                 symbol="USD"
                 variant="secondary12"
                 color="text.secondary"
-              />
+              /> */}
             </Stack>
           </Stack>
         </Stack>
