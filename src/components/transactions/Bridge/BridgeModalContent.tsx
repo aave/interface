@@ -232,7 +232,7 @@ export const BridgeModalContent = () => {
   );
 
   const estimatedTimeTooltip = (
-    <TextWithTooltip text={<Trans>Estimated time to destination</Trans>}>
+    <TextWithTooltip text={<Trans>Estimated time</Trans>}>
       <Trans>
         The source chain time to finality is the main factor that determines the time to
         destination.{' '}
@@ -254,7 +254,7 @@ export const BridgeModalContent = () => {
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h2">
-          <Trans>Bridge tokens</Trans>
+          <Trans>Bridge GHO</Trans>
         </Typography>
         {user && (
           <Box
@@ -270,7 +270,7 @@ export const BridgeModalContent = () => {
               size="small"
               onClick={close}
             >
-              <Trans>Bridge Transactions</Trans>
+              <Trans>Transactions</Trans>
             </Button>
           </Box>
         )}

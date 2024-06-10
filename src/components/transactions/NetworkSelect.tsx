@@ -33,6 +33,9 @@ export const NetworkSelect = ({
     }
   };
 
+  // Disable dropdown components if there is only one network
+  const disabled = supportedBridgeMarkets.length === 1;
+
   return (
     <Box sx={{ width: '100%', ...sx }}>
       <Box
@@ -49,12 +52,13 @@ export const NetworkSelect = ({
         <FormControl fullWidth>
           <Select
             id="network-select"
+            disabled={disabled}
             value={defaultNetwork.chainId.toString()}
             onChange={handleChange}
             variant="outlined"
             sx={{
               '.MuiSelect-select': {
-                background: 'transparent',
+                backgroundColor: 'transparent',
               },
               '& .MuiOutlinedInput-root': {
                 background: 'transparent',
@@ -74,13 +78,15 @@ export const NetworkSelect = ({
               },
               '& .MuiSelect-icon': {
                 marginRight: '12px',
+                display: disabled ? 'none' : 'inline-block',
               },
-            }}
-            inputProps={{
-              MenuProps: {
-                MenuListProps: {
-                  sx: {},
-                },
+              '& input.Mui-disabled': {
+                color: 'red',
+              },
+              '& .MuiOutlinedInput-input.Mui-disabled': {
+                backgroundColor: 'transparent',
+                opacity: 1,
+                '-webkit-text-fill-color': 'unset',
               },
             }}
           >

@@ -596,16 +596,12 @@ msgid "Both"
 msgstr "Both"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "Bridge Transactions"
-msgstr "Bridge Transactions"
+msgid "Bridge GHO"
+msgstr "Bridge GHO"
 
 #: src/modules/bridge/BridgeTopPanel.tsx
 msgid "Bridge history"
 msgstr "Bridge history"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "Bridge tokens"
-msgstr "Bridge tokens"
 
 #: src/components/transactions/Bridge/BridgeActions.tsx
 msgid "Bridge {symbol}"
@@ -1107,8 +1103,8 @@ msgid "Estimated compounding interest, including discount for Staking {0}AAVE in
 msgstr "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "Estimated time to destination"
-msgstr "Estimated time to destination"
+msgid "Estimated time"
+msgstr "Estimated time"
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
@@ -2839,6 +2835,7 @@ msgstr "Transaction history is not currently available for this market"
 msgid "Transaction overview"
 msgstr "Transaction overview"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Transactions"
