@@ -43,6 +43,7 @@ export const BridgeTransactionListItemWrapper = ({ transaction }: { transaction:
   const [, setTime] = useState(dayjs());
 
   useEffect(() => {
+    // Update every minute so the 'age' field updates while viewing the page
     const intervalId = setInterval(() => {
       setTime(dayjs());
     }, 60000);
