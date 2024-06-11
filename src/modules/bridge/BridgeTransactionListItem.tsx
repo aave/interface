@@ -127,7 +127,7 @@ export const BridgeTransactionListItem = ({
       <ListColumn align="left">
         <Typography variant="main14">{dayjs.unix(blockTimestamp).fromNow()}</Typography>
         <Typography variant="subheader2" color="text.muted">
-          {dayjs.unix(blockTimestamp).format('MMMM D YYYY HH:mm [UTC]')}
+          {dayjs.unix(blockTimestamp).format('MMMM D YYYY h:mm A')}
         </Typography>
       </ListColumn>
       <ListColumn align="left">
@@ -165,7 +165,7 @@ const BridgeTransactionMobileListItem = ({
           <Stack>
             <Typography variant="main14">{dayjs.unix(blockTimestamp).fromNow()}</Typography>
             <Typography variant="subheader2" color="text.muted">
-              {dayjs.unix(blockTimestamp).format('MMMM D YYYY HH:mm [UTC]')}
+              {dayjs.unix(blockTimestamp).format('MMMM D YYYY h:mm A')}
             </Typography>
           </Stack>
           <Stack direction="row">
