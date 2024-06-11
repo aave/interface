@@ -17,6 +17,7 @@ import {
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { formatUnits } from 'ethers/lib/utils';
+import { useEffect, useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
@@ -39,6 +40,15 @@ dayjs.extend(relativeTime);
 export const BridgeTransactionListItemWrapper = ({ transaction }: { transaction: Transaction }) => {
   const theme = useTheme();
   const downToSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const [, setTime] = useState(dayjs());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTime(dayjs());
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const { offRamps, loading } = useGetOffRampForLane(
     transaction.sourceChainId,
@@ -54,6 +64,7 @@ export const BridgeTransactionListItemWrapper = ({ transaction }: { transaction:
   const props: ListItemProps = {
     sourceChainId: transaction.sourceChainId,
     destinationChainId: transaction.destinationChainId,
+    age: dayjs.unix(transaction.blockTimestamp).fromNow(),
     blockTimestamp: transaction.blockTimestamp,
     amount: formatUnits(transaction.tokenAmounts[0].amount, 18), // assuming only 1 token transferred
     executionState,
@@ -78,6 +89,7 @@ export const BridgeTransactionListItemWrapper = ({ transaction }: { transaction:
 type ListItemProps = {
   sourceChainId: ChainId;
   destinationChainId: ChainId;
+  age: string;
   blockTimestamp: number;
   amount: string;
   executionState: MessageExecutionState | undefined;
@@ -87,6 +99,7 @@ type ListItemProps = {
 export const BridgeTransactionListItem = ({
   sourceChainId,
   destinationChainId,
+  age,
   blockTimestamp,
   amount,
   executionState,
@@ -125,7 +138,7 @@ export const BridgeTransactionListItem = ({
         </Stack>
       </ListColumn>
       <ListColumn align="left">
-        <Typography variant="main14">{dayjs.unix(blockTimestamp).fromNow()}</Typography>
+        <Typography variant="main14">{age}</Typography>
         <Typography variant="subheader2" color="text.muted">
           {dayjs.unix(blockTimestamp).format('MMMM D YYYY h:mm A')}
         </Typography>
@@ -153,6 +166,7 @@ export const BridgeTransactionListItem = ({
 const BridgeTransactionMobileListItem = ({
   sourceChainId,
   destinationChainId,
+  age,
   blockTimestamp,
   amount,
   executionState,
@@ -163,7 +177,7 @@ const BridgeTransactionMobileListItem = ({
       <Stack direction="row" my={4} justifyContent="space-between" sx={{ width: '100%' }}>
         <Stack direction="column" gap={2}>
           <Stack>
-            <Typography variant="main14">{dayjs.unix(blockTimestamp).fromNow()}</Typography>
+            <Typography variant="main14">{age}</Typography>
             <Typography variant="subheader2" color="text.muted">
               {dayjs.unix(blockTimestamp).format('MMMM D YYYY h:mm A')}
             </Typography>
