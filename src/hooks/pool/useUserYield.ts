@@ -13,6 +13,7 @@ import {
   FormattedReservesAndIncentives,
   usePoolsFormattedReserves,
 } from './usePoolFormattedReserves';
+import { useTokensNativeYield } from './useTokenNativeYield';
 import { useUserGhoPoolsFormattedReserve } from './useUserGhoPoolFormattedReserve';
 import { useUserSummariesAndIncentives } from './useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
@@ -31,6 +32,7 @@ const formatUserYield = memoize(
     user: FormatUserSummaryAndIncentivesResponse,
     currentMarket: string
   ) => {
+    // integrate LstsApy here
     const proportions = user.userReservesData.reduce(
       (acc, value) => {
         const reserve = formattedPoolReserves.find(
@@ -137,6 +139,9 @@ export const useUserYields = (
   const ghoPoolsFormattedReserveQuery = useGhoPoolsFormattedReserve(marketsData);
   const userGhoPoolsFormattedReserveQuery = useUserGhoPoolsFormattedReserve(marketsData);
   const userSummaryQuery = useUserSummariesAndIncentives(marketsData);
+  const tokenNativeYield = useTokensNativeYield(marketsData);
+  console.log('tokenNativeYield', tokenNativeYield);
+  // getNativeLstsApy
 
   return poolsFormattedReservesQuery.map((elem, index) => {
     const marketData = marketsData[index];
@@ -152,6 +157,7 @@ export const useUserYields = (
         formattedGhoUserData,
         user,
         marketData.market
+        // nativeLstsApy
       );
     };
     const ghoSelector = (
