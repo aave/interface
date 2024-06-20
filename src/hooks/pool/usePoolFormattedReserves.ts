@@ -22,7 +22,9 @@ export type FormattedReservesAndIncentives = ReturnType<
   IconMapInterface & {
     isEmodeEnabled: boolean;
     isWrappedBaseAsset: boolean;
-  } & ReserveDataHumanized;
+  } & ReserveDataHumanized & {
+    underlyingApy?: number;
+  };
 
 const formatReserves = memoize(
   (

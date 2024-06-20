@@ -24,6 +24,7 @@ export interface UserYield {
   earnedAPY: number;
   debtAPY: number;
   netAPY: number;
+  nativeAPY: TokenNativeYield;
 }
 
 const formatUserYield = memoize(
@@ -142,7 +143,7 @@ const formatUserYield = memoize(
       earnedAPY,
       debtAPY,
       netAPY,
-      tokensNativeAPY: tokensNativeApy,
+      nativeAPY: tokensNativeApy,
     };
   }
 );

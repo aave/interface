@@ -71,6 +71,7 @@ export const SuppliedPositionsList = () => {
       .filter((userReserve) => userReserve.underlyingBalance !== '0')
       .map((userReserve) => ({
         ...userReserve,
+        // nativeApy: userReserve.reserve., // Note: added only for table sort
         supplyAPY: userReserve.reserve.supplyAPY, // Note: added only for table sort
         reserve: {
           ...userReserve.reserve,
@@ -82,6 +83,9 @@ export const SuppliedPositionsList = () => {
             : {}),
         },
       })) || [];
+
+  console.log(user);
+  console.log('suppliedPositions', suppliedPositions);
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
   const preSortedReserves = suppliedPositions as DashboardReserve[];
@@ -121,7 +125,11 @@ export const SuppliedPositionsList = () => {
   if (loading)
     return <ListLoader title={<Trans>Your supplies</Trans>} head={head.map((col) => col.title)} />;
 
+  // console.log('sortedReserves', sortedReserves);
+  // console.log('user', user);
+
   return (
+    // <></>
     <ListWrapper
       tooltipOpen={tooltipOpen}
       titleComponent={

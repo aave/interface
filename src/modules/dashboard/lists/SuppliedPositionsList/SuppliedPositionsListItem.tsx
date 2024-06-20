@@ -1,5 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -22,6 +24,7 @@ export const SuppliedPositionsListItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
+  underlyingApy,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { isIsolated, aIncentivesData, isFrozen, isActive, isPaused } = reserve;
@@ -42,6 +45,8 @@ export const SuppliedPositionsListItem = ({
   const disableSwap = !isActive || isPaused || reserve.symbol == 'stETH';
   const disableWithdraw = !isActive || isPaused;
   const disableSupply = !isActive || isFrozen || isPaused;
+
+  console.log('x---reserve', reserve);
 
   return (
     <ListItemWrapper
@@ -66,7 +71,21 @@ export const SuppliedPositionsListItem = ({
       />
 
       <ListAPRColumn
-        value={Number(reserve.supplyAPY)}
+        value={
+          underlyingApy ? Number(reserve.supplyAPY) + underlyingApy : Number(reserve.supplyAPY)
+        }
+        tooltip={
+          underlyingApy ? (
+            <TextWithTooltip>
+              <div>
+                <Trans>{'Underlying APY:'}</Trans>
+                <IncentivesCard symbol={'Supply APY'} value={reserve.supplyAPY} />
+                <Trans>{'Supply APY:'}</Trans>
+                <IncentivesCard symbol={'Underlying APY'} value={underlyingApy} />
+              </div>
+            </TextWithTooltip>
+          ) : null
+        }
         incentives={aIncentivesData}
         symbol={reserve.symbol}
       />

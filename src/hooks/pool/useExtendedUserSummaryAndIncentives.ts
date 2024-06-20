@@ -1,4 +1,5 @@
 import { FormatUserSummaryAndIncentivesResponse } from '@aave/math-utils';
+import { getAddress } from 'ethers/lib/utils';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { reserveSortFn } from 'src/store/poolSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -17,6 +18,7 @@ export type ExtendedFormattedUser =
     earnedAPY: number;
     debtAPY: number;
     netAPY: number;
+    // nativeYield: number;
     isInEmode: boolean;
     userEmodeCategoryId: number;
   };
@@ -30,12 +32,18 @@ const formatExtendedUserAndIncentives = (
     ...userSummariesAndIncentives,
     userEmodeCategoryId: userReserves.userEmodeCategoryId,
     isInEmode: userReserves.userEmodeCategoryId !== 0,
-    userReservesData: userSummariesAndIncentives.userReservesData.sort((a, b) =>
-      reserveSortFn(a.reserve, b.reserve)
-    ),
+    userReservesData: userSummariesAndIncentives.userReservesData
+      .sort((a, b) => reserveSortFn(a.reserve, b.reserve))
+      .map((elem) => {
+        return {
+          ...elem,
+          underlyingApy: userYield.nativeAPY[getAddress(elem.reserve.underlyingAsset)],
+        };
+      }),
     earnedAPY: userYield.earnedAPY,
     debtAPY: userYield.debtAPY,
     netAPY: userYield.netAPY,
+    // nativeYield: userYield.nativeAPY,
   };
 };
 
