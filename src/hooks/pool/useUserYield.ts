@@ -6,7 +6,7 @@ import {
 import BigNumber from 'bignumber.js';
 import { getAddress } from 'ethers/lib/utils';
 import memoize from 'micro-memoize';
-import { TokenNativeYield } from 'src/services/TokenNativeYieldService';
+import { UnderlyingAPYs } from 'src/services/UnderlyingYieldService';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { displayGho, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
@@ -15,7 +15,7 @@ import {
   FormattedReservesAndIncentives,
   usePoolsFormattedReserves,
 } from './usePoolFormattedReserves';
-import { useTokensNativeYield } from './useTokenNativeYield';
+import { useUnderlyingYields } from './useUnderlyingYield';
 import { useUserGhoPoolsFormattedReserve } from './useUserGhoPoolFormattedReserve';
 import { useUserSummariesAndIncentives } from './useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
@@ -24,7 +24,7 @@ export interface UserYield {
   earnedAPY: number;
   debtAPY: number;
   netAPY: number;
-  nativeAPY: TokenNativeYield;
+  underlyingAPYs: UnderlyingAPYs;
 }
 
 const formatUserYield = memoize(
@@ -33,10 +33,10 @@ const formatUserYield = memoize(
     formattedGhoReserveData: FormattedGhoReserveData | undefined,
     formattedGhoUserData: FormattedGhoUserData | undefined,
     user: FormatUserSummaryAndIncentivesResponse,
-    tokensNativeApy: TokenNativeYield,
+    underlyingAPYs: UnderlyingAPYs,
     currentMarket: string
-  ) => {
-    console.log('---tokensNativeApy', tokensNativeApy);
+  ): UserYield => {
+    console.log('---underlyingAPYs', underlyingAPYs);
     const proportions = user.userReservesData.reduce(
       (acc, value) => {
         const reserve = formattedPoolReserves.find(
@@ -51,12 +51,12 @@ const formatUserYield = memoize(
             );
 
             console.log('---reserve', reserve.supplyAPY);
-            const nativeAPR = tokensNativeApy[getAddress(reserve.underlyingAsset)];
-            console.log('---nativeAPR', nativeAPR);
+            const underlyingAPY = underlyingAPYs[getAddress(reserve.underlyingAsset)];
+            console.log('---underlyingAPY', underlyingAPY);
 
-            if (nativeAPR) {
+            if (underlyingAPY) {
               acc.positiveProportion = acc.positiveProportion.plus(
-                new BigNumber(nativeAPR).multipliedBy(value.underlyingBalanceUSD)
+                new BigNumber(underlyingAPY).multipliedBy(value.underlyingBalanceUSD)
               );
             }
             if (reserve.aIncentivesData) {
@@ -143,7 +143,7 @@ const formatUserYield = memoize(
       earnedAPY,
       debtAPY,
       netAPY,
-      nativeAPY: tokensNativeApy,
+      underlyingAPYs,
     };
   }
 );
@@ -155,7 +155,7 @@ export const useUserYields = (
   const ghoPoolsFormattedReserveQuery = useGhoPoolsFormattedReserve(marketsData);
   const userGhoPoolsFormattedReserveQuery = useUserGhoPoolsFormattedReserve(marketsData);
   const userSummaryQuery = useUserSummariesAndIncentives(marketsData);
-  const tokensNativeApy = useTokensNativeYield();
+  const underlyingAPY = useUnderlyingYields();
 
   return poolsFormattedReservesQuery.map((elem, index) => {
     const marketData = marketsData[index];
@@ -164,28 +164,28 @@ export const useUserYields = (
       formattedGhoReserveData: FormattedGhoReserveData,
       formattedGhoUserData: FormattedGhoUserData,
       user: FormatUserSummaryAndIncentivesResponse,
-      tokensNativeApy: TokenNativeYield
+      underlyingAPY: UnderlyingAPYs
     ) => {
       return formatUserYield(
         formattedPoolReserves,
         formattedGhoReserveData,
         formattedGhoUserData,
         user,
-        tokensNativeApy,
+        underlyingAPY,
         marketData.market
       );
     };
     const ghoSelector = (
       formattedPoolReserves: FormattedReservesAndIncentives[],
       user: FormatUserSummaryAndIncentivesResponse,
-      tokensNativeApy: TokenNativeYield
+      underlyingAPY: UnderlyingAPYs
     ) => {
       return formatUserYield(
         formattedPoolReserves,
         undefined,
         undefined,
         user,
-        tokensNativeApy,
+        underlyingAPY,
         marketData.market
       );
     };
@@ -196,11 +196,11 @@ export const useUserYields = (
           ghoPoolsFormattedReserveQuery[index],
           userGhoPoolsFormattedReserveQuery[index],
           userSummaryQuery[index],
-          tokensNativeApy,
+          underlyingAPY,
         ] as const,
         selector
       );
-    return combineQueries([elem, userSummaryQuery[index], tokensNativeApy] as const, ghoSelector);
+    return combineQueries([elem, userSummaryQuery[index], underlyingAPY] as const, ghoSelector);
   });
 };
 

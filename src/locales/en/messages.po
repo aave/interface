@@ -2312,7 +2312,7 @@ msgstr "Supply"
 msgid "Supply APY"
 msgstr "Supply APY"
 
-#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+#: src/modules/dashboard/lists/ListAPYDetails.tsx
 msgid "Supply APY:"
 msgstr "Supply APY:"
 
@@ -2767,7 +2767,7 @@ msgstr "Unbacked"
 msgid "Unbacked mint cap is exceeded"
 msgstr "Unbacked mint cap is exceeded"
 
-#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+#: src/modules/dashboard/lists/ListAPYDetails.tsx
 msgid "Underlying APY:"
 msgstr "Underlying APY:"
 

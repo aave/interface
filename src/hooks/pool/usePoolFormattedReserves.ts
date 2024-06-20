@@ -23,7 +23,7 @@ export type FormattedReservesAndIncentives = ReturnType<
     isEmodeEnabled: boolean;
     isWrappedBaseAsset: boolean;
   } & ReserveDataHumanized & {
-    underlyingApy?: number;
+    underlyingAPY?: number;
   };
 
 const formatReserves = memoize(

@@ -9,6 +9,7 @@ import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
+import { ListAPYDetails } from '../ListAPYDetails';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
@@ -19,6 +20,7 @@ export const SuppliedPositionsListMobileItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
+  underlyingAPY,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { currentMarketData, currentMarket } = useProtocolDataContext();
@@ -74,7 +76,12 @@ export const SuppliedPositionsListMobileItem = ({
         mb={2}
       >
         <IncentivesCard
-          value={Number(supplyAPY)}
+          value={underlyingAPY ? Number(supplyAPY) + underlyingAPY : Number(supplyAPY)}
+          tooltip={
+            underlyingAPY ? (
+              <ListAPYDetails supplyAPY={Number(reserve.supplyAPY)} underlyingAPY={underlyingAPY} />
+            ) : null
+          }
           incentives={aIncentivesData}
           symbol={symbol}
           variant="secondary14"

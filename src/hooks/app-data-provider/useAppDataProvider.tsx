@@ -77,8 +77,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
 
-  // console.log('currentMarketData', currentMarketData);
-
   // pool hooks
   const { data: reservesData, isLoading: reservesDataLoading } =
     usePoolReservesHumanized(currentMarketData);

@@ -18,7 +18,6 @@ export type ExtendedFormattedUser =
     earnedAPY: number;
     debtAPY: number;
     netAPY: number;
-    // nativeYield: number;
     isInEmode: boolean;
     userEmodeCategoryId: number;
   };
@@ -37,13 +36,12 @@ const formatExtendedUserAndIncentives = (
       .map((elem) => {
         return {
           ...elem,
-          underlyingApy: userYield.nativeAPY[getAddress(elem.reserve.underlyingAsset)],
+          underlyingAPY: userYield.underlyingAPYs[getAddress(elem.reserve.underlyingAsset)],
         };
       }),
     earnedAPY: userYield.earnedAPY,
     debtAPY: userYield.debtAPY,
     netAPY: userYield.netAPY,
-    // nativeYield: userYield.nativeAPY,
   };
 };
 

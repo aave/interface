@@ -125,11 +125,7 @@ export const SuppliedPositionsList = () => {
   if (loading)
     return <ListLoader title={<Trans>Your supplies</Trans>} head={head.map((col) => col.title)} />;
 
-  // console.log('sortedReserves', sortedReserves);
-  // console.log('user', user);
-
   return (
-    // <></>
     <ListWrapper
       tooltipOpen={tooltipOpen}
       titleComponent={

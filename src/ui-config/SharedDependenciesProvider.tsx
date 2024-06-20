@@ -6,12 +6,12 @@ import { GovernanceService } from 'src/services/GovernanceService';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { MigrationService } from 'src/services/MigrationService';
 import { StkAbptMigrationService } from 'src/services/StkAbptMigrationService';
-import { TokensNativeYieldService } from 'src/services/TokenNativeYieldService';
 import { TokenWrapperService } from 'src/services/TokenWrapperService';
 import { UiGhoService } from 'src/services/UiGhoService';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
+import { UnderlyingYieldService } from 'src/services/UnderlyingYieldService';
 import { VotingMachineService } from 'src/services/VotingMachineService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
@@ -37,7 +37,7 @@ interface SharedDependenciesContext {
   stkAbptMigrationService: StkAbptMigrationService;
   migrationService: MigrationService;
   erc20Service: ERC20Service;
-  tokenNativeYieldService: TokensNativeYieldService;
+  underlyingYieldService: UnderlyingYieldService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -80,7 +80,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
 
   const uiGhoService = new UiGhoService(getProvider);
 
-  const tokenNativeYieldService = new TokensNativeYieldService(getProvider);
+  const underlyingYieldService = new UnderlyingYieldService(getProvider);
 
   return (
     <SharedDependenciesContext.Provider
@@ -100,7 +100,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         stkAbptMigrationService,
         migrationService,
         erc20Service,
-        tokenNativeYieldService,
+        underlyingYieldService,
       }}
     >
       {children}

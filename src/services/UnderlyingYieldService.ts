@@ -3,25 +3,25 @@ import { Provider } from '@ethersproject/providers';
 import { BigNumber, Contract } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 
-export interface TokenNativeYield {
+export interface UnderlyingAPYs {
   [key: string]: number | null;
 }
 
 const DAYS_IN_SECONDS = 60 * 60 * 24;
 
-export class TokensNativeYieldService {
+export class UnderlyingYieldService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-  async getTokensNativeYield(): Promise<TokenNativeYield> {
-    const wstethApr = await this.getWstethNativeYield();
+  async getUnderlyingAPYs(): Promise<UnderlyingAPYs> {
+    const stethAPY = await this.getStethAPY();
     return {
-      [AaveV3Ethereum.ASSETS.wstETH.UNDERLYING]: wstethApr,
+      [AaveV3Ethereum.ASSETS.wstETH.UNDERLYING]: stethAPY,
     };
   }
 
-  getWstethNativeYield = async () => {
+  getStethAPY = async () => {
     // computation formula: https://docs.lido.fi/integrations/api#last-lido-apr-for-steth
-    const computeStEthAPR = ({
+    const computeStethAPY = ({
       preTotalEther,
       preTotalShares,
       postTotalEther,
@@ -107,7 +107,7 @@ export class TokensNativeYieldService {
       // data.apr is the apy
       return resParsed.data.apr;
     } else {
-      return computeStEthAPR({
+      return computeStethAPY({
         preTotalEther: latestEvent.args['preTotalEther'],
         preTotalShares: latestEvent.args['preTotalShares'],
         postTotalEther: latestEvent.args['postTotalEther'],

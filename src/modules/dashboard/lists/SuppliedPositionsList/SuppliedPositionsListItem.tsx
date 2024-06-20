@@ -1,7 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -13,6 +11,7 @@ import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListAPRColumn } from '../ListAPRColumn';
+import { ListAPYDetails } from '../ListAPYDetails';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
@@ -24,7 +23,7 @@ export const SuppliedPositionsListItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
-  underlyingApy,
+  underlyingAPY,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { isIsolated, aIncentivesData, isFrozen, isActive, isPaused } = reserve;
@@ -72,18 +71,11 @@ export const SuppliedPositionsListItem = ({
 
       <ListAPRColumn
         value={
-          underlyingApy ? Number(reserve.supplyAPY) + underlyingApy : Number(reserve.supplyAPY)
+          underlyingAPY ? Number(reserve.supplyAPY) + underlyingAPY : Number(reserve.supplyAPY)
         }
         tooltip={
-          underlyingApy ? (
-            <TextWithTooltip>
-              <div>
-                <Trans>{'Underlying APY:'}</Trans>
-                <IncentivesCard symbol={'Supply APY'} value={reserve.supplyAPY} />
-                <Trans>{'Supply APY:'}</Trans>
-                <IncentivesCard symbol={'Underlying APY'} value={underlyingApy} />
-              </div>
-            </TextWithTooltip>
+          underlyingAPY ? (
+            <ListAPYDetails supplyAPY={Number(reserve.supplyAPY)} underlyingAPY={underlyingAPY} />
           ) : null
         }
         incentives={aIncentivesData}

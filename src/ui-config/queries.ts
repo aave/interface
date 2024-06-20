@@ -161,10 +161,10 @@ export const queryKeysFactory = {
     chainId,
     'tokensBalance',
   ],
-  tokensNativeYield: () => [
+  underlyingYields: () => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.incentives,
-    'tokensNativeYield',
+    'underlyingYield',
   ],
 };
 
