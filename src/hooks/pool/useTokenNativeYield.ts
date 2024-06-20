@@ -1,27 +1,18 @@
-import { useQueries } from '@tanstack/react-query';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { useQuery } from '@tanstack/react-query';
+import { TokenNativeYield } from 'src/services/TokenNativeYieldService';
 import { POLLING_INTERVAL, queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-// type TokenNativeYieldData = Map<string, string>;
+import { SimplifiedUseQueryResult } from './utils';
 
-export const useTokensNativeYield = (marketsData: MarketDataType[]) => {
-  // marketsData[0].market
+export const useTokensNativeYield = (): SimplifiedUseQueryResult<TokenNativeYield> => {
   const { tokenNativeYieldService } = useSharedDependencies();
-  return useQueries({
-    queries: marketsData.map((marketData) => ({
-      queryKey: queryKeysFactory.tokensNativeYield(marketData),
-      queryFn: () => {
-        console.log('queryFn', marketData);
-        tokenNativeYieldService.getTokensNativeYield(marketData.chainId);
-        return null;
-      },
-      enabled: !!marketData.v3,
-      refetchInterval: POLLING_INTERVAL,
-    })),
+  return useQuery({
+    queryKey: queryKeysFactory.tokensNativeYield(),
+    queryFn: () => {
+      const aprs = tokenNativeYieldService.getTokensNativeYield();
+      return aprs;
+    },
+    refetchInterval: POLLING_INTERVAL,
   });
-};
-
-export const useTokenNativeYield = (marketData: MarketDataType) => {
-  return useTokensNativeYield([marketData])[0];
 };

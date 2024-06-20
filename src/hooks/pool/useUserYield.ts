@@ -4,7 +4,9 @@ import {
   FormatUserSummaryAndIncentivesResponse,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
+import { getAddress } from 'ethers/lib/utils';
 import memoize from 'micro-memoize';
+import { TokenNativeYield } from 'src/services/TokenNativeYieldService';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { displayGho, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
@@ -30,9 +32,10 @@ const formatUserYield = memoize(
     formattedGhoReserveData: FormattedGhoReserveData | undefined,
     formattedGhoUserData: FormattedGhoUserData | undefined,
     user: FormatUserSummaryAndIncentivesResponse,
+    tokensNativeApy: TokenNativeYield,
     currentMarket: string
   ) => {
-    // integrate LstsApy here
+    console.log('---tokensNativeApy', tokensNativeApy);
     const proportions = user.userReservesData.reduce(
       (acc, value) => {
         const reserve = formattedPoolReserves.find(
@@ -40,10 +43,21 @@ const formatUserYield = memoize(
         );
 
         if (reserve) {
+          // console.log('reserve', reserve);
           if (value.underlyingBalanceUSD !== '0') {
             acc.positiveProportion = acc.positiveProportion.plus(
               new BigNumber(reserve.supplyAPY).multipliedBy(value.underlyingBalanceUSD)
             );
+
+            console.log('---reserve', reserve.supplyAPY);
+            const nativeAPR = tokensNativeApy[getAddress(reserve.underlyingAsset)];
+            console.log('---nativeAPR', nativeAPR);
+
+            if (nativeAPR) {
+              acc.positiveProportion = acc.positiveProportion.plus(
+                new BigNumber(nativeAPR).multipliedBy(value.underlyingBalanceUSD)
+              );
+            }
             if (reserve.aIncentivesData) {
               reserve.aIncentivesData.forEach((incentive) => {
                 acc.positiveProportion = acc.positiveProportion.plus(
@@ -128,6 +142,7 @@ const formatUserYield = memoize(
       earnedAPY,
       debtAPY,
       netAPY,
+      tokensNativeAPY: tokensNativeApy,
     };
   }
 );
@@ -139,9 +154,7 @@ export const useUserYields = (
   const ghoPoolsFormattedReserveQuery = useGhoPoolsFormattedReserve(marketsData);
   const userGhoPoolsFormattedReserveQuery = useUserGhoPoolsFormattedReserve(marketsData);
   const userSummaryQuery = useUserSummariesAndIncentives(marketsData);
-  const tokenNativeYield = useTokensNativeYield(marketsData);
-  console.log('tokenNativeYield', tokenNativeYield);
-  // getNativeLstsApy
+  const tokensNativeApy = useTokensNativeYield();
 
   return poolsFormattedReservesQuery.map((elem, index) => {
     const marketData = marketsData[index];
@@ -149,22 +162,31 @@ export const useUserYields = (
       formattedPoolReserves: FormattedReservesAndIncentives[],
       formattedGhoReserveData: FormattedGhoReserveData,
       formattedGhoUserData: FormattedGhoUserData,
-      user: FormatUserSummaryAndIncentivesResponse
+      user: FormatUserSummaryAndIncentivesResponse,
+      tokensNativeApy: TokenNativeYield
     ) => {
       return formatUserYield(
         formattedPoolReserves,
         formattedGhoReserveData,
         formattedGhoUserData,
         user,
+        tokensNativeApy,
         marketData.market
-        // nativeLstsApy
       );
     };
     const ghoSelector = (
       formattedPoolReserves: FormattedReservesAndIncentives[],
-      user: FormatUserSummaryAndIncentivesResponse
+      user: FormatUserSummaryAndIncentivesResponse,
+      tokensNativeApy: TokenNativeYield
     ) => {
-      return formatUserYield(formattedPoolReserves, undefined, undefined, user, marketData.market);
+      return formatUserYield(
+        formattedPoolReserves,
+        undefined,
+        undefined,
+        user,
+        tokensNativeApy,
+        marketData.market
+      );
     };
     if (marketData.addresses.GHO_TOKEN_ADDRESS)
       return combineQueries(
@@ -173,10 +195,11 @@ export const useUserYields = (
           ghoPoolsFormattedReserveQuery[index],
           userGhoPoolsFormattedReserveQuery[index],
           userSummaryQuery[index],
+          tokensNativeApy,
         ] as const,
         selector
       );
-    return combineQueries([elem, userSummaryQuery[index]] as const, ghoSelector);
+    return combineQueries([elem, userSummaryQuery[index], tokensNativeApy] as const, ghoSelector);
   });
 };
 

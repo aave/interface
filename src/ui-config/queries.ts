@@ -161,10 +161,9 @@ export const queryKeysFactory = {
     chainId,
     'tokensBalance',
   ],
-  tokensNativeYield: (marketData: MarketDataType) => [
+  tokensNativeYield: () => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.incentives,
-    ...queryKeysFactory.market(marketData),
     'tokensNativeYield',
   ],
 };
