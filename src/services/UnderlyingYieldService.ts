@@ -50,9 +50,6 @@ export class UnderlyingYieldService {
 
       // stEth rebased daily: https://help.lido.fi/en/articles/5230610-what-is-steth
       const apy = (1 + Number(apr) / 365) ** 365 - 1;
-      const apyFormated = apy * 100;
-      console.log('apy', apy);
-      console.log('apyFormated', apyFormated);
 
       return apy;
     };
@@ -86,7 +83,6 @@ export class UnderlyingYieldService {
       currentBlockNumber - blocksInDay * 7, // ~1 week
       currentBlockNumber
     );
-    console.log('events', events);
 
     const latestEvent = events.length === 0 ? null : events[events.length - 1];
 

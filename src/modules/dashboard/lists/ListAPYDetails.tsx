@@ -8,6 +8,22 @@ interface ListAPYDetailsProps {
   underlyingAPY: number;
 }
 
+const APYBox = ({ symbol, value }: { symbol: string; value: number }) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '4px',
+        alignItems: 'baseline',
+      }}
+    >
+      <Trans>{symbol + ':'}</Trans>
+      <IncentivesCard symbol={symbol} value={value} />
+    </Box>
+  );
+};
+
 export const ListAPYDetails = ({ supplyAPY, underlyingAPY }: ListAPYDetailsProps) => {
   return (
     <TextWithTooltip>
@@ -18,28 +34,8 @@ export const ListAPYDetails = ({ supplyAPY, underlyingAPY }: ListAPYDetailsProps
           gap: '4px',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: '6px',
-            alignItems: 'baseline',
-          }}
-        >
-          <Trans>{'Supply APY:'}</Trans>
-          <IncentivesCard symbol={'Supply APY'} value={supplyAPY} />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: '6px',
-            alignItems: 'baseline',
-          }}
-        >
-          <Trans>{'Underlying APY:'}</Trans>
-          <IncentivesCard symbol={'Underlying APY'} value={underlyingAPY} />{' '}
-        </Box>
+        <APYBox symbol="Supply APY" value={supplyAPY} />
+        <APYBox symbol="Underlying APY" value={underlyingAPY} />
       </Box>
     </TextWithTooltip>
   );

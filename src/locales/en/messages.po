@@ -2312,10 +2312,6 @@ msgstr "Supply"
 msgid "Supply APY"
 msgstr "Supply APY"
 
-#: src/modules/dashboard/lists/ListAPYDetails.tsx
-msgid "Supply APY:"
-msgstr "Supply APY:"
-
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Supply apy"
 msgstr "Supply apy"
@@ -2766,10 +2762,6 @@ msgstr "Unbacked"
 #: src/ui-config/errorMapping.tsx
 msgid "Unbacked mint cap is exceeded"
 msgstr "Unbacked mint cap is exceeded"
-
-#: src/modules/dashboard/lists/ListAPYDetails.tsx
-msgid "Underlying APY:"
-msgstr "Underlying APY:"
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
@@ -3358,6 +3350,7 @@ msgstr "withdrew"
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
+#: src/modules/dashboard/lists/ListAPYDetails.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "{0}"

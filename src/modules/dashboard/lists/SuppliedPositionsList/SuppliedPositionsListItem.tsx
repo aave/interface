@@ -45,8 +45,6 @@ export const SuppliedPositionsListItem = ({
   const disableWithdraw = !isActive || isPaused;
   const disableSupply = !isActive || isFrozen || isPaused;
 
-  console.log('x---reserve', reserve);
-
   return (
     <ListItemWrapper
       symbol={reserve.symbol}

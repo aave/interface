@@ -36,7 +36,6 @@ const formatUserYield = memoize(
     underlyingAPYs: UnderlyingAPYs,
     currentMarket: string
   ): UserYield => {
-    console.log('---underlyingAPYs', underlyingAPYs);
     const proportions = user.userReservesData.reduce(
       (acc, value) => {
         const reserve = formattedPoolReserves.find(
@@ -44,15 +43,12 @@ const formatUserYield = memoize(
         );
 
         if (reserve) {
-          // console.log('reserve', reserve);
           if (value.underlyingBalanceUSD !== '0') {
             acc.positiveProportion = acc.positiveProportion.plus(
               new BigNumber(reserve.supplyAPY).multipliedBy(value.underlyingBalanceUSD)
             );
 
-            console.log('---reserve', reserve.supplyAPY);
             const underlyingAPY = underlyingAPYs[getAddress(reserve.underlyingAsset)];
-            console.log('---underlyingAPY', underlyingAPY);
 
             if (underlyingAPY) {
               acc.positiveProportion = acc.positiveProportion.plus(
