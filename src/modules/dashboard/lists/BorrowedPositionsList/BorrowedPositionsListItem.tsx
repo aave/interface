@@ -13,6 +13,7 @@ import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
+import { ListAPYDetails } from '../ListAPYDetails';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
@@ -113,6 +114,7 @@ const BorrowedPositionsListItemDesktop = ({
   totalBorrowsUSD,
   borrowAPY,
   incentives,
+  underlyingAPY,
   onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
@@ -137,7 +139,16 @@ const BorrowedPositionsListItemDesktop = ({
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
-      <ListAPRColumn value={borrowAPY} incentives={incentives} symbol={reserve.symbol} />
+      <ListAPRColumn
+        value={underlyingAPY ? borrowAPY + underlyingAPY : borrowAPY}
+        tooltip={
+          underlyingAPY ? (
+            <ListAPYDetails borrowAPY={borrowAPY} underlyingAPY={underlyingAPY} />
+          ) : null
+        }
+        incentives={incentives}
+        symbol={reserve.symbol}
+      />
 
       <ListColumn>
         <ListItemAPYButton
@@ -186,6 +197,7 @@ const BorrowedPositionsListItemMobile = ({
   borrowAPY,
   incentives,
   disableRepay,
+  underlyingAPY,
   onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
@@ -226,7 +238,12 @@ const BorrowedPositionsListItemMobile = ({
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <IncentivesCard
-          value={borrowAPY}
+          value={underlyingAPY ? borrowAPY + underlyingAPY : borrowAPY}
+          tooltip={
+            underlyingAPY ? (
+              <ListAPYDetails borrowAPY={borrowAPY} underlyingAPY={underlyingAPY} />
+            ) : null
+          }
           incentives={incentives}
           symbol={symbol}
           variant="secondary14"

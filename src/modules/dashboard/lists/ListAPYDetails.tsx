@@ -4,8 +4,9 @@ import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 
 interface ListAPYDetailsProps {
-  supplyAPY: number;
   underlyingAPY: number;
+  supplyAPY?: number;
+  borrowAPY?: number;
 }
 
 const APYBox = ({ symbol, value }: { symbol: string; value: number }) => {
@@ -24,7 +25,7 @@ const APYBox = ({ symbol, value }: { symbol: string; value: number }) => {
   );
 };
 
-export const ListAPYDetails = ({ supplyAPY, underlyingAPY }: ListAPYDetailsProps) => {
+export const ListAPYDetails = ({ underlyingAPY, supplyAPY, borrowAPY }: ListAPYDetailsProps) => {
   return (
     <TextWithTooltip>
       <Box
@@ -34,7 +35,8 @@ export const ListAPYDetails = ({ supplyAPY, underlyingAPY }: ListAPYDetailsProps
           gap: '4px',
         }}
       >
-        <APYBox symbol="Supply APY" value={supplyAPY} />
+        {supplyAPY && <APYBox symbol="Supply APY" value={supplyAPY} />}
+        {borrowAPY && <APYBox symbol="Borrow APY" value={borrowAPY} />}
         <APYBox symbol="Underlying APY" value={underlyingAPY} />
       </Box>
     </TextWithTooltip>
