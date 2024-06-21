@@ -70,8 +70,6 @@ export const BorrowedPositionsList = () => {
   const showEModeButton = currentMarketData.v3 && Object.keys(eModes).length > 1;
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
 
-  console.log('^^^ user', user);
-
   let borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
       if (userReserve.variableBorrows !== '0') {
@@ -106,8 +104,6 @@ export const BorrowedPositionsList = () => {
       }
       return acc;
     }, [] as (ComputedUserReserveData & { borrowRateMode: InterestRate })[]) || [];
-
-  console.log('^^^ borrowPositions', borrowPositions);
 
   // Move GHO to top of borrowed positions list
   const ghoReserve = borrowPositions.filter((pos) => pos.reserve.symbol === GHO_SYMBOL);

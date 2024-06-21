@@ -42,8 +42,6 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
   const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData) || false;
   const disableSwitch = reserve.isPaused || !reserve.isActive || reserve.symbol == 'stETH';
 
-  console.log('item', item);
-
   const props: BorrowedPositionsListItemProps = {
     ...item,
     disableBorrow,
@@ -116,7 +114,6 @@ const BorrowedPositionsListItemDesktop = ({
   totalBorrowsUSD,
   borrowAPY,
   incentives,
-  underlyingAPY,
   onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
@@ -125,10 +122,6 @@ const BorrowedPositionsListItemDesktop = ({
   const { currentMarket } = useProtocolDataContext();
 
   const { isActive, isFrozen, isPaused, stableBorrowRateEnabled, name } = reserve;
-
-  console.log('reserve', reserve);
-  console.log('borrowAPY', borrowAPY);
-  console.log('underlyingAPY', underlyingAPY);
 
   return (
     <ListItemWrapper

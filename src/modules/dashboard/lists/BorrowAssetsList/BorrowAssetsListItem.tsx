@@ -36,9 +36,6 @@ export const BorrowAssetsListItem = ({
 
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  // console.log('symbol', symbol);
-  // console.log('underlyingAPY', underlyingAPY);
-
   return (
     <ListItemWrapper
       symbol={symbol}
@@ -64,7 +61,6 @@ export const BorrowAssetsListItem = ({
         }
       />
       <ListAPRColumn
-        // value={Number(variableBorrowRate)}
         value={
           underlyingAPY ? Number(variableBorrowRate) + underlyingAPY : Number(variableBorrowRate)
         }
@@ -76,11 +72,6 @@ export const BorrowAssetsListItem = ({
         incentives={vIncentivesData}
         symbol={symbol}
       />
-      {/* <ListAPRColumn
-        value={Number(stableBorrowRate)}
-        incentives={sIncentivesData}
-        symbol={symbol}
-      /> */}
       <ListButtonsColumn>
         <Button
           disabled={disableBorrow}

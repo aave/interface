@@ -153,10 +153,6 @@ export const BorrowAssetsList = () => {
           return availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0';
         });
 
-  console.log('$$user', user);
-  console.log('$$reserves', reserves);
-  console.log('$$borrowReserves', borrowReserves);
-  console.log('$$tokensToBorrow', tokensToBorrow);
   const { value: ghoReserve, filtered: filteredReserves } = findAndFilterGhoReserve(borrowReserves);
   const sortedReserves = handleSortDashboardReserves(
     sortDesc,
@@ -164,16 +160,7 @@ export const BorrowAssetsList = () => {
     'asset',
     filteredReserves as unknown as DashboardReserve[]
   );
-  // const sortedReserves = handleSortDashboardReserves(
-  //   sortDesc,
-  //   sortName,
-  //   'position',
-  //   preSortedReserves
-  // );
 
-  // display sortedReserves
-  console.log('sortedReserves', sortedReserves);
-  console.log('user', user);
   const borrowDisabled = !sortedReserves.length && !ghoReserve;
 
   const RenderHeader: React.FC = () => {

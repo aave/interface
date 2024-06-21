@@ -336,8 +336,6 @@ export const SupplyAssetsListItemMobile = ({
     (r) => r.tokenOut.underlyingAsset === underlyingAsset
   );
 
-  console.log('===> underlyingAPY', underlyingAPY);
-
   return (
     <ListMobileItemWrapper
       symbol={symbol}

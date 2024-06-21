@@ -32,9 +32,6 @@ export const SuppliedPositionsListItem = ({
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  // console.log('XX underlyingAPY', underlyingAPY);
-  // console.log('XX supplyAPY', supplyAPY);
-
   const canBeEnabledAsCollateral = user
     ? !debtCeiling.isMaxed &&
       reserve.reserveLiquidationThreshold !== '0' &&
