@@ -1,4 +1,3 @@
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Provider } from '@ethersproject/providers';
 import { BigNumber, Contract } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
@@ -15,7 +14,7 @@ export class UnderlyingYieldService {
   async getUnderlyingAPYs(): Promise<UnderlyingAPYs> {
     const stethAPY = await this.getStethAPY();
     return {
-      [AaveV3Ethereum.ASSETS.wstETH.UNDERLYING]: stethAPY,
+      wstETH: stethAPY,
     };
   }
 

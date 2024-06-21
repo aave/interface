@@ -1,5 +1,4 @@
 import { FormatUserSummaryAndIncentivesResponse } from '@aave/math-utils';
-import { getAddress } from 'ethers/lib/utils';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { reserveSortFn } from 'src/store/poolSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -36,7 +35,7 @@ const formatExtendedUserAndIncentives = (
       .map((elem) => {
         return {
           ...elem,
-          underlyingAPY: userYield.underlyingAPYs[getAddress(elem.reserve.underlyingAsset)],
+          underlyingAPY: userYield.underlyingAPYs[elem.reserve.symbol],
         };
       }),
     earnedAPY: userYield.earnedAPY,
