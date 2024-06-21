@@ -6,6 +6,7 @@ import {
 import { formatReservesAndIncentives } from '@aave/math-utils';
 import dayjs from 'dayjs';
 import memoize from 'micro-memoize';
+import { UnderlyingAPYs } from 'src/services/UnderlyingYieldService';
 import { reserveSortFn } from 'src/store/poolSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { fetchIconSymbolAndName, IconMapInterface } from 'src/ui-config/reservePatches';
@@ -14,6 +15,7 @@ import { getNetworkConfig, NetworkConfig } from 'src/utils/marketsAndNetworksCon
 import { selectBaseCurrencyData, selectReserves } from './selectors';
 import { usePoolsReservesHumanized } from './usePoolReserves';
 import { usePoolsReservesIncentivesHumanized } from './usePoolReservesIncentives';
+import { useUnderlyingYields } from './useUnderlyingYield';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
 
 export type FormattedReservesAndIncentives = ReturnType<
@@ -23,14 +25,15 @@ export type FormattedReservesAndIncentives = ReturnType<
     isEmodeEnabled: boolean;
     isWrappedBaseAsset: boolean;
   } & ReserveDataHumanized & {
-    underlyingAPY?: number;
+    underlyingAPY: number | null;
   };
 
 const formatReserves = memoize(
   (
     reservesData: ReservesDataHumanized,
     incentivesData: ReservesIncentiveDataHumanized[],
-    networkConfig: NetworkConfig
+    networkConfig: NetworkConfig,
+    underlyingAPYs: UnderlyingAPYs
   ) => {
     const reserves = selectReserves(reservesData);
     const baseCurrencyData = selectBaseCurrencyData(reservesData);
@@ -47,6 +50,7 @@ const formatReserves = memoize(
         isEmodeEnabled: r.eModeCategoryId !== 0,
         isWrappedBaseAsset:
           r.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase(),
+        underlyingAPY: underlyingAPYs ? underlyingAPYs[r.symbol] : null,
       }))
       .sort(reserveSortFn);
   }
@@ -57,6 +61,7 @@ export const usePoolsFormattedReserves = (
 ): SimplifiedUseQueryResult<FormattedReservesAndIncentives[]>[] => {
   const poolsReservesQueries = usePoolsReservesHumanized(marketsData);
   const poolsReservesIncentivesQueries = usePoolsReservesIncentivesHumanized(marketsData);
+  const underlyingAPYs = useUnderlyingYields();
 
   return poolsReservesQueries.map((poolReservesQuery, index) => {
     const marketData = marketsData[index];
@@ -64,11 +69,15 @@ export const usePoolsFormattedReserves = (
     const networkConfig = getNetworkConfig(marketData.chainId);
     const selector = (
       reservesData: ReservesDataHumanized,
-      incentivesData: ReservesIncentiveDataHumanized[]
+      incentivesData: ReservesIncentiveDataHumanized[],
+      underlyingAPYs: UnderlyingAPYs
     ) => {
-      return formatReserves(reservesData, incentivesData, networkConfig);
+      return formatReserves(reservesData, incentivesData, networkConfig, underlyingAPYs);
     };
-    return combineQueries([poolReservesQuery, poolReservesIncentivesQuery] as const, selector);
+    return combineQueries(
+      [poolReservesQuery, poolReservesIncentivesQuery, underlyingAPYs] as const,
+      selector
+    );
   });
 };
 

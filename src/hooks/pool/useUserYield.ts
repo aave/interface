@@ -4,9 +4,7 @@ import {
   FormatUserSummaryAndIncentivesResponse,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
-import { getAddress } from 'ethers/lib/utils';
 import memoize from 'micro-memoize';
-import { UnderlyingAPYs } from 'src/services/UnderlyingYieldService';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { displayGho, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
@@ -15,7 +13,6 @@ import {
   FormattedReservesAndIncentives,
   usePoolsFormattedReserves,
 } from './usePoolFormattedReserves';
-import { useUnderlyingYields } from './useUnderlyingYield';
 import { useUserGhoPoolsFormattedReserve } from './useUserGhoPoolFormattedReserve';
 import { useUserSummariesAndIncentives } from './useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
@@ -24,7 +21,6 @@ export interface UserYield {
   earnedAPY: number;
   debtAPY: number;
   netAPY: number;
-  underlyingAPYs: UnderlyingAPYs;
 }
 
 const formatUserYield = memoize(
@@ -33,7 +29,6 @@ const formatUserYield = memoize(
     formattedGhoReserveData: FormattedGhoReserveData | undefined,
     formattedGhoUserData: FormattedGhoUserData | undefined,
     user: FormatUserSummaryAndIncentivesResponse,
-    underlyingAPYs: UnderlyingAPYs,
     currentMarket: string
   ): UserYield => {
     const proportions = user.userReservesData.reduce(
@@ -48,11 +43,9 @@ const formatUserYield = memoize(
               new BigNumber(reserve.supplyAPY).multipliedBy(value.underlyingBalanceUSD)
             );
 
-            const underlyingAPY = underlyingAPYs[getAddress(reserve.underlyingAsset)];
-
-            if (underlyingAPY) {
+            if (reserve.underlyingAPY) {
               acc.positiveProportion = acc.positiveProportion.plus(
-                new BigNumber(underlyingAPY).multipliedBy(value.underlyingBalanceUSD)
+                new BigNumber(reserve.underlyingAPY).multipliedBy(value.underlyingBalanceUSD)
               );
             }
             if (reserve.aIncentivesData) {
@@ -139,7 +132,6 @@ const formatUserYield = memoize(
       earnedAPY,
       debtAPY,
       netAPY,
-      underlyingAPYs,
     };
   }
 );
@@ -151,7 +143,6 @@ export const useUserYields = (
   const ghoPoolsFormattedReserveQuery = useGhoPoolsFormattedReserve(marketsData);
   const userGhoPoolsFormattedReserveQuery = useUserGhoPoolsFormattedReserve(marketsData);
   const userSummaryQuery = useUserSummariesAndIncentives(marketsData);
-  const underlyingAPY = useUnderlyingYields();
 
   return poolsFormattedReservesQuery.map((elem, index) => {
     const marketData = marketsData[index];
@@ -159,31 +150,21 @@ export const useUserYields = (
       formattedPoolReserves: FormattedReservesAndIncentives[],
       formattedGhoReserveData: FormattedGhoReserveData,
       formattedGhoUserData: FormattedGhoUserData,
-      user: FormatUserSummaryAndIncentivesResponse,
-      underlyingAPY: UnderlyingAPYs
+      user: FormatUserSummaryAndIncentivesResponse
     ) => {
       return formatUserYield(
         formattedPoolReserves,
         formattedGhoReserveData,
         formattedGhoUserData,
         user,
-        underlyingAPY,
         marketData.market
       );
     };
     const ghoSelector = (
       formattedPoolReserves: FormattedReservesAndIncentives[],
-      user: FormatUserSummaryAndIncentivesResponse,
-      underlyingAPY: UnderlyingAPYs
+      user: FormatUserSummaryAndIncentivesResponse
     ) => {
-      return formatUserYield(
-        formattedPoolReserves,
-        undefined,
-        undefined,
-        user,
-        underlyingAPY,
-        marketData.market
-      );
+      return formatUserYield(formattedPoolReserves, undefined, undefined, user, marketData.market);
     };
     if (marketData.addresses.GHO_TOKEN_ADDRESS)
       return combineQueries(
@@ -192,11 +173,10 @@ export const useUserYields = (
           ghoPoolsFormattedReserveQuery[index],
           userGhoPoolsFormattedReserveQuery[index],
           userSummaryQuery[index],
-          underlyingAPY,
         ] as const,
         selector
       );
-    return combineQueries([elem, userSummaryQuery[index], underlyingAPY] as const, ghoSelector);
+    return combineQueries([elem, userSummaryQuery[index]] as const, ghoSelector);
   });
 };
 

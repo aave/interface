@@ -80,6 +80,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
   // pool hooks
   const { data: reservesData, isLoading: reservesDataLoading } =
     usePoolReservesHumanized(currentMarketData);
+
   const { data: formattedPoolReserves, isLoading: formattedPoolReservesLoading } =
     usePoolFormattedReserves(currentMarketData);
   const baseCurrencyData = reservesData?.baseCurrencyData;

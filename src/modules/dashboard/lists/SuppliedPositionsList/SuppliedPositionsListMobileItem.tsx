@@ -20,7 +20,6 @@ export const SuppliedPositionsListMobileItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
-  underlyingAPY,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { currentMarketData, currentMarket } = useProtocolDataContext();
@@ -37,6 +36,7 @@ export const SuppliedPositionsListMobileItem = ({
     isFrozen,
     isActive,
     isPaused,
+    underlyingAPY,
   } = reserve;
 
   const canBeEnabledAsCollateral = user
@@ -79,7 +79,7 @@ export const SuppliedPositionsListMobileItem = ({
           value={underlyingAPY ? Number(supplyAPY) + underlyingAPY : Number(supplyAPY)}
           tooltip={
             underlyingAPY ? (
-              <ListAPYDetails supplyAPY={Number(reserve.supplyAPY)} underlyingAPY={underlyingAPY} />
+              <ListAPYDetails supplyAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
             ) : null
           }
           incentives={aIncentivesData}

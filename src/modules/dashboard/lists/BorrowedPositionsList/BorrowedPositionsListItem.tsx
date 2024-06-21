@@ -42,6 +42,8 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
   const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData) || false;
   const disableSwitch = reserve.isPaused || !reserve.isActive || reserve.symbol == 'stETH';
 
+  console.log('item', item);
+
   const props: BorrowedPositionsListItemProps = {
     ...item,
     disableBorrow,
@@ -124,6 +126,10 @@ const BorrowedPositionsListItemDesktop = ({
 
   const { isActive, isFrozen, isPaused, stableBorrowRateEnabled, name } = reserve;
 
+  console.log('reserve', reserve);
+  console.log('borrowAPY', borrowAPY);
+  console.log('underlyingAPY', underlyingAPY);
+
   return (
     <ListItemWrapper
       symbol={reserve.symbol}
@@ -140,10 +146,10 @@ const BorrowedPositionsListItemDesktop = ({
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
       <ListAPRColumn
-        value={underlyingAPY ? borrowAPY + underlyingAPY : borrowAPY}
+        value={reserve.underlyingAPY ? borrowAPY + reserve.underlyingAPY : borrowAPY}
         tooltip={
-          underlyingAPY ? (
-            <ListAPYDetails borrowAPY={borrowAPY} underlyingAPY={underlyingAPY} />
+          reserve.underlyingAPY ? (
+            <ListAPYDetails borrowAPY={borrowAPY} underlyingAPY={reserve.underlyingAPY} />
           ) : null
         }
         incentives={incentives}
@@ -197,7 +203,6 @@ const BorrowedPositionsListItemMobile = ({
   borrowAPY,
   incentives,
   disableRepay,
-  underlyingAPY,
   onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
@@ -238,10 +243,10 @@ const BorrowedPositionsListItemMobile = ({
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <IncentivesCard
-          value={underlyingAPY ? borrowAPY + underlyingAPY : borrowAPY}
+          value={reserve.underlyingAPY ? borrowAPY + reserve.underlyingAPY : borrowAPY}
           tooltip={
-            underlyingAPY ? (
-              <ListAPYDetails borrowAPY={borrowAPY} underlyingAPY={underlyingAPY} />
+            reserve.underlyingAPY ? (
+              <ListAPYDetails borrowAPY={borrowAPY} underlyingAPY={reserve.underlyingAPY} />
             ) : null
           }
           incentives={incentives}

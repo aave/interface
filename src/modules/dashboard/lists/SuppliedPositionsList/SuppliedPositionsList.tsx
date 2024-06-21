@@ -83,6 +83,8 @@ export const SuppliedPositionsList = () => {
         },
       })) || [];
 
+  console.log('---suppliedPositions', suppliedPositions);
+
   // Transform to the DashboardReserve schema so the sort utils can work with it
   const preSortedReserves = suppliedPositions as DashboardReserve[];
   const sortedReserves = handleSortDashboardReserves(
@@ -91,6 +93,8 @@ export const SuppliedPositionsList = () => {
     'position',
     preSortedReserves
   );
+
+  console.log('---sortedReserves', sortedReserves);
 
   const RenderHeader: React.FC = () => {
     return (

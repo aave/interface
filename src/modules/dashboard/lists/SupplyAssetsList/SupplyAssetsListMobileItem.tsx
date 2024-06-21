@@ -10,6 +10,7 @@ import { IncentivesCard } from '../../../../components/incentives/IncentivesCard
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
+import { ListAPYDetails } from '../ListAPYDetails';
 import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
@@ -31,6 +32,7 @@ export const SupplyAssetsListMobileItem = ({
   underlyingAsset,
   detailsAddress,
   isPaused,
+  underlyingAPY,
 }: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
@@ -73,7 +75,12 @@ export const SupplyAssetsListMobileItem = ({
         mb={2}
       >
         <IncentivesCard
-          value={Number(supplyAPY)}
+          value={underlyingAPY ? Number(supplyAPY) + underlyingAPY : Number(supplyAPY)}
+          tooltip={
+            underlyingAPY ? (
+              <ListAPYDetails borrowAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
+            ) : null
+          }
           incentives={aIncentivesData}
           symbol={symbol}
           variant="secondary14"

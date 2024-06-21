@@ -30,14 +30,9 @@ const formatExtendedUserAndIncentives = (
     ...userSummariesAndIncentives,
     userEmodeCategoryId: userReserves.userEmodeCategoryId,
     isInEmode: userReserves.userEmodeCategoryId !== 0,
-    userReservesData: userSummariesAndIncentives.userReservesData
-      .sort((a, b) => reserveSortFn(a.reserve, b.reserve))
-      .map((elem) => {
-        return {
-          ...elem,
-          underlyingAPY: userYield.underlyingAPYs[elem.reserve.symbol],
-        };
-      }),
+    userReservesData: userSummariesAndIncentives.userReservesData.sort((a, b) =>
+      reserveSortFn(a.reserve, b.reserve)
+    ),
     earnedAPY: userYield.earnedAPY,
     debtAPY: userYield.debtAPY,
     netAPY: userYield.netAPY,

@@ -23,7 +23,6 @@ export const SuppliedPositionsListItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
-  underlyingAPY,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { isIsolated, aIncentivesData, isFrozen, isActive, isPaused } = reserve;
@@ -32,6 +31,9 @@ export const SuppliedPositionsListItem = ({
   const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  // console.log('XX underlyingAPY', underlyingAPY);
+  // console.log('XX supplyAPY', supplyAPY);
 
   const canBeEnabledAsCollateral = user
     ? !debtCeiling.isMaxed &&
@@ -69,11 +71,16 @@ export const SuppliedPositionsListItem = ({
 
       <ListAPRColumn
         value={
-          underlyingAPY ? Number(reserve.supplyAPY) + underlyingAPY : Number(reserve.supplyAPY)
+          reserve.underlyingAPY
+            ? Number(reserve.supplyAPY) + reserve.underlyingAPY
+            : Number(reserve.supplyAPY)
         }
         tooltip={
-          underlyingAPY ? (
-            <ListAPYDetails supplyAPY={Number(reserve.supplyAPY)} underlyingAPY={underlyingAPY} />
+          reserve.underlyingAPY ? (
+            <ListAPYDetails
+              supplyAPY={Number(reserve.supplyAPY)}
+              underlyingAPY={reserve.underlyingAPY}
+            />
           ) : null
         }
         incentives={aIncentivesData}

@@ -35,6 +35,7 @@ import { CapType } from '../../../../components/caps/helper';
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListAPRColumn } from '../ListAPRColumn';
+import { ListAPYDetails } from '../ListAPYDetails';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
@@ -103,6 +104,7 @@ export const SupplyAssetsListItemDesktop = ({
   disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
+  underlyingAPY,
 }: SupplyAssetsListItemProps) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentMarket = useRootStore((store) => store.currentMarket);
@@ -211,7 +213,16 @@ export const SupplyAssetsListItemDesktop = ({
         />
       )}
 
-      <ListAPRColumn value={Number(supplyAPY)} incentives={aIncentivesData} symbol={symbol} />
+      <ListAPRColumn
+        value={underlyingAPY ? Number(supplyAPY) + underlyingAPY : Number(supplyAPY)}
+        tooltip={
+          underlyingAPY ? (
+            <ListAPYDetails borrowAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
+          ) : null
+        }
+        incentives={aIncentivesData}
+        symbol={symbol}
+      />
 
       <ListColumn>
         {debtCeiling.isMaxed ? (
@@ -311,6 +322,7 @@ export const SupplyAssetsListItemMobile = ({
   disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
+  underlyingAPY,
 }: SupplyAssetsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
@@ -323,6 +335,8 @@ export const SupplyAssetsListItemMobile = ({
   const wrappedToken = wrappedTokenReserves.find(
     (r) => r.tokenOut.underlyingAsset === underlyingAsset
   );
+
+  console.log('===> underlyingAPY', underlyingAPY);
 
   return (
     <ListMobileItemWrapper
@@ -402,7 +416,12 @@ export const SupplyAssetsListItemMobile = ({
         mb={2}
       >
         <IncentivesCard
-          value={Number(supplyAPY)}
+          value={underlyingAPY ? Number(supplyAPY) + underlyingAPY : Number(supplyAPY)}
+          tooltip={
+            underlyingAPY ? (
+              <ListAPYDetails borrowAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
+            ) : null
+          }
           incentives={aIncentivesData}
           symbol={symbol}
           variant="secondary14"
