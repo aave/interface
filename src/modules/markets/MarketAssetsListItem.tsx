@@ -19,6 +19,7 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
+import { ListAPYDetails } from '../dashboard/lists/ListAPYDetails';
 
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
@@ -26,6 +27,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
+
+  console.log('symbol', reserve.symbol);
 
   return (
     <ListItem
@@ -78,7 +81,19 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={reserve.supplyAPY}
+          value={
+            reserve.underlyingAPY
+              ? Number(reserve.supplyAPY) + reserve.underlyingAPY
+              : Number(reserve.supplyAPY)
+          }
+          tooltip={
+            reserve.underlyingAPY ? (
+              <ListAPYDetails
+                supplyAPY={Number(reserve.supplyAPY)}
+                underlyingAPY={reserve.underlyingAPY}
+              />
+            ) : null
+          }
           incentives={reserve.aIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
@@ -99,7 +114,21 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
+          value={
+            reserve.underlyingAPY
+              ? Number(reserve.variableBorrowAPY) + reserve.underlyingAPY
+              : Number(reserve.totalVariableDebtUSD) > 0
+              ? reserve.variableBorrowAPY
+              : '-1'
+          }
+          tooltip={
+            reserve.underlyingAPY ? (
+              <ListAPYDetails
+                borrowAPY={Number(reserve.variableBorrowAPY)}
+                underlyingAPY={reserve.underlyingAPY}
+              />
+            ) : null
+          }
           incentives={reserve.vIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
