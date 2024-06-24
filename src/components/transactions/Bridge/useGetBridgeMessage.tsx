@@ -59,7 +59,13 @@ export const useGetBridgeMessage = ({
         };
 
         const destinationChainSelector = getChainSelectorFor(destinationChainId);
-        const fees: BigNumber = await sourceRouter.getFee(destinationChainSelector, message);
+        let fees;
+        try {
+          console.log('message', message);
+          fees = await sourceRouter.getFee(destinationChainSelector, message);
+        } catch (err) {
+          console.log('FOO BUSTED FEE', err);
+        }
 
         const sourceLaneConfig = laneConfig.find(
           (config) => config.sourceChainId === sourceChainId
@@ -89,6 +95,7 @@ export const useGetBridgeMessage = ({
         setBridgeFeeFormatted(formatEther(fees));
         setBridgeFee(fees.toString());
       } catch (e) {
+        console.log('do we error here', e);
         console.error(e);
       } finally {
         setLoading(false);

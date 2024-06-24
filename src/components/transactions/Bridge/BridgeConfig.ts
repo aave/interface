@@ -36,14 +36,14 @@ export const laneConfig: Config[] = [
     sourceChainId: ChainId.sepolia,
     lockReleaseTokenPool: '0x7768248E1Ff75612c18324bad06bb393c1206980', // TODO: address book
     chainSelector: '16015286601757825753',
-    router: '0x11C008349c41fB5c78E544397fb4613605Ec1a74'.toLowerCase(),
+    router: '0x0bf3de8c5d3e8a2b34d2beeb17abfcebaf363a59'.toLowerCase(),
     tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc', // TODO: this is GHO oracle on Ethereum
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-sepolia/version/latest',
     destinations: [
       {
         destinationChainId: ChainId.arbitrum_sepolia,
-        onRamp: '0x1f41c443Cf68750d5c195E2EA7051521d981fC77'.toLowerCase(),
+        onRamp: '0xe4Dd3B16E09c016402585a8aDFdB4A18f772a07e'.toLocaleLowerCase(),
       },
       // {
       //   destinationChainId: ChainId.fuji,
@@ -59,14 +59,14 @@ export const laneConfig: Config[] = [
     sourceChainId: ChainId.arbitrum_sepolia,
     burnMintTokenPool: '0x3eC2b6F818B72442fc36561e9F930DD2b60957D2', // TODO: address book
     chainSelector: '3478487238524512106',
-    router: '0x22356aec4Cf05ec0EC63daa576C6B2CE1DC64701'.toLowerCase(),
+    router: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165'.toLocaleLowerCase(), //old '0x22356aec4Cf05ec0EC63daa576C6B2CE1DC64701'.toLowerCase(),
     tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc', // TODO: this is GHO oracle on Ethereum
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-arb-sepolia/version/latest',
     destinations: [
       {
         destinationChainId: ChainId.sepolia,
-        onRamp: '0xc1eBd046A4086142479bE3Fc16A4791E2022909a'.toLowerCase(),
+        onRamp: '0x4205E1Ca0202A248A5D42F5975A8FE56F3E302e9'.toLowerCase(), // old'0xc1eBd046A4086142479bE3Fc16A4791E2022909a'.toLowerCase(),
       },
       // {
       //   destinationChainId: ChainId.base_sepolia,
