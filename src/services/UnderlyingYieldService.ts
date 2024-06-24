@@ -6,15 +6,24 @@ export interface UnderlyingAPYs {
   [key: string]: number | null;
 }
 
-const DAYS_IN_SECONDS = 60 * 60 * 24;
+const DAY_IN_SECONDS = 60 * 60 * 24;
+const YEAR_IN_SECONDS = 365 * DAY_IN_SECONDS;
+
+const RAY_PRECISION = 27;
+// const RAY = BigNumber.from(10).pow(RAY_PRECISION);
+const WAD_PRECISION = 18;
+const WAD = BigNumber.from(10).pow(WAD_PRECISION);
 
 export class UnderlyingYieldService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
   async getUnderlyingAPYs(): Promise<UnderlyingAPYs> {
     const stethAPY = await this.getStethAPY();
+    console.log('stethAPY', stethAPY);
+    const sdaiAPY = await this.getSdaiAPY();
     return {
       wstETH: stethAPY,
+      sDAI: sdaiAPY,
     };
   }
 
@@ -33,19 +42,18 @@ export class UnderlyingYieldService {
       postTotalShares: BigNumber;
       timeElapsed: BigNumber;
     }) => {
-      const eighteenDecimals = BigNumber.from(10).pow(18);
-      const secondsInYear = BigNumber.from(DAYS_IN_SECONDS * 365);
+      const secondsInYear = BigNumber.from(YEAR_IN_SECONDS);
 
       const preShareRate = preTotalEther.mul(BigNumber.from(10).pow(27)).div(preTotalShares);
       const postShareRate = postTotalEther.mul(BigNumber.from(10).pow(27)).div(postTotalShares);
 
       // need to mul by 10e18 because otherwise the division will be 0 (since the result is less than 1)
       const pendingApr = secondsInYear
-        .mul(postShareRate.sub(preShareRate).mul(eighteenDecimals).div(preShareRate))
+        .mul(postShareRate.sub(preShareRate).mul(WAD).div(preShareRate))
         .div(timeElapsed);
 
       // then format to 18 decimals
-      const apr = formatUnits(pendingApr, 18);
+      const apr = formatUnits(pendingApr, WAD_PRECISION);
 
       // stEth rebased daily: https://help.lido.fi/en/articles/5230610-what-is-steth
       const apy = (1 + Number(apr) / 365) ** 365 - 1;
@@ -75,7 +83,7 @@ export class UnderlyingYieldService {
     const connectedContract = contract.connect(provider);
 
     const currentBlockNumber = await provider.getBlockNumber();
-    const blocksInDay = DAYS_IN_SECONDS / 12;
+    const blocksInDay = DAY_IN_SECONDS / 12;
 
     const events = await connectedContract.queryFilter(
       connectedContract.filters.TokenRebased(),
@@ -110,5 +118,32 @@ export class UnderlyingYieldService {
         timeElapsed: latestEvent.args['timeElapsed'],
       });
     }
+  };
+
+  getSdaiAPY = async () => {
+    const abi = [
+      {
+        constant: true,
+        inputs: [],
+        name: 'dsr',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        payable: false,
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ];
+
+    const provider = this.getProvider(1);
+    const contract = new Contract('0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7', abi);
+    const connectedContract = contract.connect(provider);
+
+    const dsr = await connectedContract.dsr();
+
+    const dsrFormated = formatUnits(dsr, RAY_PRECISION);
+
+    // Inspired from DeFi LLama yield server: https://github.com/DefiLlama/yield-server/blob/master/src/adaptors/makerdao/index.js
+    const apy = Number(dsrFormated) ** YEAR_IN_SECONDS - 1;
+
+    return apy;
   };
 }
