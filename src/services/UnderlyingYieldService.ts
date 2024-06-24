@@ -26,11 +26,11 @@ export class UnderlyingYieldService {
   async getUnderlyingAPYs(): Promise<UnderlyingAPYs> {
     const stethAPY = await this.getStethAPY();
     const sdaiAPY = await this.getSdaiAPY();
-    const getRethAPY = await this.getRethAPY();
+    const rethAPY = await this.getRethAPY();
     return {
       wstETH: stethAPY,
       sDAI: sdaiAPY,
-      rETH: getRethAPY,
+      rETH: rethAPY,
     };
   }
 
@@ -177,18 +177,14 @@ export class UnderlyingYieldService {
 
     const currentBlockNumber = await provider.getBlockNumber();
 
-    console.log('currentBlockNumber', currentBlockNumber);
-
     const events = await connectedContract.queryFilter(
       connectedContract.filters.BalancesUpdated(),
       currentBlockNumber - BLOCKS_A_DAY * 7, // ~1 week
       currentBlockNumber
     );
 
-    // console.log('events', events);
     const previousLatestEvent = events.length < 2 ? null : events[events.length - 2];
     const latestEvent = events.length < 2 ? null : events[events.length - 1];
-    console.log('latestEvent', latestEvent);
 
     if (!latestEvent || !latestEvent.args || !previousLatestEvent || !previousLatestEvent.args) {
       // based on 7 day average
@@ -196,62 +192,28 @@ export class UnderlyingYieldService {
       const resParsed: {
         yearlyAPR: string;
       } = await res.json();
-      console.log('yearlyAPR', Number(resParsed.yearlyAPR) / 100);
       return Number(resParsed.yearlyAPR) / 100;
     } else {
       // current real time apr
+      const rEthRate =
+        Number(latestEvent.args['totalEth']) / Number(latestEvent.args['rethSupply']); // number of ETH per rETH
 
-      const rEthSupply = latestEvent.args['rethSupply'] as BigNumber;
-      const totalEth = latestEvent.args['totalEth'] as BigNumber;
-      // const rEthRate = totalEth.mul(WAD).div(rEthSupply); // number of ETH per rETH
-      const rEthRate = Number(totalEth) / Number(rEthSupply);
+      const rEthRatePrevious =
+        Number(previousLatestEvent.args['totalEth']) /
+        Number(previousLatestEvent.args['rethSupply']);
 
-      const rEthSupplyPrevious = previousLatestEvent.args['rethSupply'] as BigNumber;
-      const totalEthPrevious = previousLatestEvent.args['totalEth'] as BigNumber;
-      // const rEthRatePrevious = totalEthPrevious.mul(WAD).div(rEthSupplyPrevious); // previous number of ETH per rETH
-      const rEthRatePrevious = Number(totalEthPrevious) / Number(rEthSupplyPrevious);
-
-      console.log('rEthRate', rEthRate.toString());
-      console.log('rEthRatePrevious', rEthRatePrevious.toString());
-
-      // const ratio = rEthRate.div(rEthRatePrevious);
       const ratio = rEthRate / rEthRatePrevious - 1; // to only get the increase
 
-      console.log('ratio', ratio.toString());
-
-      const timeSinceLastEvent = latestEvent.args['blockTimestamp'].sub(
+      const timeBetweenPreviousAndLatestEvent = latestEvent.args['blockTimestamp'].sub(
         previousLatestEvent.args['blockTimestamp']
       );
 
-      // const apr = ratio.mul(BigNumber.from(YEAR_IN_SECONDS)).div(timeSinceLastEvent);
       // cross product
-      const apr = (ratio * YEAR_IN_SECONDS) / timeSinceLastEvent;
+      const apr = (ratio * YEAR_IN_SECONDS) / timeBetweenPreviousAndLatestEvent;
 
-      console.log('timeSinceLastEvent', timeSinceLastEvent.toString());
-
-      console.log('YEAR_IN_SECONDS', YEAR_IN_SECONDS.toString());
-
-      // const apr = BigNumber.from(YEAR_IN_SECONDS)
-      //   .div(timeSinceLastEvent)
-      //   .mul(rEthRate.div(rEthRatePrevious).mul(WAD));
-
-      console.log('apr', apr.toString());
-
-      // it seems there is 1 rebalance per day
+      // rewards are distributed approximately every 24 hours: (source: https://docs.rocketpool.net/guides/staking/overview#the-reth-token)
       const apy = aprToApy(Number(apr), 365);
 
-      console.log('apy', apy);
-
-      // const aprFormatted = formatUnits(apr, WAD_PRECISION);
-      // console.log('aprFormatted', aprFormatted);
-
-      // const stakingEth = latestEvent.args['stakingEth'];
-      // const rEthSupplyFormatted = formatUnits(rEthSupply, 18);
-      // const totalEthFormatted = formatUnits(totalEth, 18);
-      // const stakingEthFormatted = formatUnits(stakingEth, 18);
-      // console.log('rEthSupplyFormatted', rEthSupplyFormatted);
-      // console.log('totalEthFormatted', totalEthFormatted);
-      // console.log('stakingEthFormatted', stakingEthFormatted);
       return apy;
     }
   };
