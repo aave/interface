@@ -9,21 +9,28 @@ export interface UnderlyingAPYs {
 const DAY_IN_SECONDS = 60 * 60 * 24;
 const YEAR_IN_SECONDS = 365 * DAY_IN_SECONDS;
 
+const BLOCKS_A_DAY = DAY_IN_SECONDS / 12; // assume 12s block time
+
 const RAY_PRECISION = 27;
 // const RAY = BigNumber.from(10).pow(RAY_PRECISION);
 const WAD_PRECISION = 18;
 const WAD = BigNumber.from(10).pow(WAD_PRECISION);
+
+const aprToApy = (apr: number, compund: number) => {
+  return (1 + apr / compund) ** compund - 1;
+};
 
 export class UnderlyingYieldService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
   async getUnderlyingAPYs(): Promise<UnderlyingAPYs> {
     const stethAPY = await this.getStethAPY();
-    console.log('stethAPY', stethAPY);
     const sdaiAPY = await this.getSdaiAPY();
+    const getRethAPY = await this.getRethAPY();
     return {
       wstETH: stethAPY,
       sDAI: sdaiAPY,
+      rETH: getRethAPY,
     };
   }
 
@@ -56,7 +63,7 @@ export class UnderlyingYieldService {
       const apr = formatUnits(pendingApr, WAD_PRECISION);
 
       // stEth rebased daily: https://help.lido.fi/en/articles/5230610-what-is-steth
-      const apy = (1 + Number(apr) / 365) ** 365 - 1;
+      const apy = aprToApy(Number(apr), 365);
 
       return apy;
     };
@@ -79,7 +86,7 @@ export class UnderlyingYieldService {
     ];
 
     const provider = this.getProvider(1);
-    const contract = new Contract('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84', abi);
+    const contract = new Contract('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84', abi); // stETH token
     const connectedContract = contract.connect(provider);
 
     const currentBlockNumber = await provider.getBlockNumber();
@@ -134,7 +141,7 @@ export class UnderlyingYieldService {
     ];
 
     const provider = this.getProvider(1);
-    const contract = new Contract('0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7', abi);
+    const contract = new Contract('0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7', abi); // Maker DSR Pot (MCD Pot)
     const connectedContract = contract.connect(provider);
 
     const dsr = await connectedContract.dsr();
@@ -145,5 +152,107 @@ export class UnderlyingYieldService {
     const apy = Number(dsrFormated) ** YEAR_IN_SECONDS - 1;
 
     return apy;
+  };
+
+  getRethAPY = async () => {
+    const abi = [
+      {
+        anonymous: false,
+        inputs: [
+          { indexed: true, internalType: 'uint256', name: 'block', type: 'uint256' },
+          { indexed: false, internalType: 'uint256', name: 'slotTimestamp', type: 'uint256' },
+          { indexed: false, internalType: 'uint256', name: 'totalEth', type: 'uint256' },
+          { indexed: false, internalType: 'uint256', name: 'stakingEth', type: 'uint256' },
+          { indexed: false, internalType: 'uint256', name: 'rethSupply', type: 'uint256' },
+          { indexed: false, internalType: 'uint256', name: 'blockTimestamp', type: 'uint256' },
+        ],
+        name: 'BalancesUpdated',
+        type: 'event',
+      },
+    ];
+
+    const provider = this.getProvider(1);
+    const contract = new Contract('0x6Cc65bF618F55ce2433f9D8d827Fc44117D81399', abi); // RocketNetworkBalances
+    const connectedContract = contract.connect(provider);
+
+    const currentBlockNumber = await provider.getBlockNumber();
+
+    console.log('currentBlockNumber', currentBlockNumber);
+
+    const events = await connectedContract.queryFilter(
+      connectedContract.filters.BalancesUpdated(),
+      currentBlockNumber - BLOCKS_A_DAY * 7, // ~1 week
+      currentBlockNumber
+    );
+
+    // console.log('events', events);
+    const previousLatestEvent = events.length < 2 ? null : events[events.length - 2];
+    const latestEvent = events.length < 2 ? null : events[events.length - 1];
+    console.log('latestEvent', latestEvent);
+
+    if (!latestEvent || !latestEvent.args || !previousLatestEvent || !previousLatestEvent.args) {
+      // based on 7 day average
+      const res = await fetch('https://api.rocketpool.net/api/apr');
+      const resParsed: {
+        yearlyAPR: string;
+      } = await res.json();
+      console.log('yearlyAPR', Number(resParsed.yearlyAPR) / 100);
+      return Number(resParsed.yearlyAPR) / 100;
+    } else {
+      // current real time apr
+
+      const rEthSupply = latestEvent.args['rethSupply'] as BigNumber;
+      const totalEth = latestEvent.args['totalEth'] as BigNumber;
+      // const rEthRate = totalEth.mul(WAD).div(rEthSupply); // number of ETH per rETH
+      const rEthRate = Number(totalEth) / Number(rEthSupply);
+
+      const rEthSupplyPrevious = previousLatestEvent.args['rethSupply'] as BigNumber;
+      const totalEthPrevious = previousLatestEvent.args['totalEth'] as BigNumber;
+      // const rEthRatePrevious = totalEthPrevious.mul(WAD).div(rEthSupplyPrevious); // previous number of ETH per rETH
+      const rEthRatePrevious = Number(totalEthPrevious) / Number(rEthSupplyPrevious);
+
+      console.log('rEthRate', rEthRate.toString());
+      console.log('rEthRatePrevious', rEthRatePrevious.toString());
+
+      // const ratio = rEthRate.div(rEthRatePrevious);
+      const ratio = rEthRate / rEthRatePrevious - 1; // to only get the increase
+
+      console.log('ratio', ratio.toString());
+
+      const timeSinceLastEvent = latestEvent.args['blockTimestamp'].sub(
+        previousLatestEvent.args['blockTimestamp']
+      );
+
+      // const apr = ratio.mul(BigNumber.from(YEAR_IN_SECONDS)).div(timeSinceLastEvent);
+      // cross product
+      const apr = (ratio * YEAR_IN_SECONDS) / timeSinceLastEvent;
+
+      console.log('timeSinceLastEvent', timeSinceLastEvent.toString());
+
+      console.log('YEAR_IN_SECONDS', YEAR_IN_SECONDS.toString());
+
+      // const apr = BigNumber.from(YEAR_IN_SECONDS)
+      //   .div(timeSinceLastEvent)
+      //   .mul(rEthRate.div(rEthRatePrevious).mul(WAD));
+
+      console.log('apr', apr.toString());
+
+      // it seems there is 1 rebalance per day
+      const apy = aprToApy(Number(apr), 365);
+
+      console.log('apy', apy);
+
+      // const aprFormatted = formatUnits(apr, WAD_PRECISION);
+      // console.log('aprFormatted', aprFormatted);
+
+      // const stakingEth = latestEvent.args['stakingEth'];
+      // const rEthSupplyFormatted = formatUnits(rEthSupply, 18);
+      // const totalEthFormatted = formatUnits(totalEth, 18);
+      // const stakingEthFormatted = formatUnits(stakingEth, 18);
+      // console.log('rEthSupplyFormatted', rEthSupplyFormatted);
+      // console.log('totalEthFormatted', totalEthFormatted);
+      // console.log('stakingEthFormatted', stakingEthFormatted);
+      return apy;
+    }
   };
 }
