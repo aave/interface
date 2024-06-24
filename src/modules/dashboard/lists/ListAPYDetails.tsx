@@ -35,8 +35,8 @@ export const ListAPYDetails = ({ underlyingAPY, supplyAPY, borrowAPY }: ListAPYD
           gap: '4px',
         }}
       >
-        {supplyAPY && <APYBox symbol="Supply APY" value={supplyAPY} />}
-        {borrowAPY && <APYBox symbol="Borrow APY" value={borrowAPY} />}
+        {supplyAPY !== undefined && <APYBox symbol="Supply APY" value={supplyAPY} />}
+        {borrowAPY !== undefined && <APYBox symbol="Borrow APY" value={borrowAPY} />}
         <APYBox symbol="Underlying APY" value={underlyingAPY} />
       </Box>
     </TextWithTooltip>
