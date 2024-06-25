@@ -20,21 +20,33 @@ const aprToApy = (apr: number, compund: number) => {
   return (1 + apr / compund) ** compund - 1;
 };
 
+type LstExchangeData = {
+  ethSupply: number;
+  lstSupply: number;
+  timestamp: number;
+};
+
 export class UnderlyingYieldService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
   async getUnderlyingAPYs(): Promise<UnderlyingAPYs> {
-    const stethAPY = await this.getStethAPY();
-    const sdaiAPY = await this.getSdaiAPY();
-    const rethAPY = await this.getRethAPY();
+    const provider = this.getProvider(1);
+    const currentBlockNumber = await provider.getBlockNumber();
+
+    const stethAPY = await this.getStethAPY(provider, currentBlockNumber);
+    const sdaiAPY = await this.getSdaiAPY(provider);
+    const rethAPY = await this.getRethAPY(provider, currentBlockNumber);
+    const ethxAPY = await this.getEthxAPY(provider, currentBlockNumber);
+    console.log('ethxAPY', ethxAPY);
     return {
       wstETH: stethAPY,
       sDAI: sdaiAPY,
       rETH: rethAPY,
+      ETHx: ethxAPY,
     };
   }
 
-  getStethAPY = async () => {
+  getStethAPY = async (provider: Provider, currentBlockNumber: number) => {
     // computation formula: https://docs.lido.fi/integrations/api#last-lido-apr-for-steth
     const computeStethAPY = ({
       preTotalEther,
@@ -85,11 +97,9 @@ export class UnderlyingYieldService {
       },
     ];
 
-    const provider = this.getProvider(1);
     const contract = new Contract('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84', abi); // stETH token
     const connectedContract = contract.connect(provider);
 
-    const currentBlockNumber = await provider.getBlockNumber();
     const blocksInDay = DAY_IN_SECONDS / 12;
 
     const events = await connectedContract.queryFilter(
@@ -127,7 +137,7 @@ export class UnderlyingYieldService {
     }
   };
 
-  getSdaiAPY = async () => {
+  getSdaiAPY = async (provider: Provider) => {
     const abi = [
       {
         constant: true,
@@ -140,7 +150,6 @@ export class UnderlyingYieldService {
       },
     ];
 
-    const provider = this.getProvider(1);
     const contract = new Contract('0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7', abi); // Maker DSR Pot (MCD Pot)
     const connectedContract = contract.connect(provider);
 
@@ -154,7 +163,34 @@ export class UnderlyingYieldService {
     return apy;
   };
 
-  getRethAPY = async () => {
+  _getApyFromPreviousRates = (lastExchanges: LstExchangeData[], compound: number) => {
+    const apys = [];
+    for (let i = lastExchanges.length - 1; i > 0; i--) {
+      const current = lastExchanges[i];
+      const previous = lastExchanges[i - 1];
+
+      const currentRate = current.ethSupply / current.lstSupply;
+      const previousRate = previous.ethSupply / previous.lstSupply;
+
+      const ratio = currentRate / previousRate - 1; // -1 to only get the increase
+
+      const timeBetweenExchanges = current.timestamp - previous.timestamp;
+
+      // cross product
+      const apr = (ratio * YEAR_IN_SECONDS) / timeBetweenExchanges;
+
+      // rewards are distributed approximately every 24 hours: (source: https://docs.rocketpool.net/guides/staking/overview#the-reth-token)
+      const apy = aprToApy(Number(apr), compound);
+
+      apys.push(apy);
+    }
+
+    const averageApy = apys.reduce((a, b) => a + b, 0) / apys.length;
+
+    return averageApy;
+  };
+
+  getRethAPY = async (provider: Provider, currentBlockNumber: number) => {
     const abi = [
       {
         anonymous: false,
@@ -171,22 +207,16 @@ export class UnderlyingYieldService {
       },
     ];
 
-    const provider = this.getProvider(1);
     const contract = new Contract('0x6Cc65bF618F55ce2433f9D8d827Fc44117D81399', abi); // RocketNetworkBalances
     const connectedContract = contract.connect(provider);
 
-    const currentBlockNumber = await provider.getBlockNumber();
-
     const events = await connectedContract.queryFilter(
       connectedContract.filters.BalancesUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * 7, // ~1 week
+      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
       currentBlockNumber
     );
 
-    const previousLatestEvent = events.length < 2 ? null : events[events.length - 2];
-    const latestEvent = events.length < 2 ? null : events[events.length - 1];
-
-    if (!latestEvent || !latestEvent.args || !previousLatestEvent || !previousLatestEvent.args) {
+    if (events.length < 2) {
       // based on 7 day average
       const res = await fetch('https://api.rocketpool.net/api/apr');
       const resParsed: {
@@ -194,26 +224,66 @@ export class UnderlyingYieldService {
       } = await res.json();
       return Number(resParsed.yearlyAPR) / 100;
     } else {
-      // current real time apr
-      const rEthRate =
-        Number(latestEvent.args['totalEth']) / Number(latestEvent.args['rethSupply']); // number of ETH per rETH
+      const eventFormated: LstExchangeData[] = events
+        .map((event) => {
+          if (!event.args) return null;
+          return {
+            ethSupply: Number(event.args['totalEth']),
+            lstSupply: Number(event.args['rethSupply']),
+            timestamp: Number(event.args['blockTimestamp']),
+          };
+        })
+        .filter((event) => event !== null) as LstExchangeData[];
 
-      const rEthRatePrevious =
-        Number(previousLatestEvent.args['totalEth']) /
-        Number(previousLatestEvent.args['rethSupply']);
+      const apy = this._getApyFromPreviousRates(eventFormated, 365);
 
-      const ratio = rEthRate / rEthRatePrevious - 1; // to only get the increase
+      return apy;
+    }
+  };
 
-      const timeBetweenPreviousAndLatestEvent = latestEvent.args['blockTimestamp'].sub(
-        previousLatestEvent.args['blockTimestamp']
-      );
+  getEthxAPY = async (provider: Provider, currentBlockNumber: number) => {
+    const abi = [
+      {
+        anonymous: false,
+        inputs: [
+          { indexed: false, internalType: 'uint256', name: 'block', type: 'uint256' },
+          { indexed: false, internalType: 'uint256', name: 'totalEth', type: 'uint256' },
+          { indexed: false, internalType: 'uint256', name: 'ethxSupply', type: 'uint256' },
+          { indexed: false, internalType: 'uint256', name: 'time', type: 'uint256' },
+        ],
+        name: 'ExchangeRateUpdated',
+        type: 'event',
+      },
+    ];
 
-      // cross product
-      const apr = (ratio * YEAR_IN_SECONDS) / timeBetweenPreviousAndLatestEvent;
+    const contract = new Contract('0xF64bAe65f6f2a5277571143A24FaaFDFC0C2a737', abi); // Stader Labs: Oracle
+    const connectedContract = contract.connect(provider);
 
-      // rewards are distributed approximately every 24 hours: (source: https://docs.rocketpool.net/guides/staking/overview#the-reth-token)
-      const apy = aprToApy(Number(apr), 365);
+    const events = await connectedContract.queryFilter(
+      connectedContract.filters.ExchangeRateUpdated(),
+      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
+      currentBlockNumber
+    );
 
+    const eventFormated: LstExchangeData[] = events
+      .map((event) => {
+        if (!event.args) return null;
+        return {
+          ethSupply: Number(event.args['totalEth']),
+          lstSupply: Number(event.args['ethxSupply']),
+          timestamp: Number(event.args['time']),
+        };
+      })
+      .filter((event) => event !== null) as LstExchangeData[];
+
+    if (events.length < 2) {
+      const res = await fetch('https://universe.staderlabs.com/eth/apy');
+      const resParsed: {
+        value: number;
+      } = await res.json();
+      return resParsed.value / 100;
+    } else {
+      const apy = this._getApyFromPreviousRates(eventFormated, 365);
       return apy;
     }
   };
