@@ -20,13 +20,7 @@ const aprToApy = (apr: number, compund: number) => {
   return (1 + apr / compund) ** compund - 1;
 };
 
-// type LstExchangeData = {
-//   ethSupply: number;
-//   lstSupply: number;
-//   timestamp: number;
-// };
-
-type LstExchangeData = {
+type LstRate = {
   rate: number;
   timestamp: number;
 };
@@ -43,7 +37,6 @@ export class UnderlyingYieldService {
     const rethAPY = await this.getRethAPY(provider, currentBlockNumber);
     const ethxAPY = await this.getEthxAPY(provider, currentBlockNumber);
     const cbethAPY = await this.getCbethAPY(provider, currentBlockNumber);
-    console.log('cbethAPY', cbethAPY);
     return {
       wstETH: stethAPY,
       sDAI: sdaiAPY,
@@ -170,11 +163,7 @@ export class UnderlyingYieldService {
     return apy;
   };
 
-  _getApyFromPreviousRates = (
-    latestExchange: LstExchangeData,
-    previousExchange: LstExchangeData,
-    compound: number
-  ) => {
+  _getApyFromRates = (latestExchange: LstRate, previousExchange: LstRate, compound: number) => {
     const ratio = latestExchange.rate / previousExchange.rate - 1; // -1 to only get the increase
 
     const timeBetweenExchanges = latestExchange.timestamp - previousExchange.timestamp;
@@ -215,30 +204,26 @@ export class UnderlyingYieldService {
 
     const contract = new Contract('0x6Cc65bF618F55ce2433f9D8d827Fc44117D81399', abi); // RocketNetworkBalances
     const connectedContract = contract.connect(provider);
-
     const events = await connectedContract.queryFilter(
       connectedContract.filters.BalancesUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week - rewards are distributed approximately every 24 hours: (source: https://docs.rocketpool.net/guides/staking/overview#the-reth-token)
+      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
       currentBlockNumber
     );
 
-    if (events && events.length > 2) {
-      const lastestEventArgs = events[events.length - 1].args;
-      const previousEventArgs = events[0].args;
-      if (lastestEventArgs && previousEventArgs) {
-        const latestRate = lastestEventArgs['totalEth'] / lastestEventArgs['rethSupply'];
-        const previousRate = previousEventArgs['totalEth'] / previousEventArgs['rethSupply'];
-        const apy = this._getApyFromPreviousRates(
-          { rate: latestRate, timestamp: Number(lastestEventArgs['blockTimestamp']) },
-          { rate: previousRate, timestamp: Number(previousEventArgs['blockTimestamp']) },
-          365
-        );
-        return apy;
-      } else {
-        return await getApyFromApi();
-      }
-    } else {
+    const rates = events
+      .map((event) => {
+        if (!event.args || !event.args['totalEth'] || !event.args['rethSupply']) return null;
+        return {
+          rate: event.args['totalEth'] / event.args['rethSupply'],
+          timestamp: event.args['blockTimestamp'],
+        };
+      })
+      .filter((rate) => rate !== null) as LstRate[];
+    if (rates === null || rates.length < 2) {
       return await getApyFromApi();
+    } else {
+      const apy = this._getApyFromRates(rates[rates.length - 1], rates[0], 365); // rewards are distributed approximately every 24 hours: (source: https://docs.rocketpool.net/guides/staking/overview#the-reth-token)
+      return apy;
     }
   };
 
@@ -270,27 +255,24 @@ export class UnderlyingYieldService {
 
     const events = await connectedContract.queryFilter(
       connectedContract.filters.ExchangeRateUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week - rewards seems to be distributed every 24 hours
+      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
       currentBlockNumber
     );
 
-    if (events && events.length > 2) {
-      const lastestEventArgs = events[events.length - 1].args;
-      const previousEventArgs = events[0].args;
-      if (lastestEventArgs && previousEventArgs) {
-        const latestRate = lastestEventArgs['totalEth'] / lastestEventArgs['ethxSupply'];
-        const previousRate = previousEventArgs['totalEth'] / previousEventArgs['ethxSupply'];
-        const apy = this._getApyFromPreviousRates(
-          { rate: latestRate, timestamp: Number(lastestEventArgs['time']) },
-          { rate: previousRate, timestamp: Number(previousEventArgs['time']) },
-          365
-        );
-        return apy;
-      } else {
-        return await getApyFromApi();
-      }
-    } else {
+    const rates = events
+      .map((event) => {
+        if (!event.args || !event.args['totalEth'] || !event.args['ethxSupply']) return null;
+        return {
+          rate: event.args['totalEth'] / event.args['ethxSupply'],
+          timestamp: event.args['time'],
+        };
+      })
+      .filter((rate) => rate !== null) as LstRate[];
+    if (rates === null || rates.length < 2) {
       return await getApyFromApi();
+    } else {
+      const apy = this._getApyFromRates(rates[rates.length - 1], rates[0], 365); // rewards seems to be distributed every 24 hours
+      return apy;
     }
   };
 
@@ -312,11 +294,9 @@ export class UnderlyingYieldService {
 
     const events = await connectedContract.queryFilter(
       connectedContract.filters.ExchangeRateUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week - rewards seems to be distributed every 24 hours
+      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
       currentBlockNumber
     );
-
-    console.log('events', events);
 
     if (events && events.length > 2) {
       const lastestEventArgs = events[events.length - 1].args;
@@ -324,13 +304,7 @@ export class UnderlyingYieldService {
       if (lastestEventArgs && previousEventArgs) {
         const latestEventBlock = await provider.getBlock(events[events.length - 1].blockNumber);
         const previousEventBlock = await provider.getBlock(events[0].blockNumber);
-        const latestRate = Number(formatUnits(lastestEventArgs['newExchangeRate'], WAD_PRECISION));
-        const previousRate = Number(
-          formatUnits(previousEventArgs['newExchangeRate'], WAD_PRECISION)
-        );
-        console.log('latestRate', latestRate);
-        console.log('previousRate', previousRate);
-        const apy = this._getApyFromPreviousRates(
+        const apy = this._getApyFromRates(
           {
             rate: Number(formatUnits(lastestEventArgs['newExchangeRate'], WAD_PRECISION)),
             timestamp: latestEventBlock.timestamp,
@@ -341,7 +315,6 @@ export class UnderlyingYieldService {
           },
           365
         );
-        console.log('%%%% apy', apy);
         return apy;
       } else {
         return 0;
