@@ -1,6 +1,12 @@
 import { ChainId } from '@aave/contract-helpers';
-import { AaveV3ArbitrumSepolia, AaveV3Sepolia } from '@bgd-labs/aave-address-book';
+import {
+  AaveV3Arbitrum,
+  AaveV3ArbitrumSepolia,
+  AaveV3Ethereum,
+  AaveV3Sepolia,
+} from '@bgd-labs/aave-address-book';
 import { BaseNetworkConfig, networkConfigs } from 'src/ui-config/networksConfig';
+import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 export const bridgeGasLimit = '252000';
 
@@ -30,8 +36,40 @@ export interface SupportedNetworkWithChainId extends BaseNetworkConfig {
   chainId: number;
 }
 
-// TODO: make testnet and mainnet config
-export const laneConfig: Config[] = [
+const prodConfig: Config[] = [
+  {
+    sourceChainId: ChainId.mainnet,
+    chainSelector: '5009297550715157269',
+    lockReleaseTokenPool: '0x5756880b6a1eaba0175227bf02a7e87c1e02b28c',
+    router: '0x80226fc0ee2b096224eeac085bb9a8cba1146f7d',
+    tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc',
+    wrappedNativeOracle: AaveV3Ethereum.ASSETS.WETH.ORACLE,
+    subgraphUrl: '',
+    destinations: [
+      {
+        destinationChainId: ChainId.arbitrum_one,
+        onRamp: '0x925228d7b82d883dde340a55fe8e6da56244a22c',
+      },
+    ],
+  },
+  {
+    sourceChainId: ChainId.arbitrum_one,
+    chainSelector: '4949039107694359620',
+    burnMintTokenPool: '0xf168b83598516a532a85995b52504a2fa058c068',
+    router: '0x141fa059441e0ca23ce184b6a78bafd2a517dde8',
+    tokenOracle: '0xb05984ad83c20b3ade7bf97a9a0cb539dde28dbb',
+    wrappedNativeOracle: AaveV3Arbitrum.ASSETS.WETH.ORACLE,
+    subgraphUrl: '',
+    destinations: [
+      {
+        destinationChainId: ChainId.mainnet,
+        onRamp: '0xce11020d56e5fdbfe46d9fc3021641ffbbb5adee',
+      },
+    ],
+  },
+];
+
+const testnetConfig: Config[] = [
   {
     sourceChainId: ChainId.sepolia,
     lockReleaseTokenPool: '0x7768248E1Ff75612c18324bad06bb393c1206980', // TODO: address book
@@ -43,16 +81,8 @@ export const laneConfig: Config[] = [
     destinations: [
       {
         destinationChainId: ChainId.arbitrum_sepolia,
-        onRamp: '0x1f41c443Cf68750d5c195E2EA7051521d981fC77'.toLowerCase(),
+        onRamp: '0x1f41c443cf68750d5c195e2ea7051521d981fc77'.toLowerCase(),
       },
-      // {
-      //   destinationChainId: ChainId.fuji,
-      //   onRamp: '0x0477cA0a35eE05D3f9f424d88bC0977ceCf339D4'.toLowerCase(),
-      // },
-      // {
-      //   destinationChainId: ChainId.base_sepolia,
-      //   onRamp: '0x2B70a05320cB069e0fB55084D402343F832556E7'.toLowerCase(),
-      // },
     ],
   },
   {
@@ -68,58 +98,11 @@ export const laneConfig: Config[] = [
         destinationChainId: ChainId.sepolia,
         onRamp: '0xc1eBd046A4086142479bE3Fc16A4791E2022909a'.toLowerCase(),
       },
-      // {
-      //   destinationChainId: ChainId.base_sepolia,
-      //   onRamp: '0x7854E73C73e7F9bb5b0D5B4861E997f4C6E8dcC6'.toLowerCase(),
-      // },
     ],
   },
-  // {
-  //   sourceChainId: ChainId.fuji,
-  //   chainSelector: '14767482510784806043',
-  //   tokenPool: '', // TODO: address book
-
-  //   router: '0xF694E193200268f9a4868e4Aa017A0118C9a8177'.toLowerCase(),
-  //   wrappedNativeOracle: AaveV3Fuji.ASSETS.WAVAX.ORACLE,
-  //   subgraphUrl:
-  //     'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-fuji/1.0.0/gn',
-  //   destinations: [
-  //     {
-  //       destinationChainId: ChainId.sepolia,
-  //       onRamp: '0x5724B4Cc39a9690135F7273b44Dfd3BA6c0c69aD'.toLowerCase(),
-  //     },
-  //     {
-  //       destinationChainId: ChainId.base_sepolia,
-  //       onRamp: '0x1A674645f3EB4147543FCA7d40C5719cbd997362'.toLowerCase(),
-  //     },
-  //   ],
-  // },
-  // {
-  //   sourceChainId: ChainId.base_sepolia,
-  //   tokenPool: '', // TODO: address book
-
-  //   chainSelector: '10344971235874465080',
-  //   router: '0xD3b06cEbF099CE7DA4AcCf578aaebFDBd6e88a93'.toLowerCase(),
-  //   wrappedNativeOracle: AaveV3BaseSepolia.ASSETS.WETH.ORACLE,
-
-  //   subgraphUrl:
-  //     'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/gho-ccip-base-sepolia/1.0.0/gn',
-  //   destinations: [
-  //     {
-  //       destinationChainId: ChainId.sepolia,
-  //       onRamp: '0x6486906bB2d85A6c0cCEf2A2831C11A2059ebfea'.toLowerCase(),
-  //     },
-  //     {
-  //       destinationChainId: ChainId.arbitrum_sepolia,
-  //       onRamp: '0x58622a80c6DdDc072F2b527a99BE1D0934eb2b50'.toLowerCase(),
-  //     },
-  //     {
-  //       destinationChainId: ChainId.fuji,
-  //       onRamp: '0xAbA09a1b7b9f13E05A6241292a66793Ec7d43357'.toLowerCase(),
-  //     },
-  //   ],
-  // },
 ];
+
+export const laneConfig = ENABLE_TESTNET ? testnetConfig : prodConfig;
 
 export function getChainSelectorFor(chainId: ChainId) {
   const chainSelector = laneConfig.find(
