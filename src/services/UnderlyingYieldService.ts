@@ -163,31 +163,24 @@ export class UnderlyingYieldService {
     return apy;
   };
 
-  _getApyFromPreviousRates = (lastExchanges: LstExchangeData[], compound: number) => {
-    const apys = [];
-    for (let i = lastExchanges.length - 1; i > 0; i--) {
-      const current = lastExchanges[i];
-      const previous = lastExchanges[i - 1];
+  _getApyFromPreviousRates = (
+    latestExchange: LstExchangeData,
+    previousExchange: LstExchangeData,
+    compound: number
+  ) => {
+    const latestRate = latestExchange.ethSupply / latestExchange.lstSupply;
+    const previousRate = previousExchange.ethSupply / previousExchange.lstSupply;
 
-      const currentRate = current.ethSupply / current.lstSupply;
-      const previousRate = previous.ethSupply / previous.lstSupply;
+    const ratio = latestRate / previousRate - 1; // -1 to only get the increase
 
-      const ratio = currentRate / previousRate - 1; // -1 to only get the increase
+    const timeBetweenExchanges = latestExchange.timestamp - previousExchange.timestamp;
 
-      const timeBetweenExchanges = current.timestamp - previous.timestamp;
+    // cross product
+    const apr = (ratio * YEAR_IN_SECONDS) / timeBetweenExchanges;
 
-      // cross product
-      const apr = (ratio * YEAR_IN_SECONDS) / timeBetweenExchanges;
+    const apy = aprToApy(Number(apr), compound);
 
-      // rewards are distributed approximately every 24 hours: (source: https://docs.rocketpool.net/guides/staking/overview#the-reth-token)
-      const apy = aprToApy(Number(apr), compound);
-
-      apys.push(apy);
-    }
-
-    const averageApy = apys.reduce((a, b) => a + b, 0) / apys.length;
-
-    return averageApy;
+    return apy;
   };
 
   getRethAPY = async (provider: Provider, currentBlockNumber: number) => {
@@ -212,7 +205,7 @@ export class UnderlyingYieldService {
 
     const events = await connectedContract.queryFilter(
       connectedContract.filters.BalancesUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
+      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week - rewards are distributed approximately every 24 hours: (source: https://docs.rocketpool.net/guides/staking/overview#the-reth-token)
       currentBlockNumber
     );
 
@@ -235,7 +228,11 @@ export class UnderlyingYieldService {
         })
         .filter((event) => event !== null) as LstExchangeData[];
 
-      const apy = this._getApyFromPreviousRates(eventFormated, 365);
+      const apy = this._getApyFromPreviousRates(
+        eventFormated[eventFormated.length - 1],
+        eventFormated[0],
+        365
+      );
 
       return apy;
     }
@@ -256,7 +253,7 @@ export class UnderlyingYieldService {
       },
     ];
 
-    const contract = new Contract('0xF64bAe65f6f2a5277571143A24FaaFDFC0C2a737', abi); // Stader Labs: Oracle
+    const contract = new Contract('0xF64bAe65f6f2a5277571143A24FaaFDFC0C2a737', abi); // Stader Labs Oracle
     const connectedContract = contract.connect(provider);
 
     const events = await connectedContract.queryFilter(
@@ -283,7 +280,11 @@ export class UnderlyingYieldService {
       } = await res.json();
       return resParsed.value / 100;
     } else {
-      const apy = this._getApyFromPreviousRates(eventFormated, 365);
+      const apy = this._getApyFromPreviousRates(
+        eventFormated[eventFormated.length - 1],
+        eventFormated[0],
+        365
+      );
       return apy;
     }
   };
