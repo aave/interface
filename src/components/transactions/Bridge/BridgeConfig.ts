@@ -44,7 +44,8 @@ const prodConfig: Config[] = [
     router: '0x80226fc0ee2b096224eeac085bb9a8cba1146f7d',
     tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc',
     wrappedNativeOracle: AaveV3Ethereum.ASSETS.WETH.ORACLE,
-    subgraphUrl: '',
+    subgraphUrl:
+      'https://api.studio.thegraph.com/query/75867/gho-ccip-ethereum-to-arbitrum/version/latest',
     destinations: [
       {
         destinationChainId: ChainId.arbitrum_one,
@@ -59,7 +60,8 @@ const prodConfig: Config[] = [
     router: '0x141fa059441e0ca23ce184b6a78bafd2a517dde8',
     tokenOracle: '0xb05984ad83c20b3ade7bf97a9a0cb539dde28dbb',
     wrappedNativeOracle: AaveV3Arbitrum.ASSETS.WETH.ORACLE,
-    subgraphUrl: '',
+    subgraphUrl:
+      'https://api.studio.thegraph.com/query/75867/gho-ccip-arbitrum-to-ethereum/version/latest',
     destinations: [
       {
         destinationChainId: ChainId.mainnet,
