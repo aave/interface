@@ -20,9 +20,14 @@ const aprToApy = (apr: number, compund: number) => {
   return (1 + apr / compund) ** compund - 1;
 };
 
+// type LstExchangeData = {
+//   ethSupply: number;
+//   lstSupply: number;
+//   timestamp: number;
+// };
+
 type LstExchangeData = {
-  ethSupply: number;
-  lstSupply: number;
+  rate: number;
   timestamp: number;
 };
 
@@ -37,12 +42,14 @@ export class UnderlyingYieldService {
     const sdaiAPY = await this.getSdaiAPY(provider);
     const rethAPY = await this.getRethAPY(provider, currentBlockNumber);
     const ethxAPY = await this.getEthxAPY(provider, currentBlockNumber);
-    console.log('ethxAPY', ethxAPY);
+    const cbethAPY = await this.getCbethAPY(provider, currentBlockNumber);
+    console.log('cbethAPY', cbethAPY);
     return {
       wstETH: stethAPY,
       sDAI: sdaiAPY,
       rETH: rethAPY,
       ETHx: ethxAPY,
+      cbETH: cbethAPY,
     };
   }
 
@@ -168,10 +175,7 @@ export class UnderlyingYieldService {
     previousExchange: LstExchangeData,
     compound: number
   ) => {
-    const latestRate = latestExchange.ethSupply / latestExchange.lstSupply;
-    const previousRate = previousExchange.ethSupply / previousExchange.lstSupply;
-
-    const ratio = latestRate / previousRate - 1; // -1 to only get the increase
+    const ratio = latestExchange.rate / previousExchange.rate - 1; // -1 to only get the increase
 
     const timeBetweenExchanges = latestExchange.timestamp - previousExchange.timestamp;
 
@@ -184,6 +188,15 @@ export class UnderlyingYieldService {
   };
 
   getRethAPY = async (provider: Provider, currentBlockNumber: number) => {
+    const getApyFromApi = async () => {
+      // based on 7 day average
+      const res = await fetch('https://api.rocketpool.net/api/apr');
+      const resParsed: {
+        yearlyAPR: string;
+      } = await res.json();
+      return Number(resParsed.yearlyAPR) / 100;
+    };
+
     const abi = [
       {
         anonymous: false,
@@ -209,36 +222,35 @@ export class UnderlyingYieldService {
       currentBlockNumber
     );
 
-    if (events.length < 2) {
-      // based on 7 day average
-      const res = await fetch('https://api.rocketpool.net/api/apr');
-      const resParsed: {
-        yearlyAPR: string;
-      } = await res.json();
-      return Number(resParsed.yearlyAPR) / 100;
+    if (events && events.length > 2) {
+      const lastestEventArgs = events[events.length - 1].args;
+      const previousEventArgs = events[0].args;
+      if (lastestEventArgs && previousEventArgs) {
+        const latestRate = lastestEventArgs['totalEth'] / lastestEventArgs['rethSupply'];
+        const previousRate = previousEventArgs['totalEth'] / previousEventArgs['rethSupply'];
+        const apy = this._getApyFromPreviousRates(
+          { rate: latestRate, timestamp: Number(lastestEventArgs['blockTimestamp']) },
+          { rate: previousRate, timestamp: Number(previousEventArgs['blockTimestamp']) },
+          365
+        );
+        return apy;
+      } else {
+        return await getApyFromApi();
+      }
     } else {
-      const eventFormated: LstExchangeData[] = events
-        .map((event) => {
-          if (!event.args) return null;
-          return {
-            ethSupply: Number(event.args['totalEth']),
-            lstSupply: Number(event.args['rethSupply']),
-            timestamp: Number(event.args['blockTimestamp']),
-          };
-        })
-        .filter((event) => event !== null) as LstExchangeData[];
-
-      const apy = this._getApyFromPreviousRates(
-        eventFormated[eventFormated.length - 1],
-        eventFormated[0],
-        365
-      );
-
-      return apy;
+      return await getApyFromApi();
     }
   };
 
   getEthxAPY = async (provider: Provider, currentBlockNumber: number) => {
+    const getApyFromApi = async () => {
+      const res = await fetch('https://universe.staderlabs.com/eth/apy');
+      const resParsed: {
+        value: number;
+      } = await res.json();
+      return resParsed.value / 100;
+    };
+
     const abi = [
       {
         anonymous: false,
@@ -258,34 +270,84 @@ export class UnderlyingYieldService {
 
     const events = await connectedContract.queryFilter(
       connectedContract.filters.ExchangeRateUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
+      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week - rewards seems to be distributed every 24 hours
       currentBlockNumber
     );
 
-    const eventFormated: LstExchangeData[] = events
-      .map((event) => {
-        if (!event.args) return null;
-        return {
-          ethSupply: Number(event.args['totalEth']),
-          lstSupply: Number(event.args['ethxSupply']),
-          timestamp: Number(event.args['time']),
-        };
-      })
-      .filter((event) => event !== null) as LstExchangeData[];
-
-    if (events.length < 2) {
-      const res = await fetch('https://universe.staderlabs.com/eth/apy');
-      const resParsed: {
-        value: number;
-      } = await res.json();
-      return resParsed.value / 100;
+    if (events && events.length > 2) {
+      const lastestEventArgs = events[events.length - 1].args;
+      const previousEventArgs = events[0].args;
+      if (lastestEventArgs && previousEventArgs) {
+        const latestRate = lastestEventArgs['totalEth'] / lastestEventArgs['ethxSupply'];
+        const previousRate = previousEventArgs['totalEth'] / previousEventArgs['ethxSupply'];
+        const apy = this._getApyFromPreviousRates(
+          { rate: latestRate, timestamp: Number(lastestEventArgs['time']) },
+          { rate: previousRate, timestamp: Number(previousEventArgs['time']) },
+          365
+        );
+        return apy;
+      } else {
+        return await getApyFromApi();
+      }
     } else {
-      const apy = this._getApyFromPreviousRates(
-        eventFormated[eventFormated.length - 1],
-        eventFormated[0],
-        365
-      );
-      return apy;
+      return await getApyFromApi();
+    }
+  };
+
+  getCbethAPY = async (provider: Provider, currentBlockNumber: number) => {
+    const abi = [
+      {
+        anonymous: false,
+        inputs: [
+          { indexed: true, internalType: 'address', name: 'oracle', type: 'address' },
+          { indexed: false, internalType: 'uint256', name: 'newExchangeRate', type: 'uint256' },
+        ],
+        name: 'ExchangeRateUpdated',
+        type: 'event',
+      },
+    ];
+
+    const contract = new Contract('0x9b37180d847B27ADC13C2277299045C1237Ae281', abi); // cbETH Oracle
+    const connectedContract = contract.connect(provider);
+
+    const events = await connectedContract.queryFilter(
+      connectedContract.filters.ExchangeRateUpdated(),
+      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week - rewards seems to be distributed every 24 hours
+      currentBlockNumber
+    );
+
+    console.log('events', events);
+
+    if (events && events.length > 2) {
+      const lastestEventArgs = events[events.length - 1].args;
+      const previousEventArgs = events[0].args;
+      if (lastestEventArgs && previousEventArgs) {
+        const latestEventBlock = await provider.getBlock(events[events.length - 1].blockNumber);
+        const previousEventBlock = await provider.getBlock(events[0].blockNumber);
+        const latestRate = Number(formatUnits(lastestEventArgs['newExchangeRate'], WAD_PRECISION));
+        const previousRate = Number(
+          formatUnits(previousEventArgs['newExchangeRate'], WAD_PRECISION)
+        );
+        console.log('latestRate', latestRate);
+        console.log('previousRate', previousRate);
+        const apy = this._getApyFromPreviousRates(
+          {
+            rate: Number(formatUnits(lastestEventArgs['newExchangeRate'], WAD_PRECISION)),
+            timestamp: latestEventBlock.timestamp,
+          },
+          {
+            rate: Number(formatUnits(previousEventArgs['newExchangeRate'], WAD_PRECISION)),
+            timestamp: previousEventBlock.timestamp,
+          },
+          365
+        );
+        console.log('%%%% apy', apy);
+        return apy;
+      } else {
+        return 0;
+      }
+    } else {
+      return 0;
     }
   };
 }
