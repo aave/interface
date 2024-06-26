@@ -1,5 +1,5 @@
 import { Provider } from '@ethersproject/providers';
-import { BigNumber, Contract } from 'ethers';
+import { Contract } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 
 export interface UnderlyingAPYs {
@@ -12,17 +12,43 @@ const YEAR_IN_SECONDS = 365 * DAY_IN_SECONDS;
 const BLOCKS_A_DAY = DAY_IN_SECONDS / 12; // assume 12s block time
 
 const RAY_PRECISION = 27;
-// const RAY = BigNumber.from(10).pow(RAY_PRECISION);
 const WAD_PRECISION = 18;
-const WAD = BigNumber.from(10).pow(WAD_PRECISION);
 
 const aprToApy = (apr: number, compund: number) => {
   return (1 + apr / compund) ** compund - 1;
 };
 
+const getApyFromRates = (
+  latestRate: number,
+  previousRate: number,
+  duration: number,
+  compound: number
+): number => {
+  const ratio = latestRate / previousRate - 1;
+
+  // cross product
+  const apr = (ratio * YEAR_IN_SECONDS) / duration;
+
+  return aprToApy(Number(apr), compound);
+};
+
 type LstRate = {
   rate: number;
   timestamp: number;
+};
+
+const getApyFromLstRates = (
+  latestExchange: LstRate,
+  previousExchange: LstRate,
+  compound: number
+) => {
+  const timeBetweenExchanges = latestExchange.timestamp - previousExchange.timestamp;
+  return getApyFromRates(
+    latestExchange.rate,
+    previousExchange.rate,
+    compound,
+    timeBetweenExchanges
+  );
 };
 
 export class UnderlyingYieldService {
@@ -38,6 +64,7 @@ export class UnderlyingYieldService {
     const ethxAPY = await this.getEthxAPY(provider, currentBlockNumber);
     const cbethAPY = await this.getCbethAPY(provider, currentBlockNumber);
     const weethAPY = await this.getWeethAPY(provider, currentBlockNumber);
+
     return {
       wstETH: stethAPY,
       sDAI: sdaiAPY,
@@ -49,36 +76,20 @@ export class UnderlyingYieldService {
   }
 
   getStethAPY = async (provider: Provider, currentBlockNumber: number) => {
-    // computation formula: https://docs.lido.fi/integrations/api#last-lido-apr-for-steth
-    const computeStethAPY = ({
-      preTotalEther,
-      preTotalShares,
-      postTotalEther,
-      postTotalShares,
-      timeElapsed,
-    }: {
-      preTotalEther: BigNumber;
-      preTotalShares: BigNumber;
-      postTotalEther: BigNumber;
-      postTotalShares: BigNumber;
-      timeElapsed: BigNumber;
-    }) => {
-      const secondsInYear = BigNumber.from(YEAR_IN_SECONDS);
-
-      const preShareRate = preTotalEther.mul(BigNumber.from(10).pow(27)).div(preTotalShares);
-      const postShareRate = postTotalEther.mul(BigNumber.from(10).pow(27)).div(postTotalShares);
-
-      // need to mul by 10e18 because otherwise the division will be 0 (since the result is less than 1)
-      const pendingApr = secondsInYear
-        .mul(postShareRate.sub(preShareRate).mul(WAD).div(preShareRate))
-        .div(timeElapsed);
-
-      // then format to 18 decimals
-      const apr = formatUnits(pendingApr, WAD_PRECISION);
-
-      // stEth rebased daily: https://help.lido.fi/en/articles/5230610-what-is-steth
-      const apy = aprToApy(Number(apr), 365);
-
+    const getApyFromApi = async () => {
+      const res = await fetch('https://eth-api.lido.fi/v1/protocol/steth/apr/last');
+      const resParsed: {
+        data: {
+          timeUnix: number;
+          apr: number;
+        };
+        meta: {
+          symbol: string;
+          address: string;
+          chainId: number;
+        };
+      } = await res.json();
+      const apy = aprToApy(Number(resParsed.data.apr), 365);
       return apy;
     };
 
@@ -112,30 +123,14 @@ export class UnderlyingYieldService {
 
     const latestEvent = events.length === 0 ? null : events[events.length - 1];
 
-    if (!latestEvent || !latestEvent.args) {
-      // in case there are no events in the last week
-      const res = await fetch('https://eth-api.lido.fi/v1/protocol/steth/apr/last');
-      const resParsed: {
-        data: {
-          timeUnix: number;
-          apr: number;
-        };
-        meta: {
-          symbol: string;
-          address: string;
-          chainId: number;
-        };
-      } = await res.json();
-      // data.apr is the apy
-      return resParsed.data.apr;
+    if (latestEvent && latestEvent.args) {
+      // computation formula: https://docs.lido.fi/integrations/api#last-lido-apr-for-steth // <=> (post-pre)/pre <=> (post/pre)-1
+      const preShareRate = latestEvent.args['preTotalEther'] / latestEvent.args['preTotalShares'];
+      const postShareRate =
+        latestEvent.args['postTotalEther'] / latestEvent.args['postTotalShares'];
+      return getApyFromRates(postShareRate, preShareRate, latestEvent.args['timeElapsed'], 365); // stEth rebased daily: https://help.lido.fi/en/articles/5230610-what-is-steth
     } else {
-      return computeStethAPY({
-        preTotalEther: latestEvent.args['preTotalEther'],
-        preTotalShares: latestEvent.args['preTotalShares'],
-        postTotalEther: latestEvent.args['postTotalEther'],
-        postTotalShares: latestEvent.args['postTotalShares'],
-        timeElapsed: latestEvent.args['timeElapsed'],
-      });
+      return await getApyFromApi();
     }
   };
 
@@ -161,19 +156,6 @@ export class UnderlyingYieldService {
 
     // Inspired from DeFi LLama yield server: https://github.com/DefiLlama/yield-server/blob/master/src/adaptors/makerdao/index.js
     const apy = Number(dsrFormated) ** YEAR_IN_SECONDS - 1;
-
-    return apy;
-  };
-
-  _getApyFromRates = (latestExchange: LstRate, previousExchange: LstRate, compound: number) => {
-    const ratio = latestExchange.rate / previousExchange.rate - 1; // -1 to only get the increase
-
-    const timeBetweenExchanges = latestExchange.timestamp - previousExchange.timestamp;
-
-    // cross product
-    const apr = (ratio * YEAR_IN_SECONDS) / timeBetweenExchanges;
-
-    const apy = aprToApy(Number(apr), compound);
 
     return apy;
   };
@@ -224,7 +206,7 @@ export class UnderlyingYieldService {
     if (rates === null || rates.length < 2) {
       return await getApyFromApi();
     } else {
-      const apy = this._getApyFromRates(rates[rates.length - 1], rates[0], 365); // rewards are distributed approximately every 24 hours: (source: https://docs.rocketpool.net/guides/staking/overview#the-reth-token)
+      const apy = getApyFromLstRates(rates[rates.length - 1], rates[0], 365); // rewards are distributed approximately every 24 hours: (source: https://docs.rocketpool.net/guides/staking/overview#the-reth-token)
       return apy;
     }
   };
@@ -273,7 +255,7 @@ export class UnderlyingYieldService {
     if (rates === null || rates.length < 2) {
       return await getApyFromApi();
     } else {
-      const apy = this._getApyFromRates(rates[rates.length - 1], rates[0], 365); // rewards seems to be distributed every 24 hours
+      const apy = getApyFromLstRates(rates[rates.length - 1], rates[0], 365); // rewards seems to be distributed every 24 hours
       return apy;
     }
   };
@@ -306,7 +288,7 @@ export class UnderlyingYieldService {
       if (lastestEventArgs && previousEventArgs) {
         const latestEventBlock = await provider.getBlock(events[events.length - 1].blockNumber);
         const previousEventBlock = await provider.getBlock(events[0].blockNumber);
-        const apy = this._getApyFromRates(
+        const apy = getApyFromLstRates(
           {
             rate: Number(formatUnits(lastestEventArgs['newExchangeRate'], WAD_PRECISION)),
             timestamp: latestEventBlock.timestamp,
@@ -370,7 +352,7 @@ export class UnderlyingYieldService {
           lastestEventArgs['totalEthLocked'] / lastestEventArgs['totalEEthShares'];
         const previousEventRate =
           previousEventArgs['totalEthLocked'] / previousEventArgs['totalEEthShares'];
-        const apy = this._getApyFromRates(
+        const apy = getApyFromLstRates(
           {
             rate: latestEventRate,
             timestamp: latestEventBlock.timestamp,
