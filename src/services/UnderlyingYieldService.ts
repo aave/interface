@@ -37,12 +37,14 @@ export class UnderlyingYieldService {
     const rethAPY = await this.getRethAPY(provider, currentBlockNumber);
     const ethxAPY = await this.getEthxAPY(provider, currentBlockNumber);
     const cbethAPY = await this.getCbethAPY(provider, currentBlockNumber);
+    const weethAPY = await this.getWeethAPY(provider, currentBlockNumber);
     return {
       wstETH: stethAPY,
       sDAI: sdaiAPY,
       rETH: rethAPY,
       ETHx: ethxAPY,
       cbETH: cbethAPY,
+      weETH: weethAPY,
     };
   }
 
@@ -183,7 +185,7 @@ export class UnderlyingYieldService {
       const resParsed: {
         yearlyAPR: string;
       } = await res.json();
-      return Number(resParsed.yearlyAPR) / 100;
+      return aprToApy(Number(resParsed.yearlyAPR) / 100, 365);
     };
 
     const abi = [
@@ -313,7 +315,7 @@ export class UnderlyingYieldService {
             rate: Number(formatUnits(previousEventArgs['newExchangeRate'], WAD_PRECISION)),
             timestamp: previousEventBlock.timestamp,
           },
-          365
+          365 // rewards seems to be distributed every 24 hours
         );
         return apy;
       } else {
@@ -321,6 +323,70 @@ export class UnderlyingYieldService {
       }
     } else {
       return 0;
+    }
+  };
+
+  getWeethAPY = async (provider: Provider, currentBlockNumber: number) => {
+    const getApyFromApi = async () => {
+      const res = await fetch('https://www.etherfi.bid/api/etherfi/apr');
+      const resParsed: {
+        sucess: boolean;
+        latest_aprs: string[];
+      } = await res.json();
+      if (!resParsed.sucess) return 0;
+      if (resParsed.latest_aprs.length === 0) return 0;
+      return aprToApy(
+        Number(resParsed.latest_aprs[resParsed.latest_aprs.length - 1]) / 100 / 100,
+        365 * 4
+      );
+    };
+
+    const abi = [
+      {
+        anonymous: false,
+        inputs: [
+          { indexed: false, internalType: 'uint256', name: 'totalEthLocked', type: 'uint256' },
+          { indexed: false, internalType: 'uint256', name: 'totalEEthShares', type: 'uint256' },
+        ],
+        name: 'Rebase',
+        type: 'event',
+      },
+    ];
+    const contract = new Contract('0x308861A430be4cce5502d0A12724771Fc6DaF216', abi); // Etherfi LiquidityPool
+    const connectedContract = contract.connect(provider);
+    const events = await connectedContract.queryFilter(
+      connectedContract.filters.Rebase(),
+      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
+      currentBlockNumber
+    );
+
+    if (events && events.length > 2) {
+      const lastestEventArgs = events[events.length - 1].args;
+      const previousEventArgs = events[0].args;
+      if (lastestEventArgs && previousEventArgs) {
+        const latestEventBlock = await provider.getBlock(events[events.length - 1].blockNumber);
+        const previousEventBlock = await provider.getBlock(events[0].blockNumber);
+        const latestEventRate =
+          lastestEventArgs['totalEthLocked'] / lastestEventArgs['totalEEthShares'];
+        const previousEventRate =
+          previousEventArgs['totalEthLocked'] / previousEventArgs['totalEEthShares'];
+        const apy = this._getApyFromRates(
+          {
+            rate: latestEventRate,
+            timestamp: latestEventBlock.timestamp,
+          },
+          {
+            rate: previousEventRate,
+            timestamp: previousEventBlock.timestamp,
+          },
+          365 * 4 // rebase are aproximately 4 times a day
+        );
+        return apy;
+      } else {
+        return await getApyFromApi();
+      }
+    } else {
+      return await getApyFromApi();
     }
   };
 }
