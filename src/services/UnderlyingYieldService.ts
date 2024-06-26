@@ -363,7 +363,7 @@ export class UnderlyingYieldService {
             rate: previousEventRate,
             timestamp: previousEventBlock.timestamp,
           },
-          365 * 4 // rebase are aproximately 4 times a day
+          365 * 4 // rebase are approximately 4 times a day
         );
         return apy;
       } else {

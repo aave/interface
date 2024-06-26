@@ -28,8 +28,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
 
-  console.log('symbol', reserve.symbol);
-
   return (
     <ListItem
       px={6}
