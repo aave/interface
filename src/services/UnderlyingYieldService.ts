@@ -14,6 +14,8 @@ const BLOCKS_A_DAY = DAY_IN_SECONDS / 12; // assume 12s block time
 const RAY_PRECISION = 27;
 const WAD_PRECISION = 18;
 
+const EVENTS_PERIOD_DAYS = 7; // 1 week
+
 const aprToApy = (apr: number, compund: number) => {
   return (1 + apr / compund) ** compund - 1;
 };
@@ -117,7 +119,7 @@ export class UnderlyingYieldService {
 
     const events = await connectedContract.queryFilter(
       connectedContract.filters.TokenRebased(),
-      currentBlockNumber - blocksInDay * 7, // ~1 week
+      currentBlockNumber - blocksInDay * EVENTS_PERIOD_DAYS,
       currentBlockNumber
     );
 
@@ -190,7 +192,7 @@ export class UnderlyingYieldService {
     const connectedContract = contract.connect(provider);
     const events = await connectedContract.queryFilter(
       connectedContract.filters.BalancesUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
+      currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
       currentBlockNumber
     );
 
@@ -239,7 +241,7 @@ export class UnderlyingYieldService {
 
     const events = await connectedContract.queryFilter(
       connectedContract.filters.ExchangeRateUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
+      currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
       currentBlockNumber
     );
 
@@ -278,7 +280,7 @@ export class UnderlyingYieldService {
 
     const events = await connectedContract.queryFilter(
       connectedContract.filters.ExchangeRateUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
+      currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
       currentBlockNumber
     );
 
@@ -338,7 +340,7 @@ export class UnderlyingYieldService {
     const connectedContract = contract.connect(provider);
     const events = await connectedContract.queryFilter(
       connectedContract.filters.Rebase(),
-      currentBlockNumber - BLOCKS_A_DAY * 7, // 1 week
+      currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
       currentBlockNumber
     );
 
