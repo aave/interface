@@ -6,7 +6,11 @@ import {
 import BigNumber from 'bignumber.js';
 import memoize from 'micro-memoize';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { displayGhoForMintableMarket, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import {
+  displayGhoForMintableMarket,
+  GHO_MINTING_MARKETS,
+  weightedAverageAPY,
+} from 'src/utils/ghoUtilities';
 
 import { useGhoPoolsFormattedReserve } from './useGhoPoolFormattedReserve';
 import {
@@ -163,7 +167,7 @@ export const useUserYields = (
     ) => {
       return formatUserYield(formattedPoolReserves, undefined, undefined, user, marketData.market);
     };
-    if (marketData.addresses.GHO_TOKEN_ADDRESS)
+    if (GHO_MINTING_MARKETS.includes(marketData.marketTitle))
       return combineQueries(
         [
           elem,
