@@ -15,7 +15,7 @@ type Config = {
   router: string;
   chainSelector: string;
   subgraphUrl: string;
-  tokenOracle: string;
+  tokenOracle: string; // Used to get the GHO price
   wrappedNativeOracle: string; // Used to get the fee price in USD
   lockReleaseTokenPool?: string; // Only exists on Ethereum
   burnMintTokenPool?: string; // Only exists on non-Ethereum networks
@@ -40,7 +40,7 @@ const prodConfig: Config[] = [
   {
     sourceChainId: ChainId.mainnet,
     chainSelector: '5009297550715157269',
-    lockReleaseTokenPool: '0x5756880b6a1eaba0175227bf02a7e87c1e02b28c',
+    lockReleaseTokenPool: '0x5756880b6a1eaba0175227bf02a7e87c1e02b28c', // TODO: address book
     router: '0x80226fc0ee2b096224eeac085bb9a8cba1146f7d',
     tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc',
     wrappedNativeOracle: AaveV3Ethereum.ASSETS.WETH.ORACLE,
@@ -56,7 +56,7 @@ const prodConfig: Config[] = [
   {
     sourceChainId: ChainId.arbitrum_one,
     chainSelector: '4949039107694359620',
-    burnMintTokenPool: '0xf168b83598516a532a85995b52504a2fa058c068',
+    burnMintTokenPool: '0xf168b83598516a532a85995b52504a2fa058c068', // TODO: address book
     router: '0x141fa059441e0ca23ce184b6a78bafd2a517dde8',
     tokenOracle: '0xb05984ad83c20b3ade7bf97a9a0cb539dde28dbb',
     wrappedNativeOracle: AaveV3Arbitrum.ASSETS.WETH.ORACLE,
@@ -74,31 +74,31 @@ const prodConfig: Config[] = [
 const testnetConfig: Config[] = [
   {
     sourceChainId: ChainId.sepolia,
-    lockReleaseTokenPool: '0x7768248E1Ff75612c18324bad06bb393c1206980', // TODO: address book
+    lockReleaseTokenPool: '0x7768248E1Ff75612c18324bad06bb393c1206980',
     chainSelector: '16015286601757825753',
-    router: '0x11C008349c41fB5c78E544397fb4613605Ec1a74'.toLowerCase(),
+    router: '0x11c008349c41fb5c78e544397fb4613605ec1a74',
     tokenOracle: '0x98458D6A99489F15e6eB5aFa67ACFAcf6F211051', // mock oracle
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-sepolia/version/latest',
     destinations: [
       {
         destinationChainId: ChainId.arbitrum_sepolia,
-        onRamp: '0x1f41c443cf68750d5c195e2ea7051521d981fc77'.toLowerCase(),
+        onRamp: '0x1f41c443cf68750d5c195e2ea7051521d981fc77',
       },
     ],
   },
   {
     sourceChainId: ChainId.arbitrum_sepolia,
-    burnMintTokenPool: '0x3eC2b6F818B72442fc36561e9F930DD2b60957D2', // TODO: address book
+    burnMintTokenPool: '0x3eC2b6F818B72442fc36561e9F930DD2b60957D2',
     chainSelector: '3478487238524512106',
-    router: '0x22356aec4Cf05ec0EC63daa576C6B2CE1DC64701'.toLowerCase(),
+    router: '0x22356aec4cf05ec0ec63daa576c6b2ce1dc64701',
     tokenOracle: '0x0153002d20B96532C639313c2d54c3dA09109309', // mock oracle
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-arb-sepolia/version/latest',
     destinations: [
       {
         destinationChainId: ChainId.sepolia,
-        onRamp: '0xc1eBd046A4086142479bE3Fc16A4791E2022909a'.toLowerCase(),
+        onRamp: '0xc1ebd046a4086142479be3fc16a4791e2022909a',
       },
     ],
   },

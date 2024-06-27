@@ -1,4 +1,3 @@
-import { ProtocolAction } from '@aave/contract-helpers';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -167,7 +166,7 @@ export const BridgeActions = React.memo(
         });
 
         addTransaction(sendTx.hash, {
-          action: ProtocolAction.default, // TODO bridge action
+          action: 'bridge',
           txState: 'success',
           asset: tokenAddress,
           amount: amountToBridge,
@@ -194,7 +193,6 @@ export const BridgeActions = React.memo(
         requiresAmount
         amount={amountToBridge}
         symbol={symbol}
-        // preparingTransactions={loadingTxns}
         preparingTransactions={loadingTxns || !fees}
         actionText={<Trans>Bridge {symbol}</Trans>}
         actionInProgressText={<Trans>Bridging {symbol}</Trans>}
