@@ -1,4 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
 import { BigNumber, Contract } from 'ethers';
 import { useRootStore } from 'src/store/root';
@@ -13,7 +12,7 @@ export const useBridgeTokens = (currentMarketData: MarketDataType, tokenOracle: 
 
   return useQuery({
     queryFn: async () => {
-      const provider = getProvider(ChainId.mainnet); // TODO: just for testing
+      const provider = getProvider(currentMarketData.chainId);
       const oracle = new Contract(
         tokenOracle,
         [

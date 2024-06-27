@@ -331,6 +331,7 @@ export const BridgeModalContent = () => {
             />
           </Stack>
           <AssetInput
+            disableInput={!loadingBridgeMessage && sourceTokenInfo?.bridgeTokenBalance === '0'}
             value={amount}
             onChange={handleInputChange}
             usdValue={amountUsd.toString()}

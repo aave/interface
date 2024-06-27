@@ -353,6 +353,7 @@ export const marketsData: {
       REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Arbitrum.REPAY_WITH_COLLATERAL_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Arbitrum.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Arbitrum.WITHDRAW_SWAP_ADAPTER,
+      GHO_TOKEN_ADDRESS: '0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33',
     },
   },
   [CustomMarket.proto_base_sepolia_v3]: {
