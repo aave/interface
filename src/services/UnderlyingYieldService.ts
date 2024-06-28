@@ -48,8 +48,8 @@ const getApyFromLstRates = (
   return getApyFromRates(
     latestExchange.rate,
     previousExchange.rate,
-    compound,
-    timeBetweenExchanges
+    timeBetweenExchanges,
+    compound
   );
 };
 
