@@ -1,5 +1,5 @@
 import { BigNumber, constants, Contract, utils } from 'ethers';
-import { formatEther, parseUnits } from 'ethers/lib/utils';
+import { formatEther, formatUnits, parseUnits } from 'ethers/lib/utils';
 import debounce from 'lodash/debounce';
 import { useEffect, useMemo, useState } from 'react';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -81,8 +81,8 @@ export const useGetBridgeMessage = ({
           sourceAssetOracle.decimals(),
         ]);
 
-        const ethUsdPrice = latestPrice.div(BigNumber.from(10).pow(decimals));
-        const transactionCostUsd = fees.mul(ethUsdPrice).div(BigNumber.from(10).pow(18));
+        const ethUsdPrice = formatUnits(latestPrice, decimals);
+        const transactionCostUsd = Number(formatUnits(fees, 18)) * Number(ethUsdPrice);
 
         setLatestAnswer(transactionCostUsd.toString());
         setMessage(message);
