@@ -1,6 +1,6 @@
 import { ArrowNarrowRightIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Paper, Stack, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Paper, Stack, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -8,6 +8,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { Link } from 'src/components/primitives/Link';
 import { useBridgeTransactionHistory } from 'src/hooks/useBridgeTransactionHistory';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import LoveGhost from '/public/loveGhost.svg';
@@ -20,6 +21,7 @@ import {
 
 export function BridgeWrapper() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { openBridge } = useModalContext();
 
   const theme = useTheme();
   const downToSm = useMediaQuery(theme.breakpoints.down('sm'));
@@ -53,6 +55,9 @@ export function BridgeWrapper() {
         <Typography variant={'h3'}>
           <Trans>You don&apos;t have any bridge transactions</Trans>
         </Typography>{' '}
+        <Button sx={{ mt: 4 }} onClick={openBridge} variant="gradient">
+          <Typography typography="subheader1">Bridge GHO</Typography>
+        </Button>
       </Paper>
     );
   }
