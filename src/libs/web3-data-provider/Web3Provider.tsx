@@ -212,7 +212,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     await activateFn(connector, 1);
   };
 
-  const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
+  const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase' | 'XDEFI') => {
     // @ts-expect-error ethereum doesn't necessarily exist
     const { ethereum } = window;
 
@@ -231,6 +231,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       case 'MetaMask':
         //@ts-expect-error no type
         provider = ethereum.providers.find(({ isMetaMask }) => isMetaMask);
+        break;
+      case 'XDEFI':
+        //@ts-expect-error no type
+        provider = ethereum.providers.find(({ _XDEFI }) => _XDEFI);
         break;
       default:
         return false;
