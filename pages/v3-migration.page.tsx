@@ -8,7 +8,6 @@ import { ContentContainer } from 'src/components/ContentContainer';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
 import { useUserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
-import { useUserPoolReservesHumanized } from 'src/hooks/pool/useUserPoolReserves';
 import { useUserSummaryAndIncentives } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -91,20 +90,16 @@ export default function V3Migration() {
 
   const { data: fromUserSummaryAndIncentives, isLoading: fromUserSummaryAndIncentivesLoading } =
     useUserSummaryAndIncentives(fromMarketData);
-
-  const { data: toUserReservesData, isLoading: toUserReservesDataLoading } =
-    useUserPoolReservesHumanized(toMarketData);
   const { data: toUserSummaryForMigration, isLoading: toUserSummaryForMigrationLoading } =
     useUserSummaryAndIncentives(toMarketData);
-  const toUserEModeCategoryId = toUserReservesData?.userEmodeCategoryId || 0;
 
   const { data: userSummaryAfterMigration, isLoading: userSummaryAfterMigrationLoading } =
     useUserSummaryAfterMigration(fromMarketData, toMarketData);
 
+  const toUserEModeCategoryId = toUserSummaryForMigration?.userEmodeCategoryId || 0;
   const loading =
     userMigrationReservesLoading ||
     fromUserSummaryAndIncentivesLoading ||
-    toUserReservesDataLoading ||
     toUserSummaryForMigrationLoading ||
     userSummaryAfterMigrationLoading;
 
@@ -138,7 +133,7 @@ export default function V3Migration() {
     setFromMarketData(marketData);
   };
 
-  const bottomPanelProps = fromUserSummaryAndIncentives &&
+  const userSummaryBeforeMigration = fromUserSummaryAndIncentives &&
     toUserSummaryForMigration && {
       fromUserSummaryBeforeMigration: fromUserSummaryAndIncentives,
       toUserSummaryBeforeMigration: toUserSummaryForMigration,
@@ -159,7 +154,7 @@ export default function V3Migration() {
           >
             <MigrationBottomPanel
               userSummaryAfterMigration={userSummaryAfterMigration}
-              userSummaryBeforeMigration={bottomPanelProps}
+              userSummaryBeforeMigration={userSummaryBeforeMigration}
               disableButton={selectedSupplyAssets.length === 0 && selectedBorrowAssets.length === 0}
               enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
               loading={loading}
@@ -169,6 +164,7 @@ export default function V3Migration() {
               selectableMarkets={selectableMarkets}
             />
             <MigrationLists
+              toMarket={toMarketData}
               loading={loading}
               isSupplyPositionsAvailable={supplyReserves.length > 0}
               isBorrowPositionsAvailable={borrowReserves.length > 0}

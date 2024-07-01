@@ -2,9 +2,9 @@ import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
-import { UserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
-import { UserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMigration';
+import { useMemo } from 'react';
+import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
+import { useUserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMigration';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -12,7 +12,7 @@ import {
   selectedUserSupplyReservesForMigration,
   selectSelectedBorrowReservesForMigrationV3,
 } from 'src/store/v3MigrationSelectors';
-import { CustomMarket, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, getNetworkConfig, MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -24,64 +24,70 @@ import { MigrateV3Actions } from './MigrateV3Actions';
 import { MigrateV3ModalAssetsList } from './MigrateV3ModalAssetsList';
 
 interface MigrationV3ModalContentProps {
-  toUserSummaryForMigration: UserSummaryForMigration;
-  userMigrationReserves: UserMigrationReserves;
+  fromMarket: MarketDataType;
+  toMarket: MarketDataType;
 }
 
-export const MigrateV3ModalContent = ({
-  toUserSummaryForMigration,
-  userMigrationReserves,
-}: MigrationV3ModalContentProps) => {
-  const currentChainId = useRootStore((store) => store.currentChainId);
+export const MigrateV3ModalContent = ({ fromMarket, toMarket }: MigrationV3ModalContentProps) => {
+  const { data: userMigrationReserves } = useUserMigrationReserves(fromMarket, toMarket);
+  const { data: toUserSummaryForMigration } = useUserSummaryForMigration(toMarket);
+
+  const currentChainId = fromMarket.chainId;
   const setCurrentMarket = useRootStore((store) => store.setCurrentMarket);
   const currentMarket = useRootStore((store) => store.currentMarket);
+  const selectedMigrationSupplyAssets = useRootStore(
+    (store) => store.selectedMigrationSupplyAssets
+  );
+  const selectedMigrationBorrowAssets = useRootStore(
+    (store) => store.selectedMigrationBorrowAssets
+  );
 
   const { gasLimit, mainTxState: migrateTxState, txError, closeWithCb } = useModalContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const router = useRouter();
   const networkConfig = getNetworkConfig(currentChainId);
 
-  const { supplyPositions, borrowPositions } = useRootStore(
-    useCallback(
-      (state) => ({
-        supplyPositions: selectedUserSupplyReservesForMigration(
-          state.selectedMigrationSupplyAssets,
-          userMigrationReserves.supplyReserves,
-          userMigrationReserves.isolatedReserveV3
-        ),
-        borrowPositions: selectSelectedBorrowReservesForMigrationV3(
-          state.selectedMigrationBorrowAssets,
-          toUserSummaryForMigration,
-          userMigrationReserves
-        ),
-      }),
-      [userMigrationReserves, toUserSummaryForMigration]
-    )
-  );
+  const supplyAssets = useMemo(() => {
+    if (!userMigrationReserves) {
+      return [];
+    }
+    return selectedUserSupplyReservesForMigration(
+      selectedMigrationSupplyAssets,
+      userMigrationReserves.supplyReserves,
+      userMigrationReserves.isolatedReserveV3
+    ).map((supplyAsset) => {
+      return {
+        underlyingAsset: supplyAsset.underlyingAsset,
+        iconSymbol: supplyAsset.reserve.iconSymbol,
+        symbol: supplyAsset.reserve.symbol,
+        amount: supplyAsset.underlyingBalance,
+        amountInUSD: supplyAsset.underlyingBalanceUSD,
+      };
+    });
+  }, [userMigrationReserves, selectedMigrationSupplyAssets]);
 
-  const supplyAssets = supplyPositions.map((supplyAsset) => {
-    return {
-      underlyingAsset: supplyAsset.underlyingAsset,
-      iconSymbol: supplyAsset.reserve.iconSymbol,
-      symbol: supplyAsset.reserve.symbol,
-      amount: supplyAsset.underlyingBalance,
-      amountInUSD: supplyAsset.underlyingBalanceUSD,
-    };
-  });
-
-  const borrowsAssets = borrowPositions.map((asset) => {
-    return {
-      underlyingAsset: asset.debtKey,
-      iconSymbol: asset.reserve.iconSymbol,
-      symbol: asset.reserve.symbol,
-      amount:
-        asset.interestRate == InterestRate.Stable ? asset.stableBorrows : asset.variableBorrows,
-      amountInUSD:
-        asset.interestRate == InterestRate.Stable
-          ? asset.stableBorrowsUSD
-          : asset.variableBorrowsUSD,
-    };
-  });
+  const borrowAssets = useMemo(() => {
+    if (!userMigrationReserves || !toUserSummaryForMigration) {
+      return [];
+    }
+    return selectSelectedBorrowReservesForMigrationV3(
+      selectedMigrationBorrowAssets,
+      toUserSummaryForMigration,
+      userMigrationReserves
+    ).map((asset) => {
+      return {
+        underlyingAsset: asset.debtKey,
+        iconSymbol: asset.reserve.iconSymbol,
+        symbol: asset.reserve.symbol,
+        amount:
+          asset.interestRate == InterestRate.Stable ? asset.stableBorrows : asset.variableBorrows,
+        amountInUSD:
+          asset.interestRate == InterestRate.Stable
+            ? asset.stableBorrowsUSD
+            : asset.variableBorrowsUSD,
+      };
+    });
+  }, [userMigrationReserves, toUserSummaryForMigration, selectedMigrationBorrowAssets]);
 
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
@@ -134,14 +140,14 @@ export const MigrateV3ModalContent = ({
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      <TxModalDetails gasLimit={gasLimit}>
+      <TxModalDetails gasLimit={gasLimit} chainId={currentChainId}>
         <MigrateV3ModalAssetsList
           caption={<Trans>Selected supply assets</Trans>}
           assets={supplyAssets}
         />
         <MigrateV3ModalAssetsList
           caption={<Trans>Selected borrow assets</Trans>}
-          assets={borrowsAssets}
+          assets={borrowAssets}
         />
       </TxModalDetails>
 
@@ -153,6 +159,8 @@ export const MigrateV3ModalContent = ({
           blocked={false}
           userMigrationReserves={userMigrationReserves}
           toUserSummaryForMigration={toUserSummaryForMigration}
+          fromMarket={fromMarket}
+          toMarket={toMarket}
         />
       )}
     </>

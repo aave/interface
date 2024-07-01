@@ -9,8 +9,6 @@ import {
 import {
   MigrationRepayAsset,
   MigrationSupplyAsset,
-  V3MigrationHelperSignedCreditDelegationPermit,
-  V3MigrationHelperSignedPermit,
 } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import {
   ComputedUserReserve,
@@ -24,9 +22,7 @@ import {
   CalculateReserveIncentivesResponse,
   ReserveIncentiveResponse,
 } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { SignatureLike } from '@ethersproject/bytes';
 import BigNumber from 'bignumber.js';
-import { BigNumberish } from 'ethers';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import {
   BorrowMigrationReserve,
@@ -281,12 +277,12 @@ export const selectedUserSupplyReservesForMigration = (
 };
 
 export const selectUserSupplyIncreasedReservesForMigrationPermits = (
-  store: RootStore,
+  selectedMigrationSupplyAssets: MigrationSelectedAsset[],
   supplyReserves: SupplyMigrationReserve[],
   isolatedReserveV3: IsolatedReserve | undefined
 ) => {
   return selectedUserSupplyReservesForMigration(
-    store.selectedMigrationSupplyAssets,
+    selectedMigrationSupplyAssets,
     supplyReserves,
     isolatedReserveV3
   ).map((userReserve) => {
@@ -297,12 +293,12 @@ export const selectUserSupplyIncreasedReservesForMigrationPermits = (
 };
 
 export const selectUserSupplyAssetsForMigrationNoPermit = (
-  store: RootStore,
+  selectedMigrationSupplyAssets: MigrationSelectedAsset[],
   supplyReserves: SupplyMigrationReserve[],
   isolatedReserveV3: IsolatedReserve | undefined
 ): MigrationSupplyAsset[] => {
   const selectedUserSupplyReserves = selectUserSupplyIncreasedReservesForMigrationPermits(
-    store,
+    selectedMigrationSupplyAssets,
     supplyReserves,
     isolatedReserveV3
   );
@@ -318,13 +314,13 @@ export const selectUserSupplyAssetsForMigrationNoPermit = (
 };
 
 export const selectMigrationRepayAssets = (
-  store: RootStore,
+  selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[],
   borrowReserves: BorrowMigrationReserve[]
 ): MigrationRepayAsset[] => {
   const deadline = Math.floor(Date.now() / 1000 + 3600);
   return selectSelectedBorrowReservesForMigration(
     borrowReserves,
-    store.selectedMigrationBorrowAssets
+    selectedMigrationBorrowAssets
   ).map((userReserve) => ({
     underlyingAsset: userReserve.underlyingAsset,
     amount:
@@ -336,46 +332,6 @@ export const selectMigrationRepayAssets = (
     debtToken: userReserve.debtKey,
     rateMode: userReserve.interestRate,
   }));
-};
-
-export const selectMigrationSignedPermits = (
-  store: RootStore,
-  signatures: SignatureLike[],
-  deadline: BigNumberish
-): {
-  supplyPermits: V3MigrationHelperSignedPermit[];
-  creditDelegationPermits: V3MigrationHelperSignedCreditDelegationPermit[];
-} => {
-  const approvalsWithSignatures = store.approvalPermitsForMigrationAssets.map((approval, index) => {
-    return {
-      ...approval,
-      signedPermit: signatures[index],
-    };
-  });
-
-  const supplyPermits: V3MigrationHelperSignedPermit[] = approvalsWithSignatures
-    .filter((approval) => approval.permitType === 'SUPPLY_MIGRATOR_V3')
-    .map(({ signedPermit, underlyingAsset, amount }) => ({
-      deadline,
-      aToken: underlyingAsset,
-      value: amount,
-      signedPermit,
-    }));
-
-  const creditDelegationPermits: V3MigrationHelperSignedCreditDelegationPermit[] =
-    approvalsWithSignatures
-      .filter((approval) => approval.permitType === 'BORROW_MIGRATOR_V3')
-      .map(({ amount, signedPermit, underlyingAsset }) => ({
-        deadline,
-        debtToken: underlyingAsset,
-        signedPermit,
-        value: amount,
-      }));
-
-  return {
-    supplyPermits,
-    creditDelegationPermits,
-  };
 };
 
 const addPercent = (amount: string) => {
@@ -466,7 +422,7 @@ export const selectFormatUserSummaryForMigration = (
  * @returns array of approval payloads
  */
 export const selectMigrationBorrowPermitPayloads = (
-  store: RootStore,
+  selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[],
   toUserSummary: UserSummaryForMigration,
   borrowReserves: BorrowMigrationReserve[],
   buffer?: boolean
@@ -474,7 +430,7 @@ export const selectMigrationBorrowPermitPayloads = (
   const { userReservesData: userReservesDataV3 } = toUserSummary;
   const selectedUserReserves = selectSelectedBorrowReservesForMigration(
     borrowReserves,
-    store.selectedMigrationBorrowAssets
+    selectedMigrationBorrowAssets
   );
 
   const reserveDebts: ReserveDebtApprovalPayload = {};
@@ -525,7 +481,6 @@ export const selectMigrationBorrowPermitPayloads = (
     return {
       amount: bufferedAmount,
       underlyingAsset: debt.variableDebtTokenAddress,
-      permitType: 'BORROW_MIGRATOR_V3',
     };
   });
 };

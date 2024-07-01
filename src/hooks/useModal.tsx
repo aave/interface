@@ -4,6 +4,7 @@ import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalCont
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Proposal } from './governance/useProposals';
@@ -46,6 +47,8 @@ export interface ModalArgsType {
   isFrozen?: boolean;
   representatives?: Array<{ chainId: ChainId; representative: string }>;
   chainId?: number;
+  fromMarket?: MarketDataType;
+  toMarket?: MarketDataType;
 }
 
 export type TxStateType = {
@@ -106,7 +109,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openDebtSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
   openGovDelegation: () => void;
   openRevokeGovDelegation: () => void;
-  openV3Migration: () => void;
+  openV3Migration: (fromMarket: MarketDataType, toMarket: MarketDataType) => void;
   openGovVote: (proposal: Proposal, support: boolean, power: string) => void;
   openSwitch: (underlyingAsset?: string, chainId?: number) => void;
   openStakingMigrate: () => void;
@@ -316,8 +319,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.GovRepresentatives);
           setArgs({ representatives });
         },
-        openV3Migration: () => {
+        openV3Migration: (fromMarket, toMarket) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });
+          setArgs({ fromMarket, toMarket });
           setType(ModalType.V3Migration);
         },
         openSwitch: (underlyingAsset, chainId) => {
