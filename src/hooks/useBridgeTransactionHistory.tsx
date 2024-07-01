@@ -44,6 +44,8 @@ const networkNameToChainId: { [networkName: string]: ChainId } = {
   'arbitrum-sepolia': ChainId.arbitrum_sepolia,
   sepolia: ChainId.sepolia,
   'avalanche-testnet': ChainId.fuji,
+  mainnet: ChainId.mainnet,
+  'arbitrum-one': ChainId.arbitrum_one,
 };
 
 const sendRequestsQuery = gql`
