@@ -64,6 +64,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connector, setConnector] = useState<AbstractConnector>();
+  const [currentAccount, setCurrentAccount] = useState<string | undefined>(account?.toLowerCase());
   const [loading, setLoading] = useState(false);
   const [tried, setTried] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
@@ -120,6 +121,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setLoading(false);
     setDeactivated(true);
     setSwitchNetworkError(undefined);
+    setCurrentAccount(undefined);
   }, [provider, connector]);
 
   const connectReadOnlyMode = (address: string): Promise<void> => {
@@ -483,7 +485,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // inject account into zustand as long as aave itnerface is using old web3 providers
   useEffect(() => {
-    setAccount(account?.toLowerCase());
+    if (account && account.toLowerCase() !== currentAccount) {
+      setCurrentAccount(account?.toLowerCase());
+      setAccount(account?.toLowerCase());
+    }
   }, [account]);
 
   useEffect(() => {
@@ -505,7 +510,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           getTxError,
           sendTx,
           signTxData,
-          currentAccount: account?.toLowerCase() || '',
+          currentAccount: currentAccount || '',
           addERC20Token,
           error,
           switchNetworkError,
