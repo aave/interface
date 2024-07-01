@@ -16,13 +16,17 @@ export const BridgeDestinationInput = ({
   connectedAccount,
   onInputValid,
   onInputError,
+  sourceChainId,
 }: {
   connectedAccount: string;
   onInputValid: (destinationAccount: string) => void;
   onInputError: () => void;
+  sourceChainId: number;
 }) => {
-  const { data: isContractAddress, isFetching: fetchingIsContractAddress } =
-    useIsContractAddress(connectedAccount);
+  const { data: isContractAddress, isFetching: fetchingIsContractAddress } = useIsContractAddress(
+    connectedAccount,
+    sourceChainId
+  );
 
   const [useConnectedAccount, setUseConnectedAccount] = useState(true);
   const [destinationAccount, setDestinationAccount] = useState('');

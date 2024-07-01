@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { Contract } from 'ethers';
+import { parseUnits } from 'ethers/lib/utils';
 import React, { useEffect } from 'react';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -122,6 +123,7 @@ export const BridgeActions = React.memo(
       signatureAmount: amountToBridge,
       onApprovalTxConfirmed: fetchApprovedAmount,
       chainId: sourceChainId,
+      amountToApprove: parseUnits(amountToBridge || '0', 18).toString(),
     });
 
     // Update gas estimation

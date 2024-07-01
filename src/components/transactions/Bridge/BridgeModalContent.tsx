@@ -379,6 +379,7 @@ export const BridgeModalContent = () => {
                 setDestinationAccount(account);
               }}
               onInputError={() => setDestinationAccount('')}
+              sourceChainId={sourceNetworkObj.chainId}
             />
           </Box>
           <TxModalDetails gasLimit={gasLimit} chainId={sourceNetworkObj.chainId}>
