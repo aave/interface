@@ -12,6 +12,7 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
+import { ListAPYDetails } from '../dashboard/lists/ListAPYDetails';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
 
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
@@ -49,7 +50,19 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
       >
         <IncentivesCard
           align="flex-end"
-          value={reserve.supplyAPY}
+          value={
+            reserve.underlyingAPY
+              ? Number(reserve.supplyAPY) + reserve.underlyingAPY
+              : Number(reserve.supplyAPY)
+          }
+          tooltip={
+            reserve.underlyingAPY ? (
+              <ListAPYDetails
+                supplyAPY={Number(reserve.supplyAPY)}
+                underlyingAPY={reserve.underlyingAPY}
+              />
+            ) : null
+          }
           incentives={reserve.aIncentivesData || []}
           symbol={reserve.symbol}
           variant="secondary14"
@@ -93,7 +106,21 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <IncentivesCard
             align="flex-end"
-            value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
+            value={
+              reserve.underlyingAPY
+                ? Number(reserve.variableBorrowAPY) + reserve.underlyingAPY
+                : Number(reserve.totalVariableDebtUSD) > 0
+                ? reserve.variableBorrowAPY
+                : '-1'
+            }
+            tooltip={
+              reserve.underlyingAPY ? (
+                <ListAPYDetails
+                  borrowAPY={Number(reserve.variableBorrowAPY)}
+                  underlyingAPY={reserve.underlyingAPY}
+                />
+              ) : null
+            }
             incentives={reserve.vIncentivesData || []}
             symbol={reserve.symbol}
             variant="secondary14"

@@ -14,6 +14,7 @@ import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
+import { ListAPYDetails } from '../ListAPYDetails';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
@@ -142,7 +143,16 @@ const BorrowedPositionsListItemDesktop = ({
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
-      <ListAPRColumn value={borrowAPY} incentives={incentives} symbol={reserve.symbol} />
+      <ListAPRColumn
+        value={reserve.underlyingAPY ? borrowAPY + reserve.underlyingAPY : borrowAPY}
+        tooltip={
+          reserve.underlyingAPY ? (
+            <ListAPYDetails borrowAPY={borrowAPY} underlyingAPY={reserve.underlyingAPY} />
+          ) : null
+        }
+        incentives={incentives}
+        symbol={reserve.symbol}
+      />
 
       <ListColumn>
         <ListItemAPYButton
@@ -231,7 +241,12 @@ const BorrowedPositionsListItemMobile = ({
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <IncentivesCard
-          value={borrowAPY}
+          value={reserve.underlyingAPY ? borrowAPY + reserve.underlyingAPY : borrowAPY}
+          tooltip={
+            reserve.underlyingAPY ? (
+              <ListAPYDetails borrowAPY={borrowAPY} underlyingAPY={reserve.underlyingAPY} />
+            ) : null
+          }
           incentives={incentives}
           symbol={symbol}
           variant="secondary14"
