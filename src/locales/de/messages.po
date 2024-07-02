@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-06-05 14:36\n"
+"PO-Revision-Date: 2024-07-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -195,6 +195,10 @@ msgstr "Adressen"
 msgid "Addresses ({0})"
 msgstr "Adressen ({0})"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Age"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All Assets"
@@ -228,6 +232,7 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "Ermöglicht es Ihnen, zwischen <0>variablen</0> und <1>stabilen</1> Zinssätzen zu wechseln, wobei der variable Zinssatz je nach Liquidität in der Reserve steigen und sinken kann und der stabile Zinssatz für die Dauer Ihres Darlehens gleich bleibt."
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
@@ -245,6 +250,10 @@ msgstr "Betrag in der Abklingzeit"
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "Der Betrag muss größer als 0 sein."
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Amount to Bridge"
+msgstr ""
 
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Amount to migrate"
@@ -282,6 +291,7 @@ msgstr "Array-Parameter, die gleich lang sein sollten, sind nicht"
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
 msgstr ""
 
+#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -326,6 +336,10 @@ msgstr "Der Vermögenswert kann nicht als Sicherheit verwendet werden."
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
 msgstr "Anlagenklasse"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
+msgstr ""
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset is frozen in {marketName} v3 market, hence this position cannot be migrated."
@@ -585,6 +599,30 @@ msgstr "Entlehnung {symbol}"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
 msgstr "Beide"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Bridge GHO"
+msgstr ""
+
+#: src/modules/bridge/BridgeTopPanel.tsx
+msgid "Bridge history"
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeActions.tsx
+msgid "Bridge {symbol}"
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Bridged Via CCIP"
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Bridging is currently unavailable due to the rate limit being exceeded. Please try again later or reduce the amount to bridge."
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeActions.tsx
+msgid "Bridging {symbol}"
+msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
@@ -857,6 +895,10 @@ msgstr "Die Schuldenobergrenze begrenzt den Betrag, den Protokollbenutzer gegen 
 msgid "Delegated power"
 msgstr "Delegierte Befugnis"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Destination"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
@@ -1041,6 +1083,14 @@ msgstr "Englisch"
 msgid "Enter ETH address"
 msgstr "ETH-Adresse eingeben"
 
+#: src/components/transactions/Bridge/BridgeDestinationInput.tsx
+msgid "Enter ETH address or ENS"
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeDestinationInput.tsx
+msgid "Enter a valid address"
+msgstr ""
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
 msgstr "Geben Sie einen Betrag ein"
@@ -1056,6 +1106,10 @@ msgstr ""
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 msgstr "Geschätzter Zinseszins, einschließlich Abschlag für Staking {0}AAVE im Sicherheitsmodul."
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Estimated time"
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
@@ -1104,6 +1158,10 @@ msgstr "Hahn"
 msgid "Faucet {0}"
 msgstr "Hahn {0}"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Fee"
+msgstr ""
+
 #: src/layouts/FeedbackDialog.tsx
 #: src/layouts/FeedbackDialog.tsx
 msgid "Feedback"
@@ -1150,6 +1208,10 @@ msgstr "Französisch"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Mittel im Sicherheitsmodul"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "GHO balance"
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
@@ -1758,6 +1820,10 @@ msgstr "Bitte beachten Sie immer Ihren <0>Gesundheitsfaktor (HF),</0> wenn Sie e
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Bitte verbinden Sie hier eine Wallet, um Ihre persönlichen Daten einzusehen."
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Please connect your wallet to be able to bridge your tokens."
+msgstr ""
+
 #: src/components/transactions/Switch/SwitchModal.tsx
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Please connect your wallet to be able to switch your tokens."
@@ -1776,6 +1842,7 @@ msgstr "Bitte verbinden Sie Ihre Wallet, um das Migrationstool anzuzeigen."
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Bitte verbinden Sie Ihre Brieftasche, um Ihre Vorräte, Kredite und offenen Positionen zu sehen."
 
+#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/history/HistoryWrapper.tsx
 msgid "Please connect your wallet to view transaction history."
 msgstr "Bitte verbinden Sie Ihre Wallet, um den Transaktionsverlauf anzuzeigen."
@@ -1917,6 +1984,10 @@ msgstr "Empfangen (geschätzt)"
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Eingegangen"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Recent Transactions"
+msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
@@ -2183,6 +2254,10 @@ msgstr "Es tut uns leid, aber es ist ein unerwarteter Fehler aufgetreten. In der
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Es tut uns leid, aber wir konnten die Seite, die Sie gesucht haben, nicht finden."
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Source"
+msgstr ""
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
 msgstr "Spanisch"
@@ -2276,6 +2351,10 @@ msgstr "Staking-Rabatt"
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "State"
 msgstr "Zustand"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Status"
+msgstr ""
 
 #: src/layouts/FeedbackDialog.tsx
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
@@ -2522,6 +2601,10 @@ msgstr "Der Beleihungsauslauf der migrierten Positionen würde zu einer Liquidat
 msgid "The requested amount is greater than the max loan size in stable rate mode"
 msgstr "Der angeforderte Betrag ist höher als die maximale Darlehensgröße im Modus mit stabilem Zinssatz"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
+msgstr ""
+
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "Der Gesamtbetrag Ihrer Vermögenswerte in USD, der als Sicherheit für die Kreditaufnahme von Vermögenswerten verwendet werden kann."
@@ -2618,6 +2701,10 @@ msgstr "Dieses Asset ist aufgrund einer Entscheidung der Aave-Community eingefro
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "Es ist geplant, dass dieser Vermögenswert aufgrund einer Entscheidung der Aave Protocol Governance ausgelagert wird. <0>Mehr Details</0>"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. <0>Learn more</0>"
+msgstr ""
+
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "Bei dieser Gasberechnung handelt es sich nur um eine Schätzung. Ihre Brieftasche legt den Preis der Transaktion fest. Sie können die Gaseinstellungen direkt bei Ihrem Wallet-Anbieter ändern."
@@ -2653,6 +2740,10 @@ msgstr ""
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"
 msgstr "Tipp: Versuchen Sie, den Schlupf zu erhöhen oder die Eingabemenge zu reduzieren"
+
+#: src/components/transactions/Bridge/BridgeDestinationInput.tsx
+msgid "To"
+msgstr ""
 
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
@@ -2749,6 +2840,7 @@ msgstr "Die Transaktionshistorie ist derzeit für diesen Markt nicht verfügbar"
 msgid "Transaction overview"
 msgstr "Transaktionsübersicht"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Transactions"
@@ -2805,6 +2897,10 @@ msgstr "Abstecken aufheben {symbol}"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
 msgstr "Update: Störungen für WETH, WBTC, WMATIC und USDT gemeldet. AIP 230 wird die Störungen beheben und der Markt wird am ~26. Mai 13:00 UTC wie gewohnt funktionieren."
+
+#: src/components/transactions/Bridge/BridgeDestinationInput.tsx
+msgid "Use connected account"
+msgstr ""
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
@@ -2902,10 +2998,22 @@ msgstr "Variante 3"
 msgid "View"
 msgstr "Ansehen"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "View Bridge Transactions"
+msgstr ""
+
+#: src/modules/bridge/BridgeTransactionListItem.tsx
+msgid "View TX"
+msgstr ""
+
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 msgid "View Transactions"
 msgstr "Transaktionen anzeigen"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "View all"
+msgstr ""
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
@@ -3125,6 +3233,10 @@ msgstr "Sie haben an diesem Vorschlag nicht teilgenommen"
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
 msgstr "Sie haben keine Vorräte in dieser Währung"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "You don't have any bridge transactions"
+msgstr ""
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
