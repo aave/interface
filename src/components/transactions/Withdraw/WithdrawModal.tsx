@@ -4,7 +4,7 @@ import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getGhoReserve } from 'src/utils/ghoUtilities';
+import { getGhoReserve, GHO_SWITCH_FEATURE_MARKETS } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { BasicModal } from '../../primitives/BasicModal';
@@ -23,10 +23,11 @@ export const WithdrawModal = () => {
   const { reserves } = useAppDataContext();
 
   const ghoReserve = getGhoReserve(reserves);
+  const isGho = args.underlyingAsset === ghoReserve?.underlyingAsset;
 
   const isWithdrawAndSwapPossible =
     isFeatureEnabled.withdrawAndSwitch(currentMarketData) &&
-    args.underlyingAsset !== ghoReserve?.underlyingAsset;
+    (!isGho || (isGho && GHO_SWITCH_FEATURE_MARKETS.includes(currentMarketData.marketTitle)));
 
   const handleClose = () => {
     setWithdrawType(WithdrawType.WITHDRAW);

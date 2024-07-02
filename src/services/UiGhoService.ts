@@ -1,7 +1,7 @@
 import { GhoService } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { GHO_SUPPORTED_MARKETS } from 'src/utils/ghoUtilities';
+import { GHO_MINTING_MARKETS } from 'src/utils/ghoUtilities';
 import invariant from 'tiny-invariant';
 
 export class UiGhoService {
@@ -9,8 +9,8 @@ export class UiGhoService {
 
   private getUiGhoProvider(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
-    const isGhoSupportedMarket = GHO_SUPPORTED_MARKETS.includes(marketData.market);
-    invariant(isGhoSupportedMarket, 'Gho is not supported in this market');
+    const isGhoSupportedMintingMarket = GHO_MINTING_MARKETS.includes(marketData.market);
+    invariant(isGhoSupportedMintingMarket, 'GHO minting is not supported in this market');
     const { GHO_TOKEN_ADDRESS: ghoTokenAddress, GHO_UI_DATA_PROVIDER: uiGhoDataProviderAddress } =
       marketData.addresses;
     invariant(

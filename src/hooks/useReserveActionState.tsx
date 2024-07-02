@@ -12,7 +12,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { WalletEmptyInfo } from 'src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo';
 import { useRootStore } from 'src/store/root';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { displayGho } from 'src/utils/ghoUtilities';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 import { useModalContext } from './useModal';
 
@@ -49,7 +49,7 @@ export const useReserveActionState = ({
   const eModeBorrowDisabled =
     user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
 
-  const isGho = displayGho({ symbol: reserve.symbol, currentMarket });
+  const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 
   return {
     disableSupplyButton: balance === '0' || maxAmountToSupply === '0' || isGho,

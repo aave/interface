@@ -1,6 +1,7 @@
 import { ChainId, WalletBalanceProvider } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
+import { formatUnits } from 'ethers/lib/utils';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
@@ -75,5 +76,29 @@ export class WalletBalanceService {
       amount: balances[ix].toString(),
     }));
     return mappedBalances;
+  }
+
+  async getGhoBridgeBalancesTokenBalances(
+    marketData: MarketDataType,
+    user: string
+  ): Promise<{
+    bridgeTokenBalance: string;
+    bridgeTokenBalanceFormatted: string;
+    address: string;
+  }> {
+    const walletBalanceService = this.getWalletBalanceService(
+      marketData.chainId,
+      marketData.addresses.WALLET_BALANCE_PROVIDER
+    );
+    const balances = await walletBalanceService.batchBalanceOf(
+      [user],
+      [marketData.addresses.GHO_TOKEN_ADDRESS?.toLowerCase() as string] // GHO UNDERLYING
+    );
+
+    return {
+      bridgeTokenBalance: balances[0].toString(),
+      bridgeTokenBalanceFormatted: formatUnits(balances[0].toString(), 18),
+      address: marketData.addresses.GHO_TOKEN_ADDRESS as string,
+    };
   }
 }

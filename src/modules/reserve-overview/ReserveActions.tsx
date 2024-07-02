@@ -35,7 +35,7 @@ import {
   getMaxGhoMintAmount,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-import { displayGho } from 'src/utils/ghoUtilities';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { amountToUsd } from 'src/utils/utils';
 
@@ -87,7 +87,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
   let maxAmountToBorrow = '0';
   let maxAmountToSupply = '0';
-  const isGho = displayGho({ symbol: reserve.symbol, currentMarket });
+  const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 
   if (isGho && user) {
     const maxMintAmount = getMaxGhoMintAmount(user, reserve);

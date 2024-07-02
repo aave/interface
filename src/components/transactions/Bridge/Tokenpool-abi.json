@@ -1,0 +1,100 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "armProxy",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "allowlistEnabled",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "acceptLiquidity",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "getBridgeLimit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCurrentBridgedAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "remoteChainSelector",
+                "type": "uint64"
+            }
+        ],
+        "name": "getCurrentOutboundRateLimiterState",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint128",
+                        "name": "tokens",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "lastUpdated",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isEnabled",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "capacity",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "rate",
+                        "type": "uint128"
+                    }
+                ],
+                "internalType": "struct RateLimiter.TokenBucket",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

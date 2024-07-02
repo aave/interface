@@ -20,7 +20,7 @@ import {
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { displayGho } from 'src/utils/ghoUtilities';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
@@ -164,7 +164,10 @@ export const RepayModalContent = ({
       balance: maxReserveTokenForRepay.toString(10),
     });
     // push reserve aToken
-    if (currentMarketData.v3 && !displayGho({ symbol: poolReserve.symbol, currentMarket })) {
+    if (
+      currentMarketData.v3 &&
+      !displayGhoForMintableMarket({ symbol: poolReserve.symbol, currentMarket })
+    ) {
       const aTokenBalance = valueToBigNumber(underlyingBalance);
       const maxBalance = BigNumber.max(
         aTokenBalance,

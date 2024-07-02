@@ -5,19 +5,19 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 export const useApprovedAmount = ({
-  marketData,
+  chainId,
   token,
   spender,
 }: {
-  marketData: MarketDataType;
+  chainId: number;
   token: string;
   spender: string;
 }) => {
   const { approvedAmountService } = useSharedDependencies();
   const user = useRootStore((store) => store.account);
   return useQuery({
-    queryFn: () => approvedAmountService.getApprovedAmount(marketData, user, token, spender),
-    queryKey: queryKeysFactory.approvedAmount(user, token, spender, marketData),
+    queryFn: () => approvedAmountService.getApprovedAmount(chainId, user, token, spender),
+    queryKey: queryKeysFactory.approvedAmount(user, token, spender, chainId),
   });
 };
 

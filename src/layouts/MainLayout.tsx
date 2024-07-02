@@ -12,9 +12,9 @@ export function MainLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <TopBarNotify
-        notifyText="Users can now stake GHO in the safety module 🎉"
-        learnMoreLink="https://app.aave.com/staking"
+        learnMoreLink="https://governance.aave.com/t/arfc-gho-cross-chain-launch/17616"
         buttonText="Learn More"
+        notifyText="Users can now bridge GHO to Arbitrum with CCIP ✨"
       />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>

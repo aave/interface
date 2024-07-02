@@ -4,6 +4,7 @@ import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { POLLING_INTERVAL, queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import { GHO_MINTING_MARKETS } from 'src/utils/ghoUtilities';
 
 import { HookOpts } from '../commonTypes';
 
@@ -20,7 +21,7 @@ export const useUserGhoPoolsReserve = <T = GhoUserData>(
           queryKey: queryKeysFactory.ghoUserReserveData(user, marketData),
           queryFn: () => uiGhoService.getGhoUserData(marketData, user),
           refetchInterval: POLLING_INTERVAL,
-          enabled: !!user && !!marketData.addresses.GHO_TOKEN_ADDRESS,
+          enabled: !!user && GHO_MINTING_MARKETS.includes(marketData.market),
           ...opts,
         } as UseQueryOptions<GhoUserData | null, Error, T>)
     ),

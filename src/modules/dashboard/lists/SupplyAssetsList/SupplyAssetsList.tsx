@@ -13,7 +13,7 @@ import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { displayGho } from 'src/utils/ghoUtilities';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -73,7 +73,7 @@ export const SupplyAssetsList = () => {
     .filter(
       (reserve: ComputedReserveData) =>
         !(reserve.isFrozen || reserve.isPaused) &&
-        !displayGho({ symbol: reserve.symbol, currentMarket })
+        !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket })
     )
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;

@@ -11,7 +11,10 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { displayGho, findAndFilterGhoReserve } from 'src/utils/ghoUtilities';
+import {
+  displayGhoForMintableMarket,
+  findAndFilterMintableGhoReserve,
+} from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { CapType } from '../../../../components/caps/helper';
@@ -146,14 +149,17 @@ export const BorrowAssetsList = () => {
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
       : tokensToBorrow.filter(({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) => {
-          if (displayGho({ symbol, currentMarket })) {
+          if (displayGhoForMintableMarket({ symbol, currentMarket })) {
             return true;
           }
 
           return availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0';
         });
 
-  const { value: ghoReserve, filtered: filteredReserves } = findAndFilterGhoReserve(borrowReserves);
+  const { value: ghoReserve, filtered: filteredReserves } = findAndFilterMintableGhoReserve(
+    borrowReserves,
+    currentMarket
+  );
   const sortedReserves = handleSortDashboardReserves(
     sortDesc,
     sortName,
@@ -256,21 +262,25 @@ export const BorrowAssetsList = () => {
               </>
             )}
           </Box>
-          {ghoReserve && !downToXSM && displayGho({ symbol: ghoReserve.symbol, currentMarket }) && (
-            <AssetCapsProvider asset={ghoReserve.reserve}>
-              <GhoBorrowAssetsListItem {...ghoReserve} />
-            </AssetCapsProvider>
-          )}
+          {ghoReserve &&
+            !downToXSM &&
+            displayGhoForMintableMarket({ symbol: ghoReserve.symbol, currentMarket }) && (
+              <AssetCapsProvider asset={ghoReserve.reserve}>
+                <GhoBorrowAssetsListItem {...ghoReserve} />
+              </AssetCapsProvider>
+            )}
         </>
       }
     >
       <>
         {!downToXSM && !!borrowReserves.length && <RenderHeader />}
-        {ghoReserve && downToXSM && displayGho({ symbol: ghoReserve.symbol, currentMarket }) && (
-          <AssetCapsProvider asset={ghoReserve.reserve}>
-            <GhoBorrowAssetsListItem {...ghoReserve} />
-          </AssetCapsProvider>
-        )}
+        {ghoReserve &&
+          downToXSM &&
+          displayGhoForMintableMarket({ symbol: ghoReserve.symbol, currentMarket }) && (
+            <AssetCapsProvider asset={ghoReserve.reserve}>
+              <GhoBorrowAssetsListItem {...ghoReserve} />
+            </AssetCapsProvider>
+          )}
         {sortedReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>

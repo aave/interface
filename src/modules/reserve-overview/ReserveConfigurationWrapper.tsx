@@ -3,7 +3,7 @@ import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { displayGho } from 'src/utils/ghoUtilities';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -21,7 +21,7 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
   const { currentMarket } = useProtocolDataContext();
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const isGho = displayGho({ symbol: reserve.symbol, currentMarket });
+  const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 
   return (
     <Paper sx={{ pt: 4, pb: 20, px: downToXsm ? 4 : 6 }}>

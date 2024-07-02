@@ -5,8 +5,8 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 export class ApprovedAmountService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-  private async getERC20Service(marketData: MarketDataType) {
-    const provider = this.getProvider(marketData.chainId);
+  private async getERC20Service(chainId: number) {
+    const provider = this.getProvider(chainId);
     const ERC20Service = (await import('@aave/contract-helpers')).ERC20Service;
     return new ERC20Service(provider);
   }
@@ -48,12 +48,12 @@ export class ApprovedAmountService {
   }
 
   async getApprovedAmount(
-    marketData: MarketDataType,
+    chainId: number,
     user: string,
     token: string,
     spender: string
   ): Promise<number> {
-    const service = await this.getERC20Service(marketData);
+    const service = await this.getERC20Service(chainId);
     return service.approvedAmount({
       user,
       token,

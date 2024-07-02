@@ -4,7 +4,7 @@ import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { displayGho } from 'src/utils/ghoUtilities';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { BasicModal } from '../../primitives/BasicModal';
@@ -41,7 +41,7 @@ export const BorrowModal = () => {
         {(params) => (
           <UserAuthenticated>
             {(user) =>
-              displayGho({ symbol: params.symbol, currentMarket }) ? (
+              displayGhoForMintableMarket({ symbol: params.symbol, currentMarket }) ? (
                 <GhoBorrowModalContent {...params} user={user} />
               ) : (
                 <BorrowModalContent
