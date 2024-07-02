@@ -34,12 +34,13 @@ export const handleSortDashboardReserves = (
   sortName: string,
   sortPosition: string,
   positions: DashboardReserve[],
-  isBorrowedPosition?: boolean
+  isBorrowedPosition?: boolean,
+  prioritySymbol?: string
 ): DashboardReserve[] => {
   if (sortDesc) {
     return handleSortDesc(sortName, sortPosition, positions, isBorrowedPosition || false);
   } else {
-    return sortAsc(sortName, sortPosition, positions, isBorrowedPosition || false);
+    return sortAsc(sortName, sortPosition, positions, isBorrowedPosition || false, prioritySymbol);
   }
 };
 
@@ -73,7 +74,8 @@ const sortAsc = (
   sortName: string,
   sortPosition: string,
   positions: DashboardReserve[],
-  isBorrowedPosition: boolean
+  isBorrowedPosition: boolean,
+  prioritySymbol?: string
 ) => {
   if (sortName === 'symbol') {
     return handleSymbolSort(false, sortPosition, positions);
@@ -93,7 +95,19 @@ const sortAsc = (
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return positions.sort((a, b) => b[sortName] - a[sortName]);
+    const sorted = positions.sort((a, b) => a[sortName] - b[sortName]);
+
+    if (prioritySymbol) {
+      const priorityItemIndex = positions.findIndex(
+        (item) => item.reserve.symbol === prioritySymbol
+      );
+      if (priorityItemIndex > -1) {
+        const [priorityItem] = positions.splice(priorityItemIndex, 1);
+        return [priorityItem, ...sorted];
+      }
+    }
+
+    return sorted;
   }
 };
 

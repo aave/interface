@@ -74,7 +74,14 @@ export const MarketAssetsListContainer = () => {
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
   const showFrozenMarketWarning =
     marketFrozen && ['Harmony', 'Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
+
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
+  const priorityReserveIndex = unfrozenReserves.findIndex((r) => r.symbol === GHO_SYMBOL);
+  if (priorityReserveIndex > -1) {
+    const [priorityReserve] = unfrozenReserves.splice(priorityReserveIndex, 1);
+    unfrozenReserves.unshift(priorityReserve);
+  }
+
   const [showFrozenMarketsToggle, setShowFrozenMarketsToggle] = useState(false);
 
   const handleChange = () => {

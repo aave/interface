@@ -14,6 +14,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
   displayGhoForMintableMarket,
   findAndFilterMintableGhoReserve,
+  GHO_SYMBOL,
 } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -164,7 +165,9 @@ export const BorrowAssetsList = () => {
     sortDesc,
     sortName,
     'asset',
-    filteredReserves as unknown as DashboardReserve[]
+    filteredReserves as unknown as DashboardReserve[],
+    false,
+    GHO_SYMBOL
   );
   const borrowDisabled = !sortedReserves.length && !ghoReserve;
 
