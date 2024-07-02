@@ -267,9 +267,15 @@ export const SwitchModalContent = ({
                 borderColor: 'divider',
                 position: 'absolute',
                 backgroundColor: 'background.paper',
+                '&:hover': { backgroundColor: 'background.surface' },
               }}
             >
-              <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
+              <SvgIcon
+                sx={{
+                  color: 'primary.main',
+                  fontSize: '18px',
+                }}
+              >
                 <SwitchVerticalIcon />
               </SvgIcon>
             </IconButton>

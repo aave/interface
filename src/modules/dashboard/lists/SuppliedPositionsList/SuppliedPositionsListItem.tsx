@@ -5,6 +5,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { GHO_SWITCH_FEATURE_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -28,8 +29,15 @@ export const SuppliedPositionsListItem = ({
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
-  const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  let showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  if (
+    reserve.symbol === GHO_SYMBOL &&
+    !GHO_SWITCH_FEATURE_MARKETS.includes(currentMarketData.marketTitle)
+  ) {
+    showSwitchButton = false;
+  }
 
   const canBeEnabledAsCollateral = user
     ? !debtCeiling.isMaxed &&
@@ -91,7 +99,7 @@ export const SuppliedPositionsListItem = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        {isSwapButton ? (
+        {showSwitchButton ? (
           <Button
             disabled={disableSwap}
             variant="contained"

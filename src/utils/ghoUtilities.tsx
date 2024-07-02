@@ -4,17 +4,21 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 export const GHO_SYMBOL = 'GHO';
 
 /**
- * Determines if GHO is available for borrowing (minting) on the provided network, also based off the token symbol being borrowed
- * @param {GhoUtilMintingAvailableParams} - The reserve symbol and current market name
- * @returns {bool} - If the GHO token is available for minting
+ * List of markets where new GHO minting is available.
+ * Note that his is different from markets where GHO is listed as a reserve.
  */
-
-export const GHO_SUPPORTED_MARKETS = [
+export const GHO_MINTING_MARKETS = [
   'proto_mainnet_v3',
   'fork_proto_mainnet_v3',
   'proto_sepolia_v3',
   'fork_proto_sepolia_v3',
 ];
+
+/**
+ * The allow-listed markets where the paraswap switch features are enabled.
+ * Use this list to disable GHO switch features until there is enough liqudity available to do so.
+ */
+export const GHO_SWITCH_FEATURE_MARKETS = ['proto_mainnet_v3', 'fork_proto_mainnet_v3'];
 
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
   return reserves.find((reserve) => reserve.symbol === GHO_SYMBOL);
@@ -87,7 +91,12 @@ type FindAndFilterReturn<T> = {
   filtered: Array<T>;
 };
 
-export const findAndFilterGhoReserve = <T extends ReserveWithSymbol>(reserves: Array<T>) => {
+export const findAndFilterMintableGhoReserve = <T extends ReserveWithSymbol>(
+  reserves: Array<T>,
+  currentMarket: string
+) => {
+  if (!GHO_MINTING_MARKETS.includes(currentMarket)) return { value: undefined, filtered: reserves };
+
   return reserves.reduce<FindAndFilterReturn<T>>(
     (acum, reserve) => {
       if (reserve.symbol === GHO_SYMBOL) return { value: reserve, filtered: acum.filtered };
@@ -100,8 +109,14 @@ export const findAndFilterGhoReserve = <T extends ReserveWithSymbol>(reserves: A
   );
 };
 
-export const displayGho = ({ symbol, currentMarket }: GhoUtilMintingAvailableParams): boolean => {
-  return symbol === 'GHO' && GHO_SUPPORTED_MARKETS.includes(currentMarket);
+/**
+ * Determines if the given symbol is GHO and the market supports minting new GHO
+ */
+export const displayGhoForMintableMarket = ({
+  symbol,
+  currentMarket,
+}: GhoUtilMintingAvailableParams): boolean => {
+  return symbol === GHO_SYMBOL && GHO_MINTING_MARKETS.includes(currentMarket);
 };
 
 interface GhoUtilMintingAvailableParams {

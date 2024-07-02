@@ -26,7 +26,7 @@ import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import {
-  displayGho,
+  displayGhoForMintableMarket,
   ghoUserQualifiesForDiscount,
   weightedAverageAPY,
 } from 'src/utils/ghoUtilities';
@@ -154,7 +154,7 @@ export const DebtSwitchModalContent = ({
   // TODO consider pulling out a util helper here or maybe moving this logic into the store
   let availableBorrowCap = valueToBigNumber(MaxUint256.toString());
   let availableLiquidity: string | number = '0';
-  if (displayGho({ symbol: switchTarget.reserve.symbol, currentMarket })) {
+  if (displayGhoForMintableMarket({ symbol: switchTarget.reserve.symbol, currentMarket })) {
     availableLiquidity = ghoReserveData.aaveFacilitatorRemainingCapacity.toString();
   } else {
     availableBorrowCap =
