@@ -26,6 +26,7 @@ import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
   handleSortDashboardReserves,
+  sortPriorityReserve,
 } from '../../../../utils/dashboardSortUtils';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
 import { ListButtonsColumn } from '../ListButtonsColumn';
@@ -187,21 +188,21 @@ export const SupplyAssetsList = () => {
   });
 
   // Filter out reserves
-  const supplyReserves: unknown = isShowZeroAssets
-    ? sortedSupplyReserves
-    : filteredSupplyReserves.length >= 1
-    ? filteredSupplyReserves
-    : sortedSupplyReserves;
+  let supplyReserves: unknown;
+  if (isShowZeroAssets || filteredSupplyReserves.length === 0) {
+    supplyReserves = sortedSupplyReserves;
+  } else {
+    supplyReserves = filteredSupplyReserves;
+  }
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
-  const preSortedReserves = supplyReserves as DashboardReserve[];
+  let preSortedReserves = supplyReserves as DashboardReserve[];
+  preSortedReserves = sortPriorityReserve(GHO_SYMBOL, preSortedReserves);
   const sortedReserves = handleSortDashboardReserves(
     sortDesc,
     sortName,
     'assets',
-    preSortedReserves,
-    false,
-    GHO_SYMBOL
+    preSortedReserves
   );
 
   const RenderHeader: React.FC = () => {

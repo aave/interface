@@ -31,6 +31,7 @@ import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
   handleSortDashboardReserves,
+  sortPriorityReserve,
 } from '../../../../utils/dashboardSortUtils';
 import {
   assetCanBeBorrowedByUser,
@@ -161,14 +162,8 @@ export const BorrowAssetsList = () => {
     borrowReserves,
     currentMarket
   );
-  const sortedReserves = handleSortDashboardReserves(
-    sortDesc,
-    sortName,
-    'asset',
-    filteredReserves as unknown as DashboardReserve[],
-    false,
-    GHO_SYMBOL
-  );
+  const sorted = sortPriorityReserve(GHO_SYMBOL, filteredReserves as unknown as DashboardReserve[]);
+  const sortedReserves = handleSortDashboardReserves(sortDesc, sortName, 'asset', sorted);
   const borrowDisabled = !sortedReserves.length && !ghoReserve;
 
   const RenderHeader: React.FC = () => {

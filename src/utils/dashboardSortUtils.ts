@@ -29,18 +29,45 @@ export type DashboardReserve = DashboardReserveData & {
   reserve: ComputedReserveData;
 };
 
+// Narrowing down the type to only the necessary fields to simplify testing
+type Positions = { reserve: Pick<DashboardReserve['reserve'], 'symbol'> } & Pick<
+  DashboardReserve,
+  'walletBalanceUSD'
+>;
+export const sortPriorityReserve = (priorityReserveSymbol: string, positions: Positions[]) => {
+  const priorityReserve = positions.find(
+    (position) => position.reserve.symbol === priorityReserveSymbol
+  );
+  if (!priorityReserve) {
+    return positions as DashboardReserve[];
+  }
+
+  let reserves = positions.filter((item) => item !== priorityReserve);
+
+  if (priorityReserve.walletBalanceUSD !== '0') {
+    // Insert at the top if the wallet balance is non-zero
+    reserves.unshift(priorityReserve);
+  } else {
+    // Insert after all non-zero items first, then the priority reserve, then all zero items
+    const nonZeroItems = reserves.filter((item) => +item.walletBalanceUSD !== 0);
+    const zeroItems = reserves.filter((item) => +item.walletBalanceUSD === 0);
+    reserves = [...nonZeroItems, priorityReserve, ...zeroItems];
+  }
+
+  return reserves as DashboardReserve[];
+};
+
 export const handleSortDashboardReserves = (
   sortDesc: boolean,
   sortName: string,
   sortPosition: string,
   positions: DashboardReserve[],
-  isBorrowedPosition?: boolean,
-  prioritySymbol?: string
+  isBorrowedPosition?: boolean
 ): DashboardReserve[] => {
   if (sortDesc) {
     return handleSortDesc(sortName, sortPosition, positions, isBorrowedPosition || false);
   } else {
-    return sortAsc(sortName, sortPosition, positions, isBorrowedPosition || false, prioritySymbol);
+    return sortAsc(sortName, sortPosition, positions, isBorrowedPosition || false);
   }
 };
 
@@ -74,8 +101,7 @@ const sortAsc = (
   sortName: string,
   sortPosition: string,
   positions: DashboardReserve[],
-  isBorrowedPosition: boolean,
-  prioritySymbol?: string
+  isBorrowedPosition: boolean
 ) => {
   if (sortName === 'symbol') {
     return handleSymbolSort(false, sortPosition, positions);
@@ -95,19 +121,7 @@ const sortAsc = (
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const sorted = positions.sort((a, b) => a[sortName] - b[sortName]);
-
-    if (prioritySymbol) {
-      const priorityItemIndex = positions.findIndex(
-        (item) => item.reserve.symbol === prioritySymbol
-      );
-      if (priorityItemIndex > -1) {
-        const [priorityItem] = positions.splice(priorityItemIndex, 1);
-        return [priorityItem, ...sorted];
-      }
-    }
-
-    return sorted;
+    return positions.sort((a, b) => b[sortName] - a[sortName]);
   }
 };
 
