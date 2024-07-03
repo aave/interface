@@ -15,6 +15,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
         learnMoreLink="https://governance.aave.com/t/arfc-gho-cross-chain-launch/17616"
         buttonText="Learn More"
         notifyText="Users can now bridge GHO to Arbitrum with CCIP ✨"
+        storageKey="ccip-notify"
       />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>

@@ -12,11 +12,17 @@ import { useRootStore } from 'src/store/root';
 
 interface TopBarNotifyProps {
   notifyText: ReactNode;
+  storageKey: string;
   learnMoreLink?: string;
   buttonText?: string;
 }
 
-export default function TopBarNotify({ notifyText, learnMoreLink, buttonText }: TopBarNotifyProps) {
+export default function TopBarNotify({
+  notifyText,
+  storageKey,
+  learnMoreLink,
+  buttonText,
+}: TopBarNotifyProps) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
 
@@ -25,14 +31,17 @@ export default function TopBarNotify({ notifyText, learnMoreLink, buttonText }: 
   const [mobileDrawerOpen] = useRootStore((state) => [state.mobileDrawerOpen]);
 
   useEffect(() => {
-    const warningBarOpen = localStorage.getItem('warningBarOpen');
+    // remove previous key
+    localStorage.removeItem('warningBarOpen');
+
+    const warningBarOpen = localStorage.getItem(storageKey);
     if (warningBarOpen && warningBarOpen === 'false') {
       setShowWarning(false);
     }
   }, []);
 
   const handleClose = () => {
-    localStorage.setItem('warningBarOpen', 'false');
+    localStorage.setItem(storageKey, 'false');
     setShowWarning(false);
   };
 
