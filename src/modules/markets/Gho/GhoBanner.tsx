@@ -88,29 +88,29 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       >
         <Box
           component="img"
-          src="/illustration_desktop.png"
+          src="/illustration-green.svg"
           alt="ghost and coin"
           sx={{
             ['@media screen and (min-width: 1125px)']: {
-              width: 290,
+              width: 135,
             },
             width: {
-              xs: 198,
-              xsm: 229,
-              md: 266,
+              xs: 100,
+              xsm: 115,
+              md: 135,
             },
             position: 'absolute',
             top: {
-              xs: -40,
-              xsm: -35,
-              md: -63,
+              xs: -25,
+              xsm: 0,
+              md: -7,
             },
             right: {
-              xs: -50,
+              xs: 0,
               xsm: 'unset',
             },
             left: {
-              xsm: -10,
+              xsm: 30,
             },
           }}
         />
