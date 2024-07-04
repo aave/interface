@@ -109,7 +109,7 @@ export const GhoDiscountProgram = () => {
             height: 120,
             overflow: 'hidden',
             display: {
-              xs: 'none',
+              // xs: 'none',
               xsm: 'block',
             },
             transform: 'matrix(1, -0.14, 0.14, 1, 0, 0)',
