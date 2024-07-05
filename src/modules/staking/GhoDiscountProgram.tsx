@@ -38,7 +38,7 @@ export const GhoDiscountProgram = () => {
           flexDirection: 'column',
           alignItems: {
             xs: 'flex-start',
-            xsm: 'center',
+            // xsm: 'center',
           },
           height: {
             xs: 120,
@@ -68,12 +68,12 @@ export const GhoDiscountProgram = () => {
           height={220}
           alt="gho coin"
         /> */}
-        <Box display="flex" flexDirection="column" alignItems={['flex-start', 'center']} gap={3}>
+        <Box display="flex" flexDirection="column" alignItems={['flex-start']} gap={3}>
           <Typography
             variant="subheader1"
             color="text.primary"
-            width={['221px', '300px']}
-            textAlign={['left', 'center']}
+            width={['221px', '400px']}
+            textAlign={['left']}
           >
             {downToXsm ? (
               <Trans>stkAAVE holders get a discount on GHO borrow rate</Trans>
