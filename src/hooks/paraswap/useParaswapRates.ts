@@ -65,7 +65,7 @@ type UseParaswapSellTxParams = {
 };
 
 export const useParaswapSellTxParams = (chainId: number) => {
-  const FEE_CLAIMER_ADDRESS = getFeeTarget(chainId);
+  const FEE_TARGET = getFeeTarget(chainId);
   return useMutation<PopulatedTransaction, unknown, UseParaswapSellTxParams>({
     mutationFn: async ({
       srcToken,
@@ -93,7 +93,7 @@ export const useParaswapSellTxParams = (chainId: number) => {
           permit,
           deadline,
           partner,
-          partnerAddress: FEE_CLAIMER_ADDRESS,
+          partnerAddress: FEE_TARGET,
           takeSurplus: true,
           isDirectFeeTransfer: true,
         },
