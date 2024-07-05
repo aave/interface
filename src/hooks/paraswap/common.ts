@@ -22,7 +22,6 @@ import {
   TransactionParams,
 } from '@paraswap/sdk';
 import { GetRateFunctions, RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
-import { Address } from 'blo';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
@@ -85,7 +84,7 @@ const paraswapNetworks: ParaswapChainMap = {
   [ChainId.bnb]: ParaSwap(ChainId.bnb),
 };
 
-const paraswapFeeTarget: Record<number, Address> = {
+const paraswapFeeTarget: Record<number, string> = {
   [ChainId.mainnet]: AaveV3Ethereum.COLLECTOR,
   [ChainId.polygon]: AaveV3Polygon.COLLECTOR,
   [ChainId.avalanche]: AaveV3Avalanche.COLLECTOR,
