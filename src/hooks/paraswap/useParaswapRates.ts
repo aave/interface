@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { BigNumber, constants, PopulatedTransaction } from 'ethers';
 import { queryKeysFactory } from 'src/ui-config/queries';
 
-import { getFeeClaimerAddress, getParaswap } from './common';
+import { getFeeTarget, getParaswap } from './common';
 
 type ParaSwapSellRatesParams = {
   amount: string;
@@ -65,7 +65,7 @@ type UseParaswapSellTxParams = {
 };
 
 export const useParaswapSellTxParams = (chainId: number) => {
-  const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
+  const FEE_CLAIMER_ADDRESS = getFeeTarget(chainId);
   return useMutation<PopulatedTransaction, unknown, UseParaswapSellTxParams>({
     mutationFn: async ({
       srcToken,
@@ -90,11 +90,12 @@ export const useParaswapSellTxParams = (chainId: number) => {
           userAddress: user,
           priceRoute: route,
           slippage: maxSlippage,
-          takeSurplus: true,
-          partner,
-          partnerAddress: FEE_CLAIMER_ADDRESS,
           permit,
           deadline,
+          partner,
+          partnerAddress: FEE_CLAIMER_ADDRESS,
+          takeSurplus: true,
+          isDirectFeeTransfer: true,
         },
         { ignoreChecks: true }
       );
