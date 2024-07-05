@@ -55,7 +55,8 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
             md: 4,
           },
           display: 'flex',
-          backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#C9B3F94D',
+          backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#F7F7F9',
+
           position: 'relative',
           alignItems: {
             xs: 'none',
@@ -88,29 +89,32 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       >
         <Box
           component="img"
-          src="/illustration-green.svg"
+          src="/illustration-gho-logo-2.svg"
           alt="ghost and coin"
           sx={{
             ['@media screen and (min-width: 1125px)']: {
-              width: 135,
+              width: 214,
             },
             width: {
               xs: 100,
-              xsm: 115,
-              md: 135,
+              xsm: 160,
+              sm: 165,
+              md: 180,
             },
             position: 'absolute',
             top: {
-              xs: -25,
-              xsm: 0,
-              md: -7,
+              xs: -15,
+              xsm: 36,
+              sm: 12,
+              md: -13,
+              lg: -12,
             },
             right: {
               xs: 0,
               xsm: 'unset',
             },
             left: {
-              xsm: 30,
+              xsm: 10,
             },
           }}
         />

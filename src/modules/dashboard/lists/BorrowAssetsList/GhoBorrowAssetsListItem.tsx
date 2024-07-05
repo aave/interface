@@ -168,7 +168,7 @@ const GhoBorrowAssetsListItemDesktop = ({
           color="text.secondary"
         />
         <GhoIncentivesCard
-          withTokenIcon={true}
+          withTokenIcon={false}
           useApyRange
           rangeValues={ghoApyRange}
           value={ghoUserDataFetched ? userBorrowApyAfterNewBorrow : -1}
@@ -239,7 +239,7 @@ const GhoBorrowAssetsListItemMobile = ({
       >
         <Stack alignItems="end">
           <GhoIncentivesCard
-            withTokenIcon={true}
+            withTokenIcon={false}
             useApyRange
             rangeValues={ghoApyRange}
             value={ghoLoadingData ? -1 : userBorrowApyAfterNewBorrow}
