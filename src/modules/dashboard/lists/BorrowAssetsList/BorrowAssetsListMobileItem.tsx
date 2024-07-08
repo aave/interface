@@ -3,6 +3,7 @@ import { Box, Button } from '@mui/material';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { showSuperFestTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -38,6 +39,7 @@ export const BorrowAssetsListMobileItem = ({
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
+      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket)}
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
