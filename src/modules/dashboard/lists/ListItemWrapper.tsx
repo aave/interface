@@ -4,6 +4,7 @@ import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisable
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { PausedTooltip } from 'src/components/infoTooltips/PausedTooltip';
 import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
+import { SuperfestTooltip } from 'src/components/infoTooltips/Superfest';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
@@ -32,6 +33,7 @@ interface ListItemWrapperProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
+  side: 'supply' | 'borrow';
 }
 
 export const ListItemWrapper = ({
@@ -47,6 +49,7 @@ export const ListItemWrapper = ({
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
+  side,
   ...rest
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
@@ -55,6 +58,8 @@ export const ListItemWrapper = ({
   const showRenFilTooltip = frozen && symbol === 'renFIL';
   const showAmplTooltip = !frozen && symbol === 'AMPL';
   const showstETHTooltip = symbol == 'stETH';
+  const showSuperfestTooltip =
+    side == 'borrow' && currentMarket == 'proto_base_v3' && (symbol == 'USDC' || symbol == 'ETH');
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[symbol];
   const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -87,6 +92,7 @@ export const ListItemWrapper = ({
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}
         {showstETHTooltip && <StETHCollateralToolTip />}
+        {showSuperfestTooltip && <SuperfestTooltip />}
         {offboardingDiscussion && <OffboardingTooltip discussionLink={offboardingDiscussion} />}
         {showBorrowDisabledTooltip && (
           <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />

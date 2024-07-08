@@ -139,6 +139,7 @@ const BorrowedPositionsListItemDesktop = ({
       borrowEnabled={reserve.borrowingEnabled}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
+      side="borrow"
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 

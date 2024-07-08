@@ -156,6 +156,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
       frozen={isFrozen}
       data-cy={`dashboardBorrowedListItem_${symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
+      side="borrow"
     >
       <ListValueColumn
         symbol={symbol}

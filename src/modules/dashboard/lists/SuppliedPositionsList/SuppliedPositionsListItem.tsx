@@ -65,6 +65,7 @@ export const SuppliedPositionsListItem = ({
       }`}
       showSupplyCapTooltips
       showDebtCeilingTooltips
+      side="supply"
     >
       <ListValueColumn
         symbol={reserve.iconSymbol}

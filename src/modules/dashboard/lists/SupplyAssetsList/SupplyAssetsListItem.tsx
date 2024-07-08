@@ -152,6 +152,7 @@ export const SupplyAssetsListItemDesktop = ({
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
+      side="supply"
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <ListColumn>
