@@ -1,6 +1,8 @@
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 
+import { CustomMarket } from './marketsAndNetworksConfig';
+
 export function hexToAscii(_hex: string): string {
   const hex = _hex.toString();
   let str = '';
@@ -71,4 +73,8 @@ export const roundToTokenDecimals = (inputValue: string, tokenDecimals: number) 
 
   // Combine the whole and adjusted decimal parts
   return whole + '.' + adjustedDecimals;
+};
+
+export const showSuperFestTooltip = (symbol: string, currentMarket: string) => {
+  return currentMarket === CustomMarket.proto_base_v3 && (symbol === 'USDC' || symbol === 'ETH');
 };

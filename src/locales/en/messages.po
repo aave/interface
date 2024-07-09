@@ -2119,6 +2119,10 @@ msgstr "Reward(s) to claim"
 msgid "Rewards APR"
 msgstr "Rewards APR"
 
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "Rewards can be claimed through"
+msgstr "Rewards can be claimed through"
+
 #: src/components/HealthFactorNumber.tsx
 msgid "Risk details"
 msgstr "Risk details"
@@ -2679,6 +2683,10 @@ msgstr "This asset has reached its borrow cap. Nothing is available to be borrow
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
+
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/components/infoTooltips/FrozenTooltip.tsx
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
@@ -3352,6 +3360,10 @@ msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
+
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "about SuperFest."
+msgstr "about SuperFest."
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"
