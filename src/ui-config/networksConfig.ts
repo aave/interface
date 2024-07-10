@@ -436,7 +436,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
 
   [ChainId.scroll]: {
     name: 'Scroll',
-    privateJsonRPCUrl: 'https://scroll-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    // privateJsonRPCUrl: 'https://scroll-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://rpc.scroll.io', 'https://rpc.ankr.com/scroll'],
     publicJsonRPCWSUrl: 'wss://bsc.publicnode.com',
     baseAssetSymbol: 'ETH',
