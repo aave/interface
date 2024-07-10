@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-07-02 18:05\n"
+"PO-Revision-Date: 2024-07-10 00:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2124,6 +2124,10 @@ msgstr "Recompensa(s) por reclamar"
 msgid "Rewards APR"
 msgstr "APR de recompensas"
 
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "Rewards can be claimed through"
+msgstr ""
+
 #: src/components/HealthFactorNumber.tsx
 msgid "Risk details"
 msgstr "Detalles de riesgo"
@@ -2684,6 +2688,10 @@ msgstr "Este activo ha alcanzado su límite de préstamo. No queda nada disponib
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "Este activo ha alcanzado su límite de suministro. No queda nada disponible para ser suministrado desde este mercado."
+
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
 
 #: src/components/infoTooltips/FrozenTooltip.tsx
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
@@ -3357,6 +3365,10 @@ msgstr "Tu cartera de {networkName} está vacía. Consigue {0} de prueba gratis 
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Dirección cero no válida"
+
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "about SuperFest."
+msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"

@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-07-02 18:05\n"
+"PO-Revision-Date: 2024-07-10 00:18\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2124,6 +2124,10 @@ msgstr "Ανταμοιβή(ες) προς διεκδίκηση"
 msgid "Rewards APR"
 msgstr "Ανταμοιβές APR"
 
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "Rewards can be claimed through"
+msgstr ""
+
 #: src/components/HealthFactorNumber.tsx
 msgid "Risk details"
 msgstr "Λεπτομέρειες κινδύνου"
@@ -2685,6 +2689,10 @@ msgstr "Αυτό το περιουσιακό στοιχείο έχει φθάσ�
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "Αυτό το περιουσιακό στοιχείο έχει φτάσει στο όριο της προσφοράς του. Τίποτα δεν είναι διαθέσιμο για προμήθεια από αυτή την αγορά."
+
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
 
 #: src/components/infoTooltips/FrozenTooltip.tsx
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
@@ -3358,6 +3366,10 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Η μηδενική διεύθυνση δεν είναι έγκυρη"
+
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "about SuperFest."
+msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"

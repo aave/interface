@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-07-02 18:05\n"
+"PO-Revision-Date: 2024-07-10 00:18\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -2124,6 +2124,10 @@ msgstr "领取奖励"
 msgid "Rewards APR"
 msgstr "奖励年利率"
 
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "Rewards can be claimed through"
+msgstr ""
+
 #: src/components/HealthFactorNumber.tsx
 msgid "Risk details"
 msgstr "风险详情"
@@ -2684,6 +2688,10 @@ msgstr "该资产已达到其借款上限。没有任何东西可以从这个市
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "该资产已达到其供应上限。这个市场没有任何东西可以供应。"
+
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
 
 #: src/components/infoTooltips/FrozenTooltip.tsx
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
@@ -3357,6 +3365,10 @@ msgstr "你 {networkName} 钱包是空的。获取免费测试 {0} 在"
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "零地址无效"
+
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "about SuperFest."
+msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"
