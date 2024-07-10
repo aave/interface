@@ -74,7 +74,14 @@ export const roundToTokenDecimals = (inputValue: string, tokenDecimals: number) 
   // Combine the whole and adjusted decimal parts
   return whole + '.' + adjustedDecimals;
 };
-
-export const showSuperFestTooltip = (symbol: string, currentMarket: string) => {
-  return currentMarket === CustomMarket.proto_base_v3 && (symbol === 'USDC' || symbol === 'ETH');
+export enum Side {
+  SUPPLY = 'supply',
+  BORROW = 'borrow',
+}
+export const showSuperFestTooltip = (symbol: string, currentMarket: string, side?: Side) => {
+  return (
+    currentMarket === CustomMarket.proto_base_v3 &&
+    ((side === Side.SUPPLY && symbol == 'weETH') ||
+      (side === Side.BORROW && (symbol == 'USDC' || symbol == 'ETH')))
+  );
 };
