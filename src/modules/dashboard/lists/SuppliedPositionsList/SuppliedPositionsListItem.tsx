@@ -7,6 +7,7 @@ import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GHO_SWITCH_FEATURE_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -65,6 +66,7 @@ export const SuppliedPositionsListItem = ({
       }`}
       showSupplyCapTooltips
       showDebtCeilingTooltips
+      showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY)}
     >
       <ListValueColumn
         symbol={reserve.iconSymbol}

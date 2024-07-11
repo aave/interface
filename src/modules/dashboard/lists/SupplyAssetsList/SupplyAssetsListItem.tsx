@@ -29,6 +29,7 @@ import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -152,6 +153,7 @@ export const SupplyAssetsListItemDesktop = ({
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
+      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <ListColumn>
@@ -332,6 +334,7 @@ export const SupplyAssetsListItemMobile = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
+      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <Row

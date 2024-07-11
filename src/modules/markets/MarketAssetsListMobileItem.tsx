@@ -1,11 +1,13 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
+import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
+import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -17,6 +19,9 @@ import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper'
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const { currentMarket } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  const isSuperfestOnSupplySide = showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY);
+  const isSuperfestOnBorrowSide = showSuperFestTooltip(reserve.symbol, currentMarket, Side.BORROW);
 
   return (
     <ListMobileItemWrapper
@@ -53,6 +58,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           incentives={reserve.aIncentivesData || []}
           symbol={reserve.symbol}
           variant="secondary14"
+          tooltip={isSuperfestOnSupplySide && <SuperFestTooltip />}
         />
       </Row>
 
@@ -97,6 +103,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             incentives={reserve.vIncentivesData || []}
             symbol={reserve.symbol}
             variant="secondary14"
+            tooltip={isSuperfestOnBorrowSide && <SuperFestTooltip />}
           />
           {!reserve.borrowingEnabled &&
             Number(reserve.totalVariableDebt) > 0 &&
