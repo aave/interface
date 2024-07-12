@@ -347,7 +347,7 @@ const GhoMeritProgramIncentives = ({ downToXsm }: { downToXsm: boolean }) => {
       <Typography variant="subheader1" gutterBottom>
         <Trans>Merit Program</Trans>
       </Typography>
-      <Typography variant="caption" color="text.secondary" mb={6}>
+      <Typography variant="caption" color="text.secondary" mb={3}>
         <Trans>
           GHO borrowers recieve periodic rewards through the Merit program. This is a program
           initiated and implemented by the decentralised Aave community. Aave Labs does not
@@ -361,6 +361,18 @@ const GhoMeritProgramIncentives = ({ downToXsm }: { downToXsm: boolean }) => {
         >
           Learn more
         </Link>
+      </Typography>
+      <Typography variant="caption" color="text.secondary" mb={6}>
+        <Trans>Rewards can be claimed through the</Trans>{' '}
+        <Link
+          href="https://apps.aavechan.com/merit"
+          sx={{ textDecoration: 'underline' }}
+          variant="caption"
+          color="text.secondary"
+        >
+          Aave Chan Initiative interface
+        </Link>
+        {'.'}
       </Typography>
       <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>Current rewards</Trans>}>
         {isFetching ? (

@@ -2123,6 +2123,11 @@ msgstr "Rewards APR"
 msgid "Rewards can be claimed through"
 msgstr "Rewards can be claimed through"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Rewards can be claimed through the"
+msgstr "Rewards can be claimed through the"
+
 #: src/components/HealthFactorNumber.tsx
 msgid "Risk details"
 msgstr "Risk details"
