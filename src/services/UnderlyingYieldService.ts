@@ -1,6 +1,14 @@
+import { AaveV2Ethereum, MiscEthereum } from '@bgd-labs/aave-address-book';
 import { Provider } from '@ethersproject/providers';
 import { Contract } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
+
+import {
+  cbEthOracle,
+  etherfiLiquidityPool,
+  rocketNetworkBalances,
+  staderLabsOracle,
+} from './UnderlyingYieldAddressesConfig';
 
 export interface UnderlyingAPYs {
   [key: string]: number | null;
@@ -112,7 +120,7 @@ export class UnderlyingYieldService {
       },
     ];
 
-    const contract = new Contract('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84', abi); // stETH token
+    const contract = new Contract(AaveV2Ethereum.ASSETS.stETH.UNDERLYING, abi); // stETH token
     const connectedContract = contract.connect(provider);
 
     const blocksInDay = DAY_IN_SECONDS / 12;
@@ -149,7 +157,7 @@ export class UnderlyingYieldService {
       },
     ];
 
-    const contract = new Contract('0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7', abi); // Maker DSR Pot (MCD Pot)
+    const contract = new Contract(MiscEthereum.sDAI_POT, abi); // Maker DSR Pot (MCD Pot)
     const connectedContract = contract.connect(provider);
 
     const dsr = await connectedContract.dsr();
@@ -188,7 +196,7 @@ export class UnderlyingYieldService {
       },
     ];
 
-    const contract = new Contract('0x6Cc65bF618F55ce2433f9D8d827Fc44117D81399', abi); // RocketNetworkBalances
+    const contract = new Contract(rocketNetworkBalances, abi);
     const connectedContract = contract.connect(provider);
     const events = await connectedContract.queryFilter(
       connectedContract.filters.BalancesUpdated(),
@@ -236,7 +244,7 @@ export class UnderlyingYieldService {
       },
     ];
 
-    const contract = new Contract('0xF64bAe65f6f2a5277571143A24FaaFDFC0C2a737', abi); // Stader Labs Oracle
+    const contract = new Contract(staderLabsOracle, abi); // Stader Labs Oracle
     const connectedContract = contract.connect(provider);
 
     const events = await connectedContract.queryFilter(
@@ -275,7 +283,7 @@ export class UnderlyingYieldService {
       },
     ];
 
-    const contract = new Contract('0x9b37180d847B27ADC13C2277299045C1237Ae281', abi); // cbETH Oracle
+    const contract = new Contract(cbEthOracle, abi); // cbETH Oracle
     const connectedContract = contract.connect(provider);
 
     const events = await connectedContract.queryFilter(
@@ -336,7 +344,7 @@ export class UnderlyingYieldService {
         type: 'event',
       },
     ];
-    const contract = new Contract('0x308861A430be4cce5502d0A12724771Fc6DaF216', abi); // Etherfi LiquidityPool
+    const contract = new Contract(etherfiLiquidityPool, abi); // Etherfi LiquidityPool
     const connectedContract = contract.connect(provider);
     const events = await connectedContract.queryFilter(
       connectedContract.filters.Rebase(),
