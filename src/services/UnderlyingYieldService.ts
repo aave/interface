@@ -1,7 +1,8 @@
 import { AaveV2Ethereum, MiscEthereum } from '@bgd-labs/aave-address-book';
 import { Provider } from '@ethersproject/providers';
-import { Contract } from 'ethers';
+import { Contract, EventFilter } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
+import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
 import {
   cbEthOracle,
@@ -125,11 +126,12 @@ export class UnderlyingYieldService {
 
     const blocksInDay = DAY_IN_SECONDS / 12;
 
-    const events = await connectedContract.queryFilter(
-      connectedContract.filters.TokenRebased(),
-      currentBlockNumber - blocksInDay * EVENTS_PERIOD_DAYS,
-      currentBlockNumber
-    );
+    const events = await this.fetchEventsInBatches({
+      connectedContract,
+      eventFilter: connectedContract.filters.TokenRebased(),
+      fromBlock: currentBlockNumber - blocksInDay * EVENTS_PERIOD_DAYS,
+      toBlock: currentBlockNumber,
+    });
 
     const latestEvent = events.length === 0 ? null : events[events.length - 1];
 
@@ -198,11 +200,12 @@ export class UnderlyingYieldService {
 
     const contract = new Contract(rocketNetworkBalances, abi);
     const connectedContract = contract.connect(provider);
-    const events = await connectedContract.queryFilter(
-      connectedContract.filters.BalancesUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
-      currentBlockNumber
-    );
+    const events = await this.fetchEventsInBatches({
+      connectedContract,
+      eventFilter: connectedContract.filters.BalancesUpdated(),
+      fromBlock: currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
+      toBlock: currentBlockNumber,
+    });
 
     const rates = events
       .map((event) => {
@@ -246,12 +249,12 @@ export class UnderlyingYieldService {
 
     const contract = new Contract(staderLabsOracle, abi); // Stader Labs Oracle
     const connectedContract = contract.connect(provider);
-
-    const events = await connectedContract.queryFilter(
-      connectedContract.filters.ExchangeRateUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
-      currentBlockNumber
-    );
+    const events = await this.fetchEventsInBatches({
+      connectedContract,
+      eventFilter: connectedContract.filters.ExchangeRateUpdated(),
+      fromBlock: currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
+      toBlock: currentBlockNumber,
+    });
 
     const rates = events
       .map((event) => {
@@ -285,12 +288,12 @@ export class UnderlyingYieldService {
 
     const contract = new Contract(cbEthOracle, abi); // cbETH Oracle
     const connectedContract = contract.connect(provider);
-
-    const events = await connectedContract.queryFilter(
-      connectedContract.filters.ExchangeRateUpdated(),
-      currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
-      currentBlockNumber
-    );
+    const events = await this.fetchEventsInBatches({
+      connectedContract,
+      eventFilter: connectedContract.filters.ExchangeRateUpdated(),
+      fromBlock: currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
+      toBlock: currentBlockNumber,
+    });
 
     if (events && events.length > 2) {
       const lastestEventArgs = events[events.length - 1].args;
@@ -346,11 +349,12 @@ export class UnderlyingYieldService {
     ];
     const contract = new Contract(etherfiLiquidityPool, abi); // Etherfi LiquidityPool
     const connectedContract = contract.connect(provider);
-    const events = await connectedContract.queryFilter(
-      connectedContract.filters.Rebase(),
-      currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
-      currentBlockNumber
-    );
+    const events = await this.fetchEventsInBatches({
+      connectedContract,
+      eventFilter: connectedContract.filters.Rebase(),
+      fromBlock: currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
+      toBlock: currentBlockNumber,
+    });
 
     if (events && events.length > 2) {
       const lastestEventArgs = events[events.length - 1].args;
@@ -380,5 +384,39 @@ export class UnderlyingYieldService {
     } else {
       return await getApyFromApi();
     }
+  };
+
+  fetchEventsInBatches = async (parameters: {
+    connectedContract: Contract;
+    eventFilter: EventFilter;
+    fromBlock: number;
+    toBlock: number;
+    blockRange?: number;
+  }) => {
+    const { connectedContract, eventFilter, fromBlock, toBlock } = parameters;
+
+    let blockRange;
+
+    if (parameters.blockRange) {
+      blockRange = parameters.blockRange;
+    } else if (FORK_ENABLED) {
+      blockRange = 1000;
+    } else {
+      blockRange = 100000;
+    }
+
+    let startBlock = fromBlock;
+
+    const allEvents = [];
+
+    while (startBlock <= toBlock) {
+      const nextBlock = startBlock + blockRange - 1;
+      const endBlock = nextBlock < toBlock ? nextBlock : toBlock;
+      const events = await connectedContract.queryFilter(eventFilter, startBlock, endBlock);
+      allEvents.push(...events);
+      startBlock = endBlock + 1;
+    }
+
+    return allEvents;
   };
 }
