@@ -124,12 +124,10 @@ export class UnderlyingYieldService {
     const contract = new Contract(AaveV2Ethereum.ASSETS.stETH.UNDERLYING, abi); // stETH token
     const connectedContract = contract.connect(provider);
 
-    const blocksInDay = DAY_IN_SECONDS / 12;
-
     const events = await this.fetchEventsInBatches({
       connectedContract,
       eventFilter: connectedContract.filters.TokenRebased(),
-      fromBlock: currentBlockNumber - blocksInDay * EVENTS_PERIOD_DAYS,
+      fromBlock: currentBlockNumber - BLOCKS_A_DAY * EVENTS_PERIOD_DAYS,
       toBlock: currentBlockNumber,
     });
 
@@ -402,7 +400,7 @@ export class UnderlyingYieldService {
     } else if (FORK_ENABLED) {
       blockRange = 1000;
     } else {
-      blockRange = 100000;
+      blockRange = BLOCKS_A_DAY * EVENTS_PERIOD_DAYS + 1;
     }
 
     let startBlock = fromBlock;
