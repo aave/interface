@@ -37,6 +37,16 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
   return { market, network };
 };
 
+export const getMarketLogoById = (marketId: CustomMarket, networkLogoPath: string) => {
+  const market: MarketDataType = marketsData[marketId as CustomMarket];
+
+  if (market.chainId === 1 && market.marketTitle === 'Ethereum Lido Market') {
+    return { marketLogo: '/icons/networks/lido.svg' };
+  }
+
+  return { marketLogo: networkLogoPath };
+};
+
 export const getMarketHelpData = (marketName: string) => {
   const testChains = [
     'Görli',
@@ -154,6 +164,7 @@ export const MarketSwitcher = () => {
         ),
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
+
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
@@ -318,6 +329,7 @@ export const MarketSwitcher = () => {
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
         const marketNaming = getMarketHelpData(market.marketTitle);
+        const { marketLogo } = getMarketLogoById(marketId, network.networkLogoPath);
         return (
           <MenuItem
             key={marketId}
@@ -332,11 +344,7 @@ export const MarketSwitcher = () => {
                   : 'flex',
             }}
           >
-            <MarketLogo
-              size={32}
-              logo={network.networkLogoPath}
-              testChainName={marketNaming.testChainName}
-            />
+            <MarketLogo size={32} logo={marketLogo} testChainName={marketNaming.testChainName} />
             <ListItemText sx={{ mr: 0 }}>
               {marketNaming.name} {market.isFork ? 'Fork' : ''}
             </ListItemText>
