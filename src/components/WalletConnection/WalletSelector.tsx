@@ -24,7 +24,7 @@ export type WalletRowProps = {
 const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   const { connectWallet, loading } = useWeb3Context();
 
-  const { connectTonWallet } = useTonConnectContext();
+  const { connectTonWallet, disconnectTonWallet, isConnectedTonWallet } = useTonConnectContext();
   const { setWalletModalOpen } = useWalletModalContext();
 
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -86,6 +86,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
       connectTonWallet();
       setWalletModalOpen(false);
     } else {
+      if (isConnectedTonWallet) disconnectTonWallet();
       trackEvent(AUTH.CONNECT_WALLET, { walletType: walletType, walletName: walletName });
       connectWallet(walletType);
     }

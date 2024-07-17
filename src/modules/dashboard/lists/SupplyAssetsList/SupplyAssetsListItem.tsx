@@ -101,7 +101,7 @@ export const SupplyAssetsListItemDesktop = ({
   isIsolated,
   usageAsCollateralEnabledOnUser,
   detailsAddress,
-  disableSupply,
+  // disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
@@ -228,7 +228,8 @@ export const SupplyAssetsListItemDesktop = ({
 
       <ListButtonsColumn>
         <Button
-          disabled={disableSupply}
+          // disabled={disableSupply}  // disable for testing
+          disabled={true}
           variant="contained"
           onClick={() => {
             openSupply(underlyingAsset, currentMarket, name, 'dashboard');
