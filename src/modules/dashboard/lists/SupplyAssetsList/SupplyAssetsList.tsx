@@ -11,6 +11,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
@@ -44,6 +45,7 @@ const head = [
 ];
 
 export const SupplyAssetsList = () => {
+  const { isConnectedTonWallet } = useTonConnectContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
@@ -55,7 +57,7 @@ export const SupplyAssetsList = () => {
     loading: loadingReserves,
   } = useAppDataContext();
   const wrappedTokenReserves = useWrappedTokens();
-  const { walletBalances, loading } = useWalletBalances(currentMarketData);
+  const { walletBalances, loading: loadingWalletBalances } = useWalletBalances(currentMarketData);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -68,6 +70,8 @@ export const SupplyAssetsList = () => {
   const [isShowZeroAssets, setIsShowZeroAssets] = useState(
     localStorage.getItem(localStorageName) === 'true'
   );
+
+  const loading = isConnectedTonWallet ? false : loadingWalletBalances;
 
   const tokensToSupply = reserves
     .filter(

@@ -466,8 +466,8 @@ msgstr "Blocked Address"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
-#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr "Borrow"
@@ -2026,8 +2026,8 @@ msgstr "Repaid"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
-#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 msgid "Repay"
 msgstr "Repay"
 
@@ -2379,8 +2379,8 @@ msgstr "Supplied assets"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
 msgstr "Supply"
@@ -2949,9 +2949,9 @@ msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a d
 msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
-#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Utilization Rate"
 msgstr "Utilization Rate"
 
@@ -3140,8 +3140,8 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
-#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 msgid "Withdraw"
 msgstr "Withdraw"
 

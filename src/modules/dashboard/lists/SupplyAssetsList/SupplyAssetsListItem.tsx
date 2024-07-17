@@ -59,7 +59,7 @@ export const SupplyAssetsListItem = (
 
   const canSupplyAsWrappedToken =
     wrappedToken &&
-    params.walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
+    params.walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()]?.amount !== '0';
 
   const disableSupply =
     !isActive ||

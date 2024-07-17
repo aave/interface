@@ -8,6 +8,7 @@ import {
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { GHO_MINTING_MARKETS } from 'src/utils/ghoUtilities';
@@ -73,7 +74,7 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  */
 export const AppDataProvider: React.FC = ({ children }) => {
   const { currentAccount } = useWeb3Context();
-
+  const { isConnectedTonWallet } = useTonConnectContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
   // pool hooks
@@ -123,7 +124,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   // loading
   const isReservesLoading = reservesDataLoading || formattedPoolReservesLoading;
-  const isUserDataLoading = userReservesDataLoading || userSummaryLoading;
+  const isUserDataLoading = isConnectedTonWallet
+    ? false
+    : userReservesDataLoading || userSummaryLoading;
 
   let user = userSummary;
   // Factor discounted GHO interest into cumulative user fields

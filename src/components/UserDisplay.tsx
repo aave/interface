@@ -45,6 +45,8 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
   );
   const loading = domainsLoading || accountLoading;
 
+  const accountAddress = account || walletAddressTonWallet;
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
       <Avatar
@@ -58,20 +60,16 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
         {!oneLiner && defaultDomain?.name ? (
           <>
             <UserNameText
-              address={account || walletAddressTonWallet}
+              address={accountAddress}
               loading={loading}
               domainName={defaultDomain.name}
               variant="h4"
-              link={
-                withLink
-                  ? `https://etherscan.io/address/${account || walletAddressTonWallet}`
-                  : undefined
-              }
+              link={withLink ? `https://etherscan.io/address/${accountAddress}` : undefined}
               funnel={funnel}
               {...titleProps}
             />
             <UserNameText
-              address={account || walletAddressTonWallet}
+              address={accountAddress}
               loading={loading}
               variant="caption"
               {...subtitleProps}
@@ -79,15 +77,11 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
           </>
         ) : (
           <UserNameText
-            address={account || walletAddressTonWallet}
+            address={accountAddress}
             domainName={defaultDomain?.name}
             loading={loading}
             variant="h4"
-            link={
-              withLink
-                ? `https://etherscan.io/address/${account || walletAddressTonWallet}`
-                : undefined
-            }
+            link={withLink ? `https://etherscan.io/address/${accountAddress}` : undefined}
             funnel={funnel}
             {...titleProps}
           />

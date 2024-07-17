@@ -15,6 +15,7 @@ import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { hexToAscii } from 'src/utils/utils';
 
+import { useTonConnectContext } from '../hooks/useTonConnectContext';
 // import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 import { Web3Context } from '../hooks/useWeb3Context';
 import { WalletConnectConnector } from './WalletConnectConnector';
@@ -78,6 +79,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   ]);
   const setAccountLoading = useRootStore((store) => store.setAccountLoading);
   const setWalletType = useRootStore((store) => store.setWalletType);
+
+  const { walletAddressTonWallet } = useTonConnectContext();
+
   // for now we use network changed as it returns the chain string instead of hex
   // const handleChainChanged = (chainId: number) => {
   //   console.log('chainChanged', chainId);
@@ -505,7 +509,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           getTxError,
           sendTx,
           signTxData,
-          currentAccount: account?.toLowerCase() || '',
+          currentAccount: account?.toLowerCase() || walletAddressTonWallet || '',
           addERC20Token,
           error,
           switchNetworkError,

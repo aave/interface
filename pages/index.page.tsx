@@ -59,7 +59,6 @@ export default function Home() {
             </StyledToggleButtonGroup>
           </Box>
         )}
-
         {currentAccount ? (
           <DashboardContentWrapper isBorrow={mode === 'borrow'} />
         ) : (

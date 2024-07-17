@@ -19,6 +19,6 @@ export const UserAuthenticated = ({ children }: UserAuthenticatedProps) => {
       </Box>
     );
   }
-  invariant(user, 'User data loaded but no user found');
-  return <>{children(user)}</>;
+  invariant(user && user, 'User data loaded but no user found');
+  return <>{children(user || '')}</>;
 };
