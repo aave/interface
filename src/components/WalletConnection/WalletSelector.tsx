@@ -5,6 +5,8 @@ import { NoEthereumProviderError } from '@web3-react/injected-connector';
 import { utils } from 'ethers';
 import { useEffect, useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
+import { useWalletModalContext } from 'src/hooks/useWalletModal';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { UserRejectedRequestError } from 'src/libs/web3-data-provider/WalletConnectConnector';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
@@ -21,6 +23,10 @@ export type WalletRowProps = {
 };
 const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   const { connectWallet, loading } = useWeb3Context();
+
+  const { connectTonWallet } = useTonConnectContext();
+  const { setWalletModalOpen } = useWalletModalContext();
+
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const getWalletIcon = (walletType: WalletType) => {
@@ -61,23 +67,28 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
-      // case WalletType.FRAME:
-      //   return (
-      //     <img
-      //       src={`/icons/wallets/frame.svg`}
-      //       width="24px"
-      //       height="24px"
-      //       alt={`browser wallet icon`}
-      //     />
-      //   );
+      case WalletType.TON_CONNECT:
+        return (
+          <img
+            src={`/icons/wallets/logo-288.png`}
+            width="24px"
+            height="24px"
+            alt={`browser wallet icon`}
+          />
+        );
       default:
         return null;
     }
   };
 
   const connectWalletClick = () => {
-    trackEvent(AUTH.CONNECT_WALLET, { walletType: walletType, walletName: walletName });
-    connectWallet(walletType);
+    if (walletType === WalletType.TON_CONNECT) {
+      connectTonWallet();
+      setWalletModalOpen(false);
+    } else {
+      trackEvent(AUTH.CONNECT_WALLET, { walletType: walletType, walletName: walletName });
+      connectWallet(walletType);
+    }
   };
   return (
     <Button
@@ -220,6 +231,7 @@ export const WalletSelector = () => {
         walletType={WalletType.WALLET_LINK}
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
+      <WalletRow key="ton_wallets" walletName="Ton Connect" walletType={WalletType.TON_CONNECT} />
       {/* <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} /> */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
         <Typography variant="subheader1" color="text.secondary">

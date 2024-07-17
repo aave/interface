@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import { blo } from 'blo';
 import { useMemo } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import shallow from 'zustand/shallow';
@@ -27,6 +28,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
   withLink,
   funnel,
 }) => {
+  const { walletAddressTonWallet } = useTonConnectContext();
   const { account, defaultDomain, domainsLoading, accountLoading } = useRootStore(
     (state) => ({
       account: state.account,
@@ -56,16 +58,20 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
         {!oneLiner && defaultDomain?.name ? (
           <>
             <UserNameText
-              address={account}
+              address={account || walletAddressTonWallet}
               loading={loading}
               domainName={defaultDomain.name}
               variant="h4"
-              link={withLink ? `https://etherscan.io/address/${account}` : undefined}
+              link={
+                withLink
+                  ? `https://etherscan.io/address/${account || walletAddressTonWallet}`
+                  : undefined
+              }
               funnel={funnel}
               {...titleProps}
             />
             <UserNameText
-              address={account}
+              address={account || walletAddressTonWallet}
               loading={loading}
               variant="caption"
               {...subtitleProps}
@@ -73,11 +79,15 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
           </>
         ) : (
           <UserNameText
-            address={account}
+            address={account || walletAddressTonWallet}
             domainName={defaultDomain?.name}
             loading={loading}
             variant="h4"
-            link={withLink ? `https://etherscan.io/address/${account}` : undefined}
+            link={
+              withLink
+                ? `https://etherscan.io/address/${account || walletAddressTonWallet}`
+                : undefined
+            }
             funnel={funnel}
             {...titleProps}
           />

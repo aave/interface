@@ -21,6 +21,7 @@ export enum WalletType {
   GNOSIS = 'gnosis',
   LEDGER = 'ledger',
   READ_ONLY_MODE = 'read_only_mode',
+  TON_CONNECT = 'ton_connect',
 }
 
 const APP_NAME = 'Aave';

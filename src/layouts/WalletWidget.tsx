@@ -25,6 +25,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { AUTH, GENERAL } from 'src/utils/mixPanelEvents';
@@ -43,6 +44,8 @@ interface WalletWidgetProps {
 export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
   const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
     useWeb3Context();
+  const { disconnectTonWallet, isConnectedTonWallet, walletAddressTonWallet } =
+    useTonConnectContext();
 
   const { setWalletModalOpen } = useWalletModalContext();
 
@@ -68,7 +71,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (!connected) {
+    if (!connected && !isConnectedTonWallet) {
       trackEvent(GENERAL.OPEN_MODAL, { modal: 'Connect Waller' });
       setWalletModalOpen(true);
     } else {
@@ -82,11 +85,15 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       disconnectWallet();
       trackEvent(AUTH.DISCONNECT_WALLET);
       handleClose();
+    } else if (isConnectedTonWallet) {
+      disconnectTonWallet();
+      trackEvent(AUTH.DISCONNECT_WALLET);
+      handleClose();
     }
   };
 
   const handleCopy = async () => {
-    navigator.clipboard.writeText(currentAccount);
+    navigator.clipboard.writeText(currentAccount || walletAddressTonWallet);
     trackEvent(AUTH.COPY_ADDRESS);
     handleClose();
   };
@@ -291,13 +298,13 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   return (
     <>
-      {md && connected && open ? (
+      {md && (connected || isConnectedTonWallet) && open ? (
         <MobileCloseButton setOpen={setOpen} />
       ) : loading ? (
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
       ) : (
         <Button
-          variant={connected ? 'surface' : 'gradient'}
+          variant={connected || isConnectedTonWallet ? 'surface' : 'gradient'}
           aria-label="wallet"
           id="wallet-button"
           aria-controls={open ? 'wallet-button' : undefined}
@@ -305,11 +312,11 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           aria-haspopup="true"
           onClick={handleClick}
           sx={{
-            p: connected ? '5px 8px' : undefined,
+            p: connected || isConnectedTonWallet ? '5px 8px' : undefined,
             minWidth: hideWalletAccountText ? 'unset' : undefined,
           }}
           endIcon={
-            connected &&
+            (connected || isConnectedTonWallet) &&
             !hideWalletAccountText &&
             !md && (
               <SvgIcon
@@ -322,7 +329,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             )
           }
         >
-          {connected ? (
+          {connected || isConnectedTonWallet ? (
             <UserDisplay
               avatarProps={{ size: AvatarSize.SM }}
               oneLiner={true}

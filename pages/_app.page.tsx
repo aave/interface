@@ -4,6 +4,7 @@ import '/src/styles/variables.css';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { THEME, TonConnectUIProvider } from '@tonconnect/ui-react';
 import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
 import { NextPage } from 'next';
@@ -17,6 +18,7 @@ import { TransactionEventHandler } from 'src/components/TransactionEventHandler'
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
+import { TonConnectContextProvider } from 'src/libs/ton-connect-provider/TonConnectProvider';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 
@@ -137,38 +139,76 @@ export default function MyApp(props: MyAppProps) {
       />
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
-          <Web3ReactProvider getLibrary={getWeb3Library}>
-            <Web3ContextProvider>
-              <AppGlobalStyles>
-                <AddressBlocked>
-                  <ModalContextProvider>
-                    <SharedDependenciesProvider>
-                      <AppDataProvider>
-                        <GasStationProvider>
-                          {getLayout(<Component {...pageProps} />)}
-                          <SupplyModal />
-                          <WithdrawModal />
-                          <BorrowModal />
-                          <RepayModal />
-                          <CollateralChangeModal />
-                          <RateSwitchModal />
-                          <DebtSwitchModal />
-                          <ClaimRewardsModal />
-                          <EmodeModal />
-                          <SwapModal />
-                          <FaucetModal />
-                          <TransactionEventHandler />
-                          <SwitchModal />
-                          <StakingMigrateModal />
-                          <BridgeModal />
-                        </GasStationProvider>
-                      </AppDataProvider>
-                    </SharedDependenciesProvider>
-                  </ModalContextProvider>
-                </AddressBlocked>
-              </AppGlobalStyles>
-            </Web3ContextProvider>
-          </Web3ReactProvider>
+          <TonConnectUIProvider
+            manifestUrl={`https://aave-stesting.sotatek.works/tonconnect-manifest.json`} // file manifestUrl in the public folder
+            uiPreferences={{ theme: THEME.DARK }}
+            walletsListConfiguration={{
+              includeWallets: [
+                {
+                  appName: 'mytonwallet',
+                  name: 'MyTonWallet',
+                  imageUrl: 'https://mytonwallet.io/icon-256.png',
+                  aboutUrl: 'https://mytonwallet.io',
+                  universalLink: 'https://connect.mytonwallet.org',
+                  deepLink: '',
+                  jsBridgeKey: 'mytonwallet',
+                  bridgeUrl: 'https://tonconnectbridge.mytonwallet.org/bridge/',
+                  platforms: ['chrome', 'windows', 'macos', 'linux', 'ios', 'android', 'firefox'],
+                },
+                {
+                  appName: 'tonkeeper',
+                  name: 'Tonkeeper',
+                  imageUrl: 'https://tonkeeper.com/assets/tonconnect-icon.png',
+                  aboutUrl: 'https://tonkeeper.com',
+                  universalLink: 'https://app.tonkeeper.com/ton-connect',
+                  deepLink: 'tonkeeper-tc://',
+                  jsBridgeKey: 'tonkeeper',
+                  bridgeUrl: 'https://bridge.tonapi.io/bridge',
+                  platforms: ['ios', 'android', 'chrome', 'firefox', 'macos'],
+                },
+              ],
+            }}
+            actionsConfiguration={{
+              // twaReturnUrl: "https://t.me/tc_twa_demo_bot/start",
+              twaReturnUrl: 'https://t.me/',
+            }}
+            widgetRootId="tc-widget-root"
+          >
+            <TonConnectContextProvider>
+              <Web3ReactProvider getLibrary={getWeb3Library}>
+                <Web3ContextProvider>
+                  <AppGlobalStyles>
+                    <AddressBlocked>
+                      <ModalContextProvider>
+                        <SharedDependenciesProvider>
+                          <AppDataProvider>
+                            <GasStationProvider>
+                              {getLayout(<Component {...pageProps} />)}
+                              <SupplyModal />
+                              <WithdrawModal />
+                              <BorrowModal />
+                              <RepayModal />
+                              <CollateralChangeModal />
+                              <RateSwitchModal />
+                              <DebtSwitchModal />
+                              <ClaimRewardsModal />
+                              <EmodeModal />
+                              <SwapModal />
+                              <FaucetModal />
+                              <TransactionEventHandler />
+                              <SwitchModal />
+                              <StakingMigrateModal />
+                              <BridgeModal />
+                            </GasStationProvider>
+                          </AppDataProvider>
+                        </SharedDependenciesProvider>
+                      </ModalContextProvider>
+                    </AddressBlocked>
+                  </AppGlobalStyles>
+                </Web3ContextProvider>
+              </Web3ReactProvider>
+            </TonConnectContextProvider>
+          </TonConnectUIProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </LanguageProvider>

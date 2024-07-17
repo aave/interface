@@ -1,3 +1,23 @@
 body {
   --wcm-z-index: 1300;
 }
+
+/* z-index ton connect wallet modal */
+#tc-widget-root .go823957079 {
+  z-index: 999999;
+}
+
+/* disable button connect on Desktop */
+#tc-widget-root .go387286889 .go1369062826:nth-child(2),
+
+/* disable all button connect wallet */
+#tc-widget-root .go593626609>.go4005132735,
+#tc-widget-root .go593626609 li {
+  display: none;
+}
+
+/* display button connect wallet: TonWallet and TonKeeper*/
+#tc-widget-root .go593626609 li:nth-child(2),
+#tc-widget-root .go593626609 li:nth-child(3) {
+  display: block;
+}
