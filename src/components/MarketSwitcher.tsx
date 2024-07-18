@@ -241,7 +241,6 @@ export const MarketSwitcher = () => {
           </Trans>
         </Typography>
       </Box>
-
       {isV3MarketsAvailable && (
         <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
           <StyledToggleButtonGroup

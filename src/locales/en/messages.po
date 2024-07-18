@@ -1106,6 +1106,10 @@ msgstr "Estimated compounding interest, including discount for Staking {0}AAVE i
 msgid "Estimated time"
 msgstr "Estimated time"
 
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+msgid "Ethereum"
+msgstr "Ethereum"
+
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
 msgstr "Exceeds the discount"
@@ -1420,6 +1424,10 @@ msgstr "Learn more."
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
+
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+msgid "Lido"
+msgstr "Lido"
 
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"

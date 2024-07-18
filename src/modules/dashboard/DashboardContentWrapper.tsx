@@ -1,8 +1,11 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ROUTES } from 'src/components/primitives/Link';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { AUTH } from 'src/utils/mixPanelEvents';
@@ -21,6 +24,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const { currentAccount } = useWeb3Context();
   const router = useRouter();
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -30,8 +34,58 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
   const upFromSm = useMediaQuery(breakpoints.up('xsm'));
 
+  const handleUpdateEthMarket = (market) => {
+    setCurrentMarket(market);
+  };
+
   return (
     <Box>
+      {currentAccount && (
+        <Box pb={2} sx={{ width: upFromSm ? 'calc(50% - 8px)' : '100%' }}>
+          <StyledTxModalToggleGroup
+            color="secondary"
+            value={currentMarket}
+            exclusive
+            onChange={(_, value) => handleUpdateEthMarket(value)}
+          >
+            <StyledTxModalToggleButton
+              // value={EthMarketType.ETHEREUM}
+              unselectedBackgroundColor="#383D51"
+              value={'proto_mainnet_v3'}
+              disabled={currentMarket === 'proto_mainnet_v3'}
+              // onClick={() =>
+              //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
+              // }
+            >
+              <Typography variant="buttonM">
+                <Trans>Ethereum</Trans>
+              </Typography>
+            </StyledTxModalToggleButton>
+
+            <StyledTxModalToggleButton
+              // #383D51
+              unselectedBackgroundColor="#383D51"
+              value={'proto_lido_v3'}
+              // disabled={ethMarketType === EthMarketType.LIDO}
+              disabled={currentMarket === 'proto_lido_v3'}
+
+              // disabled={true}
+              // value={WithdrawType.WITHDRAWSWITCH}
+              // disabled={withdrawType === WithdrawType.WITHDRAWSWITCH}
+              // onClick={() =>
+              //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, {
+              //     withdrawType: 'Withdraw and Switch',
+              //   })
+              // }
+            >
+              <Typography variant="buttonM">
+                <Trans>Lido</Trans>
+              </Typography>
+            </StyledTxModalToggleButton>
+          </StyledTxModalToggleGroup>
+        </Box>
+      )}
+
       {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3}
       <Box
         sx={{
