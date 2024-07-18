@@ -43,7 +43,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
     () => (account ? blo(account as `0x${string}`) : undefined),
     [account]
   );
-  const loading = domainsLoading || accountLoading;
+  const loading = (domainsLoading || accountLoading) && !walletAddressTonWallet;
 
   const accountAddress = account || walletAddressTonWallet;
 

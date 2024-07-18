@@ -9,6 +9,7 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
+import { useAppDataContextTonNetwork } from 'src/hooks/useAppDataContextTonNetwork';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -56,6 +57,10 @@ export const SupplyAssetsList = () => {
     marketReferencePriceInUsd,
     loading: loadingReserves,
   } = useAppDataContext();
+
+  const { reservesTon } = useAppDataContextTonNetwork();
+  console.log('reservesTon------------', reservesTon);
+
   const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances, loading: loadingWalletBalances } = useWalletBalances(currentMarketData);
   const theme = useTheme();

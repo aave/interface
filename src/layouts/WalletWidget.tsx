@@ -300,7 +300,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     <>
       {md && (connected || isConnectedTonWallet) && open ? (
         <MobileCloseButton setOpen={setOpen} />
-      ) : loading ? (
+      ) : loading && !isConnectedTonWallet ? (
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
       ) : (
         <Button
