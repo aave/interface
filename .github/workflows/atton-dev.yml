@@ -24,7 +24,7 @@ jobs:
       - name: Build and start application
         run: |
           echo ==== CD TO DEVOPS DIRECTORY ====
-          cd ~/atton/atton_frontend
+          cd ~/atton/interface
 
           echo ==== YARN INSTALL ====
           yarn
