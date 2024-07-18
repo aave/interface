@@ -1,0 +1,55 @@
+name: fpp-fe-user
+
+on:
+  push:
+    branch: develop
+env:
+  FE_SERVICE: fe
+jobs:
+  Copy-source-code:
+    name: Copy Source Code
+    runs-on: dev-runner
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v3
+      - name: Copy file
+        run: |
+          rsync -azh --exclude={.git,.github,.env,dist,node_modules,data} --delete ./ ~/atton/atton_frontend
+
+  Build-and-start-application:
+    name: Build And Start Application
+    runs-on: dev-runner
+    needs: Copy-source-code
+    steps:
+      - name: Build and start application
+        run: |
+          echo ==== CD TO DEVOPS DIRECTORY ====
+          cd ~/atton/atton_frontend
+
+          echo ==== YARN INSTALL ====
+          yarn
+          echo ==== DONE YARN INSTALL ====
+
+          echo ==== YARN BUILD ====
+          yarn build
+          echo ==== DONE YARN BUILD ====
+
+          if pm2 list | grep -q "nextjs-dev"; then
+            echo "Next.js app is running. Stopping it..."
+            pm2 stop nextjs-dev
+            pm2 delete nextjs-dev
+          else
+            echo "Next.js app is not running."
+          fi
+
+          echo ==== YARN START ====
+          pm2 start yarn --name "nextjs-dev" -- run start
+          echo ==== DONE YARN START ====
+          
+      - name: Google Chat Notification
+        uses: Co-qn/google-chat-notification@releases/v1
+        with:
+          name: Build
+          url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+          status: ${{ job.status }}
+        if: always()
