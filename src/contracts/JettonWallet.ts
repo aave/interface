@@ -4,12 +4,13 @@ import {
   Cell,
   Contract,
   contractAddress,
-  // eslint-disable-next-line prettier/prettier
   ContractProvider,
   Sender,
   SendMode,
   toNano,
 } from '@ton/core';
+
+import { Op } from './JettonConstants';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type JettonWalletConfig = {};
@@ -90,11 +91,37 @@ export class JettonWallet implements Contract {
       value: value,
     });
   }
+
+  async sendSupply(
+    provider: ContractProvider,
+    via: Sender,
+    value: bigint,
+    jetton_amount: bigint,
+    toPool: Address,
+    responseAddress: Address, // address of user make tx
+    customPayload: Cell, //Cell.EMPTY
+    forward_ton_amount: bigint,
+    tokenAddress: Address
+  ) {
+    await provider.internal(via, {
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: JettonWallet.transferMessage(
+        jetton_amount,
+        toPool,
+        responseAddress,
+        customPayload,
+        forward_ton_amount,
+        beginCell().storeUint(Op.supply, 32).storeAddress(tokenAddress).endCell()
+      ),
+      value: value,
+    });
+  }
+
   /*
-      burn#595f07bc query_id:uint64 amount:(VarUInteger 16)
-                    response_destination:MsgAddress custom_payload:(Maybe ^Cell)
-                    = InternalMsgBody;
-    */
+    burn#595f07bc query_id:uint64 amount:(VarUInteger 16)
+                  response_destination:MsgAddress custom_payload:(Maybe ^Cell)
+                  = InternalMsgBody;
+  */
   static burnMessage(jetton_amount: bigint, responseAddress: Address, customPayload: Cell | null) {
     return beginCell()
       .storeUint(0x595f07bc, 32)
@@ -120,8 +147,8 @@ export class JettonWallet implements Contract {
     });
   }
   /*
-      withdraw_tons#107c49ef query_id:uint64 = InternalMsgBody;
-    */
+    withdraw_tons#107c49ef query_id:uint64 = InternalMsgBody;
+  */
   static withdrawTonsMessage() {
     return beginCell()
       .storeUint(0x6d8e5e3c, 32)
@@ -137,8 +164,8 @@ export class JettonWallet implements Contract {
     });
   }
   /*
-      withdraw_jettons#10 query_id:uint64 wallet:MsgAddressInt amount:Coins = InternalMsgBody;
-    */
+    withdraw_jettons#10 query_id:uint64 wallet:MsgAddressInt amount:Coins = InternalMsgBody;
+  */
   static withdrawJettonsMessage(from: Address, amount: bigint) {
     return beginCell()
       .storeUint(0x768a50b2, 32)

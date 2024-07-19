@@ -74,7 +74,7 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  */
 export const AppDataProvider: React.FC = ({ children }) => {
   const { currentAccount } = useWeb3Context();
-  const { isConnectedTonWallet } = useTonConnectContext();
+  const { isConnectedTonWallet, userSummaryTon } = useTonConnectContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
   // pool hooks
@@ -128,7 +128,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     ? false
     : userReservesDataLoading || userSummaryLoading;
 
-  let user = userSummary;
+  let user = isConnectedTonWallet ? userSummaryTon : userSummary;
   // Factor discounted GHO interest into cumulative user fields
 
   const isGhoInMarket = GHO_MINTING_MARKETS.includes(currentMarket);

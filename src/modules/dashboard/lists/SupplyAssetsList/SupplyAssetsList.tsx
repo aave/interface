@@ -58,8 +58,7 @@ export const SupplyAssetsList = () => {
     loading: loadingReserves,
   } = useAppDataContext();
 
-  const { reservesTon } = useAppDataContextTonNetwork();
-  console.log('reservesTon------------', reservesTon);
+  const { reservesTon, walletBalancesTon } = useAppDataContextTonNetwork();
 
   const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances, loading: loadingWalletBalances } = useWalletBalances(currentMarketData);
@@ -305,13 +304,38 @@ export const SupplyAssetsList = () => {
     >
       <>
         {!downToXSM && !!sortedReserves && !supplyDisabled && <RenderHeader />}
-        {sortedReserves.map((item) => (
+        {isConnectedTonWallet ? (
+          <>
+            {reservesTon?.map((item) => (
+              <Fragment key={item.underlyingAsset}>
+                <AssetCapsProvider asset={item.reserve}>
+                  <SupplyAssetsListItem
+                    {...item}
+                    key={item.id}
+                    walletBalances={walletBalancesTon}
+                  />
+                </AssetCapsProvider>
+              </Fragment>
+            ))}
+          </>
+        ) : (
+          <>
+            {sortedReserves.map((item) => (
+              <Fragment key={item.underlyingAsset}>
+                <AssetCapsProvider asset={item.reserve}>
+                  <SupplyAssetsListItem {...item} key={item.id} walletBalances={walletBalances} />
+                </AssetCapsProvider>
+              </Fragment>
+            ))}
+          </>
+        )}
+        {/* {sortedReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               <SupplyAssetsListItem {...item} key={item.id} walletBalances={walletBalances} />
             </AssetCapsProvider>
           </Fragment>
-        ))}
+        ))} */}
       </>
     </ListWrapper>
   );

@@ -7,9 +7,11 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useAppDataContextTonNetwork } from 'src/hooks/useAppDataContextTonNetwork';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -52,6 +54,9 @@ export const ModalWrapper: React.FC<{
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { walletBalances } = useWalletBalances(currentMarketData);
   const { user, reserves } = useAppDataContext();
+
+  const { isConnectedTonWallet } = useTonConnectContext();
+  const { symbolTon, userReserveTon2, poolReserveTon } = useAppDataContextTonNetwork();
   const { txError, mainTxState } = useModalContext();
 
   const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
@@ -60,22 +65,27 @@ export const ModalWrapper: React.FC<{
     return <TxErrorView txError={txError} />;
   }
 
-  const poolReserve = reserves.find((reserve) => {
-    if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
-      return reserve.isWrappedBaseAsset;
-    return underlyingAsset === reserve.underlyingAsset;
-  }) as ComputedReserveData;
+  const poolReserve = isConnectedTonWallet
+    ? poolReserveTon
+    : (reserves.find((reserve) => {
+        if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
+          return reserve.isWrappedBaseAsset;
+        return underlyingAsset === reserve.underlyingAsset;
+      }) as ComputedReserveData);
 
-  const userReserve = user?.userReservesData.find((userReserve) => {
-    if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
-      return userReserve.reserve.isWrappedBaseAsset;
-    return underlyingAsset === userReserve.underlyingAsset;
-  }) as ComputedUserReserveData;
+  const userReserve = isConnectedTonWallet
+    ? userReserveTon2
+    : (user?.userReservesData.find((userReserve) => {
+        if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
+          return userReserve.reserve.isWrappedBaseAsset;
+        return underlyingAsset === userReserve.underlyingAsset;
+      }) as ComputedUserReserveData);
 
-  const symbol =
-    poolReserve.isWrappedBaseAsset && !keepWrappedSymbol
-      ? currentNetworkConfig.baseAssetSymbol
-      : poolReserve.symbol;
+  const symbol = isConnectedTonWallet
+    ? symbolTon
+    : poolReserve.isWrappedBaseAsset && !keepWrappedSymbol
+    ? currentNetworkConfig.baseAssetSymbol
+    : poolReserve.symbol;
 
   return (
     <AssetCapsProvider asset={poolReserve}>

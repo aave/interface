@@ -1,5 +1,6 @@
 import { useTonAddress, useTonConnectUI, useTonWallet } from '@tonconnect/ui-react';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { TonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 export type TonConnectData = {
@@ -9,6 +10,7 @@ export type TonConnectData = {
   connectTonWallet: () => void;
   loadingTonWallet: boolean;
   deactivatedTonWallet: boolean;
+  userSummaryTon: ExtendedFormattedUser | undefined;
 };
 
 export const TonConnectContextProvider: React.FC<{
@@ -21,6 +23,29 @@ export const TonConnectContextProvider: React.FC<{
   const wallet = useTonWallet();
   const userFriendlyAddress = useTonAddress();
   const [tonConnectUI] = useTonConnectUI();
+
+  const userSummaryTon = {
+    userReservesData: [],
+    totalLiquidityMarketReferenceCurrency: '0',
+    totalLiquidityUSD: '0',
+    totalCollateralMarketReferenceCurrency: '0',
+    totalCollateralUSD: '0',
+    totalBorrowsMarketReferenceCurrency: '0',
+    totalBorrowsUSD: '0',
+    netWorthUSD: '0',
+    availableBorrowsMarketReferenceCurrency: '0',
+    availableBorrowsUSD: '0',
+    currentLoanToValue: '0',
+    currentLiquidationThreshold: '0',
+    healthFactor: '-1',
+    isInIsolationMode: false,
+    calculatedUserIncentives: {},
+    userEmodeCategoryId: 0,
+    isInEmode: false,
+    earnedAPY: 0,
+    debtAPY: 0,
+    netAPY: 0,
+  };
 
   useEffect(() => {
     if (wallet) {
@@ -59,6 +84,7 @@ export const TonConnectContextProvider: React.FC<{
           connectTonWallet,
           loadingTonWallet,
           deactivatedTonWallet,
+          userSummaryTon,
         },
       }}
     >

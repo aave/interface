@@ -21,7 +21,6 @@ import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { WalletBalancesMap } from 'src/hooks/app-data-provider/useWalletBalances';
-import { useAppDataContextTonNetwork } from 'src/hooks/useAppDataContextTonNetwork';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -44,7 +43,7 @@ import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { ListValueRow } from '../ListValueRow';
 
-export const SupplyAssetsListItem = (
+export const SupplyAssetsListItemTon = (
   params: DashboardReserve & { walletBalances: WalletBalancesMap }
 ) => {
   const theme = useTheme();
@@ -102,7 +101,7 @@ export const SupplyAssetsListItemDesktop = ({
   isIsolated,
   usageAsCollateralEnabledOnUser,
   detailsAddress,
-  disableSupply,
+  // disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
@@ -111,7 +110,6 @@ export const SupplyAssetsListItemDesktop = ({
   const wrappedTokenReserves = useWrappedTokens();
 
   const { openSupply, openSwitch } = useModalContext();
-  const { onSendSupply } = useAppDataContextTonNetwork();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
@@ -232,15 +230,6 @@ export const SupplyAssetsListItemDesktop = ({
         <Button
           // disabled={disableSupply}  // disable for testing
           // disabled={true}
-          variant="contained"
-          onClick={() => {
-            onSendSupply('EQCO6bP6wQbhrdRdaHMtWIZJVDmK1LG_-_QoX5D7QPVj_ED5');
-          }}
-        >
-          <Trans>Supply testing</Trans>
-        </Button>
-        <Button
-          disabled={disableSupply}
           variant="contained"
           onClick={() => {
             openSupply(underlyingAsset, currentMarket, name, 'dashboard');
