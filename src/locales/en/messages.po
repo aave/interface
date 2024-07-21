@@ -2433,10 +2433,6 @@ msgstr "Supply cap is exceeded"
 msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Supply cap on target reserve reached. Try lowering the amount."
 
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
-msgid "Supply testing"
-msgstr "Supply testing"
-
 #: src/components/transactions/Supply/SupplyActions.tsx
 #: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 msgid "Supply {symbol}"

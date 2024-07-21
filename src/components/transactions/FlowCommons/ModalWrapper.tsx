@@ -56,25 +56,32 @@ export const ModalWrapper: React.FC<{
   const { user, reserves } = useAppDataContext();
 
   const { isConnectedTonWallet } = useTonConnectContext();
-  const { symbolTon, userReserveTon2, poolReserveTon } = useAppDataContextTonNetwork();
+  const { symbolTon, userReserveTon, walletBalancesTon, reservesTon } =
+    useAppDataContextTonNetwork();
   const { txError, mainTxState } = useModalContext();
 
   const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
+
+  const isWrongNetworkMatch = isConnectedTonWallet ? false : isWrongNetwork;
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
 
-  const poolReserve = isConnectedTonWallet
-    ? poolReserveTon
-    : (reserves.find((reserve) => {
-        if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
-          return reserve.isWrappedBaseAsset;
-        return underlyingAsset === reserve.underlyingAsset;
-      }) as ComputedReserveData);
+  const poolReserveTon = reservesTon?.find((reserve) => {
+    if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
+      return reserve.isWrappedBaseAsset;
+    return underlyingAsset === reserve.underlyingAsset;
+  }) as ComputedReserveData;
+
+  const poolReserve = reserves.find((reserve) => {
+    if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
+      return reserve.isWrappedBaseAsset;
+    return underlyingAsset === reserve.underlyingAsset;
+  }) as ComputedReserveData;
 
   const userReserve = isConnectedTonWallet
-    ? userReserveTon2
+    ? userReserveTon
     : (user?.userReservesData.find((userReserve) => {
         if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
           return userReserve.reserve.isWrappedBaseAsset;
@@ -87,12 +94,29 @@ export const ModalWrapper: React.FC<{
     ? currentNetworkConfig.baseAssetSymbol
     : poolReserve.symbol;
 
+  const tokenBalance =
+    (isConnectedTonWallet && poolReserveTon && walletBalancesTon
+      ? walletBalancesTon[poolReserveTon?.underlyingAsset?.toLowerCase()]?.amount
+      : walletBalances[poolReserve?.underlyingAsset?.toLowerCase()]?.amount) || '0';
+
+  const dataPoolReserveMatch =
+    isConnectedTonWallet && poolReserveTon ? poolReserveTon : poolReserve;
+
+  console.log('user----------', user);
+  console.log(
+    'tokenBalance----------',
+    poolReserveTon,
+    poolReserve,
+    dataPoolReserveMatch,
+    isConnectedTonWallet
+  );
+
   return (
-    <AssetCapsProvider asset={poolReserve}>
+    <AssetCapsProvider asset={dataPoolReserveMatch}>
       {!mainTxState.success && (
         <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
       )}
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetworkMatch && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={getNetworkConfig(requiredChainId).name}
           chainId={requiredChainId}
@@ -105,10 +129,10 @@ export const ModalWrapper: React.FC<{
         />
       )}
       {children({
-        isWrongNetwork,
+        isWrongNetwork: isWrongNetworkMatch,
         nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount || '0',
-        tokenBalance: walletBalances[poolReserve.underlyingAsset.toLowerCase()]?.amount || '0',
-        poolReserve,
+        tokenBalance: tokenBalance,
+        poolReserve: dataPoolReserveMatch,
         symbol,
         underlyingAsset,
         userReserve,

@@ -20,6 +20,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWrappedTokens, WrappedTokenConfig } from 'src/hooks/useWrappedTokens';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import {
@@ -144,6 +145,7 @@ export const SupplyModalContent = React.memo(
     debtCeilingWarning,
     user,
   }: SupplyModalContentProps) => {
+    const { isConnectedTonWallet } = useTonConnectContext();
     const { marketReferencePriceInUsd } = useAppDataContext();
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
@@ -192,7 +194,7 @@ export const SupplyModalContent = React.memo(
 
     const supplyActionsProps = {
       amountToSupply: amount,
-      isWrongNetwork,
+      isWrongNetwork: isConnectedTonWallet ? false : isWrongNetwork,
       poolAddress: supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset,
       symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
       blocked: false,

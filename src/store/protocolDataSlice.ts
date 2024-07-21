@@ -36,6 +36,9 @@ export const createProtocolDataSlice: StateCreator<
 > = (set, get) => {
   const initialMarket = availableMarkets[0];
   const initialMarketData = marketsData[initialMarket];
+
+  const isTonMarket = Boolean(initialMarket === 'proto_mainnet_v3'); // check ton network, after that change proto_mainnet_v3 to [name ton network]
+
   return {
     currentMarket: initialMarket,
     currentMarketData: marketsData[initialMarket],
@@ -64,17 +67,23 @@ export const createProtocolDataSlice: StateCreator<
         ? currentNetworkConfig.underlyingChainId
         : currentMarketData.chainId;
       // enable permit for all v3 test network assets (except WrappedBaseAssets) or v3 production assets included in permitConfig)
-      const testnetPermitEnabled = Boolean(
-        currentMarketData.v3 &&
-          currentNetworkConfig.isTestnet &&
-          !currentMarketData.permitDisabled &&
-          !isWrappedBaseAsset
-      );
-      const productionPermitEnabled = Boolean(
-        currentMarketData.v3 &&
-          underlyingChainId &&
-          permitByChainAndToken[underlyingChainId]?.[utils.getAddress(reserveAddress).toLowerCase()]
-      );
+      const testnetPermitEnabled = isTonMarket
+        ? false
+        : Boolean(
+            currentMarketData.v3 &&
+              currentNetworkConfig.isTestnet &&
+              !currentMarketData.permitDisabled &&
+              !isWrappedBaseAsset
+          );
+      const productionPermitEnabled = isTonMarket
+        ? false
+        : Boolean(
+            currentMarketData.v3 &&
+              underlyingChainId &&
+              permitByChainAndToken[underlyingChainId]?.[
+                utils.getAddress(reserveAddress).toLowerCase()
+              ]
+          );
       return testnetPermitEnabled || productionPermitEnabled;
     },
   };
