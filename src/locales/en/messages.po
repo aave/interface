@@ -1107,8 +1107,9 @@ msgid "Estimated time"
 msgstr "Estimated time"
 
 #: src/modules/dashboard/DashboardContentWrapper.tsx
-msgid "Ethereum"
-msgstr "Ethereum"
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Ethereum Main"
+msgstr "Ethereum Main"
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
@@ -1426,6 +1427,7 @@ msgid "Let us know how we can make the app better for you. For user support rela
 msgstr "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 
 #: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
 msgid "Lido"
 msgstr "Lido"
 

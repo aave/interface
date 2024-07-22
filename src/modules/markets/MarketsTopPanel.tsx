@@ -1,20 +1,22 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme, Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { marketContainerProps } from 'pages/markets.page';
 import * as React from 'react';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
+
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export const MarketsTopPanel = () => {
   const { reserves, loading } = useAppDataContext();
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
-  const handleUpdateEthMarket = (market: string) => {
+  const handleUpdateEthMarket = (market: CustomMarket) => {
     setCurrentMarket(market);
   };
 
@@ -37,47 +39,60 @@ export const MarketsTopPanel = () => {
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
 
+  const extendedMarketContainerProps = {
+    ...marketContainerProps,
+    sx: {
+      ...marketContainerProps.sx,
+      display: 'flex',
+      flexDirection: 'column',
+    },
+  };
+
   return (
     <Box sx={{ background: 'green' }}>
       <TopInfoPanel
-        containerProps={marketContainerProps}
+        containerProps={extendedMarketContainerProps}
         pageTitle={<Trans>Markets</Trans>}
         withMarketSwitcher
+        multiMarket={true}
       >
-        <TopInfoPanelItem hideIcon title={<Trans>Total market size</Trans>} loading={loading}>
-          <FormattedNumber
-            value={aggregatedStats.totalLiquidity.toString()}
-            symbol="USD"
-            variant={valueTypographyVariant}
-            visibleDecimals={2}
-            compact
-            symbolsColor="#A5A8B6"
-            symbolsVariant={symbolsVariant}
-          />
-        </TopInfoPanelItem>
-        <TopInfoPanelItem hideIcon title={<Trans>Total available</Trans>} loading={loading}>
-          <FormattedNumber
-            value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
-            symbol="USD"
-            variant={valueTypographyVariant}
-            visibleDecimals={2}
-            compact
-            symbolsColor="#A5A8B6"
-            symbolsVariant={symbolsVariant}
-          />
-        </TopInfoPanelItem>
-        <TopInfoPanelItem hideIcon title={<Trans>Total borrows</Trans>} loading={loading}>
-          <FormattedNumber
-            value={aggregatedStats.totalDebt.toString()}
-            symbol="USD"
-            variant={valueTypographyVariant}
-            visibleDecimals={2}
-            compact
-            symbolsColor="#A5A8B6"
-            symbolsVariant={symbolsVariant}
-          />
-        </TopInfoPanelItem>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex' }}>
+          <TopInfoPanelItem hideIcon title={<Trans>Total market size</Trans>} loading={loading}>
+            <FormattedNumber
+              value={aggregatedStats.totalLiquidity.toString()}
+              symbol="USD"
+              variant={valueTypographyVariant}
+              visibleDecimals={2}
+              compact
+              symbolsColor="#A5A8B6"
+              symbolsVariant={symbolsVariant}
+            />
+          </TopInfoPanelItem>
+          <TopInfoPanelItem hideIcon title={<Trans>Total available</Trans>} loading={loading}>
+            <FormattedNumber
+              value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
+              symbol="USD"
+              variant={valueTypographyVariant}
+              visibleDecimals={2}
+              compact
+              symbolsColor="#A5A8B6"
+              symbolsVariant={symbolsVariant}
+            />
+          </TopInfoPanelItem>
+          <TopInfoPanelItem hideIcon title={<Trans>Total borrows</Trans>} loading={loading}>
+            <FormattedNumber
+              value={aggregatedStats.totalDebt.toString()}
+              symbol="USD"
+              variant={valueTypographyVariant}
+              visibleDecimals={2}
+              compact
+              symbolsColor="#A5A8B6"
+              symbolsVariant={symbolsVariant}
+            />
+          </TopInfoPanelItem>
+        </Box>
+
+        <Box pb={0} sx={{ width: 'calc(50% - 8px)' }}>
           <StyledTxModalToggleGroup
             color="secondary"
             value={currentMarket}
@@ -113,7 +128,6 @@ export const MarketsTopPanel = () => {
           </StyledTxModalToggleGroup>
         </Box>
       </TopInfoPanel>
-      {/* <Box pb={2} sx={{ width: upFromSm ? 'calc(50% - 8px)' : '100%' }}> */}
     </Box>
   );
 };
