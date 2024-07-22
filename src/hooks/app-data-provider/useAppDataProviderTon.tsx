@@ -27,14 +27,14 @@ const address_pools = 'EQCvM_iN3f_bqO_ADopJ8SR8ix5YT8wDBxfuQQ6B0QNKbhzV';
 
 export function useAppDataProviderTon() {
   const dataReserves = dataAssumeReserves as unknown as DashboardReserve[];
-  const { walletAddressTonWallet } = useTonConnectContext();
+  const userTon = dataAssumeUser as unknown as ExtendedFormattedUser;
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [listPoolContract, setListPoolContract] = useState<unknown>([]);
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
   const { onGetBalanceTonNetwork } = useGetBalanceTon();
-  const userTon = dataAssumeUser as unknown as ExtendedFormattedUser;
+  const { walletAddressTonWallet } = useTonConnectContext();
 
   useEffect(() => {
     if (!poolContract) return;

@@ -59,7 +59,7 @@ export const ModalWrapper: React.FC<{
   const { walletBalancesTon } = useWalletBalancesTon(reserves as DashboardReserve[]);
   const { txError, mainTxState } = useModalContext();
 
-  const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
+  const { isWrongNetwork: isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
@@ -90,12 +90,14 @@ export const ModalWrapper: React.FC<{
 
   const tokenBalance = isConnectedTonWallet ? tokenBalanceTonWallet : tokenBalanceAllNet;
 
+  const isWrongNetworkMat = isConnectedTonWallet ? false : isWrongNetwork;
+
   return (
     <AssetCapsProvider asset={poolReserve}>
       {!mainTxState.success && (
         <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
       )}
-      {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetworkMat && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={getNetworkConfig(requiredChainId).name}
           chainId={requiredChainId}
@@ -108,7 +110,7 @@ export const ModalWrapper: React.FC<{
         />
       )}
       {children({
-        isWrongNetwork,
+        isWrongNetwork: isWrongNetworkMat,
         nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount || '0',
         tokenBalance: tokenBalance,
         poolReserve,

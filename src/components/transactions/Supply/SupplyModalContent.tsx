@@ -62,6 +62,7 @@ export enum ErrorType {
 export const SupplyModalContentWrapper = (
   params: ModalWrapperProps & { user: ExtendedFormattedUser }
 ) => {
+  const { isConnectedTonWallet } = useTonConnectContext();
   const user = params.user;
   const { currentMarketData } = useProtocolDataContext();
   const wrappedTokenReserves = useWrappedTokens();
@@ -101,12 +102,14 @@ export const SupplyModalContentWrapper = (
       decimals: poolReserve.decimals,
       aToken: true,
     },
-    collateralType: getAssetCollateralType(
-      userReserve,
-      user.totalCollateralUSD,
-      user.isInIsolationMode,
-      debtCeilingUsage.isMaxed
-    ),
+    collateralType: isConnectedTonWallet
+      ? 0
+      : getAssetCollateralType(
+          userReserve,
+          user.totalCollateralUSD,
+          user.isInIsolationMode,
+          debtCeilingUsage.isMaxed
+        ),
     supplyCapWarning: supplyCapUsage.determineWarningDisplay({ supplyCap: supplyCapUsage }),
     debtCeilingWarning: debtCeilingUsage.determineWarningDisplay({ debtCeiling: debtCeilingUsage }),
     wrappedTokenConfig: wrappedTokenReserves.find(
@@ -145,7 +148,6 @@ export const SupplyModalContent = React.memo(
     debtCeilingWarning,
     user,
   }: SupplyModalContentProps) => {
-    const { isConnectedTonWallet } = useTonConnectContext();
     const { marketReferencePriceInUsd } = useAppDataContext();
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
@@ -194,7 +196,7 @@ export const SupplyModalContent = React.memo(
 
     const supplyActionsProps = {
       amountToSupply: amount,
-      isWrongNetwork: isConnectedTonWallet ? false : isWrongNetwork,
+      isWrongNetwork: isWrongNetwork,
       poolAddress: supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset,
       symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
       blocked: false,
