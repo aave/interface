@@ -1,5 +1,13 @@
 import dataAssumeReserves from '@public/assume-reserves.json';
-import { Address, Cell, ContractProvider, OpenedContract, Sender, toNano } from '@ton/core';
+import {
+  Address,
+  Cell,
+  ContractProvider,
+  fromNano,
+  OpenedContract,
+  Sender,
+  toNano,
+} from '@ton/core';
 import { useCallback, useEffect, useState } from 'react';
 import { JettonMinter } from 'src/contracts/JettonMinter';
 import { JettonWallet } from 'src/contracts/JettonWallet';
@@ -60,7 +68,7 @@ export function useAppDataContextTonNetwork() {
       ) as OpenedContract<JettonWallet>;
 
       const balance = await providerJettonWallet.getJettonBalance();
-      return balance;
+      return fromNano(balance);
     },
     [client, walletAddressTonWallet]
   );

@@ -45,7 +45,7 @@ jobs:
           echo ==== YARN START ====
           pm2 start yarn --name "nextjs-dev" -- run start
           echo ==== DONE YARN START ====
-          
+
       - name: Google Chat Notification
         uses: Co-qn/google-chat-notification@releases/v1
         with:
