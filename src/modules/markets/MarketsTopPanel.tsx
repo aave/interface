@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { marketContainerProps } from 'pages/markets.page';
 import * as React from 'react';
+import { MULTIPLE_MARKET_OPTIONS } from 'src/components/MarketSwitcher';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -39,22 +40,13 @@ export const MarketsTopPanel = () => {
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
 
-  const extendedMarketContainerProps = {
-    ...marketContainerProps,
-    sx: {
-      ...marketContainerProps.sx,
-      display: 'flex',
-      flexDirection: 'column',
-    },
-  };
-
   return (
-    <Box sx={{ background: 'green' }}>
+    <Box>
       <TopInfoPanel
-        containerProps={extendedMarketContainerProps}
+        containerProps={marketContainerProps}
         pageTitle={<Trans>Markets</Trans>}
         withMarketSwitcher
-        multiMarket={true}
+        multiMarket={MULTIPLE_MARKET_OPTIONS.includes(currentMarket) ? true : false}
       >
         <Box sx={{ display: 'flex' }}>
           <TopInfoPanelItem hideIcon title={<Trans>Total market size</Trans>} loading={loading}>
@@ -92,41 +84,43 @@ export const MarketsTopPanel = () => {
           </TopInfoPanelItem>
         </Box>
 
-        <Box pb={0} sx={{ width: 'calc(50% - 8px)' }}>
-          <StyledTxModalToggleGroup
-            color="secondary"
-            value={currentMarket}
-            exclusive
-            onChange={(_, value) => handleUpdateEthMarket(value)}
-          >
-            <StyledTxModalToggleButton
-              maxWidth="160px"
-              unselectedBackgroundColor="#383D51"
-              value={'proto_mainnet_v3'}
-              disabled={currentMarket === 'proto_mainnet_v3'}
-              // Todo tracking?
-              // onClick={() =>
-              //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
-              // }
+        {MULTIPLE_MARKET_OPTIONS.includes(currentMarket) && (
+          <Box pb={0} sx={{ width: 'calc(50% - 8px)' }}>
+            <StyledTxModalToggleGroup
+              color="secondary"
+              value={currentMarket}
+              exclusive
+              onChange={(_, value) => handleUpdateEthMarket(value)}
             >
-              <Typography variant="buttonM">
-                <Trans>Ethereum Main</Trans>
-              </Typography>
-            </StyledTxModalToggleButton>
+              <StyledTxModalToggleButton
+                maxWidth="160px"
+                unselectedBackgroundColor="#383D51"
+                value={'proto_mainnet_v3'}
+                disabled={currentMarket === 'proto_mainnet_v3'}
+                // Todo tracking?
+                // onClick={() =>
+                //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
+                // }
+              >
+                <Typography variant="buttonM">
+                  <Trans>Ethereum Main</Trans>
+                </Typography>
+              </StyledTxModalToggleButton>
 
-            <StyledTxModalToggleButton
-              maxWidth="160px"
-              unselectedBackgroundColor="#383D51"
-              value={'proto_lido_v3'}
-              disabled={currentMarket === 'proto_lido_v3'}
-              // Todo tracking?
-            >
-              <Typography variant="buttonM">
-                <Trans>Lido</Trans>
-              </Typography>
-            </StyledTxModalToggleButton>
-          </StyledTxModalToggleGroup>
-        </Box>
+              <StyledTxModalToggleButton
+                maxWidth="160px"
+                unselectedBackgroundColor="#383D51"
+                value={'proto_lido_v3'}
+                disabled={currentMarket === 'proto_lido_v3'}
+                // Todo tracking?
+              >
+                <Typography variant="buttonM">
+                  <Trans>Lido</Trans>
+                </Typography>
+              </StyledTxModalToggleButton>
+            </StyledTxModalToggleGroup>
+          </Box>
+        )}
       </TopInfoPanel>
     </Box>
   );

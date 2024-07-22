@@ -2,20 +2,20 @@ import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
+import { MULTIPLE_MARKET_OPTIONS } from 'src/components/MarketSwitcher';
 import { ROUTES } from 'src/components/primitives/Link';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
 import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
 import { BorrowedPositionsList } from './lists/BorrowedPositionsList/BorrowedPositionsList';
 import { SuppliedPositionsList } from './lists/SuppliedPositionsList/SuppliedPositionsList';
 import { SupplyAssetsList } from './lists/SupplyAssetsList/SupplyAssetsList';
-
-import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
 
 interface DashboardContentWrapperProps {
   isBorrow: boolean;
@@ -42,7 +42,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
   return (
     <Box>
-      {currentAccount && (
+      {currentAccount && MULTIPLE_MARKET_OPTIONS.includes(currentMarket) && (
         <Box pb={2} sx={{ width: upFromSm ? 'calc(50% - 8px)' : '100%' }}>
           <StyledTxModalToggleGroup
             color="secondary"
