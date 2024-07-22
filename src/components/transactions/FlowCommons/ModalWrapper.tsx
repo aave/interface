@@ -7,13 +7,14 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
-import { useAppDataContextTonNetwork } from 'src/hooks/useAppDataContextTonNetwork';
+import { useWalletBalancesTon } from 'src/hooks/app-data-provider/useWalletBalancesTon';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -39,7 +40,7 @@ export const ModalWrapper: React.FC<{
   // if true wETH will stay wETH otherwise wETH will be returned as ETH
   keepWrappedSymbol?: boolean;
   hideTitleSymbol?: boolean;
-  children: (props: ModalWrapperProps) => React.ReactNode;
+  children: (_props: ModalWrapperProps) => React.ReactNode;
   action?: string;
 }> = ({
   hideTitleSymbol,
@@ -49,30 +50,20 @@ export const ModalWrapper: React.FC<{
   title,
   keepWrappedSymbol,
 }) => {
+  const { isConnectedTonWallet } = useTonConnectContext();
   const { readOnlyModeAddress } = useWeb3Context();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { walletBalances } = useWalletBalances(currentMarketData);
   const { user, reserves } = useAppDataContext();
-
-  const { isConnectedTonWallet } = useTonConnectContext();
-  const { symbolTon, userReserveTon, walletBalancesTon, reservesTon } =
-    useAppDataContextTonNetwork();
+  const { walletBalancesTon } = useWalletBalancesTon(reserves as DashboardReserve[]);
   const { txError, mainTxState } = useModalContext();
 
   const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
 
-  const isWrongNetworkMatch = isConnectedTonWallet ? false : isWrongNetwork;
-
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-
-  const poolReserveTon = reservesTon?.find((reserve) => {
-    if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
-      return reserve.isWrappedBaseAsset;
-    return underlyingAsset === reserve.underlyingAsset;
-  }) as ComputedReserveData;
 
   const poolReserve = reserves.find((reserve) => {
     if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
@@ -80,43 +71,31 @@ export const ModalWrapper: React.FC<{
     return underlyingAsset === reserve.underlyingAsset;
   }) as ComputedReserveData;
 
-  const userReserve = isConnectedTonWallet
-    ? userReserveTon
-    : (user?.userReservesData.find((userReserve) => {
-        if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
-          return userReserve.reserve.isWrappedBaseAsset;
-        return underlyingAsset === userReserve.underlyingAsset;
-      }) as ComputedUserReserveData);
+  const userReserve = user?.userReservesData.find((userReserve) => {
+    if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
+      return userReserve?.reserve?.isWrappedBaseAsset;
+    return underlyingAsset === userReserve?.underlyingAsset;
+  }) as ComputedUserReserveData;
 
-  const symbol = isConnectedTonWallet
-    ? symbolTon
-    : poolReserve.isWrappedBaseAsset && !keepWrappedSymbol
-    ? currentNetworkConfig.baseAssetSymbol
-    : poolReserve.symbol;
+  const symbol =
+    poolReserve?.isWrappedBaseAsset && !keepWrappedSymbol
+      ? currentNetworkConfig?.baseAssetSymbol
+      : poolReserve?.symbol;
 
-  const tokenBalance =
-    (isConnectedTonWallet && poolReserveTon && walletBalancesTon
-      ? walletBalancesTon[poolReserveTon?.underlyingAsset?.toLowerCase()]?.amount
-      : walletBalances[poolReserve?.underlyingAsset?.toLowerCase()]?.amount) || '0';
+  const tokenBalanceAllNet =
+    walletBalances[poolReserve?.underlyingAsset?.toLowerCase()]?.amount || '0';
+  const tokenBalanceTonWallet = walletBalancesTon
+    ? walletBalancesTon[poolReserve?.underlyingAsset?.toLowerCase()]?.amount
+    : '0';
 
-  const dataPoolReserveMatch =
-    isConnectedTonWallet && poolReserveTon ? poolReserveTon : poolReserve;
-
-  console.log('user----------', user);
-  console.log(
-    'tokenBalance----------',
-    poolReserveTon,
-    poolReserve,
-    dataPoolReserveMatch,
-    isConnectedTonWallet
-  );
+  const tokenBalance = isConnectedTonWallet ? tokenBalanceTonWallet : tokenBalanceAllNet;
 
   return (
-    <AssetCapsProvider asset={dataPoolReserveMatch}>
+    <AssetCapsProvider asset={poolReserve}>
       {!mainTxState.success && (
         <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
       )}
-      {isWrongNetworkMatch && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={getNetworkConfig(requiredChainId).name}
           chainId={requiredChainId}
@@ -129,10 +108,10 @@ export const ModalWrapper: React.FC<{
         />
       )}
       {children({
-        isWrongNetwork: isWrongNetworkMatch,
+        isWrongNetwork,
         nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount || '0',
         tokenBalance: tokenBalance,
-        poolReserve: dataPoolReserveMatch,
+        poolReserve,
         symbol,
         underlyingAsset,
         userReserve,

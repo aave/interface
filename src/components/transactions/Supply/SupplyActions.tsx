@@ -5,10 +5,10 @@ import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
-import { useAppDataContextTonNetwork } from 'src/hooks/useAppDataContextTonNetwork';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
+import { useTonTransactions } from 'src/hooks/useTonTransactions';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -43,7 +43,7 @@ export const SupplyActions = React.memo(
     ...props
   }: SupplyActionProps) => {
     const { isConnectedTonWallet } = useTonConnectContext();
-    const { approvedAmountTonAssume, onSendSupply } = useAppDataContextTonNetwork();
+    const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions();
     const [
       tryPermit,
       supply,
@@ -140,7 +140,7 @@ export const SupplyActions = React.memo(
     const action = async () => {
       try {
         if (isConnectedTonWallet) {
-          onSendSupply(poolAddress);
+          onSendSupplyTon(poolAddress);
         } else {
           setMainTxState({ ...mainTxState, loading: true });
 

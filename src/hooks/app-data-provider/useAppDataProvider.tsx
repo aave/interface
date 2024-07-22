@@ -11,6 +11,7 @@ import { EmodeCategory } from 'src/helpers/types';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GHO_MINTING_MARKETS } from 'src/utils/ghoUtilities';
 
 import { formatEmodes } from '../../store/poolSelectors';
@@ -27,6 +28,9 @@ import { usePoolReservesHumanized } from '../pool/usePoolReserves';
 import { useUserGhoPoolFormattedReserve } from '../pool/useUserGhoPoolFormattedReserve';
 import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
 import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
+import { useAppDataProviderTon } from './useAppDataProviderTon';
+import { WalletBalancesMap } from './useWalletBalances';
+import { useWalletBalancesTon } from './useWalletBalancesTon';
 
 /**
  * removes the marketPrefix from a symbol
@@ -54,7 +58,7 @@ export type ExtendedFormattedUser = _ExtendedFormattedUser;
 
 export interface AppDataContextType {
   loading: boolean;
-  reserves: ComputedReserveData[];
+  reserves: ComputedReserveData[] | DashboardReserve[];
   eModes: Record<number, EmodeCategory>;
   user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;
@@ -64,6 +68,7 @@ export interface AppDataContextType {
   ghoUserData: FormattedGhoUserData;
   ghoLoadingData: boolean;
   ghoUserLoadingData: boolean;
+  walletBalancesTon: WalletBalancesMap;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -77,6 +82,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const { isConnectedTonWallet, userSummaryTon } = useTonConnectContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
+  const { reservesTon } = useAppDataProviderTon();
+  const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
+
   // pool hooks
 
   const { data: reservesData, isLoading: reservesDataLoading } =
@@ -150,13 +158,15 @@ export const AppDataProvider: React.FC = ({ children }) => {
     }
   }
 
+  const reserves = isConnectedTonWallet ? reservesTon : formattedPoolReserves || [];
+
   return (
     <AppDataContext.Provider
       value={{
         loading: isReservesLoading || (!!currentAccount && isUserDataLoading),
-        reserves: formattedPoolReserves || [],
+        reserves: reserves,
         eModes,
-        user,
+        user: user,
         userReserves: userReserves || [],
         marketReferencePriceInUsd: baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0',
         marketReferenceCurrencyDecimals: baseCurrencyData?.marketReferenceCurrencyDecimals || 0,
@@ -167,6 +177,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         ghoUserData: formattedGhoUserDataWithDefault,
         ghoLoadingData: ghoReserveDataLoading,
         ghoUserLoadingData: !!currentAccount && isGhoUserDataLoading,
+        walletBalancesTon,
       }}
     >
       {children}

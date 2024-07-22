@@ -47,9 +47,9 @@ export const getAssetCollateralType = (
   userIsInIsolationMode: boolean,
   debtCeilingIsMaxed: boolean
 ) => {
-  const poolReserve = userReserve.reserve;
+  const poolReserve = userReserve?.reserve;
 
-  if (!poolReserve.usageAsCollateralEnabled) {
+  if (!poolReserve?.usageAsCollateralEnabled) {
     return CollateralType.UNAVAILABLE;
   }
 
