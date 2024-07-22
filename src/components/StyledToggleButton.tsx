@@ -3,6 +3,7 @@ import React from 'react';
 
 interface CustomToggleButtonProps extends ToggleButtonProps {
   unselectedBackgroundColor?: string;
+  maxWidth?: string;
 }
 
 const CustomToggleButton = styled(ToggleButton)<CustomToggleButtonProps>(
@@ -38,12 +39,13 @@ const CustomToggleButton = styled(ToggleButton)<CustomToggleButtonProps>(
 ) as typeof ToggleButton;
 
 const CustomTxModalToggleButton = styled(ToggleButton)<CustomToggleButtonProps>(
-  ({ theme, unselectedBackgroundColor }) => ({
+  ({ theme, unselectedBackgroundColor, maxWidth }) => ({
     border: '0px',
     flex: 1,
     color: theme.palette.text.muted,
     borderRadius: '4px',
     backgroundColor: unselectedBackgroundColor || '#383D51',
+    maxWidth: maxWidth || '100%',
 
     '&.Mui-selected, &.Mui-selected:hover': {
       border: `1px solid ${theme.palette.other.standardInputLine}`,

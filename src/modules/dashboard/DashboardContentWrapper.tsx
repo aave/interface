@@ -15,6 +15,8 @@ import { BorrowedPositionsList } from './lists/BorrowedPositionsList/BorrowedPos
 import { SuppliedPositionsList } from './lists/SuppliedPositionsList/SuppliedPositionsList';
 import { SupplyAssetsList } from './lists/SupplyAssetsList/SupplyAssetsList';
 
+import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
+
 interface DashboardContentWrapperProps {
   isBorrow: boolean;
 }
@@ -34,7 +36,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
   const upFromSm = useMediaQuery(breakpoints.up('xsm'));
 
-  const handleUpdateEthMarket = (market) => {
+  const handleUpdateEthMarket = (market: CustomMarket) => {
     setCurrentMarket(market);
   };
 
@@ -49,34 +51,26 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             onChange={(_, value) => handleUpdateEthMarket(value)}
           >
             <StyledTxModalToggleButton
-              // value={EthMarketType.ETHEREUM}
+              maxWidth="160px"
               unselectedBackgroundColor="#383D51"
               value={'proto_mainnet_v3'}
               disabled={currentMarket === 'proto_mainnet_v3'}
+              // Todo tracking?
               // onClick={() =>
               //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
               // }
             >
               <Typography variant="buttonM">
-                <Trans>Ethereum</Trans>
+                <Trans>Ethereum Main</Trans>
               </Typography>
             </StyledTxModalToggleButton>
 
             <StyledTxModalToggleButton
-              // #383D51
+              maxWidth="160px"
               unselectedBackgroundColor="#383D51"
               value={'proto_lido_v3'}
-              // disabled={ethMarketType === EthMarketType.LIDO}
               disabled={currentMarket === 'proto_lido_v3'}
-
-              // disabled={true}
-              // value={WithdrawType.WITHDRAWSWITCH}
-              // disabled={withdrawType === WithdrawType.WITHDRAWSWITCH}
-              // onClick={() =>
-              //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, {
-              //     withdrawType: 'Withdraw and Switch',
-              //   })
-              // }
+              // Todo tracking?
             >
               <Typography variant="buttonM">
                 <Trans>Lido</Trans>
