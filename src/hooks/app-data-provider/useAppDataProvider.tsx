@@ -11,7 +11,6 @@ import { EmodeCategory } from 'src/helpers/types';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GHO_MINTING_MARKETS } from 'src/utils/ghoUtilities';
 
 import { formatEmodes } from '../../store/poolSelectors';
@@ -58,7 +57,7 @@ export type ExtendedFormattedUser = _ExtendedFormattedUser;
 
 export interface AppDataContextType {
   loading: boolean;
-  reserves: ComputedReserveData[] | DashboardReserve[];
+  reserves: ComputedReserveData[];
   eModes: Record<number, EmodeCategory>;
   user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;

@@ -97,7 +97,7 @@ export const findAndFilterMintableGhoReserve = <T extends ReserveWithSymbol>(
 ) => {
   if (!GHO_MINTING_MARKETS.includes(currentMarket)) return { value: undefined, filtered: reserves };
 
-  return reserves.reduce<FindAndFilterReturn<T>>(
+  return reserves?.reduce<FindAndFilterReturn<T>>(
     (acum, reserve) => {
       if (reserve.symbol === GHO_SYMBOL) return { value: reserve, filtered: acum.filtered };
       else return { ...acum, filtered: acum.filtered.concat(reserve) };
