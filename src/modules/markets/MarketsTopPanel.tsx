@@ -48,7 +48,7 @@ export const MarketsTopPanel = () => {
         withMarketSwitcher
         multiMarket={MULTIPLE_MARKET_OPTIONS.includes(currentMarket) ? true : false}
       >
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', gap: { xs: 3, xsm: 8 } }}>
           <TopInfoPanelItem hideIcon title={<Trans>Total market size</Trans>} loading={loading}>
             <FormattedNumber
               value={aggregatedStats.totalLiquidity.toString()}
@@ -103,7 +103,22 @@ export const MarketsTopPanel = () => {
                 // }
               >
                 <Typography variant="buttonM">
-                  <Trans>Ethereum Main</Trans>
+                  <Box
+                    component="span"
+                    sx={{
+                      display: { xs: 'none', sm: 'inline' },
+                    }}
+                  >
+                    <Trans>Ethereum Main</Trans>
+                  </Box>
+                  <Box
+                    component="span"
+                    sx={{
+                      display: { xs: 'inline', sm: 'none' },
+                    }}
+                  >
+                    <Trans>Main</Trans>
+                  </Box>
                 </Typography>
               </StyledTxModalToggleButton>
 
