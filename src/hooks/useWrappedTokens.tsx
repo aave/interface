@@ -1,5 +1,6 @@
 import { normalize } from '@aave/math-utils';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { amountToUsd } from 'src/utils/utils';
@@ -39,12 +40,11 @@ const wrappedTokenConfig: {
 export const useWrappedTokens = () => {
   const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals, reserves } =
     useAppDataContext();
+  const { isConnectedTonWallet } = useTonConnectContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
-
-  if (!reserves || reserves.length === 0) {
+  if (!reserves || reserves.length === 0 || isConnectedTonWallet) {
     return [];
   }
-
   const wrappedTokens = wrappedTokenConfig[currentMarket] ?? [];
   let wrappedTokenReserves: WrappedTokenConfig[] = [];
 
