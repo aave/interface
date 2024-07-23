@@ -11,20 +11,47 @@ import {
 } from '@ton/core';
 
 import { Op } from './JettonConstants';
+import {
+  buildJettonOffChainMetadata,
+  buildJettonOnChainMetadata,
+  readJettonMetadata,
+} from './utils';
 
 export type JettonMinterContent = {
   type: 0 | 1;
   uri: string;
 };
 
-export type JettonMinterConfig = { admin: Address; content: Cell; wallet_code: Cell };
+export type JettonMetaDataKeys =
+  | 'name'
+  | 'description'
+  | 'image'
+  | 'symbol'
+  | 'image_data'
+  | 'decimals'
+  | 'uri';
+
+export type JettonMinterConfig = {
+  admin: Address;
+  jettonWalletCode: Cell;
+  offchainUri?: string;
+  metadata?: { [s in JettonMetaDataKeys]?: string | undefined };
+};
 
 export function jettonMinterConfigToCell(config: JettonMinterConfig): Cell {
+  if (!config.offchainUri && !config.metadata) {
+    throw new Error('Must either specify onchain data or offchain uri');
+  }
+
   return beginCell()
     .storeCoins(0)
     .storeAddress(config.admin)
-    .storeRef(config.content)
-    .storeRef(config.wallet_code)
+    .storeRef(
+      config.offchainUri
+        ? buildJettonOffChainMetadata(config.offchainUri)
+        : buildJettonOnChainMetadata(config.metadata!)
+    )
+    .storeRef(config.jettonWalletCode)
     .endCell();
 }
 
@@ -210,7 +237,8 @@ export class JettonMinter implements Contract {
     return res.adminAddress;
   }
   async getContent(provider: ContractProvider) {
-    const res = await this.getJettonData(provider);
-    return res.content;
+    const { content } = await this.getJettonData(provider);
+
+    return readJettonMetadata(content);
   }
 }

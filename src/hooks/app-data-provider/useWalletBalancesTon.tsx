@@ -15,6 +15,32 @@ export interface WalletBalancesTop {
   loading: boolean;
 }
 
+export const useGetNameAssetTon = () => {
+  const { walletAddressTonWallet } = useTonConnectContext();
+  const client = useTonClient();
+
+  const onGetContentAssetTon = useCallback(
+    async (add: string) => {
+      if (!client || !walletAddressTonWallet) return;
+      const minterAddress = JettonMinter.createFromAddress(
+        Address.parse(add)
+      )?.address.toRawString();
+      const contractJettonMinter = new JettonMinter(Address.parse(minterAddress));
+      const providerJettonMinter = client.open(
+        contractJettonMinter
+      ) as OpenedContract<JettonMinter>;
+
+      const walletAddressJettonMinter = await providerJettonMinter.getContent();
+      return walletAddressJettonMinter;
+    },
+    [client, walletAddressTonWallet]
+  );
+
+  return {
+    onGetContentAssetTon,
+  };
+};
+
 export const useGetBalanceTon = () => {
   const { walletAddressTonWallet } = useTonConnectContext();
   const client = useTonClient();
@@ -54,6 +80,7 @@ export const useGetBalanceTon = () => {
 
 export const useWalletBalancesTon = (reservesTon: DashboardReserve[]): WalletBalancesTop => {
   const [walletBalancesTon, setWalletBalancesTon] = useState<WalletBalancesMap>({});
+  console.log('walletBalancesTonwalletBalancesTon', walletBalancesTon);
   useMemo(() => {
     if (!reservesTon) return;
     const transformedData: WalletBalancesMap = {};

@@ -23,6 +23,19 @@ export interface interfaceSendSupply {
   tokenAddress: Address;
 }
 
+export interface interfaceContentAssetTon {
+  persistenceType: string;
+  metadata: MetadataContentAssetTon;
+}
+
+export interface MetadataContentAssetTon {
+  name: string;
+  description: string;
+  image: string;
+  decimals: string;
+  symbol: string;
+}
+
 const address_pools = 'EQCvM_iN3f_bqO_ADopJ8SR8ix5YT8wDBxfuQQ6B0QNKbhzV';
 
 export function useAppDataProviderTon() {
@@ -34,6 +47,7 @@ export function useAppDataProviderTon() {
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
   const { onGetBalanceTonNetwork } = useGetBalanceTon();
+  // const { onGetContentAssetTon } = useGetNameAssetTon();
   const { walletAddressTonWallet } = useTonConnectContext();
 
   useEffect(() => {
@@ -48,13 +62,14 @@ export function useAppDataProviderTon() {
       const reserve = await poolContract.getReservesData();
       const arr = await Promise.all(
         reserve.map(async (item) => {
-          const walletBalance = await onGetBalanceTonNetwork(
-            'kQCb4tUBkfQ_eqaO1yRhPpyqBADvQn5P09_GumokdIgHxbj_'
-          );
+          const walletBalance = await onGetBalanceTonNetwork(item.underlyingAsset.toString());
+          // const contentAssetTon = await onGetContentAssetTon(item.underlyingAsset.toString());
           console.log('walletBalance-------', walletBalance?.toString());
           return {
             // ...item,
-            id: '10-eqco6bp6wqbhrdrdahmtwizjvdmk1lg_-_qox5d7qpvj_ed5-0x2f39d218133afab8f2b819b1066c7e434ad94e9e',
+            id: `10-${item.underlyingAsset
+              .toString()
+              .toLocaleLowerCase()}-0x2f39d218133afab8f2b819b1066c7e434ad94e9e`,
             name: 'ETHx',
             symbol: 'ETHx',
             decimals: 18,
@@ -150,8 +165,10 @@ export function useAppDataProviderTon() {
             isEmodeEnabled: true,
             isWrappedBaseAsset: false,
             reserve: {
-              id: '1-eqco6bp6wqbhrdrdahmtwizjvdmk1lg_-_qox5d7qpvj_ed5-0x2f39d218133afab8f2b819b1066c7e434ad94e9e',
-              underlyingAsset: 'eqco6bp6wqbhrdrdahmtwizjvdmk1lg_-_qox5d7qpvj_ed5',
+              id: `10-${item.underlyingAsset
+                .toString()
+                .toLocaleLowerCase()}-0x2f39d218133afab8f2b819b1066c7e434ad94e9e`,
+              underlyingAsset: item.underlyingAsset.toString().toLocaleLowerCase(),
               name: 'ETHx',
               symbol: 'ETHx',
               decimals: 18,
@@ -253,11 +270,11 @@ export function useAppDataProviderTon() {
               isWrappedBaseAsset: false,
             },
             walletBalance: walletBalance?.toString() || '0',
-            walletBalanceUSD: '0',
+            walletBalanceUSD: walletBalance?.toString() || '0',
             availableToDeposit: '0',
             availableToDepositUSD: '0',
             usageAsCollateralEnabledOnUser: true,
-            detailsAddress: 'eqco6bp6wqbhrdrdahmtwizjvdmk1lg_-_qox5d7qpvj_ed5',
+            detailsAddress: item.underlyingAsset.toString().toLocaleLowerCase(),
 
             //
             LTV: item.LTV.toString(),
@@ -271,7 +288,7 @@ export function useAppDataProviderTon() {
             reserveFactor: item.reserveFactor.toString(),
             supplyBalance: item.supplyBalance.toString(),
             supplyCap: item.supplyCap.toString(),
-            underlyingAsset: 'eqco6bp6wqbhrdrdahmtwizjvdmk1lg_-_qox5d7qpvj_ed5',
+            underlyingAsset: item.underlyingAsset.toString().toLocaleLowerCase(),
             //
 
             // id: item.underlyingAsset.toString(),
