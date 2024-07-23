@@ -51,10 +51,7 @@ export function useAppDataProviderTon() {
           const walletBalance = await onGetBalanceTonNetwork(
             'kQCb4tUBkfQ_eqaO1yRhPpyqBADvQn5P09_GumokdIgHxbj_'
           );
-          console.log(
-            'walletBalancewalletBalancewalletBalancewalletBalance',
-            walletBalance?.toString()
-          );
+          console.log('walletBalance----', walletBalance?.toString());
           return {
             // ...item,
             // id: '1-eqco6bp6wqbhrdrdahmtwizjvdmk1lg_-_qox5d7qpvj_ed5-0x2f39d218133afab8f2b819b1066c7e434ad94e9e',
