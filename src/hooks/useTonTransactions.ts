@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { JettonWallet } from 'src/contracts/JettonWallet';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
+import { address_pools } from './app-data-provider/useAppDataProviderTon';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 
@@ -31,11 +32,11 @@ export function useTonTransactions() {
         sender, //via: Sender,
         toNano('1'), //value: bigint, --- fix cứng 1
         toNano('50'), //jetton_amount: bigint, --- user input amount
-        Address.parse('EQBoyA1NN8uoEDR3ePK8PKECaWEMItPEs6Of1W1ljPyn-ne4'), //toPool: Address, --- address poll
+        Address.parse(address_pools), //toPool: Address, --- address poll
         Address.parse(walletAddressTonWallet), //responseAddress: Address -- user address
         Cell.EMPTY, // customPayload: Cell, //Cell.EMPTY
         toNano('0.5'), // forward_ton_amount: bigint,
-        Address.parse('kQCb4tUBkfQ_eqaO1yRhPpyqBADvQn5P09_GumokdIgHxbj_') //tokenAddress: Address
+        Address.parse(add) //tokenAddress: Address
       );
     },
     [client, sender, walletAddressTonWallet]

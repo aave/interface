@@ -80,7 +80,6 @@ export const useGetBalanceTon = () => {
 
 export const useWalletBalancesTon = (reservesTon: DashboardReserve[]): WalletBalancesTop => {
   const [walletBalancesTon, setWalletBalancesTon] = useState<WalletBalancesMap>({});
-  console.log('walletBalancesTonwalletBalancesTon', walletBalancesTon);
   useMemo(() => {
     if (!reservesTon) return;
     const transformedData: WalletBalancesMap = {};

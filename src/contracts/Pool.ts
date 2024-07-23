@@ -10,6 +10,7 @@ import {
   SendMode,
 } from '@ton/core';
 
+import { JettonMinter } from './JettonMinter';
 import { Reserve, ReserveData as ReserveState } from './Reserve';
 
 export type PoolConfig = {
@@ -40,7 +41,16 @@ export type ReserveConfig = {
   borrowCap: bigint;
 };
 
-export type ReserveData = { underlyingAsset: Address } & ReserveState & ReserveConfig;
+export type ReserveMetadata = {
+  underlyingAsset: Address;
+  name: string;
+  symbol: string;
+  decimals: string;
+  image: string;
+  description: string;
+};
+
+export type ReserveData = ReserveMetadata & ReserveState & ReserveConfig;
 
 export type ReservesData = ReserveData[];
 
@@ -192,12 +202,23 @@ export class Pool implements Contract {
     const result: ReservesData = [];
 
     for (const reserve of reserves) {
+      const jettonMinter = provider.open(JettonMinter.createFromAddress(reserve));
+      const metadata = (await jettonMinter.getContent()).metadata;
+      const reserveMetadata: ReserveMetadata = {
+        name: metadata.name ?? '',
+        symbol: metadata.symbol ?? '',
+        decimals: metadata.decimals ?? '',
+        image: metadata.image ?? '',
+        description: metadata.description ?? '',
+        underlyingAsset: reserve,
+      };
+
       const reserveAddress = await this.getReserveAddress(provider, reserve);
       const reserveContract = provider.open(Reserve.createFromAddress(reserveAddress));
       const reserveState = await reserveContract.getReserveData();
       const reserveConfig = await reserveContract.getReserveConfiguration();
 
-      result.push({ underlyingAsset: reserve, ...reserveState, ...reserveConfig });
+      result.push({ ...reserveMetadata, ...reserveState, ...reserveConfig });
     }
 
     return result;

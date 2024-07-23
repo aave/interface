@@ -1,5 +1,5 @@
 import dataAssumeReserves from '@public/assume-reserves.json';
-import dataAssumeUser from '@public/assume-user.json';
+import userTon from '@public/assume-user.json';
 import { Address, Cell, ContractProvider, Sender } from '@ton/core';
 import { useEffect, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
@@ -7,7 +7,7 @@ import { useContract } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
-import { ExtendedFormattedUser } from '../pool/useExtendedUserSummaryAndIncentives';
+// import { ExtendedFormattedUser } from '../pool/useExtendedUserSummaryAndIncentives';
 import { useTonClient } from '../useTonClient';
 import { useGetBalanceTon } from './useWalletBalancesTon';
 
@@ -36,11 +36,9 @@ export interface MetadataContentAssetTon {
   symbol: string;
 }
 
-const address_pools = 'EQCvM_iN3f_bqO_ADopJ8SR8ix5YT8wDBxfuQQ6B0QNKbhzV';
+export const address_pools = 'EQCvM_iN3f_bqO_ADopJ8SR8ix5YT8wDBxfuQQ6B0QNKbhzV';
 
 export function useAppDataProviderTon() {
-  const dataReserves = dataAssumeReserves as unknown as DashboardReserve[];
-  const userTon = dataAssumeUser as unknown as ExtendedFormattedUser;
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [listPoolContract, setListPoolContract] = useState<unknown>([]);
@@ -60,18 +58,18 @@ export function useAppDataProviderTon() {
     setLoading(true);
     const getValueReserve = async () => {
       const reserve = await poolContract.getReservesData();
+      console.log('reservereserve', reserve);
       const arr = await Promise.all(
         reserve.map(async (item) => {
           const walletBalance = await onGetBalanceTonNetwork(item.underlyingAsset.toString());
-          // const contentAssetTon = await onGetContentAssetTon(item.underlyingAsset.toString());
           console.log('walletBalance-------', walletBalance?.toString());
           return {
             // ...item,
             id: `10-${item.underlyingAsset
               .toString()
               .toLocaleLowerCase()}-0x2f39d218133afab8f2b819b1066c7e434ad94e9e`,
-            name: 'ETHx',
-            symbol: 'ETHx',
+            name: item.name || 'Fake coin',
+            symbol: item.symbol || 'Fake coin',
             decimals: 18,
             baseLTVasCollateral: '7450',
             reserveLiquidationThreshold: '7700',
@@ -169,8 +167,8 @@ export function useAppDataProviderTon() {
                 .toString()
                 .toLocaleLowerCase()}-0x2f39d218133afab8f2b819b1066c7e434ad94e9e`,
               underlyingAsset: item.underlyingAsset.toString().toLocaleLowerCase(),
-              name: 'ETHx',
-              symbol: 'ETHx',
+              name: item.name || 'Fake coin',
+              symbol: item.symbol || 'Fake coin',
               decimals: 18,
               baseLTVasCollateral: '7450',
               reserveLiquidationThreshold: '7700',
@@ -295,12 +293,13 @@ export function useAppDataProviderTon() {
           };
         })
       );
-      const mergedArray = JSON.parse(JSON.stringify([...arr, ...dataReserves]));
+      const mergedArray = JSON.parse(JSON.stringify([...arr, ...dataAssumeReserves]));
       setReservesTon(mergedArray as DashboardReserve[]);
       setLoading(false);
     };
     getValueReserve();
-  }, [client, dataReserves, onGetBalanceTonNetwork, poolContract, walletAddressTonWallet]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [client, poolContract, walletAddressTonWallet]);
 
   const symbolTon = 'ETHx';
 
