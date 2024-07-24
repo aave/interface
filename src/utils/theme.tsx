@@ -136,18 +136,18 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
     palette: {
       mode,
       primary: {
-        main: getColor('#383D51', '#EAEBEF'),
+        main: getColor('#2200F4', '#604AEF'),
         light: getColor('#62677B', '#F1F1F3'),
         dark: getColor('#292E41', '#D2D4DC'),
         contrast: getColor('#FFFFFF', '#0F121D'),
       },
       secondary: {
-        main: getColor('#FF607B', '#F48FB1'),
+        main: getColor('#3E03E8', '#8054FD'),
         light: getColor('#FF607B', '#F6A5C0'),
         dark: getColor('#B34356', '#AA647B'),
       },
       error: {
-        main: getColor('#BC0000B8', '#F44336'),
+        main: getColor('#FF2D2D', '#F44336'),
         light: getColor('#D26666', '#E57373'),
         dark: getColor('#BC0000', '#D32F2F'),
         '100': getColor('#4F1919', '#FBB4AF'), // for alert text
@@ -168,28 +168,33 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         '200': getColor('#E5EFFB', '#071F2E'), // for alert background
       },
       success: {
-        main: getColor('#4CAF50', '#66BB6A'),
+        main: getColor('#1FC74E', '#38E067'),
         light: getColor('#90FF95', '#90FF95'),
         dark: getColor('#318435', '#388E3C'),
         '100': getColor('#1C4B1E', '#C2E4C3'), // for alert text
         '200': getColor('#ECF8ED', '#0A130B'), // for alert background
       },
       text: {
-        primary: getColor('#303549', '#F1F1F3'),
-        secondary: getColor('#62677B', '#A5A8B6'),
-        disabled: getColor('#D2D4DC', '#62677B'),
+        primary: getColor('#111213', '#F5F5F5'),
+        secondary: getColor('#454854', '#C7C9D1'),
+        disabled: getColor('#ABAEBA', '#5C6070'),
         muted: getColor('#A5A8B6', '#8E92A3'),
         highlight: getColor('#383D51', '#C9B3F9'),
+        mainTitle: getColor('#5C6070', '#ABAEBA'),
+        subTitle: getColor('#8F93A3', '#73788C'),
+        subText: getColor('#C7C9D1', '#454854'),
       },
       background: {
-        default: getColor('#F1F1F3', '#1B2030'),
+        default: getColor('#F1F1F3', '#23242A'),
+        secondary: getColor('#F5F5F5', '#2E3038'),
+        tertiary: getColor('#E3E4E8', '#191A1F'),
         paper: getColor('#FFFFFF', '#292E41'),
         surface: getColor('#F7F7F9', '#383D51'),
         surface2: getColor('#F9F9FB', '#383D51'),
         header: getColor('#2B2D3C', '#1B2030'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
       },
-      divider: getColor('#EAEBEF', '#EBEBEF14'),
+      divider: getColor('#E3E4E8', '#2E3038'),
       action: {
         active: getColor('#8E92A3', '#EBEBEF8F'),
         hover: getColor('#F1F1F3', '#EBEBEF14'),
@@ -204,6 +209,12 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       gradients: {
         aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
         newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
+      },
+      border: {
+        activeState: getColor('#2E3038', '#E3E4E8'),
+        contentOutline: getColor('#C7C9D1', '#454854'),
+        pointDivider: getColor('#6047FF', '#6047FF'),
+        bgDivider: getColor('#F5F5F5', '#111213'),
       },
     },
     spacing: 4,
