@@ -36,7 +36,8 @@ export interface MetadataContentAssetTon {
   symbol: string;
 }
 
-export const address_pools = 'EQCvM_iN3f_bqO_ADopJ8SR8ix5YT8wDBxfuQQ6B0QNKbhzV';
+export const address_pools = 'EQDhsLMn0IZ3k3j4fjDtiYb8-gO11aX9Y-eV160K5SUG5yWj';
+// export const address_pools = 'EQCvM_iN3f_bqO_ADopJ8SR8ix5YT8wDBxfuQQ6B0QNKbhzV';
 
 export function useAppDataProviderTon() {
   const client = useTonClient();
@@ -58,6 +59,8 @@ export function useAppDataProviderTon() {
     setLoading(true);
     const getValueReserve = async () => {
       const reserve = await poolContract.getReservesData();
+      console.log('reserve----', reserve);
+      // console.log('reserve----', reserve[0].underlyingAsset.toString().toLowerCase());
       const arr = await Promise.all(
         reserve.map(async (item) => {
           const walletBalance = await onGetBalanceTonNetwork(item.underlyingAsset.toString());

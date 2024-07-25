@@ -80,7 +80,9 @@ export const useGetBalanceTon = () => {
 
 export const useWalletBalancesTon = (reservesTon: DashboardReserve[]): WalletBalancesTop => {
   const [walletBalancesTon, setWalletBalancesTon] = useState<WalletBalancesMap>({});
+  const [loading, setLoading] = useState<boolean>(false);
   useMemo(() => {
+    setLoading(true);
     if (!reservesTon) return;
     const transformedData: WalletBalancesMap = {};
     reservesTon.forEach((item) => {
@@ -91,11 +93,12 @@ export const useWalletBalancesTon = (reservesTon: DashboardReserve[]): WalletBal
       };
     });
     setWalletBalancesTon(transformedData);
+    setLoading(false);
   }, [reservesTon]);
 
   return {
     walletBalancesTon,
     hasEmptyWallet: _.isEmpty(walletBalancesTon),
-    loading: false,
+    loading: loading,
   };
 };

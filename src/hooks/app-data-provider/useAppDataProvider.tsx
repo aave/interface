@@ -81,7 +81,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const { isConnectedTonWallet, userSummaryTon } = useTonConnectContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
-  const { reservesTon } = useAppDataProviderTon();
+  const { reservesTon, loading: loadingReservesTon } = useAppDataProviderTon();
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
 
   // pool hooks
@@ -130,7 +130,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
   };
 
   // loading
-  const isReservesLoading = reservesDataLoading || formattedPoolReservesLoading;
+  const isReservesLoading =
+    reservesDataLoading || formattedPoolReservesLoading || loadingReservesTon;
   const isUserDataLoading = isConnectedTonWallet
     ? false
     : userReservesDataLoading || userSummaryLoading;
