@@ -1,6 +1,7 @@
 import { Address, beginCell, Cell, OpenedContract, toNano } from '@ton/core';
 import { useCallback } from 'react';
 import { Op } from 'src/contracts/JettonConstants';
+import { JettonMinter } from 'src/contracts/JettonMinter';
 import { JettonWallet } from 'src/contracts/JettonWallet';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
@@ -21,12 +22,23 @@ export function useTonTransactions() {
   };
 
   const onSendSupplyTon = useCallback(
-    async (add: string) => {
+    async (_add: string) => {
       if (!client || !walletAddressTonWallet) return;
-      console.log('addaddaddadd', add);
+
+      const contractJettonMinter = new JettonMinter(
+        Address.parse('EQCb4tUBkfQ_eqaO1yRhPpyqBADvQn5P09_GumokdIgHxQN1') // = add
+      );
+
+      const providerJettonMinter = client.open(
+        contractJettonMinter
+      ) as OpenedContract<JettonMinter>;
+
+      const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
+        Address.parse(walletAddressTonWallet)
+      );
 
       const contractJettonWallet = new JettonWallet(
-        Address.parse('kQCVWJSOvOOgR2L7L59F6xDdw7olADhxG2Nr3uf_CVqomUkU') // z-ton-wallet
+        walletAddressJettonMinter // z-ton-wallet
       );
 
       const providerJettonWallet = client.open(
@@ -42,7 +54,7 @@ export function useTonTransactions() {
         toNano('0.05'), // forward_ton_amount: bigint,
         beginCell()
           .storeUint(Op.supply, 32)
-          .storeAddress(Address.parse('kQCb4tUBkfQ_eqaO1yRhPpyqBADvQn5P09_GumokdIgHxbj_'))
+          .storeAddress(Address.parse('EQCb4tUBkfQ_eqaO1yRhPpyqBADvQn5P09_GumokdIgHxQN1')) // = add
           .endCell() //tokenAddress: Address
       );
     },

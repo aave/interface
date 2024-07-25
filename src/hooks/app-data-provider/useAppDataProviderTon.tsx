@@ -60,7 +60,7 @@ export function useAppDataProviderTon() {
     const getValueReserve = async () => {
       const reserve = await poolContract.getReservesData();
       console.log('reserve----', reserve);
-      // console.log('reserve----', reserve[0].underlyingAsset.toString().toLowerCase());
+      console.log('reserve----', reserve[0].underlyingAsset.toString());
       const arr = await Promise.all(
         reserve.map(async (item) => {
           const walletBalance = await onGetBalanceTonNetwork(item.underlyingAsset.toString());
