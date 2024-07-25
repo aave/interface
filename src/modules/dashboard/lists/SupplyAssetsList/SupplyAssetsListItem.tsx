@@ -72,6 +72,7 @@ export const SupplyAssetsListItem = (
     disableSupply,
     canSupplyAsWrappedToken: canSupplyAsWrappedToken ?? false,
     walletBalancesMap: params.walletBalances,
+    image: params.image,
   };
 
   if (downToXSM) {
@@ -104,6 +105,7 @@ export const SupplyAssetsListItemDesktop = ({
   disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
+  image,
 }: SupplyAssetsListItemProps) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentMarket = useRootStore((store) => store.currentMarket);
@@ -147,6 +149,7 @@ export const SupplyAssetsListItemDesktop = ({
   return (
     <ListItemWrapper
       symbol={symbol}
+      image={image}
       iconSymbol={iconSymbol}
       name={name}
       detailsAddress={detailsAddress}

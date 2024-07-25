@@ -34,6 +34,7 @@ interface ListItemWrapperProps {
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
   showSuperFestTooltip?: boolean;
+  image?: string;
 }
 
 export const ListItemWrapper = ({
@@ -50,6 +51,7 @@ export const ListItemWrapper = ({
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
   showSuperFestTooltip = false,
+  image,
   ...rest
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
@@ -78,7 +80,11 @@ export const ListItemWrapper = ({
           noWrap
           sx={{ display: 'inline-flex', alignItems: 'center' }}
         >
-          <TokenIcon symbol={iconSymbol} fontSize="large" />
+          {image ? (
+            <img alt={image} src={image} width={'32px'} height={'32px'} />
+          ) : (
+            <TokenIcon symbol={iconSymbol} fontSize="large" />
+          )}
           <Tooltip title={`${name} (${symbol})`} arrow placement="top">
             <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
               {symbol}

@@ -58,16 +58,12 @@ export function useAppDataProviderTon() {
     setLoading(true);
     const getValueReserve = async () => {
       const reserve = await poolContract.getReservesData();
-      console.log('reservereserve', reserve);
       const arr = await Promise.all(
         reserve.map(async (item) => {
           const walletBalance = await onGetBalanceTonNetwork(item.underlyingAsset.toString());
           console.log('walletBalance-------', walletBalance?.toString());
           return {
             // ...item,
-            id: `10-${item.underlyingAsset
-              .toString()
-              .toLocaleLowerCase()}-0x2f39d218133afab8f2b819b1066c7e434ad94e9e`,
             name: item.name || 'Fake coin',
             symbol: item.symbol || 'Fake coin',
             decimals: 18,
@@ -287,6 +283,10 @@ export function useAppDataProviderTon() {
             supplyBalance: item.supplyBalance.toString(),
             supplyCap: item.supplyCap.toString(),
             underlyingAsset: item.underlyingAsset.toString().toLocaleLowerCase(),
+            id: `10-${item.underlyingAsset
+              .toString()
+              .toLocaleLowerCase()}-0x2f39d218133afab8f2b819b1066c7e434ad94e9e`,
+            image: item.image || '',
             //
 
             // id: item.underlyingAsset.toString(),
