@@ -193,7 +193,6 @@ export const SupplyModalContent = React.memo(
     const isMaxSelected = amount === maxAmountToSupply;
 
     const healfthFactorAfterSupply = calculateHFAfterSupply(user, poolReserve, amountInEth);
-
     const supplyActionsProps = {
       amountToSupply: amount,
       isWrongNetwork: isWrongNetwork,
@@ -202,6 +201,7 @@ export const SupplyModalContent = React.memo(
       blocked: false,
       decimals: poolReserve.decimals,
       isWrappedBaseAsset: poolReserve.isWrappedBaseAsset,
+      underlyingAssetTon: poolReserve?.underlyingAssetTon,
     };
 
     if (supplyTxState.success)

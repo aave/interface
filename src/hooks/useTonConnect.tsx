@@ -6,8 +6,8 @@ export function useTonConnect(): { sender: Sender; connected: boolean } {
 
   return {
     sender: {
-      send: async (args: SenderArguments) => {
-        tonConnectUI.sendTransaction({
+      send: async (args: SenderArguments): Promise<void> => {
+        await tonConnectUI.sendTransaction({
           messages: [
             {
               address: args.to.toString(),

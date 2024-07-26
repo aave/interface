@@ -22,11 +22,11 @@ export function useTonTransactions() {
   };
 
   const onSendSupplyTon = useCallback(
-    async (_add: string) => {
-      if (!client || !walletAddressTonWallet) return;
+    async (_add: string, amount: string) => {
+      if (!client || !walletAddressTonWallet || !_add || !amount) return;
 
       const contractJettonMinter = new JettonMinter(
-        Address.parse('EQCb4tUBkfQ_eqaO1yRhPpyqBADvQn5P09_GumokdIgHxQN1') // = add
+        Address.parse(_add) // = address asset
       );
 
       const providerJettonMinter = client.open(
@@ -44,19 +44,22 @@ export function useTonTransactions() {
       const providerJettonWallet = client.open(
         contractJettonWallet
       ) as OpenedContract<JettonWallet>;
-      return await providerJettonWallet.sendTransfer(
+
+      await providerJettonWallet.sendTransfer(
         sender, //via: Sender,
-        toNano('0.1'), //value: bigint, --- fix cứng 1
-        toNano('50'), //jetton_amount: bigint, --- user input amount
-        Address.parse(address_pools), //toPool: Address, --- address poll
-        Address.parse(walletAddressTonWallet), //responseAddress: Address -- user address
+        toNano('0.1'), //value: bigint, --- gas fee default
+        toNano(amount), // User input amount
+        Address.parse(address_pools), //Address poll
+        Address.parse(walletAddressTonWallet), // User address wallet
         Cell.EMPTY, // customPayload: Cell, //Cell.EMPTY
         toNano('0.05'), // forward_ton_amount: bigint,
         beginCell()
           .storeUint(Op.supply, 32)
-          .storeAddress(Address.parse('EQCb4tUBkfQ_eqaO1yRhPpyqBADvQn5P09_GumokdIgHxQN1')) // = add
+          .storeAddress(Address.parse(_add)) // = address asset
           .endCell() //tokenAddress: Address
       );
+
+      return true;
     },
     [client, sender, walletAddressTonWallet]
   );

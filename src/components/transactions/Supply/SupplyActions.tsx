@@ -28,6 +28,7 @@ export interface SupplyActionProps extends BoxProps {
   blocked: boolean;
   decimals: number;
   isWrappedBaseAsset: boolean;
+  underlyingAssetTon?: string;
 }
 
 export const SupplyActions = React.memo(
@@ -40,6 +41,7 @@ export const SupplyActions = React.memo(
     blocked,
     decimals,
     isWrappedBaseAsset,
+    underlyingAssetTon,
     ...props
   }: SupplyActionProps) => {
     const { isConnectedTonWallet } = useTonConnectContext();
@@ -140,7 +142,13 @@ export const SupplyActions = React.memo(
     const action = async () => {
       try {
         if (isConnectedTonWallet) {
-          onSendSupplyTon(poolAddress);
+          const aaaaaaa = await onSendSupplyTon(`${underlyingAssetTon}`, amountToSupply.toString());
+          console.log('.------------', aaaaaaa);
+          // setMainTxState({
+          //   txHash: 'response.hash',
+          //   loading: false,
+          //   success: true,
+          // });
         } else {
           setMainTxState({ ...mainTxState, loading: true });
 

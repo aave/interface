@@ -19,4 +19,5 @@ export type SupplyAssetsItem = {
   usageAsCollateralEnabledOnUser: boolean;
   detailsAddress: string;
   image?: string;
+  underlyingAssetTon?: string;
 };

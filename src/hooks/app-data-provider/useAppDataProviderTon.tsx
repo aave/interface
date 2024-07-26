@@ -290,7 +290,7 @@ export function useAppDataProviderTon() {
               .toString()
               .toLocaleLowerCase()}-0x2f39d218133afab8f2b819b1066c7e434ad94e9e`,
             image: item.image || '',
-            //
+            underlyingAssetTon: reserve[0].underlyingAsset.toString(),
 
             // id: item.underlyingAsset.toString(),
           };

@@ -63,6 +63,7 @@ export const useGetBalanceTon = () => {
       const contractJettonWallet = new JettonWallet(
         Address.parse(walletAddressJettonMinter.toRawString())
       );
+
       const providerJettonWallet = client.open(
         contractJettonWallet
       ) as OpenedContract<JettonWallet>;
