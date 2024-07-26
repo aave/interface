@@ -65,6 +65,7 @@ export type MarketDataType = {
     WALLET_BALANCE_PROVIDER: string;
     L2_ENCODER?: string;
     UI_POOL_DATA_PROVIDER: string;
+    V3_1_UI_POOL_DATA_PROVIDER?: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
     V3_MIGRATOR?: string;
