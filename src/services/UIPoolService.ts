@@ -38,6 +38,10 @@ export class UiPoolService {
   }
 
   private async getPoolRevision(marketData: MarketDataType, provider: Provider) {
+    if (!marketData.v3) {
+      return 0;
+    }
+
     const poolContract = new Contract(
       marketData.addresses.LENDING_POOL,
       ['function POOL_REVISION() public view returns (uint256)'],
