@@ -6,7 +6,7 @@ import * as React from 'react';
 import { MULTIPLE_MARKET_OPTIONS } from 'src/components/MarketSwitcher';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
 
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -16,7 +16,10 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 
 export const MarketsTopPanel = () => {
   const { reserves, loading } = useAppDataContext();
-  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
+  const [currentMarket, setCurrentMarket] = useRootStore((store) => [
+    store.currentMarket,
+    store.setCurrentMarket,
+  ]);
   const handleUpdateEthMarket = (market: CustomMarket) => {
     setCurrentMarket(market);
   };

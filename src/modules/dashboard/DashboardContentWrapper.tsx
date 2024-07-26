@@ -6,7 +6,6 @@ import { MULTIPLE_MARKET_OPTIONS } from 'src/components/MarketSwitcher';
 import { ROUTES } from 'src/components/primitives/Link';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
@@ -26,7 +25,10 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const { currentAccount } = useWeb3Context();
   const router = useRouter();
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
+  const [currentMarket, setCurrentMarket] = useRootStore((store) => [
+    store.currentMarket,
+    store.setCurrentMarket,
+  ]);
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
