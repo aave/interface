@@ -30,11 +30,28 @@ import {
 import StyledToggleButton from './StyledToggleButton';
 import StyledToggleButtonGroup from './StyledToggleButtonGroup';
 
+export const MULTIPLE_MARKET_OPTIONS = [
+  CustomMarket.proto_mainnet_v3,
+  CustomMarket.proto_lido_v3,
+  'fork_proto_lido_v3',
+  'fork_proto_mainnet_v3',
+];
+
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
   const network: BaseNetworkConfig = networkConfigs[market.chainId];
 
   return { market, network };
+};
+
+export const getMarketLogoById = (marketId: CustomMarket, networkLogoPath: string) => {
+  const market: MarketDataType = marketsData[marketId as CustomMarket];
+
+  if (market.chainId === 1 && market.marketTitle === 'Ethereum Lido Market') {
+    return { marketLogo: '/icons/networks/lido.svg' };
+  }
+
+  return { marketLogo: networkLogoPath };
 };
 
 export const getMarketHelpData = (marketName: string) => {
@@ -48,9 +65,17 @@ export const getMarketHelpData = (marketName: string) => {
     'Kovan',
     'Rinkeby',
   ];
+
   const arrayName = marketName.split(' ');
+
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
-  const marketTitle = arrayName.filter((el) => !testChainName.includes(el)).join(' ');
+
+  const marketTitle =
+    // Note: We keep Eth for Lido market and fetch Lido market data
+    marketName === 'Ethereum Lido Market'
+      ? 'Ethereum'
+      : arrayName.filter((el) => !testChainName.includes(el)).join(' ');
+
   return {
     name: marketTitle,
     testChainName: testChainName[0],
@@ -154,6 +179,7 @@ export const MarketSwitcher = () => {
         ),
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
+
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
@@ -171,7 +197,8 @@ export const MarketSwitcher = () => {
                   }}
                 >
                   {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
-                  {upToLG && ' Market'}
+                  {/* {upToLG && ' Market'} */}
+                  {upToLG && ''}
                 </Typography>
                 {market.v3 ? (
                   <Box
@@ -230,7 +257,6 @@ export const MarketSwitcher = () => {
           </Trans>
         </Typography>
       </Box>
-
       {isV3MarketsAvailable && (
         <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
           <StyledToggleButtonGroup
@@ -315,39 +341,44 @@ export const MarketSwitcher = () => {
           </StyledToggleButtonGroup>
         </Box>
       )}
-      {availableMarkets.map((marketId: CustomMarket) => {
-        const { market, network } = getMarketInfoById(marketId);
-        const marketNaming = getMarketHelpData(market.marketTitle);
-        return (
-          <MenuItem
-            key={marketId}
-            data-cy={`marketSelector_${marketId}`}
-            value={marketId}
-            sx={{
-              '.MuiListItemIcon-root': { minWidth: 'unset' },
-              display:
-                (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
-                (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
-                  ? 'none'
-                  : 'flex',
-            }}
-          >
-            <MarketLogo
-              size={32}
-              logo={network.networkLogoPath}
-              testChainName={marketNaming.testChainName}
-            />
-            <ListItemText sx={{ mr: 0 }}>
-              {marketNaming.name} {market.isFork ? 'Fork' : ''}
-            </ListItemText>
-            <ListItemText sx={{ textAlign: 'right' }}>
-              <Typography color="text.muted" variant="description">
-                {marketNaming.testChainName}
-              </Typography>
-            </ListItemText>
-          </MenuItem>
-        );
-      })}
+      {availableMarkets
+        .filter((marketId: CustomMarket) => {
+          const { market } = getMarketInfoById(marketId);
+
+          const excludedDropdownMarkets = ['proto_lido_v3'];
+
+          return !excludedDropdownMarkets.includes(marketId) && market;
+        })
+        .map((marketId: CustomMarket) => {
+          const { market, network } = getMarketInfoById(marketId);
+          const marketNaming = getMarketHelpData(market.marketTitle);
+          const { marketLogo } = getMarketLogoById(marketId, network.networkLogoPath);
+          return (
+            <MenuItem
+              key={marketId}
+              data-cy={`marketSelector_${marketId}`}
+              value={marketId}
+              sx={{
+                '.MuiListItemIcon-root': { minWidth: 'unset' },
+                display:
+                  (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
+                  (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
+                    ? 'none'
+                    : 'flex',
+              }}
+            >
+              <MarketLogo size={32} logo={marketLogo} testChainName={marketNaming.testChainName} />
+              <ListItemText sx={{ mr: 0 }}>
+                {marketNaming.name} {market.isFork ? 'Fork' : ''}
+              </ListItemText>
+              <ListItemText sx={{ textAlign: 'right' }}>
+                <Typography color="text.muted" variant="description">
+                  {marketNaming.testChainName}
+                </Typography>
+              </ListItemText>
+            </MenuItem>
+          );
+        })}
     </TextField>
   );
 };
