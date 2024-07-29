@@ -20,6 +20,11 @@ export const MarketsTopPanel = () => {
     store.currentMarket,
     store.setCurrentMarket,
   ]);
+
+  const [currentNetworkConfig] = useRootStore((state) => [
+    state.currentNetworkConfig,
+    state.currentChainId,
+  ]);
   const handleUpdateEthMarket = (market: CustomMarket) => {
     setCurrentMarket(market);
   };
@@ -98,12 +103,12 @@ export const MarketsTopPanel = () => {
               <StyledTxModalToggleButton
                 maxWidth="160px"
                 unselectedBackgroundColor="#383D51"
-                value={'proto_mainnet_v3'}
-                disabled={currentMarket === 'proto_mainnet_v3'}
-                // Todo tracking?
-                // onClick={() =>
-                //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
-                // }
+                value={currentNetworkConfig.isFork ? 'fork_proto_mainnet_v3' : 'proto_mainnet_v3'}
+                disabled={
+                  (currentNetworkConfig.isFork &&
+                    currentMarket === ('fork_proto_mainnet_v3' as string)) ||
+                  (!currentNetworkConfig.isFork && currentMarket === 'proto_mainnet_v3')
+                }
               >
                 <Typography variant="buttonM">
                   <Box
@@ -128,8 +133,12 @@ export const MarketsTopPanel = () => {
               <StyledTxModalToggleButton
                 maxWidth="160px"
                 unselectedBackgroundColor="#383D51"
-                value={'proto_lido_v3'}
-                disabled={currentMarket === 'proto_lido_v3'}
+                disabled={
+                  (currentNetworkConfig.isFork &&
+                    currentMarket === ('fork_proto_lido_v3' as string)) ||
+                  (!currentNetworkConfig.isFork && currentMarket === 'proto_lido_v3')
+                }
+                value={currentNetworkConfig.isFork ? 'fork_proto_lido_v3' : 'proto_lido_v3'}
                 // Todo tracking?
               >
                 <Typography variant="buttonM">
