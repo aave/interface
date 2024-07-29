@@ -1,4 +1,5 @@
 import {
+  LegacyUiPoolDataProvider,
   ReservesDataHumanized,
   UiPoolDataProvider,
   UserReserveDataHumanized,
@@ -16,12 +17,32 @@ export class UiPoolService {
 
   private async getUiPoolDataService(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
+    if (this.useLegacyUiPoolDataProvider(marketData)) {
+      return new LegacyUiPoolDataProvider({
+        uiPoolDataProviderAddress: marketData.addresses.UI_POOL_DATA_PROVIDER,
+        provider,
+        chainId: marketData.chainId,
+      });
+    } else {
+      return new UiPoolDataProvider({
+        uiPoolDataProviderAddress: marketData.addresses.UI_POOL_DATA_PROVIDER as string,
+        provider,
+        chainId: marketData.chainId,
+      });
+    }
+  }
 
-    return new UiPoolDataProvider({
-      uiPoolDataProviderAddress: marketData.addresses.UI_POOL_DATA_PROVIDER as string,
-      provider,
-      chainId: marketData.chainId,
-    });
+  private useLegacyUiPoolDataProvider(marketData: MarketDataType) {
+    if (
+      !marketData.v3 ||
+      marketData.marketTitle === 'Fantom' ||
+      marketData.marketTitle === 'Harmony'
+    ) {
+      // it's a v2 market, or it does not have v3.1 upgrade
+      return true;
+    }
+
+    return false;
   }
 
   async getReservesHumanized(marketData: MarketDataType): Promise<ReservesDataHumanized> {
