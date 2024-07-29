@@ -114,7 +114,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
               <Button
                 sx={{
                   position: 'absolute',
-                  top: upFromSm ? '-140px' : '-130px',
+                  top: '-130px',
                   right: '0px',
                 }}
                 onClick={() => {
@@ -147,7 +147,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
               sx={{
                 position: 'absolute',
 
-                top: upFromSm ? '-60px' : '-90px',
+                top: downToLg ? '-130px' : '-90px',
 
                 right: '0px',
               }}
