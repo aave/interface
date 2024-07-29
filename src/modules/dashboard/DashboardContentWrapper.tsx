@@ -29,6 +29,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
     store.currentMarket,
     store.setCurrentMarket,
   ]);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -55,8 +56,12 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             <StyledTxModalToggleButton
               maxWidth="160px"
               unselectedBackgroundColor="#383D51"
-              value={'proto_mainnet_v3'}
-              disabled={currentMarket === 'proto_mainnet_v3'}
+              value={currentNetworkConfig.isFork ? 'fork_proto_mainnet_v3' : 'proto_mainnet_v3'}
+              disabled={
+                (currentNetworkConfig.isFork &&
+                  currentMarket === ('fork_proto_mainnet_v3' as string)) ||
+                (!currentNetworkConfig.isFork && currentMarket === 'proto_mainnet_v3')
+              }
               // Todo tracking?
               // onClick={() =>
               //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
@@ -70,8 +75,14 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             <StyledTxModalToggleButton
               maxWidth="160px"
               unselectedBackgroundColor="#383D51"
-              value={'proto_lido_v3'}
-              disabled={currentMarket === 'proto_lido_v3'}
+              disabled={
+                (currentNetworkConfig.isFork &&
+                  currentMarket === ('fork_proto_lido_v3' as string)) ||
+                (!currentNetworkConfig.isFork && currentMarket === ('proto_lido_v3' as string))
+              }
+              value={currentNetworkConfig.isFork ? 'fork_proto_lido_v3' : 'proto_lido_v3'}
+              // disabled={currentMarket === 'proto_lido_v3' || 'fork_proto_lido_v3' ? true : false}
+
               // Todo tracking?
             >
               <Typography variant="buttonM">
