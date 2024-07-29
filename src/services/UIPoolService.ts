@@ -25,7 +25,7 @@ export class UiPoolService {
       });
     } else {
       return new UiPoolDataProvider({
-        uiPoolDataProviderAddress: marketData.addresses.V3_1_UI_POOL_DATA_PROVIDER as string,
+        uiPoolDataProviderAddress: marketData.addresses.UI_POOL_DATA_PROVIDER as string,
         provider,
         chainId: marketData.chainId,
       });

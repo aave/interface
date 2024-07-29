@@ -46,7 +46,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   return (
     <Box>
       {currentAccount && MULTIPLE_MARKET_OPTIONS.includes(currentMarket) && (
-        <Box pb={2} sx={{ width: upFromSm ? 'calc(50% - 8px)' : '100%' }}>
+        <Box pb={2} sx={{ width: upFromSm ? '320px' : '100%' }}>
           <StyledTxModalToggleGroup
             color="secondary"
             value={currentMarket}
@@ -54,7 +54,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             onChange={(_, value) => handleUpdateEthMarket(value)}
           >
             <StyledTxModalToggleButton
-              maxWidth="160px"
+              maxWidth={upFromSm ? '160px' : undefined}
               unselectedBackgroundColor="#383D51"
               value={currentNetworkConfig.isFork ? 'fork_proto_mainnet_v3' : 'proto_mainnet_v3'}
               disabled={
@@ -73,7 +73,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             </StyledTxModalToggleButton>
 
             <StyledTxModalToggleButton
-              maxWidth="160px"
+              maxWidth={upFromSm ? '160px' : undefined}
               unselectedBackgroundColor="#383D51"
               disabled={
                 (currentNetworkConfig.isFork &&
@@ -114,7 +114,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
               <Button
                 sx={{
                   position: 'absolute',
-                  top: upFromSm ? '-60px' : '-90px',
+                  top: '-130px',
                   right: '0px',
                 }}
                 onClick={() => {
@@ -147,7 +147,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
               sx={{
                 position: 'absolute',
 
-                top: upFromSm ? '-60px' : '-90px',
+                top: downToLg ? '-130px' : '-90px',
 
                 right: '0px',
               }}
