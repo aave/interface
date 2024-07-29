@@ -9,7 +9,7 @@ interface RotationProviderConfig {
   fallFowardDelay?: number;
 }
 
-function sleep(ms: number) {
+export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 

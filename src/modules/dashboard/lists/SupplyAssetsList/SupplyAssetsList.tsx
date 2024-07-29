@@ -9,7 +9,6 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
-import { useAppDataProviderTon } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useWalletBalancesTon } from 'src/hooks/app-data-provider/useWalletBalancesTon';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
@@ -55,6 +54,7 @@ export const SupplyAssetsList = () => {
   const {
     user,
     reserves,
+    reservesTon,
     marketReferencePriceInUsd,
     loading: loadingReserves,
   } = useAppDataContext();
@@ -62,7 +62,6 @@ export const SupplyAssetsList = () => {
   const { walletBalancesTon, loading: loadingWalletBalancesTon } = useWalletBalancesTon(
     reserves as DashboardReserve[]
   );
-  const { reservesTon } = useAppDataProviderTon();
 
   const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances, loading: loadingWalletBalances } = useWalletBalances(currentMarketData);
@@ -211,7 +210,7 @@ export const SupplyAssetsList = () => {
     sortDesc,
     sortName,
     'assets',
-    isConnectedTonWallet && reservesTon ? reservesTon : preSortedReserves
+    isConnectedTonWallet ? reservesTon : preSortedReserves
   );
 
   const dataReserves = sortedReserves;

@@ -96,6 +96,7 @@
     "remark-gfm": "^3.0.1",
     "tiny-invariant": "^1.3.1",
     "tonweb": "^0.0.66",
+    "ts-retry-promise": "^0.8.1",
     "zustand": "^4.1.4"
   },
   "devDependencies": {

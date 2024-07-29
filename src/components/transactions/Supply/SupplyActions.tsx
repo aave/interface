@@ -5,6 +5,7 @@ import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -15,6 +16,7 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { sleep } from 'src/utils/rotationProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -45,6 +47,7 @@ export const SupplyActions = React.memo(
     ...props
   }: SupplyActionProps) => {
     const { isConnectedTonWallet } = useTonConnectContext();
+    const { getValueReserve } = useAppDataContext();
     const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions();
     const [
       tryPermit,
@@ -147,11 +150,18 @@ export const SupplyActions = React.memo(
             `${underlyingAssetTon}`,
             amountToSupply.toString()
           );
-          if (resSupplyTop) {
+          if (resSupplyTop?.success) {
+            await sleep(15000); // sleep 15s re call SC get new data reserve
             setMainTxState({
-              txHash: 'fakeTxhas',
+              txHash: resSupplyTop.txHash,
               loading: false,
               success: true,
+            });
+            getValueReserve();
+          } else {
+            setMainTxState({
+              txHash: undefined,
+              loading: false,
             });
           }
         } else {

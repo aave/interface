@@ -8,11 +8,13 @@ import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { address_pools } from './app-data-provider/useAppDataProviderTon';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
+import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
 export function useTonTransactions() {
   const { walletAddressTonWallet } = useTonConnectContext();
+  const { onGetGetTxByBOC } = useTonGetTxByBOC();
   const client = useTonClient();
-  const { sender } = useTonConnect();
+  const { sender, getLatestBoc } = useTonConnect();
 
   const approvedAmountTonAssume = {
     user: '0x6385fb98e0ae7bd76b55a044e1635244e46b07ef',
@@ -45,23 +47,32 @@ export function useTonTransactions() {
         contractJettonWallet
       ) as OpenedContract<JettonWallet>;
 
-      await providerJettonWallet.sendTransfer(
-        sender, //via: Sender,
-        toNano('0.1'), //value: bigint, --- gas fee default
-        toNano(amount), // User input amount
-        Address.parse(address_pools), //Address poll
-        Address.parse(walletAddressTonWallet), // User address wallet
-        Cell.EMPTY, // customPayload: Cell, //Cell.EMPTY
-        toNano('0.05'), // forward_ton_amount: bigint,
-        beginCell()
-          .storeUint(Op.supply, 32)
-          .storeAddress(Address.parse(_add)) // = address asset
-          .endCell() //tokenAddress: Address
-      );
+      try {
+        await providerJettonWallet.sendTransfer(
+          sender, //via: Sender,
+          toNano('0.1'), //value: bigint, --- gas fee default
+          toNano(amount), // User input amount
+          Address.parse(address_pools), //Address poll
+          Address.parse(walletAddressTonWallet), // User address wallet
+          Cell.EMPTY, // customPayload: Cell, //Cell.EMPTY
+          toNano('0.05'), // forward_ton_amount: bigint,
+          beginCell()
+            .storeUint(Op.supply, 32)
+            .storeAddress(Address.parse(_add)) // = address asset
+            .endCell() //tokenAddress: Address
+        );
 
-      return true;
+        const boc = await getLatestBoc();
+        const txHash = await onGetGetTxByBOC(boc, walletAddressTonWallet);
+        if (txHash) {
+          return { success: true, txHash: txHash };
+        }
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        return { success: false, error };
+      }
     },
-    [client, sender, walletAddressTonWallet]
+    [client, getLatestBoc, onGetGetTxByBOC, sender, walletAddressTonWallet]
   );
 
   return {

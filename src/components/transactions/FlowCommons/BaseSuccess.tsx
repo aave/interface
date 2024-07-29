@@ -5,6 +5,7 @@ import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 export type BaseSuccessTxViewProps = {
   txHash?: string;
@@ -21,6 +22,11 @@ const ExtLinkIcon = () => (
 export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewProps) => {
   const { close, mainTxState } = useModalContext();
   const { currentNetworkConfig } = useProtocolDataContext();
+  const { isConnectedTonWallet } = useTonConnectContext();
+
+  const hrefTon = `https://testnet.tonviewer.com/transaction/${
+    txHash ? txHash : mainTxState.txHash
+  }`;
 
   return (
     <>
@@ -61,9 +67,13 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Link
             variant="helperText"
-            href={currentNetworkConfig.explorerLinkBuilder({
-              tx: txHash ? txHash : mainTxState.txHash,
-            })}
+            href={
+              isConnectedTonWallet
+                ? hrefTon
+                : currentNetworkConfig.explorerLinkBuilder({
+                    tx: txHash ? txHash : mainTxState.txHash,
+                  })
+            }
             sx={{
               display: 'inline-flex',
               alignItems: 'center',

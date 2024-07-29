@@ -11,6 +11,7 @@ import { EmodeCategory } from 'src/helpers/types';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GHO_MINTING_MARKETS } from 'src/utils/ghoUtilities';
 
 import { formatEmodes } from '../../store/poolSelectors';
@@ -58,6 +59,7 @@ export type ExtendedFormattedUser = _ExtendedFormattedUser;
 export interface AppDataContextType {
   loading: boolean;
   reserves: ComputedReserveData[];
+  reservesTon: DashboardReserve[];
   eModes: Record<number, EmodeCategory>;
   user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;
@@ -68,6 +70,7 @@ export interface AppDataContextType {
   ghoLoadingData: boolean;
   ghoUserLoadingData: boolean;
   walletBalancesTon: WalletBalancesMap;
+  getValueReserve: () => void;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -81,7 +84,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const { isConnectedTonWallet, userSummaryTon } = useTonConnectContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
-  const { reservesTon, loading: loadingReservesTon } = useAppDataProviderTon();
+  const { getValueReserve, reservesTon, loading: loadingReservesTon } = useAppDataProviderTon();
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
 
   // pool hooks
@@ -165,6 +168,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
       value={{
         loading: isReservesLoading || (!!currentAccount && isUserDataLoading),
         reserves: reserves,
+        reservesTon,
         eModes,
         user: user,
         userReserves: userReserves || [],
@@ -178,6 +182,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         ghoLoadingData: ghoReserveDataLoading,
         ghoUserLoadingData: !!currentAccount && isGhoUserDataLoading,
         walletBalancesTon,
+        getValueReserve,
       }}
     >
       {children}
