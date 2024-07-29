@@ -66,5 +66,19 @@ export const formatEmodes = (reserves: ReserveDataHumanized[]) => {
     return acc;
   }, {} as Record<number, EmodeCategory>);
 
+  // If all reserves have an eMode cateogry other than 0, we need to add the default empty one.
+  // The UI assumes that there is always an eMode category 0, which is 'none'.
+  if (!eModes[0]) {
+    eModes[0] = {
+      liquidationBonus: 0,
+      id: 0,
+      label: '',
+      liquidationThreshold: 0,
+      ltv: 0,
+      priceSource: '0x0000000000000000000000000000000000000000',
+      assets: [],
+    };
+  }
+
   return eModes;
 };
