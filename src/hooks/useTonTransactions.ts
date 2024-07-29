@@ -12,7 +12,7 @@ import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
 export function useTonTransactions() {
   const { walletAddressTonWallet } = useTonConnectContext();
-  const { onGetGetTxByBOC } = useTonGetTxByBOC();
+  const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
   const client = useTonClient();
   const { sender, getLatestBoc } = useTonConnect();
 
@@ -50,7 +50,7 @@ export function useTonTransactions() {
       try {
         await providerJettonWallet.sendTransfer(
           sender, //via: Sender,
-          toNano('0.1'), //value: bigint, --- gas fee default
+          toNano('1'), //value: bigint, --- gas fee default 1
           toNano(amount), // User input amount
           Address.parse(address_pools), //Address poll
           Address.parse(walletAddressTonWallet), // User address wallet
@@ -65,6 +65,11 @@ export function useTonTransactions() {
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, walletAddressTonWallet);
         if (txHash) {
+          // setInterval(async () => {
+          // }, 5000);
+
+          const status = await getTransactionStatus(txHash, walletAddressTonWallet);
+          console.log('status--------------', status);
           return { success: true, txHash: txHash };
         }
       } catch (error) {
@@ -72,7 +77,7 @@ export function useTonTransactions() {
         return { success: false, error };
       }
     },
-    [client, getLatestBoc, onGetGetTxByBOC, sender, walletAddressTonWallet]
+    [client, getLatestBoc, getTransactionStatus, onGetGetTxByBOC, sender, walletAddressTonWallet]
   );
 
   return {
