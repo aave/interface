@@ -142,13 +142,18 @@ export const SupplyActions = React.memo(
     const action = async () => {
       try {
         if (isConnectedTonWallet) {
-          const aaaaaaa = await onSendSupplyTon(`${underlyingAssetTon}`, amountToSupply.toString());
-          console.log('.------------', aaaaaaa);
-          // setMainTxState({
-          //   txHash: 'response.hash',
-          //   loading: false,
-          //   success: true,
-          // });
+          setMainTxState({ ...mainTxState, loading: true });
+          const resSupplyTop = await onSendSupplyTon(
+            `${underlyingAssetTon}`,
+            amountToSupply.toString()
+          );
+          if (resSupplyTop) {
+            setMainTxState({
+              txHash: 'fakeTxhas',
+              loading: false,
+              success: true,
+            });
+          }
         } else {
           setMainTxState({ ...mainTxState, loading: true });
 
