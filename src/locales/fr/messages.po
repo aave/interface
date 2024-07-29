@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-07-10 00:18\n"
+"PO-Revision-Date: 2024-07-29 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1111,6 +1111,11 @@ msgstr "Intérêts composés estimés, y compris l’escompte pour le jalonnemen
 msgid "Estimated time"
 msgstr ""
 
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Ethereum Main"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
 msgstr "Dépasse la remise"
@@ -1426,6 +1431,11 @@ msgstr "Pour en savoir plus."
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
 
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Lido"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1498,6 +1508,10 @@ msgstr "L’AMI a été suspendu en raison d’une décision de la communauté. 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
 msgstr "MAX"
+
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Main"
+msgstr ""
 
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
