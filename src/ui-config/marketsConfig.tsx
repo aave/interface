@@ -157,7 +157,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
       withdrawAndSwitch: true,
-      debtSwitch: true,
+      debtSwitch: false,
       switch: true,
     },
     // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g`,
