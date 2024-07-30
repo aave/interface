@@ -28,6 +28,7 @@ export default function TopBarNotify({
 }: TopBarNotifyProps) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
+  const sm = useMediaQuery(breakpoints.down('sm'));
 
   const [showWarning, setShowWarning] = useState(true);
 
@@ -79,10 +80,13 @@ export default function TopBarNotify({
           variant="dense"
         >
           <Box sx={{ padding: md ? '20px 10px' : '', paddingRight: 0 }}>
-            <Typography sx={{ display: 'flex', alignContent: 'center' }} component="div">
+            <Typography
+              sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}
+              component="div"
+            >
               <Trans>{notifyText}</Trans>
 
-              {icon ? <MarketLogo sx={{ ml: 2 }} size={24} logo={icon} /> : ''}
+              {icon && !sm ? <MarketLogo sx={{ ml: 2 }} size={32} logo={icon} /> : ''}
 
               {learnMoreLink && md ? (
                 <Link
