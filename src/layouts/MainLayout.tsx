@@ -9,12 +9,16 @@ import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
 export function MainLayout({ children }: { children: ReactNode }) {
+  const APP_BANNER_VERSION = '1.0.0';
+
   return (
     <>
       <TopBarNotify
-        learnMoreLink="https://governance.aave.com/t/arfc-gho-cross-chain-launch/17616"
-        buttonText="Learn More"
-        notifyText="Users can now bridge GHO to Arbitrum with CCIP ✨"
+        learnMoreLink="/markets/?marketName=proto_lido_v3"
+        buttonText="View Market"
+        notifyText="Aave Governance has deployed a new Lido market on Ethereum V3"
+        bannerVersion={APP_BANNER_VERSION}
+        icon={'/markets/lido.svg'}
       />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
