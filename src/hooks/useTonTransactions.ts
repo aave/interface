@@ -65,10 +65,10 @@ export function useTonTransactions() {
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, walletAddressTonWallet);
         if (txHash) {
-          setInterval(async () => {
-            const status = await getTransactionStatus(txHash, walletAddressTonWallet);
-            console.log('status--------------', status);
-          }, 5000);
+          // setInterval(async () => {
+          // }, 5000);
+          const status = await getTransactionStatus(txHash, walletAddressTonWallet);
+          console.log('status--------------', status);
 
           return { success: true, txHash: txHash };
         }
