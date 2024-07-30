@@ -13,7 +13,7 @@ import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { displayGhoForMintableMarket, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -26,6 +26,7 @@ import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
   handleSortDashboardReserves,
+  sortPriorityReserve,
 } from '../../../../utils/dashboardSortUtils';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
 import { ListButtonsColumn } from '../ListButtonsColumn';
@@ -187,14 +188,16 @@ export const SupplyAssetsList = () => {
   });
 
   // Filter out reserves
-  const supplyReserves: unknown = isShowZeroAssets
-    ? sortedSupplyReserves
-    : filteredSupplyReserves.length >= 1
-    ? filteredSupplyReserves
-    : sortedSupplyReserves;
+  let supplyReserves: unknown;
+  if (isShowZeroAssets || filteredSupplyReserves.length === 0) {
+    supplyReserves = sortedSupplyReserves;
+  } else {
+    supplyReserves = filteredSupplyReserves;
+  }
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
-  const preSortedReserves = supplyReserves as DashboardReserve[];
+  let preSortedReserves = supplyReserves as DashboardReserve[];
+  preSortedReserves = sortPriorityReserve(GHO_SYMBOL, preSortedReserves);
   const sortedReserves = handleSortDashboardReserves(
     sortDesc,
     sortName,

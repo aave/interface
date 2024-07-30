@@ -14,6 +14,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
   displayGhoForMintableMarket,
   findAndFilterMintableGhoReserve,
+  GHO_SYMBOL,
 } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -30,6 +31,7 @@ import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
   handleSortDashboardReserves,
+  sortPriorityReserve,
 } from '../../../../utils/dashboardSortUtils';
 import {
   assetCanBeBorrowedByUser,
@@ -160,12 +162,8 @@ export const BorrowAssetsList = () => {
     borrowReserves,
     currentMarket
   );
-  const sortedReserves = handleSortDashboardReserves(
-    sortDesc,
-    sortName,
-    'asset',
-    filteredReserves as unknown as DashboardReserve[]
-  );
+  const sorted = sortPriorityReserve(GHO_SYMBOL, filteredReserves as unknown as DashboardReserve[]);
+  const sortedReserves = handleSortDashboardReserves(sortDesc, sortName, 'asset', sorted);
   const borrowDisabled = !sortedReserves.length && !ghoReserve;
 
   const RenderHeader: React.FC = () => {
