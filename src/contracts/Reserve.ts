@@ -9,27 +9,32 @@ import {
   SendMode,
 } from '@ton/core';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type ReserveConfig = {};
-
 export type ReserveData = {
-  supplyBalance: bigint;
-  borrowBalance: bigint;
+  totalSupply: bigint;
+  totalStableBorrow: bigint;
+  totalVariableBorrow: bigint;
   liquidityIndex: bigint;
-  borrowIndex: bigint;
+  stableBorrowIndex: bigint;
+  variableBorrowIndex: bigint;
   currentLiquidityRate: bigint;
-  currentBorrowRate: bigint;
+  currentStableBorrowRate: bigint;
+  currentVariableBorrowRate: bigint;
   lastUpdateTimestamp: bigint;
+  accruedToTreasury: bigint;
 };
 
-export type ReserveConfiguration = {
+export type ReserveConfig = {
+  rateStrategyAddress: Address;
+  decimals: string;
   isActive: boolean;
   isFrozen: boolean;
   isBorrowingEnabled: boolean;
+  isPaused: boolean;
   LTV: bigint;
   reserveFactor: bigint;
   supplyCap: bigint;
   borrowCap: bigint;
+  debtCeiling: bigint;
 };
 
 export function reserveConfigToCell(_config: ReserveConfig): Cell {
@@ -61,26 +66,34 @@ export class Reserve implements Contract {
     const { stack } = await provider.get('get_reserve_data', []);
     console.log('stack', stack);
     return {
-      supplyBalance: stack.readBigNumber(),
-      borrowBalance: stack.readBigNumber(),
+      totalSupply: stack.readBigNumber(),
+      totalStableBorrow: stack.readBigNumber(),
+      totalVariableBorrow: stack.readBigNumber(),
       liquidityIndex: stack.readBigNumber(),
-      borrowIndex: stack.readBigNumber(),
+      stableBorrowIndex: stack.readBigNumber(),
+      variableBorrowIndex: stack.readBigNumber(),
       currentLiquidityRate: stack.readBigNumber(),
-      currentBorrowRate: stack.readBigNumber(),
+      currentStableBorrowRate: stack.readBigNumber(),
+      currentVariableBorrowRate: stack.readBigNumber(),
       lastUpdateTimestamp: stack.readBigNumber(),
+      accruedToTreasury: stack.readBigNumber(),
     };
   }
 
-  async getReserveConfiguration(provider: ContractProvider): Promise<ReserveConfiguration> {
+  async getReserveConfiguration(provider: ContractProvider): Promise<ReserveConfig> {
     const { stack } = await provider.get('get_reserve_configuration', []);
     return {
+      decimals: stack.readNumber().toString(),
       isActive: stack.readBoolean(),
       isFrozen: stack.readBoolean(),
       isBorrowingEnabled: stack.readBoolean(),
+      isPaused: stack.readBoolean(),
       LTV: stack.readBigNumber(),
       reserveFactor: stack.readBigNumber(),
       supplyCap: stack.readBigNumber(),
       borrowCap: stack.readBigNumber(),
+      debtCeiling: stack.readBigNumber(),
+      rateStrategyAddress: stack.readAddress(),
     };
   }
 
@@ -89,13 +102,26 @@ export class Reserve implements Contract {
     return stack.readAddress();
   }
 
-  async getCurrentBalance(provider: ContractProvider) {
-    const { stack } = await provider.get('get_current_balance', []);
-    return stack.readBigNumber();
-  }
-
   async getUnderlyingAddress(provider: ContractProvider) {
     const { stack } = await provider.get('get_underlying_address', []);
     return stack.readAddress();
+  }
+
+  async getUserAddress(provider: ContractProvider, userAddress: Address) {
+    const { stack } = await provider.get('get_user_address', [
+      {
+        type: 'slice',
+        cell: beginCell().storeAddress(userAddress).endCell(),
+      },
+    ]);
+
+    return stack.readAddress();
+  }
+
+  async getReserveInfo(provider: ContractProvider) {
+    const { stack } = await provider.get('get_reserve_info', []);
+    return {
+      id: stack.readBigNumber(),
+    };
   }
 }

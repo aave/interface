@@ -1,9 +1,8 @@
 import { beginCell, Cell, Dictionary, Slice } from '@ton/core';
 import { sha256_sync } from '@ton/crypto';
 
-import { makeSnakeCell } from './snake-cell';
-
 // import { JettonDictValueSerializer } from '../utils/contents/jetton';
+import { makeSnakeCell } from './snake-cell';
 
 const ONCHAIN_CONTENT_PREFIX = 0x00;
 const OFFCHAIN_CONTENT_PREFIX = 0x01;

@@ -62,8 +62,11 @@ export function useTonGetTxByBOC() {
       try {
         const myAddress = Address.parse(walletAddress);
         const transactions = await client.getTransactions(myAddress, {
-          limit: 5,
+          limit: 10,
         });
+
+        // const res = await fetch(`https://testnet.tonapi.io/v2/blockchain/transactions/${txHash}`);
+        // const transaction = await res.json();
 
         for (const tx of transactions) {
           if (tx.hash().toString('hex') === txHash) {

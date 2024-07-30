@@ -204,10 +204,10 @@
             "isEmodeEnabled": true,
             "isWrappedBaseAsset": false
         },
-        "walletBalance": "0.500175",
-        "walletBalanceUSD": "0.5001798717045",
-        "availableToDeposit": "0.500175",
-        "availableToDepositUSD": "50017987.17045",
+        "walletBalance": "0",
+        "walletBalanceUSD": "0",
+        "availableToDeposit": "0",
+        "availableToDepositUSD": "0",
         "usageAsCollateralEnabledOnUser": true,
         "detailsAddress": "0x0b2c639c533813f4aa9d7837caf62653d097ff85"
     },
@@ -416,10 +416,10 @@
             "isEmodeEnabled": false,
             "isWrappedBaseAsset": false
         },
-        "walletBalance": "0.003466934808460921",
-        "walletBalanceUSD": "0.34689562252559095099",
-        "availableToDeposit": "0.003466934808460921",
-        "availableToDepositUSD": "34689562.252559095099084839",
+        "walletBalance": "0",
+        "walletBalanceUSD": "0",
+        "availableToDeposit": "0",
+        "availableToDepositUSD": "0",
         "usageAsCollateralEnabledOnUser": true,
         "detailsAddress": "0x76fb31fb4af56892a25e32cfc43de717950c9278"
     },
@@ -616,10 +616,10 @@
             "isEmodeEnabled": false,
             "isWrappedBaseAsset": false
         },
-        "walletBalance": "0.300437199059091087",
-        "walletBalanceUSD": "0.29982117060865236427",
-        "availableToDeposit": "0.300437199059091087",
-        "availableToDepositUSD": "29982117.060865236427157172",
+        "walletBalance": "0",
+        "walletBalanceUSD": "0",
+        "availableToDeposit": "0",
+        "availableToDepositUSD": "0",
         "usageAsCollateralEnabledOnUser": false,
         "detailsAddress": "0xc40f949f8a4e094d1b49a23ea9241d289b7b2819"
     }

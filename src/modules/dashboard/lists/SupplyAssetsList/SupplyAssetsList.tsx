@@ -54,7 +54,6 @@ export const SupplyAssetsList = () => {
   const {
     user,
     reserves,
-    reservesTon,
     marketReferencePriceInUsd,
     loading: loadingReserves,
   } = useAppDataContext();
@@ -64,7 +63,8 @@ export const SupplyAssetsList = () => {
   );
 
   const wrappedTokenReserves = useWrappedTokens();
-  const { walletBalances, loading: loadingWalletBalances } = useWalletBalances(currentMarketData);
+  const { walletBalances: walletBalancesDefault, loading: loadingWalletBalances } =
+    useWalletBalances(currentMarketData);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -79,6 +79,8 @@ export const SupplyAssetsList = () => {
   );
 
   const loading = isConnectedTonWallet ? loadingWalletBalancesTon : loadingWalletBalances;
+
+  const walletBalances = isConnectedTonWallet ? walletBalancesTon : walletBalancesDefault;
 
   const tokensToSupply = reserves
     .filter(
@@ -210,7 +212,7 @@ export const SupplyAssetsList = () => {
     sortDesc,
     sortName,
     'assets',
-    isConnectedTonWallet ? reservesTon : preSortedReserves
+    preSortedReserves
   );
 
   const dataReserves = sortedReserves;
@@ -312,13 +314,7 @@ export const SupplyAssetsList = () => {
         {dataReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
-              <SupplyAssetsListItem
-                {...item}
-                key={item.id}
-                walletBalances={
-                  isConnectedTonWallet && walletBalancesTon ? walletBalancesTon : walletBalances
-                }
-              />
+              <SupplyAssetsListItem {...item} key={item.id} walletBalances={walletBalances} />
             </AssetCapsProvider>
           </Fragment>
         ))}

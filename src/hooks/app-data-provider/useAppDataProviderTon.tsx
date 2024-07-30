@@ -36,7 +36,8 @@ export interface MetadataContentAssetTon {
   symbol: string;
 }
 
-export const address_pools = 'EQDhsLMn0IZ3k3j4fjDtiYb8-gO11aX9Y-eV160K5SUG5yWj';
+export const address_pools = 'EQDesKhqeTqPSxQb3G_NLDAo8T-r8BhwMCrj9LfT0CNAwUHo';
+// export const address_pools = 'EQDQg3KgzAUFf8WSNQz_FUbX6pRnJ2JciFEABwRE4Kipsh3L';
 // export const address_pools = 'EQCvM_iN3f_bqO_ADopJ8SR8ix5YT8wDBxfuQQ6B0QNKbhzV';
 
 export function useAppDataProviderTon() {
@@ -274,15 +275,11 @@ export function useAppDataProviderTon() {
 
           //
           LTV: item.LTV.toString(),
-          borrowBalance: item.borrowBalance.toString(),
           borrowCap: item.borrowCap.toString(),
-          borrowIndex: item.borrowIndex.toString(),
-          currentBorrowRate: item.currentBorrowRate.toString(),
           currentLiquidityRate: item.currentLiquidityRate.toString(),
           lastUpdateTimestamp: Number(item.lastUpdateTimestamp.toString()),
           liquidityIndex: item.liquidityIndex.toString(),
           reserveFactor: item.reserveFactor.toString(),
-          supplyBalance: item.supplyBalance.toString(),
           supplyCap: item.supplyCap.toString(),
           underlyingAsset: item.underlyingAsset.toString().toLocaleLowerCase(),
           id: `10-${item.underlyingAsset

@@ -11,7 +11,7 @@ import {
 } from '@ton/core';
 
 import { JettonMinter } from './JettonMinter';
-import { Reserve, ReserveData as ReserveState } from './Reserve';
+import { Reserve, ReserveConfig, ReserveData as ReserveState } from './Reserve';
 
 export type PoolConfig = {
   admin: Address;
@@ -24,22 +24,16 @@ export function poolConfigToCell(config: PoolConfig): Cell {
 
   return beginCell()
     .storeUint(0, 32)
+    .storeUint(0, 32)
     .storeAddress(config.admin)
+    .storeCoins(0)
+    .storeCoins(0)
+    .storeCoins(0)
     .storeRef(config.reserveCode)
     .storeRef(config.userCode)
     .storeDict(reserves)
     .endCell();
 }
-
-export type ReserveConfig = {
-  LTV: bigint;
-  isActive: boolean;
-  isFrozen: boolean;
-  isBorrowingEnabled: boolean;
-  reserveFactor: bigint;
-  supplyCap: bigint;
-  borrowCap: bigint;
-};
 
 export type ReserveMetadata = {
   underlyingAsset: Address;
@@ -55,17 +49,21 @@ export type ReserveData = ReserveMetadata & ReserveState & ReserveConfig;
 export type ReservesData = ReserveData[];
 
 export function reserveConfigToCell(config: ReserveConfig): Cell {
-  return beginCell()
-    .storeUint(0x36e5ebcb, 32)
-    .storeUint(1, 64)
+  const reserveConfigCell = beginCell()
+    .storeAddress(config.rateStrategyAddress)
+    .storeUint(config.LTV, 16)
+    .storeInt(BigInt(config.decimals), 8)
     .storeBit(config.isActive)
     .storeBit(config.isFrozen)
     .storeBit(config.isBorrowingEnabled)
-    .storeUint(config.LTV, 32)
+    .storeBit(config.isPaused)
     .storeUint(config.reserveFactor, 32)
     .storeCoins(config.supplyCap)
     .storeCoins(config.borrowCap)
+    .storeCoins(config.debtCeiling)
     .endCell();
+
+  return beginCell().storeUint(0x36e5ebcb, 32).storeRef(reserveConfigCell).endCell();
 }
 
 export class Pool implements Contract {
@@ -161,7 +159,8 @@ export class Pool implements Contract {
 
   async getReservesList(provider: ContractProvider) {
     const { stack } = await provider.get('get_pool_data', []);
-    stack.skip(4);
+    stack.skip(5);
+    // console.log(stack);
 
     const reservesList = stack.readCellOpt();
     if (!reservesList) {
@@ -192,8 +191,12 @@ export class Pool implements Contract {
         cell: beginCell().storeAddress(underlyingAddress).endCell(),
       },
     ]);
-
     return stack.readAddress();
+  }
+
+  async getCurrentReserveId(provider: ContractProvider) {
+    const { stack } = await provider.get('get_pool_data', []);
+    return stack.readBigNumber();
   }
 
   async getReservesData(provider: ContractProvider): Promise<ReservesData> {

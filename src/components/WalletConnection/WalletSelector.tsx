@@ -83,6 +83,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
 
   const connectWalletClick = () => {
     if (walletType === WalletType.TON_CONNECT) {
+      if (isConnectedTonWallet) disconnectTonWallet();
       connectTonWallet();
       setWalletModalOpen(false);
     } else {
