@@ -2,7 +2,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Stack, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { CapType } from 'src/components/caps/helper';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { AvailableTooltip } from 'src/components/infoTooltips/AvailableTooltip';
 import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -178,7 +177,6 @@ const GhoBorrowAssetsListItemDesktop = ({
           forceShowTooltip
           userQualifiesForDiscount
         />
-        <MeritIncentivesButton symbol="gho" />
       </ListColumn>
       <ListButtonsColumn>
         <Button disabled={borrowButtonDisable} variant="contained" onClick={onBorrowClick}>
@@ -249,7 +247,6 @@ const GhoBorrowAssetsListItemMobile = ({
             forceShowTooltip
             userQualifiesForDiscount
           />
-          <MeritIncentivesButton symbol="gho" />
         </Stack>
       </Row>
 

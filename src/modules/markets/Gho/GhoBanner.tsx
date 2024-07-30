@@ -11,7 +11,6 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
 
 interface GhoBannerProps {
@@ -24,9 +23,6 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isMd = useMediaQuery(theme.breakpoints.up('xs'));
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData, ghoLoadingData } = useAppDataContext();
-  const { data: incentives } = useMeritIncentives('gho');
-
-  const ghoMeritAPR = incentives?.incentiveAPR || 0;
 
   const totalBorrowed = BigNumber.min(
     valueToBigNumber(reserve?.totalDebt || 0),
@@ -271,10 +267,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
               }}
             >
               <GhoBorrowApyRange
-                minVal={Math.max(
-                  0,
-                  ghoReserveData.ghoBorrowAPYWithMaxDiscount - Number(ghoMeritAPR)
-                )}
+                minVal={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
                 maxVal={ghoReserveData.ghoVariableBorrowAPY}
                 variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 percentVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
@@ -301,26 +294,13 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                       xs: 'caption',
                     },
                   }}
-                  text={<Trans>Estimated borrow rate</Trans>}
+                  text={<Trans>Borrow rate</Trans>}
                 >
                   <>
                     <Trans>
                       Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a
                       discount on GHO borrow interest rate.
-                    </Trans>{' '}
-                    <Trans>
-                      Additionally, GHO borrowers recieve periodic rewards through the Merit
-                      program. This is a program initiated and implemented by the decentralised Aave
-                      community. Aave Labs does not guarantee the program and accepts no liability.
-                    </Trans>{' '}
-                    <Link
-                      href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
-                      sx={{ textDecoration: 'underline' }}
-                      variant="caption"
-                      color="text.secondary"
-                    >
-                      Learn more about Merit.
-                    </Link>
+                    </Trans>
                   </>
                 </TextWithTooltip>
               </Typography>
