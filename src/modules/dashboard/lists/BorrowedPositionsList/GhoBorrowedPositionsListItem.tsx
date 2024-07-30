@@ -4,7 +4,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
-import { UserMeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { FixedAPYTooltipText } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
@@ -171,7 +170,6 @@ const GhoBorrowedPositionsListItemDesktop = ({
           ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
           userQualifiesForDiscount={hasDiscount}
         />
-        <UserMeritIncentivesButton symbol="gho" />
       </ListColumn>
       <ListColumn>
         <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
