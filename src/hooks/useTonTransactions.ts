@@ -48,7 +48,7 @@ export const useTonTransactions = (yourAddressWallet: string) => {
       try {
         await providerJettonWallet.sendTransfer(
           sender, //via: Sender,
-          toNano('1'), //value: bigint, --- gas fee default 1
+          toNano('0.1'), //value: bigint, --- gas fee default 1
           BigInt(amount), // User input amount
           Address.parse(address_pools), //Address poll
           Address.parse(yourAddressWallet), // User address wallet
@@ -57,6 +57,7 @@ export const useTonTransactions = (yourAddressWallet: string) => {
           beginCell()
             .storeUint(Op.supply, 32)
             .storeAddress(Address.parse(_add)) // = address asset
+            .storeUint(1, 1)
             .endCell() //tokenAddress: Address
         );
 

@@ -110,9 +110,7 @@ export class User implements Contract {
   }
 
   async getUserSupplies(provider: ContractProvider) {
-    console.log('---------------------1111111111111111');
     const { stack } = await provider.get('get_user_data', []);
-    console.log('---------------------6', stack);
 
     stack.skip(3);
 
@@ -122,14 +120,12 @@ export class User implements Contract {
       console.log('Empty principal list');
       return [];
     }
-    console.log('---------------------7', stack);
 
     const dict = Dictionary.loadDirect(
       Dictionary.Keys.BigUint(32),
       Dictionary.Values.Cell(),
       principalList
     );
-    console.log('---------------------8', stack);
 
     const reserves = [];
     let index = 0;

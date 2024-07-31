@@ -10,6 +10,7 @@ import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 // import { ExtendedFormattedUser } from '../pool/useExtendedUserSummaryAndIncentives';
 import { useTonClient } from '../useTonClient';
+import { useTonYourSupplies } from '../useTonYourSupplies';
 import { useGetBalanceTon } from './useWalletBalancesTon';
 
 export interface interfaceSendSupply {
@@ -37,7 +38,7 @@ export interface MetadataContentAssetTon {
   symbol: string;
 }
 
-export const address_pools = 'EQDesKhqeTqPSxQb3G_NLDAo8T-r8BhwMCrj9LfT0CNAwUHo';
+export const address_pools = 'EQAEK-5McDKXZyszKAeHf7WR2Gjvy3lZEG_bYcxhOGsbBSbA';
 // export const address_pools = 'EQDQg3KgzAUFf8WSNQz_FUbX6pRnJ2JciFEABwRE4Kipsh3L';
 // export const address_pools = 'EQCvM_iN3f_bqO_ADopJ8SR8ix5YT8wDBxfuQQ6B0QNKbhzV';
 
@@ -55,6 +56,10 @@ export function useAppDataProviderTon() {
     if (!poolContract) return;
     poolContract.getReservesList().then(setListPoolContract);
   }, [poolContract]);
+
+  const { yourSuppliesTon } = useTonYourSupplies(walletAddressTonWallet, reservesTon);
+
+  console.log('yourSuppliesTon', yourSuppliesTon);
 
   const getValueReserve = useCallback(async () => {
     if (!poolContract || !client || !walletAddressTonWallet) return;
