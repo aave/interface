@@ -4,6 +4,7 @@ import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { marketContainerProps } from 'pages/markets.page';
 import * as React from 'react';
 import { MULTIPLE_MARKET_OPTIONS } from 'src/components/MarketSwitcher';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useRootStore } from 'src/store/root';
@@ -110,6 +111,8 @@ export const MarketsTopPanel = () => {
                   (!currentNetworkConfig.isFork && currentMarket === 'proto_mainnet_v3')
                 }
               >
+                <TokenIcon sx={{ mr: 1 }} symbol="eth-round" />
+
                 <Typography variant="buttonM">
                   <Box
                     component="span"
@@ -141,6 +144,8 @@ export const MarketsTopPanel = () => {
                 value={currentNetworkConfig.isFork ? 'fork_proto_lido_v3' : 'proto_lido_v3'}
                 // Todo tracking?
               >
+                <TokenIcon sx={{ mr: 1 }} symbol="lido" />
+
                 <Typography variant="buttonM">
                   <Trans>Lido</Trans>
                 </Typography>
