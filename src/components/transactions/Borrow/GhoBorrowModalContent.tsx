@@ -27,7 +27,6 @@ import {
 import { useGhoPoolReserve } from 'src/hooks/pool/useGhoPoolReserve';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -39,11 +38,7 @@ import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
-import {
-  DetailsHFLine,
-  DetailsIncentivesLine,
-  TxModalDetails,
-} from '../FlowCommons/TxModalDetails';
+import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { BorrowActions } from './BorrowActions';
 import { BorrowAmountWarning } from './BorrowAmountWarning';
 import { GhoBorrowSuccessView } from './GhoBorrowSuccessView';
@@ -134,7 +129,6 @@ export const GhoBorrowModalContent = ({
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
-  const { data: incentives } = useMeritIncentives('gho');
 
   // Check if user has any open borrow positions on GHO
   // Check if user can borrow at a discount
@@ -289,10 +283,6 @@ export const GhoBorrowModalContent = ({
           visibleHfChange={!!amount}
           healthFactor={user.healthFactor}
           futureHealthFactor={newHealthFactor.toString(10)}
-        />
-        <DetailsIncentivesLine
-          incentives={incentives ? [incentives] : []}
-          symbol={poolReserve.symbol}
         />
         <Row
           caption={
