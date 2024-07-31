@@ -55,8 +55,6 @@ export const IncentivesTooltipContent = ({
     );
   };
 
-  console.log(IncentivesSymbolMap[incentives[0].rewardTokenSymbol]);
-
   const getSymbolMap = (incentive: ReserveIncentiveResponse) => {
     const rewardTokenSymbol = incentive.rewardTokenSymbol;
     return IncentivesSymbolMap[rewardTokenSymbol]
