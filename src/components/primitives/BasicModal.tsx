@@ -8,6 +8,7 @@ export interface BasicModalProps {
   setOpen: (value: boolean) => void;
   withCloseButton?: boolean;
   contentMaxWidth?: number;
+  closeCallback?: () => void;
 }
 
 export const BasicModal = ({
@@ -16,9 +17,13 @@ export const BasicModal = ({
   withCloseButton = true,
   contentMaxWidth = 420,
   children,
+  closeCallback,
   ...props
 }: BasicModalProps) => {
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    if (closeCallback) closeCallback();
+    setOpen(false);
+  };
 
   return (
     <Modal

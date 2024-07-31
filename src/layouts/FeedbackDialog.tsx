@@ -19,6 +19,11 @@ export const FeedbackModal = () => {
   const [error, setError] = useState(false);
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [dirtyEmailField, setDirtyEmailField] = useState(false);
+
+  const onBlur = () => {
+    if (!dirtyEmailField) setDirtyEmailField(true);
+  };
 
   useEffect(() => {
     if (feedbackDialogOpen) {
@@ -76,8 +81,14 @@ export const FeedbackModal = () => {
     }
   };
 
+  const onClose = () => {
+    setEmailError('');
+    setValue('');
+    setDirtyEmailField(false);
+  };
+
   return (
-    <BasicModal open={feedbackDialogOpen} setOpen={setFeedbackOpen}>
+    <BasicModal open={feedbackDialogOpen} setOpen={setFeedbackOpen} closeCallback={onClose}>
       <Box
         sx={{
           display: 'flex',
@@ -167,11 +178,12 @@ export const FeedbackModal = () => {
 
                 <TextField
                   // label="Email"
+                  onBlur={onBlur}
                   fullWidth
                   value={email}
                   onChange={handleEmailChange}
-                  error={!!emailError}
-                  helperText={emailError}
+                  error={dirtyEmailField && !!emailError}
+                  helperText={dirtyEmailField ? emailError : undefined}
                   sx={{ mb: 2 }}
                 />
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
