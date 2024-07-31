@@ -88,7 +88,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
               // Todo tracking?
             >
-              <TokenIcon sx={{ mr: 2 }} symbol="lido" />
+              <TokenIcon sx={{ mr: 2 }} symbol="ldo" />
 
               <Typography variant="buttonM">
                 <Trans>Lido</Trans>
