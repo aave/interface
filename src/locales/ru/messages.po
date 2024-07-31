@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-07-29 18:05\n"
+"PO-Revision-Date: 2024-07-31 00:15\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -177,10 +177,6 @@ msgstr "Добавить в кошелек"
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to wallet to track your balance."
 msgstr "Добавлять {0} в кошелек для отслеживания баланса."
-
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Additionally, GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
-msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -534,6 +530,10 @@ msgstr "Информация о займе"
 msgid "Borrow power used"
 msgstr "Заимствование использованной мощности"
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Borrow rate"
+msgstr ""
+
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
 msgstr "Изменение ставки по займу"
@@ -839,10 +839,6 @@ msgstr "Текущий LTV"
 msgid "Current differential"
 msgstr "Дифференциал тока"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Current rewards"
-msgstr ""
-
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Current v2 Balance"
 msgstr "Текущий баланс v2"
@@ -1099,10 +1095,6 @@ msgstr "Введите сумму"
 msgid "Error connecting. Try refreshing the page."
 msgstr "Ошибка подключения. Попробуйте обновить страницу."
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Estimated borrow rate"
-msgstr ""
-
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 msgstr "Расчетный сложный процент, включая дисконт для стейкинга {0}AAVE в модуле безопасности."
@@ -1216,10 +1208,6 @@ msgstr "Средства в модуле «Безопасность»"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "GHO balance"
-msgstr ""
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
@@ -1591,10 +1579,6 @@ msgstr "Знакомьтесь, GHO"
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
 msgstr "Меню"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Merit Program"
-msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
