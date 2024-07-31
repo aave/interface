@@ -4,6 +4,7 @@ import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { useRouter } from 'next/router';
 import { MULTIPLE_MARKET_OPTIONS } from 'src/components/MarketSwitcher';
 import { ROUTES } from 'src/components/primitives/Link';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -67,6 +68,8 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
               //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
               // }
             >
+              <TokenIcon sx={{ mr: 1 }} symbol="eth-round" />
+
               <Typography variant="buttonM">
                 <Trans>Ethereum Main</Trans>
               </Typography>
@@ -85,6 +88,8 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
               // Todo tracking?
             >
+              <TokenIcon sx={{ mr: 1 }} symbol="lido" />
+
               <Typography variant="buttonM">
                 <Trans>Lido</Trans>
               </Typography>
