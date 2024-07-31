@@ -3,6 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
+import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
@@ -10,6 +11,7 @@ import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarnin
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
+import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -26,6 +28,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
+  const isSuperfestOnSupplySide = showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY);
+  const isSuperfestOnBorrowSide = showSuperFestTooltip(reserve.symbol, currentMarket, Side.BORROW);
 
   return (
     <ListItem
@@ -83,6 +87,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
+          tooltip={isSuperfestOnSupplySide && <SuperFestTooltip />}
         />
       </ListColumn>
 
@@ -104,6 +109,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
+          tooltip={isSuperfestOnBorrowSide && <SuperFestTooltip />}
         />
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&

@@ -1,10 +1,14 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
+import { MULTIPLE_MARKET_OPTIONS } from 'src/components/MarketSwitcher';
 import { ROUTES } from 'src/components/primitives/Link';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
 import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
@@ -21,6 +25,11 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const { currentAccount } = useWeb3Context();
   const router = useRouter();
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const [currentMarket, setCurrentMarket] = useRootStore((store) => [
+    store.currentMarket,
+    store.setCurrentMarket,
+  ]);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -30,8 +39,60 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
   const upFromSm = useMediaQuery(breakpoints.up('xsm'));
 
+  const handleUpdateEthMarket = (market: CustomMarket) => {
+    setCurrentMarket(market);
+  };
+
   return (
     <Box>
+      {currentAccount && MULTIPLE_MARKET_OPTIONS.includes(currentMarket) && (
+        <Box pb={2} sx={{ width: upFromSm ? '320px' : '100%' }}>
+          <StyledTxModalToggleGroup
+            color="secondary"
+            value={currentMarket}
+            exclusive
+            onChange={(_, value) => handleUpdateEthMarket(value)}
+          >
+            <StyledTxModalToggleButton
+              maxWidth={upFromSm ? '160px' : undefined}
+              unselectedBackgroundColor="#383D51"
+              value={currentNetworkConfig.isFork ? 'fork_proto_mainnet_v3' : 'proto_mainnet_v3'}
+              disabled={
+                (currentNetworkConfig.isFork &&
+                  currentMarket === ('fork_proto_mainnet_v3' as string)) ||
+                (!currentNetworkConfig.isFork && currentMarket === 'proto_mainnet_v3')
+              }
+              // Todo tracking?
+              // onClick={() =>
+              //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
+              // }
+            >
+              <Typography variant="buttonM">
+                <Trans>Ethereum Main</Trans>
+              </Typography>
+            </StyledTxModalToggleButton>
+
+            <StyledTxModalToggleButton
+              maxWidth={upFromSm ? '160px' : undefined}
+              unselectedBackgroundColor="#383D51"
+              disabled={
+                (currentNetworkConfig.isFork &&
+                  currentMarket === ('fork_proto_lido_v3' as string)) ||
+                (!currentNetworkConfig.isFork && currentMarket === ('proto_lido_v3' as string))
+              }
+              value={currentNetworkConfig.isFork ? 'fork_proto_lido_v3' : 'proto_lido_v3'}
+              // disabled={currentMarket === 'proto_lido_v3' || 'fork_proto_lido_v3' ? true : false}
+
+              // Todo tracking?
+            >
+              <Typography variant="buttonM">
+                <Trans>Lido</Trans>
+              </Typography>
+            </StyledTxModalToggleButton>
+          </StyledTxModalToggleGroup>
+        </Box>
+      )}
+
       {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3}
       <Box
         sx={{
@@ -53,7 +114,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
               <Button
                 sx={{
                   position: 'absolute',
-                  top: upFromSm ? '-60px' : '-90px',
+                  top: '-130px',
                   right: '0px',
                 }}
                 onClick={() => {
@@ -86,7 +147,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
               sx={{
                 position: 'absolute',
 
-                top: upFromSm ? '-60px' : '-90px',
+                top: downToLg ? '-130px' : '-90px',
 
                 right: '0px',
               }}

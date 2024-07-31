@@ -357,6 +357,8 @@ export const useTransactionHandler = ({
             const approvalTransactions = txs.filter((tx) => tx.txType == 'ERC20_APPROVAL');
             if (approvalTransactions.length > 0) {
               setApprovalTxes(approvalTransactions);
+            } else {
+              setApprovalTxes(undefined);
             }
             const preferPermit =
               tryPermit &&
@@ -378,6 +380,8 @@ export const useTransactionHandler = ({
               // For approval flow, set approval/action status and gas limit accordingly
               if (approvalTransactions.length > 0) {
                 setApprovalTxes(approvalTransactions);
+              } else {
+                setApprovalTxes(undefined);
               }
               setActionTx(
                 txs.find((tx) =>

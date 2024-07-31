@@ -4,6 +4,7 @@ import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisable
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { PausedTooltip } from 'src/components/infoTooltips/PausedTooltip';
 import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
+import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
@@ -32,6 +33,7 @@ interface ListItemWrapperProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
+  showSuperFestTooltip?: boolean;
 }
 
 export const ListItemWrapper = ({
@@ -47,6 +49,7 @@ export const ListItemWrapper = ({
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
+  showSuperFestTooltip = false,
   ...rest
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
@@ -83,6 +86,7 @@ export const ListItemWrapper = ({
           </Tooltip>
         </Link>
         {paused && <PausedTooltip />}
+        {showSuperFestTooltip && <SuperFestTooltip />}
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}

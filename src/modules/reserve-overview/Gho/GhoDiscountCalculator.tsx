@@ -10,7 +10,6 @@ import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
 import { GENERAL, RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
@@ -324,9 +323,6 @@ export const GhoDiscountCalculator = () => {
       </Typography>
       {downToXsm ? GhoDiscountCalculatorMobile : GhoDiscountCalculatorDesktop}
       <Box sx={{ mt: downToXsm ? 4 : 10 }}>
-        <GhoMeritProgramIncentives downToXsm={downToXsm} />
-      </Box>
-      <Box sx={{ mt: downToXsm ? 4 : 10 }}>
         <GhoDiscountParametersComponent
           loading={ghoLoadingData}
           downToXsm={downToXsm}
@@ -334,50 +330,6 @@ export const GhoDiscountCalculator = () => {
         />
       </Box>
     </>
-  );
-};
-
-const GhoMeritProgramIncentives = ({ downToXsm }: { downToXsm: boolean }) => {
-  const { data: meritIncentives, isFetching } = useMeritIncentives('gho');
-
-  const ghoMeritAPR = meritIncentives?.incentiveAPR || 0;
-
-  return (
-    <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-      <Typography variant="subheader1" gutterBottom>
-        <Trans>Merit Program</Trans>
-      </Typography>
-      <Typography variant="caption" color="text.secondary" mb={6}>
-        <Trans>
-          GHO borrowers recieve periodic rewards through the Merit program. This is a program
-          initiated and implemented by the decentralised Aave community. Aave Labs does not
-          guarantee the program and accepts no liability.
-        </Trans>{' '}
-        <Link
-          href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
-          sx={{ textDecoration: 'underline' }}
-          variant="caption"
-          color="text.secondary"
-        >
-          Learn more
-        </Link>
-      </Typography>
-      <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>Current rewards</Trans>}>
-        {isFetching ? (
-          <Skeleton variant="text" width={75} />
-        ) : (
-          <Stack direction="row" gap={1} alignItems="center">
-            <TokenIcon symbol="GHO" sx={{ fontSize: '14px', mr: 1 }} />
-            <FormattedNumber
-              value={ghoMeritAPR}
-              percent
-              variant="secondary14"
-              color="text.primary"
-            />
-          </Stack>
-        )}
-      </ReserveOverviewBox>
-    </Box>
   );
 };
 
