@@ -42,7 +42,7 @@ export const MeritIncentivesTooltipContent = ({
       </Typography>
 
       <Typography variant="caption" color="text.secondary" mb={3}>
-        <Trans>Rewards can be claimed through the</Trans>{' '}
+        <Trans>Merit Program rewards are claimed through the</Trans>{' '}
         <Link
           href="https://apps.aavechan.com/merit"
           sx={{ textDecoration: 'underline' }}

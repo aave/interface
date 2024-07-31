@@ -1575,6 +1575,10 @@ msgstr "Meet GHO"
 msgid "Menu"
 msgstr "Menu"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Merit Program rewards are claimed through the"
+msgstr "Merit Program rewards are claimed through the"
+
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrate"
@@ -2120,10 +2124,6 @@ msgstr "Rewards APR"
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "Rewards can be claimed through"
 msgstr "Rewards can be claimed through"
-
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Rewards can be claimed through the"
-msgstr "Rewards can be claimed through the"
 
 #: src/components/HealthFactorNumber.tsx
 msgid "Risk details"
