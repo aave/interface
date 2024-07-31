@@ -28,6 +28,7 @@ import { usePoolReservesHumanized } from '../pool/usePoolReserves';
 import { useUserGhoPoolFormattedReserve } from '../pool/useUserGhoPoolFormattedReserve';
 import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
 import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
+import { useTonYourSupplies } from '../useTonYourSupplies';
 import { useAppDataProviderTon } from './useAppDataProviderTon';
 import { WalletBalancesMap } from './useWalletBalances';
 import { useWalletBalancesTon } from './useWalletBalancesTon';
@@ -81,11 +82,16 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  */
 export const AppDataProvider: React.FC = ({ children }) => {
   const { currentAccount } = useWeb3Context();
-  const { isConnectedTonWallet, userSummaryTon } = useTonConnectContext();
+  const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
   const { getValueReserve, reservesTon, loading: loadingReservesTon } = useAppDataProviderTon();
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
+
+  const { loading: loadingYourSuppliesTon, userSummaryTon } = useTonYourSupplies(
+    walletAddressTonWallet,
+    reservesTon
+  );
 
   // pool hooks
 
@@ -134,7 +140,10 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   // loading
   const isReservesLoading =
-    reservesDataLoading || formattedPoolReservesLoading || loadingReservesTon;
+    reservesDataLoading ||
+    formattedPoolReservesLoading ||
+    loadingReservesTon ||
+    loadingYourSuppliesTon;
   const isUserDataLoading = isConnectedTonWallet
     ? false
     : userReservesDataLoading || userSummaryLoading;

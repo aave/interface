@@ -8,9 +8,7 @@ import { useContract } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
-// import { ExtendedFormattedUser } from '../pool/useExtendedUserSummaryAndIncentives';
 import { useTonClient } from '../useTonClient';
-import { useTonYourSupplies } from '../useTonYourSupplies';
 import { useGetBalanceTon } from './useWalletBalancesTon';
 
 export interface interfaceSendSupply {
@@ -49,17 +47,12 @@ export function useAppDataProviderTon() {
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
   const { onGetBalanceTonNetwork } = useGetBalanceTon();
-  // const { onGetContentAssetTon } = useGetNameAssetTon();
   const { walletAddressTonWallet } = useTonConnectContext();
 
   useEffect(() => {
     if (!poolContract) return;
     poolContract.getReservesList().then(setListPoolContract);
   }, [poolContract]);
-
-  const { yourSuppliesTon } = useTonYourSupplies(walletAddressTonWallet, reservesTon);
-
-  console.log('yourSuppliesTon', yourSuppliesTon);
 
   const getValueReserve = useCallback(async () => {
     if (!poolContract || !client || !walletAddressTonWallet) return;
