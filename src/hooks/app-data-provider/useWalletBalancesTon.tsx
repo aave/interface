@@ -1,4 +1,4 @@
-import { Address, fromNano, OpenedContract } from '@ton/core';
+import { Address, OpenedContract } from '@ton/core';
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
 import { JettonMinter } from 'src/contracts/JettonMinter';
@@ -69,7 +69,7 @@ export const useGetBalanceTon = () => {
       ) as OpenedContract<JettonWallet>;
 
       const balance = await providerJettonWallet.getJettonBalance();
-      return fromNano(balance);
+      return balance;
     },
     [client, walletAddressTonWallet]
   );

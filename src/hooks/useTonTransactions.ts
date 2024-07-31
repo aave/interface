@@ -3,15 +3,13 @@ import { useCallback } from 'react';
 import { Op } from 'src/contracts/JettonConstants';
 import { JettonMinter } from 'src/contracts/JettonMinter';
 import { JettonWallet } from 'src/contracts/JettonWallet';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 import { address_pools } from './app-data-provider/useAppDataProviderTon';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
-export function useTonTransactions() {
-  const { walletAddressTonWallet } = useTonConnectContext();
+export const useTonTransactions = (yourAddressWallet: string) => {
   const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
   const client = useTonClient();
   const { sender, getLatestBoc } = useTonConnect();
@@ -25,7 +23,7 @@ export function useTonTransactions() {
 
   const onSendSupplyTon = useCallback(
     async (_add: string, amount: string) => {
-      if (!client || !walletAddressTonWallet || !_add || !amount) return;
+      if (!client || !yourAddressWallet || !_add || !amount) return;
 
       const contractJettonMinter = new JettonMinter(
         Address.parse(_add) // = address asset
@@ -36,7 +34,7 @@ export function useTonTransactions() {
       ) as OpenedContract<JettonMinter>;
 
       const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
-        Address.parse(walletAddressTonWallet)
+        Address.parse(yourAddressWallet)
       );
 
       const contractJettonWallet = new JettonWallet(
@@ -51,9 +49,9 @@ export function useTonTransactions() {
         await providerJettonWallet.sendTransfer(
           sender, //via: Sender,
           toNano('1'), //value: bigint, --- gas fee default 1
-          toNano(amount), // User input amount
+          BigInt(amount), // User input amount
           Address.parse(address_pools), //Address poll
-          Address.parse(walletAddressTonWallet), // User address wallet
+          Address.parse(yourAddressWallet), // User address wallet
           Cell.EMPTY, // customPayload: Cell, //Cell.EMPTY
           toNano('0.05'), // forward_ton_amount: bigint,
           beginCell()
@@ -63,11 +61,11 @@ export function useTonTransactions() {
         );
 
         const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, walletAddressTonWallet);
+        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
         if (txHash) {
           // setInterval(async () => {
           // }, 5000);
-          const status = await getTransactionStatus(txHash, walletAddressTonWallet);
+          const status = await getTransactionStatus(txHash, yourAddressWallet);
           console.log('status--------------', status);
 
           return { success: true, txHash: txHash };
@@ -77,11 +75,11 @@ export function useTonTransactions() {
         return { success: false, error };
       }
     },
-    [client, getLatestBoc, getTransactionStatus, onGetGetTxByBOC, sender, walletAddressTonWallet]
+    [client, getLatestBoc, getTransactionStatus, onGetGetTxByBOC, sender, yourAddressWallet]
   );
 
   return {
     approvedAmountTonAssume,
     onSendSupplyTon,
   };
-}
+};

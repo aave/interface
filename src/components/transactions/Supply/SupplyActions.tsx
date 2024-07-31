@@ -46,9 +46,9 @@ export const SupplyActions = React.memo(
     underlyingAssetTon,
     ...props
   }: SupplyActionProps) => {
-    const { isConnectedTonWallet } = useTonConnectContext();
+    const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
     const { getValueReserve } = useAppDataContext();
-    const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions();
+    const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions(walletAddressTonWallet);
     const [
       tryPermit,
       supply,
@@ -148,7 +148,7 @@ export const SupplyActions = React.memo(
           setMainTxState({ ...mainTxState, loading: true });
           const resSupplyTop = await onSendSupplyTon(
             `${underlyingAssetTon}`,
-            amountToSupply.toString()
+            parseUnits(amountToSupply.toString(), decimals).toString()
           );
           if (resSupplyTop?.success) {
             await sleep(15000); // sleep 15s re call SC get new data reserve
