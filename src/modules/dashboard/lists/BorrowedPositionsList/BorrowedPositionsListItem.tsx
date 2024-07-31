@@ -11,6 +11,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GHO_SWITCH_FEATURE_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -139,6 +140,7 @@ const BorrowedPositionsListItemDesktop = ({
       borrowEnabled={reserve.borrowingEnabled}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
+      showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.BORROW)}
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
@@ -221,6 +223,7 @@ const BorrowedPositionsListItemMobile = ({
       frozen={reserve.isFrozen}
       borrowEnabled={reserve.borrowingEnabled}
       showBorrowCapTooltips
+      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.BORROW)}
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}
