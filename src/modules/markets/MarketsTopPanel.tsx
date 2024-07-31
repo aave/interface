@@ -111,7 +111,7 @@ export const MarketsTopPanel = () => {
                   (!currentNetworkConfig.isFork && currentMarket === 'proto_mainnet_v3')
                 }
               >
-                <TokenIcon sx={{ mr: 1 }} symbol="eth-round" />
+                <TokenIcon sx={{ mr: 2 }} symbol="eth-round" />
 
                 <Typography variant="buttonM">
                   <Box
@@ -144,7 +144,7 @@ export const MarketsTopPanel = () => {
                 value={currentNetworkConfig.isFork ? 'fork_proto_lido_v3' : 'proto_lido_v3'}
                 // Todo tracking?
               >
-                <TokenIcon sx={{ mr: 1 }} symbol="lido" />
+                <TokenIcon sx={{ mr: 2 }} symbol="lido" />
 
                 <Typography variant="buttonM">
                   <Trans>Lido</Trans>

@@ -68,7 +68,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
               //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
               // }
             >
-              <TokenIcon sx={{ mr: 1 }} symbol="eth-round" />
+              <TokenIcon sx={{ mr: 2 }} symbol="eth-round" />
 
               <Typography variant="buttonM">
                 <Trans>Ethereum Main</Trans>
@@ -88,7 +88,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
               // Todo tracking?
             >
-              <TokenIcon sx={{ mr: 1 }} symbol="lido" />
+              <TokenIcon sx={{ mr: 2 }} symbol="lido" />
 
               <Typography variant="buttonM">
                 <Trans>Lido</Trans>
