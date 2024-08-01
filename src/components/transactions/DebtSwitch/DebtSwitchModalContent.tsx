@@ -319,7 +319,7 @@ export const DebtSwitchModalContent = ({
         loading={loadingSkeleton}
         selectOptionHeader={<SelectOptionListHeader />}
         selectOption={(asset) =>
-          asset.symbol === 'GHO' ? (
+          displayGhoForMintableMarket({ symbol: asset.symbol, currentMarket }) ? (
             <GhoSwitchTargetSelectOption
               asset={asset}
               ghoApyRange={ghoTargetData?.ghoApyRange}
@@ -383,11 +383,7 @@ export const DebtSwitchModalContent = ({
               : poolReserve.stableBorrowAPY
           }
           targetBorrowAPY={switchTarget.reserve.variableBorrowAPY}
-          showAPYTypeChange={
-            currentRateMode === InterestRate.Stable ||
-            userReserve.reserve.symbol === 'GHO' ||
-            switchTarget.reserve.symbol === 'GHO'
-          }
+          showAPYTypeChange={currentRateMode === InterestRate.Stable}
           ghoData={ghoTargetData}
           currentMarket={currentMarket}
         />
