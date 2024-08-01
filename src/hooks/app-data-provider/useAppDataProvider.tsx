@@ -6,7 +6,7 @@ import {
   UserReserveData,
 } from '@aave/math-utils';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -173,10 +173,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
   }
 
   const reserves = isConnectedTonWallet ? reservesTon : formattedPoolReserves || [];
-
-  useEffect(() => {
-    getYourSupplies();
-  }, [getYourSupplies, reservesTon]);
 
   return (
     <AppDataContext.Provider

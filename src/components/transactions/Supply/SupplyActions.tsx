@@ -47,7 +47,7 @@ export const SupplyActions = React.memo(
     ...props
   }: SupplyActionProps) => {
     const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
-    const { getValueReserve } = useAppDataContext();
+    const { getValueReserve, getYourSupplies } = useAppDataContext();
     const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions(walletAddressTonWallet);
     const [
       tryPermit,
@@ -157,7 +157,8 @@ export const SupplyActions = React.memo(
               loading: false,
               success: true,
             });
-            getValueReserve();
+            await getValueReserve();
+            getYourSupplies();
           } else {
             setMainTxState({
               txHash: undefined,
