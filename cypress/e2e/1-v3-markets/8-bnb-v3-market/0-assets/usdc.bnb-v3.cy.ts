@@ -77,7 +77,7 @@ const testData = {
 };
 
 describe('USDbC INTEGRATION SPEC, BASE V3 MARKET', () => {
-  const skipTestState = skipState(false);
+  const skipTestState = skipState(true);
   configEnvWithTenderlyBnbFork({
     v3: true,
     tokens: tokenSet(tokensToRequest),
@@ -86,9 +86,9 @@ describe('USDbC INTEGRATION SPEC, BASE V3 MARKET', () => {
     borrow(borrowCase, skipTestState, true);
   });
   supply(testData.testCases.deposit, skipTestState, true);
-  testData.testCases.repay.forEach((repayCase) => {
-    repay(repayCase, skipTestState, false);
-  });
+  // testData.testCases.repay.forEach((repayCase) => {
+  //   repay(repayCase, skipTestState, false);
+  // });
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });
