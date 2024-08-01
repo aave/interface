@@ -11,6 +11,7 @@ import {
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
+  HealthFactorFlashloanFeeCaption,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CollateralType } from 'src/helpers/types';
 
@@ -25,6 +26,7 @@ export type SupplyModalDetailsProps = {
   toAmount: string;
   fromAmount: string;
   loading: boolean;
+  flashloanFee?: string;
 };
 
 export const SwapModalDetails = ({
@@ -36,6 +38,7 @@ export const SwapModalDetails = ({
   toAmount,
   fromAmount,
   loading,
+  flashloanFee,
 }: SupplyModalDetailsProps) => {
   const sourceAmountAfterSwap = valueToBigNumber(swapSource.underlyingBalance).minus(
     valueToBigNumber(fromAmount)
@@ -65,6 +68,7 @@ export const SwapModalDetails = ({
           futureHealthFactor={healthFactorAfterSwap}
           visibleHfChange={showHealthFactor}
           loading={loading}
+          caption={flashloanFee && <HealthFactorFlashloanFeeCaption fee={flashloanFee} />}
         />
       )}
       <DetailsNumberLine
