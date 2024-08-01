@@ -9,7 +9,6 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { GHO_SWITCH_FEATURE_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
@@ -40,11 +39,7 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
 
   const disableRepay = !reserve.isActive || reserve.isPaused;
 
-  const isGho = reserve.symbol === GHO_SYMBOL;
-  const showSwitchButton =
-    (isFeatureEnabled.debtSwitch(currentMarketData) &&
-      (!isGho || (isGho && GHO_SWITCH_FEATURE_MARKETS.includes(currentMarketData.marketTitle)))) ||
-    false;
+  const showSwitchButton = !!isFeatureEnabled.debtSwitch(currentMarketData);
   const disableSwitch = reserve.isPaused || !reserve.isActive || reserve.symbol == 'stETH';
 
   const props: BorrowedPositionsListItemProps = {

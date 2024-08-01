@@ -1168,11 +1168,6 @@ msgstr "Fetching data..."
 msgid "Filter"
 msgstr "Filter"
 
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-msgid "Fixed"
-msgstr "Fixed"
-
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Fixed rate"
 msgstr "Fixed rate"
