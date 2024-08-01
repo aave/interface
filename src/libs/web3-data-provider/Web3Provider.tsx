@@ -301,7 +301,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       }
     };
 
-    tryConnect();
+    if (!active) {
+      tryConnect();
+    }
   }, [active, connectWallet, deactivated]);
 
   // Tx methods
