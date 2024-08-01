@@ -144,7 +144,7 @@ export const MarketsTopPanel = () => {
                 value={currentNetworkConfig.isFork ? 'fork_proto_lido_v3' : 'proto_lido_v3'}
                 // Todo tracking?
               >
-                <TokenIcon sx={{ mr: 2 }} symbol="lido" />
+                <TokenIcon sx={{ mr: 2 }} symbol="ldo" />
 
                 <Typography variant="buttonM">
                   <Trans>Lido</Trans>

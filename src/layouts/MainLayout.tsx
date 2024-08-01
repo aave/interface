@@ -18,7 +18,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
         buttonText="View Market"
         notifyText="Aave Governance has deployed a new Lido market on Ethereum V3"
         bannerVersion={APP_BANNER_VERSION}
-        icon={'/markets/lido.svg'}
+        icon={'/icons/tokens/ldo.svg'}
       />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
