@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-07-31 18:06\n"
+"PO-Revision-Date: 2024-08-01 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1172,11 +1172,6 @@ msgstr "Daten werden abgerufen..."
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "Filter"
-
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-msgid "Fixed"
-msgstr "Fest"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Fixed rate"
