@@ -11,7 +11,6 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
 
 interface GhoBannerProps {
@@ -24,9 +23,6 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isMd = useMediaQuery(theme.breakpoints.up('xs'));
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData, ghoLoadingData } = useAppDataContext();
-  const { data: incentives } = useMeritIncentives('gho');
-
-  const ghoMeritAPR = incentives?.incentiveAPR || 0;
 
   const totalBorrowed = BigNumber.min(
     valueToBigNumber(reserve?.totalDebt || 0),
@@ -55,7 +51,8 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
             md: 4,
           },
           display: 'flex',
-          backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#C9B3F94D',
+          backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#F7F7F9',
+
           position: 'relative',
           alignItems: {
             xs: 'none',
@@ -88,29 +85,32 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       >
         <Box
           component="img"
-          src="/illustration_desktop.png"
+          src="/illustration-gho-logo-2.svg"
           alt="ghost and coin"
           sx={{
             ['@media screen and (min-width: 1125px)']: {
-              width: 290,
+              width: 214,
             },
             width: {
-              xs: 198,
-              xsm: 229,
-              md: 266,
+              xs: 100,
+              xsm: 160,
+              sm: 165,
+              md: 180,
             },
             position: 'absolute',
             top: {
-              xs: -40,
-              xsm: -35,
-              md: -63,
+              xs: -15,
+              xsm: 36,
+              sm: 12,
+              md: -13,
+              lg: -12,
             },
             right: {
-              xs: -50,
+              xs: 0,
               xsm: 'unset',
             },
             left: {
-              xsm: -10,
+              xsm: 10,
             },
           }}
         />
@@ -267,10 +267,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
               }}
             >
               <GhoBorrowApyRange
-                minVal={Math.max(
-                  0,
-                  ghoReserveData.ghoBorrowAPYWithMaxDiscount - Number(ghoMeritAPR)
-                )}
+                minVal={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
                 maxVal={ghoReserveData.ghoVariableBorrowAPY}
                 variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 percentVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
@@ -297,26 +294,13 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                       xs: 'caption',
                     },
                   }}
-                  text={<Trans>Estimated borrow rate</Trans>}
+                  text={<Trans>Borrow rate</Trans>}
                 >
                   <>
                     <Trans>
                       Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a
                       discount on GHO borrow interest rate.
-                    </Trans>{' '}
-                    <Trans>
-                      Additionally, GHO borrowers recieve periodic rewards through the Merit
-                      program. This is a program initiated and implemented by the decentralised Aave
-                      community. Aave Labs does not guarantee the program and accepts no liability.
-                    </Trans>{' '}
-                    <Link
-                      href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
-                      sx={{ textDecoration: 'underline' }}
-                      variant="caption"
-                      color="text.secondary"
-                    >
-                      Learn more about Merit.
-                    </Link>
+                    </Trans>
                   </>
                 </TextWithTooltip>
               </Typography>

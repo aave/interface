@@ -26,7 +26,7 @@ import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import {
-  displayGho,
+  displayGhoForMintableMarket,
   ghoUserQualifiesForDiscount,
   weightedAverageAPY,
 } from 'src/utils/ghoUtilities';
@@ -154,7 +154,7 @@ export const DebtSwitchModalContent = ({
   // TODO consider pulling out a util helper here or maybe moving this logic into the store
   let availableBorrowCap = valueToBigNumber(MaxUint256.toString());
   let availableLiquidity: string | number = '0';
-  if (displayGho({ symbol: switchTarget.reserve.symbol, currentMarket })) {
+  if (displayGhoForMintableMarket({ symbol: switchTarget.reserve.symbol, currentMarket })) {
     availableLiquidity = ghoReserveData.aaveFacilitatorRemainingCapacity.toString();
   } else {
     availableBorrowCap =
@@ -319,7 +319,7 @@ export const DebtSwitchModalContent = ({
         loading={loadingSkeleton}
         selectOptionHeader={<SelectOptionListHeader />}
         selectOption={(asset) =>
-          asset.symbol === 'GHO' ? (
+          displayGhoForMintableMarket({ symbol: asset.symbol, currentMarket }) ? (
             <GhoSwitchTargetSelectOption
               asset={asset}
               ghoApyRange={ghoTargetData?.ghoApyRange}
@@ -383,11 +383,7 @@ export const DebtSwitchModalContent = ({
               : poolReserve.stableBorrowAPY
           }
           targetBorrowAPY={switchTarget.reserve.variableBorrowAPY}
-          showAPYTypeChange={
-            currentRateMode === InterestRate.Stable ||
-            userReserve.reserve.symbol === 'GHO' ||
-            switchTarget.reserve.symbol === 'GHO'
-          }
+          showAPYTypeChange={currentRateMode === InterestRate.Stable}
           ghoData={ghoTargetData}
           currentMarket={currentMarket}
         />

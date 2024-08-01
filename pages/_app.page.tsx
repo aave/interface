@@ -18,7 +18,6 @@ import { GasStationProvider } from 'src/components/transactions/GasStation/GasSt
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
-import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 
 import createEmotionCache from '../src/createEmotionCache';
@@ -27,6 +26,10 @@ import { LanguageProvider } from '../src/libs/LanguageProvider';
 
 const SwitchModal = dynamic(() =>
   import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
+);
+
+const BridgeModal = dynamic(() =>
+  import('src/components/transactions/Bridge/BridgeModal').then((module) => module.BridgeModal)
 );
 
 const BorrowModal = dynamic(() =>
@@ -99,7 +102,7 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
-  const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
+  // const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -111,14 +114,14 @@ export default function MyApp(props: MyAppProps) {
       })
   );
 
-  const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
+  // const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
   useEffect(() => {
-    if (MIXPANEL_TOKEN) {
-      initializeMixpanel();
-    } else {
-      console.log('no analytics tracking');
-    }
-  }, [MIXPANEL_TOKEN, initializeMixpanel]);
+    // if (MIXPANEL_TOKEN) {
+    //   initializeMixpanel();
+    // } else {
+    console.log('no analytics tracking');
+    // }
+  }, []);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -130,7 +133,7 @@ export default function MyApp(props: MyAppProps) {
         description={
           'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
         }
-        imageUrl="https://app.aave.com/aaveMetaLogo-min.jpg"
+        imageUrl="https://app.aave.com/aave-com-opengraph.png"
       />
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
@@ -157,6 +160,7 @@ export default function MyApp(props: MyAppProps) {
                           <TransactionEventHandler />
                           <SwitchModal />
                           <StakingMigrateModal />
+                          <BridgeModal />
                         </GasStationProvider>
                       </AppDataProvider>
                     </SharedDependenciesProvider>

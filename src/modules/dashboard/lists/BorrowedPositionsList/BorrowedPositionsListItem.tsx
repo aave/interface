@@ -10,6 +10,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -39,7 +40,7 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
 
   const disableRepay = !reserve.isActive || reserve.isPaused;
 
-  const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData) || false;
+  const showSwitchButton = !!isFeatureEnabled.debtSwitch(currentMarketData);
   const disableSwitch = reserve.isPaused || !reserve.isActive || reserve.symbol == 'stETH';
 
   const props: BorrowedPositionsListItemProps = {
@@ -135,6 +136,7 @@ const BorrowedPositionsListItemDesktop = ({
       borrowEnabled={reserve.borrowingEnabled}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
+      showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.BORROW)}
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
@@ -226,6 +228,7 @@ const BorrowedPositionsListItemMobile = ({
       frozen={reserve.isFrozen}
       borrowEnabled={reserve.borrowingEnabled}
       showBorrowCapTooltips
+      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.BORROW)}
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}
