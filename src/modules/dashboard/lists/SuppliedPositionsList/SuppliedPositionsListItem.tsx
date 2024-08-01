@@ -6,6 +6,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -29,8 +30,9 @@ export const SuppliedPositionsListItem = ({
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
-  const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   const canBeEnabledAsCollateral = user
     ? !debtCeiling.isMaxed &&
@@ -58,6 +60,7 @@ export const SuppliedPositionsListItem = ({
       }`}
       showSupplyCapTooltips
       showDebtCeilingTooltips
+      showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY)}
     >
       <ListValueColumn
         symbol={reserve.iconSymbol}
@@ -104,7 +107,7 @@ export const SuppliedPositionsListItem = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        {isSwapButton ? (
+        {showSwitchButton ? (
           <Button
             disabled={disableSwap}
             variant="contained"

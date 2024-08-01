@@ -26,6 +26,7 @@ import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresM
 
 export const DashboardTopPanel = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
+
   const { market } = getMarketInfoById(currentMarket);
   const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();

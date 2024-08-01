@@ -20,7 +20,7 @@ import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
-import { displayGho } from 'src/utils/ghoUtilities';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { amountToUsd } from 'src/utils/utils';
 
@@ -52,7 +52,7 @@ export const SwapModalContent = ({
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
   const swapTargets = reserves
-    .filter((r) => !displayGho({ symbol: r.symbol, currentMarket }))
+    .filter((r) => !displayGhoForMintableMarket({ symbol: r.symbol, currentMarket }))
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset && !r.isFrozen)
     .map((reserve) => ({
       address: reserve.underlyingAsset,

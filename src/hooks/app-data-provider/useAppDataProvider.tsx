@@ -10,7 +10,7 @@ import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { GHO_SUPPORTED_MARKETS } from 'src/utils/ghoUtilities';
+import { GHO_MINTING_MARKETS } from 'src/utils/ghoUtilities';
 
 import { formatEmodes } from '../../store/poolSelectors';
 import {
@@ -129,7 +129,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
   let user = userSummary;
   // Factor discounted GHO interest into cumulative user fields
 
-  const isGhoInMarket = GHO_SUPPORTED_MARKETS.includes(currentMarket);
+  const isGhoInMarket = GHO_MINTING_MARKETS.includes(currentMarket);
 
   if (isGhoInMarket && reservesData && formattedGhoUserData) {
     const baseCurrencyData = reservesData.baseCurrencyData;

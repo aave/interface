@@ -19,11 +19,9 @@ export const RepayModal = () => {
     currentRateMode: InterestRate;
     isFrozen: boolean;
   }>;
-  const { userReserves, reserves } = useAppDataContext();
+  const { userReserves } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
   const [repayType, setRepayType] = useState(RepayType.BALANCE);
-
-  const stETHAddress = reserves.find((reserve) => reserve.symbol === 'stETH')?.underlyingAsset;
 
   // repay with collateral is only possible:
   // 1. on chains with paraswap deployed
@@ -34,8 +32,7 @@ export const RepayModal = () => {
     userReserves.some(
       (userReserve) =>
         userReserve.scaledATokenBalance !== '0' &&
-        userReserve.underlyingAsset !== args.underlyingAsset &&
-        userReserve.underlyingAsset !== stETHAddress
+        userReserve.underlyingAsset !== args.underlyingAsset
     );
 
   const handleClose = () => {

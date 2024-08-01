@@ -38,7 +38,7 @@ export const GhoDiscountProgram = () => {
           flexDirection: 'column',
           alignItems: {
             xs: 'flex-start',
-            xsm: 'center',
+            // xsm: 'center',
           },
           height: {
             xs: 120,
@@ -48,15 +48,15 @@ export const GhoDiscountProgram = () => {
           position: 'relative',
         }}
       >
-        <Box
+        {/* <Box
           component="img"
-          src="/illustration_token.png"
+          src="/illustration-green.svg"
           sx={{
             position: 'absolute',
             left: -40,
             top: -33,
-            width: 250,
-            height: 250,
+            width: 100,
+            height: 100,
             overflow: 'hidden',
             display: {
               xs: 'none',
@@ -67,13 +67,13 @@ export const GhoDiscountProgram = () => {
           width={220}
           height={220}
           alt="gho coin"
-        />
-        <Box display="flex" flexDirection="column" alignItems={['flex-start', 'center']} gap={3}>
+        /> */}
+        <Box display="flex" flexDirection="column" alignItems={['flex-start']} gap={3}>
           <Typography
             variant="subheader1"
             color="text.primary"
-            width={['221px', '300px']}
-            textAlign={['left', 'center']}
+            width={['221px', '400px']}
+            textAlign={['left']}
           >
             {downToXsm ? (
               <Trans>stkAAVE holders get a discount on GHO borrow rate</Trans>
@@ -98,6 +98,28 @@ export const GhoDiscountProgram = () => {
         </Box>
         <Box
           component="img"
+          src="/illustration-green.svg"
+          sx={{
+            position: 'absolute',
+            // left: -40,
+            top: -20,
+
+            right: 8,
+            width: 120,
+            height: 120,
+            overflow: 'hidden',
+            display: {
+              // xs: 'none',
+              xsm: 'block',
+            },
+            transform: 'matrix(1, -0.14, 0.14, 1, 0, 0)',
+          }}
+          width={220}
+          height={220}
+          alt="gho coin"
+        />
+        {/* <Box
+          component="img"
           src="/illustration_friendly_ghost.png"
           sx={{
             position: 'absolute',
@@ -107,7 +129,7 @@ export const GhoDiscountProgram = () => {
             transform: 'scaleY(0.5) scaleX(0.5)',
           }}
           alt="gho ghost"
-        />
+        /> */}
       </Box>
     </Box>
   );
