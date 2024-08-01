@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
-import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
@@ -14,8 +13,8 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
-import { ListAPYDetails } from '../dashboard/lists/ListAPYDetails';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
+import { apyTooltip } from './MarketAssetsListItem';
 
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const { currentMarket } = useProtocolDataContext();
@@ -60,18 +59,10 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
               ? Number(reserve.supplyAPY) + reserve.underlyingAPY
               : Number(reserve.supplyAPY)
           }
-          tooltip={
-            reserve.underlyingAPY ? (
-              <ListAPYDetails
-                supplyAPY={Number(reserve.supplyAPY)}
-                underlyingAPY={reserve.underlyingAPY}
-              />
-            ) : null
-          }
+          tooltip={apyTooltip(reserve.underlyingAPY, isSuperfestOnSupplySide, reserve.supplyAPY)}
           incentives={reserve.aIncentivesData || []}
           symbol={reserve.symbol}
           variant="secondary14"
-          tooltip={isSuperfestOnSupplySide && <SuperFestTooltip />}
         />
       </Row>
 
@@ -119,18 +110,14 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
                 ? reserve.variableBorrowAPY
                 : '-1'
             }
-            tooltip={
-              reserve.underlyingAPY ? (
-                <ListAPYDetails
-                  borrowAPY={Number(reserve.variableBorrowAPY)}
-                  underlyingAPY={reserve.underlyingAPY}
-                />
-              ) : null
-            }
             incentives={reserve.vIncentivesData || []}
             symbol={reserve.symbol}
             variant="secondary14"
-            tooltip={isSuperfestOnBorrowSide && <SuperFestTooltip />}
+            tooltip={apyTooltip(
+              reserve.underlyingAPY,
+              isSuperfestOnBorrowSide,
+              reserve.variableBorrowAPY
+            )}
           />
           {!reserve.borrowingEnabled &&
             Number(reserve.totalVariableDebt) > 0 &&
