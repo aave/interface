@@ -9,12 +9,16 @@ import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
 export function MainLayout({ children }: { children: ReactNode }) {
+  const APP_BANNER_VERSION = '1.0.0';
+
   return (
     <>
       <TopBarNotify
-        notifyText="Users can now stake GHO in the safety module 🎉"
-        learnMoreLink="https://app.aave.com/staking"
-        buttonText="Learn More"
+        learnMoreLink="/markets/?marketName=proto_lido_v3"
+        buttonText="View Market"
+        notifyText="Aave Governance has deployed a new Lido market on Ethereum V3"
+        bannerVersion={APP_BANNER_VERSION}
+        icon={'/icons/tokens/ldo.svg'}
       />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>

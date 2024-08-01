@@ -1,9 +1,8 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
-import { MeritIncentivesTooltipContent } from 'src/components/incentives/MeritIncentivesTooltipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -12,7 +11,6 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
 
 interface GhoBannerProps {
@@ -25,17 +23,11 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isMd = useMediaQuery(theme.breakpoints.up('xs'));
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData, ghoLoadingData } = useAppDataContext();
-  const { data: meritIncentives, isFetching: lodaingIncentives } = useMeritIncentives();
 
-  const ghoMeritAPR = meritIncentives?.actionsAPR.gho || 0;
-
-  let totalBorrowed = Number(reserve?.totalDebt);
-  if (Number(reserve?.borrowCap) > 0) {
-    totalBorrowed = BigNumber.min(
-      valueToBigNumber(reserve?.totalDebt || 0),
-      valueToBigNumber(reserve?.borrowCap || 0)
-    ).toNumber();
-  }
+  const totalBorrowed = BigNumber.min(
+    valueToBigNumber(reserve?.totalDebt || 0),
+    valueToBigNumber(reserve?.borrowCap || 0)
+  ).toNumber();
 
   return (
     <Box
@@ -59,7 +51,8 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
             md: 4,
           },
           display: 'flex',
-          backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#C9B3F94D',
+          backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#F7F7F9',
+
           position: 'relative',
           alignItems: {
             xs: 'none',
@@ -92,29 +85,32 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       >
         <Box
           component="img"
-          src="/illustration_desktop.png"
+          src="/illustration-gho-logo-2.svg"
           alt="ghost and coin"
           sx={{
             ['@media screen and (min-width: 1125px)']: {
-              width: 290,
+              width: 214,
             },
             width: {
-              xs: 198,
-              xsm: 229,
-              md: 266,
+              xs: 100,
+              xsm: 160,
+              sm: 165,
+              md: 180,
             },
             position: 'absolute',
             top: {
-              xs: -40,
-              xsm: -35,
-              md: -63,
+              xs: -15,
+              xsm: 36,
+              sm: 12,
+              md: -13,
+              lg: -12,
             },
             right: {
-              xs: -50,
+              xs: 0,
               xsm: 'unset',
             },
             left: {
-              xsm: -10,
+              xsm: 10,
             },
           }}
         />
@@ -224,15 +220,28 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   alignItems: 'flex-start',
                 }}
               >
-                {ghoLoadingData || totalBorrowed === 0 ? (
+                {ghoLoadingData ? (
                   <Skeleton width={70} height={25} />
                 ) : (
-                  <FormattedNumber
-                    symbol="USD"
-                    compact
-                    variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                    value={totalBorrowed}
-                  />
+                  <Stack direction="row" gap={1} alignItems="center">
+                    <FormattedNumber
+                      symbol="USD"
+                      compact
+                      variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
+                      value={totalBorrowed}
+                    />
+                    <Stack direction="row" gap={1} sx={{ marginTop: 0.5 }}>
+                      <Typography variant="caption">
+                        <Trans>of</Trans>
+                      </Typography>
+                      <FormattedNumber
+                        symbol="USD"
+                        compact
+                        variant="caption"
+                        value={reserve?.borrowCap || 0}
+                      />
+                    </Stack>
+                  </Stack>
                 )}
                 <Typography
                   sx={{
@@ -276,49 +285,25 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 color="text.secondary"
                 noWrap
               >
-                <Trans>Borrow rate APY</Trans>
+                <TextWithTooltip
+                  sx={{
+                    ['@media screen and (min-width: 1125px)']: {
+                      typography: 'description',
+                    },
+                    typography: {
+                      xs: 'caption',
+                    },
+                  }}
+                  text={<Trans>Borrow rate</Trans>}
+                >
+                  <>
+                    <Trans>
+                      Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a
+                      discount on GHO borrow interest rate.
+                    </Trans>
+                  </>
+                </TextWithTooltip>
               </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-              }}
-            >
-              {lodaingIncentives || ghoMeritAPR === 0 ? (
-                <Skeleton width={70} height={25} />
-              ) : (
-                <FormattedNumber
-                  percent
-                  compact
-                  variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                  value={ghoMeritAPR / 100}
-                />
-              )}
-              <TextWithTooltip
-                text={
-                  <Typography
-                    sx={{
-                      ['@media screen and (min-width: 1125px)']: {
-                        typography: 'description',
-                      },
-                      typography: {
-                        xs: 'caption',
-                      },
-                    }}
-                    color="text.secondary"
-                    noWrap
-                  >
-                    <Trans>Merit rewards</Trans>
-                  </Typography>
-                }
-              >
-                <MeritIncentivesTooltipContent
-                  incentiveAPR={(ghoMeritAPR / 100).toString()}
-                  rewardTokenSymbol="GHO"
-                />
-              </TextWithTooltip>
             </Box>
             <Button
               variant="contained"

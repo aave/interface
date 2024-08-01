@@ -41,6 +41,19 @@ export const MeritIncentivesTooltipContent = ({
         </Link>
       </Typography>
 
+      <Typography variant="caption" color="text.secondary" mb={3}>
+        <Trans>Merit Program rewards are claimed through the</Trans>{' '}
+        <Link
+          href="https://apps.aavechan.com/merit"
+          sx={{ textDecoration: 'underline' }}
+          variant="caption"
+          color="text.secondary"
+        >
+          Aave Chan Initiative interface
+        </Link>
+        {'.'}
+      </Typography>
+
       <Box sx={{ width: '100%' }}>
         <Row
           height={32}
