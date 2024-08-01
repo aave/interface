@@ -65,11 +65,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connector, setConnector] = useState<AbstractConnector>();
   const [loading, setLoading] = useState(false);
-  const [tried, setTried] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
-  const [triedFamily, setTriedFamily] = useState(false);
-  const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
-  const [triedCoinbase, setTriedCoinbase] = useState(false);
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   // const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
@@ -211,122 +207,102 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     return false;
   };
 
-  // third, try connecting to ledger
-  // useEffect(() => {
-  //   if (!triedLedger && triedGnosisSafe && triedCoinbase) {
-  //     // check if the DApp is hosted within Ledger iframe
-  //     // const canConnectToLedger = isLedgerDappBrowserProvider();
-  //     if (false) {
-  //       // TODO check if we want to support
-  //       connectWallet(WalletType.LEDGER).finally(() => setTriedLedger(true));
-  //     } else {
-  //       setTriedLedger(true);
-  //     }
-  //   }
-  // }, [connectWallet, triedGnosisSafe, triedCoinbase, triedLedger, setTriedLedger]);
-
-  // second, try connecting to coinbase
   useEffect(() => {
-    if (!triedCoinbase) {
-      // do check if condition applies to try and connect directly to coinbase
-      if (triedGnosisSafe) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const injectedProvider = (window as any)?.ethereum;
-        if (injectedProvider?.isCoinbaseBrowser) {
-          const canConnectToCoinbase = activateInjectedProvider('CoinBase');
-          if (canConnectToCoinbase) {
-            connectWallet(WalletType.INJECTED)
-              .then(() => {
-                setTriedCoinbase(true);
-              })
-              .catch(() => {
-                setTriedCoinbase(true);
-              });
-          } else {
-            // @ts-expect-error ethereum might not be in window
-            const { ethereum } = window;
-
-            if (ethereum) {
-              activateInjectedProvider('CoinBase');
-              ethereum.request({ method: 'eth_requestAccounts' });
-            }
-
-            setTriedCoinbase(true);
-          }
-        } else {
-          setTriedCoinbase(true);
-        }
-      }
-    }
-  }, [connectWallet, triedGnosisSafe, setTriedCoinbase, triedCoinbase]);
-
-  // first, try connecting to a gnosis safe
-  useEffect(() => {
-    if (!triedGnosisSafe && triedFamily) {
-      const gnosisConnector = getWallet(WalletType.GNOSIS);
-      // @ts-expect-error isSafeApp not in abstract connector type
-      gnosisConnector.isSafeApp().then((loadedInSafe) => {
-        if (loadedInSafe) {
-          connectWallet(WalletType.GNOSIS)
-            .then(() => {
-              setTriedGnosisSafe(true);
-            })
-            .catch(() => {
-              setTriedGnosisSafe(true);
-            });
-        } else {
-          setTriedGnosisSafe(true);
-        }
-      });
-    }
-  }, [connectWallet, setTriedGnosisSafe, triedGnosisSafe]);
-
-  useEffect(() => {
-    if (!triedFamily) {
+    const tryFamily = async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const isFamily = (window as any).ethereum?.isFamily;
-      if (isFamily) {
-        connectWallet(WalletType.INJECTED).finally(() => setTriedFamily(true));
-      } else {
-        setTriedFamily(true);
+      if (!isFamily) {
+        return false;
       }
-    }
-  }, [connectWallet, setTriedFamily, triedFamily]);
 
-  // handle logic to eagerly connect to the injected ethereum provider,
-  // if it exists and has granted access already
-  useEffect(() => {
-    const lastWalletProvider = localStorage.getItem('walletProvider');
-    if (!active && !deactivated && triedGnosisSafe && triedCoinbase) {
-      if (!!lastWalletProvider) {
-        connectWallet(lastWalletProvider as WalletType).catch(() => {
-          setTried(true);
-        });
-      } else {
-        setTried(true);
-        // For now we will not eagerly connect to injected provider
-        // const injected = getWallet(WalletType.INJECTED);
-        // // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
-        // // injected provider
-        // injected.isAuthorized().then((isAuthorized: boolean) => {
-        //   if (isAuthorized) {
-        //     connectWallet(WalletType.INJECTED).catch(() => {
-        //       setTried(true);
-        //     });
-        //   } else {
-        //     setTried(true);
-        //   }
-        // });
+      try {
+        await connectWallet(WalletType.INJECTED);
+        return true;
+      } catch (e) {
+        console.error(e);
+        return false;
       }
-    }
-  }, [activate, setTried, active, connectWallet, deactivated, triedGnosisSafe, triedCoinbase]);
+    };
 
-  // if the connection worked, wait until we get confirmation of that to flip the flag
-  useEffect(() => {
-    if (!tried && active) {
-      setTried(true);
-    }
-  }, [tried, active]);
+    const tryGnosis = async () => {
+      const gnosisConnector = getWallet(WalletType.GNOSIS);
+      // @ts-expect-error isSafeApp not in abstract connector type
+      const loadedInSafe = await gnosisConnector.isSafeApp();
+      if (!loadedInSafe) {
+        return false;
+      }
+
+      try {
+        await connectWallet(WalletType.GNOSIS);
+        return true;
+      } catch (e) {
+        console.error(e);
+        return false;
+      }
+    };
+
+    const tryCoinbase = async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const injectedProvider = (window as any)?.ethereum;
+      if (!injectedProvider?.isCoinbaseBrowser) {
+        return false;
+      }
+
+      const canConnectToCoinbase = activateInjectedProvider('CoinBase');
+      if (canConnectToCoinbase) {
+        try {
+          await connectWallet(WalletType.INJECTED);
+          return true;
+        } catch (e) {
+          console.error(e);
+          return false;
+        }
+      } else {
+        // @ts-expect-error ethereum might not be in window
+        const { ethereum } = window;
+
+        if (ethereum) {
+          try {
+            activateInjectedProvider('CoinBase');
+            await ethereum.request({ method: 'eth_requestAccounts' });
+          } catch (e) {
+            console.error(e);
+            return false;
+          }
+        }
+      }
+
+      return false;
+    };
+
+    const tryLastProvider = async () => {
+      const lastWalletProvider = localStorage.getItem('walletProvider');
+      if (!active && !deactivated) {
+        if (!!lastWalletProvider) {
+          try {
+            await connectWallet(lastWalletProvider as WalletType);
+            return true;
+          } catch (e) {
+            console.error(e);
+            return false;
+          }
+        }
+      }
+
+      return false;
+    };
+    const steps = [tryFamily, tryGnosis, tryCoinbase, tryLastProvider];
+    const tryConnect = async () => {
+      for (const step of steps) {
+        const success = await step();
+        if (success) {
+          break;
+        }
+      }
+    };
+
+    tryConnect();
+  }, [active, connectWallet, deactivated]);
 
   // Tx methods
 
