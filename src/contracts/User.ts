@@ -10,11 +10,22 @@ import {
   SendMode,
 } from '@ton/core';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type UserConfig = {};
+export type UserConfig = {
+  pool: Address;
+  owner: Address;
+};
 
-export function userConfigToCell(_config: UserConfig): Cell {
-  return beginCell().endCell();
+export function userConfigToCell(config: UserConfig): Cell {
+  const userPrincipals = Dictionary.empty(Dictionary.Keys.BigUint(32), Dictionary.Values.Cell());
+  return beginCell()
+    .storeAddress(config.pool)
+    .storeAddress(config.owner)
+    .storeCoins(0)
+    .storeCoins(0)
+    .storeCoins(0)
+    .storeDict(userPrincipals)
+    .storeUint(0, 256)
+    .endCell();
 }
 
 export type UserData = {
@@ -111,6 +122,7 @@ export class User implements Contract {
 
   async getUserSupplies(provider: ContractProvider) {
     const { stack } = await provider.get('get_user_data', []);
+    console.log(stack);
 
     stack.skip(3);
 

@@ -6,7 +6,7 @@ import {
   UserReserveData,
 } from '@aave/math-utils';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -72,6 +72,7 @@ export interface AppDataContextType {
   ghoUserLoadingData: boolean;
   walletBalancesTon: WalletBalancesMap;
   getValueReserve: () => void;
+  getYourSupplies: () => void;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -88,10 +89,11 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const { getValueReserve, reservesTon, loading: loadingReservesTon } = useAppDataProviderTon();
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
 
-  const { loading: loadingYourSuppliesTon, userSummaryTon } = useTonYourSupplies(
-    walletAddressTonWallet,
-    reservesTon
-  );
+  const {
+    loading: loadingYourSuppliesTon,
+    userSummaryTon,
+    getYourSupplies,
+  } = useTonYourSupplies(walletAddressTonWallet, reservesTon);
 
   // pool hooks
 
@@ -172,6 +174,10 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   const reserves = isConnectedTonWallet ? reservesTon : formattedPoolReserves || [];
 
+  useEffect(() => {
+    getYourSupplies();
+  }, [getYourSupplies, reservesTon]);
+
   return (
     <AppDataContext.Provider
       value={{
@@ -192,6 +198,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         ghoUserLoadingData: !!currentAccount && isGhoUserDataLoading,
         walletBalancesTon,
         getValueReserve,
+        getYourSupplies,
       }}
     >
       {children}

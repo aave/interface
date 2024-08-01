@@ -24,6 +24,7 @@ export const SuppliedPositionsListItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
+  image,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { isIsolated, aIncentivesData, isFrozen, isActive, isPaused } = reserve;
@@ -67,6 +68,7 @@ export const SuppliedPositionsListItem = ({
       showSupplyCapTooltips
       showDebtCeilingTooltips
       showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY)}
+      image={image}
     >
       <ListValueColumn
         symbol={reserve.iconSymbol}

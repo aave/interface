@@ -12,6 +12,7 @@ import {
 
 import { JettonMinter } from './JettonMinter';
 import { Reserve, ReserveConfig, ReserveData as ReserveState } from './Reserve';
+import { User } from './User';
 
 export type PoolConfig = {
   admin: Address;
@@ -225,5 +226,36 @@ export class Pool implements Contract {
     }
 
     return result;
+  }
+  async getUserAddress(provider: ContractProvider, ownerAddress: Address) {
+    const { stack } = await provider.get('get_user_address', [
+      {
+        type: 'slice',
+        cell: beginCell().storeAddress(ownerAddress).endCell(),
+      },
+    ]);
+    return stack.readAddress();
+  }
+
+  async getUserSupplies(provider: ContractProvider, ownerAddress: Address) {
+    const { stack } = await provider.get('get_user_address', [
+      {
+        type: 'slice',
+        cell: beginCell().storeAddress(ownerAddress).endCell(),
+      },
+    ]);
+
+    const userAddress = stack.readAddress();
+    const userContract = provider.open(User.createFromAddress(userAddress));
+
+    const userSupplies = await userContract.getUserSupplies();
+    const reserveList = await this.getReservesList(provider);
+    console.log('reserveList', reserveList);
+    const results = userSupplies.map((s) => ({
+      ...s,
+      underlyingAddress: reserveList[s.reserveID],
+    }));
+
+    return results;
   }
 }

@@ -1,96 +1,66 @@
 import { Address } from '@ton/core';
 import { formatUnits } from 'ethers/lib/utils';
+import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
-import { Reserve } from 'src/contracts/Reserve';
-import { User } from 'src/contracts/User';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { address_pools } from './app-data-provider/useAppDataProviderTon';
-// import { useContract } from './useContract';
 import { useTonClient } from './useTonClient';
 
 export const useTonYourSupplies = (yourAddressWallet: string, reserves: DashboardReserve[]) => {
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [userSummaryTon, setUserSummaryTon] = useState<ExtendedFormattedUser>();
-  // const userProviderTon = useContract<User>(yourAddressWallet, User);
-  // const poolContract = useContract<Pool>(address_pools, Pool);
   const [yourSuppliesTon, setYourSuppliesTon] = useState<unknown>([]);
 
-  const onGetYourSupply = useCallback(
-    async (assetAddress: string) => {
-      if (!client || !address_pools || !yourAddressWallet) return;
-      // const reserveAddress = await poolContract.getReserveAddress(
-      //   Address.parse(`EQBE2AjF6woqdvZfJSbBMyQl3gLPyhk8bEr2wl4v_r7DENcN`)
-      // );
-      // const reserveContract = client.open(Reserve.createFromAddress(reserveAddress));
-      // const userAddress = await reserveContract.getUserAddress(Address.parse(yourAddressWallet));
-      // const userContract = client.open(User.createFromAddress(userAddress));
-      // const data = await userProviderTon.getUserSupplies();
-      // console.log('data---------supplies');
-      // setYourSuppliesTon(data);
-
-      const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
-      const reserveAddress = await poolContract.getReserveAddress(Address.parse(assetAddress));
-      const reserveContract = client.open(Reserve.createFromAddress(reserveAddress));
-
-      const userAddress = await reserveContract.getUserAddress(Address.parse(yourAddressWallet));
-      const userContract = client.open(User.createFromAddress(userAddress));
-      const res = await userContract.getUserSupplies();
-
-      console.log(`yourSuppliesTon-----${assetAddress}-----`, res);
-      return res[0];
-    },
-    [client, yourAddressWallet]
-  );
+  const onGetYourSupply = useCallback(async () => {
+    if (!client || !address_pools || !yourAddressWallet) return;
+    const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
+    const res = await poolContract.getUserSupplies(Address.parse(yourAddressWallet));
+    return res;
+  }, [client, yourAddressWallet]);
 
   const getYourSupplies = useCallback(async () => {
     setLoading(true);
 
-    if (!client || !address_pools || !yourAddressWallet || !reserves) {
+    try {
+      if (!client || !address_pools || !yourAddressWallet || !reserves) {
+        return;
+      }
+
+      const yourSupplies = await onGetYourSupply();
+      if (!yourSupplies) return;
+
+      const result = _.chain(reserves)
+        .filter((reserve) =>
+          _.some(
+            yourSupplies,
+            (yourSupply) =>
+              reserve.underlyingAssetTon === yourSupply.underlyingAddress.toString() &&
+              Number(yourSupply.supplyBalance) > 0
+          )
+        )
+        .map((reserve) => {
+          const matchedSupply = _.find(
+            yourSupplies,
+            (yourSupply) => reserve.underlyingAssetTon === yourSupply.underlyingAddress.toString()
+          );
+
+          return {
+            ...reserve,
+            underlyingBalance: formatUnits(matchedSupply?.supplyBalance || '0', reserve.decimals),
+          };
+        })
+        .value();
+      setYourSuppliesTon(result);
+    } catch (error) {
+      console.error('Error fetching supplies:', error);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    const yourSupplies: {
-      reserveID: number;
-      supplyBalance: bigint;
-      stableBorrowBalance: bigint;
-      variableBorrowBalance: bigint;
-    }[] = [];
-
-    await Promise.allSettled(
-      reserves.map(async (item) => {
-        if (item.underlyingAssetTon) {
-          try {
-            const res = await onGetYourSupply(item.underlyingAssetTon);
-            if (res !== undefined) {
-              console.log(
-                'underlyingAssetTon-----------',
-                item.underlyingAssetTon,
-                res.supplyBalance,
-                item
-              );
-              const underlyingBalance = formatUnits(res.supplyBalance || '0', item.decimals);
-              const itemYourSupply = {
-                ...res,
-                ...item,
-                underlyingBalance,
-              };
-              yourSupplies.push(itemYourSupply);
-            }
-          } catch (error) {
-            console.error('Error fetching supply:', error);
-          }
-        }
-      })
-    );
-
-    setYourSuppliesTon(yourSupplies);
-    setLoading(false);
-  }, [client, yourAddressWallet, onGetYourSupply, reserves]);
+  }, [client, yourAddressWallet, reserves, onGetYourSupply]);
 
   useEffect(() => {
     getYourSupplies();
