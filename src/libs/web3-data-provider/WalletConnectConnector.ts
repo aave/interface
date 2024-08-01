@@ -86,7 +86,7 @@ export class WalletConnectConnector extends AbstractConnector {
     }
   }
 
-  public async getProvider(): Promise<typeof this.walletConnectProvider> {
+  public async getProvider(): Promise<EthereumProvider | undefined> {
     return this.walletConnectProvider;
   }
 
