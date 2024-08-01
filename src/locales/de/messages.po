@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-07-31 00:15\n"
+"PO-Revision-Date: 2024-07-31 18:06\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1579,6 +1579,10 @@ msgstr "Lernen Sie GHO kennen"
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
 msgstr "Menü"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Merit Program rewards are claimed through the"
+msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
