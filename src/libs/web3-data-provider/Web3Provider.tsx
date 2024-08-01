@@ -65,12 +65,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connector, setConnector] = useState<AbstractConnector>();
   const [loading, setLoading] = useState(false);
-  const [tried, setTried] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
-  const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
-  const [triedCoinbase, setTriedCoinbase] = useState(false);
   const [readOnlyMode, setReadOnlyMode] = useState(false);
-  const [triedLedger, setTriedLedger] = useState(false);
+  // const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const [setAccount, currentChainId] = useRootStore((store) => [
     store.setAccount,
@@ -144,13 +141,24 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           connector.walletConnectProvider = undefined;
         }
 
-        if (wallet === WalletType.INJECTED) {
-          await activateMetaMask(connector);
-        } else {
-          await activate(connector, undefined, true);
-        }
+        await activate(connector, undefined, true);
 
         setConnector(connector);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((window as any).ethereum.isFamily) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (window as any).ethereum.on('chainChanged', (chainId: string | number) => {
+            // the injected connector relies on the networkChanged event to update the chainId,
+            // which contains the chainId number, not the hex string.
+            connector.emit('Web3ReactUpdate', {
+              chainId: Number(chainId),
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              provider: (window as any).ethereum,
+            });
+          });
+        }
+
         setSwitchNetworkError(undefined);
         setWalletType(wallet);
         localStorage.setItem('walletProvider', wallet.toString());
@@ -166,51 +174,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     },
     [disconnectWallet, currentChainId]
   );
-
-  const activateMetaMask = async (connector: AbstractConnector) => {
-    // This is a workaround for an issue that happens with chrome and metamask.
-    // If the app was preloaded in chrome, there's a case where the extension can be
-    // unresponsive if the app was switched from preloading to active at the wrong time.
-    // This produces an infinite loading spinner on app load.
-    // There are no errors thrown that we can handle in this state, so just retry activating
-    // the connector. If it still fails after the backoff retry, then throw an error.
-    // See this issue for more details: https://github.com/MetaMask/metamask-extension/issues/23329
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const unlocked = (await (window as any)?.ethereum?._metamask?.isUnlocked()) ?? false;
-    if (!unlocked) {
-      // if the extension is locked, just do the normal activation
-      return activate(connector, undefined, true);
-    }
-
-    const activatePromise = activate(connector, undefined, true);
-
-    const activateRetryAttempts = 2;
-
-    const activateFn = async (connector: AbstractConnector, attempt: number) => {
-      await Promise.race([
-        activate(connector, undefined, true),
-        new Promise((_resolve, reject) => {
-          setTimeout(() => {
-            reject(new Error('MetaMask activation timeout'));
-          }, 2000);
-        }),
-      ]).catch((reason: unknown) => {
-        console.error(reason);
-        if (reason instanceof Error && reason.message === 'MetaMask activation timeout') {
-          if (attempt <= activateRetryAttempts) {
-            return activateFn(connector, attempt + 1);
-          }
-          throw reason;
-        }
-        // If the promise was rejected with a different error, then return the original instance.
-        // This handles cases where we are waiting for user input, such as giving the dapp permissions.
-        return activatePromise;
-      });
-    };
-
-    await activateFn(connector, 1);
-  };
 
   const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
     // @ts-expect-error ethereum doesn't necessarily exist
@@ -244,119 +207,104 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     return false;
   };
 
-  // third, try connecting to ledger
   useEffect(() => {
-    if (!triedLedger && triedGnosisSafe && triedCoinbase) {
-      // check if the DApp is hosted within Ledger iframe
-      // const canConnectToLedger = isLedgerDappBrowserProvider();
-      if (false) {
-        // TODO check if we want to support
-        connectWallet(WalletType.LEDGER).finally(() => setTriedLedger(true));
-      } else {
-        setTriedLedger(true);
+    const tryFamily = async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const isFamily = (window as any).ethereum?.isFamily;
+      if (!isFamily) {
+        return false;
       }
-    }
-  }, [connectWallet, triedGnosisSafe, triedCoinbase, triedLedger, setTriedLedger]);
 
-  // second, try connecting to coinbase
-  useEffect(() => {
-    if (!triedCoinbase) {
-      // do check if condition applies to try and connect directly to coinbase
-      if (triedGnosisSafe) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const injectedProvider = (window as any)?.ethereum;
-        if (injectedProvider?.isCoinbaseBrowser) {
-          const canConnectToCoinbase = activateInjectedProvider('CoinBase');
-          if (canConnectToCoinbase) {
-            connectWallet(WalletType.INJECTED)
-              .then(() => {
-                setTriedCoinbase(true);
-              })
-              .catch(() => {
-                setTriedCoinbase(true);
-              });
-          } else {
-            // @ts-expect-error ethereum might not be in window
-            const { ethereum } = window;
-
-            if (ethereum) {
-              activateInjectedProvider('CoinBase');
-              ethereum.request({ method: 'eth_requestAccounts' });
-            }
-
-            setTriedCoinbase(true);
-          }
-        } else {
-          setTriedCoinbase(true);
-        }
+      try {
+        await connectWallet(WalletType.INJECTED);
+        return true;
+      } catch (e) {
+        console.error(e);
+        return false;
       }
-    }
-  }, [connectWallet, triedGnosisSafe, setTriedCoinbase, triedCoinbase]);
+    };
 
-  // first, try connecting to a gnosis safe
-  useEffect(() => {
-    if (!triedGnosisSafe) {
+    const tryGnosis = async () => {
       const gnosisConnector = getWallet(WalletType.GNOSIS);
       // @ts-expect-error isSafeApp not in abstract connector type
-      gnosisConnector.isSafeApp().then((loadedInSafe) => {
-        if (loadedInSafe) {
-          connectWallet(WalletType.GNOSIS)
-            .then(() => {
-              setTriedGnosisSafe(true);
-            })
-            .catch(() => {
-              setTriedGnosisSafe(true);
-            });
-        } else {
-          setTriedGnosisSafe(true);
-        }
-      });
-    }
-  }, [connectWallet, setTriedGnosisSafe, triedGnosisSafe]);
-
-  // handle logic to eagerly connect to the injected ethereum provider,
-  // if it exists and has granted access already
-  useEffect(() => {
-    const lastWalletProvider = localStorage.getItem('walletProvider');
-    if (!active && !deactivated && triedGnosisSafe && triedCoinbase && triedLedger) {
-      if (!!lastWalletProvider) {
-        connectWallet(lastWalletProvider as WalletType).catch(() => {
-          setTried(true);
-        });
-      } else {
-        setTried(true);
-        // For now we will not eagerly connect to injected provider
-        // const injected = getWallet(WalletType.INJECTED);
-        // // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
-        // // injected provider
-        // injected.isAuthorized().then((isAuthorized: boolean) => {
-        //   if (isAuthorized) {
-        //     connectWallet(WalletType.INJECTED).catch(() => {
-        //       setTried(true);
-        //     });
-        //   } else {
-        //     setTried(true);
-        //   }
-        // });
+      const loadedInSafe = await gnosisConnector.isSafeApp();
+      if (!loadedInSafe) {
+        return false;
       }
-    }
-  }, [
-    activate,
-    setTried,
-    active,
-    connectWallet,
-    deactivated,
-    triedGnosisSafe,
-    triedCoinbase,
-    triedLedger,
-  ]);
 
-  // if the connection worked, wait until we get confirmation of that to flip the flag
-  useEffect(() => {
-    if (!tried && active) {
-      setTried(true);
+      try {
+        await connectWallet(WalletType.GNOSIS);
+        return true;
+      } catch (e) {
+        console.error(e);
+        return false;
+      }
+    };
+
+    const tryCoinbase = async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const injectedProvider = (window as any)?.ethereum;
+      if (!injectedProvider?.isCoinbaseBrowser) {
+        return false;
+      }
+
+      const canConnectToCoinbase = activateInjectedProvider('CoinBase');
+      if (canConnectToCoinbase) {
+        try {
+          await connectWallet(WalletType.INJECTED);
+          return true;
+        } catch (e) {
+          console.error(e);
+          return false;
+        }
+      } else {
+        // @ts-expect-error ethereum might not be in window
+        const { ethereum } = window;
+
+        if (ethereum) {
+          try {
+            activateInjectedProvider('CoinBase');
+            await ethereum.request({ method: 'eth_requestAccounts' });
+          } catch (e) {
+            console.error(e);
+            return false;
+          }
+        }
+      }
+
+      return false;
+    };
+
+    const tryLastProvider = async () => {
+      const lastWalletProvider = localStorage.getItem('walletProvider');
+      if (!active && !deactivated) {
+        if (!!lastWalletProvider) {
+          try {
+            await connectWallet(lastWalletProvider as WalletType);
+            return true;
+          } catch (e) {
+            console.error(e);
+            return false;
+          }
+        }
+      }
+
+      return false;
+    };
+    const steps = [tryFamily, tryGnosis, tryCoinbase, tryLastProvider];
+    const tryConnect = async () => {
+      for (const step of steps) {
+        const success = await step();
+        if (success) {
+          break;
+        }
+      }
+    };
+
+    if (!active) {
+      tryConnect();
     }
-  }, [tried, active]);
+  }, [active, connectWallet, deactivated]);
 
   // Tx methods
 
