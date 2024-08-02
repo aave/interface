@@ -28,7 +28,9 @@ import { useUserPoolsReservesHumanized } from './useUserPoolReserves';
 import { useUserPoolsReservesIncentivesHumanized } from './useUserPoolReservesIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
 
-export type FormattedUserReserves = ComputedUserReserve<FormattedReservesAndIncentives>;
+export type FormattedUserReserves = ComputedUserReserve<FormattedReservesAndIncentives> & {
+  reserveID?: number;
+};
 
 export type UserSummaryAndIncentives =
   FormatUserSummaryAndIncentivesResponse<FormattedReservesAndIncentives> & {

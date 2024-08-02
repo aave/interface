@@ -174,7 +174,7 @@ export const CollateralChangeModalContent = ({
         usageAsCollateral={usageAsCollateralModeAfterSwitch}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
-        reserveID={userReserve?.reserveID || 0}
+        reserveID={userReserve.reserveID || 0}
       />
     </>
   );
