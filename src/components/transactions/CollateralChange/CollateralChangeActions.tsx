@@ -12,6 +12,7 @@ export type CollateralChangeActionsProps = {
   usageAsCollateral: boolean;
   blocked: boolean;
   symbol: string;
+  reserveID?: number;
 };
 
 export const CollateralChangeActions = ({
@@ -20,11 +21,12 @@ export const CollateralChangeActions = ({
   usageAsCollateral,
   blocked,
   symbol,
+  reserveID,
 }: CollateralChangeActionsProps) => {
   const setUsageAsCollateral = useRootStore((state) => state.setUsageAsCollateral);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
-    reserveID: poolReserve?.reserveID,
+    reserveID: reserveID,
     usageAsCollateral,
     tryPermit: false,
     protocolAction: ProtocolAction.setUsageAsCollateral,
