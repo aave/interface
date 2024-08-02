@@ -146,7 +146,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         setConnector(connector);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if ((window as any).ethereum.isFamily) {
+        if ((window as any).ethereum?.isFamily) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (window as any).ethereum.on('chainChanged', (chainId: string | number) => {
             // the injected connector relies on the networkChanged event to update the chainId,
