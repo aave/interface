@@ -11,7 +11,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { DetailsIncentivesLine } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { displayGhoForMintableMarket, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { GhoRange } from './DebtSwitchModalContent';
@@ -89,7 +89,10 @@ export const DebtSwitchModalDetails = ({
             <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
           ) : (
             <>
-              {switchSource.reserve.symbol === 'GHO' && ghoData ? (
+              {displayGhoForMintableMarket({
+                symbol: switchSource.reserve.symbol,
+                currentMarket,
+              }) && ghoData ? (
                 <GhoIncentivesCard
                   useApyRange={false}
                   rangeValues={ghoData.ghoApyRange}
@@ -110,7 +113,10 @@ export const DebtSwitchModalDetails = ({
                 <FormattedNumber value={sourceBorrowAPY} variant="secondary14" percent />
               )}
               {ArrowRightIcon}
-              {switchTarget.reserve.symbol === 'GHO' && ghoData ? (
+              {displayGhoForMintableMarket({
+                symbol: switchTarget.reserve.symbol,
+                currentMarket,
+              }) && ghoData ? (
                 <GhoIncentivesCard
                   useApyRange={ghoData.qualifiesForDiscount && !ghoData.inputAmount}
                   rangeValues={ghoData.inputAmount === 0 ? ghoData.ghoApyRange : switchToRange}
