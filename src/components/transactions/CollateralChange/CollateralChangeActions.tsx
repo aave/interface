@@ -24,6 +24,8 @@ export const CollateralChangeActions = ({
   const setUsageAsCollateral = useRootStore((state) => state.setUsageAsCollateral);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
+    reserveID: poolReserve?.reserveID,
+    usageAsCollateral,
     tryPermit: false,
     protocolAction: ProtocolAction.setUsageAsCollateral,
     eventTxInfo: {

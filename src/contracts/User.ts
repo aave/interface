@@ -121,8 +121,12 @@ export class User implements Contract {
   }
 
   async getUserSupplies(provider: ContractProvider) {
+    const userCollateralMask = (
+      await provider.get('get_supplied_collateral_mask', [])
+    ).stack.readNumber();
+
     const { stack } = await provider.get('get_user_data', []);
-    console.log(stack);
+    // console.log(stack);
 
     stack.skip(3);
 
@@ -143,7 +147,7 @@ export class User implements Contract {
     let index = 0;
     for (const key of dict.keys()) {
       const value = dict.get(key);
-      console.log('🚀 ~ User ~ getUserSupplies ~ value:', value);
+      // console.log('🚀 ~ User ~ getUserSupplies ~ value:', value);
       if (value) {
         const cells = Cell.fromBoc(value.toBoc());
         for (const cell of cells) {
@@ -153,9 +157,10 @@ export class User implements Contract {
             supplyBalance: a.loadCoins(),
             stableBorrowBalance: a.loadCoins(),
             variableBorrowBalance: a.loadCoins(),
+            isCollateral: (userCollateralMask & (2 ** Number(key.toString()))) > 0,
           };
-          console.log(reserves[index]);
-          console.log(`[${key}] - [${value}]`);
+          // console.log(reserves[index]);
+          // console.log(`[${key}] - [${value}]`);
           index++;
         }
       }

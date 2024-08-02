@@ -7,13 +7,17 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { DependencyList, useEffect, useRef, useState } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
+import { useTonCollateral } from 'src/hooks/useTonYourSupplies';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TransactionDetails } from 'src/store/transactionsSlice';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { sleep } from 'src/utils/rotationProvider';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
@@ -29,6 +33,8 @@ interface UseTransactionHandlerProps {
   protocolAction?: ProtocolAction;
   deps?: DependencyList;
   eventTxInfo?: TransactionDetails;
+  reserveID?: number;
+  usageAsCollateral?: boolean;
 }
 
 export type Approval = {
@@ -46,6 +52,8 @@ export const useTransactionHandler = ({
   protocolAction,
   deps = [],
   eventTxInfo,
+  reserveID,
+  usageAsCollateral,
 }: UseTransactionHandlerProps) => {
   const {
     approvalTxState,
@@ -84,6 +92,11 @@ export const useTransactionHandler = ({
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
+  const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
+  const { onToggleCollateralTon } = useTonCollateral({
+    yourAddressWallet: walletAddressTonWallet,
+  });
+  const { getYourSupplies } = useAppDataContext();
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -272,6 +285,24 @@ export const useTransactionHandler = ({
   };
 
   const action = async () => {
+    if (isConnectedTonWallet) {
+      setMainTxState({ ...mainTxState, loading: true });
+      const resToggle = await onToggleCollateralTon(Number(reserveID), Boolean(usageAsCollateral));
+      if (resToggle?.success) {
+        await sleep(15000); // sleep 15s re call SC get new data reserve
+        setMainTxState({
+          txHash: resToggle.txHash,
+          loading: false,
+          success: true,
+        });
+        getYourSupplies();
+      } else {
+        setMainTxState({
+          txHash: undefined,
+          loading: false,
+        });
+      }
+    }
     if (usePermit && handleGetPermitTxns) {
       if (!signatures.length || !signatureDeadline) throw new Error('signature needed');
       try {

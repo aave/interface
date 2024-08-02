@@ -6,6 +6,7 @@ import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataPro
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -32,8 +33,15 @@ export const CollateralChangeModalContent = ({
   symbol,
   user,
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
-  const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
+  const {
+    gasLimit,
+    mainTxState: collateralChangeTxState,
+    txError: mainTxError,
+  } = useModalContext();
   const { debtCeiling } = useAssetCaps();
+  const { isConnectedTonWallet } = useTonConnectContext();
+  const txError = isConnectedTonWallet ? false : mainTxError;
+  poolReserve.reserveID = userReserve.reserveID;
 
   // Health factor calculations
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
