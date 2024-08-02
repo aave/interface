@@ -41,7 +41,7 @@ export const CollateralChangeModalContent = ({
   const { debtCeiling } = useAssetCaps();
   const { isConnectedTonWallet } = useTonConnectContext();
   const txError = isConnectedTonWallet ? false : mainTxError;
-  poolReserve.reserveID = userReserve.reserveID;
+  poolReserve.reserveID = userReserve?.reserveID || 0;
 
   // Health factor calculations
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
