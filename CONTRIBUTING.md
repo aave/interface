@@ -1,3 +1,4 @@
+
 # Objective of the Aave Interface
 
 The website-hosted user interface at app.aave.com (the “Interface”) is provided by the Aave Companies, a group of software development companies that build open source, blockchain-based software. The Interface is hosted on the Interplanetary File System (“IPFS”), is open source and provides information to users regarding the (a) the Aave Protocol, a decentralized, non-custodial liquidity protocol on the Ethereum blockchain that allows users to supply or borrow cryptoassets and earn interest on supplied assets (the “Aave Protocol”); (b) the Aave Safety Module, the primary mechanism for securing the Aave Protocol (the “Aave Safety Module”); and (c) Aave Governance, the mechanism through which AAVE token holders collectively discuss, propose, and vote on upgrades to the Aave Protocol (“Aave Governance”).
