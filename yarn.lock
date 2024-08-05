@@ -3174,17 +3174,17 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@paraswap/core@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@paraswap/core/-/core-1.1.0.tgz#5ec7415be69dc657a9d82b0fde4e20f632cca1b6"
-  integrity sha512-ecnX8ezlhYWFwolZxYEz+K+RfLr8xaxQqiJKlxJ8Yf00tXTGxDGn6/Acy00t4+9Kv0apewd7++J33eJt9yNfwg==
+"@paraswap/core@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@paraswap/core/-/core-2.2.0.tgz#848175c7729f1064e715019269b1c193a23a5be8"
+  integrity sha512-aENl5zjS0y4ag7PLEq/hHgaAH4XpN5M4Zc7Igt/03D+W6t6tgScG9on2gXKkEUErcgnZ79qnvzKhaU6QgzoBAQ==
 
-"@paraswap/sdk@6.2.4":
-  version "6.2.4"
-  resolved "https://registry.yarnpkg.com/@paraswap/sdk/-/sdk-6.2.4.tgz#df6cf7c6acf04b40c4efd678d1aa7326e5e8d219"
-  integrity sha512-Ow7MArOXYeE0xrAYclCxPUyBCsPlk+Jm3k1+jsxXF0jUQgucSXZ4yfFzA/nxlRd6xjpoljX5V05Nir1nOAINsQ==
+"@paraswap/sdk@6.9.1":
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/@paraswap/sdk/-/sdk-6.9.1.tgz#556fe38e5d57ec8ea2be88e0f75fda91850993f2"
+  integrity sha512-sTxPKY2cCfoz+dD1yHVFuQHkaJwiubnzKXZEdH7Dp93M+lSECP6JZwOgj+QG3sYuvj5015yiEZosZnsEPB0E7g==
   dependencies:
-    "@paraswap/core" "1.1.0"
+    "@paraswap/core" "2.2.0"
     bignumber.js "^9.0.2"
     ts-essentials "^9.1.2"
 
@@ -5170,12 +5170,7 @@ big-integer@^1.6.44:
   resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.51.tgz#0df92a5d9880560d3ff2d5fd20245c889d130686"
   integrity sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==
 
-bignumber.js@^9.0.0:
-  version "9.0.2"
-  resolved "https://registry.npmjs.org/bignumber.js/-/bignumber.js-9.0.2.tgz"
-  integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
-
-bignumber.js@^9.0.2:
+bignumber.js@^9.0.0, bignumber.js@^9.0.2:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.1.tgz#c4df7dc496bd849d4c9464344c1aa74228b4dac6"
   integrity sha512-pHm4LsMJ6lzgNGVfZHjMoO8sdoRhOzOH4MLmY65Jg70bpxCKu5iOHNJyfF6OyvYw7t8Fpf35RuzUyqnQsj8Vig==
