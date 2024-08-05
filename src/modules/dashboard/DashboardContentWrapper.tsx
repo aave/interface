@@ -10,7 +10,7 @@ import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
-import { AUTH } from 'src/utils/mixPanelEvents';
+import { AUTH, DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
 import { BorrowedPositionsList } from './lists/BorrowedPositionsList/BorrowedPositionsList';
@@ -63,10 +63,9 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
                   currentMarket === ('fork_proto_mainnet_v3' as string)) ||
                 (!currentNetworkConfig.isFork && currentMarket === 'proto_mainnet_v3')
               }
-              // Todo tracking?
-              // onClick={() =>
-              //   trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
-              // }
+              onClick={() =>
+                trackEvent(DASHBOARD.SELECT_V3_ETH_MARKET, { market: 'Ethereum Main' })
+              }
             >
               <TokenIcon sx={{ mr: 2 }} symbol="eth-round" />
 
@@ -86,7 +85,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
               value={currentNetworkConfig.isFork ? 'fork_proto_lido_v3' : 'proto_lido_v3'}
               // disabled={currentMarket === 'proto_lido_v3' || 'fork_proto_lido_v3' ? true : false}
 
-              // Todo tracking?
+              onClick={() => trackEvent(DASHBOARD.SELECT_V3_ETH_MARKET, { market: 'Lido' })}
             >
               <TokenIcon sx={{ mr: 2 }} symbol="ldo" />
 

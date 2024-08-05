@@ -9,6 +9,7 @@ import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
+import { MARKETS } from 'src/utils/mixPanelEvents';
 
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
@@ -21,6 +22,7 @@ export const MarketsTopPanel = () => {
     store.currentMarket,
     store.setCurrentMarket,
   ]);
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [currentNetworkConfig] = useRootStore((state) => [
     state.currentNetworkConfig,
@@ -110,6 +112,9 @@ export const MarketsTopPanel = () => {
                     currentMarket === ('fork_proto_mainnet_v3' as string)) ||
                   (!currentNetworkConfig.isFork && currentMarket === 'proto_mainnet_v3')
                 }
+                onClick={() =>
+                  trackEvent(MARKETS.SELECT_V3_ETH_MARKET, { market: 'Ethereum Main' })
+                }
               >
                 <TokenIcon sx={{ mr: 2 }} symbol="eth-round" />
 
@@ -142,7 +147,7 @@ export const MarketsTopPanel = () => {
                   (!currentNetworkConfig.isFork && currentMarket === 'proto_lido_v3')
                 }
                 value={currentNetworkConfig.isFork ? 'fork_proto_lido_v3' : 'proto_lido_v3'}
-                // Todo tracking?
+                onClick={() => trackEvent(MARKETS.SELECT_V3_ETH_MARKET, { market: 'Lido' })}
               >
                 <TokenIcon sx={{ mr: 2 }} symbol="ldo" />
 
