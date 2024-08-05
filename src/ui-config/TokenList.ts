@@ -187,7 +187,8 @@ export const TOKEN_LIST: TokenList = {
       name: 'Aave',
       symbol: 'AAVE',
       decimals: 18,
-      logoURI: 'https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1601374110',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
       extensions: {
         bridgeInfo: {
           '10': {
