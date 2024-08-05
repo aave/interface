@@ -18,6 +18,7 @@ import { GasStationProvider } from 'src/components/transactions/GasStation/GasSt
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 
 import createEmotionCache from '../src/createEmotionCache';
@@ -102,7 +103,7 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
-  // const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
+  const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -114,13 +115,13 @@ export default function MyApp(props: MyAppProps) {
       })
   );
 
-  // const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
+  const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
   useEffect(() => {
-    // if (MIXPANEL_TOKEN) {
-    //   initializeMixpanel();
-    // } else {
-    console.log('no analytics tracking');
-    // }
+    if (MIXPANEL_TOKEN) {
+      initializeMixpanel();
+    } else {
+      console.log('no analytics tracking');
+    }
   }, []);
 
   return (
