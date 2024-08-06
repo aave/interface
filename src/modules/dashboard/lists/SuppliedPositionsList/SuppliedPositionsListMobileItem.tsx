@@ -3,6 +3,7 @@ import { Box, Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Row } from '../../../../components/primitives/Row';
@@ -37,12 +38,13 @@ export const SuppliedPositionsListMobileItem = ({
     isPaused,
   } = reserve;
 
-  const canBeEnabledAsCollateral =
-    !debtCeiling.isMaxed &&
-    reserve.reserveLiquidationThreshold !== '0' &&
-    ((!reserve.isIsolated && !user.isInIsolationMode) ||
-      user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
-      (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
+  const canBeEnabledAsCollateral = user
+    ? !debtCeiling.isMaxed &&
+      reserve.reserveLiquidationThreshold !== '0' &&
+      ((!reserve.isIsolated && !user.isInIsolationMode) ||
+        user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
+        (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'))
+    : false;
 
   const disableSwap = !isActive || isPaused || reserve.symbol == 'stETH';
   const disableWithdraw = !isActive || isPaused;
@@ -58,6 +60,7 @@ export const SuppliedPositionsListMobileItem = ({
       frozen={reserve.isFrozen}
       showSupplyCapTooltips
       showDebtCeilingTooltips
+      showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY)}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}

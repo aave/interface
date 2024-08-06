@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS, PERMISSION } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 import {
@@ -10,10 +10,9 @@ import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
-import { usePermissions } from 'src/hooks/usePermissions';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
@@ -38,7 +37,6 @@ export const ModalWrapper: React.FC<{
   // if true wETH will stay wETH otherwise wETH will be returned as ETH
   keepWrappedSymbol?: boolean;
   hideTitleSymbol?: boolean;
-  requiredPermission?: PERMISSION;
   children: (props: ModalWrapperProps) => React.ReactNode;
   action?: string;
 }> = ({
@@ -47,7 +45,6 @@ export const ModalWrapper: React.FC<{
   children,
   requiredChainId: _requiredChainId,
   title,
-  requiredPermission,
   keepWrappedSymbol,
 }) => {
   const { readOnlyModeAddress } = useWeb3Context();
@@ -56,21 +53,11 @@ export const ModalWrapper: React.FC<{
   const { walletBalances } = useWalletBalances(currentMarketData);
   const { user, reserves } = useAppDataContext();
   const { txError, mainTxState } = useModalContext();
-  const { permissions } = usePermissions();
 
   const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
-  }
-
-  if (
-    requiredPermission &&
-    isFeatureEnabled.permissions(currentMarketData) &&
-    !permissions.includes(requiredPermission) &&
-    currentMarketData.permissionComponent
-  ) {
-    return <>{currentMarketData.permissionComponent}</>;
   }
 
   const poolReserve = reserves.find((reserve) => {

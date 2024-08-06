@@ -7,6 +7,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
@@ -16,9 +17,7 @@ import { useRootStore } from 'src/store/root';
 import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
 import { DASHBOARD, GENERAL } from 'src/utils/mixPanelEvents';
 
-import HALLink from '../../components/HALLink';
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
-import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { NoData } from '../../components/primitives/NoData';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
@@ -27,6 +26,7 @@ import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresM
 
 export const DashboardTopPanel = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
+
   const { market } = getMarketInfoById(currentMarket);
   const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
@@ -34,47 +34,53 @@ export const DashboardTopPanel = () => {
   const { openClaimRewards } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
-  const showMigrateButton =
-    isMigrateToV3Available && currentAccount !== '' && Number(user.totalLiquidityUSD) > 0;
+  const showMigrateButton = user
+    ? isMigrateToV3Available && currentAccount !== '' && Number(user.totalLiquidityUSD) > 0
+    : false;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { claimableRewardsUsd } = Object.keys(user.calculatedUserIncentives).reduce(
-    (acc, rewardTokenAddress) => {
-      const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
-      const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
+  const { claimableRewardsUsd } = user
+    ? Object.keys(user.calculatedUserIncentives).reduce(
+        (acc, rewardTokenAddress) => {
+          const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
+          const rewardBalance = normalize(
+            incentive.claimableRewards,
+            incentive.rewardTokenDecimals
+          );
 
-      let tokenPrice = 0;
-      // getting price from reserves for the native rewards for v2 markets
-      if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
-        if (currentMarketData.chainId === ChainId.mainnet) {
-          const aave = reserves.find((reserve) => reserve.symbol === 'AAVE');
-          tokenPrice = aave ? Number(aave.priceInUSD) : 0;
-        } else {
-          reserves.forEach((reserve) => {
-            if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
-              tokenPrice = Number(reserve.priceInUSD);
+          let tokenPrice = 0;
+          // getting price from reserves for the native rewards for v2 markets
+          if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
+            if (currentMarketData.chainId === ChainId.mainnet) {
+              const aave = reserves.find((reserve) => reserve.symbol === 'AAVE');
+              tokenPrice = aave ? Number(aave.priceInUSD) : 0;
+            } else {
+              reserves.forEach((reserve) => {
+                if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
+                  tokenPrice = Number(reserve.priceInUSD);
+                }
+              });
             }
-          });
-        }
-      } else {
-        tokenPrice = Number(incentive.rewardPriceFeed);
-      }
+          } else {
+            tokenPrice = Number(incentive.rewardPriceFeed);
+          }
 
-      const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
+          const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
 
-      if (rewardBalanceUsd > 0) {
-        if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
-          acc.assets.push(incentive.rewardTokenSymbol);
-        }
+          if (rewardBalanceUsd > 0) {
+            if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
+              acc.assets.push(incentive.rewardTokenSymbol);
+            }
 
-        acc.claimableRewardsUsd += Number(rewardBalanceUsd);
-      }
+            acc.claimableRewardsUsd += Number(rewardBalanceUsd);
+          }
 
-      return acc;
-    },
-    { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
-  );
+          return acc;
+        },
+        { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
+      )
+    : { claimableRewardsUsd: 0 };
 
   const loanToValue =
     user?.totalCollateralMarketReferenceCurrency === '0'
@@ -115,7 +121,7 @@ export const DashboardTopPanel = () => {
             />
             {showMigrateButton && !downToSM && (
               <Box sx={{ alignSelf: 'center', mb: 4, width: '100%' }}>
-                <Link href={ROUTES.migrationTool}>
+                <Link href={ROUTES.marketMigrationTool(currentMarket)}>
                   <Button variant="gradient" sx={{ height: '20px' }}>
                     <Typography variant="buttonS" data-cy={`migration-button`}>
                       <Trans>Migrate to v3</Trans>
@@ -158,9 +164,9 @@ export const DashboardTopPanel = () => {
           loading={loading}
           hideIcon
         >
-          {currentAccount && Number(user?.netWorthUSD) > 0 ? (
+          {currentAccount && user && Number(user.netWorthUSD) > 0 ? (
             <FormattedNumber
-              value={user.netAPY}
+              value={user ? user.netAPY : 0}
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
@@ -189,15 +195,6 @@ export const DashboardTopPanel = () => {
                 trackEvent(DASHBOARD.VIEW_RISK_DETAILS);
                 setOpen(true);
               }}
-              HALIntegrationComponent={
-                currentMarketData.halIntegration && (
-                  <HALLink
-                    healthFactor={user?.healthFactor || '-1'}
-                    marketName={currentMarketData.halIntegration.marketName}
-                    integrationURL={currentMarketData.halIntegration.URL}
-                  />
-                )
-              }
             />
           </TopInfoPanelItem>
         )}

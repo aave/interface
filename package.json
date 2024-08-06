@@ -5,6 +5,7 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "dev": "next dev",
+    "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8000' next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
     "build:static": "next build && next export",
@@ -30,9 +31,9 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.23.1",
-    "@aave/math-utils": "1.23.1",
-    "@bgd-labs/aave-address-book": "^2.15.2",
+    "@aave/contract-helpers": "1.29.1",
+    "@aave/math-utils": "1.29.1",
+    "@bgd-labs/aave-address-book": "^3.0.1",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
@@ -69,17 +70,20 @@
     "d3-array": "^3.2.0",
     "d3-time-format": "^4.1.0",
     "dayjs": "^1.11.5",
+    "ethereum-multicall": "^2.21.0",
     "ethers": "^5.5.4",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "gray-matter": "^4.0.3",
     "immer": "^9.0.15",
+    "micro-memoize": "^4.1.2",
     "mixpanel-browser": "^2.45.0",
     "next": "12.1.1",
     "react": "latest",
     "react-cookie-consent": "^8.0.1",
     "react-dom": "latest",
     "react-infinite-scroller": "^1.2.6",
+    "react-lazy-load": "^4.0.1",
     "react-markdown": "^8.0.7",
     "react-number-format": "^4.9.1",
     "reflect-metadata": "^0.1.13",
@@ -153,5 +157,6 @@
     "budget": null,
     "budgetPercentIncreaseRed": 20,
     "showDetails": true
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

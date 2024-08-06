@@ -1,32 +1,37 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Stack, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
 import { CollateralType } from 'src/helpers/types';
+import { minimumReceivedAfterSlippage } from 'src/hooks/paraswap/common';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
-import { useRootStore } from 'src/store/root';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { amountToUsd } from 'src/utils/utils';
 
 import {
   ComputedUserReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { ErrorType, getAssetCollateralType, useFlashloan, zeroLTVBlockingWithdraw } from '../utils';
+import { ErrorType, getAssetCollateralType, useFlashloan } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SwapActions } from './SwapActions';
 import { SwapModalDetails } from './SwapModalDetails';
@@ -39,15 +44,15 @@ export const SwapModalContent = ({
   poolReserve,
   userReserve,
   isWrongNetwork,
-}: ModalWrapperProps) => {
-  const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
+  const { reserves, marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId, currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
-  const isGho = useRootStore((store) => store.displayGho);
 
   const swapTargets = reserves
-    .filter((r) => !isGho({ symbol: r.symbol, currentMarket }))
+    .filter((r) => !displayGhoForMintableMarket({ symbol: r.symbol, currentMarket }))
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset && !r.isFrozen)
     .map((reserve) => ({
       address: reserve.underlyingAsset,
@@ -124,32 +129,34 @@ export const SwapModalContent = ({
     marketReferencePriceInUsd
   );
 
-  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
   let blockingError: ErrorType | undefined = undefined;
   if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
     blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
   } else if (!remainingSupplyCap.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
-  } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
-    blockingError = ErrorType.HF_BELOW_ONE;
+  } else if (shouldUseFlashloan && !poolReserve.flashLoanEnabled) {
+    blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
 
   const BlockingError: React.FC = () => {
     switch (blockingError) {
       case ErrorType.SUPPLY_CAP_REACHED:
         return <Trans>Supply cap on target reserve reached. Try lowering the amount.</Trans>;
-      case ErrorType.HF_BELOW_ONE:
-        return (
-          <Trans>
-            The effects on the health factor would cause liquidation. Try lowering the amount.
-          </Trans>
-        );
       case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
         return (
           <Trans>
-            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
-            collateral to perform this action
+            Assets with zero LTV ({assetsBlockingWithdraw.join(', ')}) must be withdrawn or disabled
+            as collateral to perform this action
+          </Trans>
+        );
+      case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
+        return (
+          <Trans>
+            Due to health factor impact, a flashloan is required to perform this transaction, but
+            Aave Governance has disabled flashloan availability for this asset. Try lowering the
+            amount or supplying additional collateral.
           </Trans>
         );
       default:
@@ -223,6 +230,12 @@ export const SwapModalContent = ({
     }
   }
 
+  const minimumReceived = minimumReceivedAfterSlippage(
+    outputAmount,
+    maxSlippage,
+    swapTarget.reserve.decimals
+  );
+
   return (
     <>
       {/* {showIsolationWarning && (
@@ -288,7 +301,24 @@ export const SwapModalContent = ({
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
-          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+          <ListSlippageButton
+            selectedSlippage={maxSlippage}
+            setSlippage={setMaxSlippage}
+            slippageTooltipHeader={
+              <Stack direction="row" gap={2} alignItems="center" justifyContent="space-between">
+                <Trans>Minimum amount received</Trans>
+                <Stack alignItems="end">
+                  <Stack direction="row">
+                    <TokenIcon
+                      symbol={swapTarget.reserve.iconSymbol}
+                      sx={{ mr: 1, fontSize: '14px' }}
+                    />
+                    <FormattedNumber value={minimumReceived} variant="secondary12" />
+                  </Stack>
+                </Stack>
+              </Stack>
+            }
+          />
         }
       >
         <SwapModalDetails
@@ -309,7 +339,7 @@ export const SwapModalContent = ({
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
         amountToSwap={inputAmount}
-        amountToReceive={outputAmount}
+        amountToReceive={minimumReceived}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}

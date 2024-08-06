@@ -27,7 +27,6 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
-import { usePermissions } from 'src/hooks/usePermissions';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
@@ -36,6 +35,7 @@ import {
   getMaxGhoMintAmount,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { amountToUsd } from 'src/utils/utils';
 
@@ -64,7 +64,6 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
 
   const { currentAccount, loading: loadingWeb3Context } = useWeb3Context();
-  const { isPermissionsLoading } = usePermissions();
   const { openBorrow, openSupply } = useModalContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
@@ -77,9 +76,8 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances(currentMarketData);
 
-  const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
+  const [minRemainingBaseTokenBalance] = useRootStore((store) => [
     store.poolComputed.minRemainingBaseTokenBalance,
-    store.displayGho,
   ]);
   const { baseAssetSymbol } = currentNetworkConfig;
   let balance = walletBalances[reserve.underlyingAsset];
@@ -89,16 +87,16 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
   let maxAmountToBorrow = '0';
   let maxAmountToSupply = '0';
-  const isGho = displayGho({ symbol: reserve.symbol, currentMarket });
+  const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 
-  if (isGho) {
+  if (isGho && user) {
     const maxMintAmount = getMaxGhoMintAmount(user, reserve);
     maxAmountToBorrow = BigNumber.min(
       maxMintAmount,
       valueToBigNumber(ghoReserveData.aaveFacilitatorRemainingCapacity)
     ).toString();
     maxAmountToSupply = '0';
-  } else {
+  } else if (user) {
     maxAmountToBorrow = getMaxAmountAvailableToBorrow(
       reserve,
       user,
@@ -132,7 +130,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     reserve,
   });
 
-  if (!currentAccount && !isPermissionsLoading) {
+  if (!currentAccount) {
     return <ConnectWallet loading={loadingWeb3Context} />;
   }
 

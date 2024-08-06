@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-22 18:05\n"
+"PO-Revision-Date: 2024-08-01 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -53,11 +53,12 @@ msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>滑点容差 </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "AAVE持有者（仅限以太坊网络）可以将他们的AAVE质押在安全模块中，为协议增加更多安全性并获得安全奖励。在发生短缺事件的情况下，您的股份最多可以被削减 30% 以弥补赤字，为协议提供额外的保护层。"
+msgid "AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "APR"
 msgstr "四月"
 
@@ -190,6 +191,10 @@ msgstr "地址"
 msgid "Addresses ({0})"
 msgstr "地址 （{0})"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Age"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All Assets"
@@ -223,6 +228,7 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "允许您在浮动利率和稳定利率之间切换，其中 <0>浮</0> 动利率可以根据储备中的流动性增加和减少， <1>稳定</1> 利率将在您的贷款期限内保持不变。"
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
@@ -240,6 +246,14 @@ msgstr "冷却时间"
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "金额必须大于 0"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Amount to Bridge"
+msgstr ""
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Amount to migrate"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Amount to unstake"
@@ -269,6 +283,11 @@ msgstr "批准 {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "长度应该相等的数组参数不是"
 
+#: pages/staking.staking.tsx
+msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
+msgstr ""
+
+#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -314,6 +333,10 @@ msgstr "资产不能用作抵押品。"
 msgid "Asset category"
 msgstr "资产类别"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
+msgstr ""
+
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset is frozen in {marketName} v3 market, hence this position cannot be migrated."
 msgstr "资产被冻结 {marketName} v3 市场，因此此位置无法迁移。"
@@ -349,8 +372,8 @@ msgstr "要供应的资产"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawError.tsx
-msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
-msgstr "LTV 为零 （{assetsBlockingWithdraw}） 必须撤回或禁用作为抵押品才能执行此操作"
+msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "At a discount"
@@ -384,7 +407,6 @@ msgstr "可用奖励"
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
 msgstr "可借用"
@@ -400,6 +422,7 @@ msgstr "返回仪表板"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -409,6 +432,10 @@ msgstr "平衡"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Balance to revoke"
 msgstr "要撤销的余额"
+
+#: pages/staking.staking.tsx
+msgid "Balancer Pool"
+msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -504,7 +531,7 @@ msgid "Borrow power used"
 msgstr "借用功率"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow rate APY"
+msgid "Borrow rate"
 msgstr ""
 
 #: src/modules/history/actions/ActionDetails.tsx
@@ -523,6 +550,10 @@ msgstr "借"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Borrowed asset amount"
 msgstr "借入资产金额"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Borrowed assets"
+msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
@@ -569,6 +600,30 @@ msgstr "借贷 {symbol}"
 msgid "Both"
 msgstr "双"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Bridge GHO"
+msgstr ""
+
+#: src/modules/bridge/BridgeTopPanel.tsx
+msgid "Bridge history"
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeActions.tsx
+msgid "Bridge {symbol}"
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Bridged Via CCIP"
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Bridging is currently unavailable due to the rate limit being exceeded. Please try again later or reduce the amount to bridge."
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeActions.tsx
+msgid "Bridging {symbol}"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
 msgstr "用法定货币购买加密货币"
@@ -590,6 +645,7 @@ msgid "COPY IMAGE"
 msgstr "复制图像"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Can be collateral"
@@ -775,10 +831,6 @@ msgstr "复制错误文本"
 msgid "Covered debt"
 msgstr "担保债务"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Created"
-msgstr "创建"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "当前 LTV"
@@ -799,6 +851,10 @@ msgstr "当前 v2 余额"
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Current votes"
 msgstr "当前投票"
+
+#: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
+msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
+msgstr ""
 
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
@@ -835,10 +891,15 @@ msgstr "债务上限限制了协议用户以该资产为抵押借款的金额。
 msgid "Delegated power"
 msgstr "授权"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Destination"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/MarketAssetsListItem.tsx
 msgid "Details"
@@ -918,6 +979,11 @@ msgstr "文档"
 msgid "Download"
 msgstr "下载"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to health factor impact, a flashloan is required to perform this transaction, but Aave Governance has disabled flashloan availability for this asset. Try lowering the amount or supplying additional collateral."
+msgstr ""
+
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
 msgstr "由于变基支持需要内部 stETH 机制，因此无法执行 stETH 作为源代币的抵押品切换。"
@@ -925,6 +991,10 @@ msgstr "由于变基支持需要内部 stETH 机制，因此无法执行 stETH �
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
 msgstr "由于 Horizon 桥的漏洞利用，Harmony 网络上的某些资产与以太坊不对等，这影响了 Aave V3 Harmony 市场。"
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
+msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
@@ -961,6 +1031,14 @@ msgstr "实际利率"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
 msgstr "效率模式（E-Mode）"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Eligible for the merit program."
+msgstr ""
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Email"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
@@ -1001,6 +1079,14 @@ msgstr "英语"
 msgid "Enter ETH address"
 msgstr "输入 ETH 地址"
 
+#: src/components/transactions/Bridge/BridgeDestinationInput.tsx
+msgid "Enter ETH address or ENS"
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeDestinationInput.tsx
+msgid "Enter a valid address"
+msgstr ""
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
 msgstr "输入金额"
@@ -1013,9 +1099,22 @@ msgstr "连接时出错。尝试刷新页面。"
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 msgstr "估计复利，包括质押折扣 {0}安全模块中的AAVE。"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Estimated time"
+msgstr ""
+
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Ethereum Main"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
 msgstr "超出折扣"
+
+#: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
+msgid "Exchange rate"
+msgstr ""
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Expected amount to repay"
@@ -1045,6 +1144,7 @@ msgstr "无法加载提案投票者。请刷新页面。"
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/faucet/FaucetItemLoader.tsx
 #: src/modules/faucet/FaucetMobileItemLoader.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1055,6 +1155,15 @@ msgstr "龙头"
 msgid "Faucet {0}"
 msgstr "龙头 {0}"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Fee"
+msgstr ""
+
+#: src/layouts/FeedbackDialog.tsx
+#: src/layouts/FeedbackDialog.tsx
+msgid "Feedback"
+msgstr ""
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
 msgstr "正在获取数据..."
@@ -1063,11 +1172,6 @@ msgstr "正在获取数据..."
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "滤波器"
-
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-msgid "Fixed"
-msgstr "固定"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Fixed rate"
@@ -1097,14 +1201,26 @@ msgstr "法语"
 msgid "Funds in the Safety Module"
 msgstr "安全模块中的资金"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "GHO balance"
+msgstr ""
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 msgstr "GHO 是一种与美元挂钩的原生去中心化、抵押品支持的数字资产。它是由用户通过借入多个抵押品创建的。当用户偿还其 GHO 借入头寸时，协议会销毁该用户的 GHO。GHO 的铸币者产生的所有利息支付将直接转入 AaveDAO 金库。"
 
 #: src/modules/staking/GetABPToken.tsx
-#: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
 msgstr "获取ABP代币"
+
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Get ABP v2 Token"
+msgstr ""
+
+#: src/modules/staking/GetGhoToken.tsx
+#: src/modules/staking/StakingPanel.tsx
+msgid "Get GHO"
+msgstr ""
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
@@ -1132,14 +1248,6 @@ msgstr "统辖"
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "希腊语"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v2)"
-msgstr "健康因素 （{0} v2）"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v3)"
-msgstr "健康因素 （{0} v3）"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
@@ -1269,10 +1377,6 @@ msgstr "孤立资产的借贷能力有限，其他资产不能作为抵押品。
 msgid "Join the community discussion"
 msgstr "加入社区讨论"
 
-#: src/layouts/TopBarNotify.tsx
-msgid "LEARN MORE"
-msgstr "了解更多信息"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "语言"
@@ -1287,7 +1391,6 @@ msgstr "语言"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
-#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1306,6 +1409,15 @@ msgstr "在我们的<0>常见问题解答指南</0>中了解更多信息"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Learn more."
 msgstr "了解更多信息。"
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
+msgstr ""
+
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Lido"
+msgstr ""
 
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
@@ -1380,6 +1492,10 @@ msgstr "由于社群的决定，MAI 已暂停。供应、借款和还款受到�
 msgid "MAX"
 msgstr ".MAX"
 
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Main"
+msgstr ""
+
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
 msgstr "管理分析"
@@ -1394,6 +1510,7 @@ msgid "Markets"
 msgstr "市场"
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "Max"
 msgstr "麦克斯"
 
@@ -1434,6 +1551,18 @@ msgstr "可供应的最大数量为 <0/> {0} (<1/>)."
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "最大可用供应量是有限的，因为协议供应上限 {0}%."
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Maximum amount received"
+msgstr ""
+
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+msgid "Maximum available to borrow"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Maximum collateral amount to use"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Maximum loan to value"
 msgstr "最高贷款价值比"
@@ -1446,28 +1575,47 @@ msgstr "认识 GHO"
 msgid "Menu"
 msgstr "菜单"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Merit Program rewards are claimed through the"
+msgstr ""
+
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrate"
 msgstr "迁移"
+
+#: src/layouts/MobileMenu.tsx
+#: src/layouts/MoreMenu.tsx
+msgid "Migrate to Aave V3"
+msgstr ""
 
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "迁移到 V3"
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "Migrate to stkABPT v2"
+msgstr ""
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to v3"
 msgstr "迁移到 v3"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
-#: src/modules/migration/MigrationTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
 msgstr "迁移到 {0} v3 市场"
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migrate your assets"
+msgstr ""
+
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Migrated"
 msgstr "迁移"
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrating"
 msgstr "迁移"
 
@@ -1486,6 +1634,16 @@ msgstr "最低GHO借款金额"
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Minimum USD value received"
 msgstr "收到的最低美元价值"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Minimum amount of debt to be repaid"
+msgstr ""
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
+msgid "Minimum amount received"
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum staked Aave amount"
@@ -1538,6 +1696,10 @@ msgstr "新 APY"
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
 msgstr "未选择要迁移的资产。"
+
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
+msgid "No results found. You can import a custom token with a contract address"
+msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
@@ -1609,21 +1771,9 @@ msgstr "没有质押"
 msgid "Nothing supplied yet"
 msgstr "尚未提供任何内容"
 
-#: src/components/HALLink.tsx
-msgid "Notify"
-msgstr "通知"
-
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "好的，关闭"
-
-#: src/components/TextWithModal.tsx
-msgid "Ok, I got it"
-msgstr "好的，我明白了"
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Open for voting"
-msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
@@ -1644,10 +1794,6 @@ msgstr "页面未找到"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "参与其中 {symbol} Reserve 提供年度奖励。"
-
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Payloads executed"
-msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1671,6 +1817,11 @@ msgstr "在部分迁移头寸时，请始终注意您的 <0>健康因素 （HF�
 msgid "Please connect a wallet to view your personal information here."
 msgstr "请在此处连接钱包以查看您的个人信息。"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Please connect your wallet to be able to bridge your tokens."
+msgstr ""
+
+#: src/components/transactions/Switch/SwitchModal.tsx
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Please connect your wallet to be able to switch your tokens."
 msgstr "请连接您的钱包以便能够切换您的代币。"
@@ -1688,6 +1839,7 @@ msgstr "请连接您的钱包以查看迁移工具。"
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "请连接您的钱包以查看您的供应、借款和未平仓头寸。"
 
+#: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/history/HistoryWrapper.tsx
 msgid "Please connect your wallet to view transaction history."
 msgstr "请连接您的钱包以查看交易记录。"
@@ -1830,6 +1982,10 @@ msgstr "接收（预估）"
 msgid "Received"
 msgstr "收到"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Recent Transactions"
+msgstr ""
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "收件人地址"
@@ -1854,6 +2010,10 @@ msgstr "剩余债务"
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Remaining supply"
 msgstr "剩余供应量"
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Remind me"
+msgstr ""
 
 #: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Remove"
@@ -1940,10 +2100,6 @@ msgstr "重新质押 {symbol}"
 msgid "Review approval tx details"
 msgstr "查看审批 tx 详细信息"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Review changes to continue"
-msgstr "查看更改以继续"
-
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
 msgstr "评论 tx"
@@ -1964,6 +2120,10 @@ msgstr "领取奖励"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Rewards APR"
 msgstr "奖励年利率"
+
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "Rewards can be claimed through"
+msgstr ""
 
 #: src/components/HealthFactorNumber.tsx
 msgid "Risk details"
@@ -2005,14 +2165,6 @@ msgstr "选择语言"
 msgid "Select slippage tolerance"
 msgstr "选择滑点容差"
 
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 borrows to migrate"
-msgstr "选择要迁移的 v2 借用"
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 supplies to migrate"
-msgstr "选择要迁移的 v2 供应"
-
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 msgstr "所选资产已成功迁移。访问市场仪表板查看它们。"
@@ -2025,6 +2177,10 @@ msgstr "选定的借入资产"
 msgid "Selected supply assets"
 msgstr "选定的供应资产"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Send Feedback"
+msgstr ""
+
 #: src/layouts/AppFooter.tsx
 msgid "Send feedback"
 msgstr "发送反馈"
@@ -2032,10 +2188,6 @@ msgstr "发送反馈"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
 msgstr "设置委派"
-
-#: src/components/HALLink.tsx
-msgid "Setup notifications about your Health Factor using the Hal app."
-msgstr "使用 Hal 应用程序设置有关您的健康因子的通知。"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/ProposalOverview.tsx
@@ -2103,6 +2255,10 @@ msgstr "对不起，发生了意外错误。在此期间，您可以尝试重新
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "很抱歉，我们无法找到您要查找的页面。"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Source"
+msgstr ""
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
 msgstr "西班牙语"
@@ -2154,11 +2310,16 @@ msgstr "质押 AAVE"
 msgid "Stake ABPT"
 msgstr "质押 ABPT"
 
+#: pages/staking.staking.tsx
+msgid "Stake GHO"
+msgstr ""
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
 msgstr "赌注冷却时间已激活"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "押"
@@ -2192,6 +2353,15 @@ msgstr "质押折扣"
 msgid "State"
 msgstr "州"
 
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "Status"
+msgstr ""
+
+#: src/layouts/FeedbackDialog.tsx
+msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
+msgstr ""
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
 msgstr "提供"
@@ -2200,10 +2370,15 @@ msgstr "提供"
 msgid "Supplied asset amount"
 msgstr "提供的资产金额"
 
+#: src/modules/migration/MigrationLists.tsx
+msgid "Supplied assets"
+msgstr ""
+
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
@@ -2213,7 +2388,9 @@ msgid "Supply"
 msgstr "供应"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -2232,6 +2409,8 @@ msgstr "供应年化"
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
 msgstr "供应平衡"
@@ -2249,6 +2428,7 @@ msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "已达到目标储备的供应上限。尝试降低金额。"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 msgid "Supply {symbol}"
 msgstr "供应 {symbol}"
 
@@ -2257,6 +2437,7 @@ msgid "Supplying your"
 msgstr "提供您的"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 msgid "Supplying {symbol}"
 msgstr "提供 {symbol}"
 
@@ -2343,6 +2524,10 @@ msgstr "测试网模式"
 msgid "Testnet mode is ON"
 msgstr "测试网模式开启"
 
+#: src/layouts/FeedbackDialog.tsx
+msgid "Thank you for submitting feedback!"
+msgstr ""
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting!!"
 msgstr "感谢您的投票！！"
@@ -2352,8 +2537,8 @@ msgid "The % of your total borrowing power used. This is based on the amount of 
 msgstr "已使用总借贷能力的百分比。这是基于您提供的抵押品金额和您可以借入的总金额。"
 
 #: src/modules/staking/GetABPTokenModal.tsx
-msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
-msgstr "Aave Balancer Pool Token （ABPT） 是一种流动性池代币。您可以通过在 Balancer 流动性池中存入 AAVE + ETH 的组合来获得 ABPT。然后，您可以将 BPT 质押在安全模块中，以保护协议并获得安全奖励。"
+msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is different from using market pricing via oracles for other crypto assets. This creates stabilizing arbitrage opportunities when the price of GHO fluctuates."
@@ -2404,9 +2589,10 @@ msgstr "冷却期是解质押代币之前所需的时间（20 天）。您只能
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 msgstr "冷却时间是 {0}.后 {1} 冷却时间，您将进入 {2}.您将在冷却和解除质押窗口期间继续获得奖励。"
 
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
-msgstr "对健康因素的影响将导致清算。尝试降低金额。"
+#: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanelNoWallet.tsx
+msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
+msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
@@ -2415,6 +2601,10 @@ msgstr "贷款与迁移头寸的价值之比将导致清算。增加迁移的抵
 #: src/ui-config/errorMapping.tsx
 msgid "The requested amount is greater than the max loan size in stable rate mode"
 msgstr "请求的金额大于稳定利率模式下的最大贷款规模"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
+msgstr ""
 
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
@@ -2496,6 +2686,10 @@ msgstr "该资产已达到其借款上限。没有任何东西可以从这个市
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "该资产已达到其供应上限。这个市场没有任何东西可以供应。"
 
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/infoTooltips/FrozenTooltip.tsx
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "由于 Aave 协议治理决定，该资产被冻结。 <0>更多详情</0>"
@@ -2512,13 +2706,17 @@ msgstr "由于 Aave 社区的决定，该资产被冻结。 <0>更多详情</0>"
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "由于 Aave 协议治理决策，该资产计划被卸载。 <0>更多详情</0>"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. <0>Learn more</0>"
+msgstr ""
+
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "此气体计算只是一个估计值。您的钱包将设定交易价格。您可以直接从您的钱包提供商处修改 gas 设置。"
 
-#: src/components/HALLink.tsx
-msgid "This integration was<0>proposed and approved</0>by the community."
-msgstr "这种整合是由社区<0>提出并批准的</0>。"
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
@@ -2533,20 +2731,24 @@ msgid "This represents the threshold at which a borrow position will be consider
 msgstr "这代表了借款头寸将被视为抵押品不足的门槛，并可对每笔抵押品进行清算。例如，如果抵押品的清算门槛为 80%，则意味着当债务价值为抵押品价值的 80% 时，该头寸将被清算。"
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "Time left to be able to withdraw your staked asset."
-msgstr "剩余时间可以提取您的质押资产。"
-
-#: src/modules/staking/StakingPanel.tsx
 msgid "Time left to unstake"
 msgstr "还剩下时间去质押"
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "Time left until the withdrawal window closes."
-msgstr "提款窗口关闭前的剩余时间。"
+msgid "Time remaining until the 48 hour withdraw period starts."
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
+msgid "Time remaining until the withdraw period ends."
+msgstr ""
 
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"
 msgstr "提示：尝试增加滑点或减少输入量"
+
+#: src/components/transactions/Bridge/BridgeDestinationInput.tsx
+msgid "To"
+msgstr ""
 
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
@@ -2643,14 +2845,11 @@ msgstr "该市场目前不提供交易历史记录"
 msgid "Transaction overview"
 msgstr "交易概览"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Transactions"
 msgstr "交易"
-
-#: src/components/transactions/UnStake/UnStakeActions.tsx
-msgid "UNSTAKE {symbol}"
-msgstr "UNSTAKE的 {symbol}"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
@@ -2676,12 +2875,21 @@ msgid "Underlying token"
 msgstr "基础代币"
 
 #: src/modules/staking/StakingPanel.tsx
+msgid "Unstake"
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "立即取消质押"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "解质押窗口"
+
+#: src/components/transactions/UnStake/UnStakeActions.tsx
+msgid "Unstake {symbol}"
+msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
@@ -2694,6 +2902,10 @@ msgstr "取消质押 {symbol}"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
 msgstr "更新：WETH、WBTC、WMATIC 和 USDT 报告了中断。AIP 230 将解决中断问题，市场将于 UTC 时间 ~26 日 13：00 正常运作。"
+
+#: src/components/transactions/Bridge/BridgeDestinationInput.tsx
+msgid "Use connected account"
+msgstr ""
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
@@ -2724,12 +2936,16 @@ msgid "User does not have outstanding variable rate debt on this reserve"
 msgstr "用户在此储备金中没有未偿还的浮动利率债务"
 
 #: src/ui-config/errorMapping.tsx
-msgid "User is in isolation mode"
-msgstr "用户处于隔离模式"
+msgid "User is in isolation mode or LTV is zero"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "用户正在尝试借入多种资产，包括孤立的资产"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate."
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
@@ -2787,10 +3003,22 @@ msgstr "版本 3"
 msgid "View"
 msgstr "视图"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "View Bridge Transactions"
+msgstr ""
+
+#: src/modules/bridge/BridgeTransactionListItem.tsx
+msgid "View TX"
+msgstr ""
+
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 #: src/modules/dashboard/DashboardContentWrapper.tsx
 msgid "View Transactions"
 msgstr "查看交易"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "View all"
+msgstr ""
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
@@ -2800,6 +3028,7 @@ msgstr "查看所有选票"
 msgid "View contract"
 msgstr "查看合同"
 
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
@@ -2838,10 +3067,6 @@ msgstr "票"
 msgid "Voting"
 msgstr "投票"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-msgid "Voting closed"
-msgstr ""
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting is on"
 msgstr ""
@@ -2862,6 +3087,8 @@ msgstr "钱包余额"
 #: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -2910,6 +3137,7 @@ msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Ma
 msgstr "使用测试网水龙头，您可以获得免费资产来测试 Aave 协议。确保将您的钱包提供商切换到适当的测试网网络，选择所需的资产，然后单击“水龙头”以将代币转移到您的钱包。测试网上的资产不是“真实的”，这意味着它们没有货币价值。 <0>了解更多信息</0>"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -2931,6 +3159,10 @@ msgstr "提现和转换"
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
 msgstr "撤回 {symbol}"
+
+#: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
+msgid "Withdrawing"
+msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 msgid "Withdrawing and Switching"
@@ -3006,6 +3238,10 @@ msgstr "您没有参与此提案"
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
 msgstr "您没有这种货币的供应品"
+
+#: src/modules/bridge/BridgeWrapper.tsx
+msgid "You don't have any bridge transactions"
+msgstr ""
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
@@ -3127,6 +3363,10 @@ msgstr "你 {networkName} 钱包是空的。获取免费测试 {0} 在"
 msgid "Zero address not valid"
 msgstr "零地址无效"
 
+#: src/components/infoTooltips/SuperFestTooltip.tsx
+msgid "about SuperFest."
+msgstr ""
+
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"
 msgstr "资产"
@@ -3152,7 +3392,6 @@ msgid "enabled"
 msgstr "启用"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "ends"
 msgstr "结束"
 
@@ -3162,6 +3401,7 @@ msgid "for"
 msgstr "为"
 
 #: src/components/caps/DebtCeilingStatus.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
@@ -3198,7 +3438,6 @@ msgid "staking view"
 msgstr "质押视图"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/governance/ProposalV3ListItem.tsx
 msgid "starts"
 msgstr "开始"
 
@@ -3234,6 +3473,8 @@ msgstr "撤回"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/layouts/TopBarNotify.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
@@ -3274,6 +3515,7 @@ msgid "{m}m"
 msgstr "{m}m"
 
 #: src/hooks/useReserveActionState.tsx
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} 龙头"
@@ -3285,6 +3527,10 @@ msgstr "{notifyText}"
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} 所选资产"
+
+#: src/modules/governance/proposal/ProposalLifecycle.tsx
+msgid "{stepName}"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"

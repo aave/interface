@@ -3,12 +3,15 @@ import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
+import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { MARKETS } from 'src/utils/mixPanelEvents';
+import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -18,7 +21,6 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
-import { MARKETS } from '../../utils/mixPanelEvents';
 
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
@@ -26,6 +28,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
+  const isSuperfestOnSupplySide = showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY);
+  const isSuperfestOnBorrowSide = showSuperFestTooltip(reserve.symbol, currentMarket, Side.BORROW);
 
   return (
     <ListItem
@@ -83,6 +87,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
+          tooltip={isSuperfestOnSupplySide && <SuperFestTooltip />}
         />
       </ListColumn>
 
@@ -104,12 +109,13 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
+          tooltip={isSuperfestOnBorrowSide && <SuperFestTooltip />}
         />
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
       </ListColumn>
-      {/* 
+      {/*
       <ListColumn>
         <IncentivesCard
           value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}

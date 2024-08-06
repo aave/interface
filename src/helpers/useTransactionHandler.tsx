@@ -5,9 +5,8 @@ import {
 } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { queryClient } from 'pages/_app.page';
+import { useQueryClient } from '@tanstack/react-query';
 import { DependencyList, useEffect, useRef, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -59,9 +58,9 @@ export const useTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
+  const queryClient = useQueryClient();
 
   const [
     signPoolERC20Approval,
@@ -125,10 +124,8 @@ export const useTransactionHandler = ({
         });
 
         queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
         queryClient.invalidateQueries({ queryKey: queryKeysFactory.staking });
-        refetchPoolData && refetchPoolData();
-        refetchGhoData && refetchGhoData();
-        refetchIncentiveData && refetchIncentiveData();
       } catch (e) {
         // TODO: what to do with this error?
         try {
@@ -360,6 +357,8 @@ export const useTransactionHandler = ({
             const approvalTransactions = txs.filter((tx) => tx.txType == 'ERC20_APPROVAL');
             if (approvalTransactions.length > 0) {
               setApprovalTxes(approvalTransactions);
+            } else {
+              setApprovalTxes(undefined);
             }
             const preferPermit =
               tryPermit &&
@@ -381,6 +380,8 @@ export const useTransactionHandler = ({
               // For approval flow, set approval/action status and gas limit accordingly
               if (approvalTransactions.length > 0) {
                 setApprovalTxes(approvalTransactions);
+              } else {
+                setApprovalTxes(undefined);
               }
               setActionTx(
                 txs.find((tx) =>

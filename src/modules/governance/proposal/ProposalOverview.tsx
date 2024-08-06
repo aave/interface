@@ -22,7 +22,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { LensIcon } from 'src/components/icons/LensIcon';
 import { Warning } from 'src/components/primitives/Warning';
-import { EnhancedProposal } from 'src/hooks/governance/useProposal';
+import { Proposal } from 'src/hooks/governance/useProposals';
 // import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 import { StateBadge } from 'src/modules/governance/StateBadge';
 // import { IpfsType } from 'src/static-build/ipfs';
@@ -43,7 +43,7 @@ const StyledLink = styled('a')({
 
 interface ProposalOverviewProps {
   error: boolean;
-  proposal?: EnhancedProposal;
+  proposal?: Proposal;
   loading: boolean;
 }
 
@@ -68,7 +68,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
           {proposal ? (
             <>
               <Typography variant="h2" sx={{ mb: 6 }}>
-                {proposal.proposal.proposalMetadata.title || <Skeleton />}
+                {proposal.subgraphProposal.proposalMetadata.title || <Skeleton />}
               </Typography>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Box
@@ -80,7 +80,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   }}
                 >
                   <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
-                    <StateBadge state={proposal.proposal.state} loading={loading} />
+                    <StateBadge state={proposal.badgeState} loading={loading} />
                   </Box>
 
                   {/*
@@ -104,11 +104,11 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   rel="noopener"
                   onClick={() =>
                     trackEvent(GENERAL.EXTERNAL_LINK, {
-                      AIP: proposal.proposal.id,
+                      AIP: proposal.subgraphProposal.id,
                       Link: 'Raw Ipfs',
                     })
                   }
-                  href={`${ipfsGateway}/${proposal.proposal.ipfsHash}`}
+                  href={`${ipfsGateway}/${proposal.subgraphProposal.proposalMetadata.ipfsHash}`}
                   startIcon={
                     <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
                       <DownloadIcon />
@@ -124,12 +124,12 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   rel="noopener noreferrer"
                   onClick={() =>
                     trackEvent(GENERAL.EXTERNAL_LINK, {
-                      AIP: proposal.proposal.id,
+                      AIP: proposal.subgraphProposal.id,
                       Link: 'Share on twitter',
                     })
                   }
                   href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                    proposal.proposal.proposalMetadata.title
+                    proposal.subgraphProposal.proposalMetadata.title
                   )}&url=${window.location.href}`}
                   startIcon={<Twitter />}
                 >
@@ -142,11 +142,11 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   rel="noopener noreferrer"
                   onClick={() =>
                     trackEvent(GENERAL.EXTERNAL_LINK, {
-                      AIP: proposal.proposal.id,
+                      AIP: proposal.subgraphProposal.id,
                       Link: 'Share on lens',
                     })
                   }
-                  href={`https://hey.xyz/?url=${window.location.href}&text=Check out this proposal on aave governance 👻👻 - ${proposal.proposal.proposalMetadata.title}&hashtags=Aave&preview=true`}
+                  href={`https://hey.xyz/?url=${window.location.href}&text=Check out this proposal on aave governance 👻👻 - ${proposal.subgraphProposal.proposalMetadata.title}&hashtags=Aave&preview=true`}
                   startIcon={
                     <LensIcon
                       color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}
@@ -214,7 +214,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 },
               }}
             >
-              {proposal.proposal.proposalMetadata.description}
+              {proposal.subgraphProposal.proposalMetadata.description}
             </ReactMarkdown>
           ) : (
             <>

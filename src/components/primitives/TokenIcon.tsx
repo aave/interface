@@ -1,5 +1,6 @@
 import { Badge, Box, Icon, IconProps } from '@mui/material';
 import { forwardRef, useEffect, useRef, useState } from 'react';
+import LazyLoad from 'react-lazy-load';
 
 interface ATokenIconProps {
   symbol?: string;
@@ -147,19 +148,55 @@ interface TokenIconProps extends IconProps {
  * @returns
  */
 function SingleTokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
+  const [tokenSymbol, setTokenSymbol] = useState(symbol.toLowerCase());
+
+  useEffect(() => {
+    setTokenSymbol(symbol.toLowerCase());
+  }, [symbol]);
+
   return (
     <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
       {aToken ? (
-        <ATokenIcon symbol={symbol} />
+        <ATokenIcon symbol={tokenSymbol} />
       ) : (
         // eslint-disable-next-line
         <img
-          src={`/icons/tokens/${symbol.toLowerCase()}.svg`}
+          src={`/icons/tokens/${tokenSymbol}.svg`}
+          onError={() => setTokenSymbol('default')}
           width="100%"
           height="100%"
           alt={`${symbol} icon`}
         />
       )}
+    </Icon>
+  );
+}
+
+/**
+ * Renders a tokenIcon specified by url.
+ * TokenIcons are expected to be non protocol related assets for swaps
+ * @param param0
+ * @returns
+ */
+
+interface ExternalTokenIconProps extends IconProps {
+  symbol: string;
+  logoURI?: string;
+}
+
+export function ExternalTokenIcon({ symbol, logoURI, ...rest }: ExternalTokenIconProps) {
+  const [tokenSymbol, setTokenSymbol] = useState(symbol.toLowerCase());
+  return (
+    <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
+      <LazyLoad>
+        <img
+          src={tokenSymbol === 'default' || !logoURI ? '/icons/tokens/default.svg' : logoURI}
+          width="100%"
+          height="100%"
+          alt={`${symbol} icon`}
+          onError={() => setTokenSymbol('default')}
+        />
+      </LazyLoad>
     </Icon>
   );
 }

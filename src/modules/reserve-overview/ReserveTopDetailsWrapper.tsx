@@ -11,10 +11,11 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
@@ -37,7 +38,6 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   const { currentMarket, currentChainId } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
-  const [displayGho] = useRootStore((store) => [store.displayGho]);
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -45,6 +45,8 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
+
+  const [tokenSymbol, setTokenSymbol] = useState(poolReserve.iconSymbol.toLowerCase());
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
 
@@ -55,7 +57,8 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
         ) : (
           <img
-            src={`/icons/tokens/${poolReserve.iconSymbol.toLowerCase()}.svg`}
+            src={`/icons/tokens/${tokenSymbol}.svg`}
+            onError={() => setTokenSymbol('default')}
             width="40px"
             height="40px"
             alt=""
@@ -73,7 +76,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
     );
   };
 
-  const isGho = displayGho({ symbol: poolReserve.symbol, currentMarket });
+  const isGho = displayGhoForMintableMarket({ symbol: poolReserve.symbol, currentMarket });
 
   return (
     <TopInfoPanel

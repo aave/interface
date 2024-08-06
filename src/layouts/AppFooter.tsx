@@ -22,7 +22,7 @@ const StyledLink = styled(Link)<StyledLinkProps>(({ theme }) => ({
 
 const FOOTER_ICONS = [
   {
-    href: 'https://hey.xyz/u/aaveaave',
+    href: 'https://hey.xyz/u/aave',
     icon: <LensLogoIcon />,
     title: 'Aave',
   },
@@ -44,7 +44,11 @@ const FOOTER_ICONS = [
 ];
 
 export function AppFooter() {
-  const [setAnalyticsConfigOpen] = useRootStore((store) => [store.setAnalyticsConfigOpen]);
+  const [setAnalyticsConfigOpen, setFeedbackOpen] = useRootStore((store) => [
+    store.setAnalyticsConfigOpen,
+    store.setFeedbackOpen,
+  ]);
+
   const FOOTER_LINKS = [
     {
       href: 'https://aave.com/term-of-use/',
@@ -70,9 +74,13 @@ export function AppFooter() {
       href: 'https://discord.com/invite/aave',
       label: <Trans>Send feedback</Trans>,
       key: 'Send feedback',
+      onClick: (event: React.MouseEvent) => {
+        event.preventDefault();
+        setFeedbackOpen(true);
+      },
     },
     {
-      href: '',
+      href: '/',
       label: <Trans>Manage analytics</Trans>,
       key: 'Manage analytics',
       onClick: (event: React.MouseEvent) => {

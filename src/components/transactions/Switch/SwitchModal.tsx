@@ -1,34 +1,134 @@
-import { API_ETH_MOCK_ADDRESS, ReserveDataHumanized } from '@aave/contract-helpers';
-import { normalize } from '@aave/math-utils';
-import { Box, CircularProgress } from '@mui/material';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import { Trans } from '@lingui/macro';
+import { Box, CircularProgress, Typography } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useMemo, useState } from 'react';
-import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
-import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
-import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { queryKeysFactory } from 'src/ui-config/queries';
+import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import invariant from 'tiny-invariant';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { supportedNetworksWithEnabledMarket } from './common';
 import { SwitchModalContent } from './SwitchModalContent';
 
-export interface ReserveWithBalance extends ReserveDataHumanized {
-  balance: string;
-  iconSymbol: string;
+const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
+
+interface SwitchModalContentWrapperProps {
+  user: string;
+  chainId: number;
+  setSelectedChainId: (chainId: number) => void;
 }
 
-const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
+const getFilteredTokens = (chainId: number): TokenInfoWithBalance[] => {
+  let customTokenList = TOKEN_LIST.tokens;
+  const savedCustomTokens = localStorage.getItem('customTokens');
+  if (savedCustomTokens) {
+    customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
+  }
+  const transformedTokens = customTokenList.map((token) => {
+    return { ...token, balance: '0' };
+  });
+  const realChainId = getNetworkConfig(chainId).underlyingChainId ?? chainId;
+  return transformedTokens.filter((token) => token.chainId === realChainId);
+};
+
+const SwitchModalContentWrapper = ({
+  user,
+  chainId,
+  setSelectedChainId,
+}: SwitchModalContentWrapperProps) => {
+  const filteredTokens = useMemo(() => getFilteredTokens(chainId), [chainId]);
+
+  const { data: baseTokenList } = useTokensBalance(filteredTokens, chainId, user);
+
+  const { defaultInputToken, defaultOutputToken } = useMemo(() => {
+    if (baseTokenList) {
+      const defaultInputToken =
+        baseTokenList.find((token) => token.extensions?.isNative) || baseTokenList[0];
+      const defaultOutputToken =
+        baseTokenList.find(
+          (token) =>
+            (token.address === AaveV3Ethereum.ASSETS.GHO.UNDERLYING || token.symbol == 'AAVE') &&
+            token.address !== defaultInputToken.address
+        ) || baseTokenList.find((token) => token.address !== defaultInputToken.address);
+      invariant(
+        defaultInputToken && defaultOutputToken,
+        'token list should have at least 2 assets'
+      );
+      return { defaultInputToken, defaultOutputToken };
+    }
+    return { defaultInputToken: filteredTokens[0], defaultOutputToken: filteredTokens[1] };
+  }, [baseTokenList, filteredTokens]);
+
+  const queryClient = useQueryClient();
+
+  const addNewToken = async (token: TokenInfoWithBalance) => {
+    queryClient.setQueryData<TokenInfoWithBalance[]>(
+      queryKeysFactory.tokensBalance(filteredTokens, chainId, user),
+      (oldData) => {
+        if (oldData)
+          return [...oldData, token].sort((a, b) => Number(b.balance) - Number(a.balance));
+        return [token];
+      }
+    );
+    const customTokens = localStorage.getItem('customTokens');
+    const newTokenInfo = {
+      address: token.address,
+      symbol: token.symbol,
+      decimals: token.decimals,
+      chainId: token.chainId,
+      name: token.name,
+      logoURI: token.logoURI,
+      extensions: {
+        isUserCustom: true,
+      },
+    };
+    if (customTokens) {
+      const parsedCustomTokens: TokenInfo[] = JSON.parse(customTokens);
+      parsedCustomTokens.push(newTokenInfo);
+      localStorage.setItem('customTokens', JSON.stringify(parsedCustomTokens));
+    } else {
+      localStorage.setItem('customTokens', JSON.stringify([newTokenInfo]));
+    }
+  };
+
+  if (!baseTokenList) {
+    return (
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  return (
+    <SwitchModalContent
+      key={chainId}
+      selectedChainId={chainId}
+      setSelectedChainId={setSelectedChainId}
+      supportedNetworks={supportedNetworksWithEnabledMarket}
+      defaultInputToken={defaultInputToken}
+      defaultOutputToken={defaultOutputToken}
+      tokens={baseTokenList}
+      addNewToken={addNewToken}
+    />
+  );
+};
 
 export const SwitchModal = () => {
   const {
     type,
     close,
-    args: { underlyingAsset },
+    args: { chainId },
   } = useModalContext();
 
   const currentChainId = useRootStore((store) => store.currentChainId);
+  const { chainId: connectedChainId } = useWeb3Context();
   const user = useRootStore((store) => store.account);
 
   const [selectedChainId, setSelectedChainId] = useState(() => {
@@ -37,108 +137,40 @@ export const SwitchModal = () => {
     return defaultNetwork.chainId;
   });
 
-  const selectedNetworkConfig = getNetworkConfig(selectedChainId);
-
   useEffect(() => {
-    if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === currentChainId))
+    // Passing chainId as prop will set default network for switch modal
+    if (chainId && supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === chainId)) {
+      setSelectedChainId(chainId);
+    } else if (
+      connectedChainId &&
+      supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === connectedChainId)
+    ) {
+      const supportedFork = supportedNetworksWithEnabledMarket.find(
+        (elem) => elem.underlyingChainId === connectedChainId
+      );
+      setSelectedChainId(supportedFork ? supportedFork.chainId : connectedChainId);
+    } else if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === currentChainId)) {
       setSelectedChainId(currentChainId);
-    else {
+    } else {
       setSelectedChainId(defaultNetwork.chainId);
     }
-  }, [currentChainId]);
-
-  const marketsBySupportedNetwork = useMemo(
-    () =>
-      Object.values(marketsData).filter(
-        (elem) => elem.chainId === selectedChainId && elem.enabledFeatures?.switch
-      ),
-    [selectedChainId]
-  );
-
-  const poolReservesDataQueries = usePoolsReservesHumanized(marketsBySupportedNetwork, {
-    refetchInterval: 0,
-  });
-
-  const networkReserves = poolReservesDataQueries.reduce((acum, elem) => {
-    if (elem.data) {
-      const wrappedBaseAsset = elem.data.reservesData.find(
-        (reserveData) => reserveData.symbol === selectedNetworkConfig.wrappedBaseAssetSymbol
-      );
-      const acumWithoutBaseAsset = acum.concat(
-        elem.data.reservesData.filter(
-          (reserveDataElem) =>
-            !acum.find((acumElem) => acumElem.underlyingAsset === reserveDataElem.underlyingAsset)
-        )
-      );
-      if (
-        wrappedBaseAsset &&
-        !acum.find((acumElem) => acumElem.underlyingAsset === API_ETH_MOCK_ADDRESS)
-      )
-        return acumWithoutBaseAsset.concat({
-          ...wrappedBaseAsset,
-          underlyingAsset: API_ETH_MOCK_ADDRESS,
-          decimals: selectedNetworkConfig.baseAssetDecimals,
-          ...fetchIconSymbolAndName({
-            underlyingAsset: API_ETH_MOCK_ADDRESS,
-            symbol: selectedNetworkConfig.baseAssetSymbol,
-          }),
-        });
-      return acumWithoutBaseAsset;
-    }
-    return acum;
-  }, [] as ReserveDataHumanized[]);
-
-  const poolBalancesDataQueries = usePoolsTokensBalance(marketsBySupportedNetwork, user, {
-    refetchInterval: 0,
-  });
-
-  const poolsBalances = poolBalancesDataQueries.reduce((acum, elem) => {
-    if (elem.data) return acum.concat(elem.data);
-    return acum;
-  }, [] as UserPoolTokensBalances[]);
-
-  const reservesWithBalance: ReserveWithBalance[] = useMemo(() => {
-    return networkReserves.map((elem) => {
-      return {
-        ...elem,
-        ...fetchIconSymbolAndName({
-          underlyingAsset: elem.underlyingAsset,
-          symbol: elem.symbol,
-          name: elem.name,
-        }),
-        balance: normalize(
-          poolsBalances
-            .find(
-              (balance) =>
-                balance.address.toLocaleLowerCase() === elem.underlyingAsset.toLocaleLowerCase()
-            )
-            ?.amount.toString() || '0',
-          elem.decimals
-        ),
-      };
-    });
-  }, [networkReserves, poolsBalances]);
-
-  const reserversWithBalanceSortedByBalance = reservesWithBalance.sort(
-    (a, b) => Number(b.balance) - Number(a.balance)
-  );
+  }, [currentChainId, chainId, connectedChainId]);
 
   return (
     <BasicModal open={type === ModalType.Switch} setOpen={close}>
-      {reserversWithBalanceSortedByBalance.length > 1 ? (
-        <SwitchModalContent
-          key={selectedChainId}
-          selectedChainId={selectedChainId}
-          setSelectedChainId={setSelectedChainId}
-          supportedNetworks={supportedNetworksWithEnabledMarket}
-          reserves={reserversWithBalanceSortedByBalance}
-          selectedNetworkConfig={selectedNetworkConfig}
-          defaultAsset={underlyingAsset}
-        />
-      ) : (
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
-          <CircularProgress />
+      {!user ? (
+        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
+          <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
+            <Trans>Please connect your wallet to be able to switch your tokens.</Trans>
+          </Typography>
+          <ConnectWalletButton />
         </Box>
+      ) : (
+        <SwitchModalContentWrapper
+          user={user}
+          chainId={selectedChainId}
+          setSelectedChainId={setSelectedChainId}
+        />
       )}
     </BasicModal>
   );

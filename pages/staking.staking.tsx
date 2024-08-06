@@ -1,25 +1,28 @@
 import { Stake } from '@aave/contract-helpers';
+import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
-import { formatEther, formatUnits } from 'ethers/lib/utils';
+import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { Link } from 'src/components/primitives/Link';
+import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
-// import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
+import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
-import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
+import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -48,27 +51,30 @@ const UnStakeModal = dynamic(() =>
 );
 
 export default function Staking() {
-  const { currentAccount, loading, chainId } = useWeb3Context();
+  const { currentAccount, loading } = useWeb3Context();
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: stakeUserResult, isLoading: stakeUserResultLoading } =
-    useUserStakeUiData(currentMarketData);
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
 
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
     useGeneralStakeUiData(currentMarketData);
 
-  let stkAave, stkBpt, stkGho;
+  let stkAave: StakeTokenFormatted | undefined;
+  let stkBpt: StakeTokenFormatted | undefined;
+  let stkGho: StakeTokenFormatted | undefined;
+  let stkBptV2: StakeTokenFormatted | undefined;
 
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stkAave, stkBpt, stkGho] = stakeGeneralResult.stakeData;
+  if (stakeGeneralResult && Array.isArray(stakeGeneralResult)) {
+    [stkAave, stkBpt, stkGho, stkBptV2] = stakeGeneralResult;
   }
 
-  let stkAaveUserData, stkBptUserData, stkGhoUserData;
-  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stkAaveUserData, stkBptUserData, stkGhoUserData] = stakeUserResult.stakeUserData;
+  let stkAaveUserData: StakeUIUserData | undefined;
+  let stkBptUserData: StakeUIUserData | undefined;
+  let stkGhoUserData: StakeUIUserData | undefined;
+  let stkBptV2UserData: StakeUIUserData | undefined;
+  if (stakeUserResult && Array.isArray(stakeUserResult)) {
+    [stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData] = stakeUserResult;
   }
-
-  const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 
   const {
     openStake,
@@ -76,11 +82,11 @@ export default function Staking() {
     openUnstake,
     openStakeRewardsClaim,
     openStakeRewardsRestakeClaim,
+    openStakingMigrate,
   } = useModalContext();
 
   const [mode, setMode] = useState<Stake>(Stake.aave);
 
-  const { name: network } = getNetworkConfig(chainId);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
@@ -89,23 +95,19 @@ export default function Staking() {
     });
   }, [trackEvent]);
 
-  const tvl = formatUnits(
-    BigNumber.from(stkAave?.stakeTokenTotalSupply || '0')
-      .mul(stkAave?.stakeTokenPriceUSD || '0')
-      .add(
-        BigNumber.from(stkBpt?.stakeTokenTotalSupply || '0').mul(stkBpt?.stakeTokenPriceUSD || '0')
-      )
-      .add(
-        BigNumber.from(stkGho?.stakeTokenTotalSupply || '0').mul(stkGho?.stakeTokenPriceUSD || '0')
-      ), // "0"
-    18 + 8
-  );
+  const tvl = {
+    'Staked Aave': Number(stkAave?.totalSupplyUSDFormatted || '0'),
+    'Staked GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
+    'Staked ABPT': Number(stkBpt?.totalSupplyUSDFormatted || '0'),
+    'Staked ABPT V2': Number(stkBptV2?.totalSupplyUSDFormatted || '0'),
+  };
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
   const stkEmission = formatEther(
     BigNumber.from(stkAave?.distributionPerSecond || '0')
       .add(stkBpt?.distributionPerSecond || '0')
       .add(stkGho?.distributionPerSecond || '0')
+      .add(stkBptV2?.distributionPerSecond || '0')
       .mul('86400')
   );
 
@@ -113,9 +115,15 @@ export default function Staking() {
   const isStkGho = mode === 'gho';
   const isStkBpt = mode === 'bpt';
 
+  const showAbptPanel =
+    !stkBpt?.inPostSlashingPeriod ||
+    stkBptUserData?.stakeTokenUserBalance !== '0' ||
+    stkBptUserData.userIncentivesToClaim !== '0' ||
+    stkBptUserData.underlyingTokenUserBalance !== '0';
+
   return (
     <>
-      <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeDataLoading} />
+      <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeGeneralResultLoading} />
 
       <ContentContainer>
         {currentAccount ? (
@@ -164,20 +172,40 @@ export default function Staking() {
                 <StakingPanel
                   stakeTitle="AAVE"
                   stakedToken="AAVE"
-                  maxSlash="0.3"
+                  maxSlash={stkAave?.maxSlashablePercentageFormatted || '0'}
                   icon="aave"
                   stakeData={stkAave}
-                  stakeUserData={stkAaveUserData} // todo change?
+                  stakeUserData={stkAaveUserData}
                   onStakeAction={() => openStake(Stake.aave, 'AAVE')}
-                  onCooldownAction={() => openStakeCooldown(Stake.aave)}
+                  onCooldownAction={() => openStakeCooldown(Stake.aave, 'AAVE')}
                   onUnstakeAction={() => openUnstake(Stake.aave, 'AAVE')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.aave, 'AAVE')}
                   onStakeRewardClaimRestakeAction={() =>
                     openStakeRewardsRestakeClaim(Stake.aave, 'AAVE')
                   }
-                  headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
-                  hasDiscountProgram={true}
-                />
+                >
+                  <Box
+                    sx={{
+                      mt: {
+                        xs: '20px',
+                        xsm: '36px',
+                      },
+                      px: {
+                        xsm: 6,
+                      },
+                      width:
+                        STAGING_ENV || ENABLE_TESTNET
+                          ? {
+                              xs: '100%',
+                              lg: '50%',
+                            }
+                          : '100%',
+                      marginX: 'auto',
+                    }}
+                  >
+                    <GhoDiscountProgram />
+                  </Box>
+                </StakingPanel>
               </Grid>
               <Grid
                 item
@@ -188,16 +216,14 @@ export default function Staking() {
                 <StakingPanel
                   stakeTitle="GHO"
                   stakedToken="GHO"
-                  maxSlash="0.99" // TODO fetch from contracts
+                  maxSlash={stkGho?.maxSlashablePercentageFormatted || '0'}
                   icon="gho"
                   stakeData={stkGho}
                   stakeUserData={stkGhoUserData}
-                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake(Stake.gho, 'GHO')}
-                  onCooldownAction={() => openStakeCooldown(Stake.gho)}
+                  onCooldownAction={() => openStakeCooldown(Stake.gho, 'GHO')}
                   onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.gho, 'AAVE')}
-                  // headerAction={<GetGhoToken />}
                 />
               </Grid>
 
@@ -208,19 +234,89 @@ export default function Staking() {
                 sx={{ display: { xs: !isStkBpt ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
-                  stakeTitle="ABPT"
-                  stakedToken="ABPT"
-                  maxSlash="0.3"
-                  icon="stkbpt"
-                  stakeData={stkBpt}
-                  stakeUserData={stkBptUserData}
-                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
-                  onStakeAction={() => openStake(Stake.bpt, 'stkBPT')}
-                  onCooldownAction={() => openStakeCooldown(Stake.bpt)}
-                  onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
+                  stakeTitle="ABPT V2"
+                  stakedToken="ABPTV2"
+                  maxSlash={stkBptV2?.maxSlashablePercentageFormatted || '0'}
+                  icon="stkbptv2"
+                  stakeData={stkBptV2}
+                  stakeUserData={stkBptV2UserData}
+                  onStakeAction={() => openStake(Stake.bptv2, 'stkbptv2')}
+                  onCooldownAction={() => openStakeCooldown(Stake.bptv2, 'stkbptv2')}
+                  onUnstakeAction={() => openUnstake(Stake.bptv2, 'stkbptv2')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bptv2, 'AAVE')}
                   headerAction={<GetABPToken />}
                 />
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                lg={6}
+                sx={{ display: { xs: !isStkBpt ? 'none' : 'block', lg: 'block' } }}
+              >
+                {showAbptPanel && (
+                  <StakingPanel
+                    stakeTitle="ABPT"
+                    stakedToken="ABPT"
+                    maxSlash={stkBpt?.maxSlashablePercentageFormatted || '0'}
+                    icon="stkbpt"
+                    stakeData={stkBpt}
+                    stakeUserData={stkBptUserData}
+                    onStakeAction={() => openStake(Stake.bpt, 'stkBPT')}
+                    onCooldownAction={() => openStakeCooldown(Stake.bpt, 'stkbpt')}
+                    onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
+                    onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
+                    onMigrateAction={() => openStakingMigrate()}
+                    headerAction={
+                      stkBpt?.inPostSlashingPeriod ? (
+                        <Stack direction="row" alignItems="center" gap={3}>
+                          <Box
+                            sx={(theme) => ({
+                              backgroundColor: theme.palette.warning.main,
+                              borderRadius: 12,
+                              height: '16px',
+                              width: '84px',
+                              marginLeft: 'auto',
+                            })}
+                          >
+                            <Typography sx={{ px: 2 }} color="white" variant="caption">
+                              Deprecated
+                            </Typography>
+                          </Box>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            component={Link}
+                            endIcon={
+                              <SvgIcon sx={{ width: 14, height: 14 }}>
+                                <ExternalLinkIcon />
+                              </SvgIcon>
+                            }
+                            href="https://pools.balancer.exchange/#/pool/0xc697051d1c6296c24ae3bcef39aca743861d9a81/"
+                          >
+                            <Trans>Balancer Pool</Trans>
+                          </Button>
+                        </Stack>
+                      ) : null
+                    }
+                  >
+                    {stkBpt?.inPostSlashingPeriod && (
+                      <Box
+                        sx={{
+                          mt: 4,
+                        }}
+                      >
+                        <Warning severity="warning" sx={{ mb: 0 }}>
+                          <Trans>
+                            As a result of governance decisions, this ABPT staking pool is now
+                            deprecated. You have the flexibility to either migrate all of your
+                            tokens to v2 or unstake them without any cooldown period.
+                          </Trans>
+                        </Warning>
+                      </Box>
+                    )}
+                  </StakingPanel>
+                )}
               </Grid>
             </Grid>
           </>

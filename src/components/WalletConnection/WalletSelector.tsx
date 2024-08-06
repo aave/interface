@@ -3,7 +3,7 @@ import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } fro
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError } from '@web3-react/injected-connector';
 import { utils } from 'ethers';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { UserRejectedRequestError } from 'src/libs/web3-data-provider/WalletConnectConnector';
@@ -113,7 +113,6 @@ export const WalletSelector = () => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
   const mainnetProvider = getENSProvider();
-  const [unsTlds, setUnsTlds] = useState<string[]>([]);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   let blockingError: ErrorType | undefined = undefined;
@@ -129,22 +128,6 @@ export const WalletSelector = () => {
     }
     // TODO: add other errors
   }
-
-  // Get UNS Tlds. Grabbing this fron an endpoint since Unstoppable adds new TLDs frequently, so this wills tay updated
-  useEffect(() => {
-    const unsTlds = async () => {
-      const url = 'https://resolve.unstoppabledomains.com/supported_tlds';
-      const response = await fetch(url);
-      const data = await response.json();
-      setUnsTlds(data['tlds']);
-    };
-
-    try {
-      unsTlds();
-    } catch (e) {
-      console.log('Error fetching UNS TLDs: ', e);
-    }
-  }, []);
 
   const handleBlocking = () => {
     switch (blockingError) {
@@ -169,21 +152,6 @@ export const WalletSelector = () => {
       if (inputMockWalletAddress.slice(-4) === '.eth') {
         // Attempt to resolve ENS name and use resolved address if valid
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
-        if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          connectReadOnlyMode(resolvedAddress);
-        } else {
-          setValidAddressError(true);
-        }
-      } else if (unsTlds.includes(inputMockWalletAddress.split('.').pop() as string)) {
-        // Handle UNS names
-        const url = 'https://resolve.unstoppabledomains.com/domains/' + inputMockWalletAddress;
-        const options = {
-          method: 'GET',
-          headers: { Authorization: 'Bearer 01f60ca8-2dc3-457d-b12e-95ac2a7fb517' },
-        };
-        const response = await fetch(url, options);
-        const data = await response.json();
-        const resolvedAddress = data['meta']['owner'];
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
           connectReadOnlyMode(resolvedAddress);
         } else {
@@ -238,7 +206,7 @@ export const WalletSelector = () => {
             overflow: 'show',
             fontSize: sm ? '16px' : '14px',
           })}
-          placeholder="Enter ethereum address or username"
+          placeholder="Enter ethereum address or ENS name"
           fullWidth
           value={inputMockWalletAddress}
           onChange={(e) => setInputMockWalletAddress(e.target.value)}
@@ -259,9 +227,7 @@ export const WalletSelector = () => {
           fullWidth
           onClick={() => trackEvent(AUTH.MOCK_WALLET)}
           disabled={
-            !utils.isAddress(inputMockWalletAddress) &&
-            inputMockWalletAddress.slice(-4) !== '.eth' &&
-            !unsTlds.includes(inputMockWalletAddress.split('.').pop() as string)
+            !utils.isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth'
           }
           aria-label="read-only mode address"
         >

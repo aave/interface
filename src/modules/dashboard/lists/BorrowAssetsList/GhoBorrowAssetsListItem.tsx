@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Stack, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { CapType } from 'src/components/caps/helper';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { AvailableTooltip } from 'src/components/infoTooltips/AvailableTooltip';
@@ -11,7 +11,6 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
@@ -35,12 +34,11 @@ export const GhoBorrowAssetsListItem = ({
   const { openBorrow } = useModalContext();
   const { user } = useAppDataContext();
   const { currentMarket } = useProtocolDataContext();
-  const { ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
-  const { ghoUserDataFetched } = useRootStore();
+  const { ghoReserveData, ghoUserData, ghoUserLoadingData, ghoLoadingData } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user, reserve));
+  const maxAmountUserCanMint = user ? Number(getMaxGhoMintAmount(user, reserve)) : 0;
   const availableBorrows = Math.min(
     maxAmountUserCanMint,
     ghoReserveData.aaveFacilitatorRemainingCapacity
@@ -61,7 +59,7 @@ export const GhoBorrowAssetsListItem = ({
     ghoUserData.userGhoAvailableToBorrowAtDiscount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
-  const ghoApyRange: [number, number] | undefined = ghoUserDataFetched
+  const ghoApyRange: [number, number] | undefined = !ghoUserLoadingData
     ? [
         ghoUserData.userGhoAvailableToBorrowAtDiscount === 0
           ? ghoReserveData.ghoBorrowAPYWithMaxDiscount
@@ -80,7 +78,7 @@ export const GhoBorrowAssetsListItem = ({
     borrowButtonDisable,
     userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
     ghoApyRange,
-    ghoUserDataFetched,
+    ghoUserDataFetched: !ghoUserLoadingData,
     userBorrowApyAfterNewBorrow,
     ghoLoadingData,
     onBorrowClick: () => openBorrow(underlyingAsset, currentMarket, name, 'dashboard'),
@@ -169,7 +167,7 @@ const GhoBorrowAssetsListItemDesktop = ({
           color="text.secondary"
         />
         <GhoIncentivesCard
-          withTokenIcon={true}
+          withTokenIcon={false}
           useApyRange
           rangeValues={ghoApyRange}
           value={ghoUserDataFetched ? userBorrowApyAfterNewBorrow : -1}
@@ -237,17 +235,19 @@ const GhoBorrowAssetsListItemMobile = ({
         captionVariant="description"
         mb={2}
       >
-        <GhoIncentivesCard
-          withTokenIcon={true}
-          useApyRange
-          rangeValues={ghoApyRange}
-          value={ghoLoadingData ? -1 : userBorrowApyAfterNewBorrow}
-          data-cy="apyType"
-          stkAaveBalance={userDiscountTokenBalance}
-          ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
-          forceShowTooltip
-          userQualifiesForDiscount
-        />
+        <Stack alignItems="end">
+          <GhoIncentivesCard
+            withTokenIcon={false}
+            useApyRange
+            rangeValues={ghoApyRange}
+            value={ghoLoadingData ? -1 : userBorrowApyAfterNewBorrow}
+            data-cy="apyType"
+            stkAaveBalance={userDiscountTokenBalance}
+            ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
+            forceShowTooltip
+            userQualifiesForDiscount
+          />
+        </Stack>
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>

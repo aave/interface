@@ -309,6 +309,11 @@
       "fullName": "AAVE",
       "shortName": "AAVE",
       "address": "0x8D38414592AC67dc42F32a00D322F2319990e8Ac"
+    },
+    "GHO": {
+      "fullName": "GHO",
+      "shortName": "GHO",
+      "address": "0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f"
     }
   },
   "fantomMarket": {
@@ -521,8 +526,8 @@
       "wrapped": true
     },
     "DAI": {
-      "fullName": "DAI",
-      "shortName": "DAI",
+      "fullName": "1DAI",
+      "shortName": "1DAI",
       "collateral": true,
       "wrapped": false
     },
@@ -533,8 +538,8 @@
       "wrapped": false
     },
     "USDC": {
-      "fullName": "USD Coin",
-      "shortName": "USDC",
+      "fullName": "1USD Coin",
+      "shortName": "1USDC",
       "collateral": true,
       "wrapped": false
     },
@@ -951,10 +956,22 @@
       "collateral": true,
       "wrapped": false
     },
+    "USDT": {
+      "fullName": "USDT",
+      "shortName": "USDT",
+      "collateral": false,
+      "wrapped": false
+    },
     "aUSDC": {
       "fullName": "aUSD",
       "shortName": "aUSDC",
       "collateral": true,
+      "wrapped": false
+    },
+    "USDT": {
+      "fullName": "USDT",
+      "shortName": "USDT",
+      "collateral": false,
       "wrapped": false
     },
     "WBTC": {
@@ -1092,6 +1109,52 @@
       "shortName": "wstETH",
       "collateral": true,
       "wrapped": false
+    }
+  },
+  "bnbV3Market": {
+    "BNB": {
+      "fullName": "BNB",
+      "shortName": "BNB",
+      "collateral": true,
+      "wrapped": false
+    },
+    "WBNB": {
+      "fullName": "WBNB",
+      "shortName": "WBNB",
+      "wrapped": true
+    },
+    "aWBNB": {
+      "fullName": "aWBNB",
+      "shortName": "aWBNB",
+      "wrapped": true
+    },
+    "USDC": {
+      "fullName": "USDC",
+      "shortName": "USDC",
+      "collateral": true,
+      "wrapped": true
+    },
+    "aUSDC": {
+      "fullName": "aUSDC",
+      "shortName": "aUSDC",
+      "collateral": true,
+      "wrapped": false
+    }
+  },
+  "metisV3Market": {
+    "METIS": {
+      "fullName": "Metis",
+      "shortName": "Metis",
+      "collateral": true,
+      "wrapped": false
+    }
+  },
+  "scrollV3Market": {
+    "ETH": {
+      "fullName": "ETH",
+      "shortName": "ETH",
+      "collateral": true,
+      "wrapped": true
     }
   }
 }

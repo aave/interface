@@ -140,6 +140,10 @@ export const configEnvWithTenderlyArbitrumFork = createConfigWithTenderlyFork(
   ChainId.arbitrum_one,
   'fork_proto_arbitrum_v3'
 );
+export const configEnvWithTenderlyBnbFork = createConfigWithTenderlyFork(
+  ChainId.bnb,
+  'fork_proto_bnb_v3'
+);
 export const configEnvWithTenderlyAEthereumV3Fork = createConfigWithTenderlyFork(
   ChainId.mainnet,
   'fork_proto_mainnet_v3'
@@ -156,3 +160,23 @@ export const configEnvWithTenderlySepoliaGhoFork = createConfigWithTenderlyFork(
   ChainId.sepolia,
   'fork_proto_sepolia_gho_v3'
 );
+
+const createConfigWithOrigin = (market: string, mockedAddress: string) => {
+  before('Open main page', () => {
+    cy.visit(URL, {
+      onBeforeLoad(win) {
+        // forks are always expected to run on chainId 3030
+        win.localStorage.setItem('selectedMarket', market);
+        win.localStorage.setItem('walletProvider', 'read_only_mode');
+        win.localStorage.setItem('readOnlyModeAddress', mockedAddress);
+      },
+    });
+  });
+};
+
+export const configEnvHarmony = (mockedAddress: string) =>
+  createConfigWithOrigin('proto_harmony_v3', mockedAddress);
+export const configEnvMetis = (mockedAddress: string) =>
+  createConfigWithOrigin('proto_metis_v3', mockedAddress);
+export const configEnvScroll = (mockedAddress: string) =>
+  createConfigWithOrigin('proto_scroll_v3', mockedAddress);

@@ -1,4 +1,7 @@
+import { MigrationSupplyException } from 'src/store/v3MigrationSlice';
+
 import { MarketDataType } from './marketsConfig';
+import { TokenInfo } from './TokenList';
 
 export const queryKeysFactory = {
   governance: ['governance'] as const,
@@ -59,6 +62,12 @@ export const queryKeysFactory = {
     ...queryKeysFactory.market(marketData),
     'poolReservesDataHumanized',
   ],
+  userPoolReservesDataHumanized: (user: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.pool,
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    'userPoolReservesDataHumanized',
+  ],
   generalStakeUiData: (marketData: MarketDataType, stakedTokens: string[], oracles: string[]) => [
     ...queryKeysFactory.staking,
     ...queryKeysFactory.market(marketData),
@@ -87,6 +96,30 @@ export const queryKeysFactory = {
     user: string
   ) => [...queryKeysFactory.user(user), chainId, amount, srcToken, destToken, 'paraswapRates'],
   gasPrices: (chainId: number) => [chainId, 'gasPrices'],
+  poolReservesIncentiveDataHumanized: (marketData: MarketDataType) => [
+    ...queryKeysFactory.pool,
+    ...queryKeysFactory.incentives,
+    ...queryKeysFactory.market(marketData),
+    'poolReservesIncentiveDataHumanized',
+  ],
+  userPoolReservesIncentiveDataHumanized: (user: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.pool,
+    ...queryKeysFactory.incentives,
+    ...queryKeysFactory.market(marketData),
+    ...queryKeysFactory.user(user),
+    'userPoolReservesIncentiveDataHumanized',
+  ],
+  ghoReserveData: (marketData: MarketDataType) => [
+    ...queryKeysFactory.gho,
+    ...queryKeysFactory.market(marketData),
+    'ghoReserveData',
+  ],
+  ghoUserReserveData: (user: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.gho,
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    'ghoUserReserveData',
+  ],
   poolApprovedAmount: (user: string, token: string, marketData: MarketDataType) => [
     ...queryKeysFactory.pool,
     ...queryKeysFactory.user(user),
@@ -94,9 +127,9 @@ export const queryKeysFactory = {
     token,
     'poolApprovedAmount',
   ],
-  approvedAmount: (user: string, token: string, spender: string, marketData: MarketDataType) => [
+  approvedAmount: (user: string, token: string, spender: string, chainId: number) => [
     ...queryKeysFactory.user(user),
-    ...queryKeysFactory.market(marketData),
+    chainId,
     token,
     spender,
     'approvedAmount',
@@ -112,6 +145,27 @@ export const queryKeysFactory = {
     token,
     chainId,
     'tokenDelegatees',
+  ],
+  getGhoBridgeBalances: (user: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.gho,
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    'getGhoBridgeBalances',
+  ],
+  migrationExceptions: (
+    suplies: MigrationSupplyException[],
+    marketFrom: MarketDataType,
+    marketTo: MarketDataType
+  ) => [
+    ...suplies.map((supply) => supply.underlyingAsset),
+    ...queryKeysFactory.market(marketFrom),
+    ...queryKeysFactory.market(marketTo),
+  ],
+  tokensBalance: (tokenList: TokenInfo[], chainId: number, user: string) => [
+    ...queryKeysFactory.user(user),
+    tokenList.map((elem) => elem.address),
+    chainId,
+    'tokensBalance',
   ],
 };
 

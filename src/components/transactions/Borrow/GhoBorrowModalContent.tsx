@@ -20,14 +20,18 @@ import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useGhoPoolReserve } from 'src/hooks/pool/useGhoPoolReserve';
+import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { ghoUserQualifiesForDiscount, weightedAverageAPY } from 'src/utils/ghoUtilities';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { CapType } from '../../caps/helper';
@@ -111,14 +115,16 @@ export const GhoBorrowModalContent = ({
   poolReserve,
   userReserve,
   symbol,
-}: ModalWrapperProps) => {
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { mainTxState: borrowTxState, gasLimit, txError, close: closeModal } = useModalContext();
-  const { user, marketReferencePriceInUsd, ghoReserveData, ghoUserData, ghoLoadingData } =
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
+  const currentMarket = useRootStore((state) => state.currentMarket);
+  const { marketReferencePriceInUsd, ghoReserveData, ghoUserData, ghoLoadingData } =
     useAppDataContext();
-  const ghoUserQualifiesForDiscount = useRootStore((state) => state.ghoUserQualifiesForDiscount);
+  const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
+  const { data: _ghoReserveData } = useGhoPoolReserve(currentMarketData);
   const { borrowCap } = useAssetCaps();
-
-  const { currentMarket: customMarket } = useProtocolDataContext();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
@@ -128,7 +134,10 @@ export const GhoBorrowModalContent = ({
   // Check if user can borrow at a discount
   const hasGhoBorrowPositions = ghoUserData.userGhoBorrowBalance > 0;
   const userStakedAaveBalance: number = ghoUserData.userDiscountTokenBalance;
-  const discountAvailable = ghoUserQualifiesForDiscount(amount);
+  const discountAvailable =
+    _ghoUserData && _ghoReserveData
+      ? ghoUserQualifiesForDiscount(_ghoReserveData, _ghoUserData, amount)
+      : false;
 
   // amount calculations
   let maxAmountToBorrow = getMaxGhoMintAmount(user, poolReserve);
@@ -298,7 +307,7 @@ export const GhoBorrowModalContent = ({
                 discountAvailable={discountAvailable}
                 userDiscountTokenBalance={ghoUserData.userDiscountTokenBalance}
                 underlyingAsset={underlyingAsset}
-                customMarket={customMarket}
+                customMarket={currentMarket}
                 currentBorrowAPY={currentBorrowAPY}
                 futureBorrowAPY={futureBorrowAPY}
                 onDetailsClick={() => closeModal()}

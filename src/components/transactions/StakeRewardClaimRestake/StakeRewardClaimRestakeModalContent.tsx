@@ -1,4 +1,4 @@
-import { Stake } from '@aave/contract-helpers';
+import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -43,15 +43,8 @@ export const StakeRewardClaimRestakeModalContent = ({
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
-  let stakeData;
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult.stakeData)) {
-    [stakeData] = stakeGeneralResult.stakeData;
-  }
-
-  let stakeUserData;
-  if (stakeUserResult && Array.isArray(stakeUserResult.stakeUserData)) {
-    [stakeUserData] = stakeUserResult.stakeUserData;
-  }
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
@@ -69,8 +62,7 @@ export const StakeRewardClaimRestakeModalContent = ({
   };
 
   // staking token usd value
-  const amountInUsd =
-    Number(maxAmountToClaim) * Number(normalize(stakeData?.stakeTokenPriceUSD || 1, 18));
+  const amountInUsd = Number(maxAmountToClaim) * Number(stakeData?.stakeTokenPriceUSDFormatted);
   // error handler
   let blockingError: ErrorType | undefined = undefined;
   if (maxAmountToClaim === '0') {
@@ -135,7 +127,7 @@ export const StakeRewardClaimRestakeModalContent = ({
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
+      <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
         <DetailsNumberLine
           description={<Trans>Staking APR</Trans>}
           value={Number(stakeData?.stakeApy || '0') / 10000}

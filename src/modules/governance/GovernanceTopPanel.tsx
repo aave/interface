@@ -51,7 +51,7 @@ export const GovernanceTopPanel = () => {
         <Box mb={4}>
           <ChainAvailabilityText wrapperSx={{ mb: 4 }} chainId={ChainId.mainnet} />
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-            <img src={`/aave.svg`} width="32px" height="32px" alt="" />
+            {/* <img src={`/aave.svg`} width="32px" height="32px" alt="" /> */}
             <Typography
               variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
@@ -91,6 +91,7 @@ export const GovernanceTopPanel = () => {
         <ExternalLink text="SNAPSHOTS" href="https://snapshot.org/#/aave.eth" />
         <ExternalLink text="FORUM" href="https://governance.aave.com/" />
         <ExternalLink text="FAQ" href="https://docs.aave.com/faq/governance" />
+        <ExternalLink text="GOVERNANCE V2" href="https://governance-v2.aave.com/" />
       </Box>
     </TopInfoPanel>
   );

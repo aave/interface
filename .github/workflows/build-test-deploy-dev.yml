@@ -30,6 +30,7 @@ jobs:
           NEXT_PUBLIC_MIXPANEL: ${{ secrets.NEXT_PUBLIC_MIXPANEL }}
           NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
           NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
+          NEXT_PUBLIC_SUBGRAPH_API_KEY: ${{ secrets.NEXT_PUBLIC_SUBGRAPH_API_KEY }}
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
@@ -72,6 +73,7 @@ jobs:
           - base
           - gho
           - gnosis
+          - bnb
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -201,6 +203,7 @@ jobs:
           - mobile
           - governance-stake
           - widgets
+          - general
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 

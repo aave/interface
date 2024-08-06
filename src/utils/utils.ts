@@ -1,6 +1,8 @@
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 
+import { CustomMarket } from './marketsAndNetworksConfig';
+
 export function hexToAscii(_hex: string): string {
   const hex = _hex.toString();
   let str = '';
@@ -35,9 +37,7 @@ export const makeCancelable = <T>(promise: Promise<T>) => {
 
 export const optimizedPath = (currentChainId: ChainId) => {
   return (
-    currentChainId === ChainId.arbitrum_one ||
-    currentChainId === ChainId.arbitrum_rinkeby ||
-    currentChainId === ChainId.optimism
+    currentChainId === ChainId.arbitrum_one || currentChainId === ChainId.optimism
     // ||
     // currentChainId === ChainId.optimism_kovan
   );
@@ -73,4 +73,15 @@ export const roundToTokenDecimals = (inputValue: string, tokenDecimals: number) 
 
   // Combine the whole and adjusted decimal parts
   return whole + '.' + adjustedDecimals;
+};
+export enum Side {
+  SUPPLY = 'supply',
+  BORROW = 'borrow',
+}
+export const showSuperFestTooltip = (symbol: string, currentMarket: string, side?: Side) => {
+  return (
+    currentMarket === CustomMarket.proto_base_v3 &&
+    ((side === Side.SUPPLY && symbol == 'weETH') ||
+      (side === Side.BORROW && (symbol == 'USDC' || symbol == 'ETH')))
+  );
 };

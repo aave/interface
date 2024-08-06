@@ -4,15 +4,12 @@ import create from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
 import { AnalyticsSlice, createAnalyticsSlice } from './analyticsSlice';
-import { createGhoSlice, GhoSlice } from './ghoSlice';
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
-import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
 import { createLayoutSlice, LayoutSlice } from './layoutSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
 import { createProtocolDataSlice, ProtocolDataSlice } from './protocolDataSlice';
 import { createStakeSlice, StakeSlice } from './stakeSlice';
 import { createTransactionsSlice, TransactionsSlice } from './transactionsSlice';
-import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 import { getQueryParameter } from './utils/queryParams';
 import { createV3MigrationSlice, V3MigrationSlice } from './v3MigrationSlice';
 import { createWalletDomainsSlice, WalletDomainsSlice } from './walletDomains';
@@ -24,10 +21,8 @@ export type RootStore = StakeSlice &
   ProtocolDataSlice &
   WalletSlice &
   PoolSlice &
-  IncentiveSlice &
   GovernanceSlice &
   V3MigrationSlice &
-  GhoSlice &
   WalletDomainsSlice &
   AnalyticsSlice &
   TransactionsSlice &
@@ -41,10 +36,8 @@ export const useRootStore = create<RootStore>()(
         ...createProtocolDataSlice(...args),
         ...createWalletSlice(...args),
         ...createPoolSlice(...args),
-        ...createIncentiveSlice(...args),
         ...createGovernanceSlice(...args),
         ...createV3MigrationSlice(...args),
-        ...createGhoSlice(...args),
         ...createWalletDomainsSlice(...args),
         ...createAnalyticsSlice(...args),
         ...createTransactionsSlice(...args),
@@ -71,22 +64,6 @@ if (typeof document !== 'undefined') {
     }
   };
 }
-
-export const usePoolDataSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshPoolData();
-}, 60000);
-
-export const usePoolDataV3Subscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshPoolV3Data();
-}, 60000);
-
-export const useIncentiveDataSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshIncentiveData();
-}, 60000);
-
-export const useGhoDataSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshGhoData();
-}, 60000);
 
 useRootStore.subscribe(
   (state) => state.account,

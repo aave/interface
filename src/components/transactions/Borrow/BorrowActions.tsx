@@ -8,10 +8,9 @@ import {
 } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -68,8 +67,8 @@ export const BorrowActions = React.memo(
       setLoadingTxns,
       setApprovalTxState,
     } = useModalContext();
-    const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
     const { sendTx } = useWeb3Context();
+    const queryClient = useQueryClient();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
 
@@ -135,9 +134,7 @@ export const BorrowActions = React.memo(
         });
 
         queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-        refetchPoolData && refetchPoolData();
-        refetchIncentiveData && refetchIncentiveData();
-        refetchGhoData && refetchGhoData();
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);

@@ -1,13 +1,19 @@
 import { createContext, useContext } from 'react';
 import { ApprovedAmountService } from 'src/services/ApprovedAmountService';
 import { DelegationTokenService } from 'src/services/DelegationTokenService';
+import { ERC20Service } from 'src/services/Erc20Service';
 import { GovernanceService } from 'src/services/GovernanceService';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
+import { MigrationService } from 'src/services/MigrationService';
+import { StkAbptMigrationService } from 'src/services/StkAbptMigrationService';
+import { TokenWrapperService } from 'src/services/TokenWrapperService';
+import { UiGhoService } from 'src/services/UiGhoService';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
 import { VotingMachineService } from 'src/services/VotingMachineService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
 
@@ -24,12 +30,19 @@ interface SharedDependenciesContext {
   approvedAmountService: ApprovedAmountService;
   uiIncentivesService: UiIncentivesService;
   uiPoolService: UiPoolService;
+  tokenWrapperService: TokenWrapperService;
+  uiGhoService: UiGhoService;
   delegationTokenService: DelegationTokenService;
+  stkAbptMigrationService: StkAbptMigrationService;
+  migrationService: MigrationService;
+  erc20Service: ERC20Service;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
 
 export const SharedDependenciesProvider: React.FC = ({ children }) => {
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
+
   const getGovernanceProvider = (chainId: number) => {
     const networkConfig = getNetworkConfig(chainId);
     const isGovernanceFork =
@@ -52,9 +65,18 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const uiStakeDataService = new UiStakeDataService(getStakeProvider);
   const approvedAmountService = new ApprovedAmountService(getProvider);
   const delegationTokenService = new DelegationTokenService(getGovernanceProvider);
+  const stkAbptMigrationService = new StkAbptMigrationService();
+  const migrationService = new MigrationService(getProvider);
 
   const uiPoolService = new UiPoolService(getProvider);
   const uiIncentivesService = new UiIncentivesService(getProvider);
+  const tokenWrapperService = new TokenWrapperService(
+    currentMarketData.chainId,
+    getProvider(currentMarketData.chainId)
+  );
+  const erc20Service = new ERC20Service(getProvider);
+
+  const uiGhoService = new UiGhoService(getProvider);
 
   return (
     <SharedDependenciesContext.Provider
@@ -68,7 +90,12 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         approvedAmountService,
         uiPoolService,
         uiIncentivesService,
+        tokenWrapperService,
+        uiGhoService,
         delegationTokenService,
+        stkAbptMigrationService,
+        migrationService,
+        erc20Service,
       }}
     >
       {children}

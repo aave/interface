@@ -14,6 +14,11 @@ import {
   borrowsUnavailable,
   dashboardAssetValuesVerification,
 } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aMATICPolygonV2: 800,
+};
 
 const testData = {
   testCases: {
@@ -90,7 +95,7 @@ const testData = {
 
 describe('MATIC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyPolygonFork({});
+  configEnvWithTenderlyPolygonFork({ tokens: tokenSet(tokensToRequest) });
 
   supply(testData.testCases.deposit, skipTestState, true);
   describe('Check Collateral switching', () => {

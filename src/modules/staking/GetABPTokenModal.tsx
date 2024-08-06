@@ -18,12 +18,12 @@ export const GetABPTokenModal = ({ open, close }: GetABPTokenModalProps) => {
     <>
       <BasicModal open={open} setOpen={close}>
         <Typography variant="h2">
-          <Trans>Get ABP Token</Trans>
+          <Trans>Get ABP v2 Token</Trans>
         </Typography>
         <Typography sx={{ my: 6 }}>
           <Trans>
             The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by
-            depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then
+            depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then
             stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives.
           </Trans>
         </Typography>
@@ -37,7 +37,7 @@ export const GetABPTokenModal = ({ open, close }: GetABPTokenModalProps) => {
           }
           fullWidth
           sx={{ px: 4 }}
-          href="https://pools.balancer.exchange/#/pool/0xc697051d1c6296c24ae3bcef39aca743861d9a81/"
+          href="https://app.balancer.fi/#/ethereum/pool/0x3de27efa2f1aa663ae5d458857e731c129069f29000200000000000000000588"
           target="_blank"
           rel="noopener"
           onClick={() =>

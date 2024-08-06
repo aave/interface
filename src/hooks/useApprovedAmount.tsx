@@ -5,24 +5,19 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 export const useApprovedAmount = ({
-  marketData,
+  chainId,
   token,
   spender,
 }: {
-  marketData: MarketDataType;
-  user: string;
+  chainId: number;
   token: string;
   spender: string;
 }) => {
   const { approvedAmountService } = useSharedDependencies();
   const user = useRootStore((store) => store.account);
   return useQuery({
-    queryFn: () => approvedAmountService.getApprovedAmount(marketData, user, token, spender),
-    queryKey: queryKeysFactory.approvedAmount(user, token, spender, marketData),
-    enabled: !!user,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    queryFn: () => approvedAmountService.getApprovedAmount(chainId, user, token, spender),
+    queryKey: queryKeysFactory.approvedAmount(user, token, spender, chainId),
   });
 };
 
@@ -32,9 +27,5 @@ export const usePoolApprovedAmount = (marketData: MarketDataType, token: string)
   return useQuery({
     queryFn: () => approvedAmountService.getPoolApprovedAmount(marketData, user, token),
     queryKey: queryKeysFactory.poolApprovedAmount(user, token, marketData),
-    enabled: !!user,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
   });
 };
