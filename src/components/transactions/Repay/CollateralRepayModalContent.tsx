@@ -20,10 +20,10 @@ import {
 } from 'src/hooks/paraswap/common';
 import { useCollateralRepaySwap } from 'src/hooks/paraswap/useCollateralRepaySwap';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { useRootStore } from 'src/store/root';
 import { calculateHFAfterRepay } from 'src/utils/hfUtils';
 
 import { Asset, AssetInput } from '../AssetInput';
@@ -32,6 +32,7 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsHFLine,
   DetailsNumberLineWithSub,
+  HealthFactorFlashloanFeeCaption,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { ErrorType, useFlashloan } from '../utils';
@@ -48,7 +49,12 @@ export function CollateralRepayModalContent({
 }: ModalWrapperProps & { debtType: InterestRate; user: ExtendedFormattedUser }) {
   const { reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const [currentChainId, currentNetworkConfig, currentMarketData] = useRootStore((store) => [
+    store.currentChainId,
+    store.currentNetworkConfig,
+    store.currentMarketData,
+  ]);
+
   const { currentAccount } = useWeb3Context();
 
   // List of tokens eligble to repay with, ordered by USD value
@@ -353,6 +359,11 @@ export function CollateralRepayModalContent({
           healthFactor={user?.healthFactor}
           futureHealthFactor={hfAfterSwap.toString(10)}
           loading={loadingSkeleton}
+          caption={
+            shouldUseFlashloan && (
+              <HealthFactorFlashloanFeeCaption fee={currentMarketData.v3 ? '0.05%' : '0.09%'} />
+            )
+          }
         />
         <DetailsNumberLineWithSub
           description={<Trans>Borrow balance after repay</Trans>}

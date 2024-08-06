@@ -76,8 +76,8 @@ const testData = {
   },
 };
 
-describe.skip('USDbC INTEGRATION SPEC, BASE V3 MARKET', () => {
-  const skipTestState = skipState(true);
+describe('USDbC INTEGRATION SPEC, BASE V3 MARKET', () => {
+  const skipTestState = skipState(false);
   configEnvWithTenderlyBnbFork({
     v3: true,
     tokens: tokenSet(tokensToRequest),

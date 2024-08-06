@@ -974,6 +974,10 @@ msgstr "Docs"
 msgid "Download"
 msgstr "Download"
 
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx
+msgid "Due to a low health factor (or if a reserve is frozen), a flash loan is required to perform this action, which incurs a fee. A portion of the fee goes to liquidity providers, while the rest goes to the protocol treasury."
+msgstr "Due to a low health factor (or if a reserve is frozen), a flash loan is required to perform this action, which incurs a fee. A portion of the fee goes to liquidity providers, while the rest goes to the protocol treasury."
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Due to health factor impact, a flashloan is required to perform this transaction, but Aave Governance has disabled flashloan availability for this asset. Try lowering the amount or supplying additional collateral."
@@ -1172,6 +1176,10 @@ msgstr "Filter"
 msgid "Fixed rate"
 msgstr "Fixed rate"
 
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx
+msgid "Flash loan fee {fee}"
+msgstr "Flash loan fee {fee}"
+
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
 msgstr "Flashloan is disabled for this asset, hence this position cannot be migrated."
@@ -1244,6 +1252,7 @@ msgstr "Governance"
 msgid "Greek"
 msgstr "Greek"
 
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx

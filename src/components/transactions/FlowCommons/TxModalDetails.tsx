@@ -1,7 +1,7 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
+import { Box, FormControlLabel, Skeleton, Stack, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import {
@@ -10,6 +10,7 @@ import {
   UnavailableDueToIsolationBadge,
 } from 'src/components/isolationMode/IsolatedBadge';
 import { Row } from 'src/components/primitives/Row';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { CollateralType } from 'src/helpers/types';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
@@ -280,11 +281,32 @@ export const DetailsIncentivesLine = ({
   );
 };
 
+export const HealthFactorFlashloanFeeCaption = ({ fee }: { fee: string }) => {
+  return (
+    <Stack justifyContent="space-between">
+      <Trans>Health factor</Trans>
+      <Stack sx={{ mt: 0.5 }} direction="row" alignItems="center">
+        <Typography variant="helperText" color="text.secondary">
+          <Trans>Flash loan fee {fee}</Trans>
+        </Typography>
+        <TextWithTooltip>
+          <Trans>
+            Due to a low health factor (or if a reserve is frozen), a flash loan is required to
+            perform this action, which incurs a fee. A portion of the fee goes to liquidity
+            providers, while the rest goes to the protocol treasury.
+          </Trans>
+        </TextWithTooltip>
+      </Stack>
+    </Stack>
+  );
+};
+
 export interface DetailsHFLineProps {
   healthFactor: string;
   futureHealthFactor: string;
   visibleHfChange: boolean;
   loading?: boolean;
+  caption?: ReactNode;
 }
 
 export const DetailsHFLine = ({
@@ -292,11 +314,12 @@ export const DetailsHFLine = ({
   futureHealthFactor,
   visibleHfChange,
   loading = false,
+  caption,
 }: DetailsHFLineProps) => {
   if (healthFactor === '-1' && futureHealthFactor === '-1') return null;
   return (
     <Row
-      caption={<Trans>Health factor</Trans>}
+      caption={caption ? caption : <Trans>Health factor</Trans>}
       captionVariant="description"
       mb={4}
       align="flex-start"
