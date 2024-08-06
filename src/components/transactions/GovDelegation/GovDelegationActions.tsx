@@ -2,13 +2,13 @@ import { DelegationType } from '@aave/contract-helpers';
 import { useGovernanceDelegate } from 'src/helpers/useGovernanceDelegate';
 
 import { DelegationTxsWrapper } from '../DelegationTxsWrapper';
-import { DelegationTokenType } from './DelegationTokenSelector';
+import { DelegationToken } from './DelegationTokenSelector';
 
 export type GovDelegationActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
   delegationType: DelegationType;
-  delegationTokenType: DelegationTokenType;
+  delegationTokens: DelegationToken[];
   delegatee: string;
   isRevoke: boolean;
 };
@@ -17,12 +17,12 @@ export const GovDelegationActions = ({
   isWrongNetwork,
   blocked,
   delegationType,
-  delegationTokenType,
+  delegationTokens,
   delegatee,
   isRevoke,
 }: GovDelegationActionsProps) => {
   const { signMetaTxs, action, mainTxState, loadingTxns, approvalTxState } = useGovernanceDelegate(
-    delegationTokenType,
+    delegationTokens,
     delegationType,
     blocked,
     delegatee
@@ -37,7 +37,7 @@ export const GovDelegationActions = ({
       handleSignatures={signMetaTxs}
       handleAction={action}
       isWrongNetwork={isWrongNetwork}
-      requiresSignature={delegationTokenType === DelegationTokenType.ALL}
+      requiresSignature={delegationTokens.length > 1}
       blocked={blocked}
       approvalTxState={approvalTxState}
     />

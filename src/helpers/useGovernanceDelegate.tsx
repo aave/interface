@@ -1,4 +1,5 @@
 import {
+  DelegateMetaSigParams,
   DelegationType,
   EthereumTransactionTypeExtended,
   gasLimitRecommendations,
@@ -10,7 +11,7 @@ import { TransactionResponse } from '@ethersproject/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { utils } from 'ethers';
 import { useEffect, useState } from 'react';
-import { DelegationTokenType } from 'src/components/transactions/GovDelegation/DelegationTokenSelector';
+import { DelegationToken } from 'src/components/transactions/GovDelegation/DelegationTokenSelector';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -22,7 +23,7 @@ import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider'
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
 export const useGovernanceDelegate = (
-  delegationTokenType: DelegationTokenType,
+  delegationTokens: DelegationToken[],
   delegationType: DelegationType,
   skip: boolean,
   delegatee: string
@@ -38,16 +39,13 @@ export const useGovernanceDelegate = (
 
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
-  // const [aaveNonce, setAaveNonce] = useState(0);
-  // const [stkAaveNonce, setStkAaveNonce] = useState(0);
-  // const [aAaveNonce, setAAaveNonce] = useState(0);
   const [deadline, setDeadline] = useState(Math.floor(Date.now() / 1000 + 3600).toString());
   // const prepareDelegateSignature = useRootStore((state) => state.prepareDelegateSignature);
   // const prepareDelegateByTypeSignature = useRootStore(
   //   (state) => state.prepareDelegateByTypeSignature
   // );
 
-  const isSignatureAction = delegationTokenType === DelegationTokenType.ALL;
+  const isSignatureAction = delegationTokens.length > 1;
 
   const {
     approvalTxState,
@@ -100,46 +98,21 @@ export const useGovernanceDelegate = (
     if (isSignatureAction) {
       setMainTxState({ ...mainTxState, loading: true });
 
-      const { v: v1, r: r1, s: s1 } = utils.splitSignature(signatures[0]);
-      const { v: v2, r: r2, s: s2 } = utils.splitSignature(signatures[1]);
-      const { v: v3, r: r3, s: s3 } = utils.splitSignature(signatures[2]);
-
-      let txs: MetaDelegateParams[] = [];
-
-      txs = [
-        {
+      const txs = signatures.map<MetaDelegateParams>((signature, index) => {
+        const { v, r, s } = utils.splitSignature(signature);
+        return {
           delegator: user,
           delegatee,
-          underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
+          underlyingAsset: delegationTokens[index].address,
           deadline,
-          v: v1,
-          r: r1,
-          s: s1,
+          v,
+          r,
+          s,
           delegationType: delegationType,
-        },
-        {
-          delegator: user,
-          delegatee,
-          underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
-          deadline,
-          v: v2,
-          r: r2,
-          s: s2,
-          delegationType: delegationType,
-        },
-        {
-          delegator: user,
-          delegatee,
-          underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
-          deadline,
-          v: v3,
-          r: r3,
-          s: s3,
-          delegationType: delegationType,
-        },
-      ];
+        };
+      });
 
-      let txData = await delegationTokenService.batchMetaDelegate(user, txs, connectedChainId);
+      let txData = await delegationTokenService.batchMetaDelegate(user, txs);
       txData = await estimateGasLimit(txData);
 
       return processTx({
@@ -196,64 +169,32 @@ export const useGovernanceDelegate = (
   };
 
   const signMetaTxs = async () => {
-    if (delegationTokenType === DelegationTokenType.ALL) {
+    if (delegationTokens.length > 1) {
       setApprovalTxState({ ...approvalTxState, loading: true });
-      const [aaveNonce, stkAaveNonce, aAaveNonce] = await Promise.all([
-        getTokenNonce(user, governanceV3Config.votingAssets.aaveTokenAddress),
-        getTokenNonce(user, governanceV3Config.votingAssets.stkAaveTokenAddress),
-        getTokenNonce(user, governanceV3Config.votingAssets.aAaveTokenAddress),
-      ]);
+      const nonces = await Promise.all(
+        delegationTokens.map((token) => getTokenNonce(user, token.address))
+      );
       const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
       setDeadline(deadline);
-      // setAaveNonce(aaveNonce);
-      // setStkAaveNonce(stkAaveNonce);
-      // setAAaveNonce(aAaveNonce);
 
-      const delegationParameters = [
-        {
+      const delegationParameters = delegationTokens.map<DelegateMetaSigParams>((token, index) => {
+        return {
           delegator: user,
-          delegatee: delegatee,
-          underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
+          delegatee,
+          underlyingAsset: token.address,
           deadline,
-          nonce: String(aaveNonce),
+          nonce: String(nonces[index]),
           delegationType: delegationType,
-          governanceTokenName: 'Aave token V3',
+          governanceTokenName: token.domainName,
           increaseNonce: false,
           connectedChainId,
-        },
-        {
-          delegator: user,
-          delegatee: delegatee,
-          underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
-          deadline,
-          nonce: String(stkAaveNonce),
-          delegationType: delegationType,
-          governanceTokenName: 'Staked Aave',
-          increaseNonce: false,
-          connectedChainId,
-        },
-        {
-          delegator: user,
-          delegatee: delegatee,
-          underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
-          governanceTokenName: 'Aave Ethereum AAVE',
-          deadline,
-          nonce: String(aAaveNonce),
-          delegationType: delegationType,
-          increaseNonce: false,
-          connectedChainId,
-        },
-      ];
+        };
+      });
 
       const unsignedPayloads: string[] = [];
       for (const tx of delegationParameters) {
-        if (delegationType !== DelegationType.ALL) {
-          const payload = await delegationTokenService.prepareV3DelegateByTypeSignature(tx);
-          unsignedPayloads.push(payload);
-        } else {
-          const payload = await delegationTokenService.prepareV3DelegateByTypeSignature(tx);
-          unsignedPayloads.push(payload);
-        }
+        const payload = await delegationTokenService.prepareV3DelegateByTypeSignature(tx);
+        unsignedPayloads.push(payload);
       }
       try {
         const signedPayload: SignatureLike[] = [];
@@ -287,7 +228,7 @@ export const useGovernanceDelegate = (
     }
     setLoadingTxns(true);
     const timeout = setTimeout(async () => {
-      if (delegationTokenType === DelegationTokenType.ALL) {
+      if (delegationTokens.length > 1) {
         const gas = gasLimitRecommendations[ProtocolAction.default];
         setGasLimit(gas.limit);
         setMainTxState({
@@ -298,34 +239,15 @@ export const useGovernanceDelegate = (
       } else {
         let txs: EthereumTransactionTypeExtended[] = [];
         if (delegationType === DelegationType.ALL) {
-          // TODO check if this is working as normal
           txs = await delegate({
             delegatee,
-            governanceToken:
-              delegationTokenType === DelegationTokenType.AAVE
-                ? governanceV3Config.votingAssets.aaveTokenAddress
-                : delegationTokenType === DelegationTokenType.STKAAVE
-                ? governanceV3Config.votingAssets.stkAaveTokenAddress
-                : governanceV3Config.votingAssets.aAaveTokenAddress,
-            // delegationTokenType === DelegationTokenType.AAVE
-            //   ? governanceConfig.aaveTokenAddress
-            //   : governanceConfig.stkAaveTokenAddress,
+            governanceToken: delegationTokens[0].address,
           });
         } else {
-          // TODO check if this is working as normal
-
           txs = await delegateByType({
             delegatee,
             delegationType: delegationType.toString(),
-            governanceToken:
-              delegationTokenType === DelegationTokenType.AAVE
-                ? governanceV3Config.votingAssets.aaveTokenAddress
-                : delegationTokenType === DelegationTokenType.STKAAVE
-                ? governanceV3Config.votingAssets.stkAaveTokenAddress
-                : governanceV3Config.votingAssets.aAaveTokenAddress,
-            // delegationTokenType === DelegationTokenType.AAVE
-            //   ? governanceConfig.aaveTokenAddress
-            //   : governanceConfig.stkAaveTokenAddress,
+            governanceToken: delegationTokens[0].address,
           });
         }
         setActionTx(txs[0]);
@@ -348,7 +270,7 @@ export const useGovernanceDelegate = (
       }
     }, 1000);
     return () => clearTimeout(timeout);
-  }, [delegationTokenType, delegationType, delegatee, skip]);
+  }, [delegationTokens.length, delegationType, delegatee, skip]);
 
   return { approvalTxState, signMetaTxs, mainTxState, loadingTxns, action, isSignatureAction };
 };

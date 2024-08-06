@@ -11,8 +11,7 @@ export const useTokensPowers = (tokens: string[]) => {
   const user = useRootStore((store) => store.account);
   return useQueries({
     queries: tokens.map((token) => ({
-      queryFn: () =>
-        delegationTokenService.getTokenPowers(user, token, governanceV3Config.coreChainId),
+      queryFn: () => delegationTokenService.getTokenPowers(user, token),
       queryKey: queryKeysFactory.tokenPowers(user, token, governanceV3Config.coreChainId),
       enabled: !!user,
     })),
