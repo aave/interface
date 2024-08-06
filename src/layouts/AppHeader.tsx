@@ -129,7 +129,7 @@ export function AppHeader() {
 
   const disableTestnet = () => {
     localStorage.setItem('testnetsEnabled', 'false');
-    // Set window.location to trigger a page reload when navigating to the the dashboard
+    // Set window.location to trigger a page reload when navigating to the dashboard
     window.location.href = '/';
   };
 
@@ -139,7 +139,7 @@ export function AppHeader() {
     localStorage.removeItem('forkBaseChainId');
     localStorage.removeItem('forkNetworkId');
     localStorage.removeItem('forkRPCUrl');
-    // Set window.location to trigger a page reload when navigating to the the dashboard
+    // Set window.location to trigger a page reload when navigating to the dashboard
     window.location.href = '/';
   };
 
