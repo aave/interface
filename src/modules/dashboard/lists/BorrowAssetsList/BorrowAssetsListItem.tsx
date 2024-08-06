@@ -11,6 +11,7 @@ import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListAPRColumn } from '../ListAPRColumn';
+import { ListAPYDetails } from '../ListAPYDetails';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -27,6 +28,7 @@ export const BorrowAssetsListItem = ({
   vIncentivesData,
   underlyingAsset,
   isFreezed,
+  underlyingAPY,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
@@ -61,15 +63,17 @@ export const BorrowAssetsListItem = ({
         }
       />
       <ListAPRColumn
-        value={Number(variableBorrowRate)}
+        value={
+          underlyingAPY ? Number(variableBorrowRate) + underlyingAPY : Number(variableBorrowRate)
+        }
+        tooltip={
+          underlyingAPY ? (
+            <ListAPYDetails borrowAPY={Number(variableBorrowRate)} underlyingAPY={underlyingAPY} />
+          ) : null
+        }
         incentives={vIncentivesData}
         symbol={symbol}
       />
-      {/* <ListAPRColumn
-        value={Number(stableBorrowRate)}
-        incentives={sIncentivesData}
-        symbol={symbol}
-      /> */}
       <ListButtonsColumn>
         <Button
           disabled={disableBorrow}

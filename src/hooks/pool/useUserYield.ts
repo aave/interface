@@ -34,7 +34,7 @@ const formatUserYield = memoize(
     formattedGhoUserData: FormattedGhoUserData | undefined,
     user: FormatUserSummaryAndIncentivesResponse,
     currentMarket: string
-  ) => {
+  ): UserYield => {
     const proportions = user.userReservesData.reduce(
       (acc, value) => {
         const reserve = formattedPoolReserves.find(
@@ -46,6 +46,12 @@ const formatUserYield = memoize(
             acc.positiveProportion = acc.positiveProportion.plus(
               new BigNumber(reserve.supplyAPY).multipliedBy(value.underlyingBalanceUSD)
             );
+
+            if (reserve.underlyingAPY) {
+              acc.positiveProportion = acc.positiveProportion.plus(
+                new BigNumber(reserve.underlyingAPY).multipliedBy(value.underlyingBalanceUSD)
+              );
+            }
             if (reserve.aIncentivesData) {
               reserve.aIncentivesData.forEach((incentive) => {
                 acc.positiveProportion = acc.positiveProportion.plus(

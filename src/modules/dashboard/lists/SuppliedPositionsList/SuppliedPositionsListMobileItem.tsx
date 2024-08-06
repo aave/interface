@@ -10,6 +10,7 @@ import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
+import { ListAPYDetails } from '../ListAPYDetails';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
@@ -36,6 +37,7 @@ export const SuppliedPositionsListMobileItem = ({
     isFrozen,
     isActive,
     isPaused,
+    underlyingAPY,
   } = reserve;
 
   const canBeEnabledAsCollateral = user
@@ -76,7 +78,12 @@ export const SuppliedPositionsListMobileItem = ({
         mb={2}
       >
         <IncentivesCard
-          value={Number(supplyAPY)}
+          value={underlyingAPY ? Number(supplyAPY) + underlyingAPY : Number(supplyAPY)}
+          tooltip={
+            underlyingAPY ? (
+              <ListAPYDetails supplyAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
+            ) : null
+          }
           incentives={aIncentivesData}
           symbol={symbol}
           variant="secondary14"

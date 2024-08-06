@@ -12,6 +12,7 @@ import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListAPRColumn } from '../ListAPRColumn';
+import { ListAPYDetails } from '../ListAPYDetails';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
@@ -69,7 +70,19 @@ export const SuppliedPositionsListItem = ({
       />
 
       <ListAPRColumn
-        value={Number(reserve.supplyAPY)}
+        value={
+          reserve.underlyingAPY
+            ? Number(reserve.supplyAPY) + reserve.underlyingAPY
+            : Number(reserve.supplyAPY)
+        }
+        tooltip={
+          reserve.underlyingAPY ? (
+            <ListAPYDetails
+              supplyAPY={Number(reserve.supplyAPY)}
+              underlyingAPY={reserve.underlyingAPY}
+            />
+          ) : null
+        }
         incentives={aIncentivesData}
         symbol={reserve.symbol}
       />
