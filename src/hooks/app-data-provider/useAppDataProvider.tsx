@@ -141,11 +141,10 @@ export const AppDataProvider: React.FC = ({ children }) => {
   };
 
   // loading
-  const isReservesLoading =
-    reservesDataLoading ||
-    formattedPoolReservesLoading ||
-    loadingReservesTon ||
-    loadingYourSuppliesTon;
+  const isReservesLoading = isConnectedTonWallet
+    ? loadingReservesTon || loadingYourSuppliesTon
+    : reservesDataLoading || formattedPoolReservesLoading;
+
   const isUserDataLoading = isConnectedTonWallet
     ? false
     : userReservesDataLoading || userSummaryLoading;

@@ -14,7 +14,7 @@ module.exports = {
       'error',
       { ignoreRestSiblings: true, argsIgnorePattern: '^_' },
     ],
-    'prettier/prettier': 'warn',
+    'prettier/prettier': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'simple-import-sort/imports': 'error',
