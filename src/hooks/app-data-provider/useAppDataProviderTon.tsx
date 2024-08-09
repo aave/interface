@@ -324,5 +324,6 @@ export function useAppDataProviderTon() {
     address: 'counterContract?.address.toString()',
     loading,
     getValueReserve,
+    setReservesTon,
   };
 }

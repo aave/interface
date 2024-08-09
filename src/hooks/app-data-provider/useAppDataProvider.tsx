@@ -30,9 +30,9 @@ import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
 import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
 import { useTonYourSupplies } from '../useTonYourSupplies';
 import { useAppDataProviderTon } from './useAppDataProviderTon';
+import { useUpdatePriceBalances } from './useUpdatePriceBalances';
 import { WalletBalancesMap } from './useWalletBalances';
 import { useWalletBalancesTon } from './useWalletBalancesTon';
-
 /**
  * removes the marketPrefix from a symbol
  * @param symbol
@@ -75,6 +75,11 @@ export interface AppDataContextType {
   getYourSupplies: () => void;
 }
 
+type WalletBalanceUSD = {
+  id: string;
+  address: string;
+  value: string | number;
+};
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
 
 /**
@@ -82,18 +87,28 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  * It fetches reserves /incentives & walletbalances & keeps them updated.
  */
 export const AppDataProvider: React.FC = ({ children }) => {
+  const URL_PRICE_SOCKET = 'https://aave-ton-api.sotatek.works/';
   const { currentAccount } = useWeb3Context();
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
-  const { getValueReserve, reservesTon, loading: loadingReservesTon } = useAppDataProviderTon();
+  // const [walletSocket, setWalletSocket] = useState();
+
+  const {
+    getValueReserve,
+    reservesTon,
+    loading: loadingReservesTon,
+    setReservesTon,
+  } = useAppDataProviderTon();
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
 
   const {
-    loading: loadingYourSuppliesTon,
+    // loading: loadingYourSuppliesTon,
     userSummaryTon,
     getYourSupplies,
   } = useTonYourSupplies(walletAddressTonWallet, reservesTon);
+
+  useUpdatePriceBalances(URL_PRICE_SOCKET, reservesTon, setReservesTon);
 
   // pool hooks
 
@@ -142,10 +157,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   // loading
   const isReservesLoading =
-    reservesDataLoading ||
-    formattedPoolReservesLoading ||
-    loadingReservesTon ||
-    loadingYourSuppliesTon;
+    reservesDataLoading || formattedPoolReservesLoading || loadingReservesTon;
+
   const isUserDataLoading = isConnectedTonWallet
     ? false
     : userReservesDataLoading || userSummaryLoading;
