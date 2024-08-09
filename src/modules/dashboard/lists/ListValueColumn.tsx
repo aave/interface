@@ -23,7 +23,7 @@ const Content = ({
 }: ListValueColumnProps) => {
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <FormattedNumber
           value={value}
           variant="secondary14"
@@ -34,12 +34,14 @@ const Content = ({
         {capsComponent}
       </Box>
 
-      <FormattedNumber
-        value={String(subValue)}
-        symbol="USD"
-        variant="secondary12"
-        color="text.secondary"
-      />
+      {!withTooltip && !!subValue && !disabled && (
+        <FormattedNumber
+          value={subValue}
+          symbol="USD"
+          variant="secondary12"
+          color="text.secondary"
+        />
+      )}
     </>
   );
 };
