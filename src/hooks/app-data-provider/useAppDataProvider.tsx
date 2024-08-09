@@ -75,11 +75,6 @@ export interface AppDataContextType {
   getYourSupplies: () => void;
 }
 
-type WalletBalanceUSD = {
-  id: string;
-  address: string;
-  value: string | number;
-};
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
 
 /**
