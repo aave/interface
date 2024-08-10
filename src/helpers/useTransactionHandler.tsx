@@ -33,7 +33,7 @@ interface UseTransactionHandlerProps {
   protocolAction?: ProtocolAction;
   deps?: DependencyList;
   eventTxInfo?: TransactionDetails;
-  reserveID?: string;
+  reserveID?: string | number;
   usageAsCollateral?: boolean;
 }
 

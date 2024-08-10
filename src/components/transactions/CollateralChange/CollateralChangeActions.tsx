@@ -12,7 +12,7 @@ export type CollateralChangeActionsProps = {
   usageAsCollateral: boolean;
   blocked: boolean;
   symbol: string;
-  reserveID?: string;
+  reserveID?: string | number;
 };
 
 export const CollateralChangeActions = ({

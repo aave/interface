@@ -131,14 +131,12 @@ export class User implements Contract {
     // const userCollateralMask = (await provider.get('get_supplied_collateral_mask', [])).stack.readNumber();
 
     const { stack } = await provider.get('get_user_data', []);
-    console.log(stack);
 
     stack.skip(3);
 
     const principalList = stack.readCellOpt();
     // console.log('principalList-----', principalList);
     if (!principalList) {
-      console.log('Empty principal list');
       return [];
     }
 
@@ -152,7 +150,6 @@ export class User implements Contract {
     let index = 0;
     for (const key of dict.keys()) {
       const value = dict.get(key);
-      console.log('🚀 ~ User ~ getUserSupplies ~ value:', value);
       if (value) {
         const cells = Cell.fromBoc(value.toBoc());
         for (const cell of cells) {
@@ -170,7 +167,6 @@ export class User implements Contract {
             isCollateral: a.loadBoolean(),
             // isCollateral: (userCollateralMask & Number(key.toString())) > 0,
           };
-          console.log(reserves[index]);
           // console.log(`[${key}] - [${value}]`);
           index++;
         }

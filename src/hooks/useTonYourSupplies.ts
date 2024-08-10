@@ -8,6 +8,7 @@ import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndI
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { address_pools } from './app-data-provider/useAppDataProviderTon';
+import { WalletBalanceUSD } from './app-data-provider/useUpdatePriceBalances';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
@@ -16,7 +17,11 @@ interface UseTransactionHandlerTonProps {
   yourAddressWallet: string;
 }
 
-export const useTonYourSupplies = (yourAddressWallet: string, reserves: DashboardReserve[]) => {
+export const useTonYourSupplies = (
+  yourAddressWallet: string,
+  reserves: DashboardReserve[],
+  ExchangeRateListUSD: WalletBalanceUSD[]
+) => {
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [userSummaryTon, setUserSummaryTon] = useState<ExtendedFormattedUser>();
@@ -39,8 +44,6 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
       const yourSupplies = await onGetYourSupply();
 
-      console.log('---------------------------1111111111111111111111--------------', reserves);
-
       const result = await Promise.all(
         _.chain(reserves)
           .filter((reserve) =>
@@ -60,6 +63,10 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
             return {
               ...reserve,
               underlyingBalance: formatUnits(matchedSupply?.supplyBalance || '0', reserve.decimals),
+              underlyingBalanceUSD: formatUnits(
+                matchedSupply?.supplyBalance || '0',
+                reserve.decimals
+              ),
               usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
               reserveID: matchedSupply?.underlyingAddress,
               // usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
@@ -81,21 +88,56 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
     getYourSupplies();
   }, [client, onGetYourSupply, yourAddressWallet, reserves, getYourSupplies]);
 
+  const updateRealTimeBalanceUSD = useCallback(
+    (data: unknown) => {
+      try {
+        if (!data || !ExchangeRateListUSD) return [];
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const result = _.map(data, (asset: any) => {
+          const match = _.find(ExchangeRateListUSD, { address: asset?.underlyingAssetTon });
+          if (match) {
+            return {
+              ...asset,
+              underlyingBalanceUSD:
+                (Number(match?.value) || 0) * (Number(asset.underlyingBalance) || 0),
+            };
+          }
+          return asset;
+        });
+
+        return result;
+      } catch (error) {
+        console.error(error);
+        return [];
+      }
+    },
+    [ExchangeRateListUSD]
+  );
+
   useEffect(() => {
+    const dataUpdate = updateRealTimeBalanceUSD(yourSuppliesTon);
+
+    const totalLiquidityUSD = _.sumBy(dataUpdate, (item) => {
+      const underlyingBalanceUSD =
+        typeof item.value === 'string' ? parseFloat(item.value) : item.value;
+      return isNaN(underlyingBalanceUSD) ? 0 : underlyingBalanceUSD;
+    });
+
     const res = {
-      userReservesData: yourSuppliesTon,
-      totalLiquidityMarketReferenceCurrency: '0',
-      totalLiquidityUSD: '0',
-      totalCollateralMarketReferenceCurrency: '0',
-      totalCollateralUSD: '0',
-      totalBorrowsMarketReferenceCurrency: '0',
-      totalBorrowsUSD: '0',
-      netWorthUSD: '0',
-      availableBorrowsMarketReferenceCurrency: '0',
-      availableBorrowsUSD: '0',
-      currentLoanToValue: '0',
-      currentLiquidationThreshold: '0',
-      healthFactor: '-1',
+      userReservesData: dataUpdate,
+      totalLiquidityMarketReferenceCurrency: '111',
+      totalLiquidityUSD: String(totalLiquidityUSD) || '0',
+      totalCollateralMarketReferenceCurrency: '113',
+      totalCollateralUSD: '114',
+      totalBorrowsMarketReferenceCurrency: '115',
+      totalBorrowsUSD: '116',
+      netWorthUSD: '117',
+      availableBorrowsMarketReferenceCurrency: '118',
+      availableBorrowsUSD: '119',
+      currentLoanToValue: '120',
+      currentLiquidationThreshold: '121',
+      healthFactor: '122',
       isInIsolationMode: false,
       calculatedUserIncentives: {},
       userEmodeCategoryId: 0,
@@ -105,7 +147,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
       netAPY: 0,
     };
     setUserSummaryTon(res as ExtendedFormattedUser);
-  }, [yourSuppliesTon]);
+  }, [yourSuppliesTon, ExchangeRateListUSD, updateRealTimeBalanceUSD]);
 
   return {
     yourSuppliesTon,

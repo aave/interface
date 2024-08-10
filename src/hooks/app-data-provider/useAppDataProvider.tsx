@@ -97,13 +97,17 @@ export const AppDataProvider: React.FC = ({ children }) => {
   } = useAppDataProviderTon();
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
 
+  const { ExchangeRateListUSD } = useUpdatePriceBalances(
+    URL_PRICE_SOCKET,
+    reservesTon,
+    setReservesTon
+  );
+
   const {
     // loading: loadingYourSuppliesTon,
     userSummaryTon,
     getYourSupplies,
-  } = useTonYourSupplies(walletAddressTonWallet, reservesTon);
-
-  useUpdatePriceBalances(URL_PRICE_SOCKET, reservesTon, setReservesTon);
+  } = useTonYourSupplies(walletAddressTonWallet, reservesTon, ExchangeRateListUSD);
 
   // pool hooks
 

@@ -152,7 +152,7 @@ export const SupplyActions = React.memo(
             parseUnits(amountToSupply.toString(), decimals).toString()
           );
           if (resSupplyTop?.success) {
-            await sleep(15000); // sleep 15s re call SC get new data reserve
+            await sleep(30000); // sleep 30s re call SC get new data reserve
             setMainTxState({
               txHash: resSupplyTop.txHash,
               loading: false,

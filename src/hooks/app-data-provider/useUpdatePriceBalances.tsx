@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import useSocket from 'src/utils/connectSocket';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
-type WalletBalanceUSD = {
+export type WalletBalanceUSD = {
   id: string;
   address: string;
   value: string | number;
@@ -52,10 +52,6 @@ export const useUpdatePriceBalances = (
         );
         if (dataById) {
           const newWalletBalanceUSD = String(Number(dataById.value) * Number(item.walletBalance));
-          console.log(
-            '🚀 ~ newWalletBalanceUSD: ' + `${item.name} :${dataById.value} ==== `,
-            newWalletBalanceUSD
-          );
           if (item.walletBalanceUSD !== newWalletBalanceUSD) {
             isUpdated = true;
             return {
@@ -70,7 +66,6 @@ export const useUpdatePriceBalances = (
       if (isUpdated) {
         setReservesTon(resultMappingUsd as DashboardReserve[]);
       }
-      console.log('🚀 ~ resultMappingUsd:', resultMappingUsd);
     }
   }, [reservesTon, dataWalletBalance, setReservesTon]);
 
@@ -102,7 +97,6 @@ export const useUpdatePriceBalances = (
             walletSocketRef.current = result;
           }
         }
-        console.log('🚀 ~ data price:', result);
       };
 
       const onDisconnect = () => {
@@ -125,4 +119,8 @@ export const useUpdatePriceBalances = (
   useEffect(() => {
     updateReservesTon();
   }, [reservesTon, dataWalletBalance, updateReservesTon]);
+
+  return {
+    ExchangeRateListUSD: dataWalletBalance,
+  };
 };
