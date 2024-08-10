@@ -88,7 +88,13 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
-  const { getValueReserve, reservesTon, loading: loadingReservesTon, yourWalletBalanceTon, setReservesTon } = useAppDataProviderTon();
+  const {
+    getValueReserve,
+    reservesTon,
+    loading: loadingReservesTon,
+    yourWalletBalanceTon,
+    setReservesTon,
+  } = useAppDataProviderTon();
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
 
   const {
@@ -197,7 +203,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         walletBalancesTon,
         getValueReserve,
         getYourSupplies,
-        yourWalletBalanceTon
+        yourWalletBalanceTon,
       }}
     >
       {children}

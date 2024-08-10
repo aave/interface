@@ -98,16 +98,14 @@ export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
   };
 };
 
-
 export const useTonBalance = (walletAddress: string) => {
   const wallet = useTonWallet();
-  const [balance, setBalance] = useState("");
+  const [balance, setBalance] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const client = useTonClient();
 
   const fetchBalance = useCallback(async () => {
-
     if (!client || !walletAddress || !wallet || !wallet?.account?.publicKey) return;
 
     setLoading(true);
@@ -117,17 +115,21 @@ export const useTonBalance = (walletAddress: string) => {
       const address = Address.parse(walletAddress);
       const workchain = 0; // Usually you need a workchain 0
 
-      const publicKey = Buffer.from(wallet.account.publicKey, 'hex')
+      const publicKey = Buffer.from(wallet.account.publicKey, 'hex');
       const walletContract = WalletContractV4.create({ workchain, publicKey: publicKey });
 
       const walletInstance = client.open(walletContract);
 
-
       const balance: bigint = await walletInstance.getBalance();
-      console.log("Current deployment wallet balance --------------------- = ", fromNano(balance).toString(), "💎TON", wallet?.account?.publicKey);
+      console.log(
+        'Current deployment wallet balance --------------------- = ',
+        fromNano(balance).toString(),
+        '💎TON',
+        wallet?.account?.publicKey
+      );
       const seqno: number = await walletInstance.getSeqno();
       const account = await client.getAccount(seqno, address);
-      console.log("--------------------------", account)
+      console.log('--------------------------', account);
 
       setBalance(fromNano(balance).toString());
     } catch (err) {

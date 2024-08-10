@@ -52,15 +52,18 @@ export function useAppDataProviderTon() {
   const { walletAddressTonWallet } = useTonConnectContext();
   const { balance: yourWalletBalanceTon } = useTonBalance(walletAddressTonWallet);
 
-
-  const getPoolJettonWalletAddress = useCallback(async (address: string) => {
-    if (!client || !address_pools || !address) return null;
-    const contractJettonMinter = new JettonMinter(Address.parse(address));
-    const providerJettonMinter = client.open(contractJettonMinter) as OpenedContract<JettonMinter>;
-    const poolJetton = await providerJettonMinter.getWalletAddress(Address.parse(address_pools));
-    return poolJetton;
-
-  }, [client]);
+  const getPoolJettonWalletAddress = useCallback(
+    async (address: string) => {
+      if (!client || !address_pools || !address) return null;
+      const contractJettonMinter = new JettonMinter(Address.parse(address));
+      const providerJettonMinter = client.open(
+        contractJettonMinter
+      ) as OpenedContract<JettonMinter>;
+      const poolJetton = await providerJettonMinter.getWalletAddress(Address.parse(address_pools));
+      return poolJetton;
+    },
+    [client]
+  );
 
   const getValueReserve = useCallback(async () => {
     if (!poolContract || !client || !walletAddressTonWallet) return;
@@ -71,10 +74,14 @@ export function useAppDataProviderTon() {
       console.log('underlyingAddress------', reserve[0].underlyingAddress.toString());
       const arr = await Promise.all(
         reserve.map(async (item) => {
-          const balance = item?.isJetton && await onGetBalanceTonNetwork(item.underlyingAddress.toString());
-          const walletBalance = item?.isJetton ? formatUnits(balance || '0', item.decimals) : yourWalletBalanceTon;
+          const balance =
+            item?.isJetton && (await onGetBalanceTonNetwork(item.underlyingAddress.toString()));
+          const walletBalance = item?.isJetton
+            ? formatUnits(balance || '0', item.decimals)
+            : yourWalletBalanceTon;
 
-          const poolJettonWalletAddress = item.isJetton && await getPoolJettonWalletAddress(item.underlyingAddress.toString());
+          const poolJettonWalletAddress =
+            item.isJetton && (await getPoolJettonWalletAddress(item.underlyingAddress.toString()));
 
           return {
             ...item,
@@ -317,12 +324,18 @@ export function useAppDataProviderTon() {
       const mergedArray = JSON.parse(JSON.stringify([...arr, ...dataAssumeReserves]));
       setReservesTon(mergedArray as DashboardReserve[]);
       setLoading(false);
-    }
-    catch (error) {
-      console.error("Error in getValueReserve: ", error);
+    } catch (error) {
+      console.error('Error in getValueReserve: ', error);
       setLoading(false);
     }
-  }, [client, getPoolJettonWalletAddress, onGetBalanceTonNetwork, poolContract, walletAddressTonWallet, yourWalletBalanceTon]);
+  }, [
+    client,
+    getPoolJettonWalletAddress,
+    onGetBalanceTonNetwork,
+    poolContract,
+    walletAddressTonWallet,
+    yourWalletBalanceTon,
+  ]);
 
   useEffect(() => {
     getValueReserve();
