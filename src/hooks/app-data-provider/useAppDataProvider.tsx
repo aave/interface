@@ -30,7 +30,7 @@ import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
 import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
 import { useTonYourSupplies } from '../useTonYourSupplies';
 import { useAppDataProviderTon } from './useAppDataProviderTon';
-import { useUpdatePriceBalances } from './useUpdatePriceBalances';
+import { useSocketGetRateUSD } from './useSocketGetRateUSD';
 import { WalletBalancesMap } from './useWalletBalances';
 import { useWalletBalancesTon } from './useWalletBalancesTon';
 /**
@@ -83,26 +83,21 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  * It fetches reserves /incentives & walletbalances & keeps them updated.
  */
 export const AppDataProvider: React.FC = ({ children }) => {
-  const URL_PRICE_SOCKET = 'https://aave-ton-api.sotatek.works/';
   const { currentAccount } = useWeb3Context();
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
+
+  const { ExchangeRateListUSD } = useSocketGetRateUSD();
+
   const {
     getValueReserve,
     reservesTon,
     loading: loadingReservesTon,
     yourWalletBalanceTon,
-    setReservesTon,
-  } = useAppDataProviderTon();
+  } = useAppDataProviderTon(ExchangeRateListUSD);
+
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
-
-  const { ExchangeRateListUSD } = useUpdatePriceBalances(
-    URL_PRICE_SOCKET,
-    reservesTon,
-    setReservesTon
-  );
-
   const {
     // loading: loadingYourSuppliesTon,
     userSummaryTon,

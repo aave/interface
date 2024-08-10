@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS, ReservesDataHumanized } from '@aave/contract-helpers';
 import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
-import { Address, fromNano } from '@ton/core';
+import { fromNano } from '@ton/core';
 import { WalletContractV4 } from '@ton/ton';
 import { useTonWallet } from '@tonconnect/ui-react';
 import { BigNumber } from 'bignumber.js';
@@ -112,9 +112,7 @@ export const useTonBalance = (walletAddress: string) => {
     setError(null);
 
     try {
-      const address = Address.parse(walletAddress);
       const workchain = 0; // Usually you need a workchain 0
-
       const publicKey = Buffer.from(wallet.account.publicKey, 'hex');
       const walletContract = WalletContractV4.create({ workchain, publicKey: publicKey });
 
@@ -127,9 +125,6 @@ export const useTonBalance = (walletAddress: string) => {
         '💎TON',
         wallet?.account?.publicKey
       );
-      const seqno: number = await walletInstance.getSeqno();
-      const account = await client.getAccount(seqno, address);
-      console.log('--------------------------', account);
 
       setBalance(fromNano(balance).toString());
     } catch (err) {

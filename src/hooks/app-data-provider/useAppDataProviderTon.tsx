@@ -10,6 +10,7 @@ import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { useTonClient } from '../useTonClient';
+import { WalletBalanceUSD } from './useSocketGetRateUSD';
 import { useTonBalance } from './useWalletBalances';
 import { useGetBalanceTon } from './useWalletBalancesTon';
 
@@ -43,7 +44,7 @@ export const address_pools = 'EQDOthAmNuoCzB_z_Dz84uutd_dycy98Jpm-3SgpyJnkDgG2';
 // export const address_pools = 'EQDQg3KgzAUFf8WSNQz_FUbX6pRnJ2JciFEABwRE4Kipsh3L';
 // export const address_pools = 'EQCvM_iN3f_bqO_ADopJ8SR8ix5YT8wDBxfuQQ6B0QNKbhzV';
 
-export function useAppDataProviderTon() {
+export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
@@ -341,6 +342,36 @@ export function useAppDataProviderTon() {
     getValueReserve();
   }, [client, getValueReserve, poolContract, walletAddressTonWallet, yourWalletBalanceTon]);
 
+  const updateReservesTon = useCallback(() => {
+    if (reservesTon && reservesTon.length) {
+      let isUpdated = false;
+      const resultMappingUsd = reservesTon.map((item) => {
+        const dataById = ExchangeRateListUSD.find(
+          (subItem) => subItem.address === item?.underlyingAssetTon
+        );
+        if (dataById) {
+          const newWalletBalanceUSD = String(Number(dataById.value) * Number(item.walletBalance));
+          if (item.walletBalanceUSD !== newWalletBalanceUSD) {
+            isUpdated = true;
+            return {
+              ...item,
+              walletBalanceUSD: newWalletBalanceUSD,
+            };
+          }
+        }
+        return item;
+      });
+
+      if (isUpdated) {
+        setReservesTon(resultMappingUsd as DashboardReserve[]);
+      }
+    }
+  }, [ExchangeRateListUSD, reservesTon]);
+
+  useEffect(() => {
+    updateReservesTon();
+  }, [ExchangeRateListUSD, reservesTon, updateReservesTon]);
+
   const symbolTon = 'ETHx';
 
   return {
@@ -353,4 +384,4 @@ export function useAppDataProviderTon() {
     setReservesTon,
     yourWalletBalanceTon,
   };
-}
+};

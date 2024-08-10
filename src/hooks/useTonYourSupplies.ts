@@ -8,7 +8,7 @@ import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndI
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { address_pools } from './app-data-provider/useAppDataProviderTon';
-import { WalletBalanceUSD } from './app-data-provider/useUpdatePriceBalances';
+import { WalletBalanceUSD } from './app-data-provider/useSocketGetRateUSD';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';

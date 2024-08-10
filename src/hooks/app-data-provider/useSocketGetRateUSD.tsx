@@ -1,7 +1,8 @@
 import _ from 'lodash';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useSocket from 'src/utils/connectSocket';
-import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+
+const URL_PRICE_SOCKET = 'https://aave-ton-api.sotatek.works/';
 
 export type WalletBalanceUSD = {
   id: string;
@@ -9,12 +10,7 @@ export type WalletBalanceUSD = {
   value: string | number;
 };
 
-export const useUpdatePriceBalances = (
-  URL_PRICE_SOCKET: string,
-  //   dataWalletBalance: WalletBalanceUSD[],
-  reservesTon: DashboardReserve[],
-  setReservesTon: (reserves: DashboardReserve[]) => void
-) => {
+export const useSocketGetRateUSD = () => {
   const walletSocketRef = useRef(null);
   const socket = useSocket(URL_PRICE_SOCKET);
 
@@ -42,32 +38,6 @@ export const useUpdatePriceBalances = (
       return value.usd !== newValue;
     });
   };
-
-  const updateReservesTon = useCallback(() => {
-    if (reservesTon && reservesTon.length) {
-      let isUpdated = false;
-      const resultMappingUsd = reservesTon.map((item) => {
-        const dataById = dataWalletBalance.find(
-          (subItem) => subItem.address === item?.underlyingAssetTon
-        );
-        if (dataById) {
-          const newWalletBalanceUSD = String(Number(dataById.value) * Number(item.walletBalance));
-          if (item.walletBalanceUSD !== newWalletBalanceUSD) {
-            isUpdated = true;
-            return {
-              ...item,
-              walletBalanceUSD: newWalletBalanceUSD,
-            };
-          }
-        }
-        return item;
-      });
-
-      if (isUpdated) {
-        setReservesTon(resultMappingUsd as DashboardReserve[]);
-      }
-    }
-  }, [reservesTon, dataWalletBalance, setReservesTon]);
 
   useEffect(() => {
     if (socket) {
@@ -115,10 +85,6 @@ export const useUpdatePriceBalances = (
       };
     }
   }, [socket]);
-
-  useEffect(() => {
-    updateReservesTon();
-  }, [reservesTon, dataWalletBalance, updateReservesTon]);
 
   return {
     ExchangeRateListUSD: dataWalletBalance,
