@@ -35,6 +35,7 @@ export const useUpdatePriceBalances = (
       value: 1,
     },
   ]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const hasChanged = (oldData: any, newData: any) => {
     return _.some(oldData, (value, key) => {
       const newValue = _.get(newData, [key, 'usd']);
@@ -79,6 +80,7 @@ export const useUpdatePriceBalances = (
         console.log('Connected to socket server');
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const onEventName = (data: any) => {
         const result = JSON.parse(data);
         if (!walletSocketRef.current) {
