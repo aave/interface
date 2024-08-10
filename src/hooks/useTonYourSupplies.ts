@@ -119,9 +119,11 @@ export const useTonYourSupplies = (
     const dataUpdate = updateRealTimeBalanceUSD(yourSuppliesTon);
 
     const totalLiquidityUSD = _.sumBy(dataUpdate, (item) => {
-      const underlyingBalanceUSD =
-        typeof item.value === 'string' ? parseFloat(item.value) : item.value;
-      return isNaN(underlyingBalanceUSD) ? 0 : underlyingBalanceUSD;
+      const value =
+        typeof item.underlyingBalanceUSD === 'string'
+          ? parseFloat(item.underlyingBalanceUSD)
+          : item.underlyingBalanceUSD;
+      return isNaN(value) ? 0 : value;
     });
 
     const res = {
