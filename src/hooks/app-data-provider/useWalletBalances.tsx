@@ -1,12 +1,17 @@
 import { API_ETH_MOCK_ADDRESS, ReservesDataHumanized } from '@aave/contract-helpers';
 import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
+import { Address, fromNano } from '@ton/core';
+import { WalletContractV4 } from '@ton/ton';
+import { useTonWallet } from '@tonconnect/ui-react';
 import { BigNumber } from 'bignumber.js';
+import { useCallback, useEffect, useState } from 'react';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
 
 import { usePoolsReservesHumanized } from '../pool/usePoolReserves';
 import { usePoolsTokensBalance } from '../pool/usePoolTokensBalance';
+import { useTonClient } from '../useTonClient';
 
 export interface WalletBalance {
   amount: string;
@@ -93,10 +98,56 @@ export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
   };
 };
 
+
+export const useTonBalance = (walletAddress: string) => {
+  const wallet = useTonWallet();
+  const [balance, setBalance] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const client = useTonClient();
+
+  const fetchBalance = useCallback(async () => {
+
+    if (!client || !walletAddress || !wallet || !wallet?.account?.publicKey) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const address = Address.parse(walletAddress);
+      const workchain = 0; // Usually you need a workchain 0
+
+      const publicKey = Buffer.from(wallet.account.publicKey, 'hex')
+      const walletContract = WalletContractV4.create({ workchain, publicKey: publicKey });
+
+      const walletInstance = client.open(walletContract);
+
+
+      const balance: bigint = await walletInstance.getBalance();
+      console.log("Current deployment wallet balance --------------------- = ", fromNano(balance).toString(), "💎TON", wallet?.account?.publicKey);
+      const seqno: number = await walletInstance.getSeqno();
+      const account = await client.getAccount(seqno, address);
+      console.log("--------------------------", account)
+
+      setBalance(fromNano(balance).toString());
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [client, wallet, walletAddress]);
+
+  useEffect(() => {
+    fetchBalance();
+  }, [fetchBalance]);
+
+  return { balance, loading, error, refetch: fetchBalance };
+};
 export interface WalletBalances {
   walletBalances: WalletBalancesMap;
   hasEmptyWallet: boolean;
   loading: boolean;
+  yourWalletBalanceTon?: string;
 }
 
 export const useWalletBalances = (marketData: MarketDataType): WalletBalances => {

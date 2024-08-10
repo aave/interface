@@ -31,6 +31,7 @@ export interface SupplyActionProps extends BoxProps {
   decimals: number;
   isWrappedBaseAsset: boolean;
   underlyingAssetTon?: string;
+  poolJettonWalletAddress?: string;
 }
 
 export const SupplyActions = React.memo(

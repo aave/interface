@@ -20,4 +20,5 @@ export type SupplyAssetsItem = {
   detailsAddress: string;
   image?: string;
   underlyingAssetTon?: string;
+  poolJettonWalletAddress?: string;
 };

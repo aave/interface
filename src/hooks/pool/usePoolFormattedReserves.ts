@@ -23,7 +23,8 @@ export type FormattedReservesAndIncentives = ReturnType<
     isEmodeEnabled: boolean;
     isWrappedBaseAsset: boolean;
     underlyingAssetTon?: string;
-    reserveID?: number;
+    reserveID?: string;
+    poolJettonWalletAddress?: string;
   } & ReserveDataHumanized;
 
 const formatReserves = memoize(

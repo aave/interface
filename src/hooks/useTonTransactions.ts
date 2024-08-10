@@ -1,4 +1,5 @@
 import { Address, beginCell, Cell, OpenedContract, toNano } from '@ton/core';
+import { useTonWallet } from '@tonconnect/ui-react';
 import { useCallback } from 'react';
 import { Op } from 'src/contracts/JettonConstants';
 import { JettonMinter } from 'src/contracts/JettonMinter';
@@ -11,6 +12,7 @@ import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
 export const useTonTransactions = (yourAddressWallet: string) => {
   const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
+  const wallet = useTonWallet();
   const client = useTonClient();
   const { sender, getLatestBoc } = useTonConnect();
 
@@ -23,7 +25,8 @@ export const useTonTransactions = (yourAddressWallet: string) => {
 
   const onSendSupplyTon = useCallback(
     async (_add: string, amount: string) => {
-      if (!client || !yourAddressWallet || !_add || !amount) return;
+      if (!client || !yourAddressWallet || !_add || !amount || !wallet || !wallet.account.publicKey)
+        return;
 
       const contractJettonMinter = new JettonMinter(
         Address.parse(_add) // = address asset
@@ -76,7 +79,7 @@ export const useTonTransactions = (yourAddressWallet: string) => {
         return { success: false, error };
       }
     },
-    [client, getLatestBoc, getTransactionStatus, onGetGetTxByBOC, sender, yourAddressWallet]
+    [client, getLatestBoc, getTransactionStatus, onGetGetTxByBOC, sender, wallet, yourAddressWallet]
   );
 
   return {

@@ -4,11 +4,11 @@ import { useCallback } from 'react';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { retry } from 'ts-retry-promise';
 
-import { useTonClient } from './useTonClient';
+import { useTonClientV2 } from './useTonClient';
 
 export function useTonGetTxByBOC() {
   const { walletAddressTonWallet } = useTonConnectContext();
-  const client = useTonClient();
+  const client = useTonClientV2();
 
   const onGetGetTxByBOC = useCallback(
     async (exBoc: string, _add: string) => {

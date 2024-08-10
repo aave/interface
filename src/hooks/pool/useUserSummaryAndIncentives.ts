@@ -29,7 +29,7 @@ import { useUserPoolsReservesIncentivesHumanized } from './useUserPoolReservesIn
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
 
 export type FormattedUserReserves = ComputedUserReserve<FormattedReservesAndIncentives> & {
-  reserveID?: number;
+  reserveID?: string;
 };
 
 export type UserSummaryAndIncentives =

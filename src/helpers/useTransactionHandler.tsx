@@ -33,7 +33,7 @@ interface UseTransactionHandlerProps {
   protocolAction?: ProtocolAction;
   deps?: DependencyList;
   eventTxInfo?: TransactionDetails;
-  reserveID?: number;
+  reserveID?: string;
   usageAsCollateral?: boolean;
 }
 
@@ -287,7 +287,7 @@ export const useTransactionHandler = ({
   const action = async () => {
     if (isConnectedTonWallet) {
       setMainTxState({ ...mainTxState, loading: true });
-      const resToggle = await onToggleCollateralTon(Number(reserveID), Boolean(usageAsCollateral));
+      const resToggle = await onToggleCollateralTon(String(reserveID), Boolean(usageAsCollateral));
       if (resToggle?.success) {
         await sleep(15000); // sleep 15s re call SC get new data reserve
         setMainTxState({

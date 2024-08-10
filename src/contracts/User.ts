@@ -16,16 +16,18 @@ export type UserConfig = {
 };
 
 export function userConfigToCell(config: UserConfig): Cell {
-  const userPrincipals = Dictionary.empty(Dictionary.Keys.BigUint(32), Dictionary.Values.Cell());
-  return beginCell()
-    .storeAddress(config.pool)
-    .storeAddress(config.owner)
-    .storeCoins(0)
-    .storeCoins(0)
-    .storeCoins(0)
-    .storeDict(userPrincipals)
-    .storeUint(0, 256)
-    .endCell();
+  const userPrincipals = Dictionary.empty(Dictionary.Keys.BigUint(256), Dictionary.Values.Cell());
+  return (
+    beginCell()
+      .storeAddress(config.pool)
+      .storeAddress(config.owner)
+      .storeCoins(0)
+      .storeCoins(0)
+      .storeCoins(0)
+      .storeDict(userPrincipals)
+      // .storeUint(0, 256)
+      .endCell()
+  );
 }
 
 export type UserData = {
@@ -39,6 +41,7 @@ export type UserPrincipalData = {
   stableBorrowBalance: bigint;
   variableBorrowBalance: bigint;
   previousIndex: bigint;
+  isCollateral: boolean;
 };
 
 export class User implements Contract {
@@ -66,8 +69,8 @@ export class User implements Contract {
     provider: ContractProvider,
     via: Sender,
     value: bigint,
-    reserveId: bigint,
-    bitMaskValue: bigint
+    poolJWA: Address,
+    isCollateral: boolean
   ) {
     await provider.internal(via, {
       value,
@@ -75,8 +78,8 @@ export class User implements Contract {
       body: beginCell()
         .storeUint(0x50168bbe, 32)
         .storeUint(0, 64)
-        .storeUint(reserveId, 32)
-        .storeUint(bitMaskValue, 1)
+        .storeAddress(poolJWA)
+        .storeBit(isCollateral)
         .endCell(),
     });
   }
@@ -107,26 +110,28 @@ export class User implements Contract {
 
   async getUserPrincipalData(
     provider: ContractProvider,
-    reserveId: bigint
+    poolJWA: Address
   ): Promise<UserPrincipalData> {
     const { stack } = await provider.get('get_user_principal_data', [
-      { type: 'int', value: reserveId },
+      {
+        type: 'slice',
+        cell: beginCell().storeAddress(poolJWA).endCell(),
+      },
     ]);
     return {
       supplyBalance: stack.readBigNumber(),
       stableBorrowBalance: stack.readBigNumber(),
       variableBorrowBalance: stack.readBigNumber(),
       previousIndex: stack.readBigNumber(),
+      isCollateral: stack.readBoolean(),
     };
   }
 
   async getUserSupplies(provider: ContractProvider) {
-    const userCollateralMask = (
-      await provider.get('get_supplied_collateral_mask', [])
-    ).stack.readNumber();
+    // const userCollateralMask = (await provider.get('get_supplied_collateral_mask', [])).stack.readNumber();
 
     const { stack } = await provider.get('get_user_data', []);
-    // console.log(stack);
+    console.log(stack);
 
     stack.skip(3);
 
@@ -138,7 +143,7 @@ export class User implements Contract {
     }
 
     const dict = Dictionary.loadDirect(
-      Dictionary.Keys.BigUint(32),
+      Dictionary.Keys.BigUint(256),
       Dictionary.Values.Cell(),
       principalList
     );
@@ -147,19 +152,25 @@ export class User implements Contract {
     let index = 0;
     for (const key of dict.keys()) {
       const value = dict.get(key);
-      // console.log('🚀 ~ User ~ getUserSupplies ~ value:', value);
+      console.log('🚀 ~ User ~ getUserSupplies ~ value:', value);
       if (value) {
         const cells = Cell.fromBoc(value.toBoc());
         for (const cell of cells) {
           const a = cell.beginParse();
+
+          // console.log(Buffer.from(key.toString(16)), 'hex');
+          // console.log(key.toString(16));
           reserves[index] = {
-            reserveID: Number(key.toString()),
+            // reserveID: BigInt(key.toString()),
+            underlyingAddress: Address.normalize(`0:${key.toString(16)}`),
             supplyBalance: a.loadCoins(),
             stableBorrowBalance: a.loadCoins(),
             variableBorrowBalance: a.loadCoins(),
-            isCollateral: (userCollateralMask & (2 ** Number(key.toString()))) > 0,
+            previousIndex: a.loadInt(128),
+            isCollateral: a.loadBoolean(),
+            // isCollateral: (userCollateralMask & Number(key.toString())) > 0,
           };
-          // console.log(reserves[index]);
+          console.log(reserves[index]);
           // console.log(`[${key}] - [${value}]`);
           index++;
         }

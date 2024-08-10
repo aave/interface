@@ -38,31 +38,37 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
       }
 
       const yourSupplies = await onGetYourSupply();
-      if (!yourSupplies) return;
 
-      const result = _.chain(reserves)
-        .filter((reserve) =>
-          _.some(
-            yourSupplies,
-            (yourSupply) =>
-              reserve.underlyingAssetTon === yourSupply.underlyingAddress.toString() &&
-              Number(yourSupply.supplyBalance) > 0
+      console.log('---------------------------1111111111111111111111--------------', reserves);
+
+      const result = await Promise.all(
+        _.chain(reserves)
+          .filter((reserve) =>
+            _.some(
+              yourSupplies,
+              (yourSupply) =>
+                reserve.poolJettonWalletAddress === yourSupply.underlyingAddress.toString() &&
+                Number(yourSupply.supplyBalance) > 0
+            )
           )
-        )
-        .map((reserve) => {
-          const matchedSupply = _.find(
-            yourSupplies,
-            (yourSupply) => reserve.underlyingAssetTon === yourSupply.underlyingAddress.toString()
-          );
+          .map(async (reserve) => {
+            const matchedSupply = _.find(
+              yourSupplies,
+              (yourSupply) =>
+                reserve.poolJettonWalletAddress === yourSupply.underlyingAddress.toString()
+            );
+            return {
+              ...reserve,
+              underlyingBalance: formatUnits(matchedSupply?.supplyBalance || '0', reserve.decimals),
+              usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
+              reserveID: matchedSupply?.underlyingAddress,
+              // usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
+              // reserveID: matchedSupply?.reserveID,
+            };
+          })
+          .value()
+      );
 
-          return {
-            ...reserve,
-            underlyingBalance: formatUnits(matchedSupply?.supplyBalance || '0', reserve.decimals),
-            usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
-            reserveID: matchedSupply?.reserveID,
-          };
-        })
-        .value();
       setYourSuppliesTon(result);
     } catch (error) {
       console.error('Error fetching supplies:', error);
@@ -115,7 +121,7 @@ export const useTonCollateral = ({ yourAddressWallet }: UseTransactionHandlerTon
   const { sender, getLatestBoc } = useTonConnect();
 
   const onToggleCollateralTon = useCallback(
-    async (reserveId: number, status: boolean) => {
+    async (reserveId: string, status: boolean) => {
       if (!client || !yourAddressWallet || !address_pools) {
         return;
       }
@@ -129,8 +135,8 @@ export const useTonCollateral = ({ yourAddressWallet }: UseTransactionHandlerTon
         await collateralContract.sendUpdateColleteral(
           sender, //via: Sender,
           toNano('0.1'), // gas 0.1
-          BigInt(reserveId), // reserveID
-          BigInt(status) // true = isCollateral, false = unCollateral
+          Address.parse(reserveId), // reserveID
+          status // true = isCollateral, false = unCollateral
         );
 
         const boc = await getLatestBoc();

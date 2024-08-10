@@ -11,47 +11,37 @@ import {
   toNano,
 } from '@ton/core';
 
-import { readJettonMetadata } from '../helpers/jetton-metadata';
-import { User } from './User';
-
 // TODO: Reconstruct the folder structure
 const OP = {
   INIT_RESERVE: 0x36e5ebcb,
-  UPDATE_CONFIG: 0x36e5edab,
-  DEPOSIT: 0x35880552,
 };
 
-export type PoolConfig = {
+export type MockPoolConfig = {
   admin: Address;
-  userCode: Cell;
 };
 
-export function PoolConfigToCell(config: PoolConfig): Cell {
+export function MockPoolConfigToCell(config: MockPoolConfig): Cell {
   const newDict = Dictionary.empty(Dictionary.Keys.BigUint(256), Dictionary.Values.Cell());
   return beginCell()
     .storeAddress(config.admin)
     .storeDict(newDict)
     .storeDict(newDict)
     .storeDict(newDict)
-    .storeRef(config.userCode)
     .endCell();
 }
 
 export type ReserveConfig = {
   underlyingAddress: Address;
-  decimals: number;
   LTV: number;
+  decimals: number;
   isActive: boolean;
   isFrozen: boolean;
   isBorrowingEnabled: boolean;
   isPaused: boolean;
-  isJetton: boolean;
   reserveFactor: number;
   supplyCap: bigint;
   borrowCap: bigint;
   debtCeiling: bigint;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  content: Cell | any;
 };
 
 export function ReserveConfigToCell(config: ReserveConfig): Cell {
@@ -63,12 +53,10 @@ export function ReserveConfigToCell(config: ReserveConfig): Cell {
     .storeBit(config.isFrozen)
     .storeBit(config.isBorrowingEnabled)
     .storeBit(config.isPaused)
-    .storeBit(config.isJetton)
     .storeUint(config.reserveFactor, 32)
     .storeCoins(config.supplyCap)
     .storeCoins(config.borrowCap)
     .storeCoins(config.debtCeiling)
-    .storeRef(config.content)
     .endCell();
 }
 
@@ -118,63 +106,34 @@ export function RateStrategyToCell(config: RateStrategy): Cell {
 }
 
 export type InitReserveParams = {
-  queryId: number;
-  poolJettonWalletAddress: Address;
+  queryId: bigint;
+  underlyingAddress: Address;
   reserveConfig: ReserveConfig;
   rateStrategy: RateStrategy;
 };
 
-export type UpdateConfigParams = {
-  queryId: bigint;
-  poolJettonWalletAddress: Address;
-  reserveConfig: ReserveConfig;
-};
-
 export function InitReserveParamsToCell(config: InitReserveParams): Cell {
-  const { queryId, poolJettonWalletAddress, reserveConfig, rateStrategy } = config;
+  const { queryId, underlyingAddress, reserveConfig, rateStrategy } = config;
   return beginCell()
     .storeUint(OP.INIT_RESERVE, 32)
     .storeUint(queryId, 64)
-    .storeAddress(poolJettonWalletAddress)
+    .storeAddress(underlyingAddress)
     .storeRef(ReserveConfigToCell(reserveConfig))
     .storeRef(RateStrategyToCell(rateStrategy))
     .endCell();
 }
 
-export function UpdateConfigParamsToCell(config: UpdateConfigParams): Cell {
-  const { queryId, poolJettonWalletAddress, reserveConfig } = config;
-  return beginCell()
-    .storeUint(OP.UPDATE_CONFIG, 32)
-    .storeUint(queryId, 64)
-    .storeAddress(poolJettonWalletAddress)
-    .storeRef(ReserveConfigToCell(reserveConfig))
-    .endCell();
-}
-
-export type DepositParams = {
-  queryId: number;
-  amount: bigint;
-};
-
-export function DepositParamsToCell(config: DepositParams): Cell {
-  return beginCell()
-    .storeUint(OP.DEPOSIT, 32)
-    .storeUint(config.queryId, 64)
-    .storeCoins(config.amount)
-    .endCell();
-}
-
-export class Pool implements Contract {
+export class MockPool implements Contract {
   constructor(readonly address: Address, readonly init?: { code: Cell; data: Cell }) {}
 
   static createFromAddress(address: Address) {
-    return new Pool(address);
+    return new MockPool(address);
   }
 
-  static createFromConfig(config: PoolConfig, code: Cell, workchain = 0) {
-    const data = PoolConfigToCell(config);
+  static createFromConfig(config: MockPoolConfig, code: Cell, workchain = 0) {
+    const data = MockPoolConfigToCell(config);
     const init = { code, data };
-    return new Pool(contractAddress(workchain, init), init);
+    return new MockPool(contractAddress(workchain, init), init);
   }
 
   async sendDeploy(provider: ContractProvider, via: Sender, value: bigint) {
@@ -190,22 +149,6 @@ export class Pool implements Contract {
       value: toNano('0.01'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: InitReserveParamsToCell(params),
-    });
-  }
-
-  async sendUpdateConfig(provider: ContractProvider, via: Sender, params: UpdateConfigParams) {
-    await provider.internal(via, {
-      value: toNano('0.1'),
-      sendMode: SendMode.PAY_GAS_SEPARATELY,
-      body: UpdateConfigParamsToCell(params),
-    });
-  }
-
-  async sendDeposit(provider: ContractProvider, via: Sender, params: DepositParams) {
-    await provider.internal(via, {
-      value: params.amount + toNano('0.1'),
-      sendMode: SendMode.PAY_GAS_SEPARATELY,
-      body: DepositParamsToCell(params),
     });
   }
 
@@ -235,40 +178,13 @@ export class Pool implements Contract {
       const cs = configs.readCell();
       const ss = states.readCell();
 
-      const config = unpackReserveConfig(cs);
-      const content = (await readJettonMetadata(config.content)).metadata;
+      const config: ReserveConfig = unpackReserveConfig(cs);
       const state: ReserveState = unpackReserveState(ss);
 
-      delete config.content;
-
-      reserveData.push({ ...config, ...state, ...content });
+      reserveData.push({ ...config, ...state });
     }
 
     return reserveData;
-  }
-
-  async getUserAddress(provider: ContractProvider, ownerAddress: Address) {
-    const { stack } = await provider.get('get_user_address', [
-      {
-        type: 'slice',
-        cell: beginCell().storeAddress(ownerAddress).endCell(),
-      },
-    ]);
-    return stack.readAddress();
-  }
-
-  async getUserSupplies(provider: ContractProvider, ownerAddress: Address) {
-    const { stack } = await provider.get('get_user_address', [
-      {
-        type: 'slice',
-        cell: beginCell().storeAddress(ownerAddress).endCell(),
-      },
-    ]);
-
-    const userAddress = stack.readAddress();
-    const userContract = provider.open(User.createFromAddress(userAddress));
-
-    return await userContract.getUserSupplies();
   }
 }
 
@@ -281,12 +197,10 @@ export function packReserveConfig(config: ReserveConfig): Cell {
     .storeBit(config.isFrozen)
     .storeBit(config.isBorrowingEnabled)
     .storeBit(config.isPaused)
-    .storeBit(config.isJetton)
     .storeUint(config.reserveFactor, 32)
     .storeCoins(config.supplyCap)
     .storeCoins(config.borrowCap)
     .storeCoins(config.debtCeiling)
-    .storeRef(config.content)
     .endCell();
 }
 
@@ -300,12 +214,10 @@ export function unpackReserveConfig(cell: Cell): ReserveConfig {
     isFrozen: cs.loadBoolean(),
     isBorrowingEnabled: cs.loadBoolean(),
     isPaused: cs.loadBoolean(),
-    isJetton: cs.loadBoolean(),
     reserveFactor: cs.loadUint(32),
     supplyCap: cs.loadCoins(),
     borrowCap: cs.loadCoins(),
     debtCeiling: cs.loadCoins(),
-    content: cs.loadRef(),
   };
 }
 
@@ -313,14 +225,14 @@ export type ReserveState = {
   totalSupply: bigint;
   totalStableDebt: bigint;
   totalVariableDebt: bigint;
-  liquidityIndex: bigint;
-  stableBorrowIndex: bigint;
-  variableBorrowIndex: bigint;
-  currentLiquidityRate: bigint;
-  currentStableBorrowRate: bigint;
-  currentVariableBorrowRate: bigint;
-  averageStableBorrowRate: bigint;
-  lastUpdateTimestamp: bigint;
+  liquidityIndex: number;
+  stableBorrowIndex: number;
+  variableBorrowIndex: number;
+  currentLiquidityRate: number;
+  currentStableBorrowRate: number;
+  currentVariableBorrowRate: number;
+  averageStableBorrowRate: number;
+  lastUpdateTimestamp: number;
   accruedToTreasury: bigint;
 };
 
@@ -334,14 +246,14 @@ export function unpackReserveState(cell: Cell): ReserveState {
     totalSupply: balances.loadCoins(),
     totalStableDebt: balances.loadCoins(),
     totalVariableDebt: balances.loadCoins(),
-    liquidityIndex: indexes.loadUintBig(128),
-    stableBorrowIndex: indexes.loadUintBig(128),
-    variableBorrowIndex: indexes.loadUintBig(128),
-    currentLiquidityRate: rates.loadUintBig(128),
-    currentStableBorrowRate: rates.loadUintBig(128),
-    currentVariableBorrowRate: rates.loadUintBig(128),
-    averageStableBorrowRate: rates.loadUintBig(128),
-    lastUpdateTimestamp: cs.loadUintBig(128),
+    liquidityIndex: indexes.loadUint(128),
+    stableBorrowIndex: indexes.loadUint(128),
+    variableBorrowIndex: indexes.loadUint(128),
+    currentLiquidityRate: rates.loadUint(128),
+    currentStableBorrowRate: rates.loadUint(128),
+    currentVariableBorrowRate: rates.loadUint(128),
+    averageStableBorrowRate: rates.loadUint(128),
+    lastUpdateTimestamp: cs.loadUint(128),
     accruedToTreasury: cs.loadCoins(),
   };
 }
