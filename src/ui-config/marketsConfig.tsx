@@ -25,6 +25,7 @@ import {
   AaveV3Scroll,
   AaveV3ScrollSepolia,
   AaveV3Sepolia,
+  AaveV3ZkSync,
 } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
 
@@ -96,6 +97,7 @@ export enum CustomMarket {
   proto_bnb_v3 = 'proto_bnb_v3',
   proto_scroll_v3 = 'proto_scroll_v3',
   proto_lido_v3 = 'proto_lido_v3',
+  proto_zksync_v3 = 'proto_zksync_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -107,6 +109,8 @@ export enum CustomMarket {
 }
 
 const apiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
+
+console.log('AaveV3ZkSync ------->', AaveV3ZkSync);
 
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
@@ -171,6 +175,34 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3EthereumLido.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       WITHDRAW_SWITCH_ADAPTER: AaveV3EthereumLido.WITHDRAW_SWAP_ADAPTER,
+    },
+  },
+  [CustomMarket.proto_zksync_v3]: {
+    marketTitle: 'ZkSync Market',
+    market: CustomMarket.proto_zksync_v3,
+    chainId: 324, // TODO: Utilities ChainId.zkSync,
+    v3: true,
+    enabledFeatures: {
+      liquiditySwap: true,
+      collateralRepay: true,
+      incentives: true,
+      withdrawAndSwitch: true,
+      debtSwitch: true,
+      switch: true,
+    },
+    disableCharts: true,
+    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3ZkSync.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3ZkSync.POOL,
+      WETH_GATEWAY: AaveV3ZkSync.WETH_GATEWAY,
+      // REPAY_WITH_COLLATERAL_ADAPTER: AaveV3ZkSync.REPAY_WITH_COLLATERAL_ADAPTER,
+      // SWAP_COLLATERAL_ADAPTER: AaveV3ZkSync.SWAP_COLLATERAL_ADAPTER,
+      WALLET_BALANCE_PROVIDER: AaveV3ZkSync.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3ZkSync.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3ZkSync.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Ethereum.COLLECTOR,
+      // WITHDRAW_SWITCH_ADAPTER: AaveV3ZkSync.WITHDRAW_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_mainnet]: {
