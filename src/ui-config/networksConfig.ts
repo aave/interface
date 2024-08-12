@@ -450,4 +450,22 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
   },
+  [ChainId.zksync]: {
+    name: 'ZkSync',
+    // privateJsonRPCUrl: 'https://scroll-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    publicJsonRPCUrl: ['https://1rpc.io/zksync2-era', 'https://zksync.drpc.org'],
+    publicJsonRPCWSUrl: 'wss://zksync.drpc.org',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://explorer.zksync.io/',
+    isTestnet: false,
+    networkLogoPath: '/icons/networks/zksync.svg',
+    bridge: {
+      icon: '/icons/networks/zksync.svg',
+      name: 'Zksync Bridge',
+      url: 'https://portal.zksync.io/bridge/',
+    },
+    ratesHistoryApiUrl,
+  },
 } as const;

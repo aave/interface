@@ -110,8 +110,6 @@ export enum CustomMarket {
 
 const apiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
 
-console.log('AaveV3ZkSync ------->', AaveV3ZkSync);
-
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
@@ -178,9 +176,9 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_zksync_v3]: {
-    marketTitle: 'ZkSync Market',
+    marketTitle: 'ZkSync',
     market: CustomMarket.proto_zksync_v3,
-    chainId: 324, // TODO: Utilities ChainId.zkSync,
+    chainId: ChainId.zksync, // TODO: Utilities ChainId.zkSync,
     v3: true,
     enabledFeatures: {
       liquiditySwap: true,
