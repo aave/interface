@@ -62,7 +62,7 @@ export const MarketsTopPanel = () => {
         <Box sx={{ display: 'flex', gap: { xs: 3, xsm: 8 } }}>
           <TopInfoPanelItem
             hideIcon
-            title={<Trans>{downToSM ? 'Market Size' : 'Total market size'}</Trans>}
+            title={<Trans>{downToSM ? 'Market' : 'Total market size'}</Trans>}
             loading={loading}
           >
             <FormattedNumber
