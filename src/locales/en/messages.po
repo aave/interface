@@ -2774,10 +2774,6 @@ msgstr "To submit a proposal for minor changes to the protocol, you'll need at l
 msgid "Top 10 addresses"
 msgstr "Top 10 addresses"
 
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Total available"
-msgstr "Total available"
-
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -2789,10 +2785,6 @@ msgstr "Total available"
 msgid "Total borrowed"
 msgstr "Total borrowed"
 
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Total borrows"
-msgstr "Total borrows"
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "Total emission per day"
 msgstr "Total emission per day"
@@ -2800,10 +2792,6 @@ msgstr "Total emission per day"
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Total interest accrued"
 msgstr "Total interest accrued"
-
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Total market size"
-msgstr "Total market size"
 
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -3471,6 +3459,9 @@ msgstr "withdrew"
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "{0}"
