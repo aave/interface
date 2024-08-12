@@ -5,9 +5,16 @@ export const calculateAPYTon = (currentLiquidityRate: string) => {
   return value;
 };
 
-export const calculateTotalElementTon = <T>(data: T[], key: keyof T): number => {
+export const calculateTotalElementTon = <T>(
+  data: T[],
+  valueKey: keyof T,
+  collateralKey?: keyof T // Tham số này giờ là tùy chọn
+): number => {
   return _.sumBy(data, (item) => {
-    const value = item[key];
+    if (collateralKey && item[collateralKey] === false) {
+      return 0;
+    }
+    const value = item[valueKey];
     const numericValue = typeof value === 'string' ? parseFloat(value) : (value as number);
     return isNaN(numericValue) ? 0 : numericValue;
   });

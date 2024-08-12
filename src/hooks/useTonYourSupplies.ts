@@ -70,8 +70,6 @@ export const useTonYourSupplies = (
               ),
               usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
               reserveID: matchedSupply?.underlyingAddress,
-              // usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
-              // reserveID: matchedSupply?.reserveID,
             };
           })
           .value()
@@ -123,12 +121,18 @@ export const useTonYourSupplies = (
 
     const earnedAPY = calculateTotalElementTon(dataUpdate, 'supplyAPY');
 
+    const totalCollateralUSD = calculateTotalElementTon(
+      dataUpdate,
+      'underlyingBalanceUSD',
+      'usageAsCollateralEnabledOnUser'
+    );
+
     const res = {
       userReservesData: dataUpdate,
       totalLiquidityMarketReferenceCurrency: '111',
       totalLiquidityUSD: String(totalLiquidityUSD) || '0',
       totalCollateralMarketReferenceCurrency: '113',
-      totalCollateralUSD: '114',
+      totalCollateralUSD: String(totalCollateralUSD),
       totalBorrowsMarketReferenceCurrency: '115',
       totalBorrowsUSD: '116',
       netWorthUSD: '117',
