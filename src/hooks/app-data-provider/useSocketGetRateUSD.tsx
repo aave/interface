@@ -1,9 +1,10 @@
+import axios from 'axios';
 import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import useSocket from 'src/utils/connectSocket';
 
 const URL_PRICE_SOCKET = 'https://aave-ton-api.sotatek.works/';
-
+const URL_DEFAULT_VALUE_PRICE = 'https://aave-ton-api.sotatek.works/crawler/price';
 export type WalletBalanceUSD = {
   id: string;
   address: string;
@@ -13,8 +14,8 @@ export type WalletBalanceUSD = {
 export const useSocketGetRateUSD = () => {
   const walletSocketRef = useRef(null);
   const socket = useSocket(URL_PRICE_SOCKET);
-
-  const [dataWalletBalance, setDataWalletBalance] = useState<WalletBalanceUSD[]>([
+  // Data with no value price
+  const defaultRateUSDNotValue = [
     {
       id: 'dai',
       address: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
@@ -30,7 +31,36 @@ export const useSocketGetRateUSD = () => {
       address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
       value: 1,
     },
-  ]);
+  ];
+
+  const [dataWalletBalance, setDataWalletBalance] = useState<WalletBalanceUSD[]>([]);
+
+  // CALL API SET DEFAULT VALUE FOR MONEY
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get(URL_DEFAULT_VALUE_PRICE);
+
+        if (result.data) {
+          // Filter and update dataWalletBalance
+          const updatedData = defaultRateUSDNotValue.map((item) => {
+            const priceData = result.data[item.id];
+            return {
+              ...item,
+              value: priceData ? priceData.usd : 1,
+            };
+          });
+
+          setDataWalletBalance(updatedData);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const hasChanged = (oldData: any, newData: any) => {
     return _.some(oldData, (value, key) => {
