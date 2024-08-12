@@ -202,6 +202,7 @@ export const SupplyModalContent = React.memo(
       decimals: poolReserve.decimals,
       isWrappedBaseAsset: poolReserve.isWrappedBaseAsset,
       underlyingAssetTon: poolReserve?.underlyingAssetTon,
+      isJetton: poolReserve?.isJetton || false,
     };
 
     if (supplyTxState.success)

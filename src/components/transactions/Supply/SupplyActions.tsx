@@ -32,6 +32,7 @@ export interface SupplyActionProps extends BoxProps {
   isWrappedBaseAsset: boolean;
   underlyingAssetTon?: string;
   poolJettonWalletAddress?: string;
+  isJetton?: boolean;
 }
 
 export const SupplyActions = React.memo(
@@ -45,11 +46,15 @@ export const SupplyActions = React.memo(
     decimals,
     isWrappedBaseAsset,
     underlyingAssetTon,
+    isJetton,
     ...props
   }: SupplyActionProps) => {
     const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
     const { getValueReserve, getYourSupplies } = useAppDataContext();
-    const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions(walletAddressTonWallet);
+    const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions(
+      walletAddressTonWallet,
+      `${underlyingAssetTon}`
+    );
     const [
       tryPermit,
       supply,
@@ -148,8 +153,8 @@ export const SupplyActions = React.memo(
         if (isConnectedTonWallet) {
           setMainTxState({ ...mainTxState, loading: true });
           const resSupplyTop = await onSendSupplyTon(
-            `${underlyingAssetTon}`,
-            parseUnits(amountToSupply.toString(), decimals).toString()
+            parseUnits(amountToSupply.toString(), decimals).toString(),
+            isJetton
           );
           if (resSupplyTop?.success) {
             await sleep(30000); // sleep 30s re call SC get new data reserve

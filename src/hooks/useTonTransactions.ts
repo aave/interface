@@ -1,20 +1,23 @@
 import { Address, beginCell, Cell, OpenedContract, toNano } from '@ton/core';
-import { useTonWallet } from '@tonconnect/ui-react';
 import { useCallback } from 'react';
 import { Op } from 'src/contracts/JettonConstants';
 import { JettonMinter } from 'src/contracts/JettonMinter';
 import { JettonWallet } from 'src/contracts/JettonWallet';
+import { Pool } from 'src/contracts/Pool';
 
 import { address_pools } from './app-data-provider/useAppDataProviderTon';
+import { useContract } from './useContract';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
-export const useTonTransactions = (yourAddressWallet: string) => {
+export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
   const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
-  const wallet = useTonWallet();
   const client = useTonClient();
   const { sender, getLatestBoc } = useTonConnect();
+
+  const providerJettonMinter = useContract<JettonMinter>(underlyingAssetTon, JettonMinter);
+  const providerPool = useContract<Pool>(underlyingAssetTon, Pool);
 
   const approvedAmountTonAssume = {
     user: '0x6385fb98e0ae7bd76b55a044e1635244e46b07ef',
@@ -23,18 +26,9 @@ export const useTonTransactions = (yourAddressWallet: string) => {
     amount: '-1',
   };
 
-  const onSendSupplyTon = useCallback(
-    async (_add: string, amount: string) => {
-      if (!client || !yourAddressWallet || !_add || !amount || !wallet || !wallet.account.publicKey)
-        return;
-
-      const contractJettonMinter = new JettonMinter(
-        Address.parse(_add) // = address asset
-      );
-
-      const providerJettonMinter = client.open(
-        contractJettonMinter
-      ) as OpenedContract<JettonMinter>;
+  const onSendJettonToken = useCallback(
+    async (amount: string) => {
+      if (!client || !yourAddressWallet || !amount || !providerJettonMinter) return;
 
       const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
         Address.parse(yourAddressWallet)
@@ -59,10 +53,47 @@ export const useTonTransactions = (yourAddressWallet: string) => {
           toNano('0.05'), // forward_ton_amount: bigint,
           beginCell()
             .storeUint(Op.supply, 32)
-            .storeAddress(Address.parse(_add)) // = address asset
+            .storeAddress(Address.parse(underlyingAssetTon)) // = address asset
             .storeUint(1, 1)
             .endCell() //tokenAddress: Address
         );
+
+        return true;
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        return { success: false, error };
+      }
+    },
+    [client, providerJettonMinter, sender, underlyingAssetTon, yourAddressWallet]
+  );
+
+  const onSendNativeToken = useCallback(
+    async (amount: string) => {
+      if (!client || !yourAddressWallet || !amount || !providerPool) return;
+      try {
+        const params = {
+          queryId: Date.now(),
+          amount: BigInt(amount),
+        };
+        await providerPool.sendDeposit(
+          sender, //via: Sender
+          params //via: Sender
+        );
+
+        return true;
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        return { success: false, error };
+      }
+    },
+    [client, providerPool, sender, yourAddressWallet]
+  );
+
+  const onSendSupplyTon = useCallback(
+    async (amount: string, isJetton: boolean | undefined) => {
+      try {
+        if (isJetton) await onSendJettonToken(amount);
+        else await onSendNativeToken(amount);
 
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
@@ -79,7 +110,14 @@ export const useTonTransactions = (yourAddressWallet: string) => {
         return { success: false, error };
       }
     },
-    [client, getLatestBoc, getTransactionStatus, onGetGetTxByBOC, sender, wallet, yourAddressWallet]
+    [
+      getLatestBoc,
+      getTransactionStatus,
+      onGetGetTxByBOC,
+      onSendJettonToken,
+      onSendNativeToken,
+      yourAddressWallet,
+    ]
   );
 
   return {

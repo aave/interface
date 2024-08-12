@@ -81,8 +81,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             ? formatUnits(balance || '0', item.decimals)
             : yourWalletBalanceTon;
 
-          const poolJettonWalletAddress =
-            item.isJetton && (await getPoolJettonWalletAddress(item.underlyingAddress.toString()));
+          const poolJettonWalletAddress = item.isJetton
+            ? await getPoolJettonWalletAddress(item.underlyingAddress.toString())
+            : item.underlyingAddress;
 
           return {
             ...item,
