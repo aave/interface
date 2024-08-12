@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
 import { User } from 'src/contracts/User';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { calculateTotalElementTon } from 'src/utils/calculatesTon';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { address_pools } from './app-data-provider/useAppDataProviderTon';
@@ -118,13 +119,9 @@ export const useTonYourSupplies = (
   useEffect(() => {
     const dataUpdate = updateRealTimeBalanceUSD(yourSuppliesTon);
 
-    const totalLiquidityUSD = _.sumBy(dataUpdate, (item) => {
-      const value =
-        typeof item.underlyingBalanceUSD === 'string'
-          ? parseFloat(item.underlyingBalanceUSD)
-          : item.underlyingBalanceUSD;
-      return isNaN(value) ? 0 : value;
-    });
+    const totalLiquidityUSD = calculateTotalElementTon(dataUpdate, 'underlyingBalanceUSD');
+
+    const earnedAPY = calculateTotalElementTon(dataUpdate, 'supplyAPY');
 
     const res = {
       userReservesData: dataUpdate,
@@ -144,9 +141,9 @@ export const useTonYourSupplies = (
       calculatedUserIncentives: {},
       userEmodeCategoryId: 0,
       isInEmode: false,
-      earnedAPY: 0,
-      debtAPY: 0,
-      netAPY: 0,
+      earnedAPY: earnedAPY,
+      debtAPY: 1,
+      netAPY: 2,
     };
     setUserSummaryTon(res as ExtendedFormattedUser);
   }, [yourSuppliesTon, ExchangeRateListUSD, updateRealTimeBalanceUSD]);

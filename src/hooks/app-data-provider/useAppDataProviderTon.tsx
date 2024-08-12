@@ -7,6 +7,7 @@ import { JettonMinter } from 'src/contracts/JettonMinter';
 import { Pool } from 'src/contracts/Pool';
 import { useContract } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
+import { calculateAPYTon } from 'src/utils/calculatesTon';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { useTonClient } from '../useTonClient';
@@ -85,6 +86,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             ? await getPoolJettonWalletAddress(item.underlyingAddress.toString())
             : item.underlyingAddress;
 
+          const supplyAPY = calculateAPYTon(item.currentLiquidityRate.toString());
+
           return {
             ...item,
             baseLTVasCollateral: '7450',
@@ -134,7 +137,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             formattedEModeLiquidationBonus: '0.01',
             formattedEModeLiquidationThreshold: '0.95',
             formattedEModeLtv: '0.93',
-            supplyAPY: '0.00003112395906657383',
+            supplyAPY: supplyAPY,
             variableBorrowAPY: '0.00238943754103481217',
             stableBorrowAPY: '0.07250818117089440143',
             formattedAvailableLiquidity: '2314.651612891643030158',
@@ -160,7 +163,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             unbackedUSD: '0',
             aIncentivesData: [
               {
-                incentiveAPR: '0.02478541814898917815',
+                incentiveAPR: '0',
                 rewardTokenAddress: '0x30D20208d987713f46DFD34EF128Bb16C404D10f',
                 rewardTokenSymbol: 'SD',
               },
@@ -220,7 +223,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               formattedEModeLiquidationBonus: '0.01',
               formattedEModeLiquidationThreshold: '0.95',
               formattedEModeLtv: '0.93',
-              supplyAPY: '0.00003112395906657383',
+              supplyAPY: supplyAPY,
               variableBorrowAPY: '0.00238943754103481217',
               stableBorrowAPY: '0.07250818117089440143',
               formattedAvailableLiquidity: '2314.651612891643030158',
@@ -246,7 +249,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               unbackedUSD: '0',
               aIncentivesData: [
                 {
-                  incentiveAPR: '0.02478541814898917815',
+                  incentiveAPR: '0',
                   rewardTokenAddress: '0x30D20208d987713f46DFD34EF128Bb16C404D10f',
                   rewardTokenSymbol: 'SD',
                 },
