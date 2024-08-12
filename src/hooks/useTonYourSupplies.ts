@@ -4,12 +4,10 @@ import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
 import { User } from 'src/contracts/User';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
-import { calculateTotalElementTon } from 'src/utils/calculatesTon';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { address_pools } from './app-data-provider/useAppDataProviderTon';
-import { WalletBalanceUSD } from './app-data-provider/useSocketGetRateUSD';
+import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
@@ -18,15 +16,10 @@ interface UseTransactionHandlerTonProps {
   yourAddressWallet: string;
 }
 
-export const useTonYourSupplies = (
-  yourAddressWallet: string,
-  reserves: DashboardReserve[],
-  ExchangeRateListUSD: WalletBalanceUSD[]
-) => {
+export const useTonYourSupplies = (yourAddressWallet: string, reserves: DashboardReserve[]) => {
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
-  const [userSummaryTon, setUserSummaryTon] = useState<ExtendedFormattedUser>();
-  const [yourSuppliesTon, setYourSuppliesTon] = useState<unknown>([]);
+  const [yourSuppliesTon, setYourSuppliesTon] = useState<FormattedUserReserves[]>([]);
 
   const onGetYourSupply = useCallback(async () => {
     if (!client || !address_pools || !yourAddressWallet) return;
@@ -64,18 +57,21 @@ export const useTonYourSupplies = (
             return {
               ...reserve,
               underlyingBalance: formatUnits(matchedSupply?.supplyBalance || '0', reserve.decimals),
-              underlyingBalanceUSD: formatUnits(
-                matchedSupply?.supplyBalance || '0',
-                reserve.decimals
-              ),
-              usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
               reserveID: matchedSupply?.underlyingAddress,
+              usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
+              id: reserve.id,
+              underlyingAsset: reserve.underlyingAsset,
+              scaledATokenBalance: reserve.scaledATokenBalance,
+              stableBorrowRate: reserve.stableBorrowRate,
+              scaledVariableDebt: reserve.scaledVariableDebt,
+              principalStableDebt: reserve.principalStableDebt,
+              stableBorrowLastUpdateTimestamp: reserve.stableBorrowLastUpdateTimestamp,
             };
           })
           .value()
       );
 
-      setYourSuppliesTon(result);
+      setYourSuppliesTon(result as FormattedUserReserves[]);
     } catch (error) {
       console.error('Error fetching supplies:', error);
     } finally {
@@ -87,76 +83,10 @@ export const useTonYourSupplies = (
     getYourSupplies();
   }, [client, onGetYourSupply, yourAddressWallet, reserves, getYourSupplies]);
 
-  const updateRealTimeBalanceUSD = useCallback(
-    (data: unknown) => {
-      try {
-        if (!data || !ExchangeRateListUSD) return [];
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const result = _.map(data, (asset: any) => {
-          const match = _.find(ExchangeRateListUSD, { address: asset?.underlyingAssetTon });
-          if (match) {
-            return {
-              ...asset,
-              underlyingBalanceUSD:
-                (Number(match?.value) || 0) * (Number(asset.underlyingBalance) || 0),
-            };
-          }
-          return asset;
-        });
-
-        return result;
-      } catch (error) {
-        console.error(error);
-        return [];
-      }
-    },
-    [ExchangeRateListUSD]
-  );
-
-  useEffect(() => {
-    const dataUpdate = updateRealTimeBalanceUSD(yourSuppliesTon);
-
-    const totalLiquidityUSD = calculateTotalElementTon(dataUpdate, 'underlyingBalanceUSD');
-
-    const earnedAPY = calculateTotalElementTon(dataUpdate, 'supplyAPY');
-
-    const totalCollateralUSD = calculateTotalElementTon(
-      dataUpdate,
-      'underlyingBalanceUSD',
-      'usageAsCollateralEnabledOnUser'
-    );
-
-    const res = {
-      userReservesData: dataUpdate,
-      totalLiquidityMarketReferenceCurrency: '111',
-      totalLiquidityUSD: String(totalLiquidityUSD) || '0',
-      totalCollateralMarketReferenceCurrency: '113',
-      totalCollateralUSD: String(totalCollateralUSD),
-      totalBorrowsMarketReferenceCurrency: '115',
-      totalBorrowsUSD: '116',
-      netWorthUSD: '117',
-      availableBorrowsMarketReferenceCurrency: '118',
-      availableBorrowsUSD: '119',
-      currentLoanToValue: '120',
-      currentLiquidationThreshold: '121',
-      healthFactor: '122',
-      isInIsolationMode: false,
-      calculatedUserIncentives: {},
-      userEmodeCategoryId: 0,
-      isInEmode: false,
-      earnedAPY: earnedAPY,
-      debtAPY: 1,
-      netAPY: 2,
-    };
-    setUserSummaryTon(res as ExtendedFormattedUser);
-  }, [yourSuppliesTon, ExchangeRateListUSD, updateRealTimeBalanceUSD]);
-
   return {
     yourSuppliesTon,
     getYourSupplies,
     loading,
-    userSummaryTon,
   };
 };
 

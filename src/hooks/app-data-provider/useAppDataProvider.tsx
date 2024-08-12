@@ -28,6 +28,7 @@ import { usePoolReservesHumanized } from '../pool/usePoolReserves';
 import { useUserGhoPoolFormattedReserve } from '../pool/useUserGhoPoolFormattedReserve';
 import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
 import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
+import { useUserSummaryAndIncentivesTon } from '../pool/useUserSummaryAndIncentivesTon';
 import { useTonYourSupplies } from '../useTonYourSupplies';
 import { useAppDataProviderTon } from './useAppDataProviderTon';
 import { useSocketGetRateUSD } from './useSocketGetRateUSD';
@@ -100,9 +101,11 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
   const {
     // loading: loadingYourSuppliesTon,
-    userSummaryTon,
+    yourSuppliesTon,
     getYourSupplies,
-  } = useTonYourSupplies(walletAddressTonWallet, reservesTon, ExchangeRateListUSD);
+  } = useTonYourSupplies(walletAddressTonWallet, reservesTon);
+
+  const { userSummaryTon } = useUserSummaryAndIncentivesTon(ExchangeRateListUSD, yourSuppliesTon);
 
   // pool hooks
 

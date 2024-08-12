@@ -30,6 +30,11 @@ export const useSocketGetRateUSD = () => {
       address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
       value: 1,
     },
+    {
+      id: 'ton',
+      address: 'EQDOthAmNuoCzB_z_Dz84uutd_dycy98Jpm-3SgpyJnkDgG2',
+      value: 1,
+    },
   ]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const hasChanged = (oldData: any, newData: any) => {

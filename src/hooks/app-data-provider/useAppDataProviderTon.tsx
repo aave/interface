@@ -1,3 +1,9 @@
+import {
+  calculateCompoundedRate,
+  normalize,
+  RAY_DECIMALS,
+  SECONDS_PER_YEAR,
+} from '@aave/math-utils';
 import dataAssumeReserves from '@public/assume-reserves.json';
 import userTon from '@public/assume-user.json';
 import { Address, Cell, ContractProvider, OpenedContract, Sender } from '@ton/core';
@@ -7,7 +13,6 @@ import { JettonMinter } from 'src/contracts/JettonMinter';
 import { Pool } from 'src/contracts/Pool';
 import { useContract } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
-import { calculateAPYTon } from 'src/utils/calculatesTon';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { useTonClient } from '../useTonClient';
@@ -72,8 +77,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     setLoading(true);
     try {
       const reserve = await poolContract.getReservesData();
-      console.log('reserve----------------', reserve);
-      console.log('underlyingAddress------', reserve[0].underlyingAddress.toString());
       const arr = await Promise.all(
         reserve.map(async (item) => {
           const balance =
@@ -86,7 +89,23 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             ? await getPoolJettonWalletAddress(item.underlyingAddress.toString())
             : item.underlyingAddress;
 
-          const supplyAPY = calculateAPYTon(item.currentLiquidityRate.toString());
+          const supplyAPY = calculateCompoundedRate({
+            rate: item.currentLiquidityRate.toString(),
+            duration: SECONDS_PER_YEAR,
+          });
+
+          // const variableBorrowAPY = calculateCompoundedRate({
+          //   rate: item.currentVariableBorrowRate.toString(),
+          //   duration: SECONDS_PER_YEAR,
+          // });
+
+          const stableBorrowAPY = calculateCompoundedRate({
+            rate: item.currentStableBorrowRate.toString(),
+            duration: SECONDS_PER_YEAR,
+          });
+
+          const variableBorrows = 5;
+          const stableBorrows = 0;
 
           return {
             ...item,
@@ -97,7 +116,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             borrowingEnabled: true,
             stableBorrowRateEnabled: false,
             liquidityRate: '31123474726224900471975',
-            variableBorrowRate: '2386587374537667364806198',
+            variableBorrowRate: '1111',
             stableBorrowRate: '70000000000000000000000000',
             aTokenAddress: '0x1c0E06a0b1A4c160c17545FF2A951bfcA57C0002',
             stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
@@ -137,15 +156,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             formattedEModeLiquidationBonus: '0.01',
             formattedEModeLiquidationThreshold: '0.95',
             formattedEModeLtv: '0.93',
-            supplyAPY: supplyAPY,
-            variableBorrowAPY: '0.00238943754103481217',
-            stableBorrowAPY: '0.07250818117089440143',
             formattedAvailableLiquidity: '2314.651612891643030158',
             unborrowedLiquidity: '2314.651612891643030158',
             formattedBaseLTVasCollateral: '0.745',
             supplyAPR: '0.0000311234747262249',
             variableBorrowAPR: '0.00238658737453766736',
-            stableBorrowAPR: '0.07',
             formattedReserveLiquidationThreshold: '0.77',
             debtCeilingUSD: '0',
             isolationModeTotalDebtUSD: '0',
@@ -182,7 +197,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               borrowingEnabled: true,
               stableBorrowRateEnabled: false,
               liquidityRate: '31123474726224900471975',
-              variableBorrowRate: '2386587374537667364806198',
+              variableBorrowRate: '1111',
               stableBorrowRate: '70000000000000000000000000',
               aTokenAddress: '0x1c0E06a0b1A4c160c17545FF2A951bfcA57C0002',
               stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
@@ -203,7 +218,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               baseVariableBorrowRate: '0',
               optimalUsageRatio: '450000000000000000000000000',
               eModeCategoryId: 1,
-              borrowCap: '320',
+              borrowCap: '222',
               eModeLtv: 9300,
               eModeLiquidationThreshold: 9500,
               eModeLiquidationBonus: 10100,
@@ -223,9 +238,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               formattedEModeLiquidationBonus: '0.01',
               formattedEModeLiquidationThreshold: '0.95',
               formattedEModeLtv: '0.93',
-              supplyAPY: supplyAPY,
-              variableBorrowAPY: '0.00238943754103481217',
-              stableBorrowAPY: '0.07250818117089440143',
+              supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
+              variableBorrowAPY: '0.025', // normalize(variableBorrowAPY, RAY_DECIMALS)
+              stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
               formattedAvailableLiquidity: '2314.651612891643030158',
               unborrowedLiquidity: '2314.651612891643030158',
               formattedBaseLTVasCollateral: '0.745',
@@ -290,7 +305,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             decimals: Number(item.decimals),
             variableBorrowIndex: item.variableBorrowIndex.toString(),
             walletBalance: walletBalance?.toString() || '0',
-            walletBalanceUSD: walletBalance?.toString() || '0',
             isActive: item.isActive,
             isFrozen: item.isFrozen,
             isPaused: item.isPaused,
@@ -323,6 +337,19 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             averageStableBorrowRate: item.averageStableBorrowRate.toString(),
             isJetton: item.isJetton,
             poolJettonWalletAddress: poolJettonWalletAddress?.toString(),
+            stableBorrows: stableBorrows.toString(),
+            stableBorrowsMarketReferenceCurrency: '0',
+            stableBorrowsUSD: '0',
+            variableBorrows: variableBorrows.toString(),
+            variableBorrowsMarketReferenceCurrency: '0',
+            totalBorrows: '0',
+            totalBorrowsMarketReferenceCurrency: '0',
+            totalBorrowsUSD: '0',
+            supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
+            stableBorrowAPR: '0.07',
+            stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
+            variableBorrowAPY: '0.025', // normalize(variableBorrowAPY, RAY_DECIMALS)
+            borrowRateMode: 'Variable',
           };
         })
       );
@@ -346,7 +373,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     getValueReserve();
   }, [client, getValueReserve, poolContract, walletAddressTonWallet, yourWalletBalanceTon]);
 
-  const updateReservesTon = useCallback(() => {
+  const updateReservesTonToUSD = useCallback(() => {
     if (reservesTon && reservesTon.length) {
       let isUpdated = false;
       const resultMappingUsd = reservesTon.map((item) => {
@@ -355,11 +382,15 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         );
         if (dataById) {
           const newWalletBalanceUSD = String(Number(dataById.value) * Number(item.walletBalance));
+          const newVariableBorrowsUSD = String(
+            Number(dataById.value) * Number(item.variableBorrows)
+          );
           if (item.walletBalanceUSD !== newWalletBalanceUSD) {
             isUpdated = true;
             return {
               ...item,
               walletBalanceUSD: newWalletBalanceUSD,
+              variableBorrowsUSD: newVariableBorrowsUSD,
             };
           }
         }
@@ -373,8 +404,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   }, [ExchangeRateListUSD, reservesTon]);
 
   useEffect(() => {
-    updateReservesTon();
-  }, [ExchangeRateListUSD, reservesTon, updateReservesTon]);
+    updateReservesTonToUSD();
+  }, [ExchangeRateListUSD, reservesTon, updateReservesTonToUSD]);
 
   const symbolTon = 'ETHx';
 
