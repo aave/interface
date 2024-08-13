@@ -69,6 +69,7 @@ export const useGetBalanceTon = () => {
       ) as OpenedContract<JettonWallet>;
 
       const balance = await providerJettonWallet.getJettonBalance();
+
       return balance;
     },
     [client, walletAddressTonWallet]

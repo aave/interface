@@ -1,14 +1,17 @@
 import axios from 'axios';
 import _ from 'lodash';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import useSocket from 'src/utils/connectSocket';
 
 const URL_PRICE_SOCKET = 'https://aave-ton-api.sotatek.works/';
 const URL_DEFAULT_VALUE_PRICE = 'https://aave-ton-api.sotatek.works/crawler/price';
+
 export type WalletBalanceUSD = {
   id: string;
   address: string;
-  value: string | number;
+  usd: string;
+  decimal: number;
+  signature: string;
 };
 
 export const useSocketGetRateUSD = () => {
@@ -19,26 +22,38 @@ export const useSocketGetRateUSD = () => {
     {
       id: 'dai',
       address: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
-      value: 1,
     },
     {
       id: 'usd-coin',
       address: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
-      value: 1,
     },
     {
       id: 'tether',
       address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
-      value: 1,
     },
     {
-      id: 'ton',
-      address: 'EQDOthAmNuoCzB_z_Dz84uutd_dycy98Jpm-3SgpyJnkDgG2',
-      value: 1,
+      id: 'the-open-network',
+      address: 'EQBwMI8jo3q9Ft5WiCelyE1_w1_SOQLpuny-y0EbdIeUbvQB',
     },
   ];
 
   const [dataWalletBalance, setDataWalletBalance] = useState<WalletBalanceUSD[]>([]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const matchDataBalance = useCallback(
+    (data: any) => {
+      const result = JSON.parse(data);
+      const updatedData = dataWalletBalance.map((item) => {
+        const priceData = result[item.id];
+        return {
+          ...item,
+          usd: priceData?.usd || '0',
+        };
+      });
+      return updatedData;
+    },
+    [dataWalletBalance]
+  );
 
   // CALL API SET DEFAULT VALUE FOR MONEY
   useEffect(() => {
@@ -47,12 +62,15 @@ export const useSocketGetRateUSD = () => {
         const result = await axios.get(URL_DEFAULT_VALUE_PRICE);
 
         if (result.data) {
-          // Filter and update dataWalletBalance
           const updatedData = defaultRateUSDNotValue.map((item) => {
             const priceData = result.data[item.id];
             return {
               ...item,
-              value: priceData ? priceData.usd : 1,
+              address: item?.address,
+              usd: priceData?.usd,
+              id: item?.id,
+              decimal: priceData?.decimal,
+              signature: priceData?.signature,
             };
           });
 
@@ -88,17 +106,8 @@ export const useSocketGetRateUSD = () => {
         } else {
           const check = hasChanged(walletSocketRef.current, result);
           if (check) {
-            setDataWalletBalance((prevBalances) => {
-              return prevBalances.map((balance) => {
-                if (result[balance.id] && result[balance.id].usd !== balance.value) {
-                  return {
-                    ...balance,
-                    value: result[balance.id].usd,
-                  };
-                }
-                return balance;
-              });
-            });
+            const res = matchDataBalance(data);
+            setDataWalletBalance(res);
             walletSocketRef.current = result;
           }
         }
@@ -119,7 +128,7 @@ export const useSocketGetRateUSD = () => {
         socket.off('disconnect', onDisconnect);
       };
     }
-  }, [socket]);
+  }, [socket, dataWalletBalance, matchDataBalance]);
 
   return {
     ExchangeRateListUSD: dataWalletBalance,

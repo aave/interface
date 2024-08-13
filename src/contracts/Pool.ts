@@ -18,12 +18,14 @@ import { User } from './User';
 const OP = {
   INIT_RESERVE: 0x36e5ebcb,
   UPDATE_CONFIG: 0x36e5edab,
+  BORROW: 0xdf316703,
   DEPOSIT: 0x35880552,
 };
 
 export type PoolConfig = {
   admin: Address;
   userCode: Cell;
+  be_public_key: Buffer;
 };
 
 export function PoolConfigToCell(config: PoolConfig): Cell {
@@ -34,6 +36,7 @@ export function PoolConfigToCell(config: PoolConfig): Cell {
     .storeDict(newDict)
     .storeDict(newDict)
     .storeRef(config.userCode)
+    .storeBuffer(config.be_public_key)
     .endCell();
 }
 
@@ -41,6 +44,7 @@ export type ReserveConfig = {
   underlyingAddress: Address;
   decimals: number;
   LTV: number;
+  liquidationThreshold: number;
   isActive: boolean;
   isFrozen: boolean;
   isBorrowingEnabled: boolean;
@@ -58,6 +62,7 @@ export function ReserveConfigToCell(config: ReserveConfig): Cell {
   return beginCell()
     .storeAddress(config.underlyingAddress)
     .storeUint(config.LTV, 16)
+    .storeUint(config.liquidationThreshold, 16)
     .storeUint(config.decimals, 8)
     .storeBit(config.isActive)
     .storeBit(config.isFrozen)
@@ -130,6 +135,14 @@ export type UpdateConfigParams = {
   reserveConfig: ReserveConfig;
 };
 
+export type BorrowParams = {
+  queryId: number;
+  poolJettonWalletAddress: Address;
+  amount: bigint;
+  price: bigint;
+  sig: Buffer;
+};
+
 export function InitReserveParamsToCell(config: InitReserveParams): Cell {
   const { queryId, poolJettonWalletAddress, reserveConfig, rateStrategy } = config;
   return beginCell()
@@ -148,6 +161,18 @@ export function UpdateConfigParamsToCell(config: UpdateConfigParams): Cell {
     .storeUint(queryId, 64)
     .storeAddress(poolJettonWalletAddress)
     .storeRef(ReserveConfigToCell(reserveConfig))
+    .endCell();
+}
+
+export function BorrowParamsToCell(config: BorrowParams): Cell {
+  const { queryId, poolJettonWalletAddress, amount, price, sig } = config;
+  return beginCell()
+    .storeUint(OP.BORROW, 32)
+    .storeUint(queryId, 64)
+    .storeCoins(amount)
+    .storeAddress(poolJettonWalletAddress)
+    .storeUint(price, 32)
+    .storeBuffer(sig)
     .endCell();
 }
 
@@ -201,6 +226,14 @@ export class Pool implements Contract {
     });
   }
 
+  async sendBorrow(provider: ContractProvider, via: Sender, params: BorrowParams) {
+    await provider.internal(via, {
+      value: toNano('0.2'),
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: BorrowParamsToCell(params),
+    });
+  }
+
   async sendDeposit(provider: ContractProvider, via: Sender, params: DepositParams) {
     await provider.internal(via, {
       value: params.amount + toNano('0.1'),
@@ -213,6 +246,7 @@ export class Pool implements Contract {
     const { stack } = await provider.get('get_reserve_configs', []);
 
     const result = stack.readTuple();
+    console.log('result', result);
 
     const reserveConfigs: ReserveConfig[] = [];
 
@@ -225,10 +259,14 @@ export class Pool implements Contract {
   }
 
   async getReservesData(provider: ContractProvider) {
+    console.log('get reserves data');
     const { stack } = await provider.get('get_reserves_data', []);
 
     const configs = stack.readTuple();
     const states = stack.readTuple();
+
+    console.log('configs', configs);
+    console.log('states', states);
 
     const reserveData = [];
     while (configs.remaining && states.remaining) {
@@ -241,7 +279,9 @@ export class Pool implements Contract {
 
       delete config.content;
 
-      reserveData.push({ ...config, ...state, ...content });
+      const assetHash = BigInt('0x' + config.underlyingAddress.hash.toString('hex'));
+
+      reserveData.push({ reserveID: assetHash.toString(), ...config, ...state, ...content });
     }
 
     return reserveData;
@@ -257,6 +297,27 @@ export class Pool implements Contract {
     return stack.readAddress();
   }
 
+  // async sendBorrow(
+  //     provider: ContractProvider,
+  //     via: Sender,
+  //     value: bigint,
+  //     amount: bigint,
+  //     poolJettonWalletAddress: Address,
+  // ) {
+  //     console.log("userWalletAddress - poolJettonWalletAddress",  poolJettonWalletAddress)
+  //     await provider.internal(via, {
+  //         value,
+  //         sendMode: SendMode.PAY_GAS_SEPARATELY,
+  //         body: beginCell()
+  //             .storeUint(0xdf316703, 32) //0xdf316703 op borrow
+  //             .storeUint(Date.now(), 64)
+  //             .storeCoins(amount)
+  //             // .storeAddress(userWalletAddress)
+  //             .storeAddress(poolJettonWalletAddress)
+  //             .endCell(),
+  //     });
+  // }
+
   async getUserSupplies(provider: ContractProvider, ownerAddress: Address) {
     const { stack } = await provider.get('get_user_address', [
       {
@@ -268,7 +329,12 @@ export class Pool implements Contract {
     const userAddress = stack.readAddress();
     const userContract = provider.open(User.createFromAddress(userAddress));
 
-    return await userContract.getUserSupplies();
+    try {
+      const result = await userContract.getUserSupplies();
+      return result;
+    } catch (err) {
+      return [];
+    }
   }
 }
 
@@ -295,6 +361,7 @@ export function unpackReserveConfig(cell: Cell): ReserveConfig {
   return {
     underlyingAddress: cs.loadAddress(),
     LTV: cs.loadUint(16),
+    liquidationThreshold: cs.loadUint(16),
     decimals: cs.loadUint(8),
     isActive: cs.loadBoolean(),
     isFrozen: cs.loadBoolean(),

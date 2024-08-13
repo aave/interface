@@ -57,8 +57,8 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
             return {
               ...reserve,
               underlyingBalance: formatUnits(matchedSupply?.supplyBalance || '0', reserve.decimals),
-              reserveID: matchedSupply?.underlyingAddress,
-              usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
+              reserveID: matchedSupply?.underlyingAddress.toString(),
+              usageAsCollateralEnabledOnUser: true, //matchedSupply?.isCollateral
               id: reserve.id,
               underlyingAsset: reserve.underlyingAsset,
               scaledATokenBalance: reserve.scaledATokenBalance,
@@ -107,7 +107,7 @@ export const useTonCollateral = ({ yourAddressWallet }: UseTransactionHandlerTon
 
       const collateralContract = client.open(User.createFromAddress(userContractAddress));
       try {
-        await collateralContract.sendUpdateColleteral(
+        await collateralContract.sendUpdateCollateral(
           sender, //via: Sender,
           toNano('0.1'), // gas 0.1
           Address.parse(reserveId), // reserveID

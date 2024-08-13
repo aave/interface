@@ -1,3 +1,4 @@
+import { BigNumberish, ethers } from 'ethers';
 import _ from 'lodash';
 
 export const calculateAPYTon = (currentLiquidityRate: string) => {
@@ -40,3 +41,9 @@ export const calculateWeightedAvgAPY = <T>(data: T[], balance: keyof T, apy: key
     return 0;
   }
 };
+
+export function formatUnitsTon(value: BigNumberish, decimals: BigNumberish = 18): string {
+  const bigValue = ethers.BigNumber.from(value);
+
+  return ethers.utils.formatUnits(bigValue, decimals);
+}

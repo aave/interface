@@ -7,6 +7,7 @@ import {
 import dataAssumeReserves from '@public/assume-reserves.json';
 import userTon from '@public/assume-user.json';
 import { Address, Cell, ContractProvider, OpenedContract, Sender } from '@ton/core';
+import { BigNumberish, ethers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useState } from 'react';
 import { JettonMinter } from 'src/contracts/JettonMinter';
@@ -19,6 +20,14 @@ import { useTonClient } from '../useTonClient';
 import { WalletBalanceUSD } from './useSocketGetRateUSD';
 import { useTonBalance } from './useWalletBalances';
 import { useGetBalanceTon } from './useWalletBalancesTon';
+
+export function formatUnitsTon(value: BigNumberish, decimals: BigNumberish = 18): string {
+  // Sử dụng ethers.BigNumber để đảm bảo giá trị là số nguyên lớn
+  const bigValue = ethers.BigNumber.from(value);
+
+  // Chuyển đổi số nguyên lớn về chuỗi với định dạng thập phân
+  return ethers.utils.formatUnits(bigValue, decimals);
+}
 
 export interface interfaceSendSupply {
   provider: ContractProvider;
@@ -44,7 +53,7 @@ export interface MetadataContentAssetTon {
   decimals: string;
   symbol: string;
 }
-export const address_pools = 'EQDOthAmNuoCzB_z_Dz84uutd_dycy98Jpm-3SgpyJnkDgG2';
+export const address_pools = 'EQBwMI8jo3q9Ft5WiCelyE1_w1_SOQLpuny-y0EbdIeUbvQB';
 // export const address_pools = 'EQBSk8o4dTKT0BmhFx7uphjUgS12FY0cL88qCfYHTZggruO5';
 // export const address_pools = 'EQDTzCz3Xrt40qJjbw7A4cuQ-xkoeC2uoAuWf-IgzWlJ7fLe';
 // export const address_pools = 'EQDQg3KgzAUFf8WSNQz_FUbX6pRnJ2JciFEABwRE4Kipsh3L';
@@ -77,6 +86,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     setLoading(true);
     try {
       const reserve = await poolContract.getReservesData();
+
       const arr = await Promise.all(
         reserve.map(async (item) => {
           const balance =
@@ -108,7 +118,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           const stableBorrows = 0;
 
           return {
-            ...item,
+            // ...item,
             baseLTVasCollateral: '7450',
             reserveLiquidationThreshold: '7700',
             reserveLiquidationBonus: '10750',
@@ -353,7 +363,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           };
         })
       );
+
       const mergedArray = JSON.parse(JSON.stringify([...arr, ...dataAssumeReserves]));
+
       setReservesTon(mergedArray as DashboardReserve[]);
       setLoading(false);
     } catch (error) {
@@ -377,14 +389,17 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     if (reservesTon && reservesTon.length) {
       let isUpdated = false;
       const resultMappingUsd = reservesTon.map((item) => {
-        const dataById = ExchangeRateListUSD.find(
+        const dataById = ExchangeRateListUSD?.find(
           (subItem) => subItem.address === item?.underlyingAssetTon
         );
         if (dataById) {
-          const newWalletBalanceUSD = String(Number(dataById.value) * Number(item.walletBalance));
-          const newVariableBorrowsUSD = String(
-            Number(dataById.value) * Number(item.variableBorrows)
-          );
+          // const usdRate = Number(ethers.utils.formatUnits(dataById.usd || "0", dataById.decimal))
+
+          const numberFormateUSD = Number(dataById.usd).toFixed(0).toString();
+          const usdRate = Number(formatUnits(numberFormateUSD, dataById.decimal));
+          const newWalletBalanceUSD = (usdRate * parseFloat(item.walletBalance)).toString();
+          const newVariableBorrowsUSD = (usdRate * parseFloat(item.variableBorrows)).toString();
+
           if (item.walletBalanceUSD !== newWalletBalanceUSD) {
             isUpdated = true;
             return {

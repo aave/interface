@@ -1,3 +1,4 @@
+import { formatUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
@@ -20,11 +21,12 @@ export const useUserSummaryAndIncentivesTon = (
         const result = _.map(data, (asset: FormattedUserReserves) => {
           const match = _.find(ExchangeRateListUSD, { address: asset?.underlyingAssetTon });
           if (match) {
+            const numberFormateUSD = Number(match.usd).toFixed(0).toString();
+            const usdRate = Number(formatUnits(numberFormateUSD, match.decimal));
+            const underlyingBalanceUSD = String(usdRate * Number(asset.underlyingBalance));
             return {
               ...asset,
-              underlyingBalanceUSD: String(
-                (Number(match?.value) || 0) * (Number(asset.underlyingBalance) || 0)
-              ),
+              underlyingBalanceUSD: underlyingBalanceUSD,
             };
           }
           return asset;

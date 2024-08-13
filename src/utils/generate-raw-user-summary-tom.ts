@@ -6,6 +6,7 @@ export interface RawUserSummaryResponseTon {
   totalCollateralUSD: number;
   totalLiquidityUSD: number;
   totalBorrowsUSD: number;
+  healthFactor: number;
   netWorthUSD: number;
   earnedAPY: number;
   netAPY: number;
@@ -48,10 +49,13 @@ export function generateRawUserSummaryTon({
     (weightedAvgSupplyAPY * totalLiquidityUSD) / netWorthUSD -
     (weightedAvgBorrowAPY * totalBorrowsUSD) / netWorthUSD; // Net APY
 
+  const healthFactor = 111;
+
   return {
     totalCollateralUSD,
     totalLiquidityUSD,
     totalBorrowsUSD,
+    healthFactor,
     netWorthUSD,
     earnedAPY,
     netAPY,

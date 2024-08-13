@@ -1,8 +1,9 @@
 import { beginCell, Cell, Dictionary, Slice } from '@ton/core';
 import { sha256_sync } from '@ton/crypto';
+import { KeyPair, mnemonicToPrivateKey } from 'ton-crypto';
 
 // import { JettonDictValueSerializer } from '../utils/contents/jetton';
-import { makeSnakeCell } from './snake-cell';
+import { makeSnakeCell } from '../helpers/snake-cell';
 
 const ONCHAIN_CONTENT_PREFIX = 0x00;
 const OFFCHAIN_CONTENT_PREFIX = 0x01;
@@ -132,4 +133,16 @@ export function parseJettonOnChainMetadata(contentSlice: Slice) {
   });
 
   return metadata;
+}
+
+export async function getPublicKey() {
+  // TODO get from BE api
+  return (await getKeyPair()).publicKey;
+}
+
+export async function getKeyPair(): Promise<KeyPair> {
+  // TODO get from BE api
+  const mnemonicsString = process.env.WALLET_MNEMONIC ?? '';
+  const kpBE = await mnemonicToPrivateKey(mnemonicsString.split(' '));
+  return kpBE;
 }

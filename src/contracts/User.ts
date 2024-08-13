@@ -65,7 +65,7 @@ export class User implements Contract {
     });
   }
 
-  async sendUpdateColleteral(
+  async sendUpdateCollateral(
     provider: ContractProvider,
     via: Sender,
     value: bigint,
@@ -131,12 +131,14 @@ export class User implements Contract {
     // const userCollateralMask = (await provider.get('get_supplied_collateral_mask', [])).stack.readNumber();
 
     const { stack } = await provider.get('get_user_data', []);
+    console.log(stack);
 
     stack.skip(3);
 
     const principalList = stack.readCellOpt();
     // console.log('principalList-----', principalList);
     if (!principalList) {
+      console.log('Empty principal list');
       return [];
     }
 
@@ -164,9 +166,10 @@ export class User implements Contract {
             stableBorrowBalance: a.loadCoins(),
             variableBorrowBalance: a.loadCoins(),
             previousIndex: a.loadInt(128),
-            isCollateral: a.loadBoolean(),
+            // isCollateral: a.loadBoolean(),
             // isCollateral: (userCollateralMask & Number(key.toString())) > 0,
           };
+          // console.log(reserves[index]);
           // console.log(`[${key}] - [${value}]`);
           index++;
         }
