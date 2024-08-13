@@ -62,7 +62,19 @@ export const MarketsTopPanel = () => {
         <Box sx={{ display: 'flex', gap: { xs: 3, xsm: 8 } }}>
           <TopInfoPanelItem
             hideIcon
-            title={<Trans>{downToSM ? 'Market' : 'Total market size'}</Trans>}
+            title={
+              <>
+                {downToSM ? (
+                  <>
+                    <Trans>Market</Trans>
+                  </>
+                ) : (
+                  <>
+                    <Trans>Total mark size</Trans>
+                  </>
+                )}
+              </>
+            }
             loading={loading}
           >
             <FormattedNumber
@@ -77,7 +89,17 @@ export const MarketsTopPanel = () => {
           </TopInfoPanelItem>
           <TopInfoPanelItem
             hideIcon
-            title={<Trans>{downToSM ? 'Available' : 'Total available'}</Trans>}
+            title={
+              <>
+                {downToSM ? (
+                  <Trans>Available</Trans>
+                ) : (
+                  <>
+                    <Trans>Total available</Trans>
+                  </>
+                )}
+              </>
+            }
             loading={loading}
           >
             <FormattedNumber
@@ -92,7 +114,17 @@ export const MarketsTopPanel = () => {
           </TopInfoPanelItem>
           <TopInfoPanelItem
             hideIcon
-            title={<Trans>{downToSM ? 'Borrows' : 'Total borrows'}</Trans>}
+            title={
+              <>
+                {downToSM ? (
+                  <Trans>Borrows</Trans>
+                ) : (
+                  <>
+                    <Trans>Total borrows</Trans>
+                  </>
+                )}
+              </>
+            }
             loading={loading}
           >
             <FormattedNumber
