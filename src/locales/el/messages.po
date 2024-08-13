@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-08-01 18:05\n"
+"PO-Revision-Date: 2024-08-13 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -385,6 +385,7 @@ msgstr ""
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
 msgid "Available"
 msgstr "Διαθέσιμο"
 
@@ -595,6 +596,10 @@ msgstr ""
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Δανεισμός {symbol}"
+
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Borrows"
+msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
@@ -1500,6 +1505,7 @@ msgstr ""
 msgid "Manage analytics"
 msgstr ""
 
+#: src/modules/markets/MarketsTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Αγορά"

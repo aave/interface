@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-08-01 18:05\n"
+"PO-Revision-Date: 2024-08-13 18:06\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -385,6 +385,7 @@ msgstr "Mit einem Rabatt"
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
 msgid "Available"
 msgstr "Verfügbar"
 
@@ -595,6 +596,10 @@ msgstr "Wenn Sie diesen Betrag leihen, verringern Sie Ihren Gesundheitsfaktor un
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Entlehnung {symbol}"
+
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Borrows"
+msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
@@ -1500,6 +1505,7 @@ msgstr ""
 msgid "Manage analytics"
 msgstr "Verwalten von Analysen"
 
+#: src/modules/markets/MarketsTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Markt"
