@@ -70,7 +70,7 @@ export const MarketsTopPanel = () => {
                   </>
                 ) : (
                   <>
-                    <Trans>Total mark size</Trans>
+                    <Trans>Total market size</Trans>
                   </>
                 )}
               </>

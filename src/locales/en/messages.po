@@ -2808,8 +2808,8 @@ msgid "Total interest accrued"
 msgstr "Total interest accrued"
 
 #: src/modules/markets/MarketsTopPanel.tsx
-msgid "Total mark size"
-msgstr "Total mark size"
+msgid "Total market size"
+msgstr "Total market size"
 
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
