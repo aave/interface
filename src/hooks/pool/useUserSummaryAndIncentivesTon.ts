@@ -24,9 +24,11 @@ export const useUserSummaryAndIncentivesTon = (
             const numberFormateUSD = Number(match.usd).toFixed(0).toString();
             const usdRate = Number(formatUnits(numberFormateUSD, match.decimal));
             const underlyingBalanceUSD = String(usdRate * Number(asset.underlyingBalance));
+            const variableBorrowsUSD = String(usdRate * Number(asset.variableBorrows));
             return {
               ...asset,
               underlyingBalanceUSD: underlyingBalanceUSD,
+              variableBorrowsUSD: variableBorrowsUSD,
             };
           }
           return asset;
@@ -44,28 +46,31 @@ export const useUserSummaryAndIncentivesTon = (
   useEffect(() => {
     const userReservesDataUpdate = updateRealTimeBalanceUSD(yourSuppliesTon); // matching data
     const {
+      collateralInUSDAsset,
       totalLiquidityUSD,
       totalCollateralUSD,
       totalBorrowsUSD,
+      healthFactor,
       netWorthUSD,
       earnedAPY,
       netAPY,
     } = generateRawUserSummaryTon({ userReserves: userReservesDataUpdate });
 
     const res = {
+      collateralInUSDAsset: collateralInUSDAsset.toString(),
       userReservesData: userReservesDataUpdate,
       totalLiquidityMarketReferenceCurrency: '111',
-      totalLiquidityUSD: String(totalLiquidityUSD) || '0',
+      totalLiquidityUSD: totalLiquidityUSD.toString() || '0',
       totalCollateralMarketReferenceCurrency: '113',
-      totalCollateralUSD: String(totalCollateralUSD),
+      totalCollateralUSD: totalCollateralUSD.toString(),
       totalBorrowsMarketReferenceCurrency: '115',
-      totalBorrowsUSD: String(totalBorrowsUSD),
-      netWorthUSD: String(netWorthUSD),
+      totalBorrowsUSD: totalBorrowsUSD.toString(),
+      netWorthUSD: netWorthUSD.toString(),
       availableBorrowsMarketReferenceCurrency: '118',
       availableBorrowsUSD: '119',
       currentLoanToValue: '120',
       currentLiquidationThreshold: '121',
-      healthFactor: '122',
+      healthFactor: healthFactor.toString(),
       isInIsolationMode: false,
       calculatedUserIncentives: {},
       userEmodeCategoryId: 0,

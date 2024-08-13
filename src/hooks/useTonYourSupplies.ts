@@ -58,7 +58,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               ...reserve,
               underlyingBalance: formatUnits(matchedSupply?.supplyBalance || '0', reserve.decimals),
               reserveID: matchedSupply?.underlyingAddress.toString(),
-              usageAsCollateralEnabledOnUser: true, //matchedSupply?.isCollateral
+              usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
               id: reserve.id,
               underlyingAsset: reserve.underlyingAsset,
               scaledATokenBalance: reserve.scaledATokenBalance,
@@ -66,6 +66,10 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               scaledVariableDebt: reserve.scaledVariableDebt,
               principalStableDebt: reserve.principalStableDebt,
               stableBorrowLastUpdateTimestamp: reserve.stableBorrowLastUpdateTimestamp,
+              variableBorrows: formatUnits(
+                matchedSupply?.variableBorrowBalance || '0',
+                reserve.decimals
+              ),
             };
           })
           .value()

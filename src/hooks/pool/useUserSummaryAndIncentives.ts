@@ -33,6 +33,8 @@ export type FormattedUserReserves = ComputedUserReserve<FormattedReservesAndInce
   underlyingAssetTon?: string;
   supplyAPY?: string;
   variableBorrowAPY?: string;
+  formattedReserveLiquidationThreshold?: string;
+  formattedBaseLTVasCollateral?: string;
 };
 
 export type UserSummaryAndIncentives =

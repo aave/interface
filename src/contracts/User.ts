@@ -166,7 +166,7 @@ export class User implements Contract {
             stableBorrowBalance: a.loadCoins(),
             variableBorrowBalance: a.loadCoins(),
             previousIndex: a.loadInt(128),
-            // isCollateral: a.loadBoolean(),
+            isCollateral: a.loadBoolean(),
             // isCollateral: (userCollateralMask & Number(key.toString())) > 0,
           };
           // console.log(reserves[index]);

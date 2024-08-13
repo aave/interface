@@ -1,8 +1,14 @@
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
-import { calculateTotalElementTon, calculateWeightedAvgAPY } from './calculatesTon';
+import {
+  calculateCollateralInUSDAssetTon,
+  calculateHealthFactor,
+  calculateTotalElementTon,
+  calculateWeightedAvgAPY,
+} from './calculatesTon';
 
 export interface RawUserSummaryResponseTon {
+  collateralInUSDAsset: number;
   totalCollateralUSD: number;
   totalLiquidityUSD: number;
   totalBorrowsUSD: number;
@@ -19,17 +25,19 @@ export interface RawUserSummaryRequestTon {
 export function generateRawUserSummaryTon({
   userReserves,
 }: RawUserSummaryRequestTon): RawUserSummaryResponseTon {
-  const totalLiquidityUSD = calculateTotalElementTon(userReserves, 'underlyingBalanceUSD');
-
+  const totalLiquidityUSD = calculateTotalElementTon(userReserves, 'underlyingBalanceUSD'); // total user supplied - usd
+  const totalBorrowsUSD = calculateTotalElementTon(userReserves, 'variableBorrowsUSD'); // total user borrowed - usd
   const earnedAPY = calculateTotalElementTon(userReserves, 'supplyAPY'); // total APY your supplies
+
+  const collateralInUSDAsset = calculateCollateralInUSDAssetTon(userReserves); // Collateral in USD asset a  *  Max LTV asset a
+
+  const healthFactor = calculateHealthFactor(userReserves);
 
   const totalCollateralUSD = calculateTotalElementTon(
     userReserves,
     'underlyingBalanceUSD',
     'usageAsCollateralEnabledOnUser'
   );
-
-  const totalBorrowsUSD = 20;
 
   const weightedAvgSupplyAPY = calculateWeightedAvgAPY(
     userReserves,
@@ -49,9 +57,8 @@ export function generateRawUserSummaryTon({
     (weightedAvgSupplyAPY * totalLiquidityUSD) / netWorthUSD -
     (weightedAvgBorrowAPY * totalBorrowsUSD) / netWorthUSD; // Net APY
 
-  const healthFactor = 111;
-
   return {
+    collateralInUSDAsset,
     totalCollateralUSD,
     totalLiquidityUSD,
     totalBorrowsUSD,

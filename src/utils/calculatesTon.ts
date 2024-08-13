@@ -1,5 +1,6 @@
 import { BigNumberish, ethers } from 'ethers';
 import _ from 'lodash';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
 export const calculateAPYTon = (currentLiquidityRate: string) => {
   const value = (1 + Number(currentLiquidityRate) / 31536000) ** 31536000 - 1;
@@ -42,8 +43,30 @@ export const calculateWeightedAvgAPY = <T>(data: T[], balance: keyof T, apy: key
   }
 };
 
-export function formatUnitsTon(value: BigNumberish, decimals: BigNumberish = 18): string {
+export const formatUnitsTon = (value: BigNumberish, decimals: BigNumberish = 18): string => {
   const bigValue = ethers.BigNumber.from(value);
 
   return ethers.utils.formatUnits(bigValue, decimals);
-}
+};
+
+export const calculateHealthFactor = (reserves: FormattedUserReserves[]): number => {
+  const numerator = reserves.reduce((total, reserve) => {
+    const underlyingBalance = parseFloat(reserve.underlyingBalanceUSD);
+    const liquidationThreshold = parseFloat(reserve?.formattedReserveLiquidationThreshold || '0');
+    return total + underlyingBalance * liquidationThreshold;
+  }, 0);
+
+  const denominator = reserves.reduce((total, reserve) => {
+    return total + parseFloat(reserve.variableBorrows);
+  }, 0);
+
+  return denominator === 0 ? 0 : numerator / denominator;
+};
+
+export const calculateCollateralInUSDAssetTon = (reserves: FormattedUserReserves[]): number => {
+  return reserves.reduce((total, item) => {
+    const underlyingBalance = parseFloat(item.underlyingBalanceUSD);
+    const ltv = parseFloat(item.formattedBaseLTVasCollateral || '0');
+    return total + underlyingBalance * ltv;
+  }, 0);
+};

@@ -39,8 +39,8 @@ export const useSocketGetRateUSD = () => {
 
   const [dataWalletBalance, setDataWalletBalance] = useState<WalletBalanceUSD[]>([]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const matchDataBalance = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (data: any) => {
       const result = JSON.parse(data);
       const updatedData = dataWalletBalance.map((item) => {

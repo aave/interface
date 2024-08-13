@@ -19,6 +19,7 @@ export type ExtendedFormattedUser =
     netAPY: number;
     isInEmode: boolean;
     userEmodeCategoryId: number;
+    collateralInUSDAsset?: string;
   };
 
 const formatExtendedUserAndIncentives = (
