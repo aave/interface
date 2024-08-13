@@ -60,7 +60,23 @@ export const MarketsTopPanel = () => {
         multiMarket={MULTIPLE_MARKET_OPTIONS.includes(currentMarket) ? true : false}
       >
         <Box sx={{ display: 'flex', gap: { xs: 3, xsm: 8 } }}>
-          <TopInfoPanelItem hideIcon title={<Trans>Total market size</Trans>} loading={loading}>
+          <TopInfoPanelItem
+            hideIcon
+            title={
+              <>
+                {downToSM ? (
+                  <>
+                    <Trans>Market</Trans>
+                  </>
+                ) : (
+                  <>
+                    <Trans>Total market size</Trans>
+                  </>
+                )}
+              </>
+            }
+            loading={loading}
+          >
             <FormattedNumber
               value={aggregatedStats.totalLiquidity.toString()}
               symbol="USD"
@@ -71,7 +87,21 @@ export const MarketsTopPanel = () => {
               symbolsVariant={symbolsVariant}
             />
           </TopInfoPanelItem>
-          <TopInfoPanelItem hideIcon title={<Trans>Total available</Trans>} loading={loading}>
+          <TopInfoPanelItem
+            hideIcon
+            title={
+              <>
+                {downToSM ? (
+                  <Trans>Available</Trans>
+                ) : (
+                  <>
+                    <Trans>Total available</Trans>
+                  </>
+                )}
+              </>
+            }
+            loading={loading}
+          >
             <FormattedNumber
               value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
               symbol="USD"
@@ -82,7 +112,21 @@ export const MarketsTopPanel = () => {
               symbolsVariant={symbolsVariant}
             />
           </TopInfoPanelItem>
-          <TopInfoPanelItem hideIcon title={<Trans>Total borrows</Trans>} loading={loading}>
+          <TopInfoPanelItem
+            hideIcon
+            title={
+              <>
+                {downToSM ? (
+                  <Trans>Borrows</Trans>
+                ) : (
+                  <>
+                    <Trans>Total borrows</Trans>
+                  </>
+                )}
+              </>
+            }
+            loading={loading}
+          >
             <FormattedNumber
               value={aggregatedStats.totalDebt.toString()}
               symbol="USD"

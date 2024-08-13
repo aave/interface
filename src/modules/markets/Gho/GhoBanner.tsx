@@ -85,7 +85,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       >
         <Box
           component="img"
-          src="/illustration-gho-logo-2.svg"
+          src="/gho-group.svg"
           alt="ghost and coin"
           sx={{
             ['@media screen and (min-width: 1125px)']: {
