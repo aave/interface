@@ -3,6 +3,8 @@ import _ from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useSocket from 'src/utils/connectSocket';
 
+import { address_pools } from './useAppDataProviderTon';
+
 const URL_PRICE_SOCKET = 'https://aave-ton-api.sotatek.works/';
 const URL_DEFAULT_VALUE_PRICE = 'https://aave-ton-api.sotatek.works/crawler/price';
 
@@ -33,7 +35,7 @@ export const useSocketGetRateUSD = () => {
     },
     {
       id: 'the-open-network',
-      address: 'EQBUpTYY_OWdLT2LEYJSx85wevYdSMKFNTmSmcZ0f24TixcN',
+      address: address_pools,
     },
   ];
 

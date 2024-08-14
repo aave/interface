@@ -246,7 +246,6 @@ export class Pool implements Contract {
     const { stack } = await provider.get('get_reserve_configs', []);
 
     const result = stack.readTuple();
-    console.log('result', result);
 
     const reserveConfigs: ReserveConfig[] = [];
 
@@ -259,14 +258,10 @@ export class Pool implements Contract {
   }
 
   async getReservesData(provider: ContractProvider) {
-    console.log('get reserves data');
     const { stack } = await provider.get('get_reserves_data', []);
 
     const configs = stack.readTuple();
     const states = stack.readTuple();
-
-    console.log('configs', configs);
-    console.log('states', states);
 
     const reserveData = [];
     while (configs.remaining && states.remaining) {

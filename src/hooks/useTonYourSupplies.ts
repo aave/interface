@@ -17,12 +17,12 @@ interface UseTransactionHandlerTonProps {
 }
 
 export interface UserSuppliesType {
-  underlyingAddress: string;
   supplyBalance: bigint;
   stableBorrowBalance: bigint;
   variableBorrowBalance: bigint;
-  previousIndex: number;
+  previousIndex: bigint;
   isCollateral: boolean;
+  underlyingAddress: string;
 }
 
 export const useTonYourSupplies = (yourAddressWallet: string, reserves: DashboardReserve[]) => {

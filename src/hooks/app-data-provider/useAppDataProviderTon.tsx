@@ -79,16 +79,16 @@ export interface PoolContractReservesDataType {
   variableBorrowIndex: bigint | 0;
 }
 
-export const address_pools = 'EQBUpTYY_OWdLT2LEYJSx85wevYdSMKFNTmSmcZ0f24TixcN';
+export const address_pools = 'EQAU5KH9DQ5EJPZSAhN96PWpi-b9J8mSqfce05yBUQ4bjiD0';
 
 export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
-  const poolContract = useContract<Pool>(address_pools, Pool);
   const [poolContractReservesData, setPoolContractReservesData] = useState<
     PoolContractReservesDataType[]
   >([]);
+  const poolContract = useContract<Pool>(address_pools, Pool);
   const { onGetBalanceTonNetwork } = useGetBalanceTon();
   const { walletAddressTonWallet } = useTonConnectContext();
   const { balance: yourWalletBalanceTon } = useTonBalance(walletAddressTonWallet);
@@ -130,23 +130,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
       const arr = await Promise.all(
         poolContractReservesData.map(async (item) => {
-          const dataById = ExchangeRateListUSD?.find(
-            (subItem) => subItem.address === item.underlyingAddress.toString()
-          );
-
-          const numberFormateUSD = Number(dataById?.usd || 0)
-            .toFixed(0)
-            .toString();
-          const priceInUSD = Number(formatUnits(numberFormateUSD, dataById?.decimal)).toString();
-
           const balance =
             item?.isJetton && (await onGetBalanceTonNetwork(item.underlyingAddress.toString()));
 
           const walletBalance = item?.isJetton
             ? formatUnits(balance || '0', item.decimals)
             : yourWalletBalanceTon;
-
-          const walletBalanceUSD = (parseFloat(priceInUSD) * parseFloat(walletBalance)).toString();
 
           const poolJettonWalletAddress = item.isJetton
             ? await getPoolJettonWalletAddress(item.underlyingAddress.toString())
@@ -157,10 +146,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             duration: SECONDS_PER_YEAR,
           });
 
-          // const variableBorrowAPY = calculateCompoundedRate({
-          //   rate: item.currentVariableBorrowRate.toString(),
-          //   duration: SECONDS_PER_YEAR,
-          // });
+          const variableBorrowAPY = calculateCompoundedRate({
+            rate: item.currentVariableBorrowRate.toString(),
+            duration: SECONDS_PER_YEAR,
+          });
 
           const stableBorrowAPY = calculateCompoundedRate({
             rate: item.currentStableBorrowRate.toString(),
@@ -244,7 +233,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             totalVariableDebtUSD: '127227.13920693082542400187',
             totalStableDebtUSD: '0',
             formattedPriceInMarketReferenceCurrency: '3527.65932594',
-            priceInUSD: priceInUSD,
+            priceInUSD: '0',
             borrowCapUSD: '1128850.9843008',
             supplyCapUSD: '11288509.843008',
             unbackedUSD: '0',
@@ -311,7 +300,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               formattedEModeLiquidationThreshold: '0.95',
               formattedEModeLtv: '0.93',
               supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
-              variableBorrowAPY: '0.025', // normalize(variableBorrowAPY, RAY_DECIMALS)
+              variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
               stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
               formattedAvailableLiquidity: '2314.651612891643030158',
               unborrowedLiquidity: '2314.651612891643030158',
@@ -330,7 +319,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               totalVariableDebtUSD: '127227.13920693082542400187',
               totalStableDebtUSD: '0',
               formattedPriceInMarketReferenceCurrency: '3527.65932594',
-              priceInUSD: priceInUSD,
+              priceInUSD: '0',
               borrowCapUSD: '1128850.9843008',
               supplyCapUSD: '11288509.843008',
               unbackedUSD: '0',
@@ -364,7 +353,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               accruedToTreasury: item.accruedToTreasury.toString(),
               totalVariableDebt: item.totalVariableDebt.toString(),
               totalStableDebt: item.totalStableDebt.toString(),
-              walletBalanceUSD,
+              walletBalanceUSD: '0',
             },
 
             availableToDeposit: '0',
@@ -419,9 +408,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
             stableBorrowAPR: '0.07',
             stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
-            variableBorrowAPY: '0.025', // normalize(variableBorrowAPY, RAY_DECIMALS)
+            variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
             borrowRateMode: 'Variable',
-            walletBalanceUSD,
+            walletBalanceUSD: '0',
           };
         })
       );
@@ -439,7 +428,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     poolContractReservesData,
     walletAddressTonWallet,
     yourWalletBalanceTon,
-    ExchangeRateListUSD,
   ]);
 
   useEffect(() => {
@@ -451,8 +439,40 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     walletAddressTonWallet,
     yourWalletBalanceTon,
     poolContractReservesData,
-    ExchangeRateListUSD,
   ]);
+
+  useEffect(() => {
+    const newReserves = reservesTon.map((reserve) => {
+      const dataById = ExchangeRateListUSD?.find(
+        (subItem) => subItem.address === reserve.underlyingAssetTon
+      );
+
+      const numberFormateUSD = Number(dataById?.usd || 0)
+        .toFixed(0)
+        .toString();
+
+      const priceInUSD = Number(formatUnits(numberFormateUSD, dataById?.decimal)).toString();
+
+      const walletBalanceUSD = (
+        parseFloat(priceInUSD) * parseFloat(reserve.walletBalance)
+      ).toString();
+
+      return {
+        ...reserve,
+        walletBalanceUSD,
+        priceInUSD,
+        reserve: {
+          ...reserve.reserve,
+          walletBalanceUSD,
+          priceInUSD,
+        },
+      };
+    });
+
+    if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
+      setReservesTon(newReserves);
+    }
+  }, [reservesTon, ExchangeRateListUSD]);
 
   const symbolTon = 'ETHx';
 
