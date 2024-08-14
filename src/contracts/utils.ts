@@ -142,7 +142,9 @@ export async function getPublicKey() {
 
 export async function getKeyPair(): Promise<KeyPair> {
   // TODO get from BE api
-  const mnemonicsString = process.env.WALLET_MNEMONIC ?? '';
+  const mnemonicsString =
+    process.env.WALLET_MNEMONIC ??
+    'tooth file stomach split degree van excite sausage soup simple onion merry list depend keep garbage admit client engine other expose six put curious';
   const kpBE = await mnemonicToPrivateKey(mnemonicsString.split(' '));
   return kpBE;
 }
