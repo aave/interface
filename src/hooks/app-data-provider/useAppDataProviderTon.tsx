@@ -410,6 +410,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               walletBalanceUSD: newWalletBalanceUSD,
               variableBorrowsUSD: newVariableBorrowsUSD,
               priceInUSD: usdRate.toString(),
+              reserve: {
+                ...item.reserve,
+                priceInUSD: usdRate.toString(),
+              },
             };
           }
         }
