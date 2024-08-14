@@ -134,7 +134,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             (subItem) => subItem.address === item.underlyingAddress.toString()
           );
 
-          console.log('dataByIddataByIddataById', dataById);
           const numberFormateUSD = Number(dataById?.usd || 0)
             .toFixed(0)
             .toString();
