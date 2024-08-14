@@ -2,6 +2,7 @@ import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Address, beginCell } from '@ton/core';
 import { Fragment, useCallback, useState } from 'react';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -9,7 +10,13 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
+import { Pool } from 'src/contracts/Pool';
+import { getKeyPair } from 'src/contracts/utils';
+import { address_pools } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useContract } from 'src/hooks/useContract';
+import { useTonClient } from 'src/hooks/useTonClient';
+import { useTonConnect } from 'src/hooks/useTonConnect';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
@@ -17,6 +24,7 @@ import {
   findAndFilterMintableGhoReserve,
 } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { KeyPair, sign } from 'ton-crypto';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -41,14 +49,6 @@ import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
 import { GhoBorrowAssetsListItem } from './GhoBorrowAssetsListItem';
-import { useContract } from 'src/hooks/useContract';
-import { Pool } from 'src/contracts/Pool';
-import { useTonConnect } from 'src/hooks/useTonConnect';
-import { useTonClient } from 'src/hooks/useTonClient';
-import { getKeyPair } from 'src/contracts/utils';
-import { Address, beginCell } from '@ton/core';
-import { KeyPair, sign } from 'ton-crypto';
-import { address_pools } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 
 const head = [
   {
@@ -205,7 +205,7 @@ export const BorrowAssetsList = () => {
     async (amount: string) => {
       if (!client || !walletAddressTonWallet || !amount || !providerPool) return;
       try {
-        let beKeyPair: KeyPair = await getKeyPair();
+        const beKeyPair: KeyPair = await getKeyPair();
         console.log('🚀 ~ beKeyPair:', beKeyPair);
 
         if (!beKeyPair || !beKeyPair.secretKey) {
@@ -219,7 +219,7 @@ export const BorrowAssetsList = () => {
         const price = data[0];
         console.log('price from redstone api: ', price.value);
 
-        let newValue = (price.value * 10 ** 6).toFixed();
+        const newValue = (price.value * 10 ** 6).toFixed();
 
         console.log('symbol', newValue);
         const dataPrice = beginCell().storeInt(+newValue, 32).endCell();
