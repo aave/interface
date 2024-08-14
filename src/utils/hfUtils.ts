@@ -11,9 +11,6 @@ import {
   ComputedUserReserveData,
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
-
-import { calculateHFAfterSupplyTon } from './calculatesTon';
 
 interface CalculateHFAfterSwapProps {
   fromAmount: BigNumberValue;
@@ -222,8 +219,7 @@ export const calculateHFAfterSupply = (
   user: ExtendedFormattedUser,
   poolReserve: ComputedReserveData,
   supplyAmountInEth: BigNumber,
-  isConnectedTonWallet?: boolean,
-  reserves?: FormattedReservesAndIncentives[]
+  isConnectedTonWallet?: boolean
 ) => {
   let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
 
@@ -244,12 +240,15 @@ export const calculateHFAfterSupply = (
       (user.isInIsolationMode &&
         user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset))
   ) {
-    if (isConnectedTonWallet && reserves) {
-      healthFactorAfterDeposit = calculateHFAfterSupplyTon(
-        reserves,
-        poolReserve,
-        supplyAmountInEth
-      );
+    if (isConnectedTonWallet) {
+      const totalCollateralMarketReferenceCurrencyAfterTon = user
+        ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(
+            Number(supplyAmountInEth) * Number(poolReserve.formattedReserveLiquidationThreshold)
+          )
+        : '-1';
+      healthFactorAfterDeposit = valueToBigNumber(totalCollateralMarketReferenceCurrencyAfterTon)
+        .dividedBy(user.totalBorrowsUSD)
+        .toString();
     } else {
       healthFactorAfterDeposit = calculateHealthFactorFromBalancesBigUnits({
         collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,

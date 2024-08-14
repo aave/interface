@@ -148,7 +148,7 @@ export const SupplyModalContent = React.memo(
     debtCeilingWarning,
     user,
   }: SupplyModalContentProps) => {
-    const { marketReferencePriceInUsd, reserves } = useAppDataContext();
+    const { marketReferencePriceInUsd } = useAppDataContext();
     const { isConnectedTonWallet } = useTonConnectContext();
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
@@ -197,8 +197,7 @@ export const SupplyModalContent = React.memo(
       user,
       poolReserve,
       amountInEth,
-      isConnectedTonWallet,
-      reserves
+      isConnectedTonWallet
     );
     const supplyActionsProps = {
       amountToSupply: amount,
@@ -299,6 +298,7 @@ export const SupplyWrappedTokenModalContent = ({
   user,
 }: SupplyModalContentProps) => {
   const { marketReferencePriceInUsd } = useAppDataContext();
+  const { isConnectedTonWallet } = useTonConnectContext();
   const { currentMarketData } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
   const { walletBalances } = useWalletBalances(currentMarketData);
@@ -401,7 +401,12 @@ export const SupplyWrappedTokenModalContent = ({
 
   const isMaxSelected = amount === maxAmountToSupply;
 
-  const healfthFactorAfterSupply = calculateHFAfterSupply(user, poolReserve, amountInEth);
+  const healfthFactorAfterSupply = calculateHFAfterSupply(
+    user,
+    poolReserve,
+    amountInEth,
+    isConnectedTonWallet
+  );
 
   if (supplyTxState.success) {
     const successModalAmount = supplyingWrappedToken

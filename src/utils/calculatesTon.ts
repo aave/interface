@@ -1,7 +1,5 @@
-import BigNumber from 'bignumber.js';
 import { BigNumberish, ethers } from 'ethers';
 import _ from 'lodash';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
@@ -68,36 +66,26 @@ export const calculateHealthFactor = (
   return denominator === 0 ? 0 : numerator / denominator;
 };
 
-export const calculateHFAfterSupplyTon = (
-  reserves: FormattedReservesAndIncentives[],
-  poolReserve: ComputedReserveData,
-  supplyAmountInEth: BigNumber
-): string => {
-  if (!reserves) return '0';
-
-  const underlyingAsset = poolReserve.underlyingAsset;
-
-  const indexToUpdate = _.findIndex(reserves, { underlyingAsset });
-
-  if (indexToUpdate === -1) {
-    throw new Error('Asset not found');
-  }
-
-  reserves[indexToUpdate].underlyingBalanceUSD = (
-    Number(reserves[indexToUpdate].underlyingBalanceUSD) + Number(supplyAmountInEth.toString())
-  ).toString();
-
-  const newHf = calculateHealthFactor(reserves);
-
-  console.log('newHf----', newHf.toString());
-
-  return '2';
+export const calculateTotalCollateralUSD = (
+  reserves: FormattedUserReserves[] | FormattedReservesAndIncentives[],
+  getFactor: (reserve: FormattedUserReserves | FormattedReservesAndIncentives) => number
+): number => {
+  return reserves.reduce((total, reserve) => {
+    const underlyingBalance = parseFloat(reserve?.underlyingBalanceUSD || '0');
+    const factor = getFactor(reserve);
+    return total + underlyingBalance * factor;
+  }, 0);
 };
 
-export const calculateCollateralInUSDAssetTon = (reserves: FormattedUserReserves[]): number => {
-  return reserves.reduce((total, item) => {
-    const underlyingBalance = parseFloat(item.underlyingBalanceUSD);
-    const ltv = parseFloat(item.formattedBaseLTVasCollateral || '0');
-    return total + underlyingBalance * ltv;
+export const calculateTotalCollateralMarketReferenceCurrency = (
+  reserves: FormattedUserReserves[] | FormattedReservesAndIncentives[]
+): number => {
+  return reserves.reduce((total, reserve) => {
+    if (reserve.usageAsCollateralEnabledOnUser) {
+      const underlyingBalance = parseFloat(reserve?.underlyingBalanceUSD || '0');
+      const liquidationThreshold = parseFloat(reserve?.formattedReserveLiquidationThreshold || '0');
+      return total + underlyingBalance * liquidationThreshold;
+    }
+    return total;
   }, 0);
 };

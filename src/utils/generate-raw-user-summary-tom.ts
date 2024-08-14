@@ -1,14 +1,16 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
 import {
-  calculateCollateralInUSDAssetTon,
-  calculateHealthFactor,
+  calculateTotalCollateralMarketReferenceCurrency,
+  calculateTotalCollateralUSD,
   calculateTotalElementTon,
   calculateWeightedAvgAPY,
 } from './calculatesTon';
 
 export interface RawUserSummaryResponseTon {
   totalCollateralMarketReferenceCurrency: number;
+  currentLiquidationThreshold: number;
   collateralInUSDAsset: number;
   totalCollateralUSD: number;
   totalLiquidityUSD: number;
@@ -30,9 +32,19 @@ export function generateRawUserSummaryTon({
   const totalBorrowsUSD = calculateTotalElementTon(userReserves, 'variableBorrowsUSD'); // total user borrowed - usd
   const earnedAPY = calculateTotalElementTon(userReserves, 'supplyAPY'); // total APY your supplies
 
-  const collateralInUSDAsset = calculateCollateralInUSDAssetTon(userReserves); // Collateral in USD asset a  *  Max LTV asset a
+  const collateralInUSDAsset = calculateTotalCollateralUSD(userReserves, (reserve) =>
+    parseFloat(reserve?.formattedBaseLTVasCollateral || '0')
+  ); // Collateral in USD asset a  *  Max LTV asset a
 
-  const healthFactor = calculateHealthFactor(userReserves);
+  const totalCollateralMarketReferenceCurrency =
+    calculateTotalCollateralMarketReferenceCurrency(userReserves);
+
+  const currentLiquidationThreshold = 0.15;
+
+  const healthFactor =
+    valueToBigNumber(totalCollateralMarketReferenceCurrency)
+      .dividedBy(totalBorrowsUSD)
+      .toNumber() || 0;
 
   const totalCollateralUSD = calculateTotalElementTon(
     userReserves,
@@ -58,10 +70,9 @@ export function generateRawUserSummaryTon({
     (weightedAvgSupplyAPY * totalLiquidityUSD) / netWorthUSD -
     (weightedAvgBorrowAPY * totalBorrowsUSD) / netWorthUSD; // Net APY
 
-  const totalCollateralMarketReferenceCurrency = 11;
-
   return {
     totalCollateralMarketReferenceCurrency,
+    currentLiquidationThreshold,
     collateralInUSDAsset,
     totalCollateralUSD,
     totalLiquidityUSD,
