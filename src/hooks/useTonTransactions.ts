@@ -45,12 +45,12 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       try {
         await providerJettonWallet.sendTransfer(
           sender, //via: Sender,
-          toNano('0.1'), //value: bigint, --- gas fee default 1
+          toNano('0.3'), //value: bigint, --- gas fee default 1
           BigInt(amount), // User input amount
           Address.parse(address_pools), //Address poll
           Address.parse(yourAddressWallet), // User address wallet
           Cell.EMPTY, // customPayload: Cell, //Cell.EMPTY
-          toNano('0.05'), // forward_ton_amount: bigint,
+          toNano('0.1'), // forward_ton_amount: bigint,
           beginCell()
             .storeUint(Op.supply, 32)
             .storeAddress(Address.parse(underlyingAssetTon)) // = address asset

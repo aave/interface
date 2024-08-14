@@ -145,7 +145,7 @@ export const useTonCollateral = ({ yourAddressWallet }: UseTransactionHandlerTon
       try {
         await collateralContract.sendUpdateCollateral(
           sender, //via: Sender,
-          toNano('0.1'), // gas 0.1
+          toNano('0.3'), // gas 0.1
           Address.parse(reserveId), // reserveID
           status // true = isCollateral, false = unCollateral
         );
