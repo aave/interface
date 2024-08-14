@@ -232,7 +232,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             totalDebtUSD: '127227.13920693082542400187',
             totalVariableDebtUSD: '127227.13920693082542400187',
             totalStableDebtUSD: '0',
-            formattedPriceInMarketReferenceCurrency: '3527.65932594',
+            formattedPriceInMarketReferenceCurrency: '0',
             priceInUSD: '0',
             borrowCapUSD: '1128850.9843008',
             supplyCapUSD: '11288509.843008',
@@ -318,7 +318,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               totalDebtUSD: '127227.13920693082542400187',
               totalVariableDebtUSD: '127227.13920693082542400187',
               totalStableDebtUSD: '0',
-              formattedPriceInMarketReferenceCurrency: '3527.65932594',
+              formattedPriceInMarketReferenceCurrency: '0',
               priceInUSD: '0',
               borrowCapUSD: '1128850.9843008',
               supplyCapUSD: '11288509.843008',
@@ -461,10 +461,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         ...reserve,
         walletBalanceUSD,
         priceInUSD,
+        formattedPriceInMarketReferenceCurrency: priceInUSD,
         reserve: {
           ...reserve.reserve,
           walletBalanceUSD,
           priceInUSD,
+          formattedPriceInMarketReferenceCurrency: priceInUSD,
         },
       };
     });

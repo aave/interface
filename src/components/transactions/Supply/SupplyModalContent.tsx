@@ -148,7 +148,8 @@ export const SupplyModalContent = React.memo(
     debtCeilingWarning,
     user,
   }: SupplyModalContentProps) => {
-    const { marketReferencePriceInUsd } = useAppDataContext();
+    const { marketReferencePriceInUsd, reserves } = useAppDataContext();
+    const { isConnectedTonWallet } = useTonConnectContext();
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
     const minRemainingBaseTokenBalance = useRootStore(
@@ -192,7 +193,13 @@ export const SupplyModalContent = React.memo(
 
     const isMaxSelected = amount === maxAmountToSupply;
 
-    const healfthFactorAfterSupply = calculateHFAfterSupply(user, poolReserve, amountInEth);
+    const healfthFactorAfterSupply = calculateHFAfterSupply(
+      user,
+      poolReserve,
+      amountInEth,
+      isConnectedTonWallet,
+      reserves
+    );
     const supplyActionsProps = {
       amountToSupply: amount,
       isWrongNetwork: isWrongNetwork,

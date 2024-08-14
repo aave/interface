@@ -27,6 +27,8 @@ export type FormattedReservesAndIncentives = ReturnType<
     poolJettonWalletAddress?: string;
     isJetton?: boolean;
     priceInUSD?: string;
+    underlyingBalanceUSD?: string;
+    variableBorrows?: string;
   } & ReserveDataHumanized;
 
 const formatReserves = memoize(

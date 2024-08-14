@@ -9,6 +9,7 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
 
   useEffect(() => {
     const {
+      totalCollateralMarketReferenceCurrency,
       collateralInUSDAsset,
       totalLiquidityUSD,
       totalCollateralUSD,
@@ -23,10 +24,10 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       collateralInUSDAsset: collateralInUSDAsset.toString(),
       userReservesData: yourSuppliesTon,
       totalLiquidityMarketReferenceCurrency: '111',
-      totalLiquidityUSD: totalLiquidityUSD.toString() || '0',
+      totalLiquidityUSD: totalLiquidityUSD.toString(),
       totalCollateralMarketReferenceCurrency: '113',
       totalCollateralUSD: totalCollateralUSD.toString(),
-      totalBorrowsMarketReferenceCurrency: '115',
+      totalBorrowsMarketReferenceCurrency: totalCollateralMarketReferenceCurrency.toString(),
       totalBorrowsUSD: totalBorrowsUSD.toString(),
       netWorthUSD: netWorthUSD.toString(),
       availableBorrowsMarketReferenceCurrency: '118',
