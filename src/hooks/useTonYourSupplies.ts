@@ -16,33 +16,47 @@ interface UseTransactionHandlerTonProps {
   yourAddressWallet: string;
 }
 
+export interface UserSuppliesType {
+  underlyingAddress: string;
+  supplyBalance: bigint;
+  stableBorrowBalance: bigint;
+  variableBorrowBalance: bigint;
+  previousIndex: number;
+  isCollateral: boolean;
+}
+
 export const useTonYourSupplies = (yourAddressWallet: string, reserves: DashboardReserve[]) => {
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [yourSuppliesTon, setYourSuppliesTon] = useState<FormattedUserReserves[]>([]);
-
-  const onGetYourSupply = useCallback(async () => {
-    if (!client || !address_pools || !yourAddressWallet) return;
-    const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
-    const res = await poolContract.getUserSupplies(Address.parse(yourAddressWallet));
-    return res;
-  }, [client, yourAddressWallet]);
+  const [userSupplies, setUserSupplies] = useState<UserSuppliesType[]>([]);
 
   const getYourSupplies = useCallback(async () => {
     setLoading(true);
-
     try {
-      if (!client || !address_pools || !yourAddressWallet || !reserves) {
-        return;
-      }
+      if (!client || !address_pools || !yourAddressWallet) return;
+      const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
+      const res = await poolContract.getUserSupplies(Address.parse(yourAddressWallet));
+      return setUserSupplies(res);
+    } catch (error) {
+      console.error('Error fetching supplies:', error);
+      setUserSupplies([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [client, yourAddressWallet]);
 
-      const yourSupplies = await onGetYourSupply();
+  useEffect(() => {
+    getYourSupplies();
+  }, [client, getYourSupplies, yourAddressWallet]);
 
+  const onMatchDataYourSupplies = useCallback(async () => {
+    try {
       const result = await Promise.all(
         _.chain(reserves)
           .filter((reserve) =>
             _.some(
-              yourSupplies,
+              userSupplies,
               (yourSupply) =>
                 reserve.poolJettonWalletAddress === yourSupply.underlyingAddress.toString() &&
                 Number(yourSupply.supplyBalance) > 0
@@ -50,13 +64,37 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
           )
           .map(async (reserve) => {
             const matchedSupply = _.find(
-              yourSupplies,
+              userSupplies,
               (yourSupply) =>
                 reserve.poolJettonWalletAddress === yourSupply.underlyingAddress.toString()
             );
+
+            const underlyingBalance = formatUnits(
+              matchedSupply?.supplyBalance || '0',
+              reserve.decimals
+            );
+
+            const variableBorrows = formatUnits(
+              matchedSupply?.variableBorrowBalance || '0',
+              reserve.decimals
+            );
+
+            const underlyingBalanceUSD = (
+              parseFloat(reserve.priceInUSD) * parseFloat(underlyingBalance)
+            ).toString();
+
+            const variableBorrowsUSD = (
+              parseFloat(reserve.priceInUSD) * parseFloat(variableBorrows)
+            ).toString();
+
             return {
               ...reserve,
-              underlyingBalance: formatUnits(matchedSupply?.supplyBalance || '0', reserve.decimals),
+              underlyingBalance,
+              underlyingBalanceUSD,
+
+              variableBorrowsUSD,
+              variableBorrows,
+
               reserveID: matchedSupply?.underlyingAddress.toString(),
               usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
               id: reserve.id,
@@ -66,10 +104,6 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               scaledVariableDebt: reserve.scaledVariableDebt,
               principalStableDebt: reserve.principalStableDebt,
               stableBorrowLastUpdateTimestamp: reserve.stableBorrowLastUpdateTimestamp,
-              variableBorrows: formatUnits(
-                matchedSupply?.variableBorrowBalance || '0',
-                reserve.decimals
-              ),
             };
           })
           .value()
@@ -78,14 +112,12 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
       setYourSuppliesTon(result as FormattedUserReserves[]);
     } catch (error) {
       console.error('Error fetching supplies:', error);
-    } finally {
-      setLoading(false);
     }
-  }, [client, yourAddressWallet, reserves, onGetYourSupply]);
+  }, [reserves, userSupplies]);
 
   useEffect(() => {
-    getYourSupplies();
-  }, [client, onGetYourSupply, yourAddressWallet, reserves, getYourSupplies]);
+    onMatchDataYourSupplies();
+  }, [reserves, userSupplies, onMatchDataYourSupplies]);
 
   return {
     yourSuppliesTon,

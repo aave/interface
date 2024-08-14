@@ -74,6 +74,7 @@ export interface AppDataContextType {
   walletBalancesTon: WalletBalancesMap;
   getValueReserve: () => void;
   getYourSupplies: () => void;
+  getPoolContractGetReservesData: () => void;
   yourWalletBalanceTon?: string;
 }
 
@@ -96,6 +97,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     reservesTon,
     loading: loadingReservesTon,
     yourWalletBalanceTon,
+    getPoolContractGetReservesData,
   } = useAppDataProviderTon(ExchangeRateListUSD);
 
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
@@ -105,7 +107,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     getYourSupplies,
   } = useTonYourSupplies(walletAddressTonWallet, reservesTon);
 
-  const { userSummaryTon } = useUserSummaryAndIncentivesTon(ExchangeRateListUSD, yourSuppliesTon);
+  const { userSummaryTon } = useUserSummaryAndIncentivesTon(yourSuppliesTon);
 
   // pool hooks
 
@@ -204,6 +206,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         ghoUserLoadingData: !!currentAccount && isGhoUserDataLoading,
         walletBalancesTon,
         getValueReserve,
+        getPoolContractGetReservesData,
         getYourSupplies,
         yourWalletBalanceTon,
       }}

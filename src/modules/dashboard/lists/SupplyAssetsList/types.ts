@@ -21,4 +21,7 @@ export type SupplyAssetsItem = {
   image?: string;
   underlyingAssetTon?: string;
   poolJettonWalletAddress?: string;
+  priceInUSD?: string;
+  underlyingBalanceUSD?: string;
+  variableBorrowsUSD?: string;
 };

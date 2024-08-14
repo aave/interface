@@ -50,7 +50,7 @@ export const SupplyActions = React.memo(
     ...props
   }: SupplyActionProps) => {
     const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
-    const { getValueReserve, getYourSupplies } = useAppDataContext();
+    const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
     const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions(
       walletAddressTonWallet,
       `${underlyingAssetTon}`
@@ -163,7 +163,7 @@ export const SupplyActions = React.memo(
               loading: false,
               success: true,
             });
-            await getValueReserve();
+            await getPoolContractGetReservesData();
             getYourSupplies();
           } else {
             setMainTxState({

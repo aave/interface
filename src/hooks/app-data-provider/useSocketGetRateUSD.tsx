@@ -33,7 +33,7 @@ export const useSocketGetRateUSD = () => {
     },
     {
       id: 'the-open-network',
-      address: 'EQBwMI8jo3q9Ft5WiCelyE1_w1_SOQLpuny-y0EbdIeUbvQB',
+      address: 'EQBUpTYY_OWdLT2LEYJSx85wevYdSMKFNTmSmcZ0f24TixcN',
     },
   ];
 
