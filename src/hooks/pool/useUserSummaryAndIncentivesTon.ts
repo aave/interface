@@ -44,6 +44,7 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       debtAPY: 1,
       netAPY: netAPY ? netAPY : 0,
     };
+    console.log('User Summary Ton----------', res);
     setUserSummaryTon(res as ExtendedFormattedUser);
   }, [yourSuppliesTon]);
 

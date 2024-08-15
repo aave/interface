@@ -190,7 +190,6 @@ export const BorrowAssetsList = () => {
     filteredReserves as unknown as DashboardReserve[]
   );
   const borrowDisabled = !sortedReserves.length && !ghoReserve;
-  console.log('🚀 ~ sortedReserves:', sortedReserves);
 
   // {
   //   id: 'dai',

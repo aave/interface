@@ -4,7 +4,7 @@ import {
   RAY_DECIMALS,
   SECONDS_PER_YEAR,
 } from '@aave/math-utils';
-import dataAssumeReserves from '@public/assume-reserves.json';
+// import dataAssumeReserves from '@public/assume-reserves.json';
 import userTon from '@public/assume-user.json';
 import { Address, Cell, ContractProvider, OpenedContract, Sender } from '@ton/core';
 import { formatUnits } from 'ethers/lib/utils';
@@ -415,7 +415,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         })
       );
 
-      const mergedArray = JSON.parse(JSON.stringify([...arr, ...dataAssumeReserves]));
+      const mergedArray = JSON.parse(JSON.stringify([...arr]));
+
       setReservesTon(mergedArray as DashboardReserve[]);
     } catch (error) {
       console.error('Error in getValueReserve: ', error);
@@ -472,6 +473,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     });
 
     if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
+      console.log('Assets to supply---------------', newReserves);
       setReservesTon(newReserves);
     }
   }, [reservesTon, ExchangeRateListUSD]);
