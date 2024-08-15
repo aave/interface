@@ -6,7 +6,7 @@ import { Pool } from 'src/contracts/Pool';
 import { User } from 'src/contracts/User';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
-import { address_pools } from './app-data-provider/useAppDataProviderTon';
+import { address_pools, MAX_ATTEMPTS } from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
@@ -33,7 +33,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
   const getYourSupplies = useCallback(async () => {
     let attempts = 0;
-    const maxAttempts = 10;
+    const maxAttempts = MAX_ATTEMPTS;
     setLoading(true);
 
     const fetchData = async () => {
@@ -46,7 +46,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
       } catch (error) {
         console.error(`Error fetching getYourSupplies (attempt ${attempts}):`, error);
         if (attempts < maxAttempts) {
-          console.log('Retrying...');
+          console.log('Retrying...getYourSupplies');
           await fetchData();
         } else {
           console.log('Max attempts reached, stopping retries. getYourSupplies');
