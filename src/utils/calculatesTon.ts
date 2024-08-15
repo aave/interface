@@ -50,22 +50,6 @@ export const formatUnitsTon = (value: BigNumberish, decimals: BigNumberish = 18)
   return ethers.utils.formatUnits(bigValue, decimals);
 };
 
-export const calculateHealthFactor = (
-  reserves: FormattedUserReserves[] | FormattedReservesAndIncentives[]
-): number => {
-  const numerator = reserves.reduce((total, reserve) => {
-    const underlyingBalance = parseFloat(reserve?.underlyingBalanceUSD || '0');
-    const liquidationThreshold = parseFloat(reserve?.formattedReserveLiquidationThreshold || '0');
-    return total + underlyingBalance * liquidationThreshold;
-  }, 0);
-
-  const denominator = reserves.reduce((total, reserve) => {
-    return total + parseFloat(reserve?.variableBorrows || '0');
-  }, 0);
-
-  return denominator === 0 ? 0 : numerator / denominator;
-};
-
 export const calculateTotalCollateralUSD = (
   reserves: FormattedUserReserves[] | FormattedReservesAndIncentives[],
   getFactor: (reserve: FormattedUserReserves | FormattedReservesAndIncentives) => number
