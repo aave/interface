@@ -24,6 +24,7 @@ export default function Home() {
       'Page Name': 'Dashboard',
       Market: currentMarket,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trackEvent]);
 
   return (

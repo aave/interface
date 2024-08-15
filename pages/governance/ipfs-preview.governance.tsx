@@ -154,6 +154,7 @@ export default function IpfsPreview() {
   useEffect(() => {
     if (!ipfsHash) return;
     fetchIpfs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipfsHash]);
 
   return (

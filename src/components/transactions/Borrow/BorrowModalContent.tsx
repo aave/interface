@@ -19,6 +19,7 @@ import {
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -38,7 +39,6 @@ import {
 import { BorrowActions } from './BorrowActions';
 import { BorrowAmountWarning } from './BorrowAmountWarning';
 import { ParameterChangewarning } from './ParameterChangewarning';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 export enum ErrorType {
   STABLE_RATE_NOT_ENABLED,
