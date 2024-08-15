@@ -289,7 +289,7 @@ export const BorrowAssetsList = () => {
           <div>
             <Trans>Assets to borrow</Trans>
           </div>
-          <Button variant="contained" onClick={() => onSendToBorrow('200')}>
+          <Button variant="contained" onClick={() => onSendToBorrow('50')}>
             <Trans>Borrow</Trans>
           </Button>
         </Typography>
