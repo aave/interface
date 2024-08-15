@@ -156,13 +156,27 @@ export const BorrowModalContent = ({
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
 
-  const newHealthFactor = calculateHealthFactorFromBalancesBigUnits({
-    collateralBalanceMarketReferenceCurrency: user.totalCollateralUSD,
-    borrowBalanceMarketReferenceCurrency: valueToBigNumber(user.totalBorrowsUSD).plus(
-      amountToBorrowInUsd
-    ),
-    currentLiquidationThreshold: user.currentLiquidationThreshold,
-  });
+  const calculateHealthFactorFromBalancesBigUnitsTon = () => {
+    const newTotalBorrowsUSD = user
+      ? valueToBigNumber(user.totalBorrowsUSD).plus(amountToBorrowInUsd)
+      : '-1';
+
+    const newHf = valueToBigNumber(user.totalCollateralMarketReferenceCurrency).dividedBy(
+      newTotalBorrowsUSD
+    );
+    return newHf;
+  };
+
+  const newHealthFactor = isConnectedTonWallet
+    ? calculateHealthFactorFromBalancesBigUnitsTon()
+    : calculateHealthFactorFromBalancesBigUnits({
+        collateralBalanceMarketReferenceCurrency: user.totalCollateralUSD,
+        borrowBalanceMarketReferenceCurrency: valueToBigNumber(user.totalBorrowsUSD).plus(
+          amountToBorrowInUsd
+        ),
+        currentLiquidationThreshold: user.currentLiquidationThreshold,
+      });
+
   const displayRiskCheckbox =
     newHealthFactor.toNumber() < 1.5 && newHealthFactor.toString() !== '-1';
 
