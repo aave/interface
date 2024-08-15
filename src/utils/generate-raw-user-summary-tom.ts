@@ -10,6 +10,7 @@ import {
 
 export interface RawUserSummaryResponseTon {
   totalCollateralMarketReferenceCurrency: number;
+  totalBorrowsMarketReferenceCurrency: number;
   currentLiquidationThreshold: number;
   collateralInUSDAsset: number;
   totalCollateralUSD: number;
@@ -72,8 +73,11 @@ export function generateRawUserSummaryTon({
     (weightedAvgSupplyAPY * totalLiquidityUSD) / netWorthUSD -
     (weightedAvgBorrowAPY * totalBorrowsUSD) / netWorthUSD; // Net APY
 
+  const totalBorrowsMarketReferenceCurrency = (totalBorrowsUSD / totalCollateralUSD) * 100 || 0;
+
   return {
     totalCollateralMarketReferenceCurrency,
+    totalBorrowsMarketReferenceCurrency,
     currentLiquidationThreshold,
     collateralInUSDAsset,
     totalCollateralUSD,

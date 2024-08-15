@@ -32,19 +32,35 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   const [userSupplies, setUserSupplies] = useState<UserSuppliesType[]>([]);
 
   const getYourSupplies = useCallback(async () => {
+    let attempts = 0;
+    const maxAttempts = 10;
     setLoading(true);
-    try {
-      if (!client || !address_pools || !yourAddressWallet) return;
-      const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
-      const res = await poolContract.getUserSupplies(Address.parse(yourAddressWallet));
-      return setUserSupplies(res);
-    } catch (error) {
-      console.error('Error fetching supplies:', error);
-      setUserSupplies([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [client, yourAddressWallet]);
+
+    const fetchData = async () => {
+      try {
+        attempts++;
+        if (!client || !address_pools || !yourAddressWallet) return;
+        const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
+        const res = await poolContract.getUserSupplies(Address.parse(yourAddressWallet));
+        return setUserSupplies(res);
+      } catch (error) {
+        console.error(`Error fetching getYourSupplies (attempt ${attempts}):`, error);
+        if (attempts < maxAttempts) {
+          console.log('Retrying...');
+          await fetchData();
+        } else {
+          console.log('Max attempts reached, stopping retries. getYourSupplies');
+          setUserSupplies([]);
+        }
+      } finally {
+        if (attempts >= maxAttempts || (attempts < maxAttempts && userSupplies.length > 0)) {
+          setLoading(false);
+        }
+      }
+    };
+
+    await fetchData();
+  }, [client, userSupplies.length, yourAddressWallet]);
 
   useEffect(() => {
     getYourSupplies();

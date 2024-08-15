@@ -107,18 +107,40 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   );
 
   const getPoolContractGetReservesData = useCallback(async () => {
+    let attempts = 0;
+    const maxAttempts = 10;
     setLoading(true);
-    try {
-      if (!poolContract || !client || !walletAddressTonWallet) return;
-      const reserves = await poolContract.getReservesData();
-      setPoolContractReservesData(reserves);
-    } catch (error) {
-      console.error('Error fetching supplies:', error);
-      setPoolContractReservesData([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [client, poolContract, walletAddressTonWallet]);
+
+    const fetchData = async () => {
+      try {
+        attempts++;
+        if (!poolContract || !client || !walletAddressTonWallet) return;
+        const reserves = await poolContract.getReservesData();
+        setPoolContractReservesData(reserves);
+      } catch (error) {
+        console.error(
+          `Error fetching getPoolContractGetReservesData (attempt ${attempts}):`,
+          error
+        );
+        if (attempts < maxAttempts) {
+          console.log('Retrying...');
+          await fetchData();
+        } else {
+          console.log('Max attempts reached, stopping retries.');
+          setPoolContractReservesData([]);
+        }
+      } finally {
+        if (
+          attempts >= maxAttempts ||
+          (attempts < maxAttempts && poolContractReservesData.length > 0)
+        ) {
+          setLoading(false);
+        }
+      }
+    };
+
+    await fetchData();
+  }, [client, poolContract, poolContractReservesData.length, walletAddressTonWallet]);
 
   useEffect(() => {
     getPoolContractGetReservesData();
