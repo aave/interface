@@ -42,9 +42,11 @@ export function generateRawUserSummaryTon({
   const currentLiquidationThreshold = 0.15;
 
   const healthFactor =
-    valueToBigNumber(totalCollateralMarketReferenceCurrency)
-      .dividedBy(totalBorrowsUSD)
-      .toNumber() || -1;
+    totalBorrowsUSD === 0
+      ? -1
+      : valueToBigNumber(totalCollateralMarketReferenceCurrency)
+          .dividedBy(totalBorrowsUSD)
+          .toNumber() || -1;
 
   const totalCollateralUSD = calculateTotalElementTon(
     userReserves,

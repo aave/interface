@@ -247,7 +247,7 @@ export const calculateHFAfterSupply = (
           )
         : '-1';
       healthFactorAfterDeposit =
-        user.userReservesData.length < 1
+        user.totalBorrowsUSD === '0'
           ? '-1'
           : valueToBigNumber(totalCollateralMarketReferenceCurrencyAfterTon)
               .dividedBy(user.totalBorrowsUSD)
