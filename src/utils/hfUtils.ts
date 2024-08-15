@@ -246,9 +246,12 @@ export const calculateHFAfterSupply = (
             Number(supplyAmountInEth) * Number(poolReserve.formattedReserveLiquidationThreshold)
           )
         : '-1';
-      healthFactorAfterDeposit = valueToBigNumber(totalCollateralMarketReferenceCurrencyAfterTon)
-        .dividedBy(user.totalBorrowsUSD)
-        .toString();
+      healthFactorAfterDeposit =
+        user.userReservesData.length < 1
+          ? '-1'
+          : valueToBigNumber(totalCollateralMarketReferenceCurrencyAfterTon)
+              .dividedBy(user.totalBorrowsUSD)
+              .toString();
     } else {
       healthFactorAfterDeposit = calculateHealthFactorFromBalancesBigUnits({
         collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,

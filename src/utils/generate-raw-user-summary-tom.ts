@@ -44,7 +44,7 @@ export function generateRawUserSummaryTon({
   const healthFactor =
     valueToBigNumber(totalCollateralMarketReferenceCurrency)
       .dividedBy(totalBorrowsUSD)
-      .toNumber() || 0;
+      .toNumber() || -1;
 
   const totalCollateralUSD = calculateTotalElementTon(
     userReserves,
