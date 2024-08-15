@@ -54,22 +54,30 @@ export const calculateTotalCollateralUSD = (
   reserves: FormattedUserReserves[] | FormattedReservesAndIncentives[],
   getFactor: (reserve: FormattedUserReserves | FormattedReservesAndIncentives) => number
 ): number => {
-  return reserves?.reduce((total, reserve) => {
-    const underlyingBalance = parseFloat(reserve?.underlyingBalanceUSD || '0');
-    const factor = getFactor(reserve);
-    return total + underlyingBalance * factor;
-  }, 0);
+  return reserves.reduce(
+    (total: number, reserve: FormattedUserReserves | FormattedReservesAndIncentives) => {
+      const underlyingBalance = parseFloat(reserve?.underlyingBalanceUSD || '0');
+      const factor = getFactor(reserve);
+      return total + underlyingBalance * factor;
+    },
+    0
+  );
 };
 
 export const calculateTotalCollateralMarketReferenceCurrency = (
   reserves: FormattedUserReserves[] | FormattedReservesAndIncentives[]
 ): number => {
-  return reserves?.reduce((total, reserve) => {
-    if (reserve.usageAsCollateralEnabledOnUser) {
-      const underlyingBalance = parseFloat(reserve?.underlyingBalanceUSD || '0');
-      const liquidationThreshold = parseFloat(reserve?.formattedReserveLiquidationThreshold || '0');
-      return total + underlyingBalance * liquidationThreshold;
-    }
-    return total;
-  }, 0);
+  return reserves.reduce(
+    (total: number, reserve: FormattedUserReserves | FormattedReservesAndIncentives) => {
+      if (reserve.usageAsCollateralEnabledOnUser) {
+        const underlyingBalance = parseFloat(reserve?.underlyingBalanceUSD || '0');
+        const liquidationThreshold = parseFloat(
+          reserve?.formattedReserveLiquidationThreshold || '0'
+        );
+        return total + underlyingBalance * liquidationThreshold;
+      }
+      return total;
+    },
+    0
+  );
 };
