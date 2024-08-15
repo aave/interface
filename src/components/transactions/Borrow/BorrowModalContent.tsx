@@ -38,6 +38,7 @@ import {
 import { BorrowActions } from './BorrowActions';
 import { BorrowAmountWarning } from './BorrowAmountWarning';
 import { ParameterChangewarning } from './ParameterChangewarning';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 export enum ErrorType {
   STABLE_RATE_NOT_ENABLED,
@@ -127,8 +128,14 @@ export const BorrowModalContent = ({
   const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
 
+  const { isConnectedTonWallet } = useTonConnectContext();
   // amount calculations
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
+    poolReserve,
+    user,
+    interestRateMode,
+    isConnectedTonWallet
+  ); // need fix
 
   // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected

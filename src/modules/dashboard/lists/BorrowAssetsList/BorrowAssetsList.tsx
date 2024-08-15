@@ -228,7 +228,7 @@ export const BorrowAssetsList = () => {
         const params = {
           queryId: Date.now(),
           poolJettonWalletAddress: Address.parse(
-            'EQCS__oKhV5e0zRbfyWmwD_HbIxpJjmdeaGes8SU--HcxycS' // pool jedston wallet address
+            'EQC_bBS-Q4hQ338IkQwP_HBHBvbTLFYyq3pmE-G_3zeuiNG_' // pool jedston wallet address
           ),
           amount: BigInt(Number(amount) * 10 ** 6),
           price: BigInt(newValue),
@@ -289,7 +289,7 @@ export const BorrowAssetsList = () => {
           <div>
             <Trans>Assets to borrow</Trans>
           </div>
-          <Button variant="contained" onClick={() => onSendToBorrow('12')}>
+          <Button variant="contained" onClick={() => onSendToBorrow('200')}>
             <Trans>Borrow</Trans>
           </Button>
         </Typography>

@@ -41,7 +41,7 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       userEmodeCategoryId: 0,
       isInEmode: false,
       earnedAPY: earnedAPY,
-      debtAPY: 1,
+      debtAPY: Number(totalBorrowsUSD / totalCollateralUSD),
       netAPY: netAPY ? netAPY : 0,
     };
     console.log('User Summary Ton----------', res);
