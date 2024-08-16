@@ -134,6 +134,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.metis_andromeda]: GovernanceV3Metis.PC_DATA_HELPER,
       [ChainId.bnb]: GovernanceV3BNB.PC_DATA_HELPER,
       [ChainId.scroll]: GovernanceV3Scroll.PC_DATA_HELPER,
+      [324]: '0xe28A3235DCF1Acb8397B546bd588bAAFD7081505',
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
