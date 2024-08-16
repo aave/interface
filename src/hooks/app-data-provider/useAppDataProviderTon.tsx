@@ -1,5 +1,6 @@
 import {
   calculateCompoundedRate,
+  LTV_PRECISION,
   normalize,
   RAY_DECIMALS,
   SECONDS_PER_YEAR,
@@ -187,13 +188,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
             const reserveLiquidationThreshold = item.liquidationThreshold.toString();
 
-            const formattedReserveLiquidationThreshold = (
-              Number(item.liquidationThreshold) / 100000
-            ).toString();
+            const formattedReserveLiquidationThreshold = normalize(reserveLiquidationThreshold, 4);
 
             const baseLTVasCollateral = item.LTV.toString();
 
-            const formattedBaseLTVasCollateral = (Number(item.LTV) / 10000).toString();
+            const formattedBaseLTVasCollateral = normalize(baseLTVasCollateral, LTV_PRECISION);
 
             return {
               // ...item,
