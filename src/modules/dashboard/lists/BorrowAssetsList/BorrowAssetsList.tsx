@@ -1,22 +1,15 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Address, beginCell } from '@ton/core';
-import { Fragment, useCallback, useState } from 'react';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Fragment, useState } from 'react';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
-import { Pool } from 'src/contracts/Pool';
-import { getKeyPair } from 'src/contracts/utils';
-import { address_pools } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
-import { useContract } from 'src/hooks/useContract';
-import { useTonClient } from 'src/hooks/useTonClient';
-import { useTonConnect } from 'src/hooks/useTonConnect';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
@@ -24,7 +17,6 @@ import {
   findAndFilterMintableGhoReserve,
 } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
-import { KeyPair, sign } from 'ton-crypto';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -111,10 +103,6 @@ export const BorrowAssetsList = () => {
   const [sortDesc, setSortDesc] = useState(false);
 
   const { baseAssetSymbol } = currentNetworkConfig;
-  const providerPool = useContract<Pool>(address_pools, Pool);
-  const { walletAddressTonWallet } = useTonConnectContext();
-  const client = useTonClient();
-  const { sender } = useTonConnect();
 
   const tokensToBorrow = reserves
     .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
@@ -191,62 +179,6 @@ export const BorrowAssetsList = () => {
   );
   const borrowDisabled = !sortedReserves.length && !ghoReserve;
 
-  // {
-  //   id: 'dai',
-  //   address: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
-  // },
-  // {
-  //   id: 'usd-coin',
-  //   address: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
-  // },
-
-  const onSendToBorrow = useCallback(
-    async (amount: string) => {
-      if (!client || !walletAddressTonWallet || !amount || !providerPool) return;
-      try {
-        const beKeyPair: KeyPair = await getKeyPair();
-        console.log('🚀 ~ beKeyPair:', beKeyPair);
-
-        if (!beKeyPair || !beKeyPair.secretKey) {
-          throw new Error('Invalid KeyPair or secretKey is missing');
-        }
-
-        const res = await fetch(
-          'https://api.redstone.finance/prices?symbol=USDT&provider=redstone&limit=1'
-        );
-        const data = await res.json();
-        const price = data[0];
-        console.log('price from redstone api: ', price.value);
-
-        const newValue = (price.value * 10 ** 6).toFixed();
-
-        console.log('symbol', newValue);
-        const dataPrice = beginCell().storeInt(+newValue, 32).endCell();
-
-        const sig = sign(dataPrice.hash(), beKeyPair.secretKey);
-
-        const params = {
-          queryId: Date.now(),
-          poolJettonWalletAddress: Address.parse(
-            'EQAjhcSn9icWjnMTQs5R_KKLs2BU4Jr63SylsiLrFazE0qhe' // pool jedston wallet address
-          ),
-          amount: BigInt(Number(amount) * 10 ** 6),
-          price: BigInt(newValue),
-          sig,
-        };
-        await providerPool.sendBorrow(
-          sender, //via: Sender
-          params //via: Sender,
-        );
-        return true;
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        return { success: false, error };
-      }
-    },
-    [client, providerPool, sender, walletAddressTonWallet]
-  );
-
   const RenderHeader: React.FC = () => {
     return (
       <ListHeaderWrapper>
@@ -286,12 +218,7 @@ export const BorrowAssetsList = () => {
     <ListWrapper
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <div>
-            <Trans>Assets to borrow</Trans>
-          </div>
-          <Button variant="contained" onClick={() => onSendToBorrow('50')}>
-            <Trans>Borrow</Trans>
-          </Button>
+          <Trans>Assets to borrow</Trans>
         </Typography>
       }
       localStorageName="borrowAssetsDashboardTableCollapse"

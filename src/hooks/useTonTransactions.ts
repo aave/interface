@@ -10,6 +10,10 @@ import { useContract } from './useContract';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
+import { getKeyPair } from 'src/contracts/utils';
+import { KeyPair, sign } from 'ton-crypto';
+import { parseUnits } from 'ethers/lib/utils';
+import { FormattedReservesAndIncentives } from './pool/usePoolFormattedReserves';
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
   const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
@@ -17,7 +21,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   const { sender, getLatestBoc } = useTonConnect();
 
   const providerJettonMinter = useContract<JettonMinter>(underlyingAssetTon, JettonMinter);
-  const providerPool = useContract<Pool>(underlyingAssetTon, Pool);
+  const providerPoolAssetTon = useContract<Pool>(underlyingAssetTon, Pool);
+  const providerPool = useContract<Pool>(address_pools, Pool);
 
   const approvedAmountTonAssume = {
     user: '0x6385fb98e0ae7bd76b55a044e1635244e46b07ef',
@@ -69,13 +74,13 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
   const onSendNativeToken = useCallback(
     async (amount: string) => {
-      if (!client || !yourAddressWallet || !amount || !providerPool) return;
+      if (!client || !yourAddressWallet || !amount || !providerPoolAssetTon) return;
       try {
         const params = {
           queryId: Date.now(),
           amount: BigInt(amount),
         };
-        await providerPool.sendDeposit(
+        await providerPoolAssetTon.sendDeposit(
           sender, //via: Sender
           params //via: Sender
         );
@@ -86,7 +91,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, error };
       }
     },
-    [client, providerPool, sender, yourAddressWallet]
+    [client, providerPoolAssetTon, sender, yourAddressWallet]
   );
 
   const onSendSupplyTon = useCallback(
@@ -120,8 +125,49 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     ]
   );
 
+  const onSendBorrowTon = useCallback(
+    async (amount: string, poolReserve: FormattedReservesAndIncentives) => {
+      try {
+        const beKeyPair: KeyPair = await getKeyPair();
+        if (!client || !amount || !providerPool || !poolReserve.poolJettonWalletAddress) return;
+        if (!beKeyPair || !beKeyPair.secretKey) {
+          throw new Error('Invalid KeyPair or secretKey is missing');
+        }
+
+        const parseAmount = parseUnits(amount, poolReserve.decimals);
+        const parsePrice = parseUnits(poolReserve.priceInUSD, poolReserve.decimals);
+        const dataPrice = beginCell().storeInt(+parsePrice, 32).endCell();
+
+        const sig = sign(dataPrice.hash(), beKeyPair.secretKey);
+
+        const params = {
+          queryId: Date.now(),
+          poolJettonWalletAddress: Address.parse(poolReserve.poolJettonWalletAddress),
+          amount: BigInt(parseAmount.toString()),
+          price: BigInt(parsePrice.toString()),
+          sig,
+        };
+
+        await providerPool.sendBorrow(
+          sender, //via: Sender
+          params //via: Sender,
+        );
+
+        const boc = await getLatestBoc();
+        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
+
+        return { success: true, txHash };
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        return { success: false, error };
+      }
+    },
+    [getLatestBoc, onGetGetTxByBOC, sender, providerPoolAssetTon, yourAddressWallet]
+  );
+
   return {
     approvedAmountTonAssume,
     onSendSupplyTon,
+    onSendBorrowTon,
   };
 };
