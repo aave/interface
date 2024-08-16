@@ -120,6 +120,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               scaledVariableDebt: reserve.scaledVariableDebt,
               principalStableDebt: reserve.principalStableDebt,
               stableBorrowLastUpdateTimestamp: reserve.stableBorrowLastUpdateTimestamp,
+              underlyingBalanceMarketReferenceCurrency: underlyingBalanceUSD,
             };
           })
           .value()

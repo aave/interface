@@ -151,6 +151,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const getValueReserve = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
+    setLoading(true);
     const fetchData = async () => {
       try {
         attempts++;
@@ -454,6 +455,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         } else {
           console.log('Max attempts reached, stopping retries.');
           setReservesTon([]);
+        }
+      } finally {
+        if (
+          attempts >= maxAttempts ||
+          (attempts < maxAttempts && poolContractReservesData.length > 0)
+        ) {
+          setLoading(false);
         }
       }
     };
