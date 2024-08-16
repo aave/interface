@@ -1,6 +1,7 @@
-import { TenderlyFork } from '../cypress/support/tools/tenderly';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
+
+import { TenderlyFork } from '../cypress/support/tools/tenderly';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/naming-convention

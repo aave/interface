@@ -172,7 +172,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
       background: theme.palette.background.default,
     };
 
-    const data = useMemo(() => getRates(reserve), [JSON.stringify(reserve)]);
+    const data = useMemo(() => getRates(reserve), [reserve]);
 
     // bounds
     const innerWidth = width - margin.left - margin.right;

@@ -6,6 +6,7 @@ type SkipType = {
   get: () => boolean;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const skipSetup = (skip: any) => {
   before(function () {
     if (skip.get()) {

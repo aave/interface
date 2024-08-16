@@ -1,8 +1,8 @@
+import assets from '../../../fixtures/assets.json';
+import constants from '../../../fixtures/constans.json';
+import { skipState } from '../../../support/steps/common';
 import { configEnvHarmony } from '../../../support/steps/configuration.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
-import constants from '../../../fixtures/constans.json';
-import assets from '../../../fixtures/assets.json';
-import { skipState } from '../../../support/steps/common';
 
 const testData = {
   dashboard: [

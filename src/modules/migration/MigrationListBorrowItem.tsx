@@ -29,7 +29,13 @@ export const MigrationListBorrowItem = ({
           : selectedAsset.debtKey == userReserve.reserve.variableDebtTokenAddress
       ) >= 0
     );
-  }, [selectedBorrowAssets]);
+  }, [
+    selectedBorrowAssets,
+    userReserve.interestRate,
+    userReserve.migrationDisabled,
+    userReserve.reserve.stableDebtTokenAddress,
+    userReserve.reserve.variableDebtTokenAddress,
+  ]);
 
   const handleCheckboxClick = () => {
     toggleSelectedBorrowPosition(userReserve);
