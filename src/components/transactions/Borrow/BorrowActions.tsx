@@ -11,12 +11,18 @@ import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
+import { useTonTransactions } from 'src/hooks/useTonTransactions';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { sleep } from 'src/utils/rotationProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -71,6 +77,13 @@ export const BorrowActions = React.memo(
     const queryClient = useQueryClient();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
+    const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
+    const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
+
+    const { onSendBorrowTon } = useTonTransactions(
+      walletAddressTonWallet,
+      `${poolReserve.underlyingAssetTon}`
+    );
 
     const approval = async () => {
       try {
@@ -106,35 +119,56 @@ export const BorrowActions = React.memo(
 
     const action = async () => {
       try {
-        setMainTxState({ ...mainTxState, loading: true });
-        let borrowTxData = borrow({
-          amount: parseUnits(amountToBorrow, poolReserve.decimals).toString(),
-          reserve: poolAddress,
-          interestRateMode,
-          debtTokenAddress:
-            interestRateMode === InterestRate.Variable
-              ? poolReserve.variableDebtTokenAddress
-              : poolReserve.stableDebtTokenAddress,
-        });
-        borrowTxData = await estimateGasLimit(borrowTxData);
-        const response = await sendTx(borrowTxData);
-        await response.wait(1);
-        setMainTxState({
-          txHash: response.hash,
-          loading: false,
-          success: true,
-        });
+        if (isConnectedTonWallet) {
+          setMainTxState({ ...mainTxState, loading: true });
 
-        addTransaction(response.hash, {
-          action: ProtocolAction.borrow,
-          txState: 'success',
-          asset: poolAddress,
-          amount: amountToBorrow,
-          assetName: poolReserve.name,
-        });
+          const resBorrowTop = await onSendBorrowTon(amountToBorrow, poolReserve);
+          if (resBorrowTop?.success) {
+            await sleep(30000); // sleep 30s re call SC get new data reserve
+            setMainTxState({
+              txHash: resBorrowTop.txHash,
+              loading: false,
+              success: true,
+            });
+            await getPoolContractGetReservesData();
+            await getYourSupplies();
+          } else {
+            setMainTxState({
+              txHash: undefined,
+              loading: false,
+            });
+          }
+        } else {
+          setMainTxState({ ...mainTxState, loading: true });
+          let borrowTxData = borrow({
+            amount: parseUnits(amountToBorrow, poolReserve.decimals).toString(),
+            reserve: poolAddress,
+            interestRateMode,
+            debtTokenAddress:
+              interestRateMode === InterestRate.Variable
+                ? poolReserve.variableDebtTokenAddress
+                : poolReserve.stableDebtTokenAddress,
+          });
+          borrowTxData = await estimateGasLimit(borrowTxData);
+          const response = await sendTx(borrowTxData);
+          await response.wait(1);
+          setMainTxState({
+            txHash: response.hash,
+            loading: false,
+            success: true,
+          });
 
-        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-        queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
+          addTransaction(response.hash, {
+            action: ProtocolAction.borrow,
+            txState: 'success',
+            asset: poolAddress,
+            amount: amountToBorrow,
+            assetName: poolReserve.name,
+          });
+
+          queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+          queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
+        }
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
