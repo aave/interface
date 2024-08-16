@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.29.1":
-  version "1.29.1"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.29.1.tgz#34beab8afa35bbfc6168c78ced8317d96a493fe0"
-  integrity sha512-34z5CKpNdEx26G+DSezovdR3PyAf0v0Typbf2udaKG4GrOBgqbKqxr4zqS/dpFO5aAQJJ+nuEM19lKRK4sMcpg==
+"@aave/contract-helpers@1.29.2-0f700fed5068bc1874adec9a6398513da64b392b.0":
+  version "1.29.2-0f700fed5068bc1874adec9a6398513da64b392b.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.29.2-0f700fed5068bc1874adec9a6398513da64b392b.0.tgz#30e5fb8a05e411c426c2b7837b16595866d2876a"
+  integrity sha512-hcBw5keGcXVuk7mR/nlusr7PSsAw7dqoExoAJN9HncN93o5bAOhZRyLfbaLWo926eFoTyetdurc5UmXhRqZ+jw==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
@@ -1317,10 +1317,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-3.0.1.tgz#942cef06984ed7b12b5a6694c5010637b505edd3"
-  integrity sha512-dlq/tBbGzmXPK4q94+Oy/XFXsE3qnKq60L9Hd67WlF3f6zCyzuTuQvUCPW/7hpH3Wda9LAnUbOxGunHAt05n6g==
+"@bgd-labs/aave-address-book@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-3.1.1.tgz#46e528f5b86dff0a26b17fd7573e2abf4c2c1c44"
+  integrity sha512-H3oQFMCgnL0BsQuSTAaj9M3zBm1uK3Uk6qfPH29ktLxhipE4UVqglhC/ZQVMT2wlgf1bMBjmsvwgTDRDOwXuFQ==
 
 "@coinbase/wallet-sdk@3.1.0", "@coinbase/wallet-sdk@^3.0.4":
   version "3.1.0"

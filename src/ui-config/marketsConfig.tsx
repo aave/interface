@@ -25,6 +25,7 @@ import {
   AaveV3Scroll,
   AaveV3ScrollSepolia,
   AaveV3Sepolia,
+  AaveV3ZkSync,
 } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
 
@@ -35,7 +36,7 @@ export type MarketDataType = {
   marketTitle: string;
   market: CustomMarket;
   // the network the market operates on
-  chainId: ChainId;
+  chainId: ChainId | number; // TODO: remove, just for testing
   enabledFeatures?: {
     liquiditySwap?: boolean;
     staking?: boolean;
@@ -96,6 +97,7 @@ export enum CustomMarket {
   proto_bnb_v3 = 'proto_bnb_v3',
   proto_scroll_v3 = 'proto_scroll_v3',
   proto_lido_v3 = 'proto_lido_v3',
+  proto_zksync_v3 = 'proto_zksync_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -705,6 +707,22 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Scroll.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Scroll.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Scroll.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_zksync_v3]: {
+    marketTitle: 'ZKsync',
+    market: CustomMarket.proto_zksync_v3,
+    chainId: 260, // ChainId.zksync,
+    v3: true,
+    // subgraphUrl: 'TODO'
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3ZkSync.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3ZkSync.POOL,
+      WETH_GATEWAY: AaveV3ZkSync.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3ZkSync.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3ZkSync.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3ZkSync.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3ZkSync.COLLECTOR,
     },
   },
 } as const;

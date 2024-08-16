@@ -432,7 +432,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
   },
-
   [ChainId.scroll]: {
     name: 'Scroll',
     // privateJsonRPCUrl: 'https://scroll-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
@@ -449,5 +448,14 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://scroll.io/bridge',
     },
     ratesHistoryApiUrl,
+  },
+  [260]: {
+    name: 'ZKsync',
+    publicJsonRPCUrl: ['http://127.0.0.1:8011'],
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://explorer.zksync.io/',
+    networkLogoPath: '/icons/networks/zksync.svg',
   },
 } as const;
