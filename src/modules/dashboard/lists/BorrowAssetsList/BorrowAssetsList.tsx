@@ -228,7 +228,7 @@ export const BorrowAssetsList = () => {
         const params = {
           queryId: Date.now(),
           poolJettonWalletAddress: Address.parse(
-            'EQC_bBS-Q4hQ338IkQwP_HBHBvbTLFYyq3pmE-G_3zeuiNG_' // pool jedston wallet address
+            'EQAjhcSn9icWjnMTQs5R_KKLs2BU4Jr63SylsiLrFazE0qhe' // pool jedston wallet address
           ),
           amount: BigInt(Number(amount) * 10 ** 6),
           price: BigInt(newValue),
