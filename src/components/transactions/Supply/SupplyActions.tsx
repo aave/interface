@@ -164,7 +164,7 @@ export const SupplyActions = React.memo(
               success: true,
             });
             await getPoolContractGetReservesData();
-            getYourSupplies();
+            await getYourSupplies();
           } else {
             setMainTxState({
               txHash: undefined,
