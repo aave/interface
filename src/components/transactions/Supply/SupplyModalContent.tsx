@@ -62,7 +62,6 @@ export enum ErrorType {
 export const SupplyModalContentWrapper = (
   params: ModalWrapperProps & { user: ExtendedFormattedUser }
 ) => {
-  const { isConnectedTonWallet } = useTonConnectContext();
   const user = params.user;
   const { currentMarketData } = useProtocolDataContext();
   const wrappedTokenReserves = useWrappedTokens();
@@ -102,14 +101,12 @@ export const SupplyModalContentWrapper = (
       decimals: poolReserve.decimals,
       aToken: true,
     },
-    collateralType: isConnectedTonWallet
-      ? 0
-      : getAssetCollateralType(
-          userReserve,
-          user.totalCollateralUSD,
-          user.isInIsolationMode,
-          debtCeilingUsage.isMaxed
-        ),
+    collateralType: getAssetCollateralType(
+      userReserve,
+      user.totalCollateralUSD,
+      user.isInIsolationMode,
+      debtCeilingUsage.isMaxed
+    ),
     supplyCapWarning: supplyCapUsage.determineWarningDisplay({ supplyCap: supplyCapUsage }),
     debtCeilingWarning: debtCeilingUsage.determineWarningDisplay({ debtCeiling: debtCeilingUsage }),
     wrappedTokenConfig: wrappedTokenReserves.find(
