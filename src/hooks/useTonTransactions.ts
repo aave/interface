@@ -162,7 +162,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, error };
       }
     },
-    [getLatestBoc, onGetGetTxByBOC, sender, providerPoolAssetTon, yourAddressWallet]
+    [client, providerPool, sender, getLatestBoc, onGetGetTxByBOC, yourAddressWallet]
   );
 
   return {
