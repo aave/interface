@@ -127,15 +127,14 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
   const onSendBorrowTon = useCallback(
     async (amount: string, poolReserve: FormattedReservesAndIncentives) => {
-      try {
-        const beKeyPair: KeyPair = await getKeyPair();
-        if (!client || !amount || !providerPool || !poolReserve.poolJettonWalletAddress) return;
-        if (!beKeyPair || !beKeyPair.secretKey) {
-          throw new Error('Invalid KeyPair or secretKey is missing');
-        }
+      const beKeyPair: KeyPair = await getKeyPair();
+      if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress) return;
 
-        const parseAmount = parseUnits(amount, poolReserve.decimals);
-        const parsePrice = parseUnits(poolReserve.priceInUSD, poolReserve.decimals);
+      try {
+        const decimal = poolReserve.decimals;
+        const parseAmount = parseUnits(amount, decimal).toString();
+        const parsePrice = parseUnits(poolReserve.priceInUSD, decimal).toString();
+
         const dataPrice = beginCell().storeInt(+parsePrice, 32).endCell();
 
         const sig = sign(dataPrice.hash(), beKeyPair.secretKey);
@@ -143,8 +142,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         const params = {
           queryId: Date.now(),
           poolJettonWalletAddress: Address.parse(poolReserve.poolJettonWalletAddress),
-          amount: BigInt(parseAmount.toString()),
-          price: BigInt(parsePrice.toString()),
+          amount: BigInt(parseAmount),
+          price: BigInt(parsePrice),
           sig,
         };
 
@@ -162,7 +161,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, error };
       }
     },
-    [client, providerPool, sender, getLatestBoc, onGetGetTxByBOC, yourAddressWallet]
+    [getLatestBoc, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
   );
 
   return {

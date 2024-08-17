@@ -72,7 +72,7 @@ export const BorrowedPositionsList = () => {
 
   let borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
-      if (userReserve.variableBorrows !== '0') {
+      if (Number(userReserve.variableBorrows) !== 0) {
         acc.push({
           ...userReserve,
           borrowRateMode: InterestRate.Variable,
@@ -87,7 +87,7 @@ export const BorrowedPositionsList = () => {
           },
         });
       }
-      if (userReserve.stableBorrows !== '0') {
+      if (Number(userReserve.stableBorrows) !== 0) {
         acc.push({
           ...userReserve,
           borrowRateMode: InterestRate.Stable,
