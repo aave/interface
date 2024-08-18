@@ -1,9 +1,9 @@
 import {
-  // calculateCompoundedRate,
+  calculateCompoundedRate,
   LTV_PRECISION,
   normalize,
   RAY_DECIMALS,
-  // SECONDS_PER_YEAR,
+  SECONDS_PER_YEAR,
 } from '@aave/math-utils';
 // import dataAssumeReserves from '@public/assume-reserves.json';
 import userTon from '@public/assume-user.json';
@@ -170,35 +170,35 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               ? await getPoolJettonWalletAddress(item.underlyingAddress.toString())
               : item.underlyingAddress;
 
-            // const supplyAPY = calculateCompoundedRate({
-            //   rate: item.currentLiquidityRate.toString(),
-            //   duration: SECONDS_PER_YEAR,
-            // });
+            const supplyAPY = calculateCompoundedRate({
+              rate: item.currentLiquidityRate.toString().substring(0, 27), // cut from 0 to 27 index
+              duration: SECONDS_PER_YEAR,
+            });
 
-            // const variableBorrowAPY = calculateCompoundedRate({
-            //   rate: item.currentVariableBorrowRate.toString(),
-            //   duration: SECONDS_PER_YEAR,
-            // });
+            const variableBorrowAPY = calculateCompoundedRate({
+              rate: item.currentVariableBorrowRate.toString().toString().substring(0, 27), // cut from 0 to 27 index
+              duration: SECONDS_PER_YEAR,
+            });
 
-            // const stableBorrowAPY = calculateCompoundedRate({
-            //   rate: item.currentStableBorrowRate.toString(),
-            //   duration: SECONDS_PER_YEAR,
-            // });
+            const stableBorrowAPY = calculateCompoundedRate({
+              rate: item.currentStableBorrowRate.toString().toString().substring(0, 27), // cut from 0 to 27 index
+              duration: SECONDS_PER_YEAR,
+            });
 
-            const supplyAPY = formatUnits(
-              Math.ceil(Number(normalize(Number(item.currentLiquidityRate) || 0, RAY_DECIMALS))),
-              item.decimals
-            );
-            const variableBorrowAPY = formatUnits(
-              Math.ceil(
-                Number(normalize(Number(item.currentVariableBorrowRate) || 0, RAY_DECIMALS))
-              ),
-              item.decimals
-            );
-            const stableBorrowAPY = formatUnits(
-              Math.ceil(Number(normalize(Number(item.currentStableBorrowRate) || 0, RAY_DECIMALS))),
-              item.decimals
-            );
+            // const supplyAPY = formatUnits(
+            //   Math.ceil(Number(normalize(Number(item.currentLiquidityRate) || 0, RAY_DECIMALS))),
+            //   item.decimals
+            // );
+            // const variableBorrowAPY = formatUnits(
+            //   Math.ceil(
+            //     Number(normalize(Number(item.currentVariableBorrowRate) || 0, RAY_DECIMALS))
+            //   ),
+            //   item.decimals
+            // );
+            // const stableBorrowAPY = formatUnits(
+            //   Math.ceil(Number(normalize(Number(item.currentStableBorrowRate) || 0, RAY_DECIMALS))),
+            //   item.decimals
+            // );
 
             const stableBorrows = 0;
 
@@ -341,12 +341,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 formattedEModeLiquidationBonus: '0.01',
                 formattedEModeLiquidationThreshold: '0.95',
                 formattedEModeLtv: '0.93',
-                // supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
-                supplyAPY: normalize(supplyAPY, LTV_PRECISION),
-                // variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
-                variableBorrowAPY: normalize(variableBorrowAPY, LTV_PRECISION),
-                // stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
-                stableBorrowAPY: normalize(stableBorrowAPY, LTV_PRECISION),
+                supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
+                // supplyAPY: normalize(supplyAPY, LTV_PRECISION),
+                variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
+                // variableBorrowAPY: normalize(variableBorrowAPY, LTV_PRECISION),
+                stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
+                // stableBorrowAPY: normalize(stableBorrowAPY, LTV_PRECISION),
                 formattedAvailableLiquidity: '2314.651612891643030158',
                 unborrowedLiquidity: '2314.651612891643030158',
                 formattedBaseLTVasCollateral: formattedBaseLTVasCollateral,
@@ -450,13 +450,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               totalBorrows: '0',
               totalBorrowsMarketReferenceCurrency: '0',
               totalBorrowsUSD: '0',
-              // supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
-              supplyAPY: normalize(supplyAPY, LTV_PRECISION),
+              supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
+              // supplyAPY: normalize(supplyAPY, LTV_PRECISION),
               stableBorrowAPR: '0.07',
-              // stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
-              stableBorrowAPY: normalize(stableBorrowAPY, LTV_PRECISION),
-              // variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
-              variableBorrowAPY: normalize(variableBorrowAPY, LTV_PRECISION),
+              stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
+              // stableBorrowAPY: normalize(stableBorrowAPY, LTV_PRECISION),
+              variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
+              // variableBorrowAPY: normalize(variableBorrowAPY, LTV_PRECISION),
               borrowRateMode: 'Variable',
               walletBalanceUSD: '0',
             };
