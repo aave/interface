@@ -14,11 +14,14 @@ export interface RawUserSummaryResponseTon {
   currentLiquidationThreshold: number;
   collateralInUSDAsset: number;
   totalCollateralUSD: number;
+  currentLoanToValue: number;
+  availableBorrowsUSD: number;
   totalLiquidityUSD: number;
   totalBorrowsUSD: number;
   healthFactor: number;
   netWorthUSD: number;
   earnedAPY: number;
+  debtAPY: number;
   netAPY: number;
 }
 
@@ -75,17 +78,26 @@ export function generateRawUserSummaryTon({
 
   const totalBorrowsMarketReferenceCurrency = (totalBorrowsUSD / totalCollateralUSD) * 100 || 0;
 
+  const currentLoanToValue = (totalBorrowsUSD / totalCollateralUSD) * 100 || 0;
+
+  const debtAPY = totalBorrowsUSD / totalCollateralUSD;
+
+  const availableBorrowsUSD = totalCollateralUSD - totalBorrowsUSD;
+
   return {
     totalCollateralMarketReferenceCurrency,
     totalBorrowsMarketReferenceCurrency,
     currentLiquidationThreshold,
     collateralInUSDAsset,
     totalCollateralUSD,
+    currentLoanToValue,
+    availableBorrowsUSD,
     totalLiquidityUSD,
     totalBorrowsUSD,
     healthFactor,
     netWorthUSD,
     earnedAPY,
+    debtAPY,
     netAPY,
   };
 }

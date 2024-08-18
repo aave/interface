@@ -13,28 +13,31 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       totalBorrowsMarketReferenceCurrency,
       currentLiquidationThreshold,
       collateralInUSDAsset,
-      totalLiquidityUSD,
+      currentLoanToValue,
+      availableBorrowsUSD,
       totalCollateralUSD,
+      totalLiquidityUSD,
       totalBorrowsUSD,
       healthFactor,
       netWorthUSD,
       earnedAPY,
+      debtAPY,
       netAPY,
     } = generateRawUserSummaryTon({ userReserves: yourSuppliesTon });
 
     const res = {
       collateralInUSDAsset: collateralInUSDAsset.toString(),
       userReservesData: yourSuppliesTon,
-      totalLiquidityMarketReferenceCurrency: '111',
-      totalLiquidityUSD: totalLiquidityUSD.toString(),
+      totalLiquidityMarketReferenceCurrency: totalLiquidityUSD.toString(), /// totalLiquidityUSD = totalLiquidityMarketReferenceCurrency
+      totalLiquidityUSD: totalLiquidityUSD.toString(), /// totalLiquidityUSD = totalLiquidityMarketReferenceCurrency
       totalCollateralMarketReferenceCurrency: totalCollateralMarketReferenceCurrency.toString(),
       totalCollateralUSD: totalCollateralUSD.toString(),
       totalBorrowsMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency.toString(),
       totalBorrowsUSD: totalBorrowsUSD.toString(),
       netWorthUSD: netWorthUSD.toString(),
-      availableBorrowsMarketReferenceCurrency: '118',
-      availableBorrowsUSD: '119',
-      currentLoanToValue: '120',
+      availableBorrowsMarketReferenceCurrency: availableBorrowsUSD.toString(), /// availableBorrowsUSD = availableBorrowsMarketReferenceCurrency
+      availableBorrowsUSD: availableBorrowsUSD.toString(), /// availableBorrowsUSD = availableBorrowsMarketReferenceCurrency
+      currentLoanToValue: currentLoanToValue.toString(),
       currentLiquidationThreshold: currentLiquidationThreshold.toString(),
       healthFactor: healthFactor.toString(),
       isInIsolationMode: false,
@@ -42,7 +45,7 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       userEmodeCategoryId: 0,
       isInEmode: false,
       earnedAPY: earnedAPY,
-      debtAPY: Number(totalBorrowsUSD / totalCollateralUSD),
+      debtAPY: debtAPY,
       netAPY: netAPY ? netAPY : 0,
     };
     console.log('User Summary Ton----------', res);

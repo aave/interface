@@ -30,17 +30,8 @@ interface PoolReserveBorrowSubset {
 export function getMaxAmountAvailableToBorrow(
   poolReserve: PoolReserveBorrowSubset & { priceInUSD?: string },
   user: FormatUserSummaryAndIncentivesResponse & { collateralInUSDAsset?: string },
-  rateMode: InterestRate,
-  isConnectedTonWallet?: boolean
+  rateMode: InterestRate
 ): string {
-  if (!!isConnectedTonWallet) {
-    // const availableForUserUSD = BigNumber.min(user.collateralInUSDAsset, user.totalBorrowsUSD);
-    const value =
-      (Number(user.collateralInUSDAsset) - Number(user.totalBorrowsUSD)) /
-      Number(poolReserve?.priceInUSD);
-
-    return value.toString();
-  }
   const availableInPoolUSD = poolReserve.availableLiquidityUSD;
   const availableForUserUSD = BigNumber.min(user.availableBorrowsUSD, availableInPoolUSD);
 
