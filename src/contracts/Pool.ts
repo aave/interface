@@ -139,8 +139,7 @@ export type BorrowParams = {
   queryId: number;
   poolJettonWalletAddress: Address;
   amount: bigint;
-  price: bigint;
-  sig: Buffer;
+  price_data: Dictionary<bigint, Cell>;
 };
 
 export function InitReserveParamsToCell(config: InitReserveParams): Cell {
@@ -165,14 +164,15 @@ export function UpdateConfigParamsToCell(config: UpdateConfigParams): Cell {
 }
 
 export function BorrowParamsToCell(config: BorrowParams): Cell {
-  const { queryId, poolJettonWalletAddress, amount, price, sig } = config;
+  const { queryId, poolJettonWalletAddress, amount, price_data } = config;
+
+  console.log('poolJettonWalletAddress', poolJettonWalletAddress);
   return beginCell()
     .storeUint(OP.BORROW, 32)
     .storeUint(queryId, 64)
     .storeCoins(amount)
     .storeAddress(poolJettonWalletAddress)
-    .storeUint(price, 32)
-    .storeBuffer(sig)
+    .storeDict(price_data)
     .endCell();
 }
 
@@ -228,7 +228,7 @@ export class Pool implements Contract {
 
   async sendBorrow(provider: ContractProvider, via: Sender, params: BorrowParams) {
     await provider.internal(via, {
-      value: toNano('0.2'),
+      value: toNano('0.3'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: BorrowParamsToCell(params),
     });
@@ -246,6 +246,7 @@ export class Pool implements Contract {
     const { stack } = await provider.get('get_reserve_configs', []);
 
     const result = stack.readTuple();
+    console.log('result', result);
 
     const reserveConfigs: ReserveConfig[] = [];
 
@@ -258,10 +259,14 @@ export class Pool implements Contract {
   }
 
   async getReservesData(provider: ContractProvider) {
+    console.log('get reserves data');
     const { stack } = await provider.get('get_reserves_data', []);
 
     const configs = stack.readTuple();
     const states = stack.readTuple();
+
+    console.log('configs', configs);
+    console.log('states', states);
 
     const reserveData = [];
     while (configs.remaining && states.remaining) {

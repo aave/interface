@@ -268,6 +268,7 @@ export const BorrowModalContent = ({
       )}
 
       <AssetInput
+        image={poolReserve.image}
         value={amount}
         onChange={handleChange}
         usdValue={usdValue.toString(10)}

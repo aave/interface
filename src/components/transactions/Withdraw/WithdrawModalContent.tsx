@@ -115,6 +115,7 @@ export const WithdrawModalContent = ({
   return (
     <>
       <AssetInput
+        image={poolReserve.image}
         value={withdrawAmount}
         onChange={handleChange}
         symbol={symbol}

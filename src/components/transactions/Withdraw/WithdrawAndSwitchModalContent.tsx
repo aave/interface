@@ -198,6 +198,7 @@ export const WithdrawAndSwitchModalContent = ({
   return (
     <>
       <AssetInput
+        image={poolReserve.image}
         inputTitle={<Trans>Withdraw</Trans>}
         value={withdrawAmount}
         onChange={handleChange}
@@ -237,6 +238,7 @@ export const WithdrawAndSwitchModalContent = ({
       </Box>
 
       <AssetInput
+        image={poolReserve.image}
         value={withdrawAndUnwrap ? unwrappedAmount || '' : outputAmount}
         onSelect={setTargetReserve}
         usdValue={outputUSD}

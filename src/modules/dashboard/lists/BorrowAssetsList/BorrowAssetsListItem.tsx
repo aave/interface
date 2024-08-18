@@ -27,6 +27,7 @@ export const BorrowAssetsListItem = ({
   vIncentivesData,
   underlyingAsset,
   isFreezed,
+  image,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
@@ -38,6 +39,7 @@ export const BorrowAssetsListItem = ({
   return (
     <ListItemWrapper
       symbol={symbol}
+      image={image}
       iconSymbol={iconSymbol}
       name={name}
       detailsAddress={underlyingAsset}

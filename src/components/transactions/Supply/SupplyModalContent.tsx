@@ -234,6 +234,7 @@ export const SupplyModalContent = React.memo(
         {poolReserve.symbol === 'SNX' && maxAmountToSupply !== '0' && <SNXWarning />}
 
         <AssetInput
+          image={poolReserve?.image || ''}
           value={amount}
           onChange={handleChange}
           usdValue={amountInUsd.toString(10)}

@@ -80,7 +80,7 @@ export interface PoolContractReservesDataType {
   variableBorrowIndex: bigint | 0;
 }
 
-export const address_pools = 'EQBkmUUiBjnEVVgJTM5czzyGkXPu4MoCTif4FkxWvH-E2zr5';
+export const address_pools = 'EQDb9JsZ1QOwszqEzpJmnMJAAXukXzchlrV6Q08nJ83oVjbw';
 export const MAX_ATTEMPTS = 10;
 
 export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {

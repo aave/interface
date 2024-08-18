@@ -86,6 +86,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   selectOption?: (asset: T) => ReactNode;
   sx?: BoxProps;
   exchangeRateComponent?: ReactNode;
+  image?: string;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -108,6 +109,7 @@ export const AssetInput = <T extends Asset = Asset>({
   selectOption,
   sx = {},
   exchangeRateComponent,
+  image,
 }: AssetInputProps<T>) => {
   const theme = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -196,11 +198,22 @@ export const AssetInput = <T extends Asset = Asset>({
           )}
           {!onSelect || assets.length === 1 ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <TokenIcon
-                aToken={asset.aToken}
-                symbol={asset.iconSymbol || asset.symbol}
-                sx={{ mr: 2, ml: 4 }}
-              />
+              {image ? (
+                <Box
+                  component="img"
+                  width={'24px'}
+                  height={'24px'}
+                  sx={{ mr: 2, ml: 4 }}
+                  alt={image}
+                  src={image}
+                />
+              ) : (
+                <TokenIcon
+                  aToken={asset.aToken}
+                  symbol={asset.iconSymbol || asset.symbol}
+                  sx={{ mr: 2, ml: 4 }}
+                />
+              )}
               <Typography variant="h3" sx={{ lineHeight: '28px' }} data-cy={'inputAsset'}>
                 {symbol}
               </Typography>
@@ -269,11 +282,22 @@ export const AssetInput = <T extends Asset = Asset>({
                       selectOption(asset)
                     ) : (
                       <>
-                        <TokenIcon
-                          aToken={asset.aToken}
-                          symbol={asset.iconSymbol || asset.symbol}
-                          sx={{ fontSize: '22px', mr: 1 }}
-                        />
+                        {image ? (
+                          <Box
+                            component="img"
+                            width={'22px'}
+                            height={'22px'}
+                            sx={{ mr: 1 }}
+                            alt={image}
+                            src={image}
+                          />
+                        ) : (
+                          <TokenIcon
+                            aToken={asset.aToken}
+                            symbol={asset.iconSymbol || asset.symbol}
+                            sx={{ fontSize: '22px', mr: 1 }}
+                          />
+                        )}
                         <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
                         {asset.balance && <FormattedNumber value={asset.balance} compact />}
                       </>

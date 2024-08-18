@@ -86,6 +86,7 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
     onOpenRateSwitch: () => {
       openRateSwitch(reserve.underlyingAsset, item.borrowRateMode);
     },
+    image: item.image,
   };
 
   if (downToXSM) {
@@ -123,6 +124,7 @@ const BorrowedPositionsListItemDesktop = ({
   onOpenBorrow,
   onOpenRepay,
   onOpenRateSwitch,
+  image,
 }: BorrowedPositionsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
 
@@ -130,6 +132,7 @@ const BorrowedPositionsListItemDesktop = ({
 
   return (
     <ListItemWrapper
+      image={image}
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
       name={name}

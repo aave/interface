@@ -30,6 +30,7 @@ export type FormattedReservesAndIncentives = ReturnType<
     underlyingBalanceUSD?: string;
     variableBorrows?: string;
     usageAsCollateralEnabledOnUser?: boolean;
+    image?: string;
   } & ReserveDataHumanized;
 
 const formatReserves = memoize(

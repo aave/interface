@@ -130,7 +130,7 @@
     "cypress": "10.9.0",
     "cypress-repeat": "^2.3.3",
     "cypress-wait-until": "^1.7.2",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.4.5",
     "eslint": "^8.29.0",
     "eslint-config-next": "13.0.6",
     "eslint-config-prettier": "^8.5.0",

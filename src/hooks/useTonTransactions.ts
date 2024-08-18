@@ -5,9 +5,9 @@ import { Op } from 'src/contracts/JettonConstants';
 import { JettonMinter } from 'src/contracts/JettonMinter';
 import { JettonWallet } from 'src/contracts/JettonWallet';
 import { Pool } from 'src/contracts/Pool';
-import { getKeyPair } from 'src/contracts/utils';
-import { KeyPair, sign } from 'ton-crypto';
+import { getMultiSig } from 'src/contracts/utils';
 
+// import { KeyPair, sign } from 'ton-crypto';
 import { address_pools } from './app-data-provider/useAppDataProviderTon';
 import { FormattedReservesAndIncentives } from './pool/usePoolFormattedReserves';
 import { useContract } from './useContract';
@@ -127,25 +127,35 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
   const onSendBorrowTon = useCallback(
     async (amount: string, poolReserve: FormattedReservesAndIncentives) => {
-      const beKeyPair: KeyPair = await getKeyPair();
+      // const beKeyPair: KeyPair = await getKeyPair();
       if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress) return;
 
       try {
         const decimal = poolReserve.decimals;
         const parseAmount = parseUnits(amount, decimal).toString();
-        const parsePrice = parseUnits(poolReserve.priceInUSD, decimal).toString();
+        // const parsePrice = parseUnits(poolReserve.priceInUSD, decimal).toString();
 
-        const dataPrice = beginCell().storeInt(+parsePrice, 32).endCell();
+        // const dataPrice = beginCell().storeInt(+parsePrice, 32).endCell();
 
-        const sig = sign(dataPrice.hash(), beKeyPair.secretKey);
+        // const sig = sign(dataPrice.hash(), beKeyPair.secretKey);
+
+        const dataMultiSig = await getMultiSig({
+          isMock: false,
+        });
 
         const params = {
           queryId: Date.now(),
-          poolJettonWalletAddress: Address.parse(poolReserve.poolJettonWalletAddress),
           amount: BigInt(parseAmount),
-          price: BigInt(parsePrice),
-          sig,
+          poolJettonWalletAddress: Address.parse(poolReserve.poolJettonWalletAddress),
+          price_data: dataMultiSig,
         };
+
+        //   const params: BorrowParams = {
+        //     queryId: 1,
+        //     amount: borrowAmount, // amount borrow
+        //     poolJettonWalletAddress: await USDT.getWalletAddress(testEnv.pool.address),
+        //     price_data: dataMultiSig
+        // }
 
         await providerPool.sendBorrow(
           sender, //via: Sender
