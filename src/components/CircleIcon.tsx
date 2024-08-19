@@ -28,8 +28,8 @@ export const CircleIcon = ({ downToSM, tooltipText, children }: CircleIconProps)
         }}
       >
         <Box
-          sx={{
-            bgcolor: '#383D51',
+          sx={(theme) => ({
+            backgroundColor: theme.palette.background.primary,
             width: downToSM ? '18px' : '24px',
             height: downToSM ? '18px' : '24px',
             borderRadius: '50%',
@@ -37,7 +37,7 @@ export const CircleIcon = ({ downToSM, tooltipText, children }: CircleIconProps)
             justifyContent: 'center',
             ml: '8px',
             border: '0.5px solid rgba(235, 235, 237, 0.12)',
-          }}
+          })}
         >
           {children}
         </Box>

@@ -8,8 +8,9 @@ const CustomToggleGroup = styled(ToggleButtonGroup)<ToggleButtonGroupProps>({
 
 const CustomTxModalToggleGroup = styled(ToggleButtonGroup)<ToggleButtonGroupProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.header,
-  padding: '2px',
-  height: '36px',
+  borderRadius: 1,
+  overflow: 'hidden',
+  height: '41px',
   width: '100%',
 })) as typeof ToggleButtonGroup;
 

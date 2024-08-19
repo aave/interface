@@ -98,17 +98,14 @@ export const AddTokenDropdown = ({
                 assetName: poolReserve.name,
               });
             }}
-            sx={{
+            sx={(theme) => ({
               display: 'inline-flex',
               alignItems: 'center',
-              '&:hover': {
-                '.Wallet__icon': { opacity: '0 !important' },
-                '.Wallet__iconHover': { opacity: '1 !important' },
-              },
+              color: theme.palette.text.primary,
               cursor: 'pointer',
-            }}
+            })}
           >
-            <WalletIcon sx={{ width: '14px', height: '14px', '&:hover': { stroke: '#F1F1F3' } }} />
+            <WalletIcon sx={{ width: '14px', height: '14px' }} />
           </Box>
         </CircleIcon>
       </Box>

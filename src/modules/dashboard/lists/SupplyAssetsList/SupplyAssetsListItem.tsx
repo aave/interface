@@ -116,6 +116,7 @@ export const SupplyAssetsListItemDesktop = ({
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
   const isMaxCapReached = supplyCapUsage.isMaxed;
+  const theme = useTheme();
 
   const trackEvent = useRootStore((store) => store.trackEvent);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -232,6 +233,12 @@ export const SupplyAssetsListItemDesktop = ({
       <ListButtonsColumn>
         <Button
           disabled={disableSupply}
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+          }}
           variant="contained"
           onClick={() => {
             openSupply(underlyingAsset, currentMarket, name, 'dashboard');
@@ -240,60 +247,25 @@ export const SupplyAssetsListItemDesktop = ({
           <Trans>Supply</Trans>
         </Button>
         <Button
-          id="supply-extra-button"
           sx={{
-            minWidth: 0,
-            px: 4,
+            p: 2,
+            ml: '4px !important',
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+            borderColor: theme.palette.text.subText,
+            bgcolor: 'transparent',
+            color: 'text.primary',
+            '&:hover': {
+              color: '#604AEF',
+              borderColor: '#604AEF',
+            },
           }}
-          variant="outlined"
-          onClick={handleClick}
-          aria-controls={open ? 'basic-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
+          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+          onClick={onDetailsClick}
         >
-          <Trans>...</Trans>
+          <Trans>Details</Trans>
         </Button>
-        <Menu
-          id="supply-item-extra-menu"
-          anchorEl={anchorEl}
-          open={open}
-          MenuListProps={{
-            'aria-labelledby': 'supply-extra-button',
-            sx: {
-              py: 0,
-            },
-          }}
-          onClose={handleClose}
-          keepMounted={true}
-          PaperProps={{
-            sx: {
-              minWidth: '120px',
-              py: 0,
-            },
-          }}
-        >
-          <MenuItem
-            sx={{ gap: 2 }}
-            onClick={handleSwitchClick}
-            disabled={!isFeatureEnabled.switch(currentMarketData)}
-          >
-            <SvgIcon fontSize="small">
-              <SwitchHorizontalIcon />
-            </SvgIcon>
-            <ListItemText>Switch</ListItemText>
-          </MenuItem>
-          <MenuItem
-            sx={{ gap: 2 }}
-            component={Link}
-            href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
-            onClick={onDetailsClick}
-          >
-            <SvgIcon fontSize="small">
-              <EyeIcon />
-            </SvgIcon>
-            <ListItemText>Details</ListItemText>
-          </MenuItem>
-        </Menu>
       </ListButtonsColumn>
     </ListItemWrapper>
   );

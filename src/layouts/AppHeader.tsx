@@ -43,7 +43,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     borderRadius: '20px',
     width: '10px',
     height: '10px',
-    backgroundColor: `${theme.palette.secondary.main}`,
+    backgroundColor: theme.palette.mode === 'light' ? '#e6e4f4' : '#28216d',
     color: `${theme.palette.secondary.main}`,
     '&::after': {
       position: 'absolute',
@@ -88,6 +88,7 @@ export function AppHeader() {
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
   const smd = useMediaQuery('(max-width:1120px)');
+  const theme = useTheme();
 
   const [visitedSwitch, setVisitedSwitch] = useState(() => {
     if (typeof window === 'undefined') return true;
@@ -115,7 +116,7 @@ export function AppHeader() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [md]);
 
-  const headerHeight = 48;
+  const headerHeight = 64;
 
   const toggleWalletWigit = (state: boolean) => {
     if (md) setMobileDrawerOpen(state);
@@ -194,20 +195,18 @@ export function AppHeader() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         sx={(theme) => ({
-          height: headerHeight,
           position: 'sticky',
           top: 0,
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
-          bgcolor: theme.palette.background.header,
+          backgroundColor: theme.palette.mode === 'light' ? '#e6e4f4' : '#28216d',
           padding: {
             xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
             xsm: '8px 20px',
           },
           display: 'flex',
           alignItems: 'center',
-          flexDirection: 'space-between',
-          boxShadow: 'inset 0px -1px 0px rgba(242, 243, 247, 0.16)',
+          justifyContent: 'space-between',
         })}
       >
         <Box
@@ -222,9 +221,20 @@ export function AppHeader() {
           }}
           onClick={() => setMobileMenuOpen(false)}
         >
-          <img src={uiConfig.appLogo} alt="AAVE" width={72} height={20} />
+          <img
+            style={{
+              fontSize: '20px',
+              filter:
+                theme.palette.mode === 'light'
+                  ? 'invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%)'
+                  : 'none',
+            }}
+            sizes="small"
+            src={uiConfig.appLogo}
+            alt="CODE labs"
+          />
         </Box>
-        <Box sx={{ mr: sm ? 1 : 3 }}>
+        {/* <Box sx={{ mr: sm ? 1 : 3 }}>
           {ENABLE_TESTNET && (
             <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
               <Button
@@ -263,15 +273,13 @@ export function AppHeader() {
               </Button>
             </ContentWithTooltip>
           )}
-        </Box>
+        </Box> */}
 
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Box sx={{ display: { xs: 'none', md: 'block', flex: 1 } }}>
           <NavItems />
         </Box>
 
-        <Box sx={{ flexGrow: 1 }} />
-
-        <NoSsr>
+        {/* <NoSsr>
           <StyledBadge
             invisible={visitedSwitch}
             variant="dot"
@@ -320,17 +328,25 @@ export function AppHeader() {
               </SvgIcon>
             </Button>
           </StyledBadge>
-        </NoSsr>
+        </NoSsr> */}
 
         {!mobileMenuOpen && (
-          <WalletWidget
-            open={walletWidgetOpen}
-            setOpen={toggleWalletWigit}
-            headerHeight={headerHeight}
-          />
+          <Box
+            sx={{ bgcolor: theme.palette.background.modulePopup, borderRadius: 2, height: '48px' }}
+          >
+            <WalletWidget
+              open={walletWidgetOpen}
+              setOpen={toggleWalletWigit}
+              headerHeight={headerHeight}
+            />
+          </Box>
         )}
 
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Box
+          sx={{
+            display: { xs: 'none', md: 'block' },
+          }}
+        >
           <SettingsMenu />
         </Box>
 

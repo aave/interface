@@ -19,7 +19,6 @@ export const TopInfoPanelItem = ({
   titleIcon,
   children,
   hideIcon,
-  variant = 'dark',
   withLine,
   loading,
   withoutIconWrapper,
@@ -32,7 +31,7 @@ export const TopInfoPanelItem = ({
       sx={{
         display: 'flex',
         alignItems: 'center',
-        width: { xs: 'calc(50% - 12px)', xsm: 'unset' },
+        minWidth: '170px',
       }}
     >
       {withLine && (
@@ -69,20 +68,20 @@ export const TopInfoPanelItem = ({
           </Box>
         ))}
 
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, gap: 2 }}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Typography
-            sx={{ color: variant === 'dark' ? '#A5A8B6' : '#62677B' }}
-            variant={upToSM ? 'description' : 'caption'}
-            component="div"
-          >
+          <Typography variant="body3" color="text.secondary">
             {title}
           </Typography>
           {titleIcon && titleIcon}
         </Box>
 
         {loading ? (
-          <Skeleton width={60} height={upToSM ? 28 : 24} sx={{ background: '#383D51' }} />
+          <Skeleton
+            width={60}
+            height={upToSM ? 28 : 24}
+            sx={(theme) => ({ background: theme.palette.background.modulePopup, mt: 1 })}
+          />
         ) : (
           children
         )}

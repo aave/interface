@@ -19,8 +19,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
 
-import LoveGhost from '/public/loveGhost.svg';
-
 import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
@@ -112,8 +110,194 @@ export const HistoryWrapper = () => {
     () => transactions?.pages?.flatMap((page) => page) || [],
     [transactions]
   );
-  const filteredTxns = useMemo(
+  const filteredTxns: TransactionHistoryItemUnion[] = useMemo(
     () => applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns }),
+    // () => [
+    //   {
+    //     id: '1',
+    //     txHash: '0x123',
+    //     action: 'Supply',
+    //     pool: {
+    //       id: 'pool1',
+    //     },
+    //     timestamp: 1633024800,
+    //     reserve: {
+    //       symbol: 'ETH',
+    //       decimals: 18,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000000',
+    //       name: 'Ethereum',
+    //     },
+    //     amount: '1000000000000000000', // 1 ETH in wei
+    //     assetPriceUSD: '3000',
+    //   },
+    //   {
+    //     id: '2',
+    //     txHash: '0x456',
+    //     action: 'Borrow',
+    //     pool: {
+    //       id: 'pool2',
+    //     },
+    //     timestamp: 1633025800,
+    //     reserve: {
+    //       symbol: 'DAI',
+    //       decimals: 18,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000001',
+    //       name: 'Dai Stablecoin',
+    //     },
+    //     amount: '500000000000000000000', // 500 DAI in wei
+    //     assetPriceUSD: '1',
+    //     borrowRateModeFrom: 'stable',
+    //     borrowRateModeTo: 'variable',
+    //     stableBorrowRate: 18
+    //   },
+    //   {
+    //     id: '3',
+    //     txHash: '0x789',
+    //     action: 'RedeemUnderlying',
+    //     pool: {
+    //       id: 'pool3',
+    //     },
+    //     timestamp: 1633026800,
+    //     reserve: {
+    //       symbol: 'USDC',
+    //       decimals: 6,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000002',
+    //       name: 'USD Coin',
+    //     },
+    //     amount: '1000000', // 1 USDC in smallest unit
+    //     assetPriceUSD: '1',
+    //   },
+    //   {
+    //     id: '4',
+    //     txHash: '0xabc',
+    //     action: 'Deposit',
+    //     pool: {
+    //       id: 'pool4',
+    //     },
+    //     timestamp: 1633027800,
+    //     reserve: {
+    //       symbol: 'BTC',
+    //       decimals: 8,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000003',
+    //       name: 'Bitcoin',
+    //     },
+    //     amount: '100000000', // 1 BTC in satoshi
+    //     assetPriceUSD: '50000',
+    //   },
+    //   {
+    //     id: '5',
+    //     txHash: '0xdef',
+    //     action: 'Repay',
+    //     pool: {
+    //       id: 'pool5',
+    //     },
+    //     timestamp: 1633028800,
+    //     reserve: {
+    //       symbol: 'ETH',
+    //       decimals: 18,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000000',
+    //       name: 'Ethereum',
+    //     },
+    //     amount: '2000000000000000000', // 2 ETH in wei
+    //     assetPriceUSD: '3000',
+    //   },
+    //   {
+    //     id: '6',
+    //     txHash: '0xghi',
+    //     action: 'UsageAsCollateral',
+    //     pool: {
+    //       id: 'pool6',
+    //     },
+    //     timestamp: 1633029800,
+    //     reserve: {
+    //       symbol: 'DAI',
+    //       decimals: 18,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000001',
+    //       name: 'Dai Stablecoin',
+    //     },
+    //     amount: '1000000000000000000000', // 1000 DAI in wei
+    //     assetPriceUSD: '1',
+    //   },
+    //   {
+    //     id: '7',
+    //     txHash: '0xjkl',
+    //     action: 'SwapBorrowRate',
+    //     pool: {
+    //       id: 'pool7',
+    //     },
+    //     timestamp: 1623030800,
+    //     reserve: {
+    //       symbol: 'USDT',
+    //       decimals: 6,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000004',
+    //       name: 'Tether',
+    //     },
+    //     amount: '5000000', // 5 USDT in smallest unit
+    //     assetPriceUSD: '1',
+    //     borrowRateModeFrom: 'stable',
+    //     borrowRateModeTo: 'variable',
+    //     stableBorrowRate: 18,
+    //     variableBorrowRate: 20
+    //   },
+    //   {
+    //     id: '8',
+    //     txHash: '0xmn0',
+    //     action: 'Swap',
+    //     pool: {
+    //       id: 'pool8',
+    //     },
+    //     timestamp: 1633031800,
+    //     reserve: {
+    //       symbol: 'ETH',
+    //       decimals: 18,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000000',
+    //       name: 'Ethereum',
+    //     },
+    //     amount: '3000000000000000000', // 3 ETH in wei
+    //     assetPriceUSD: '3000',
+    //     swapFromReserve: {
+    //       symbol: 'DAI',
+    //       decimals: 18,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000001',
+    //       name: 'Dai Stablecoin',
+    //     },
+    //     swapToReserve: {
+    //       symbol: 'USDC',
+    //       decimals: 6,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000002',
+    //       name: 'USD Coin',
+    //     },
+    //     borrowRateModeFrom: 'Variable',
+    //     borrowRateModeTo: 'variable',
+    //     stableBorrowRate: 18,
+    //     variableBorrowRate: 20
+    //   },
+    //   {
+    //     id: '9',
+    //     txHash: '0xpqr',
+    //     action: 'LiquidationCall',
+    //     pool: {
+    //       id: 'pool9',
+    //     },
+    //     timestamp: 1633032800,
+    //     collateralReserve: {
+    //       symbol: 'USDC',
+    //       decimals: 6,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000002',
+    //       name: 'USD Coin',
+    //     },
+    //     collateralAmount: '2000000', // 2 USDC in smallest unit
+    //     principalReserve: {
+    //       symbol: 'ETH',
+    //       decimals: 18,
+    //       underlyingAsset: '0x0000000000000000000000000000000000000000',
+    //       name: 'Ethereum',
+    //     },
+    //     principalAmount: '4000000000000000000', // 4 ETH in wei
+    //     borrowAssetPriceUSD: '3000',
+    //     collateralAssetPriceUSD: '1',
+    //   },
+    // ],
     [searchQuery, filterQuery, flatTxns]
   );
 
@@ -130,7 +314,6 @@ export const HistoryWrapper = () => {
           flex: 1,
         }}
       >
-        <LoveGhost style={{ marginBottom: '16px' }} />
         <Typography variant={downToMD ? 'h4' : 'h3'}>
           <Trans>Transaction history is not currently available for this market</Trans>
         </Typography>
@@ -156,62 +339,63 @@ export const HistoryWrapper = () => {
 
   return (
     <ListWrapper
+      paperSx={(theme) => ({ backgroundColor: theme.palette.background.primary })}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           <Trans>Transactions</Trans>
         </Typography>
       }
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: 8, mt: 6, mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'inline-flex' }}>
           <HistoryFilterMenu onFilterChange={setFilterQuery} currentFilter={filterQuery} />
           <SearchInput
             onSearchTermChange={setSearchQuery}
             placeholder="Search assets..."
-            wrapperSx={{ width: '280px' }}
+            wrapperSx={{ width: '280px', ml: 2 }}
             key={searchResetKey}
           />
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
-          {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
-          <Box
-            sx={{
-              cursor: 'pointer',
-              color: 'primary',
-              height: 'auto',
-              width: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-              mr: 6,
-            }}
-            onClick={handleCsvDownload}
-          >
-            <SvgIcon>
-              <DocumentDownloadIcon width={22} height={22} />
-            </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
-              <Trans>.CSV</Trans>
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              cursor: 'pointer',
-              color: 'primary',
-              height: 'auto',
-              width: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-            onClick={handleJsonDownload}
-          >
-            <SvgIcon>
-              <DocumentDownloadIcon width={22} height={22} />
-            </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
-              <Trans>.JSON</Trans>
-            </Typography>
-          </Box>
-        </Box>
+        {/*<Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>*/}
+        {/*  {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}*/}
+        {/*  <Box*/}
+        {/*    sx={{*/}
+        {/*      cursor: 'pointer',*/}
+        {/*      color: 'primary',*/}
+        {/*      height: 'auto',*/}
+        {/*      width: 'auto',*/}
+        {/*      display: 'flex',*/}
+        {/*      alignItems: 'center',*/}
+        {/*      mr: 6,*/}
+        {/*    }}*/}
+        {/*    onClick={handleCsvDownload}*/}
+        {/*  >*/}
+        {/*    <SvgIcon>*/}
+        {/*      <DocumentDownloadIcon width={22} height={22} />*/}
+        {/*    </SvgIcon>*/}
+        {/*    <Typography variant="buttonM" color="text.primary">*/}
+        {/*      <Trans>.CSV</Trans>*/}
+        {/*    </Typography>*/}
+        {/*  </Box>*/}
+        {/*  <Box*/}
+        {/*    sx={{*/}
+        {/*      cursor: 'pointer',*/}
+        {/*      color: 'primary',*/}
+        {/*      height: 'auto',*/}
+        {/*      width: 'auto',*/}
+        {/*      display: 'flex',*/}
+        {/*      alignItems: 'center',*/}
+        {/*    }}*/}
+        {/*    onClick={handleJsonDownload}*/}
+        {/*  >*/}
+        {/*    <SvgIcon>*/}
+        {/*      <DocumentDownloadIcon width={22} height={22} />*/}
+        {/*    </SvgIcon>*/}
+        {/*    <Typography variant="buttonM" color="text.primary">*/}
+        {/*      <Trans>.JSON</Trans>*/}
+        {/*    </Typography>*/}
+        {/*  </Box>*/}
+        {/*</Box>*/}
       </Box>
 
       {isLoading ? (
@@ -221,8 +405,8 @@ export const HistoryWrapper = () => {
         </>
       ) : !isEmpty ? (
         Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
-          <React.Fragment key={groupIndex}>
-            <Typography variant="h4" color="text.primary" sx={{ ml: 9, mt: 6, mb: 2 }}>
+          <div key={groupIndex} style={{ padding: 8 }}>
+            <Typography variant="body4" color="text.subTitle" sx={{ mt: 15, mb: 2 }}>
               {date}
             </Typography>
             {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
@@ -233,7 +417,7 @@ export const HistoryWrapper = () => {
                 </div>
               );
             })}
-          </React.Fragment>
+          </div>
         ))
       ) : filterActive ? (
         <Box
@@ -250,25 +434,25 @@ export const HistoryWrapper = () => {
             my: 24,
           }}
         >
-          <Typography variant="h3" color="text.primary">
-            <Trans>Nothing found</Trans>
+          <Typography variant="h6" sx={(theme) => ({ color: theme.palette.text.primary })}>
+            <Trans>No Transaction yet.</Trans>
           </Typography>
-          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">
-            <Trans>
-              We couldn&apos;t find any transactions related to your search. Try again with a
-              different asset name, or reset filters.
-            </Trans>
-          </Typography>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setSearchQuery('');
-              setFilterQuery([]);
-              setSearchResetKey((prevKey) => prevKey + 1); // Remount SearchInput component to clear search query
-            }}
-          >
-            Reset Filters
-          </Button>
+          {/*<Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">*/}
+          {/*  <Trans>*/}
+          {/*    We couldn&apos;t find any transactions related to your search. Try again with a*/}
+          {/*    different asset name, or reset filters.*/}
+          {/*  </Trans>*/}
+          {/*</Typography>*/}
+          {/*<Button*/}
+          {/*  variant="outlined"*/}
+          {/*  onClick={() => {*/}
+          {/*    setSearchQuery('');*/}
+          {/*    setFilterQuery([]);*/}
+          {/*    setSearchResetKey((prevKey) => prevKey + 1); // Remount SearchInput component to clear search query*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  Reset Filters*/}
+          {/*</Button>*/}
         </Box>
       ) : !isFetchingNextPage ? (
         <Box
@@ -282,8 +466,8 @@ export const HistoryWrapper = () => {
             flex: 1,
           }}
         >
-          <Typography sx={{ my: 24 }} variant="h3" color="text.primary">
-            <Trans>No transactions yet.</Trans>
+          <Typography variant="h6" sx={(theme) => ({ color: theme.palette.text.primary, my: 24 })}>
+            <Trans>No Transaction yet.</Trans>
           </Typography>
         </Box>
       ) : (

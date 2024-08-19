@@ -3,6 +3,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
+import { MoneyIcon } from 'src/components/icons/MoneyIcon';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -133,7 +134,7 @@ export const BorrowedPositionsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper>
+      <ListHeaderWrapper sx={{ bgcolor: theme.palette.background.primary }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
@@ -158,23 +159,34 @@ export const BorrowedPositionsList = () => {
   };
 
   if (loading)
-    return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
+    return <ListLoader title={<Trans>Your supplies</Trans>} head={head.map((c) => c.title)} />;
 
   return (
     <ListWrapper
+      wrapperSx={{
+        pl: 5,
+      }}
+      paperSx={(theme) => ({ backgroundColor: theme.palette.background.group })}
+      icon={<MoneyIcon sx={{ height: '60px', width: '60px', mb: 3 }} />}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Your borrows</Trans>
+        <Typography component="div" variant="h2" sx={{ mr: 4, color: 'white' }}>
+          <Trans>Your supplies</Trans>
         </Typography>
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"
+      isPosition
       subTitleComponent={
         showEModeButton ? (
           <DashboardEModeButton userEmodeCategoryId={user ? user.userEmodeCategoryId : 0} />
         ) : undefined
       }
       noData={!sortedReserves.length}
+      subChildrenComponent={
+        !sortedReserves.length ? (
+          <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
+        ) : null
+      }
       topInfo={
         <>
           {!!sortedReserves.length && (
@@ -214,18 +226,21 @@ export const BorrowedPositionsList = () => {
       }
     >
       {sortedReserves.length ? (
-        <>
+        <div
+          style={{
+            backgroundColor: theme.palette.background.primary,
+            margin: '0px -20px -20px -20px',
+            borderRadius: '12px',
+          }}
+        >
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
-            <BorrowedPositionsListItemWrapper
-              item={item}
-              key={item.underlyingAsset + item.borrowRateMode}
-            />
+            <div key={item.underlyingAsset + item.borrowRateMode} style={{ padding: '0 20px' }}>
+              <BorrowedPositionsListItemWrapper item={item} />
+            </div>
           ))}
-        </>
-      ) : (
-        <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
-      )}
+        </div>
+      ) : null}
     </ListWrapper>
   );
 };

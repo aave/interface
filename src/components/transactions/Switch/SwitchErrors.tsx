@@ -15,7 +15,7 @@ export const SwitchErrors = ({ ratesError, balance, inputAmount }: SwitchErrorsP
     return <ParaswapRatesError error={ratesError} />;
   } else if (Number(inputAmount) > Number(balance)) {
     return (
-      <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+      <Warning severity="error" sx={{ mt: 4 }}>
         <Typography variant="caption">
           <Trans>Your balance is lower than the selected amount.</Trans>
         </Typography>

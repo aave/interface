@@ -1,4 +1,6 @@
 import { Trans } from '@lingui/macro';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { useRootStore } from 'src/store/root';
@@ -18,6 +20,8 @@ interface ListWrapperProps {
   wrapperSx?: BoxProps['sx'];
   tooltipOpen?: boolean;
   paperSx?: PaperProps['sx'];
+  icon?: ReactNode;
+  isPosition?: boolean;
 }
 
 export const ListWrapper = ({
@@ -32,6 +36,8 @@ export const ListWrapper = ({
   wrapperSx,
   tooltipOpen,
   paperSx,
+  icon,
+  isPosition,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -90,95 +96,118 @@ export const ListWrapper = ({
 
   return (
     <Paper
-      sx={{
-        mt: withTopMargin ? 4 : 0,
-        border: 1,
-        borderColor: 'divider',
-        ...paperSx,
-      }}
+      variant="elevation"
+      sx={[
+        () => ({
+          mt: withTopMargin ? 4 : 0,
+          py: 9,
+          px: 5,
+        }),
+        ...(Array.isArray(paperSx) ? paperSx : [paperSx]),
+      ]}
     >
-      <Box
-        sx={{
-          px: { xs: 4, xsm: 6 },
-          py: { xs: 3.5, xsm: 4 },
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          ...wrapperSx,
-        }}
-      >
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            alignItems: { xs: 'flex-start', xsm: 'center' },
-            py: '3.6px',
-            flexDirection: { xs: 'column', xsm: 'row' },
-          }}
-        >
-          {titleComponent}
-          {subTitleComponent}
-        </Box>
-
-        {!!localStorageName && !noData && (
+      <Box display="flex" flexDirection={'column'} gap={5}>
+        <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
+          {!!icon && icon}
           <Box
+            flex={1}
             sx={{
               display: 'flex',
-              alignItems: 'center',
-              cursor: 'pointer',
-              minHeight: '28px',
-              pl: 3,
-              span: {
-                width: '14px',
-                height: '2px',
-                bgcolor: 'text.secondary',
-                position: 'relative',
-                ml: 1,
-                '&:after': {
-                  content: "''",
-                  position: 'absolute',
-                  width: '14px',
-                  height: '2px',
-                  bgcolor: 'text.secondary',
-                  transition: 'all 0.2s ease',
-                  transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
-                  opacity: collapsed ? 1 : 0,
-                },
-              },
-            }}
-            onClick={() => {
-              handleTrackingEvents();
-
-              !!localStorageName && !noData
-                ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
-                : undefined;
+              alignItems: 'start',
+              justifyContent: 'space-between',
+              ...wrapperSx,
             }}
           >
-            <Typography variant="buttonM" color="text.secondary">
-              {collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
-            </Typography>
-            <span />
-          </Box>
-        )}
-      </Box>
+            <Box sx={{ minWidth: 0 }}>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: { xs: 'flex-start', xsm: 'center' },
+                  py: '3.6px',
+                  flexDirection: { xs: 'column', xsm: 'row' },
+                }}
+              >
+                {titleComponent}
+                {subTitleComponent}
+              </Box>
 
-      {topInfo && (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            px: { xs: 4, xsm: 6 },
-            pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
-            overflowX: tooltipOpen ? 'hidden' : 'auto',
-          }}
-        >
-          {topInfo}
+              {topInfo && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    px: { xs: 4, xsm: 0 },
+                    pb: { xs: collapsed && !noData ? 6 : 2, xsm: 0 },
+                    flexWrap: 'wrap',
+                    gap: 1.5,
+                    overflowX: tooltipOpen ? 'hidden' : 'auto',
+                  }}
+                >
+                  {topInfo}
+                </Box>
+              )}
+              {subChildrenComponent && !collapsed && (
+                <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
+              )}
+            </Box>
+
+            {!!localStorageName && !noData && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  minHeight: '28px',
+                  pl: 3,
+                  // span: {
+                  //   width: '14px',
+                  //   height: '2px',
+                  //   bgcolor: 'text.secondary',
+                  //   position: 'relative',
+                  //   ml: 1,
+                  //   '&:after': {
+                  //     content: "''",
+                  //     position: 'absolute',
+                  //     width: '14px',
+                  //     height: '2px',
+                  //     bgcolor: 'text.secondary',
+                  //     transition: 'all 0.2s ease',
+                  //     transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
+                  //     opacity: collapsed ? 1 : 0,
+                  //   },
+                  // },
+                }}
+                onClick={() => {
+                  handleTrackingEvents();
+                  !!localStorageName && !noData
+                    ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
+                    : undefined;
+                }}
+              >
+                <Typography
+                  variant="buttonM"
+                  color={isPosition ? 'white' : 'text.secondary'}
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  {collapsed ? (
+                    <>
+                      <Trans>Show</Trans> <KeyboardArrowDownIcon sx={{ ml: 1 }} />
+                    </>
+                  ) : (
+                    <>
+                      <Trans>Hide</Trans> <KeyboardArrowUpIcon sx={{ ml: 1 }} />
+                    </>
+                  )}
+                </Typography>
+                <span />
+              </Box>
+            )}
+          </Box>
         </Box>
-      )}
-      {subChildrenComponent && !collapsed && (
-        <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
-      )}
-      <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
+
+        <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
+      </Box>
     </Paper>
   );
 };

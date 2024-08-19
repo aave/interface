@@ -8,7 +8,7 @@ interface ParaswapRatesErrorProps {
 
 export const ParaswapRatesError = ({ error }: ParaswapRatesErrorProps) => {
   return (
-    <Warning severity="error" icon={false} sx={{ mt: 4 }}>
+    <Warning severity="error" sx={{ mt: 4 }}>
       <Typography variant="caption">
         {error instanceof Error
           ? convertParaswapErrorMessage(error.message)

@@ -7,37 +7,20 @@ type ReserveOverviewBoxProps = {
   fullWidth?: boolean;
 };
 
-export function ReserveOverviewBox({
-  title,
-  children,
-  fullWidth = false,
-}: ReserveOverviewBoxProps) {
+export function ReserveOverviewBox({ title, children }: ReserveOverviewBoxProps) {
   return (
     <Box
-      sx={(theme) => ({
-        borderRadius: '6px',
-        border: `1px solid ${theme.palette.divider}`,
-        flex: fullWidth ? '0 100%' : '0 32%',
-        marginBottom: '2%',
-        maxWidth: fullWidth ? '100%' : '32%',
-      })}
+      sx={{
+        height: '100%',
+        minWidth: 140,
+      }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%',
-          justifyContent: 'space-around',
-          padding: '8px',
-        }}
-      >
-        {title && (
-          <Typography variant="secondary14" color="text.secondary" component="span">
-            {title}
-          </Typography>
-        )}
-        {children}
-      </Box>
+      {title && (
+        <Typography variant="detail2" color="text.mainTitle" component="span">
+          {title}
+        </Typography>
+      )}
+      {children}
     </Box>
   );
 }

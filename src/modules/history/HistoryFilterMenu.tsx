@@ -108,7 +108,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
       return (
         <Box sx={{ display: 'flex' }}>
           <Typography variant="description" color={theme.palette.primary.main} sx={{ mr: 1 }}>
-            TXs:
+            TXs:&nbsp;
           </Typography>
           {displayedFilters}
           {hiddenCount > 0 && <React.Fragment>...(+{hiddenCount})</React.Fragment>}
@@ -126,61 +126,52 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
   return (
     <Box>
       <Button
-        sx={{
-          minWidth: 148,
+        variant="text"
+        size="medium"
+        sx={(theme) => ({
           maxWidth: downToMD ? '100%' : 360,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          height: 36,
-          border: '1px solid',
-          borderColor: 'divider',
-          borderRadius: '4px',
-          mr: downToMD ? 0 : 2,
-          ml: downToMD ? 4 : 0,
-          pl: 2,
-          pr: 1,
-        }}
+          color: theme.palette.text.secondary,
+          px: 5,
+          height: 42,
+          width: 205,
+        })}
         onClick={handleClick}
-      >
-        <Box display="flex" alignItems="center" overflow="hidden">
-          <SvgIcon height={9} width={9} color="primary">
+        startIcon={
+          <SvgIcon height={9} width={9}>
             <SortIcon />
           </SvgIcon>
-          <Typography
-            variant="subheader1"
-            color="text.primary"
-            sx={{
-              ml: 1,
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              mr: 1,
-            }}
-          >
-            <FilterButtonLabel />
-          </Typography>
-        </Box>
+        }
+      >
+        <Typography
+          variant="body4"
+          sx={{
+            ml: 1,
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            mr: 1,
+            textTransform: 'none',
+          }}
+        >
+          <FilterButtonLabel />
+        </Typography>
         {!allSelected && (
-          <DarkTooltip
-            title={
-              <Typography variant="caption" color="common.white">
-                <Trans>Reset</Trans>
-              </Typography>
-            }
-          >
+          <DarkTooltip title={<Trans>Reset</Trans>}>
             <Box
-              sx={{
+              sx={() => ({
                 cursor: 'pointer',
-                color: 'primary',
                 height: 'auto',
                 width: 'auto',
                 display: 'flex',
                 alignItems: 'center',
-              }}
+                ml: 'auto',
+              })}
               onClick={handleClearFilter}
             >
-              <XCircleIcon color="#A5A8B6" width={18} height={18} />
+              <XCircleIcon width={16} height={16} />
             </Box>
           </DarkTooltip>
         )}
@@ -190,33 +181,37 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
         PaperProps={{
-          sx: {
-            width: 280,
+          sx: (theme) => ({
+            backgroundColor: theme.palette.background.secondary,
+            border: `1px solid ${theme.palette.border.contents}`,
+            width: 205,
             maxHeight: 300,
             mt: 1,
-            boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-            borderRadius: '4px',
+            boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
+            borderRadius: 2,
+          }),
+        }}
+        MenuListProps={{
+          sx: {
+            py: 0,
           },
         }}
       >
         <MenuItem
           onClick={() => handleFilterClick(undefined)}
           sx={{
-            background: allSelected ? theme.palette.background.surface : undefined,
+            background: allSelected ? theme.palette.background.contents : undefined,
             display: 'flex',
             justifyContent: 'space-between',
           }}
         >
-          <Typography variant="subheader1" color="text.primary">
-            <Trans>All transactions</Trans>
-          </Typography>
+          <Trans>All transactions</Trans>
           {allSelected && (
             <SvgIcon sx={{ fontSize: '16px' }}>
               <CheckIcon />
             </SvgIcon>
           )}
         </MenuItem>
-        <Divider sx={{ mt: 1 }} />
         <Box
           sx={{
             overflowY: 'scroll',
@@ -238,15 +233,13 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
                   onClick={() => handleFilterClick(option)}
                   sx={{
                     background: currentFilter.includes(option)
-                      ? theme.palette.background.surface
+                      ? theme.palette.background.contents
                       : undefined,
                     display: 'flex',
                     justifyContent: 'space-between',
                   }}
                 >
-                  <Typography variant="subheader1" color="text.primary">
-                    <FilterLabel filter={option} />
-                  </Typography>
+                  <FilterLabel filter={option} />
                   {currentFilter.includes(option) && (
                     <SvgIcon sx={{ fontSize: '16px' }}>
                       <CheckIcon />

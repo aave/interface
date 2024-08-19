@@ -63,8 +63,8 @@ export const PolygonWarning = () => {
 
 export const MarketWarning = ({ marketName, forum }: MarketWarningProps) => {
   return (
-    <Warning severity="error">
-      <Typography variant="caption">
+    <Warning severity="warning">
+      <Typography variant="body7" color="text.secondary">
         <WarningMessage market={marketName} />{' '}
         <Link href={getLink(marketName, forum)} target="_blank">
           {forum ? <Trans>Join the community discussion</Trans> : <Trans>Learn more</Trans>}

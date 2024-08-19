@@ -7,14 +7,15 @@ import {
   CircularProgress,
   Divider,
   Paper,
+  PaperProps,
   Skeleton,
   Stack,
   Typography,
   useTheme,
 } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import React, { ReactNode, useState } from 'react';
-import { WalletIcon } from 'src/components/icons/WalletIcon';
+import React, { ComponentProps, ReactNode, useState } from 'react';
+import { WalletIcon2 } from 'src/components/icons/WalletIcon2';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
@@ -149,7 +150,12 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const { market } = getMarketInfoById(currentMarket);
 
   return (
-    <PaperWrapper>
+    <PaperWrapper
+      sx={(theme) => ({
+        backgroundColor: theme.palette.background.top,
+        boxShadow: 'none',
+      })}
+    >
       {reserve.isWrappedBaseAsset && (
         <Box>
           <WrappedBaseAssetSelector
@@ -160,17 +166,14 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
           />
         </Box>
       )}
-      <WalletBalance
-        balance={balance.amount}
-        symbol={selectedAsset}
-        marketTitle={market.marketTitle}
-      />
-      {reserve.isFrozen || reserve.isPaused ? (
-        <Box sx={{ mt: 3 }}>{reserve.isPaused ? <PauseWarning /> : <FrozenWarning />}</Box>
-      ) : (
-        <>
-          <Divider sx={{ my: 6 }} />
-          <Stack gap={3}>
+      <Box sx={{ display: 'flex', gap: '8px 2px', flexWrap: 'wrap' }}>
+        <WalletBalance
+          balance={balance.amount}
+          symbol={selectedAsset}
+          marketTitle={market.marketTitle}
+        />
+        {!reserve.isFrozen && !reserve.isPaused && (
+          <>
             {!isGho && (
               <SupplyAction
                 reserve={reserve}
@@ -193,17 +196,21 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
                 }}
               />
             )}
-            {alerts}
-          </Stack>
-        </>
-      )}
+          </>
+        )}
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', mt: 5, gap: 2 }}>
+        {alerts}
+        {reserve.isPaused && <PauseWarning />}
+        {reserve.isFrozen && <FrozenWarning />}
+      </Box>
     </PaperWrapper>
   );
 };
 
 const PauseWarning = () => {
   return (
-    <Warning sx={{ mb: 0 }} severity="error" icon={true}>
+    <Warning sx={{ mb: 0 }} severity="error">
       <Trans>Because this asset is paused, no actions can be taken until further notice</Trans>
     </Warning>
   );
@@ -211,7 +218,7 @@ const PauseWarning = () => {
 
 const FrozenWarning = () => {
   return (
-    <Warning sx={{ mb: 0 }} severity="error" icon={true}>
+    <Warning sx={{ mb: 0 }} severity="error">
       <Trans>
         Since this asset is frozen, the only available actions are withdraw and repay which can be
         accessed from the <Link href={ROUTES.dashboard}>Dashboard</Link>
@@ -259,10 +266,12 @@ const ActionsSkeleton = () => {
   );
 };
 
-const PaperWrapper = ({ children }: { children: ReactNode }) => {
+const PaperWrapper = ({ children, sx }: PaperProps) => {
   return (
-    <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
-      <Typography variant="h3" sx={{ mb: 6 }}>
+    <Paper
+      sx={[{ py: { xs: 4, xsm: 7 }, px: { xs: 4, xsm: 5 } }, ...(Array.isArray(sx) ? sx : [sx])]}
+    >
+      <Typography variant="h2" sx={{ mb: { xs: 6, xsm: 8 } }}>
         <Trans>Your info</Trans>
       </Typography>
 
@@ -309,48 +318,43 @@ const SupplyAction = ({
   onActionClicked,
 }: ActionProps) => {
   return (
-    <Stack>
-      <AvailableTooltip
-        variant="description"
-        text={<Trans>Available to supply</Trans>}
-        capType={CapType.supplyCap}
-        event={{
-          eventName: GENERAL.TOOL_TIP,
-          eventParams: {
-            tooltip: 'Available to supply: your info',
-            asset: reserve.underlyingAsset,
-            assetName: reserve.name,
-          },
-        }}
-      />
-      <Stack
-        sx={{ height: '44px' }}
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
+    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexShrink: 0, width: '300px' }}>
+      <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column', minWidth: '160px' }}>
+        <AvailableTooltip
+          variant="detail2"
+          textColor="text.mainTitle"
+          text={<Trans>Available to supply</Trans>}
+          capType={CapType.supplyCap}
+          event={{
+            eventName: GENERAL.TOOL_TIP,
+            eventParams: {
+              tooltip: 'Available to supply: your info',
+              asset: reserve.underlyingAsset,
+              assetName: reserve.name,
+            },
+          }}
+        />
+
+        <ValueWithSymbol value={value} symbol={symbol} variant={'body6'} color="text.primary" />
+        <FormattedNumber
+          value={usdValue}
+          variant="detail2"
+          color="text.mainTitle"
+          symbolsColor="text.mainTitle"
+          symbol="USD"
+        />
+      </Box>
+      <Button
+        onClick={onActionClicked}
+        disabled={disable}
+        fullWidth={false}
+        variant="contained"
+        size="small"
+        data-cy="supplyButton"
       >
-        <Box>
-          <ValueWithSymbol value={value} symbol={symbol} />
-          <FormattedNumber
-            value={usdValue}
-            variant="subheader2"
-            color="text.muted"
-            symbolsColor="text.muted"
-            symbol="USD"
-          />
-        </Box>
-        <Button
-          sx={{ height: '36px', width: '96px' }}
-          onClick={onActionClicked}
-          disabled={disable}
-          fullWidth={false}
-          variant="contained"
-          data-cy="supplyButton"
-        >
-          <Trans>Supply</Trans>
-        </Button>
-      </Stack>
-    </Stack>
+        <Trans>Supply</Trans>
+      </Button>
+    </Box>
   );
 };
 
@@ -363,48 +367,45 @@ const BorrowAction = ({
   onActionClicked,
 }: ActionProps) => {
   return (
-    <Stack>
-      <AvailableTooltip
-        variant="description"
-        text={<Trans>Available to borrow</Trans>}
-        capType={CapType.borrowCap}
-        event={{
-          eventName: GENERAL.TOOL_TIP,
-          eventParams: {
-            tooltip: 'Available to borrow: your info',
-            asset: reserve.underlyingAsset,
-            assetName: reserve.name,
-          },
-        }}
-      />
-      <Stack
-        sx={{ height: '44px' }}
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
+    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexShrink: 0, width: '300px' }}>
+      <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column', minWidth: '160px' }}>
+        <AvailableTooltip
+          variant="detail2"
+          sx={{ whiteSpace: 'nowrap' }}
+          textColor="text.mainTitle"
+          text={<Trans>Available to borrow</Trans>}
+          capType={CapType.borrowCap}
+          event={{
+            eventName: GENERAL.TOOL_TIP,
+            eventParams: {
+              tooltip: 'Available to borrow: your info',
+              asset: reserve.underlyingAsset,
+              assetName: reserve.name,
+            },
+          }}
+        />
+
+        <ValueWithSymbol value={value} symbol={symbol} variant={'body6'} color="text.primary" />
+        <FormattedNumber
+          value={usdValue}
+          variant="detail2"
+          color="text.mainTitle"
+          symbolsColor="text.mainTitle"
+          symbol="USD"
+        />
+      </Box>
+      <Button
+        onClick={onActionClicked}
+        disabled={disable}
+        fullWidth={false}
+        variant="contained"
+        color="primary"
+        data-cy="borrowButton"
+        size="small"
       >
-        <Box>
-          <ValueWithSymbol value={value} symbol={symbol} />
-          <FormattedNumber
-            value={usdValue}
-            variant="subheader2"
-            color="text.muted"
-            symbolsColor="text.muted"
-            symbol="USD"
-          />
-        </Box>
-        <Button
-          sx={{ height: '36px', width: '96px' }}
-          onClick={onActionClicked}
-          disabled={disable}
-          fullWidth={false}
-          variant="contained"
-          data-cy="borrowButton"
-        >
-          <Trans>Borrow </Trans>
-        </Button>
-      </Stack>
-    </Stack>
+        <Trans>Borrow </Trans>
+      </Button>
+    </Box>
   );
 };
 
@@ -421,18 +422,18 @@ const WrappedBaseAssetSelector = ({
 }) => {
   return (
     <StyledTxModalToggleGroup
-      color="primary"
+      color="standard"
       value={selectedAsset}
       exclusive
       onChange={(_, value) => setSelectedAsset(value)}
       sx={{ mb: 4 }}
     >
       <StyledTxModalToggleButton value={assetSymbol}>
-        <Typography variant="buttonM">{assetSymbol}</Typography>
+        <Typography variant="body7">{assetSymbol}</Typography>
       </StyledTxModalToggleButton>
 
       <StyledTxModalToggleButton value={baseAssetSymbol}>
-        <Typography variant="buttonM">{baseAssetSymbol}</Typography>
+        <Typography variant="body7">{baseAssetSymbol}</Typography>
       </StyledTxModalToggleButton>
     </StyledTxModalToggleGroup>
   );
@@ -442,13 +443,19 @@ interface ValueWithSymbolProps {
   value: string;
   symbol: string;
   children?: ReactNode;
+  variant?: ComponentProps<typeof Typography>['variant'];
+  color?: string;
 }
 
-const ValueWithSymbol = ({ value, symbol, children }: ValueWithSymbolProps) => {
+const ValueWithSymbol = ({ value, symbol, children, variant, color }: ValueWithSymbolProps) => {
   return (
     <Stack direction="row" alignItems="center" gap={1}>
-      <FormattedNumber value={value} variant="h4" color="text.primary" />
-      <Typography variant="buttonL" color="text.secondary">
+      <FormattedNumber
+        value={value}
+        variant={variant || 'detail2'}
+        color={color || 'text.mainTitle'}
+      />
+      <Typography variant={variant || 'detail2'} color={color || 'text.mainTitle'}>
         {symbol}
       </Typography>
       {children}
@@ -461,27 +468,38 @@ interface WalletBalanceProps {
   symbol: string;
   marketTitle: string;
 }
+
 const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => {
   const theme = useTheme();
 
   return (
-    <Stack direction="row" gap={3}>
+    <Stack
+      direction="row"
+      gap={3}
+      alignItems="center"
+      flexWrap="nowrap"
+      sx={{ flexShrink: 0, width: '300px' }}
+    >
       <Box
         sx={(theme) => ({
-          width: '42px',
-          height: '42px',
-          background: theme.palette.background.surface,
-          border: `0.5px solid ${theme.palette.background.disabled}`,
+          background: theme.palette.background.primary,
           borderRadius: '12px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          width: '60px',
+          height: '60px',
         })}
       >
-        <WalletIcon sx={{ stroke: `${theme.palette.text.secondary}` }} />
+        <WalletIcon2 sx={{ width: '40px', height: '35px' }} />
       </Box>
       <Box>
-        <Typography variant="description" color="text.secondary">
+        <Typography
+          variant="body6"
+          color="text.primary"
+          component="div"
+          sx={{ mb: 2, whiteSpace: 'nowrap' }}
+        >
           Wallet balance
         </Typography>
         <ValueWithSymbol value={balance} symbol={symbol}>

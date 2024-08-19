@@ -127,7 +127,7 @@ export const AssetInput = <T extends Asset = Asset>({
   return (
     <Box {...sx}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-        <Typography color="text.secondary">
+        <Typography variant="body7" color="text.secondary">
           {inputTitle ? inputTitle : <Trans>Amount</Trans>}
         </Typography>
         {capType && <AvailableTooltip capType={capType} />}
@@ -138,9 +138,13 @@ export const AssetInput = <T extends Asset = Asset>({
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: '6px',
           overflow: 'hidden',
+          padding: '16px',
+          display: 'flex',
+          gap: '12px',
+          flexDirection: 'column',
         })}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, px: 3, py: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {loading ? (
             <Box sx={{ flex: 1 }}>
               <CircularProgress color="inherit" size="16px" />
@@ -163,13 +167,11 @@ export const AssetInput = <T extends Asset = Asset>({
               inputProps={{
                 'aria-label': 'amount input',
                 style: {
-                  fontSize: '21px',
-                  lineHeight: '28,01px',
-                  padding: 0,
-                  height: '28px',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
+                  fontFamily: 'Inter',
+                  fontSize: '20px',
+                  fontStyle: 'normal',
+                  fontWeight: '600',
+                  lineHeight: '130%',
                 },
               }}
               // eslint-disable-next-line
@@ -193,7 +195,7 @@ export const AssetInput = <T extends Asset = Asset>({
               }}
               disabled={disabled}
             >
-              <XCircleIcon height={16} />
+              <XCircleIcon height={22} />
             </IconButton>
           )}
           {!onSelect || assets.length === 1 ? (
@@ -204,7 +206,11 @@ export const AssetInput = <T extends Asset = Asset>({
                 symbol={asset.iconSymbol || asset.symbol}
                 sx={{ mr: 2, ml: 4 }}
               />
-              <Typography variant="h3" sx={{ lineHeight: '28px' }} data-cy={'inputAsset'}>
+              <Typography
+                variant="body5"
+                sx={{ lineHeight: '24px', color: 'text.primary' }}
+                data-cy={'inputAsset'}
+              >
                 {symbol}
               </Typography>
             </Box>
@@ -299,7 +305,7 @@ export const AssetInput = <T extends Asset = Asset>({
           )}
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', height: '16px', px: 3, py: 2, mb: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', height: '16px' }}>
           {loading ? (
             <Box sx={{ flex: 1 }} />
           ) : (
@@ -307,8 +313,8 @@ export const AssetInput = <T extends Asset = Asset>({
               value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
               compact
               symbol="USD"
-              variant="secondary12"
-              color="text.muted"
+              variant="body7"
+              color={theme.palette.text.mainTitle}
               symbolsColor="text.muted"
               flexGrow={1}
             />
@@ -316,20 +322,32 @@ export const AssetInput = <T extends Asset = Asset>({
 
           {asset.balance && onChange && (
             <>
-              <Typography component="div" variant="secondary12" color="text.secondary">
+              <Typography component="div" variant="body7" color={theme.palette.text.mainTitle}>
                 {balanceText && balanceText !== '' ? balanceText : <Trans>Balance</Trans>}{' '}
                 <FormattedNumber
                   value={asset.balance}
                   compact
-                  variant="secondary12"
-                  color="text.secondary"
+                  variant="body7"
+                  color={theme.palette.text.mainTitle}
                   symbolsColor="text.disabled"
                 />
               </Typography>
               {!disableInput && (
                 <Button
-                  size="small"
-                  sx={{ minWidth: 0, ml: '7px', p: 0 }}
+                  // size="small"
+                  sx={{
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    lineHeight: '130%',
+                    display: 'block',
+                    minWidth: 0,
+                    p: 0,
+                    textTransform: 'uppercase',
+                    border: 'none',
+                    ':hover': {
+                      bgcolor: 'transparent',
+                    },
+                  }}
                   onClick={() => {
                     if (event) {
                       trackEvent(event.eventName, { ...event.eventParams });

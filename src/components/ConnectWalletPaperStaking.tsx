@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { CircularProgress, Grid, Paper, PaperProps, Typography } from '@mui/material';
+import { Box, CircularProgress, Grid, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { StakingPanelNoWallet } from 'src/modules/staking/StakingPanelNoWallet';
 
@@ -25,7 +25,8 @@ export const ConnectWalletPaperStaking = ({
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        p: 4,
+        px: 5,
+        py: 25,
         flex: 1,
         ...sx,
       }}
@@ -35,10 +36,10 @@ export const ConnectWalletPaperStaking = ({
           <CircularProgress />
         ) : (
           <>
-            <Typography variant="h2" sx={{ mb: 2 }}>
+            <Typography variant="h2" sx={{ mb: 8 }} color={'text.primary'}>
               <Trans>Please, connect your wallet</Trans>
             </Typography>
-            <Typography sx={{ mb: 6 }} color="text.secondary">
+            <Typography sx={{ mb: 10, fontSize: '20px' }} color="text.secondary">
               {description || (
                 <Trans>
                   Please connect your wallet to see your supplies, borrowings, and open positions.
@@ -46,17 +47,21 @@ export const ConnectWalletPaperStaking = ({
               )}
             </Typography>
             <ConnectWalletButton funnel={'Staking page'} />
-            <Grid container spacing={1} pt={6} sx={{ maxWidth: '758px', textAlign: 'right' }}>
-              <Grid item xs={12} md={4}>
-                <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <StakingPanelNoWallet stakedToken={'ABPT V2'} icon={'stkbptv2'} />
-              </Grid>
-            </Grid>
+            <Box
+              pt={17}
+              sx={{
+                width: '100%',
+                textAlign: 'right',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                display: 'flex',
+                gap: 3,
+              }}
+            >
+              <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} />
+              {/* <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} /> */}
+              <StakingPanelNoWallet stakedToken={'ABPT V2'} icon={'stkbptv2'} />
+            </Box>
           </>
         )}
       </>

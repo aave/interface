@@ -24,7 +24,13 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
   const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 
   return (
-    <Paper sx={{ pt: 4, pb: 20, px: downToXsm ? 4 : 6 }}>
+    <Paper
+      variant="elevation"
+      sx={{
+        py: 9,
+        px: 5,
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -34,18 +40,18 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
           mb:
             reserve.isFrozen || reserve.symbol == 'AMPL' || reserve.symbol === 'stETH'
               ? '0px'
-              : '36px',
+              : '28px',
         }}
       >
-        <Typography variant="h3">
+        <Typography variant="h2" color="text.primary">
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
       </Box>
-      {isGho ? (
-        <GhoReserveConfiguration reserve={reserve} />
-      ) : (
-        <ReserveConfiguration reserve={reserve} />
-      )}
+      {/*{isGho ? (*/}
+      {/*  <GhoReserveConfiguration reserve={reserve} />*/}
+      {/*) : (*/}
+      <ReserveConfiguration reserve={reserve} />
+      {/*)}*/}
     </Paper>
   );
 };

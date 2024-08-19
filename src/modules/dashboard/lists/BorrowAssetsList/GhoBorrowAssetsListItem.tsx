@@ -121,18 +121,26 @@ const GhoBorrowAssetsListItemDesktop = ({
   userBorrowApyAfterNewBorrow,
   onBorrowClick,
 }: GhoBorrowAssetsListItemProps) => {
+  const theme = useTheme();
   return (
     <ListItem
-      sx={{ borderTop: '1px solid', borderBottom: '1px solid', borderColor: 'divider', mb: 2 }}
+      sx={{
+        borderTop: '1px solid',
+        borderBottom: '1px solid',
+        borderColor: 'divider',
+        mb: 2,
+        px: 0,
+      }}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
     >
       <ListColumn maxWidth={DASHBOARD_LIST_COLUMN_WIDTHS.CELL} isRow>
         <Link
+          p={0}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
           noWrap
-          sx={{ display: 'inline-flex', alignItems: 'center' }}
+          sx={{ display: 'inline-flex', alignItems: 'center', color: 'text.primary' }}
         >
-          <TokenIcon symbol={iconSymbol} fontSize="large" />
+          <TokenIcon symbol={iconSymbol} fontSize="medium" />
           <Tooltip title={`${name} (${symbol})`} arrow placement="top">
             <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
               {symbol}
@@ -181,10 +189,32 @@ const GhoBorrowAssetsListItemDesktop = ({
         <MeritIncentivesButton symbol="gho" />
       </ListColumn>
       <ListButtonsColumn>
-        <Button disabled={borrowButtonDisable} variant="contained" onClick={onBorrowClick}>
+        <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+          }}
+          disabled={borrowButtonDisable}
+          variant="contained"
+          onClick={onBorrowClick}
+        >
           <Trans>Borrow</Trans>
         </Button>
         <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+            color: 'text.primary',
+            bgcolor: 'transparent',
+            borderColor: theme.palette.text.subText,
+            '&:hover': {
+              bgcolor: 'transparent',
+            },
+          }}
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}

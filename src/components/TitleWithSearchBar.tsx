@@ -47,22 +47,30 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        gap: 4,
       }}
     >
       {showMarketTitle && (
-        <Typography component="div" variant="h2" sx={{ mr: 4 }} {...titleProps}>
+        <Typography variant="h2" {...titleProps}>
           {title}
         </Typography>
       )}
       <Box
-        sx={{
+        sx={(theme) => ({
           height: '40px',
           width: showSearchBar && sm ? '100%' : 'unset',
           position: 'relative',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-        }}
+          input: {
+            '&::placeholder': {
+              fontSize: 14,
+              fontWeight: 500,
+              color: theme.palette.text.subTitle,
+            },
+          },
+        })}
       >
         {showSearchIcon && (
           <IconButton onClick={() => setShowSearchBar(true)}>
@@ -84,10 +92,8 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
               onSearchTermChange={onSearchTermChange}
             />
             {sm && (
-              <Button sx={{ ml: 2 }} onClick={() => handleCancelClick()}>
-                <Typography variant="buttonM">
-                  <Trans>Cancel</Trans>
-                </Typography>
+              <Button sx={{ ml: 2 }} onClick={() => handleCancelClick()} size="small">
+                <Trans>Cancel</Trans>
               </Button>
             )}
           </Box>

@@ -30,16 +30,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
-  const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
-
-  const iconStyling = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    color: '#A5A8B6',
-    '&:hover': { color: '#F1F1F3' },
-    cursor: 'pointer',
-  };
+  const valueTypographyVariant = downToSM ? 'main16' : 'body1';
+  const symbolsTypographyVariant = downToSM ? 'secondary16' : 'body1';
 
   return (
     <>
@@ -49,7 +41,6 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
         />
       </TopInfoPanelItem>
 
@@ -59,7 +50,6 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
         />
       </TopInfoPanelItem>
 
@@ -69,7 +59,6 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           percent
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
         />
       </TopInfoPanelItem>
 
@@ -80,10 +69,9 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
             symbol="USD"
             variant={valueTypographyVariant}
             symbolsVariant={symbolsTypographyVariant}
-            symbolsColor="#A5A8B6"
           />
           {loading ? (
-            <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
+            <Skeleton width={16} height={16} sx={{ ml: 1 }} />
           ) : (
             <CircleIcon tooltipText="View oracle contract" downToSM={downToSM}>
               <Link
@@ -98,7 +86,12 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                 href={currentNetworkConfig.explorerLinkBuilder({
                   address: poolReserve?.priceOracle,
                 })}
-                sx={iconStyling}
+                sx={(theme) => ({
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  color: theme.palette.text.primary,
+                  cursor: 'pointer',
+                })}
               >
                 <SvgIcon sx={{ fontSize: downToSM ? '12px' : '14px' }}>
                   <ExternalLinkIcon />

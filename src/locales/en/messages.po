@@ -18,12 +18,10 @@ msgstr ""
 msgid "..."
 msgstr "..."
 
-#: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid ".CSV"
 msgstr ".CSV"
 
-#: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid ".JSON"
 msgstr ".JSON"
@@ -620,6 +618,10 @@ msgstr "Bridging is currently unavailable due to the rate limit being exceeded. 
 msgid "Bridging {symbol}"
 msgstr "Bridging {symbol}"
 
+#: src/layouts/AppFooter.tsx
+msgid "Bug Bounty"
+msgstr "Bug Bounty"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
 msgstr "Buy Crypto With Fiat"
@@ -790,6 +792,10 @@ msgstr "Connect"
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
 msgstr "Connect wallet"
+
+#: src/layouts/AppFooter.tsx
+msgid "Contact Us"
+msgstr "Contact Us"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -973,10 +979,6 @@ msgstr "Discount parameters are decided by the Aave community and may be changed
 msgid "Discountable amount"
 msgstr "Discountable amount"
 
-#: src/layouts/AppFooter.tsx
-msgid "Docs"
-msgstr "Docs"
-
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "Download"
 msgstr "Download"
@@ -1134,10 +1136,6 @@ msgstr "Export data to"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: src/layouts/AppFooter.tsx
-msgid "FAQS"
-msgstr "FAQS"
-
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr "Failed to load proposal voters. Please refresh the page."
@@ -1187,6 +1185,10 @@ msgstr "Fixed rate"
 msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
 msgstr "Flashloan is disabled for this asset, hence this position cannot be migrated."
 
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "For more information on linking your wallet, check out our FAQ."
+msgstr "For more information on linking your wallet, check out our FAQ."
+
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
@@ -1194,6 +1196,10 @@ msgstr "For repayment of a specific type of debt, the user needs to have debt th
 #: src/layouts/AppHeader.tsx
 msgid "Fork mode is ON"
 msgstr "Fork mode is ON"
+
+#: src/layouts/AppFooter.tsx
+msgid "Forum"
+msgstr "Forum"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
@@ -1497,10 +1503,6 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 msgid "MAX"
 msgstr "MAX"
 
-#: src/layouts/AppFooter.tsx
-msgid "Manage analytics"
-msgstr "Manage analytics"
-
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Market"
@@ -1590,17 +1592,9 @@ msgstr "Migrate"
 msgid "Migrate to Aave V3"
 msgstr "Migrate to Aave V3"
 
-#: src/components/TopInfoPanel/PageTitle.tsx
-msgid "Migrate to V3"
-msgstr "Migrate to V3"
-
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Migrate to stkABPT v2"
 msgstr "Migrate to stkABPT v2"
-
-#: src/modules/dashboard/DashboardTopPanel.tsx
-msgid "Migrate to v3"
-msgstr "Migrate to v3"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
@@ -1662,10 +1656,6 @@ msgstr "More"
 msgid "NAY"
 msgstr "NAY"
 
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
-msgstr "Need help connecting a wallet? <0>Read our FAQ</0>"
-
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
 msgstr "Net APR"
@@ -1694,6 +1684,11 @@ msgstr "Network not supported for this wallet"
 msgid "New APY"
 msgstr "New APY"
 
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapper.tsx
+msgid "No Transaction yet."
+msgstr "No Transaction yet."
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
@@ -1712,7 +1707,6 @@ msgstr "No rewards to claim"
 msgid "No search results{0}"
 msgstr "No search results{0}"
 
-#: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "No transactions yet."
 msgstr "No transactions yet."
@@ -1758,7 +1752,6 @@ msgstr "Not reached"
 msgid "Nothing borrowed yet"
 msgstr "Nothing borrowed yet"
 
-#: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Nothing found"
 msgstr "Nothing found"
@@ -1835,7 +1828,6 @@ msgstr "Please connect your wallet to get free testnet assets."
 msgid "Please connect your wallet to see migration tool."
 msgstr "Please connect your wallet to see migration tool."
 
-#: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Please connect your wallet to see your supplies, borrowings, and open positions."
@@ -1845,15 +1837,10 @@ msgstr "Please connect your wallet to see your supplies, borrowings, and open po
 msgid "Please connect your wallet to view transaction history."
 msgstr "Please connect your wallet to view transaction history."
 
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Please enter a valid wallet address."
-msgstr "Please enter a valid wallet address."
-
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
 msgstr "Please switch to {networkName}."
 
-#: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr "Please, connect your wallet"
@@ -1891,8 +1878,8 @@ msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
 
 #: src/layouts/AppFooter.tsx
-msgid "Privacy"
-msgstr "Privacy"
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
@@ -2181,10 +2168,6 @@ msgstr "Selected supply assets"
 #: src/layouts/FeedbackDialog.tsx
 msgid "Send Feedback"
 msgstr "Send Feedback"
-
-#: src/layouts/AppFooter.tsx
-msgid "Send feedback"
-msgstr "Send feedback"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
@@ -2515,8 +2498,8 @@ msgid "Techpaper"
 msgstr "Techpaper"
 
 #: src/layouts/AppFooter.tsx
-msgid "Terms"
-msgstr "Terms"
+msgid "Term of COnditions"
+msgstr "Term of COnditions"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
@@ -2827,14 +2810,6 @@ msgstr "Total supplied"
 msgid "Total worth"
 msgstr "Total worth"
 
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Track wallet"
-msgstr "Track wallet"
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Track wallet balance in read-only mode"
-msgstr "Track wallet balance in read-only mode"
-
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
 msgstr "Transaction failed"
@@ -2852,10 +2827,13 @@ msgid "Transaction overview"
 msgstr "Transaction overview"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-#: src/modules/history/HistoryWrapper.tsx
-#: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Transactions"
 msgstr "Transactions"
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Transactions1"
+msgstr "Transactions1"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
@@ -3106,14 +3084,13 @@ msgid "Wallet not detected. Connect or install wallet and retry"
 msgstr "Wallet not detected. Connect or install wallet and retry"
 
 #: src/components/WalletConnection/WalletSelector.tsx
-msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
-msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
+msgid "Wallets are provided by external providers and by selecting them you agree to their terms and conditions. Access to your wallet may depend on the operational status of external providers"
+msgstr "Wallets are provided by external providers and by selecting them you agree to their terms and conditions. Access to your wallet may depend on the operational status of external providers"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
 msgstr "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
 
-#: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
 msgstr "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
@@ -3121,6 +3098,10 @@ msgstr "We couldn't find any transactions related to your search. Try again with
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
+
+#: src/components/ConnectWalletPaper.tsx
+msgid "We could’t detect a wallet. Connect a wallet to stake and view your balance."
+msgstr "We could’t detect a wallet. Connect a wallet to stake and view your balance."
 
 #: pages/404.page.tsx
 msgid "We suggest you go back to the Dashboard."

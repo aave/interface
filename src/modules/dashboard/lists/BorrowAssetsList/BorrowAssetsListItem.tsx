@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
@@ -31,6 +31,7 @@ export const BorrowAssetsListItem = ({
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
+  const theme = useTheme();
 
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
@@ -74,6 +75,12 @@ export const BorrowAssetsListItem = ({
       /> */}
       <ListButtonsColumn>
         <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+          }}
           disabled={disableBorrow}
           variant="contained"
           onClick={() => {
@@ -83,6 +90,18 @@ export const BorrowAssetsListItem = ({
           <Trans>Borrow</Trans>
         </Button>
         <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+            bgcolor: 'transparent',
+            color: 'text.primary',
+            borderColor: theme.palette.text.subText,
+            '&:hover': {
+              bgcolor: 'transparent',
+            },
+          }}
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}

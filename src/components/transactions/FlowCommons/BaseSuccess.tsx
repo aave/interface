@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
-import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -27,6 +27,7 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
   const hrefTon = `https://testnet.tonviewer.com/transaction/${
     txHash ? txHash : mainTxState.txHash
   }`;
+  const theme = useTheme();
 
   return (
     <>
@@ -36,6 +37,8 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
+          p: '6px',
+          mb: '20px',
         }}
       >
         <Box
@@ -51,12 +54,12 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
             justifyContent: 'center',
           }}
         >
-          <SvgIcon sx={{ color: 'success.main', fontSize: '32px' }}>
-            <CheckIcon />
+          <SvgIcon sx={{ color: 'success.main', fontSize: '60px' }}>
+            <CheckCircleIcon />
           </SvgIcon>
         </Box>
 
-        <Typography sx={{ mt: 4 }} variant="h2">
+        <Typography sx={{ mt: 5, mb: 2 }} variant="body1">
           <Trans>All done!</Trans>
         </Typography>
 
@@ -78,8 +81,12 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'right',
-              mt: 6,
-              mb: 3,
+              p: '0px 4px 0px 8px',
+              width: 'max-content',
+              marginLeft: 'auto',
+              color: theme.palette.text.subTitle,
+              borderRadius: '4px',
+              border: `1px solid ${theme.palette.text.subTitle}`,
             }}
             underline="hover"
             target="_blank"
@@ -92,7 +99,7 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
             onClick={close}
             variant="contained"
             size="large"
-            sx={{ minHeight: '44px' }}
+            sx={{ minHeight: '44px', mt: 12 }}
             data-cy="closeButton"
           >
             <Trans>Ok, Close</Trans>

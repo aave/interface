@@ -59,8 +59,8 @@ const getAssetCapData = (asset: ComputedReserveData): AssetCapUsageData => {
       isMaxed: borrowCapReached,
       // percentUsed: 98.5,
       // isMaxed: false,
-      determineWarningDisplay: ({ borrowCap, icon, ...rest }) =>
-        borrowCap ? <BorrowCapWarning borrowCap={borrowCap} icon={icon} {...rest} /> : null,
+      determineWarningDisplay: ({ borrowCap, ...rest }) =>
+        borrowCap ? <BorrowCapWarning borrowCap={borrowCap} {...rest} icon={true} /> : null,
       displayMaxedTooltip: ({ borrowCap }) =>
         borrowCap ? <BorrowCapMaxedTooltip borrowCap={borrowCap} /> : null,
     },

@@ -95,14 +95,19 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   return (
     <Button
       disabled={loading}
-      variant="outlined"
-      sx={{
+      variant="text"
+      sx={(theme) => ({
+        border: 'none',
+        background: theme.palette.background.secondary,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        mb: '8px',
-      }}
+        height: 64,
+        px: 4,
+        mb: 2,
+        borderRadius: 2,
+      })}
       size="large"
       onClick={connectWalletClick}
       endIcon={getWalletIcon(walletType)}
@@ -121,6 +126,7 @@ export enum ErrorType {
 
 export const WalletSelector = () => {
   const { error, connectReadOnlyMode } = useWeb3Context();
+
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
   const { breakpoints } = useTheme();
@@ -234,74 +240,84 @@ export const WalletSelector = () => {
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       <WalletRow key="ton_wallets" walletName="Ton Connect" walletType={WalletType.TON_CONNECT} />
+      <Typography variant="body7" sx={(theme) => ({ color: theme.palette.text.secondary, mt: 4 })}>
+        <Trans>For more information on linking your wallet, check out our FAQ.</Trans>
+      </Typography>
+      <Typography variant="detail4" sx={(theme) => ({ color: theme.palette.text.secondary })}>
+        <Trans>
+          Wallets are provided by external providers and by selecting them you agree to their terms
+          and conditions. Access to your wallet may depend on the operational status of external
+          providers
+        </Trans>
+      </Typography>
       {/* <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} /> */}
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
-        <Typography variant="subheader1" color="text.secondary">
-          <Trans>Track wallet balance in read-only mode</Trans>
-        </Typography>
-        <ReadOnlyModeTooltip />
-      </Box>
-      <form onSubmit={handleSubmit}>
-        <InputBase
-          sx={(theme) => ({
-            py: 1,
-            px: 3,
-            border: `1px solid ${theme.palette.divider}`,
-            borderRadius: '6px',
-            mb: 1,
-            overflow: 'show',
-            fontSize: sm ? '16px' : '14px',
-          })}
-          placeholder="Enter ethereum address or username"
-          fullWidth
-          value={inputMockWalletAddress}
-          onChange={(e) => setInputMockWalletAddress(e.target.value)}
-          inputProps={{
-            'aria-label': 'read-only mode address',
-          }}
-        />
-        <Button
-          type="submit"
-          variant="outlined"
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            mb: '8px',
-          }}
-          size="large"
-          fullWidth
-          onClick={() => trackEvent(AUTH.MOCK_WALLET)}
-          disabled={
-            !utils.isAddress(inputMockWalletAddress) &&
-            inputMockWalletAddress.slice(-4) !== '.eth' &&
-            !unsTlds.includes(inputMockWalletAddress.split('.').pop() as string)
-          }
-          aria-label="read-only mode address"
-        >
-          <Trans>Track wallet</Trans>
-        </Button>
-      </form>
-      {validAddressError && (
-        <Typography variant="helperText" color="error.main">
-          <Trans>Please enter a valid wallet address.</Trans>
-        </Typography>
-      )}
-      <Typography variant="description" sx={{ mt: '22px', mb: '30px', alignSelf: 'center' }}>
-        <Trans>
-          Need help connecting a wallet?{' '}
-          <Link href="https://docs.aave.com/faq/troubleshooting" target="_blank" rel="noopener">
-            Read our FAQ
-          </Link>
-        </Trans>
-      </Typography>
-      <Typography variant="helperText">
-        <Trans>
-          Wallets are provided by External Providers and by selecting you agree to Terms of those
-          Providers. Your access to the wallet might be reliant on the External Provider being
-          operational.
-        </Trans>
-      </Typography>
+      {/*<Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>*/}
+      {/*  <Typography variant="subheader1" color="text.secondary">*/}
+      {/*    <Trans>Track wallet balance in read-only mode</Trans>*/}
+      {/*  </Typography>*/}
+      {/*  <ReadOnlyModeTooltip />*/}
+      {/*</Box>*/}
+      {/*<form onSubmit={handleSubmit}>*/}
+      {/*  <InputBase*/}
+      {/*    sx={(theme) => ({*/}
+      {/*      py: 1,*/}
+      {/*      px: 3,*/}
+      {/*      border: `1px solid ${theme.palette.divider}`,*/}
+      {/*      borderRadius: '6px',*/}
+      {/*      mb: 1,*/}
+      {/*      overflow: 'show',*/}
+      {/*      fontSize: sm ? '16px' : '14px',*/}
+      {/*    })}*/}
+      {/*    placeholder="Enter ethereum address or username"*/}
+      {/*    fullWidth*/}
+      {/*    value={inputMockWalletAddress}*/}
+      {/*    onChange={(e) => setInputMockWalletAddress(e.target.value)}*/}
+      {/*    inputProps={{*/}
+      {/*      'aria-label': 'read-only mode address',*/}
+      {/*    }}*/}
+      {/*  />*/}
+      {/*  <Button*/}
+      {/*    type="submit"*/}
+      {/*    variant="outlined"*/}
+      {/*    sx={{*/}
+      {/*      display: 'flex',*/}
+      {/*      flexDirection: 'row',*/}
+      {/*      justifyContent: 'center',*/}
+      {/*      mb: '8px',*/}
+      {/*    }}*/}
+      {/*    size="large"*/}
+      {/*    fullWidth*/}
+      {/*    onClick={() => trackEvent(AUTH.MOCK_WALLET)}*/}
+      {/*    disabled={*/}
+      {/*      !utils.isAddress(inputMockWalletAddress) &&*/}
+      {/*      inputMockWalletAddress.slice(-4) !== '.eth' &&*/}
+      {/*      !unsTlds.includes(inputMockWalletAddress.split('.').pop() as string)*/}
+      {/*    }*/}
+      {/*    aria-label="read-only mode address"*/}
+      {/*  >*/}
+      {/*    <Trans>Track wallet</Trans>*/}
+      {/*  </Button>*/}
+      {/*</form>*/}
+      {/*{validAddressError && (*/}
+      {/*  <Typography variant="helperText" color="error.main">*/}
+      {/*    <Trans>Please enter a valid wallet address.</Trans>*/}
+      {/*  </Typography>*/}
+      {/*)}*/}
+      {/*<Typography variant="description" sx={{ mt: '22px', mb: '30px', alignSelf: 'center' }}>*/}
+      {/*  <Trans>*/}
+      {/*    Need help connecting a wallet?{' '}*/}
+      {/*    <Link href="https://docs.aave.com/faq/troubleshooting" target="_blank" rel="noopener">*/}
+      {/*      Read our FAQ*/}
+      {/*    </Link>*/}
+      {/*  </Trans>*/}
+      {/*</Typography>*/}
+      {/*<Typography variant="helperText">*/}
+      {/*  <Trans>*/}
+      {/*    Wallets are provided by External Providers and by selecting you agree to Terms of those*/}
+      {/*    Providers. Your access to the wallet might be reliant on the External Provider being*/}
+      {/*    operational.*/}
+      {/*  </Trans>*/}
+      {/*</Typography>*/}
     </Box>
   );
 };

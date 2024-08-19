@@ -10,8 +10,8 @@ interface IncentivesCardProps {
   symbol: string;
   value: string | number;
   incentives?: ReserveIncentiveResponse[];
-  variant?: 'main14' | 'main16' | 'secondary14';
-  symbolsVariant?: 'secondary14' | 'secondary16';
+  variant?: 'main14' | 'main16' | 'secondary14' | 'body6';
+  symbolsVariant?: 'secondary14' | 'secondary16' | 'body6';
   align?: 'center' | 'flex-end';
   color?: string;
   tooltip?: ReactNode;

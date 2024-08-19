@@ -16,6 +16,7 @@ import {
   MenuItem,
   SvgIcon,
   Typography,
+  useTheme,
 } from '@mui/material';
 import * as React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -45,6 +46,7 @@ export const ListItemAPYButton = ({
 }: ListItemAPYButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const theme = useTheme();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -55,6 +57,14 @@ export const ListItemAPYButton = ({
   return (
     <>
       <Button
+        sx={{
+          borderColor: theme.palette.text.subText,
+          bgcolor: 'transparent',
+          color: 'text.primary',
+          '&:hover': {
+            bgcolor: 'transparent',
+          },
+        }}
         variant="outlined"
         onClick={handleClick}
         size="small"

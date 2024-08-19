@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Button, SvgIcon, Typography } from '@mui/material';
+import { Button, SvgIcon, Typography, useTheme } from '@mui/material';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { DarkTooltip } from './infoTooltips/DarkTooltip';
@@ -8,10 +8,17 @@ import { Link, ROUTES } from './primitives/Link';
 
 export const FaucetButton = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
+  const theme = useTheme();
 
   return (
     <DarkTooltip title="Get free assets to test the Aave Protocol">
       <Button
+        sx={{
+          bgcolor: 'transparent',
+          '&:hover': { bgcolor: 'transparent' },
+          color: 'text.primary',
+          borderColor: theme.palette.text.subText,
+        }}
         startIcon={
           <img
             src={currentNetworkConfig.networkLogoPath}

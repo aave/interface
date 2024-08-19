@@ -115,7 +115,6 @@ export const MarketSwitcher = () => {
   );
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const isV3MarketsAvailable = availableMarkets
@@ -148,7 +147,13 @@ export const MarketSwitcher = () => {
         native: false,
         className: 'MarketSwitcher__select',
         IconComponent: (props) => (
-          <SvgIcon fontSize="medium" {...props}>
+          <SvgIcon
+            fontSize="medium"
+            {...props}
+            sx={(theme) => ({
+              color: `${theme.palette.text.primary} !important`,
+            })}
+          >
             <ChevronDownIcon />
           </SvgIcon>
         ),
@@ -157,45 +162,21 @@ export const MarketSwitcher = () => {
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
-                size={upToLG ? 32 : 28}
+                size={upToLG ? 48 : 48}
                 logo={network.networkLogoPath}
                 testChainName={getMarketHelpData(market.marketTitle).testChainName}
               />
-              <Box sx={{ mr: 1, display: 'inline-flex', alignItems: 'flex-start' }}>
+              <Box sx={{ ml: 2, mr: 1, display: 'inline-flex', alignItems: 'flex-start' }}>
                 <Typography
-                  variant={upToLG ? 'display1' : 'h1'}
-                  sx={{
-                    fontSize: downToXSM ? '1.55rem' : undefined,
-                    color: 'common.white',
+                  variant={upToLG ? 'h1' : 'h1'}
+                  sx={(theme) => ({
+                    color: theme.palette.text.primary,
                     mr: 1,
-                  }}
+                  })}
                 >
                   {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
                   {upToLG && ' Market'}
                 </Typography>
-                {market.v3 ? (
-                  <Box
-                    sx={{
-                      color: '#fff',
-                      px: 2,
-                      borderRadius: '12px',
-                      background: (theme) => theme.palette.gradients.aaveGradient,
-                    }}
-                  >
-                    <Typography variant="subheader2">V3</Typography>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      color: '#A5A8B6',
-                      px: 2,
-                      borderRadius: '12px',
-                      backgroundColor: '#383D51',
-                    }}
-                  >
-                    <Typography variant="subheader2">V2</Typography>
-                  </Box>
-                )}
               </Box>
             </Box>
           );
@@ -206,7 +187,6 @@ export const MarketSwitcher = () => {
             py: 0,
             backgroundColor: 'transparent !important',
           },
-          '.MuiSelect-icon': { color: '#F1F1F3' },
         },
         MenuProps: {
           anchorOrigin: {
@@ -214,8 +194,21 @@ export const MarketSwitcher = () => {
             horizontal: 'right',
           },
           PaperProps: {
+            sx: (theme) => ({
+              py: 1,
+              maxHeight: 410,
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              '::-webkit-scrollbar': {
+                display: 'none',
+              },
+              backgroundColor: theme.palette.background.secondary,
+              border: `1px solid ${theme.palette.border.contents}`,
+              boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
+            }),
             style: {
-              minWidth: 240,
+              minWidth: 220,
             },
             variant: 'outlined',
             elevation: 0,
@@ -224,97 +217,95 @@ export const MarketSwitcher = () => {
       }}
     >
       <Box>
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
-          <Trans>
-            {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
-          </Trans>
+        <Typography variant="detail4" color="text.secondary" sx={{ px: 4, mb: 1 }}>
+          <Trans>{ENABLE_TESTNET || STAGING_ENV ? 'Select Testnet Market' : 'Select Market'}</Trans>
         </Typography>
       </Box>
 
-      {isV3MarketsAvailable && (
-        <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
-          <StyledToggleButtonGroup
-            value={selectedMarketVersion}
-            exclusive
-            onChange={(_, value) => {
-              if (value !== null) {
-                setSelectedMarketVersion(value);
-              }
-            }}
-            sx={{
-              width: '100%',
-              height: '36px',
-              background: theme.palette.primary.main,
-              border: `1px solid ${
-                theme.palette.mode === 'dark' ? 'rgba(235, 235, 237, 0.12)' : '#1B2030'
-              }`,
-              borderRadius: '6px',
-              marginTop: '16px',
-              marginBottom: '12px',
-              padding: '2px',
-            }}
-          >
-            <StyledToggleButton
-              value={SelectedMarketVersion.V3}
-              data-cy={`markets_switch_button_v3`}
-              sx={{
-                backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
-                '&.Mui-selected, &.Mui-selected:hover': {
-                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
-                },
-                borderRadius: '4px',
-              }}
-            >
-              <Typography
-                variant="buttonM"
-                sx={
-                  selectedMarketVersion === SelectedMarketVersion.V3
-                    ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
-                    : {
-                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
-                      }
-                }
-              >
-                <Trans>Version 3</Trans>
-              </Typography>
-            </StyledToggleButton>
-            <StyledToggleButton
-              value={SelectedMarketVersion.V2}
-              data-cy={`markets_switch_button_v2`}
-              sx={{
-                backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
-                '&.Mui-selected, &.Mui-selected:hover': {
-                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
-                },
-                borderRadius: '4px',
-              }}
-            >
-              <Typography
-                variant="buttonM"
-                sx={
-                  selectedMarketVersion === SelectedMarketVersion.V2
-                    ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
-                    : {
-                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
-                      }
-                }
-              >
-                <Trans>Version 2</Trans>
-              </Typography>
-            </StyledToggleButton>
-          </StyledToggleButtonGroup>
-        </Box>
-      )}
+      {/*{isV3MarketsAvailable && (*/}
+      {/*  <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>*/}
+      {/*    <StyledToggleButtonGroup*/}
+      {/*      value={selectedMarketVersion}*/}
+      {/*      exclusive*/}
+      {/*      onChange={(_, value) => {*/}
+      {/*        if (value !== null) {*/}
+      {/*          setSelectedMarketVersion(value);*/}
+      {/*        }*/}
+      {/*      }}*/}
+      {/*      sx={{*/}
+      {/*        width: '100%',*/}
+      {/*        height: '36px',*/}
+      {/*        background: theme.palette.primary.main,*/}
+      {/*        border: `1px solid ${*/}
+      {/*          theme.palette.mode === 'dark' ? 'rgba(235, 235, 237, 0.12)' : '#1B2030'*/}
+      {/*        }`,*/}
+      {/*        borderRadius: '6px',*/}
+      {/*        marginTop: '16px',*/}
+      {/*        marginBottom: '12px',*/}
+      {/*        padding: '2px',*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      <StyledToggleButton*/}
+      {/*        value={SelectedMarketVersion.V3}*/}
+      {/*        data-cy={`markets_switch_button_v3`}*/}
+      {/*        sx={{*/}
+      {/*          backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',*/}
+      {/*          '&.Mui-selected, &.Mui-selected:hover': {*/}
+      {/*            backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',*/}
+      {/*            boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',*/}
+      {/*          },*/}
+      {/*          borderRadius: '4px',*/}
+      {/*        }}*/}
+      {/*      >*/}
+      {/*        <Typography*/}
+      {/*          variant="buttonM"*/}
+      {/*          sx={*/}
+      {/*            selectedMarketVersion === SelectedMarketVersion.V3*/}
+      {/*              ? {*/}
+      {/*                  backgroundImage: (theme) => theme.palette.gradients.aaveGradient,*/}
+      {/*                  backgroundClip: 'text',*/}
+      {/*                  color: 'transparent',*/}
+      {/*                }*/}
+      {/*              : {*/}
+      {/*                  color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',*/}
+      {/*                }*/}
+      {/*          }*/}
+      {/*        >*/}
+      {/*          <Trans>Version 3</Trans>*/}
+      {/*        </Typography>*/}
+      {/*      </StyledToggleButton>*/}
+      {/*      <StyledToggleButton*/}
+      {/*        value={SelectedMarketVersion.V2}*/}
+      {/*        data-cy={`markets_switch_button_v2`}*/}
+      {/*        sx={{*/}
+      {/*          backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',*/}
+      {/*          '&.Mui-selected, &.Mui-selected:hover': {*/}
+      {/*            backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',*/}
+      {/*            boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',*/}
+      {/*          },*/}
+      {/*          borderRadius: '4px',*/}
+      {/*        }}*/}
+      {/*      >*/}
+      {/*        <Typography*/}
+      {/*          variant="buttonM"*/}
+      {/*          sx={*/}
+      {/*            selectedMarketVersion === SelectedMarketVersion.V2*/}
+      {/*              ? {*/}
+      {/*                  backgroundImage: (theme) => theme.palette.gradients.aaveGradient,*/}
+      {/*                  backgroundClip: 'text',*/}
+      {/*                  color: 'transparent',*/}
+      {/*                }*/}
+      {/*              : {*/}
+      {/*                  color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',*/}
+      {/*                }*/}
+      {/*          }*/}
+      {/*        >*/}
+      {/*          <Trans>Version 2</Trans>*/}
+      {/*        </Typography>*/}
+      {/*      </StyledToggleButton>*/}
+      {/*    </StyledToggleButtonGroup>*/}
+      {/*  </Box>*/}
+      {/*)}*/}
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
         const marketNaming = getMarketHelpData(market.marketTitle);
@@ -324,6 +315,8 @@ export const MarketSwitcher = () => {
             data-cy={`marketSelector_${marketId}`}
             value={marketId}
             sx={{
+              py: '13.5px',
+              px: 3,
               '.MuiListItemIcon-root': { minWidth: 'unset' },
               display:
                 (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
@@ -333,13 +326,11 @@ export const MarketSwitcher = () => {
             }}
           >
             <MarketLogo
-              size={32}
+              size={24}
               logo={network.networkLogoPath}
               testChainName={marketNaming.testChainName}
             />
-            <ListItemText sx={{ mr: 0 }}>
-              {marketNaming.name} {market.isFork ? 'Fork' : ''}
-            </ListItemText>
+            {marketNaming.name} {market.isFork ? 'Fork' : ''}
             <ListItemText sx={{ textAlign: 'right' }}>
               <Typography color="text.muted" variant="description">
                 {marketNaming.testChainName}

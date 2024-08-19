@@ -78,8 +78,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
             </Box>
 
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              {' '}
-              <Typography variant="caption" color="text.muted">
+              <Typography variant="body5" color="text.mainTitle">
                 {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
               </Typography>
               <Button
@@ -94,15 +93,16 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
                   justifyContent: 'center',
                   pl: 1,
                   pr: 1,
+                  color: theme.palette.text.secondary,
                 }}
-                variant="outlined"
+                variant="text"
                 href={explorerLink}
                 target="_blank"
                 onClick={() =>
                   trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
                 }
               >
-                <Trans>VIEW TX</Trans>{' '}
+                <Trans>Explorer</Trans>
                 <SvgIcon
                   sx={{
                     fontSize: '15px',

@@ -38,25 +38,20 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       sx={{
         pt: 5,
         mb: 10,
-        px: {
-          md: 6,
-        },
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
+        borderRadius: 0,
       }}
     >
       <Box
         component={Link}
         href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
         sx={(theme) => ({
-          borderRadius: {
-            md: 4,
-          },
           display: 'flex',
           backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#F7F7F9',
-
+          borderRadius: 0,
           position: 'relative',
           alignItems: {
             xs: 'none',
@@ -328,7 +323,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
             <Button
               variant="contained"
               component={Link}
-              size={'medium'}
+              size={'small'}
               href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
               sx={{
                 display: {

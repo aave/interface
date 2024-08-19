@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Link, SvgIcon, Typography, useTheme } from '@mui/material';
 import { ApprovalMethodToggleButton } from 'src/components/transactions/FlowCommons/ApprovalMethodToggleButton';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -23,11 +23,12 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
   const usingPermit = tryPermit && walletApprovalMethodPreference;
   const { currentNetworkConfig } = useProtocolDataContext();
   const isSigned = approvalHash === MOCK_SIGNED_HASH;
+  const theme = useTheme();
   // a signature is not submitted on-chain so there is no link to review
   if (!approvalHash && !isSigned && tryPermit)
     return (
       <Box sx={{ display: 'inline-flex', alignItems: 'center', mb: 2 }}>
-        <Typography variant="subheader2" color="text.secondary">
+        <Typography variant="body7" color={theme.palette.text.subTitle}>
           <Trans>Approve with</Trans>&nbsp;
         </Typography>
         <ApprovalMethodToggleButton

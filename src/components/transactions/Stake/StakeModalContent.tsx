@@ -1,7 +1,7 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
@@ -43,6 +43,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
 
   const stakeData = stakeGeneralResult?.[0];
   const stakeUserData = stakeUserResult?.[0];
+  const theme = useTheme();
 
   // states
   const [_amount, setAmount] = useState('');
@@ -102,16 +103,18 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
 
   return (
     <>
-      <TxModalTitle title="Stake" symbol={nameFormatted} />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      <TxModalTitle sx={{ mb: 8 }} title="Stake CODE" />
+      {/* {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={networkConfig.name}
           chainId={stakingChain}
           funnel={'Stake Modal'}
         />
-      )}
+      )} */}
 
-      <CooldownWarning />
+      <Box sx={{ background: theme.palette.point.riskMedium, mb: 8 }}>
+        <CooldownWarning />
+      </Box>
 
       <AssetInput
         value={amount}

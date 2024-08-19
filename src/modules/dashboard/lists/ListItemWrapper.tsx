@@ -65,7 +65,7 @@ export const ListItemWrapper = ({
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <ListItem {...rest}>
+    <ListItem {...rest} sx={{ height: '100px', px: '0 !important' }}>
       <ListColumn maxWidth={DASHBOARD_LIST_COLUMN_WIDTHS.CELL} isRow>
         <Link
           onClick={() =>
@@ -78,15 +78,16 @@ export const ListItemWrapper = ({
           }
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           noWrap
-          sx={{ display: 'inline-flex', alignItems: 'center' }}
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            color: 'text.primary',
+            fontSize: '16px',
+          }}
         >
-          {image ? (
-            <img alt={image} src={image} width={'32px'} height={'32px'} />
-          ) : (
-            <TokenIcon symbol={iconSymbol} fontSize="large" />
-          )}
+          <TokenIcon symbol={iconSymbol} img={image} fontSize="medium" />
           <Tooltip title={`${name} (${symbol})`} arrow placement="top">
-            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+            <Typography variant="subheader1" sx={{ ml: 2 }} noWrap data-cy={`assetName`}>
               {symbol}
             </Typography>
           </Tooltip>

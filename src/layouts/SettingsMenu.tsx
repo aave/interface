@@ -1,6 +1,6 @@
 import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Button, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
+import { Button, Menu, MenuItem, SvgIcon, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { DEFAULT_LOCALE } from 'src/libs/LanguageProvider';
 import { useRootStore } from 'src/store/root';
@@ -28,6 +28,7 @@ export function SettingsMenu() {
   const [languagesOpen, setLanguagesOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const theme = useTheme();
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
     setSettingsOpen(true);
@@ -63,9 +64,17 @@ export function SettingsMenu() {
         aria-expanded={settingsOpen ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleSettingsClick}
-        sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
+        sx={{
+          p: '12px',
+          minWidth: 'unset',
+          ml: 2,
+          bgcolor: theme.palette.background.modulePopup,
+          height: '48px',
+          width: '48px',
+          borderRadius: '12px',
+        }}
       >
-        <SvgIcon sx={{ color: '#F1F1F3' }} fontSize="small">
+        <SvgIcon sx={{ color: theme.palette.text.primary }} fontSize="small">
           <CogIcon />
         </SvgIcon>
       </Button>

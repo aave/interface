@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
-import { Box, CircularProgress, Stack } from '@mui/material';
+import { Box, CircularProgress, Stack, useTheme } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
@@ -63,6 +63,7 @@ export const GasStation: React.FC<GasStationProps> = ({
   const { data: isContractAddress } = useIsContractAddress(account);
   const nativeBalanceUSD = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amountUSD;
   const { name, baseAssetSymbol } = getNetworkConfig(selectedChainId);
+  const theme = useTheme();
 
   const { loadingTxns } = useModalContext();
 
@@ -82,9 +83,11 @@ export const GasStation: React.FC<GasStationProps> = ({
 
   return (
     <Stack gap={6} sx={{ width: '100%' }}>
-      <Box sx={{ display: 'flex', mt: 6, justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <LocalGasStationIcon color="primary" sx={{ fontSize: '16px', mr: 1.5 }} />
+          <LocalGasStationIcon
+            sx={{ fontSize: '20px', mr: 1.5, color: theme.palette.text.subTitle }}
+          />
 
           {loadingTxns && !skipLoad ? (
             <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
@@ -93,8 +96,8 @@ export const GasStation: React.FC<GasStationProps> = ({
               <FormattedNumber
                 value={totalGasCostsUsd}
                 symbol="USD"
-                color="text.secondary"
-                variant="caption"
+                color={theme.palette.text.subTitle}
+                variant="detail3"
               />
               <GasTooltip />
             </>

@@ -60,42 +60,26 @@ export const useReserveActionState = ({
       eModeBorrowDisabled ||
       maxAmountToBorrow === '0',
     alerts: (
-      <Stack gap={3}>
+      <Stack gap={2}>
         {balance === '0' && !isGho && (
           <>
             {currentNetworkConfig.isTestnet ? (
-              <Warning sx={{ mb: 0 }} severity="info" icon={false}>
+              <Warning sx={{ mb: 0 }} severity="info">
                 <Trans>
                   Your {networkName} wallet is empty. Get free test {reserve.name} at
                 </Trans>{' '}
                 {!currentMarketData.addresses.FAUCET ? (
-                  <Button
-                    variant="text"
-                    href="https://faucet.circle.com/"
-                    component={Link}
-                    sx={{ verticalAlign: 'top' }}
-                    disableRipple
-                    endIcon={
-                      <SvgIcon sx={{ width: 14, height: 14 }}>
-                        <ExternalLinkIcon />
-                      </SvgIcon>
-                    }
-                  >
-                    <Typography variant="caption">
-                      <Trans>{networkName} Faucet</Trans>
-                    </Typography>
-                  </Button>
+                  <Link href="https://faucet.circle.com/">
+                    <Trans>{networkName} Faucet</Trans>
+                  </Link>
                 ) : (
-                  <Button
-                    variant="text"
+                  <Link
+                    href={'#'}
                     sx={{ verticalAlign: 'top' }}
                     onClick={() => openFaucet(reserve.underlyingAsset)}
-                    disableRipple
                   >
-                    <Typography variant="caption">
-                      <Trans>{networkName} Faucet</Trans>
-                    </Typography>
-                  </Button>
+                    <Trans>{networkName} Faucet</Trans>
+                  </Link>
                 )}
               </Warning>
             ) : (
@@ -111,19 +95,19 @@ export const useReserveActionState = ({
         )}
 
         {(balance !== '0' || isGho) && user?.totalCollateralMarketReferenceCurrency === '0' && (
-          <Warning sx={{ mb: 0 }} severity="info" icon={false}>
+          <Warning sx={{ mb: 0 }} severity="info">
             <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
           </Warning>
         )}
 
         {isolationModeBorrowDisabled && (
-          <Warning sx={{ mb: 0 }} severity="warning" icon={false}>
+          <Warning sx={{ mb: 0 }} severity="warning">
             <Trans>Collateral usage is limited because of Isolation mode.</Trans>
           </Warning>
         )}
 
         {eModeBorrowDisabled && isolationModeBorrowDisabled && (
-          <Warning sx={{ mb: 0 }} severity="info" icon={false}>
+          <Warning sx={{ mb: 0 }} severity="info">
             <Trans>
               Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation
               mode. To manage E-Mode and Isolation mode visit your{' '}
@@ -133,7 +117,7 @@ export const useReserveActionState = ({
         )}
 
         {eModeBorrowDisabled && !isolationModeBorrowDisabled && (
-          <Warning sx={{ mb: 0 }} severity="info" icon={false}>
+          <Warning sx={{ mb: 0 }} severity="info">
             <Trans>
               Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for{' '}
               {getEmodeMessage(eModes[user.userEmodeCategoryId].label)} category. To manage E-Mode
@@ -143,7 +127,7 @@ export const useReserveActionState = ({
         )}
 
         {!eModeBorrowDisabled && isolationModeBorrowDisabled && (
-          <Warning sx={{ mb: 0 }} severity="info" icon={false}>
+          <Warning sx={{ mb: 0 }} severity="info">
             <Trans>
               Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode
               visit your <Link href={ROUTES.dashboard}>Dashboard</Link>.
@@ -152,13 +136,13 @@ export const useReserveActionState = ({
         )}
 
         {maxAmountToSupply === '0' &&
-          supplyCap?.determineWarningDisplay({ supplyCap, icon: false, sx: { mb: 0 } })}
+          supplyCap?.determineWarningDisplay({ supplyCap, sx: { mb: 0 } })}
         {maxAmountToBorrow === '0' &&
-          borrowCap?.determineWarningDisplay({ borrowCap, icon: false, sx: { mb: 0 } })}
+          borrowCap?.determineWarningDisplay({ borrowCap, sx: { mb: 0 } })}
         {reserve.isIsolated &&
           balance !== '0' &&
           user?.totalCollateralUSD !== '0' &&
-          debtCeiling?.determineWarningDisplay({ debtCeiling, icon: false, sx: { mb: 0 } })}
+          debtCeiling?.determineWarningDisplay({ debtCeiling, sx: { mb: 0 } })}
       </Stack>
     ),
   };

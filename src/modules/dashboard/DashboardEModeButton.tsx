@@ -53,7 +53,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         e.stopPropagation();
       }}
     >
-      <Typography mr={1} variant="description" color="text.secondary">
+      <Typography mr={1} variant="description" color="white">
         <Trans>E-Mode</Trans>
       </Typography>
 
@@ -69,6 +69,11 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           ml: 1,
           borderRadius: '4px',
           p: 0,
+          bgcolor: theme.palette.background.chip,
+          color: 'white',
+          '&:hover': {
+            bgcolor: theme.palette.background.chip,
+          },
           '&:after': {
             content: "''",
             position: 'absolute',
@@ -107,7 +112,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           </SvgIcon>
 
           {isEModeDisabled ? (
-            <Typography variant="buttonS" color="text.secondary">
+            <Typography variant="buttonS">
               <EModeLabelMessage />
             </Typography>
           ) : (
@@ -120,7 +125,6 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
             sx={{
               fontSize: iconButtonSize,
               ml: '4px',
-              color: 'primary.light',
             }}
           >
             <CogIcon />

@@ -48,7 +48,7 @@ export const CapsCircularStatus = ({ value, tooltipContent, onClick }: CapsCircu
         if (onClick) onClick(value);
       }}
     >
-      <Box sx={{ position: 'relative', mr: 4 }}>
+      <Box sx={{ position: 'relative' }}>
         <CircularProgress
           variant="determinate"
           sx={{
@@ -57,7 +57,7 @@ export const CapsCircularStatus = ({ value, tooltipContent, onClick }: CapsCircu
             left: 1.25,
             top: 1.25,
           }}
-          size={77.5}
+          size={80}
           thickness={2}
           value={100}
         />

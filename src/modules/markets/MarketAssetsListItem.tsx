@@ -50,20 +50,20 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
     >
       <ListColumn isRow maxWidth={280}>
         <TokenIcon symbol={reserve.iconSymbol} img={reserve.image} fontSize="large" />
-        <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
-          <Typography variant="h4" noWrap>
+        <Box sx={{ pl: 3, overflow: 'hidden' }}>
+          <Typography variant="body6" noWrap color="text.primary">
             {reserve.name}
           </Typography>
 
           <Box
             sx={{
-              p: { xs: '0', xsm: '3.625px 0px' },
+              p: { xs: '0', xsm: '3px 0px' },
             }}
           >
-            <Typography variant="subheader2" color="text.muted" noWrap>
+            <Typography variant="detail2" color="text.mainTitle" noWrap>
               {reserve.symbol}
               {reserve.isIsolated && (
-                <span style={{ marginLeft: '8px' }}>
+                <span style={{ marginLeft: '16px' }}>
                   <IsolatedEnabledBadge />
                 </span>
               )}
@@ -76,7 +76,12 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
+        <FormattedNumber
+          compact
+          value={reserve.totalLiquidity}
+          variant="body6"
+          color="text.primary"
+        />
         <ReserveSubheader value={reserve.totalLiquidityUSD} />
       </ListColumn>
 
@@ -85,8 +90,9 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           value={reserve.supplyAPY}
           incentives={reserve.aIncentivesData || []}
           symbol={reserve.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
+          variant="body6"
+          symbolsVariant="body6"
+          color="text.primary"
           tooltip={isSuperfestOnSupplySide && <SuperFestTooltip />}
         />
       </ListColumn>
@@ -94,11 +100,16 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       <ListColumn>
         {reserve.borrowingEnabled || Number(reserve.totalDebt) > 0 ? (
           <>
-            <FormattedNumber compact value={reserve.totalDebt} variant="main16" />{' '}
+            <FormattedNumber
+              compact
+              value={reserve.totalDebt}
+              variant="body6"
+              color="text.primary"
+            />
             <ReserveSubheader value={reserve.totalDebtUSD} />
           </>
         ) : (
-          <NoData variant={'secondary14'} color="text.secondary" />
+          <NoData variant="body6" color="text.primary" />
         )}
       </ListColumn>
 
@@ -107,8 +118,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
           incentives={reserve.vIncentivesData || []}
           symbol={reserve.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
+          variant="body6"
+          symbolsVariant="body6"
           tooltip={isSuperfestOnBorrowSide && <SuperFestTooltip />}
         />
         {!reserve.borrowingEnabled &&
@@ -131,7 +142,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn minWidth={95} maxWidth={95} align="right">
         <Button
-          variant="outlined"
+          variant="text"
+          size="small"
           component={Link}
           href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
           onClick={() =>

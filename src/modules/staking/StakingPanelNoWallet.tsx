@@ -45,16 +45,19 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
       sx={(theme) => ({
         display: 'flex',
         justifyContent: 'space-between',
+        gap: 3,
         alignItems: 'center',
         flexDirection: 'row',
         borderRadius: '6px',
         border: `1px solid ${theme.palette.divider}`,
-        p: 4,
-        background: theme.palette.background.paper,
-        width: '250px',
+        px: 5,
+        py: 2,
+        background: 'transparent',
+        width: '100%',
         height: '68px',
         margin: '0 auto',
         position: 'relative',
+        textAlign: 'left',
         '&:after': {
           content: "''",
           position: 'absolute',
@@ -69,20 +72,18 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          flexDirection: 'flex-start',
           alignItems: 'center',
+          width: '100%',
+          gap: 3,
+          flex: 1,
         }}
       >
-        <TokenIcon symbol={icon} />
+        <TokenIcon symbol={icon} sx={{ width: '24px', height: '24px' }} />
         <Stack direction="column" alignItems="start">
-          <Typography variant="subheader1" color="text.primary" ml={2}>
-            {stakedToken}
+          <Typography color="text.primary" sx={{ fontSize: '18px', textAlign: 'left' }}>
+            Stake CODE on {stakedToken} mainnet
           </Typography>
-          {stakedToken === 'GHO' && (
-            <Box sx={{ mx: 2 }}>
-              <MeritIncentivesButton symbol="stkgho" />
-            </Box>
-          )}
         </Stack>
       </Box>
       <Box
@@ -91,10 +92,11 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           width: { xs: '100%', xsm: 'unset' },
           justifyContent: 'space-between',
           alignItems: 'center',
+          flex: 1,
         }}
       >
-        <Box display={'flex'} alignItems={'center'}>
-          <Typography variant="subheader2" color="text.secondary">
+        <Box display={'flex'} flexDirection={'column'} gap={2}>
+          <Typography color="text.secondary" sx={{ fontSize: '14px' }}>
             <Trans>Staking APR</Trans>
           </Typography>
 
@@ -115,14 +117,14 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
               </Trans>
             </TextWithTooltip>
           )}
-        </Box>
 
-        <FormattedNumber
-          value={parseFloat(stakingAPY || '0') / 10000}
-          percent
-          variant="secondary14"
-          color="text.primary"
-        />
+          <FormattedNumber
+            value={parseFloat(stakingAPY || '0') / 10000}
+            symbol="USD"
+            color="text.secondary"
+            sx={{ fontSize: '14px' }}
+          />
+        </Box>
       </Box>
     </Box>
   );

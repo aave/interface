@@ -1,4 +1,11 @@
-import { SxProps, Theme, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import {
+  SxProps,
+  Theme,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+  useTheme,
+} from '@mui/material';
 
 export const supportedTimeRangeOptions = ['1m', '3m', '6m', '1y'] as const;
 
@@ -38,7 +45,7 @@ export const TimeRangeSelector = ({
       onTimeRangeChanged(newInterval);
     }
   };
-
+  const theme = useTheme();
   return (
     <ToggleButtonGroup
       disabled={disabled}
@@ -64,15 +71,20 @@ export const TimeRangeSelector = ({
             sx={(theme): SxProps<Theme> | undefined => ({
               '&.MuiToggleButtonGroup-grouped:not(.Mui-selected), &.MuiToggleButtonGroup-grouped&.Mui-disabled':
                 {
-                  border: '0.5px solid transparent',
-                  backgroundColor: 'background.surface',
-                  color: 'action.disabled',
+                  backgroundColor: theme.palette.text.disabledBg,
+                  color: theme.palette.text.disabled,
+                  border: 'none',
+                  ...theme.typography.detail4,
+                  textTransform: 'lowercase',
+                  transition: '0.2s',
                 },
               '&.MuiToggleButtonGroup-grouped&.Mui-selected': {
-                borderRadius: '4px',
-                border: `0.5px solid ${theme.palette.divider}`,
-                boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
-                backgroundColor: 'background.paper',
+                backgroundColor: theme.palette.text.mainTitle,
+                color: theme.palette.text.buttonText,
+                border: 'none',
+                ...theme.typography.detail4,
+                textTransform: 'lowercase',
+                transition: '0.2s',
               },
               ...props.sx?.button,
             })}

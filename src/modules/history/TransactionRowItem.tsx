@@ -13,7 +13,7 @@ import { ActionFields, TransactionHistoryItem } from './types';
 
 function ActionTitle({ action }: { action: string }) {
   return (
-    <Typography sx={{ width: '180px' }}>
+    <Typography sx={{ width: '180px' }} variant="body8">
       <ActionTextMap action={action} />
     </Typography>
   );
@@ -48,14 +48,16 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
   const explorerLink = currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
   return (
-    <Box px={6}>
+    <Box px={0}>
       <ListItem
         px={3}
         sx={{
-          borderWidth: `1px 0 0 0`,
-          borderStyle: `solid`,
-          borderColor: `${theme.palette.divider}`,
-          height: '72px',
+          borderTop: `1px solid ${theme.palette.border.divider}`,
+          py: '18px',
+          px: 0,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
         }}
       >
         <Box
@@ -64,43 +66,40 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'left',
-            gap: '4px',
-            mr: 6,
+            gap: 3,
+            width: 220,
           }}
         >
           <ActionTitle action={transaction.action} />
-          <Typography variant="caption" color="text.muted">
+          <Typography variant="body5" color="text.mainTitle">
             {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
           </Typography>
         </Box>
 
         <Box>
-          <ActionDetails transaction={transaction} iconSize="20px" />
+          <ActionDetails transaction={transaction} iconSize="24px" />
         </Box>
         <ListColumn align="right">
-          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-            {!downToMD && (
-              <Button
-                variant="outlined"
-                href={explorerLink}
-                target="_blank"
-                onClick={() =>
-                  trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
-                }
-              >
-                <Trans>View</Trans>{' '}
-                <SvgIcon
-                  sx={{
-                    marginLeft: '5px',
-                    fontSize: '20px',
-                    color: 'text.secondary',
-                  }}
-                >
-                  <ArrowOutward />
-                </SvgIcon>
-              </Button>
-            )}
-          </Box>
+          {!downToMD && (
+            <Button
+              variant="text"
+              size="small"
+              sx={(theme) => ({
+                px: 5,
+                height: 34,
+                color: theme.palette.text.secondary,
+                fontSize: 17,
+              })}
+              href={explorerLink}
+              target="_blank"
+              onClick={() =>
+                trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
+              }
+            >
+              <Trans>Explorer</Trans>
+              <ArrowOutward width={24} height={24} />
+            </Button>
+          )}
         </ListColumn>
       </ListItem>
     </Box>

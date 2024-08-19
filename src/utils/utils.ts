@@ -85,3 +85,46 @@ export const showSuperFestTooltip = (symbol: string, currentMarket: string, side
       (side === Side.BORROW && (symbol == 'USDC' || symbol == 'ETH')))
   );
 };
+
+export function withOpacity(color: string, opacity: number): string {
+  // Helper function to convert a value to a 2-digit hex string
+  const toHex = (value: number) => {
+    const hex = Math.round(value).toString(16).padStart(2, '0');
+    return hex;
+  };
+
+  // Normalize the opacity value to be between 0 and 1
+  opacity = Math.max(0, Math.min(opacity, 1));
+
+  // Convert hex color to RGB
+  let r: number, g: number, b: number;
+  if (color.startsWith('#')) {
+    // Handle hex format (e.g., #RRGGBB or #RGB)
+    if (color.length === 7) {
+      r = parseInt(color.slice(1, 3), 16);
+      g = parseInt(color.slice(3, 5), 16);
+      b = parseInt(color.slice(5, 7), 16);
+    } else if (color.length === 4) {
+      r = parseInt(color[1] + color[1], 16);
+      g = parseInt(color[2] + color[2], 16);
+      b = parseInt(color[3] + color[3], 16);
+    } else {
+      throw new Error('Invalid hex color format.');
+    }
+  } else if (color.startsWith('rgb(')) {
+    // Handle RGB format (e.g., rgb(255, 0, 0))
+    const rgbValues = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+    if (!rgbValues) {
+      throw new Error('Invalid RGB color format.');
+    }
+    r = parseInt(rgbValues[1], 10);
+    g = parseInt(rgbValues[2], 10);
+    b = parseInt(rgbValues[3], 10);
+  } else {
+    throw new Error('Unsupported color format.');
+  }
+
+  // Convert RGB values and opacity to 8-digit hex format
+  const alpha = toHex(opacity * 255);
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}${alpha}`;
+}

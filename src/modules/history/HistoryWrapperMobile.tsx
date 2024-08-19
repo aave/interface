@@ -138,12 +138,202 @@ export const HistoryWrapperMobile = () => {
     () => applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns }),
     [searchQuery, filterQuery, flatTxns]
   );
+  // const filteredTxns: TransactionHistoryItemUnion[] = useMemo(
+  //   // () => applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns }),
+  //   () => [
+  //     {
+  //       id: '1',
+  //       txHash: '0x123',
+  //       action: 'Supply',
+  //       pool: {
+  //         id: 'pool1',
+  //       },
+  //       timestamp: 1633024800,
+  //       reserve: {
+  //         symbol: 'ETH',
+  //         decimals: 18,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000000',
+  //         name: 'Ethereum',
+  //       },
+  //       amount: '1000000000000000000', // 1 ETH in wei
+  //       assetPriceUSD: '3000',
+  //     },
+  //     {
+  //       id: '2',
+  //       txHash: '0x456',
+  //       action: 'Borrow',
+  //       pool: {
+  //         id: 'pool2',
+  //       },
+  //       timestamp: 1633025800,
+  //       reserve: {
+  //         symbol: 'DAI',
+  //         decimals: 18,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000001',
+  //         name: 'Dai Stablecoin',
+  //       },
+  //       amount: '500000000000000000000', // 500 DAI in wei
+  //       assetPriceUSD: '1',
+  //       borrowRateModeFrom: 'stable',
+  //       borrowRateModeTo: 'variable',
+  //       stableBorrowRate: 18
+  //     },
+  //     {
+  //       id: '3',
+  //       txHash: '0x789',
+  //       action: 'RedeemUnderlying',
+  //       pool: {
+  //         id: 'pool3',
+  //       },
+  //       timestamp: 1633026800,
+  //       reserve: {
+  //         symbol: 'USDC',
+  //         decimals: 6,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000002',
+  //         name: 'USD Coin',
+  //       },
+  //       amount: '1000000', // 1 USDC in smallest unit
+  //       assetPriceUSD: '1',
+  //     },
+  //     {
+  //       id: '4',
+  //       txHash: '0xabc',
+  //       action: 'Deposit',
+  //       pool: {
+  //         id: 'pool4',
+  //       },
+  //       timestamp: 1633027800,
+  //       reserve: {
+  //         symbol: 'BTC',
+  //         decimals: 8,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000003',
+  //         name: 'Bitcoin',
+  //       },
+  //       amount: '100000000', // 1 BTC in satoshi
+  //       assetPriceUSD: '50000',
+  //     },
+  //     {
+  //       id: '5',
+  //       txHash: '0xdef',
+  //       action: 'Repay',
+  //       pool: {
+  //         id: 'pool5',
+  //       },
+  //       timestamp: 1633028800,
+  //       reserve: {
+  //         symbol: 'ETH',
+  //         decimals: 18,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000000',
+  //         name: 'Ethereum',
+  //       },
+  //       amount: '2000000000000000000', // 2 ETH in wei
+  //       assetPriceUSD: '3000',
+  //     },
+  //     {
+  //       id: '6',
+  //       txHash: '0xghi',
+  //       action: 'UsageAsCollateral',
+  //       pool: {
+  //         id: 'pool6',
+  //       },
+  //       timestamp: 1633029800,
+  //       reserve: {
+  //         symbol: 'DAI',
+  //         decimals: 18,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000001',
+  //         name: 'Dai Stablecoin',
+  //       },
+  //       amount: '1000000000000000000000', // 1000 DAI in wei
+  //       assetPriceUSD: '1',
+  //     },
+  //     {
+  //       id: '7',
+  //       txHash: '0xjkl',
+  //       action: 'SwapBorrowRate',
+  //       pool: {
+  //         id: 'pool7',
+  //       },
+  //       timestamp: 1623030800,
+  //       reserve: {
+  //         symbol: 'USDT',
+  //         decimals: 6,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000004',
+  //         name: 'Tether',
+  //       },
+  //       amount: '5000000', // 5 USDT in smallest unit
+  //       assetPriceUSD: '1',
+  //       borrowRateModeFrom: 'stable',
+  //       borrowRateModeTo: 'variable',
+  //       stableBorrowRate: 18,
+  //       variableBorrowRate: 20
+  //     },
+  //     {
+  //       id: '8',
+  //       txHash: '0xmn0',
+  //       action: 'Swap',
+  //       pool: {
+  //         id: 'pool8',
+  //       },
+  //       timestamp: 1633031800,
+  //       reserve: {
+  //         symbol: 'ETH',
+  //         decimals: 18,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000000',
+  //         name: 'Ethereum',
+  //       },
+  //       amount: '3000000000000000000', // 3 ETH in wei
+  //       assetPriceUSD: '3000',
+  //       swapFromReserve: {
+  //         symbol: 'DAI',
+  //         decimals: 18,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000001',
+  //         name: 'Dai Stablecoin',
+  //       },
+  //       swapToReserve: {
+  //         symbol: 'USDC',
+  //         decimals: 6,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000002',
+  //         name: 'USD Coin',
+  //       },
+  //       borrowRateModeFrom: 'Variable',
+  //       borrowRateModeTo: 'variable',
+  //       stableBorrowRate: 18,
+  //       variableBorrowRate: 20
+  //     },
+  //     {
+  //       id: '9',
+  //       txHash: '0xpqr',
+  //       action: 'LiquidationCall',
+  //       pool: {
+  //         id: 'pool9',
+  //       },
+  //       timestamp: 1633032800,
+  //       collateralReserve: {
+  //         symbol: 'USDC',
+  //         decimals: 6,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000002',
+  //         name: 'USD Coin',
+  //       },
+  //       collateralAmount: '2000000', // 2 USDC in smallest unit
+  //       principalReserve: {
+  //         symbol: 'ETH',
+  //         decimals: 18,
+  //         underlyingAsset: '0x0000000000000000000000000000000000000000',
+  //         name: 'Ethereum',
+  //       },
+  //       principalAmount: '4000000000000000000', // 4 ETH in wei
+  //       borrowAssetPriceUSD: '3000',
+  //       collateralAssetPriceUSD: '1',
+  //     },
+  //   ],
+  //   [searchQuery, filterQuery, flatTxns]
+  // );
   const isEmpty = filteredTxns.length === 0;
   const filterActive = searchQuery !== '' || filterQuery.length > 0;
 
   return (
     <ListWrapper
-      wrapperSx={showSearchBar ? { px: 4 } : undefined}
+      wrapperSx={showSearchBar ? { px: 5, py: 9 } : undefined}
       titleComponent={
         <Box
           ref={searchBarRef}
@@ -156,7 +346,7 @@ export const HistoryWrapperMobile = () => {
         >
           {!showSearchBar && (
             <Typography component="div" variant="h2" sx={{ mr: 4, height: '36px' }}>
-              <Trans>Transactions</Trans>
+              <Trans>Transactions1</Trans>
             </Typography>
           )}
           {!showSearchBar && (
@@ -243,7 +433,7 @@ export const HistoryWrapperMobile = () => {
       ) : !isEmpty ? (
         Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
           <React.Fragment key={groupIndex}>
-            <Typography variant="h4" color="text.primary" sx={{ ml: 4, mt: 6, mb: 2 }}>
+            <Typography variant="body4" color="text.subTitle" sx={{ ml: 4, mt: 6, mb: 2 }}>
               {date}
             </Typography>
             {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {

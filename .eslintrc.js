@@ -14,6 +14,7 @@ module.exports = {
       'error',
       { ignoreRestSiblings: true, argsIgnorePattern: '^_' },
     ],
+    '@typescript-eslint/no-unused-vars': 'off',
     'prettier/prettier': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',

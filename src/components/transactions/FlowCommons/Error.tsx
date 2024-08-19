@@ -1,11 +1,13 @@
 import { DuplicateIcon, XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
 export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
   const { close } = useModalContext();
+  const theme = useTheme();
 
   return (
     <>
@@ -15,7 +17,8 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          mb: '92px',
+          p: '6px',
+          mb: '40px',
         }}
       >
         <Box
@@ -30,20 +33,26 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
             justifyContent: 'center',
           }}
         >
-          <SvgIcon sx={{ color: 'error.main', fontSize: '32px' }}>
-            <XIcon />
+          <SvgIcon sx={{ color: 'error.main', fontSize: '60px' }}>
+            <CancelIcon />
           </SvgIcon>
         </Box>
 
-        <Typography sx={{ mt: 2 }} variant="h2">
+        <Typography sx={{ mt: 5, mb: 2 }} variant="body1">
           <Trans>Transaction failed</Trans>
         </Typography>
 
-        <Typography>
+        <Typography variant="body5" sx={{ color: 'text.secondary', px: 8, textAlign: 'center' }}>
           <Trans>
             You can report incident to our{' '}
-            <Link href="https://discord.com/invite/aave">Discord</Link> or
-            <Link href="https://github.com/aave/interface">Github</Link>.
+            <Link color="text.secondary" href="https://discord.com/invite/aave">
+              Discord
+            </Link>{' '}
+            or{' '}
+            <Link color="text.secondary" href="https://github.com/aave/interface">
+              Github
+            </Link>
+            .
           </Trans>
         </Typography>
 
@@ -51,9 +60,21 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
           variant="outlined"
           onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
           size="small"
-          sx={{ mt: 6 }}
+          sx={{
+            mt: 4,
+            color: theme.palette.text.subTitle,
+            bgcolor: 'transparent',
+            p: '0px 4px 0px 8px',
+            borderRadius: '4px',
+            border: `1px solid ${theme.palette.text.subTitle}`,
+            '&:hover': {
+              bgcolor: 'transparent',
+            },
+          }}
         >
-          <Trans>Copy error text</Trans>
+          <Typography variant="detail2" sx={{ textTransform: 'uppercase' }}>
+            <Trans>Copy error text</Trans>
+          </Typography>
 
           <SvgIcon sx={{ ml: 0.5, fontSize: '12px' }}>
             <DuplicateIcon />

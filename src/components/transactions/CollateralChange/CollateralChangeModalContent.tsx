@@ -120,7 +120,7 @@ export const CollateralChangeModalContent = ({
   return (
     <>
       {showEnableIsolationModeMsg && (
-        <Warning severity="warning" icon={false} sx={{ mb: 3 }}>
+        <Warning severity="warning" sx={{ mb: 3 }}>
           <Trans>
             Enabling this asset as collateral increases your borrowing power and Health Factor.
             However, it can get liquidated if your health factor drops below 1.
@@ -129,7 +129,7 @@ export const CollateralChangeModalContent = ({
       )}
 
       {showDisableIsolationModeMsg && (
-        <Warning severity="warning" icon={false} sx={{ mb: 3 }}>
+        <Warning severity="warning" sx={{ mb: 3 }}>
           <Trans>
             Disabling this asset as collateral affects your borrowing power and Health Factor.
           </Trans>
@@ -139,7 +139,7 @@ export const CollateralChangeModalContent = ({
       {showEnterIsolationModeMsg && <IsolationModeWarning asset={poolReserve.symbol} />}
 
       {showExitIsolationModeMsg && (
-        <Warning severity="info" icon={false} sx={{ mb: 3 }}>
+        <Warning severity="info" sx={{ mb: 3 }}>
           <Trans>You will exit isolation mode and other tokens can now be used as collateral</Trans>
         </Warning>
       )}

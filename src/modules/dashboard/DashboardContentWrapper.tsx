@@ -21,14 +21,12 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const { currentAccount } = useWeb3Context();
   const router = useRouter();
   const trackEvent = useRootStore((store) => store.trackEvent);
-
+  const theme = useTheme();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   const downToLg = useMediaQuery(breakpoints.down('lg'));
-
-  const upFromSm = useMediaQuery(breakpoints.up('xsm'));
 
   return (
     <Box>
@@ -43,7 +41,6 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
         <Box
           sx={{
             position: 'relative',
-
             display: { xs: isBorrow ? 'none' : 'block', lg: 'block' },
             width: paperWidth,
           }}
@@ -51,17 +48,17 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           {currentAccount && !isBorrow && downToLg && (
             <Box>
               <Button
-                sx={{
+                sx={(theme) => ({
                   position: 'absolute',
-                  top: upFromSm ? '-60px' : '-90px',
+                  top: '-120px',
                   right: '0px',
-                }}
+                  color: theme.palette.text.secondary,
+                })}
                 onClick={() => {
                   router.push(ROUTES.history);
                   trackEvent(AUTH.VIEW_TX_HISTORY);
                 }}
-                component="a"
-                variant="surface"
+                variant="outlined"
                 size="small"
               >
                 <Trans>View Transactions</Trans>
@@ -76,35 +73,10 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
         <Box
           sx={{
             position: 'relative',
-
             display: { xs: !isBorrow ? 'none' : 'block', lg: 'block' },
             width: paperWidth,
           }}
         >
-          {currentAccount && (
-            <Box
-              sx={{
-                position: 'absolute',
-
-                top: upFromSm ? '-60px' : '-90px',
-
-                right: '0px',
-              }}
-            >
-              <Button
-                onClick={() => {
-                  router.push(ROUTES.history);
-                  trackEvent(AUTH.VIEW_TX_HISTORY);
-                }}
-                component="a"
-                variant="surface"
-                size="small"
-              >
-                <Trans>View Transactions</Trans>
-              </Button>
-            </Box>
-          )}
-
           <BorrowedPositionsList />
           <BorrowAssetsList />
         </Box>

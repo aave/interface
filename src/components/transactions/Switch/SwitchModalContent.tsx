@@ -342,7 +342,7 @@ export const SwitchModalContent = ({
             <>
               {(selectedInputToken.extensions?.isUserCustom ||
                 selectedOutputToken.extensions?.isUserCustom) && (
-                <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
+                <Warning severity="warning" sx={{ mt: 2, mb: 2 }}>
                   <Typography variant="caption">
                     You have selected a custom imported token.
                   </Typography>

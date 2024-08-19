@@ -98,34 +98,35 @@ export const MarketAssetsListContainer = () => {
       }
     >
       {showFrozenMarketWarning && (
-        <Box mx={6}>
+        <Box>
           <MarketWarning marketName={currentMarketData.marketTitle} forum />
         </Box>
       )}
 
-      {displayGhoBanner && (
-        <Box mb={4}>
-          <GhoBanner reserve={ghoReserve} />
-        </Box>
-      )}
+      {/*{displayGhoBanner && (*/}
+      {/*  <Box mb={4}>*/}
+      {/*    <GhoBanner reserve={ghoReserve} />*/}
+      {/*  </Box>*/}
+      {/*)}*/}
 
       {/* Unfrozen assets list */}
       <MarketAssetsList reserves={unfrozenReserves} loading={loading} />
 
       {/* Frozen or paused assets list */}
       {frozenOrPausedReserves.length > 0 && (
-        <Box sx={{ mt: 10, px: { xs: 4, xsm: 6 } }}>
-          <Typography variant="h4" mb={4}>
+        <Box sx={{ mt: 12 }}>
+          <Typography variant="h2" mb={7} color="text.primary">
             <Trans>Show Frozen or paused assets</Trans>
 
             <Switch
               checked={showFrozenMarketsToggle}
               onChange={handleChange}
               inputProps={{ 'aria-label': 'controlled' }}
+              sx={{ ml: 4 }}
             />
           </Typography>
           {showFrozenMarketsToggle && (
-            <Warning severity="info">
+            <Warning severity="info" sx={{ mt: 4, mb: 8 }}>
               <Trans>
                 These assets are temporarily frozen or paused by Aave community decisions, meaning
                 that further supply / borrow, or rate swap of these assets are unavailable.

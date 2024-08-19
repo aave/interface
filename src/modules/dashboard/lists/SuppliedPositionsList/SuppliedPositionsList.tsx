@@ -2,6 +2,7 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
+import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -94,7 +95,7 @@ export const SuppliedPositionsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper>
+      <ListHeaderWrapper sx={{ bgcolor: theme.palette.background.primary }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
@@ -123,13 +124,19 @@ export const SuppliedPositionsList = () => {
 
   return (
     <ListWrapper
+      wrapperSx={{
+        pl: 5,
+      }}
+      icon={<WalletIcon sx={{ height: '60px', width: '60px', mb: 4, color: 'white' }} />}
+      paperSx={(theme) => ({ backgroundColor: theme.palette.background.group })}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Your supplies</Trans>
+        <Typography component="div" variant="h2" sx={{ mb: 3, mr: 4, color: '#fff' }}>
+          Your supplies
         </Typography>
       }
       localStorageName="suppliedAssetsDashboardTableCollapse"
+      isPosition
       noData={!sortedReserves.length}
       topInfo={
         <>
@@ -172,7 +179,13 @@ export const SuppliedPositionsList = () => {
       }
     >
       {sortedReserves.length ? (
-        <>
+        <div
+          style={{
+            backgroundColor: theme.palette.background.primary,
+            margin: '0px -20px -20px -20px',
+            borderRadius: '12px',
+          }}
+        >
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
             <Fragment key={item.underlyingAsset}>
@@ -180,12 +193,14 @@ export const SuppliedPositionsList = () => {
                 {downToXSM ? (
                   <SuppliedPositionsListMobileItem {...item} />
                 ) : (
-                  <SuppliedPositionsListItem {...item} />
+                  <div style={{ padding: '0 20px' }}>
+                    <SuppliedPositionsListItem {...item} />
+                  </div>
                 )}
               </AssetCapsProvider>
             </Fragment>
           ))}
-        </>
+        </div>
       ) : (
         <DashboardContentNoData text={<Trans>Nothing supplied yet</Trans>} />
       )}

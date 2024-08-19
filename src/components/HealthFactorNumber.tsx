@@ -28,8 +28,9 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
     <Box
       sx={{
         display: 'inline-flex',
-        alignItems: { xs: 'flex-start', xsm: 'center' },
-        flexDirection: { xs: 'column', xsm: 'row' },
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
       }}
       data-cy={'HealthFactorTopPannel'}
     >
@@ -48,12 +49,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
       )}
 
       {onInfoClick && (
-        <Button
-          onClick={onInfoClick}
-          variant="surface"
-          size="small"
-          sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
-        >
+        <Button onClick={onInfoClick} variant="surface" size="small" sx={{ p: 0 }}>
           <Trans>Risk details</Trans>
         </Button>
       )}

@@ -96,10 +96,10 @@ export default function Staking() {
   }, [trackEvent]);
 
   const tvl = {
-    'Staked Aave': Number(stkAave?.totalSupplyUSDFormatted || '0'),
-    'Staked GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
-    'Staked ABPT': Number(stkBpt?.totalSupplyUSDFormatted || '0'),
-    'Staked ABPT V2': Number(stkBptV2?.totalSupplyUSDFormatted || '0'),
+    'Staked on Aave': Number(stkAave?.totalSupplyUSDFormatted || '0'),
+    'Staked on GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
+    'Staked on ABPT': Number(stkBpt?.totalSupplyUSDFormatted || '0'),
+    'Staked on ABPT V2': Number(stkBptV2?.totalSupplyUSDFormatted || '0'),
   };
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
@@ -161,7 +161,7 @@ export default function Staking() {
             </Box>
 
             <Grid container spacing={4}>
-              <Grid
+              {/* <Grid
                 item
                 xs={12}
                 lg={STAGING_ENV || ENABLE_TESTNET ? 12 : 6}
@@ -206,7 +206,7 @@ export default function Staking() {
                     <GhoDiscountProgram />
                   </Box>
                 </StakingPanel>
-              </Grid>
+              </Grid> */}
               <Grid
                 item
                 xs={12}

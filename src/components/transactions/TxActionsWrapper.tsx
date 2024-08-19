@@ -1,6 +1,14 @@
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Button, CircularProgress, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  BoxProps,
+  Button,
+  CircularProgress,
+  SvgIcon,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { ReactNode } from 'react';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -111,8 +119,8 @@ export const TxActionsWrapper = ({
         disabled: true,
         content: (
           <>
-            <Trans>Approve Confirmed</Trans>
-            <SvgIcon sx={{ fontSize: 20, ml: 2 }}>
+            <Trans>Approving {symbol}</Trans>
+            <SvgIcon sx={{ fontSize: 24, ml: 2 }}>
               <CheckIcon />
             </SvgIcon>
           </>
@@ -123,7 +131,7 @@ export const TxActionsWrapper = ({
       content: (
         <ApprovalTooltip
           variant="buttonL"
-          iconSize={20}
+          iconSize={18}
           iconMargin={2}
           color="white"
           text={<Trans>Approve {symbol} to continue</Trans>}
@@ -136,10 +144,11 @@ export const TxActionsWrapper = ({
   const { content, disabled, loading, handleClick } = getMainParams();
   const approvalParams = getApprovalParams();
 
+  const theme = useTheme();
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }} {...rest}>
       {approvalParams && !readOnlyModeAddress && (
-        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', mt: 5, mb: 12 }}>
           <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
         </Box>
       )}
@@ -150,7 +159,7 @@ export const TxActionsWrapper = ({
           disabled={approvalParams.disabled || blocked}
           onClick={() => approvalParams.handleClick && approvalParams.handleClick()}
           size="large"
-          sx={{ minHeight: '44px' }}
+          sx={{ minHeight: '44px', mt: 12 }}
           data-cy="approvalButton"
         >
           {approvalParams.loading && (
@@ -165,7 +174,20 @@ export const TxActionsWrapper = ({
         disabled={disabled || blocked || readOnlyModeAddress !== undefined}
         onClick={handleClick}
         size="large"
-        sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
+        sx={{
+          minHeight: '44px',
+          p: 3,
+          mt: 12,
+          ...(approvalParams ? { mt: 2 } : {}),
+          ...(disabled
+            ? {
+                bgcolor: theme.palette.text.disabledBg,
+                color: theme.palette.text.disabledText,
+              }
+            : {}),
+          bgcolor: theme.palette.point.primary,
+          color: theme.palette.text.buttonText,
+        }}
         data-cy="actionButton"
       >
         {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}

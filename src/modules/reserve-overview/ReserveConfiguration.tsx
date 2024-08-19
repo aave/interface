@@ -1,6 +1,7 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, SvgIcon } from '@mui/material';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
+import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -103,18 +104,16 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           debtCeiling={debtCeiling}
         />
       </PanelRow>
-
       {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
-          <Divider sx={{ my: { xs: 6, sm: 10 } }} />
-          <PanelRow>
-            <PanelTitle>Borrow info</PanelTitle>
-            <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-              {!reserve.borrowingEnabled && (
-                <Warning sx={{ mb: '40px' }} severity="error">
-                  <BorrowDisabledWarning symbol={reserve.symbol} currentMarket={currentMarket} />
-                </Warning>
-              )}
+          <PanelRow sx={{ mt: { xs: 6, sm: 10 } }}>
+            <PanelTitle> Borrow info</PanelTitle>
+            <Box sx={{ flexGrow: 1, width: '100%' }}>
+              {/*{reserve.borrowingEnabled && (*/}
+              {/*  <Warning sx={{ mb: '40px' }} severity="error">*/}
+              {/*    <BorrowDisabledWarning symbol={reserve.symbol} currentMarket={currentMarket} />*/}
+              {/*  </Warning>*/}
+              {/*)}*/}
               <BorrowInfo
                 reserve={reserve}
                 currentMarketData={currentMarketData}
@@ -128,33 +127,39 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </>
       )}
 
-      {reserve.eModeCategoryId !== 0 && (
-        <>
-          <Divider sx={{ my: { xs: 6, sm: 10 } }} />
-          <ReserveEModePanel reserve={reserve} />
-        </>
-      )}
+      {/*{reserve.eModeCategoryId !== 0 && (*/}
+      {/*  <>*/}
+      {/*    <Box sx={{ mt: { xs: 6, sm: 10 } }} />*/}
+      {/*    <ReserveEModePanel reserve={reserve} />*/}
+      {/*  </>*/}
+      {/*)}*/}
 
       {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
-          <Divider sx={{ my: { xs: 6, sm: 10 } }} />
-
-          <PanelRow>
+          <PanelRow sx={{ mt: { xs: 6, sm: 10 } }}>
             <PanelTitle>Interest rate model</PanelTitle>
-            <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <PanelItem title={<Trans>Utilization Rate</Trans>} className="borderless">
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: { xs: 'wrap', mdlg: 'nowrap' },
+                gap: 7,
+                width: '100%',
+              }}
+            >
+              <Box sx={{ flex: 1, height: '100%', display: 'flex', minWidth: 400 }}>
+                <PanelItem
+                  sx={{ minWidth: '150px' }}
+                  title={
+                    <Typography color="text.mainTitle" variant="detail2">
+                      <Trans>Utilization Rate</Trans>
+                    </Typography>
+                  }
+                >
                   <FormattedNumber
                     value={reserve.borrowUsageRatio}
                     percent
-                    variant="main16"
+                    variant="body6"
+                    color="text.primary"
                     compact
                   />
                 </PanelItem>
@@ -171,13 +176,19 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   })}
                   endIcon={
                     <SvgIcon sx={{ width: 14, height: 14 }}>
-                      <ExternalLinkIcon />
+                      <CallMadeOutlinedIcon />
                     </SvgIcon>
                   }
                   component={Link}
                   size="small"
-                  variant="outlined"
-                  sx={{ verticalAlign: 'top' }}
+                  variant="text"
+                  sx={(theme) => ({
+                    height: '24px',
+                    color: theme.palette.text.secondary,
+                    ...theme.typography.detail2,
+                    textTransform: 'uppercase',
+                    px: 2,
+                  })}
                 >
                   <Trans>Interest rate strategy</Trans>
                 </Button>

@@ -28,8 +28,8 @@ export const MarketsTopPanel = () => {
     }
   );
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
-  const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
+  const valueTypographyVariant = downToSM ? 'main16' : 'body1';
+  const symbolsVariant = downToSM ? 'secondary16' : 'body1';
 
   return (
     <TopInfoPanel
@@ -44,7 +44,6 @@ export const MarketsTopPanel = () => {
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
@@ -55,7 +54,6 @@ export const MarketsTopPanel = () => {
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
@@ -66,7 +64,6 @@ export const MarketsTopPanel = () => {
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>

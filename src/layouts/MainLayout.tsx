@@ -6,16 +6,15 @@ import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
 import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
-import TopBarNotify from './TopBarNotify';
 
 export function MainLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <TopBarNotify
-        learnMoreLink="https://governance.aave.com/t/arfc-gho-cross-chain-launch/17616"
-        buttonText="Learn More"
-        notifyText="Users can now bridge GHO to Arbitrum with CCIP ✨"
-      />
+      {/*<TopBarNotify*/}
+      {/*  learnMoreLink="https://governance.aave.com/t/arfc-gho-cross-chain-launch/17616"*/}
+      {/*  buttonText="Learn More"*/}
+      {/*  notifyText="Users can now bridge GHO to Arbitrum with CCIP ✨"*/}
+      {/*/>*/}
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {children}

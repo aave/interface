@@ -12,36 +12,85 @@ import { createTheme } from '@mui/material/styles';
 import { ColorPartial } from '@mui/material/styles/createPalette';
 import React from 'react';
 
+import colors from './colors';
+import { withOpacity } from './utils';
+
 const theme = createTheme();
 const {
   typography: { pxToRem },
 } = theme;
 
 const FONT = 'Inter, Arial';
+const FONT_HEADING = 'Poppins';
 
 declare module '@mui/material/styles/createPalette' {
   interface PaletteColor extends ColorPartial {}
 
   interface TypeText {
+    primary: string;
+    secondary: string;
+    disabledText: string;
+    disabledBg: string;
+    mainTitle: string;
+    subTitle: string;
+    subText: string;
+    buttonText: string;
+    buttonBgTap: string;
+    // to be removed
     muted: string;
   }
 
   interface TypeBackground {
+    primary: string;
+    secondary: string;
+    tertiary: string;
+    modulePopup: string;
+    point: string;
+    contents: string;
+    dim: string;
+    group: string;
+    top: string;
+    chip: string;
+    // to be removed
     default: string;
     paper: string;
     surface: string;
     surface2: string;
     header: string;
     disabled: string;
+    cardBg: string;
   }
 
   interface Palette {
+    positive: {
+      main: string;
+    };
+    negative: {
+      main: string;
+    };
     gradients: {
       aaveGradient: string;
       newGradient: string;
     };
     other: {
       standardInputLine: string;
+    };
+    border: {
+      active: string;
+      contents: string;
+      point: string;
+      divider: string;
+      bg: string;
+    };
+    point: {
+      primary: string;
+      secondary: string;
+      positive: string;
+      negative: string;
+      riskMedium: string;
+      riskRow: string;
+      riskHigh: string;
+      noti: string;
     };
   }
 
@@ -54,23 +103,26 @@ declare module '@mui/material/styles/createPalette' {
 }
 
 interface TypographyCustomVariants {
-  display1: React.CSSProperties;
-  subheader1: React.CSSProperties;
-  subheader2: React.CSSProperties;
-  description: React.CSSProperties;
-  buttonL: React.CSSProperties;
-  buttonM: React.CSSProperties;
-  buttonS: React.CSSProperties;
-  helperText: React.CSSProperties;
-  tooltip: React.CSSProperties;
-  main21: React.CSSProperties;
-  secondary21: React.CSSProperties;
-  main16: React.CSSProperties;
-  secondary16: React.CSSProperties;
-  main14: React.CSSProperties;
-  secondary14: React.CSSProperties;
-  main12: React.CSSProperties;
-  secondary12: React.CSSProperties;
+  h1: React.CSSProperties;
+  h2: React.CSSProperties;
+  h3: React.CSSProperties;
+  h4: React.CSSProperties;
+  h5: React.CSSProperties;
+  h6: React.CSSProperties;
+  body1: React.CSSProperties;
+  body2: React.CSSProperties;
+  body3: React.CSSProperties;
+  body4: React.CSSProperties;
+  body5: React.CSSProperties;
+  body6: React.CSSProperties;
+  body7: React.CSSProperties;
+  body8: React.CSSProperties;
+  body9: React.CSSProperties;
+  detail1: React.CSSProperties;
+  detail2: React.CSSProperties;
+  detail3: React.CSSProperties;
+  detail4: React.CSSProperties;
+  detail5: React.CSSProperties;
 }
 
 declare module '@mui/material/styles' {
@@ -89,6 +141,28 @@ declare module '@mui/material/styles' {
 // Update the Typography's variant prop options
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    h1: true;
+    h2: true;
+    h3: true;
+    h4: true;
+    h5: true;
+    h6: true;
+    body1: true;
+    body2: true;
+    body3: true;
+    body4: true;
+    body5: true;
+    body6: true;
+    body7: true;
+    body8: true;
+    body9: true;
+    detail1: true;
+    detail2: true;
+    detail3: true;
+    detail4: true;
+    detail5: true;
+
+    // to be removed
     display1: true;
     subheader1: true;
     subheader2: true;
@@ -106,12 +180,8 @@ declare module '@mui/material/Typography' {
     secondary14: true;
     main12: true;
     secondary12: true;
-    h5: false;
-    h6: false;
     subtitle1: false;
     subtitle2: false;
-    body1: false;
-    body2: false;
     button: false;
     overline: false;
   }
@@ -136,60 +206,66 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
     palette: {
       mode,
       primary: {
-        main: getColor('#383D51', '#EAEBEF'),
-        light: getColor('#62677B', '#F1F1F3'),
-        dark: getColor('#292E41', '#D2D4DC'),
-        contrast: getColor('#FFFFFF', '#0F121D'),
+        main: getColor(colors.marine[500], colors.marine[300]),
       },
       secondary: {
-        main: getColor('#FF607B', '#F48FB1'),
-        light: getColor('#FF607B', '#F6A5C0'),
-        dark: getColor('#B34356', '#AA647B'),
+        main: getColor(colors.violet[500], colors.violet[300]),
+      },
+      positive: {
+        main: getColor(colors.green[500], colors.green[300]),
+      },
+      negative: {
+        main: getColor(colors.red[400], colors.red[300]),
       },
       error: {
-        main: getColor('#BC0000B8', '#F44336'),
-        light: getColor('#D26666', '#E57373'),
-        dark: getColor('#BC0000', '#D32F2F'),
-        '100': getColor('#4F1919', '#FBB4AF'), // for alert text
-        '200': getColor('#F9EBEB', '#2E0C0A'), // for alert background
+        main: getColor('#FF2D2D', '#F44336'),
       },
       warning: {
         main: getColor('#F89F1A', '#FFA726'),
-        light: getColor('#FFCE00', '#FFB74D'),
-        dark: getColor('#C67F15', '#F57C00'),
-        '100': getColor('#63400A', '#FFDCA8'), // for alert text
-        '200': getColor('#FEF5E8', '#301E04'), // for alert background
       },
       info: {
         main: getColor('#0062D2', '#29B6F6'),
-        light: getColor('#0062D2', '#4FC3F7'),
-        dark: getColor('#002754', '#0288D1'),
-        '100': getColor('#002754', '#A9E2FB'), // for alert text
-        '200': getColor('#E5EFFB', '#071F2E'), // for alert background
       },
       success: {
-        main: getColor('#4CAF50', '#66BB6A'),
-        light: getColor('#90FF95', '#90FF95'),
-        dark: getColor('#318435', '#388E3C'),
-        '100': getColor('#1C4B1E', '#C2E4C3'), // for alert text
-        '200': getColor('#ECF8ED', '#0A130B'), // for alert background
+        main: getColor('#1FC74E', '#38E067'),
       },
       text: {
-        primary: getColor('#303549', '#F1F1F3'),
-        secondary: getColor('#62677B', '#A5A8B6'),
-        disabled: getColor('#D2D4DC', '#62677B'),
-        muted: getColor('#A5A8B6', '#8E92A3'),
-        highlight: getColor('#383D51', '#C9B3F9'),
+        primary: getColor(colors.gray[950], colors.gray[50]),
+        secondary: getColor(colors.gray[700], colors.gray[200]),
+        mainTitle: getColor(colors.gray[600], colors.gray[300]),
+        subTitle: getColor(colors.gray[400], colors.gray[500]),
+        subText: getColor(colors.gray[200], colors.gray[700]),
+        disabledBg: getColor(colors.gray[100], colors.gray[800]),
+        disabledText: getColor(colors.gray[300], colors.gray[600]),
+        buttonText: getColor(colors.white, colors.white),
+        buttonBgTap: getColor(colors.gray[50], colors.gray[950]),
+      },
+      point: {
+        primary: getColor(colors.marine[500], colors.marine[300]),
+        secondary: getColor(colors.violet[500], colors.violet[300]),
+        positive: getColor(colors.green[500], colors.green[400]),
+        negative: getColor(colors.red[400], colors.red[300]),
+        riskMedium: getColor(
+          withOpacity(colors.orange[50], 0.7),
+          withOpacity(colors.orange[400], 0.3)
+        ),
+        riskRow: getColor(withOpacity(colors.blue[100], 0.4), withOpacity(colors.blue[400], 0.2)),
+        riskHigh: getColor(withOpacity(colors.red[400], 0.1), withOpacity(colors.red[300], 0.2)),
+        noti: getColor(withOpacity(colors.green[300], 0.3), withOpacity(colors.green[400], 0.2)),
       },
       background: {
-        default: getColor('#F1F1F3', '#1B2030'),
-        paper: getColor('#FFFFFF', '#292E41'),
-        surface: getColor('#F7F7F9', '#383D51'),
-        surface2: getColor('#F9F9FB', '#383D51'),
-        header: getColor('#2B2D3C', '#1B2030'),
-        disabled: getColor('#EAEBEF', '#EBEBEF14'),
+        primary: getColor(colors.white, colors.gray[850]),
+        secondary: getColor(colors.gray[50], colors.gray[800]),
+        tertiary: getColor(colors.gray[100], colors.gray[900]),
+        modulePopup: getColor(colors.white, withOpacity(colors.gray[700], 0.2)),
+        point: getColor(colors.marine[50], withOpacity(colors.marine[900], 0.2)),
+        contents: getColor(colors.gray[30], withOpacity(colors.gray[700], 0.5)),
+        dim: getColor(withOpacity(colors.black, 0.6), withOpacity(colors.black, 0.6)),
+        group: getColor(colors.marine[400], colors.marine[300]),
+        top: getColor(withOpacity(colors.marine[300], 0.1), '#28216D'),
+        chip: getColor(colors.marine[500], colors.marine[400]),
       },
-      divider: getColor('#EAEBEF', '#EBEBEF14'),
+      divider: getColor(colors.gray[100], colors.gray[800]),
       action: {
         active: getColor('#8E92A3', '#EBEBEF8F'),
         hover: getColor('#F1F1F3', '#EBEBEF14'),
@@ -205,169 +281,136 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
         newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
       },
+      border: {
+        active: getColor(colors.gray[800], colors.gray[100]),
+        contents: getColor(colors.gray[200], colors.gray[700]),
+        divider: getColor(colors.gray[100], colors.gray[700]),
+        point: getColor(withOpacity(colors.marine[300], 0.5), withOpacity(colors.marine[300], 0.5)),
+        bg: getColor(colors.gray[50], colors.gray[950]),
+      },
     },
     spacing: 4,
     typography: {
       fontFamily: FONT,
-      h5: undefined,
-      h6: undefined,
-      subtitle1: undefined,
-      subtitle2: undefined,
-      body1: undefined,
-      body2: undefined,
-      button: undefined,
-      overline: undefined,
-      display1: {
-        fontFamily: FONT,
-        fontWeight: 700,
-        letterSpacing: pxToRem(0.25),
-        lineHeight: '123.5%',
-        fontSize: pxToRem(32),
-      },
       h1: {
-        fontFamily: FONT,
+        fontFamily: FONT_HEADING,
         fontWeight: 700,
-        letterSpacing: pxToRem(0.25),
-        lineHeight: '123.5%',
-        fontSize: pxToRem(28),
+        lineHeight: '130%',
+        fontSize: pxToRem(36),
       },
       h2: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: 'unset',
-        lineHeight: '133.4%',
-        fontSize: pxToRem(21),
+        fontFamily: FONT_HEADING,
+        fontWeight: 700,
+        lineHeight: '130%',
+        fontSize: pxToRem(24),
       },
       h3: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: '160%',
+        fontFamily: FONT_HEADING,
+        fontWeight: 700,
+        lineHeight: '130%',
         fontSize: pxToRem(18),
       },
       h4: {
+        fontFamily: FONT_HEADING,
+        fontWeight: 400,
+        lineHeight: '130%',
+        fontSize: pxToRem(18),
+      },
+      h5: {
+        fontFamily: FONT_HEADING,
+        fontWeight: 700,
+        lineHeight: '150%',
+        fontSize: pxToRem(22),
+      },
+      h6: {
+        fontFamily: FONT_HEADING,
+        fontWeight: 700,
+        lineHeight: '150%',
+        fontSize: '30px',
+      },
+      body1: {
         fontFamily: FONT,
         fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(16),
+        fontSize: pxToRem(22),
+        lineHeight: '130%',
       },
-      subheader1: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-      },
-      subheader2: {
+      body2: {
         fontFamily: FONT,
         fontWeight: 500,
-        letterSpacing: pxToRem(0.1),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
+        fontSize: pxToRem(18),
+        lineHeight: '130%',
       },
-      description: {
+      body3: {
         fontFamily: FONT,
         fontWeight: 400,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: '143%',
-        fontSize: pxToRem(14),
+        fontSize: pxToRem(18),
+        lineHeight: '140%',
       },
-      caption: {
+      body4: {
+        fontFamily: FONT,
+        fontWeight: 600,
+        fontSize: pxToRem(17),
+        lineHeight: '130%',
+      },
+      body5: {
+        fontFamily: FONT,
+        fontWeight: 500,
+        fontSize: pxToRem(17),
+        lineHeight: '130%',
+      },
+      body6: {
+        fontFamily: FONT,
+        fontWeight: 600,
+        fontSize: pxToRem(16),
+        lineHeight: '130%',
+      },
+      body7: {
         fontFamily: FONT,
         fontWeight: 400,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
-      },
-      buttonL: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        letterSpacing: pxToRem(0.46),
-        lineHeight: pxToRem(24),
         fontSize: pxToRem(16),
+        lineHeight: '130%',
       },
-      buttonM: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(14),
-      },
-      buttonS: {
+      body8: {
         fontFamily: FONT,
         fontWeight: 600,
-        letterSpacing: pxToRem(0.46),
-        lineHeight: pxToRem(20),
-        textTransform: 'uppercase',
-        fontSize: pxToRem(10),
+        fontSize: pxToRem(20),
+        lineHeight: '130%',
       },
-      helperText: {
+      body9: {
+        fontFamily: FONT,
+        fontWeight: 600,
+        fontSize: pxToRem(26),
+        lineHeight: '130%',
+      },
+      detail1: {
+        fontFamily: FONT,
+        fontWeight: 700,
+        fontSize: pxToRem(14),
+        lineHeight: '130%',
+      },
+      detail2: {
+        fontFamily: FONT,
+        fontWeight: 500,
+        fontSize: pxToRem(14),
+        lineHeight: '130%',
+      },
+      detail3: {
         fontFamily: FONT,
         fontWeight: 400,
-        letterSpacing: pxToRem(0.4),
-        lineHeight: pxToRem(12),
-        fontSize: pxToRem(10),
+        fontSize: pxToRem(14),
+        lineHeight: '130%',
       },
-      tooltip: {
+      detail4: {
         fontFamily: FONT,
         fontWeight: 400,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
+        fontSize: pxToRem(13),
+        lineHeight: '130%',
       },
-      main21: {
+      detail5: {
         fontFamily: FONT,
-        fontWeight: 800,
-        lineHeight: '133.4%',
-        fontSize: pxToRem(21),
-      },
-      secondary21: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        lineHeight: '133.4%',
-        fontSize: pxToRem(21),
-      },
-      main16: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(16),
-      },
-      secondary16: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(16),
-      },
-      main14: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-      },
-      secondary14: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-      },
-      main12: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.1),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
-      },
-      secondary12: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        letterSpacing: pxToRem(0.1),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
+        fontWeight: 400,
+        fontSize: pxToRem(15),
+        lineHeight: '140%',
       },
     },
   } as ThemeOptions;
@@ -380,6 +423,7 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             transform: 'unset',
+            backgroundColor: theme.palette.text.disabledBg,
           },
         },
       },
@@ -415,51 +459,53 @@ export function getThemedComponents(theme: Theme) {
         },
         styleOverrides: {
           root: {
-            borderRadius: '4px',
+            borderRadius: '6px',
+            textTransform: 'none',
           },
           sizeLarge: {
-            ...theme.typography.buttonL,
-            padding: '10px 24px',
+            borderRadius: '8px',
+            padding: '12px 24px',
+            fontWeight: 600,
+            fontSize: 16,
           },
           sizeMedium: {
-            ...theme.typography.buttonM,
-            padding: '6px 12px',
+            borderRadius: '8px',
+            padding: '12px 46.5px',
+            fontSize: 16,
           },
           sizeSmall: {
-            ...theme.typography.buttonS,
-            padding: '0 6px',
+            padding: '9px 8px',
           },
         },
         variants: [
           {
-            props: { variant: 'surface' },
-            style: {
-              color: theme.palette.common.white,
-              border: '1px solid',
-              borderColor: '#EBEBED1F',
-              backgroundColor: '#383D51',
-              '&:hover, &.Mui-focusVisible': {
-                backgroundColor: theme.palette.background.header,
-              },
-            },
-          },
-          {
-            props: { variant: 'gradient' },
-            style: {
-              color: theme.palette.common.white,
-              background: theme.palette.gradients.aaveGradient,
-              transition: 'all 0.2s ease',
-              '&:hover, &.Mui-focusVisible': {
-                background: theme.palette.gradients.aaveGradient,
-                opacity: '0.9',
-              },
-            },
-          },
-          {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              background: theme.palette.background.surface,
-              borderColor: theme.palette.divider,
+              background: theme.palette.text.buttonText,
+              borderColor: theme.palette.primary.main,
+              color: theme.palette.primary.main,
+              '&:hover': {
+                background: theme.palette.text.buttonText,
+                color: theme.palette.point.primary,
+              },
+            },
+          },
+          {
+            props: { color: 'primary', variant: 'text' },
+            style: {
+              border: '1px solid',
+              background: theme.palette.background.primary,
+              borderColor: theme.palette.text.subText,
+              color: theme.palette.text.primary,
+            },
+          },
+          {
+            props: { color: 'primary', disabled: true },
+            style: {
+              border: '1px solid',
+              background: theme.palette.background.disabled,
+              borderColor: theme.palette.border.contents,
+              color: theme.palette.text.disabledText,
             },
           },
         ],
@@ -468,11 +514,12 @@ export function getThemedComponents(theme: Theme) {
         defaultProps: {
           variant: 'description',
           variantMapping: {
-            display1: 'h1',
             h1: 'h1',
             h2: 'h2',
             h3: 'h3',
             h4: 'h4',
+            h5: 'h5',
+            h6: 'h6',
             subheader1: 'p',
             subheader2: 'p',
             caption: 'p',
@@ -527,14 +574,16 @@ export function getThemedComponents(theme: Theme) {
       MuiMenuItem: {
         styleOverrides: {
           root: {
-            padding: '12px 16px',
+            padding: '13.5px 12px',
+            fontSize: '16px',
+            fontWeight: 400,
           },
         },
-      },
-      MuiListItemText: {
-        styleOverrides: {
-          root: {
-            ...theme.typography.subheader1,
+        defaultProps: {
+          sx: {
+            '&.Mui-selected': {
+              backgroundColor: theme.palette.background.group,
+            },
           },
         },
       },
@@ -558,7 +607,7 @@ export function getThemedComponents(theme: Theme) {
       MuiPaper: {
         styleOverrides: {
           root: {
-            borderRadius: '4px',
+            borderRadius: '16px',
           },
         },
         variants: [
@@ -567,17 +616,14 @@ export function getThemedComponents(theme: Theme) {
             style: {
               border: `1px solid ${theme.palette.divider}`,
               boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-              background:
-                theme.palette.mode === 'light'
-                  ? theme.palette.background.paper
-                  : theme.palette.background.surface,
             },
           },
           {
             props: { variant: 'elevation' },
             style: {
-              boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
-              ...(theme.palette.mode === 'dark' ? { backgroundImage: 'none' } : {}),
+              boxShadow: '4px 4px 20px 0px rgba(0, 0, 0, 0.05)',
+              backgroundColor: theme.palette.background.primary,
+              backgroundImage: 'unset',
             },
           },
         ],
@@ -588,36 +634,17 @@ export function getThemedComponents(theme: Theme) {
             display: 'flex',
             flexDirection: 'column',
             flex: 1,
-            paddingBottom: '39px',
             [theme.breakpoints.up('xs')]: {
-              paddingLeft: '8px',
-              paddingRight: '8px',
-            },
-            [theme.breakpoints.up('xsm')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
             },
             [theme.breakpoints.up('sm')]: {
-              paddingLeft: '48px',
-              paddingRight: '48px',
+              paddingLeft: '24px',
+              paddingRight: '24px',
             },
             [theme.breakpoints.up('md')]: {
-              paddingLeft: '96px',
-              paddingRight: '96px',
-            },
-            [theme.breakpoints.up('lg')]: {
-              paddingLeft: '20px',
-              paddingRight: '20px',
-            },
-            [theme.breakpoints.up('xl')]: {
-              maxWidth: 'unset',
-              paddingLeft: '96px',
-              paddingRight: '96px',
-            },
-            [theme.breakpoints.up('xxl')]: {
-              paddingLeft: 0,
-              paddingRight: 0,
-              maxWidth: '1440px',
+              paddingLeft: '32px',
+              paddingRight: '32px',
             },
           },
         },
@@ -625,34 +652,43 @@ export function getThemedComponents(theme: Theme) {
       MuiSwitch: {
         styleOverrides: {
           root: {
-            height: 20 + 6 * 2,
-            width: 34 + 6 * 2,
-            padding: 6,
+            width: 35,
+            height: 20,
+            padding: 0,
           },
           switchBase: {
-            padding: 8,
+            padding: 0,
+            margin: '1px !important',
+            transitionDuration: '300ms',
+            '& + .MuiSwitch-track': {
+              backgroundColor: `${theme.palette.text.subText} !important`,
+            },
             '&.Mui-checked': {
-              transform: 'translateX(14px)',
+              transform: 'translateX(15px)',
+              color: '#FFF',
               '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.success.main,
+                backgroundColor: `${theme.palette.point.primary} !important`,
                 opacity: 1,
+                border: 0,
+              },
+              '&.Mui-disabled + .MuiSwitch-track': {
+                opacity: 0.5,
               },
             },
-            '&.Mui-disabled': {
-              opacity: theme.palette.mode === 'dark' ? 0.3 : 0.7,
+            '&.Mui-disabled + .MuiSwitch-track': {
+              opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
             },
           },
           thumb: {
             color: theme.palette.common.white,
-            borderRadius: '6px',
-            width: '16px',
-            height: '16px',
-            boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.12)',
+            borderRadius: '100px',
+            width: '18px',
+            height: '18px',
+            boxShadow: '1px 1px 1px 0px rgba(0, 0, 0, 0.05)',
           },
           track: {
             opacity: 1,
-            backgroundColor: theme.palette.action.active,
-            borderRadius: '8px',
+            borderRadius: '12px',
           },
         },
       },
@@ -677,18 +713,18 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             boxShadow: 'none',
-            borderRadius: '4px',
-            padding: '8px 12px',
-            ...theme.typography.caption,
+            borderRadius: 0,
+            padding: '8px 8px 8px 4px',
+            ...theme.typography.body7,
+            color: theme.palette.text.secondary,
             alignItems: 'flex-start',
             '.MuiAlert-message': {
               padding: 0,
-              paddingTop: '2px',
-              paddingBottom: '2px',
             },
             '.MuiAlert-icon': {
               padding: 0,
               opacity: 1,
+              marginRight: '8px',
               '.MuiSvgIcon-root': {
                 fontSize: pxToRem(20),
               },
@@ -702,7 +738,7 @@ export function getThemedComponents(theme: Theme) {
               },
             },
             '.MuiButton-text': {
-              ...theme.typography.caption,
+              ...theme.typography.body7,
               fontWeight: 500,
               textDecoration: 'underline',
               padding: 0,
@@ -718,8 +754,8 @@ export function getThemedComponents(theme: Theme) {
         defaultProps: {
           iconMapping: {
             error: (
-              <SvgIcon color="error">
-                <ExclamationIcon />
+              <SvgIcon color="error" sx={{ color: '#FB8509' }}>
+                <InformationCircleIcon />
               </SvgIcon>
             ),
             info: (
@@ -733,7 +769,12 @@ export function getThemedComponents(theme: Theme) {
               </SvgIcon>
             ),
             warning: (
-              <SvgIcon color="warning">
+              <SvgIcon
+                color="warning"
+                sx={{
+                  color: theme.palette.point.negative,
+                }}
+              >
                 <ExclamationCircleIcon />
               </SvgIcon>
             ),
@@ -743,8 +784,7 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { severity: 'error' },
             style: {
-              color: theme.palette.error['100'],
-              background: theme.palette.error['200'],
+              background: theme.palette.point.riskMedium,
               a: {
                 color: theme.palette.error['100'],
               },
@@ -756,12 +796,8 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { severity: 'info' },
             style: {
-              color: theme.palette.info['100'],
-              background: theme.palette.info['200'],
+              background: theme.palette.point.riskRow,
               a: {
-                color: theme.palette.info['100'],
-              },
-              '.MuiButton-text': {
                 color: theme.palette.info['100'],
               },
             },
@@ -782,13 +818,9 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { severity: 'warning' },
             style: {
-              color: theme.palette.warning['100'],
-              background: theme.palette.warning['200'],
+              background: theme.palette.point.riskHigh,
               a: {
-                color: theme.palette.warning['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.palette.warning['100'],
+                color: theme.palette.primary.main,
               },
             },
           },
@@ -801,6 +833,7 @@ export function getThemedComponents(theme: Theme) {
             fontWeight: 400,
             fontSize: pxToRem(14),
             minWidth: '375px',
+            backgroundColor: theme.palette.mode === 'light' ? colors.gray[50] : colors.gray[800],
             '> div:first-of-type': {
               minHeight: '100vh',
               display: 'flex',
@@ -827,7 +860,6 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           outlined: {
             backgroundColor: theme.palette.background.surface,
-            ...theme.typography.buttonM,
             padding: '6px 12px',
             color: theme.palette.primary.light,
           },
@@ -843,6 +875,22 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            paddingBlock: '3px',
+            paddingInline: '4px',
+            borderRadius: '4px',
+            height: 'fit-content',
+          },
+          label: {
+            ...theme.typography.detail2,
+            padding: 0,
+          },
+        },
+      },
     },
   } as ThemeOptions;
 }
+
+// fasfd

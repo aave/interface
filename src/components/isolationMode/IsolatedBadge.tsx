@@ -120,12 +120,7 @@ const IsolationModeTooltipTemplate = ({ content }: { content: ReactNode }) => {
     <Box>
       <Box sx={{ mb: 4 }}>{content}</Box>
       <Typography variant="subheader2" color="text.secondary">
-        <Trans>
-          Learn more in our{' '}
-          <Link href="https://docs.aave.com/faq/aave-v3-features#isolation-mode" fontWeight={500}>
-            FAQ guide
-          </Link>
-        </Trans>
+        <Trans>Please see our FAQ guide for more details.</Trans>
       </Typography>
     </Box>
   );

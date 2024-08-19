@@ -59,13 +59,12 @@ export const TokenLinkDropdown = ({
       <Box onClick={handleClick}>
         <CircleIcon tooltipText={'View token contracts'} downToSM={downToSM}>
           <Box
-            sx={{
+            sx={(theme) => ({
               display: 'inline-flex',
               alignItems: 'center',
-              color: '#A5A8B6',
-              '&:hover': { color: '#F1F1F3' },
+              color: theme.palette.text.primary,
               cursor: 'pointer',
-            }}
+            })}
           >
             <SvgIcon sx={{ fontSize: '14px' }}>
               <ExternalLinkIcon />

@@ -219,7 +219,7 @@ export const SupplyAssetsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper>
+      <ListHeaderWrapper sx={{ bgcolor: theme.palette.background.primary }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
@@ -258,7 +258,7 @@ export const SupplyAssetsList = () => {
   return (
     <ListWrapper
       titleComponent={
-        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           <Trans>Assets to supply</Trans>
         </Typography>
       }
@@ -267,7 +267,7 @@ export const SupplyAssetsList = () => {
       noData={supplyDisabled}
       subChildrenComponent={
         <>
-          <Box sx={{ px: 6 }}>
+          <Box>
             {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
               <MarketWarning marketName="Harmony" />
             ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
@@ -297,19 +297,18 @@ export const SupplyAssetsList = () => {
               ))
             )}
           </Box>
-
-          {filteredSupplyReserves.length >= 1 && (
-            <DashboardListTopPanel
-              value={isShowZeroAssets}
-              onClick={setIsShowZeroAssets}
-              localStorageName={localStorageName}
-              bridge={bridge}
-            />
-          )}
         </>
       }
     >
       <>
+        {filteredSupplyReserves.length >= 1 && (
+          <DashboardListTopPanel
+            value={isShowZeroAssets}
+            onClick={setIsShowZeroAssets}
+            localStorageName={localStorageName}
+            bridge={bridge}
+          />
+        )}
         {!downToXSM && !!sortedReserves && !supplyDisabled && <RenderHeader />}
         {dataReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>

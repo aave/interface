@@ -439,7 +439,7 @@ export const BridgeModalContent = () => {
           {txError && <GasEstimationError txError={txError} />}
 
           {/* {bridgeLimitExceeded && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+            <Warning severity="error" sx={{ mt: 4 }} >
               <Typography variant="caption">
                 <Trans>
                   The selected amount is not available to bridge due to the bridge limit of
@@ -451,7 +451,7 @@ export const BridgeModalContent = () => {
           )}
 
           {rateLimitExceeded && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+            <Warning severity="error" sx={{ mt: 4 }} >
               <Typography variant="caption">
                 <Trans>
                   The selected amount is not available to bridge due to CCIP rate limit of
@@ -462,7 +462,7 @@ export const BridgeModalContent = () => {
             </Warning>
           )} */}
           {rateLimitExceeded && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+            <Warning severity="error" sx={{ mt: 4 }}>
               <Typography variant="caption">
                 <Trans>
                   Bridging is currently unavailable due to the rate limit being exceeded. Please try

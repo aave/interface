@@ -145,7 +145,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
   disableRepay,
 }: GhoBorrowedPositionsListItemProps) => {
   const { symbol, iconSymbol, name, isFrozen, underlyingAsset } = reserve;
-
+  const theme = useTheme();
   return (
     <ListItemWrapper
       symbol={symbol}
@@ -178,9 +178,16 @@ const GhoBorrowedPositionsListItemDesktop = ({
           <Button
             variant="outlined"
             size="small"
-            color="primary"
             disabled
             data-cy={`apyButton_fixed`}
+            sx={{
+              borderColor: theme.palette.text.subText,
+              bgcolor: 'transparent',
+              color: 'text.primary',
+              '&:hover': {
+                bgcolor: 'transparent',
+              },
+            }}
           >
             GHO RATE
             <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
@@ -200,11 +207,43 @@ const GhoBorrowedPositionsListItemDesktop = ({
             <Trans>Switch</Trans>
           </Button>
         ) : (
-          <Button disabled={borrowDisabled} variant="outlined" onClick={onBorrowClick}>
+          <Button
+            size="medium"
+            sx={{
+              p: 2,
+              height: '36px',
+              fontSize: '14px',
+              textTransform: 'capitalize',
+              bgcolor: theme.palette.point.primary,
+              color: 'white',
+              '&:hover': {
+                bgcolor: theme.palette.point.primary,
+              },
+            }}
+            disabled={borrowDisabled}
+            variant="outlined"
+            onClick={onBorrowClick}
+          >
             <Trans>Borrow</Trans>
           </Button>
         )}
-        <Button disabled={disableRepay} variant="outlined" onClick={onRepayClick}>
+        <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+            borderColor: theme.palette.text.subText,
+            bgcolor: 'transparent',
+            color: 'text.primary',
+            '&:hover': {
+              bgcolor: 'transparent',
+            },
+          }}
+          disabled={disableRepay}
+          variant="outlined"
+          onClick={onRepayClick}
+        >
           <Trans>Repay</Trans>
         </Button>
       </ListButtonsColumn>

@@ -7,12 +7,12 @@ export const DarkTooltip = ({ title, children, wrap }: TooltipProps & { wrap?: b
         placement="top"
         componentsProps={{
           tooltip: {
-            sx: {
-              bgcolor: 'rgba(15, 18, 29, 0.8)',
+            sx: (theme) => ({
+              backgroundColor: theme.palette.background.secondary,
               '& .MuiTooltip-arrow': {
-                color: 'rgba(15, 18, 29, 0.8)',
+                color: theme.palette.background.secondary,
               },
-            },
+            }),
           },
           popper: {
             modifiers: [
@@ -27,13 +27,14 @@ export const DarkTooltip = ({ title, children, wrap }: TooltipProps & { wrap?: b
         }}
         title={
           <Box
-            sx={{
+            sx={(theme) => ({
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               whiteSpace: wrap ? 'normal' : 'nowrap',
-            }}
+              color: theme.palette.text.secondary,
+            })}
           >
             {title}
           </Box>

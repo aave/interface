@@ -1,4 +1,4 @@
-import { Box, ClickAwayListener, experimental_sx, Popper, styled, Tooltip } from '@mui/material';
+import { Box, ClickAwayListener, Popper, styled, Tooltip } from '@mui/material';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
 
 interface ContentWithTooltipProps {
@@ -12,24 +12,19 @@ interface ContentWithTooltipProps {
   offset?: [number, number];
 }
 
-export const PopperComponent = styled(Popper)(
-  experimental_sx({
-    '.MuiTooltip-tooltip': {
-      color: 'text.primary',
-      backgroundColor: 'background.paper',
-      p: 0,
-      borderRadius: '6px',
-      boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      maxWidth: '280px',
-    },
-    '.MuiTooltip-arrow': {
-      color: 'background.paper',
-      '&:before': {
-        boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      },
-    },
-  })
-);
+export const PopperComponent = styled(Popper)(({ theme }) => ({
+  '.MuiTooltip-tooltip': {
+    color: theme.palette.text.secondary,
+    backgroundColor: theme.palette.background.secondary,
+    padding: '0px',
+    borderRadius: '8px',
+    maxWidth: '280px',
+    boxShadow: '0px 8px 16px -2px #1B212C1F',
+  },
+  '.MuiTooltip-arrow': {
+    color: theme.palette.background.secondary,
+  },
+}));
 
 export const ContentWithTooltip = ({
   children,
@@ -79,18 +74,16 @@ export const ContentWithTooltip = ({
           onClickAway={handleClose}
         >
           <Box
-            sx={{
-              py: 4,
-              px: 6,
-              fontSize: '12px',
-              lineHeight: '16px',
+            sx={(theme) => ({
+              p: 3,
+              ...theme.typography.detail4,
+              color: theme.palette.text.secondary,
               a: {
-                fontSize: '12px',
-                lineHeight: '16px',
-                fontWeight: 500,
+                fontSize: '13px',
+                lineHeight: '16.9px',
                 '&:hover': { textDecoration: 'underline' },
               },
-            }}
+            })}
           >
             {tooltipContent}
           </Box>

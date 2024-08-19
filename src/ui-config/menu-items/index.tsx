@@ -16,7 +16,7 @@ interface Navigation {
 export const navigation: Navigation[] = [
   {
     link: ROUTES.dashboard,
-    title: t`Dashboard`,
+    title: t`Supply & Borrow`,
     dataCy: 'menuDashboard',
   },
   {
@@ -26,12 +26,12 @@ export const navigation: Navigation[] = [
   },
   {
     link: ROUTES.staking,
-    title: t`Stake`,
+    title: t`Staking`,
     dataCy: 'menuStake',
-    isVisible: () =>
-      process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
-      process.env.NEXT_PUBLIC_ENV === 'prod' &&
-      !ENABLE_TESTNET,
+    // isVisible: () =>
+    //   process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
+    //   process.env.NEXT_PUBLIC_ENV === 'prod' &&
+    //   !ENABLE_TESTNET,
   },
   {
     link: ROUTES.governance,
@@ -43,10 +43,20 @@ export const navigation: Navigation[] = [
     //   !ENABLE_TESTNET,
   },
   {
-    link: ROUTES.faucet,
-    title: t`Faucet`,
-    isVisible: () => process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET,
+    link: ROUTES.referralprogram,
+    title: t`Referral Program`,
+    dataCy: 'menuReferral',
   },
+  {
+    link: ROUTES.docs,
+    title: t`Docs`,
+    dataCy: 'menuDocs',
+  },
+  // {
+  //   link: ROUTES.faucet,
+  //   title: t`Faucet`,
+  //   isVisible: () => process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET,
+  // },
 ];
 
 interface MoreMenuItem extends Navigation {

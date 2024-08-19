@@ -16,7 +16,7 @@ interface NavItemsProps {
 export const NavItems = ({ setOpen }: NavItemsProps) => {
   const { i18n } = useLingui();
   const { currentMarketData } = useProtocolDataContext();
-
+  const theme = useTheme();
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -34,6 +34,9 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
         display: 'flex',
         alignItems: { xs: 'flex-start', md: 'center' },
         flexDirection: { xs: 'column', md: 'row' },
+        width: '100%',
+        justifyContent: 'center',
+        gap: 6,
       }}
       disablePadding
     >
@@ -61,41 +64,24 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 {i18n._(item.title)}
               </Typography>
             ) : (
-              <Button
-                component={Link}
-                onClick={() => handleClick(item.title, false)}
+              <Link
                 href={item.link}
-                sx={(theme) => ({
-                  color: '#F1F1F3',
-                  p: '6px 8px',
-                  position: 'relative',
-                  '.active&:after, &:hover&:after': {
-                    transform: 'scaleX(1)',
-                    transformOrigin: 'bottom left',
-                  },
-                  '&:after': {
-                    content: "''",
-                    position: 'absolute',
-                    width: '100%',
-                    transform: 'scaleX(0)',
-                    height: '2px',
-                    bottom: '-6px',
-                    left: '0',
-                    background: theme.palette.gradients.aaveGradient,
-                    transformOrigin: 'bottom right',
-                    transition: 'transform 0.25s ease-out',
-                  },
-                })}
+                sx={{
+                  color: theme.palette.text.mainTitle,
+                  cursor: 'pointer',
+                  '&.active': { fontWeight: 'bold', color: theme.palette.text.primary },
+                  ':hover': { color: theme.palette.mode === 'light' ? 'black' : 'white' },
+                }}
               >
                 {i18n._(item.title)}
-              </Button>
+              </Link>
             )}
           </ListItem>
         ))}
 
-      <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
+      {/* <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
         <MoreMenu />
-      </ListItem>
+      </ListItem> */}
     </List>
   );
 };

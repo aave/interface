@@ -12,11 +12,13 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import * as React from 'react';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
+import { PageTitle } from '../../components/TopInfoPanel/PageTitle';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import {
@@ -35,10 +37,9 @@ interface ReserveTopDetailsProps {
 export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const router = useRouter();
   const { reserves, loading } = useAppDataContext();
-  const { currentMarket, currentChainId } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId, currentMarket } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
-
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -48,19 +49,19 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
 
   const [tokenSymbol, setTokenSymbol] = useState(poolReserve.iconSymbol.toLowerCase());
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  const valueTypographyVariant = downToSM ? 'main16' : 'body6';
 
   const ReserveIcon = () => {
     return (
       <Box mr={3} sx={{ mr: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {loading ? (
-          <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
+          <Skeleton variant="circular" width={32} height={32} />
         ) : (
           <img
             src={poolReserve.image ? poolReserve.image : `/icons/tokens/${tokenSymbol}.svg`}
             onError={() => setTokenSymbol('default')}
-            width="40px"
-            height="40px"
+            width="32px"
+            height="32px"
             alt=""
           />
         )}
@@ -70,9 +71,11 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
 
   const ReserveName = () => {
     return loading ? (
-      <Skeleton width={60} height={28} sx={{ background: '#383D51' }} />
+      <Skeleton width={60} height={28} />
     ) : (
-      <Typography variant={valueTypographyVariant}>{poolReserve.name}</Typography>
+      <Typography variant={valueTypographyVariant} color="text.primary">
+        {poolReserve.name}
+      </Typography>
     );
   };
 
@@ -85,19 +88,17 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           <Box
             sx={{
               display: 'flex',
-              alignItems: downToSM ? 'flex-start' : 'center',
+              alignItems: 'flex-start',
               alignSelf: downToSM ? 'flex-start' : 'center',
-              mb: 4,
               minHeight: '40px',
-              flexDirection: downToSM ? 'column' : 'row',
+              flexDirection: 'column',
             }}
           >
             <Button
-              variant="surface"
-              size="medium"
-              color="primary"
+              variant="text"
+              size="small"
               startIcon={
-                <SvgIcon sx={{ fontSize: '20px' }}>
+                <SvgIcon height={24} width={24}>
                   <ArrowBackRoundedIcon />
                 </SvgIcon>
               }
@@ -106,30 +107,34 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                 if (history.state.idx !== 0) router.back();
                 else router.push('/markets');
               }}
-              sx={{ mr: 3, mb: downToSM ? '24px' : '0' }}
+              sx={{ mb: downToSM ? '24px' : 15, p: 3 }}
             >
               <Trans>Go Back</Trans>
             </Button>
-
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <MarketLogo size={20} logo={network.networkLogoPath} />
-              <Typography variant="subheader1" sx={{ color: 'common.white' }}>
-                {market.marketTitle} <Trans>Market</Trans>
-              </Typography>
-              {market.v3 && (
-                <Box
-                  sx={{
-                    color: '#fff',
-                    px: 2,
-                    mx: 2,
-                    borderRadius: '12px',
-                    background: (theme) => theme.palette.gradients.aaveGradient,
-                  }}
-                >
-                  <Typography variant="subheader2">Version 3</Typography>
-                </Box>
-              )}
-            </Box>
+            <PageTitle
+              pageTitle={<Trans>Reserve History</Trans>}
+              withMarketSwitcher={true}
+              bridge={currentNetworkConfig.bridge}
+            />
+            {/*<Box sx={{ display: 'flex', alignItems: 'center' }}>*/}
+            {/*  <MarketLogo size={20} logo={network.networkLogoPath} />*/}
+            {/*  <Typography variant="subheader1" sx={{ color: 'common.white' }}>*/}
+            {/*    {market.marketTitle} <Trans>Market</Trans>*/}
+            {/*  </Typography>*/}
+            {/*  {market.v3 && (*/}
+            {/*    <Box*/}
+            {/*      sx={{*/}
+            {/*        color: '#fff',*/}
+            {/*        px: 2,*/}
+            {/*        mx: 2,*/}
+            {/*        borderRadius: '12px',*/}
+            {/*        background: (theme) => theme.palette.gradients.aaveGradient,*/}
+            {/*      }}*/}
+            {/*    >*/}
+            {/*      <Typography variant="subheader2">Version 3</Typography>*/}
+            {/*    </Box>*/}
+            {/*  )}*/}
+            {/*</Box>*/}
           </Box>
 
           {downToSM && (
@@ -137,14 +142,14 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
               <ReserveIcon />
               <Box>
                 {!loading && (
-                  <Typography sx={{ color: '#A5A8B6' }} variant="caption">
+                  <Typography color="text.primary" variant="body6">
                     {poolReserve.symbol}
                   </Typography>
                 )}
                 <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                   <ReserveName />
                   {loading ? (
-                    <Skeleton width={160} height={16} sx={{ ml: 1, background: 'red' }} />
+                    <Skeleton width={160} height={16} sx={{ ml: 1 }} />
                   ) : (
                     <Box sx={{ display: 'flex' }}>
                       <TokenLinkDropdown
@@ -175,39 +180,40 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
       {!downToSM && (
         <>
           <TopInfoPanelItem
-            title={!loading && <Trans>{poolReserve.symbol}</Trans>}
+            title={
+              <Box sx={{ display: 'inline-flex', alignItems: 'center', minWidth: 170 }}>
+                <ReserveName />
+
+                <Box sx={{ display: 'flex' }}>
+                  <TokenLinkDropdown
+                    poolReserve={poolReserve}
+                    downToSM={downToSM}
+                    hideAToken={isGho}
+                  />
+                  {connected && (
+                    <AddTokenDropdown
+                      poolReserve={poolReserve}
+                      downToSM={downToSM}
+                      switchNetwork={switchNetwork}
+                      addERC20Token={addERC20Token}
+                      currentChainId={currentChainId}
+                      connectedChainId={connectedChainId}
+                      hideAToken={isGho}
+                    />
+                  )}
+                </Box>
+              </Box>
+            }
             withoutIconWrapper
             icon={<ReserveIcon />}
             loading={loading}
           >
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <ReserveName />
-
-              <Box sx={{ display: 'flex' }}>
-                <TokenLinkDropdown
-                  poolReserve={poolReserve}
-                  downToSM={downToSM}
-                  hideAToken={isGho}
-                />
-                {connected && (
-                  <AddTokenDropdown
-                    poolReserve={poolReserve}
-                    downToSM={downToSM}
-                    switchNetwork={switchNetwork}
-                    addERC20Token={addERC20Token}
-                    currentChainId={currentChainId}
-                    connectedChainId={connectedChainId}
-                    hideAToken={isGho}
-                  />
-                )}
-              </Box>
-            </Box>
+            {!loading && (
+              <Typography variant="detail2" color="text.mainTitle">
+                <Trans>{poolReserve.symbol}</Trans>
+              </Typography>
+            )}
           </TopInfoPanelItem>
-          <Divider
-            orientation="vertical"
-            flexItem
-            sx={{ my: 1, borderColor: 'rgba(235, 235, 239, 0.08)' }}
-          />
         </>
       )}
       {isGho ? (

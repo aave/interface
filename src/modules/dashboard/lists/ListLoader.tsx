@@ -1,7 +1,7 @@
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
+import { ListWrapper } from 'src/components/lists/ListWrapper';
 
-import { ListWrapper } from '../../../components/lists/ListWrapper';
 import { ListHeader } from './ListHeader';
 import { ListItemLoader } from './ListItemLoader';
 import { MobileListItemLoader } from './MobileListItemLoader';

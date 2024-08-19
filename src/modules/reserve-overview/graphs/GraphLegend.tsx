@@ -16,14 +16,14 @@ export function GraphLegend({
         <Box key={label.text} sx={{ display: 'inline-flex', alignItems: 'center', mr: 6 }}>
           <Box
             sx={{
-              width: 6,
-              height: 6,
+              width: 10,
+              height: 10,
               backgroundColor: label.color,
-              mr: '11px',
+              mr: 2,
               borderRadius: '50%',
             }}
           />
-          <Typography variant="description" color="text.secondary">
+          <Typography variant="detail2" color="text.primary">
             {label.text}
           </Typography>
         </Box>

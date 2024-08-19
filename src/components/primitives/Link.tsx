@@ -120,6 +120,8 @@ export const ROUTES = {
   governance: '/governance',
   faucet: '/faucet',
   migrationTool: '/v3-migration',
+  referralprogram: '/referral-program',
+  docs: '/faq',
   marketMigrationTool: (marketName: CustomMarket) => `/v3-migration/?market=${marketName}`,
   dynamicRenderedProposal: (proposalId: number) =>
     `/governance/v3/proposal?proposalId=${proposalId}`,

@@ -3,7 +3,9 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon, CalendarIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { Box, Checkbox, FormControlLabel, SvgIcon, Typography, useTheme } from '@mui/material';
 import dayjs from 'dayjs';
 import { formatEther, parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
@@ -66,6 +68,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
 
   const stakeData = stakeGeneralResult?.[0];
   const stakeUserData = stakeUserResult?.[0];
+  const theme = useTheme();
 
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
@@ -161,11 +164,11 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
 
   return (
     <>
-      <TxModalTitle title="Cooldown to unstake" />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      <TxModalTitle sx={{ mb: 3 }} title="Cooldown to unstake" />
+      {/* {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
-      )}
-      <Typography variant="description" sx={{ mb: 6 }}>
+      )} */}
+      <Typography variant="detail5">
         <Trans>
           The cooldown period is {timeMessage(stakeCooldownSeconds)}. After{' '}
           {timeMessage(stakeCooldownSeconds)} of cooldown, you will enter unstake window of{' '}
@@ -194,16 +197,16 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
           flexDirection: 'row',
           width: '100%',
           justifyContent: 'space-between',
-          pt: '6px',
-          pb: '30px',
+          mt: '32px',
+          py: '16px',
         }}
       >
-        <Typography variant="description" color="text.primary">
+        <Typography variant="body7" color="text.secondary">
           <Trans>Amount to unstake</Trans>
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
-          <FormattedNumber value={amountToCooldown} variant="secondary14" color="text.primary" />
+          <TokenIcon symbol={icon} sx={{ mr: 1, width: 24, height: 24 }} />
+          <FormattedNumber value={amountToCooldown} variant="body7" color="text.secondary" />
         </Box>
       </Box>
 
@@ -213,22 +216,22 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
           flexDirection: 'row',
           width: '100%',
           justifyContent: 'space-between',
-          pt: '6px',
-          pb: '30px',
+          mt: '16px',
+          mb: '24px',
         }}
       >
-        <Typography variant="description" color="text.primary">
+        <Typography variant="body7" color="text.secondary">
           <Trans>Unstake window</Trans>
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="secondary14" component="span">
+          <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
+            <Typography variant="body7" component="span">
               {dateMessage(stakeCooldownSeconds)}
             </Typography>
             <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
               <ArrowNarrowRightIcon />
             </SvgIcon>
-            <Typography variant="secondary14" component="span">
+            <Typography variant="body7" component="span">
               {dateMessage(stakeCooldownSeconds + stakeUnstakeWindow)}
             </Typography>
           </Box>
@@ -236,9 +239,16 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
             href={googleCalendarUrl}
             target="_blank"
             rel="noopener noreferrer"
-            sx={{ display: 'flex', alignItems: 'center', mt: 1 }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              mt: 1,
+              color: theme.palette.text.subTitle,
+            }}
           >
-            <Trans>Remind me</Trans>
+            <Typography variant="detail5">
+              <Trans>Remind me</Trans>
+            </Typography>
             <SvgIcon sx={{ fontSize: '16px', ml: 1 }}>
               <CalendarIcon />
             </SvgIcon>
@@ -246,7 +256,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         </Box>
       </Box>
 
-      <Box mb={6}>
+      <Box mb={5}>
         <Box
           sx={{
             width: `${unstakeWindowLineWidth}%`,
@@ -258,10 +268,10 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
             ml: 'auto',
           }}
         >
-          <Typography variant="helperText" mb={1}>
+          <Typography variant="detail4" color="text.primary">
             <Trans>You unstake here</Trans>
           </Typography>
-          <SvgIcon sx={{ fontSize: '13px' }}>
+          <SvgIcon sx={{ fontSize: '18px', color: 'text.primary' }}>
             <ArrowDownIcon />
           </SvgIcon>
         </Box>
@@ -313,18 +323,20 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>
-            <Typography variant="helperText" mb={1}>
+            <Typography variant="detail4">
               <Trans>Cooldown period</Trans>
             </Typography>
-            <Typography variant="subheader2" color="error.main">
+            <br />
+            <Typography variant="detail1" color={theme.palette.point.negative}>
               <Trans>{timeMessage(stakeCooldownSeconds)}</Trans>
             </Typography>
           </Box>
           <Box sx={{ textAlign: 'right' }}>
-            <Typography variant="helperText" mb={1}>
+            <Typography variant="detail4">
               <Trans>Unstake window</Trans>
             </Typography>
-            <Typography variant="subheader2" color="success.main">
+            <br />
+            <Typography variant="detail1" color={theme.palette.point.positive}>
               <Trans>{timeMessage(stakeUnstakeWindow)}</Trans>
             </Typography>
           </Box>
@@ -332,12 +344,19 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
       </Box>
 
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
+        <Typography variant="detail1" color={theme.palette.point.negative}>
           {handleBlocked()}
         </Typography>
       )}
 
-      <Warning severity="error">
+      <Warning
+        severity="error"
+        sx={{
+          my: 5,
+          '.MuiSvgIcon-root': { color: theme.palette.point.negative },
+          bgcolor: `${theme.palette.point.riskHigh} !important`,
+        }}
+      >
         {stakeAssetName === 'gho' && usersStkGhoIncentives !== 0 && (
           <>
             <Typography variant="caption">
@@ -360,9 +379,12 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
       <GasStation chainId={ChainId.mainnet} gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 
       <FormControlLabel
-        sx={{ mt: 12 }}
+        sx={{ mt: 8 }}
         control={
           <Checkbox
+            icon={<CheckCircleOutlineIcon />}
+            checkedIcon={<CheckCircleIcon />}
+            sx={{ color: 'text.secondary' }}
             checked={cooldownCheck}
             onClick={handleOnCoolDownCheckBox}
             inputProps={{ 'aria-label': 'controlled' }}
@@ -370,12 +392,25 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
           />
         }
         label={
-          <Trans>
-            I understand how cooldown ({timeMessage(stakeCooldownSeconds)}) and unstaking (
-            {timeMessage(stakeUnstakeWindow)}) work
-          </Trans>
+          <Typography variant="body7" color="text.secondary">
+            <Trans>
+              I understand how cooldown ({timeMessage(stakeCooldownSeconds)}) and unstaking (
+              {timeMessage(stakeUnstakeWindow)}) work
+            </Trans>
+          </Typography>
         }
       />
+      {/* <FormControlLabel
+        sx={{ mt: { xs: bridge ? 2 : 0, xsm: 0, fontSize: '16px' } }}
+        control={<Checkbox icon={<CheckCircleOutlineIcon />} checkedIcon={<CheckCircleIcon />} />}
+        checked={value}
+        onChange={() => {
+          trackEvent(DASHBOARD.SHOW_ASSETS_0_BALANCE, {});
+
+          toggleLocalStorageClick(value, onClick, localStorageName);
+        }}
+        label={<Trans>Show assets with 0 balance</Trans>}
+      /> */}
 
       {txError && <GasEstimationError txError={txError} />}
 

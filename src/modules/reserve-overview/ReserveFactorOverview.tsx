@@ -1,5 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { ReserveFactorTooltip } from 'src/components/infoTooltips/ReserveFactorTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -32,6 +33,7 @@ export const ReserveFactorOverview = ({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
+        gap: 3,
       }}
     >
       <ReserveOverviewBox
@@ -58,16 +60,16 @@ export const ReserveFactorOverview = ({
           />
         }
       >
-        <FormattedNumber value={reserveFactor} percent variant="secondary14" visibleDecimals={2} />
+        <FormattedNumber
+          value={reserveFactor}
+          percent
+          variant="body6"
+          color="text.primary"
+          visibleDecimals={2}
+        />
       </ReserveOverviewBox>
 
-      <ReserveOverviewBox
-        title={
-          <Typography variant="description">
-            <Trans>Collector Contract</Trans>
-          </Typography>
-        }
-      >
+      <ReserveOverviewBox title={<Trans>Collector Contract</Trans>}>
         <Link
           onClick={() => {
             trackEvent(GENERAL.EXTERNAL_LINK, {
@@ -79,14 +81,20 @@ export const ReserveFactorOverview = ({
           href={explorerLinkBuilder({
             address: collectorContract,
           })}
-          sx={{ textDecoration: 'none' }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="description" color="text.secondary">
+            <Typography variant="body6" color="text.primary">
               <Trans>View contract</Trans>
             </Typography>
-            <SvgIcon sx={{ ml: 1, fontSize: 14 }}>
-              <ExternalLinkIcon />
+            <SvgIcon
+              sx={(theme) => ({
+                ml: 1,
+                fontSize: 18,
+                color: theme.palette.text.primary,
+                '&:hover': { color: theme.palette.text.primary },
+              })}
+            >
+              <CallMadeOutlinedIcon />
             </SvgIcon>
           </Box>
         </Link>

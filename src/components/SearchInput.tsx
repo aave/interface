@@ -2,7 +2,7 @@ import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
 import debounce from 'lodash/debounce';
-import { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
@@ -36,18 +36,20 @@ export const SearchInput = ({
   }, [onSearchTermChange]);
   return (
     <Box
-      sx={(theme) => ({
-        display: 'flex',
-        alignItems: 'center',
-        gap: 2,
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: '6px',
-        height: '36px',
-        ...wrapperSx,
-      })}
+      sx={[
+        (theme) => ({
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          border: `1px solid ${theme.palette.border.contents}`,
+          borderRadius: 2,
+          height: '42px',
+        }),
+        ...(Array.isArray(wrapperSx) ? wrapperSx : [wrapperSx]),
+      ]}
     >
-      <Box sx={{ ml: 2, mt: 1 }}>
-        <SearchIcon height={16} />
+      <Box sx={(theme) => ({ ml: 2, mt: 1, color: theme.palette.text.secondary })}>
+        <SearchIcon height={20} />
       </Box>
       <InputBase
         autoFocus={sm}
@@ -63,12 +65,22 @@ export const SearchInput = ({
           if (disableFocus) event.stopPropagation();
         }}
       />
-      <IconButton
-        sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
+      <Box
+        sx={() => ({
+          cursor: 'pointer',
+          height: 'auto',
+          width: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          ml: 'auto',
+          p: 0,
+          mr: 2,
+          visibility: searchTerm ? 'visible' : 'hidden',
+        })}
         onClick={() => handleClear()}
       >
-        <XCircleIcon height={16} />
-      </IconButton>
+        <XCircleIcon width={16} height={16} />
+      </Box>
     </Box>
   );
 };

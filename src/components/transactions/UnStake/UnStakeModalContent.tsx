@@ -1,7 +1,7 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useRef, useState } from 'react';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
@@ -107,10 +107,10 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   console.log(icon);
   return (
     <>
-      <TxModalTitle title="Unstake" symbol={nameFormatted} />
-      {isWrongNetwork && !readOnlyModeAddress && (
+      <TxModalTitle sx={{ mb: 8 }} title="Unstake" symbol={nameFormatted} />
+      {/* {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
-      )}
+      )} */}
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -131,7 +131,9 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
           {handleBlocked()}
         </Typography>
       )}
-      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} chainId={ChainId.mainnet} />
+      <Box sx={{ mt: '6px' }}>
+        <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} chainId={ChainId.mainnet} />
+      </Box>
 
       {txError && <GasEstimationError txError={txError} />}
 

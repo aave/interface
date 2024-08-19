@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -27,14 +27,16 @@ export const StakeActionBox = ({
   dataCy,
   cooldownAmount,
 }: StakeActionBoxProps) => {
+  const theme = useTheme();
   return (
     <Box
       sx={(theme) => ({
         flex: 1,
         display: 'flex',
-        borderRadius: '6px',
         border: `1px solid ${theme.palette.divider}`,
         position: 'relative',
+        height: '292px',
+        borderRadius: '12px',
         '&:after': {
           content: "''",
           borderRadius: '6px',
@@ -43,7 +45,7 @@ export const StakeActionBox = ({
           bottom: -1,
           left: -1,
           right: -1,
-          background: gradientBorder ? theme.palette.gradients.aaveGradient : 'transparent',
+          // background: gradientBorder ? theme.palette.gradients.aaveGradient : 'transparent',
         },
       })}
     >
@@ -55,22 +57,24 @@ export const StakeActionBox = ({
           alignItems: 'center',
           flexDirection: 'column',
           borderRadius: '6px',
-          background: theme.palette.background.paper,
+          color: theme.palette.text.subTitle,
+          bgcolor: 'transparent',
           position: 'relative',
           zIndex: 2,
         })}
         data-cy={dataCy}
       >
-        <Box sx={{ mb: 6, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-          <Typography mb={1} color="text.secondary">
+        <Box sx={{ mb: 9, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+          <Typography variant="body7" color={theme.palette.text.disabledText}>
             {title}
           </Typography>
 
           <FormattedNumber
+            sx={{ my: '10px' }}
             value={value}
             visibleDecimals={2}
-            variant="secondary21"
-            color={+value === 0 ? 'text.muted' : 'text.primary'}
+            variant="h2"
+            color={+value === 0 ? theme.palette.text.disabledText : 'text.primary'}
             data-cy={`amountNative`}
           />
           <FormattedNumber
@@ -78,20 +82,15 @@ export const StakeActionBox = ({
             symbol="USD"
             visibleDecimals={2}
             variant="secondary12"
-            color={+valueUSD === 0 ? 'text.muted' : 'text.secondary'}
-            symbolsColor={+valueUSD === 0 ? 'text.muted' : 'text.secondary'}
+            color={+valueUSD === 0 ? theme.palette.text.disabledText : 'text.secondary'}
+            symbolsColor={+valueUSD === 0 ? theme.palette.text.disabledText : 'text.secondary'}
             data-cy={`amountUSD`}
           />
         </Box>
 
-        <Box sx={{ width: '100%', mb: 2 }}>{children}</Box>
+        <Box sx={{ width: '100%', mb: '10px' }}>{children}</Box>
 
-        <Row
-          caption={bottomLineTitle}
-          captionVariant="caption"
-          captionColor="text.secondary"
-          width="100%"
-        >
+        <Row caption={bottomLineTitle} captionVariant="caption" width="100%">
           {bottomLineComponent}
         </Row>
         {cooldownAmount}

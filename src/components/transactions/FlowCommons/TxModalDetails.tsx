@@ -1,7 +1,15 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
+import {
+  Box,
+  FormControlLabel,
+  Skeleton,
+  SvgIcon,
+  Switch,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import {
@@ -40,17 +48,19 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   children,
   chainId,
 }) => {
+  const theme = useTheme();
   return (
-    <Box sx={{ pt: 5 }}>
-      <Typography sx={{ mb: 1 }} color="text.secondary">
+    <Box sx={{ pt: 6 }}>
+      <Typography variant="body7" sx={{ mb: '5.5px' }} color="text.secondary">
         <Trans>Transaction overview</Trans>
       </Typography>
 
       <Box
         sx={(theme) => ({
-          p: 3,
+          bgcolor: theme.palette.background.secondary,
+          p: '16px 12px',
           border: `1px solid ${theme.palette.divider}`,
-          borderRadius: '4px',
+          borderRadius: '8px',
           '.MuiBox-root:last-of-type': {
             mb: 0,
           },
@@ -58,7 +68,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
       >
         {children}
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: '6px' }}>
         <GasStation
           chainId={chainId}
           gasLimit={parseUnits(gasLimit || '0', 'wei')}

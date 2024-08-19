@@ -34,7 +34,6 @@ export const StETHMigrationWarning: React.FC<StETHMigrationWarningProps> = ({
 
   return (
     <Warning
-      icon={false}
       sx={{
         mb: 4,
       }}

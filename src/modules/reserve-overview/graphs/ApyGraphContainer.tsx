@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography, useTheme } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import { useState } from 'react';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -39,8 +39,9 @@ export const ApyGraphContainer = ({
     ESupportedTimeRanges.OneMonth
   );
 
-  const CHART_HEIGHT = 155;
-  const CHART_HEIGHT_LOADING_FIX = 3.5;
+  const theme = useTheme();
+  const CHART_HEIGHT = 253;
+  const CHART_HEIGHT_LOADING_FIX = 62;
   let reserveAddress = '';
   if (reserve) {
     if (currentMarketData.v3) {
@@ -56,7 +57,9 @@ export const ApyGraphContainer = ({
   );
 
   // Supply fields
-  const supplyFields: Fields = [{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }];
+  const supplyFields: Fields = [
+    { name: 'liquidityRate', color: theme.palette.point.positive, text: 'Supply APR' },
+  ];
 
   // Borrow fields
   const borrowFields: Fields = [
@@ -64,14 +67,14 @@ export const ApyGraphContainer = ({
       ? ([
           {
             name: 'stableBorrowRate',
-            color: '#E7C6DF',
+            color: theme.palette.point.riskHigh,
             text: 'Borrow APR, stable',
           },
         ] as const)
       : []),
     {
       name: 'variableBorrowRate',
-      color: '#B6509E',
+      color: theme.palette.point.negative,
       text: 'Borrow APR, variable',
     },
   ];
@@ -81,12 +84,13 @@ export const ApyGraphContainer = ({
   const graphLoading = (
     <Box
       sx={{
-        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
-        width: 'auto',
+        height: 'auto',
+        width: 'full',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        my: 'auto',
       }}
     >
       <CircularProgress size={20} sx={{ mb: 2, opacity: 0.5 }} />
@@ -99,7 +103,7 @@ export const ApyGraphContainer = ({
   const graphError = (
     <Box
       sx={{
-        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
+        height: CHART_HEIGHT,
         width: 'auto',
         display: 'flex',
         flexDirection: 'column',
@@ -107,34 +111,38 @@ export const ApyGraphContainer = ({
         justifyContent: 'center',
       }}
     >
-      <Typography variant="subheader1">
+      <Typography variant="body5">
         <Trans>Something went wrong</Trans>
       </Typography>
-      <Typography variant="caption" sx={{ mb: 3 }}>
+      <Typography variant="detail5" sx={{ mb: 3 }}>
         <Trans>Data couldn&apos;t be fetched, please reload graph.</Trans>
       </Typography>
-      <Button variant="outlined" color="primary" onClick={refetch}>
+      <Button variant="outlined" color="primary" size="small" onClick={refetch}>
         <Trans>Reload</Trans>
       </Button>
     </Box>
   );
 
   return (
-    <Box sx={{ mt: 10, mb: 4 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mb: 4,
-        }}
-      >
+    <Box
+      sx={{
+        maxWidth: { xs: '100%', mdlg: 450 },
+        width: '100%',
+        minWidth: 350,
+        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Box sx={{ height: CHART_HEIGHT_LOADING_FIX }}>
         <GraphLegend labels={fields} />
-        <GraphTimeRangeSelector
-          disabled={loading || error}
-          timeRange={selectedTimeRange}
-          onTimeRangeChanged={setSelectedTimeRange}
-        />
+        <Box sx={{ mt: 5, display: 'flex', justifyContent: 'flex-end' }}>
+          <GraphTimeRangeSelector
+            disabled={loading || error}
+            timeRange={selectedTimeRange}
+            onTimeRangeChanged={setSelectedTimeRange}
+          />
+        </Box>
       </Box>
       {loading && graphLoading}
       {error && graphError}

@@ -15,13 +15,13 @@ type WalletEmptyInfoProps = Pick<NetworkConfig, 'bridge' | 'name'> & {
   sx?: SxProps<Theme>;
 };
 
-export function WalletEmptyInfo({ bridge, name, chainId, icon, sx }: WalletEmptyInfoProps) {
+export function WalletEmptyInfo({ bridge, name, chainId, sx }: WalletEmptyInfoProps) {
   const network = [ChainId.avalanche].includes(chainId) ? 'Ethereum & Bitcoin' : 'Ethereum';
 
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <Warning severity="info" icon={icon} sx={sx}>
+    <Warning severity="info" sx={sx}>
       {bridge ? (
         <Trans>
           Your {name} wallet is empty. Purchase or transfer assets or use{' '}

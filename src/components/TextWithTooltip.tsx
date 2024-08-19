@@ -63,7 +63,7 @@ export const TextWithTooltip = ({
             borderRadius: '50%',
             p: 0,
             minWidth: 0,
-            ml: iconMargin || 0.5,
+            ml: iconMargin || '2px',
           }}
           onClick={() => {
             if (event) {
@@ -74,7 +74,7 @@ export const TextWithTooltip = ({
           <SvgIcon
             sx={{
               fontSize: iconSize,
-              color: iconColor ? iconColor : open ? 'info.main' : 'text.muted',
+              color: iconColor ? iconColor : open ? 'info.main' : 'text.mainTitle',
               borderRadius: '50%',
               '&:hover': { color: iconColor || 'info.main' },
             }}

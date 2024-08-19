@@ -30,7 +30,7 @@ export default function FaucetAssetsList() {
   const { walletBalances } = useWalletBalances(currentMarketData);
 
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('md'));
 
   const listData = reserves
     .filter(
