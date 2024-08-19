@@ -51,7 +51,8 @@ export const ApyGraphContainer = ({
   }
   const { data, loading, error, refetch } = useReserveRatesHistory(
     reserveAddress,
-    selectedTimeRange
+    selectedTimeRange,
+    reserve.symbol
   );
 
   // Supply fields

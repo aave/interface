@@ -4,7 +4,6 @@
  */
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ESupportedTimeRanges } from 'src/modules/reserve-overview/TimeRangeSelector';
 import { makeCancelable } from 'src/utils/utils';
 
@@ -15,27 +14,21 @@ export const reserveRateTimeRangeOptions = [
 ];
 export type ReserveRateTimeRange = typeof reserveRateTimeRangeOptions[number];
 
-type RatesHistoryParams = {
-  from: number;
-  resolutionInHours: number;
-};
+// type RatesHistoryParams = {
+//   from: number;
+//   resolutionInHours: number;
+// };
 
 type APIResponse = {
-  liquidityRate_avg: number;
-  variableBorrowRate_avg: number;
-  stableBorrowRate_avg: number;
-  utilizationRate_avg: number;
-  x: { year: number; month: number; date: number; hours: number };
+  supplyApr: string;
+  borrowApr: string;
+  createdTimestamp: string;
+  symbol: string;
 };
 
-const fetchStats = async (
-  address: string,
-  timeRange: ReserveRateTimeRange,
-  endpointURL: string
-) => {
-  const { from, resolutionInHours } = resolutionForTimeRange(timeRange);
+const fetchStats = async (symbol: string, type: ESupportedTimeRanges, endpointURL: string) => {
   try {
-    const url = `${endpointURL}?reserveId=${address}&from=${from}&resolutionInHours=${resolutionInHours}`;
+    const url = `${endpointURL}/crawler/history?symbol=${symbol}&type=${type}`;
     const result = await fetch(url);
     const json = await result.json();
     return json;
@@ -46,35 +39,35 @@ const fetchStats = async (
 
 // TODO: there is possibly a bug here, as Polygon and Avalanche v2 data is coming through empty and erroring in our hook
 // The same asset without the 'from' field comes through just fine.
-const resolutionForTimeRange = (timeRange: ReserveRateTimeRange): RatesHistoryParams => {
-  // Return today as a fallback
-  let calculatedDate = dayjs().unix();
-  switch (timeRange) {
-    case ESupportedTimeRanges.OneMonth:
-      calculatedDate = dayjs().subtract(30, 'day').unix();
-      return {
-        from: calculatedDate,
-        resolutionInHours: 6,
-      };
-    case ESupportedTimeRanges.SixMonths:
-      calculatedDate = dayjs().subtract(6, 'month').unix();
-      return {
-        from: calculatedDate,
-        resolutionInHours: 24,
-      };
-    case ESupportedTimeRanges.OneYear:
-      calculatedDate = dayjs().subtract(1, 'year').unix();
-      return {
-        from: calculatedDate,
-        resolutionInHours: 24,
-      };
-    default:
-      return {
-        from: calculatedDate,
-        resolutionInHours: 6,
-      };
-  }
-};
+// const resolutionForTimeRange = (timeRange: ReserveRateTimeRange): RatesHistoryParams => {
+//   // Return today as a fallback
+//   let calculatedDate = dayjs().unix();
+//   switch (timeRange) {
+//     case ESupportedTimeRanges.OneMonth:
+//       calculatedDate = dayjs().subtract(30, 'day').unix();
+//       return {
+//         from: calculatedDate,
+//         resolutionInHours: 6,
+//       };
+//     case ESupportedTimeRanges.SixMonths:
+//       calculatedDate = dayjs().subtract(6, 'month').unix();
+//       return {
+//         from: calculatedDate,
+//         resolutionInHours: 24,
+//       };
+//     case ESupportedTimeRanges.OneYear:
+//       calculatedDate = dayjs().subtract(1, 'year').unix();
+//       return {
+//         from: calculatedDate,
+//         resolutionInHours: 24,
+//       };
+//     default:
+//       return {
+//         from: calculatedDate,
+//         resolutionInHours: 6,
+//       };
+//   }
+// };
 
 export type FormattedReserveHistoryItem = {
   date: number;
@@ -98,13 +91,16 @@ export const BROKEN_ASSETS = [
 ];
 
 // TODO: api need to be altered to expect chainId underlying asset and poolConfig
-export function useReserveRatesHistory(reserveAddress: string, timeRange: ReserveRateTimeRange) {
-  const { currentNetworkConfig } = useProtocolDataContext();
+export function useReserveRatesHistory(
+  reserveAddress: string,
+  timeRange: ReserveRateTimeRange,
+  symbol: string
+) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState<FormattedReserveHistoryItem[]>([]);
 
-  const ratesHistoryApiUrl = currentNetworkConfig?.ratesHistoryApiUrl;
+  const ratesHistoryApiUrl = 'https://aave-ton-api.sotatek.works';
 
   const refetchData = useCallback<() => () => void>(() => {
     // reset
@@ -113,18 +109,22 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
     setData([]);
 
     if (reserveAddress && ratesHistoryApiUrl && !BROKEN_ASSETS.includes(reserveAddress)) {
-      const cancelable = makeCancelable(fetchStats(reserveAddress, timeRange, ratesHistoryApiUrl));
+      const cancelable = makeCancelable(
+        fetchStats(symbol.toLowerCase(), timeRange, ratesHistoryApiUrl)
+      );
 
       cancelable.promise
         .then((data: APIResponse[]) => {
           setData(
-            data.map((d) => ({
-              date: new Date(d.x.year, d.x.month, d.x.date, d.x.hours).getTime(),
-              liquidityRate: d.liquidityRate_avg,
-              variableBorrowRate: d.variableBorrowRate_avg,
-              utilizationRate: d.utilizationRate_avg,
-              stableBorrowRate: d.stableBorrowRate_avg,
-            }))
+            data
+              ?.filter((x) => !!x.createdTimestamp)
+              .map((d) => ({
+                date: dayjs.unix(+d.createdTimestamp).valueOf(),
+                liquidityRate: +d.supplyApr,
+                variableBorrowRate: +d.borrowApr,
+                utilizationRate: 0,
+                stableBorrowRate: +d.borrowApr,
+              }))
           );
           setLoading(false);
         })
