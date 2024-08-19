@@ -74,8 +74,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
             _.some(
               userSupplies,
               (yourSupply) =>
-                reserve.poolJettonWalletAddress === yourSupply.underlyingAddress.toString() &&
-                Number(yourSupply.supplyBalance) > 0
+                reserve.poolJettonWalletAddress === yourSupply.underlyingAddress.toString()
             )
           )
           .map(async (reserve) => {
