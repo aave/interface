@@ -49,7 +49,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       data-cy={`marketListItemListItem_${reserve.symbol.toUpperCase()}`}
     >
       <ListColumn isRow maxWidth={280}>
-        <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
+        <TokenIcon symbol={reserve.iconSymbol} img={reserve.image} fontSize="large" />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
           <Typography variant="h4" noWrap>
             {reserve.name}

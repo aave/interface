@@ -29,6 +29,7 @@ interface ListMobileItemWrapperProps {
   showDebtCeilingTooltips?: boolean;
   isIsolated?: boolean;
   showSuperFestTooltip?: boolean;
+  img?: string;
 }
 
 export const ListMobileItemWrapper = ({
@@ -47,6 +48,7 @@ export const ListMobileItemWrapper = ({
   showDebtCeilingTooltips = false,
   isIsolated = false,
   showSuperFestTooltip = false,
+  img,
 }: ListMobileItemWrapperProps) => {
   const WarningComponent: React.FC = () => {
     const showFrozenTooltip = frozen && symbol !== 'renFIL';
@@ -77,6 +79,7 @@ export const ListMobileItemWrapper = ({
       isIsolated={isIsolated}
       symbol={symbol}
       iconSymbol={iconSymbol}
+      img={img}
       name={name}
       underlyingAsset={underlyingAsset}
       warningComponent={<WarningComponent />}

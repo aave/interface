@@ -198,22 +198,12 @@ export const AssetInput = <T extends Asset = Asset>({
           )}
           {!onSelect || assets.length === 1 ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              {image ? (
-                <Box
-                  component="img"
-                  width={'24px'}
-                  height={'24px'}
-                  sx={{ mr: 2, ml: 4 }}
-                  alt={image}
-                  src={image}
-                />
-              ) : (
-                <TokenIcon
-                  aToken={asset.aToken}
-                  symbol={asset.iconSymbol || asset.symbol}
-                  sx={{ mr: 2, ml: 4 }}
-                />
-              )}
+              <TokenIcon
+                img={image}
+                aToken={asset.aToken}
+                symbol={asset.iconSymbol || asset.symbol}
+                sx={{ mr: 2, ml: 4 }}
+              />
               <Typography variant="h3" sx={{ lineHeight: '28px' }} data-cy={'inputAsset'}>
                 {symbol}
               </Typography>

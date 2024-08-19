@@ -27,6 +27,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
     <ListMobileItemWrapper
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
+      img={reserve.image}
       name={reserve.name}
       underlyingAsset={reserve.underlyingAsset}
       currentMarket={currentMarket}

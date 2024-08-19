@@ -140,6 +140,7 @@ ATokenIcon.displayName = 'ATokenIcon';
 interface TokenIconProps extends IconProps {
   symbol: string;
   aToken?: boolean;
+  img?: string;
 }
 
 /**
@@ -148,7 +149,7 @@ interface TokenIconProps extends IconProps {
  * @param param0
  * @returns
  */
-function SingleTokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
+function SingleTokenIcon({ symbol, aToken, img, ...rest }: TokenIconProps) {
   const [tokenSymbol, setTokenSymbol] = useState(symbol.toLowerCase());
 
   useEffect(() => {
@@ -162,7 +163,7 @@ function SingleTokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
       ) : (
         // eslint-disable-next-line
         <img
-          src={`/icons/tokens/${tokenSymbol}.svg`}
+          src={img ? img : `/icons/tokens/${tokenSymbol}.svg`}
           onError={() => setTokenSymbol('default')}
           width="100%"
           height="100%"
@@ -206,15 +207,17 @@ interface MultiTokenIconProps extends IconProps {
   symbols: string[];
   badgeSymbol?: string;
   aToken?: boolean;
+  img?: string;
 }
 
-export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIconProps) {
+export function MultiTokenIcon({ symbols, badgeSymbol, img, ...rest }: MultiTokenIconProps) {
   if (!badgeSymbol)
     return (
       <Box sx={{ display: 'inline-flex', position: 'relative' }}>
         {symbols.map((symbol, ix) => (
           <SingleTokenIcon
             {...rest}
+            img={img}
             key={symbol}
             symbol={symbol}
             sx={{ ml: ix === 0 ? 0 : `calc(-1 * 0.5em)`, ...rest.sx }}
@@ -225,13 +228,19 @@ export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIcon
   return (
     <Badge
       badgeContent={
-        <SingleTokenIcon symbol={badgeSymbol} sx={{ border: '1px solid #fff' }} fontSize="small" />
+        <SingleTokenIcon
+          img={img}
+          symbol={badgeSymbol}
+          sx={{ border: '1px solid #fff' }}
+          fontSize="small"
+        />
       }
       sx={{ '.MuiBadge-anchorOriginTopRight': { top: 9 } }}
     >
       {symbols.map((symbol, ix) => (
         <SingleTokenIcon
           {...rest}
+          img={img}
           key={symbol}
           symbol={symbol}
           sx={{ ml: ix === 0 ? 0 : 'calc(-1 * 0.5em)', ...rest.sx }}
@@ -241,11 +250,11 @@ export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIcon
   );
 }
 
-export function TokenIcon({ symbol, ...rest }: TokenIconProps) {
+export function TokenIcon({ symbol, img, ...rest }: TokenIconProps) {
   const symbolChunks = symbol.split('_');
   if (symbolChunks.length > 1) {
     const [badge, ...symbols] = symbolChunks;
-    return <MultiTokenIcon {...rest} symbols={symbols} badgeSymbol={'/pools/' + badge} />;
+    return <MultiTokenIcon {...rest} symbols={symbols} img={img} badgeSymbol={'/pools/' + badge} />;
   }
-  return <SingleTokenIcon symbol={symbol} {...rest} />;
+  return <SingleTokenIcon symbol={symbol} img={img} {...rest} />;
 }

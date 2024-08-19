@@ -57,7 +57,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
         ) : (
           <img
-            src={`/icons/tokens/${tokenSymbol}.svg`}
+            src={poolReserve.image ? poolReserve.image : `/icons/tokens/${tokenSymbol}.svg`}
             onError={() => setTokenSymbol('default')}
             width="40px"
             height="40px"
