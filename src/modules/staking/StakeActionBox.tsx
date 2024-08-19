@@ -23,7 +23,6 @@ export const StakeActionBox = ({
   children,
   bottomLineTitle,
   bottomLineComponent,
-  gradientBorder,
   dataCy,
   cooldownAmount,
 }: StakeActionBoxProps) => {
