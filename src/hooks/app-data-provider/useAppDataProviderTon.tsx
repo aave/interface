@@ -6,7 +6,6 @@ import {
   SECONDS_PER_YEAR,
   valueToBigNumber,
 } from '@aave/math-utils';
-// import dataAssumeReserves from '@public/assume-reserves.json';
 import userTon from '@public/assume-user.json';
 import { Address, Cell, ContractProvider, OpenedContract, Sender } from '@ton/core';
 import { formatUnits } from 'ethers/lib/utils';
@@ -171,41 +170,37 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               ? await getPoolJettonWalletAddress(item.underlyingAddress.toString())
               : item.underlyingAddress;
 
+            const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+
+            const supplyAPR = normalize(liquidityRate, RAY_DECIMALS);
+
             const supplyAPY = calculateCompoundedRate({
-              rate: item.currentLiquidityRate.toString().substring(0, 27), // cut from 0 to 27 index
+              rate: liquidityRate,
               duration: SECONDS_PER_YEAR,
             });
 
             const variableBorrowAPY = calculateCompoundedRate({
-              rate: item.currentVariableBorrowRate.toString().toString().substring(0, 27), // cut from 0 to 27 index
+              rate: item.currentVariableBorrowRate.toString().toString().substring(0, RAY_DECIMALS), // cut from 0 to 27 index
               duration: SECONDS_PER_YEAR,
             });
+
+            const stableBorrowRate = item.currentStableBorrowRate
+              .toString()
+              .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
             const stableBorrowAPY = calculateCompoundedRate({
-              rate: item.currentStableBorrowRate.toString().toString().substring(0, 27), // cut from 0 to 27 index
+              rate: stableBorrowRate,
               duration: SECONDS_PER_YEAR,
             });
-
-            // const supplyAPY = formatUnits(
-            //   Math.ceil(Number(normalize(Number(item.currentLiquidityRate) || 0, RAY_DECIMALS))),
-            //   item.decimals
-            // );
-            // const variableBorrowAPY = formatUnits(
-            //   Math.ceil(
-            //     Number(normalize(Number(item.currentVariableBorrowRate) || 0, RAY_DECIMALS))
-            //   ),
-            //   item.decimals
-            // );
-            // const stableBorrowAPY = formatUnits(
-            //   Math.ceil(Number(normalize(Number(item.currentStableBorrowRate) || 0, RAY_DECIMALS))),
-            //   item.decimals
-            // );
 
             const stableBorrows = 0;
 
             const reserveLiquidationThreshold = item.liquidationThreshold.toString();
 
-            const formattedReserveLiquidationThreshold = normalize(reserveLiquidationThreshold, 4);
+            const formattedReserveLiquidationThreshold = normalize(
+              reserveLiquidationThreshold,
+              LTV_PRECISION
+            );
 
             const baseLTVasCollateral = item.LTV.toString();
 
@@ -229,9 +224,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               usageAsCollateralEnabled: true,
               borrowingEnabled: true,
               stableBorrowRateEnabled: false,
-              liquidityRate: '31123474726224900471975',
+              liquidityRate: liquidityRate,
               variableBorrowRate: '1111',
-              stableBorrowRate: '70000000000000000000000000',
+              stableBorrowRate: stableBorrowRate,
               aTokenAddress: '0x1c0E06a0b1A4c160c17545FF2A951bfcA57C0002',
               stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
               variableDebtTokenAddress: '0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b',
@@ -243,11 +238,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               totalScaledVariableDebt: '36.053394800123496879',
               priceInMarketReferenceCurrency: '352765932594',
               priceOracle: '0xD6270dAabFe4862306190298C2B48fed9e15C847',
-              variableRateSlope1: '70000000000000000000000000',
+              variableRateSlope1: stableBorrowRate,
               variableRateSlope2: '3000000000000000000000000000',
               stableRateSlope1: '0',
               stableRateSlope2: '0',
-              baseStableBorrowRate: '70000000000000000000000000',
+              baseStableBorrowRate: stableBorrowRate,
               baseVariableBorrowRate: '0',
               optimalUsageRatio: '450000000000000000000000000',
               eModeCategoryId: 1,
@@ -273,7 +268,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               formattedAvailableLiquidity: normalize(availableLiquidity, Number(item.decimals)),
               unborrowedLiquidity: '2314.651612891643030158',
               formattedBaseLTVasCollateral: formattedBaseLTVasCollateral,
-              supplyAPR: '0.0000311234747262249',
+              supplyAPR: supplyAPR,
               variableBorrowAPR: '0.00238658737453766736',
               formattedReserveLiquidationThreshold: formattedReserveLiquidationThreshold,
               debtCeilingUSD: '0',
@@ -306,9 +301,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 usageAsCollateralEnabled: true,
                 borrowingEnabled: true,
                 stableBorrowRateEnabled: false,
-                liquidityRate: '31123474726224900471975',
+                liquidityRate: liquidityRate,
                 variableBorrowRate: '1111',
-                stableBorrowRate: '70000000000000000000000000',
+                stableBorrowRate: stableBorrowRate,
                 aTokenAddress: '0x1c0E06a0b1A4c160c17545FF2A951bfcA57C0002',
                 stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
                 variableDebtTokenAddress: '0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b',
@@ -320,11 +315,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 totalScaledVariableDebt: '36.053394800123496879',
                 priceInMarketReferenceCurrency: '352765932594',
                 priceOracle: '0xD6270dAabFe4862306190298C2B48fed9e15C847',
-                variableRateSlope1: '70000000000000000000000000',
+                variableRateSlope1: stableBorrowRate,
                 variableRateSlope2: '3000000000000000000000000000',
                 stableRateSlope1: '0',
                 stableRateSlope2: '0',
-                baseStableBorrowRate: '70000000000000000000000000',
+                baseStableBorrowRate: stableBorrowRate,
                 baseVariableBorrowRate: '0',
                 optimalUsageRatio: '450000000000000000000000000',
                 eModeCategoryId: 1,
@@ -349,15 +344,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 formattedEModeLiquidationThreshold: '0.95',
                 formattedEModeLtv: '0.93',
                 supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
-                // supplyAPY: normalize(supplyAPY, LTV_PRECISION),
                 variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
-                // variableBorrowAPY: normalize(variableBorrowAPY, LTV_PRECISION),
                 stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
-                // stableBorrowAPY: normalize(stableBorrowAPY, LTV_PRECISION),
                 formattedAvailableLiquidity: normalize(availableLiquidity, Number(item.decimals)),
                 unborrowedLiquidity: '2314.651612891643030158',
                 formattedBaseLTVasCollateral: formattedBaseLTVasCollateral,
-                supplyAPR: '0.0000311234747262249',
+                supplyAPR: supplyAPR,
                 variableBorrowAPR: '0.00238658737453766736',
                 stableBorrowAPR: '0.07',
                 formattedReserveLiquidationThreshold: formattedReserveLiquidationThreshold,
@@ -439,8 +431,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               description: item.description,
               isBorrowingEnabled: item.isBorrowingEnabled,
               stableBorrowIndex: item.stableBorrowIndex.toString(),
-              // totalStableBorrow: item.totalStableBorrow.toString(),
-              // totalVariableBorrow: item.totalVariableBorrow.toString(),
               averageStableBorrowRate: item.averageStableBorrowRate.toString(),
               isJetton: item.isJetton,
               poolJettonWalletAddress: poolJettonWalletAddress?.toString(),
@@ -452,12 +442,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               totalBorrowsMarketReferenceCurrency: '0',
               totalBorrowsUSD: '0',
               supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
-              // supplyAPY: normalize(supplyAPY, LTV_PRECISION),
               stableBorrowAPR: '0.07',
               stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
-              // stableBorrowAPY: normalize(stableBorrowAPY, LTV_PRECISION),
               variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
-              // variableBorrowAPY: normalize(variableBorrowAPY, LTV_PRECISION),
               borrowRateMode: 'Variable',
             };
           })
