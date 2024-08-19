@@ -73,8 +73,8 @@ export function generateRawUserSummaryTon({
   const netWorthUSD = totalLiquidityUSD - totalBorrowsUSD; // Net worth
 
   const netAPY =
-    (weightedAvgSupplyAPY * totalLiquidityUSD) / netWorthUSD -
-    (weightedAvgBorrowAPY * totalBorrowsUSD) / netWorthUSD; // Net APY
+    (weightedAvgSupplyAPY * totalLiquidityUSD) / netWorthUSD +
+    (-weightedAvgBorrowAPY * totalBorrowsUSD) / netWorthUSD; // Net APY
 
   const totalBorrowsMarketReferenceCurrency = (totalBorrowsUSD / totalCollateralUSD) * 100 || 0;
 

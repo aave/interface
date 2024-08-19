@@ -283,8 +283,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               totalDebtUSD: '127227.13920693082542400187',
               totalVariableDebtUSD: '127227.13920693082542400187',
               totalStableDebtUSD: '0',
-              formattedPriceInMarketReferenceCurrency: '0',
-              priceInUSD: '0',
               borrowCapUSD: '1128850.9843008',
               supplyCapUSD: '11288509.843008',
               unbackedUSD: '0',
@@ -370,8 +368,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 totalDebtUSD: '127227.13920693082542400187',
                 totalVariableDebtUSD: '127227.13920693082542400187',
                 totalStableDebtUSD: '0',
-                formattedPriceInMarketReferenceCurrency: '0',
-                priceInUSD: '0',
                 borrowCapUSD: '1128850.9843008',
                 supplyCapUSD: '11288509.843008',
                 unbackedUSD: '0',
@@ -405,7 +401,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 accruedToTreasury: item.accruedToTreasury.toString(),
                 totalVariableDebt: formatUnits(item.totalVariableDebt || '0', item.decimals),
                 totalStableDebt: formatUnits(item.totalStableDebt || '0', item.decimals),
-                walletBalanceUSD: '0',
               },
 
               availableToDeposit: '0',
@@ -464,7 +459,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
               // variableBorrowAPY: normalize(variableBorrowAPY, LTV_PRECISION),
               borrowRateMode: 'Variable',
-              walletBalanceUSD: '0',
             };
           })
         );

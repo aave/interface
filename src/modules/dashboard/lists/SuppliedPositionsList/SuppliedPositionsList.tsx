@@ -68,7 +68,7 @@ export const SuppliedPositionsList = () => {
 
   const suppliedPositions =
     user?.userReservesData
-      .filter((userReserve) => userReserve.underlyingBalance !== '0')
+      .filter((userReserve) => Number(userReserve.underlyingBalance) !== 0)
       .map((userReserve) => ({
         ...userReserve,
         supplyAPY: userReserve.reserve.supplyAPY, // Note: added only for table sort

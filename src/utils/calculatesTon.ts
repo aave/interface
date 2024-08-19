@@ -38,7 +38,7 @@ export const calculateWeightedAvgAPY = <T>(data: T[], balance: keyof T, apy: key
       weightedSum += Number(amount) * Number(supplyAPY);
     });
 
-    return totalAmount === 0 ? 0 : (weightedSum / totalAmount) * 100;
+    return totalAmount === 0 ? 0 : weightedSum / totalAmount;
   } catch (error) {
     return 0;
   }
