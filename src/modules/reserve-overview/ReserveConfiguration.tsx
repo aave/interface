@@ -33,10 +33,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const reserveId =
     reserve.underlyingAsset + currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
-  const renderCharts =
-    !!currentNetworkConfig.ratesHistoryApiUrl &&
-    !currentMarketData.disableCharts &&
-    !BROKEN_ASSETS.includes(reserveId);
+  const renderCharts = !currentMarketData.disableCharts && !BROKEN_ASSETS.includes(reserveId);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus: boolean = reserve.supplyCap !== '0';
   const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';
