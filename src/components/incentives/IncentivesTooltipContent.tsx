@@ -57,6 +57,7 @@ export const IncentivesTooltipContent = ({
 
   const getSymbolMap = (incentive: ReserveIncentiveResponse) => {
     const rewardTokenSymbol = incentive.rewardTokenSymbol;
+
     return IncentivesSymbolMap[rewardTokenSymbol]
       ? {
           ...IncentivesSymbolMap[rewardTokenSymbol],
@@ -112,7 +113,7 @@ export const IncentivesTooltipContent = ({
         ))}
 
         {incentives.length > 1 && (
-          <Box sx={(theme) => ({ pt: 1, mt: 1, border: `1px solid ${theme.palette.divider}` })}>
+          <Box sx={() => ({ pt: 1, mt: 1 })}>
             <Row caption={<Trans>Net APR</Trans>} height={32}>
               <Number incentiveAPR={incentivesNetAPR} />
             </Row>
