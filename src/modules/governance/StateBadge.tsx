@@ -56,6 +56,8 @@ const Badge = styled('span')<BadgeProps>(({ theme, state }) => {
   };
   const color = COLOR_MAP[state] || '#000';
   return experimental_sx({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     ...theme.typography.subheader2,
     color,
     border: '1px solid',
