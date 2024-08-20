@@ -1,5 +1,6 @@
 import {
   BigNumberValue,
+  calculateHealthFactorFromBalances,
   calculateHealthFactorFromBalancesBigUnits,
   ComputedUserReserve,
   UserReserveData,
@@ -249,12 +250,11 @@ export const calculateHFAfterSupply = (
           )
         : '-1';
 
-      healthFactorAfterDeposit =
-        user.totalBorrowsUSD === '0'
-          ? '-1'
-          : valueToBigNumber(totalCollateralMarketReferenceCurrencyAfterTon)
-              .div(user.totalBorrowsUSD)
-              .toString();
+      healthFactorAfterDeposit = calculateHealthFactorFromBalances({
+        collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfterTon,
+        borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
+        currentLiquidationThreshold: user.currentLiquidationThreshold,
+      });
     } else {
       healthFactorAfterDeposit = calculateHealthFactorFromBalancesBigUnits({
         collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
