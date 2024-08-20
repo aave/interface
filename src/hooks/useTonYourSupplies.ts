@@ -1,3 +1,4 @@
+import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Address, toNano } from '@ton/core';
 import { formatUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
@@ -84,23 +85,23 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
                 reserve.poolJettonWalletAddress === yourSupply.underlyingAddress.toString()
             );
 
-            const underlyingBalance = formatUnits(
-              matchedSupply?.supplyBalance || '0',
+            const underlyingBalance = normalize(
+              matchedSupply?.supplyBalance.toString() || '0',
               reserve.decimals
             );
 
-            const variableBorrows = formatUnits(
-              matchedSupply?.variableBorrowBalance || '0',
+            const variableBorrows = normalize(
+              matchedSupply?.variableBorrowBalance.toString() || '0',
               reserve.decimals
             );
 
-            const underlyingBalanceUSD = (
-              parseFloat(reserve.priceInUSD) * parseFloat(underlyingBalance)
-            ).toString();
+            const underlyingBalanceUSD = valueToBigNumber(reserve.priceInUSD)
+              .multipliedBy(underlyingBalance)
+              .toString();
 
-            const variableBorrowsUSD = (
-              parseFloat(reserve.priceInUSD) * parseFloat(variableBorrows)
-            ).toString();
+            const variableBorrowsUSD = valueToBigNumber(reserve.priceInUSD)
+              .multipliedBy(variableBorrows)
+              .toString();
 
             return {
               ...reserve,
