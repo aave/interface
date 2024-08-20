@@ -74,6 +74,8 @@ export const TxActionsWrapper = ({
 
   function getMainParams() {
     // start with ton connect
+    if (isConnectedTonWallet && isAmountMissing)
+      return { disabled: true, content: <Trans>Enter an amount</Trans> };
     if (isConnectedTonWallet && preparingTransactions) return { disabled: true, loading: true };
     if (isConnectedTonWallet && !mainTxState?.loading)
       return { content: actionText, handleClick: handleAction };
