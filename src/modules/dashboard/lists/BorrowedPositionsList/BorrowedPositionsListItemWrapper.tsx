@@ -8,12 +8,12 @@ import { GhoBorrowedPositionsListItem } from './GhoBorrowedPositionsListItem';
 
 export interface BorrowedPositionsListItemWrapperProps {
   item: DashboardReserve;
-  userEMode: number;
+  disableEModeSwitch: boolean;
 }
 
 export const BorrowedPositionsListItemWrapper = ({
   item,
-  userEMode,
+  disableEModeSwitch,
 }: BorrowedPositionsListItemWrapperProps) => {
   const { currentMarket } = useProtocolDataContext();
 
@@ -22,7 +22,7 @@ export const BorrowedPositionsListItemWrapper = ({
       {displayGhoForMintableMarket({ symbol: item.reserve.symbol, currentMarket }) ? (
         <GhoBorrowedPositionsListItem {...item} />
       ) : (
-        <BorrowedPositionsListItem item={item} userEMode={userEMode} />
+        <BorrowedPositionsListItem item={item} disableEModeSwitch={disableEModeSwitch} />
       )}
     </AssetCapsProvider>
   );

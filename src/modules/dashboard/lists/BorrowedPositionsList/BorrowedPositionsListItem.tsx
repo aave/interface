@@ -24,7 +24,7 @@ import { BorrowedPositionsListItemWrapperProps } from './BorrowedPositionsListIt
 
 export const BorrowedPositionsListItem = ({
   item,
-  userEMode,
+  disableEModeSwitch,
 }: BorrowedPositionsListItemWrapperProps) => {
   const { borrowCap } = useAssetCaps();
   const { currentMarket, currentMarketData } = useProtocolDataContext();
@@ -45,10 +45,7 @@ export const BorrowedPositionsListItem = ({
 
   const showSwitchButton = !!isFeatureEnabled.debtSwitch(currentMarketData);
   const disableSwitch =
-    reserve.isPaused ||
-    !reserve.isActive ||
-    reserve.symbol == 'stETH' ||
-    (userEMode !== 0 && userEMode !== item.eModeCategoryId);
+    reserve.isPaused || !reserve.isActive || reserve.symbol == 'stETH' || disableEModeSwitch;
 
   const props: BorrowedPositionsListItemProps = {
     ...item,
