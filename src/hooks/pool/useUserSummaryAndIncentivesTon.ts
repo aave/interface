@@ -7,15 +7,18 @@ import { FormattedUserReserves } from './useUserSummaryAndIncentives';
 export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserReserves[]) => {
   const [userSummaryTon, setUserSummaryTon] = useState<ExtendedFormattedUser>();
 
+  const userEmodeCategoryId = 0;
+
   useEffect(() => {
     const {
+      availableBorrowsMarketReferenceCurrency,
       totalCollateralMarketReferenceCurrency,
       totalBorrowsMarketReferenceCurrency,
       currentLiquidationThreshold,
       collateralInUSDAsset,
-      currentLoanToValue,
       availableBorrowsUSD,
       totalCollateralUSD,
+      currentLoanToValue,
       totalLiquidityUSD,
       totalBorrowsUSD,
       healthFactor,
@@ -23,7 +26,10 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       earnedAPY,
       debtAPY,
       netAPY,
-    } = generateRawUserSummaryTon({ userReserves: yourSuppliesTon });
+    } = generateRawUserSummaryTon({
+      userReserves: yourSuppliesTon,
+      userEmodeCategoryId: userEmodeCategoryId,
+    });
 
     const res = {
       collateralInUSDAsset: collateralInUSDAsset.toString(),
@@ -35,14 +41,14 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       totalBorrowsMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency.toString(),
       totalBorrowsUSD: totalBorrowsUSD.toString(),
       netWorthUSD: netWorthUSD.toString(),
-      availableBorrowsMarketReferenceCurrency: availableBorrowsUSD.toString(), /// availableBorrowsUSD = availableBorrowsMarketReferenceCurrency
+      availableBorrowsMarketReferenceCurrency: availableBorrowsMarketReferenceCurrency.toString(), /// availableBorrowsUSD = availableBorrowsMarketReferenceCurrency
       availableBorrowsUSD: availableBorrowsUSD.toString(), /// availableBorrowsUSD = availableBorrowsMarketReferenceCurrency
       currentLoanToValue: currentLoanToValue.toString(),
       currentLiquidationThreshold: currentLiquidationThreshold.toString(),
       healthFactor: healthFactor.toString(),
       isInIsolationMode: false,
       calculatedUserIncentives: {},
-      userEmodeCategoryId: 0,
+      userEmodeCategoryId: userEmodeCategoryId,
       isInEmode: false,
       earnedAPY: earnedAPY,
       debtAPY: debtAPY,

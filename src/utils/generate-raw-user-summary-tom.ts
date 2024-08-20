@@ -1,37 +1,88 @@
-import { valueToBigNumber } from '@aave/math-utils';
+import {
+  calculateAvailableBorrowsMarketReferenceCurrency,
+  calculateHealthFactorFromBalances,
+  FormatReserveUSDResponse,
+  normalizeBN,
+  valueToBigNumber,
+} from '@aave/math-utils';
+import BigNumber from 'bignumber.js';
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
+import { calculateUserReserveTotals } from './calculate-user-reserve-totals';
 import {
-  calculateTotalCollateralMarketReferenceCurrency,
   calculateTotalCollateralUSD,
   calculateTotalElementTon,
   calculateWeightedAvgAPY,
 } from './calculatesTon';
 
 export interface RawUserSummaryResponseTon {
-  totalCollateralMarketReferenceCurrency: number;
-  totalBorrowsMarketReferenceCurrency: number;
-  currentLiquidationThreshold: number;
+  availableBorrowsMarketReferenceCurrency: BigNumber;
+  totalCollateralMarketReferenceCurrency: BigNumber;
+  totalBorrowsMarketReferenceCurrency: BigNumber;
+  currentLiquidationThreshold: BigNumber;
   collateralInUSDAsset: number;
-  totalCollateralUSD: number;
-  currentLoanToValue: number;
   availableBorrowsUSD: number;
+  totalCollateralUSD: number;
+  isInIsolationMode: boolean;
+  currentLoanToValue: BigNumber;
   totalLiquidityUSD: number;
   totalBorrowsUSD: number;
-  healthFactor: number;
+  healthFactor: BigNumber;
   netWorthUSD: number;
   earnedAPY: number;
   debtAPY: number;
   netAPY: number;
+  isolatedReserve: FormatReserveUSDResponse | undefined;
+  currentLtv: BigNumber;
+  totalLiquidityMarketReferenceCurrency: BigNumber;
 }
 
 export interface RawUserSummaryRequestTon {
   userReserves: FormattedUserReserves[];
+  userEmodeCategoryId: number;
 }
 
 export function generateRawUserSummaryTon({
   userReserves,
+  userEmodeCategoryId,
 }: RawUserSummaryRequestTon): RawUserSummaryResponseTon {
+  const marketReferencePriceInUsd = 10 ** 9; // 10
+  const marketReferenceCurrencyDecimals = 18;
+
+  const {
+    totalLiquidityMarketReferenceCurrency,
+    totalBorrowsMarketReferenceCurrency,
+    totalCollateralMarketReferenceCurrency,
+    currentLtv,
+    currentLiquidationThreshold,
+    isInIsolationMode,
+    isolatedReserve,
+  } = calculateUserReserveTotals({ userReserves, userEmodeCategoryId });
+
+  const _availableBorrowsMarketReferenceCurrency = calculateAvailableBorrowsMarketReferenceCurrency(
+    {
+      collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
+      borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
+      currentLtv,
+    }
+  );
+
+  const availableBorrowsMarketReferenceCurrency =
+    isInIsolationMode && isolatedReserve
+      ? BigNumber.min(
+          BigNumber.max(
+            0,
+            normalizeBN(
+              new BigNumber(isolatedReserve.debtCeiling).minus(
+                isolatedReserve.isolationModeTotalDebt
+              ),
+              isolatedReserve.debtCeilingDecimals - marketReferenceCurrencyDecimals
+            )
+          ),
+          _availableBorrowsMarketReferenceCurrency
+        )
+      : _availableBorrowsMarketReferenceCurrency;
+
   const totalLiquidityUSD = calculateTotalElementTon(userReserves, 'underlyingBalanceUSD'); // total user supplied - usd
   const totalBorrowsUSD = calculateTotalElementTon(userReserves, 'variableBorrowsUSD'); // total user borrowed - usd
   const earnedAPY = calculateTotalElementTon(userReserves, 'supplyAPY'); // total APY your supplies
@@ -40,17 +91,17 @@ export function generateRawUserSummaryTon({
     parseFloat(reserve?.formattedBaseLTVasCollateral || '0')
   ); // Collateral in USD asset a  *  Max LTV asset a
 
-  const totalCollateralMarketReferenceCurrency =
-    calculateTotalCollateralMarketReferenceCurrency(userReserves);
+  // const healthFactor1 =
+  //   totalBorrowsUSD === 0
+  //     ? -1
+  //     : valueToBigNumber(totalCollateralMarketReferenceCurrency).div(totalBorrowsUSD).toNumber() ||
+  //       -1;
 
-  const currentLiquidationThreshold = 0.15;
-
-  const healthFactor =
-    totalBorrowsUSD === 0
-      ? -1
-      : valueToBigNumber(totalCollateralMarketReferenceCurrency)
-          .dividedBy(totalBorrowsUSD)
-          .toNumber() || -1;
+  const healthFactor = calculateHealthFactorFromBalances({
+    collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
+    borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
+    currentLiquidationThreshold,
+  });
 
   const totalCollateralUSD = calculateTotalElementTon(
     userReserves,
@@ -70,28 +121,28 @@ export function generateRawUserSummaryTon({
     'variableBorrowAPY'
   );
 
-  const netWorthUSD = totalLiquidityUSD - totalBorrowsUSD; // Net worth
+  const netWorthUSD = Number(valueToBigNumber(totalLiquidityUSD).minus(totalBorrowsUSD)); // Net worth
 
   const netAPY =
-    (weightedAvgSupplyAPY * totalLiquidityUSD) / netWorthUSD +
-    (-weightedAvgBorrowAPY * totalBorrowsUSD) / netWorthUSD; // Net APY
+    (weightedAvgSupplyAPY * totalLiquidityUSD) / netWorthUSD -
+    (weightedAvgBorrowAPY * totalBorrowsUSD) / netWorthUSD; // Net APY
 
-  const totalBorrowsMarketReferenceCurrency = (totalBorrowsUSD / totalCollateralUSD) * 100 || 0;
+  const currentLoanToValue = currentLtv;
 
-  const currentLoanToValue = (totalBorrowsUSD / totalCollateralUSD) * 100 || 0;
+  const debtAPY = Number(valueToBigNumber(totalBorrowsUSD).div(totalCollateralUSD));
 
-  const debtAPY = totalBorrowsUSD / totalCollateralUSD;
-
-  const availableBorrowsUSD = totalCollateralUSD - totalBorrowsUSD;
+  const availableBorrowsUSD = Number(valueToBigNumber(totalCollateralUSD).minus(totalBorrowsUSD));
 
   return {
+    availableBorrowsMarketReferenceCurrency,
     totalCollateralMarketReferenceCurrency,
     totalBorrowsMarketReferenceCurrency,
     currentLiquidationThreshold,
     collateralInUSDAsset,
+    availableBorrowsUSD,
     totalCollateralUSD,
     currentLoanToValue,
-    availableBorrowsUSD,
+    isInIsolationMode,
     totalLiquidityUSD,
     totalBorrowsUSD,
     healthFactor,
@@ -99,5 +150,8 @@ export function generateRawUserSummaryTon({
     earnedAPY,
     debtAPY,
     netAPY,
+    isolatedReserve,
+    currentLtv,
+    totalLiquidityMarketReferenceCurrency,
   };
 }
