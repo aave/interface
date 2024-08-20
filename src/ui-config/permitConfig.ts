@@ -1,5 +1,4 @@
 import { ChainId } from '@aave/contract-helpers';
-import { AaveV3ZkSync } from '@bgd-labs/aave-address-book';
 
 export const permitByChainAndToken: {
   [chainId: number]: Record<string, boolean>;

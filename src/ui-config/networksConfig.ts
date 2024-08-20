@@ -451,7 +451,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.zksync]: {
     name: 'ZKsync',
-    publicJsonRPCUrl: ['http://127.0.0.1:8011'],
+    publicJsonRPCUrl: ['https://mainnet.era.zksync.io'],
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
