@@ -451,6 +451,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.zksync]: {
     name: 'ZKsync',
+    privateJsonRPCUrl: 'https://zksync-mainnet.g.alchemy.com/v2/GyNpZOF5T0issE8wYgXXR_KJjUp-yds0',
     publicJsonRPCUrl: ['https://mainnet.era.zksync.io'],
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
