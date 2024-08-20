@@ -82,6 +82,6 @@ export const showSuperFestTooltip = (symbol: string, currentMarket: string, side
   return (
     currentMarket === CustomMarket.proto_base_v3 &&
     side === Side.SUPPLY &&
-    (symbol == 'ETH' || symbol == 'WETH')
+    (symbol == 'ETH' || symbol == 'WETH' || symbol == 'wstETH')
   );
 };
