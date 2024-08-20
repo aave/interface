@@ -61,7 +61,7 @@ const head = [
 ];
 
 export const BorrowedPositionsList = () => {
-  const { user, loading, eModes } = useAppDataContext();
+  const { user, loading, eModes, reserves } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
@@ -69,6 +69,9 @@ export const BorrowedPositionsList = () => {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const showEModeButton = currentMarketData.v3 && Object.keys(eModes).length > 1;
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
+
+  if (loading || !user)
+    return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
 
   let borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
@@ -131,6 +134,12 @@ export const BorrowedPositionsList = () => {
     true
   );
 
+  const disableEModeSwitch =
+    user.isInEmode &&
+    reserves.filter(
+      (reserve) => reserve.eModeCategoryId === user.userEmodeCategoryId && reserve.borrowingEnabled
+    ).length < 2;
+
   const RenderHeader: React.FC = () => {
     return (
       <ListHeaderWrapper>
@@ -156,9 +165,6 @@ export const BorrowedPositionsList = () => {
       </ListHeaderWrapper>
     );
   };
-
-  if (loading)
-    return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
 
   return (
     <ListWrapper
@@ -220,6 +226,7 @@ export const BorrowedPositionsList = () => {
             <BorrowedPositionsListItemWrapper
               item={item}
               key={item.underlyingAsset + item.borrowRateMode}
+              disableEModeSwitch={disableEModeSwitch}
             />
           ))}
         </>
