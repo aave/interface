@@ -712,9 +712,9 @@ export const marketsData: {
   [CustomMarket.proto_zksync_v3]: {
     marketTitle: 'ZKsync',
     market: CustomMarket.proto_zksync_v3,
-    chainId: 260, // ChainId.zksync,
+    chainId: ChainId.zksync,
     v3: true,
-    // subgraphUrl: 'TODO'
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/ENYSc8G3WvrbhWH8UZHrqPWYRcuyCaNmaTmoVp7uzabM`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3ZkSync.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3ZkSync.POOL,

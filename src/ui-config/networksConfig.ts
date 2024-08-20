@@ -449,7 +449,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
   },
-  [260]: {
+  [ChainId.zksync]: {
     name: 'ZKsync',
     publicJsonRPCUrl: ['http://127.0.0.1:8011'],
     baseAssetSymbol: 'ETH',
