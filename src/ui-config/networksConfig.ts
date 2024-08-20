@@ -458,5 +458,11 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://explorer.zksync.io/',
     networkLogoPath: '/icons/networks/zksync.svg',
+    bridge: {
+      icon: '/icons/networks/zksync.svg',
+      name: 'ZKsync Bridge',
+      url: 'https://portal.zksync.io/bridge/',
+    },
+    ratesHistoryApiUrl,
   },
 } as const;
