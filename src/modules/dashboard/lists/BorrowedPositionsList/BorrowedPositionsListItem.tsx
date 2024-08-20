@@ -20,8 +20,12 @@ import { ListItemWrapper } from '../ListItemWrapper';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { ListValueRow } from '../ListValueRow';
+import { BorrowedPositionsListItemWrapperProps } from './BorrowedPositionsListItemWrapper';
 
-export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) => {
+export const BorrowedPositionsListItem = ({
+  item,
+  userEMode,
+}: BorrowedPositionsListItemWrapperProps) => {
   const { borrowCap } = useAssetCaps();
   const { currentMarket, currentMarketData } = useProtocolDataContext();
   const theme = useTheme();
@@ -40,7 +44,11 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
   const disableRepay = !reserve.isActive || reserve.isPaused;
 
   const showSwitchButton = !!isFeatureEnabled.debtSwitch(currentMarketData);
-  const disableSwitch = reserve.isPaused || !reserve.isActive || reserve.symbol == 'stETH';
+  const disableSwitch =
+    reserve.isPaused ||
+    !reserve.isActive ||
+    reserve.symbol == 'stETH' ||
+    (userEMode !== 0 && userEMode !== item.eModeCategoryId);
 
   const props: BorrowedPositionsListItemProps = {
     ...item,

@@ -220,6 +220,7 @@ export const BorrowedPositionsList = () => {
             <BorrowedPositionsListItemWrapper
               item={item}
               key={item.underlyingAsset + item.borrowRateMode}
+              userEMode={user ? user.userEmodeCategoryId : 0}
             />
           ))}
         </>
