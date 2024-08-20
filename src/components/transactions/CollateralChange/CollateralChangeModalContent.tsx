@@ -1,4 +1,8 @@
-import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
+import {
+  calculateHealthFactorFromBalances,
+  calculateHealthFactorFromBalancesBigUnits,
+  valueToBigNumber,
+} from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
@@ -54,15 +58,25 @@ export const CollateralChangeModalContent = ({
   const showEnterIsolationModeMsg = poolReserve.isIsolated && usageAsCollateralModeAfterSwitch;
   const showExitIsolationModeMsg = poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch;
 
-  const totalCollateralAfterSwitchETH = currenttotalCollateralMarketReferenceCurrency[
+  const totalCollateralAfterSwitch = currenttotalCollateralMarketReferenceCurrency[
     usageAsCollateralModeAfterSwitch ? 'plus' : 'minus'
   ](userReserve.underlyingBalanceMarketReferenceCurrency);
 
-  const healthFactorAfterSwitch = calculateHealthFactorFromBalancesBigUnits({
-    collateralBalanceMarketReferenceCurrency: totalCollateralAfterSwitchETH,
+  const healthFactorAfterSwitchTon = calculateHealthFactorFromBalances({
+    collateralBalanceMarketReferenceCurrency: totalCollateralAfterSwitch,
     borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
+
+  const healthFactorAfterSwitchETH = calculateHealthFactorFromBalancesBigUnits({
+    collateralBalanceMarketReferenceCurrency: totalCollateralAfterSwitch,
+    borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
+    currentLiquidationThreshold: user.currentLiquidationThreshold,
+  });
+
+  const healthFactorAfterSwitch = isConnectedTonWallet
+    ? healthFactorAfterSwitchTon
+    : healthFactorAfterSwitchETH;
 
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 

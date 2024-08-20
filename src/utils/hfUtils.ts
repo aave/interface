@@ -242,16 +242,8 @@ export const calculateHFAfterSupply = (
         user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset))
   ) {
     if (isConnectedTonWallet) {
-      const totalCollateralMarketReferenceCurrencyAfterTon = user
-        ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(
-            supplyAmountInEth
-              .multipliedBy(poolReserve.formattedReserveLiquidationThreshold)
-              .toString()
-          )
-        : '-1';
-
       healthFactorAfterDeposit = calculateHealthFactorFromBalances({
-        collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfterTon,
+        collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
         borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
         currentLiquidationThreshold: user.currentLiquidationThreshold,
       });

@@ -26,6 +26,7 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       earnedAPY,
       debtAPY,
       netAPY,
+      isolatedReserve,
     } = generateRawUserSummaryTon({
       userReserves: yourSuppliesTon,
       userEmodeCategoryId: userEmodeCategoryId,
@@ -53,6 +54,7 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       earnedAPY: earnedAPY,
       debtAPY: debtAPY,
       netAPY: netAPY ? netAPY : 0,
+      isolatedReserve,
     };
     console.log('User Summary Ton----------', res);
     setUserSummaryTon(res as ExtendedFormattedUser);
