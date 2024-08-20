@@ -46,7 +46,7 @@ export function generateRawUserSummaryTon({
   userReserves,
   userEmodeCategoryId,
 }: RawUserSummaryRequestTon): RawUserSummaryResponseTon {
-  const marketReferencePriceInUsd = 10 ** 9; // 10
+  // const marketReferencePriceInUsd = 10 ** 9; // 10
   const marketReferenceCurrencyDecimals = 18;
 
   const {
@@ -90,12 +90,6 @@ export function generateRawUserSummaryTon({
   const collateralInUSDAsset = calculateTotalCollateralUSD(userReserves, (reserve) =>
     parseFloat(reserve?.formattedBaseLTVasCollateral || '0')
   ); // Collateral in USD asset a  *  Max LTV asset a
-
-  // const healthFactor1 =
-  //   totalBorrowsUSD === 0
-  //     ? -1
-  //     : valueToBigNumber(totalCollateralMarketReferenceCurrency).div(totalBorrowsUSD).toNumber() ||
-  //       -1;
 
   const healthFactor = calculateHealthFactorFromBalances({
     collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
