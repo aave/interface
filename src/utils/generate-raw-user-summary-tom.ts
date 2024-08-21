@@ -1,8 +1,6 @@
 import {
-  calculateAvailableBorrowsMarketReferenceCurrency,
   calculateHealthFactorFromBalances,
   FormatReserveUSDResponse,
-  normalizeBN,
   valueToBigNumber,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
@@ -59,30 +57,6 @@ export function generateRawUserSummaryTon({
     isolatedReserve,
   } = calculateUserReserveTotals({ userReserves, userEmodeCategoryId });
 
-  const _availableBorrowsMarketReferenceCurrency = calculateAvailableBorrowsMarketReferenceCurrency(
-    {
-      collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
-      borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
-      currentLtv,
-    }
-  );
-
-  const availableBorrowsMarketReferenceCurrency =
-    isInIsolationMode && isolatedReserve
-      ? BigNumber.min(
-          BigNumber.max(
-            0,
-            normalizeBN(
-              new BigNumber(isolatedReserve.debtCeiling).minus(
-                isolatedReserve.isolationModeTotalDebt
-              ),
-              isolatedReserve.debtCeilingDecimals - marketReferenceCurrencyDecimals
-            )
-          ),
-          _availableBorrowsMarketReferenceCurrency
-        )
-      : _availableBorrowsMarketReferenceCurrency;
-
   const totalLiquidityUSD = calculateTotalElementTon(userReserves, 'underlyingBalanceUSD'); // total user supplied - usd
   const totalBorrowsUSD = calculateTotalElementTon(userReserves, 'variableBorrowsUSD'); // total user borrowed - usd
   const earnedAPY = calculateTotalElementTon(userReserves, 'supplyAPY'); // total APY your supplies
@@ -123,9 +97,12 @@ export function generateRawUserSummaryTon({
 
   const currentLoanToValue = currentLtv;
 
-  const debtAPY = Number(valueToBigNumber(totalBorrowsUSD).div(totalCollateralUSD));
+  const debtAPY = weightedAvgBorrowAPY;
+  // const debtAPY = Number(valueToBigNumber(totalBorrowsUSD).div(totalCollateralUSD));
 
   const availableBorrowsUSD = Number(valueToBigNumber(totalCollateralUSD).minus(totalBorrowsUSD));
+
+  const availableBorrowsMarketReferenceCurrency = valueToBigNumber(availableBorrowsUSD);
 
   return {
     availableBorrowsMarketReferenceCurrency,
