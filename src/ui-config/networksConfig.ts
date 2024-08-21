@@ -456,7 +456,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://explorer.zksync.io/',
+    explorerLink: 'https://era.zksync.network/',
     networkLogoPath: '/icons/networks/zksync.svg',
     bridge: {
       icon: '/icons/networks/zksync.svg',
