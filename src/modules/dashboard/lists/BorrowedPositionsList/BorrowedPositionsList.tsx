@@ -8,6 +8,7 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -70,6 +71,7 @@ export const BorrowedPositionsList = () => {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const showEModeButton = currentMarketData.v3 && Object.keys(eModes).length > 1;
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
+  const { isConnectedTonWallet } = useTonConnectContext();
 
   let borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
@@ -119,7 +121,7 @@ export const BorrowedPositionsList = () => {
   const collateralUsagePercent = maxBorrowAmount.eq(0)
     ? '0'
     : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
-        .div(maxBorrowAmount)
+        .div(isConnectedTonWallet ? Number(user?.collateralInUSDAsset) : maxBorrowAmount)
         .toFixed();
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
@@ -159,7 +161,7 @@ export const BorrowedPositionsList = () => {
   };
 
   if (loading)
-    return <ListLoader title={<Trans>Your supplies</Trans>} head={head.map((c) => c.title)} />;
+    return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
 
   return (
     <ListWrapper
@@ -171,7 +173,7 @@ export const BorrowedPositionsList = () => {
       tooltipOpen={tooltipOpen}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mr: 4, color: 'white' }}>
-          <Trans>Your supplies</Trans>
+          <Trans>Your borrows</Trans>
         </Typography>
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"
