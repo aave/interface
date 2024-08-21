@@ -12,6 +12,7 @@ import { MarketDataType, networkConfigs } from 'src/utils/marketsAndNetworksConf
 import { usePoolsReservesHumanized } from '../pool/usePoolReserves';
 import { usePoolsTokensBalance } from '../pool/usePoolTokensBalance';
 import { useTonClient } from '../useTonClient';
+import { MAX_ATTEMPTS } from './useAppDataProviderTon';
 
 export interface WalletBalance {
   amount: string;
@@ -102,43 +103,49 @@ export const useTonBalance = (walletAddress: string) => {
   const wallet = useTonWallet();
   const [balance, setBalance] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const client = useTonClient();
 
   const fetchBalance = useCallback(async () => {
-    if (!client || !walletAddress || !wallet || !wallet?.account?.publicKey) return;
-
+    let attempts = 0;
+    const maxAttempts = MAX_ATTEMPTS;
     setLoading(true);
-    setError(null);
+    const fetchData = async () => {
+      try {
+        attempts++;
+        if (!client || !walletAddress || !wallet || !wallet?.account?.publicKey) return;
+        const workchain = 0; // Usually you need a workchain 0
+        const publicKey = Buffer.from(wallet.account.publicKey, 'hex');
+        const walletContract = WalletContractV4.create({ workchain, publicKey: publicKey });
 
-    try {
-      const workchain = 0; // Usually you need a workchain 0
-      const publicKey = Buffer.from(wallet.account.publicKey, 'hex');
-      const walletContract = WalletContractV4.create({ workchain, publicKey: publicKey });
+        const walletInstance = client.open(walletContract);
 
-      const walletInstance = client.open(walletContract);
+        const balance: bigint = await walletInstance.getBalance();
 
-      const balance: bigint = await walletInstance.getBalance();
-      console.log(
-        'Current deployment wallet balance --------------------- = ',
-        fromNano(balance).toString(),
-        '💎TON',
-        wallet?.account?.publicKey
-      );
+        setBalance(fromNano(balance).toString());
+      } catch (error) {
+        console.error(`Error fetching balance TON (attempt ${attempts}):`, error);
+        if (attempts < maxAttempts) {
+          console.log('Retrying... balance TON');
+          await fetchData();
+        } else {
+          console.log('Max attempts reached, stopping retries.');
+          setBalance('');
+        }
+      } finally {
+        if (attempts >= maxAttempts || (attempts < maxAttempts && !balance)) {
+          setLoading(false);
+        }
+      }
+    };
 
-      setBalance(fromNano(balance).toString());
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [client, wallet, walletAddress]);
+    await fetchData();
+  }, [balance, client, wallet, walletAddress]);
 
   useEffect(() => {
     fetchBalance();
   }, [fetchBalance]);
 
-  return { balance, loading, error, refetch: fetchBalance };
+  return { balance, loading, refetch: fetchBalance };
 };
 export interface WalletBalances {
   walletBalances: WalletBalancesMap;
