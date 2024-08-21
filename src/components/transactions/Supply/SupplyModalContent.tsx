@@ -63,6 +63,7 @@ export const SupplyModalContentWrapper = (
   params: ModalWrapperProps & { user: ExtendedFormattedUser }
 ) => {
   const user = params.user;
+  const { isConnectedTonWallet } = useTonConnectContext();
   const { currentMarketData } = useProtocolDataContext();
   const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances } = useWalletBalances(currentMarketData);
@@ -105,7 +106,8 @@ export const SupplyModalContentWrapper = (
       userReserve,
       user.totalCollateralUSD,
       user.isInIsolationMode,
-      debtCeilingUsage.isMaxed
+      debtCeilingUsage.isMaxed,
+      isConnectedTonWallet
     ),
     supplyCapWarning: supplyCapUsage.determineWarningDisplay({ supplyCap: supplyCapUsage }),
     debtCeilingWarning: debtCeilingUsage.determineWarningDisplay({ debtCeiling: debtCeilingUsage }),

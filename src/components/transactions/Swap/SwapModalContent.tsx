@@ -17,6 +17,7 @@ import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
@@ -47,6 +48,7 @@ export const SwapModalContent = ({
   user,
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { reserves, marketReferencePriceInUsd } = useAppDataContext();
+  const { isConnectedTonWallet } = useTonConnectContext();
   const { currentChainId, currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
@@ -184,7 +186,8 @@ export const SwapModalContent = ({
     userReserve,
     user.totalCollateralUSD,
     user.isInIsolationMode,
-    sourceDebtCeiling
+    sourceDebtCeiling,
+    isConnectedTonWallet
   );
 
   const { debtCeilingReached: targetDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
@@ -192,7 +195,8 @@ export const SwapModalContent = ({
     swapTarget,
     user.totalCollateralUSD,
     user.isInIsolationMode,
-    targetDebtCeiling
+    targetDebtCeiling,
+    isConnectedTonWallet
   );
 
   // If the user is swapping all of their isolated asset to an asset that is not supplied,

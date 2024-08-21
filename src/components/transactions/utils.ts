@@ -45,10 +45,14 @@ export const getAssetCollateralType = (
   userReserve: ComputedUserReserveData,
   userTotalCollateralUSD: string,
   userIsInIsolationMode: boolean,
-  debtCeilingIsMaxed: boolean
+  debtCeilingIsMaxed: boolean,
+  isConnectedTonWallet?: boolean
 ) => {
   const poolReserve = userReserve?.reserve;
 
+  if (!poolReserve?.usageAsCollateralEnabled && isConnectedTonWallet) {
+    return CollateralType.ENABLED;
+  }
   if (!poolReserve?.usageAsCollateralEnabled) {
     return CollateralType.UNAVAILABLE;
   }
