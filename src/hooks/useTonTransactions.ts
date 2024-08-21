@@ -63,10 +63,10 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             .endCell() //tokenAddress: Address
         );
 
-        return true;
+        return { success: true, message: 'success' };
       } catch (error) {
         console.error('Transaction failed:', error);
-        return { success: false, error };
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
     [client, providerJettonMinter, sender, underlyingAssetTon, yourAddressWallet]
@@ -85,10 +85,10 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           params //via: Sender
         );
 
-        return true;
+        return { success: true, message: 'success' };
       } catch (error) {
         console.error('Transaction failed:', error);
-        return { success: false, error };
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
     [client, providerPoolAssetTon, sender, yourAddressWallet]
@@ -97,8 +97,15 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   const onSendSupplyTon = useCallback(
     async (amount: string, isJetton: boolean | undefined) => {
       try {
-        if (isJetton) await onSendJettonToken(amount);
-        else await onSendNativeToken(amount);
+        let res:
+          | boolean
+          | {
+              success: boolean;
+              message: string;
+            }
+          | undefined;
+        if (isJetton) res = await onSendJettonToken(amount);
+        else res = await onSendNativeToken(amount);
 
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
@@ -109,9 +116,12 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           console.log('status--------------', status);
 
           return { success: true, txHash: txHash };
+        } else if (
+          res?.message === '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent'
+        ) {
+          throw new Error(`MetaMask Tx Signature: User denied transaction signature.`);
         }
       } catch (error) {
-        console.error('Transaction failed:', error);
         return { success: false, error };
       }
     },
