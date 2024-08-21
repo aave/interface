@@ -123,7 +123,7 @@ export function generateRawUserSummaryTon({
 
   const currentLoanToValue = currentLtv;
 
-  const debtAPY = Number(valueToBigNumber(totalBorrowsUSD).div(totalCollateralUSD));
+  const debtAPY = Number(weightedAvgBorrowAPY);
 
   const availableBorrowsUSD = Number(valueToBigNumber(totalCollateralUSD).minus(totalBorrowsUSD));
 
