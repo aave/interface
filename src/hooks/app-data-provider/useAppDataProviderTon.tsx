@@ -280,7 +280,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               totalVariableDebtUSD: '127227.13920693082542400187',
               totalStableDebtUSD: '0',
               borrowCapUSD: '1128850.9843008',
-              supplyCapUSD: '11288509.843008',
               unbackedUSD: '0',
               aIncentivesData: [
                 {
@@ -324,7 +323,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 baseVariableBorrowRate: '0',
                 optimalUsageRatio: '450000000000000000000000000',
                 eModeCategoryId: 0,
-                borrowCap: '222',
                 eModeLtv: baseLTVasCollateral,
                 eModeLiquidationThreshold: reserveLiquidationThreshold,
                 eModeLiquidationBonus: 10100,
@@ -361,8 +359,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 totalDebtUSD: '127227.13920693082542400187',
                 totalVariableDebtUSD: '127227.13920693082542400187',
                 totalStableDebtUSD: '0',
-                borrowCapUSD: '1128850.9843008',
-                supplyCapUSD: '11288509.843008',
                 unbackedUSD: '0',
                 aIncentivesData: [
                   {
@@ -385,7 +381,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 reserveFactor: item.reserveFactor.toString(),
                 isPaused: item.isPaused,
                 debtCeiling: item.debtCeiling.toString(),
-                supplyCap: item.supplyCap.toString(),
+                borrowCap: formatUnits(item.borrowCap || '0', item.decimals),
+                supplyCap: formatUnits(item.supplyCap || '0', item.decimals),
                 isActive: item.isActive,
                 isFrozen: item.isFrozen,
                 liquidityIndex: item.liquidityIndex.toString(),
@@ -415,12 +412,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               totalStableDebt: formatUnits(item.totalStableDebt || '0', item.decimals),
 
               //
-              borrowCap: item.borrowCap.toString(),
               currentLiquidityRate: item.currentLiquidityRate.toString(),
               lastUpdateTimestamp: Number(item.lastUpdateTimestamp.toString()),
               liquidityIndex: item.liquidityIndex.toString(),
               reserveFactor: item.reserveFactor.toString(),
-              supplyCap: item.supplyCap.toString(),
+              borrowCap: formatUnits(item.borrowCap || '0', item.decimals),
+              supplyCap: formatUnits(item.supplyCap || '0', item.decimals),
               underlyingAsset: item.underlyingAddress.toString().toLocaleLowerCase(),
               id: `10-${item.underlyingAddress
                 .toString()
@@ -478,6 +475,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     await fetchData();
   }, [
     client,
+    fetchBalanceTon,
     getPoolJettonWalletAddress,
     onGetBalanceTonNetwork,
     poolContract,
@@ -521,6 +519,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .multipliedBy(reserve.formattedAvailableLiquidity || 0)
         .toString();
 
+      const borrowCapUSD = valueToBigNumber(priceInUSD)
+        .multipliedBy(reserve.borrowCap || 0)
+        .toString();
+      const supplyCapUSD = valueToBigNumber(priceInUSD)
+        .multipliedBy(reserve.supplyCap || 0)
+        .toString();
+
       return {
         ...reserve,
         walletBalanceUSD,
@@ -528,6 +533,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         formattedPriceInMarketReferenceCurrency: priceInUSD,
         totalLiquidityUSD,
         availableLiquidityUSD,
+        borrowCapUSD,
+        supplyCapUSD,
         reserve: {
           ...reserve.reserve,
           walletBalanceUSD,
@@ -535,6 +542,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           formattedPriceInMarketReferenceCurrency: priceInUSD,
           totalLiquidityUSD,
           availableLiquidityUSD,
+          borrowCapUSD,
+          supplyCapUSD,
         },
       };
     });
