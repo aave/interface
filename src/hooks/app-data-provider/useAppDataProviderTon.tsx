@@ -184,8 +184,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               duration: SECONDS_PER_YEAR,
             });
 
+            const variableBorrowRate = item.currentVariableBorrowRate
+              .toString()
+              .toString()
+              .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+
             const variableBorrowAPY = calculateCompoundedRate({
-              rate: item.currentVariableBorrowRate.toString().toString().substring(0, RAY_DECIMALS), // cut from 0 to 27 index
+              rate: variableBorrowRate,
               duration: SECONDS_PER_YEAR,
             });
 
@@ -230,7 +235,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               borrowingEnabled: true,
               stableBorrowRateEnabled: false,
               liquidityRate: liquidityRate,
-              variableBorrowRate: '1111',
+              variableBorrowRate: variableBorrowRate,
               stableBorrowRate: stableBorrowRate,
               aTokenAddress: '0x1c0E06a0b1A4c160c17545FF2A951bfcA57C0002',
               stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
@@ -306,7 +311,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 borrowingEnabled: true,
                 stableBorrowRateEnabled: false,
                 liquidityRate: liquidityRate,
-                variableBorrowRate: '1111',
+                variableBorrowRate: variableBorrowRate,
                 stableBorrowRate: stableBorrowRate,
                 aTokenAddress: '0x1c0E06a0b1A4c160c17545FF2A951bfcA57C0002',
                 stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
@@ -514,7 +519,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         formatUnits(numberFormateUSD, dataById?.decimal)
       ).toString();
 
-      const walletBalanceUSD = valueToBigNumber(priceInUSD)
+      const walletBalanceUSD = valueToBigNumber(formattedPriceInUSD)
         .multipliedBy(reserve.walletBalance || 0)
         .toString();
 
