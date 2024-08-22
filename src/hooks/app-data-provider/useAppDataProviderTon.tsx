@@ -82,11 +82,15 @@ export interface PoolContractReservesDataType {
 
 export const address_pools = 'EQDb9JsZ1QOwszqEzpJmnMJAAXukXzchlrV6Q08nJ83oVjbw';
 export const MAX_ATTEMPTS = 10;
+export const GAS_FEE_TON = 0.3;
 
 export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
+  const [gasFeeTonMarketReferenceCurrency, setGasFeeTonMarketReferenceCurrency] = useState<
+    number | string
+  >('0');
   const [poolContractReservesData, setPoolContractReservesData] = useState<
     PoolContractReservesDataType[]
   >([]);
@@ -526,6 +530,14 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .multipliedBy(reserve.supplyCap || 0)
         .toString();
 
+      if (dataById?.address === address_pools) {
+        setGasFeeTonMarketReferenceCurrency(
+          valueToBigNumber(priceInUSD)
+            .multipliedBy(GAS_FEE_TON || 0)
+            .toString()
+        );
+      }
+
       return {
         ...reserve,
         walletBalanceUSD,
@@ -566,5 +578,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     getPoolContractGetReservesData,
     setReservesTon,
     yourWalletBalanceTon,
+    gasFeeTonMarketReferenceCurrency,
   };
 };

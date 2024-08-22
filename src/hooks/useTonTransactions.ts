@@ -8,7 +8,7 @@ import { Pool } from 'src/contracts/Pool';
 import { getMultiSig } from 'src/contracts/utils';
 
 // import { KeyPair, sign } from 'ton-crypto';
-import { address_pools } from './app-data-provider/useAppDataProviderTon';
+import { address_pools, GAS_FEE_TON } from './app-data-provider/useAppDataProviderTon';
 import { FormattedReservesAndIncentives } from './pool/usePoolFormattedReserves';
 import { useContract } from './useContract';
 import { useTonClient } from './useTonClient';
@@ -50,7 +50,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       try {
         await providerJettonWallet.sendTransfer(
           sender, //via: Sender,
-          toNano('0.3'), //value: bigint, --- gas fee default 1
+          toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
           BigInt(amount), // User input amount
           Address.parse(address_pools), //Address poll
           Address.parse(yourAddressWallet), // User address wallet

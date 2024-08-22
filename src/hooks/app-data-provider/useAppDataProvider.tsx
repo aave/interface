@@ -76,6 +76,7 @@ export interface AppDataContextType {
   getYourSupplies: () => void;
   getPoolContractGetReservesData: () => void;
   yourWalletBalanceTon?: string;
+  gasFeeTonMarketReferenceCurrency: string | number;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -98,6 +99,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     loading: loadingReservesTon,
     yourWalletBalanceTon,
     getPoolContractGetReservesData,
+    gasFeeTonMarketReferenceCurrency,
   } = useAppDataProviderTon(ExchangeRateListUSD);
 
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
@@ -209,6 +211,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         getPoolContractGetReservesData,
         getYourSupplies,
         yourWalletBalanceTon,
+        gasFeeTonMarketReferenceCurrency,
       }}
     >
       {children}

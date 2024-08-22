@@ -7,11 +7,13 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import { GasTooltip } from 'src/components/infoTooltips/GasTooltip';
 import { Warning } from 'src/components/primitives/Warning';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { usePoolReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useModalContext } from 'src/hooks/useModal';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
@@ -50,6 +52,8 @@ export const GasStation: React.FC<GasStationProps> = ({
   chainId,
 }) => {
   const { state } = useGasStation();
+  const { gasFeeTonMarketReferenceCurrency } = useAppDataContext();
+  const { isConnectedTonWallet } = useTonConnectContext();
   const [currentChainId, account] = useRootStore((store) => [store.currentChainId, store.account]);
   const selectedChainId = chainId ?? currentChainId;
   // TODO: find a better way to query base token price instead of using a random market.
@@ -94,7 +98,7 @@ export const GasStation: React.FC<GasStationProps> = ({
           ) : totalGasCostsUsd && !disabled ? (
             <>
               <FormattedNumber
-                value={totalGasCostsUsd}
+                value={isConnectedTonWallet ? gasFeeTonMarketReferenceCurrency : totalGasCostsUsd}
                 symbol="USD"
                 color={theme.palette.text.subTitle}
                 variant="detail3"
