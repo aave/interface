@@ -8,6 +8,7 @@ import {
   ExtendedFormattedUser,
 } from '../hooks/app-data-provider/useAppDataProvider';
 import { roundToTokenDecimals } from './utils';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 // Subset of ComputedReserveData
 interface PoolReserveBorrowSubset {
@@ -27,13 +28,25 @@ interface PoolReserveBorrowSubset {
  * @param userReserve
  * @param user
  */
+
 export function getMaxAmountAvailableToBorrow(
   poolReserve: PoolReserveBorrowSubset & { priceInUSD?: string },
   user: FormatUserSummaryAndIncentivesResponse & { collateralInUSDAsset?: string },
   rateMode: InterestRate
 ): string {
+  const { isConnectedTonWallet } = useTonConnectContext();
+
   const availableInPoolUSD = poolReserve.availableLiquidityUSD;
   const availableForUserUSD = BigNumber.min(user.availableBorrowsUSD, availableInPoolUSD);
+
+  if (isConnectedTonWallet) {
+    const resultAvailableBorrow = valueToBigNumber(Number(user?.collateralInUSDAsset))
+      .minus(user.totalBorrowsMarketReferenceCurrency)
+      .div(poolReserve.formattedPriceInMarketReferenceCurrency)
+      .toString();
+
+    return resultAvailableBorrow;
+  }
 
   const availableBorrowCap =
     poolReserve.borrowCap === '0'
