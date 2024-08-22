@@ -509,7 +509,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .toFixed(0)
         .toString();
 
-      const priceInUSD = Number(formatUnits(numberFormateUSD, dataById?.decimal)).toString();
+      const priceInUSD = Number(formatUnits(numberFormateUSD)).toString();
+      const formattedPriceInUSD = Number(
+        formatUnits(numberFormateUSD, dataById?.decimal)
+      ).toString();
 
       const walletBalanceUSD = valueToBigNumber(priceInUSD)
         .multipliedBy(reserve.walletBalance || 0)
@@ -542,7 +545,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         ...reserve,
         walletBalanceUSD,
         priceInUSD,
-        formattedPriceInMarketReferenceCurrency: priceInUSD,
+        formattedPriceInMarketReferenceCurrency: formattedPriceInUSD,
+        priceInMarketReferenceCurrency: formattedPriceInUSD,
         totalLiquidityUSD,
         availableLiquidityUSD,
         borrowCapUSD,
@@ -551,7 +555,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           ...reserve.reserve,
           walletBalanceUSD,
           priceInUSD,
-          formattedPriceInMarketReferenceCurrency: priceInUSD,
+          formattedPriceInMarketReferenceCurrency: formattedPriceInUSD,
+          priceInMarketReferenceCurrency: formattedPriceInUSD,
           totalLiquidityUSD,
           availableLiquidityUSD,
           borrowCapUSD,

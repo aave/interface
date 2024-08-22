@@ -130,7 +130,12 @@ export const BorrowModalContent = ({
 
   const { isConnectedTonWallet } = useTonConnectContext();
   // amount calculations
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
+    poolReserve,
+    user,
+    interestRateMode,
+    isConnectedTonWallet
+  );
 
   // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected

@@ -10,6 +10,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
   displayGhoForMintableMarket,
@@ -95,6 +96,7 @@ const head = [
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
+  const { isConnectedTonWallet } = useTonConnectContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
@@ -106,7 +108,14 @@ export const BorrowAssetsList = () => {
     .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
     .map((reserve: ComputedReserveData) => {
       const availableBorrows = user
-        ? Number(getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable))
+        ? Number(
+            getMaxAmountAvailableToBorrow(
+              reserve,
+              user,
+              InterestRate.Variable,
+              isConnectedTonWallet
+            )
+          )
         : 0;
 
       const availableBorrowsInUSD = valueToBigNumber(availableBorrows)

@@ -1,6 +1,11 @@
-import { normalize, valueToBigNumber } from '@aave/math-utils';
+import {
+  BigNumberValue,
+  getCompoundedBalance,
+  getLinearBalance,
+  getMarketReferenceCurrencyAndUsdBalance,
+  normalize,
+} from '@aave/math-utils';
 import { Address, toNano } from '@ton/core';
-import { formatUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
@@ -9,6 +14,7 @@ import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { address_pools, MAX_ATTEMPTS } from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
+import { useCurrentTimestamp } from './useCurrentTimestamp';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
@@ -31,6 +37,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   const [loading, setLoading] = useState<boolean>(false);
   const [yourSuppliesTon, setYourSuppliesTon] = useState<FormattedUserReserves[]>([]);
   const [userSupplies, setUserSupplies] = useState<UserSuppliesType[]>([]);
+  const currentTimestamp = useCurrentTimestamp(1);
 
   const getYourSupplies = useCallback(async () => {
     let attempts = 0;
@@ -79,48 +86,70 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
             )
           )
           .map(async (reserve) => {
+            const {
+              priceInMarketReferenceCurrency,
+              decimals,
+              liquidityIndex,
+              liquidityRate,
+              lastUpdateTimestamp,
+              variableBorrowIndex,
+              variableBorrowRate,
+            } = reserve;
+
+            const normalizeWithReserve = (n: BigNumberValue) => normalize(n, decimals);
+
             const matchedSupply = _.find(
               userSupplies,
               (yourSupply) =>
                 reserve.poolJettonWalletAddress === yourSupply.underlyingAddress.toString()
             );
 
-            const underlyingBalance = normalize(
-              matchedSupply?.supplyBalance.toString() || '0',
-              reserve.decimals
-            );
+            const underlyingBalance = getLinearBalance({
+              balance: matchedSupply?.supplyBalance.toString() || '0', // reserve.scaledATokenBalance
+              index: liquidityIndex,
+              rate: liquidityRate,
+              lastUpdateTimestamp: lastUpdateTimestamp,
+              currentTimestamp,
+            });
 
-            const variableBorrows = normalize(
-              matchedSupply?.variableBorrowBalance.toString() || '0',
-              reserve.decimals
-            );
+            const balanceRequest = {
+              balance: matchedSupply?.supplyBalance.toString() || '0',
+              priceInMarketReferenceCurrency: priceInMarketReferenceCurrency,
+              marketReferenceCurrencyDecimals: decimals,
+              decimals: decimals,
+              marketReferencePriceInUsdNormalized: priceInMarketReferenceCurrency,
+            };
 
-            const underlyingBalanceUSD = valueToBigNumber(reserve.priceInUSD)
-              .multipliedBy(underlyingBalance)
-              .toString();
+            const { marketReferenceCurrencyBalance: underlyingBalanceMarketReferenceCurrency } =
+              getMarketReferenceCurrencyAndUsdBalance(balanceRequest);
 
-            const variableBorrowsUSD = valueToBigNumber(reserve.priceInUSD)
-              .multipliedBy(variableBorrows)
-              .toString();
+            const variableBorrows = getCompoundedBalance({
+              principalBalance: matchedSupply?.variableBorrowBalance.toString() || '0',
+              reserveIndex: variableBorrowIndex,
+              reserveRate: variableBorrowRate,
+              lastUpdateTimestamp: lastUpdateTimestamp,
+              currentTimestamp,
+            });
+
+            const { marketReferenceCurrencyBalance: variableBorrowsMarketReferenceCurrency } =
+              getMarketReferenceCurrencyAndUsdBalance({
+                balance: variableBorrows,
+                priceInMarketReferenceCurrency,
+                marketReferenceCurrencyDecimals: decimals,
+                decimals,
+                marketReferencePriceInUsdNormalized: priceInMarketReferenceCurrency,
+              });
 
             return {
               ...reserve,
-              underlyingBalance,
-              underlyingBalanceUSD,
+              underlyingBalance: normalizeWithReserve(underlyingBalance),
+              underlyingBalanceUSD: normalize(underlyingBalanceMarketReferenceCurrency, 0),
 
-              variableBorrowsUSD,
-              variableBorrows,
+              variableBorrows: normalizeWithReserve(variableBorrows),
+              variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0),
 
               reserveID: matchedSupply?.underlyingAddress.toString(),
               usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
-              id: reserve.id,
-              underlyingAsset: reserve.underlyingAsset,
-              scaledATokenBalance: reserve.scaledATokenBalance,
-              stableBorrowRate: reserve.stableBorrowRate,
-              scaledVariableDebt: reserve.scaledVariableDebt,
-              principalStableDebt: reserve.principalStableDebt,
-              stableBorrowLastUpdateTimestamp: reserve.stableBorrowLastUpdateTimestamp,
-              underlyingBalanceMarketReferenceCurrency: underlyingBalanceUSD,
             };
           })
           .value()
@@ -130,6 +159,8 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
     } catch (error) {
       console.error('Error fetching supplies:', error);
     }
+    // }, [currentTimestamp, reserves, userSupplies]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reserves, userSupplies]);
 
   useEffect(() => {

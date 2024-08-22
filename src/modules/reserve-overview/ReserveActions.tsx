@@ -28,6 +28,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
@@ -65,6 +66,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
 
   const { currentAccount, loading: loadingWeb3Context } = useWeb3Context();
+  const { isConnectedTonWallet } = useTonConnectContext();
   const { openBorrow, openSupply } = useModalContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
@@ -101,7 +103,8 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     maxAmountToBorrow = getMaxAmountAvailableToBorrow(
       reserve,
       user,
-      InterestRate.Variable
+      InterestRate.Variable,
+      isConnectedTonWallet
     ).toString();
 
     maxAmountToSupply = getMaxAmountAvailableToSupply(

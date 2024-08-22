@@ -55,7 +55,12 @@ export const calculateTotalCollateralUSD = (
   getFactor: (reserve: FormattedUserReserves | FormattedReservesAndIncentives) => number
 ): number => {
   const formattedReserves = reserves as (FormattedUserReserves | FormattedReservesAndIncentives)[];
-  return formattedReserves.reduce(
+
+  const newFormattedReserves = formattedReserves.filter(
+    (item: FormattedUserReserves | FormattedReservesAndIncentives) =>
+      item.usageAsCollateralEnabledOnUser
+  );
+  return newFormattedReserves.reduce(
     (total: number, reserve: FormattedUserReserves | FormattedReservesAndIncentives) => {
       const underlyingBalance = parseFloat(reserve?.underlyingBalanceUSD || '0');
       const factor = getFactor(reserve);
