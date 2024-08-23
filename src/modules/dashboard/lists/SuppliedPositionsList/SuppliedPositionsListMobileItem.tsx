@@ -20,6 +20,7 @@ export const SuppliedPositionsListMobileItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
+  image,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { currentMarketData, currentMarket } = useProtocolDataContext();
@@ -61,6 +62,7 @@ export const SuppliedPositionsListMobileItem = ({
       showSupplyCapTooltips
       showDebtCeilingTooltips
       showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY)}
+      img={image}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
