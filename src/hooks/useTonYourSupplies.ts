@@ -140,6 +140,30 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
                 marketReferencePriceInUsdNormalized: priceInMarketReferenceCurrency,
               });
 
+            // const stableBorrows = getCompoundedStableBalance({
+            //   principalBalance: principalStableDebt,
+            //   userStableRate: stableBorrowRate,
+            //   lastUpdateTimestamp: stableBorrowLastUpdateTimestamp,
+            //   currentTimestamp,
+            // });
+
+            // const {
+            //   marketReferenceCurrencyBalance: stableBorrowsMarketReferenceCurrency,
+            //   usdBalance: stableBorrowsUSD,
+            // } = getMarketReferenceCurrencyAndUsdBalance({
+            //   balance: stableBorrows,
+            //   priceInMarketReferenceCurrency,
+            //   marketReferenceCurrencyDecimals,
+            //   decimals,
+            //   marketReferencePriceInUsdNormalized,
+            // });
+
+            const stableBorrowsMarketReferenceCurrency = 0;
+
+            const totalBorrowsMarketReferenceCurrency = variableBorrowsMarketReferenceCurrency.plus(
+              stableBorrowsMarketReferenceCurrency
+            );
+
             return {
               ...reserve,
               underlyingBalance: normalizeWithReserve(underlyingBalance),
@@ -158,8 +182,17 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               scaledVariableDebt: reserve.scaledVariableDebt,
               principalStableDebt: reserve.principalStableDebt,
               stableBorrowLastUpdateTimestamp: reserve.stableBorrowLastUpdateTimestamp,
+
               underlyingBalanceMarketReferenceCurrency: normalize(
                 underlyingBalanceMarketReferenceCurrency,
+                0
+              ),
+              variableBorrowsMarketReferenceCurrency: normalize(
+                variableBorrowsMarketReferenceCurrency,
+                0
+              ),
+              totalBorrowsMarketReferenceCurrency: normalize(
+                totalBorrowsMarketReferenceCurrency,
                 0
               ),
             };
