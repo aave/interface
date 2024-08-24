@@ -7,10 +7,9 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import userTon from '@public/assume-user.json';
-import { Address, Cell, ContractProvider, OpenedContract, Sender } from '@ton/core';
+import { Address, Cell, ContractProvider, Sender } from '@ton/core';
 import { formatUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useState } from 'react';
-import { JettonMinter } from 'src/contracts/JettonMinter';
 import { Pool } from 'src/contracts/Pool';
 import { useContract } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -48,20 +47,15 @@ export interface MetadataContentAssetTon {
 
 export interface PoolContractReservesDataType {
   LTV: number;
-  accruedToTreasury: bigint | 0;
   averageStableBorrowRate: bigint | 0;
-  symbol?: string | undefined;
-  name?: string | undefined;
-  description?: string | undefined;
-  image?: string | undefined;
-  image_data?: string | undefined;
-  decimals: string | number;
-  reserveID: string;
   borrowCap: bigint | string | 0 | number;
   currentLiquidityRate: bigint | string | 0 | number;
   currentStableBorrowRate: bigint | string | 0 | number;
   currentVariableBorrowRate: bigint | string | 0 | number;
   debtCeiling: bigint | string | 0 | number;
+  decimals: string | number;
+  description?: string | undefined;
+  image?: string | undefined;
   isActive: boolean;
   isBorrowingEnabled: boolean;
   isFrozen: boolean;
@@ -69,18 +63,27 @@ export interface PoolContractReservesDataType {
   isPaused: boolean;
   lastUpdateTimestamp: bigint | string | 0 | number;
   liquidationThreshold: bigint | string | 0 | number;
+  liquidity: bigint | string | 0 | number;
   liquidityIndex: bigint | string | 0 | number;
+  name?: string | undefined;
+  poolJWAddress: Address;
   reserveFactor: bigint | string | 0 | number;
-  stableBorrowIndex: bigint | string | 0 | number;
+  reserveID: bigint | string;
   supplyCap: bigint | string | 0 | number;
+  symbol?: string | undefined;
   totalStableDebt: bigint | string | 0 | number;
   totalSupply: bigint | string | 0 | number;
   totalVariableDebt: bigint | string | 0 | number;
   underlyingAddress: Address;
   variableBorrowIndex: bigint | 0;
+
+  // accruedToTreasury: bigint | 0;
+  // image_data?: string | undefined;
+  // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQDb9JsZ1QOwszqEzpJmnMJAAXukXzchlrV6Q08nJ83oVjbw';
+export const address_pools = 'EQCcTLBaNSSkieiaguIga3T6zoH6h9dQKLjLQMtUR59_mB_o';
+// export const address_pools = 'EQDb9JsZ1QOwszqEzpJmnMJAAXukXzchlrV6Q08nJ83oVjbw';
 export const MAX_ATTEMPTS = 10;
 export const GAS_FEE_TON = 0.3;
 
@@ -100,18 +103,18 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const { balance: yourWalletBalanceTon, refetch: fetchBalanceTon } =
     useTonBalance(walletAddressTonWallet);
 
-  const getPoolJettonWalletAddress = useCallback(
-    async (address: string) => {
-      if (!client || !address_pools || !address) return null;
-      const contractJettonMinter = new JettonMinter(Address.parse(address));
-      const providerJettonMinter = client.open(
-        contractJettonMinter
-      ) as OpenedContract<JettonMinter>;
-      const poolJetton = await providerJettonMinter.getWalletAddress(Address.parse(address_pools));
-      return poolJetton;
-    },
-    [client]
-  );
+  // const getPoolJettonWalletAddress = useCallback(
+  //   async (address: string) => {
+  //     if (!client || !address_pools || !address) return null;
+  //     const contractJettonMinter = new JettonMinter(Address.parse(address));
+  //     const providerJettonMinter = client.open(
+  //       contractJettonMinter
+  //     ) as OpenedContract<JettonMinter>;
+  //     const poolJetton = await providerJettonMinter.getWalletAddress(Address.parse(address_pools));
+  //     return poolJetton;
+  //   },
+  //   [client]
+  // );
 
   const getPoolContractGetReservesData = useCallback(async () => {
     let attempts = 0;
@@ -123,7 +126,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         attempts++;
         if (!poolContract || !client || !walletAddressTonWallet) return;
         const reserves = await poolContract.getReservesData();
-        setPoolContractReservesData(reserves);
+        setPoolContractReservesData(reserves as PoolContractReservesDataType[]);
       } catch (error) {
         console.error(
           `Error fetching getPoolContractGetReservesData (attempt ${attempts}):`,
@@ -172,8 +175,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               : yourWalletBalanceTon;
 
             const poolJettonWalletAddress = item.isJetton
-              ? await getPoolJettonWalletAddress(item.underlyingAddress.toString())
-              : item.underlyingAddress;
+              ? item.poolJWAddress.toString()
+              : item.underlyingAddress.toString();
 
             const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
@@ -220,7 +223,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               item.totalStableDebt.toString()
             );
 
-            const totalLiquidity = item.totalSupply.toString();
+            // const totalLiquidity = item.totalSupply.toString();
+            const totalLiquidity = item.liquidity.toString(); // cần confirm lại sửa dụng totalSupply hay liquidity
 
             const availableLiquidity = valueToBigNumber(totalLiquidity).minus(totalBorrowed);
 
@@ -397,7 +401,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 liquidityIndex: item.liquidityIndex.toString(),
                 variableBorrowIndex: item.variableBorrowIndex.toString(),
                 lastUpdateTimestamp: Number(item.lastUpdateTimestamp.toString()),
-                accruedToTreasury: item.accruedToTreasury.toString(),
+                // accruedToTreasury: item.accruedToTreasury.toString(),
                 totalVariableDebt: formatUnits(item.totalVariableDebt || '0', item.decimals),
                 totalStableDebt: formatUnits(item.totalStableDebt || '0', item.decimals),
               },
@@ -417,7 +421,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               isFrozen: item.isFrozen,
               isPaused: item.isPaused,
               debtCeiling: item.debtCeiling.toString(),
-              accruedToTreasury: item.accruedToTreasury.toString(),
+              // accruedToTreasury: item.accruedToTreasury.toString(),
               totalStableDebt: formatUnits(item.totalStableDebt || '0', item.decimals),
 
               //
@@ -437,7 +441,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               currentVariableBorrowRate: item.currentVariableBorrowRate.toString(),
               description: item.description,
               isBorrowingEnabled: item.isBorrowingEnabled,
-              stableBorrowIndex: item.stableBorrowIndex.toString(),
+              // stableBorrowIndex: item.stableBorrowIndex.toString(),
               averageStableBorrowRate: item.averageStableBorrowRate.toString(),
               isJetton: item.isJetton,
               poolJettonWalletAddress: poolJettonWalletAddress?.toString(),
@@ -453,6 +457,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
               variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
               borrowRateMode: 'Variable',
+              reserveID: item.reserveID.toString(),
             };
           })
         );
@@ -485,7 +490,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   }, [
     client,
     fetchBalanceTon,
-    getPoolJettonWalletAddress,
     onGetBalanceTonNetwork,
     poolContract,
     poolContractReservesData,
@@ -514,7 +518,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .toFixed(0)
         .toString();
 
-      const priceInUSD = Number(formatUnits(numberFormateUSD)).toString();
+      const priceInUSD = Number(formatUnits(numberFormateUSD, dataById?.decimal)).toString();
+
       const formattedPriceInUSD = Number(
         formatUnits(numberFormateUSD, dataById?.decimal)
       ).toString();
@@ -523,24 +528,25 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .multipliedBy(reserve.walletBalance || 0)
         .toString();
 
-      const totalLiquidityUSD = valueToBigNumber(priceInUSD)
+      const totalLiquidityUSD = valueToBigNumber(formattedPriceInUSD)
         .multipliedBy(reserve.totalLiquidity || 0)
         .toString();
 
-      const availableLiquidityUSD = valueToBigNumber(priceInUSD)
+      const availableLiquidityUSD = valueToBigNumber(formattedPriceInUSD)
         .multipliedBy(reserve.formattedAvailableLiquidity || 0)
         .toString();
 
-      const borrowCapUSD = valueToBigNumber(priceInUSD)
+      const borrowCapUSD = valueToBigNumber(formattedPriceInUSD)
         .multipliedBy(reserve.borrowCap || 0)
         .toString();
-      const supplyCapUSD = valueToBigNumber(priceInUSD)
+
+      const supplyCapUSD = valueToBigNumber(formattedPriceInUSD)
         .multipliedBy(reserve.supplyCap || 0)
         .toString();
 
       if (dataById?.address === address_pools) {
         setGasFeeTonMarketReferenceCurrency(
-          valueToBigNumber(priceInUSD)
+          valueToBigNumber(formattedPriceInUSD)
             .multipliedBy(GAS_FEE_TON || 0)
             .toString()
         );

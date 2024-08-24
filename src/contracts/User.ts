@@ -127,35 +127,91 @@ export class User implements Contract {
     };
   }
 
-  unpackUserPrincipal(cell: Cell) {
-    const cs = cell.beginParse();
-    return {
-      supplyBalance: cs.loadCoins(),
-      stableBorrowBalance: cs.loadCoins(),
-      variableBorrowBalance: cs.loadCoins(),
-      previousIndex: cs.loadIntBig(128),
-      isCollateral: cs.loadBoolean(),
-    };
-  }
+  // async getUserSupplies(provider: ContractProvider) {
+  //     // const userCollateralMask = (await provider.get('get_supplied_collateral_mask', [])).stack.readNumber();
+
+  //     const { stack } = await provider.get('get_user_data', []);
+  //     console.log(stack);
+
+  //     stack.skip(3);
+
+  //     const principalList = stack.readCellOpt();
+  //     // console.log('principalList-----', principalList);
+  //     if (!principalList) {
+  //         console.log('Empty principal list');
+  //         return [];
+  //     }
+
+  //     const dict = Dictionary.loadDirect(Dictionary.Keys.BigUint(256), Dictionary.Values.Cell(), principalList);
+
+  //     const reserves = [];
+  //     let index = 0;
+  //     for (const key of dict.keys()) {
+  //         const value = dict.get(key);
+  //         console.log('🚀 ~ User ~ getUserSupplies ~ value:', value);
+  //         if (value) {
+  //             const cells = Cell.fromBoc(value.toBoc());
+  //             for (const cell of cells) {
+  //                 const a = cell.beginParse();
+
+  //                 // console.log(Buffer.from(key.toString(16)), 'hex');
+  //                 // console.log(key.toString(16));
+  //                 reserves[index] = {
+  //                     // reserveID: BigInt(key.toString()),
+  //                     underlyingAddress: Address.normalize(`0:${key.toString(16)}`),
+  //                     supplyBalance: a.loadCoins(),
+  //                     stableBorrowBalance: a.loadCoins(),
+  //                     variableBorrowBalance: a.loadCoins(),
+  //                     previousIndex: a.loadInt(128),
+  //                     isCollateral: a.loadBoolean(),
+  //                     // isCollateral: (userCollateralMask & Number(key.toString())) > 0,
+  //                 };
+  //                 console.log(reserves[index]);
+  //                 // console.log(`[${key}] - [${value}]`);
+  //                 index++;
+  //             }
+  //         }
+  //     }
+
+  //     return reserves;
+  // }
 
   async getUserSupplies(provider: ContractProvider) {
-    // const userCollateralMask = (await provider.get('get_supplied_collateral_mask', [])).stack.readNumber();
+    const { stack } = await provider.get('get_user_supply_data', []);
+    const supplies = stack.readTuple();
+    const reserves = stack.readTuple();
 
-    const { stack } = await provider.get('get_user_data', []);
-
-    stack.skip(3);
-    const userData = [];
-    const keyList = stack.readTuple();
-    const principalList = stack.readTuple();
-
-    while (keyList.remaining && principalList.remaining) {
-      const underlyingAddress = Address.normalize(`0:${keyList.readBigNumber().toString(16)}`);
-      const cs = principalList.readCell();
-      const config = this.unpackUserPrincipal(cs);
-
-      userData.push({ underlyingAddress, ...config });
+    const result = [];
+    while (supplies.remaining && reserves.remaining) {
+      const ds = supplies.readCell().beginParse();
+      const underlyingAddress = reserves.readAddress();
+      result.push({
+        totalSupply: ds.loadCoins(),
+        liquidityIndex: ds.loadUintBig(128),
+        isCollateral: ds.loadBoolean(),
+        underlyingAddress,
+      });
     }
 
-    return userData;
+    return result;
+  }
+
+  async getUserBorrowings(provider: ContractProvider) {
+    const { stack } = await provider.get('get_user_borrow_data', []);
+    const borrowings = stack.readTuple();
+    const reserves = stack.readTuple();
+
+    const result = [];
+    while (borrowings.remaining && reserves.remaining) {
+      const ds = borrowings.readCell().beginParse();
+      const underlyingAddress = reserves.readAddress();
+      result.push({
+        variableBorrowBalance: ds.loadCoins(),
+        previousIndex: ds.loadUintBig(128),
+        underlyingAddress,
+      });
+    }
+
+    return result;
   }
 }
