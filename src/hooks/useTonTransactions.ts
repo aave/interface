@@ -142,7 +142,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress) return;
 
       try {
-        const decimal = USD_DECIMALS; // poolReserve.decimals
+        const decimal = poolReserve.decimals; // poolReserve.decimals
         const parseAmount = parseUnits(amount, decimal).toString();
         // const parsePrice = parseUnits(poolReserve.priceInUSD, decimal).toString();
 

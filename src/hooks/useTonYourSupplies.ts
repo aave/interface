@@ -12,7 +12,11 @@ import { Pool } from 'src/contracts/Pool';
 import { User } from 'src/contracts/User';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
-import { address_pools, MAX_ATTEMPTS } from './app-data-provider/useAppDataProviderTon';
+import {
+  address_pools,
+  GAS_FEE_TON,
+  MAX_ATTEMPTS,
+} from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
 import { useCurrentTimestamp } from './useCurrentTimestamp';
 import { useTonClient } from './useTonClient';
@@ -244,7 +248,7 @@ export const useTonCollateral = ({ yourAddressWallet }: UseTransactionHandlerTon
       try {
         await collateralContract.sendUpdateCollateral(
           sender, //via: Sender,
-          toNano('0.3'), // gas 0.1
+          toNano(GAS_FEE_TON), // gas 0.1
           Address.parse(reserveId), // reserveID
           status // true = isCollateral, false = unCollateral
         );

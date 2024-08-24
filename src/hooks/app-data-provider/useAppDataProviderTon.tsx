@@ -223,8 +223,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               item.totalStableDebt.toString()
             );
 
-            // const totalLiquidity = item.totalSupply.toString();
-            const totalLiquidity = item.liquidity.toString(); // cần confirm lại sửa dụng totalSupply hay liquidity
+            const totalLiquidity = item.liquidity.toString();
 
             const availableLiquidity = valueToBigNumber(totalLiquidity).minus(totalBorrowed);
 

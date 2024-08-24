@@ -95,10 +95,16 @@ export const GasStation: React.FC<GasStationProps> = ({
 
           {loadingTxns && !skipLoad ? (
             <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          ) : totalGasCostsUsd && !disabled ? (
+          ) : (totalGasCostsUsd && !disabled) || isConnectedTonWallet ? (
             <>
               <FormattedNumber
-                value={isConnectedTonWallet ? gasFeeTonMarketReferenceCurrency : totalGasCostsUsd}
+                value={
+                  isConnectedTonWallet
+                    ? gasFeeTonMarketReferenceCurrency
+                    : totalGasCostsUsd
+                    ? totalGasCostsUsd
+                    : '-'
+                }
                 symbol="USD"
                 color={theme.palette.text.subTitle}
                 variant="detail3"
