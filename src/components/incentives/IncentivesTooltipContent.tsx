@@ -18,6 +18,11 @@ const IncentivesSymbolMap: {
     symbol: 'aWETH',
     aToken: true,
   },
+  aBasUSDC: {
+    tokenIconSymbol: 'usdc',
+    symbol: 'aUSDC',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
