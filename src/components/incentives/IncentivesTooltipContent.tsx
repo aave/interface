@@ -25,6 +25,23 @@ const IncentivesSymbolMap: {
   },
 };
 
+export const getSymbolMap = (incentive: ReserveIncentiveResponse) => {
+  const rewardTokenSymbol = incentive.rewardTokenSymbol;
+
+  return IncentivesSymbolMap[rewardTokenSymbol]
+    ? {
+        ...IncentivesSymbolMap[rewardTokenSymbol],
+        rewardTokenAddress: incentive.rewardTokenAddress,
+        incentiveAPR: incentive.incentiveAPR,
+      }
+    : {
+        ...incentive,
+        tokenIconSymbol: rewardTokenSymbol,
+        symbol: rewardTokenSymbol,
+        aToken: false,
+      };
+};
+
 interface IncentivesTooltipContentProps {
   incentives: ReserveIncentiveResponse[];
   incentivesNetAPR: 'Infinity' | number;
@@ -58,23 +75,6 @@ export const IncentivesTooltipContent = ({
         )}
       </Box>
     );
-  };
-
-  const getSymbolMap = (incentive: ReserveIncentiveResponse) => {
-    const rewardTokenSymbol = incentive.rewardTokenSymbol;
-
-    return IncentivesSymbolMap[rewardTokenSymbol]
-      ? {
-          ...IncentivesSymbolMap[rewardTokenSymbol],
-          rewardTokenAddress: incentive.rewardTokenAddress,
-          incentiveAPR: incentive.incentiveAPR,
-        }
-      : {
-          ...incentive,
-          tokenIconSymbol: rewardTokenSymbol,
-          symbol: rewardTokenSymbol,
-          aToken: false,
-        };
   };
 
   return (
