@@ -123,7 +123,8 @@ export const BorrowActions = React.memo(
           setMainTxState({ ...mainTxState, loading: true });
 
           const resBorrowTop = await onSendBorrowTon(amountToBorrow, poolReserve);
-          if (resBorrowTop?.success) {
+
+          if (!!resBorrowTop?.success) {
             await sleep(30000); // sleep 30s re call SC get new data reserve
             setMainTxState({
               txHash: resBorrowTop.txHash,
@@ -133,6 +134,12 @@ export const BorrowActions = React.memo(
             await getPoolContractGetReservesData();
             await getYourSupplies();
           } else {
+            const parsedError = getErrorTextFromError(
+              resBorrowTop?.error,
+              TxAction.GAS_ESTIMATION,
+              false
+            );
+            setTxError(parsedError);
             setMainTxState({
               txHash: undefined,
               loading: false,

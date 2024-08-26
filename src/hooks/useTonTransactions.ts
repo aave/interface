@@ -109,7 +109,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-        if (txHash) {
+
+        if (txHash && !!res?.success) {
           // setInterval(async () => {
           // }, 5000);
           // const status = await getTransactionStatus(txHash, yourAddressWallet);
@@ -119,7 +120,10 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         } else if (
           res?.message === '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent'
         ) {
-          throw new Error(`MetaMask Tx Signature: User denied transaction signature.`);
+          return {
+            success: false,
+            error: '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent',
+          };
         }
       } catch (error) {
         return { success: false, error };
@@ -128,19 +132,12 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [getLatestBoc, onGetGetTxByBOC, onSendJettonToken, onSendNativeToken, yourAddressWallet]
   );
 
-  const onSendBorrowTon = useCallback(
+  const onSendBorrowJettonToken = useCallback(
     async (amount: string, poolReserve: FormattedReservesAndIncentives) => {
-      // const beKeyPair: KeyPair = await getKeyPair();
       if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress) return;
-
       try {
         const decimal = poolReserve.decimals; // poolReserve.decimals
         const parseAmount = parseUnits(amount, decimal).toString();
-        // const parsePrice = parseUnits(poolReserve.priceInUSD, decimal).toString();
-
-        // const dataPrice = beginCell().storeInt(+parsePrice, 32).endCell();
-
-        // const sig = sign(dataPrice.hash(), beKeyPair.secretKey);
 
         const dataMultiSig = await getMultiSig({
           isMock: false,
@@ -153,28 +150,51 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           price_data: dataMultiSig,
         };
 
-        //   const params: BorrowParams = {
-        //     queryId: 1,
-        //     amount: borrowAmount, // amount borrow
-        //     poolJettonWalletAddress: await USDT.getWalletAddress(testEnv.pool.address),
-        //     price_data: dataMultiSig
-        // }
-
         await providerPool.sendBorrow(
           sender, //via: Sender
           params //via: Sender,
         );
 
+        return { success: true, message: 'success' };
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
+      }
+    },
+    [providerPool, sender]
+  );
+
+  const onSendBorrowTon = useCallback(
+    async (amount: string, poolReserve: FormattedReservesAndIncentives) => {
+      if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress)
+        return { success: false, message: 'error' };
+
+      try {
+        const res = await onSendBorrowJettonToken(amount, poolReserve);
+
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
-        return { success: true, txHash };
+        if (txHash && !!res?.success) {
+          // setInterval(async () => {
+          // }, 5000);
+          // const status = await getTransactionStatus(txHash, yourAddressWallet);
+          // console.log('status--------------', status);
+
+          return { success: true, txHash: txHash };
+        } else if (
+          res?.message === '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent'
+        ) {
+          return {
+            success: false,
+            error: '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent',
+          };
+        }
       } catch (error) {
-        console.error('Transaction failed:', error);
         return { success: false, error };
       }
     },
-    [getLatestBoc, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
+    [getLatestBoc, onGetGetTxByBOC, onSendBorrowJettonToken, providerPool, yourAddressWallet]
   );
 
   return {
