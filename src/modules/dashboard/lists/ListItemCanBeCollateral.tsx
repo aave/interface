@@ -7,14 +7,16 @@ import { ListItemIsolationBadge } from './ListItemIsolationBadge';
 interface ListItemCanBeCollateralProps {
   isIsolated: boolean;
   usageAsCollateralEnabled: boolean;
+  formattedBaseLTVasCollateral: string;
 }
 
 export const ListItemCanBeCollateral = ({
   isIsolated,
   usageAsCollateralEnabled,
+  formattedBaseLTVasCollateral,
 }: ListItemCanBeCollateralProps) => {
   const CollateralStates = () => {
-    if (usageAsCollateralEnabled && !isIsolated) {
+    if (usageAsCollateralEnabled && !isIsolated && formattedBaseLTVasCollateral !== '0') {
       return (
         <SvgIcon sx={{ color: 'success.main', fontSize: { xs: '20px', xsm: '24px' } }}>
           <CheckIcon />

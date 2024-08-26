@@ -31,6 +31,7 @@ export const SupplyAssetsListMobileItem = ({
   underlyingAsset,
   detailsAddress,
   isPaused,
+  formattedBaseLTVasCollateral,
 }: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
@@ -87,6 +88,7 @@ export const SupplyAssetsListMobileItem = ({
         mb={2}
       >
         <ListItemCanBeCollateral
+          formattedBaseLTVasCollateral={formattedBaseLTVasCollateral}
           isIsolated={isIsolated}
           usageAsCollateralEnabled={usageAsCollateralEnabledOnUser}
         />

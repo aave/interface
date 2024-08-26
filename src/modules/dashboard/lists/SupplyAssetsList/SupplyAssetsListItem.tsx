@@ -104,6 +104,7 @@ export const SupplyAssetsListItemDesktop = ({
   disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
+  formattedBaseLTVasCollateral,
 }: SupplyAssetsListItemProps) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentMarket = useRootStore((store) => store.currentMarket);
@@ -220,6 +221,7 @@ export const SupplyAssetsListItemDesktop = ({
           <NoData variant="main14" color="text.secondary" />
         ) : (
           <ListItemCanBeCollateral
+            formattedBaseLTVasCollateral={formattedBaseLTVasCollateral}
             isIsolated={isIsolated}
             usageAsCollateralEnabled={usageAsCollateralEnabledOnUser}
           />
@@ -313,6 +315,7 @@ export const SupplyAssetsListItemMobile = ({
   disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
+  formattedBaseLTVasCollateral,
 }: SupplyAssetsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
@@ -419,6 +422,7 @@ export const SupplyAssetsListItemMobile = ({
         mb={2}
       >
         <ListItemCanBeCollateral
+          formattedBaseLTVasCollateral={formattedBaseLTVasCollateral}
           isIsolated={isIsolated}
           usageAsCollateralEnabled={usageAsCollateralEnabledOnUser}
         />
