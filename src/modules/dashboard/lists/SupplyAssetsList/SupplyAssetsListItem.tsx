@@ -288,6 +288,7 @@ export const SupplyAssetsListItemMobile = ({
   disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
+  image,
 }: SupplyAssetsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
@@ -310,6 +311,7 @@ export const SupplyAssetsListItemMobile = ({
       currentMarket={currentMarket}
       showDebtCeilingTooltips
       showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
+      img={image}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <Row

@@ -228,6 +228,7 @@ const BorrowedPositionsListItemMobile = ({
   onOpenBorrow,
   onOpenRepay,
   onOpenRateSwitch,
+  image,
 }: BorrowedPositionsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
 
@@ -255,6 +256,7 @@ const BorrowedPositionsListItemMobile = ({
       borrowEnabled={reserve.borrowingEnabled}
       showBorrowCapTooltips
       showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.BORROW)}
+      img={image}
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}

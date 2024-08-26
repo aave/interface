@@ -26,6 +26,7 @@ export const BorrowAssetsListMobileItem = ({
   vIncentivesData,
   underlyingAsset,
   isFreezed,
+  image,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
@@ -40,6 +41,7 @@ export const BorrowAssetsListMobileItem = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.BORROW)}
+      img={image}
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
