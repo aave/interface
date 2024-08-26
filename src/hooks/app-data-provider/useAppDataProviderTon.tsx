@@ -82,7 +82,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQCcTLBaNSSkieiaguIga3T6zoH6h9dQKLjLQMtUR59_mB_o';
+export const address_pools = 'EQCyFlKjeGyVT6jOqjUk-E3McsNnwB7vQMDPA_KgVRGku5YC';
 // export const address_pools = 'EQDb9JsZ1QOwszqEzpJmnMJAAXukXzchlrV6Q08nJ83oVjbw';
 export const MAX_ATTEMPTS = 10;
 export const GAS_FEE_TON = 0.3;
@@ -174,9 +174,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               ? formatUnits(balance || '0', item.decimals)
               : yourWalletBalanceTon;
 
-            const poolJettonWalletAddress = item.isJetton
-              ? item.poolJWAddress.toString()
-              : item.underlyingAddress.toString();
+            // const poolJettonWalletAddress = item.isJetton
+            //   ? item.poolJWAddress.toString()
+            //   : item.underlyingAddress.toString();
+
+            const poolJettonWalletAddress = item.poolJWAddress.toString();
 
             const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 

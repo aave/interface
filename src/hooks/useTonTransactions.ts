@@ -1,4 +1,3 @@
-import { USD_DECIMALS } from '@aave/math-utils';
 import { Address, beginCell, Cell, OpenedContract, toNano } from '@ton/core';
 import { parseUnits } from 'ethers/lib/utils';
 import { useCallback } from 'react';
@@ -17,7 +16,7 @@ import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
-  const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
+  const { onGetGetTxByBOC } = useTonGetTxByBOC();
   const client = useTonClient();
   const { sender, getLatestBoc } = useTonConnect();
 
@@ -113,8 +112,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         if (txHash) {
           // setInterval(async () => {
           // }, 5000);
-          const status = await getTransactionStatus(txHash, yourAddressWallet);
-          console.log('status--------------', status);
+          // const status = await getTransactionStatus(txHash, yourAddressWallet);
+          // console.log('status--------------', status);
 
           return { success: true, txHash: txHash };
         } else if (
@@ -126,14 +125,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, error };
       }
     },
-    [
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      onSendJettonToken,
-      onSendNativeToken,
-      yourAddressWallet,
-    ]
+    [getLatestBoc, onGetGetTxByBOC, onSendJettonToken, onSendNativeToken, yourAddressWallet]
   );
 
   const onSendBorrowTon = useCallback(
