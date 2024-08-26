@@ -12,7 +12,11 @@ import { Pool } from 'src/contracts/Pool';
 import { User } from 'src/contracts/User';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
-import { address_pools, MAX_ATTEMPTS } from './app-data-provider/useAppDataProviderTon';
+import {
+  address_pools,
+  GAS_FEE_TON,
+  MAX_ATTEMPTS,
+} from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
 import { useCurrentTimestamp } from './useCurrentTimestamp';
 import { useTonClient } from './useTonClient';
@@ -24,12 +28,13 @@ interface UseTransactionHandlerTonProps {
 }
 
 export interface UserSuppliesType {
-  supplyBalance: bigint;
-  stableBorrowBalance: bigint;
-  variableBorrowBalance: bigint;
-  previousIndex: bigint;
-  isCollateral: boolean;
-  underlyingAddress: string;
+  supplyBalance: number | bigint | string;
+  totalSupply: number | bigint;
+  variableBorrowBalance: number | bigint;
+  liquidityIndex: number | bigint | string;
+  isCollateral: true;
+  underlyingAddress: Address | string;
+  previousIndex: number | bigint;
 }
 
 export const useTonYourSupplies = (yourAddressWallet: string, reserves: DashboardReserve[]) => {
@@ -49,8 +54,16 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
         attempts++;
         if (!client || !address_pools || !yourAddressWallet) return;
         const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
-        const res = await poolContract.getUserSupplies(Address.parse(yourAddressWallet));
-        return setUserSupplies(res);
+        const res = await poolContract.getUserData(Address.parse(yourAddressWallet));
+        const data = res.map((item) => {
+          return {
+            ...item,
+            supplyBalance: item.totalSupply.toString(),
+            underlyingAddress: item.underlyingAddress.toString(),
+            liquidityIndex: item.liquidityIndex.toString(),
+          };
+        });
+        return setUserSupplies(data);
       } catch (error) {
         console.error(`Error fetching getYourSupplies (attempt ${attempts}):`, error);
         if (attempts < maxAttempts) {
@@ -81,8 +94,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
           .filter((reserve) =>
             _.some(
               userSupplies,
-              (yourSupply) =>
-                reserve.poolJettonWalletAddress === yourSupply.underlyingAddress.toString()
+              (yourSupply) => reserve.underlyingAssetTon === yourSupply.underlyingAddress.toString()
             )
           )
           .map(async (reserve) => {
@@ -100,8 +112,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
             const matchedSupply = _.find(
               userSupplies,
-              (yourSupply) =>
-                reserve.poolJettonWalletAddress === yourSupply.underlyingAddress.toString()
+              (yourSupply) => reserve.underlyingAssetTon === yourSupply.underlyingAddress.toString()
             );
 
             const underlyingBalance = getLinearBalance({
@@ -172,7 +183,6 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               variableBorrows: normalizeWithReserve(variableBorrows),
               variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0),
 
-              reserveID: matchedSupply?.underlyingAddress.toString(),
               usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
 
               id: reserve.id,
@@ -238,7 +248,7 @@ export const useTonCollateral = ({ yourAddressWallet }: UseTransactionHandlerTon
       try {
         await collateralContract.sendUpdateCollateral(
           sender, //via: Sender,
-          toNano('0.3'), // gas 0.1
+          toNano(GAS_FEE_TON), // gas 0.1
           Address.parse(reserveId), // reserveID
           status // true = isCollateral, false = unCollateral
         );

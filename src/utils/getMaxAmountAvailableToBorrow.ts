@@ -52,6 +52,8 @@ export function getMaxAmountAvailableToBorrow(
       : valueToBigNumber(Number(poolReserve.borrowCap)).minus(
           valueToBigNumber(poolReserve.totalDebt)
         );
+
+  // formattedAvailableLiquidity đang sai trường này
   const availableLiquidity = BigNumber.max(
     BigNumber.min(poolReserve.formattedAvailableLiquidity, availableBorrowCap),
     0

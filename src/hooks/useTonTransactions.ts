@@ -16,7 +16,7 @@ import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
-  const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
+  const { onGetGetTxByBOC } = useTonGetTxByBOC();
   const client = useTonClient();
   const { sender, getLatestBoc } = useTonConnect();
 
@@ -112,8 +112,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         if (txHash) {
           // setInterval(async () => {
           // }, 5000);
-          const status = await getTransactionStatus(txHash, yourAddressWallet);
-          console.log('status--------------', status);
+          // const status = await getTransactionStatus(txHash, yourAddressWallet);
+          // console.log('status--------------', status);
 
           return { success: true, txHash: txHash };
         } else if (
@@ -125,14 +125,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, error };
       }
     },
-    [
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      onSendJettonToken,
-      onSendNativeToken,
-      yourAddressWallet,
-    ]
+    [getLatestBoc, onGetGetTxByBOC, onSendJettonToken, onSendNativeToken, yourAddressWallet]
   );
 
   const onSendBorrowTon = useCallback(
@@ -141,7 +134,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress) return;
 
       try {
-        const decimal = poolReserve.decimals;
+        const decimal = poolReserve.decimals; // poolReserve.decimals
         const parseAmount = parseUnits(amount, decimal).toString();
         // const parsePrice = parseUnits(poolReserve.priceInUSD, decimal).toString();
 

@@ -141,6 +141,7 @@ export default function MyApp(props: MyAppProps) {
         <QueryClientProvider client={queryClient}>
           <TonConnectUIProvider
             manifestUrl={`https://aave-stesting.sotatek.works/tonconnect-manifest.json`} // file manifestUrl in the public folder
+            // manifestUrl={`https://ton-connect.github.io/demo-dapp-with-react-ui/tonconnect-manifest.json`} // file manifestUrl in the public folder
             uiPreferences={{ theme: THEME.DARK }}
             walletsListConfiguration={{
               includeWallets: [

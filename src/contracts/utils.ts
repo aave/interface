@@ -1,15 +1,15 @@
 import { Address, beginCell, Cell, Dictionary, Slice } from '@ton/core';
 import { sha256_sync } from '@ton/crypto';
+import axios from 'axios';
+import { buffer } from 'stream/consumers';
+import { KeyPair, mnemonicNew, mnemonicToPrivateKey, sign } from 'ton-crypto';
 
-// import * as dotenv from 'dotenv';
-// import { KeyPair, mnemonicToPrivateKey } from 'ton-crypto';
 // import { JettonDictValueSerializer } from '../utils/contents/jetton';
 import { makeSnakeCell } from '../helpers/snake-cell';
 
-// dotenv.config();
-
 const ONCHAIN_CONTENT_PREFIX = 0x00;
 const OFFCHAIN_CONTENT_PREFIX = 0x01;
+const SNAKE_PREFIX = 0x00;
 
 export type JettonMetaDataKeys =
   | 'name'
@@ -30,6 +30,16 @@ const jettonOnChainMetadataSpec: {
   symbol: 'utf8',
   image_data: undefined,
   uri: 'ascii',
+};
+
+export type DataPrice = {
+  usd: string;
+  decimal: bigint;
+  symbol: string;
+  priceNumber: number;
+  timestamp: number;
+  address: Address;
+  signature: Buffer;
 };
 
 /**
@@ -117,6 +127,7 @@ export async function readJettonMetadata(contentCell: Cell): Promise<{
       };
     }
     case OFFCHAIN_CONTENT_PREFIX:
+      const { metadata, isIpfs } = await parseJettonOffchainMetadata(contentSlice);
     default:
       throw new Error('Unexpected jetton metadata content prefix');
   }
@@ -138,15 +149,37 @@ export function parseJettonOnChainMetadata(contentSlice: Slice) {
   return metadata;
 }
 
-export type DataPrice = {
-  usd: string;
-  decimal: bigint;
-  symbol: string;
-  priceNumber: number;
-  timestamp: number;
-  address: Address;
-  signature: Buffer;
-};
+async function parseJettonOffchainMetadata(contentSlice: Slice): Promise<{
+  metadata: { [s in JettonMetaDataKeys]?: string };
+  isIpfs: boolean;
+}> {
+  return getJettonMetadataFromExternalUri(
+    Buffer.from(contentSlice.loadStringTail()).toString('ascii')
+  );
+}
+
+async function getJettonMetadataFromExternalUri(uri: string) {
+  const jsonURI = uri.replace('ipfs://', 'https://ipfs.io/ipfs/');
+
+  return {
+    metadata: (await axios.get(jsonURI)).data,
+    isIpfs: /(^|\/)ipfs[.:]/.test(jsonURI),
+  };
+}
+
+export async function getPublicKey() {
+  // TODO get from BE api
+  return (await getKeyPair()).publicKey;
+}
+
+export async function getKeyPair(): Promise<KeyPair> {
+  const mnemonic =
+    'tooth file stomach split degree van excite sausage soup simple onion merry list depend keep garbage admit client engine other expose six put curious';
+  // TODO get from BE api
+  const mnemonicsString = process.env.WALLET_MNEMONIC_BE ?? mnemonic;
+  const kpBE = await mnemonicToPrivateKey(mnemonicsString.split(' '));
+  return kpBE;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getPrice(symbol: any): Promise<DataPrice> {
@@ -262,18 +295,3 @@ export async function getMultiSig(listJettonAddressMock: any): Promise<Dictionar
 
   return dict;
 }
-
-// export async function getPublicKey() {
-//   // TODO get from BE api
-//   return (await getKeyPair()).publicKey;
-// }
-
-// export async function getKeyPair(): Promise<KeyPair> {
-//   // TODO get from BE api
-//   const mnemonicsString =
-//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-//     process.env.WALLET_MNEMONIC_BE! ??
-//     'tooth file stomach split degree van excite sausage soup simple onion merry list depend keep garbage admit client engine other expose six put curious';
-//   const kpBE = await mnemonicToPrivateKey(mnemonicsString.split(' '));
-//   return kpBE;
-// }
