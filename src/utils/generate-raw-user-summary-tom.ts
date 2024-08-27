@@ -1,4 +1,5 @@
 import {
+  calculateAvailableBorrowsMarketReferenceCurrency,
   calculateHealthFactorFromBalances,
   FormatReserveUSDResponse,
   valueToBigNumber,
@@ -12,6 +13,7 @@ import {
   calculateTotalElementTon,
   calculateWeightedAvgAPY,
 } from './calculatesTon';
+import { normalizedToUsd } from './usd/normalized-to-usd';
 
 export interface RawUserSummaryResponseTon {
   availableBorrowsMarketReferenceCurrency: BigNumber;
@@ -45,7 +47,7 @@ export function generateRawUserSummaryTon({
   userEmodeCategoryId,
 }: RawUserSummaryRequestTon): RawUserSummaryResponseTon {
   // const marketReferencePriceInUsd = 10 ** 9; // 10
-  const marketReferenceCurrencyDecimals = 18;
+  // const marketReferenceCurrencyDecimals = 18;
 
   const {
     totalLiquidityMarketReferenceCurrency,
@@ -101,7 +103,11 @@ export function generateRawUserSummaryTon({
 
   const availableBorrowsUSD = Number(valueToBigNumber(totalCollateralUSD).minus(totalBorrowsUSD));
 
-  const availableBorrowsMarketReferenceCurrency = valueToBigNumber(availableBorrowsUSD);
+  const availableBorrowsMarketReferenceCurrency = calculateAvailableBorrowsMarketReferenceCurrency({
+    collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
+    borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
+    currentLtv,
+  });
 
   return {
     availableBorrowsMarketReferenceCurrency,
