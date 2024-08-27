@@ -459,6 +459,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
               borrowRateMode: 'Variable',
               reserveID: item.reserveID.toString(),
+              totalSupply: item.totalSupply.toString(),
             };
           })
         );
