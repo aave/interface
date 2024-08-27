@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { generateRawUserSummaryTon } from 'src/utils/generate-raw-user-summary-tom';
 
@@ -9,7 +9,7 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
 
   const userEmodeCategoryId = 0;
 
-  useEffect(() => {
+  useMemo(() => {
     const {
       availableBorrowsMarketReferenceCurrency,
       totalCollateralMarketReferenceCurrency,

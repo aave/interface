@@ -6,8 +6,9 @@ import {
   normalize,
 } from '@aave/math-utils';
 import { Address, toNano } from '@ton/core';
+import dayjs from 'dayjs';
 import _ from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
 import { User } from 'src/contracts/User';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -18,7 +19,6 @@ import {
   MAX_ATTEMPTS,
 } from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
-import { useCurrentTimestamp } from './useCurrentTimestamp';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
@@ -42,7 +42,6 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   const [loading, setLoading] = useState<boolean>(false);
   const [yourSuppliesTon, setYourSuppliesTon] = useState<FormattedUserReserves[]>([]);
   const [userSupplies, setUserSupplies] = useState<UserSuppliesType[]>([]);
-  const currentTimestamp = useCurrentTimestamp(1);
 
   const getYourSupplies = useCallback(async () => {
     let attempts = 0;
@@ -120,7 +119,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               index: liquidityIndex,
               rate: liquidityRate,
               lastUpdateTimestamp: lastUpdateTimestamp,
-              currentTimestamp,
+              currentTimestamp: dayjs().unix(),
             });
 
             const balanceRequest = {
@@ -139,7 +138,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               reserveIndex: variableBorrowIndex,
               reserveRate: variableBorrowRate,
               lastUpdateTimestamp: lastUpdateTimestamp,
-              currentTimestamp,
+              currentTimestamp: dayjs().unix(),
             });
 
             const { marketReferenceCurrencyBalance: variableBorrowsMarketReferenceCurrency } =
@@ -214,13 +213,11 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
     } catch (error) {
       console.error('Error fetching supplies:', error);
     }
-    // }, [currentTimestamp, reserves, userSupplies]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reserves, userSupplies]);
 
-  useEffect(() => {
+  useMemo(() => {
     onMatchDataYourSupplies();
-  }, [reserves, userSupplies, onMatchDataYourSupplies]);
+  }, [onMatchDataYourSupplies]);
 
   return {
     yourSuppliesTon,

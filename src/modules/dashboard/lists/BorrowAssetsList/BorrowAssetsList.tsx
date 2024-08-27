@@ -2,7 +2,7 @@ import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -104,46 +104,48 @@ export const BorrowAssetsList = () => {
 
   const { baseAssetSymbol } = currentNetworkConfig;
 
-  const tokensToBorrow = reserves
-    .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
-    .map((reserve: ComputedReserveData) => {
-      const availableBorrows = user
-        ? Number(
-            getMaxAmountAvailableToBorrow(
-              reserve,
-              user,
-              InterestRate.Variable,
-              isConnectedTonWallet
+  const tokensToBorrow = useMemo(() => {
+    return reserves
+      .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
+      .map((reserve: ComputedReserveData) => {
+        const availableBorrows = user
+          ? Number(
+              getMaxAmountAvailableToBorrow(
+                reserve,
+                user,
+                InterestRate.Variable,
+                isConnectedTonWallet
+              )
             )
-          )
-        : 0;
+          : 0;
 
-      const availableBorrowsInUSD = valueToBigNumber(availableBorrows)
-        .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
-        .multipliedBy(marketReferencePriceInUsd)
-        .shiftedBy(-USD_DECIMALS)
-        .toFixed(2);
+        const availableBorrowsInUSD = valueToBigNumber(availableBorrows)
+          .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
+          .multipliedBy(marketReferencePriceInUsd)
+          .shiftedBy(-USD_DECIMALS)
+          .toFixed(2);
 
-      return {
-        ...reserve,
-        reserve,
-        totalBorrows: reserve.totalDebt,
-        availableBorrows,
-        availableBorrowsInUSD,
-        stableBorrowRate:
-          reserve.stableBorrowRateEnabled && reserve.borrowingEnabled
-            ? Number(reserve.stableBorrowAPY)
-            : -1,
-        variableBorrowRate: reserve.borrowingEnabled ? Number(reserve.variableBorrowAPY) : -1,
-        iconSymbol: reserve.iconSymbol,
-        ...(reserve.isWrappedBaseAsset
-          ? fetchIconSymbolAndName({
-              symbol: baseAssetSymbol,
-              underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-            })
-          : {}),
-      };
-    });
+        return {
+          ...reserve,
+          reserve,
+          totalBorrows: reserve.totalDebt,
+          availableBorrows,
+          availableBorrowsInUSD,
+          stableBorrowRate:
+            reserve.stableBorrowRateEnabled && reserve.borrowingEnabled
+              ? Number(reserve.stableBorrowAPY)
+              : -1,
+          variableBorrowRate: reserve.borrowingEnabled ? Number(reserve.variableBorrowAPY) : -1,
+          iconSymbol: reserve.iconSymbol,
+          ...(reserve.isWrappedBaseAsset
+            ? fetchIconSymbolAndName({
+                symbol: baseAssetSymbol,
+                underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+              })
+            : {}),
+        };
+      });
+  }, [reserves, user, isConnectedTonWallet, marketReferencePriceInUsd, baseAssetSymbol]);
 
   const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
     user?.availableBorrowsMarketReferenceCurrency || '0'
@@ -176,6 +178,7 @@ export const BorrowAssetsList = () => {
     filteredReserves as unknown as DashboardReserve[]
   );
   // Check condition
+
   const borrowDisabled = !sortedReserves.length && !ghoReserve;
 
   const RenderHeader: React.FC = () => {
