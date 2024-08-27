@@ -129,6 +129,8 @@ export const DashboardTopPanel = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
+            flexWrap: 'wrap',
+            gap: '20px',
           }}
         >
           <div style={{ display: 'flex', gap: '20px', color: theme.palette.text.primary }}>

@@ -201,7 +201,7 @@ export function AppHeader() {
           zIndex: theme.zIndex.appBar,
           backgroundColor: theme.palette.mode === 'light' ? '#e6e4f4' : '#28216d',
           padding: {
-            xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
+            xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 8px',
             xsm: '8px 20px',
           },
           display: 'flex',
