@@ -24,7 +24,8 @@ export const getErrorTextFromError = (
 
   if (
     error.message === 'MetaMask Tx Signature: User denied transaction signature.' ||
-    error.message === 'MetaMask Message Signature: User denied message signature.'
+    error.message === 'MetaMask Message Signature: User denied message signature.' ||
+    error.message === '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent'
   ) {
     return {
       error: errorMapping[4001],

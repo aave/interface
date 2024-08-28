@@ -134,11 +134,11 @@ export const BorrowActions = React.memo(
             await getPoolContractGetReservesData();
             await getYourSupplies();
           } else {
-            const parsedError = getErrorTextFromError(
-              resBorrowTop?.error,
-              TxAction.GAS_ESTIMATION,
-              false
-            );
+            const error = {
+              name: 'borrow',
+              message: resBorrowTop?.error,
+            };
+            const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
             setTxError(parsedError);
             setMainTxState({
               txHash: undefined,

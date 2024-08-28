@@ -166,11 +166,11 @@ export const SupplyActions = React.memo(
             await getPoolContractGetReservesData();
             await getYourSupplies();
           } else {
-            const parsedError = getErrorTextFromError(
-              resSupplyTop?.error,
-              TxAction.GAS_ESTIMATION,
-              false
-            );
+            const error = {
+              name: 'supply',
+              message: resSupplyTop?.error,
+            };
+            const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
             setTxError(parsedError);
             setMainTxState({
               txHash: undefined,
