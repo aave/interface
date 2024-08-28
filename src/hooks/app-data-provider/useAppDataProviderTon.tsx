@@ -1,5 +1,6 @@
 import {
   calculateCompoundedRate,
+  getCompoundedBalance,
   LTV_PRECISION,
   normalize,
   RAY_DECIMALS,
@@ -8,6 +9,7 @@ import {
 } from '@aave/math-utils';
 import userTon from '@public/assume-user.json';
 import { Address, Cell, ContractProvider, Sender } from '@ton/core';
+import dayjs from 'dayjs';
 import { formatUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
@@ -221,7 +223,24 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
             const formattedBaseLTVasCollateral = normalize(baseLTVasCollateral, LTV_PRECISION);
 
-            const totalBorrowed = valueToBigNumber(item.totalVariableDebt.toString()).plus(
+            const totalScaledVariableDebt = formatUnits(
+              item.totalVariableDebt || '0',
+              item.decimals
+            );
+
+            const lastUpdateTimestamp = Number(item.lastUpdateTimestamp.toString());
+
+            const variableBorrowIndex = item.variableBorrowIndex.toString();
+
+            const totalVariableDebt = getCompoundedBalance({
+              principalBalance: totalScaledVariableDebt,
+              reserveIndex: valueToBigNumber(variableBorrowIndex),
+              reserveRate: variableBorrowRate,
+              lastUpdateTimestamp: lastUpdateTimestamp,
+              currentTimestamp: dayjs().unix(),
+            });
+
+            const totalBorrowed = valueToBigNumber(totalVariableDebt).plus(
               item.totalStableDebt.toString()
             );
 
@@ -253,7 +272,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               totalPrincipalStableDebt: '0',
               averageStableRate: '0',
               stableDebtLastUpdateTimestamp: 0,
-              totalScaledVariableDebt: '36.053394800123496879',
+              totalScaledVariableDebt,
               priceInMarketReferenceCurrency: '352765932594',
               priceOracle: '0xD6270dAabFe4862306190298C2B48fed9e15C847',
               variableRateSlope1: stableBorrowRate,
@@ -329,7 +348,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 totalPrincipalStableDebt: '0',
                 averageStableRate: '0',
                 stableDebtLastUpdateTimestamp: 0,
-                totalScaledVariableDebt: '36.053394800123496879',
+                totalScaledVariableDebt,
                 priceInMarketReferenceCurrency: '352765932594',
                 priceOracle: '0xD6270dAabFe4862306190298C2B48fed9e15C847',
                 variableRateSlope1: stableBorrowRate,
@@ -403,10 +422,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 isActive: item.isActive,
                 isFrozen: item.isFrozen,
                 liquidityIndex: item.liquidityIndex.toString(),
-                variableBorrowIndex: item.variableBorrowIndex.toString(),
-                lastUpdateTimestamp: Number(item.lastUpdateTimestamp.toString()),
+                variableBorrowIndex,
+                lastUpdateTimestamp,
                 // accruedToTreasury: item.accruedToTreasury.toString(),
-                totalVariableDebt: formatUnits(item.totalVariableDebt || '0', item.decimals),
+                totalVariableDebt: formatUnits(totalVariableDebt.toString() || '0', item.decimals),
                 totalStableDebt: formatUnits(item.totalStableDebt || '0', item.decimals),
               },
 
@@ -414,12 +433,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               availableToDepositUSD: '0',
               usageAsCollateralEnabledOnUser: true,
 
-              totalVariableDebt: formatUnits(item.totalVariableDebt || '0', item.decimals),
+              totalVariableDebt: formatUnits(totalVariableDebt.toString() || '0', item.decimals),
               detailsAddress: item.underlyingAddress.toString().toLocaleLowerCase(),
               name: item.name || 'Fake coin',
               symbol: item.symbol || 'Fake coin',
               decimals: Number(item.decimals),
-              variableBorrowIndex: item.variableBorrowIndex.toString(),
+              variableBorrowIndex,
               walletBalance: walletBalance?.toString() || '0',
               isActive: item.isActive,
               isFrozen: item.isFrozen,
@@ -430,7 +449,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
               //
               currentLiquidityRate: item.currentLiquidityRate.toString(),
-              lastUpdateTimestamp: Number(item.lastUpdateTimestamp.toString()),
+              lastUpdateTimestamp,
               liquidityIndex: item.liquidityIndex.toString(),
               reserveFactor: item.reserveFactor.toString(),
               borrowCap,
