@@ -68,7 +68,7 @@ export type MarketDataType = {
     UI_POOL_DATA_PROVIDER: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
-    // V3_MIGRATOR?: string;
+    V3_MIGRATOR?: string;
     GHO_TOKEN_ADDRESS?: string;
     GHO_UI_DATA_PROVIDER?: string;
   };
@@ -196,7 +196,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV2Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Ethereum.COLLECTOR,
-      // V3_MIGRATOR: AaveV2Ethereum.MIGRATION_HELPER,
+      V3_MIGRATOR: AaveV2Ethereum.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Ethereum.DEBT_SWAP_ADAPTER,
     },
   },
@@ -234,7 +234,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV2EthereumAMM.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2EthereumAMM.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2EthereumAMM.COLLECTOR,
-      // V3_MIGRATOR: AaveV2EthereumAMM.MIGRATION_HELPER,
+      V3_MIGRATOR: AaveV2EthereumAMM.MIGRATION_HELPER,
     },
   },
   [CustomMarket.proto_polygon]: {
@@ -258,7 +258,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV2Polygon.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Polygon.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Polygon.COLLECTOR,
-      // V3_MIGRATOR: AaveV2Polygon.MIGRATION_HELPER,
+      V3_MIGRATOR: AaveV2Polygon.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Polygon.DEBT_SWAP_ADAPTER,
     },
   },
@@ -284,7 +284,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV2Avalanche.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Avalanche.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Avalanche.COLLECTOR,
-      // V3_MIGRATOR: AaveV2Avalanche.MIGRATION_HELPER,
+      V3_MIGRATOR: AaveV2Avalanche.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Avalanche.DEBT_SWAP_ADAPTER,
     },
   },
