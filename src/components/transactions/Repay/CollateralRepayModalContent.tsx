@@ -71,7 +71,9 @@ export function CollateralRepayModalContent({
   const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>(repayTokens[0]);
   const tokenToRepayWithBalance = tokenToRepayWith.balance || '0';
 
-  const [swapVariant, setSwapVariant] = useState<SwapVariant>('exactOut');
+  // const [swapVariant, setSwapVariant] = useState<SwapVariant>('exactOut');
+  const swapVariant: SwapVariant = 'exactOut';
+
   const [amount, setAmount] = useState('');
   const [maxSlippage, setMaxSlippage] = useState('0.5');
 
@@ -107,10 +109,10 @@ export function CollateralRepayModalContent({
 
   const swapIn = { ...collateralReserveData, amount: tokenToRepayWithBalance };
   const swapOut = { ...poolReserve, amount: amountRef.current };
-  if (swapVariant === 'exactIn') {
-    swapIn.amount = tokenToRepayWithBalance;
-    swapOut.amount = '0';
-  }
+  // if (swapVariant === 'exactIn') {
+  //   swapIn.amount = tokenToRepayWithBalance;
+  //   swapOut.amount = '0';
+  // }
 
   const repayAllDebt =
     isMaxSelected &&
@@ -144,16 +146,51 @@ export function CollateralRepayModalContent({
       maxSelected &&
       valueToBigNumber(tokenToRepayWithBalance).lt(collateralAmountRequiredToCoverDebt)
     ) {
-      // The selected collateral amount is not enough to pay the full debt. We'll try to do a swap using the exact amount of collateral.
-      // The amount won't be known until we fetch the swap data, so we'll clear it out. Once the swap data is fetched, we'll set the amount.
-      amountRef.current = '';
-      setAmount('');
-      setSwapVariant('exactIn');
+      console.log(
+        'collateral required to cover debt',
+        collateralAmountRequiredToCoverDebt.toString()
+      );
+
+      const maxAmountOfCollateralAvailableMinusSlippage = valueToBigNumber(tokenToRepayWithBalance)
+        .multipliedBy(100 - Number(maxSlippage) - 1) // subtract and additional 1% to account interest accrued and prevent swap failures
+        .dividedBy(100)
+        .multipliedBy(collateralReserveData.priceInUSD)
+        .multipliedBy(collateralReserveData.priceInUSD);
+
+      // convert to how much debt can be repaid based on usd amount of collateral
+      const convertedDebtAmount = maxAmountOfCollateralAvailableMinusSlippage
+        .dividedBy(poolReserve.priceInUSD)
+        .toString();
+
+      console.log(
+        'max collateral amount available minus slippage and buffer',
+        maxAmountOfCollateralAvailableMinusSlippage.toString()
+      );
+      console.log('converted debt amount', convertedDebtAmount);
+
+      amountRef.current = convertedDebtAmount;
+      setAmount(convertedDebtAmount);
     } else {
       amountRef.current = maxSelected ? safeAmountToRepayAll.toString(10) : value;
       setAmount(value);
-      setSwapVariant('exactOut');
     }
+    // if (
+    //   maxSelected &&
+    //   valueToBigNumber(tokenToRepayWithBalance).lt(collateralAmountRequiredToCoverDebt)
+    // ) {
+    //   // The selected collateral amount is not enough to pay the full debt. We'll try to do a swap using the exact amount of collateral.
+    //   // The amount won't be known until we fetch the swap data, so we'll clear it out. Once the swap data is fetched, we'll set the amount.
+    //   amountRef.current = '';
+    //   setAmount('');
+    //   setSwapVariant('exactIn');
+    // } else {
+    //   amountRef.current = maxSelected ? safeAmountToRepayAll.toString(10) : value;
+    //   setAmount(value);
+    //   setSwapVariant('exactOut');
+    // }
+    // amountRef.current = maxSelected ? safeAmountToRepayAll.toString(10) : value;
+    // setAmount(value);
+    // setSwapVariant('exactOut');
   };
 
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
@@ -190,8 +227,8 @@ export function CollateralRepayModalContent({
     collateralReserveData.priceInUSD
   );
 
-  const exactOutputAmount = swapVariant === 'exactIn' ? outputAmount : repayAmount;
-  const exactOutputUsd = swapVariant === 'exactIn' ? outputAmountUSD : repayAmountUsdValue;
+  const exactOutputAmount = repayAmount; // swapVariant === 'exactIn' ? outputAmount : repayAmount;
+  const exactOutputUsd = repayAmountUsdValue; // swapVariant === 'exactIn' ? outputAmountUSD : repayAmountUsdValue;
 
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
@@ -307,6 +344,12 @@ export function CollateralRepayModalContent({
           <BlockingError />
         </Typography>
       )}
+      {/* {!error && !blockingError && (
+        <Typography variant="helperText" color="warning.main">
+          This transaction may fail because the amount to repay with plus slippage exceeds your
+          current balance
+        </Typography>
+      )} */}
 
       <TxModalDetails
         gasLimit={gasLimit}
@@ -316,7 +359,7 @@ export function CollateralRepayModalContent({
             setSlippage={setMaxSlippage}
             slippageTooltipHeader={
               <Stack direction="row" alignItems="center">
-                {swapVariant === 'exactIn' ? (
+                {false ? (
                   <>
                     <Trans>Minimum amount of debt to be repaid</Trans>
                     <Stack alignItems="end">
@@ -379,8 +422,8 @@ export function CollateralRepayModalContent({
       <CollateralRepayActions
         poolReserve={poolReserve}
         fromAssetData={collateralReserveData}
-        repayAmount={swapVariant === 'exactIn' ? outputAmountWithSlippage : outputAmount}
-        repayWithAmount={swapVariant === 'exactOut' ? inputAmountWithSlippage : inputAmount}
+        repayAmount={outputAmount}
+        repayWithAmount={inputAmountWithSlippage}
         repayAllDebt={repayAllDebt}
         useFlashLoan={shouldUseFlashloan}
         isWrongNetwork={isWrongNetwork}
