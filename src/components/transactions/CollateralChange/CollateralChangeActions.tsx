@@ -12,7 +12,8 @@ export type CollateralChangeActionsProps = {
   usageAsCollateral: boolean;
   blocked: boolean;
   symbol: string;
-  reserveID?: string | number;
+  underlyingAssetTon?: string | number;
+  poolJettonWalletAddress?: string;
 };
 
 export const CollateralChangeActions = ({
@@ -21,12 +22,14 @@ export const CollateralChangeActions = ({
   usageAsCollateral,
   blocked,
   symbol,
-  reserveID,
+  underlyingAssetTon,
+  poolJettonWalletAddress,
 }: CollateralChangeActionsProps) => {
   const setUsageAsCollateral = useRootStore((state) => state.setUsageAsCollateral);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
-    reserveID: reserveID,
+    underlyingAssetTon: underlyingAssetTon,
+    poolJettonWalletAddress: poolJettonWalletAddress,
     usageAsCollateral,
     tryPermit: false,
     protocolAction: ProtocolAction.setUsageAsCollateral,

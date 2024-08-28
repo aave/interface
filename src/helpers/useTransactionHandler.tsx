@@ -9,7 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
-import { useTonCollateral } from 'src/hooks/useTonYourSupplies';
+import { useTonTransactions } from 'src/hooks/useTonTransactions';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -33,8 +33,9 @@ interface UseTransactionHandlerProps {
   protocolAction?: ProtocolAction;
   deps?: DependencyList;
   eventTxInfo?: TransactionDetails;
-  reserveID?: string | number;
+  underlyingAssetTon?: string | number;
   usageAsCollateral?: boolean;
+  poolJettonWalletAddress?: string;
 }
 
 export type Approval = {
@@ -52,8 +53,9 @@ export const useTransactionHandler = ({
   protocolAction,
   deps = [],
   eventTxInfo,
-  reserveID,
+  underlyingAssetTon,
   usageAsCollateral,
+  poolJettonWalletAddress,
 }: UseTransactionHandlerProps) => {
   const {
     approvalTxState,
@@ -93,9 +95,10 @@ export const useTransactionHandler = ({
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
-  const { onToggleCollateralTon } = useTonCollateral({
-    yourAddressWallet: walletAddressTonWallet,
-  });
+  const { onToggleCollateralTon } = useTonTransactions(
+    walletAddressTonWallet,
+    String(underlyingAssetTon)
+  );
   const { getYourSupplies } = useAppDataContext();
 
   useEffect(() => {
@@ -287,21 +290,31 @@ export const useTransactionHandler = ({
   const action = async () => {
     if (isConnectedTonWallet) {
       setMainTxState({ ...mainTxState, loading: true });
-      const resToggle = await onToggleCollateralTon(String(reserveID), Boolean(usageAsCollateral));
-      if (resToggle?.success) {
+      const resToggle = await onToggleCollateralTon(
+        String(poolJettonWalletAddress),
+        Boolean(usageAsCollateral)
+      );
+
+      if (!!resToggle?.success) {
         await sleep(15000); // sleep 15s re call SC get new data reserve
         setMainTxState({
           txHash: resToggle.txHash,
           loading: false,
           success: true,
         });
-        getYourSupplies();
       } else {
+        const error = {
+          name: 'borrow',
+          message: resToggle?.error,
+        };
+        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
           loading: false,
         });
       }
+      getYourSupplies();
     }
     if (usePermit && handleGetPermitTxns) {
       if (!signatures.length || !signatureDeadline) throw new Error('signature needed');

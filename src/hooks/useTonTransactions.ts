@@ -145,9 +145,9 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
         const params = {
           queryId: Date.now(),
-          amount: BigInt(parseAmount),
           poolJettonWalletAddress: Address.parse(poolReserve.poolJettonWalletAddress),
-          price_data: dataMultiSig,
+          amount: BigInt(parseAmount),
+          priceData: dataMultiSig,
         };
 
         await providerPool.sendBorrow(
@@ -197,9 +197,52 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [getLatestBoc, onGetGetTxByBOC, onSendBorrowJettonToken, providerPool, yourAddressWallet]
   );
 
+  const onToggleCollateralTon = useCallback(
+    async (poolJWAddress: string, status: boolean) => {
+      if (!client || !providerPool || !poolJWAddress) return;
+      try {
+        const dataMultiSig = await getMultiSig({
+          isMock: false,
+        });
+
+        const params = {
+          poolJWAddress: Address.parse(poolJWAddress),
+          useAsCollateral: status,
+          priceData: dataMultiSig,
+        };
+
+        await providerPool.sendSetUseReserveAsCollateral(sender, params);
+
+        const boc = await getLatestBoc();
+        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
+
+        if (txHash) {
+          return { success: true, txHash: txHash };
+        } else {
+          throw Error('Error');
+        }
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        if (
+          error.message.replace(/\s+/g, '').toLowerCase() ===
+          '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent'
+        ) {
+          return {
+            success: false,
+            error: '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent',
+          };
+        } else {
+          return { success: false, error };
+        }
+      }
+    },
+    [client, getLatestBoc, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
+  );
+
   return {
     approvedAmountTonAssume,
     onSendSupplyTon,
     onSendBorrowTon,
+    onToggleCollateralTon,
   };
 };

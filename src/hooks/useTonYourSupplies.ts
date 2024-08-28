@@ -5,25 +5,18 @@ import {
   getMarketReferenceCurrencyAndUsdBalance,
   normalize,
 } from '@aave/math-utils';
-import { Address, toNano } from '@ton/core';
+import { Address } from '@ton/core';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
-import { User } from 'src/contracts/User';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
-import {
-  address_pools,
-  GAS_FEE_TON,
-  MAX_ATTEMPTS,
-} from './app-data-provider/useAppDataProviderTon';
+import { address_pools, MAX_ATTEMPTS } from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
 import { useTonClient } from './useTonClient';
-import { useTonConnect } from './useTonConnect';
-import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
-interface UseTransactionHandlerTonProps {
+export interface UseTransactionHandlerTonProps {
   yourAddressWallet: string;
 }
 
@@ -32,7 +25,7 @@ export interface UserSuppliesType {
   totalSupply: number | bigint;
   variableBorrowBalance: number | bigint;
   liquidityIndex: number | bigint | string;
-  isCollateral: true;
+  isCollateral: boolean;
   underlyingAddress: Address | string;
   previousIndex: number | bigint;
 }
@@ -223,47 +216,5 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
     yourSuppliesTon,
     getYourSupplies,
     loading,
-  };
-};
-
-export const useTonCollateral = ({ yourAddressWallet }: UseTransactionHandlerTonProps) => {
-  const client = useTonClient();
-  const { onGetGetTxByBOC } = useTonGetTxByBOC();
-  const { sender, getLatestBoc } = useTonConnect();
-
-  const onToggleCollateralTon = useCallback(
-    async (reserveId: string, status: boolean) => {
-      if (!client || !yourAddressWallet || !address_pools) {
-        return;
-      }
-      const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
-      const userContractAddress = await poolContract.getUserAddress(
-        Address.parse(yourAddressWallet)
-      );
-
-      const collateralContract = client.open(User.createFromAddress(userContractAddress));
-      try {
-        await collateralContract.sendUpdateCollateral(
-          sender, //via: Sender,
-          toNano(GAS_FEE_TON), // gas 0.1
-          Address.parse(reserveId), // reserveID
-          status // true = isCollateral, false = unCollateral
-        );
-
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-        if (txHash) {
-          return { success: true, txHash: txHash };
-        }
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        return { success: false, error };
-      }
-    },
-    [client, getLatestBoc, onGetGetTxByBOC, sender, yourAddressWallet]
-  );
-
-  return {
-    onToggleCollateralTon,
   };
 };
