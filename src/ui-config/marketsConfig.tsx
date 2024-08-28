@@ -68,7 +68,7 @@ export type MarketDataType = {
     UI_POOL_DATA_PROVIDER: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
-    V3_MIGRATOR?: string;
+    // V3_MIGRATOR?: string;
     GHO_TOKEN_ADDRESS?: string;
     GHO_UI_DATA_PROVIDER?: string;
   };
@@ -119,12 +119,12 @@ export const marketsData: {
     enabledFeatures: {
       governance: true,
       staking: true,
-      liquiditySwap: true,
+      liquiditySwap: false,
       collateralRepay: false,
       incentives: true,
-      withdrawAndSwitch: true,
-      debtSwitch: true,
-      switch: true,
+      withdrawAndSwitch: false,
+      debtSwitch: false,
+      switch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g`,
     addresses: {
@@ -151,12 +151,12 @@ export const marketsData: {
     enabledFeatures: {
       governance: true,
       staking: true,
-      liquiditySwap: true,
+      liquiditySwap: false,
       collateralRepay: false,
       incentives: true,
-      withdrawAndSwitch: true,
+      withdrawAndSwitch: false,
       debtSwitch: false,
-      switch: true,
+      switch: false,
     },
     // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g`,
     addresses: {
@@ -179,11 +179,11 @@ export const marketsData: {
     enabledFeatures: {
       governance: true,
       staking: true,
-      liquiditySwap: true,
+      liquiditySwap: false,
       collateralRepay: false,
       incentives: true,
-      debtSwitch: true,
-      switch: true,
+      debtSwitch: false,
+      switch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/8wR23o1zkS4gpLqLNU4kG3JHYVucqGyopL5utGxP2q1N`,
     addresses: {
@@ -196,7 +196,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV2Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Ethereum.COLLECTOR,
-      V3_MIGRATOR: AaveV2Ethereum.MIGRATION_HELPER,
+      // V3_MIGRATOR: AaveV2Ethereum.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Ethereum.DEBT_SWAP_ADAPTER,
     },
   },
@@ -204,7 +204,7 @@ export const marketsData: {
   //   marketTitle: 'Ethereum Permissioned Market example',
   //   chainId: ChainId.mainnet,
   //   enabledFeatures: {
-  //     // liquiditySwap: true,
+  //     // liquiditySwap: false,
   //     // collateralRepay: false,
   //     // incentives: true,
   //     permissions: true,
@@ -234,7 +234,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV2EthereumAMM.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2EthereumAMM.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2EthereumAMM.COLLECTOR,
-      V3_MIGRATOR: AaveV2EthereumAMM.MIGRATION_HELPER,
+      // V3_MIGRATOR: AaveV2EthereumAMM.MIGRATION_HELPER,
     },
   },
   [CustomMarket.proto_polygon]: {
@@ -242,10 +242,10 @@ export const marketsData: {
     market: CustomMarket.proto_polygon,
     chainId: ChainId.polygon,
     enabledFeatures: {
-      liquiditySwap: true,
+      liquiditySwap: false,
       incentives: true,
       collateralRepay: false,
-      debtSwitch: true,
+      debtSwitch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/H1Et77RZh3XEf27vkAmJyzgCME2RSFLtDS2f4PPW6CGp`,
     addresses: {
@@ -258,7 +258,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV2Polygon.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Polygon.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Polygon.COLLECTOR,
-      V3_MIGRATOR: AaveV2Polygon.MIGRATION_HELPER,
+      // V3_MIGRATOR: AaveV2Polygon.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Polygon.DEBT_SWAP_ADAPTER,
     },
   },
@@ -267,11 +267,11 @@ export const marketsData: {
     market: CustomMarket.proto_avalanche,
     chainId: ChainId.avalanche,
     enabledFeatures: {
-      liquiditySwap: true,
+      liquiditySwap: false,
       incentives: true,
       collateralRepay: false,
-      debtSwitch: true,
-      switch: true,
+      debtSwitch: false,
+      switch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/EZvK18pMhwiCjxwesRLTg81fP33WnR6BnZe5Cvma3H1C`,
     addresses: {
@@ -284,7 +284,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV2Avalanche.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Avalanche.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Avalanche.COLLECTOR,
-      V3_MIGRATOR: AaveV2Avalanche.MIGRATION_HELPER,
+      // V3_MIGRATOR: AaveV2Avalanche.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Avalanche.DEBT_SWAP_ADAPTER,
     },
   },
@@ -316,11 +316,11 @@ export const marketsData: {
     chainId: ChainId.base,
     enabledFeatures: {
       incentives: true,
-      liquiditySwap: true,
-      withdrawAndSwitch: true,
+      liquiditySwap: false,
+      withdrawAndSwitch: false,
       collateralRepay: false,
-      debtSwitch: true,
-      switch: true,
+      debtSwitch: false,
+      switch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/GQFbb95cE6d8mV989mL5figjaGaKCQB3xqYrr1bRyXqF`,
     addresses: {
@@ -364,11 +364,11 @@ export const marketsData: {
     chainId: ChainId.arbitrum_one,
     enabledFeatures: {
       incentives: true,
-      liquiditySwap: true,
+      liquiditySwap: false,
       collateralRepay: false,
-      debtSwitch: true,
-      withdrawAndSwitch: true,
-      switch: true,
+      debtSwitch: false,
+      withdrawAndSwitch: false,
+      switch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B`,
     addresses: {
@@ -411,12 +411,12 @@ export const marketsData: {
     v3: true,
     chainId: ChainId.avalanche,
     enabledFeatures: {
-      liquiditySwap: true,
+      liquiditySwap: false,
       incentives: true,
       collateralRepay: false,
-      debtSwitch: true,
-      withdrawAndSwitch: true,
-      switch: true,
+      debtSwitch: false,
+      withdrawAndSwitch: false,
+      switch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/2h9woxy8RTjHu1HJsCEnmzpPHFArU33avmUh4f71JpVn`,
     addresses: {
@@ -498,7 +498,7 @@ export const marketsData: {
     enabledFeatures: {
       incentives: true,
       collateralRepay: false,
-      liquiditySwap: true,
+      liquiditySwap: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/6L1vPqyE3xvkzkWjh6wUKc1ABWYYps5HJahoxhrv2PJn`,
     addresses: {
@@ -559,10 +559,10 @@ export const marketsData: {
     enabledFeatures: {
       incentives: true,
       collateralRepay: false,
-      liquiditySwap: true,
-      debtSwitch: true,
-      withdrawAndSwitch: true,
-      switch: true,
+      liquiditySwap: false,
+      debtSwitch: false,
+      withdrawAndSwitch: false,
+      switch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/DSfLz8oQBUeU5atALgUFQKMTSYV9mZAVYp4noLSXAfvb`,
     addresses: {
@@ -586,12 +586,12 @@ export const marketsData: {
     chainId: ChainId.polygon,
     v3: true,
     enabledFeatures: {
-      liquiditySwap: true,
+      liquiditySwap: false,
       incentives: true,
       collateralRepay: false,
-      debtSwitch: true,
-      withdrawAndSwitch: true,
-      switch: true,
+      debtSwitch: false,
+      withdrawAndSwitch: false,
+      switch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Co2URyXjnxaw8WqxKyVHdirq9Ahhm5vcTs4dMedAq211`,
     addresses: {
@@ -670,11 +670,11 @@ export const marketsData: {
     v3: true,
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/7Jk85XgkV1MQ7u56hD8rr65rfASbayJXopugWkUoBMnZ`,
     enabledFeatures: {
-      liquiditySwap: true,
+      liquiditySwap: false,
       collateralRepay: false,
-      debtSwitch: true,
-      withdrawAndSwitch: true,
-      switch: true,
+      debtSwitch: false,
+      withdrawAndSwitch: false,
+      switch: false,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3BNB.POOL_ADDRESSES_PROVIDER,
