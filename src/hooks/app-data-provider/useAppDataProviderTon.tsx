@@ -182,6 +182,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
             const poolJettonWalletAddress = item.poolJWAddress.toString();
 
+            const totalLiquidity = item.totalSupply.toString();
+
             const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
             const supplyAPR = normalize(liquidityRate, RAY_DECIMALS);
@@ -242,12 +244,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             const totalBorrowed = valueToBigNumber(totalVariableDebt).plus(
               item.totalStableDebt.toString()
             );
+            const liquidity = item.liquidity.toString();
 
-            const totalLiquidity = item.liquidity.toString();
+            const availableLiquidity = valueToBigNumber(liquidity).minus(totalBorrowed);
 
-            const availableLiquidity = valueToBigNumber(totalLiquidity).minus(totalBorrowed);
-
-            const utilizationRate = valueToBigNumber(totalBorrowed).div(totalLiquidity);
+            const utilizationRate = valueToBigNumber(totalBorrowed).div(liquidity);
 
             const borrowCap = formatUnits(item.borrowCap || '0', item.decimals);
             const supplyCap = formatUnits(item.supplyCap || '0', item.decimals);
