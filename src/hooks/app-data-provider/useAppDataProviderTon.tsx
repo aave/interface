@@ -84,7 +84,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQAqrEOwMWC5b21_qwl6eS7ZiXoUqA1_ULEOkxkiZorOcC2G';
+export const address_pools = 'EQCBIjGzWcg4dMiJSvDlVKYDthqWy9Xh-Jg3ZohLhVQMRjhj';
 // export const address_pools = 'EQDb9JsZ1QOwszqEzpJmnMJAAXukXzchlrV6Q08nJ83oVjbw';
 export const MAX_ATTEMPTS = 10;
 export const GAS_FEE_TON = 0.3;
