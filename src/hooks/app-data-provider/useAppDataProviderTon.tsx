@@ -293,7 +293,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               debtCeilingDecimals: 2,
               isSiloedBorrowing: false,
               flashLoanEnabled: true,
-              totalDebt: '36.065596887825658831',
+              totalDebt: totalVariableDebt,
               totalLiquidity: formatUnits(totalLiquidity || '0', item.decimals),
               borrowUsageRatio: utilizationRate,
               supplyUsageRatio: utilizationRate,
@@ -311,8 +311,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               isolationModeTotalDebtUSD: '0',
               availableDebtCeilingUSD: '0',
               isIsolated: false,
-              totalDebtUSD: '127227.13920693082542400187',
-              totalVariableDebtUSD: '127227.13920693082542400187',
               totalStableDebtUSD: '0',
               borrowCapUSD: '1128850.9843008',
               unbackedUSD: '0',
@@ -369,7 +367,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 debtCeilingDecimals: 2,
                 isSiloedBorrowing: false,
                 flashLoanEnabled: true,
-                totalDebt: '36.065596887825658831',
+                totalDebt: totalVariableDebt,
                 totalLiquidity: formatUnits(totalLiquidity || '0', item.decimals),
                 borrowUsageRatio: utilizationRate,
                 supplyUsageRatio: utilizationRate,
@@ -391,8 +389,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 isolationModeTotalDebtUSD: '0',
                 availableDebtCeilingUSD: '0',
                 isIsolated: false,
-                totalDebtUSD: '127227.13920693082542400187',
-                totalVariableDebtUSD: '127227.13920693082542400187',
                 totalStableDebtUSD: '0',
                 unbackedUSD: '0',
                 aIncentivesData: [
@@ -567,6 +563,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .multipliedBy(reserve.supplyCap || 0)
         .toString();
 
+      const totalVariableDebtUSD = valueToBigNumber(formattedPriceInUSD)
+        .multipliedBy(reserve.totalVariableDebt || 0)
+        .toString();
+
       if (dataById?.address === address_pools) {
         setGasFeeTonMarketReferenceCurrency(
           valueToBigNumber(formattedPriceInUSD)
@@ -585,6 +585,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         availableLiquidityUSD,
         borrowCapUSD,
         supplyCapUSD,
+        totalVariableDebtUSD,
+        totalDebtUSD: totalVariableDebtUSD,
         reserve: {
           ...reserve.reserve,
           walletBalanceUSD,
@@ -595,6 +597,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           availableLiquidityUSD,
           borrowCapUSD,
           supplyCapUSD,
+          totalVariableDebtUSD,
+          totalDebtUSD: totalVariableDebtUSD,
         },
       };
     });

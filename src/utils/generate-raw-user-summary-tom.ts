@@ -61,7 +61,6 @@ export function generateRawUserSummaryTon({
 
   const totalLiquidityUSD = totalLiquidityMarketReferenceCurrency; // total user supplied - usd
   const totalBorrowsUSD = totalBorrowsMarketReferenceCurrency; // total user borrowed - usd
-  const earnedAPY = calculateTotalElementTon(userReserves, 'supplyAPY'); // total APY your supplies
 
   const collateralInUSDAsset = calculateTotalCollateralUSD(userReserves, (reserve) =>
     parseFloat(reserve?.formattedBaseLTVasCollateral || '0')
@@ -72,31 +71,22 @@ export function generateRawUserSummaryTon({
     borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
     currentLiquidationThreshold,
   });
-  console.log('🚀 ~ healthFactor:', healthFactor.toString());
 
   const totalCollateralUSD = totalCollateralMarketReferenceCurrency;
 
-  const weightedAvgSupplyAPY = calculateWeightedAvgAPY(
-    userReserves,
-    'underlyingBalanceUSD',
-    'supplyAPY'
-  );
+  // weightedAvgSupplyAPY
+  const earnedAPY = calculateWeightedAvgAPY(userReserves, 'underlyingBalanceUSD', 'supplyAPY');
 
-  const weightedAvgBorrowAPY = calculateWeightedAvgAPY(
-    userReserves,
-    'variableBorrowsUSD',
-    'variableBorrowAPY'
-  );
+  //weightedAvgBorrowAPY
+  const debtAPY = calculateWeightedAvgAPY(userReserves, 'variableBorrowsUSD', 'variableBorrowAPY');
 
   const netWorthUSD = Number(valueToBigNumber(totalLiquidityUSD).minus(totalBorrowsUSD)); // Net worth
 
   const netAPY =
-    (weightedAvgSupplyAPY * Number(totalLiquidityUSD)) / netWorthUSD -
-    (weightedAvgBorrowAPY * Number(totalBorrowsUSD)) / netWorthUSD; // Net APY
+    (earnedAPY || 0) * (Number(totalLiquidityUSD) / Number(netWorthUSD !== 0 ? netWorthUSD : '1')) -
+    (debtAPY || 0) * (Number(totalBorrowsUSD) / Number(netWorthUSD !== 0 ? netWorthUSD : '1'));
 
   const currentLoanToValue = currentLtv;
-
-  const debtAPY = Number(weightedAvgBorrowAPY);
 
   const availableBorrowsMarketReferenceCurrency = calculateAvailableBorrowsMarketReferenceCurrency({
     collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
