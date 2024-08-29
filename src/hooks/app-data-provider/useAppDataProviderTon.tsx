@@ -182,7 +182,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
             const poolJettonWalletAddress = item.poolJWAddress.toString();
 
-            const totalLiquidity = item.totalSupply.toString();
+            const totalLiquidity = item.totalSupply.toString(); // the totalSupply is total all user supply to asset
 
             const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
