@@ -226,7 +226,6 @@ export const BorrowModalContent = ({
     symbol: poolReserve.iconSymbol,
     decimals: poolReserve.decimals,
   };
-
   const iconSymbol =
     borrowUnWrapped && poolReserve.isWrappedBaseAsset
       ? currentNetworkConfig.baseAssetSymbol

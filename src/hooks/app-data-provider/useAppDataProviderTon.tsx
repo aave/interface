@@ -328,7 +328,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               ],
               vIncentivesData: [],
               sIncentivesData: [],
-              iconSymbol: 'ETHX',
+              iconSymbol: item.symbol,
               isEmodeEnabled: true,
               isWrappedBaseAsset: false,
               reserve: {
@@ -405,15 +405,15 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 ],
                 vIncentivesData: [],
                 sIncentivesData: [],
-                iconSymbol: 'ETHX',
+                iconSymbol: item.symbol,
                 isEmodeEnabled: true,
                 isWrappedBaseAsset: false,
                 id: `10-${item.underlyingAddress
                   .toString()
                   .toLocaleLowerCase()}-0x2f39d218133afab8f2b819b1066c7e434ad94e9e`,
                 underlyingAsset: item.underlyingAddress.toString().toLocaleLowerCase(),
-                name: item.name || 'Fake coin',
-                symbol: item.symbol || 'Fake coin',
+                name: item.name,
+                symbol: item.symbol,
                 reserveFactor: item.reserveFactor.toString(),
                 isPaused: item.isPaused,
                 debtCeiling: item.debtCeiling.toString(),

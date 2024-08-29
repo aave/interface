@@ -4,6 +4,7 @@ import LazyLoad from 'react-lazy-load';
 
 interface ATokenIconProps {
   symbol?: string;
+  img?: string;
 }
 
 /**
@@ -86,8 +87,10 @@ export function Base64Token({
   );
 }
 
-export const ATokenIcon = forwardRef<SVGSVGElement, ATokenIconProps>(({ symbol }, ref) => {
-  return (
+export const ATokenIcon = forwardRef<SVGSVGElement, ATokenIconProps>(({ symbol, img }, ref) => {
+  return img ? (
+    <img src={img} width="100%" height="100%" alt={`${symbol} icon`} />
+  ) : (
     <svg
       style={{
         position: 'absolute',
@@ -159,7 +162,7 @@ function SingleTokenIcon({ symbol, aToken, img, ...rest }: TokenIconProps) {
   return (
     <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
       {aToken ? (
-        <ATokenIcon symbol={tokenSymbol} />
+        <ATokenIcon img={img} symbol={tokenSymbol} />
       ) : (
         // eslint-disable-next-line
         <img
