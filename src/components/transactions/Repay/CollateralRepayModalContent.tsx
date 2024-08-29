@@ -141,39 +141,9 @@ export function CollateralRepayModalContent({
 
   const handleRepayAmountChange = (value: string) => {
     const maxSelected = value === '-1';
+    amountRef.current = maxSelected ? safeAmountToRepayAll.toString(10) : value;
+    setAmount(value);
 
-    if (
-      maxSelected &&
-      valueToBigNumber(tokenToRepayWithBalance).lt(collateralAmountRequiredToCoverDebt)
-    ) {
-      console.log(
-        'collateral required to cover debt',
-        collateralAmountRequiredToCoverDebt.toString()
-      );
-
-      const maxAmountOfCollateralAvailableMinusSlippage = valueToBigNumber(tokenToRepayWithBalance)
-        .multipliedBy(100 - Number(maxSlippage) - 1) // subtract and additional 1% to account interest accrued and prevent swap failures
-        .dividedBy(100)
-        .multipliedBy(collateralReserveData.priceInUSD)
-        .multipliedBy(collateralReserveData.priceInUSD);
-
-      // convert to how much debt can be repaid based on usd amount of collateral
-      const convertedDebtAmount = maxAmountOfCollateralAvailableMinusSlippage
-        .dividedBy(poolReserve.priceInUSD)
-        .toString();
-
-      console.log(
-        'max collateral amount available minus slippage and buffer',
-        maxAmountOfCollateralAvailableMinusSlippage.toString()
-      );
-      console.log('converted debt amount', convertedDebtAmount);
-
-      amountRef.current = convertedDebtAmount;
-      setAmount(convertedDebtAmount);
-    } else {
-      amountRef.current = maxSelected ? safeAmountToRepayAll.toString(10) : value;
-      setAmount(value);
-    }
     // if (
     //   maxSelected &&
     //   valueToBigNumber(tokenToRepayWithBalance).lt(collateralAmountRequiredToCoverDebt)
@@ -188,9 +158,6 @@ export function CollateralRepayModalContent({
     //   setAmount(value);
     //   setSwapVariant('exactOut');
     // }
-    // amountRef.current = maxSelected ? safeAmountToRepayAll.toString(10) : value;
-    // setAmount(value);
-    // setSwapVariant('exactOut');
   };
 
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
@@ -344,12 +311,6 @@ export function CollateralRepayModalContent({
           <BlockingError />
         </Typography>
       )}
-      {/* {!error && !blockingError && (
-        <Typography variant="helperText" color="warning.main">
-          This transaction may fail because the amount to repay with plus slippage exceeds your
-          current balance
-        </Typography>
-      )} */}
 
       <TxModalDetails
         gasLimit={gasLimit}
