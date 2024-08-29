@@ -101,8 +101,8 @@ export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
 
 export const useTonBalance = (walletAddress: string) => {
   const wallet = useTonWallet();
-  const [balance, setBalance] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [balance, setBalance] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
   const client = useTonClient();
 
   const fetchBalance = useCallback(async () => {
@@ -144,6 +144,10 @@ export const useTonBalance = (walletAddress: string) => {
   useEffect(() => {
     fetchBalance();
   }, [fetchBalance]);
+
+  useEffect(() => {
+    if (!walletAddress) setBalance('0');
+  }, [walletAddress]);
 
   return { balance, loading, refetch: fetchBalance };
 };
