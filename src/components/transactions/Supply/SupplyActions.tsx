@@ -151,6 +151,7 @@ export const SupplyActions = React.memo(
     const action = async () => {
       try {
         if (isConnectedTonWallet) {
+          const action = ProtocolAction.default;
           setMainTxState({ ...mainTxState, loading: true });
           const resSupplyTop = await onSendSupplyTon(
             parseUnits(amountToSupply.toString(), decimals).toString(),
@@ -163,6 +164,7 @@ export const SupplyActions = React.memo(
               loading: false,
               success: true,
             });
+
             await getPoolContractGetReservesData();
             await getYourSupplies();
           } else {

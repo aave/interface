@@ -84,7 +84,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQAdO4eqKSmDMSrpRPXNlaO3EJ_jLnOAclTyS7z2_oIO5MoO';
+export const address_pools = 'EQAqrEOwMWC5b21_qwl6eS7ZiXoUqA1_ULEOkxkiZorOcC2G';
 // export const address_pools = 'EQDb9JsZ1QOwszqEzpJmnMJAAXukXzchlrV6Q08nJ83oVjbw';
 export const MAX_ATTEMPTS = 10;
 export const GAS_FEE_TON = 0.3;
@@ -252,6 +252,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             const borrowCap = formatUnits(item.borrowCap || '0', item.decimals);
             const supplyCap = formatUnits(item.supplyCap || '0', item.decimals);
 
+            const totalPrincipalInterestDebt = valueToBigNumber(totalScaledVariableDebt)
+              .plus(formatUnits(Number(totalVariableDebt) || '0', item.decimals))
+              .toString();
+
             return {
               // ...item,
               baseLTVasCollateral,
@@ -268,7 +272,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               variableDebtTokenAddress: '0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b',
               interestRateStrategyAddress: '0x48AF11111764E710fcDcE2750db848C63edab57B',
               availableLiquidity: availableLiquidity,
-              totalPrincipalStableDebt: '0',
+              totalPrincipalInterestDebt,
               averageStableRate: '0',
               stableDebtLastUpdateTimestamp: 0,
               totalScaledVariableDebt,
@@ -342,7 +346,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 variableDebtTokenAddress: '0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b',
                 interestRateStrategyAddress: '0x48AF11111764E710fcDcE2750db848C63edab57B',
                 availableLiquidity: availableLiquidity,
-                totalPrincipalStableDebt: '0',
+                totalPrincipalInterestDebt,
                 averageStableRate: '0',
                 stableDebtLastUpdateTimestamp: 0,
                 totalScaledVariableDebt,
