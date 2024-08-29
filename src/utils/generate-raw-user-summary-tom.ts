@@ -21,12 +21,12 @@ export interface RawUserSummaryResponseTon {
   totalBorrowsMarketReferenceCurrency: BigNumber;
   currentLiquidationThreshold: BigNumber;
   collateralInUSDAsset: number;
-  availableBorrowsUSD: number;
-  totalCollateralUSD: number;
+  availableBorrowsUSD: BigNumber;
+  totalCollateralUSD: BigNumber;
   isInIsolationMode: boolean;
   currentLoanToValue: BigNumber;
-  totalLiquidityUSD: number;
-  totalBorrowsUSD: number;
+  totalLiquidityUSD: BigNumber;
+  totalBorrowsUSD: BigNumber;
   healthFactor: BigNumber;
   netWorthUSD: number;
   earnedAPY: number;
@@ -59,8 +59,8 @@ export function generateRawUserSummaryTon({
     isolatedReserve,
   } = calculateUserReserveTotals({ userReserves, userEmodeCategoryId });
 
-  const totalLiquidityUSD = calculateTotalElementTon(userReserves, 'underlyingBalanceUSD'); // total user supplied - usd
-  const totalBorrowsUSD = calculateTotalElementTon(userReserves, 'variableBorrowsUSD'); // total user borrowed - usd
+  const totalLiquidityUSD = totalLiquidityMarketReferenceCurrency; // total user supplied - usd
+  const totalBorrowsUSD = totalBorrowsMarketReferenceCurrency; // total user borrowed - usd
   const earnedAPY = calculateTotalElementTon(userReserves, 'supplyAPY'); // total APY your supplies
 
   const collateralInUSDAsset = calculateTotalCollateralUSD(userReserves, (reserve) =>
@@ -72,12 +72,9 @@ export function generateRawUserSummaryTon({
     borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
     currentLiquidationThreshold,
   });
+  console.log('🚀 ~ healthFactor:', healthFactor.toString());
 
-  const totalCollateralUSD = calculateTotalElementTon(
-    userReserves,
-    'underlyingBalanceUSD',
-    'usageAsCollateralEnabledOnUser'
-  );
+  const totalCollateralUSD = totalCollateralMarketReferenceCurrency;
 
   const weightedAvgSupplyAPY = calculateWeightedAvgAPY(
     userReserves,
@@ -94,20 +91,20 @@ export function generateRawUserSummaryTon({
   const netWorthUSD = Number(valueToBigNumber(totalLiquidityUSD).minus(totalBorrowsUSD)); // Net worth
 
   const netAPY =
-    (weightedAvgSupplyAPY * totalLiquidityUSD) / netWorthUSD -
-    (weightedAvgBorrowAPY * totalBorrowsUSD) / netWorthUSD; // Net APY
+    (weightedAvgSupplyAPY * Number(totalLiquidityUSD)) / netWorthUSD -
+    (weightedAvgBorrowAPY * Number(totalBorrowsUSD)) / netWorthUSD; // Net APY
 
   const currentLoanToValue = currentLtv;
 
   const debtAPY = Number(weightedAvgBorrowAPY);
-
-  const availableBorrowsUSD = Number(valueToBigNumber(totalCollateralUSD).minus(totalBorrowsUSD));
 
   const availableBorrowsMarketReferenceCurrency = calculateAvailableBorrowsMarketReferenceCurrency({
     collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
     borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
     currentLtv,
   });
+
+  const availableBorrowsUSD = availableBorrowsMarketReferenceCurrency;
 
   return {
     availableBorrowsMarketReferenceCurrency,

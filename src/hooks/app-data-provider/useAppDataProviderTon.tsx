@@ -193,7 +193,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
             const variableBorrowRate = item.currentVariableBorrowRate
               .toString()
-              .toString()
               .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
             const variableBorrowAPY = calculateCompoundedRate({
@@ -306,8 +305,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               unborrowedLiquidity: '2314.651612891643030158',
               formattedBaseLTVasCollateral: formattedBaseLTVasCollateral,
               supplyAPR: supplyAPR,
-              variableBorrowAPR: '0.00238658737453766736',
-              formattedReserveLiquidationThreshold,
+              variableBorrowAPR: variableBorrowRate,
+              formattedReserveLiquidationThreshold: formattedReserveLiquidationThreshold,
               debtCeilingUSD: '0',
               isolationModeTotalDebtUSD: '0',
               availableDebtCeilingUSD: '0',
@@ -385,7 +384,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 unborrowedLiquidity: '2314.651612891643030158',
                 formattedBaseLTVasCollateral: formattedBaseLTVasCollateral,
                 supplyAPR: supplyAPR,
-                variableBorrowAPR: '0.00238658737453766736',
+                variableBorrowAPR: variableBorrowRate,
                 stableBorrowAPR: '0.07',
                 formattedReserveLiquidationThreshold,
                 debtCeilingUSD: '0',
