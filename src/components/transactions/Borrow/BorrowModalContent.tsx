@@ -235,8 +235,9 @@ export const BorrowModalContent = ({
   if (borrowTxState.success)
     return (
       <TxSuccessView
+        image={poolReserve.image}
         action={<Trans>Borrowed</Trans>}
-        amount={amount}
+        amount={amount || borrowTxState.amount}
         symbol={iconSymbol}
         addToken={borrowUnWrapped && poolReserve.isWrappedBaseAsset ? undefined : addToken}
       />

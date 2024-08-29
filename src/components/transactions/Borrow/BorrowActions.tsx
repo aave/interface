@@ -130,9 +130,10 @@ export const BorrowActions = React.memo(
               txHash: resBorrowTop.txHash,
               loading: false,
               success: true,
+              amount: amountToBorrow,
             });
-            await getPoolContractGetReservesData();
-            await getYourSupplies();
+
+            Promise.all([getPoolContractGetReservesData(), getYourSupplies()]);
           } else {
             const error = {
               name: 'borrow',
