@@ -213,8 +213,9 @@ export const SupplyModalContent = React.memo(
     if (supplyTxState.success)
       return (
         <TxSuccessView
+          image={poolReserve.image}
           action={<Trans>Supplied</Trans>}
-          amount={amount}
+          amount={amount || supplyTxState.amount}
           symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
           addToken={addTokenProps}
         />
@@ -417,6 +418,7 @@ export const SupplyWrappedTokenModalContent = ({
 
     return (
       <TxSuccessView
+        image={poolReserve.image}
         action={<Trans>Supplied</Trans>}
         amount={successModalAmount}
         symbol={poolReserve.symbol}

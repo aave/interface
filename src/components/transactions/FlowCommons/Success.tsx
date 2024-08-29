@@ -20,6 +20,7 @@ export type SuccessTxViewProps = {
   addToken?: ERC20TokenType;
   customAction?: ReactNode;
   customText?: ReactNode;
+  image?: string;
 };
 
 export const TxSuccessView = ({
@@ -32,6 +33,7 @@ export const TxSuccessView = ({
   addToken,
   customAction,
   customText,
+  image,
 }: SuccessTxViewProps) => {
   const { addERC20Token } = useWeb3Context();
   const [base64, setBase64] = useState('');
@@ -93,8 +95,9 @@ export const TxSuccessView = ({
             })}
           >
             <TokenIcon
+              img={image}
               symbol={addToken.symbol}
-              aToken={addToken && addToken.aToken ? true : false}
+              aToken={addToken && !image && addToken.aToken ? true : false}
               sx={{ fontSize: '32px', mt: '12px', mb: '8px' }}
             />
             <Typography variant="description" color="text.primary" sx={{ mx: '24px' }}>

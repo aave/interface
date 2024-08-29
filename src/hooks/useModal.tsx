@@ -54,6 +54,7 @@ export type TxStateType = {
   // txError?: string;
   loading?: boolean;
   success?: boolean;
+  amount?: string;
 };
 
 type CallbackFn = () => void;
