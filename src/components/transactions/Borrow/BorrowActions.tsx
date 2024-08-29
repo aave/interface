@@ -126,14 +126,13 @@ export const BorrowActions = React.memo(
 
           if (!!resBorrowTop?.success) {
             await sleep(30000); // sleep 30s re call SC get new data reserve
+            Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
             setMainTxState({
               txHash: resBorrowTop.txHash,
               loading: false,
               success: true,
               amount: amountToBorrow,
             });
-
-            Promise.all([getPoolContractGetReservesData(), getYourSupplies()]);
           } else {
             const error = {
               name: 'borrow',
