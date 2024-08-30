@@ -296,7 +296,8 @@ export const useTransactionHandler = ({
       );
 
       if (!!resToggle?.success) {
-        await sleep(15000); // sleep 15s re call SC get new data reserve
+        await sleep(30000); // sleep 30s re call SC get new data reserve
+        Promise.allSettled([getYourSupplies()]);
         setMainTxState({
           txHash: resToggle.txHash,
           loading: false,
@@ -314,7 +315,6 @@ export const useTransactionHandler = ({
           loading: false,
         });
       }
-      getYourSupplies();
     }
     if (usePermit && handleGetPermitTxns) {
       if (!signatures.length || !signatureDeadline) throw new Error('signature needed');

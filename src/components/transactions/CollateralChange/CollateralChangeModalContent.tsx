@@ -1,8 +1,4 @@
-import {
-  calculateHealthFactorFromBalances,
-  calculateHealthFactorFromBalancesBigUnits,
-  valueToBigNumber,
-} from '@aave/math-utils';
+import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
@@ -10,6 +6,8 @@ import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataPro
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
+import { TxAction } from 'src/ui-config/errorMapping';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -41,6 +39,7 @@ export const CollateralChangeModalContent = ({
     mainTxState: collateralChangeTxState,
     txError: mainTxError,
   } = useModalContext();
+  const { isConnectedTonWallet } = useTonConnectContext();
   const { debtCeiling } = useAssetCaps();
   const txError = mainTxError;
 
@@ -59,12 +58,6 @@ export const CollateralChangeModalContent = ({
   const totalCollateralAfterSwitch = currenttotalCollateralMarketReferenceCurrency[
     usageAsCollateralModeAfterSwitch ? 'plus' : 'minus'
   ](userReserve.underlyingBalanceMarketReferenceCurrency);
-
-  const healthFactorAfterSwitchTon = calculateHealthFactorFromBalances({
-    collateralBalanceMarketReferenceCurrency: totalCollateralAfterSwitch,
-    borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
-    currentLiquidationThreshold: user.currentLiquidationThreshold,
-  });
 
   const healthFactorAfterSwitchETH = calculateHealthFactorFromBalancesBigUnits({
     collateralBalanceMarketReferenceCurrency: totalCollateralAfterSwitch,
@@ -176,7 +169,9 @@ export const CollateralChangeModalContent = ({
         </Typography>
       )}
 
-      {txError && <GasEstimationError txError={txError} />}
+      {txError && txError.txAction !== TxAction.GAS_ESTIMATION && (
+        <GasEstimationError txError={txError} />
+      )}
 
       <CollateralChangeActions
         symbol={symbol}
