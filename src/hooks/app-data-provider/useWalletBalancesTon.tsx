@@ -1,4 +1,5 @@
 import { Address, OpenedContract } from '@ton/core';
+import { formatUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
 import { JettonMinter } from 'src/contracts/JettonMinter';
@@ -41,38 +42,42 @@ export const useGetNameAssetTon = () => {
   };
 };
 
-export const useGetBalanceTon = () => {
+export const useGetBalanceTon = (yourWalletBalanceTon: string) => {
   const { walletAddressTonWallet } = useTonConnectContext();
   const client = useTonClient();
 
   const onGetBalanceTonNetwork = useCallback(
-    async (add: string) => {
+    async (add: string, decimals: string | number, isJetton: boolean) => {
       if (!client || !walletAddressTonWallet) return;
-      const minterAddress = JettonMinter.createFromAddress(
-        Address.parse(add)
-      )?.address.toRawString();
-      const contractJettonMinter = new JettonMinter(Address.parse(minterAddress));
-      const providerJettonMinter = client.open(
-        contractJettonMinter
-      ) as OpenedContract<JettonMinter>;
+      if (!isJetton) {
+        return yourWalletBalanceTon;
+      } else {
+        const minterAddress = JettonMinter.createFromAddress(
+          Address.parse(add)
+        )?.address.toRawString();
+        const contractJettonMinter = new JettonMinter(Address.parse(minterAddress));
+        const providerJettonMinter = client.open(
+          contractJettonMinter
+        ) as OpenedContract<JettonMinter>;
 
-      const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
-        Address.parse(walletAddressTonWallet)
-      );
+        const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
+          Address.parse(walletAddressTonWallet)
+        );
 
-      const contractJettonWallet = new JettonWallet(
-        Address.parse(walletAddressJettonMinter.toRawString())
-      );
+        const contractJettonWallet = new JettonWallet(
+          Address.parse(walletAddressJettonMinter.toRawString())
+        );
 
-      const providerJettonWallet = client.open(
-        contractJettonWallet
-      ) as OpenedContract<JettonWallet>;
+        const providerJettonWallet = client.open(
+          contractJettonWallet
+        ) as OpenedContract<JettonWallet>;
 
-      const balance = await providerJettonWallet.getJettonBalance();
+        const balance = await providerJettonWallet.getJettonBalance();
 
-      return balance;
+        return formatUnits(balance || '0', decimals);
+      }
     },
-    [client, walletAddressTonWallet]
+    [client, walletAddressTonWallet, yourWalletBalanceTon]
   );
 
   return {

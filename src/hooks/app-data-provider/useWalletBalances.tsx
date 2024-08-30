@@ -99,7 +99,7 @@ export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
   };
 };
 
-export const useTonBalance = (walletAddress: string) => {
+export const useTonBalance = () => {
   const wallet = useTonWallet();
   const [balance, setBalance] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
@@ -112,9 +112,14 @@ export const useTonBalance = (walletAddress: string) => {
     const fetchData = async () => {
       try {
         attempts++;
-        if (!client || !walletAddress || !wallet || !wallet?.account?.publicKey) return;
+        if (!client || !wallet || !wallet?.account?.publicKey) return setBalance('');
         const workchain = 0; // Usually you need a workchain 0
         const publicKey = Buffer.from(wallet.account.publicKey, 'hex');
+
+        // // Generate new key
+        // const mnemonics = await mnemonicNew();
+        // const keyPair = await mnemonicToPrivateKey(mnemonics);
+
         const walletContract = WalletContractV4.create({ workchain, publicKey: publicKey });
 
         const walletInstance = client.open(walletContract);
@@ -139,15 +144,11 @@ export const useTonBalance = (walletAddress: string) => {
     };
 
     await fetchData();
-  }, [balance, client, wallet, walletAddress]);
+  }, [balance, client, wallet]);
 
   useEffect(() => {
     fetchBalance();
   }, [fetchBalance]);
-
-  useEffect(() => {
-    if (!walletAddress) setBalance('0');
-  }, [walletAddress]);
 
   return { balance, loading, refetch: fetchBalance };
 };

@@ -100,10 +100,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     PoolContractReservesDataType[]
   >([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
-  const { onGetBalanceTonNetwork } = useGetBalanceTon();
+  const { balance: yourWalletBalanceTon, refetch: fetchBalanceTon } = useTonBalance();
+  const { onGetBalanceTonNetwork } = useGetBalanceTon(yourWalletBalanceTon);
   const { walletAddressTonWallet } = useTonConnectContext();
-  const { balance: yourWalletBalanceTon, refetch: fetchBalanceTon } =
-    useTonBalance(walletAddressTonWallet);
 
   // const getPoolJettonWalletAddress = useCallback(
   //   async (address: string) => {
@@ -169,16 +168,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         await fetchBalanceTon();
         const arr = await Promise.all(
           poolContractReservesData.map(async (item) => {
-            const balance =
-              item?.isJetton && (await onGetBalanceTonNetwork(item.underlyingAddress.toString()));
-
-            const walletBalance = item?.isJetton
-              ? formatUnits(balance || '0', item.decimals)
-              : yourWalletBalanceTon;
-
-            // const poolJettonWalletAddress = item.isJetton
-            //   ? item.poolJWAddress.toString()
-            //   : item.underlyingAddress.toString();
+            const walletBalance = await onGetBalanceTonNetwork(
+              item.underlyingAddress.toString(),
+              item.decimals,
+              item?.isJetton
+            );
 
             const poolJettonWalletAddress = item.poolJWAddress.toString();
 
@@ -518,19 +512,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     poolContract,
     poolContractReservesData,
     walletAddressTonWallet,
-    yourWalletBalanceTon,
   ]);
 
   useEffect(() => {
     getValueReserve();
-  }, [
-    client,
-    getValueReserve,
-    poolContract,
-    walletAddressTonWallet,
-    yourWalletBalanceTon,
-    poolContractReservesData,
-  ]);
+  }, [getValueReserve]);
 
   useEffect(() => {
     const newReserves = reservesTon.map((reserve) => {
