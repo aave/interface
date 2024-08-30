@@ -13,7 +13,7 @@ export const GasEstimationError = ({ txError }: { txError: TxErrorType }) => {
             <Button
               sx={{ verticalAlign: 'top' }}
               variant="text"
-              onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
+              onClick={() => navigator.clipboard.writeText(txError?.rawError?.message?.toString())}
             >
               <Typography variant="description">
                 <Trans>copy the error</Trans>
@@ -25,7 +25,7 @@ export const GasEstimationError = ({ txError }: { txError: TxErrorType }) => {
             There was some error. Please try changing the parameters or{' '}
             <Button
               sx={{ verticalAlign: 'top' }}
-              onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
+              onClick={() => navigator.clipboard.writeText(txError?.rawError?.message?.toString())}
             >
               <Typography variant="description">copy the error</Typography>
             </Button>

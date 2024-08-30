@@ -21,6 +21,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { TxAction } from 'src/ui-config/errorMapping';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
@@ -305,7 +306,9 @@ export const BorrowModalContent = ({
         />
       </TxModalDetails>
 
-      {txError && <GasEstimationError txError={txError} />}
+      {txError && txError.txAction !== TxAction.GAS_ESTIMATION && (
+        <GasEstimationError txError={txError} />
+      )}
 
       {displayRiskCheckbox && (
         <BorrowAmountWarning

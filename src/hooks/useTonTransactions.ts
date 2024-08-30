@@ -1,3 +1,4 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { Address, beginCell, Cell, OpenedContract, toNano } from '@ton/core';
 import { parseUnits } from 'ethers/lib/utils';
 import { useCallback } from 'react';
@@ -137,7 +138,10 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress) return;
       try {
         const decimal = poolReserve.decimals; // poolReserve.decimals
-        const parseAmount = parseUnits(amount, decimal).toString();
+        const parseAmount = parseUnits(
+          valueToBigNumber(amount).toFixed(decimal),
+          decimal
+        ).toString();
 
         const dataMultiSig = await getMultiSig({
           isMock: false,

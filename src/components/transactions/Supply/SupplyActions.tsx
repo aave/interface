@@ -1,4 +1,5 @@
 import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -153,7 +154,7 @@ export const SupplyActions = React.memo(
         if (isConnectedTonWallet) {
           setMainTxState({ ...mainTxState, loading: true });
           const resSupplyTop = await onSendSupplyTon(
-            parseUnits(amountToSupply.toString(), decimals).toString(),
+            parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString(),
             isJetton
           );
           if (!!resSupplyTop?.success) {
