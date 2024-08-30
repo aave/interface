@@ -8,12 +8,7 @@ import BigNumber from 'bignumber.js';
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
 import { calculateUserReserveTotals } from './calculate-user-reserve-totals';
-import {
-  calculateTotalCollateralUSD,
-  calculateTotalElementTon,
-  calculateWeightedAvgAPY,
-} from './calculatesTon';
-import { normalizedToUsd } from './usd/normalized-to-usd';
+import { calculateTotalCollateralUSD, calculateWeightedAvgAPY } from './calculatesTon';
 
 export interface RawUserSummaryResponseTon {
   availableBorrowsMarketReferenceCurrency: BigNumber;

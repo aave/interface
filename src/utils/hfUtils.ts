@@ -3,6 +3,8 @@ import {
   calculateHealthFactorFromBalances,
   calculateHealthFactorFromBalancesBigUnits,
   ComputedUserReserve,
+  LTV_PRECISION,
+  normalize,
   UserReserveData,
   valueToBigNumber,
 } from '@aave/math-utils';
@@ -219,8 +221,7 @@ export const calculateHFAfterWithdraw = ({
 export const calculateHFAfterSupply = (
   user: ExtendedFormattedUser,
   poolReserve: ComputedReserveData,
-  supplyAmountInEth: BigNumber,
-  isConnectedTonWallet?: boolean
+  supplyAmountInEth: BigNumber
 ) => {
   let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
 
@@ -241,21 +242,13 @@ export const calculateHFAfterSupply = (
       (user.isInIsolationMode &&
         user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset))
   ) {
-    if (isConnectedTonWallet) {
-      healthFactorAfterDeposit = calculateHealthFactorFromBalances({
-        collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
-        borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
-        currentLiquidationThreshold: user.currentLiquidationThreshold,
-      });
-    } else {
-      healthFactorAfterDeposit = calculateHealthFactorFromBalancesBigUnits({
-        collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
-        borrowBalanceMarketReferenceCurrency: valueToBigNumber(
-          user.totalBorrowsMarketReferenceCurrency
-        ),
-        currentLiquidationThreshold: liquidationThresholdAfter,
-      });
-    }
+    healthFactorAfterDeposit = calculateHealthFactorFromBalancesBigUnits({
+      collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
+      borrowBalanceMarketReferenceCurrency: valueToBigNumber(
+        user.totalBorrowsMarketReferenceCurrency
+      ),
+      currentLiquidationThreshold: liquidationThresholdAfter,
+    });
   }
 
   return healthFactorAfterDeposit;

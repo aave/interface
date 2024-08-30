@@ -1,9 +1,6 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import {
-  calculateHealthFactorFromBalances,
   calculateHealthFactorFromBalancesBigUnits,
-  LTV_PRECISION,
-  normalize,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
@@ -164,9 +161,7 @@ export const BorrowModalContent = ({
     borrowBalanceMarketReferenceCurrency: valueToBigNumber(user.totalBorrowsUSD).plus(
       amountToBorrowInUsd
     ),
-    currentLiquidationThreshold: isConnectedTonWallet
-      ? normalize(user.currentLiquidationThreshold, LTV_PRECISION)
-      : user.currentLiquidationThreshold,
+    currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
 
   const displayRiskCheckbox =

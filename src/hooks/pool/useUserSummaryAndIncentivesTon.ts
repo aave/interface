@@ -1,3 +1,4 @@
+import { LTV_PRECISION, normalize } from '@aave/math-utils';
 import { useMemo, useState } from 'react';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { generateRawUserSummaryTon } from 'src/utils/generate-raw-user-summary-tom';
@@ -44,8 +45,8 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       netWorthUSD: netWorthUSD.toString(),
       availableBorrowsMarketReferenceCurrency: availableBorrowsMarketReferenceCurrency.toString(), /// availableBorrowsUSD = availableBorrowsMarketReferenceCurrency
       availableBorrowsUSD: availableBorrowsUSD.toString(), /// availableBorrowsUSD = availableBorrowsMarketReferenceCurrency
-      currentLoanToValue: currentLoanToValue.toString(),
-      currentLiquidationThreshold: currentLiquidationThreshold.toString(),
+      currentLoanToValue: normalize(currentLoanToValue, LTV_PRECISION),
+      currentLiquidationThreshold: normalize(currentLiquidationThreshold, LTV_PRECISION),
       healthFactor: healthFactor.toString(),
       isInIsolationMode: false,
       calculatedUserIncentives: {},
