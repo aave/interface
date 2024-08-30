@@ -10,7 +10,6 @@ import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataPro
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -43,7 +42,6 @@ export const CollateralChangeModalContent = ({
     txError: mainTxError,
   } = useModalContext();
   const { debtCeiling } = useAssetCaps();
-  const { isConnectedTonWallet } = useTonConnectContext();
   const txError = mainTxError;
 
   // Health factor calculations
@@ -74,9 +72,7 @@ export const CollateralChangeModalContent = ({
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
 
-  const healthFactorAfterSwitch = isConnectedTonWallet
-    ? healthFactorAfterSwitchTon
-    : healthFactorAfterSwitchETH;
+  const healthFactorAfterSwitch = healthFactorAfterSwitchETH;
 
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
