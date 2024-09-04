@@ -167,6 +167,11 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               stableBorrowsMarketReferenceCurrency
             );
 
+            const isCollateral =
+              matchedSupply?.isCollateral === undefined || matchedSupply?.isCollateral === true
+                ? true
+                : false;
+
             return {
               ...reserve,
               underlyingBalance: normalizeWithReserve(underlyingBalance),
@@ -175,7 +180,8 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               variableBorrows: normalizeWithReserve(variableBorrows),
               variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0),
 
-              usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
+              usageAsCollateralEnabledOnUser: isCollateral,
+              usageAsCollateralEnabled: isCollateral,
 
               id: reserve.id,
               underlyingAsset: reserve.underlyingAsset,
@@ -197,6 +203,38 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
                 totalBorrowsMarketReferenceCurrency,
                 0
               ),
+
+              reserve: {
+                ...reserve.reserve,
+                underlyingBalance: normalizeWithReserve(underlyingBalance),
+                underlyingBalanceUSD: normalize(underlyingBalanceMarketReferenceCurrency, 0),
+
+                variableBorrows: normalizeWithReserve(variableBorrows),
+                variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0),
+
+                usageAsCollateralEnabled: isCollateral,
+
+                id: reserve.id,
+                underlyingAsset: reserve.underlyingAsset,
+                scaledATokenBalance: reserve.scaledATokenBalance,
+                stableBorrowRate: reserve.stableBorrowRate,
+                scaledVariableDebt: reserve.scaledVariableDebt,
+                principalStableDebt: reserve.principalStableDebt,
+                stableBorrowLastUpdateTimestamp: reserve.stableBorrowLastUpdateTimestamp,
+
+                underlyingBalanceMarketReferenceCurrency: normalize(
+                  underlyingBalanceMarketReferenceCurrency,
+                  0
+                ),
+                variableBorrowsMarketReferenceCurrency: normalize(
+                  variableBorrowsMarketReferenceCurrency,
+                  0
+                ),
+                totalBorrowsMarketReferenceCurrency: normalize(
+                  totalBorrowsMarketReferenceCurrency,
+                  0
+                ),
+              },
             };
           })
           .value()

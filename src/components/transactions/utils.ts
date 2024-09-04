@@ -50,9 +50,14 @@ export const getAssetCollateralType = (
 ) => {
   const poolReserve = userReserve?.reserve;
 
+  // if (poolReserve?.usageAsCollateralEnabled && isConnectedTonWallet) {
+  //   return CollateralType.ENABLED;
+  // }
+
   if (!poolReserve?.usageAsCollateralEnabled && isConnectedTonWallet) {
-    return CollateralType.ENABLED;
+    return CollateralType.DISABLED;
   }
+
   if (!poolReserve?.usageAsCollateralEnabled) {
     return CollateralType.UNAVAILABLE;
   }
