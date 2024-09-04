@@ -73,6 +73,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: true, message: 'success' };
       } catch (error) {
         console.error('Transaction failed:', error);
+        console.log(error.message.replace(/\s+/g, '').toLowerCase());
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -95,6 +96,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: true, message: 'success' };
       } catch (error) {
         console.error('Transaction failed:', error);
+        console.log(error.message.replace(/\s+/g, '').toLowerCase());
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -169,6 +171,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: true, message: 'success' };
       } catch (error) {
         console.error('Transaction failed:', error);
+        console.log(error.message.replace(/\s+/g, '').toLowerCase());
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -235,6 +238,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         }
       } catch (error) {
         console.error('Transaction failed:', error);
+        console.log(error.message.replace(/\s+/g, '').toLowerCase());
         if (
           error.message.replace(/\s+/g, '').toLowerCase() === ErrorTypeTon.cancelledClient ||
           error.message.replace(/\s+/g, '').toLowerCase() === ErrorTypeTon.cancelledApp
