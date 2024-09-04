@@ -16,6 +16,12 @@ import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
+export const ErrorTypeTon = {
+  cancelledClient: '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent',
+  cancelledApp:
+    '[ton_connect_sdk_error]userrejectserror:userrejectstheactioninthewallet.canceledbytheuser',
+};
+
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
   const { onGetGetTxByBOC } = useTonGetTxByBOC();
   const client = useTonClient();
@@ -119,15 +125,16 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
           return { success: true, txHash: txHash };
         } else if (
-          res?.message === '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent'
+          res?.message === ErrorTypeTon.cancelledClient ||
+          res?.message === ErrorTypeTon.cancelledApp
         ) {
           return {
             success: false,
-            error: '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent',
+            error: ErrorTypeTon.cancelledClient,
           };
         }
       } catch (error) {
-        return { success: false, error };
+        return { success: false, error: error?.message };
       }
     },
     [getLatestBoc, onGetGetTxByBOC, onSendJettonToken, onSendNativeToken, yourAddressWallet]
@@ -187,11 +194,12 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
           return { success: true, txHash: txHash };
         } else if (
-          res?.message === '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent'
+          res?.message === ErrorTypeTon.cancelledClient ||
+          res?.message === ErrorTypeTon.cancelledApp
         ) {
           return {
             success: false,
-            error: '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent',
+            error: ErrorTypeTon.cancelledClient,
           };
         }
       } catch (error) {
@@ -228,12 +236,12 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       } catch (error) {
         console.error('Transaction failed:', error);
         if (
-          error.message.replace(/\s+/g, '').toLowerCase() ===
-          '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent'
+          error.message.replace(/\s+/g, '').toLowerCase() === ErrorTypeTon.cancelledClient ||
+          error.message.replace(/\s+/g, '').toLowerCase() === ErrorTypeTon.cancelledApp
         ) {
           return {
             success: false,
-            error: '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent',
+            error: ErrorTypeTon.cancelledClient,
           };
         } else {
           return { success: false, error };
