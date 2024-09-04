@@ -1,6 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Address, beginCell, Cell, OpenedContract, toNano } from '@ton/core';
 import { parseUnits } from 'ethers/lib/utils';
+import _ from 'lodash';
 import { useCallback } from 'react';
 import { Op } from 'src/contracts/JettonConstants';
 import { JettonMinter } from 'src/contracts/JettonMinter';
@@ -16,11 +17,13 @@ import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
-export const ErrorTypeTon = {
-  cancelledClient: '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent',
-  cancelledApp:
-    '[ton_connect_sdk_error]userrejectserror:userrejectstheactioninthewallet.canceledbytheuser',
-};
+export const ErrorCancelledTon = [
+  'TON Tx Signature: User denied transaction signature.',
+  '[ton_connect_sdk_error]tonconnectuierrortransactionwasnotsent',
+  '[ton_connect_sdk_error]userrejectserror:userrejectstheactioninthewallet.canceledbytheuser',
+  '[ton_connect_sdk_error]e:userrejectstheactioninthewallet.canceledbytheuser',
+  '[ton_connect_sdk_error]ertransactionwasnotsent',
+];
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
   const { onGetGetTxByBOC } = useTonGetTxByBOC();
@@ -126,13 +129,10 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           // console.log('status--------------', status);
 
           return { success: true, txHash: txHash };
-        } else if (
-          res?.message === ErrorTypeTon.cancelledClient ||
-          res?.message === ErrorTypeTon.cancelledApp
-        ) {
+        } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
             success: false,
-            error: ErrorTypeTon.cancelledClient,
+            error: ErrorCancelledTon[0],
           };
         }
       } catch (error) {
@@ -171,7 +171,6 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: true, message: 'success' };
       } catch (error) {
         console.error('Transaction failed:', error);
-        console.log(error.message.replace(/\s+/g, '').toLowerCase());
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -196,13 +195,10 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           // console.log('status--------------', status);
 
           return { success: true, txHash: txHash };
-        } else if (
-          res?.message === ErrorTypeTon.cancelledClient ||
-          res?.message === ErrorTypeTon.cancelledApp
-        ) {
+        } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
             success: false,
-            error: ErrorTypeTon.cancelledClient,
+            error: ErrorCancelledTon[0],
           };
         }
       } catch (error) {
@@ -238,14 +234,11 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         }
       } catch (error) {
         console.error('Transaction failed:', error);
-        console.log(error.message.replace(/\s+/g, '').toLowerCase());
-        if (
-          error.message.replace(/\s+/g, '').toLowerCase() === ErrorTypeTon.cancelledClient ||
-          error.message.replace(/\s+/g, '').toLowerCase() === ErrorTypeTon.cancelledApp
-        ) {
+        const errorToCheck = error.message.replace(/\s+/g, '').toLowerCase();
+        if (_.includes(ErrorCancelledTon, errorToCheck)) {
           return {
             success: false,
-            error: ErrorTypeTon.cancelledClient,
+            error: ErrorCancelledTon[0],
           };
         } else {
           return { success: false, error };
