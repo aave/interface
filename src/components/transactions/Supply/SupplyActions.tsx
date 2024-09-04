@@ -157,7 +157,6 @@ export const SupplyActions = React.memo(
             parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString(),
             isJetton
           );
-          console.log('----------------', resSupplyTop);
           if (!!resSupplyTop?.success) {
             await sleep(30000); // sleep 30s re call SC get new data reserve
             Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
