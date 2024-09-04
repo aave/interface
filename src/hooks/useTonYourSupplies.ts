@@ -175,7 +175,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               variableBorrows: normalizeWithReserve(variableBorrows),
               variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0),
 
-              usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral || true,
+              usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
 
               id: reserve.id,
               underlyingAsset: reserve.underlyingAsset,

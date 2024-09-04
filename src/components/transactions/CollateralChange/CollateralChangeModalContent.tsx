@@ -34,18 +34,12 @@ export const CollateralChangeModalContent = ({
   symbol,
   user,
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
-  const {
-    gasLimit,
-    mainTxState: collateralChangeTxState,
-    txError: mainTxError,
-  } = useModalContext();
-  const { isConnectedTonWallet } = useTonConnectContext();
+  const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
   const { debtCeiling } = useAssetCaps();
-  const txError = mainTxError;
 
   // Health factor calculations
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
-  const currenttotalCollateralMarketReferenceCurrency = valueToBigNumber(
+  const currentTotalCollateralMarketReferenceCurrency = valueToBigNumber(
     user.totalCollateralMarketReferenceCurrency
   );
 
@@ -55,17 +49,26 @@ export const CollateralChangeModalContent = ({
   const showEnterIsolationModeMsg = poolReserve.isIsolated && usageAsCollateralModeAfterSwitch;
   const showExitIsolationModeMsg = poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch;
 
-  const totalCollateralAfterSwitch = currenttotalCollateralMarketReferenceCurrency[
+  const totalCollateralMarketReferenceCurrencyAfter = currentTotalCollateralMarketReferenceCurrency[
     usageAsCollateralModeAfterSwitch ? 'plus' : 'minus'
   ](userReserve.underlyingBalanceMarketReferenceCurrency);
 
-  const healthFactorAfterSwitchETH = calculateHealthFactorFromBalancesBigUnits({
-    collateralBalanceMarketReferenceCurrency: totalCollateralAfterSwitch,
-    borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
-    currentLiquidationThreshold: user.currentLiquidationThreshold,
-  });
+  const liquidationThresholdAfter = user
+    ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
+        .multipliedBy(user.currentLiquidationThreshold)
+        [usageAsCollateralModeAfterSwitch ? 'plus' : 'minus'](
+          valueToBigNumber(userReserve.underlyingBalanceMarketReferenceCurrency).multipliedBy(
+            poolReserve.formattedReserveLiquidationThreshold
+          )
+        )
+        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+    : '-1';
 
-  const healthFactorAfterSwitch = healthFactorAfterSwitchETH;
+  const healthFactorAfterSwitch = calculateHealthFactorFromBalancesBigUnits({
+    collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
+    borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
+    currentLiquidationThreshold: liquidationThresholdAfter,
+  });
 
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
