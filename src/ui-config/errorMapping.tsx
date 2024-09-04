@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { ReactElement } from 'react';
+import { ErrorCancelledTon } from 'src/hooks/useTonTransactions';
 
 export enum TxAction {
   APPROVAL,
@@ -26,7 +27,7 @@ export const getErrorTextFromError = (
   if (
     error.message === 'MetaMask Tx Signature: User denied transaction signature.' ||
     error.message === 'MetaMask Message Signature: User denied message signature.' ||
-    error.message === 'TON Tx Signature: User denied transaction signature.'
+    error.message === ErrorCancelledTon[0]
   ) {
     return {
       error: errorMapping[4001],
