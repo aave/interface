@@ -5,6 +5,7 @@ export enum TxAction {
   APPROVAL,
   MAIN_ACTION,
   GAS_ESTIMATION,
+  CANCELLED,
 }
 
 export type TxErrorType = {
@@ -32,7 +33,7 @@ export const getErrorTextFromError = (
       blocking: false,
       actionBlocked: false,
       rawError: error,
-      txAction,
+      txAction: TxAction.CANCELLED,
     };
   }
 

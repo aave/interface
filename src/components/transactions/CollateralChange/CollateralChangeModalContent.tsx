@@ -6,7 +6,6 @@ import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataPro
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { TxAction } from 'src/ui-config/errorMapping';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
