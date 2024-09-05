@@ -90,6 +90,7 @@ export const GAS_FEE_TON = 0.3;
 export const API_TON_V2 = 'https://testnet.toncenter.com/api/v2';
 export const API_TON_V3 = 'https://testnet.toncenter.com/api/v3';
 export const SCAN_TRANSACTION_TON = 'https://testnet.tonviewer.com';
+export const URL_API_BE = 'https://aave-ton-api.sotatek.works';
 
 export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {
   const client = useTonClient();
@@ -102,8 +103,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     PoolContractReservesDataType[]
   >([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
-  const { balance: yourWalletBalanceTon, refetch: fetchBalanceTon } = useTonBalance();
-  const { onGetBalanceTonNetwork } = useGetBalanceTon(yourWalletBalanceTon);
+  const { onGetBalanceTonNetwork, yourWalletBalanceTon } = useGetBalanceTon();
   const { walletAddressTonWallet } = useTonConnectContext();
 
   // const getPoolJettonWalletAddress = useCallback(
@@ -167,7 +167,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       try {
         attempts++;
         if (!poolContract || !client || !walletAddressTonWallet) return;
-        await fetchBalanceTon();
         const arr = await Promise.all(
           poolContractReservesData.map(async (item) => {
             const walletBalance = await onGetBalanceTonNetwork(
@@ -510,7 +509,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     await fetchData();
   }, [
     client,
-    fetchBalanceTon,
     onGetBalanceTonNetwork,
     poolContract,
     poolContractReservesData,
@@ -614,7 +612,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     getValueReserve,
     getPoolContractGetReservesData,
     setReservesTon,
-    yourWalletBalanceTon,
     gasFeeTonMarketReferenceCurrency,
+    yourWalletBalanceTon,
   };
 };

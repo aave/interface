@@ -8,7 +8,7 @@ import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { useTonClient } from '../useTonClient';
-import { WalletBalancesMap } from './useWalletBalances';
+import { useTonBalance, WalletBalancesMap } from './useWalletBalances';
 
 export interface WalletBalancesTop {
   walletBalancesTon: WalletBalancesMap;
@@ -42,8 +42,9 @@ export const useGetNameAssetTon = () => {
   };
 };
 
-export const useGetBalanceTon = (yourWalletBalanceTon: string) => {
+export const useGetBalanceTon = () => {
   const { walletAddressTonWallet } = useTonConnectContext();
+  const { balance: yourWalletBalanceTon } = useTonBalance(walletAddressTonWallet);
   const client = useTonClient();
 
   const onGetBalanceTonNetwork = useCallback(
@@ -82,6 +83,7 @@ export const useGetBalanceTon = (yourWalletBalanceTon: string) => {
 
   return {
     onGetBalanceTonNetwork,
+    yourWalletBalanceTon,
   };
 };
 

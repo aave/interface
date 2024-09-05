@@ -3,10 +3,7 @@ import _ from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useSocket from 'src/utils/connectSocket';
 
-import { address_pools } from './useAppDataProviderTon';
-
-const URL_PRICE_SOCKET = 'https://aave-ton-api.sotatek.works/';
-const URL_DEFAULT_VALUE_PRICE = 'https://aave-ton-api.sotatek.works/crawler/price';
+import { address_pools, URL_API_BE } from './useAppDataProviderTon';
 
 export type WalletBalanceUSD = {
   id: string;
@@ -18,7 +15,7 @@ export type WalletBalanceUSD = {
 
 export const useSocketGetRateUSD = () => {
   const walletSocketRef = useRef(null);
-  const socket = useSocket(URL_PRICE_SOCKET);
+  const socket = useSocket(URL_API_BE);
   // Data with no value price
   const defaultRateUSDNotValue = [
     {
@@ -61,7 +58,7 @@ export const useSocketGetRateUSD = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(URL_DEFAULT_VALUE_PRICE);
+        const result = await axios.get(`${URL_API_BE}/crawler/price`);
 
         if (result.data) {
           const updatedData = defaultRateUSDNotValue.map((item) => {
