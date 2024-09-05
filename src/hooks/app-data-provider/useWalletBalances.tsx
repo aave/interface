@@ -108,7 +108,7 @@ export const useTonBalance = (yourWalletTon: string) => {
     const maxAttempts = MAX_ATTEMPTS;
     setLoading(true);
 
-    const fetchData = async () => {
+    const fetchData = async (): Promise<string | undefined> => {
       try {
         if (!yourWalletTon) return;
 
@@ -121,7 +121,9 @@ export const useTonBalance = (yourWalletTon: string) => {
         const balance = data.accounts[0].balance;
         setLoading(false);
 
-        return setBalance(fromNano(balance).toString());
+        const balanceFormatted = fromNano(balance).toString();
+        setBalance(balanceFormatted);
+        return balanceFormatted;
       } catch (error) {
         attempts += 1;
         console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
