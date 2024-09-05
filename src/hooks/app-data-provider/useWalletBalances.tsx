@@ -110,6 +110,8 @@ export const useTonBalance = (yourWalletTon: string) => {
 
     const fetchData = async () => {
       try {
+        if (!yourWalletTon) return;
+
         const params = {
           address: yourWalletTon,
           include_boc: true,
