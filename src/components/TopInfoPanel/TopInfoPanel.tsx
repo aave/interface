@@ -7,7 +7,6 @@ interface TopInfoPanelProps extends PageTitleProps {
   children?: ReactNode;
   titleComponent?: ReactNode;
   containerProps?: ContainerProps;
-  multiMarket?: boolean;
 }
 
 export const TopInfoPanel = ({
