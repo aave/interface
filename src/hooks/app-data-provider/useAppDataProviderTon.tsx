@@ -84,10 +84,12 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQD3fhDT87m99gNweXHQ9GR3H_nIdXZx82wRUN1pf6NGcIw3';
-// export const address_pools = 'EQDb9JsZ1QOwszqEzpJmnMJAAXukXzchlrV6Q08nJ83oVjbw';
+export const address_pools = 'EQDYognA0TffBwcm72ydttn9qFS09hrwxNT4Hyo7fuDDIzSW';
 export const MAX_ATTEMPTS = 10;
 export const GAS_FEE_TON = 0.3;
+export const API_TON_V2 = 'https://testnet.toncenter.com/api/v2';
+export const API_TON_V3 = 'https://testnet.toncenter.com/api/v3';
+export const SCAN_TRANSACTION_TON = 'https://testnet.tonviewer.com';
 
 export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {
   const client = useTonClient();

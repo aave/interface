@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
+import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -24,9 +25,7 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
   const { currentNetworkConfig } = useProtocolDataContext();
   const { isConnectedTonWallet } = useTonConnectContext();
 
-  const hrefTon = `https://testnet.tonviewer.com/transaction/${
-    txHash ? txHash : mainTxState.txHash
-  }`;
+  const hrefTon = `${SCAN_TRANSACTION_TON}/transaction/${txHash ? txHash : mainTxState.txHash}`;
   const theme = useTheme();
 
   return (
