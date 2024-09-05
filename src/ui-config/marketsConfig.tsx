@@ -147,7 +147,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_lido_v3]: {
-    marketTitle: 'Ethereum Lido Market',
+    marketTitle: 'Lido',
     market: CustomMarket.proto_lido_v3,
     chainId: ChainId.mainnet,
     v3: true,
@@ -177,7 +177,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_etherfi_v3]: {
-    marketTitle: 'EtherFi Market',
+    marketTitle: 'EtherFi',
     market: CustomMarket.proto_etherfi_v3,
     chainId: ChainId.mainnet,
     v3: true,
