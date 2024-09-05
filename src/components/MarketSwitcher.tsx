@@ -318,8 +318,6 @@ export const MarketSwitcher = () => {
         </Box>
       )}
       {availableMarkets.map((marketId: CustomMarket) => {
-        console.log('marketId', marketId);
-
         const { market, logo } = getMarketInfoById(marketId);
         const marketNaming = getMarketHelpData(market.marketTitle);
         return (
