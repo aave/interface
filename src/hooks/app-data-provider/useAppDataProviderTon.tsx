@@ -486,8 +486,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
         const mergedArray = JSON.parse(JSON.stringify([...arr]));
 
-        console.log('Assets to supply-----------', mergedArray);
-
         setReservesTon(mergedArray as DashboardReserve[]);
       } catch (error) {
         console.error(`Error fetching getValueReserve (attempt ${attempts}):`, error);
