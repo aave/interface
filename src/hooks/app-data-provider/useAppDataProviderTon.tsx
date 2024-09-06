@@ -248,11 +248,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             const borrowCap = formatUnits(item.borrowCap || '0', item.decimals);
             const supplyCap = formatUnits(item.supplyCap || '0', item.decimals);
 
+            const totalStableDebt = formatUnits(item.totalStableDebt || '0', item.decimals);
+
             const totalPrincipalInterestDebt = valueToBigNumber(totalScaledVariableDebt)
               .plus(formatUnits(Number(totalVariableDebt) || '0', item.decimals))
               .toString();
-
-            const totalStableDebt = formatUnits(item.totalStableDebt || '0', item.decimals);
 
             return {
               // ...item,
