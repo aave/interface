@@ -28,6 +28,8 @@ export const BorrowAssetsListItem = ({
   underlyingAsset,
   isFreezed,
   image,
+  totalScaledVariableDebt,
+  priceInUSD,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
@@ -37,6 +39,25 @@ export const BorrowAssetsListItem = ({
 
   const trackEvent = useRootStore((store) => store.trackEvent);
 
+  const checkAvailableValue = (
+    availableBorrows: number,
+    borrowCap: number,
+    totalScaledVariableDebt: number
+  ) => {
+    return availableBorrows > 0
+      ? Math.min(availableBorrows, borrowCap) - totalScaledVariableDebt
+      : 0;
+  };
+
+  const checkAvailableUSDValue = (
+    availableBorrowsInUSD: number,
+    borrowCap: number,
+    totalScaledVariableDebt: number
+  ) => {
+    return availableBorrowsInUSD > 0
+      ? Math.min(availableBorrowsInUSD, borrowCap) - totalScaledVariableDebt * Number(priceInUSD)
+      : 0;
+  };
   return (
     <ListItemWrapper
       symbol={symbol}
@@ -50,8 +71,16 @@ export const BorrowAssetsListItem = ({
     >
       <ListValueColumn
         symbol={symbol}
-        value={Number(availableBorrows) > 0 ? Number(availableBorrows) : 0}
-        subValue={Number(availableBorrowsInUSD) > 0 ? Number(availableBorrowsInUSD) : 0}
+        value={checkAvailableValue(
+          Number(availableBorrows),
+          Number(borrowCap),
+          Number(totalScaledVariableDebt)
+        )}
+        subValue={checkAvailableUSDValue(
+          Number(availableBorrowsInUSD),
+          Number(borrowCap),
+          Number(totalScaledVariableDebt)
+        )}
         disabled={Number(availableBorrows) === 0}
         withTooltip={false}
         capsComponent={

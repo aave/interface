@@ -130,12 +130,24 @@ export const BorrowModalContent = ({
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
 
   const { isConnectedTonWallet } = useTonConnectContext();
+
+  const checkMaxAmountToBorrow = (
+    availableBorrows: number,
+    borrowCapData: number,
+    totalScaledVariableDebt: number
+  ): string => {
+    return availableBorrows > 0
+      ? (Math.min(availableBorrows, borrowCapData) - totalScaledVariableDebt).toString()
+      : '0';
+  };
+
   // amount calculations
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-    poolReserve,
-    user,
-    interestRateMode,
-    isConnectedTonWallet
+  const maxAmountToBorrow = checkMaxAmountToBorrow(
+    Number(
+      getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode, isConnectedTonWallet)
+    ),
+    Number(poolReserve?.borrowCap),
+    Number(poolReserve?.totalScaledVariableDebt)
   );
 
   // We set this in a useEffect, so it doesn't constantly change when
