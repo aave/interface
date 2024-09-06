@@ -64,8 +64,9 @@ export const CollateralChangeModalContent = ({
     : '-1';
 
   const healthFactorAfterSwitch =
-    Number(totalCollateralMarketReferenceCurrencyAfter) === 0
-      ? valueToBigNumber(0)
+    Number(totalCollateralMarketReferenceCurrencyAfter) === 0 &&
+    !!Number(user.totalBorrowsMarketReferenceCurrency)
+      ? valueToBigNumber('0')
       : calculateHealthFactorFromBalancesBigUnits({
           collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
           borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
