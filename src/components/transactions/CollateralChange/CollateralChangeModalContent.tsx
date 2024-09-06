@@ -63,11 +63,14 @@ export const CollateralChangeModalContent = ({
         .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
     : '-1';
 
-  const healthFactorAfterSwitch = calculateHealthFactorFromBalancesBigUnits({
-    collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
-    borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
-    currentLiquidationThreshold: liquidationThresholdAfter,
-  });
+  const healthFactorAfterSwitch =
+    Number(totalCollateralMarketReferenceCurrencyAfter) === 0
+      ? valueToBigNumber(0)
+      : calculateHealthFactorFromBalancesBigUnits({
+          collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
+          borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
+          currentLiquidationThreshold: liquidationThresholdAfter,
+        });
 
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
