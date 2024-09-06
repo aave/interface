@@ -151,7 +151,7 @@ export const marketsData: {
     market: CustomMarket.proto_lido_v3,
     chainId: ChainId.mainnet,
     v3: true,
-    logo: '/icons/markets/ldo.svg',
+    logo: '/icons/markets/lido.svg',
     enabledFeatures: {
       governance: true,
       staking: true,
