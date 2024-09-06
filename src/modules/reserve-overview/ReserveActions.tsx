@@ -26,7 +26,7 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useTonBalance, useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -76,6 +76,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     user,
     loading: loadingReserves,
     marketReferencePriceInUsd,
+    yourWalletBalanceTon,
   } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances(currentMarketData);
 
@@ -138,7 +139,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     return <ConnectWallet loading={loadingWeb3Context} />;
   }
 
-  if (loadingReserves || loadingWalletBalance) {
+  if ((loadingReserves || loadingWalletBalance) && !isConnectedTonWallet) {
     return <ActionsSkeleton />;
   }
 
@@ -171,7 +172,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
       )}
       <Box sx={{ display: 'flex', gap: '8px 2px', flexWrap: 'wrap' }}>
         <WalletBalance
-          balance={balance.amount}
+          balance={isConnectedTonWallet ? `${yourWalletBalanceTon}` : balance.amount}
           symbol={selectedAsset}
           marketTitle={market.marketTitle}
         />

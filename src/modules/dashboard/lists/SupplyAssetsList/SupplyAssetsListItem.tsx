@@ -246,26 +246,31 @@ export const SupplyAssetsListItemDesktop = ({
         >
           <Trans>Supply</Trans>
         </Button>
-        <Button
-          sx={{
-            p: 2,
-            ml: '4px !important',
-            height: '36px',
-            fontSize: '14px',
-            textTransform: 'capitalize',
-            borderColor: theme.palette.text.subText,
-            bgcolor: 'transparent',
-            color: 'text.primary',
-            '&:hover': {
-              color: '#604AEF',
-              borderColor: '#604AEF',
-            },
-          }}
+        <Link
+          onClick={() => onDetailsClick()}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
-          onClick={onDetailsClick}
         >
-          <Trans>Details</Trans>
-        </Button>
+          <Button
+            sx={{
+              p: 2,
+              ml: '4px !important',
+              height: '36px',
+              fontSize: '14px',
+              textTransform: 'capitalize',
+              borderColor: theme.palette.text.subText,
+              bgcolor: 'transparent',
+              color: 'text.primary',
+              '&:hover': {
+                color: '#604AEF',
+                borderColor: '#604AEF',
+              },
+            }}
+            // href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+            // onClick={onDetailsClick}
+          >
+            <Trans>Details</Trans>
+          </Button>
+        </Link>
       </ListButtonsColumn>
     </ListItemWrapper>
   );
@@ -411,14 +416,17 @@ export const SupplyAssetsListItemMobile = ({
         >
           <Trans>Supply</Trans>
         </Button>
-        <Button
-          variant="outlined"
-          component={Link}
-          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
-          fullWidth
-        >
-          <Trans>Details</Trans>
-        </Button>
+
+        <Link href={ROUTES.reserveOverview(detailsAddress, currentMarket)}>
+          <Button
+            variant="outlined"
+            component={Link}
+            // href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+            fullWidth
+          >
+            <Trans>Details</Trans>
+          </Button>
+        </Link>
       </Box>
     </ListMobileItemWrapper>
   );
