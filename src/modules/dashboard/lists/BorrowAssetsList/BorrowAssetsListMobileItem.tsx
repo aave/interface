@@ -27,11 +27,43 @@ export const BorrowAssetsListMobileItem = ({
   underlyingAsset,
   isFreezed,
   image,
+  totalScaledVariableDebt,
+  priceInUSD,
+  borrowCapUSD,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
 
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
+
+  const checkAvailableValue = (
+    availableBorrows: number,
+    borrowCap: number,
+    totalScaledVariableDebt: number
+  ) => {
+    if (availableBorrows > 0) {
+      return availableBorrows >= borrowCap
+        ? Math.min(availableBorrows, borrowCap) - totalScaledVariableDebt
+        : availableBorrows;
+    } else {
+      return 0;
+    }
+  };
+
+  const checkAvailableUSDValue = (
+    availableBorrowsInUSD: number,
+    borrowCapUSD: number,
+    totalScaledVariableDebt: number
+  ) => {
+    if (availableBorrowsInUSD > 0) {
+      return availableBorrowsInUSD >= borrowCapUSD
+        ? Math.min(availableBorrowsInUSD, borrowCapUSD) -
+            totalScaledVariableDebt * Number(priceInUSD)
+        : availableBorrowsInUSD;
+    } else {
+      return 0;
+    }
+  };
 
   return (
     <ListMobileItemWrapper
@@ -45,8 +77,16 @@ export const BorrowAssetsListMobileItem = ({
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
-        value={Number(availableBorrows) > 0 ? Number(availableBorrows) : 0}
-        subValue={Number(availableBorrowsInUSD) > 0 ? Number(availableBorrowsInUSD) : 0}
+        value={checkAvailableValue(
+          Number(availableBorrows),
+          Number(borrowCap),
+          Number(totalScaledVariableDebt)
+        )}
+        subValue={checkAvailableUSDValue(
+          Number(availableBorrowsInUSD),
+          Number(borrowCapUSD),
+          Number(totalScaledVariableDebt)
+        )}
         disabled={Number(availableBorrows) === 0}
         capsComponent={
           <CapsHint
