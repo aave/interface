@@ -136,9 +136,13 @@ export const BorrowModalContent = ({
     borrowCapData: number,
     totalScaledVariableDebt: number
   ): string => {
-    return availableBorrows > 0
-      ? (Math.min(availableBorrows, borrowCapData) - totalScaledVariableDebt).toString()
-      : '0';
+    if (availableBorrows > 0) {
+      return availableBorrows >= borrowCapData
+        ? (Math.min(availableBorrows, borrowCapData) - totalScaledVariableDebt).toString()
+        : availableBorrows.toString();
+    } else {
+      return '0';
+    }
   };
 
   // amount calculations
