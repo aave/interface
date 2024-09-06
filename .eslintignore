@@ -1,6 +1,7 @@
 # General Ignores
 .gitignore
 .prettierignore
+.gitmodules
 .eslintcache
 node_modules/
 public/
@@ -20,3 +21,6 @@ src/locales/
 *.md
 *.log
 *.lock
+
+# Packages
+packages

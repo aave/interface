@@ -1,4 +1,5 @@
 # General Ignores
+.gitmodules
 .gitignore
 .eslintcache
 .eslintignore
@@ -24,3 +25,6 @@ src/locales/
 *.md
 *.log
 *.lock
+
+# Packages
+packages
