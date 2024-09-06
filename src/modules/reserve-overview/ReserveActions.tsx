@@ -76,7 +76,6 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     user,
     loading: loadingReserves,
     marketReferencePriceInUsd,
-    yourWalletBalanceTon,
   } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances(currentMarketData);
 
@@ -88,6 +87,8 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
     balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
   }
+
+  const balanceAmount = isConnectedTonWallet ? `${reserve?.walletBalance}` : balance?.amount;
 
   let maxAmountToBorrow = '0';
   let maxAmountToSupply = '0';
@@ -109,7 +110,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     ).toString();
 
     maxAmountToSupply = getMaxAmountAvailableToSupply(
-      balance?.amount || '0',
+      balanceAmount || '0',
       reserve,
       reserve.underlyingAsset,
       minRemainingBaseTokenBalance
@@ -129,7 +130,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   ).toString();
 
   const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
-    balance: balance?.amount || '0',
+    balance: balanceAmount || '0',
     maxAmountToSupply: maxAmountToSupply.toString(),
     maxAmountToBorrow: maxAmountToBorrow.toString(),
     reserve,
@@ -172,7 +173,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
       )}
       <Box sx={{ display: 'flex', gap: '8px 2px', flexWrap: 'wrap' }}>
         <WalletBalance
-          balance={isConnectedTonWallet ? `${yourWalletBalanceTon}` : balance.amount}
+          balance={balanceAmount}
           symbol={selectedAsset}
           marketTitle={market.marketTitle}
         />

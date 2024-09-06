@@ -31,6 +31,7 @@ export type FormattedReservesAndIncentives = ReturnType<
     variableBorrows?: string;
     usageAsCollateralEnabledOnUser?: boolean;
     image?: string;
+    walletBalance?: string;
   } & ReserveDataHumanized;
 
 const formatReserves = memoize(
