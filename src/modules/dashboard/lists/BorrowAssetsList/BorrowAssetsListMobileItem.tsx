@@ -13,6 +13,7 @@ import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 export const BorrowAssetsListMobileItem = ({
   symbol,
@@ -33,6 +34,7 @@ export const BorrowAssetsListMobileItem = ({
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
+  const { isConnectedTonWallet } = useTonConnectContext();
 
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
@@ -77,16 +79,24 @@ export const BorrowAssetsListMobileItem = ({
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
-        value={checkAvailableValue(
-          Number(availableBorrows),
-          Number(borrowCap),
-          Number(totalScaledVariableDebt)
-        )}
-        subValue={checkAvailableUSDValue(
-          Number(availableBorrowsInUSD),
-          Number(borrowCapUSD),
-          Number(totalScaledVariableDebt)
-        )}
+        value={
+          isConnectedTonWallet
+            ? checkAvailableValue(
+                Number(availableBorrows),
+                Number(borrowCap),
+                Number(totalScaledVariableDebt)
+              )
+            : availableBorrows
+        }
+        subValue={
+          isConnectedTonWallet
+            ? checkAvailableUSDValue(
+                Number(availableBorrowsInUSD),
+                Number(borrowCapUSD || borrowCap),
+                Number(totalScaledVariableDebt)
+              )
+            : availableBorrowsInUSD
+        }
         disabled={Number(availableBorrows) === 0}
         capsComponent={
           <CapsHint

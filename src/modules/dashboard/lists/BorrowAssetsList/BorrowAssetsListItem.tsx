@@ -14,6 +14,7 @@ import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 export const BorrowAssetsListItem = ({
   symbol,
@@ -35,6 +36,7 @@ export const BorrowAssetsListItem = ({
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const theme = useTheme();
+  const { isConnectedTonWallet } = useTonConnectContext();
 
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
@@ -82,16 +84,24 @@ export const BorrowAssetsListItem = ({
     >
       <ListValueColumn
         symbol={symbol}
-        value={checkAvailableValue(
-          Number(availableBorrows),
-          Number(borrowCap),
-          Number(totalScaledVariableDebt)
-        )}
-        subValue={checkAvailableUSDValue(
-          Number(availableBorrowsInUSD),
-          Number(borrowCapUSD),
-          Number(totalScaledVariableDebt)
-        )}
+        value={
+          isConnectedTonWallet
+            ? checkAvailableValue(
+                Number(availableBorrows),
+                Number(borrowCap),
+                Number(totalScaledVariableDebt)
+              )
+            : availableBorrows
+        }
+        subValue={
+          isConnectedTonWallet
+            ? checkAvailableUSDValue(
+                Number(availableBorrowsInUSD),
+                Number(borrowCapUSD || borrowCap),
+                Number(totalScaledVariableDebt)
+              )
+            : availableBorrowsInUSD
+        }
         disabled={Number(availableBorrows) === 0}
         withTooltip={false}
         capsComponent={
