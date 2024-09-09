@@ -85,7 +85,7 @@
     "react-infinite-scroller": "^1.2.6",
     "react-lazy-load": "^4.0.1",
     "react-markdown": "^8.0.7",
-    "react-number-format": "^4.9.1",
+    "react-number-format": "^5.4.2",
     "reflect-metadata": "^0.1.13",
     "remark-gfm": "^3.0.1",
     "tiny-invariant": "^1.3.1",
