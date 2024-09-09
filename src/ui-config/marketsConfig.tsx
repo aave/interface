@@ -12,6 +12,7 @@ import {
   AaveV3BaseSepolia,
   AaveV3BNB,
   AaveV3Ethereum,
+  AaveV3EthereumEtherFi,
   AaveV3EthereumLido,
   AaveV3Fantom,
   AaveV3FantomTestnet,
@@ -53,6 +54,7 @@ export type MarketDataType = {
   permissionComponent?: ReactNode;
   disableCharts?: boolean;
   subgraphUrl?: string;
+  logo?: string;
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
@@ -96,6 +98,7 @@ export enum CustomMarket {
   proto_bnb_v3 = 'proto_bnb_v3',
   proto_scroll_v3 = 'proto_scroll_v3',
   proto_lido_v3 = 'proto_lido_v3',
+  proto_etherfi_v3 = 'proto_etherfi_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -144,10 +147,11 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_lido_v3]: {
-    marketTitle: 'Ethereum Lido Market',
+    marketTitle: 'Lido',
     market: CustomMarket.proto_lido_v3,
     chainId: ChainId.mainnet,
     v3: true,
+    logo: '/icons/markets/lido.svg',
     enabledFeatures: {
       governance: true,
       staking: true,
@@ -158,7 +162,7 @@ export const marketsData: {
       debtSwitch: false,
       switch: true,
     },
-    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g`,
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/5vxMbXRhG1oQr55MWC5j6qg78waWujx1wjeuEWDA6j3`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3EthereumLido.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3EthereumLido.POOL,
@@ -170,6 +174,36 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3EthereumLido.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       WITHDRAW_SWITCH_ADAPTER: AaveV3EthereumLido.WITHDRAW_SWAP_ADAPTER,
+    },
+  },
+  [CustomMarket.proto_etherfi_v3]: {
+    marketTitle: 'EtherFi',
+    market: CustomMarket.proto_etherfi_v3,
+    chainId: ChainId.mainnet,
+    v3: true,
+    logo: '/icons/markets/etherfi.svg',
+    enabledFeatures: {
+      governance: true,
+      staking: true,
+      liquiditySwap: true,
+      collateralRepay: false,
+      incentives: true,
+      withdrawAndSwitch: true,
+      debtSwitch: false,
+      switch: false,
+    },
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/8o4HGApJkAqnvxAHShG4w5xiXihHyL7HkeDdQdRUYmqZ`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3EthereumEtherFi.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3EthereumEtherFi.POOL,
+      WETH_GATEWAY: AaveV3EthereumEtherFi.WETH_GATEWAY,
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3EthereumEtherFi.REPAY_WITH_COLLATERAL_ADAPTER,
+      SWAP_COLLATERAL_ADAPTER: AaveV3EthereumEtherFi.SWAP_COLLATERAL_ADAPTER,
+      WALLET_BALANCE_PROVIDER: AaveV3EthereumEtherFi.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3EthereumEtherFi.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3EthereumEtherFi.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3EthereumEtherFi.COLLECTOR,
+      WITHDRAW_SWITCH_ADAPTER: AaveV3EthereumEtherFi.WITHDRAW_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_mainnet]: {

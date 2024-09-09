@@ -7,7 +7,6 @@ interface TopInfoPanelProps extends PageTitleProps {
   children?: ReactNode;
   titleComponent?: ReactNode;
   containerProps?: ContainerProps;
-  multiMarket?: boolean;
 }
 
 export const TopInfoPanel = ({
@@ -16,7 +15,6 @@ export const TopInfoPanel = ({
   withMarketSwitcher,
   withMigrateButton,
   bridge,
-  multiMarket,
   children,
   containerProps = {},
 }: TopInfoPanelProps) => {
@@ -49,7 +47,6 @@ export const TopInfoPanel = ({
               gap: { xs: 3, xsm: 8 },
               flexWrap: 'wrap',
               width: '100%',
-              ...(multiMarket && { flexDirection: 'column' }),
             }}
           >
             {children}
