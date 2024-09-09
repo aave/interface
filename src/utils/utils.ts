@@ -78,8 +78,6 @@ export enum Side {
   SUPPLY = 'supply',
   BORROW = 'borrow',
 }
-// Keeping this hooks for next Superfest incentives
-export const showSuperFestTooltip = (symbol: string, currentMarket: string, side?: Side) => {
-  if (symbol || currentMarket || side) return false; // line to avoid unused variables error
+export const showSuperFestTooltip = (_symbol: string, _currentMarket: string, _side?: Side) => {
   return false;
 };
