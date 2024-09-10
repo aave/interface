@@ -79,7 +79,10 @@ export enum Side {
   BORROW = 'borrow',
 }
 export const showSuperFestTooltip = (symbol: string, currentMarket: string, side?: Side) => {
+  const superFestRewardsEnabled = false;
+
   return (
+    superFestRewardsEnabled &&
     currentMarket === CustomMarket.proto_base_v3 &&
     side === Side.SUPPLY &&
     (symbol == 'ETH' || symbol == 'WETH' || symbol == 'wstETH')
