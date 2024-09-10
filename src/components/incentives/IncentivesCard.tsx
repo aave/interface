@@ -41,7 +41,7 @@ export const IncentivesCard = ({
         <Box sx={{ display: 'flex' }}>
           <FormattedNumber
             data-cy={`apy`}
-            value={symbol === 'USDC' ? Number(value) * 10 ** 12 : value} // multiply by 10^12 to convert to
+            value={symbol}
             percent
             variant={variant}
             symbolsVariant={symbolsVariant}
