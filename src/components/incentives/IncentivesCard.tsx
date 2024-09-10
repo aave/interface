@@ -41,7 +41,7 @@ export const IncentivesCard = ({
         <Box sx={{ display: 'flex' }}>
           <FormattedNumber
             data-cy={`apy`}
-            value={symbol}
+            value={value}
             percent
             variant={variant}
             symbolsVariant={symbolsVariant}
