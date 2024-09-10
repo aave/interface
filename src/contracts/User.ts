@@ -177,41 +177,76 @@ export class User implements Contract {
   // }
 
   async getUserSupplies(provider: ContractProvider) {
-    const { stack } = await provider.get('get_user_supply_data', []);
-    const supplies = stack.readTuple();
-    const reserves = stack.readTuple();
+    try {
+      const { stack } = await provider.get('get_user_supply_data', []);
+      const supplies = stack.readTuple();
+      const reserves = stack.readTuple();
 
-    const result = [];
-    while (supplies.remaining && reserves.remaining) {
-      const ds = supplies.readCell().beginParse();
-      const underlyingAddress = reserves.readAddress();
-      result.push({
-        totalSupply: ds.loadCoins(),
-        liquidityIndex: ds.loadUintBig(128),
-        isCollateral: ds.loadBoolean(),
-        underlyingAddress,
-      });
+      const result = [];
+      while (supplies.remaining && reserves.remaining) {
+        const ds = supplies.readCell().beginParse();
+        const underlyingAddress = reserves.readAddress();
+        result.push({
+          totalSupply: ds.loadCoins(),
+          liquidityIndex: ds.loadUintBig(128),
+          isCollateral: ds.loadBoolean(),
+          underlyingAddress,
+        });
+      }
+
+      return result;
+    } catch (error) {
+      console.log('getUserSupplies error', error);
+      return [];
     }
-
-    return result;
   }
 
-  async getUserBorrowings(provider: ContractProvider) {
-    const { stack } = await provider.get('get_user_borrow_data', []);
-    const borrowings = stack.readTuple();
-    const reserves = stack.readTuple();
+  async getUserVariableBorrowings(provider: ContractProvider) {
+    try {
+      const { stack } = await provider.get('get_user_variable_borrow_data', []);
+      const borrowings = stack.readTuple();
+      const reserves = stack.readTuple();
 
-    const result = [];
-    while (borrowings.remaining && reserves.remaining) {
-      const ds = borrowings.readCell().beginParse();
-      const underlyingAddress = reserves.readAddress();
-      result.push({
-        variableBorrowBalance: ds.loadCoins(),
-        previousIndex: ds.loadUintBig(128),
-        underlyingAddress,
-      });
+      const result = [];
+      while (borrowings.remaining && reserves.remaining) {
+        const ds = borrowings.readCell().beginParse();
+        const underlyingAddress = reserves.readAddress();
+        result.push({
+          variableBorrowBalance: ds.loadCoins(),
+          variableBorrowIndex: ds.loadUintBig(128),
+          underlyingAddress,
+        });
+      }
+
+      return result;
+    } catch (error) {
+      console.log('getUserBorrowings error', error);
+      return [];
     }
+  }
 
-    return result;
+  async getUserStableBorrowings(provider: ContractProvider) {
+    try {
+      const { stack } = await provider.get('get_user_stable_borrow_data', []);
+      const borrowings = stack.readTuple();
+      const reserves = stack.readTuple();
+
+      const result = [];
+      while (borrowings.remaining && reserves.remaining) {
+        const ds = borrowings.readCell().beginParse();
+        const underlyingAddress = reserves.readAddress();
+        result.push({
+          stableBorrowBalance: ds.loadCoins(),
+          stableBorrowRate: ds.loadUintBig(128),
+          stableLastUpdateTimestamp: ds.loadUintBig(128),
+          underlyingAddress,
+        });
+      }
+
+      return result;
+    } catch (error) {
+      console.log('getUserBorrowings error', error);
+      return [];
+    }
   }
 }

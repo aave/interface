@@ -27,6 +27,8 @@ import {
   SetUseReserveAsCollateralParamsToCell,
   UpdateConfigParams,
   UpdateConfigParamsToCell,
+  WithdrawParams,
+  WithdrawParamsToCell,
 } from './params';
 
 export class Pool implements Contract {
@@ -84,6 +86,14 @@ export class Pool implements Contract {
     });
   }
 
+  async sendWithdraw(provider: ContractProvider, via: Sender, params: WithdrawParams) {
+    await provider.internal(via, {
+      value: toNano('0.2'),
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: WithdrawParamsToCell(params),
+    });
+  }
+
   async sendSetUseReserveAsCollateral(
     provider: ContractProvider,
     via: Sender,
@@ -113,7 +123,7 @@ export class Pool implements Contract {
   }
 
   async getReservesData(provider: ContractProvider) {
-    console.log('get reserves data');
+    console.log('1111111111111111111111111111111');
     const { stack } = await provider.get('get_reserves_data', []);
 
     const configs = stack.readTuple();
@@ -123,6 +133,7 @@ export class Pool implements Contract {
     console.log('states', states);
 
     const reserveData = [];
+
     while (configs.remaining && states.remaining) {
       const cs = configs.readCell();
       const ss = states.readCell();
@@ -137,7 +148,6 @@ export class Pool implements Contract {
 
       reserveData.push({ reserveID: assetHash, ...config, ...state, ...content });
     }
-
     return reserveData;
   }
 
@@ -164,20 +174,31 @@ export class Pool implements Contract {
 
     try {
       const supplies = await userContract.getUserSupplies();
-      const borrowings = await userContract.getUserBorrowings();
+      const variableBorrowings = await userContract.getUserVariableBorrowings();
+      const stableBorrowings = await userContract.getUserStableBorrowings();
 
       const mergedArray = _.values(
-        _.merge(_.keyBy(supplies, 'underlyingAddress'), _.keyBy(borrowings, 'underlyingAddress'))
+        _.merge(
+          _.keyBy(supplies, 'underlyingAddress'),
+          _.keyBy(variableBorrowings, 'underlyingAddress'),
+          _.keyBy(stableBorrowings, 'underlyingAddress')
+        )
       );
 
-      const updatedData = mergedArray.map((item) => ({
-        totalSupply: item.totalSupply || 0,
-        variableBorrowBalance: item.variableBorrowBalance || 0,
-        liquidityIndex: item.liquidityIndex || BigInt('1000000000000000000000000000'),
-        isCollateral: item.isCollateral,
-        underlyingAddress: item.underlyingAddress,
-        previousIndex: item.previousIndex || BigInt('1000000000000000000000000000'),
-      }));
+      const updatedData = mergedArray.map((item) => {
+        return {
+          underlyingAddress: item.underlyingAddress,
+          totalSupply: item.totalSupply || 0,
+          liquidityIndex: item.liquidityIndex || BigInt('1000000000000000000000000000'),
+          isCollateral: item.isCollateral ?? false,
+          variableBorrowBalance: item.variableBorrowBalance || 0,
+          variableBorrowIndex: item.variableBorrowIndex || BigInt('1000000000000000000000000000'),
+          stableBorrowBalance: item.stableBorrowBalance || 0,
+          stableBorrowRate: item.stableBorrowRate || BigInt('0'),
+          stableLastUpdateTimestamp: item.stableLastUpdateTimestamp || BigInt('0'),
+        };
+      });
+
       return updatedData;
     } catch (err) {
       console.log('Error Log: ', err);
@@ -199,6 +220,7 @@ export function packReserveConfig(config: ReserveConfig): Cell {
     .storeBit(config.isActive)
     .storeBit(config.isFrozen)
     .storeBit(config.isBorrowingEnabled)
+    .storeBit(config.stableRateBorrowingEnabled)
     .storeBit(config.isPaused)
     .storeBit(config.isJetton)
     .storeUint(config.reserveFactor, 32)
@@ -208,7 +230,6 @@ export function packReserveConfig(config: ReserveConfig): Cell {
     .storeRef(config.content)
     .endCell();
 }
-
 export function unpackReserveConfig(cell: Cell): ReserveConfig {
   const cs = cell.beginParse();
   const addresses = cs.loadRef().beginParse();
@@ -221,6 +242,7 @@ export function unpackReserveConfig(cell: Cell): ReserveConfig {
     isActive: cs.loadBoolean(),
     isFrozen: cs.loadBoolean(),
     isBorrowingEnabled: cs.loadBoolean(),
+    stableRateBorrowingEnabled: cs.loadBoolean(),
     isPaused: cs.loadBoolean(),
     isJetton: cs.loadBoolean(),
     reserveFactor: cs.loadUint(32),

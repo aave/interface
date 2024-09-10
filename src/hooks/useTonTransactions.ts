@@ -156,10 +156,13 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           isMock: false,
         });
 
+        // 0 - INTEREST_MODE_STABLE
+        // 1 - INTEREST_MODE_VARIABLE
         const params = {
           queryId: Date.now(),
           poolJettonWalletAddress: Address.parse(poolReserve.poolJettonWalletAddress),
           amount: BigInt(parseAmount),
+          interestRateMode: 1,
           priceData: dataMultiSig,
         };
 
@@ -248,10 +251,59 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [client, getLatestBoc, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
   );
 
+  const onSendWithdrawTon = useCallback(
+    async (poolJettonWalletAddress: string, decimals: number, amount: string | undefined) => {
+      if (!poolJettonWalletAddress || !amount || !providerPool || !decimals)
+        return { success: false, message: 'error' };
+
+      try {
+        const dataMultiSig = await getMultiSig({
+          isMock: false,
+        });
+
+        const parseAmount = parseUnits(
+          valueToBigNumber(amount).toFixed(decimals),
+          decimals
+        ).toString();
+
+        const params = {
+          queryId: Date.now(),
+          poolJettonWalletAddress: Address.parse(poolJettonWalletAddress),
+          amount: BigInt(parseAmount),
+          priceData: dataMultiSig,
+        };
+
+        await providerPool.sendWithdraw(sender, params);
+
+        const boc = await getLatestBoc();
+        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
+
+        if (txHash) {
+          return { success: true, txHash: txHash };
+        } else {
+          throw Error('Error');
+        }
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        const errorToCheck = error.message.replace(/\s+/g, '').toLowerCase();
+        if (_.includes(ErrorCancelledTon, errorToCheck)) {
+          return {
+            success: false,
+            error: ErrorCancelledTon[0],
+          };
+        } else {
+          return { success: false, error };
+        }
+      }
+    },
+    [getLatestBoc, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
+  );
+
   return {
     approvedAmountTonAssume,
     onSendSupplyTon,
     onSendBorrowTon,
     onToggleCollateralTon,
+    onSendWithdrawTon,
   };
 };

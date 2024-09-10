@@ -36,6 +36,8 @@ interface UseTransactionHandlerProps {
   underlyingAssetTon?: string | number;
   usageAsCollateral?: boolean;
   poolJettonWalletAddress?: string;
+  typeAction?: 'isWithdraw' | 'isCollateral';
+  decimals?: number;
 }
 
 export type Approval = {
@@ -56,6 +58,8 @@ export const useTransactionHandler = ({
   underlyingAssetTon,
   usageAsCollateral,
   poolJettonWalletAddress,
+  typeAction,
+  decimals,
 }: UseTransactionHandlerProps) => {
   const {
     approvalTxState,
@@ -95,11 +99,11 @@ export const useTransactionHandler = ({
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
-  const { onToggleCollateralTon } = useTonTransactions(
+  const { onToggleCollateralTon, onSendWithdrawTon } = useTonTransactions(
     walletAddressTonWallet,
     String(underlyingAssetTon)
   );
-  const { getYourSupplies } = useAppDataContext();
+  const { getYourSupplies, getPoolContractGetReservesData } = useAppDataContext();
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -290,30 +294,61 @@ export const useTransactionHandler = ({
   const action = async () => {
     if (isConnectedTonWallet) {
       setMainTxState({ ...mainTxState, loading: true });
-      const resToggle = await onToggleCollateralTon(
-        String(poolJettonWalletAddress),
-        Boolean(usageAsCollateral)
-      );
+      if ((typeAction = 'isWithdraw')) {
+        const resToggle = await onSendWithdrawTon(
+          String(poolJettonWalletAddress),
+          decimals ? decimals : 8,
+          eventTxInfo?.amount
+        );
 
-      if (!!resToggle?.success) {
-        await sleep(30000); // sleep 30s re call SC get new data reserve
-        Promise.allSettled([getYourSupplies()]);
-        setMainTxState({
-          txHash: resToggle.txHash,
-          loading: false,
-          success: true,
-        });
+        if (!!resToggle?.success) {
+          await sleep(30000); // sleep 30s re call SC get new data reserve
+          Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
+          setMainTxState({
+            txHash: resToggle.txHash,
+            loading: false,
+            success: true,
+          });
+        } else {
+          const error = {
+            name: 'Error Withdraw Ton',
+            message: resToggle?.error,
+          };
+          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+          setTxError(parsedError);
+          setMainTxState({
+            txHash: undefined,
+            loading: false,
+          });
+        }
+      } else if ((typeAction = 'isCollateral')) {
+        const resToggle = await onToggleCollateralTon(
+          String(poolJettonWalletAddress),
+          Boolean(usageAsCollateral)
+        );
+
+        if (!!resToggle?.success) {
+          await sleep(30000); // sleep 30s re call SC get new data reserve
+          Promise.allSettled([getYourSupplies()]);
+          setMainTxState({
+            txHash: resToggle.txHash,
+            loading: false,
+            success: true,
+          });
+        } else {
+          const error = {
+            name: 'Error Toggle Collateral Ton',
+            message: resToggle?.error,
+          };
+          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+          setTxError(parsedError);
+          setMainTxState({
+            txHash: undefined,
+            loading: false,
+          });
+        }
       } else {
-        const error = {
-          name: 'borrow',
-          message: resToggle?.error,
-        };
-        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-        setTxError(parsedError);
-        setMainTxState({
-          txHash: undefined,
-          loading: false,
-        });
+        console.log(typeAction);
       }
     }
     if (usePermit && handleGetPermitTxns) {

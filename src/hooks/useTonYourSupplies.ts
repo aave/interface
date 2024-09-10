@@ -21,13 +21,16 @@ export interface UseTransactionHandlerTonProps {
 }
 
 export interface UserSuppliesType {
-  supplyBalance: number | bigint | string;
+  supplyBalance: string;
+  underlyingAddress: string;
+  liquidityIndex: string;
   totalSupply: number | bigint;
-  variableBorrowBalance: number | bigint;
-  liquidityIndex: number | bigint | string;
   isCollateral: boolean;
-  underlyingAddress: Address | string;
-  previousIndex: number | bigint;
+  variableBorrowBalance: number | bigint;
+  variableBorrowIndex: bigint;
+  stableBorrowBalance: number | bigint;
+  stableBorrowRate: bigint;
+  stableLastUpdateTimestamp: bigint;
 }
 
 export const useTonYourSupplies = (yourAddressWallet: string, reserves: DashboardReserve[]) => {
@@ -55,6 +58,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
             liquidityIndex: item.liquidityIndex.toString(),
           };
         });
+
         return setUserSupplies(data);
       } catch (error) {
         console.error(`Error fetching getYourSupplies (attempt ${attempts}):`, error);

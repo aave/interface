@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Address, beginCell, Cell, Dictionary } from '@ton/core';
 
 import { OPCODE } from './constants';
@@ -18,13 +19,13 @@ export type ReserveConfig = {
   isActive: boolean;
   isFrozen: boolean;
   isBorrowingEnabled: boolean;
+  stableRateBorrowingEnabled: boolean;
   isPaused: boolean;
   isJetton: boolean;
   reserveFactor: number;
   supplyCap: bigint;
   borrowCap: bigint;
   debtCeiling: bigint;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: Cell | any;
 };
 
@@ -54,6 +55,14 @@ export type UpdateConfigParams = {
 };
 
 export type BorrowParams = {
+  queryId: number;
+  poolJettonWalletAddress: Address;
+  amount: bigint;
+  interestRateMode: number;
+  priceData: Dictionary<bigint, Cell>;
+};
+
+export type WithdrawParams = {
   queryId: number;
   poolJettonWalletAddress: Address;
   amount: bigint;
@@ -158,9 +167,21 @@ export function UpdateConfigParamsToCell(config: UpdateConfigParams): Cell {
 }
 
 export function BorrowParamsToCell(config: BorrowParams): Cell {
-  const { queryId, poolJettonWalletAddress, amount, priceData } = config;
+  const { queryId, poolJettonWalletAddress, amount, interestRateMode, priceData } = config;
   return beginCell()
     .storeUint(OPCODE.BORROW, 32)
+    .storeUint(queryId, 64)
+    .storeCoins(amount)
+    .storeUint(interestRateMode, 1)
+    .storeAddress(poolJettonWalletAddress)
+    .storeDict(priceData)
+    .endCell();
+}
+
+export function WithdrawParamsToCell(config: WithdrawParams): Cell {
+  const { queryId, poolJettonWalletAddress, amount, priceData } = config;
+  return beginCell()
+    .storeUint(OPCODE.WITHDRAW, 32)
     .storeUint(queryId, 64)
     .storeCoins(amount)
     .storeAddress(poolJettonWalletAddress)

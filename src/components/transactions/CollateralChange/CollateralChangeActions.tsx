@@ -30,6 +30,8 @@ export const CollateralChangeActions = ({
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     underlyingAssetTon: underlyingAssetTon,
     poolJettonWalletAddress: poolJettonWalletAddress,
+    decimals: poolReserve.decimals,
+    typeAction: 'isCollateral',
     usageAsCollateral,
     tryPermit: false,
     protocolAction: ProtocolAction.setUsageAsCollateral,

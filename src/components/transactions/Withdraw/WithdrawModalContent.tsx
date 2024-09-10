@@ -64,12 +64,13 @@ export const WithdrawModalContent = ({
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxAmountToWithdraw.toString(10) : value;
     setAmount(value);
-    if (maxSelected && maxAmountToWithdraw.eq(underlyingBalance)) {
-      trackEvent(GENERAL.MAX_INPUT_SELECTION, { type: 'withdraw' });
-      setWithdrawMax('-1');
-    } else {
-      setWithdrawMax(maxAmountToWithdraw.toString(10));
-    }
+    // if (maxSelected && maxAmountToWithdraw.eq(underlyingBalance)) {
+    //   trackEvent(GENERAL.MAX_INPUT_SELECTION, { type: 'withdraw' });
+    //   setWithdrawMax('-1');
+    // } else {
+    //   setWithdrawMax(maxAmountToWithdraw.toString(10));
+    // }
+    setWithdrawMax(maxAmountToWithdraw.toString(10));
   };
 
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
@@ -226,6 +227,8 @@ export const WithdrawModalContent = ({
         symbol={symbol}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
         sx={displayRiskCheckbox ? { mt: 0 } : {}}
+        underlyingAssetTon={userReserve.underlyingAssetTon || 0}
+        poolJettonWalletAddress={userReserve.poolJettonWalletAddress}
       />
     </>
   );

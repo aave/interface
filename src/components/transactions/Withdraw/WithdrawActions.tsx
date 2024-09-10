@@ -14,6 +14,8 @@ export interface WithdrawActionsProps extends BoxProps {
   isWrongNetwork: boolean;
   symbol: string;
   blocked: boolean;
+  underlyingAssetTon?: string | number;
+  poolJettonWalletAddress?: string;
 }
 
 export const WithdrawActions = ({
@@ -24,6 +26,8 @@ export const WithdrawActions = ({
   symbol,
   blocked,
   sx,
+  underlyingAssetTon,
+  poolJettonWalletAddress,
 }: WithdrawActionsProps) => {
   const withdraw = useRootStore((state) => state.withdraw);
 
@@ -44,6 +48,9 @@ export const WithdrawActions = ({
         asset: poolReserve.underlyingAsset,
       },
       protocolAction: ProtocolAction.withdraw,
+      underlyingAssetTon: underlyingAssetTon,
+      poolJettonWalletAddress: poolJettonWalletAddress,
+      typeAction: 'isWithdraw',
     });
 
   return (
