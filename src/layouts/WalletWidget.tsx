@@ -28,6 +28,7 @@ import { CompactMode } from 'src/components/CompactableTypography';
 import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
+import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -187,7 +188,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               }}
             />
             <Typography color={{ xs: '#F1F1F3', md: 'text.primary' }} variant="subheader1">
-              {networkConfig.name}
+              {isConnectedTonWallet ? 'TON' : networkConfig.name}
             </Typography>
           </Box>
         </Box>
@@ -282,7 +283,13 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       </Link>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
       {networkConfig?.explorerLinkBuilder && (
-        <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
+        <Link
+          href={
+            isConnectedTonWallet
+              ? `${SCAN_TRANSACTION_TON}/${currentAccount}`
+              : networkConfig.explorerLinkBuilder({ address: currentAccount })
+          }
+        >
           <Box
             component={component}
             sx={{
