@@ -123,7 +123,6 @@ export class Pool implements Contract {
   }
 
   async getReservesData(provider: ContractProvider) {
-    console.log('1111111111111111111111111111111');
     const { stack } = await provider.get('get_reserves_data', []);
 
     const configs = stack.readTuple();

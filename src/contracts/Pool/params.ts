@@ -183,7 +183,7 @@ export function WithdrawParamsToCell(config: WithdrawParams): Cell {
   return beginCell()
     .storeUint(OPCODE.WITHDRAW, 32)
     .storeUint(queryId, 64)
-    .storeCoins(amount)
+    .storeInt(amount, 128)
     .storeAddress(poolJettonWalletAddress)
     .storeDict(priceData)
     .endCell();
