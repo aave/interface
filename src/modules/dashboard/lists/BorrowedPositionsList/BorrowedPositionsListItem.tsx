@@ -22,7 +22,13 @@ import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { ListValueRow } from '../ListValueRow';
 
-export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) => {
+export const BorrowedPositionsListItem = ({
+  item,
+  checkMaxVariableBorrow,
+}: {
+  item: DashboardReserve;
+  checkMaxVariableBorrow: boolean;
+}) => {
   const { borrowCap } = useAssetCaps();
   const { currentMarket, currentMarketData } = useProtocolDataContext();
   const theme = useTheme();
@@ -36,7 +42,8 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
     !reserve.borrowingEnabled ||
     reserve.isFrozen ||
     reserve.isPaused ||
-    borrowCap.isMaxed;
+    borrowCap.isMaxed ||
+    checkMaxVariableBorrow;
 
   const disableRepay = !reserve.isActive || reserve.isPaused;
 

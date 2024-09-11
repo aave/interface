@@ -124,6 +124,8 @@ export const BorrowedPositionsList = () => {
         .div(isConnectedTonWallet ? Number(user?.collateralInUSDAsset) : maxBorrowAmount)
         .toFixed();
 
+  const checkMaxVariableBorrow: boolean = Number(collateralUsagePercent) * 100 >= 100;
+
   // Transform to the DashboardReserve schema so the sort utils can work with it
   const preSortedReserves = borrowPositions as DashboardReserve[];
   const sortedReserves = handleSortDashboardReserves(
@@ -238,7 +240,10 @@ export const BorrowedPositionsList = () => {
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
             <div key={item.underlyingAsset + item.borrowRateMode} style={{ padding: '0 20px' }}>
-              <BorrowedPositionsListItemWrapper item={item} />
+              <BorrowedPositionsListItemWrapper
+                item={item}
+                checkMaxVariableBorrow={checkMaxVariableBorrow}
+              />
             </div>
           ))}
         </div>

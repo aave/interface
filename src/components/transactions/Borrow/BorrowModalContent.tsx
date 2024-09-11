@@ -146,13 +146,15 @@ export const BorrowModalContent = ({
   };
 
   // amount calculations
-  const maxAmountToBorrow = checkMaxAmountToBorrow(
-    Number(
-      getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode, isConnectedTonWallet)
-    ),
-    Number(poolReserve?.borrowCap),
-    Number(poolReserve?.totalScaledVariableDebt)
-  );
+  const maxAmountToBorrow = isConnectedTonWallet
+    ? checkMaxAmountToBorrow(
+        Number(
+          getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode, isConnectedTonWallet)
+        ),
+        Number(poolReserve?.borrowCap),
+        Number(poolReserve?.totalScaledVariableDebt)
+      )
+    : getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode, isConnectedTonWallet);
 
   // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected

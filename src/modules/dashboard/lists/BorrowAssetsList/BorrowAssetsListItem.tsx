@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Button, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
@@ -35,6 +36,7 @@ export const BorrowAssetsListItem = ({
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const theme = useTheme();
+  const { isConnectedTonWallet } = useTonConnectContext();
 
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
@@ -82,16 +84,24 @@ export const BorrowAssetsListItem = ({
     >
       <ListValueColumn
         symbol={symbol}
-        value={checkAvailableValue(
-          Number(availableBorrows),
-          Number(borrowCap),
-          Number(totalScaledVariableDebt)
-        )}
-        subValue={checkAvailableUSDValue(
-          Number(availableBorrowsInUSD),
-          Number(borrowCapUSD),
-          Number(totalScaledVariableDebt)
-        )}
+        value={
+          isConnectedTonWallet
+            ? checkAvailableValue(
+                Number(availableBorrows),
+                Number(borrowCap),
+                Number(totalScaledVariableDebt)
+              )
+            : availableBorrows
+        }
+        subValue={
+          isConnectedTonWallet
+            ? checkAvailableUSDValue(
+                Number(availableBorrowsInUSD),
+                Number(borrowCapUSD || borrowCap),
+                Number(totalScaledVariableDebt)
+              )
+            : availableBorrowsInUSD
+        }
         disabled={Number(availableBorrows) === 0}
         withTooltip={false}
         capsComponent={
