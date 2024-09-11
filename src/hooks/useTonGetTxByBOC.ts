@@ -94,7 +94,7 @@ export function useTonGetTxByBOC() {
     let attempts = 0;
     const maxAttempts = 50;
 
-    const fetchTransactions = async () => {
+    const fetchTransactions = async (): Promise<boolean> => {
       try {
         attempts++;
         const params = {
