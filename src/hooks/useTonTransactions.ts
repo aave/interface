@@ -264,7 +264,9 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         });
 
         const parseAmount =
-          amount === '-1' ? -1 : parseUnits(valueToBigNumber(amount).toFixed(8), 8).toString();
+          amount === '-1'
+            ? -1
+            : parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString();
 
         const params = {
           queryId: Date.now(),
