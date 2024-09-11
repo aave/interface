@@ -420,7 +420,7 @@ export const SupplyAssetsListItemMobile = ({
         <Link href={ROUTES.reserveOverview(detailsAddress, currentMarket)}>
           <Button
             variant="outlined"
-            component={Link}
+            // component={Link}
             // href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
             fullWidth
           >

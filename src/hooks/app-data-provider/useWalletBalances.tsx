@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
+import { sleep } from 'src/utils/rotationProvider';
 
 import { usePoolsReservesHumanized } from '../pool/usePoolReserves';
 import { usePoolsTokensBalance } from '../pool/usePoolTokensBalance';
@@ -128,8 +129,10 @@ export const useTonBalance = (yourWalletTon: string) => {
         attempts += 1;
         console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
         if (attempts < maxAttempts) {
+          await sleep(2000);
           console.log('Retrying...');
-          return fetchData(); // Thử lại
+          setBalance('0');
+          return fetchData();
         } else {
           setLoading(false);
           throw new Error('Max retry attempts reached.');

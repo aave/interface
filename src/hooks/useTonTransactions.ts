@@ -252,8 +252,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const onSendWithdrawTon = useCallback(
-    async (poolJettonWalletAddress: string, decimals: number, amount: string | undefined) => {
-      if (!poolJettonWalletAddress || !amount || !providerPool || !decimals)
+    async (poolJettonWalletAddress: string, decimals: number, amount: string) => {
+      if (!poolJettonWalletAddress || !providerPool || !decimals)
         return { success: false, message: 'error' };
 
       try {
@@ -261,10 +261,10 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           isMock: false,
         });
 
-        const parseAmount = parseUnits(
-          valueToBigNumber(amount).toFixed(decimals),
-          decimals
-        ).toString();
+        const parseAmount =
+          amount === '-1'
+            ? -1
+            : parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString();
 
         const params = {
           queryId: Date.now(),

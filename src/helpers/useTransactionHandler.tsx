@@ -298,7 +298,7 @@ export const useTransactionHandler = ({
         const resToggle = await onSendWithdrawTon(
           String(poolJettonWalletAddress),
           decimals ? decimals : 8,
-          eventTxInfo?.amount
+          `${eventTxInfo?.amount}`
         );
 
         if (!!resToggle?.success) {
