@@ -51,6 +51,7 @@ export const WithdrawActions = ({
       underlyingAssetTon: underlyingAssetTon,
       poolJettonWalletAddress: poolJettonWalletAddress,
       typeAction: 'isWithdraw',
+      decimals: poolReserve.decimals,
     });
 
   return (

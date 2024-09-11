@@ -26,7 +26,7 @@ export const ErrorCancelledTon = [
 ];
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
-  const { onGetGetTxByBOC } = useTonGetTxByBOC();
+  const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
   const client = useTonClient();
   const { sender, getLatestBoc } = useTonConnect();
 
@@ -77,6 +77,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       } catch (error) {
         console.error('Transaction failed:', error);
         console.log(error.message.replace(/\s+/g, '').toLowerCase());
+        // [ton_connect_sdk_error]badrequesterror:requesttothewalletcontainserrors.insufficientbalance something wrong
+
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -100,6 +102,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       } catch (error) {
         console.error('Transaction failed:', error);
         console.log(error.message.replace(/\s+/g, '').toLowerCase());
+        // [ton_connect_sdk_error]badrequesterror:requesttothewalletcontainserrors.insufficientbalance something wrong
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -125,9 +128,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         if (txHash && !!res?.success) {
           // setInterval(async () => {
           // }, 5000);
-          // const status = await getTransactionStatus(txHash, yourAddressWallet);
+          // const status = await getTransactionStatus(txHash);
           // console.log('status--------------', status);
-
           return { success: true, txHash: txHash };
         } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
@@ -252,7 +254,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const onSendWithdrawTon = useCallback(
-    async (poolJettonWalletAddress: string, decimals: number, amount: string) => {
+    async (poolJettonWalletAddress: string, decimals: number | undefined, amount: string) => {
       if (!poolJettonWalletAddress || !providerPool || !decimals)
         return { success: false, message: 'error' };
 
@@ -262,9 +264,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         });
 
         const parseAmount =
-          amount === '-1'
-            ? -1
-            : parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString();
+          amount === '-1' ? -1 : parseUnits(valueToBigNumber(amount).toFixed(8), 8).toString();
 
         const params = {
           queryId: Date.now(),
@@ -279,7 +279,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
         if (txHash) {
-          return { success: true, txHash: txHash };
+          const status = await getTransactionStatus(txHash);
+          return { success: status, txHash: txHash };
         } else {
           throw Error('Error');
         }
@@ -296,7 +297,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         }
       }
     },
-    [getLatestBoc, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
+    [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
   );
 
   return {

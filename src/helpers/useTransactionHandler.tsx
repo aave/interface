@@ -297,22 +297,23 @@ export const useTransactionHandler = ({
       if ((typeAction = 'isWithdraw')) {
         const resToggle = await onSendWithdrawTon(
           String(poolJettonWalletAddress),
-          decimals ? decimals : 8,
+          decimals,
           `${eventTxInfo?.amount}`
         );
 
-        if (!!resToggle?.success) {
-          await sleep(30000); // sleep 30s re call SC get new data reserve
-          Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
+        if (resToggle?.success !== undefined && resToggle?.success !== null) {
+          if (resToggle?.success)
+            Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
+
           setMainTxState({
             txHash: resToggle.txHash,
             loading: false,
-            success: true,
+            success: resToggle.success,
           });
         } else {
           const error = {
             name: 'Error Withdraw Ton',
-            message: resToggle?.error,
+            message: `${resToggle?.error}`,
           };
           const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
           setTxError(parsedError);
