@@ -38,6 +38,7 @@ export type FormattedUserReserves = ComputedUserReserve<FormattedReservesAndInce
   reserveLiquidationThreshold?: string;
   usageAsCollateralEnabledOnUser?: boolean;
   poolJettonWalletAddress?: string;
+  usageAsCollateralEnabled?: boolean;
 };
 
 export type UserSummaryAndIncentives =
