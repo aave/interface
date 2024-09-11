@@ -226,6 +226,8 @@ export const WithdrawModalContent = ({
         symbol={symbol}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
         sx={displayRiskCheckbox ? { mt: 0 } : {}}
+        underlyingAssetTon={userReserve.underlyingAssetTon || 0}
+        poolJettonWalletAddress={userReserve.poolJettonWalletAddress}
       />
     </>
   );

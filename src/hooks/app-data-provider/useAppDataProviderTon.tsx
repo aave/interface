@@ -19,7 +19,6 @@ import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { useTonClient } from '../useTonClient';
 import { WalletBalanceUSD } from './useSocketGetRateUSD';
-import { useTonBalance } from './useWalletBalances';
 import { useGetBalanceTon } from './useWalletBalancesTon';
 
 export interface interfaceSendSupply {
@@ -84,7 +83,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQCGWQk9qxAbLFUFtCKapNAv6dPL73H1qEN5rktarpbfbUvp';
+export const address_pools = 'EQBd8mQNuLyAX-6KTW0Hv2MW9gt-6R1Lmr5Fl2tS6NB_UzO2';
 export const MAX_ATTEMPTS = 10;
 export const GAS_FEE_TON = 0.3;
 export const API_TON_V2 = 'https://testnet.toncenter.com/api/v2';

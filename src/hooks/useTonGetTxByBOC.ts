@@ -1,10 +1,44 @@
 import { Address, beginCell, Cell, storeMessage } from '@ton/core';
-import { reject } from 'lodash';
+import axios from 'axios';
+import _, { reject } from 'lodash';
 import { useCallback } from 'react';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
+import { sleep } from 'src/utils/rotationProvider';
 import { retry } from 'ts-retry-promise';
 
+import { API_TON_V3, MAX_ATTEMPTS } from './app-data-provider/useAppDataProviderTon';
 import { useTonClientV2 } from './useTonClient';
+
+type DataType = {
+  [key: string]: {
+    user_friendly: string;
+  };
+};
+
+type KnownAddressesType = string[];
+
+function getRemainingFriendlyAddresses(
+  data: DataType,
+  knownAddresses: KnownAddressesType
+): string | null {
+  const remaining: string[] = [];
+
+  for (const key in data) {
+    const userFriendly = data[key].user_friendly;
+
+    if (!knownAddresses.includes(userFriendly)) {
+      remaining.push(userFriendly);
+    }
+  }
+
+  return remaining.length > 0 ? remaining[0] : null;
+}
+
+export default function convertHexToBase64(hexString: string) {
+  const buffer = Buffer.from(hexString, 'hex');
+
+  return buffer.toString('base64');
+}
 
 export function useTonGetTxByBOC() {
   const { walletAddressTonWallet } = useTonConnectContext();
@@ -56,31 +90,115 @@ export function useTonGetTxByBOC() {
     [client, walletAddressTonWallet]
   );
 
-  const getTransactionStatus = useCallback(
-    async (txHash: string, walletAddress: string) => {
-      if (!client || !walletAddressTonWallet || !txHash || !walletAddress) return;
+  const getTransactionsUser = useCallback(async (account: string, traceIdToFind: string) => {
+    let attempts = 0;
+    const maxAttempts = 50;
+
+    const fetchTransactions = async () => {
       try {
-        const myAddress = Address.parse(walletAddress);
-        const transactions = await client.getTransactions(myAddress, {
+        attempts++;
+        const params = {
+          account,
           limit: 10,
-        });
+          offset: 0,
+          sort: 'desc',
+        };
 
-        // const res = await fetch(`https://testnet.tonapi.io/v2/blockchain/transactions/${txHash}`);
-        // const transaction = await res.json();
+        const { data } = await axios.get(`${API_TON_V3}/transactions`, { params });
 
-        for (const tx of transactions) {
-          if (tx.hash().toString('hex') === txHash) {
-            return tx;
+        const transactions = data.transactions || [];
+        const result = _.find(transactions, { trace_id: traceIdToFind });
+
+        if (result) {
+          return result.description?.compute_ph?.success || false;
+        } else {
+          if (attempts < maxAttempts) {
+            await sleep(2000);
+            return fetchTransactions();
+          } else {
+            return false;
           }
         }
-
-        throw new Error('Transaction not found');
       } catch (error) {
-        console.error('Error fetching transaction status:', error);
-        throw error;
+        console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
+        if (attempts < maxAttempts) {
+          await sleep(1000);
+          return fetchTransactions();
+        } else {
+          throw new Error('Max retry attempts reached.');
+        }
       }
+    };
+
+    return await fetchTransactions();
+  }, []);
+
+  const getTransactionStatus = useCallback(
+    async (txHash: string) => {
+      let attempts = 0;
+      const maxAttempts = MAX_ATTEMPTS;
+
+      const fetchStatusTransaction = async (): Promise<boolean | null> => {
+        try {
+          attempts++;
+          if (!txHash) return null;
+
+          const params = {
+            hash: txHash,
+          };
+
+          const { data } = await axios.get(`${API_TON_V3}/adjacentTransactions`, { params });
+          const address_books = _.values(data.address_book);
+
+          const lastElementAddress = _.last(address_books);
+
+          if (!lastElementAddress) {
+            console.error('No valid address found');
+            return null;
+          }
+
+          const user_friendly_transaction = lastElementAddress.user_friendly;
+          const txHashBase64 = convertHexToBase64(txHash);
+
+          const result = await getTransactionsUser(user_friendly_transaction, txHashBase64);
+          return result;
+        } catch (error) {
+          attempts += 1;
+          console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
+          if (attempts < maxAttempts) {
+            await sleep(2000);
+            return fetchStatusTransaction();
+          } else {
+            throw new Error('Max retry attempts reached.');
+          }
+        }
+      };
+
+      return await fetchStatusTransaction();
+      // try {
+      //   // const myAddress = Address.parse(walletAddress);
+      //   // const transactions = await client.getTransactions(myAddress, {
+      //   //   limit: 10,
+      //   // });
+
+      //   const res = await fetch(`${API_TON_V3}/adjacentTransactions?hash=${txHash}`);
+      //   // const transaction = await res.json();
+
+      //   console.log('------------------------------------------', res);
+
+      //   // for (const tx of transactions) {
+      //   //   if (tx.hash().toString('hex') === txHash) {
+      //   //     return tx;
+      //   //   }
+      //   // }
+
+      //   // throw new Error('Transaction not found');
+      // } catch (error) {
+      //   console.error('Error fetching transaction status:', error);
+      //   throw error;
+      // }
     },
-    [client, walletAddressTonWallet]
+    [getTransactionsUser]
   );
 
   return {

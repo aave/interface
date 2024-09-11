@@ -26,7 +26,7 @@ export const ErrorCancelledTon = [
 ];
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
-  const { onGetGetTxByBOC } = useTonGetTxByBOC();
+  const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
   const client = useTonClient();
   const { sender, getLatestBoc } = useTonConnect();
 
@@ -77,6 +77,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       } catch (error) {
         console.error('Transaction failed:', error);
         console.log(error.message.replace(/\s+/g, '').toLowerCase());
+        // [ton_connect_sdk_error]badrequesterror:requesttothewalletcontainserrors.insufficientbalance something wrong
+
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -100,6 +102,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       } catch (error) {
         console.error('Transaction failed:', error);
         console.log(error.message.replace(/\s+/g, '').toLowerCase());
+        // [ton_connect_sdk_error]badrequesterror:requesttothewalletcontainserrors.insufficientbalance something wrong
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -125,9 +128,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         if (txHash && !!res?.success) {
           // setInterval(async () => {
           // }, 5000);
-          // const status = await getTransactionStatus(txHash, yourAddressWallet);
+          // const status = await getTransactionStatus(txHash);
           // console.log('status--------------', status);
-
           return { success: true, txHash: txHash };
         } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
@@ -156,10 +158,13 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           isMock: false,
         });
 
+        // 0 - INTEREST_MODE_STABLE
+        // 1 - INTEREST_MODE_VARIABLE
         const params = {
           queryId: Date.now(),
           poolJettonWalletAddress: Address.parse(poolReserve.poolJettonWalletAddress),
           amount: BigInt(parseAmount),
+          interestRateMode: 1,
           priceData: dataMultiSig,
         };
 
@@ -248,10 +253,60 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [client, getLatestBoc, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
   );
 
+  const onSendWithdrawTon = useCallback(
+    async (poolJettonWalletAddress: string, decimals: number | undefined, amount: string) => {
+      if (!poolJettonWalletAddress || !providerPool || !decimals)
+        return { success: false, message: 'error' };
+
+      try {
+        const dataMultiSig = await getMultiSig({
+          isMock: false,
+        });
+
+        const parseAmount =
+          amount === '-1'
+            ? -1
+            : parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString();
+
+        const params = {
+          queryId: Date.now(),
+          poolJettonWalletAddress: Address.parse(poolJettonWalletAddress),
+          amount: BigInt(parseAmount),
+          priceData: dataMultiSig,
+        };
+
+        await providerPool.sendWithdraw(sender, params);
+
+        const boc = await getLatestBoc();
+        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
+
+        if (txHash) {
+          const status = await getTransactionStatus(txHash);
+          return { success: status, txHash: txHash };
+        } else {
+          throw Error('Error');
+        }
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        const errorToCheck = error.message.replace(/\s+/g, '').toLowerCase();
+        if (_.includes(ErrorCancelledTon, errorToCheck)) {
+          return {
+            success: false,
+            error: ErrorCancelledTon[0],
+          };
+        } else {
+          return { success: false, error };
+        }
+      }
+    },
+    [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
+  );
+
   return {
     approvedAmountTonAssume,
     onSendSupplyTon,
     onSendBorrowTon,
     onToggleCollateralTon,
+    onSendWithdrawTon,
   };
 };
