@@ -15,6 +15,7 @@ import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 export const BorrowAssetsListItem = ({
   symbol,
@@ -38,7 +39,9 @@ export const BorrowAssetsListItem = ({
   const theme = useTheme();
   const { isConnectedTonWallet } = useTonConnectContext();
 
-  const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
+  const assetCaps = useAssetCaps();
+
+  const disableBorrow = isFreezed || Number(availableBorrows) <= 0 || assetCaps.borrowCap.isMaxed;
 
   const trackEvent = useRootStore((store) => store.trackEvent);
 
