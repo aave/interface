@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Button, useTheme } from '@mui/material';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -38,7 +39,9 @@ export const BorrowAssetsListItem = ({
   const theme = useTheme();
   const { isConnectedTonWallet } = useTonConnectContext();
 
-  const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
+  const assetCaps = useAssetCaps();
+
+  const disableBorrow = isFreezed || Number(availableBorrows) <= 0 || assetCaps.borrowCap.isMaxed;
 
   const trackEvent = useRootStore((store) => store.trackEvent);
 
