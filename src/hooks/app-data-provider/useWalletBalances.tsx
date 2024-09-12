@@ -4,6 +4,7 @@ import { fromNano } from '@ton/core';
 import axios from 'axios';
 import { BigNumber } from 'bignumber.js';
 import { useCallback, useEffect, useState } from 'react';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
@@ -102,12 +103,16 @@ export const useTonBalance = (yourWalletTon: string) => {
   // const wallet = useTonWallet();
   const [balance, setBalance] = useState<string>('0');
   const [loading, setLoading] = useState<boolean>(true);
+  const { isConnectedTonWallet } = useTonConnectContext();
   // const client = useTonClient();
 
   const fetchBalance = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
     setLoading(true);
+    if (!isConnectedTonWallet) {
+      return setBalance('0');
+    }
 
     const fetchData = async (): Promise<string | undefined> => {
       try {
@@ -145,7 +150,7 @@ export const useTonBalance = (yourWalletTon: string) => {
     } catch (error) {
       console.error('Final error after all attempts:', error);
     }
-  }, [yourWalletTon]);
+  }, [isConnectedTonWallet, yourWalletTon]);
 
   useEffect(() => {
     fetchBalance();
