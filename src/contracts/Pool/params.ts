@@ -66,6 +66,7 @@ export type WithdrawParams = {
   queryId: number;
   poolJettonWalletAddress: Address;
   amount: bigint;
+  isMaxWithdraw: boolean;
   priceData: Dictionary<bigint, Cell>;
 };
 
@@ -178,11 +179,12 @@ export function BorrowParamsToCell(config: BorrowParams): Cell {
 }
 
 export function WithdrawParamsToCell(config: WithdrawParams): Cell {
-  const { queryId, poolJettonWalletAddress, amount, priceData } = config;
+  const { queryId, poolJettonWalletAddress, amount, isMaxWithdraw, priceData } = config;
   return beginCell()
     .storeUint(OPCODE.WITHDRAW, 32)
     .storeUint(queryId, 64)
-    .storeInt(amount, 128)
+    .storeCoins(amount)
+    .storeBit(isMaxWithdraw)
     .storeAddress(poolJettonWalletAddress)
     .storeDict(priceData)
     .endCell();

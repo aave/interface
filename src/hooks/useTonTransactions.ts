@@ -273,6 +273,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           poolJettonWalletAddress: Address.parse(poolJettonWalletAddress),
           amount: BigInt(parseAmount),
           priceData: dataMultiSig,
+          isMaxWithdraw: amount === '-1' ? true : false,
         };
 
         await providerPool.sendWithdraw(sender, params);
