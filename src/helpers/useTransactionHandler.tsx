@@ -294,7 +294,7 @@ export const useTransactionHandler = ({
   const action = async () => {
     if (isConnectedTonWallet) {
       setMainTxState({ ...mainTxState, loading: true });
-      if ((typeAction = 'isWithdraw')) {
+      if (typeAction === 'isWithdraw') {
         const resToggle = await onSendWithdrawTon(
           String(poolJettonWalletAddress),
           decimals,

@@ -54,7 +54,6 @@ export class Pool implements Contract {
 
   async sendInitReserve(provider: ContractProvider, via: Sender, params: InitReserveParams) {
     const cell = InitReserveParamsToCell(params);
-    console.log(cell.asSlice().remainingBits);
     await provider.internal(via, {
       value: toNano('0.01'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
@@ -110,7 +109,6 @@ export class Pool implements Contract {
     const { stack } = await provider.get('get_reserve_configs', []);
 
     const result = stack.readTuple();
-    console.log('result', result);
 
     const reserveConfigs: ReserveConfig[] = [];
 
@@ -127,9 +125,6 @@ export class Pool implements Contract {
 
     const configs = stack.readTuple();
     const states = stack.readTuple();
-
-    console.log('configs', configs);
-    console.log('states', states);
 
     const reserveData = [];
 
@@ -200,7 +195,6 @@ export class Pool implements Contract {
 
       return updatedData;
     } catch (err) {
-      console.log('Error Log: ', err);
       return [];
     }
   }

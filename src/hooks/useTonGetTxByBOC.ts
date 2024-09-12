@@ -113,14 +113,14 @@ export function useTonGetTxByBOC() {
           return result.description?.compute_ph?.success || false;
         } else {
           if (attempts < maxAttempts) {
-            await sleep(2000);
+            await sleep(2500);
             return fetchTransactions();
           } else {
             return false;
           }
         }
       } catch (error) {
-        console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
+        console.log(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
         if (attempts < maxAttempts) {
           await sleep(1000);
           return fetchTransactions();
@@ -160,13 +160,14 @@ export function useTonGetTxByBOC() {
           const user_friendly_transaction = lastElementAddress.user_friendly;
           const txHashBase64 = convertHexToBase64(txHash);
 
+          console.log('address_books---------', address_books, txHashBase64);
           const result = await getTransactionsUser(user_friendly_transaction, txHashBase64);
           return result;
         } catch (error) {
           attempts += 1;
           console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
           if (attempts < maxAttempts) {
-            await sleep(2000);
+            await sleep(2500);
             return fetchStatusTransaction();
           } else {
             throw new Error('Max retry attempts reached.');

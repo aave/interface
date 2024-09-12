@@ -93,7 +93,7 @@ export const URL_API_BE = 'https://aave-ton-api.sotatek.works';
 
 export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {
   const client = useTonClient();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
   const [gasFeeTonMarketReferenceCurrency, setGasFeeTonMarketReferenceCurrency] = useState<
     number | string
@@ -103,26 +103,15 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   >([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
   const { onGetBalanceTonNetwork, yourWalletBalanceTon } = useGetBalanceTon();
-  const { walletAddressTonWallet } = useTonConnectContext();
-
-  // const getPoolJettonWalletAddress = useCallback(
-  //   async (address: string) => {
-  //     if (!client || !address_pools || !address) return null;
-  //     const contractJettonMinter = new JettonMinter(Address.parse(address));
-  //     const providerJettonMinter = client.open(
-  //       contractJettonMinter
-  //     ) as OpenedContract<JettonMinter>;
-  //     const poolJetton = await providerJettonMinter.getWalletAddress(Address.parse(address_pools));
-  //     return poolJetton;
-  //   },
-  //   [client]
-  // );
+  const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
 
   const getPoolContractGetReservesData = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
-    setLoading(true);
 
+    if (!isConnectedTonWallet) {
+      setPoolContractReservesData([]);
+    }
     const fetchData = async () => {
       try {
         attempts++;
@@ -146,13 +135,19 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           attempts >= maxAttempts ||
           (attempts < maxAttempts && poolContractReservesData.length > 0)
         ) {
-          setLoading(false);
+          return;
         }
       }
     };
 
     await fetchData();
-  }, [client, poolContract, poolContractReservesData.length, walletAddressTonWallet]);
+  }, [
+    client,
+    isConnectedTonWallet,
+    poolContract,
+    poolContractReservesData.length,
+    walletAddressTonWallet,
+  ]);
 
   useEffect(() => {
     getPoolContractGetReservesData();

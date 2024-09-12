@@ -196,7 +196,6 @@ export class User implements Contract {
 
       return result;
     } catch (error) {
-      console.log('getUserSupplies error', error);
       return [];
     }
   }
@@ -220,7 +219,6 @@ export class User implements Contract {
 
       return result;
     } catch (error) {
-      console.log('getUserBorrowings error', error);
       return [];
     }
   }
@@ -245,7 +243,6 @@ export class User implements Contract {
 
       return result;
     } catch (error) {
-      console.log('getUserBorrowings error', error);
       return [];
     }
   }

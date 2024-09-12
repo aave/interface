@@ -1,16 +1,24 @@
 import { LTV_PRECISION, normalize } from '@aave/math-utils';
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { generateRawUserSummaryTon } from 'src/utils/generate-raw-user-summary-tom';
 
 import { FormattedUserReserves } from './useUserSummaryAndIncentives';
 
 export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserReserves[]) => {
   const [userSummaryTon, setUserSummaryTon] = useState<ExtendedFormattedUser>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const { isConnectedTonWallet } = useTonConnectContext();
 
   const userEmodeCategoryId = 0;
 
-  useMemo(() => {
+  useEffect(() => {
+    if (!yourSuppliesTon) {
+      setLoading(true);
+      return;
+    }
+
     const {
       availableBorrowsMarketReferenceCurrency,
       totalCollateralMarketReferenceCurrency,
@@ -36,15 +44,15 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
     const res = {
       collateralInUSDAsset: collateralInUSDAsset.toString(),
       userReservesData: yourSuppliesTon,
-      totalLiquidityMarketReferenceCurrency: totalLiquidityUSD.toString(), /// totalLiquidityUSD = totalLiquidityMarketReferenceCurrency
-      totalLiquidityUSD: totalLiquidityUSD.toString(), /// totalLiquidityUSD = totalLiquidityMarketReferenceCurrency
+      totalLiquidityMarketReferenceCurrency: totalLiquidityUSD.toString(),
+      totalLiquidityUSD: totalLiquidityUSD.toString(),
       totalCollateralMarketReferenceCurrency: totalCollateralMarketReferenceCurrency.toString(),
       totalCollateralUSD: totalCollateralUSD.toString(),
       totalBorrowsMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency.toString(),
       totalBorrowsUSD: totalBorrowsUSD.toString(),
       netWorthUSD: netWorthUSD.toString(),
-      availableBorrowsMarketReferenceCurrency: availableBorrowsMarketReferenceCurrency.toString(), /// availableBorrowsUSD = availableBorrowsMarketReferenceCurrency
-      availableBorrowsUSD: availableBorrowsUSD.toString(), /// availableBorrowsUSD = availableBorrowsMarketReferenceCurrency
+      availableBorrowsMarketReferenceCurrency: availableBorrowsMarketReferenceCurrency.toString(),
+      availableBorrowsUSD: availableBorrowsUSD.toString(),
       currentLoanToValue: normalize(currentLoanToValue, LTV_PRECISION),
       currentLiquidationThreshold: normalize(currentLiquidationThreshold, LTV_PRECISION),
       healthFactor: healthFactor.toString(),
@@ -57,11 +65,25 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       netAPY: netAPY ? netAPY : 0,
       isolatedReserve,
     };
-    console.log('User Summary Ton----------', res);
-    setUserSummaryTon(res as ExtendedFormattedUser);
+
+    setUserSummaryTon(res);
+    setLoading(false);
   }, [yourSuppliesTon]);
+
+  useEffect(() => {
+    console.log('User Summary Ton----------', userSummaryTon);
+    console.log('Total-supply--------------', userSummaryTon?.collateralInUSDAsset);
+    console.log('Total-borrow--------------', userSummaryTon?.totalBorrowsMarketReferenceCurrency);
+  }, [userSummaryTon]);
+
+  useEffect(() => {
+    if (!isConnectedTonWallet) {
+      setUserSummaryTon(undefined);
+    }
+  }, [isConnectedTonWallet]);
 
   return {
     userSummaryTon,
+    loading,
   };
 };

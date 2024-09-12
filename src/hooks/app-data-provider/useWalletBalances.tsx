@@ -100,7 +100,7 @@ export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
 
 export const useTonBalance = (yourWalletTon: string) => {
   // const wallet = useTonWallet();
-  const [balance, setBalance] = useState<string>('');
+  const [balance, setBalance] = useState<string>('0');
   const [loading, setLoading] = useState<boolean>(true);
   // const client = useTonClient();
 
@@ -120,18 +120,18 @@ export const useTonBalance = (yourWalletTon: string) => {
 
         const { data } = await axios.get(`${API_TON_V3}/accountStates`, { params });
         const balance = data.accounts[0].balance;
-        setLoading(false);
 
         const balanceFormatted = fromNano(balance).toString();
         setBalance(balanceFormatted);
+        setLoading(false);
         return balanceFormatted;
       } catch (error) {
         attempts += 1;
-        console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
+        setBalance('0');
+        console.error(`Error fetchBalance data (Attempt ${attempts}/${maxAttempts}):`, error);
         if (attempts < maxAttempts) {
           await sleep(2000);
           console.log('Retrying...');
-          setBalance('0');
           return fetchData();
         } else {
           setLoading(false);
@@ -147,49 +147,7 @@ export const useTonBalance = (yourWalletTon: string) => {
     }
   }, [yourWalletTon]);
 
-  // const fetchBalance = useCallback(async () => {
-  //   let attempts = 0;
-  //   const maxAttempts = MAX_ATTEMPTS;
-  //   setLoading(true);
-  //   const fetchData = async () => {
-  //     try {
-  //       attempts++;
-  //       if (!client || !wallet || !wallet?.account?.publicKey) return setBalance('');
-  //       const workchain = 0; // Usually you need a workchain 0
-  //       const publicKey = Buffer.from(wallet.account.publicKey, 'hex');
-
-  //       // // Generate new key
-  //       // const mnemonics = await mnemonicNew();
-  //       // const keyPair = await mnemonicToPrivateKey(mnemonics);
-
-  //       const walletContract = WalletContractV4.create({ workchain, publicKey: publicKey });
-
-  //       const walletInstance = client.open(walletContract);
-
-  //       const balance: bigint = await walletInstance.getBalance();
-
-  //       setBalance(fromNano(balance).toString());
-  //     } catch (error) {
-  //       console.error(`Error fetching balance TON (attempt ${attempts}):`, error);
-  //       if (attempts < maxAttempts) {
-  //         console.log('Retrying... balance TON');
-  //         await fetchData();
-  //       } else {
-  //         console.log('Max attempts reached, stopping retries.');
-  //         setBalance('');
-  //       }
-  //     } finally {
-  //       if (attempts >= maxAttempts || (attempts < maxAttempts && !balance)) {
-  //         setLoading(false);
-  //       }
-  //     }
-  //   };
-
-  //   await fetchData();
-  // }, [balance, client, wallet]);
-
   useEffect(() => {
-    // fetchBalanceExample();
     fetchBalance();
   }, [fetchBalance]);
 

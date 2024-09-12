@@ -8,8 +8,9 @@ import {
 import { Address } from '@ton/core';
 import dayjs from 'dayjs';
 import _ from 'lodash';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { address_pools, MAX_ATTEMPTS } from './app-data-provider/useAppDataProviderTon';
@@ -34,6 +35,7 @@ export interface UserSuppliesType {
 }
 
 export const useTonYourSupplies = (yourAddressWallet: string, reserves: DashboardReserve[]) => {
+  const { isConnectedTonWallet } = useTonConnectContext();
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [yourSuppliesTon, setYourSuppliesTon] = useState<FormattedUserReserves[]>([]);
@@ -42,8 +44,9 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   const getYourSupplies = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
-    setLoading(true);
-
+    if (!isConnectedTonWallet) {
+      setUserSupplies([]);
+    }
     const fetchData = async () => {
       try {
         attempts++;
@@ -71,19 +74,20 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
         }
       } finally {
         if (attempts >= maxAttempts || (attempts < maxAttempts && userSupplies.length > 0)) {
-          setLoading(false);
+          return;
         }
       }
     };
 
     await fetchData();
-  }, [client, userSupplies.length, yourAddressWallet]);
+  }, [client, isConnectedTonWallet, userSupplies.length, yourAddressWallet]);
 
   useEffect(() => {
     getYourSupplies();
   }, [client, getYourSupplies, yourAddressWallet]);
 
   const onMatchDataYourSupplies = useCallback(async () => {
+    setLoading(true);
     try {
       const result = await Promise.all(
         _.chain(reserves)
@@ -247,10 +251,13 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
       setYourSuppliesTon(result as FormattedUserReserves[]);
     } catch (error) {
       console.error('Error fetching supplies:', error);
+      setYourSuppliesTon([]);
+    } finally {
+      setLoading(false);
     }
   }, [reserves, userSupplies]);
 
-  useMemo(() => {
+  useEffect(() => {
     onMatchDataYourSupplies();
   }, [onMatchDataYourSupplies]);
 

@@ -293,7 +293,6 @@ export const SupplyWrappedTokenModalContent = ({
   user,
 }: SupplyModalContentProps) => {
   const { marketReferencePriceInUsd } = useAppDataContext();
-  const { isConnectedTonWallet } = useTonConnectContext();
   const { currentMarketData } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
   const { walletBalances } = useWalletBalances(currentMarketData);

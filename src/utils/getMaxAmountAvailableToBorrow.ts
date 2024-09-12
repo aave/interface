@@ -43,14 +43,6 @@ export function getMaxAmountAvailableToBorrow(
       .div(poolReserve.formattedPriceInMarketReferenceCurrency)
       .toString();
 
-    console.log(
-      'total-supply--------------:',
-      user?.collateralInUSDAsset,
-
-      'total-borrow--------------:',
-      user.totalBorrowsMarketReferenceCurrency
-    );
-
     return resultAvailableBorrow;
   }
 

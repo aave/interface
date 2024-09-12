@@ -64,7 +64,6 @@ export class Reserve implements Contract {
 
   async getReserveData(provider: ContractProvider): Promise<ReserveData> {
     const { stack } = await provider.get('get_reserve_data', []);
-    console.log('stack', stack);
     return {
       totalSupply: stack.readBigNumber(),
       totalStableBorrow: stack.readBigNumber(),

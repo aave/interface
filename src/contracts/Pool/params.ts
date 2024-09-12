@@ -146,7 +146,6 @@ export function RateStrategyToCell(config: RateStrategy): Cell {
 export function InitReserveParamsToCell(config: InitReserveParams): Cell {
   const { queryId, poolJWAddress, reserveConfig, rateStrategy } = config;
   const cell = ReserveConfigToCell(reserveConfig);
-  console.log('cell bits:', cell.asSlice().remainingBits);
   return beginCell()
     .storeUint(OPCODE.INIT_RESERVE, 32)
     .storeUint(queryId, 64)

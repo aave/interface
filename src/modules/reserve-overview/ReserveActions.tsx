@@ -14,7 +14,7 @@ import {
   useTheme,
 } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import React, { ComponentProps, ReactNode, useState } from 'react';
+import { ComponentProps, ReactNode, useState } from 'react';
 import { WalletIcon2 } from 'src/components/icons/WalletIcon2';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -26,7 +26,7 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useTonBalance, useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
