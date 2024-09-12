@@ -159,7 +159,7 @@ export const SupplyActions = React.memo(
           );
           if (!!resSupplyTop?.success) {
             await sleep(30000); // sleep 30s re call SC get new data reserve
-            Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
+            await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
             setMainTxState({
               txHash: resSupplyTop.txHash,
               loading: false,

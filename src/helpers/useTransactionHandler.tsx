@@ -303,7 +303,7 @@ export const useTransactionHandler = ({
 
         if (resToggle?.success !== undefined && resToggle?.success !== null) {
           if (resToggle?.success)
-            Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
+            await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
 
           setMainTxState({
             txHash: resToggle.txHash,
@@ -330,7 +330,7 @@ export const useTransactionHandler = ({
 
         if (!!resToggle?.success) {
           await sleep(30000); // sleep 30s re call SC get new data reserve
-          Promise.allSettled([getYourSupplies()]);
+          await Promise.allSettled([getYourSupplies()]);
           setMainTxState({
             txHash: resToggle.txHash,
             loading: false,
