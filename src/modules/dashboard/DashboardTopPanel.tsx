@@ -4,7 +4,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
@@ -133,7 +132,14 @@ export const DashboardTopPanel = () => {
             gap: '20px',
           }}
         >
-          <div style={{ display: 'flex', gap: '20px', color: theme.palette.text.primary }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '20px',
+              color: theme.palette.text.primary,
+              flexWrap: 'wrap',
+            }}
+          >
             <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading} hideIcon>
               {currentAccount ? (
                 <FormattedNumber
