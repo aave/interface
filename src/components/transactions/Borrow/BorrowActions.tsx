@@ -26,6 +26,7 @@ import { sleep } from 'src/utils/rotationProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
+import { valueToBigNumber } from '@aave/math-utils';
 
 export interface BorrowActionsProps extends BoxProps {
   poolReserve: ComputedReserveData;
@@ -35,6 +36,7 @@ export interface BorrowActionsProps extends BoxProps {
   isWrongNetwork: boolean;
   symbol: string;
   blocked: boolean;
+  isMaxBorrowCap?: boolean;
 }
 
 export const BorrowActions = React.memo(
@@ -47,6 +49,7 @@ export const BorrowActions = React.memo(
     isWrongNetwork,
     blocked,
     sx,
+    isMaxBorrowCap,
   }: BorrowActionsProps) => {
     const [
       borrow,
@@ -79,6 +82,11 @@ export const BorrowActions = React.memo(
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
     const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
     const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
+    const fixAmountToBorrow =
+      isMaxBorrowCap && isConnectedTonWallet
+        ? valueToBigNumber(amountToBorrow).multipliedBy(0.9995).toString()
+        : amountToBorrow;
+    console.log('🚀 ~ amountToBorrow ===:', fixAmountToBorrow);
 
     const { onSendBorrowTon } = useTonTransactions(
       walletAddressTonWallet,
@@ -122,7 +130,7 @@ export const BorrowActions = React.memo(
         if (isConnectedTonWallet) {
           setMainTxState({ ...mainTxState, loading: true });
 
-          const resBorrowTop = await onSendBorrowTon(amountToBorrow, poolReserve);
+          const resBorrowTop = await onSendBorrowTon(fixAmountToBorrow, poolReserve);
 
           if (!!resBorrowTop?.success) {
             await sleep(30000); // sleep 30s re call SC get new data reserve
@@ -131,7 +139,7 @@ export const BorrowActions = React.memo(
               txHash: resBorrowTop.txHash,
               loading: false,
               success: true,
-              amount: amountToBorrow,
+              amount: fixAmountToBorrow,
             });
           } else {
             const error = {
@@ -148,7 +156,7 @@ export const BorrowActions = React.memo(
         } else {
           setMainTxState({ ...mainTxState, loading: true });
           let borrowTxData = borrow({
-            amount: parseUnits(amountToBorrow, poolReserve.decimals).toString(),
+            amount: parseUnits(fixAmountToBorrow, poolReserve.decimals).toString(),
             reserve: poolAddress,
             interestRateMode,
             debtTokenAddress:
@@ -169,7 +177,7 @@ export const BorrowActions = React.memo(
             action: ProtocolAction.borrow,
             txState: 'success',
             asset: poolAddress,
-            amount: amountToBorrow,
+            amount: fixAmountToBorrow,
             assetName: poolReserve.name,
           });
 
@@ -211,7 +219,7 @@ export const BorrowActions = React.memo(
         if (approvedAmount && poolAddress === API_ETH_MOCK_ADDRESS) {
           const fetchedRequiresApproval = checkRequiresApproval({
             approvedAmount: approvedAmount.amount,
-            amount: amountToBorrow,
+            amount: fixAmountToBorrow,
             signedAmount: '0',
           });
           setRequiresApproval(fetchedRequiresApproval);
@@ -221,7 +229,7 @@ export const BorrowActions = React.memo(
         setLoadingTxns(false);
       },
       [
-        amountToBorrow,
+        fixAmountToBorrow,
         approvedAmount,
         currentMarketData.addresses.WETH_GATEWAY,
         getCreditDelegationApprovedAmount,
@@ -255,7 +263,7 @@ export const BorrowActions = React.memo(
         mainTxState={mainTxState}
         approvalTxState={approvalTxState}
         requiresAmount={true}
-        amount={amountToBorrow}
+        amount={fixAmountToBorrow}
         isWrongNetwork={isWrongNetwork}
         handleAction={action}
         actionText={<Trans>Borrow {symbol}</Trans>}
