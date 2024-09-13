@@ -103,7 +103,8 @@ export const WithdrawModalContent = ({
     return (
       <TxSuccessView
         action={<Trans>withdrew</Trans>}
-        amount={amountRef.current}
+        amount={amountRef.current || withdrawTxState.amount}
+        image={poolReserve.image}
         symbol={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? currentNetworkConfig.baseAssetSymbol
@@ -175,7 +176,7 @@ export const WithdrawModalContent = ({
         />
       </TxModalDetails>
 
-      {txError && <GasEstimationError txError={txError} />}
+      {txError && txError.error && <GasEstimationError txError={txError} />}
 
       {displayRiskCheckbox && (
         <>
