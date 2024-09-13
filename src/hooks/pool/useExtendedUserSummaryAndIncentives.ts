@@ -20,6 +20,7 @@ export type ExtendedFormattedUser =
     isInEmode: boolean;
     userEmodeCategoryId: number;
     collateralInUSDAsset?: string;
+    contractUserTon?: string;
   };
 
 const formatExtendedUserAndIncentives = (
