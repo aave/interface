@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { BigNumber, constants, PopulatedTransaction } from 'ethers';
 import { queryKeysFactory } from 'src/ui-config/queries';
 
-import { getFeeClaimerAddress, getParaswap } from './common';
+import { getParaswap } from './common';
 
 type ParaSwapSellRatesParams = {
   amount: string;
@@ -29,7 +29,7 @@ export const useParaswapSellRates = ({
 }: ParaSwapSellRatesParams) => {
   return useQuery<OptimalRate | undefined>({
     queryFn: () => {
-      const paraswap = getParaswap(chainId);
+      const { paraswap } = getParaswap(chainId);
       return paraswap.getRate({
         amount,
         srcToken,
@@ -65,7 +65,6 @@ type UseParaswapSellTxParams = {
 };
 
 export const useParaswapSellTxParams = (chainId: number) => {
-  const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
   return useMutation<PopulatedTransaction, unknown, UseParaswapSellTxParams>({
     mutationFn: async ({
       srcToken,
@@ -79,7 +78,7 @@ export const useParaswapSellTxParams = (chainId: number) => {
       deadline,
       partner,
     }: UseParaswapSellTxParams) => {
-      const paraswap = getParaswap(chainId);
+      const { paraswap, feeClaimer } = getParaswap(chainId);
       const response = await paraswap.buildTx(
         {
           srcToken,
@@ -92,7 +91,7 @@ export const useParaswapSellTxParams = (chainId: number) => {
           slippage: maxSlippage,
           takeSurplus: true,
           partner,
-          partnerAddress: FEE_CLAIMER_ADDRESS,
+          partnerAddress: feeClaimer,
           permit,
           deadline,
         },
