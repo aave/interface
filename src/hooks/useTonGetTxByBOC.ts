@@ -6,7 +6,7 @@ import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { sleep } from 'src/utils/rotationProvider';
 import { retry } from 'ts-retry-promise';
 
-import { API_TON_V3, MAX_ATTEMPTS } from './app-data-provider/useAppDataProviderTon';
+import { API_TON_SCAN_V2 } from './app-data-provider/useAppDataProviderTon';
 import { useTonClientV2 } from './useTonClient';
 
 type DataType = {
@@ -90,116 +90,63 @@ export function useTonGetTxByBOC() {
     [client, walletAddressTonWallet]
   );
 
-  const getTransactionsUser = useCallback(async (account: string, traceIdToFind: string) => {
-    let attempts = 0;
-    const maxAttempts = 50;
-
-    const fetchTransactions = async (): Promise<boolean> => {
-      try {
-        attempts++;
-        const params = {
-          account,
-          limit: 10,
-          offset: 0,
-          sort: 'desc',
-        };
-
-        const { data } = await axios.get(`${API_TON_V3}/transactions`, { params });
-
-        const transactions = data.transactions || [];
-        const result = _.find(transactions, { trace_id: traceIdToFind });
-
-        if (result) {
-          return result.description?.compute_ph?.success || false;
-        } else {
-          if (attempts < maxAttempts) {
-            await sleep(2500);
-            return fetchTransactions();
-          } else {
-            return false;
-          }
-        }
-      } catch (error) {
-        console.log(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
-        if (attempts < maxAttempts) {
-          await sleep(1000);
-          return fetchTransactions();
-        } else {
-          throw new Error('Max retry attempts reached.');
-        }
-      }
-    };
-
-    return await fetchTransactions();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const flattenData = useCallback((data: any[]): any[] => {
+    return _.flatMap(data, (item) => {
+      const { children, ...rest } = item;
+      return [rest, ...(children ? flattenData(children) : [])];
+    });
   }, []);
 
   const getTransactionStatus = useCallback(
     async (txHash: string) => {
       let attempts = 0;
-      const maxAttempts = MAX_ATTEMPTS;
+      const maxAttempts = 50;
 
       const fetchStatusTransaction = async (): Promise<boolean | null> => {
-        try {
-          attempts++;
-          if (!txHash) return null;
+        while (attempts < maxAttempts) {
+          try {
+            attempts++;
+            if (!txHash) return null;
 
-          const params = {
-            hash: txHash,
-          };
+            const { data } = await axios.get(`${API_TON_SCAN_V2}/traces/${txHash}`);
+            const children = data.children;
 
-          const { data } = await axios.get(`${API_TON_V3}/adjacentTransactions`, { params });
-          const address_books = _.values(data.address_book);
+            if (children) {
+              const dataFlatten = flattenData(children);
+              const pending = dataFlatten.some(
+                (item) =>
+                  Array.isArray(item?.transaction?.out_msgs) && item.transaction.out_msgs.length > 0
+              );
+              console.log('Transaction-----pending:', pending, dataFlatten);
 
-          const lastElementAddress = _.last(address_books);
-
-          if (!lastElementAddress) {
-            console.error('No valid address found');
-            return null;
-          }
-
-          const user_friendly_transaction = lastElementAddress.user_friendly;
-          const txHashBase64 = convertHexToBase64(txHash);
-
-          console.log('address_books---------', address_books, txHashBase64);
-          const result = await getTransactionsUser(user_friendly_transaction, txHashBase64);
-          return result;
-        } catch (error) {
-          await sleep(2500);
-          attempts += 1;
-          console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
-          if (attempts < maxAttempts) {
-            return fetchStatusTransaction();
-          } else {
-            throw new Error('Max retry attempts reached.');
+              if (pending) {
+                console.log('Transaction-----pending');
+                await sleep(4000); // Retry after sleep if pending
+              } else if (dataFlatten.some((item) => item.transaction.aborted === true)) {
+                console.log('Transaction-----false');
+                return false;
+              } else {
+                console.log('Transaction-----true');
+                return true;
+              }
+            } else {
+              await sleep(4000); // Retry if no children data
+            }
+          } catch (error) {
+            console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
+            if (attempts >= maxAttempts) {
+              throw new Error('Max retry attempts reached.');
+            }
+            await sleep(4000); // Retry after sleep if error occurs
           }
         }
+        return null; // Return null if max attempts reached without success
       };
 
       return await fetchStatusTransaction();
-      // try {
-      //   // const myAddress = Address.parse(walletAddress);
-      //   // const transactions = await client.getTransactions(myAddress, {
-      //   //   limit: 10,
-      //   // });
-
-      //   const res = await fetch(`${API_TON_V3}/adjacentTransactions?hash=${txHash}`);
-      //   // const transaction = await res.json();
-
-      //   console.log('------------------------------------------', res);
-
-      //   // for (const tx of transactions) {
-      //   //   if (tx.hash().toString('hex') === txHash) {
-      //   //     return tx;
-      //   //   }
-      //   // }
-
-      //   // throw new Error('Transaction not found');
-      // } catch (error) {
-      //   console.error('Error fetching transaction status:', error);
-      //   throw error;
-      // }
     },
-    [getTransactionsUser]
+    [flattenData]
   );
 
   return {
