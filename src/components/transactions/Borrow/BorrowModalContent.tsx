@@ -134,11 +134,11 @@ export const BorrowModalContent = ({
   const checkMaxAmountToBorrow = (
     availableBorrows: number,
     borrowCapData: number,
-    totalScaledVariableDebt: number
+    totalDebt: number
   ): string => {
     if (availableBorrows > 0) {
       return availableBorrows >= borrowCapData
-        ? (Math.min(availableBorrows, borrowCapData) - totalScaledVariableDebt).toString()
+        ? (Math.min(availableBorrows, borrowCapData) - totalDebt).toString()
         : availableBorrows.toString();
     } else {
       return '0';
@@ -152,7 +152,7 @@ export const BorrowModalContent = ({
           getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode, isConnectedTonWallet)
         ),
         Number(poolReserve?.borrowCap),
-        Number(poolReserve?.totalScaledVariableDebt)
+        Number(poolReserve?.totalDebt)
       )
     : getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode, isConnectedTonWallet);
 
@@ -340,6 +340,7 @@ export const BorrowModalContent = ({
       <ParameterChangewarning underlyingAsset={underlyingAsset} />
 
       <BorrowActions
+        isMaxBorrowCap={isMaxSelected}
         poolReserve={poolReserve}
         amountToBorrow={amount}
         poolAddress={
