@@ -12,7 +12,7 @@ import { sleep } from 'src/utils/rotationProvider';
 
 import { usePoolsReservesHumanized } from '../pool/usePoolReserves';
 import { usePoolsTokensBalance } from '../pool/usePoolTokensBalance';
-import { API_TON_V3, MAX_ATTEMPTS } from './useAppDataProviderTon';
+import { API_TON_V2, MAX_ATTEMPTS } from './useAppDataProviderTon';
 
 export interface WalletBalance {
   amount: string;
@@ -120,11 +120,11 @@ export const useTonBalance = (yourWalletTon: string) => {
 
         const params = {
           address: yourWalletTon,
-          include_boc: true,
         };
 
-        const { data } = await axios.get(`${API_TON_V3}/accountStates`, { params });
-        const balance = data.accounts[0].balance;
+        const { data } = await axios.get(`${API_TON_V2}/getAddressInformation`, { params });
+
+        const balance = data.result.balance;
 
         const balanceFormatted = fromNano(balance).toString();
         setBalance(balanceFormatted);

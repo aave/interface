@@ -6,7 +6,10 @@ import { generateRawUserSummaryTon } from 'src/utils/generate-raw-user-summary-t
 
 import { FormattedUserReserves } from './useUserSummaryAndIncentives';
 
-export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserReserves[]) => {
+export const useUserSummaryAndIncentivesTon = (
+  yourSuppliesTon: FormattedUserReserves[],
+  contractUserTon: string
+) => {
   const [userSummaryTon, setUserSummaryTon] = useState<ExtendedFormattedUser>();
   const [loading, setLoading] = useState<boolean>(true);
   const { isConnectedTonWallet } = useTonConnectContext();
@@ -64,11 +67,12 @@ export const useUserSummaryAndIncentivesTon = (yourSuppliesTon: FormattedUserRes
       debtAPY: debtAPY,
       netAPY: netAPY ? netAPY : 0,
       isolatedReserve,
+      contractUserTon,
     };
 
     setUserSummaryTon(res);
     setLoading(false);
-  }, [yourSuppliesTon]);
+  }, [yourSuppliesTon, contractUserTon]);
 
   useEffect(() => {
     console.log('User Summary Ton----------', userSummaryTon);

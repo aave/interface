@@ -164,10 +164,10 @@ export function useTonGetTxByBOC() {
           const result = await getTransactionsUser(user_friendly_transaction, txHashBase64);
           return result;
         } catch (error) {
+          await sleep(2500);
           attempts += 1;
           console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
           if (attempts < maxAttempts) {
-            await sleep(2500);
             return fetchStatusTransaction();
           } else {
             throw new Error('Max retry attempts reached.');

@@ -40,12 +40,14 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   const [loading, setLoading] = useState<boolean>(false);
   const [yourSuppliesTon, setYourSuppliesTon] = useState<FormattedUserReserves[]>([]);
   const [userSupplies, setUserSupplies] = useState<UserSuppliesType[]>([]);
+  const [contractUserTon, setContractUserTon] = useState<string>('');
 
   const getYourSupplies = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
     if (!isConnectedTonWallet) {
       setUserSupplies([]);
+      setContractUserTon('');
     }
     const fetchData = async () => {
       try {
@@ -53,6 +55,8 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
         if (!client || !address_pools || !yourAddressWallet) return;
         const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
         const res = await poolContract.getUserData(Address.parse(yourAddressWallet));
+        const contractUserTon = await poolContract.getUserAddress(Address.parse(yourAddressWallet));
+        setContractUserTon(contractUserTon.toString());
         const data = res.map((item) => {
           return {
             ...item,
@@ -264,6 +268,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   return {
     yourSuppliesTon,
     getYourSupplies,
+    contractUserTon,
     loading,
   };
 };

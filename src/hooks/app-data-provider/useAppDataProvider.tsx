@@ -106,11 +106,14 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const {
     // loading: loadingYourSuppliesTon,
     yourSuppliesTon,
+    contractUserTon,
     getYourSupplies,
   } = useTonYourSupplies(walletAddressTonWallet, reservesTon);
 
-  const { userSummaryTon, loading: userSummaryLoadingTon } =
-    useUserSummaryAndIncentivesTon(yourSuppliesTon);
+  const { userSummaryTon, loading: userSummaryLoadingTon } = useUserSummaryAndIncentivesTon(
+    yourSuppliesTon,
+    contractUserTon
+  );
 
   // pool hooks
 

@@ -295,32 +295,35 @@ export const useTransactionHandler = ({
     if (isConnectedTonWallet) {
       setMainTxState({ ...mainTxState, loading: true });
       if (typeAction === 'isWithdraw') {
-        const resToggle = await onSendWithdrawTon(
-          String(poolJettonWalletAddress),
-          decimals,
-          `${eventTxInfo?.amount}`
-        );
+        try {
+          const res = await onSendWithdrawTon(
+            String(poolJettonWalletAddress),
+            decimals,
+            `${eventTxInfo?.amount}`
+          );
 
-        if (resToggle?.success !== undefined && resToggle?.success !== null) {
-          if (resToggle?.success)
+          if (!res.success) {
+            const error = {
+              name: 'Error Withdraw Ton',
+              message: `${res?.error}`,
+            };
+            const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+            setTxError(parsedError);
+            setMainTxState({
+              txHash: undefined,
+              loading: false,
+            });
+          } else if (res.success) {
             await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
-
-          setMainTxState({
-            txHash: resToggle.txHash,
-            loading: false,
-            success: resToggle.success,
-          });
-        } else {
-          const error = {
-            name: 'Error Withdraw Ton',
-            message: `${resToggle?.error}`,
-          };
-          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-          setTxError(parsedError);
-          setMainTxState({
-            txHash: undefined,
-            loading: false,
-          });
+            setMainTxState({
+              txHash: res.txHash,
+              loading: false,
+              success: res.success,
+              amount: eventTxInfo?.amount,
+            });
+          }
+        } catch (error) {
+          console.log('error Withdraw--------------', error);
         }
       } else if ((typeAction = 'isCollateral')) {
         const resToggle = await onToggleCollateralTon(
