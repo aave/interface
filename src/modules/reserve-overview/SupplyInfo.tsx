@@ -189,7 +189,8 @@ export const SupplyInfo = ({
               </Typography>
             </Warning>
           </Box>
-        ) : reserve.reserveLiquidationThreshold !== '0' ? (
+        ) : reserve.reserveLiquidationThreshold !== '0' &&
+          reserve.formattedBaseLTVasCollateral !== '0' ? (
           <Box
             sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
             paddingTop={'42px'}

@@ -10,7 +10,7 @@ import { DASHBOARD } from 'src/utils/mixPanelEvents';
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
-import { IncentivesTooltipContent } from './IncentivesTooltipContent';
+import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 
 interface IncentivesButtonProps {
@@ -231,7 +231,7 @@ const Content = ({
             <>
               {incentives.map((incentive) => (
                 <TokenIcon
-                  symbol={incentive.rewardTokenSymbol}
+                  symbol={getSymbolMap(incentive).tokenIconSymbol}
                   sx={{ fontSize: `${iconSize}px`, ml: -1 }}
                   key={incentive.rewardTokenSymbol}
                 />
@@ -241,7 +241,7 @@ const Content = ({
             <>
               {incentives.slice(0, 3).map((incentive) => (
                 <TokenIcon
-                  symbol={incentive.rewardTokenSymbol}
+                  symbol={getSymbolMap(incentive).tokenIconSymbol}
                   sx={{ fontSize: `${iconSize}px`, ml: -1 }}
                   key={incentive.rewardTokenSymbol}
                 />
