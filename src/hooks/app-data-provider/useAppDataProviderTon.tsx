@@ -83,7 +83,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQC_n8D_DRTgpqMfBSyy4Dzd_4-xS_ku40euqgHhoqKfBWgO';
+export const address_pools = 'EQCPXI1xmSgrQquVtfmWuOJx_j6aAZ6PCO73shIKiyd_Wx-d';
 export const MAX_ATTEMPTS = 10;
 export const GAS_FEE_TON = 0.3;
 export const API_TON_V2 = 'https://testnet.toncenter.com/api/v2';
