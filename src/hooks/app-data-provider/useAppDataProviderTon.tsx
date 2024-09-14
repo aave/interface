@@ -514,6 +514,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     getValueReserve();
   }, [getValueReserve]);
 
+  // useEffect(() => {
+  //   if (!isConnectedTonWallet) {
+  //     setReservesTon([]);
+  //   }
+  // }, [isConnectedTonWallet]);
+
   useEffect(() => {
     const newReserves = reservesTon.map((reserve) => {
       const dataById = ExchangeRateListUSD?.find(
@@ -591,10 +597,14 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     });
 
     if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
-      console.log('Assets to supply---------------', newReserves);
-      setReservesTon(newReserves);
+      if (!isConnectedTonWallet) {
+        setReservesTon([]);
+      } else {
+        console.log('Assets to supply---------------', newReserves);
+        setReservesTon(newReserves);
+      }
     }
-  }, [reservesTon, ExchangeRateListUSD]);
+  }, [reservesTon, ExchangeRateListUSD, isConnectedTonWallet]);
 
   const symbolTon = 'ETHx';
 
