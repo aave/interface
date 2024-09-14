@@ -129,29 +129,30 @@ export const BorrowActions = React.memo(
       try {
         if (isConnectedTonWallet) {
           setMainTxState({ ...mainTxState, loading: true });
-
-          const resBorrowTop = await onSendBorrowTon(fixAmountToBorrow, poolReserve);
-
-          if (!!resBorrowTop?.success) {
-            await sleep(30000); // sleep 30s re call SC get new data reserve
-            await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
-            setMainTxState({
-              txHash: resBorrowTop.txHash,
-              loading: false,
-              success: true,
-              amount: fixAmountToBorrow,
-            });
-          } else {
-            const error = {
-              name: 'borrow',
-              message: resBorrowTop?.error,
-            };
-            const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-            setTxError(parsedError);
-            setMainTxState({
-              txHash: undefined,
-              loading: false,
-            });
+          try {
+            const resBorrowTop = await onSendBorrowTon(fixAmountToBorrow, poolReserve);
+            if (!resBorrowTop?.success) {
+              const error = {
+                name: 'borrow',
+                message: resBorrowTop?.error,
+              };
+              const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+              setTxError(parsedError);
+              setMainTxState({
+                txHash: undefined,
+                loading: false,
+              });
+            } else {
+              await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
+              setMainTxState({
+                txHash: resBorrowTop.txHash,
+                loading: false,
+                success: true,
+                amount: fixAmountToBorrow,
+              });
+            }
+          } catch (error) {
+            console.log('error borrow--------------', error);
           }
         } else {
           setMainTxState({ ...mainTxState, loading: true });

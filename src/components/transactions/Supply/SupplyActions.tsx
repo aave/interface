@@ -17,7 +17,6 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { sleep } from 'src/utils/rotationProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -153,30 +152,33 @@ export const SupplyActions = React.memo(
       try {
         if (isConnectedTonWallet) {
           setMainTxState({ ...mainTxState, loading: true });
-          const resSupplyTop = await onSendSupplyTon(
-            parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString(),
-            isJetton
-          );
-          if (!!resSupplyTop?.success) {
-            await sleep(30000); // sleep 30s re call SC get new data reserve
-            await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
-            setMainTxState({
-              txHash: resSupplyTop.txHash,
-              loading: false,
-              success: true,
-              amount: amountToSupply,
-            });
-          } else {
-            const error = {
-              name: 'supply',
-              message: resSupplyTop?.error,
-            };
-            const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-            setTxError(parsedError);
-            setMainTxState({
-              txHash: undefined,
-              loading: false,
-            });
+          try {
+            const resSupplyTop = await onSendSupplyTon(
+              parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString(),
+              isJetton
+            );
+            if (!resSupplyTop?.success) {
+              const error = {
+                name: 'supply',
+                message: resSupplyTop?.error,
+              };
+              const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+              setTxError(parsedError);
+              setMainTxState({
+                txHash: undefined,
+                loading: false,
+              });
+            } else {
+              await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
+              setMainTxState({
+                txHash: resSupplyTop.txHash,
+                loading: false,
+                success: true,
+                amount: amountToSupply,
+              });
+            }
+          } catch (error) {
+            console.log('error supply--------------', error);
           }
         } else {
           setMainTxState({ ...mainTxState, loading: true });

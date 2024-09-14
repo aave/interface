@@ -125,12 +125,9 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
-        if (txHash && !!res?.success) {
-          // setInterval(async () => {
-          // }, 5000);
-          // const status = await getTransactionStatus(txHash);
-          // console.log('status--------------', status);
-          return { success: true, txHash: txHash };
+        if (txHash) {
+          const status = await getTransactionStatus(txHash);
+          return { success: status, txHash: txHash };
         } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
             success: false,
@@ -141,7 +138,14 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, error: error?.message };
       }
     },
-    [getLatestBoc, onGetGetTxByBOC, onSendJettonToken, onSendNativeToken, yourAddressWallet]
+    [
+      getLatestBoc,
+      getTransactionStatus,
+      onGetGetTxByBOC,
+      onSendJettonToken,
+      onSendNativeToken,
+      yourAddressWallet,
+    ]
   );
 
   const onSendBorrowJettonToken = useCallback(
@@ -194,12 +198,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
         if (txHash && !!res?.success) {
-          // setInterval(async () => {
-          // }, 5000);
-          // const status = await getTransactionStatus(txHash, yourAddressWallet);
-          // console.log('status--------------', status);
-
-          return { success: true, txHash: txHash };
+          const status = await getTransactionStatus(txHash);
+          return { success: status, txHash: txHash };
         } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
             success: false,
@@ -210,7 +210,14 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, error };
       }
     },
-    [getLatestBoc, onGetGetTxByBOC, onSendBorrowJettonToken, providerPool, yourAddressWallet]
+    [
+      getLatestBoc,
+      getTransactionStatus,
+      onGetGetTxByBOC,
+      onSendBorrowJettonToken,
+      providerPool,
+      yourAddressWallet,
+    ]
   );
 
   const onToggleCollateralTon = useCallback(
