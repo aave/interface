@@ -417,7 +417,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 isFrozen: item.isFrozen,
                 liquidityIndex: item.liquidityIndex.toString(),
                 // accruedToTreasury: item.accruedToTreasury.toString(),
-                totalVariableDebt: formatUnits(totalVariableDebt.toString() || '0', item.decimals),
+                totalVariableDebt,
                 totalStableDebt,
               },
 
@@ -425,7 +425,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               availableToDepositUSD: '0',
               usageAsCollateralEnabledOnUser: true,
 
-              totalVariableDebt: formatUnits(totalVariableDebt.toString() || '0', item.decimals),
+              totalVariableDebt: totalVariableDebt,
               totalStableDebt,
               detailsAddress: item.underlyingAddress.toString().toLocaleLowerCase(),
               name: item.name || 'Fake coin',

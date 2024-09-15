@@ -105,8 +105,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     maxAmountToBorrow = getMaxAmountAvailableToBorrow(
       reserve,
       user,
-      InterestRate.Variable,
-      isConnectedTonWallet
+      InterestRate.Variable
     ).toString();
 
     maxAmountToSupply = getMaxAmountAvailableToSupply(

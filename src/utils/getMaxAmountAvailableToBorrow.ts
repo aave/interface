@@ -31,20 +31,10 @@ interface PoolReserveBorrowSubset {
 export function getMaxAmountAvailableToBorrow(
   poolReserve: PoolReserveBorrowSubset & { priceInUSD?: string },
   user: FormatUserSummaryAndIncentivesResponse & { collateralInUSDAsset?: string },
-  rateMode: InterestRate,
-  isConnectedTonWallet?: boolean
+  rateMode: InterestRate
 ): string {
   const availableInPoolUSD = poolReserve.availableLiquidityUSD;
   const availableForUserUSD = BigNumber.min(user.availableBorrowsUSD, availableInPoolUSD);
-
-  if (isConnectedTonWallet) {
-    const resultAvailableBorrow = valueToBigNumber(Number(user?.collateralInUSDAsset))
-      .minus(user.totalBorrowsMarketReferenceCurrency)
-      .div(poolReserve.formattedPriceInMarketReferenceCurrency)
-      .toString();
-
-    return resultAvailableBorrow;
-  }
 
   const availableBorrowCap =
     poolReserve.borrowCap === '0'
@@ -52,8 +42,6 @@ export function getMaxAmountAvailableToBorrow(
       : valueToBigNumber(Number(poolReserve.borrowCap)).minus(
           valueToBigNumber(poolReserve.totalDebt)
         );
-
-  // formattedAvailableLiquidity đang sai trường này
   const availableLiquidity = BigNumber.max(
     BigNumber.min(poolReserve.formattedAvailableLiquidity, availableBorrowCap),
     0

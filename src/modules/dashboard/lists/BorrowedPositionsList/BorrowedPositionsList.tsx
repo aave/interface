@@ -8,7 +8,6 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -71,7 +70,6 @@ export const BorrowedPositionsList = () => {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const showEModeButton = currentMarketData.v3 && Object.keys(eModes).length > 1;
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
-  const { isConnectedTonWallet } = useTonConnectContext();
 
   let borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
@@ -118,10 +116,11 @@ export const BorrowedPositionsList = () => {
   const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
     user?.availableBorrowsMarketReferenceCurrency || '0'
   );
+
   const collateralUsagePercent = maxBorrowAmount.eq(0)
     ? '0'
     : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
-        .div(isConnectedTonWallet ? Number(user?.collateralInUSDAsset) : maxBorrowAmount)
+        .div(maxBorrowAmount)
         .toFixed();
 
   const checkMaxVariableBorrow: boolean = Number(collateralUsagePercent) * 100 >= 100;
@@ -211,7 +210,7 @@ export const BorrowedPositionsList = () => {
                 }
               />
               <ListTopInfoItem
-                title={<Trans>Borrow power used</Trans>}
+                title={<Trans>Borrow power used </Trans>}
                 value={collateralUsagePercent || 0}
                 percent
                 tooltip={

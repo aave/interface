@@ -1,10 +1,7 @@
 import {
   BigNumberValue,
-  calculateHealthFactorFromBalances,
   calculateHealthFactorFromBalancesBigUnits,
   ComputedUserReserve,
-  LTV_PRECISION,
-  normalize,
   UserReserveData,
   valueToBigNumber,
 } from '@aave/math-utils';
