@@ -239,7 +239,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
             const availableLiquidity = valueToBigNumber(liquidity).minus(totalBorrowed);
 
-            // console.log("availableLiquidity=========", item.symbol, "liquidity:", liquidity.toString(), " - ", "totalBorrowed:", totalBorrowed.toString())
+            // console.log("availableLiquidity=========", item.symbol, "liquidity:", liquidity.toString(), " - ", "totalBorrowed:", totalBorrowed.toString(), item.totalVariableDebt.toString(), availableLiquidity.toString())
 
             const utilizationRate = valueToBigNumber(totalBorrowed).div(liquidity);
 
