@@ -23,6 +23,7 @@ export const ErrorCancelledTon = [
   '[ton_connect_sdk_error]userrejectserror:userrejectstheactioninthewallet.canceledbytheuser',
   '[ton_connect_sdk_error]e:userrejectstheactioninthewallet.canceledbytheuser',
   '[ton_connect_sdk_error]ertransactionwasnotsent',
+  '[ton_connect_sdk_error]userrejectserror:userrejectstheactioninthewallet.walletdeclinedtherequest',
 ];
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
