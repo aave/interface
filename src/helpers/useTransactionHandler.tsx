@@ -17,7 +17,6 @@ import { TransactionDetails } from 'src/store/transactionsSlice';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { sleep } from 'src/utils/rotationProvider';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
@@ -319,7 +318,7 @@ export const useTransactionHandler = ({
               txHash: res.txHash,
               loading: false,
               success: res.success,
-              amount: eventTxInfo?.amount,
+              amount: eventTxInfo?.rootAmount,
             });
           }
         } catch (error) {
@@ -331,24 +330,23 @@ export const useTransactionHandler = ({
           Boolean(usageAsCollateral)
         );
 
-        if (!!resToggle?.success) {
-          await sleep(30000); // sleep 30s re call SC get new data reserve
-          await Promise.allSettled([getYourSupplies()]);
-          setMainTxState({
-            txHash: resToggle.txHash,
-            loading: false,
-            success: true,
-          });
-        } else {
+        if (resToggle && !resToggle.success) {
           const error = {
-            name: 'Error Toggle Collateral Ton',
-            message: resToggle?.error,
+            name: 'Error change collateral Ton',
+            message: `${resToggle?.error}`,
           };
           const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
           setTxError(parsedError);
           setMainTxState({
             txHash: undefined,
             loading: false,
+          });
+        } else if (resToggle && resToggle.success) {
+          await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
+          setMainTxState({
+            txHash: resToggle.txHash,
+            loading: false,
+            success: resToggle.success,
           });
         }
       } else {

@@ -125,7 +125,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
-        if (txHash) {
+        if (txHash && !!res?.success) {
           const status = await getTransactionStatus(txHash);
           return { success: status, txHash: txHash };
         } else if (_.includes(ErrorCancelledTon, res?.message)) {
@@ -207,7 +207,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           };
         }
       } catch (error) {
-        return { success: false, error };
+        return { success: false, error: error?.message };
       }
     },
     [
@@ -240,24 +240,29 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
         if (txHash) {
-          return { success: true, txHash: txHash };
+          const status = await getTransactionStatus(txHash);
+          return { success: status, txHash: txHash };
         } else {
-          throw Error('Error');
+          return { success: false, error: 'No txHash received' };
         }
       } catch (error) {
         console.error('Transaction failed:', error);
         const errorToCheck = error.message.replace(/\s+/g, '').toLowerCase();
         if (_.includes(ErrorCancelledTon, errorToCheck)) {
-          return {
-            success: false,
-            error: ErrorCancelledTon[0],
-          };
-        } else {
-          return { success: false, error };
+          return { success: false, error: ErrorCancelledTon[0] };
         }
+        return { success: false, error: 'Transaction failed' };
       }
     },
-    [client, getLatestBoc, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
+    [
+      client,
+      getLatestBoc,
+      getTransactionStatus,
+      onGetGetTxByBOC,
+      providerPool,
+      sender,
+      yourAddressWallet,
+    ]
   );
 
   const onSendWithdrawTon = useCallback(
@@ -271,8 +276,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         });
 
         const parseAmount =
-          amount === '-1'
-            ? -1
+          Number(amount) === -1
+            ? 1
             : parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString();
 
         const params = {
@@ -280,7 +285,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           poolJettonWalletAddress: Address.parse(poolJettonWalletAddress),
           amount: BigInt(parseAmount),
           priceData: dataMultiSig,
-          isMaxWithdraw: amount === '-1' ? true : false,
+          isMaxWithdraw: Number(amount) === -1 ? true : false,
         };
 
         await providerPool.sendWithdraw(sender, params);
@@ -292,7 +297,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           const status = await getTransactionStatus(txHash);
           return { success: status, txHash: txHash };
         } else {
-          throw Error('Error');
+          return { success: false, error: 'No txHash received' };
         }
       } catch (error) {
         console.error('Transaction failed:', error);
@@ -302,9 +307,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             success: false,
             error: ErrorCancelledTon[0],
           };
-        } else {
-          return { success: false, error };
         }
+        return { success: false, error };
       }
     },
     [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]

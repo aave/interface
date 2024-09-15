@@ -27,6 +27,7 @@ export type TransactionDetails = {
   outAmount?: string;
   outAmountUsd?: string;
   outAssetName?: string;
+  rootAmount?: string;
 };
 
 export type TransactionEvent = TransactionDetails & {
