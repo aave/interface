@@ -5,7 +5,6 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { GHO_SWITCH_FEATURE_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
@@ -33,13 +32,7 @@ export const SuppliedPositionsListItem = ({
   const { debtCeiling } = useAssetCaps();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const theme = useTheme();
-  let showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
-  if (
-    reserve.symbol === GHO_SYMBOL &&
-    !GHO_SWITCH_FEATURE_MARKETS.includes(currentMarketData.marketTitle)
-  ) {
-    showSwitchButton = false;
-  }
+  const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   const canBeEnabledAsCollateral = user
     ? !debtCeiling.isMaxed &&

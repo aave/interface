@@ -234,9 +234,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             const totalBorrowed = valueToBigNumber(totalVariableDebt).plus(
               item.totalStableDebt.toString()
             );
+
             const liquidity = item.liquidity.toString();
 
             const availableLiquidity = valueToBigNumber(liquidity).minus(totalBorrowed);
+
+            // console.log("availableLiquidity=========", item.symbol, "liquidity:", liquidity.toString(), " - ", "totalBorrowed:", totalBorrowed.toString())
 
             const utilizationRate = valueToBigNumber(totalBorrowed).div(liquidity);
 
@@ -268,7 +271,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
               variableDebtTokenAddress: '0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b',
               interestRateStrategyAddress: '0x48AF11111764E710fcDcE2750db848C63edab57B',
-              availableLiquidity: availableLiquidity,
+              availableLiquidity,
               averageStableRate: '0',
               stableDebtLastUpdateTimestamp: 0,
               totalScaledVariableDebt,

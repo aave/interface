@@ -1,9 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Button, useTheme } from '@mui/material';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
@@ -30,49 +28,13 @@ export const BorrowAssetsListItem = ({
   underlyingAsset,
   isFreezed,
   image,
-  totalScaledVariableDebt,
-  priceInUSD,
-  borrowCapUSD,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
-  const theme = useTheme();
-  const { isConnectedTonWallet } = useTonConnectContext();
 
-  const assetCaps = useAssetCaps();
-
-  const disableBorrow = isFreezed || Number(availableBorrows) <= 0 || assetCaps.borrowCap.isMaxed;
+  const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
   const trackEvent = useRootStore((store) => store.trackEvent);
-
-  const checkAvailableValue = (
-    availableBorrows: number,
-    borrowCap: number,
-    totalScaledVariableDebt: number
-  ) => {
-    if (availableBorrows > 0) {
-      return availableBorrows >= borrowCap
-        ? Math.min(availableBorrows, borrowCap) - totalScaledVariableDebt
-        : availableBorrows;
-    } else {
-      return 0;
-    }
-  };
-
-  const checkAvailableUSDValue = (
-    availableBorrowsInUSD: number,
-    borrowCapUSD: number,
-    totalScaledVariableDebt: number
-  ) => {
-    if (availableBorrowsInUSD > 0) {
-      return availableBorrowsInUSD >= borrowCapUSD
-        ? Math.min(availableBorrowsInUSD, borrowCapUSD) -
-            totalScaledVariableDebt * Number(priceInUSD)
-        : availableBorrowsInUSD;
-    } else {
-      return 0;
-    }
-  };
 
   return (
     <ListItemWrapper
@@ -87,24 +49,8 @@ export const BorrowAssetsListItem = ({
     >
       <ListValueColumn
         symbol={symbol}
-        value={
-          isConnectedTonWallet
-            ? checkAvailableValue(
-                Number(availableBorrows),
-                Number(borrowCap),
-                Number(totalScaledVariableDebt)
-              )
-            : availableBorrows
-        }
-        subValue={
-          isConnectedTonWallet
-            ? checkAvailableUSDValue(
-                Number(availableBorrowsInUSD),
-                Number(borrowCapUSD || borrowCap),
-                Number(totalScaledVariableDebt)
-              )
-            : availableBorrowsInUSD
-        }
+        value={Number(availableBorrows)}
+        subValue={Number(availableBorrowsInUSD)}
         disabled={Number(availableBorrows) === 0}
         withTooltip={false}
         capsComponent={
@@ -143,7 +89,7 @@ export const BorrowAssetsListItem = ({
           <Trans>Borrow</Trans>
         </Button>
         <Button
-          sx={{
+          sx={(theme) => ({
             p: 2,
             height: '36px',
             fontSize: '14px',
@@ -154,7 +100,7 @@ export const BorrowAssetsListItem = ({
             '&:hover': {
               bgcolor: 'transparent',
             },
-          }}
+          })}
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}

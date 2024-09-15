@@ -19,7 +19,6 @@ import {
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { TxAction } from 'src/ui-config/errorMapping';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';

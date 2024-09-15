@@ -2,7 +2,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
@@ -28,44 +27,11 @@ export const BorrowAssetsListMobileItem = ({
   underlyingAsset,
   isFreezed,
   image,
-  totalScaledVariableDebt,
-  priceInUSD,
-  borrowCapUSD,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
-  const { isConnectedTonWallet } = useTonConnectContext();
 
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
-
-  const checkAvailableValue = (
-    availableBorrows: number,
-    borrowCap: number,
-    totalScaledVariableDebt: number
-  ) => {
-    if (availableBorrows > 0) {
-      return availableBorrows >= borrowCap
-        ? Math.min(availableBorrows, borrowCap) - totalScaledVariableDebt
-        : availableBorrows;
-    } else {
-      return 0;
-    }
-  };
-
-  const checkAvailableUSDValue = (
-    availableBorrowsInUSD: number,
-    borrowCapUSD: number,
-    totalScaledVariableDebt: number
-  ) => {
-    if (availableBorrowsInUSD > 0) {
-      return availableBorrowsInUSD >= borrowCapUSD
-        ? Math.min(availableBorrowsInUSD, borrowCapUSD) -
-            totalScaledVariableDebt * Number(priceInUSD)
-        : availableBorrowsInUSD;
-    } else {
-      return 0;
-    }
-  };
 
   return (
     <ListMobileItemWrapper
@@ -79,24 +45,8 @@ export const BorrowAssetsListMobileItem = ({
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
-        value={
-          isConnectedTonWallet
-            ? checkAvailableValue(
-                Number(availableBorrows),
-                Number(borrowCap),
-                Number(totalScaledVariableDebt)
-              )
-            : availableBorrows
-        }
-        subValue={
-          isConnectedTonWallet
-            ? checkAvailableUSDValue(
-                Number(availableBorrowsInUSD),
-                Number(borrowCapUSD || borrowCap),
-                Number(totalScaledVariableDebt)
-              )
-            : availableBorrowsInUSD
-        }
+        value={Number(availableBorrows)}
+        subValue={Number(availableBorrowsInUSD)}
         disabled={Number(availableBorrows) === 0}
         capsComponent={
           <CapsHint
