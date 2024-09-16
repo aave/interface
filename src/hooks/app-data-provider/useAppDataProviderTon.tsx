@@ -150,6 +150,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     isConnectedTonWallet,
     poolContract,
     poolContractReservesData.length,
+    refetchBalanceTokenTon,
     walletAddressTonWallet,
   ]);
 
