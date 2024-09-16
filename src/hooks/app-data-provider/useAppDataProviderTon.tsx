@@ -83,7 +83,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQCPXI1xmSgrQquVtfmWuOJx_j6aAZ6PCO73shIKiyd_Wx-d';
+export const address_pools = 'EQBNO-W9JGiituUr5SD-Oe0OoHDT-1gpQUkMur4_lUSb0w2V';
 export const MAX_ATTEMPTS = 10;
 export const GAS_FEE_TON = 0.3;
 export const API_TON_V2 = 'https://testnet.toncenter.com/api/v2';
@@ -237,7 +237,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
             const liquidity = item.liquidity.toString();
 
-            const availableLiquidity = valueToBigNumber(liquidity).minus(totalBorrowed);
+            const availableLiquidity = valueToBigNumber(liquidity); // SC confirm = liquidity --> remove .minus(totalBorrowed)
 
             // console.log("availableLiquidity=========", item.symbol, "liquidity:", liquidity.toString(), " - ", "totalBorrowed:", totalBorrowed.toString(), item.totalVariableDebt.toString(), availableLiquidity.toString())
 
