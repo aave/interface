@@ -157,7 +157,7 @@ export const useTonBalance = (yourWalletTon: string, isConnectedTonWallet: boole
     fetchBalance();
   }, [fetchBalance, isConnectedTonWallet, yourWalletTon]);
 
-  return { balance, loading, refetch: fetchBalance };
+  return { balance, loading, refetchBalanceTokenTon: fetchBalance };
 };
 export interface WalletBalances {
   walletBalances: WalletBalancesMap;

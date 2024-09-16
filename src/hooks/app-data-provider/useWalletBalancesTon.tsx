@@ -44,10 +44,11 @@ export const useGetNameAssetTon = () => {
 
 export const useGetBalanceTon = (isConnectedTonWallet: boolean) => {
   const { walletAddressTonWallet } = useTonConnectContext();
-  const { balance: yourWalletBalanceTon, loading: loadingTokenTon } = useTonBalance(
-    walletAddressTonWallet,
-    isConnectedTonWallet
-  );
+  const {
+    balance: yourWalletBalanceTon,
+    loading: loadingTokenTon,
+    refetchBalanceTokenTon,
+  } = useTonBalance(walletAddressTonWallet, isConnectedTonWallet);
   const client = useTonClient();
 
   const onGetBalanceTonNetwork = useCallback(
@@ -98,6 +99,7 @@ export const useGetBalanceTon = (isConnectedTonWallet: boolean) => {
     onGetBalanceTonNetwork,
     yourWalletBalanceTon,
     loadingTokenTon,
+    refetchBalanceTokenTon,
   };
 };
 
