@@ -568,6 +568,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
       return {
         ...reserve,
+        walletBalance,
         walletBalanceUSD,
         priceInUSD,
         formattedPriceInMarketReferenceCurrency: priceInUSD,
@@ -580,6 +581,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         totalDebtUSD: totalVariableDebtUSD,
         reserve: {
           ...reserve.reserve,
+          walletBalance,
           walletBalanceUSD,
           priceInUSD,
           formattedPriceInMarketReferenceCurrency: priceInUSD,
