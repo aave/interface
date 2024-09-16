@@ -184,7 +184,7 @@ export class Pool implements Contract {
           underlyingAddress: item.underlyingAddress,
           totalSupply: item.totalSupply || 0,
           liquidityIndex: item.liquidityIndex || BigInt('1000000000000000000000000000'),
-          isCollateral: item.isCollateral ?? false,
+          isCollateral: item.isCollateral,
           variableBorrowBalance: item.variableBorrowBalance || 0,
           variableBorrowIndex: item.variableBorrowIndex || BigInt('1000000000000000000000000000'),
           stableBorrowBalance: item.stableBorrowBalance || 0,

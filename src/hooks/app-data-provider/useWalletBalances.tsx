@@ -110,8 +110,9 @@ export const useTonBalance = (yourWalletTon: string) => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
     setLoading(true);
-    if (!isConnectedTonWallet) {
-      return setBalance('0');
+
+    if (!isConnectedTonWallet || !yourWalletTon) {
+      setBalance('0');
     }
 
     const fetchData = async (): Promise<string | undefined> => {
