@@ -139,6 +139,7 @@ export const BorrowAssetsList = () => {
   const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
     user?.availableBorrowsMarketReferenceCurrency || '0'
   );
+
   const collateralUsagePercent = maxBorrowAmount.eq(0)
     ? '0'
     : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
@@ -153,7 +154,7 @@ export const BorrowAssetsList = () => {
             return true;
           }
 
-          return availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0';
+          return Number(availableBorrowsInUSD) !== 0 && Number(totalLiquidityUSD) !== 0;
         });
 
   const { value: ghoReserve, filtered: filteredReserves } = findAndFilterMintableGhoReserve(
@@ -193,8 +194,6 @@ export const BorrowAssetsList = () => {
       </ListHeaderWrapper>
     );
   };
-
-  // console.log("tokensToBorrow--------------", tokensToBorrow)
 
   if (loading)
     return (
