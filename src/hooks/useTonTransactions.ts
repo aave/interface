@@ -143,7 +143,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           };
         }
       } catch (error) {
-        return { success: false, error: error?.message };
+        return { success: false, error: error?.message, blocking: false };
       }
     },
     [
@@ -197,7 +197,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   const onSendBorrowTon = useCallback(
     async (amount: string, poolReserve: FormattedReservesAndIncentives) => {
       if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress)
-        return { success: false, message: 'error' };
+        return { success: false, message: 'error', blocking: false };
 
       try {
         const res = await onSendBorrowJettonToken(amount, poolReserve);
@@ -216,7 +216,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           };
         }
       } catch (error) {
-        return { success: false, error: error?.message };
+        return { success: false, error: error?.message, blocking: false };
       }
     },
     [
@@ -252,7 +252,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           const status = await getTransactionStatus(txHash);
           return { success: status, txHash: txHash, blocking: !status, message: txHash };
         } else {
-          return { success: false, error: 'No txHash received' };
+          return { success: false, error: 'No txHash received', blocking: false };
         }
       } catch (error) {
         console.error('Transaction failed:', error);
@@ -264,7 +264,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             blocking: false,
           };
         }
-        return { success: false, error: 'Transaction failed' };
+        return { success: false, error: 'Transaction failed', blocking: false };
       }
     },
     [
@@ -281,7 +281,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   const onSendWithdrawTon = useCallback(
     async (poolJettonWalletAddress: string, decimals: number | undefined, amount: string) => {
       if (!poolJettonWalletAddress || !providerPool || !decimals)
-        return { success: false, message: 'error' };
+        return { success: false, message: 'error', blocking: false };
 
       try {
         const dataMultiSig = await getMultiSig({
@@ -310,7 +310,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           const status = await getTransactionStatus(txHash);
           return { success: status, txHash: txHash, blocking: !status, message: txHash };
         } else {
-          return { success: false, error: 'No txHash received' };
+          return { success: false, error: 'No txHash received', blocking: false };
         }
       } catch (error) {
         console.error('Transaction failed:', error);
@@ -322,7 +322,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             blocking: false,
           };
         }
-        return { success: false, error };
+        return { success: false, error: error?.message, blocking: false };
       }
     },
     [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
