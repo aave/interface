@@ -158,7 +158,7 @@ export const useTonBalance = (yourWalletTon: string) => {
 
   useEffect(() => {
     fetchBalance();
-  }, [fetchBalance]);
+  }, [fetchBalance, isConnectedTonWallet, yourWalletTon]);
 
   return { balance, loading, refetch: fetchBalance };
 };
