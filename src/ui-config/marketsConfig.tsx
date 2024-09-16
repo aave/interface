@@ -186,7 +186,7 @@ export const marketsData: {
       governance: true,
       staking: true,
       liquiditySwap: true,
-      collateralRepay: false,
+      collateralRepay: true,
       incentives: true,
       withdrawAndSwitch: true,
       debtSwitch: false,
@@ -214,7 +214,7 @@ export const marketsData: {
       governance: true,
       staking: true,
       liquiditySwap: true,
-      collateralRepay: true,
+      collateralRepay: false,
       incentives: true,
       debtSwitch: true,
       switch: true,
@@ -231,7 +231,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Ethereum.COLLECTOR,
       V3_MIGRATOR: AaveV2Ethereum.MIGRATION_HELPER,
-      DEBT_SWITCH_ADAPTER: AaveV2Ethereum.DEBT_SWAP_ADAPTER,
+      DEBT_SWITCH_ADAPTER: '0xAf5c88245CD02Ff3DF332EF1E1FfD5bc5D1d87cd',
     },
   },
   // [CustomMarket.permissioned_market]: {
@@ -278,7 +278,7 @@ export const marketsData: {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
-      collateralRepay: true,
+      collateralRepay: false,
       debtSwitch: true,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/H1Et77RZh3XEf27vkAmJyzgCME2RSFLtDS2f4PPW6CGp`,
@@ -293,7 +293,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Polygon.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Polygon.COLLECTOR,
       V3_MIGRATOR: AaveV2Polygon.MIGRATION_HELPER,
-      DEBT_SWITCH_ADAPTER: AaveV2Polygon.DEBT_SWAP_ADAPTER,
+      DEBT_SWITCH_ADAPTER: '0x63dfa7c09Dc2Ff4030d6B8Dc2ce6262BF898C8A4',
     },
   },
   [CustomMarket.proto_avalanche]: {
@@ -303,7 +303,7 @@ export const marketsData: {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
-      collateralRepay: true,
+      collateralRepay: false,
       debtSwitch: true,
       switch: true,
     },
@@ -319,7 +319,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Avalanche.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Avalanche.COLLECTOR,
       V3_MIGRATOR: AaveV2Avalanche.MIGRATION_HELPER,
-      DEBT_SWITCH_ADAPTER: AaveV2Avalanche.DEBT_SWAP_ADAPTER,
+      DEBT_SWITCH_ADAPTER: '0x63dfa7c09Dc2Ff4030d6B8Dc2ce6262BF898C8A4',
     },
   },
   // v3
