@@ -50,6 +50,7 @@ export const useGetBalanceTon = () => {
   const onGetBalanceTonNetwork = useCallback(
     async (add: string, decimals: string | number, isJetton: boolean) => {
       if (!client || !walletAddressTonWallet || !yourWalletBalanceTon) return '';
+      console.log('yourWalletBalanceTon---------------', yourWalletBalanceTon);
       if (!isJetton) {
         return yourWalletBalanceTon;
       } else {

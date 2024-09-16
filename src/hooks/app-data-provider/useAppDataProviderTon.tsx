@@ -514,7 +514,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
   useEffect(() => {
     getValueReserve();
-  }, [getValueReserve]);
+  }, [getValueReserve, yourWalletBalanceTon]);
 
   // useEffect(() => {
   //   if (!isConnectedTonWallet) {
