@@ -129,11 +129,17 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
         if (txHash && !!res?.success) {
           const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash, blocking: !status, message: txHash };
+          return {
+            success: status,
+            txHash: txHash,
+            blocking: !status,
+            message: txHash,
+          };
         } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
             success: false,
-            error: ErrorCancelledTon[0],
+            message: ErrorCancelledTon[0],
+            blocking: false,
           };
         }
       } catch (error) {
@@ -205,7 +211,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
             success: false,
-            error: ErrorCancelledTon[0],
+            message: ErrorCancelledTon[0],
+            blocking: false,
           };
         }
       } catch (error) {
@@ -251,7 +258,11 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         console.error('Transaction failed:', error);
         const errorToCheck = error.message.replace(/\s+/g, '').toLowerCase();
         if (_.includes(ErrorCancelledTon, errorToCheck)) {
-          return { success: false, error: ErrorCancelledTon[0] };
+          return {
+            success: false,
+            message: ErrorCancelledTon[0],
+            blocking: false,
+          };
         }
         return { success: false, error: 'Transaction failed' };
       }
@@ -307,7 +318,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         if (_.includes(ErrorCancelledTon, errorToCheck)) {
           return {
             success: false,
-            error: ErrorCancelledTon[0],
+            message: ErrorCancelledTon[0],
+            blocking: false,
           };
         }
         return { success: false, error };
