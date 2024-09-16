@@ -160,9 +160,13 @@ export const SupplyActions = React.memo(
             if (!resSupplyTop?.success) {
               const error = {
                 name: 'supply',
-                message: resSupplyTop?.error,
+                message: `${resSupplyTop?.message}`,
               };
-              const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+              const parsedError = getErrorTextFromError(
+                error,
+                TxAction.GAS_ESTIMATION,
+                resSupplyTop?.blocking
+              );
               setTxError(parsedError);
               setMainTxState({
                 txHash: undefined,

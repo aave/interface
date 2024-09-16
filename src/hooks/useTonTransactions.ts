@@ -129,7 +129,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
         if (txHash && !!res?.success) {
           const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash };
+          return { success: status, txHash: txHash, blocking: !status, message: txHash };
         } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
             success: false,
@@ -201,7 +201,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
         if (txHash && !!res?.success) {
           const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash };
+          return { success: status, txHash: txHash, blocking: !status, message: txHash };
         } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
             success: false,
@@ -243,7 +243,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
         if (txHash) {
           const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash };
+          return { success: status, txHash: txHash, blocking: !status, message: txHash };
         } else {
           return { success: false, error: 'No txHash received' };
         }
@@ -297,7 +297,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
         if (txHash) {
           const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash };
+          return { success: status, txHash: txHash, blocking: !status, message: txHash };
         } else {
           return { success: false, error: 'No txHash received' };
         }

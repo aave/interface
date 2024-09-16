@@ -13,6 +13,7 @@ import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { AssetInput } from '../AssetInput';
+import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -98,6 +99,10 @@ export const WithdrawModalContent = ({
   const usdValue = valueToBigNumber(withdrawAmount).multipliedBy(
     userReserve?.reserve.priceInUSD || 0
   );
+
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
 
   if (withdrawTxState.success)
     return (

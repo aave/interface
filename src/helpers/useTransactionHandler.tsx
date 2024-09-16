@@ -304,9 +304,13 @@ export const useTransactionHandler = ({
           if (!res.success) {
             const error = {
               name: 'Error Withdraw Ton',
-              message: `${res?.error}`,
+              message: `${res?.message}`,
             };
-            const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+            const parsedError = getErrorTextFromError(
+              error,
+              TxAction.GAS_ESTIMATION,
+              res?.blocking
+            );
             setTxError(parsedError);
             setMainTxState({
               txHash: undefined,
@@ -333,9 +337,13 @@ export const useTransactionHandler = ({
         if (resToggle && !resToggle.success) {
           const error = {
             name: 'Error change collateral Ton',
-            message: `${resToggle?.error}`,
+            message: `${resToggle?.message}`,
           };
-          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+          const parsedError = getErrorTextFromError(
+            error,
+            TxAction.GAS_ESTIMATION,
+            resToggle?.blocking
+          );
           setTxError(parsedError);
           setMainTxState({
             txHash: undefined,

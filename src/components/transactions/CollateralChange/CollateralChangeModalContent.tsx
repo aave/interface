@@ -8,6 +8,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { TxAction } from 'src/ui-config/errorMapping';
 
+import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -120,6 +121,10 @@ export const CollateralChangeModalContent = ({
         return null;
     }
   };
+
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
 
   if (collateralChangeTxState.success)
     return (

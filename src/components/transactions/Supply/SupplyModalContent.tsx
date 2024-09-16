@@ -38,6 +38,7 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { CapType } from '../../caps/helper';
 import { Asset, AssetInput } from '../AssetInput';
+import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -203,6 +204,10 @@ export const SupplyModalContent = React.memo(
       underlyingAssetTon: poolReserve?.underlyingAssetTon,
       isJetton: poolReserve?.isJetton || false,
     };
+
+    if (txError && txError.blocking) {
+      return <TxErrorView txError={txError} />;
+    }
 
     if (supplyTxState.success)
       return (

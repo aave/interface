@@ -27,6 +27,7 @@ import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
+import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -219,6 +220,10 @@ export const BorrowModalContent = ({
     borrowUnWrapped && poolReserve.isWrappedBaseAsset
       ? currentNetworkConfig.baseAssetSymbol
       : poolReserve.iconSymbol;
+
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
 
   if (borrowTxState.success)
     return (

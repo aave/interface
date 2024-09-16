@@ -127,9 +127,13 @@ export const BorrowActions = React.memo(
             if (!resBorrowTop?.success) {
               const error = {
                 name: 'borrow',
-                message: resBorrowTop?.error,
+                message: `${resBorrowTop?.message}`,
               };
-              const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+              const parsedError = getErrorTextFromError(
+                error,
+                TxAction.GAS_ESTIMATION,
+                resBorrowTop?.blocking
+              );
               setTxError(parsedError);
               setMainTxState({
                 txHash: undefined,
