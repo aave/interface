@@ -159,6 +159,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const getValueReserve = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
+    console.log('--------------yourWalletBalanceTon-----------', yourWalletBalanceTon);
     setLoading(true);
     const fetchData = async () => {
       try {
@@ -166,11 +167,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         if (!poolContract || !client || !walletAddressTonWallet) return;
         const arr = await Promise.all(
           poolContractReservesData.map(async (item) => {
-            const walletBalance = await onGetBalanceTonNetwork(
-              item.underlyingAddress.toString(),
-              item.decimals,
-              item?.isJetton
-            );
+            const walletBalance = !item?.isJetton
+              ? yourWalletBalanceTon
+              : await onGetBalanceTonNetwork(
+                  item.underlyingAddress.toString(),
+                  item.decimals,
+                  item?.isJetton
+                );
 
             const poolJettonWalletAddress = item.poolJWAddress.toString();
 
@@ -485,11 +488,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
         const mergedArray = JSON.parse(JSON.stringify([...arr]));
 
-        console.log(
-          '--------------yourWalletBalanceTon-----------',
-          mergedArray,
-          yourWalletBalanceTon
-        );
         setReservesTon(mergedArray as DashboardReserve[]);
       } catch (error) {
         await sleep(1000);
