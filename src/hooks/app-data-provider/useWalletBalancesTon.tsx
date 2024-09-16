@@ -55,52 +55,47 @@ export const useGetBalanceTon = (isConnectedTonWallet: boolean) => {
   }, [yourWalletBalanceTon, isConnectedTonWallet]);
 
   const onGetBalanceTonNetwork = useCallback(
-    async (add: string, decimals: string | number, isJetton: boolean) => {
+    async (add: string, decimals: string | number) => {
       if (!client || !walletAddressTonWallet) {
         console.error('Client or wallet address is not available.');
         return '0';
       }
+      try {
+        const minterAddress = JettonMinter.createFromAddress(
+          Address.parse(add)
+        )?.address.toRawString();
 
-      if (!isJetton) {
-        return yourWalletBalanceTon || '0';
-      } else {
-        try {
-          const minterAddress = JettonMinter.createFromAddress(
-            Address.parse(add)
-          )?.address.toRawString();
-
-          if (!minterAddress) {
-            console.error('Minter address not found.');
-            return '0';
-          }
-
-          const contractJettonMinter = new JettonMinter(Address.parse(minterAddress));
-          const providerJettonMinter = client.open(
-            contractJettonMinter
-          ) as OpenedContract<JettonMinter>;
-
-          const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
-            Address.parse(walletAddressTonWallet)
-          );
-
-          const contractJettonWallet = new JettonWallet(
-            Address.parse(walletAddressJettonMinter.toRawString())
-          );
-
-          const providerJettonWallet = client.open(
-            contractJettonWallet
-          ) as OpenedContract<JettonWallet>;
-
-          const balance = await providerJettonWallet.getJettonBalance();
-
-          return formatUnits(balance || '0', decimals);
-        } catch (error) {
-          console.error('Error fetching Jetton balance:', error);
+        if (!minterAddress) {
+          console.error('Minter address not found.');
           return '0';
         }
+
+        const contractJettonMinter = new JettonMinter(Address.parse(minterAddress));
+        const providerJettonMinter = client.open(
+          contractJettonMinter
+        ) as OpenedContract<JettonMinter>;
+
+        const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
+          Address.parse(walletAddressTonWallet)
+        );
+
+        const contractJettonWallet = new JettonWallet(
+          Address.parse(walletAddressJettonMinter.toRawString())
+        );
+
+        const providerJettonWallet = client.open(
+          contractJettonWallet
+        ) as OpenedContract<JettonWallet>;
+
+        const balance = await providerJettonWallet.getJettonBalance();
+
+        return formatUnits(balance || '0', decimals);
+      } catch (error) {
+        console.error('Error fetching Jetton balance:', error);
+        return '0';
       }
     },
-    [client, walletAddressTonWallet, yourWalletBalanceTon]
+    [client, walletAddressTonWallet]
   );
 
   return {
