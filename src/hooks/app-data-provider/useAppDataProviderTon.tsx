@@ -159,7 +159,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const getValueReserve = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
-    console.log('--------------yourWalletBalanceTon-----------', yourWalletBalanceTon);
     setLoading(true);
     const fetchData = async () => {
       try {
@@ -594,12 +593,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       if (!isConnectedTonWallet) {
         setReservesTon([]);
       } else {
+        console.log('--------------yourWalletBalanceTon-----------', yourWalletBalanceTon);
         console.log('Assets to supply---------------', newReserves);
         setReservesTon(newReserves);
       }
       setLoading(false);
     }
-  }, [reservesTon, ExchangeRateListUSD, isConnectedTonWallet]);
+  }, [reservesTon, ExchangeRateListUSD, isConnectedTonWallet, yourWalletBalanceTon]);
 
   const symbolTon = 'ETHx';
 
