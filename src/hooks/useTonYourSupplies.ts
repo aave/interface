@@ -12,6 +12,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { sleep } from 'src/utils/rotationProvider';
 
 import { address_pools, MAX_ATTEMPTS } from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
@@ -68,9 +69,11 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
         return setUserSupplies(data);
       } catch (error) {
+        await sleep(1000);
         console.error(`Error fetching getYourSupplies (attempt ${attempts}):`, error);
         if (attempts < maxAttempts) {
           console.log('Retrying...getYourSupplies');
+          setUserSupplies([]);
           await fetchData();
         } else {
           console.log('Max attempts reached, stopping retries. getYourSupplies');
@@ -88,7 +91,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
   useEffect(() => {
     getYourSupplies();
-  }, [client, getYourSupplies, yourAddressWallet]);
+  }, [getYourSupplies, yourAddressWallet, isConnectedTonWallet]);
 
   const onMatchDataYourSupplies = useCallback(async () => {
     setLoading(true);
@@ -263,7 +266,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
   useEffect(() => {
     onMatchDataYourSupplies();
-  }, [onMatchDataYourSupplies]);
+  }, [onMatchDataYourSupplies, yourAddressWallet, isConnectedTonWallet, reserves, userSupplies]);
 
   return {
     yourSuppliesTon,

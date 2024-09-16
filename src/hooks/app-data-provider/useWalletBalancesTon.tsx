@@ -1,7 +1,7 @@
 import { Address, OpenedContract } from '@ton/core';
 import { formatUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { JettonMinter } from 'src/contracts/JettonMinter';
 import { JettonWallet } from 'src/contracts/JettonWallet';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -49,10 +49,6 @@ export const useGetBalanceTon = (isConnectedTonWallet: boolean) => {
     isConnectedTonWallet
   );
   const client = useTonClient();
-
-  useEffect(() => {
-    console.log('balance- ton-------', yourWalletBalanceTon, isConnectedTonWallet);
-  }, [yourWalletBalanceTon, isConnectedTonWallet]);
 
   const onGetBalanceTonNetwork = useCallback(
     async (add: string, decimals: string | number) => {

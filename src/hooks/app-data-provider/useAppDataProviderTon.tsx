@@ -594,7 +594,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       if (!isConnectedTonWallet) {
         setReservesTon([]);
       } else {
-        // console.log('Assets to supply---------------', newReserves);
+        console.log('Assets to supply---------------', newReserves);
         setReservesTon(newReserves);
       }
       setLoading(false);
