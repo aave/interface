@@ -111,6 +111,7 @@ export const useTonBalance = (yourWalletTon: string) => {
     const maxAttempts = MAX_ATTEMPTS;
     setLoading(true);
 
+    console.log('isConnectedTonWallet---------------', isConnectedTonWallet, yourWalletTon);
     if (!isConnectedTonWallet || !yourWalletTon) {
       setBalance('0');
     }
