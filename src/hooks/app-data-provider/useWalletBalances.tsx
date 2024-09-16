@@ -124,9 +124,11 @@ export const useTonBalance = (yourWalletTon: string) => {
           address: yourWalletTon,
         };
 
-        const { data } = await axios.get(`${API_TON_V2}/getAddressInformation`, { params });
+        const res = await axios.get(`${API_TON_V2}/getAddressInformation`, { params });
 
-        const balance = data.result.balance;
+        const balance = res.data.result.balance;
+
+        console.log('apiGetTon-----------------------------------', res);
 
         const balanceFormatted = fromNano(balance).toString();
         setBalance(balanceFormatted);
