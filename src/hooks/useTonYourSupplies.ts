@@ -46,6 +46,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   const getYourSupplies = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
+    setLoading(true);
     if (!isConnectedTonWallet) {
       setUserSupplies([]);
       setContractUserTon('');
@@ -94,7 +95,6 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   }, [getYourSupplies, yourAddressWallet, isConnectedTonWallet]);
 
   const onMatchDataYourSupplies = useCallback(async () => {
-    setLoading(true);
     try {
       const result = await Promise.all(
         _.chain(reserves)
@@ -260,6 +260,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
       console.error('Error fetching supplies:', error);
       setYourSuppliesTon([]);
     } finally {
+      await sleep(500);
       setLoading(false);
     }
   }, [reserves, userSupplies]);

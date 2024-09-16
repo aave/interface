@@ -104,7 +104,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
   const {
-    // loading: loadingYourSuppliesTon,
+    loading: loadingYourSuppliesTon,
     yourSuppliesTon,
     contractUserTon,
     getYourSupplies,
@@ -162,10 +162,13 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   // loading
   const isReservesLoading =
-    reservesDataLoading || formattedPoolReservesLoading || loadingReservesTon;
+    reservesDataLoading ||
+    formattedPoolReservesLoading ||
+    loadingReservesTon ||
+    loadingYourSuppliesTon;
 
   const isUserDataLoading = isConnectedTonWallet
-    ? loadingReservesTon || userSummaryLoadingTon
+    ? loadingReservesTon || userSummaryLoadingTon || loadingYourSuppliesTon
     : userReservesDataLoading || userSummaryLoading;
 
   let user = isConnectedTonWallet ? userSummaryTon : userSummary;
