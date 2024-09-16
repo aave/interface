@@ -16,6 +16,7 @@ import { Pool } from 'src/contracts/Pool';
 import { useContract } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { sleep } from 'src/utils/rotationProvider';
 
 import { useTonClient } from '../useTonClient';
 import { WalletBalanceUSD } from './useSocketGetRateUSD';
@@ -103,8 +104,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     PoolContractReservesDataType[]
   >([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
-  const { onGetBalanceTonNetwork, yourWalletBalanceTon, loadingTokenTon } = useGetBalanceTon();
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
+  const { onGetBalanceTonNetwork, yourWalletBalanceTon, loadingTokenTon } =
+    useGetBalanceTon(isConnectedTonWallet);
 
   const getPoolContractGetReservesData = useCallback(async () => {
     let attempts = 0;
@@ -490,6 +492,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         );
         setReservesTon(mergedArray as DashboardReserve[]);
       } catch (error) {
+        await sleep(1000);
         console.error(`Error fetching getValueReserve (attempt ${attempts}):`, error);
         if (attempts < maxAttempts) {
           console.log('Retrying...getValueReserve');
@@ -512,8 +515,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   ]);
 
   useEffect(() => {
+    console.log('balance- ton-----22222222--', yourWalletBalanceTon, isConnectedTonWallet);
+  }, [yourWalletBalanceTon, isConnectedTonWallet]);
+
+  useEffect(() => {
     getValueReserve();
-  }, [getValueReserve]);
+  }, [getValueReserve, yourWalletBalanceTon]);
 
   useEffect(() => {
     const newReserves = reservesTon.map((reserve) => {
@@ -595,7 +602,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       if (!isConnectedTonWallet) {
         setReservesTon([]);
       } else {
-        console.log('Assets to supply---------------', newReserves);
+        // console.log('Assets to supply---------------', newReserves);
         setReservesTon(newReserves);
       }
       setLoading(false);

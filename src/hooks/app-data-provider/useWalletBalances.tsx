@@ -4,7 +4,6 @@ import { fromNano } from '@ton/core';
 import axios from 'axios';
 import { BigNumber } from 'bignumber.js';
 import { useCallback, useEffect, useState } from 'react';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
@@ -12,7 +11,7 @@ import { sleep } from 'src/utils/rotationProvider';
 
 import { usePoolsReservesHumanized } from '../pool/usePoolReserves';
 import { usePoolsTokensBalance } from '../pool/usePoolTokensBalance';
-import { API_TON_V2, MAX_ATTEMPTS } from './useAppDataProviderTon';
+import { API_TON_V2 } from './useAppDataProviderTon';
 
 export interface WalletBalance {
   amount: string;
@@ -99,11 +98,10 @@ export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
   };
 };
 
-export const useTonBalance = (yourWalletTon: string) => {
+export const useTonBalance = (yourWalletTon: string, isConnectedTonWallet: boolean) => {
   // const wallet = useTonWallet();
   const [balance, setBalance] = useState<string>('0');
   const [loading, setLoading] = useState<boolean>(true);
-  const { isConnectedTonWallet } = useTonConnectContext();
   // const client = useTonClient();
 
   const fetchBalance = useCallback(async () => {
@@ -127,7 +125,7 @@ export const useTonBalance = (yourWalletTon: string) => {
 
         const balance = res.data.result.balance;
 
-        console.log('apiGetTon-----------------------------------', res);
+        // console.log('apiGetTon-----------------------------------', res);
 
         const balanceFormatted = fromNano(balance).toString();
         setBalance(balanceFormatted);

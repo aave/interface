@@ -105,7 +105,7 @@ export const useSocketGetRateUSD = () => {
           const check = hasChanged(walletSocketRef.current, result);
           if (check) {
             const res = matchDataBalance(data);
-            console.log('socket-price-------------------: ', res);
+            // console.log('socket-price-------------------: ', res);
             setDataWalletBalance(res);
             walletSocketRef.current = result;
           }

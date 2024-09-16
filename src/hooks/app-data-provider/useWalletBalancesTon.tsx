@@ -1,7 +1,7 @@
 import { Address, OpenedContract } from '@ton/core';
 import { formatUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { JettonMinter } from 'src/contracts/JettonMinter';
 import { JettonWallet } from 'src/contracts/JettonWallet';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -42,41 +42,62 @@ export const useGetNameAssetTon = () => {
   };
 };
 
-export const useGetBalanceTon = () => {
+export const useGetBalanceTon = (isConnectedTonWallet: boolean) => {
   const { walletAddressTonWallet } = useTonConnectContext();
-  const { balance: yourWalletBalanceTon, loading: loadingTokenTon } =
-    useTonBalance(walletAddressTonWallet);
+  const { balance: yourWalletBalanceTon, loading: loadingTokenTon } = useTonBalance(
+    walletAddressTonWallet,
+    isConnectedTonWallet
+  );
   const client = useTonClient();
+
+  useEffect(() => {
+    console.log('balance- ton-------', yourWalletBalanceTon, isConnectedTonWallet);
+  }, [yourWalletBalanceTon, isConnectedTonWallet]);
 
   const onGetBalanceTonNetwork = useCallback(
     async (add: string, decimals: string | number, isJetton: boolean) => {
-      if (!client || !walletAddressTonWallet || !yourWalletBalanceTon) return '';
+      if (!client || !walletAddressTonWallet) {
+        console.error('Client or wallet address is not available.');
+        return '0';
+      }
+
       if (!isJetton) {
-        return yourWalletBalanceTon;
+        return yourWalletBalanceTon || '0';
       } else {
-        const minterAddress = JettonMinter.createFromAddress(
-          Address.parse(add)
-        )?.address.toRawString();
-        const contractJettonMinter = new JettonMinter(Address.parse(minterAddress));
-        const providerJettonMinter = client.open(
-          contractJettonMinter
-        ) as OpenedContract<JettonMinter>;
+        try {
+          const minterAddress = JettonMinter.createFromAddress(
+            Address.parse(add)
+          )?.address.toRawString();
 
-        const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
-          Address.parse(walletAddressTonWallet)
-        );
+          if (!minterAddress) {
+            console.error('Minter address not found.');
+            return '0';
+          }
 
-        const contractJettonWallet = new JettonWallet(
-          Address.parse(walletAddressJettonMinter.toRawString())
-        );
+          const contractJettonMinter = new JettonMinter(Address.parse(minterAddress));
+          const providerJettonMinter = client.open(
+            contractJettonMinter
+          ) as OpenedContract<JettonMinter>;
 
-        const providerJettonWallet = client.open(
-          contractJettonWallet
-        ) as OpenedContract<JettonWallet>;
+          const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
+            Address.parse(walletAddressTonWallet)
+          );
 
-        const balance = await providerJettonWallet.getJettonBalance();
+          const contractJettonWallet = new JettonWallet(
+            Address.parse(walletAddressJettonMinter.toRawString())
+          );
 
-        return formatUnits(balance || '0', decimals);
+          const providerJettonWallet = client.open(
+            contractJettonWallet
+          ) as OpenedContract<JettonWallet>;
+
+          const balance = await providerJettonWallet.getJettonBalance();
+
+          return formatUnits(balance || '0', decimals);
+        } catch (error) {
+          console.error('Error fetching Jetton balance:', error);
+          return '0';
+        }
       }
     },
     [client, walletAddressTonWallet, yourWalletBalanceTon]
