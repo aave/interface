@@ -103,7 +103,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     PoolContractReservesDataType[]
   >([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
-  const { onGetBalanceTonNetwork, yourWalletBalanceTon } = useGetBalanceTon();
+  const { onGetBalanceTonNetwork, yourWalletBalanceTon, loadingTokenTon } = useGetBalanceTon();
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
 
   const getPoolContractGetReservesData = useCallback(async () => {
@@ -483,6 +483,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
         const mergedArray = JSON.parse(JSON.stringify([...arr]));
 
+        console.log(
+          '--------------yourWalletBalanceTon-----------',
+          mergedArray,
+          yourWalletBalanceTon
+        );
         setReservesTon(mergedArray as DashboardReserve[]);
       } catch (error) {
         console.error(`Error fetching getValueReserve (attempt ${attempts}):`, error);
@@ -492,13 +497,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         } else {
           console.log('Max attempts reached, stopping retries.');
           setReservesTon([]);
-        }
-      } finally {
-        if (
-          attempts >= maxAttempts ||
-          (attempts < maxAttempts && poolContractReservesData.length > 0)
-        ) {
-          setLoading(false);
         }
       }
     };
@@ -510,18 +508,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     poolContract,
     poolContractReservesData,
     walletAddressTonWallet,
+    yourWalletBalanceTon,
   ]);
 
   useEffect(() => {
-    console.log('yourWalletBalanceTon---------------', yourWalletBalanceTon);
     getValueReserve();
-  }, [getValueReserve, yourWalletBalanceTon]);
-
-  // useEffect(() => {
-  //   if (!isConnectedTonWallet) {
-  //     setReservesTon([]);
-  //   }
-  // }, [isConnectedTonWallet]);
+  }, [getValueReserve]);
 
   useEffect(() => {
     const newReserves = reservesTon.map((reserve) => {
@@ -606,6 +598,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         console.log('Assets to supply---------------', newReserves);
         setReservesTon(newReserves);
       }
+      setLoading(false);
     }
   }, [reservesTon, ExchangeRateListUSD, isConnectedTonWallet]);
 
@@ -616,7 +609,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     reservesTon,
     userTon,
     address: 'counterContract?.address.toString()',
-    loading,
+    loading: loading || loadingTokenTon,
     getValueReserve,
     getPoolContractGetReservesData,
     setReservesTon,
