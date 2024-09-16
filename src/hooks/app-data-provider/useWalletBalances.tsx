@@ -108,7 +108,7 @@ export const useTonBalance = (yourWalletTon: string) => {
 
   const fetchBalance = useCallback(async () => {
     let attempts = 0;
-    const maxAttempts = MAX_ATTEMPTS;
+    const maxAttempts = 50;
     setLoading(true);
 
     console.log('isConnectedTonWallet---------------', isConnectedTonWallet, yourWalletTon);
@@ -137,7 +137,7 @@ export const useTonBalance = (yourWalletTon: string) => {
         setBalance('0');
         console.error(`Error fetchBalance data (Attempt ${attempts}/${maxAttempts}):`, error);
         if (attempts < maxAttempts) {
-          await sleep(2000);
+          await sleep(3000);
           console.log('Retrying...');
           return fetchData();
         } else {
