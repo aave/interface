@@ -529,8 +529,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         formatUnits(numberFormateUSD, dataById?.decimal)
       ).toString();
 
+      const walletBalance =
+        !reserve?.isJetton && reserve.walletBalance !== yourWalletBalanceTon
+          ? yourWalletBalanceTon
+          : reserve.walletBalance;
+
       const walletBalanceUSD = valueToBigNumber(formattedPriceInUSD)
-        .multipliedBy(reserve.walletBalance || 0)
+        .multipliedBy(walletBalance || 0)
         .toString();
 
       const totalLiquidityUSD = valueToBigNumber(formattedPriceInUSD)
@@ -588,7 +593,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         },
       };
     });
-
     if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
       if (!isConnectedTonWallet) {
         setReservesTon([]);
