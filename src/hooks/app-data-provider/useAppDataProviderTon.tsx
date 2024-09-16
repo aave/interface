@@ -105,12 +105,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   >([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
-  const { onGetBalanceTonNetwork, yourWalletBalanceTon, loadingTokenTon, refetchBalanceTokenTon } =
+  const { onGetBalanceTonNetwork, yourWalletBalanceTon, refetchBalanceTokenTon } =
     useGetBalanceTon(isConnectedTonWallet);
 
   const getPoolContractGetReservesData = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
+    setLoading(true);
 
     if (!isConnectedTonWallet) {
       setPoolContractReservesData([]);
@@ -161,7 +162,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const getValueReserve = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
-    setLoading(true);
     const fetchData = async () => {
       try {
         attempts++;
@@ -616,7 +616,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     reservesTon,
     userTon,
     address: 'counterContract?.address.toString()',
-    loading: loading || loadingTokenTon,
+    loading: loading,
     getValueReserve,
     getPoolContractGetReservesData,
     setReservesTon,
