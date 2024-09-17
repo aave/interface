@@ -112,6 +112,7 @@ export const useTonBalance = (yourWalletTon: string, isConnectedTonWallet: boole
 
       if (!isConnectedTonWallet || !yourWalletTon) {
         setBalance('0');
+        setLoading(false);
       }
 
       const fetchData = async (): Promise<string | undefined> => {

@@ -49,6 +49,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
     if (!isConnectedTonWallet) {
       setUserSupplies([]);
       setContractUserTon('');
+      setLoading(false);
     }
     const fetchData = async () => {
       try {

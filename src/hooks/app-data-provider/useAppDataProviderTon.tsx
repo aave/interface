@@ -114,6 +114,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       const maxAttempts = MAX_ATTEMPTS;
 
       if (!isConnectedTonWallet) {
+        setLoading(false);
         setPoolContractReservesData([]);
       }
       const fetchData = async () => {
