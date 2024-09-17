@@ -84,7 +84,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQBfSnU-nTFCMlFescQdbJ3WKspyoKddrX6LBWqp0qUo7MQm';
+export const address_pools = 'EQDuGo9ZA7EhZ4wMqzBPNYFj2MpvTdbEh7M9AcuKMOvWM2Kt';
 export const MAX_ATTEMPTS = 10;
 export const GAS_FEE_TON = 0.3;
 export const API_TON_V2 = 'https://testnet.toncenter.com/api/v2';
@@ -105,7 +105,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   >([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
-  const { onGetBalanceTonNetwork, yourWalletBalanceTon, refetchBalanceTokenTon } =
+  const { onGetBalanceTonNetwork, yourWalletBalanceTon, loadingTokenTon, refetchBalanceTokenTon } =
     useGetBalanceTon(isConnectedTonWallet);
 
   const getPoolContractGetReservesData = useCallback(async () => {
@@ -530,6 +530,14 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       const formattedPriceInUSD = Number(
         formatUnits(numberFormateUSD, dataById?.decimal)
       ).toString();
+      if (!reserve?.isJetton) {
+        console.log(
+          '--------------yourWalletBalanceTon-----------',
+          reserve?.isJetton,
+          reserve.walletBalance,
+          yourWalletBalanceTon
+        );
+      }
 
       const walletBalance =
         !reserve?.isJetton && reserve.walletBalance !== yourWalletBalanceTon
@@ -601,7 +609,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       if (!isConnectedTonWallet) {
         setReservesTon([]);
       } else {
-        console.log('--------------yourWalletBalanceTon-----------', yourWalletBalanceTon);
         console.log('Assets to supply---------------', newReserves);
         setReservesTon(newReserves);
       }
@@ -616,7 +623,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     reservesTon,
     userTon,
     address: 'counterContract?.address.toString()',
-    loading: loading,
+    loading: loading || loadingTokenTon,
     getValueReserve,
     getPoolContractGetReservesData,
     setReservesTon,
