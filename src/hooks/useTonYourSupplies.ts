@@ -46,7 +46,6 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   const getYourSupplies = useCallback(async () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS;
-    setLoading(true);
     if (!isConnectedTonWallet) {
       setUserSupplies([]);
       setContractUserTon('');
@@ -91,6 +90,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   }, [client, isConnectedTonWallet, userSupplies.length, yourAddressWallet]);
 
   useEffect(() => {
+    setLoading(true);
     getYourSupplies();
   }, [getYourSupplies, yourAddressWallet, isConnectedTonWallet]);
 

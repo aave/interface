@@ -124,6 +124,7 @@ export const BorrowActions = React.memo(
           setMainTxState({ ...mainTxState, loading: true });
           try {
             const resBorrowTop = await onSendBorrowTon(amountToBorrow, poolReserve);
+            await Promise.allSettled([getPoolContractGetReservesData(true), getYourSupplies()]);
             if (!resBorrowTop?.success) {
               const error = {
                 name: 'borrow',
@@ -140,7 +141,6 @@ export const BorrowActions = React.memo(
                 loading: false,
               });
             } else {
-              await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
               setMainTxState({
                 txHash: resBorrowTop.txHash,
                 loading: false,

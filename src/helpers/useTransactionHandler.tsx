@@ -300,6 +300,7 @@ export const useTransactionHandler = ({
             decimals,
             `${eventTxInfo?.amount}`
           );
+          await Promise.allSettled([getPoolContractGetReservesData(true), getYourSupplies()]);
 
           if (!res.success) {
             const error = {
@@ -317,7 +318,6 @@ export const useTransactionHandler = ({
               loading: false,
             });
           } else if (res.success) {
-            await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
             setMainTxState({
               txHash: res.txHash,
               loading: false,
@@ -334,6 +334,7 @@ export const useTransactionHandler = ({
           Boolean(usageAsCollateral)
         );
 
+        await Promise.allSettled([getPoolContractGetReservesData(true), getYourSupplies()]);
         if (resToggle && !resToggle.success) {
           const error = {
             name: 'Error change collateral Ton',
@@ -350,7 +351,6 @@ export const useTransactionHandler = ({
             loading: false,
           });
         } else if (resToggle && resToggle.success) {
-          await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
           setMainTxState({
             txHash: resToggle.txHash,
             loading: false,

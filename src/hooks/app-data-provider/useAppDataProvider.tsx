@@ -74,7 +74,7 @@ export interface AppDataContextType {
   walletBalancesTon: WalletBalancesMap;
   getValueReserve: () => void;
   getYourSupplies: () => void;
-  getPoolContractGetReservesData: () => void;
+  getPoolContractGetReservesData: (iSPauseReload?: boolean) => void;
   yourWalletBalanceTon?: string;
   gasFeeTonMarketReferenceCurrency: string | number;
 }

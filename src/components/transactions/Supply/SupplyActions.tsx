@@ -157,6 +157,7 @@ export const SupplyActions = React.memo(
               parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString(),
               isJetton
             );
+            await Promise.allSettled([getPoolContractGetReservesData(true), getYourSupplies()]);
             if (!resSupplyTop?.success) {
               const error = {
                 name: 'supply',
@@ -173,7 +174,6 @@ export const SupplyActions = React.memo(
                 loading: false,
               });
             } else {
-              await Promise.allSettled([getPoolContractGetReservesData(), getYourSupplies()]);
               setMainTxState({
                 txHash: resSupplyTop.txHash,
                 loading: false,

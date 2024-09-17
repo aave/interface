@@ -104,54 +104,57 @@ export const useTonBalance = (yourWalletTon: string, isConnectedTonWallet: boole
   const [loading, setLoading] = useState<boolean>(true);
   // const client = useTonClient();
 
-  const fetchBalance = useCallback(async () => {
-    let attempts = 0;
-    const maxAttempts = 50;
-    setLoading(true);
+  const fetchBalance = useCallback(
+    async (pauseReload?: boolean) => {
+      let attempts = 0;
+      const maxAttempts = 50;
+      setLoading(pauseReload ? false : true);
 
-    if (!isConnectedTonWallet || !yourWalletTon) {
-      setBalance('0');
-    }
-
-    const fetchData = async (): Promise<string | undefined> => {
-      try {
-        if (!yourWalletTon) return;
-
-        const params = {
-          address: yourWalletTon,
-        };
-
-        const res = await axios.get(`${API_TON_V2}/getAddressInformation`, { params });
-
-        const balance = res.data.result.balance;
-
-        // console.log('apiGetTon-----------------------------------', res);
-
-        const balanceFormatted = fromNano(balance).toString();
-        setBalance(balanceFormatted);
-        setLoading(false);
-        return balanceFormatted;
-      } catch (error) {
-        attempts += 1;
+      if (!isConnectedTonWallet || !yourWalletTon) {
         setBalance('0');
-        console.error(`Error fetchBalance data (Attempt ${attempts}/${maxAttempts}):`, error);
-        if (attempts < maxAttempts) {
-          await sleep(3000);
-          console.log('Retrying...');
-          return fetchData();
-        } else {
-          setLoading(false);
-          throw new Error('Max retry attempts reached.');
-        }
       }
-    };
 
-    try {
-      await fetchData();
-    } catch (error) {
-      console.error('Final error after all attempts:', error);
-    }
-  }, [isConnectedTonWallet, yourWalletTon]);
+      const fetchData = async (): Promise<string | undefined> => {
+        try {
+          if (!yourWalletTon) return;
+
+          const params = {
+            address: yourWalletTon,
+          };
+
+          const res = await axios.get(`${API_TON_V2}/getAddressInformation`, { params });
+
+          const balance = res.data.result.balance;
+
+          // console.log('apiGetTon-----------------------------------', res);
+
+          const balanceFormatted = fromNano(balance).toString();
+          setBalance(balanceFormatted);
+          setLoading(false);
+          return balanceFormatted;
+        } catch (error) {
+          attempts += 1;
+          setBalance('0');
+          console.error(`Error fetchBalance data (Attempt ${attempts}/${maxAttempts}):`, error);
+          if (attempts < maxAttempts) {
+            await sleep(3000);
+            console.log('Retrying...');
+            return fetchData();
+          } else {
+            setLoading(false);
+            throw new Error('Max retry attempts reached.');
+          }
+        }
+      };
+
+      try {
+        await fetchData();
+      } catch (error) {
+        console.error('Final error after all attempts:', error);
+      }
+    },
+    [isConnectedTonWallet, yourWalletTon]
+  );
 
   useEffect(() => {
     fetchBalance();
