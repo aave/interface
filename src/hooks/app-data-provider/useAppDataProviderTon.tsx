@@ -169,7 +169,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         const arr = await Promise.all(
           poolContractReservesData.map(async (item) => {
             const walletBalance = !item?.isJetton
-              ? yourWalletBalanceTon
+              ? '0'
               : await onGetBalanceTonNetwork(item.underlyingAddress.toString(), item.decimals);
 
             const poolJettonWalletAddress = item.poolJWAddress.toString();
@@ -506,14 +506,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     poolContract,
     poolContractReservesData,
     walletAddressTonWallet,
-    yourWalletBalanceTon,
   ]);
 
   useEffect(() => {
     if (isConnectedTonWallet) {
       getValueReserve();
     }
-  }, [getValueReserve, yourWalletBalanceTon, isConnectedTonWallet, poolContract]);
+  }, [getValueReserve, isConnectedTonWallet, poolContract]);
 
   useEffect(() => {
     const newReserves = reservesTon.map((reserve) => {
@@ -534,13 +533,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         console.log(
           '--------------yourWalletBalanceTon-----------',
           reserve?.isJetton,
-          reserve.walletBalance,
-          yourWalletBalanceTon
+          Number(reserve.walletBalance),
+          Number(yourWalletBalanceTon)
         );
       }
 
       const walletBalance =
-        !reserve?.isJetton && reserve.walletBalance !== yourWalletBalanceTon
+        !reserve?.isJetton && Number(reserve.walletBalance) !== Number(yourWalletBalanceTon)
           ? yourWalletBalanceTon
           : reserve.walletBalance;
 
