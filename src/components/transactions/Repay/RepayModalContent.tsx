@@ -24,6 +24,7 @@ import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
+import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -227,11 +228,15 @@ export const RepayModalContent = ({
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(reserve.priceInUSD);
 
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
+
   if (repayTxState.success)
     return (
       <TxSuccessView
         action={<Trans>repaid</Trans>}
-        amount={amountRef.current}
+        amount={amountRef.current || repayTxState.amount}
         symbol={repayWithATokens ? poolReserve.symbol : tokenToRepayWith.symbol}
       />
     );
@@ -293,6 +298,7 @@ export const RepayModalContent = ({
         symbol={modalSymbol}
         debtType={debtType}
         repayWithATokens={repayWithATokens}
+        underlyingAssetTon={poolReserve?.underlyingAssetTon}
       />
     </>
   );

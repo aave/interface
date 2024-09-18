@@ -168,5 +168,6 @@ export const errorMapping: Record<number, ReactElement> = {
   89: <Trans>User is trying to borrow multiple assets including a siloed one</Trans>,
   // 90: <Trans>the total debt of the reserve needs to be</Trans>,
 
+  100: <Trans>Transaction error</Trans>,
   4001: <Trans>You cancelled the transaction.</Trans>,
 };

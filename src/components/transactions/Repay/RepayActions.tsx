@@ -5,10 +5,15 @@ import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
+import { useTonTransactions } from 'src/hooks/useTonTransactions';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
@@ -29,6 +34,7 @@ export interface RepayActionProps extends BoxProps {
   repayWithATokens: boolean;
   blocked?: boolean;
   maxApproveNeeded: string;
+  underlyingAssetTon?: string;
 }
 
 export const RepayActions = ({
@@ -42,8 +48,15 @@ export const RepayActions = ({
   repayWithATokens,
   blocked,
   maxApproveNeeded,
+  underlyingAssetTon,
   ...props
 }: RepayActionProps) => {
+  const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
+  const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
+  const { onSendRepayTon, approvedAmountTonAssume } = useTonTransactions(
+    walletAddressTonWallet,
+    `${underlyingAssetTon}`
+  );
   const [
     repay,
     repayWithPermit,
@@ -82,7 +95,7 @@ export const RepayActions = ({
   } = useModalContext();
 
   const {
-    data: approvedAmount,
+    data: approvedAmountMain,
     refetch: fetchApprovedAmount,
     isFetching: fetchingApprovedAmount,
     isFetchedAfterMount,
@@ -95,6 +108,8 @@ export const RepayActions = ({
   const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   setLoadingTxns(fetchingApprovedAmount);
+
+  const approvedAmount = isConnectedTonWallet ? approvedAmountTonAssume : approvedAmountMain;
 
   const requiresApproval =
     !repayWithATokens &&
@@ -132,9 +147,48 @@ export const RepayActions = ({
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
-
       let response: TransactionResponse;
       let action = ProtocolAction.default;
+
+      if (isConnectedTonWallet) {
+        setMainTxState({ ...mainTxState, loading: true });
+        try {
+          const res = await onSendRepayTon(amountToRepay, poolReserve.decimals);
+          await Promise.allSettled([getPoolContractGetReservesData(true), getYourSupplies()]);
+          if (!res?.success) {
+            const error = {
+              name: 'repay',
+              message: `${res?.message}`,
+            };
+            const parsedError = getErrorTextFromError(
+              error,
+              TxAction.GAS_ESTIMATION,
+              res?.blocking
+            );
+            setTxError(parsedError);
+            setMainTxState({
+              txHash: undefined,
+              loading: false,
+            });
+          } else {
+            setMainTxState({
+              txHash: res.txHash,
+              loading: false,
+              success: true,
+              amount: amountToRepay,
+            });
+            addTransaction(`${res.txHash}`, {
+              action,
+              txState: 'success',
+              asset: poolAddress,
+              amount: amountToRepay,
+              assetName: symbol,
+            });
+          }
+        } catch (error) {
+          console.log('error repay--------------', error);
+        }
+      }
 
       if (usePermit && signatureParams) {
         const repayWithPermitParams = {

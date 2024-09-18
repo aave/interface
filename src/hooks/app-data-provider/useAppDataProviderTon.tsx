@@ -11,10 +11,11 @@ import userTon from '@public/assume-user.json';
 import { Address, Cell, ContractProvider, Sender } from '@ton/core';
 import dayjs from 'dayjs';
 import { formatUnits } from 'ethers/lib/utils';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
 import { useContract } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
+import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { sleep } from 'src/utils/rotationProvider';
 
@@ -94,6 +95,7 @@ export const SCAN_TRANSACTION_TON = 'https://testnet.tonviewer.com';
 export const URL_API_BE = 'https://aave-ton-api.sotatek.works';
 
 export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {
+  const [setAccount] = useRootStore((store) => [store.setAccount, store.currentChainId]);
   const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(true);
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
@@ -107,6 +109,14 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
   const { onGetBalanceTonNetwork, yourWalletBalanceTon, loadingTokenTon, refetchBalanceTokenTon } =
     useGetBalanceTon(isConnectedTonWallet);
+
+  useMemo(() => {
+    if (isConnectedTonWallet) {
+      setAccount(walletAddressTonWallet);
+    } else {
+      setAccount('');
+    }
+  }, [isConnectedTonWallet, setAccount, walletAddressTonWallet]);
 
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
@@ -533,14 +543,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       const formattedPriceInUSD = Number(
         formatUnits(numberFormateUSD, dataById?.decimal)
       ).toString();
-      if (!reserve?.isJetton) {
-        console.log(
-          '--------------yourWalletBalanceTon-----------',
-          reserve?.isJetton,
-          Number(reserve.walletBalance),
-          Number(yourWalletBalanceTon)
-        );
-      }
 
       const walletBalance =
         !reserve?.isJetton && Number(reserve.walletBalance) !== Number(yourWalletBalanceTon)

@@ -25,6 +25,8 @@ export const ErrorCancelledTon = [
   '[ton_connect_sdk_error]ertransactionwasnotsent',
   '[ton_connect_sdk_error]userrejectserror:userrejectstheactioninthewallet.walletdeclinedtherequest',
   '[ton_connect_sdk_error]e:userrejectstheactioninthewallet.walletdeclinedtherequest',
+  '[ton_connect_sdk_error]rrejectrequest',
+  '[ton_connect_sdk_error]unknownerrorrejectrequest',
 ];
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
@@ -74,6 +76,21 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             .storeUint(1, 1)
             .endCell() //tokenAddress: Address
         );
+
+        // const interestMode = 1; //INTEREST_MODE_VARIABLE = 1
+        // const useAToken = false;
+        // const isMax = false;
+
+        //   const repay = await user1USDCWallet.sendTransfer(
+        //     user1.getSender(),  //   sender, //via: Sender,
+        //     toNano('0.1'),  //   toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
+        //     amountRepay10USDC,  // BigInt(amount), // User input amount
+        //     pool.address,  // Address.parse(address_pools), //Address poll
+        //     user1.address, //  Address.parse(yourAddressWallet), // User address wallet
+        //     Cell.EMPTY, //
+        //     toNano('0.1'),
+        //     beginCell().storeUint(Op.repay, 32).storeBit(interestMode).storeBit(useAToken).storeBit(isMax).endCell(),
+        // );
 
         return { success: true, message: 'success' };
       } catch (error) {
@@ -141,9 +158,11 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             message: ErrorCancelledTon[0],
             blocking: false,
           };
+        } else {
+          throw new Error('Transaction failed');
         }
       } catch (error) {
-        return { success: false, error: error?.message, blocking: false };
+        return { success: false, message: error?.message, blocking: false };
       }
     },
     [
@@ -170,13 +189,13 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           isMock: false,
         });
 
-        // 0 - INTEREST_MODE_STABLE
-        // 1 - INTEREST_MODE_VARIABLE
+        const interestRateMode = 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
+
         const params = {
           queryId: Date.now(),
           poolJettonWalletAddress: Address.parse(poolReserve.poolJettonWalletAddress),
           amount: BigInt(parseAmount),
-          interestRateMode: 1,
+          interestRateMode: interestRateMode,
           priceData: dataMultiSig,
         };
 
@@ -214,9 +233,11 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             message: ErrorCancelledTon[0],
             blocking: false,
           };
+        } else {
+          throw new Error('Transaction failed');
         }
       } catch (error) {
-        return { success: false, error: error?.message, blocking: false };
+        return { success: false, message: error?.message, blocking: false };
       }
     },
     [
@@ -263,8 +284,9 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             message: ErrorCancelledTon[0],
             blocking: false,
           };
+        } else {
+          return { success: false, message: error?.message, blocking: false };
         }
-        return { success: false, error: 'Transaction failed', blocking: false };
       }
     },
     [
@@ -310,7 +332,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           const status = await getTransactionStatus(txHash);
           return { success: status, txHash: txHash, blocking: !status, message: txHash };
         } else {
-          return { success: false, error: 'No txHash received', blocking: false };
+          throw new Error('Transaction failed');
         }
       } catch (error) {
         console.error('Transaction failed:', error);
@@ -321,11 +343,89 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             message: ErrorCancelledTon[0],
             blocking: false,
           };
+        } else {
+          return { success: false, error: 100, blocking: false };
         }
-        return { success: false, error: error?.message, blocking: false };
       }
     },
     [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
+  );
+
+  const onSendRepayTon = useCallback(
+    async (amount: string, decimals: number | undefined) => {
+      if (!providerPool || !decimals || !providerJettonMinter || !client)
+        return { success: false, message: 'error', blocking: false };
+
+      const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
+        Address.parse(yourAddressWallet)
+      );
+
+      const contractJettonWallet = new JettonWallet(
+        walletAddressJettonMinter // z-ton-wallet
+      );
+
+      const providerJettonWallet = client.open(
+        contractJettonWallet
+      ) as OpenedContract<JettonWallet>;
+
+      try {
+        const parseAmount = parseUnits(
+          valueToBigNumber(amount).toFixed(decimals),
+          decimals
+        ).toString();
+        const interestRateMode = 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
+        const useAToken = false;
+        const isMax = false;
+
+        await providerJettonWallet.sendTransfer(
+          sender, //via: Sender,
+          toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
+          BigInt(parseAmount), // User input amount
+          Address.parse(address_pools), //Address poll
+          Address.parse(yourAddressWallet), // User address wallet
+          Cell.EMPTY, //
+          toNano('0.1'), // forward_ton_amount: bigint,
+          beginCell()
+            .storeUint(Op.repay, 32)
+            .storeBit(interestRateMode)
+            .storeBit(useAToken)
+            .storeBit(isMax)
+            .endCell()
+        );
+
+        const boc = await getLatestBoc();
+        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
+
+        if (txHash) {
+          const status = await getTransactionStatus(txHash);
+          return { success: status, txHash: txHash, blocking: !status, message: txHash };
+        } else {
+          throw new Error('Transaction failed');
+        }
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        const errorToCheck = error.message.replace(/\s+/g, '').toLowerCase();
+        if (_.includes(ErrorCancelledTon, errorToCheck)) {
+          return {
+            success: false,
+            message: ErrorCancelledTon[0],
+            blocking: false,
+          };
+        } else {
+          return { success: false, message: error?.message, blocking: false };
+        }
+      }
+    },
+    [
+      client,
+      getLatestBoc,
+      getTransactionStatus,
+      onGetGetTxByBOC,
+      providerJettonMinter,
+      providerPool,
+      sender,
+      yourAddressWallet,
+    ]
   );
 
   return {
@@ -334,5 +434,6 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     onSendBorrowTon,
     onToggleCollateralTon,
     onSendWithdrawTon,
+    onSendRepayTon,
   };
 };

@@ -13,6 +13,7 @@ export abstract class Op {
   static change_content = 4;
 
   static supply = 0x1530f236;
+  static repay = 0x95cded06;
 }
 
 export abstract class Errors {

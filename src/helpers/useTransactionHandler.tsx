@@ -306,6 +306,7 @@ export const useTransactionHandler = ({
             const error = {
               name: 'Error Withdraw Ton',
               message: `${res?.message}`,
+              error: res.error,
             };
             const parsedError = getErrorTextFromError(
               error,
