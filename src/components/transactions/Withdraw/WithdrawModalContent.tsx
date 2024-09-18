@@ -11,6 +11,7 @@ import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw
 import { useRootStore } from 'src/store/root';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
@@ -26,7 +27,6 @@ import {
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawActions } from './WithdrawActions';
 import { useWithdrawError } from './WithdrawError';
-import { roundToTokenDecimals } from 'src/utils/utils';
 
 export enum ErrorType {
   CAN_NOT_WITHDRAW_THIS_AMOUNT,

@@ -1,32 +1,29 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
-import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
-import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
 import {
   AssetsBeingOffboarded,
   OffboardingWarning,
 } from 'src/components/Warnings/OffboardingWarning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { BorrowInfo } from './BorrowInfo';
 import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
-import { ReserveEModePanel } from './ReserveEModePanel';
 import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
 import { SupplyInfo } from './SupplyInfo';
-import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -190,7 +187,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     px: 2,
                   })}
                 >
-                  <Trans>Interest rate strategy 222</Trans>
+                  <Trans>Interest rate strategy</Trans>
                 </Button>
               </Box>
               <InterestRateModelGraphContainer reserve={reserve} />
