@@ -146,10 +146,6 @@ export const RepayActions = ({
 
   const action = async () => {
     try {
-      setMainTxState({ ...mainTxState, loading: true });
-      let response: TransactionResponse;
-      let action = ProtocolAction.default;
-
       if (isConnectedTonWallet) {
         setMainTxState({ ...mainTxState, loading: true });
         try {
@@ -177,85 +173,81 @@ export const RepayActions = ({
               success: true,
               amount: amountToRepay,
             });
-            addTransaction(`${res.txHash}`, {
-              action,
-              txState: 'success',
-              asset: poolAddress,
-              amount: amountToRepay,
-              assetName: symbol,
-            });
           }
         } catch (error) {
           console.log('error repay--------------', error);
         }
-      }
-
-      if (usePermit && signatureParams) {
-        const repayWithPermitParams = {
-          amount:
-            amountToRepay === '-1'
-              ? amountToRepay
-              : parseUnits(amountToRepay, poolReserve.decimals).toString(),
-          reserve: poolAddress,
-          interestRateMode: debtType,
-          signature: signatureParams.signature,
-          deadline: signatureParams.deadline,
-        };
-
-        let encodedParams: [string, string, string] | undefined;
-        if (optimizedPath()) {
-          encodedParams = await encodeRepayWithPermit(repayWithPermitParams);
-        }
-
-        action = ProtocolAction.repayWithPermit;
-        let signedRepayWithPermitTxData = repayWithPermit({
-          ...repayWithPermitParams,
-          encodedTxData: encodedParams ? encodedParams[0] : undefined,
-        });
-
-        signedRepayWithPermitTxData = await estimateGasLimit(signedRepayWithPermitTxData);
-        response = await sendTx(signedRepayWithPermitTxData);
-        await response.wait(1);
       } else {
-        const repayParams = {
-          amountToRepay:
-            amountToRepay === '-1'
-              ? amountToRepay
-              : parseUnits(amountToRepay, poolReserve.decimals).toString(),
-          poolAddress,
-          repayWithATokens,
-          debtType,
-        };
+        let response: TransactionResponse;
+        let action = ProtocolAction.default;
 
-        let encodedParams: string | undefined;
-        if (optimizedPath()) {
-          encodedParams = await encodeRepayParams(repayParams);
+        if (usePermit && signatureParams) {
+          const repayWithPermitParams = {
+            amount:
+              amountToRepay === '-1'
+                ? amountToRepay
+                : parseUnits(amountToRepay, poolReserve.decimals).toString(),
+            reserve: poolAddress,
+            interestRateMode: debtType,
+            signature: signatureParams.signature,
+            deadline: signatureParams.deadline,
+          };
+
+          let encodedParams: [string, string, string] | undefined;
+          if (optimizedPath()) {
+            encodedParams = await encodeRepayWithPermit(repayWithPermitParams);
+          }
+
+          action = ProtocolAction.repayWithPermit;
+          let signedRepayWithPermitTxData = repayWithPermit({
+            ...repayWithPermitParams,
+            encodedTxData: encodedParams ? encodedParams[0] : undefined,
+          });
+
+          signedRepayWithPermitTxData = await estimateGasLimit(signedRepayWithPermitTxData);
+          response = await sendTx(signedRepayWithPermitTxData);
+          await response.wait(1);
+        } else {
+          const repayParams = {
+            amountToRepay:
+              amountToRepay === '-1'
+                ? amountToRepay
+                : parseUnits(amountToRepay, poolReserve.decimals).toString(),
+            poolAddress,
+            repayWithATokens,
+            debtType,
+          };
+
+          let encodedParams: string | undefined;
+          if (optimizedPath()) {
+            encodedParams = await encodeRepayParams(repayParams);
+          }
+
+          action = ProtocolAction.repay;
+          let repayTxData = repay({
+            ...repayParams,
+            encodedTxData: encodedParams,
+          });
+          repayTxData = await estimateGasLimit(repayTxData);
+          response = await sendTx(repayTxData);
+          await response.wait(1);
         }
-
-        action = ProtocolAction.repay;
-        let repayTxData = repay({
-          ...repayParams,
-          encodedTxData: encodedParams,
+        setMainTxState({
+          txHash: response.hash,
+          loading: false,
+          success: true,
         });
-        repayTxData = await estimateGasLimit(repayTxData);
-        response = await sendTx(repayTxData);
-        await response.wait(1);
-      }
-      setMainTxState({
-        txHash: response.hash,
-        loading: false,
-        success: true,
-      });
-      addTransaction(response.hash, {
-        action,
-        txState: 'success',
-        asset: poolAddress,
-        amount: amountToRepay,
-        assetName: symbol,
-      });
+        addTransaction(response.hash, {
+          action,
+          txState: 'success',
+          asset: poolAddress,
+          amount: amountToRepay,
+          assetName: symbol,
+        });
 
-      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-      queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
+      }
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
