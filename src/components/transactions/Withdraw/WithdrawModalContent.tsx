@@ -26,6 +26,7 @@ import {
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawActions } from './WithdrawActions';
 import { useWithdrawError } from './WithdrawError';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 export enum ErrorType {
   CAN_NOT_WITHDRAW_THIS_AMOUNT,
@@ -59,7 +60,10 @@ export const WithdrawModalContent = ({
   const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
-  const withdrawAmount = isMaxSelected ? maxAmountToWithdraw.toString(10) : _amount;
+
+  const withdrawAmount = isMaxSelected
+    ? roundToTokenDecimals(maxAmountToWithdraw.toString(), poolReserve.decimals)
+    : _amount;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';

@@ -25,6 +25,8 @@ import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraph
 import { ReserveEModePanel } from './ReserveEModePanel';
 import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
 import { SupplyInfo } from './SupplyInfo';
+import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -39,7 +41,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const showSupplyCapStatus: boolean = reserve.supplyCap !== '0';
   const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';
   const trackEvent = useRootStore((store) => store.trackEvent);
-
+  const { currentAccount } = useWeb3Context();
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
 
   return (
@@ -171,9 +173,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                       assetName: reserve.name,
                     });
                   }}
-                  href={currentNetworkConfig.explorerLinkBuilder({
-                    address: reserve.interestRateStrategyAddress,
-                  })}
+                  href={`${SCAN_TRANSACTION_TON}/${currentAccount}`}
                   endIcon={
                     <SvgIcon sx={{ width: 14, height: 14 }}>
                       <CallMadeOutlinedIcon />
@@ -190,7 +190,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     px: 2,
                   })}
                 >
-                  <Trans>Interest rate strategy</Trans>
+                  <Trans>Interest rate strategy 222</Trans>
                 </Button>
               </Box>
               <InterestRateModelGraphContainer reserve={reserve} />

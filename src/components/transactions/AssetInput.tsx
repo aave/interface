@@ -330,6 +330,7 @@ export const AssetInput = <T extends Asset = Asset>({
                   variant="body7"
                   color={theme.palette.text.mainTitle}
                   symbolsColor="text.disabled"
+                  visibleDecimals={2}
                 />
               </Typography>
               {!disableInput && (
