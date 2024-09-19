@@ -1,1 +1,1 @@
-All Rights Reserved © Aave Labs
+All Rights Reserved © CK Finance
