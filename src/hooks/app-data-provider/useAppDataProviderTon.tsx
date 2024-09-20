@@ -278,10 +278,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             const totalDebt = normalizeWithReserve(totalDebtCalculate);
             const borrowUsageRatio = totalLiquidityCalculate.eq(0)
               ? '0'
-              : valueToBigNumber(totalDebt).dividedBy(totalLiquidityCalculate).toFixed();
+              : valueToBigNumber(totalDebtCalculate).dividedBy(totalLiquidityCalculate).toFixed();
             const supplyUsageRatio = totalLiquidityCalculate.eq(0)
               ? '0'
-              : valueToBigNumber(totalDebt)
+              : valueToBigNumber(totalDebtCalculate)
                   .dividedBy(totalLiquidityCalculate.plus(unbacked))
                   .toFixed();
             const formattedBaseLTVasCollateral = normalize(baseLTVasCollateral, LTV_PRECISION);
