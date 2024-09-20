@@ -4,7 +4,9 @@ import { Box, Skeleton, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
+import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -20,6 +22,7 @@ interface ReserveTopDetailsProps {
 
 export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const { reserves, loading } = useAppDataContext();
+  const { isConnectedTonWallet } = useTonConnectContext();
   const { currentNetworkConfig } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -32,6 +35,12 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
 
   const valueTypographyVariant = downToSM ? 'main16' : 'body1';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'body1';
+
+  const linkViewOracleContract = isConnectedTonWallet
+    ? `${SCAN_TRANSACTION_TON}/${poolReserve.underlyingAssetTon}`
+    : currentNetworkConfig.explorerLinkBuilder({
+        address: poolReserve?.priceOracle,
+      });
 
   return (
     <>
@@ -83,9 +92,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                     asset: poolReserve.underlyingAsset,
                   })
                 }
-                href={currentNetworkConfig.explorerLinkBuilder({
-                  address: poolReserve?.priceOracle,
-                })}
+                href={linkViewOracleContract}
                 sx={(theme) => ({
                   display: 'inline-flex',
                   alignItems: 'center',
