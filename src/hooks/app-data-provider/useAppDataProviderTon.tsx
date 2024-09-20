@@ -9,6 +9,7 @@ import {
 } from '@aave/math-utils';
 import userTon from '@public/assume-user.json';
 import { Address, Cell, ContractProvider, Sender } from '@ton/core';
+import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import { formatUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -185,20 +186,21 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         if (!poolContract || !client || !walletAddressTonWallet) return;
         const arr = await Promise.all(
           poolContractReservesData.map(async (item) => {
-            const normalizeWithReserve = (n: BigNumberValue) => normalize(n, Number(item.decimals));
+            const decimals = Number(item.decimals);
+            const normalizeWithReserve = (n: BigNumberValue) => normalize(n, decimals);
             // const isIsolated = item.debtCeiling.toString() !== '0'; // todo
             const isIsolated = false;
             const walletBalance = !item?.isJetton
               ? '0'
-              : await onGetBalanceTonNetwork(item.underlyingAddress.toString(), item.decimals);
+              : await onGetBalanceTonNetwork(item.underlyingAddress.toString(), decimals);
 
             const stableBorrows = 0;
             const unbacked = 0;
             const poolJettonWalletAddress = item.poolJWAddress.toString();
-            const borrowCap = formatUnits(item.borrowCap || '0', item.decimals);
-            const supplyCap = formatUnits(item.supplyCap || '0', item.decimals);
+            const borrowCap = formatUnits(item.borrowCap || '0', decimals);
+            const supplyCap = formatUnits(item.supplyCap || '0', decimals);
             const liquidity = item.liquidity.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
-            const availableLiquidity = valueToBigNumber(liquidity); // SC confirm = liquidity --> remove .minus(totalBorrowed)
+            // const availableLiquidity = valueToBigNumber(liquidity); // SC confirm = liquidity --> remove .minus(totalBorrowed)
             const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
             const supplyAPYCalculate = calculateCompoundedRate({
@@ -253,12 +255,27 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               // currentTimestampClone
             );
 
+            /**
+             * availableLiquidity returned by the helper is the amount of unborrowed tokens
+             * the actual availableLiquidity might be lower due to borrowCap
+             */
+            const availableLiquidity =
+              borrowCap === '0'
+                ? new BigNumber(liquidity)
+                : BigNumber.min(
+                    liquidity,
+                    new BigNumber(borrowCap).shiftedBy(decimals).minus(
+                      // plus 1 as the cap is exclusive
+                      totalDebtCalculate.plus(1)
+                    )
+                  );
+
             const totalVariableDebt = normalizeWithReserve(totalVariableDebtCalculate);
             const totalStableDebt = normalizeWithReserve(totalStableDebtCalculate);
             const totalLiquidity = normalizeWithReserve(totalLiquidityCalculate);
             const formattedAvailableLiquidity = normalizeWithReserve(availableLiquidity);
             const unborrowedLiquidity = normalizeWithReserve(availableLiquidity);
-            const totalDebt = totalDebtCalculate;
+            const totalDebt = normalizeWithReserve(totalDebtCalculate);
             const borrowUsageRatio = totalLiquidityCalculate.eq(0)
               ? '0'
               : valueToBigNumber(totalDebt).dividedBy(totalLiquidityCalculate).toFixed();
@@ -385,7 +402,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                 formattedBaseLTVasCollateral,
                 formattedReserveLiquidationThreshold,
                 supplyAPR,
-                decimals: Number(item.decimals),
+                decimals,
                 reserveLiquidationBonus: '10750',
                 usageAsCollateralEnabled: true,
                 borrowingEnabled: true,
@@ -477,7 +494,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               detailsAddress: item.underlyingAddress.toString().toLocaleLowerCase(),
               name: item.name || 'Fake coin',
               symbol: item.symbol || 'Fake coin',
-              decimals: Number(item.decimals),
+              decimals,
               variableBorrowIndex,
               walletBalance: walletBalance?.toString() || '0',
               isActive: item.isActive,
@@ -521,7 +538,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               borrowRateMode: 'Variable',
               reserveID: item.reserveID.toString(),
               totalSupply: item.totalSupply.toString(),
-              liquidity: formatUnits(item.liquidity || '0', item.decimals),
+              liquidity: formatUnits(item.liquidity || '0', decimals),
             };
           })
         );
