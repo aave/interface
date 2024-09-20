@@ -11,6 +11,7 @@ import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -35,6 +36,12 @@ export const BorrowInfo = ({
   showBorrowCapStatus,
   borrowCap,
 }: BorrowInfoProps) => {
+  const { isConnectedTonWallet } = useTonConnectContext();
+
+  const collectorContract = isConnectedTonWallet
+    ? '0xccEa5C65f6d4F465B71501418b88FBe4e7071283'
+    : currentMarketData.addresses.COLLECTOR;
+
   const maxAvailableToBorrow = BigNumber.max(
     valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt)),
     0
@@ -232,9 +239,9 @@ export const BorrowInfo = ({
             <Trans>Collector Info</Trans>
           </Typography>
         </Box>
-        {currentMarketData.addresses.COLLECTOR && (
+        {collectorContract && (
           <ReserveFactorOverview
-            collectorContract={currentMarketData.addresses.COLLECTOR}
+            collectorContract={collectorContract}
             explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
             reserveFactor={reserve.reserveFactor}
             reserveName={reserve.name}
