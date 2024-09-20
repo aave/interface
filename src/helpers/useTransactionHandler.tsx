@@ -306,7 +306,6 @@ export const useTransactionHandler = ({
             const error = {
               name: 'Error Withdraw Ton',
               message: `${res?.message}`,
-              error: res.error,
             };
             const parsedError = getErrorTextFromError(
               error,
@@ -511,7 +510,8 @@ export const useTransactionHandler = ({
               txHash: undefined,
             });
             const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-            setTxError(parsedError);
+            const parsedErrorMatch = isConnectedTonWallet ? undefined : parsedError;
+            setTxError(parsedErrorMatch);
             setLoadingTxns(false);
           });
       }, 1000);

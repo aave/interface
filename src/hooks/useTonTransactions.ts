@@ -344,7 +344,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             blocking: false,
           };
         } else {
-          return { success: false, error: 100, blocking: false };
+          return { success: false, message: error.message, blocking: false };
         }
       }
     },

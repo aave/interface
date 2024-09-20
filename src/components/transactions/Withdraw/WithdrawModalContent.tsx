@@ -185,7 +185,7 @@ export const WithdrawModalContent = ({
         />
       </TxModalDetails>
 
-      {txError && txError.error && <GasEstimationError txError={txError} />}
+      {txError && <GasEstimationError txError={txError} />}
 
       {displayRiskCheckbox && (
         <>
