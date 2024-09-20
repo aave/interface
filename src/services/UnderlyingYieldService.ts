@@ -7,7 +7,8 @@ import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 import {
   cbEthOracle,
   etherfiLiquidityPool,
-  rocketNetworkBalances,
+  rocketNetworkBalancesKey,
+  rocketStorage,
   staderLabsOracle,
 } from './UnderlyingYieldAddressesConfig';
 
@@ -180,6 +181,22 @@ export class UnderlyingYieldService {
       return aprToApy(Number(resParsed.yearlyAPR) / 100, 365);
     };
 
+    const rocketStorageAbi = [
+      {
+        inputs: [{ internalType: 'bytes32', name: '_key', type: 'bytes32' }],
+        name: 'getAddress',
+        outputs: [{ internalType: 'address', name: 'r', type: 'address' }],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ];
+
+    const rocketStorageContract = new Contract(rocketStorage, rocketStorageAbi);
+    const rocketStorageConnectedContract = rocketStorageContract.connect(provider);
+    const rocketNetworkBalancesAddress = await rocketStorageConnectedContract.getAddress(
+      rocketNetworkBalancesKey
+    );
+
     const abi = [
       {
         anonymous: false,
@@ -196,7 +213,7 @@ export class UnderlyingYieldService {
       },
     ];
 
-    const contract = new Contract(rocketNetworkBalances, abi);
+    const contract = new Contract(rocketNetworkBalancesAddress, abi);
     const connectedContract = contract.connect(provider);
     const events = await this.fetchEventsInBatches({
       connectedContract,
