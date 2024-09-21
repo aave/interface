@@ -104,6 +104,11 @@ export interface IconMapInterface {
 
 export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSymbolInterface) {
   const underlyingAssetMap: Record<string, IconMapInterface> = {
+    '0x18084fba666a33d37592fa2633fd49a74dd93a88': {
+      name: 'tBTC',
+      symbol: 'tBTC',
+      iconSymbol: 'tBTC',
+    },
     '0xdd974d5c2e2928dea5f71b9825b8b646686bd200': {
       name: 'Kyber Legacy',
       symbol: 'KNCL',
