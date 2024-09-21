@@ -6,7 +6,7 @@ import {
   UserReserveData,
 } from '@aave/math-utils';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -72,10 +72,8 @@ export interface AppDataContextType {
   ghoLoadingData: boolean;
   ghoUserLoadingData: boolean;
   walletBalancesTon: WalletBalancesMap;
-  getValueReserve: () => void;
   getYourSupplies: () => void;
   getPoolContractGetReservesData: (iSPauseReload?: boolean) => void;
-  yourWalletBalanceTon?: string;
   gasFeeTonMarketReferenceCurrency: string | number;
 }
 
@@ -94,10 +92,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const { ExchangeRateListUSD } = useSocketGetRateUSD();
 
   const {
-    getValueReserve,
     reservesTon,
     loading: loadingReservesTon,
-    yourWalletBalanceTon,
     getPoolContractGetReservesData,
     gasFeeTonMarketReferenceCurrency,
   } = useAppDataProviderTon(ExchangeRateListUSD);
@@ -171,7 +167,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
       ? userSummaryLoadingTon || loadingYourSuppliesTon
       : userReservesDataLoading || userSummaryLoading;
 
-  let user = isConnectedTonWallet ? userSummaryTon : userSummary;
+  let user =
+    isConnectedTonWallet && currentMarketData.marketTitle === 'TON' ? userSummaryTon : userSummary;
   // Factor discounted GHO interest into cumulative user fields
 
   const isGhoInMarket = GHO_MINTING_MARKETS.includes(currentMarket);
@@ -196,6 +193,16 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const reserves =
     currentMarketData.marketTitle === 'TON' ? reservesTon : formattedPoolReserves || [];
 
+  useEffect(() => {
+    console.log(
+      'loading-page',
+      isReservesLoading,
+      !!currentAccount && isUserDataLoading,
+      isUserDataLoading,
+      currentAccount
+    );
+  }, [currentAccount, isReservesLoading, isUserDataLoading]);
+
   return (
     <AppDataContext.Provider
       value={{
@@ -215,10 +222,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
         ghoLoadingData: ghoReserveDataLoading,
         ghoUserLoadingData: !!currentAccount && isGhoUserDataLoading,
         walletBalancesTon,
-        getValueReserve,
         getPoolContractGetReservesData,
         getYourSupplies,
-        yourWalletBalanceTon,
         gasFeeTonMarketReferenceCurrency,
       }}
     >

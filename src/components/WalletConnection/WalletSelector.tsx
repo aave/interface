@@ -158,7 +158,7 @@ export const WalletSelector = () => {
         const data = await response.json();
         setUnsTlds(data['tlds']);
       } catch (e) {
-        console.log('Error fetching UNS TLDs: ', e);
+        console.warn('Error fetching UNS TLDs: ', e);
       }
     };
 

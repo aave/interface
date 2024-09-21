@@ -104,7 +104,7 @@ export const useTonBalance = (yourWalletTon: string, isConnectedTonWallet: boole
   const [loading, setLoading] = useState<boolean>(true);
   // const client = useTonClient();
 
-  const fetchBalance = useCallback(
+  const refetchBalanceTokenTon = useCallback(
     async (pauseReload?: boolean) => {
       let attempts = 0;
       const maxAttempts = 50;
@@ -126,8 +126,6 @@ export const useTonBalance = (yourWalletTon: string, isConnectedTonWallet: boole
           const res = await axios.get(`${API_TON_V2}/getAddressInformation`, { params });
 
           const balance = res.data.result.balance;
-
-          // console.log('apiGetTon-----------------------------------', res);
 
           const balanceFormatted = fromNano(balance).toString();
           setBalance(balanceFormatted);
@@ -158,10 +156,10 @@ export const useTonBalance = (yourWalletTon: string, isConnectedTonWallet: boole
   );
 
   useEffect(() => {
-    fetchBalance();
-  }, [fetchBalance, isConnectedTonWallet, yourWalletTon]);
+    refetchBalanceTokenTon();
+  }, [refetchBalanceTokenTon, isConnectedTonWallet, yourWalletTon]);
 
-  return { balance, loading, refetchBalanceTokenTon: fetchBalance };
+  return { balance, loading, refetchBalanceTokenTon };
 };
 export interface WalletBalances {
   walletBalances: WalletBalancesMap;
