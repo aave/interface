@@ -4,6 +4,8 @@ import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/
 import React, { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
+import { SCAN_TRANSACTION_TON_HISTORY } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -24,6 +26,7 @@ interface TransactionHistoryItemProps {
 }
 
 function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
+  const { isConnectedTonWallet } = useTonConnectContext();
   const [copyStatus, setCopyStatus] = useState(false);
   const { currentNetworkConfig, trackEvent } = useRootStore((state) => ({
     currentNetworkConfig: state.currentNetworkConfig,
@@ -45,7 +48,9 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
     }
   }, [copyStatus]);
 
-  const explorerLink = currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
+  const explorerLink = isConnectedTonWallet
+    ? `${SCAN_TRANSACTION_TON_HISTORY}/${transaction.txHash}`
+    : currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
   return (
     <Box px={0}>
@@ -96,7 +101,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
                 trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
               }
             >
-              <Trans>Explorer</Trans>
+              <Trans>{isConnectedTonWallet ? 'View' : 'Explorer'} </Trans>
               <ArrowOutward width={24} height={24} />
             </Button>
           )}

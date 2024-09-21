@@ -94,7 +94,14 @@ export const API_TON_V2 = 'https://testnet.toncenter.com/api/v2';
 export const API_TON_V3 = 'https://testnet.toncenter.com/api/v3';
 export const API_TON_SCAN_V2 = 'https://testnet.tonapi.io/v2';
 export const SCAN_TRANSACTION_TON = 'https://testnet.tonviewer.com';
+export const SCAN_TRANSACTION_TON_HISTORY = 'https://testnet.tonviewer.com/transaction';
 export const URL_API_BE = 'https://aave-ton-api.sotatek.works';
+
+export const OP_CODE_SUPPLY = '0x1530f236';
+export const OP_CODE_BORROW = '0xdf316703';
+export const OP_CODE_REPAY = '0x95cded06';
+export const OP_CODE_WITHDRAW = '0x2572afa4';
+export const OP_CODE_COLLATERAL_UPDATE = '0xab476844';
 
 export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {
   const [setAccount] = useRootStore((store) => [store.setAccount, store.currentChainId]);
