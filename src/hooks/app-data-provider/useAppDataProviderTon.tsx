@@ -190,7 +190,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             const normalizeWithReserve = (n: BigNumberValue) => normalize(n, decimals);
             // const isIsolated = item.debtCeiling.toString() !== '0'; // todo
             const isIsolated = false;
-            const walletBalance = !item?.isJetton
+            const walletBalance = !isConnectedTonWallet
+              ? '0'
+              : !item?.isJetton
               ? '0'
               : await onGetBalanceTonNetwork(item.underlyingAddress.toString(), decimals);
 
@@ -584,6 +586,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     await fetchData();
   }, [
     client,
+    isConnectedTonWallet,
     onGetBalanceTonNetwork,
     poolContract,
     poolContractReservesData,
@@ -612,10 +615,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         formatUnits(numberFormateUSD, dataById?.decimal)
       ).toString();
 
-      const walletBalance =
-        !reserve?.isJetton && Number(reserve.walletBalance) !== Number(yourWalletBalanceTon)
-          ? yourWalletBalanceTon
-          : reserve.walletBalance;
+      const walletBalance = !isConnectedTonWallet
+        ? '0'
+        : !reserve?.isJetton && Number(reserve.walletBalance) !== Number(yourWalletBalanceTon)
+        ? yourWalletBalanceTon
+        : reserve.walletBalance;
 
       const walletBalanceUSD = valueToBigNumber(formattedPriceInUSD)
         .multipliedBy(walletBalance || 0)
@@ -685,12 +689,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       };
     });
     if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
-      if (!isConnectedTonWallet) {
-        setReservesTon([]);
-      } else {
-        console.log('Assets to supply---------------', newReserves);
-        setReservesTon(newReserves);
-      }
+      console.log('Assets to supply---------------', newReserves);
+      setReservesTon(newReserves);
       setLoading(false);
     }
   }, [reservesTon, ExchangeRateListUSD, isConnectedTonWallet, yourWalletBalanceTon]);

@@ -29,12 +29,14 @@ import { ReactNode } from 'react';
 
 // Enable for premissioned market
 // import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
+export type ExtendedChainId = ChainId | -239 | -1;
+
 export type MarketDataType = {
   v3?: boolean;
   marketTitle: string;
   market: CustomMarket;
   // the network the market operates on
-  chainId: ChainId;
+  chainId: ExtendedChainId;
   enabledFeatures?: {
     liquiditySwap?: boolean;
     staking?: boolean;
@@ -102,6 +104,8 @@ export enum CustomMarket {
   amm_mainnet = 'amm_mainnet',
   // external
   // permissioned_market = 'permissioned_market',
+  ton_testnet = 'ton_testnet',
+  ton_mainnet = 'ton_mainnet',
 }
 
 const apiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
@@ -669,6 +673,38 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Scroll.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Scroll.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Scroll.COLLECTOR,
+    },
+  },
+  [CustomMarket.ton_testnet]: {
+    marketTitle: 'Ton testnet',
+    market: CustomMarket.ton_testnet,
+    chainId: -239,
+    v3: true,
+    subgraphUrl: `https://testnet.toncenter.com`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '',
+      LENDING_POOL: '',
+      WETH_GATEWAY: '',
+      WALLET_BALANCE_PROVIDER: '',
+      UI_POOL_DATA_PROVIDER: '',
+      UI_INCENTIVE_DATA_PROVIDER: '',
+      COLLECTOR: '',
+    },
+  },
+  [CustomMarket.ton_mainnet]: {
+    marketTitle: 'Ton',
+    market: CustomMarket.ton_mainnet,
+    chainId: -1,
+    v3: true,
+    subgraphUrl: `https://toncenter.com`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '',
+      LENDING_POOL: '',
+      WETH_GATEWAY: '',
+      WALLET_BALANCE_PROVIDER: '',
+      UI_POOL_DATA_PROVIDER: '',
+      UI_INCENTIVE_DATA_PROVIDER: '',
+      COLLECTOR: '',
     },
   },
 } as const;

@@ -4,6 +4,7 @@ import { ProviderWithSend } from 'src/components/transactions/GovVote/temporary/
 
 import {
   CustomMarket,
+  ExtendedChainId,
   MarketDataType,
   marketsData as _marketsData,
 } from '../ui-config/marketsConfig';
@@ -132,7 +133,7 @@ const linkBuilder =
     return baseUrl;
   };
 
-export function getNetworkConfig(chainId: ChainId): NetworkConfig {
+export function getNetworkConfig(chainId: ExtendedChainId): NetworkConfig {
   const config = networkConfigs[chainId];
   if (!config) {
     // this case can only ever occure when a wallet is connected with a unknown chainId which will not allow interaction
@@ -166,7 +167,7 @@ const providers: { [network: string]: ProviderWithSend } = {};
  * @param chainId
  * @returns provider or fallbackprovider in case multiple rpcs are configured
  */
-export const getProvider = (chainId: ChainId): ProviderWithSend => {
+export const getProvider = (chainId: ExtendedChainId): ProviderWithSend => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
     const chainProviders: string[] = [];
