@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import { formatUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
-import { useContract } from 'src/hooks/useContract';
+import { useContract, useContractUnNotAuth } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { calculateReserveDebt } from 'src/utils/calculate-reserve-debt';
@@ -115,6 +115,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     PoolContractReservesDataType[]
   >([]);
   const poolContract = useContract<Pool>(address_pools, Pool);
+  const poolContractNotAuth = useContractUnNotAuth<Pool>(address_pools, Pool);
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
   const { onGetBalanceTonNetwork, yourWalletBalanceTon, loadingTokenTon, refetchBalanceTokenTon } =
     useGetBalanceTon(isConnectedTonWallet);
@@ -132,16 +133,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       let attempts = 0;
       const maxAttempts = MAX_ATTEMPTS;
 
-      if (!isConnectedTonWallet) {
-        setLoading(false);
-        setPoolContractReservesData([]);
-      }
       const fetchData = async () => {
         try {
           attempts++;
-          if (!poolContract || !client || !walletAddressTonWallet) return;
-          await refetchBalanceTokenTon(pauseReload);
-          const reserves = await poolContract.getReservesData();
+          if (!poolContractNotAuth) return;
+          isConnectedTonWallet && (await refetchBalanceTokenTon(pauseReload));
+          const reserves = await poolContractNotAuth.getReservesData();
           setPoolContractReservesData(reserves as PoolContractReservesDataType[]);
         } catch (error) {
           console.error(
@@ -164,23 +161,20 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           }
         }
       };
-
       await fetchData();
     },
     [
-      client,
       isConnectedTonWallet,
-      poolContract,
+      poolContractNotAuth,
       poolContractReservesData.length,
       refetchBalanceTokenTon,
-      walletAddressTonWallet,
     ]
   );
 
   useEffect(() => {
     setLoading(true);
     getPoolContractGetReservesData();
-  }, [client, poolContract, walletAddressTonWallet, getPoolContractGetReservesData]);
+  }, [client, poolContractNotAuth, isConnectedTonWallet, getPoolContractGetReservesData]);
 
   const getValueReserve = useCallback(async () => {
     let attempts = 0;
@@ -190,7 +184,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     const fetchData = async () => {
       try {
         attempts++;
-        if (!poolContract || !client || !walletAddressTonWallet) return;
         const arr = await Promise.all(
           poolContractReservesData.map(async (item) => {
             const decimals = Number(item.decimals);
@@ -591,20 +584,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     };
 
     await fetchData();
-  }, [
-    client,
-    isConnectedTonWallet,
-    onGetBalanceTonNetwork,
-    poolContract,
-    poolContractReservesData,
-    walletAddressTonWallet,
-  ]);
+  }, [isConnectedTonWallet, onGetBalanceTonNetwork, poolContractReservesData]);
 
   useEffect(() => {
-    if (isConnectedTonWallet) {
-      getValueReserve();
-    }
-  }, [getValueReserve, isConnectedTonWallet, poolContract]);
+    getValueReserve();
+  }, [getValueReserve, isConnectedTonWallet]);
 
   useEffect(() => {
     const newReserves = reservesTon.map((reserve) => {

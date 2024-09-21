@@ -82,6 +82,7 @@ export const useUserSummaryAndIncentivesTon = (
 
   useEffect(() => {
     if (!isConnectedTonWallet) {
+      setLoading(false);
       setUserSummaryTon(undefined);
     }
   }, [isConnectedTonWallet]);

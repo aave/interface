@@ -162,14 +162,14 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   // loading
   const isReservesLoading =
-    reservesDataLoading ||
-    formattedPoolReservesLoading ||
-    loadingReservesTon ||
-    loadingYourSuppliesTon;
+    currentMarketData.marketTitle === 'TON'
+      ? loadingReservesTon
+      : reservesDataLoading || formattedPoolReservesLoading;
 
-  const isUserDataLoading = isConnectedTonWallet
-    ? loadingReservesTon || userSummaryLoadingTon || loadingYourSuppliesTon
-    : userReservesDataLoading || userSummaryLoading;
+  const isUserDataLoading =
+    currentMarketData.marketTitle === 'TON'
+      ? userSummaryLoadingTon || loadingYourSuppliesTon
+      : userReservesDataLoading || userSummaryLoading;
 
   let user = isConnectedTonWallet ? userSummaryTon : userSummary;
   // Factor discounted GHO interest into cumulative user fields
@@ -193,7 +193,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
     }
   }
 
-  const reserves = isConnectedTonWallet ? reservesTon : formattedPoolReserves || [];
+  const reserves =
+    currentMarketData.marketTitle === 'TON' ? reservesTon : formattedPoolReserves || [];
 
   return (
     <AppDataContext.Provider

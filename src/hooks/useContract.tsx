@@ -16,3 +16,16 @@ export function useContract<T extends Contract>(
     return client.open(contract) as OpenedContract<T>;
   }, [client, walletAddressTonWallet]);
 }
+
+export function useContractUnNotAuth<T extends Contract>(
+  contractAddress: string,
+  ContractClass: new (address: Address) => T
+): OpenedContract<T> | undefined {
+  const client = useTonClient();
+
+  return useAsyncInitialize(async () => {
+    if (!client) return;
+    const contract = new ContractClass(Address.parse(contractAddress));
+    return client.open(contract) as OpenedContract<T>;
+  }, [client]);
+}

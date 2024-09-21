@@ -676,7 +676,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.ton_testnet]: {
-    marketTitle: 'Ton testnet',
+    marketTitle: 'TON',
     market: CustomMarket.ton_testnet,
     chainId: -239,
     v3: true,
@@ -692,7 +692,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.ton_mainnet]: {
-    marketTitle: 'Ton',
+    marketTitle: 'TON',
     market: CustomMarket.ton_mainnet,
     chainId: -1,
     v3: true,
