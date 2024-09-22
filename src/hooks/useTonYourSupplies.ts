@@ -74,7 +74,6 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
         console.error(`Error fetching getYourSupplies (attempt ${attempts}):`, error);
         if (attempts < maxAttempts) {
           console.log('Retrying...getYourSupplies');
-          setUserSupplies([]);
           await fetchData();
         } else {
           console.log('Max attempts reached, stopping retries. getYourSupplies');
@@ -93,7 +92,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   useEffect(() => {
     setLoading(true);
     getYourSupplies();
-  }, [getYourSupplies, yourAddressWallet, isConnectedTonWallet]);
+  }, [getYourSupplies, isConnectedTonWallet]);
 
   const onMatchDataYourSupplies = useCallback(async () => {
     try {

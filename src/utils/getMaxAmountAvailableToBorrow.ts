@@ -29,8 +29,8 @@ interface PoolReserveBorrowSubset {
  */
 
 export function getMaxAmountAvailableToBorrow(
-  poolReserve: PoolReserveBorrowSubset & { priceInUSD?: string },
-  user: FormatUserSummaryAndIncentivesResponse & { collateralInUSDAsset?: string },
+  poolReserve: PoolReserveBorrowSubset,
+  user: FormatUserSummaryAndIncentivesResponse,
   rateMode: InterestRate
 ): string {
   const availableInPoolUSD = poolReserve.availableLiquidityUSD;

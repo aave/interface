@@ -89,7 +89,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
 
-  const { ExchangeRateListUSD } = useSocketGetRateUSD();
+  const { ExchangeRateListUSD, loading: loadingMarketPrice } = useSocketGetRateUSD();
 
   const {
     reservesTon,
@@ -100,7 +100,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   const { walletBalancesTon } = useWalletBalancesTon(reservesTon);
   const {
-    loading: loadingYourSuppliesTon,
+    loading: loadingUseTonYourSuppliesTon,
     yourSuppliesTon,
     contractUserTon,
     getYourSupplies,
@@ -159,12 +159,12 @@ export const AppDataProvider: React.FC = ({ children }) => {
   // loading
   const isReservesLoading =
     currentMarketData.marketTitle === 'TON'
-      ? loadingReservesTon
+      ? loadingReservesTon || loadingMarketPrice
       : reservesDataLoading || formattedPoolReservesLoading;
 
   const isUserDataLoading =
     currentMarketData.marketTitle === 'TON'
-      ? userSummaryLoadingTon || loadingYourSuppliesTon
+      ? userSummaryLoadingTon || loadingUseTonYourSuppliesTon
       : userReservesDataLoading || userSummaryLoading;
 
   let user =

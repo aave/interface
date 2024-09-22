@@ -19,6 +19,7 @@ import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { calculateReserveDebt } from 'src/utils/calculate-reserve-debt';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { sleep } from 'src/utils/rotationProvider';
 
 import { WalletBalanceUSD } from './useSocketGetRateUSD';
 import { useGetBalanceTon } from './useWalletBalancesTon';
@@ -105,7 +106,7 @@ export const OP_CODE_COLLATERAL_UPDATE = '0xab476844';
 
 export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {
   const [setAccount] = useRootStore((store) => [store.setAccount, store.currentChainId]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
   const [gasFeeTonMarketReferenceCurrency, setGasFeeTonMarketReferenceCurrency] = useState<
     number | string
@@ -133,6 +134,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       while (attempts < maxAttempts) {
         try {
           attempts++;
+
+          setLoading(pauseReload ? false : true);
 
           // Check if the pool contract is available
           if (!poolContractNotAuth) {
@@ -171,8 +174,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             });
 
             // Set the final calculated data into the state
-            setLoading(pauseReload ? false : true);
-            console.log('111111111111111111111111111111111111', isConnectedTonWallet, data);
             setPoolContractReservesData(data as PoolContractReservesDataType[]);
 
             // Break the loop since data is successfully fetched and processed
@@ -203,11 +204,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   );
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await getPoolContractGetReservesData();
-    };
-    fetchData();
+    setLoading(true);
+    getPoolContractGetReservesData();
   }, [isConnectedTonWallet, getPoolContractGetReservesData]);
 
   const getMapValueReserve = useCallback(async () => {
@@ -686,6 +684,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
       console.log('Assets to supply---------------', newReserves);
       setReservesTon(newReserves);
+      sleep(2000);
       setLoading(false);
     }
   }, [reservesTon, ExchangeRateListUSD, isConnectedTonWallet]);

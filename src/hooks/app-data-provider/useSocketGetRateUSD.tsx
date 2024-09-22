@@ -3,7 +3,27 @@ import _ from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useSocket from 'src/utils/connectSocket';
 
-import { address_pools, URL_API_BE } from './useAppDataProviderTon';
+import { address_pools, MAX_ATTEMPTS_50, URL_API_BE } from './useAppDataProviderTon';
+
+export const defaultRateUSDNotValue = [
+  {
+    id: 'dai',
+    address: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
+    usd: '0',
+  },
+  {
+    id: 'usd-coin',
+    address: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
+  },
+  {
+    id: 'tether',
+    address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
+  },
+  {
+    id: 'the-open-network',
+    address: address_pools,
+  },
+];
 
 export type WalletBalanceUSD = {
   id: string;
@@ -16,27 +36,51 @@ export type WalletBalanceUSD = {
 export const useSocketGetRateUSD = () => {
   const walletSocketRef = useRef(null);
   const socket = useSocket(URL_API_BE);
-  // Data with no value price
-  const defaultRateUSDNotValue = [
-    {
-      id: 'dai',
-      address: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
-    },
-    {
-      id: 'usd-coin',
-      address: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
-    },
-    {
-      id: 'tether',
-      address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
-    },
-    {
-      id: 'the-open-network',
-      address: address_pools,
-    },
-  ];
-
   const [dataWalletBalance, setDataWalletBalance] = useState<WalletBalanceUSD[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  // CALL API SET DEFAULT VALUE FOR MONEY
+  const onGetMarketPrice = useCallback(async () => {
+    let attempts = 0;
+    const maxAttempts = MAX_ATTEMPTS_50;
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        attempts++;
+
+        const result = await axios.get(`${URL_API_BE}/crawler/price`);
+        const updatedData = defaultRateUSDNotValue.map((item) => {
+          const priceData = result.data[item.id];
+          return {
+            ...item,
+            address: item?.address,
+            usd: priceData?.usd,
+            id: item?.id,
+            decimal: priceData?.decimal,
+            signature: priceData?.signature,
+          };
+        });
+        setDataWalletBalance(updatedData);
+      } catch (error) {
+        console.error(`Error fetching getBalanceTokenTon (attempt ${attempts}):`, error);
+        if (attempts < maxAttempts) {
+          console.log('Retrying...getBalanceTokenTon');
+          return await fetchData(); // Retry fetching the balance
+        } else {
+          console.log('Max attempts reached, stopping retries.');
+          return '0'; // Return '0' if maximum attempts are reached
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    return await fetchData(); // Return the result of fetchData()
+  }, []);
+
+  useEffect(() => {
+    onGetMarketPrice();
+  }, [onGetMarketPrice]);
 
   const matchDataBalance = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,34 +97,6 @@ export const useSocketGetRateUSD = () => {
     },
     [dataWalletBalance]
   );
-
-  // CALL API SET DEFAULT VALUE FOR MONEY
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios.get(`${URL_API_BE}/crawler/price`);
-
-        if (result.data) {
-          const updatedData = defaultRateUSDNotValue.map((item) => {
-            const priceData = result.data[item.id];
-            return {
-              ...item,
-              address: item?.address,
-              usd: priceData?.usd,
-              id: item?.id,
-              decimal: priceData?.decimal,
-              signature: priceData?.signature,
-            };
-          });
-          setDataWalletBalance(updatedData);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const hasChanged = (oldData: any, newData: any) => {
@@ -105,7 +121,6 @@ export const useSocketGetRateUSD = () => {
           const check = hasChanged(walletSocketRef.current, result);
           if (check) {
             const res = matchDataBalance(data);
-            // console.log('socket-price-------------------: ', res);
             setDataWalletBalance(res);
             walletSocketRef.current = result;
           }
@@ -131,5 +146,6 @@ export const useSocketGetRateUSD = () => {
 
   return {
     ExchangeRateListUSD: dataWalletBalance,
+    loading,
   };
 };

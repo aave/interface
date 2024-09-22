@@ -17,7 +17,7 @@ export const useUserSummaryAndIncentivesTon = (
   const userEmodeCategoryId = 0;
 
   useEffect(() => {
-    if (!yourSuppliesTon) {
+    if (!yourSuppliesTon || !contractUserTon) {
       setLoading(true);
       return;
     }
