@@ -44,7 +44,7 @@ export const useSocketGetRateUSD = () => {
     let attempts = 0;
     const maxAttempts = MAX_ATTEMPTS_50;
     setLoading(true);
-    const fetchData = async () => {
+    const fetchData = async (): Promise<WalletBalanceUSD[] | undefined> => {
       try {
         attempts++;
 
@@ -62,13 +62,13 @@ export const useSocketGetRateUSD = () => {
         });
         setDataWalletBalance(updatedData);
       } catch (error) {
-        console.error(`Error fetching getBalanceTokenTon (attempt ${attempts}):`, error);
+        console.error(`Error fetching onGetMarketPrice (attempt ${attempts}):`, error);
         if (attempts < maxAttempts) {
-          console.log('Retrying...getBalanceTokenTon');
+          console.log('Retrying...onGetMarketPrice');
           return await fetchData(); // Retry fetching the balance
         } else {
           console.log('Max attempts reached, stopping retries.');
-          return '0'; // Return '0' if maximum attempts are reached
+          setDataWalletBalance([]); // Return '0' if maximum attempts are reached
         }
       } finally {
         setLoading(false);
