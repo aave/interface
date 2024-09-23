@@ -2970,7 +2970,7 @@ msgid "Variable debt supply is not zero"
 msgstr "Variables Schuldenangebot ist nicht Null"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
-msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
+msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."
 msgstr "Der variable Zinssatz <0>schwankt</0> je nach Marktbedingungen. Empfohlen für kurzfristige Positionen."
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
