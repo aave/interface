@@ -156,19 +156,19 @@ export const AppDataProvider: React.FC = ({ children }) => {
     userGhoAvailableToBorrowAtDiscount: 0,
   };
 
+  const isTonNetwork = currentMarketData.marketTitle === 'TON';
+  const isConnectNetWorkTon = isConnectedTonWallet && isTonNetwork;
+
   // loading
-  const isReservesLoading =
-    currentMarketData.marketTitle === 'TON'
-      ? loadingReservesTon || loadingMarketPrice
-      : reservesDataLoading || formattedPoolReservesLoading;
+  const isReservesLoading = isTonNetwork
+    ? loadingReservesTon || loadingMarketPrice
+    : reservesDataLoading || formattedPoolReservesLoading;
 
-  const isUserDataLoading =
-    currentMarketData.marketTitle === 'TON'
-      ? userSummaryLoadingTon || loadingUseTonYourSuppliesTon
-      : userReservesDataLoading || userSummaryLoading;
+  const isUserDataLoading = isTonNetwork
+    ? userSummaryLoadingTon || loadingUseTonYourSuppliesTon
+    : userReservesDataLoading || userSummaryLoading;
 
-  let user =
-    isConnectedTonWallet && currentMarketData.marketTitle === 'TON' ? userSummaryTon : userSummary;
+  let user = isConnectNetWorkTon ? userSummaryTon : userSummary;
   // Factor discounted GHO interest into cumulative user fields
 
   const isGhoInMarket = GHO_MINTING_MARKETS.includes(currentMarket);
@@ -190,22 +190,19 @@ export const AppDataProvider: React.FC = ({ children }) => {
     }
   }
 
-  const reserves =
-    currentMarketData.marketTitle === 'TON' ? reservesTon : formattedPoolReserves || [];
+  const reserves = isTonNetwork ? reservesTon : formattedPoolReserves || [];
 
   useEffect(() => {
     console.log('loading-page', isReservesLoading, isUserDataLoading);
   }, [isReservesLoading, isUserDataLoading]);
 
-  const marketReferencePriceInUsd =
-    isConnectedTonWallet && currentMarketData.marketTitle === 'TON'
-      ? `${10 ** 8}`
-      : baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0';
+  const marketReferencePriceInUsd = isConnectNetWorkTon
+    ? `${10 ** 8}`
+    : baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0';
 
-  const marketReferenceCurrencyDecimals =
-    isConnectedTonWallet && currentMarketData.marketTitle === 'TON'
-      ? 8
-      : baseCurrencyData?.marketReferenceCurrencyDecimals || 0;
+  const marketReferenceCurrencyDecimals = isConnectNetWorkTon
+    ? 8
+    : baseCurrencyData?.marketReferenceCurrencyDecimals || 0;
 
   return (
     <AppDataContext.Provider
