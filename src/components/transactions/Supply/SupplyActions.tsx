@@ -153,20 +153,22 @@ export const SupplyActions = React.memo(
         if (isConnectedTonWallet) {
           setMainTxState({ ...mainTxState, loading: true });
           try {
-            const resSupplyTop = await onSendSupplyTon(
+            const resSupplyTon = await onSendSupplyTon(
               parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString(),
               isJetton
             );
+
             await Promise.allSettled([getPoolContractGetReservesData(true), getYourSupplies()]);
-            if (!resSupplyTop?.success) {
+
+            if (!resSupplyTon?.success) {
               const error = {
                 name: 'supply',
-                message: `${resSupplyTop?.message}`,
+                message: `${resSupplyTon?.message}`,
               };
               const parsedError = getErrorTextFromError(
                 error,
                 TxAction.GAS_ESTIMATION,
-                resSupplyTop?.blocking
+                resSupplyTon?.blocking
               );
               setTxError(parsedError);
               setMainTxState({
@@ -175,7 +177,7 @@ export const SupplyActions = React.memo(
               });
             } else {
               setMainTxState({
-                txHash: resSupplyTop.txHash,
+                txHash: resSupplyTon.txHash,
                 loading: false,
                 success: true,
                 amount: amountToSupply,
