@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-09-09 18:05\n"
+"PO-Revision-Date: 2024-09-23 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -2971,7 +2971,7 @@ msgstr "L'offre de dette variable n'est pas nulle"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."
-msgstr "Le taux d’intérêt variable <0>fluctuera</0> en fonction des conditions du marché. Recommandé pour les postes à court terme."
+msgstr ""
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Variable rate"
