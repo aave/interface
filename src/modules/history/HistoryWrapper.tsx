@@ -40,8 +40,9 @@ export const HistoryWrapper = () => {
   const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [searchResetKey, setSearchResetKey] = useState(0);
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
   const { isConnectedTonWallet } = useTonConnectContext();
-
+  const checkTonNetwork = isConnectedTonWallet && currentMarketData.marketTitle === 'TON';
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -146,7 +147,7 @@ export const HistoryWrapper = () => {
     return applyTxHistoryFilters({ searchQuery, filterQuery, txns: updatedTxns });
   }, [searchQuery, filterQuery, flatTxns]);
 
-  if (!isConnectedTonWallet && !subgraphUrl) {
+  if (!checkTonNetwork && !subgraphUrl) {
     return (
       <Paper
         sx={{
@@ -245,7 +246,7 @@ export const HistoryWrapper = () => {
             key={searchResetKey}
           />
         </Box>
-        {!isConnectedTonWallet && (
+        {!checkTonNetwork && (
           <>
             <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
               {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}

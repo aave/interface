@@ -101,7 +101,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
                 trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
               }
             >
-              <Trans>{isConnectedTonWallet ? 'View' : 'Explorer'} </Trans>
+              <Trans>Explorer</Trans>
               <ArrowOutward width={24} height={24} />
             </Button>
           )}

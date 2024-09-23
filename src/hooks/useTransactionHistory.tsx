@@ -90,6 +90,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     state.account,
   ]);
   const { isConnectedTonWallet } = useTonConnectContext();
+  const checkTonNetwork = isConnectedTonWallet && currentMarketData.marketTitle === 'TON';
 
   const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 
@@ -97,7 +98,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
 
   // Handle subgraphs with multiple markets (currently only ETH V2 and ETH V2 AMM)
   let selectedPool: string | undefined = undefined;
-  if (isConnectedTonWallet) {
+  if (checkTonNetwork) {
     selectedPool = Address.parse(address_pools.toString()).toRawString() ?? '';
   } else {
     if (
@@ -140,7 +141,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     const encodedAccount = parseAddressWallet ? encodeURI(parseAddressWallet) : '';
 
     // Fetch from Ton wallet
-    if (isConnectedTonWallet) {
+    if (checkTonNetwork) {
       const url = `${URL_TRANSACTION_HISTORY}?pool=${encodedPool}&address=${encodedAccount}&page=${skip}&limit=${first}`;
       console.log('Fetching transaction history from:', url);
 
@@ -202,11 +203,11 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     error,
   }: UseInfiniteQueryResult<TransactionHistoryItemUnion[], Error> = useInfiniteQuery(
     queryKeysFactory.transactionHistory(
-      isConnectedTonWallet ? parseAddressWallet : account,
+      checkTonNetwork ? parseAddressWallet : account,
       currentMarketData
     ),
     async ({ pageParam = 0 }) => {
-      if (isConnectedTonWallet) {
+      if (checkTonNetwork) {
         const response = await fetchTransactionHistory({
           parseAddressWallet,
           first: 100,
@@ -227,11 +228,11 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       }
     },
     {
-      enabled: isConnectedTonWallet
+      enabled: !checkTonNetwork
         ? !!parseAddressWallet
         : !!account && !!currentMarketData.subgraphUrl,
 
-      ...(isConnectedTonWallet && {
+      ...(!checkTonNetwork && {
         getNextPageParam: (
           lastPage: TransactionHistoryItemUnion[],
           allPages: TransactionHistoryItemUnion[][]
@@ -248,21 +249,21 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
 
   // Chỉ khi `isConnectedTonWallet` là `true`, mới sử dụng useEffect để quản lý filter và việc tải tiếp dữ liệu
   useEffect(() => {
-    if (isConnectedTonWallet) {
+    if (!checkTonNetwork) {
       if (isFilterActive && hasNextPage && !isFetchingNextPage) {
         setShouldKeepFetching(true);
       } else {
         setShouldKeepFetching(false);
       }
     }
-  }, [isConnectedTonWallet, isFilterActive, hasNextPage, isFetchingNextPage]);
+  }, [checkTonNetwork, isFilterActive, hasNextPage, isFetchingNextPage]);
 
   // Khi `shouldKeepFetching` là `true`, trigger fetch tiếp theo
   useEffect(() => {
-    if (shouldKeepFetching && isConnectedTonWallet) {
+    if (shouldKeepFetching && !checkTonNetwork) {
       fetchNextPage();
     }
-  }, [shouldKeepFetching, isConnectedTonWallet, fetchNextPage]);
+  }, [shouldKeepFetching, checkTonNetwork, fetchNextPage]);
 
   const fetchForDownload = async ({
     searchQuery,
