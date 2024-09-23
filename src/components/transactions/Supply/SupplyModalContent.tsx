@@ -62,9 +62,9 @@ export const SupplyModalContentWrapper = (
   params: ModalWrapperProps & { user: ExtendedFormattedUser }
 ) => {
   const user = params.user;
-  const { currentMarketData } = useProtocolDataContext();
+  // const { currentMarketData } = useProtocolDataContext();
   const wrappedTokenReserves = useWrappedTokens();
-  const { walletBalances } = useWalletBalances(currentMarketData);
+  // const { walletBalances } = useWalletBalances(currentMarketData);
   const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCaps();
 
   const { poolReserve, userReserve } = params;
@@ -73,9 +73,7 @@ export const SupplyModalContentWrapper = (
     (r) => r.tokenOut.underlyingAsset === params.underlyingAsset
   );
 
-  const canSupplyAsWrappedToken =
-    wrappedToken &&
-    walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
+  const canSupplyAsWrappedToken = wrappedToken && wrappedToken.tokenIn.balance !== '0';
 
   const hasDifferentCollateral = user.userReservesData.find(
     (reserve) => reserve.usageAsCollateralEnabledOnUser && reserve.reserve.id !== poolReserve.id
@@ -287,9 +285,9 @@ export const SupplyWrappedTokenModalContent = ({
   user,
 }: SupplyModalContentProps) => {
   const { marketReferencePriceInUsd } = useAppDataContext();
-  const { currentMarketData } = useProtocolDataContext();
+  // const { currentMarketData } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
-  const { walletBalances } = useWalletBalances(currentMarketData);
+  // const { walletBalances } = useWalletBalances(currentMarketData);
   const minRemainingBaseTokenBalance = useRootStore(
     (state) => state.poolComputed.minRemainingBaseTokenBalance
   );
@@ -298,8 +296,8 @@ export const SupplyWrappedTokenModalContent = ({
     throw new Error('Wrapped token config is not defined');
   }
 
-  const tokenInBalance = walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset].amount;
-  const tokenOutBalance = walletBalances[wrappedTokenConfig.tokenOut.underlyingAsset].amount;
+  const tokenInBalance = wrappedTokenConfig.tokenIn.balance; // walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset].amount;
+  const tokenOutBalance = wrappedTokenConfig.tokenOut.balance; // walletBalances[wrappedTokenConfig.tokenOut.underlyingAsset].amount;
 
   const assets = [
     {

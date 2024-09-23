@@ -57,9 +57,8 @@ export const SupplyAssetsListItem = (
     (r) => r.tokenOut.underlyingAsset === underlyingAsset
   );
 
-  const canSupplyAsWrappedToken =
-    wrappedToken &&
-    params.walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
+  const canSupplyAsWrappedToken = wrappedToken && wrappedToken.tokenIn.balance !== '0';
+  // params.walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
 
   const disableSupply =
     !isActive ||
@@ -184,9 +183,7 @@ export const SupplyAssetsListItemDesktop = ({
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
                 <FormattedNumber
-                  value={
-                    walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
-                  }
+                  value={wrappedToken.tokenIn.balance}
                   visibleDecimals={2}
                   variant="secondary12"
                   color="text.secondary"
