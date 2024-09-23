@@ -19,6 +19,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -49,6 +50,7 @@ export const RepayModalContent = ({
   debtType,
   user,
 }: ModalWrapperProps & { debtType: InterestRate; user: ExtendedFormattedUser }) => {
+  const { isConnectedTonWallet } = useTonConnectContext();
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
@@ -287,12 +289,10 @@ export const RepayModalContent = ({
 
       {txError && <GasEstimationError txError={txError} />}
 
-      {amount}
-
       <RepayActions
         maxApproveNeeded={safeAmountToRepayAll.toString()}
         poolReserve={poolReserve}
-        amountToRepay={isMaxSelected ? repayMax : amount}
+        amountToRepay={isConnectedTonWallet ? amount : isMaxSelected ? repayMax : amount}
         poolAddress={
           repayWithATokens ? poolReserve.underlyingAsset : tokenToRepayWith.address ?? ''
         }

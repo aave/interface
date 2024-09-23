@@ -373,7 +373,10 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         const parseAmount =
           Number(amount) === -1
             ? 1
-            : parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString();
+            : parseUnits(
+                valueToBigNumber(amount).multipliedBy(1.001).toFixed(decimals),
+                decimals
+              ).toString();
         const interestRateMode = 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
         const useAToken = false;
 
