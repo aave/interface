@@ -227,6 +227,10 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
             .filter((key) => isNaN(Number(key)))
             .map((optionKey) => {
               const option = FilterOptions[optionKey as keyof typeof FilterOptions];
+              if (option === FilterOptions.RATECHANGE) {
+                return null;
+              }
+
               return (
                 <MenuItem
                   key={optionKey}
@@ -247,7 +251,8 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
                   )}
                 </MenuItem>
               );
-            })}
+            })
+            .filter((item) => item !== null)}{' '}
         </Box>
       </Menu>
     </Box>
