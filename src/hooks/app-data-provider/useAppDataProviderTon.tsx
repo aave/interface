@@ -87,7 +87,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQD0Gt-PYwQX_Ee0xmcc_tS4nJX2ieC7cLop41bkUQqt35Y7';
+export const address_pools = 'EQCHVMMopXKCQuepiZYjPF9zGjqeRTjryLuYRZKf0K11zSSq';
 export const MAX_ATTEMPTS = 10;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
@@ -205,6 +205,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
   useEffect(() => {
     setLoading(true);
+    setPoolContractReservesData([]);
     getPoolContractGetReservesData();
   }, [isConnectedTonWallet, getPoolContractGetReservesData]);
 

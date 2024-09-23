@@ -162,6 +162,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           throw new Error('Transaction failed');
         }
       } catch (error) {
+        console.log('error supply', error);
         return { success: false, message: error?.message, blocking: false };
       }
     },
@@ -369,13 +370,12 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       ) as OpenedContract<JettonWallet>;
 
       try {
-        const parseAmount = parseUnits(
-          valueToBigNumber(amount).toFixed(decimals),
-          decimals
-        ).toString();
+        const parseAmount =
+          Number(amount) === -1
+            ? 1
+            : parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString();
         const interestRateMode = 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
         const useAToken = false;
-        const isMax = false;
 
         await providerJettonWallet.sendTransfer(
           sender, //via: Sender,
@@ -389,7 +389,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             .storeUint(Op.repay, 32)
             .storeBit(interestRateMode)
             .storeBit(useAToken)
-            .storeBit(isMax)
+            .storeBit(Number(amount) === -1 ? true : false)
             .endCell()
         );
 
