@@ -2970,7 +2970,7 @@ msgid "Variable debt supply is not zero"
 msgstr "Переменное предложение долга не равно нулю"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
-msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
+msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."
 msgstr "Переменная процентная ставка будет <0>колебаться</0> в зависимости от рыночных условий. Рекомендуется для краткосрочных позиций."
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
