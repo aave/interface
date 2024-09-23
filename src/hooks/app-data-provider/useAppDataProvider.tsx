@@ -194,14 +194,18 @@ export const AppDataProvider: React.FC = ({ children }) => {
     currentMarketData.marketTitle === 'TON' ? reservesTon : formattedPoolReserves || [];
 
   useEffect(() => {
-    console.log(
-      'loading-page',
-      isReservesLoading,
-      !!currentAccount && isUserDataLoading,
-      isUserDataLoading,
-      currentAccount
-    );
-  }, [currentAccount, isReservesLoading, isUserDataLoading]);
+    console.log('loading-page', isReservesLoading, isUserDataLoading);
+  }, [isReservesLoading, isUserDataLoading]);
+
+  const marketReferencePriceInUsd =
+    isConnectedTonWallet && currentMarketData.marketTitle === 'TON'
+      ? `${10 ** 8}`
+      : baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0';
+
+  const marketReferenceCurrencyDecimals =
+    isConnectedTonWallet && currentMarketData.marketTitle === 'TON'
+      ? 8
+      : baseCurrencyData?.marketReferenceCurrencyDecimals || 0;
 
   return (
     <AppDataContext.Provider
@@ -212,8 +216,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
         eModes,
         user: user,
         userReserves: userReserves || [],
-        marketReferencePriceInUsd: baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0',
-        marketReferenceCurrencyDecimals: baseCurrencyData?.marketReferenceCurrencyDecimals || 0,
+        marketReferencePriceInUsd,
+        marketReferenceCurrencyDecimals,
         // TODO: we should consider removing this from the context and use zustand instead. If we had a selector that would return the formatted gho data, I think that
         // would work out pretty well. We could even extend that pattern for the other reserves, and migrate towards the global store instead of the app data provider.
         // ghoLoadingData for now is just propagated through to reduce changes to other components.

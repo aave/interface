@@ -240,10 +240,10 @@ export const BorrowModalContent = ({
     interestRateMode === InterestRate.Stable
       ? poolReserve.sIncentivesData
       : poolReserve.vIncentivesData;
+
   return (
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
-
       {poolReserve.stableBorrowRateEnabled && (
         <BorrowModeSwitch
           interestRateMode={interestRateMode}
@@ -252,7 +252,6 @@ export const BorrowModalContent = ({
           stableRate={poolReserve.stableBorrowAPY}
         />
       )}
-
       <AssetInput
         image={poolReserve.image}
         value={amount}
@@ -278,13 +277,11 @@ export const BorrowModalContent = ({
           },
         }}
       />
-
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
           {handleBlocked()}
         </Typography>
       )}
-
       {poolReserve.isWrappedBaseAsset && (
         <DetailsUnwrapSwitch
           unwrapped={borrowUnWrapped}
@@ -307,7 +304,6 @@ export const BorrowModalContent = ({
       {txError && txError.txAction !== TxAction.GAS_ESTIMATION && (
         <GasEstimationError txError={txError} />
       )}
-
       {displayRiskCheckbox && (
         <BorrowAmountWarning
           riskCheckboxAccepted={riskCheckboxAccepted}
@@ -316,9 +312,7 @@ export const BorrowModalContent = ({
           }}
         />
       )}
-
       <ParameterChangewarning underlyingAsset={underlyingAsset} />
-
       <BorrowActions
         isMaxBorrowCap={isMaxSelected}
         poolReserve={poolReserve}

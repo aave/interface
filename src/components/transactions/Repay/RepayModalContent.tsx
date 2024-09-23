@@ -287,6 +287,8 @@ export const RepayModalContent = ({
 
       {txError && <GasEstimationError txError={txError} />}
 
+      {amount}
+
       <RepayActions
         maxApproveNeeded={safeAmountToRepayAll.toString()}
         poolReserve={poolReserve}
