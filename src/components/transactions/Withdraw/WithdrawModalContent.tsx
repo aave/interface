@@ -7,6 +7,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useRootStore } from 'src/store/root';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
@@ -24,6 +25,7 @@ import {
 } from '../FlowCommons/TxModalDetails';
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawActions } from './WithdrawActions';
+import { WithdrawAndUnwrapAction } from './WithdrawAndUnwrapActions';
 import { useWithdrawError } from './WithdrawError';
 
 export enum ErrorType {
@@ -53,12 +55,19 @@ export const WithdrawModalContent = ({
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const amountRef = useRef<string>('');
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const wrappedTokenReserves = useWrappedTokens();
 
   const isMaxSelected = _amount === '-1';
   const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
   const withdrawAmount = isMaxSelected ? maxAmountToWithdraw.toString(10) : _amount;
+
+  const wrappedToken = wrappedTokenReserves.find(
+    (r) => r.tokenOut.underlyingAsset === poolReserve.underlyingAsset
+  );
+
+  const canBeUnwrapped = !poolReserve.isWrappedBaseAsset && wrappedToken !== undefined;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
@@ -112,6 +121,11 @@ export const WithdrawModalContent = ({
       />
     );
 
+  const unwrapFromSymbol = wrappedToken ? wrappedToken.tokenOut.symbol : poolReserve.symbol;
+  const unwrapToSymbol = wrappedToken
+    ? wrappedToken.tokenIn.symbol
+    : currentNetworkConfig.baseAssetSymbol;
+
   return (
     <>
       <AssetInput
@@ -147,12 +161,12 @@ export const WithdrawModalContent = ({
         </Typography>
       )}
 
-      {poolReserve.isWrappedBaseAsset && (
+      {(poolReserve.isWrappedBaseAsset || canBeUnwrapped) && (
         <DetailsUnwrapSwitch
           unwrapped={withdrawUnWrapped}
           setUnWrapped={setWithdrawUnWrapped}
           label={
-            <Typography>{`Unwrap ${poolReserve.symbol} (to withdraw ${currentNetworkConfig.baseAssetSymbol})`}</Typography>
+            <Typography>{`Unwrap ${unwrapFromSymbol} (to withdraw ${unwrapToSymbol})`}</Typography>
           }
         />
       )}
@@ -213,19 +227,30 @@ export const WithdrawModalContent = ({
         </>
       )}
 
-      <WithdrawActions
-        poolReserve={poolReserve}
-        amountToWithdraw={isMaxSelected ? withdrawMax : withdrawAmount}
-        poolAddress={
-          withdrawUnWrapped && poolReserve.isWrappedBaseAsset
-            ? API_ETH_MOCK_ADDRESS
-            : poolReserve.underlyingAsset
-        }
-        isWrongNetwork={isWrongNetwork}
-        symbol={symbol}
-        blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
-        sx={displayRiskCheckbox ? { mt: 0 } : {}}
-      />
+      {wrappedToken && withdrawUnWrapped ? (
+        <WithdrawAndUnwrapAction
+          poolReserve={poolReserve}
+          amountToWithdraw={isMaxSelected ? withdrawMax : withdrawAmount}
+          isWrongNetwork={isWrongNetwork}
+          tokenWrapperAddress={wrappedToken.tokenWrapperAddress}
+          blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+          sx={displayRiskCheckbox ? { mt: 0 } : {}}
+        />
+      ) : (
+        <WithdrawActions
+          poolReserve={poolReserve}
+          amountToWithdraw={isMaxSelected ? withdrawMax : withdrawAmount}
+          poolAddress={
+            withdrawUnWrapped && poolReserve.isWrappedBaseAsset
+              ? API_ETH_MOCK_ADDRESS
+              : poolReserve.underlyingAsset
+          }
+          isWrongNetwork={isWrongNetwork}
+          symbol={symbol}
+          blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+          sx={displayRiskCheckbox ? { mt: 0 } : {}}
+        />
+      )}
     </>
   );
 };

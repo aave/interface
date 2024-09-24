@@ -84,7 +84,7 @@ export const WithdrawAndUnwrapAction = ({
   if (approvedAmount !== undefined) {
     requiresApproval = checkRequiresApproval({
       approvedAmount: approvedAmount.toString(),
-      amount: amountToWithdraw,
+      amount: amountToWithdraw === '-1' ? constants.MaxUint256.toString() : amountToWithdraw,
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
   }

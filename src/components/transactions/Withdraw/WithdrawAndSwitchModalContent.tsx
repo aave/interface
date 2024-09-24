@@ -14,10 +14,8 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { minimumReceivedAfterSlippage } from 'src/hooks/paraswap/common';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
-import { useTokenInForTokenOut } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
@@ -33,7 +31,6 @@ import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawAndSwitchActions } from './WithdrawAndSwitchActions';
 import { WithdrawAndSwitchTxSuccessView } from './WithdrawAndSwitchSuccess';
-import { WithdrawAndUnwrapAction } from './WithdrawAndUnwrapActions';
 import { useWithdrawError } from './WithdrawError';
 
 export enum ErrorType {
@@ -53,7 +50,6 @@ export const WithdrawAndSwitchModalContent = ({
   const { currentAccount } = useWeb3Context();
   const { reserves } = useAppDataContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
-  const wrappedTokenReserves = useWrappedTokens();
 
   const [_amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
@@ -69,7 +65,6 @@ export const WithdrawAndSwitchModalContent = ({
       iconSymbol: reserve.iconSymbol,
     }));
 
-  // TODO: if withdrawing and unwrapping, should we show that asset at the top of the list?
   swapTargets = [
     ...swapTargets.filter((r) => r.symbol === 'GHO'),
     ...swapTargets.filter((r) => r.symbol !== 'GHO'),
@@ -86,20 +81,6 @@ export const WithdrawAndSwitchModalContent = ({
   const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
 
-  let withdrawAndUnwrap = false;
-  const wrappedTokenConfig = wrappedTokenReserves.find(
-    (config) => config.tokenOut.underlyingAsset === poolReserve.underlyingAsset
-  );
-  if (wrappedTokenConfig) {
-    withdrawAndUnwrap = targetReserve.address === wrappedTokenConfig.tokenIn.underlyingAsset;
-  }
-
-  const { data: unwrappedAmount, isFetching: loadingTokenInForTokenOut } = useTokenInForTokenOut(
-    amountRef.current,
-    poolReserve.decimals,
-    wrappedTokenConfig?.tokenWrapperAddress || ''
-  );
-
   const {
     inputAmountUSD,
     inputAmount,
@@ -114,19 +95,11 @@ export const WithdrawAndSwitchModalContent = ({
     swapIn: { ...poolReserve, amount: amountRef.current },
     swapOut: { ...swapTarget.reserve, amount: '0' },
     max: isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance),
-    skip: withdrawAndUnwrap || withdrawTxState.loading || false,
+    skip: withdrawTxState.loading || false,
     maxSlippage: Number(maxSlippage),
   });
 
-  let outputUSD = outputAmountUSD;
-  if (withdrawAndUnwrap) {
-    outputUSD = valueToBigNumber(unwrappedAmount || '0')
-      .multipliedBy(wrappedTokenConfig?.tokenIn.priceInUSD || 0)
-      .toString();
-  }
-
-  const loadingSkeleton =
-    (routeLoading && outputAmountUSD === '0') || (withdrawAndUnwrap && loadingTokenInForTokenOut);
+  const loadingSkeleton = routeLoading && outputAmountUSD === '0';
 
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
 
@@ -176,21 +149,15 @@ export const WithdrawAndSwitchModalContent = ({
   );
 
   if (withdrawTxState.success) {
-    let amount = inputAmount;
-    let outAmount = minimumAmountReceived;
-    if (withdrawAndUnwrap) {
-      amount = amountRef.current;
-      outAmount = unwrappedAmount || '0';
-    }
     return (
       <WithdrawAndSwitchTxSuccessView
         txHash={withdrawTxState.txHash}
-        amount={amount}
+        amount={inputAmount}
         symbol={
           poolReserve.isWrappedBaseAsset ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol
         }
         outSymbol={targetReserve.symbol}
-        outAmount={outAmount}
+        outAmount={outputAmount}
       />
     );
   }
@@ -237,9 +204,9 @@ export const WithdrawAndSwitchModalContent = ({
       </Box>
 
       <AssetInput
-        value={withdrawAndUnwrap ? unwrappedAmount || '' : outputAmount}
+        value={outputAmount}
         onSelect={setTargetReserve}
-        usdValue={outputUSD}
+        usdValue={outputAmountUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
         inputTitle={<Trans>Receive (est.)</Trans>}
@@ -248,7 +215,7 @@ export const WithdrawAndSwitchModalContent = ({
         loading={loadingSkeleton}
       />
 
-      {error && !loadingSkeleton && !withdrawAndUnwrap && (
+      {error && !loadingSkeleton && (
         <Typography variant="helperText" color="error.main">
           {error}
         </Typography>
@@ -263,26 +230,24 @@ export const WithdrawAndSwitchModalContent = ({
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
-          withdrawAndUnwrap ? null : (
-            <ListSlippageButton
-              selectedSlippage={maxSlippage}
-              setSlippage={setMaxSlippage}
-              slippageTooltipHeader={
-                <Stack direction="row" gap={2} alignItems="center" justifyContent="space-between">
-                  <Trans>Minimum amount received</Trans>
-                  <Stack alignItems="end">
-                    <Stack direction="row">
-                      <TokenIcon
-                        symbol={swapTarget.reserve.iconSymbol}
-                        sx={{ mr: 1, fontSize: '14px' }}
-                      />
-                      <FormattedNumber value={minimumAmountReceived} variant="secondary12" />
-                    </Stack>
+          <ListSlippageButton
+            selectedSlippage={maxSlippage}
+            setSlippage={setMaxSlippage}
+            slippageTooltipHeader={
+              <Stack direction="row" gap={2} alignItems="center" justifyContent="space-between">
+                <Trans>Minimum amount received</Trans>
+                <Stack alignItems="end">
+                  <Stack direction="row">
+                    <TokenIcon
+                      symbol={swapTarget.reserve.iconSymbol}
+                      sx={{ mr: 1, fontSize: '14px' }}
+                    />
+                    <FormattedNumber value={minimumAmountReceived} variant="secondary12" />
                   </Stack>
                 </Stack>
-              }
-            />
-          )
+              </Stack>
+            }
+          />
         }
       >
         <DetailsNumberLine
@@ -340,28 +305,17 @@ export const WithdrawAndSwitchModalContent = ({
         </>
       )}
 
-      {withdrawAndUnwrap ? (
-        <WithdrawAndUnwrapAction
-          poolReserve={poolReserve}
-          amountToWithdraw={amountRef.current}
-          isWrongNetwork={isWrongNetwork}
-          tokenWrapperAddress={wrappedTokenConfig?.tokenWrapperAddress || ''}
-          sx={displayRiskCheckbox ? { mt: 0 } : {}}
-          blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
-        />
-      ) : (
-        <WithdrawAndSwitchActions
-          poolReserve={poolReserve}
-          targetReserve={swapTarget.reserve}
-          amountToSwap={inputAmount}
-          amountToReceive={minimumAmountReceived}
-          isMaxSelected={isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance)}
-          isWrongNetwork={isWrongNetwork}
-          blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
-          buildTxFn={buildTxFn}
-          sx={displayRiskCheckbox ? { mt: 0 } : {}}
-        />
-      )}
+      <WithdrawAndSwitchActions
+        poolReserve={poolReserve}
+        targetReserve={swapTarget.reserve}
+        amountToSwap={inputAmount}
+        amountToReceive={minimumAmountReceived}
+        isMaxSelected={isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance)}
+        isWrongNetwork={isWrongNetwork}
+        blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+        buildTxFn={buildTxFn}
+        sx={displayRiskCheckbox ? { mt: 0 } : {}}
+      />
     </>
   );
 };
