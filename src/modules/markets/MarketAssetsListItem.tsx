@@ -110,10 +110,10 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       <ListColumn>
         <IncentivesCard
           value={
-            reserve.underlyingAPY
-              ? Number(reserve.variableBorrowAPY) + reserve.underlyingAPY
-              : Number(reserve.totalVariableDebtUSD) > 0
-              ? reserve.variableBorrowAPY
+            Number(reserve.totalVariableDebtUSD) > 0
+              ? reserve.underlyingAPY
+                ? Number(reserve.variableBorrowAPY) + reserve.underlyingAPY
+                : reserve.variableBorrowAPY
               : '-1'
           }
           incentives={reserve.vIncentivesData || []}
