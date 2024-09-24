@@ -11,7 +11,6 @@ import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { CollateralType } from 'src/helpers/types';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import {
   useTokenInForTokenOut,
   useTokenOutForTokenIn,
@@ -486,7 +485,7 @@ export const SupplyWrappedTokenModalContent = ({
   );
 };
 
-const ExchangeRate = ({
+export const ExchangeRate = ({
   supplyAmount,
   decimals,
   tokenInSymbol,
@@ -508,7 +507,7 @@ const ExchangeRate = ({
   return (
     <Stack direction="row" alignItems="center" gap={1}>
       <Typography variant="caption">Supply amount</Typography>
-      <TokenIcon sx={{ fontSize: '16px' }} symbol="sdai" />
+      <TokenIcon sx={{ fontSize: '16px' }} symbol={tokenOutSymbol} />
       {loading ? (
         <Skeleton variant="rectangular" width={80} height={14} />
       ) : (
@@ -520,7 +519,7 @@ const ExchangeRate = ({
             visibleDecimals={2}
           />
           <Typography variant="subheader2" color="text.secondary">
-            sDAI
+            {tokenOutSymbol}
           </Typography>
         </>
       )}
