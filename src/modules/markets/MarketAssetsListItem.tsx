@@ -172,22 +172,12 @@ export const apyTooltip = ({
   if (isSuperfest && underlyingAPY) {
     return (
       <>
-        <ListAPYDetails
-          supplyAPY={side == Side.SUPPLY ? Number(apy) : undefined}
-          borrowAPY={side == Side.BORROW ? Number(apy) : undefined}
-          underlyingAPY={underlyingAPY}
-        />
+        <ListAPYDetails apy={Number(apy)} side={side} underlyingAPY={underlyingAPY} />
         <SuperFestTooltip />
       </>
     );
   } else if (!isSuperfest && underlyingAPY) {
-    return (
-      <ListAPYDetails
-        supplyAPY={side == Side.SUPPLY ? Number(apy) : undefined}
-        borrowAPY={side == Side.BORROW ? Number(apy) : undefined}
-        underlyingAPY={underlyingAPY}
-      />
-    );
+    return <ListAPYDetails apy={Number(apy)} side={side} underlyingAPY={underlyingAPY} />;
   } else if (isSuperfest && !underlyingAPY) {
     return <SuperFestTooltip />;
   } else {

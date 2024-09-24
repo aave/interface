@@ -2,11 +2,12 @@ import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { Side } from 'src/utils/utils';
 
 interface ListAPYDetailsProps {
   underlyingAPY: number;
-  supplyAPY?: number;
-  borrowAPY?: number;
+  apy: number;
+  side: Side;
 }
 
 const APYBox = ({ symbol, value }: { symbol: string; value: number }) => {
@@ -25,7 +26,7 @@ const APYBox = ({ symbol, value }: { symbol: string; value: number }) => {
   );
 };
 
-export const ListAPYDetails = ({ underlyingAPY, supplyAPY, borrowAPY }: ListAPYDetailsProps) => {
+export const ListAPYDetails = ({ underlyingAPY, apy, side }: ListAPYDetailsProps) => {
   return (
     <TextWithTooltip>
       <Box
@@ -35,8 +36,10 @@ export const ListAPYDetails = ({ underlyingAPY, supplyAPY, borrowAPY }: ListAPYD
           gap: '4px',
         }}
       >
-        {supplyAPY !== undefined && <APYBox symbol="Supply APY" value={supplyAPY} />}
-        {borrowAPY !== undefined && <APYBox symbol="Borrow APY" value={borrowAPY} />}
+        <APYBox
+          symbol={side == Side.SUPPLY ? 'Supply APY' : side == Side.BORROW ? 'Borrow APY' : ''}
+          value={apy}
+        />
         <APYBox symbol="Underlying APY" value={underlyingAPY} />
       </Box>
     </TextWithTooltip>

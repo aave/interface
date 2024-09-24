@@ -3,6 +3,7 @@ import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { Side } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -78,7 +79,11 @@ export const SupplyAssetsListMobileItem = ({
           value={underlyingAPY ? Number(supplyAPY) + underlyingAPY : Number(supplyAPY)}
           tooltip={
             underlyingAPY ? (
-              <ListAPYDetails supplyAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
+              <ListAPYDetails
+                apy={Number(supplyAPY)}
+                side={Side.SUPPLY}
+                underlyingAPY={underlyingAPY}
+              />
             ) : null
           }
           incentives={aIncentivesData}

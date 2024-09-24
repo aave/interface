@@ -68,7 +68,11 @@ export const BorrowAssetsListItem = ({
         }
         tooltip={
           underlyingAPY ? (
-            <ListAPYDetails borrowAPY={Number(variableBorrowRate)} underlyingAPY={underlyingAPY} />
+            <ListAPYDetails
+              apy={Number(variableBorrowRate)}
+              side={Side.BORROW}
+              underlyingAPY={underlyingAPY}
+            />
           ) : null
         }
         incentives={vIncentivesData}

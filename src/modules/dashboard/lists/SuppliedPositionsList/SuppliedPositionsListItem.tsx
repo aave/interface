@@ -78,7 +78,8 @@ export const SuppliedPositionsListItem = ({
         tooltip={
           reserve.underlyingAPY ? (
             <ListAPYDetails
-              supplyAPY={Number(reserve.supplyAPY)}
+              apy={Number(reserve.supplyAPY)}
+              side={Side.SUPPLY}
               underlyingAPY={reserve.underlyingAPY}
             />
           ) : null

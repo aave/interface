@@ -76,7 +76,8 @@ export const BorrowAssetsListMobileItem = ({
           tooltip={
             underlyingAPY ? (
               <ListAPYDetails
-                borrowAPY={Number(variableBorrowRate)}
+                apy={Number(variableBorrowRate)}
+                side={Side.BORROW}
                 underlyingAPY={underlyingAPY}
               />
             ) : null
