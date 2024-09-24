@@ -89,6 +89,7 @@ export class UnderlyingYieldService {
 
   getStethAPY = async (provider: Provider, currentBlockNumber: number) => {
     const getApyFromApi = async () => {
+      console.log('Warning: Fetching stETH APY from API');
       const res = await fetch('https://eth-api.lido.fi/v1/protocol/steth/apr/last');
       const resParsed: {
         data: {
@@ -173,6 +174,7 @@ export class UnderlyingYieldService {
 
   getRethAPY = async (provider: Provider, currentBlockNumber: number) => {
     const getApyFromApi = async () => {
+      console.log('Warning: Fetching rETH APY from API');
       // based on 7 day average
       const res = await fetch('https://api.rocketpool.net/api/apr');
       const resParsed: {
@@ -241,6 +243,7 @@ export class UnderlyingYieldService {
 
   getEthxAPY = async (provider: Provider, currentBlockNumber: number) => {
     const getApyFromApi = async () => {
+      console.log('Warning: Fetching ETHx APY from API');
       const res = await fetch('https://universe.staderlabs.com/eth/apy');
       const resParsed: {
         value: number;
@@ -338,6 +341,7 @@ export class UnderlyingYieldService {
 
   getWeethAPY = async (provider: Provider, currentBlockNumber: number) => {
     const getApyFromApi = async () => {
+      console.log('Warning: Fetching weETH APY from API');
       const res = await fetch('https://www.etherfi.bid/api/etherfi/apr');
       const resParsed: {
         sucess: boolean;
