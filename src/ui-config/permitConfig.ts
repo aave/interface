@@ -45,4 +45,10 @@ export const permitByChainAndToken: {
   [ChainId.optimism]: {
     '0x76fb31fb4af56892a25e32cfc43de717950c9278': false, // aave
   },
+  [ChainId.zksync]: {
+    '0x5a7d6b2f92c77fad6ccabd7ee0624e64907eaf3e': true,
+    '0x703b52f2b28febcb60e1372858af5b18849fe867': true,
+    '0x493257fd37edb34451f62edf8d2a0c418852ba4c': true,
+    '0x5aea5775959fbc2557cc8789bc1bf90a239d9a91': true,
+  },
 };

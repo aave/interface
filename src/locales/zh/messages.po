@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-09-09 18:05\n"
+"PO-Revision-Date: 2024-09-23 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -2970,8 +2970,8 @@ msgid "Variable debt supply is not zero"
 msgstr "可变债务供应量不为零"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
-msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
-msgstr "浮动利率会根据市场情况 <0>而波动</0> 。推荐用于短期头寸。"
+msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."
+msgstr ""
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Variable rate"
