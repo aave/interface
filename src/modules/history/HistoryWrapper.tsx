@@ -119,6 +119,7 @@ export const HistoryWrapper = () => {
 
       const reserveName = name || 'Unknown Name';
       const reserveAsset = underlyingAsset || 'Unknown Asset';
+      const collateralStatus = item.collateralStatus === 'disable' ? false : true;
 
       if (
         action === 'Supply' ||
@@ -141,7 +142,7 @@ export const HistoryWrapper = () => {
         console.log('Item not match with action: ', item);
       }
       const iconSymbol = item.symbol;
-      return { ...item, action, iconSymbol };
+      return { ...item, action, iconSymbol, toState: collateralStatus };
     });
 
     return applyTxHistoryFilters({ searchQuery, filterQuery, txns: updatedTxns });

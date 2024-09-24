@@ -70,6 +70,7 @@ export type ActionFields = {
     fromState: boolean;
     toState: boolean;
     assetPriceUSD: string;
+    collateralStatus?: string | null;
   };
 };
 
