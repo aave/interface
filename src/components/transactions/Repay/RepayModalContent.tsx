@@ -139,7 +139,6 @@ export const RepayModalContent = ({
       );
     }
   };
-
   // token info
   useEffect(() => {
     const repayTokens: RepayAsset[] = [];
