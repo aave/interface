@@ -69,6 +69,8 @@ export const useWrappedTokens = () => {
       throw new Error('wrapped token out reserve not found');
     }
 
+    const { tokenIn, tokenOut } = wrappedTokenData;
+
     let tokenInFormattedPriceInMarketReferenceCurrency = '0';
     if (tokenInReserve) {
       tokenInFormattedPriceInMarketReferenceCurrency = normalize(
@@ -76,7 +78,7 @@ export const useWrappedTokens = () => {
         marketReferenceCurrencyDecimals
       );
     } else {
-      tokenInFormattedPriceInMarketReferenceCurrency = normalize(wrappedTokenData.tokenInPrice, 6);
+      tokenInFormattedPriceInMarketReferenceCurrency = normalize(tokenIn.price, 8);
     }
 
     const tokenOutFormattedPriceInMarketReferenceCurrency = normalize(
@@ -86,16 +88,16 @@ export const useWrappedTokens = () => {
 
     return {
       tokenIn: {
-        symbol: 'USDS', // TODO tokenInReserve.symbol,
-        underlyingAsset: tokenInReserve?.underlyingAsset ?? wrappedTokenData.tokenIn,
-        decimals: tokenInReserve?.decimals ?? 6,
+        symbol: tokenInReserve?.symbol ?? tokenIn.symbol,
+        underlyingAsset: tokenInReserve?.underlyingAsset ?? tokenIn.address,
+        decimals: tokenInReserve?.decimals ?? tokenIn.decimals,
         priceInUSD: amountToUsd(
           1,
           tokenInFormattedPriceInMarketReferenceCurrency,
           marketReferencePriceInUsd
         ).toString(),
         formattedPriceInMarketReferenceCurrency: tokenInFormattedPriceInMarketReferenceCurrency,
-        balance: formatUnits(wrappedTokenData.tokenInBalance, 18),
+        balance: formatUnits(tokenIn.balance, tokenIn.decimals),
       },
       tokenOut: {
         symbol: tokenOutReserve.symbol,
@@ -107,7 +109,7 @@ export const useWrappedTokens = () => {
           marketReferencePriceInUsd
         ).toString(),
         formattedPriceInMarketReferenceCurrency: tokenOutFormattedPriceInMarketReferenceCurrency,
-        balance: formatUnits(wrappedTokenData.tokenOutBalance, 18),
+        balance: formatUnits(tokenOut.balance, tokenOut.decimals),
       },
       tokenWrapperAddress: config.tokenWrapperContractAddress,
     };
@@ -118,7 +120,7 @@ export const useWrappedTokens = () => {
 
 type TokenDetails = {
   token: string;
-  decimals: BigNumber;
+  decimals: number;
   name: string;
   symbol: string;
   balance: BigNumber;
@@ -255,14 +257,24 @@ const useWrappedTokenDataProvider = () => {
       const [, , tokenWrapper, exchangeRate] = result;
 
       return {
-        tokenIn: tokenInDetails.token,
-        tokenOut: tokenOutDetails.token,
+        tokenIn: {
+          address: tokenInDetails.token,
+          name: tokenInDetails.name,
+          symbol: tokenInDetails.symbol,
+          balance: tokenInDetails.balance.toString(),
+          decimals: tokenInDetails.decimals,
+          price: tokenInDetails.latestAnswer.toNumber(),
+        },
+        tokenOut: {
+          address: tokenOutDetails.token,
+          name: tokenOutDetails.name,
+          symbol: tokenOutDetails.symbol,
+          balance: tokenOutDetails.balance.toString(),
+          decimals: tokenOutDetails.decimals,
+          price: tokenOutDetails.latestAnswer.toNumber(),
+        },
         tokenWrapper,
         exchangeRate: exchangeRate.toString(),
-        tokenInBalance: tokenInDetails.balance.toString(),
-        tokenOutBalance: tokenOutDetails.balance.toString(),
-        tokenInPrice: tokenInDetails.latestAnswer.toNumber(), // 6 decimals
-        tokenOutPrice: tokenOutDetails.latestAnswer.toNumber(), // 6 decimals
       };
     },
     queryKey: ['getWrappedTokenData', chainId],
