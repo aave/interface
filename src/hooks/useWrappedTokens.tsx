@@ -133,13 +133,16 @@ type TokenDetailsResponse = {
 type WrappedTokenDataResponse = {
   tokenIn: TokenDetailsResponse;
   tokenOut: TokenDetailsResponse;
-  exchangeRate: BigNumber;
   tokenWrapperContract: string;
 };
 
 const useWrappedTokenDataProvider = () => {
-  const dataProviderAddress = '0x052A2cCb1af80A5b785DBc555F320d876fb849b4';
-  const [chainId, account] = useRootStore((store) => [store.currentChainId, store.account]);
+  const dataProviderAddress = '0xBd3E680F670B7780457ba4D1D5C5e1Be9943BB30';
+  const [chainId, account, marketData] = useRootStore((store) => [
+    store.currentChainId,
+    store.account,
+    store.currentMarketData,
+  ]);
   return useQuery({
     queryFn: async () => {
       const provider = getProvider(chainId);
@@ -148,57 +151,43 @@ const useWrappedTokenDataProvider = () => {
           inputs: [
             {
               internalType: 'address',
+              name: 'poolAddress',
+              type: 'address',
+            },
+            {
+              internalType: 'address',
               name: 'user',
               type: 'address',
             },
           ],
+          stateMutability: 'view',
+          type: 'function',
           name: 'getWrappedTokenData',
           outputs: [
             {
+              internalType: 'struct WrappedTokenDataProvider.WrappedToken[]',
+              name: '',
+              type: 'tuple[]',
               components: [
                 {
-                  components: [
-                    {
-                      internalType: 'address',
-                      name: 'token',
-                      type: 'address',
-                    },
-                    {
-                      internalType: 'uint8',
-                      name: 'decimals',
-                      type: 'uint8',
-                    },
-                    {
-                      internalType: 'string',
-                      name: 'name',
-                      type: 'string',
-                    },
-                    {
-                      internalType: 'string',
-                      name: 'symbol',
-                      type: 'string',
-                    },
-                    {
-                      internalType: 'uint256',
-                      name: 'balance',
-                      type: 'uint256',
-                    },
-                    {
-                      internalType: 'int256',
-                      name: 'latestAnswer',
-                      type: 'int256',
-                    },
-                  ],
                   internalType: 'struct WrappedTokenDataProvider.TokenDetails',
                   name: 'tokenIn',
                   type: 'tuple',
-                },
-                {
                   components: [
                     {
                       internalType: 'address',
                       name: 'token',
                       type: 'address',
+                    },
+                    {
+                      internalType: 'uint256',
+                      name: 'balance',
+                      type: 'uint256',
+                    },
+                    {
+                      internalType: 'int256',
+                      name: 'latestAnswer',
+                      type: 'int256',
                     },
                     {
                       internalType: 'uint8',
@@ -215,6 +204,18 @@ const useWrappedTokenDataProvider = () => {
                       name: 'symbol',
                       type: 'string',
                     },
+                  ],
+                },
+                {
+                  internalType: 'struct WrappedTokenDataProvider.TokenDetails',
+                  name: 'tokenOut',
+                  type: 'tuple',
+                  components: [
+                    {
+                      internalType: 'address',
+                      name: 'token',
+                      type: 'address',
+                    },
                     {
                       internalType: 'uint256',
                       name: 'balance',
@@ -225,33 +226,38 @@ const useWrappedTokenDataProvider = () => {
                       name: 'latestAnswer',
                       type: 'int256',
                     },
+                    {
+                      internalType: 'uint8',
+                      name: 'decimals',
+                      type: 'uint8',
+                    },
+                    {
+                      internalType: 'string',
+                      name: 'name',
+                      type: 'string',
+                    },
+                    {
+                      internalType: 'string',
+                      name: 'symbol',
+                      type: 'string',
+                    },
                   ],
-                  internalType: 'struct WrappedTokenDataProvider.TokenDetails',
-                  name: 'tokenOut',
-                  type: 'tuple',
                 },
                 {
                   internalType: 'address',
                   name: 'tokenWrapperContract',
                   type: 'address',
                 },
-                {
-                  internalType: 'uint256',
-                  name: 'exchangeRate',
-                  type: 'uint256',
-                },
               ],
-              internalType: 'struct WrappedTokenDataProvider.WrappedToken[]',
-              name: '',
-              type: 'tuple[]',
             },
           ],
-          stateMutability: 'view',
-          type: 'function',
         },
       ];
       const contract = new Contract(dataProviderAddress, abi, provider);
-      const result: WrappedTokenDataResponse[] = await contract.getWrappedTokenData(account);
+      const result: WrappedTokenDataResponse[] = await contract.getWrappedTokenData(
+        marketData.addresses.LENDING_POOL,
+        account
+      );
 
       return result.map((r) => ({
         tokenIn: {
@@ -271,7 +277,6 @@ const useWrappedTokenDataProvider = () => {
           price: r.tokenOut.latestAnswer.toNumber(),
         },
         tokenWrapper: r.tokenWrapperContract,
-        exchangeRate: r.exchangeRate.toString(),
       }));
     },
     queryKey: ['getWrappedTokenData', chainId],
