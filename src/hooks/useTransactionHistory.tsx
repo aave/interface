@@ -228,9 +228,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       }
     },
     {
-      enabled: !checkTonNetwork
-        ? !!parseAddressWallet
-        : !!account && !!currentMarketData.subgraphUrl,
+      enabled: !!parseAddressWallet || (!!account && !!currentMarketData.subgraphUrl),
 
       ...(!checkTonNetwork && {
         getNextPageParam: (
