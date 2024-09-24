@@ -116,8 +116,17 @@ export const useWrappedTokens = () => {
   return wrappedTokenReserves;
 };
 
+type TokenDetails = {
+  token: string;
+  decimals: BigNumber;
+  name: string;
+  symbol: string;
+  balance: BigNumber;
+  latestAnswer: BigNumber;
+};
+
 const useWrappedTokenDataProvider = () => {
-  const dataProviderAddress = '0x3562A1C4f8E32556e57872B3A25E0B724641fd99';
+  const dataProviderAddress = '0x312d98Bd3ecBC0abf4abbA32c738d9EA22f173CE';
   const [chainId, account] = useRootStore((store) => [store.currentChainId, store.account]);
   return useQuery({
     queryFn: async () => {
@@ -136,14 +145,78 @@ const useWrappedTokenDataProvider = () => {
             {
               components: [
                 {
-                  internalType: 'address',
+                  components: [
+                    {
+                      internalType: 'address',
+                      name: 'token',
+                      type: 'address',
+                    },
+                    {
+                      internalType: 'uint8',
+                      name: 'decimals',
+                      type: 'uint8',
+                    },
+                    {
+                      internalType: 'string',
+                      name: 'name',
+                      type: 'string',
+                    },
+                    {
+                      internalType: 'string',
+                      name: 'symbol',
+                      type: 'string',
+                    },
+                    {
+                      internalType: 'uint256',
+                      name: 'balance',
+                      type: 'uint256',
+                    },
+                    {
+                      internalType: 'int256',
+                      name: 'latestAnswer',
+                      type: 'int256',
+                    },
+                  ],
+                  internalType: 'struct WrappedTokenDataProvider.TokenDetails',
                   name: 'tokenIn',
-                  type: 'address',
+                  type: 'tuple',
                 },
                 {
-                  internalType: 'address',
+                  components: [
+                    {
+                      internalType: 'address',
+                      name: 'token',
+                      type: 'address',
+                    },
+                    {
+                      internalType: 'uint8',
+                      name: 'decimals',
+                      type: 'uint8',
+                    },
+                    {
+                      internalType: 'string',
+                      name: 'name',
+                      type: 'string',
+                    },
+                    {
+                      internalType: 'string',
+                      name: 'symbol',
+                      type: 'string',
+                    },
+                    {
+                      internalType: 'uint256',
+                      name: 'balance',
+                      type: 'uint256',
+                    },
+                    {
+                      internalType: 'int256',
+                      name: 'latestAnswer',
+                      type: 'int256',
+                    },
+                  ],
+                  internalType: 'struct WrappedTokenDataProvider.TokenDetails',
                   name: 'tokenOut',
-                  type: 'address',
+                  type: 'tuple',
                 },
                 {
                   internalType: 'address',
@@ -154,26 +227,6 @@ const useWrappedTokenDataProvider = () => {
                   internalType: 'uint256',
                   name: 'exchangeRate',
                   type: 'uint256',
-                },
-                {
-                  internalType: 'uint256',
-                  name: 'tokenInBalance',
-                  type: 'uint256',
-                },
-                {
-                  internalType: 'uint256',
-                  name: 'tokenOutBalance',
-                  type: 'uint256',
-                },
-                {
-                  internalType: 'int256',
-                  name: 'tokenInLatestAnswer',
-                  type: 'int256',
-                },
-                {
-                  internalType: 'int256',
-                  name: 'tokenOutLatestAnswer',
-                  type: 'int256',
                 },
               ],
               internalType: 'struct WrappedTokenDataProvider.WrappedToken[]',
@@ -187,8 +240,8 @@ const useWrappedTokenDataProvider = () => {
       ];
       const contract = new Contract(dataProviderAddress, abi, provider);
       const result: [
-        string,
-        string,
+        unknown,
+        unknown,
         string,
         BigNumber,
         BigNumber,
@@ -196,25 +249,20 @@ const useWrappedTokenDataProvider = () => {
         BigNumber,
         BigNumber
       ] = (await contract.getWrappedTokenData(account))[0];
-      const [
-        tokenIn,
-        tokenOut,
-        tokenWrapper,
-        exchangeRate,
-        tokenInBalance,
-        tokenOutBalance,
-        tokenInPrice,
-        tokenOutPrice,
-      ] = result;
+
+      const tokenInDetails = result[0] as TokenDetails;
+      const tokenOutDetails = result[1] as TokenDetails;
+      const [, , tokenWrapper, exchangeRate] = result;
+
       return {
-        tokenIn,
-        tokenOut,
+        tokenIn: tokenInDetails.token,
+        tokenOut: tokenOutDetails.token,
         tokenWrapper,
         exchangeRate: exchangeRate.toString(),
-        tokenInBalance: tokenInBalance.toString(),
-        tokenOutBalance: tokenOutBalance.toString(),
-        tokenInPrice: tokenInPrice.toNumber(), // 6 decimals
-        tokenOutPrice: tokenOutPrice.toNumber(), // 6 decimals
+        tokenInBalance: tokenInDetails.balance.toString(),
+        tokenOutBalance: tokenOutDetails.balance.toString(),
+        tokenInPrice: tokenInDetails.latestAnswer.toNumber(), // 6 decimals
+        tokenOutPrice: tokenOutDetails.latestAnswer.toNumber(), // 6 decimals
       };
     },
     queryKey: ['getWrappedTokenData', chainId],
