@@ -62,7 +62,8 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           tooltip={apyTooltip({
             underlyingAPY: reserve.underlyingAPY,
             isSuperfest: isSuperfestOnSupplySide,
-            supplyAPY: reserve.supplyAPY,
+            apy: reserve.supplyAPY,
+            side: Side.SUPPLY,
           })}
           incentives={reserve.aIncentivesData || []}
           symbol={reserve.symbol}
@@ -120,7 +121,8 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             tooltip={apyTooltip({
               underlyingAPY: reserve.underlyingAPY,
               isSuperfest: isSuperfestOnBorrowSide,
-              borrowAPY: reserve.variableBorrowAPY,
+              apy: reserve.variableBorrowAPY,
+              side: Side.BORROW,
             })}
           />
           {!reserve.borrowingEnabled &&

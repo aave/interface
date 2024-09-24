@@ -91,7 +91,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           tooltip={apyTooltip({
             underlyingAPY: reserve.underlyingAPY,
             isSuperfest: isSuperfestOnSupplySide,
-            supplyAPY: reserve.supplyAPY,
+            apy: reserve.supplyAPY,
+            side: Side.SUPPLY,
           })}
           incentives={reserve.aIncentivesData || []}
           symbol={reserve.symbol}
@@ -127,7 +128,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           tooltip={apyTooltip({
             underlyingAPY: reserve.underlyingAPY,
             isSuperfest: isSuperfestOnBorrowSide,
-            borrowAPY: reserve.variableBorrowAPY,
+            apy: reserve.variableBorrowAPY,
+            side: Side.BORROW,
           })}
         />
         {!reserve.borrowingEnabled &&
@@ -159,43 +161,36 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 export const apyTooltip = ({
   underlyingAPY,
   isSuperfest,
-  supplyAPY,
-  borrowAPY,
+  apy,
+  side,
 }: {
   underlyingAPY: number | null;
   isSuperfest: boolean;
-  supplyAPY?: string;
-  borrowAPY?: string;
+  apy: string;
+  side: Side;
 }) => {
-  console.log('supplyAPY', supplyAPY);
-  console.log('borrowAPY', borrowAPY);
-  if (supplyAPY && underlyingAPY && isSuperfest) {
+  if (isSuperfest && underlyingAPY) {
     return (
       <>
-        <ListAPYDetails supplyAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
+        <ListAPYDetails
+          supplyAPY={side == Side.SUPPLY ? Number(apy) : undefined}
+          borrowAPY={side == Side.BORROW ? Number(apy) : undefined}
+          underlyingAPY={underlyingAPY}
+        />
         <SuperFestTooltip />
       </>
     );
-  }
-  if (borrowAPY && underlyingAPY && isSuperfest) {
+  } else if (!isSuperfest && underlyingAPY) {
     return (
-      <>
-        <ListAPYDetails borrowAPY={Number(borrowAPY)} underlyingAPY={underlyingAPY} />
-        <SuperFestTooltip />
-      </>
+      <ListAPYDetails
+        supplyAPY={side == Side.SUPPLY ? Number(apy) : undefined}
+        borrowAPY={side == Side.BORROW ? Number(apy) : undefined}
+        underlyingAPY={underlyingAPY}
+      />
     );
-  }
-  if (supplyAPY && underlyingAPY && !isSuperfest) {
-    console.log('Supply tooltip');
-    return <ListAPYDetails supplyAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />;
-  }
-  if (borrowAPY && underlyingAPY && !isSuperfest) {
-    console.log('Borrow tooltip');
-    return <ListAPYDetails borrowAPY={Number(borrowAPY)} underlyingAPY={underlyingAPY} />;
-  }
-  if (isSuperfest && !underlyingAPY) {
-    console.log('Superfest tooltip');
+  } else if (isSuperfest && !underlyingAPY) {
     return <SuperFestTooltip />;
+  } else {
+    return null;
   }
-  return null;
 };
