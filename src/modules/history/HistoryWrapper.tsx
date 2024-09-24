@@ -329,7 +329,7 @@ export const HistoryWrapper = () => {
           }}
         >
           <Typography variant="h6" sx={(theme) => ({ color: theme.palette.text.primary })}>
-            <Trans>No Transaction yet.</Trans>
+            <Trans>Nothing found</Trans>
           </Typography>
           <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">
             <Trans>
