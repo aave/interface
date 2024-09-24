@@ -279,7 +279,7 @@ const useWrappedTokenDataProvider = () => {
         tokenWrapper: r.tokenWrapperContract,
       }));
     },
-    queryKey: ['getWrappedTokenData', chainId],
+    queryKey: ['getWrappedTokenData', marketData.addresses.LENDING_POOL],
     enabled: !!account,
   });
 };
