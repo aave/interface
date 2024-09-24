@@ -219,7 +219,7 @@ export const SupplyAssetsListItemDesktop = ({
         value={underlyingAPY ? Number(supplyAPY) + underlyingAPY : Number(supplyAPY)}
         tooltip={
           underlyingAPY ? (
-            <ListAPYDetails borrowAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
+            <ListAPYDetails supplyAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
           ) : null
         }
         incentives={aIncentivesData}
@@ -420,7 +420,7 @@ export const SupplyAssetsListItemMobile = ({
           value={underlyingAPY ? Number(supplyAPY) + underlyingAPY : Number(supplyAPY)}
           tooltip={
             underlyingAPY ? (
-              <ListAPYDetails borrowAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
+              <ListAPYDetails supplyAPY={Number(supplyAPY)} underlyingAPY={underlyingAPY} />
             ) : null
           }
           incentives={aIncentivesData}
