@@ -70,7 +70,6 @@ export const SupplyAssetsListItem = (
     ...params,
     disableSupply,
     canSupplyAsWrappedToken: canSupplyAsWrappedToken ?? false,
-    walletBalancesMap: params.walletBalances,
   };
 
   if (downToXSM) {
@@ -83,7 +82,6 @@ export const SupplyAssetsListItem = (
 interface SupplyAssetsListItemProps extends DashboardReserve {
   disableSupply: boolean;
   canSupplyAsWrappedToken: boolean;
-  walletBalancesMap: WalletBalancesMap;
 }
 
 export const SupplyAssetsListItemDesktop = ({
@@ -102,7 +100,6 @@ export const SupplyAssetsListItemDesktop = ({
   detailsAddress,
   disableSupply,
   canSupplyAsWrappedToken,
-  walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentMarket = useRootStore((store) => store.currentMarket);
@@ -181,7 +178,7 @@ export const SupplyAssetsListItemDesktop = ({
                 symbolsColor="common.white"
               />
               <Stack direction="row" alignItems="center">
-                <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
+                <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol={wrappedToken.tokenIn.symbol} />
                 <FormattedNumber
                   value={wrappedToken.tokenIn.balance}
                   visibleDecimals={2}
@@ -309,7 +306,6 @@ export const SupplyAssetsListItemMobile = ({
   detailsAddress,
   disableSupply,
   canSupplyAsWrappedToken,
-  walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
@@ -367,9 +363,7 @@ export const SupplyAssetsListItemMobile = ({
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
                 <FormattedNumber
-                  value={
-                    walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
-                  }
+                  value={wrappedToken.tokenIn.balance}
                   visibleDecimals={2}
                   variant="secondary12"
                   color="text.secondary"

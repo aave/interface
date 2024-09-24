@@ -1,10 +1,8 @@
 import { normalize } from '@aave/math-utils';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { BigNumber, Contract } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { amountToUsd } from 'src/utils/utils';
 
@@ -25,31 +23,31 @@ export type WrappedTokenConfig = {
   tokenWrapperAddress: string;
 };
 
-const wrappedTokenConfig: {
-  [market: string]: Array<{
-    tokenIn: string;
-    tokenOut: string;
-    tokenWrapperContractAddress: string;
-  }>;
-} = {
-  [CustomMarket.proto_mainnet_v3]: [
-    {
-      tokenIn: AaveV3Ethereum.ASSETS.DAI.UNDERLYING.toLowerCase(),
-      tokenOut: AaveV3Ethereum.ASSETS.sDAI.UNDERLYING.toLowerCase(),
-      tokenWrapperContractAddress: AaveV3Ethereum.SAVINGS_DAI_TOKEN_WRAPPER,
-    },
-    {
-      tokenIn: '0xdC035D45d973E3EC169d2276DDab16f1e407384F'.toLowerCase(),
-      tokenOut: '0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD'.toLowerCase(),
-      tokenWrapperContractAddress: '0xEE220dEFCaE7344C62cc93E309bB88d723CFf122',
-    },
-  ],
-};
+// const wrappedTokenConfig: {
+//   [market: string]: Array<{
+//     tokenIn: string;
+//     tokenOut: string;
+//     tokenWrapperContractAddress: string;
+//   }>;
+// } = {
+//   [CustomMarket.proto_mainnet_v3]: [
+//     {
+//       tokenIn: AaveV3Ethereum.ASSETS.DAI.UNDERLYING.toLowerCase(),
+//       tokenOut: AaveV3Ethereum.ASSETS.sDAI.UNDERLYING.toLowerCase(),
+//       tokenWrapperContractAddress: AaveV3Ethereum.SAVINGS_DAI_TOKEN_WRAPPER,
+//     },
+//     {
+//       tokenIn: '0xdC035D45d973E3EC169d2276DDab16f1e407384F'.toLowerCase(),
+//       tokenOut: '0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD'.toLowerCase(),
+//       tokenWrapperContractAddress: '0xEE220dEFCaE7344C62cc93E309bB88d723CFf122',
+//     },
+//   ],
+// };
 
 export const useWrappedTokens = () => {
   const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals, reserves } =
     useAppDataContext();
-  const currentMarket = useRootStore((store) => store.currentMarket);
+  // const currentMarket = useRootStore((store) => store.currentMarket);
 
   const { data: wrappedTokenData } = useWrappedTokenDataProvider();
 
@@ -57,19 +55,24 @@ export const useWrappedTokens = () => {
     return [];
   }
 
-  const wrappedTokens = wrappedTokenConfig[currentMarket] ?? [];
+  console.log('wrappedTokenData', wrappedTokenData);
+  // const wrappedTokens = wrappedTokenConfig[currentMarket] ?? [];
   let wrappedTokenReserves: WrappedTokenConfig[] = [];
 
-  wrappedTokenReserves = wrappedTokens.map<WrappedTokenConfig>((config) => {
-    const tokenInReserve = reserves.find((reserve) => reserve.underlyingAsset === config.tokenIn);
-    const tokenOutReserve = reserves.find((reserve) => reserve.underlyingAsset === config.tokenOut);
+  wrappedTokenReserves = wrappedTokenData.map<WrappedTokenConfig>((config) => {
+    const tokenInReserve = reserves.find(
+      (reserve) => reserve.underlyingAsset === config.tokenIn.address.toLowerCase()
+    );
+    const tokenOutReserve = reserves.find(
+      (reserve) => reserve.underlyingAsset === config.tokenOut.address.toLowerCase()
+    );
 
     if (!tokenOutReserve) {
       // we always need a tokenOutReserve, tokenInReserve is not required
       throw new Error('wrapped token out reserve not found');
     }
 
-    const { tokenIn, tokenOut } = wrappedTokenData;
+    const { tokenIn, tokenOut } = config;
 
     let tokenInFormattedPriceInMarketReferenceCurrency = '0';
     if (tokenInReserve) {
@@ -111,24 +114,31 @@ export const useWrappedTokens = () => {
         formattedPriceInMarketReferenceCurrency: tokenOutFormattedPriceInMarketReferenceCurrency,
         balance: formatUnits(tokenOut.balance, tokenOut.decimals),
       },
-      tokenWrapperAddress: config.tokenWrapperContractAddress,
+      tokenWrapperAddress: config.tokenWrapper,
     };
   });
 
   return wrappedTokenReserves;
 };
 
-type TokenDetails = {
+type TokenDetailsResponse = {
   token: string;
-  decimals: number;
   name: string;
   symbol: string;
   balance: BigNumber;
+  decimals: number;
   latestAnswer: BigNumber;
 };
 
+type WrappedTokenDataResponse = {
+  tokenIn: TokenDetailsResponse;
+  tokenOut: TokenDetailsResponse;
+  exchangeRate: BigNumber;
+  tokenWrapperContract: string;
+};
+
 const useWrappedTokenDataProvider = () => {
-  const dataProviderAddress = '0x312d98Bd3ecBC0abf4abbA32c738d9EA22f173CE';
+  const dataProviderAddress = '0x052A2cCb1af80A5b785DBc555F320d876fb849b4';
   const [chainId, account] = useRootStore((store) => [store.currentChainId, store.account]);
   return useQuery({
     queryFn: async () => {
@@ -241,41 +251,28 @@ const useWrappedTokenDataProvider = () => {
         },
       ];
       const contract = new Contract(dataProviderAddress, abi, provider);
-      const result: [
-        unknown,
-        unknown,
-        string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber
-      ] = (await contract.getWrappedTokenData(account))[0];
+      const result: WrappedTokenDataResponse[] = await contract.getWrappedTokenData(account);
 
-      const tokenInDetails = result[0] as TokenDetails;
-      const tokenOutDetails = result[1] as TokenDetails;
-      const [, , tokenWrapper, exchangeRate] = result;
-
-      return {
+      return result.map((r) => ({
         tokenIn: {
-          address: tokenInDetails.token,
-          name: tokenInDetails.name,
-          symbol: tokenInDetails.symbol,
-          balance: tokenInDetails.balance.toString(),
-          decimals: tokenInDetails.decimals,
-          price: tokenInDetails.latestAnswer.toNumber(),
+          address: r.tokenIn.token,
+          name: r.tokenIn.name,
+          symbol: r.tokenIn.symbol,
+          balance: r.tokenIn.balance.toString(),
+          decimals: r.tokenIn.decimals,
+          price: r.tokenIn.latestAnswer.toNumber(),
         },
         tokenOut: {
-          address: tokenOutDetails.token,
-          name: tokenOutDetails.name,
-          symbol: tokenOutDetails.symbol,
-          balance: tokenOutDetails.balance.toString(),
-          decimals: tokenOutDetails.decimals,
-          price: tokenOutDetails.latestAnswer.toNumber(),
+          address: r.tokenOut.token,
+          name: r.tokenOut.name,
+          symbol: r.tokenOut.symbol,
+          balance: r.tokenOut.balance.toString(),
+          decimals: r.tokenOut.decimals,
+          price: r.tokenOut.latestAnswer.toNumber(),
         },
-        tokenWrapper,
-        exchangeRate: exchangeRate.toString(),
-      };
+        tokenWrapper: r.tokenWrapperContract,
+        exchangeRate: r.exchangeRate.toString(),
+      }));
     },
     queryKey: ['getWrappedTokenData', chainId],
     enabled: !!account,
