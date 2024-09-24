@@ -26,8 +26,8 @@ export const WrappedTokenTooltipContent = ({
     <Stack direction="column" gap={3}>
       <Typography variant="tooltip">
         <Trans>
-          DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching
-          incurs no additional costs and no slippage.
+          {tokenInSymbol} balance will be converted via wrapper contracts and then supplied as{' '}
+          {tokenOutSymbol}. Switching incurs no additional costs and no slippage.
         </Trans>
       </Typography>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
