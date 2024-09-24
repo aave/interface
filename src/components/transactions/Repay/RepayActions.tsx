@@ -35,6 +35,7 @@ export interface RepayActionProps extends BoxProps {
   blocked?: boolean;
   maxApproveNeeded: string;
   underlyingAssetTon?: string;
+  isMaxSelected?: boolean;
 }
 
 export const RepayActions = ({
@@ -49,6 +50,7 @@ export const RepayActions = ({
   blocked,
   maxApproveNeeded,
   underlyingAssetTon,
+  isMaxSelected,
   ...props
 }: RepayActionProps) => {
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
@@ -149,7 +151,7 @@ export const RepayActions = ({
       if (isConnectedTonWallet) {
         setMainTxState({ ...mainTxState, loading: true });
         try {
-          const res = await onSendRepayTon(amountToRepay, poolReserve.decimals);
+          const res = await onSendRepayTon(amountToRepay, poolReserve.decimals, isMaxSelected);
           await Promise.allSettled([getPoolContractGetReservesData(true), getYourSupplies()]);
           if (!res?.success) {
             const error = {

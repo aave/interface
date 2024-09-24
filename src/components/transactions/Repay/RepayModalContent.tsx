@@ -293,6 +293,7 @@ export const RepayModalContent = ({
         maxApproveNeeded={safeAmountToRepayAll.toString()}
         poolReserve={poolReserve}
         amountToRepay={isConnectedTonWallet ? amount : isMaxSelected ? repayMax : amount}
+        isMaxSelected={isMaxSelected}
         poolAddress={
           repayWithATokens ? poolReserve.underlyingAsset : tokenToRepayWith.address ?? ''
         }

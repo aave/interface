@@ -452,7 +452,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     ratesHistoryApiUrl,
   },
   [-239]: {
-    name: 'ton_testnet',
+    name: 'TON',
     publicJsonRPCUrl: ['https://explorer-testnet.tonsquare.io'],
     publicJsonRPCWSUrl: 'wss://testnet.ton.dev',
     baseAssetSymbol: 'TON',
@@ -461,14 +461,14 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://testnet.tonviewer.com',
     isTestnet: true,
     networkLogoPath: '/icons/networks/ton_network_logo.svg',
-    bridge: {
-      icon: '/icons/networks/ton_network_logo.svg',
-      name: 'TON network',
-      url: 'https://ton-bridge.io',
-    },
+    // bridge: {
+    //   icon: '/icons/networks/ton_network_logo.svg',
+    //   name: 'TON',
+    //   url: 'https://ton-bridge.io',
+    // },
   },
   [-1]: {
-    name: 'ton_mainnet',
+    name: 'TON',
     publicJsonRPCUrl: ['https://explorer.tonsquare.io'],
     publicJsonRPCWSUrl: 'wss://main.ton.dev',
     baseAssetSymbol: 'TON',
@@ -476,10 +476,10 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 6,
     explorerLink: 'https://tonviewer.com',
     networkLogoPath: '/icons/networks/ton_network_logo.svg',
-    bridge: {
-      icon: '/icons/networks/ton_network_logo.svg',
-      name: 'TON network',
-      url: 'https://ton-bridge.io',
-    },
+    // bridge: {
+    //   icon: '/icons/networks/ton_network_logo.svg',
+    //   name: 'TON',
+    //   url: 'https://ton-bridge.io',
+    // },
   },
 } as const;

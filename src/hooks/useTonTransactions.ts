@@ -353,7 +353,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const onSendRepayTon = useCallback(
-    async (amount: string, decimals: number | undefined) => {
+    async (amount: string, decimals: number | undefined, isMaxSelected: boolean | undefined) => {
       if (!providerPool || !decimals || !providerJettonMinter || !client)
         return { success: false, message: 'error', blocking: false };
 
@@ -374,7 +374,9 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           Number(amount) === -1
             ? 1
             : parseUnits(
-                valueToBigNumber(amount).multipliedBy(1.001).toFixed(decimals),
+                valueToBigNumber(amount)
+                  .multipliedBy(isMaxSelected ? 1.001 : 1)
+                  .toFixed(decimals),
                 decimals
               ).toString();
         const interestRateMode = 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
