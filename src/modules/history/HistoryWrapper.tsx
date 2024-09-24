@@ -147,6 +147,15 @@ export const HistoryWrapper = () => {
     return applyTxHistoryFilters({ searchQuery, filterQuery, txns: updatedTxns });
   }, [searchQuery, filterQuery, flatTxns]);
 
+  if (!currentAccount) {
+    return (
+      <ConnectWalletPaper
+        loading={web3Loading}
+        description={<Trans> Please connect your wallet to view transaction history.</Trans>}
+      />
+    );
+  }
+
   if (!checkTonNetwork && !subgraphUrl) {
     return (
       <Paper
@@ -164,15 +173,6 @@ export const HistoryWrapper = () => {
           <Trans>Transaction history is not currently available for this market</Trans>
         </Typography>
       </Paper>
-    );
-  }
-
-  if (!currentAccount) {
-    return (
-      <ConnectWalletPaper
-        loading={web3Loading}
-        description={<Trans> Please connect your wallet to view transaction history.</Trans>}
-      />
     );
   }
 
