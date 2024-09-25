@@ -21,6 +21,16 @@ import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
 import TransactionMobileRowItem from './TransactionMobileRowItem';
 import { FilterOptions, TransactionHistoryItemUnion } from './types';
+import {
+  address_pools,
+  OP_CODE_BORROW,
+  OP_CODE_COLLATERAL_UPDATE,
+  OP_CODE_REPAY,
+  OP_CODE_SUPPLY,
+  OP_CODE_WITHDRAW,
+} from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
+import { useRootStore } from 'src/store/root';
 
 export const HistoryWrapperMobile = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,6 +51,28 @@ export const HistoryWrapperMobile = () => {
   const handleCancelClick = () => {
     setShowSearchBar(false);
     setSearchQuery('');
+  };
+
+  const ACTION_HISTORY: { [key: string]: string } = {
+    [OP_CODE_SUPPLY]: 'Supply',
+    [OP_CODE_BORROW]: 'Borrow',
+    [OP_CODE_REPAY]: 'Repay',
+    [OP_CODE_WITHDRAW]: 'RedeemUnderlying',
+    [OP_CODE_COLLATERAL_UPDATE]: 'UsageAsCollateral',
+  };
+
+  const defaultUnderlyingAsset = {
+    USDC: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
+    USDT: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
+    DAI: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
+    TON: address_pools,
+  };
+
+  const defaultNameAsset = {
+    USDC: 'USD Coin',
+    USDT: 'Tether',
+    DAI: 'Dai Stablecoin',
+    TON: 'TON',
   };
 
   // Create ref to exclude search box from click handler below
@@ -134,200 +166,57 @@ export const HistoryWrapperMobile = () => {
     () => transactions?.pages?.flatMap((page) => page) || [],
     [transactions]
   );
-  const filteredTxns = useMemo(
-    () => applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns }),
-    [searchQuery, filterQuery, flatTxns]
-  );
-  // const filteredTxns: TransactionHistoryItemUnion[] = useMemo(
-  //   // () => applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns }),
-  //   () => [
-  //     {
-  //       id: '1',
-  //       txHash: '0x123',
-  //       action: 'Supply',
-  //       pool: {
-  //         id: 'pool1',
-  //       },
-  //       timestamp: 1633024800,
-  //       reserve: {
-  //         symbol: 'ETH',
-  //         decimals: 18,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000000',
-  //         name: 'Ethereum',
-  //       },
-  //       amount: '1000000000000000000', // 1 ETH in wei
-  //       assetPriceUSD: '3000',
-  //     },
-  //     {
-  //       id: '2',
-  //       txHash: '0x456',
-  //       action: 'Borrow',
-  //       pool: {
-  //         id: 'pool2',
-  //       },
-  //       timestamp: 1633025800,
-  //       reserve: {
-  //         symbol: 'DAI',
-  //         decimals: 18,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000001',
-  //         name: 'Dai Stablecoin',
-  //       },
-  //       amount: '500000000000000000000', // 500 DAI in wei
-  //       assetPriceUSD: '1',
-  //       borrowRateModeFrom: 'stable',
-  //       borrowRateModeTo: 'variable',
-  //       stableBorrowRate: 18
-  //     },
-  //     {
-  //       id: '3',
-  //       txHash: '0x789',
-  //       action: 'RedeemUnderlying',
-  //       pool: {
-  //         id: 'pool3',
-  //       },
-  //       timestamp: 1633026800,
-  //       reserve: {
-  //         symbol: 'USDC',
-  //         decimals: 6,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000002',
-  //         name: 'USD Coin',
-  //       },
-  //       amount: '1000000', // 1 USDC in smallest unit
-  //       assetPriceUSD: '1',
-  //     },
-  //     {
-  //       id: '4',
-  //       txHash: '0xabc',
-  //       action: 'Deposit',
-  //       pool: {
-  //         id: 'pool4',
-  //       },
-  //       timestamp: 1633027800,
-  //       reserve: {
-  //         symbol: 'BTC',
-  //         decimals: 8,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000003',
-  //         name: 'Bitcoin',
-  //       },
-  //       amount: '100000000', // 1 BTC in satoshi
-  //       assetPriceUSD: '50000',
-  //     },
-  //     {
-  //       id: '5',
-  //       txHash: '0xdef',
-  //       action: 'Repay',
-  //       pool: {
-  //         id: 'pool5',
-  //       },
-  //       timestamp: 1633028800,
-  //       reserve: {
-  //         symbol: 'ETH',
-  //         decimals: 18,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000000',
-  //         name: 'Ethereum',
-  //       },
-  //       amount: '2000000000000000000', // 2 ETH in wei
-  //       assetPriceUSD: '3000',
-  //     },
-  //     {
-  //       id: '6',
-  //       txHash: '0xghi',
-  //       action: 'UsageAsCollateral',
-  //       pool: {
-  //         id: 'pool6',
-  //       },
-  //       timestamp: 1633029800,
-  //       reserve: {
-  //         symbol: 'DAI',
-  //         decimals: 18,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000001',
-  //         name: 'Dai Stablecoin',
-  //       },
-  //       amount: '1000000000000000000000', // 1000 DAI in wei
-  //       assetPriceUSD: '1',
-  //     },
-  //     {
-  //       id: '7',
-  //       txHash: '0xjkl',
-  //       action: 'SwapBorrowRate',
-  //       pool: {
-  //         id: 'pool7',
-  //       },
-  //       timestamp: 1623030800,
-  //       reserve: {
-  //         symbol: 'USDT',
-  //         decimals: 6,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000004',
-  //         name: 'Tether',
-  //       },
-  //       amount: '5000000', // 5 USDT in smallest unit
-  //       assetPriceUSD: '1',
-  //       borrowRateModeFrom: 'stable',
-  //       borrowRateModeTo: 'variable',
-  //       stableBorrowRate: 18,
-  //       variableBorrowRate: 20
-  //     },
-  //     {
-  //       id: '8',
-  //       txHash: '0xmn0',
-  //       action: 'Swap',
-  //       pool: {
-  //         id: 'pool8',
-  //       },
-  //       timestamp: 1633031800,
-  //       reserve: {
-  //         symbol: 'ETH',
-  //         decimals: 18,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000000',
-  //         name: 'Ethereum',
-  //       },
-  //       amount: '3000000000000000000', // 3 ETH in wei
-  //       assetPriceUSD: '3000',
-  //       swapFromReserve: {
-  //         symbol: 'DAI',
-  //         decimals: 18,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000001',
-  //         name: 'Dai Stablecoin',
-  //       },
-  //       swapToReserve: {
-  //         symbol: 'USDC',
-  //         decimals: 6,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000002',
-  //         name: 'USD Coin',
-  //       },
-  //       borrowRateModeFrom: 'Variable',
-  //       borrowRateModeTo: 'variable',
-  //       stableBorrowRate: 18,
-  //       variableBorrowRate: 20
-  //     },
-  //     {
-  //       id: '9',
-  //       txHash: '0xpqr',
-  //       action: 'LiquidationCall',
-  //       pool: {
-  //         id: 'pool9',
-  //       },
-  //       timestamp: 1633032800,
-  //       collateralReserve: {
-  //         symbol: 'USDC',
-  //         decimals: 6,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000002',
-  //         name: 'USD Coin',
-  //       },
-  //       collateralAmount: '2000000', // 2 USDC in smallest unit
-  //       principalReserve: {
-  //         symbol: 'ETH',
-  //         decimals: 18,
-  //         underlyingAsset: '0x0000000000000000000000000000000000000000',
-  //         name: 'Ethereum',
-  //       },
-  //       principalAmount: '4000000000000000000', // 4 ETH in wei
-  //       borrowAssetPriceUSD: '3000',
-  //       collateralAssetPriceUSD: '1',
-  //     },
-  //   ],
-  //   [searchQuery, filterQuery, flatTxns]
-  // );
+  const filteredTxns: TransactionHistoryItemUnion[] = useMemo(() => {
+    const txnArray = Array.isArray(flatTxns) ? flatTxns : [];
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const updatedTxns = txnArray.map((item: any) => {
+      const action = ACTION_HISTORY[item.opCode as keyof typeof ACTION_HISTORY] || 'Unknown Action';
+
+      const poolId = item.pool ?? null;
+      if (poolId) {
+        item = { ...item };
+        delete item.pool;
+      }
+
+      const underlyingAsset =
+        defaultUnderlyingAsset[item.symbol as keyof typeof defaultUnderlyingAsset];
+      const name = defaultNameAsset[item.symbol as keyof typeof defaultNameAsset];
+
+      const reserveName = name || 'Unknown Name';
+      const reserveAsset = underlyingAsset || 'Unknown Asset';
+      const collateralStatus = item.collateralStatus === 'disable' ? false : true;
+
+      if (
+        action === 'Supply' ||
+        action === 'Repay' ||
+        action === 'Withdraw' ||
+        action === 'Borrow' ||
+        action === 'UsageAsCollateral' ||
+        action === 'RedeemUnderlying'
+      ) {
+        item.pool = {
+          id: poolId,
+        };
+        item.reserve = {
+          symbol: item.symbol,
+          decimals: item.decimals,
+          underlyingAsset: reserveAsset,
+          name: reserveName,
+        };
+      } else {
+        console.log('Item not match with action: ', item);
+      }
+      const iconSymbol = item.symbol;
+      return { ...item, action, iconSymbol, toState: collateralStatus };
+    });
+
+    return applyTxHistoryFilters({ searchQuery, filterQuery, txns: updatedTxns });
+  }, [searchQuery, filterQuery, flatTxns]);
+
+  const { isConnectedTonWallet } = useTonConnectContext();
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
+  const checkTonNetwork = isConnectedTonWallet && currentMarketData.marketTitle === 'TON';
   const isEmpty = filteredTxns.length === 0;
   const filterActive = searchQuery !== '' || filterQuery.length > 0;
 
@@ -346,17 +235,19 @@ export const HistoryWrapperMobile = () => {
         >
           {!showSearchBar && (
             <Typography component="div" variant="h2" sx={{ mr: 4, height: '36px' }}>
-              <Trans>Transactions1</Trans>
+              <Trans>Transactions</Trans>
             </Typography>
           )}
           {!showSearchBar && (
             <Box sx={{ display: 'flex', gap: '22px' }}>
               {loadingDownload && <CircularProgress size={20} sx={{ mr: 2 }} color="inherit" />}
-              <Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>
-                <SvgIcon>
-                  <DocumentDownloadIcon width={20} height={20} />
-                </SvgIcon>
-              </Box>
+              {!checkTonNetwork && (
+                <Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>
+                  <SvgIcon>
+                    <DocumentDownloadIcon width={20} height={20} />
+                  </SvgIcon>
+                </Box>
+              )}
               <Menu
                 anchorEl={menuAnchorEl}
                 open={Boolean(menuAnchorEl)}
@@ -404,7 +295,15 @@ export const HistoryWrapperMobile = () => {
             </Box>
           )}
           {showSearchBar && (
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', px: 0 }}>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                px: 0,
+              }}
+            >
               <SearchInput
                 wrapperSx={{
                   width: '320px',
@@ -413,7 +312,7 @@ export const HistoryWrapperMobile = () => {
                 onSearchTermChange={setSearchQuery}
                 key={searchResetKey}
               />
-              <Button onClick={() => handleCancelClick()}>
+              <Button onClick={() => handleCancelClick()} style={{ marginTop: '10px' }}>
                 <Typography variant="buttonM">
                   <Trans>Cancel</Trans>
                 </Typography>
