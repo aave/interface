@@ -137,7 +137,7 @@ type WrappedTokenDataResponse = {
 };
 
 const useWrappedTokenDataProvider = () => {
-  const dataProviderAddress = '0xBd3E680F670B7780457ba4D1D5C5e1Be9943BB30';
+  const dataProviderAddress = '0xF99f11Ee413A716413a42AB55D97477CC3ef1448';
   const [chainId, account, marketData] = useRootStore((store) => [
     store.currentChainId,
     store.account,
