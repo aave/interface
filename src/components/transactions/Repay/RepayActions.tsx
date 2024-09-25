@@ -156,7 +156,7 @@ export const RepayActions = ({
           const params = {
             amount: amountToRepay,
             decimals: poolReserve.decimals,
-            isMaxSelected: isMaxSelected,
+            isMaxSelected,
             isAToken: repayWithATokens,
             isJetton: poolReserve.isJetton,
             balance,

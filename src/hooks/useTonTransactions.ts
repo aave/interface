@@ -380,7 +380,6 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
               .endCell()
           );
         } else {
-          // for TON token
           const dataMultiSig = await getMultiSig({
             isMock: false,
           });
@@ -405,7 +404,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const onSendRepayATokenTon = useCallback(
-    async ({ amount, isAToken, interestRateMode }: RepayParamsSend) => {
+    async ({ amount, isAToken, interestRateMode, isJetton }: RepayParamsSend) => {
       if (!providerJettonMinter || !client || !providerPool || !interestRateMode)
         return { success: false, message: 'error', blocking: false };
 
@@ -414,23 +413,35 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           isMock: false,
         });
 
-        const paramsRepay: RepayParams = {
-          queryId: Date.now(),
-          amount: BigInt(amount), // amount borrow
-          poolJWRepay: await providerJettonMinter.getWalletAddress(Address.parse(address_pools)),
-          poolJWCollateral: await providerJettonMinter.getWalletAddress(
-            Address.parse(address_pools)
-          ),
-          interestRateMode: interestRateMode,
-          useAToken: isAToken,
-          isMax: false,
-          priceData: dataMultiSig,
-        };
+        if (isJetton) {
+          const paramsRepay: RepayParams = {
+            queryId: Date.now(),
+            amount: BigInt(amount), // amount borrow
+            poolJWRepay: await providerJettonMinter.getWalletAddress(Address.parse(address_pools)),
+            poolJWCollateral: await providerJettonMinter.getWalletAddress(
+              Address.parse(address_pools)
+            ),
+            interestRateMode: interestRateMode,
+            useAToken: isAToken,
+            isMax: false,
+            priceData: dataMultiSig,
+          };
 
-        await providerPool.sendRepayUseAToken(
-          sender, //via: Sender
-          paramsRepay //via: Sender,
-        );
+          await providerPool.sendRepayUseAToken(
+            sender, //via: Sender
+            paramsRepay //via: Sender,
+          );
+        } else {
+          const repayParams: RepayParams = {
+            queryId: Date.now(),
+            amount: BigInt(amount),
+            useAToken: isAToken,
+            isMax: false,
+            priceData: dataMultiSig,
+            interestRateMode: interestRateMode,
+          };
+          providerPool.sendRepayTON(sender, repayParams);
+        }
 
         return { success: true, message: 'success' };
       } catch (error) {
@@ -470,8 +481,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
         const params = {
           amount: parseAmount,
-          isAToken: isAToken,
-          interestRateMode: interestRateMode,
+          isAToken,
+          interestRateMode,
           isJetton,
         };
 

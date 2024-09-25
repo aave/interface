@@ -118,7 +118,7 @@ export class Pool implements Contract {
 
   async sendRepayTON(provider: ContractProvider, via: Sender, params: RepayParams) {
     await provider.internal(via, {
-      value: params.amount + toNano('0.1'),
+      value: params.useAToken ? toNano('0.1') : params.amount + toNano('0.1'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: RepayTonParamsToCell(params),
     });
