@@ -391,7 +391,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             priceData: dataMultiSig,
             interestRateMode: interestRateMode,
           };
-          providerPool.sendRepayTON(sender, repayParams);
+          await providerPool.sendRepayTON(sender, repayParams);
         }
 
         return { success: true, message: 'success' };
@@ -440,7 +440,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             priceData: dataMultiSig,
             interestRateMode: interestRateMode,
           };
-          providerPool.sendRepayTON(sender, repayParams);
+          await providerPool.sendRepayTON(sender, repayParams);
         }
 
         return { success: true, message: 'success' };
