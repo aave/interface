@@ -14,14 +14,6 @@ import {
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
-import {
-  address_pools,
-  OP_CODE_BORROW,
-  OP_CODE_COLLATERAL_UPDATE,
-  OP_CODE_REPAY,
-  OP_CODE_SUPPLY,
-  OP_CODE_WITHDRAW,
-} from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
@@ -30,7 +22,13 @@ import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
 import TransactionMobileRowItem from './TransactionMobileRowItem';
-import { FilterOptions, TransactionHistoryItemUnion } from './types';
+import {
+  ACTION_HISTORY,
+  defaultNameAsset,
+  defaultUnderlyingAsset,
+  FilterOptions,
+  TransactionHistoryItemUnion,
+} from './types';
 
 export const HistoryWrapperMobile = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,28 +49,6 @@ export const HistoryWrapperMobile = () => {
   const handleCancelClick = () => {
     setShowSearchBar(false);
     setSearchQuery('');
-  };
-
-  const ACTION_HISTORY: { [key: string]: string } = {
-    [OP_CODE_SUPPLY]: 'Supply',
-    [OP_CODE_BORROW]: 'Borrow',
-    [OP_CODE_REPAY]: 'Repay',
-    [OP_CODE_WITHDRAW]: 'RedeemUnderlying',
-    [OP_CODE_COLLATERAL_UPDATE]: 'UsageAsCollateral',
-  };
-
-  const defaultUnderlyingAsset = {
-    USDC: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
-    USDT: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
-    DAI: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
-    TON: address_pools,
-  };
-
-  const defaultNameAsset = {
-    USDC: 'USD Coin',
-    USDT: 'Tether',
-    DAI: 'Dai Stablecoin',
-    TON: 'TON',
   };
 
   // Create ref to exclude search box from click handler below
