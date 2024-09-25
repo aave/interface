@@ -64,12 +64,12 @@ export type BorrowParams = {
 
 export type RepayParams = {
   queryId: number;
-  poolJWRepay: Address;
-  poolJWCollateral: Address;
+  poolJWRepay?: Address;
+  poolJWCollateral?: Address;
   amount: bigint;
   interestRateMode: number;
-  useAToken: number;
-  isMax: number;
+  useAToken: boolean;
+  isMax: boolean;
   priceData: Dictionary<bigint, Cell>;
 };
 
@@ -90,6 +90,11 @@ export type SetUseReserveAsCollateralParams = {
   poolJWAddress: Address;
   useAsCollateral: boolean;
   priceData: Dictionary<bigint, Cell>;
+};
+
+export type UpgradeParams = {
+  queryId: number;
+  code: Cell;
 };
 
 /* ---------- Cell Builders ---------- */
@@ -207,8 +212,8 @@ export function RepayParamsToCell(config: RepayParams): Cell {
     .storeUint(interestRateMode, 1)
     .storeAddress(poolJWRepay)
     .storeAddress(poolJWCollateral)
-    .storeUint(useAToken, 1)
-    .storeUint(isMax, 1)
+    .storeBit(useAToken)
+    .storeBit(isMax)
     .storeDict(priceData)
     .endCell();
 }
@@ -242,5 +247,26 @@ export function SetUseReserveAsCollateralParamsToCell(
     .storeAddress(config.poolJWAddress)
     .storeBit(config.useAsCollateral)
     .storeDict(config.priceData)
+    .endCell();
+}
+
+export function UpgradeParamsToCell(config: UpgradeParams): Cell {
+  return beginCell()
+    .storeUint(OPCODE.UPGRADE, 32)
+    .storeUint(config.queryId, 64)
+    .storeRef(config.code)
+    .endCell();
+}
+
+export function RepayTonParamsToCell(config: RepayParams): Cell {
+  const { queryId, amount, interestRateMode, useAToken, isMax, priceData } = config;
+  return beginCell()
+    .storeUint(OPCODE.REPAY_TON, 32)
+    .storeUint(queryId, 64)
+    .storeCoins(amount)
+    .storeUint(interestRateMode, 1)
+    .storeBit(useAToken)
+    .storeBit(isMax)
+    .storeDict(priceData)
     .endCell();
 }

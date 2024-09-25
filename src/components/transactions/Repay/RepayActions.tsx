@@ -155,7 +155,8 @@ export const RepayActions = ({
             amount: amountToRepay,
             decimals: poolReserve.decimals,
             isMaxSelected: isMaxSelected,
-            isAToken: repayWithATokens ? 1 : 0,
+            isAToken: repayWithATokens,
+            isJetton: poolReserve.isJetton,
           };
 
           const res = await onSendRepayTon(params);

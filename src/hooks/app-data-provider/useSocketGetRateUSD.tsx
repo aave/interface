@@ -3,27 +3,7 @@ import _ from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useSocket from 'src/utils/connectSocket';
 
-import { address_pools, MAX_ATTEMPTS_50, URL_API_BE } from './useAppDataProviderTon';
-
-export const defaultRateUSDNotValue = [
-  {
-    id: 'dai',
-    address: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
-    usd: '0',
-  },
-  {
-    id: 'usd-coin',
-    address: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
-  },
-  {
-    id: 'tether',
-    address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
-  },
-  {
-    id: 'the-open-network',
-    address: address_pools,
-  },
-];
+import { defaultRateUSDNotValue, MAX_ATTEMPTS_50, URL_API_BE } from './useAppDataProviderTon';
 
 export type WalletBalanceUSD = {
   id: string;

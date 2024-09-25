@@ -104,6 +104,26 @@ export const OP_CODE_REPAY = '0x95cded06';
 export const OP_CODE_WITHDRAW = '0x2572afa4';
 export const OP_CODE_COLLATERAL_UPDATE = '0xab476844';
 
+export const defaultRateUSDNotValue = [
+  {
+    id: 'dai',
+    address: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
+    usd: '0',
+  },
+  {
+    id: 'usd-coin',
+    address: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
+  },
+  {
+    id: 'tether',
+    address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
+  },
+  {
+    id: 'the-open-network',
+    address: address_pools,
+  },
+];
+
 export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) => {
   const [setAccount] = useRootStore((store) => [store.setAccount, store.currentChainId]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -367,7 +387,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             usageAsCollateralEnabled: true,
             borrowingEnabled: true,
             stableBorrowRateEnabled: false,
-            aTokenAddress: '0x1c0E06a0b1A4c160c17545FF2A951bfcA57C0002',
+            aTokenAddress: '',
             stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
             variableDebtTokenAddress: '0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b',
             interestRateStrategyAddress: '0x48AF11111764E710fcDcE2750db848C63edab57B',
@@ -454,7 +474,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               usageAsCollateralEnabled: true,
               borrowingEnabled: true,
               stableBorrowRateEnabled: false,
-              aTokenAddress: item.underlyingAddress.toString().toLocaleLowerCase(),
+              aTokenAddress: '',
               stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
               variableDebtTokenAddress: '0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b',
               interestRateStrategyAddress: '0x48AF11111764E710fcDcE2750db848C63edab57B',

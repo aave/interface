@@ -66,6 +66,7 @@ export const RepayModalContent = ({
     iconSymbol: poolReserve.iconSymbol,
     balance: tokenBalance,
   });
+
   const [assets, setAssets] = useState<RepayAsset[]>([tokenToRepayWith]);
   const [repayMax, setRepayMax] = useState('');
   const [_amount, setAmount] = useState('');

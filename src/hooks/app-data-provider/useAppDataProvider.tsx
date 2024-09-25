@@ -192,10 +192,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   const reserves = isTonNetwork ? reservesTon : formattedPoolReserves || [];
 
-  useEffect(() => {
-    console.log('loading-page', isReservesLoading, isUserDataLoading);
-  }, [isReservesLoading, isUserDataLoading]);
-
   const marketReferencePriceInUsd = isConnectNetWorkTon
     ? `${10 ** 8}`
     : baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0';
