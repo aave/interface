@@ -22,6 +22,8 @@ import {
   InitReserveParamsToCell,
   PoolConfig,
   PoolConfigToCell,
+  RepayParams,
+  RepayParamsToCell,
   ReserveConfig,
   SetUseReserveAsCollateralParams,
   SetUseReserveAsCollateralParamsToCell,
@@ -102,6 +104,14 @@ export class Pool implements Contract {
       value: toNano('0.1'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: SetUseReserveAsCollateralParamsToCell(params),
+    });
+  }
+
+  async sendRepayUseAToken(provider: ContractProvider, via: Sender, params: RepayParams) {
+    await provider.internal(via, {
+      value: toNano('0.2'),
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: RepayParamsToCell(params),
     });
   }
 

@@ -454,7 +454,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               usageAsCollateralEnabled: true,
               borrowingEnabled: true,
               stableBorrowRateEnabled: false,
-              aTokenAddress: '0x1c0E06a0b1A4c160c17545FF2A951bfcA57C0002',
+              aTokenAddress: item.underlyingAddress.toString().toLocaleLowerCase(),
               stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
               variableDebtTokenAddress: '0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b',
               interestRateStrategyAddress: '0x48AF11111764E710fcDcE2750db848C63edab57B',

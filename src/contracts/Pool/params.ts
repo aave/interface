@@ -62,6 +62,17 @@ export type BorrowParams = {
   priceData: Dictionary<bigint, Cell>;
 };
 
+export type RepayParams = {
+  queryId: number;
+  poolJWRepay: Address;
+  poolJWCollateral: Address;
+  amount: bigint;
+  interestRateMode: number;
+  useAToken: number;
+  isMax: number;
+  priceData: Dictionary<bigint, Cell>;
+};
+
 export type WithdrawParams = {
   queryId: number;
   poolJettonWalletAddress: Address;
@@ -174,6 +185,30 @@ export function BorrowParamsToCell(config: BorrowParams): Cell {
     .storeCoins(amount)
     .storeUint(interestRateMode, 1)
     .storeAddress(poolJettonWalletAddress)
+    .storeDict(priceData)
+    .endCell();
+}
+
+export function RepayParamsToCell(config: RepayParams): Cell {
+  const {
+    queryId,
+    poolJWRepay,
+    poolJWCollateral,
+    amount,
+    interestRateMode,
+    useAToken,
+    isMax,
+    priceData,
+  } = config;
+  return beginCell()
+    .storeUint(OPCODE.REPAY_USE_ATOKEN, 32)
+    .storeUint(queryId, 64)
+    .storeCoins(amount)
+    .storeUint(interestRateMode, 1)
+    .storeAddress(poolJWRepay)
+    .storeAddress(poolJWCollateral)
+    .storeUint(useAToken, 1)
+    .storeUint(isMax, 1)
     .storeDict(priceData)
     .endCell();
 }

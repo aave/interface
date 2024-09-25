@@ -151,7 +151,14 @@ export const RepayActions = ({
       if (isConnectedTonWallet) {
         setMainTxState({ ...mainTxState, loading: true });
         try {
-          const res = await onSendRepayTon(amountToRepay, poolReserve.decimals, isMaxSelected);
+          const params = {
+            amount: amountToRepay,
+            decimals: poolReserve.decimals,
+            isMaxSelected: isMaxSelected,
+            isAToken: repayWithATokens ? 1 : 0,
+          };
+
+          const res = await onSendRepayTon(params);
           await Promise.allSettled([getPoolContractGetReservesData(true), getYourSupplies()]);
           if (!res?.success) {
             const error = {

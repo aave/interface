@@ -6,7 +6,7 @@ import { useCallback } from 'react';
 import { Op } from 'src/contracts/JettonConstants';
 import { JettonMinter } from 'src/contracts/JettonMinter';
 import { JettonWallet } from 'src/contracts/JettonWallet';
-import { Pool } from 'src/contracts/Pool';
+import { Pool, RepayParams } from 'src/contracts/Pool';
 import { getMultiSig } from 'src/contracts/utils';
 
 // import { KeyPair, sign } from 'ton-crypto';
@@ -28,6 +28,14 @@ export const ErrorCancelledTon = [
   '[ton_connect_sdk_error]rrejectrequest',
   '[ton_connect_sdk_error]unknownerrorrejectrequest',
 ];
+
+export interface RepayParamsSend {
+  amount: string | number;
+  isAToken: number;
+  interestRateMode?: number;
+  decimals?: number | undefined;
+  isMaxSelected?: boolean | undefined;
+}
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
   const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
@@ -77,27 +85,10 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             .endCell() //tokenAddress: Address
         );
 
-        // const interestMode = 1; //INTEREST_MODE_VARIABLE = 1
-        // const useAToken = false;
-        // const isMax = false;
-
-        //   const repay = await user1USDCWallet.sendTransfer(
-        //     user1.getSender(),  //   sender, //via: Sender,
-        //     toNano('0.1'),  //   toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
-        //     amountRepay10USDC,  // BigInt(amount), // User input amount
-        //     pool.address,  // Address.parse(address_pools), //Address poll
-        //     user1.address, //  Address.parse(yourAddressWallet), // User address wallet
-        //     Cell.EMPTY, //
-        //     toNano('0.1'),
-        //     beginCell().storeUint(Op.repay, 32).storeBit(interestMode).storeBit(useAToken).storeBit(isMax).endCell(),
-        // );
-
         return { success: true, message: 'success' };
       } catch (error) {
         console.error('Transaction failed:', error);
         console.log(error.message.replace(/\s+/g, '').toLowerCase());
-        // [ton_connect_sdk_error]badrequesterror:requesttothewalletcontainserrors.insufficientbalance something wrong
-
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -352,9 +343,9 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
   );
 
-  const onSendRepayTon = useCallback(
-    async (amount: string, decimals: number | undefined, isMaxSelected: boolean | undefined) => {
-      if (!providerPool || !decimals || !providerJettonMinter || !client)
+  const onSendRepayTokenTon = useCallback(
+    async ({ amount, isAToken, interestRateMode }: RepayParamsSend) => {
+      if (!providerJettonMinter || !client || !interestRateMode)
         return { success: false, message: 'error', blocking: false };
 
       const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
@@ -370,6 +361,79 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       ) as OpenedContract<JettonWallet>;
 
       try {
+        await providerJettonWallet.sendTransfer(
+          sender, //via: Sender,
+          toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
+          BigInt(amount), // User input amount
+          Address.parse(address_pools), //Address poll
+          Address.parse(yourAddressWallet), // User address wallet
+          Cell.EMPTY, //
+          toNano('0.1'), // forward_ton_amount: bigint,
+          beginCell()
+            .storeUint(Op.repay, 32)
+            .storeBit(interestRateMode)
+            .storeBit(isAToken)
+            .storeBit(Number(amount) === -1 ? true : false)
+            .endCell()
+        );
+        return { success: true, message: 'success' };
+      } catch (error) {
+        console.log(error.message.replace(/\s+/g, '').toLowerCase());
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
+      }
+    },
+    [client, providerJettonMinter, sender, yourAddressWallet]
+  );
+
+  const onSendRepayATokenTon = useCallback(
+    async ({ amount, isAToken, interestRateMode }: RepayParamsSend) => {
+      if (!providerJettonMinter || !client || !providerPool || !interestRateMode)
+        return { success: false, message: 'error', blocking: false };
+
+      try {
+        const dataMultiSig = await getMultiSig({
+          isMock: false,
+        });
+
+        const paramsRepay: RepayParams = {
+          queryId: 1,
+          amount: BigInt(amount), // amount borrow
+          poolJWRepay: await providerJettonMinter.getWalletAddress(Address.parse(address_pools)),
+          poolJWCollateral: await providerJettonMinter.getWalletAddress(
+            Address.parse(address_pools)
+          ),
+          interestRateMode: interestRateMode,
+          useAToken: isAToken,
+          isMax: 0,
+          priceData: dataMultiSig,
+        };
+
+        await providerPool.sendRepayUseAToken(
+          sender, //via: Sender
+          paramsRepay //via: Sender,
+        );
+
+        return { success: true, message: 'success' };
+      } catch (error) {
+        console.log(error.message.replace(/\s+/g, '').toLowerCase());
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
+      }
+    },
+    [client, providerJettonMinter, providerPool, sender]
+  );
+
+  const onSendRepayTon = useCallback(
+    async ({ amount, decimals, isMaxSelected, isAToken }: RepayParamsSend) => {
+      if (!decimals) return { success: false, message: 'error', blocking: false };
+      try {
+        let res:
+          | boolean
+          | {
+              success: boolean;
+              message: string;
+            }
+          | undefined;
+
         const parseAmount =
           Number(amount) === -1
             ? 1
@@ -380,55 +444,47 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
                 decimals
               ).toString();
         const interestRateMode = 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
-        const useAToken = false;
 
-        await providerJettonWallet.sendTransfer(
-          sender, //via: Sender,
-          toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
-          BigInt(parseAmount), // User input amount
-          Address.parse(address_pools), //Address poll
-          Address.parse(yourAddressWallet), // User address wallet
-          Cell.EMPTY, //
-          toNano('0.1'), // forward_ton_amount: bigint,
-          beginCell()
-            .storeUint(Op.repay, 32)
-            .storeBit(interestRateMode)
-            .storeBit(useAToken)
-            .storeBit(Number(amount) === -1 ? true : false)
-            .endCell()
-        );
+        const params = {
+          amount: parseAmount,
+          isAToken: isAToken,
+          interestRateMode: interestRateMode,
+        };
+
+        if (isAToken) res = await onSendRepayATokenTon(params);
+        else res = await onSendRepayTokenTon(params);
 
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
-        if (txHash) {
+        if (txHash && !!res?.success) {
           const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash, blocking: !status, message: txHash };
-        } else {
-          throw new Error('Transaction failed');
-        }
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        const errorToCheck = error.message.replace(/\s+/g, '').toLowerCase();
-        if (_.includes(ErrorCancelledTon, errorToCheck)) {
+          return {
+            success: status,
+            txHash: txHash,
+            blocking: !status,
+            message: txHash,
+          };
+        } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
             success: false,
             message: ErrorCancelledTon[0],
             blocking: false,
           };
         } else {
-          return { success: false, message: error?.message, blocking: false };
+          throw new Error('Transaction failed');
         }
+      } catch (error) {
+        console.log('error supply', error);
+        return { success: false, message: error?.message, blocking: false };
       }
     },
     [
-      client,
       getLatestBoc,
       getTransactionStatus,
       onGetGetTxByBOC,
-      providerJettonMinter,
-      providerPool,
-      sender,
+      onSendRepayATokenTon,
+      onSendRepayTokenTon,
       yourAddressWallet,
     ]
   );
