@@ -32,6 +32,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
     currentNetworkConfig: state.currentNetworkConfig,
     trackEvent: state.trackEvent,
   }));
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
   const theme = useTheme();
 
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
@@ -48,9 +49,10 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
     }
   }, [copyStatus]);
 
-  const explorerLink = isConnectedTonWallet
-    ? `${SCAN_TRANSACTION_TON_HISTORY}/${transaction.txHash}`
-    : currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
+  const explorerLink =
+    isConnectedTonWallet && currentMarketData.marketTitle === 'TON'
+      ? `${SCAN_TRANSACTION_TON_HISTORY}/${transaction.txHash}`
+      : currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
   return (
     <Box px={0}>

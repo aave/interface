@@ -119,6 +119,7 @@ export const HistoryWrapper = () => {
 
       const reserveName = name || 'Unknown Name';
       const reserveAsset = underlyingAsset || 'Unknown Asset';
+      const collateralStatus = item.collateralStatus === 'disable' ? false : true;
 
       if (
         action === 'Supply' ||
@@ -141,11 +142,20 @@ export const HistoryWrapper = () => {
         console.log('Item not match with action: ', item);
       }
       const iconSymbol = item.symbol;
-      return { ...item, action, iconSymbol };
+      return { ...item, action, iconSymbol, toState: collateralStatus };
     });
 
     return applyTxHistoryFilters({ searchQuery, filterQuery, txns: updatedTxns });
   }, [searchQuery, filterQuery, flatTxns]);
+
+  if (!currentAccount) {
+    return (
+      <ConnectWalletPaper
+        loading={web3Loading}
+        description={<Trans> Please connect your wallet to view transaction history.</Trans>}
+      />
+    );
+  }
 
   if (!checkTonNetwork && !subgraphUrl) {
     return (
@@ -164,15 +174,6 @@ export const HistoryWrapper = () => {
           <Trans>Transaction history is not currently available for this market</Trans>
         </Typography>
       </Paper>
-    );
-  }
-
-  if (!currentAccount) {
-    return (
-      <ConnectWalletPaper
-        loading={web3Loading}
-        description={<Trans> Please connect your wallet to view transaction history.</Trans>}
-      />
     );
   }
 

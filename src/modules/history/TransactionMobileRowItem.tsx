@@ -9,6 +9,8 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { unixTimestampToFormattedTime } from './helpers';
 import { ActionFields, TransactionHistoryItem } from './types';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
+import { SCAN_TRANSACTION_TON_HISTORY } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 
 function ActionTitle({ action }: { action: string }) {
   return (
@@ -28,6 +30,8 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
     currentNetworkConfig: state.currentNetworkConfig,
     trackEvent: state.trackEvent,
   }));
+  const { isConnectedTonWallet } = useTonConnectContext();
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
   const theme = useTheme();
 
   useEffect(() => {
@@ -42,7 +46,10 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
     }
   }, [copyStatus]);
 
-  const explorerLink = currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
+  const explorerLink =
+    isConnectedTonWallet && currentMarketData.marketTitle === 'TON'
+      ? `${SCAN_TRANSACTION_TON_HISTORY}/${transaction.txHash}`
+      : currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
   return (
     <Box>
