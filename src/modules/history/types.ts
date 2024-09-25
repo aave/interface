@@ -1,3 +1,12 @@
+import {
+  OP_CODE_BORROW,
+  OP_CODE_COLLATERAL_UPDATE,
+  OP_CODE_REPAY,
+  OP_CODE_SUPPLY,
+  OP_CODE_WITHDRAW,
+  address_pools,
+} from 'src/hooks/app-data-provider/useAppDataProviderTon';
+
 export type TransactionHistoryItem<T = unknown> = {
   id: string;
   txHash: string;
@@ -178,4 +187,26 @@ export const actionFilterMap = (action: string): number => {
     default:
       return 7;
   }
+};
+
+export const ACTION_HISTORY: { [key: string]: string } = {
+  [OP_CODE_SUPPLY]: 'Supply',
+  [OP_CODE_BORROW]: 'Borrow',
+  [OP_CODE_REPAY]: 'Repay',
+  [OP_CODE_WITHDRAW]: 'RedeemUnderlying',
+  [OP_CODE_COLLATERAL_UPDATE]: 'UsageAsCollateral',
+};
+
+export const defaultUnderlyingAsset = {
+  USDC: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
+  USDT: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
+  DAI: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
+  TON: address_pools,
+};
+
+export const defaultNameAsset = {
+  USDC: 'USD Coin',
+  USDT: 'Tether',
+  DAI: 'Dai Stablecoin',
+  TON: 'TON',
 };

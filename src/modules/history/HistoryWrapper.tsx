@@ -14,14 +14,6 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
-import {
-  address_pools,
-  OP_CODE_BORROW,
-  OP_CODE_COLLATERAL_UPDATE,
-  OP_CODE_REPAY,
-  OP_CODE_SUPPLY,
-  OP_CODE_WITHDRAW,
-} from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -33,7 +25,13 @@ import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
 import { HistoryWrapperMobile } from './HistoryWrapperMobile';
 import TransactionRowItem from './TransactionRowItem';
-import { FilterOptions, TransactionHistoryItemUnion } from './types';
+import {
+  ACTION_HISTORY,
+  defaultNameAsset,
+  defaultUnderlyingAsset,
+  FilterOptions,
+  TransactionHistoryItemUnion,
+} from './types';
 
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -45,14 +43,6 @@ export const HistoryWrapper = () => {
   const checkTonNetwork = isConnectedTonWallet && currentMarketData.marketTitle === 'TON';
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
   const trackEvent = useRootStore((store) => store.trackEvent);
-
-  const ACTION_HISTORY: { [key: string]: string } = {
-    [OP_CODE_SUPPLY]: 'Supply',
-    [OP_CODE_BORROW]: 'Borrow',
-    [OP_CODE_REPAY]: 'Repay',
-    [OP_CODE_WITHDRAW]: 'RedeemUnderlying',
-    [OP_CODE_COLLATERAL_UPDATE]: 'UsageAsCollateral',
-  };
 
   const {
     data: transactions,
@@ -81,24 +71,10 @@ export const HistoryWrapper = () => {
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
   const { currentAccount, loading: web3Loading } = useWeb3Context();
 
-  const flatTxns = useMemo(
-    () => transactions?.pages?.flatMap((page) => page) || [],
-    [transactions]
-  );
-
-  const defaultUnderlyingAsset = {
-    USDC: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
-    USDT: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
-    DAI: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
-    TON: address_pools,
-  };
-
-  const defaultNameAsset = {
-    USDC: 'USD Coin',
-    USDT: 'Tether',
-    DAI: 'Dai Stablecoin',
-    TON: 'TON',
-  };
+  const flatTxns = useMemo(() => {
+    console.log('Transactions updated: ', transactions);
+    return transactions?.pages?.flatMap((page) => page) || [];
+  }, [transactions]);
 
   const filteredTxns: TransactionHistoryItemUnion[] = useMemo(() => {
     const txnArray = Array.isArray(flatTxns) ? flatTxns : [];
