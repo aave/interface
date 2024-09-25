@@ -302,6 +302,7 @@ export const RepayModalContent = ({
         debtType={debtType}
         repayWithATokens={repayWithATokens}
         underlyingAssetTon={poolReserve?.underlyingAssetTon}
+        balance={balance}
       />
     </>
   );

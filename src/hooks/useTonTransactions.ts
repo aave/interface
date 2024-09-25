@@ -36,6 +36,7 @@ export interface RepayParamsSend {
   decimals?: number | undefined;
   isMaxSelected?: boolean | undefined;
   isJetton?: boolean;
+  balance?: string;
 }
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
@@ -441,9 +442,13 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const onSendRepayTon = useCallback(
-    async ({ amount, decimals, isMaxSelected, isAToken, isJetton }: RepayParamsSend) => {
-      if (!decimals) return { success: false, message: 'error', blocking: false };
+    async ({ amount, decimals, isMaxSelected, isAToken, isJetton, balance }: RepayParamsSend) => {
+      if (!decimals || !balance) return { success: false, message: 'error', blocking: false };
       try {
+        const isBuffer =
+          isMaxSelected &&
+          valueToBigNumber(amount).multipliedBy(1.001).isLessThan(valueToBigNumber(balance));
+
         let res:
           | boolean
           | {
@@ -457,7 +462,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             ? 1
             : parseUnits(
                 valueToBigNumber(amount)
-                  .multipliedBy(isMaxSelected ? 1.001 : 1)
+                  .multipliedBy(isBuffer ? 1.001 : 1)
                   .toFixed(decimals),
                 decimals
               ).toString();
