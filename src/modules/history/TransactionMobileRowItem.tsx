@@ -3,6 +3,8 @@ import ArrowOutward from '@mui/icons-material/ArrowOutward';
 import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ListItem } from 'src/components/lists/ListItem';
+import { SCAN_TRANSACTION_TON_HISTORY } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -28,6 +30,8 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
     currentNetworkConfig: state.currentNetworkConfig,
     trackEvent: state.trackEvent,
   }));
+  const { isConnectedTonWallet } = useTonConnectContext();
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
   const theme = useTheme();
 
   useEffect(() => {
@@ -42,7 +46,10 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
     }
   }, [copyStatus]);
 
-  const explorerLink = currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
+  const explorerLink =
+    isConnectedTonWallet && currentMarketData.marketTitle === 'TON'
+      ? `${SCAN_TRANSACTION_TON_HISTORY}/${transaction.txHash}`
+      : currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
   return (
     <Box>
