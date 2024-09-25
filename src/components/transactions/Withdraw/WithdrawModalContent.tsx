@@ -3,8 +3,11 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
+import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { Warning } from 'src/components/primitives/Warning';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useTokenInForTokenOut } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
@@ -172,6 +175,15 @@ export const WithdrawModalContent = ({
       )}
 
       <TxModalDetails gasLimit={gasLimit}>
+        {canBeUnwrapped && withdrawUnWrapped && (
+          <UnwrapWithdrawDetails
+            withdrawAmount={withdrawAmount}
+            tokenOutDecimals={wrappedToken.tokenOut.decimals}
+            tokenWrapperAddress={wrappedToken.tokenWrapperAddress}
+            tokenInSymbol={unwrapFromSymbol}
+            tokenOutSymbol={unwrapToSymbol}
+          />
+        )}
         <DetailsNumberLine
           description={<Trans>Remaining supply</Trans>}
           value={underlyingBalance.minus(withdrawAmount || '0').toString(10)}
@@ -252,5 +264,44 @@ export const WithdrawModalContent = ({
         />
       )}
     </>
+  );
+};
+
+const UnwrapWithdrawDetails = ({
+  withdrawAmount,
+  tokenOutDecimals,
+  tokenWrapperAddress,
+  tokenInSymbol,
+  tokenOutSymbol,
+}: {
+  withdrawAmount: string;
+  tokenOutDecimals: number;
+  tokenWrapperAddress: string;
+  tokenInSymbol: string;
+  tokenOutSymbol: string;
+}) => {
+  const { data: tokenInAmount, isFetching: loading } = useTokenInForTokenOut(
+    withdrawAmount,
+    tokenOutDecimals,
+    tokenWrapperAddress
+  );
+
+  return (
+    <DetailsNumberLine
+      loading={loading}
+      description={
+        <TextWithTooltip text={<Trans>Amount to receive</Trans>}>
+          <WrappedTokenTooltipContent
+            action="withdrawn"
+            decimals={tokenOutDecimals}
+            tokenWrapperAddress={tokenWrapperAddress}
+            tokenInSymbol={tokenInSymbol}
+            tokenOutSymbol={tokenOutSymbol}
+          />
+        </TextWithTooltip>
+      }
+      value={tokenInAmount || '0'}
+      symbol={tokenOutSymbol}
+    />
   );
 };

@@ -525,6 +525,7 @@ export const ExchangeRate = ({
       )}
       <TextWithTooltip>
         <WrappedTokenTooltipContent
+          action="supplied"
           decimals={decimals}
           tokenWrapperAddress={tokenWrapperAddress}
           tokenInSymbol={tokenInSymbol}

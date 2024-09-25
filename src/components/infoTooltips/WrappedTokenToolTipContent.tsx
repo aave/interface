@@ -6,11 +6,13 @@ import { useTokenOutForTokenIn } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 
 export const WrappedTokenTooltipContent = ({
+  action,
   decimals,
   tokenWrapperAddress,
   tokenInSymbol,
   tokenOutSymbol,
 }: {
+  action: 'supplied' | 'borrowed' | 'withdrawn';
   decimals: number;
   tokenWrapperAddress: string;
   tokenInSymbol: string;
@@ -26,7 +28,7 @@ export const WrappedTokenTooltipContent = ({
     <Stack direction="column" gap={3}>
       <Typography variant="tooltip">
         <Trans>
-          {tokenInSymbol} balance will be converted via wrapper contracts and then supplied as{' '}
+          {tokenInSymbol} balance will be converted via wrapper contracts and then {action} as{' '}
           {tokenOutSymbol}. Switching incurs no additional costs and no slippage.
         </Trans>
       </Typography>

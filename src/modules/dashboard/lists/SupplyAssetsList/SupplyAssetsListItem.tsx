@@ -156,6 +156,7 @@ export const SupplyAssetsListItemDesktop = ({
           <ContentWithTooltip
             tooltipContent={
               <WrappedTokenTooltipContent
+                action="supplied"
                 decimals={wrappedToken.tokenIn.decimals}
                 tokenWrapperAddress={wrappedToken.tokenWrapperAddress}
                 tokenInSymbol={wrappedToken.tokenIn.symbol}
@@ -339,6 +340,7 @@ export const SupplyAssetsListItemMobile = ({
           <ContentWithTooltip
             tooltipContent={
               <WrappedTokenTooltipContent
+                action="supplied"
                 decimals={wrappedToken.tokenIn.decimals}
                 tokenWrapperAddress={wrappedToken.tokenWrapperAddress}
                 tokenInSymbol={wrappedToken.tokenIn.symbol}
