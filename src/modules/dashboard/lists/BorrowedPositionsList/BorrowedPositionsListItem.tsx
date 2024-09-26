@@ -5,10 +5,12 @@ import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { Row } from 'src/components/primitives/Row';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+// import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
@@ -21,14 +23,9 @@ import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { ListValueRow } from '../ListValueRow';
 
-export const BorrowedPositionsListItem = ({
-  item,
-  checkMaxVariableBorrow,
-}: {
-  item: DashboardReserve;
-  checkMaxVariableBorrow: boolean;
-}) => {
-  const { borrowCap } = useAssetCaps();
+export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) => {
+  const { user } = useAppDataContext();
+  // const { borrowCap } = useAssetCaps();
   const { currentMarket, currentMarketData } = useProtocolDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -36,13 +33,18 @@ export const BorrowedPositionsListItem = ({
 
   const reserve = item.reserve;
 
-  const disableBorrow =
-    !reserve.isActive ||
-    !reserve.borrowingEnabled ||
-    reserve.isFrozen ||
-    reserve.isPaused ||
-    borrowCap.isMaxed ||
-    checkMaxVariableBorrow;
+  const availableBorrows = user
+    ? Number(getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable))
+    : 0;
+
+  const disableBorrow = item.isFreezed || Number(availableBorrows) <= 0;
+
+  // const disableBorrow =
+  // !reserve.isActive ||
+  // !reserve.borrowingEnabled ||
+  // reserve.isFrozen ||
+  // reserve.isPaused ||
+  // borrowCap.isMaxed;
 
   const disableRepay = !reserve.isActive || reserve.isPaused;
 

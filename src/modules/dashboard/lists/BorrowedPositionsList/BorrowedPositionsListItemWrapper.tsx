@@ -6,13 +6,7 @@ import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { GhoBorrowedPositionsListItem } from './GhoBorrowedPositionsListItem';
 
-export const BorrowedPositionsListItemWrapper = ({
-  item,
-  checkMaxVariableBorrow,
-}: {
-  item: DashboardReserve;
-  checkMaxVariableBorrow: boolean;
-}) => {
+export const BorrowedPositionsListItemWrapper = ({ item }: { item: DashboardReserve }) => {
   const { currentMarket } = useProtocolDataContext();
 
   return (
@@ -20,7 +14,7 @@ export const BorrowedPositionsListItemWrapper = ({
       {displayGhoForMintableMarket({ symbol: item.reserve.symbol, currentMarket }) ? (
         <GhoBorrowedPositionsListItem {...item} />
       ) : (
-        <BorrowedPositionsListItem item={item} checkMaxVariableBorrow={checkMaxVariableBorrow} />
+        <BorrowedPositionsListItem item={item} />
       )}
     </AssetCapsProvider>
   );
