@@ -80,7 +80,7 @@ const testData = {
       {
         asset: assets.polygonV3Market.POL,
         apyType: constants.apyType.variable,
-        repayableAsset: assets.polygonV3Market.aWMATIC,
+        repayableAsset: assets.polygonV3Market.aWPOL,
         amount: 0.01,
         hasApproval: true,
         repayOption: constants.repayType.default,

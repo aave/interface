@@ -621,9 +621,9 @@
       "shortName": "WPOL",
       "wrapped": true
     },
-    "aWMATIC": {
-      "fullName": "aWMATIC",
-      "shortName": "aWMATIC",
+    "aWPOL": {
+      "fullName": "aWPOL",
+      "shortName": "aWPOL",
       "wrapped": true
     },
     "DAI": {
