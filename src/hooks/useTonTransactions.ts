@@ -350,20 +350,20 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       if (!providerJettonMinter || !client || !interestRateMode || !providerPool)
         return { success: false, message: 'error', blocking: false };
 
-      const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
-        Address.parse(yourAddressWallet)
-      );
-
-      const contractJettonWallet = new JettonWallet(
-        walletAddressJettonMinter // z-ton-wallet
-      );
-
-      const providerJettonWallet = client.open(
-        contractJettonWallet
-      ) as OpenedContract<JettonWallet>;
-
       try {
         if (isJetton) {
+          const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
+            Address.parse(yourAddressWallet)
+          );
+
+          const contractJettonWallet = new JettonWallet(
+            walletAddressJettonMinter // z-ton-wallet
+          );
+
+          const providerJettonWallet = client.open(
+            contractJettonWallet
+          ) as OpenedContract<JettonWallet>;
+
           await providerJettonWallet.sendTransfer(
             sender, //via: Sender,
             toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
@@ -485,6 +485,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           interestRateMode,
           isJetton,
         };
+
+        console.log('params---------', params);
 
         if (isAToken) res = await onSendRepayATokenTon(params);
         else res = await onSendRepayTokenTon(params);
