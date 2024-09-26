@@ -48,14 +48,14 @@
     }
   },
   "polygonMarket": {
-    "MATIC": {
-      "fullName": "Matic",
-      "shortName": "MATIC",
+    "POL": {
+      "fullName": "POL",
+      "shortName": "POL",
       "wrapped": true
     },
-    "WMATIC": {
-      "fullName": "Wrapped Matic",
-      "shortName": "WMATIC",
+    "WPOL": {
+      "fullName": "Wrapped POL",
+      "shortName": "WPOL",
       "wrapped": true
     },
     "amWMATIC": {
@@ -611,14 +611,14 @@
     }
   },
   "polygonV3Market": {
-    "MATIC": {
-      "fullName": "MATIC",
-      "shortName": "MATIC",
+    "POL": {
+      "fullName": "POL",
+      "shortName": "POL",
       "wrapped": true
     },
-    "WMATIC": {
-      "fullName": "WMATIC",
-      "shortName": "WMATIC",
+    "WPOL": {
+      "fullName": "WPOL",
+      "shortName": "WPOL",
       "wrapped": true
     },
     "aWMATIC": {

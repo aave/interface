@@ -23,34 +23,34 @@ const tokensToRequest: RequestedTokens = {
 const testData = {
   testCases: {
     deposit: {
-      asset: assets.polygonMarket.MATIC,
+      asset: assets.polygonMarket.POL,
       amount: 1.09,
       hasApproval: true,
     },
     collateral: {
       switchOff: {
-        asset: assets.polygonMarket.MATIC,
+        asset: assets.polygonMarket.POL,
         isCollateralType: true,
         hasApproval: true,
       },
       switchOn: {
-        asset: assets.polygonMarket.MATIC,
+        asset: assets.polygonMarket.POL,
         isCollateralType: false,
         hasApproval: true,
       },
       switchNegative: {
-        asset: assets.polygonMarket.MATIC,
+        asset: assets.polygonMarket.POL,
         isCollateralType: true,
       },
     },
     borrow: {
-      asset: assets.polygonMarket.MATIC,
+      asset: assets.polygonMarket.POL,
       amount: 0.04,
       apyType: constants.borrowAPYType.default,
       hasApproval: false,
     },
     repay: {
-      asset: assets.polygonMarket.MATIC,
+      asset: assets.polygonMarket.POL,
       apyType: constants.apyType.variable,
       amount: 0.01,
       hasApproval: true,
@@ -58,13 +58,13 @@ const testData = {
     },
     withdraw: [
       {
-        asset: assets.polygonMarket.MATIC,
+        asset: assets.polygonMarket.POL,
         isCollateral: true,
         amount: 0.01,
         hasApproval: false,
       },
       {
-        asset: assets.polygonMarket.MATIC,
+        asset: assets.polygonMarket.POL,
         isCollateral: true,
         amount: 0.01,
         hasApproval: true,
@@ -76,16 +76,16 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonMarket.MATIC.shortName,
-        wrapped: assets.polygonMarket.MATIC.wrapped,
+        assetName: assets.polygonMarket.POL.shortName,
+        wrapped: assets.polygonMarket.POL.wrapped,
         amount: 1.07,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonMarket.MATIC.shortName,
-        wrapped: assets.polygonMarket.MATIC.wrapped,
+        assetName: assets.polygonMarket.POL.shortName,
+        wrapped: assets.polygonMarket.POL.wrapped,
         amount: 0.03,
         apyType: constants.borrowAPYType.variable,
       },
@@ -93,7 +93,7 @@ const testData = {
   },
 };
 
-describe('MATIC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+describe('POL INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ tokens: tokenSet(tokensToRequest) });
 
