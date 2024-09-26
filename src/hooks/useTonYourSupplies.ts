@@ -14,7 +14,7 @@ import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { sleep } from 'src/utils/rotationProvider';
 
-import { address_pools, MAX_ATTEMPTS } from './app-data-provider/useAppDataProviderTon';
+import { address_pools, MAX_ATTEMPTS_50 } from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
 import { useTonClient } from './useTonClient';
 
@@ -45,7 +45,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
   const getYourSupplies = useCallback(async () => {
     let attempts = 0;
-    const maxAttempts = MAX_ATTEMPTS;
+    const maxAttempts = MAX_ATTEMPTS_50;
     if (!isConnectedTonWallet) {
       setUserSupplies([]);
       setContractUserTon('');
@@ -57,6 +57,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
         if (!client || !address_pools || !yourAddressWallet) return;
         const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
         const res = await poolContract.getUserData(Address.parse(yourAddressWallet));
+        console.log('------', res);
         const contractUserTon = await poolContract.getUserAddress(Address.parse(yourAddressWallet));
         setContractUserTon(contractUserTon.toString());
         const data = res.map((item) => {

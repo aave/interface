@@ -149,7 +149,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
       let attempts = 0;
-      const maxAttempts = MAX_ATTEMPTS;
+      const maxAttempts = MAX_ATTEMPTS_50;
 
       while (attempts < maxAttempts) {
         try {
