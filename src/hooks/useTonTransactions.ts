@@ -477,6 +477,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
                   .toFixed(decimals),
                 decimals
               ).toString();
+
         const interestRateMode = 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
 
         const params = {
@@ -485,8 +486,6 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           interestRateMode,
           isJetton,
         };
-
-        console.log('params---------', params);
 
         if (isAToken) res = await onSendRepayATokenTon(params);
         else res = await onSendRepayTokenTon(params);
