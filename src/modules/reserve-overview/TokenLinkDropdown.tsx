@@ -7,6 +7,7 @@ import { CircleIcon } from 'src/components/CircleIcon';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 
 import { RESERVE_DETAILS } from '../../utils/mixPanelEvents';
@@ -20,9 +21,10 @@ interface TokenLinkDropdownProps {
 export const TokenLinkDropdown = ({
   poolReserve,
   downToSM,
-  hideAToken,
+  hideAToken: hideATokenMain,
 }: TokenLinkDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { isConnectedTonWallet } = useTonConnectContext();
 
   const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const open = Boolean(anchorEl);
@@ -46,13 +48,17 @@ export const TokenLinkDropdown = ({
     return null;
   }
 
-  const showVariableDebtToken =
-    poolReserve.borrowingEnabled || Number(poolReserve.totalVariableDebt) > 0;
+  const showVariableDebtToken = isConnectedTonWallet
+    ? false
+    : poolReserve.borrowingEnabled || Number(poolReserve.totalVariableDebt) > 0;
 
-  const showStableDebtToken =
-    poolReserve.stableBorrowRateEnabled || Number(poolReserve.totalStableDebt) > 0;
+  const showStableDebtToken = isConnectedTonWallet
+    ? false
+    : poolReserve.stableBorrowRateEnabled || Number(poolReserve.totalStableDebt) > 0;
 
   const showDebtTokenHeader = showVariableDebtToken || showStableDebtToken;
+
+  const hideAToken = isConnectedTonWallet ? true : hideATokenMain;
 
   return (
     <>
