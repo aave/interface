@@ -76,7 +76,7 @@ const NETWORK_ASSETS: TokenInfo[] = [
   },
   {
     name: 'Polygon',
-    symbol: 'MATIC',
+    symbol: 'POL',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
     chainId: 137,
@@ -9285,9 +9285,9 @@ export const TOKEN_LIST: TokenList = {
       },
     },
     {
-      name: 'Wrapped Matic',
+      name: 'Wrapped POL',
       address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-      symbol: 'WMATIC',
+      symbol: 'WPOL',
       decimals: 18,
       chainId: 137,
       logoURI:
