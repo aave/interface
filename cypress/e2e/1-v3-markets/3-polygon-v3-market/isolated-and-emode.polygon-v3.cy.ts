@@ -19,7 +19,7 @@ const tokensToRequest: RequestedTokens = {
 const testData = {
   testCases: {
     swapMATIC: {
-      fromAsset: assets.polygonV3Market.MATIC,
+      fromAsset: assets.polygonV3Market.POL,
       toAsset: assets.polygonV3Market.USDT,
       isCollateralFromAsset: true,
       amount: 10,

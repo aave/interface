@@ -19,12 +19,12 @@ const tokensToRequest: RequestedTokens = {
 const testData = {
   testCases: {
     depositMATIC: {
-      asset: assets.polygonV3Market.MATIC,
+      asset: assets.polygonV3Market.POL,
       amount: 100,
       hasApproval: true,
     },
     swapMATIC: {
-      fromAsset: assets.polygonV3Market.MATIC,
+      fromAsset: assets.polygonV3Market.POL,
       toAsset: assets.polygonV3Market.USDT,
       isCollateralFromAsset: true,
       amount: 10,
@@ -60,7 +60,7 @@ const testData = {
       hasApproval: true,
     },
     switchCollateralForMATIC: {
-      asset: assets.polygonV3Market.MATIC,
+      asset: assets.polygonV3Market.POL,
       isCollateralType: true,
       hasApproval: true,
     },

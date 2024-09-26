@@ -13,19 +13,19 @@ const tokensToRequest: RequestedTokens = {
 const testData = {
   testCases: {
     borrow: {
-      asset: assets.polygonV3Market.MATIC,
+      asset: assets.polygonV3Market.POL,
       amount: 1,
       apyType: constants.borrowAPYType.default,
       hasApproval: false,
       isRisk: true,
     },
     deposit2: {
-      asset: assets.polygonV3Market.MATIC,
+      asset: assets.polygonV3Market.POL,
       amount: 1,
       hasApproval: true,
     },
     withdraw: {
-      asset: assets.polygonV3Market.MATIC,
+      asset: assets.polygonV3Market.POL,
       isCollateral: true,
       amount: 9999,
       hasApproval: false,

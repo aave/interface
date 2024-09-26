@@ -8,7 +8,7 @@ import { dashboardAssetValuesVerification } from '../../../support/steps/verific
 const testData = {
   v2Market: {
     depositBase: {
-      asset: assets.polygonMarket.MATIC,
+      asset: assets.polygonMarket.POL,
       amount: 500,
       hasApproval: true,
     },
@@ -20,7 +20,7 @@ const testData = {
         hasApproval: true,
       },
       {
-        asset: assets.polygonMarket.MATIC,
+        asset: assets.polygonMarket.POL,
         amount: 100,
         apyType: constants.borrowAPYType.default,
         hasApproval: false,
@@ -43,11 +43,11 @@ const testData = {
   },
   migration: {
     supplies: [
-      { shortName: assets.polygonMarket.MATIC.shortName },
+      { shortName: assets.polygonMarket.POL.shortName },
       { shortName: assets.polygonMarket.DAI.shortName },
     ],
     borrows: [
-      { shortName: assets.polygonMarket.MATIC.shortName },
+      { shortName: assets.polygonMarket.POL.shortName },
       { shortName: assets.polygonMarket.DAI.shortName },
     ],
     isAllSupplies: true,
@@ -57,8 +57,8 @@ const testData = {
     finalDashboard1: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonMarket.MATIC.shortName,
-        wrapped: assets.polygonMarket.MATIC.wrapped,
+        assetName: assets.polygonMarket.POL.shortName,
+        wrapped: assets.polygonMarket.POL.wrapped,
         amount: 500,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
@@ -80,8 +80,8 @@ const testData = {
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonMarket.MATIC.shortName,
-        wrapped: assets.polygonMarket.MATIC.wrapped,
+        assetName: assets.polygonMarket.POL.shortName,
+        wrapped: assets.polygonMarket.POL.wrapped,
         amount: 100,
         apyType: constants.borrowAPYType.variable,
       },

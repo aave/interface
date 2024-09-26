@@ -82,7 +82,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   WBTC: 'Wrapped BTC',
   WETH: 'Wrapped ETH',
   WFTM: 'Wrapped FTM',
-  WMATIC: 'Wrapped Matic',
+  WPOL: 'Wrapped POL',
   WONE: 'Wrapped ONE',
   YFI: 'yearn.finance',
   ZRX: '0x Coin',

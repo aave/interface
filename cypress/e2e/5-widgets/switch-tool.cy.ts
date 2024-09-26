@@ -78,7 +78,7 @@ const testData = {
   ],
   polygon: [
     {
-      fromAsset: assets.polygonV3Market.MATIC,
+      fromAsset: assets.polygonV3Market.POL,
       toAsset: assets.polygonV3Market.USDC,
       amount: 1,
       hasApproval: true,
