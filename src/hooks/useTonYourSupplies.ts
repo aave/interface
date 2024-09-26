@@ -57,7 +57,6 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
         if (!client || !address_pools || !yourAddressWallet) return;
         const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
         const res = await poolContract.getUserData(Address.parse(yourAddressWallet));
-        console.log('------', res);
         const contractUserTon = await poolContract.getUserAddress(Address.parse(yourAddressWallet));
         setContractUserTon(contractUserTon.toString());
         const data = res.map((item) => {
