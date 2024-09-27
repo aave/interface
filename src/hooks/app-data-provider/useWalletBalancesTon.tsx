@@ -6,6 +6,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { JettonMinter } from 'src/contracts/JettonMinter';
 import { JettonWallet } from 'src/contracts/JettonWallet';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { retry } from 'ts-retry-promise';
 
 import { useTonClient } from '../useTonClient';
 import { API_TON_V2, MAX_ATTEMPTS_50, PoolContractReservesDataType } from './useAppDataProviderTon';
@@ -26,7 +27,6 @@ export const useGetBalanceTon = () => {
 
   const onGetBalanceTonNetwork = useCallback(
     async (tokenAddress: string, yourAddress: string, decimals: string | number) => {
-      // Validate the client and addresses before proceeding
       if (!client) {
         console.error('Client is not available.');
         return '0';
@@ -42,91 +42,79 @@ export const useGetBalanceTon = () => {
         return '0';
       }
 
-      const maxAttempts = MAX_ATTEMPTS_50; // Set maximum attempts
-      let attempts = 0;
-      let balance = '0';
+      try {
+        const balance = await retry(
+          async () => {
+            // Parse token and user wallet addresses
+            const parsedTokenAddress = Address.parse(tokenAddress);
+            const parsedWalletAddress = Address.parse(yourAddress);
 
-      while (attempts < maxAttempts) {
-        attempts++;
-        try {
-          // Parse token and user wallet addresses once and reuse them
-          const parsedTokenAddress = Address.parse(tokenAddress);
-          const parsedWalletAddress = Address.parse(yourAddress);
+            // Open the Jetton Minter contract
+            const jettonMinterContract = new JettonMinter(parsedTokenAddress);
+            const jettonMinterProvider = client.open(
+              jettonMinterContract
+            ) as OpenedContract<JettonMinter>;
 
-          // Open the Jetton Minter contract
-          const jettonMinterContract = new JettonMinter(parsedTokenAddress);
-          const jettonMinterProvider = client.open(
-            jettonMinterContract
-          ) as OpenedContract<JettonMinter>;
+            // Retrieve the Jetton Wallet address for the user
+            const jettonWalletAddress = await jettonMinterProvider.getWalletAddress(
+              parsedWalletAddress
+            );
+            if (!jettonWalletAddress) {
+              console.error('Jetton wallet address not found.');
+              return '0';
+            }
 
-          // Retrieve the Jetton Wallet address for the user
-          const jettonWalletAddress = await jettonMinterProvider.getWalletAddress(
-            parsedWalletAddress
-          );
+            // Open the Jetton Wallet contract using the obtained address
+            const jettonWalletContract = new JettonWallet(jettonWalletAddress);
+            const jettonWalletProvider = client.open(
+              jettonWalletContract
+            ) as OpenedContract<JettonWallet>;
 
-          if (!jettonWalletAddress) {
-            console.error('Jetton wallet address not found.');
-            return '0';
+            // Fetch the Jetton balance for the user's wallet
+            const fetchedBalance = await jettonWalletProvider.getJettonBalance();
+
+            // Format and return the balance using the provided decimals
+            return formatUnits(fetchedBalance || '0', decimals);
+          },
+          {
+            retries: MAX_ATTEMPTS_50, // Maximum number of retries
+            delay: 1000, // Delay between retries (1 second)
           }
+        );
 
-          // Open the Jetton Wallet contract using the obtained address
-          const jettonWalletContract = new JettonWallet(jettonWalletAddress);
-          const jettonWalletProvider = client.open(
-            jettonWalletContract
-          ) as OpenedContract<JettonWallet>;
-
-          // Fetch the Jetton balance for the user's wallet
-          const fetchedBalance = await jettonWalletProvider.getJettonBalance();
-
-          // Format and return the balance using the provided decimals
-          balance = formatUnits(fetchedBalance || '0', decimals);
-          return balance; // Return balance on success
-        } catch (error) {
-          console.error(`Error fetching Jetton balance (attempt ${attempts}):`, error);
-          // If the maximum attempts have been reached, break the loop
-          if (attempts >= maxAttempts) {
-            console.warn('Max attempts reached. Returning default balance.');
-            return '0'; // Return '0' after max attempts
-          }
-        }
+        return balance; // Return balance on success
+      } catch (error) {
+        console.error('Failed to fetch balance after retries:', error);
+        return '0'; // Return '0' after max attempts
       }
-
-      return balance; // Fallback return
     },
     [client]
   );
 
   const getBalanceTokenTon = useCallback(async (youAddress?: string) => {
-    // Maximum attempts to retry fetching the balance
-    const maxAttempts = MAX_ATTEMPTS_50;
-    let attempts = 0;
+    if (!youAddress) return '0';
 
-    // Recursive function to fetch the balance with retry mechanism
-    const fetchData = async (): Promise<string> => {
-      try {
-        attempts++;
-        if (!youAddress) return '0';
+    try {
+      const balance = await retry(
+        async () => {
+          const params = { address: youAddress };
+          const res = await axios.get(`${API_TON_V2}/getAddressInformation`, { params });
+          const balance = res.data.result.balance;
 
-        // Fetch balance information from the API
-        const params = { address: youAddress };
-        const res = await axios.get(`${API_TON_V2}/getAddressInformation`, { params });
-        const balance = res.data.result.balance;
-
-        // Convert balance from Nano format and return as string
-        return fromNano(balance).toString();
-      } catch (error) {
-        console.error(`Error fetching getBalanceTokenTon (attempt ${attempts}):`, error);
-        if (attempts < maxAttempts) {
-          console.log('Retrying...getBalanceTokenTon');
-          return await fetchData(); // Retry fetching the balance
-        } else {
-          console.log('Max attempts reached, stopping retries.');
-          return '0'; // Return '0' if maximum attempts are reached
+          // Convert balance from Nano format and return as string
+          return fromNano(balance).toString();
+        },
+        {
+          retries: MAX_ATTEMPTS_50, // Maximum number of retries
+          delay: 1000, // Delay between retries (1 second)
         }
-      }
-    };
+      );
 
-    return await fetchData(); // Return the result of fetchData()
+      return balance; // Return fetched balance
+    } catch (error) {
+      console.error('Failed to fetch getBalanceTokenTon after retries:', error);
+      return '0'; // Return '0' if maximum attempts are reached
+    }
   }, []);
 
   const onGetBalancesTokenInWalletTon = useCallback(
@@ -140,7 +128,6 @@ export const useGetBalanceTon = () => {
       // Fetch all balances for the given pool reserves data
       const balances = await Promise.all(
         poolContractReservesData.map(async (item) => {
-          // Destructure and prepare necessary properties
           const { decimals, underlyingAddress, isJetton } = item;
           let walletBalance = '0';
 

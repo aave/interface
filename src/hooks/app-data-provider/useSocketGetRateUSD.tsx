@@ -2,6 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useSocket from 'src/utils/connectSocket';
+import { retry } from 'ts-retry-promise';
 
 import { defaultRateUSDNotValue, MAX_ATTEMPTS_50, URL_API_BE } from './useAppDataProviderTon';
 
@@ -21,41 +22,41 @@ export const useSocketGetRateUSD = () => {
 
   // CALL API SET DEFAULT VALUE FOR MONEY
   const onGetMarketPrice = useCallback(async () => {
-    let attempts = 0;
-    const maxAttempts = MAX_ATTEMPTS_50;
     setLoading(true);
-    const fetchData = async (): Promise<WalletBalanceUSD[] | undefined> => {
-      try {
-        attempts++;
 
-        const result = await axios.get(`${URL_API_BE}/crawler/price`);
-        const updatedData = defaultRateUSDNotValue.map((item) => {
-          const priceData = result.data[item.id];
-          return {
-            ...item,
-            address: item?.address,
-            usd: priceData?.usd,
-            id: item?.id,
-            decimal: priceData?.decimal,
-            signature: priceData?.signature,
-          };
-        });
-        setDataWalletBalance(updatedData);
-      } catch (error) {
-        console.error(`Error fetching onGetMarketPrice (attempt ${attempts}):`, error);
-        if (attempts < maxAttempts) {
-          console.log('Retrying...onGetMarketPrice');
-          return await fetchData(); // Retry fetching the balance
-        } else {
-          console.log('Max attempts reached, stopping retries.');
-          setDataWalletBalance([]); // Return '0' if maximum attempts are reached
+    try {
+      // Use retry to fetch market price data with automatic retries on failure
+      await retry(
+        async () => {
+          const result = await axios.get(`${URL_API_BE}/crawler/price`);
+
+          // Update the wallet balance data with fetched prices
+          const updatedData = defaultRateUSDNotValue.map((item) => {
+            const priceData = result.data[item.id];
+            return {
+              ...item,
+              address: item?.address,
+              usd: priceData?.usd,
+              id: item?.id,
+              decimal: priceData?.decimal,
+              signature: priceData?.signature,
+            };
+          });
+
+          // Set the updated data to state
+          setDataWalletBalance(updatedData);
+        },
+        {
+          retries: MAX_ATTEMPTS_50, // Maximum number of retries
+          delay: 1000, // Delay between retries (1 second)
         }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    return await fetchData(); // Return the result of fetchData()
+      );
+    } catch (error) {
+      console.error('Failed to fetch market price after retries:', error);
+      setDataWalletBalance([]); // Set empty data if failure occurs after retries
+    } finally {
+      setLoading(false); // Ensure loading state is reset
+    }
   }, []);
 
   useEffect(() => {

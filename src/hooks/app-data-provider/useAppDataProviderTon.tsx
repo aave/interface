@@ -20,6 +20,7 @@ import { useRootStore } from 'src/store/root';
 import { calculateReserveDebt } from 'src/utils/calculate-reserve-debt';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { sleep } from 'src/utils/rotationProvider';
+import { retry } from 'ts-retry-promise';
 
 import { WalletBalanceUSD } from './useSocketGetRateUSD';
 import { useGetBalanceTon } from './useWalletBalancesTon';
@@ -148,25 +149,25 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
-      let attempts = 0;
-      const maxAttempts = MAX_ATTEMPTS_50;
+      try {
+        setLoading(pauseReload ? false : true);
 
-      while (attempts < maxAttempts) {
-        try {
-          attempts++;
+        // Use retry to attempt this block of code if it fails
+        await retry(
+          async () => {
+            // Check if the pool contract is available
+            if (!poolContractNotAuth) {
+              console.error('poolContractNotAuth is not available.');
+              return;
+            }
 
-          setLoading(pauseReload ? false : true);
+            // Fetch reserves data from the pool contract
+            const reserves = await poolContractNotAuth.getReservesData();
 
-          // Check if the pool contract is available
-          if (!poolContractNotAuth) {
-            console.error('poolContractNotAuth is not available.');
-            return;
-          }
+            if (!reserves) {
+              throw new Error('Failed to fetch reserves');
+            }
 
-          // Fetch reserves data from the pool contract
-          const reserves = await poolContractNotAuth.getReservesData();
-
-          if (reserves) {
             // Retrieve token balances from the user's wallet in the TON network
             const balances = await onGetBalancesTokenInWalletTon(
               reserves as PoolContractReservesDataType[],
@@ -195,24 +196,15 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
             // Set the final calculated data into the state
             setPoolContractReservesData(data as PoolContractReservesDataType[]);
-
-            // Break the loop since data is successfully fetched and processed
-            break;
+          },
+          {
+            retries: MAX_ATTEMPTS_50, // Maximum number of retries
+            delay: 1000, // Delay between retries (1 second)
           }
-        } catch (error) {
-          console.error(
-            `Error fetching getPoolContractGetReservesData (attempt ${attempts}):`,
-            error
-          );
-
-          if (attempts >= maxAttempts) {
-            console.log('Max attempts reached, stopping retries.');
-            setPoolContractReservesData([]); // Set empty data if max attempts are reached
-            break; // Exit the loop when max attempts are reached
-          } else {
-            console.log('Retrying...getPoolContractGetReservesData');
-          }
-        }
+        );
+      } catch (error) {
+        console.error('Error fetching getPoolContractGetReservesData:', error);
+        setPoolContractReservesData([]); // Set empty data if failure occurs after retries
       }
     },
     [

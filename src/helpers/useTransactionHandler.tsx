@@ -8,6 +8,7 @@ import { TransactionResponse } from '@ethersproject/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { MAX_ATTEMPTS } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useTonTransactions } from 'src/hooks/useTonTransactions';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -17,6 +18,7 @@ import { TransactionDetails } from 'src/store/transactionsSlice';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { retry } from 'ts-retry-promise';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
@@ -300,7 +302,14 @@ export const useTransactionHandler = ({
             decimals,
             `${eventTxInfo?.amount}`
           );
-          await Promise.allSettled([getPoolContractGetReservesData(true), getYourSupplies()]);
+
+          await Promise.all([
+            retry(async () => getPoolContractGetReservesData(true), {
+              retries: MAX_ATTEMPTS,
+              delay: 1000,
+            }),
+            retry(async () => getYourSupplies(), { retries: MAX_ATTEMPTS, delay: 1000 }),
+          ]);
 
           if (!res.success) {
             const error = {
@@ -334,7 +343,14 @@ export const useTransactionHandler = ({
           Boolean(usageAsCollateral)
         );
 
-        await Promise.allSettled([getPoolContractGetReservesData(true), getYourSupplies()]);
+        await Promise.all([
+          retry(async () => getPoolContractGetReservesData(true), {
+            retries: MAX_ATTEMPTS,
+            delay: 1000,
+          }),
+          retry(async () => getYourSupplies(), { retries: MAX_ATTEMPTS, delay: 1000 }),
+        ]);
+
         if (resToggle && !resToggle.success) {
           const error = {
             name: 'Error change collateral Ton',

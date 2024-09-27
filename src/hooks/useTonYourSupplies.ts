@@ -13,6 +13,7 @@ import { Pool } from 'src/contracts/Pool';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { sleep } from 'src/utils/rotationProvider';
+import { retry } from 'ts-retry-promise';
 
 import { address_pools, MAX_ATTEMPTS_50 } from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
@@ -44,50 +45,49 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   const [contractUserTon, setContractUserTon] = useState<string>('');
 
   const getYourSupplies = useCallback(async () => {
-    let attempts = 0;
-    const maxAttempts = MAX_ATTEMPTS_50;
     if (!isConnectedTonWallet) {
       setUserSupplies([]);
       setContractUserTon('');
       setLoading(false);
+      return;
     }
-    const fetchData = async () => {
-      try {
-        attempts++;
-        if (!client || !address_pools || !yourAddressWallet) return;
-        const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
-        const res = await poolContract.getUserData(Address.parse(yourAddressWallet));
-        const contractUserTon = await poolContract.getUserAddress(Address.parse(yourAddressWallet));
-        setContractUserTon(contractUserTon.toString());
-        const data = res.map((item) => {
-          return {
+
+    try {
+      await retry(
+        async () => {
+          if (!client || !address_pools || !yourAddressWallet) return;
+
+          // Open the pool contract using the address
+          const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
+
+          // Fetch user data from the pool contract
+          const res = await poolContract.getUserData(Address.parse(yourAddressWallet));
+          const contractUserTon = await poolContract.getUserAddress(
+            Address.parse(yourAddressWallet)
+          );
+          setContractUserTon(contractUserTon.toString());
+
+          // Map the response to the format you need
+          const data = res.map((item) => ({
             ...item,
             supplyBalance: item.totalSupply.toString(),
             underlyingAddress: item.underlyingAddress.toString(),
             liquidityIndex: item.liquidityIndex.toString(),
-          };
-        });
+          }));
 
-        return setUserSupplies(data);
-      } catch (error) {
-        await sleep(1000);
-        console.error(`Error fetching getYourSupplies (attempt ${attempts}):`, error);
-        if (attempts < maxAttempts) {
-          console.log('Retrying...getYourSupplies');
-          await fetchData();
-        } else {
-          console.log('Max attempts reached, stopping retries. getYourSupplies');
-          setUserSupplies([]);
+          // Update the state with the fetched supplies data
+          setUserSupplies(data);
+        },
+        {
+          retries: MAX_ATTEMPTS_50, // Maximum number of retries
+          delay: 1000, // Delay between retries (1 second)
         }
-      } finally {
-        if (attempts >= maxAttempts || (attempts < maxAttempts && userSupplies.length > 0)) {
-          return;
-        }
-      }
-    };
-
-    await fetchData();
-  }, [client, isConnectedTonWallet, userSupplies.length, yourAddressWallet]);
+      );
+    } catch (error) {
+      console.error('Failed to fetch supplies after retries:', error);
+      setUserSupplies([]); // Set empty data in case of failure
+    }
+  }, [client, isConnectedTonWallet, yourAddressWallet]);
 
   useEffect(() => {
     setLoading(true);
