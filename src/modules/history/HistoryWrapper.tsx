@@ -32,6 +32,8 @@ import {
   FilterOptions,
   TransactionHistoryItemUnion,
 } from './types';
+import { useSocketGetRateUSD } from 'src/hooks/app-data-provider/useSocketGetRateUSD';
+import { useAppDataProviderTon } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -43,6 +45,8 @@ export const HistoryWrapper = () => {
   const checkTonNetwork = isConnectedTonWallet && currentMarketData.marketTitle === 'TON';
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const { ExchangeRateListUSD } = useSocketGetRateUSD();
+  const { reservesTon } = useAppDataProviderTon(ExchangeRateListUSD);
 
   const {
     data: transactions,
@@ -117,12 +121,31 @@ export const HistoryWrapper = () => {
       } else {
         console.log('Item not match with action: ', item);
       }
+      let assetPriceUSD = '1';
+      if (reservesTon && reservesTon.length) {
+        if (item.symbol === 'TON') {
+          console.log('item.symbol: ', item.symbol);
+        }
+        assetPriceUSD =
+          reservesTon.find((subItem) => subItem.symbol === item.symbol)?.priceInUSD.toString() ??
+          '1';
+      }
       const iconSymbol = item.symbol;
-      return { ...item, action, iconSymbol, toState: collateralStatus };
+      console.log('Symbol', item.symbol, 'AssetPriceUSD: ', assetPriceUSD);
+      return { ...item, action, iconSymbol, toState: collateralStatus, assetPriceUSD };
     });
 
     return applyTxHistoryFilters({ searchQuery, filterQuery, txns: updatedTxns });
-  }, [searchQuery, filterQuery, flatTxns]);
+  }, [searchQuery, filterQuery, flatTxns, reservesTon]);
+
+  if (isLoading || isFetchingNextPage) {
+    return (
+      <>
+        <HistoryItemLoader />
+        <HistoryItemLoader />
+      </>
+    );
+  }
 
   if (!currentAccount) {
     return (
@@ -130,15 +153,6 @@ export const HistoryWrapper = () => {
         loading={web3Loading}
         description={<Trans> Please connect your wallet to view transaction history.</Trans>}
       />
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <>
-        <HistoryItemLoader />
-        <HistoryItemLoader />
-      </>
     );
   }
 

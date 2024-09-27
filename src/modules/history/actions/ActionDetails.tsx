@@ -38,16 +38,23 @@ export const ActionTextMap = ({ action }: { action: string }) => {
 export const ActionDetails = <K extends keyof ActionFields>({
   transaction,
   iconSize,
+  isConnectedTonWallet,
 }: {
   transaction: TransactionHistoryItem<ActionFields[K]>;
   iconSize: string;
+  isConnectedTonWallet?: boolean;
 }) => {
   switch (transaction.action) {
     case 'Supply':
     case 'Deposit':
       const supplyTx = transaction as TransactionHistoryItem<ActionFields['Supply']>;
       const formattedSupplyReserve = fetchIconSymbolAndNameHistorical(supplyTx.reserve);
-      const formattedSupplyAmount = formatUnits(supplyTx.amount, supplyTx.reserve.decimals);
+
+      const formattedSupplyAmount = formatUnits(
+        supplyTx.amount,
+        isConnectedTonWallet ? supplyTx.decimals : supplyTx.reserve.decimals
+      );
+
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedSupplyReserve.iconSymbol} sx={{ fontSize: iconSize }} />
@@ -71,6 +78,8 @@ export const ActionDetails = <K extends keyof ActionFields>({
                     variant="body1"
                     color="common.white"
                     sx={{ mr: 2 }}
+                    isConnectedTonWallet
+                    compact={isConnectedTonWallet ? true : false}
                   />
                   <Typography variant="secondary14" color="common.white">
                     {formattedSupplyReserve.symbol}
@@ -89,6 +98,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                 compact
                 compactThreshold={100000}
                 sx={{ mr: 2 }}
+                isConnectedTonWallet
               />
             </Box>
           </DarkTooltip>
@@ -134,6 +144,8 @@ export const ActionDetails = <K extends keyof ActionFields>({
                     variant="body1"
                     color="text.primary"
                     sx={{ mr: 2 }}
+                    isConnectedTonWallet
+                    compact={isConnectedTonWallet ? true : false}
                   />
                   <Typography variant="body1" color="text.primary">
                     {formattedBorrowReserve.symbol}
@@ -152,6 +164,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                 sx={{ mr: 2 }}
                 compact
                 compactThreshold={100000}
+                isConnectedTonWallet
               />
             </Box>
           </DarkTooltip>
@@ -197,6 +210,8 @@ export const ActionDetails = <K extends keyof ActionFields>({
                     variant="body1"
                     color="text.primary"
                     sx={{ mr: 2 }}
+                    isConnectedTonWallet
+                    compact={isConnectedTonWallet ? true : false}
                   />
                   <Typography variant="body1" color="text.primary">
                     {formattedWithdrawReserve.symbol}
@@ -215,6 +230,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                 sx={{ mr: 2 }}
                 compact
                 compactThreshold={100000}
+                isConnectedTonWallet
               />
             </Box>
           </DarkTooltip>
@@ -260,6 +276,8 @@ export const ActionDetails = <K extends keyof ActionFields>({
                     variant="body1"
                     color="text.primary"
                     sx={{ mr: 2 }}
+                    isConnectedTonWallet
+                    compact={isConnectedTonWallet ? true : false}
                   />
                   <Typography variant="body1" color="text.primary">
                     {formattedRepayReserve.symbol}
@@ -278,6 +296,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                 sx={{ mr: 2 }}
                 compact
                 compactThreshold={100000}
+                isConnectedTonWallet
               />
             </Box>
           </DarkTooltip>
@@ -444,6 +463,8 @@ export const ActionDetails = <K extends keyof ActionFields>({
                           variant="body1"
                           color="text.primary"
                           sx={{ mr: 1 }}
+                          isConnectedTonWallet
+                          compact={isConnectedTonWallet ? true : false}
                         />
                         <Typography variant="body1" color="text.primary">
                           {formattedLiquidationColatReserve.symbol}
@@ -462,6 +483,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                       sx={{ mr: 1 }}
                       compact
                       compactThreshold={100000}
+                      isConnectedTonWallet
                     />
                   </Box>
                 </DarkTooltip>
@@ -546,6 +568,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                       sx={{ mr: 1 }}
                       compact
                       compactThreshold={100000}
+                      isConnectedTonWallet
                     />
                   </Box>
                 </DarkTooltip>

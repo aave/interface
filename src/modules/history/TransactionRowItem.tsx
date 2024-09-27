@@ -49,6 +49,8 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
     }
   }, [copyStatus]);
 
+  const checkTonNetwork = isConnectedTonWallet && currentMarketData.marketTitle === 'TON';
+
   const explorerLink =
     isConnectedTonWallet && currentMarketData.marketTitle === 'TON'
       ? `${SCAN_TRANSACTION_TON_HISTORY}/${transaction.txHash}`
@@ -84,7 +86,11 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
         </Box>
 
         <Box>
-          <ActionDetails transaction={transaction} iconSize="24px" />
+          <ActionDetails
+            transaction={transaction}
+            iconSize="24px"
+            isConnectedTonWallet={checkTonNetwork}
+          />
         </Box>
         <ListColumn align="right">
           {!downToMD && (

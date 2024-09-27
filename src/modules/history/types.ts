@@ -15,6 +15,7 @@ export type TransactionHistoryItem<T = unknown> = {
     id: string;
   };
   timestamp: number;
+  decimals?: number;
 } & T;
 
 export type ReserveSubset = {
