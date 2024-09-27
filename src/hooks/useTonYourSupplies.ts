@@ -4,9 +4,11 @@ import {
   getLinearBalance,
   getMarketReferenceCurrencyAndUsdBalance,
   normalize,
+  valueToBigNumber,
 } from '@aave/math-utils';
 import { Address } from '@ton/core';
 import dayjs from 'dayjs';
+import { BigNumber } from 'ethers';
 import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
@@ -43,6 +45,21 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
   const [yourSuppliesTon, setYourSuppliesTon] = useState<FormattedUserReserves[]>([]);
   const [userSupplies, setUserSupplies] = useState<UserSuppliesType[]>([]);
   const [contractUserTon, setContractUserTon] = useState<string>('');
+
+  const getAssetCollateralTypeTon = (
+    underlyingBalance: string,
+    isCollateral: boolean | undefined
+  ) => {
+    if (valueToBigNumber(underlyingBalance).eq(0)) {
+      return true;
+    } else {
+      if (isCollateral || isCollateral === undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
 
   const getYourSupplies = useCallback(async () => {
     if (!isConnectedTonWallet) {
@@ -182,10 +199,10 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
               stableBorrowsMarketReferenceCurrency
             );
 
-            const isCollateral =
-              matchedSupply?.isCollateral === undefined || matchedSupply?.isCollateral === true
-                ? true
-                : false;
+            const isCollateral = getAssetCollateralTypeTon(
+              underlyingBalance.toString(),
+              matchedSupply?.isCollateral
+            );
 
             return {
               ...reserve,
