@@ -133,6 +133,15 @@ export const HistoryWrapper = () => {
     );
   }
 
+  if (isLoading) {
+    return (
+      <>
+        <HistoryItemLoader />
+        <HistoryItemLoader />
+      </>
+    );
+  }
+
   if (!checkTonNetwork && !subgraphUrl) {
     return (
       <Paper
