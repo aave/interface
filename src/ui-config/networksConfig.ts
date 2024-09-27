@@ -453,8 +453,12 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [-239]: {
     name: 'TON',
-    publicJsonRPCUrl: ['https://explorer-testnet.tonsquare.io'],
-    publicJsonRPCWSUrl: 'wss://testnet.ton.dev',
+    publicJsonRPCUrl: [
+      'https://eth-sepolia.public.blastapi.io',
+      'https://explorer-testnet.tonsquare.io',
+    ],
+    publicJsonRPCWSUrl: '',
+    // publicJsonRPCWSUrl: 'wss://testnet.ton.dev',
     baseAssetSymbol: 'TON',
     wrappedBaseAssetSymbol: '',
     baseAssetDecimals: 6,
@@ -469,8 +473,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [-1]: {
     name: 'TON',
-    publicJsonRPCUrl: ['https://explorer.tonsquare.io'],
-    publicJsonRPCWSUrl: 'wss://main.ton.dev',
+    publicJsonRPCUrl: ['https://eth-sepolia.public.blastapi.io', 'https://explorer.tonsquare.io'],
+    publicJsonRPCWSUrl: '',
+    // publicJsonRPCWSUrl: 'wss://main.ton.dev',
     baseAssetSymbol: 'TON',
     wrappedBaseAssetSymbol: '',
     baseAssetDecimals: 6,

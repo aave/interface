@@ -149,18 +149,15 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
+      // Check if the pool contract is available
+      if (!poolContractNotAuth) return;
+
       try {
         setLoading(pauseReload ? false : true);
 
         // Use retry to attempt this block of code if it fails
         await retry(
           async () => {
-            // Check if the pool contract is available
-            if (!poolContractNotAuth) {
-              console.error('poolContractNotAuth is not available.');
-              return;
-            }
-
             // Fetch reserves data from the pool contract
             const reserves = await poolContractNotAuth.getReservesData();
 
