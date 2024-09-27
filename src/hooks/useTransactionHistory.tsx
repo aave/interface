@@ -228,7 +228,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       }
     },
     {
-      enabled: !!parseAddressWallet || (!!account && !!currentMarketData.subgraphUrl),
+      enabled: !!parseAddressWallet || !!account || !!currentMarketData.subgraphUrl,
 
       ...(!checkTonNetwork && {
         getNextPageParam: (
@@ -245,7 +245,6 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     }
   );
 
-  // Chỉ khi `isConnectedTonWallet` là `true`, mới sử dụng useEffect để quản lý filter và việc tải tiếp dữ liệu
   useEffect(() => {
     if (!checkTonNetwork) {
       if (isFilterActive && hasNextPage && !isFetchingNextPage) {
@@ -256,7 +255,6 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     }
   }, [checkTonNetwork, isFilterActive, hasNextPage, isFetchingNextPage]);
 
-  // Khi `shouldKeepFetching` là `true`, trigger fetch tiếp theo
   useEffect(() => {
     if (shouldKeepFetching && !checkTonNetwork) {
       fetchNextPage();
