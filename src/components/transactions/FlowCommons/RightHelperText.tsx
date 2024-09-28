@@ -81,7 +81,5 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
         )}
       </Box>
     );
-  return (
-    <>{`firstly: ${approvalHash && !usingPermit}, params: ${approvalHash}, ${!usingPermit},`}</>
-  );
+  return <></>;
 };
