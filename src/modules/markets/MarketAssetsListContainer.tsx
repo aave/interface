@@ -73,7 +73,7 @@ export const MarketAssetsListContainer = () => {
     }));
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
   const showFrozenMarketWarning =
-    marketFrozen && ['Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
+    marketFrozen && ['Ethereum AMM'].includes(currentMarketData.marketTitle);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
   const [showFrozenMarketsToggle, setShowFrozenMarketsToggle] = useState(false);
 

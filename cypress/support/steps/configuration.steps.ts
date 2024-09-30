@@ -128,10 +128,7 @@ export const configEnvWithTenderlyOptimismFork = createConfigWithTenderlyFork(
   ChainId.optimism,
   'fork_proto_optimism_v3'
 );
-export const configEnvWithTenderlyFantomFork = createConfigWithTenderlyFork(
-  ChainId.fantom,
-  'fork_proto_fantom_v3'
-);
+
 export const configEnvWithTenderlyBaseFork = createConfigWithTenderlyFork(
   ChainId.base,
   'fork_proto_base_v3'

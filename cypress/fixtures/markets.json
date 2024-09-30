@@ -57,11 +57,6 @@
       "version": "v3",
       "dataCy": "marketSelector_proto_fuji_v3"
     },
-    "FantomTestnetV3Market": {
-      "name": "Fantom",
-      "version": "v3",
-      "dataCy": "marketSelector_proto_fantom_testnet_v3"
-    },
     "OptimismGoerliV3Market": {
       "name": "Optimism",
       "version": "v3",

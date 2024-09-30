@@ -15,9 +15,7 @@ export const getFrozenProposalLink = (
   symbol: string | undefined,
   currentMarket: string | undefined
 ): string => {
-  if (currentMarket && currentMarket === 'proto_fantom_v3') {
-    return 'https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647';
-  } else if (symbol && frozenProposalMap[symbol.toUpperCase() + currentMarket]) {
+  if (symbol && frozenProposalMap[symbol.toUpperCase() + currentMarket]) {
     return frozenProposalMap[symbol.toUpperCase() + currentMarket];
   } else {
     return 'https://app.aave.com/governance';

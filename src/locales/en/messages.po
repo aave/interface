@@ -1778,10 +1778,6 @@ msgid "Pending..."
 msgstr "Pending..."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Per the community, the Fantom market has been frozen."
-msgstr "Per the community, the Fantom market has been frozen."
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the V2 AMM market has been deprecated."
 msgstr "Per the community, the V2 AMM market has been deprecated."
 

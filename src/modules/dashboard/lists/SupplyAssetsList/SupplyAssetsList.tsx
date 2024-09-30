@@ -253,9 +253,7 @@ export const SupplyAssetsList = () => {
       subChildrenComponent={
         <>
           <Box sx={{ px: 6 }}>
-            {supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
-              <MarketWarning marketName="Fantom" />
-            ) : supplyDisabled && currentMarketData.marketTitle === 'Ethereum AMM' ? (
+            {supplyDisabled && currentMarketData.marketTitle === 'Ethereum AMM' ? (
               <MarketWarning marketName="Ethereum AMM" />
             ) : user?.isInIsolationMode ? (
               <Warning severity="warning">

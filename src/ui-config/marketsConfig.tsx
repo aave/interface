@@ -76,7 +76,6 @@ export type MarketDataType = {
 export enum CustomMarket {
   // v3 test networks, all v3.0.1
   proto_arbitrum_sepolia_v3 = 'proto_arbitrum_sepolia_v3',
-  proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_optimism_sepolia_v3 = 'proto_optimism_sepolia_v3',
   proto_scroll_sepolia_v3 = 'proto_scroll_sepolia_v3',
@@ -85,7 +84,6 @@ export enum CustomMarket {
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',
   proto_optimism_v3 = 'proto_optimism_v3',
-  proto_fantom_v3 = 'proto_fantom_v3',
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
