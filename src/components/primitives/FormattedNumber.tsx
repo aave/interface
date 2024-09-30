@@ -13,6 +13,7 @@ interface CompactNumberProps {
   visibleDecimals?: number;
   roundDown?: boolean;
   compactThreshold?: number;
+  isConnectedTonWallet?: boolean;
 }
 
 const POSTFIXES = ['', 'K', 'M', 'B', 'T', 'P', 'E', 'Z', 'Y'];
@@ -22,6 +23,7 @@ export const compactNumber = ({
   visibleDecimals = 2,
   roundDown,
   compactThreshold,
+  isConnectedTonWallet,
 }: CompactNumberProps) => {
   const bnValue = valueToBigNumber(value);
 
@@ -42,14 +44,24 @@ export const compactNumber = ({
   }
   const prefix = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: visibleDecimals,
-    minimumFractionDigits: visibleDecimals,
+    minimumFractionDigits: isConnectedTonWallet ? 1 : visibleDecimals,
   }).format(formattedValue);
 
-  return { prefix, postfix };
+  return { prefix: isConnectedTonWallet ? formattedValue : prefix, postfix };
 };
 
-function CompactNumber({ value, visibleDecimals, roundDown }: CompactNumberProps) {
-  const { prefix, postfix } = compactNumber({ value, visibleDecimals, roundDown });
+function CompactNumber({
+  value,
+  visibleDecimals,
+  roundDown,
+  isConnectedTonWallet,
+}: CompactNumberProps) {
+  const { prefix, postfix } = compactNumber({
+    value,
+    visibleDecimals,
+    roundDown,
+    isConnectedTonWallet,
+  });
 
   return (
     <>
@@ -69,6 +81,7 @@ export type FormattedNumberProps = TypographyProps<ElementType, { component?: El
   symbolsVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
   roundDown?: boolean;
   compactThreshold?: number;
+  isConnectedTonWallet?: boolean;
 };
 
 export function FormattedNumber({
@@ -81,6 +94,7 @@ export function FormattedNumber({
   symbolsColor,
   roundDown,
   compactThreshold,
+  isConnectedTonWallet,
   ...rest
 }: FormattedNumberProps) {
   const number = percent ? Number(value) * 100 : Number(value);
@@ -148,6 +162,7 @@ export function FormattedNumber({
           visibleDecimals={decimals}
           roundDown={roundDown}
           compactThreshold={compactThreshold}
+          isConnectedTonWallet={isConnectedTonWallet}
         />
       )}
 
