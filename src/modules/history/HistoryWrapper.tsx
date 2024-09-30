@@ -224,7 +224,11 @@ export const HistoryWrapper = () => {
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'inline-flex' }}>
-          <HistoryFilterMenu onFilterChange={setFilterQuery} currentFilter={filterQuery} />
+          <HistoryFilterMenu
+            onFilterChange={setFilterQuery}
+            currentFilter={filterQuery}
+            checkTonNetwork
+          />
           <SearchInput
             onSearchTermChange={setSearchQuery}
             placeholder="Search assets..."

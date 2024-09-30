@@ -4,7 +4,6 @@ import { Check as CheckIcon, Sort as SortIcon } from '@mui/icons-material';
 import {
   Box,
   Button,
-  Divider,
   Menu,
   MenuItem,
   SvgIcon,
@@ -22,6 +21,7 @@ import { FilterOptions } from './types';
 interface HistoryFilterMenuProps {
   onFilterChange: (filter: FilterOptions[]) => void;
   currentFilter: FilterOptions[];
+  checkTonNetwork?: boolean;
 }
 
 interface FilterLabelProps {
@@ -43,13 +43,16 @@ const FilterLabel: React.FC<FilterLabelProps> = ({ filter }) => {
     case FilterOptions.COLLATERALCHANGE:
       return <Trans>Collateral change</Trans>;
     case FilterOptions.LIQUIDATION:
-      return <Trans>Liqudation</Trans>;
+      return <Trans>Liquidation</Trans>;
+    default:
+      return null;
   }
 };
 
 export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
   onFilterChange,
   currentFilter,
+  checkTonNetwork = false, // Giá trị mặc định là false nếu không truyền
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [localFilter, setLocalFilter] = useState<FilterOptions[]>(currentFilter);
@@ -62,6 +65,16 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
   const theme = useTheme();
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
 
+  const hiddenFilterOptions = checkTonNetwork ? [FilterOptions.RATECHANGE] : [];
+
+  const visibleFilterOptions = Object.keys(FilterOptions)
+    .filter(
+      (key) =>
+        isNaN(Number(key)) &&
+        !hiddenFilterOptions.includes(FilterOptions[key as keyof typeof FilterOptions])
+    )
+    .map((key) => FilterOptions[key as keyof typeof FilterOptions]) as FilterOptions[];
+
   const allSelected = currentFilter.length === 0;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -70,7 +83,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
 
   const handleClose = () => {
     setAnchorEl(null);
-    onFilterChange(currentFilter);
+    onFilterChange(localFilter);
   };
 
   const handleFilterClick = (filter: FilterOptions | undefined) => {
@@ -81,9 +94,8 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
       } else {
         trackEvent(TRANSACTION_HISTORY.FILTER, { value: filter });
         newFilter = [...currentFilter, filter];
-        // Checks if all filter options are selected,  enum length is divided by 2 based on how Typescript creates object from enum
-        if (newFilter.length === Object.keys(FilterOptions).length / 2) {
-          newFilter = [];
+        if (newFilter.length === visibleFilterOptions.length) {
+          newFilter = []; // Set "All transactions"
         }
       }
     }
@@ -223,36 +235,26 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
             },
           }}
         >
-          {Object.keys(FilterOptions)
-            .filter((key) => isNaN(Number(key)))
-            .map((optionKey) => {
-              const option = FilterOptions[optionKey as keyof typeof FilterOptions];
-              if (option === FilterOptions.RATECHANGE) {
-                return null;
-              }
-
-              return (
-                <MenuItem
-                  key={optionKey}
-                  onClick={() => handleFilterClick(option)}
-                  sx={{
-                    background: currentFilter.includes(option)
-                      ? theme.palette.background.contents
-                      : undefined,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <FilterLabel filter={option} />
-                  {currentFilter.includes(option) && (
-                    <SvgIcon sx={{ fontSize: '16px' }}>
-                      <CheckIcon />
-                    </SvgIcon>
-                  )}
-                </MenuItem>
-              );
-            })
-            .filter((item) => item !== null)}{' '}
+          {visibleFilterOptions.map((option) => (
+            <MenuItem
+              key={option}
+              onClick={() => handleFilterClick(option)}
+              sx={{
+                background: currentFilter.includes(option)
+                  ? theme.palette.background.contents
+                  : undefined,
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <FilterLabel filter={option} />
+              {currentFilter.includes(option) && (
+                <SvgIcon sx={{ fontSize: '16px' }}>
+                  <CheckIcon />
+                </SvgIcon>
+              )}
+            </MenuItem>
+          ))}
         </Box>
       </Menu>
     </Box>
