@@ -174,8 +174,6 @@ const createConfigWithOrigin = (market: string, mockedAddress: string) => {
   });
 };
 
-export const configEnvHarmony = (mockedAddress: string) =>
-  createConfigWithOrigin('proto_harmony_v3', mockedAddress);
 export const configEnvMetis = (mockedAddress: string) =>
   createConfigWithOrigin('proto_metis_v3', mockedAddress);
 export const configEnvScroll = (mockedAddress: string) =>

@@ -216,10 +216,6 @@ export const BorrowAssetsList = () => {
       subChildrenComponent={
         <>
           <Box sx={{ px: 6, mb: 4 }}>
-            {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
-              <MarketWarning marketName="Harmony" />
-            )}
-
             {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
               <MarketWarning marketName="Fantom" />
             )}

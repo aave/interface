@@ -38,7 +38,6 @@ export const permitByChainAndToken: {
   [ChainId.polygon]: {
     '0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c': true,
   },
-  [ChainId.harmony]: {},
   [ChainId.avalanche]: {
     '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7': true,
   },

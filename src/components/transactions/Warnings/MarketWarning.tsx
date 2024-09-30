@@ -4,14 +4,7 @@ import { Link, Typography } from '@mui/material';
 import { Warning } from '../../primitives/Warning';
 
 const WarningMessage = ({ market }: { market: string }) => {
-  if (market === 'Harmony') {
-    return (
-      <Trans>
-        Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity
-        with Ethereum, which affects the Aave V3 Harmony market.
-      </Trans>
-    );
-  } else if (market === 'Fantom') {
+  if (market === 'Fantom') {
     return <Trans>Per the community, the Fantom market has been frozen.</Trans>;
   } else if (market === 'Ethereum AMM') {
     return <Trans>Per the community, the V2 AMM market has been deprecated.</Trans>;
@@ -21,13 +14,7 @@ const WarningMessage = ({ market }: { market: string }) => {
 };
 
 const getLink = (market: string, forum: boolean | undefined): string => {
-  if (market === 'Harmony') {
-    if (forum) {
-      return 'https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614';
-    } else {
-      return 'https://snapshot.org/#/aave.eth/proposal/0x81a78109941e5e0ac6cb5ebf82597c839c20ad6821a8c3ff063dba39032533d4';
-    }
-  } else if (market === 'Fantom') {
+  if (market === 'Fantom') {
     if (forum) {
       return 'https://governance.aave.com/t/arc-aave-v3-fantom-freeze-reserves/9166';
     } else {
