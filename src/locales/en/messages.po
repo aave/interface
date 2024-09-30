@@ -1778,8 +1778,8 @@ msgid "Pending..."
 msgstr "Pending..."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Per the community, the V2 AMM market has been deprecated."
-msgstr "Per the community, the V2 AMM market has been deprecated."
+msgid "Per the community, the {market} has been frozen."
+msgstr "Per the community, the {market} has been frozen."
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
@@ -1929,10 +1929,6 @@ msgstr "Reached"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
 msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Read more here."
-msgstr "Read more here."
 
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
@@ -2871,10 +2867,6 @@ msgstr "Unstaked"
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "Unstaking {symbol}"
 msgstr "Unstaking {symbol}"
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
-msgstr "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
 
 #: src/components/transactions/Bridge/BridgeDestinationInput.tsx
 msgid "Use connected account"

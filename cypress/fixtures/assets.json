@@ -178,38 +178,6 @@
       "wrapped": false
     }
   },
-  "ammMarket": {
-    "DAI": {
-      "fullName": "DAI",
-      "shortName": "DAI",
-      "collateral": true,
-      "wrapped": false
-    },
-    "ETH": {
-      "fullName": "Ethereum",
-      "shortName": "ETH",
-      "collateral": true,
-      "wrapped": true
-    },
-    "WBTC": {
-      "fullName": "Wrapped BTC",
-      "shortName": "WBTC",
-      "collateral": true,
-      "wrapped": false
-    },
-    "USDT": {
-      "fullName": "USDT Coin",
-      "shortName": "USDT",
-      "collateral": false,
-      "wrapped": false
-    },
-    "USDC": {
-      "fullName": "USD Coin",
-      "shortName": "USDC",
-      "collateral": true,
-      "wrapped": false
-    }
-  },
   "aaveMarket": {
     "DAI": {
       "fullName": "DAI",

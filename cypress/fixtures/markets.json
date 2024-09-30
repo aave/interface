@@ -25,11 +25,6 @@
       "version": "v2",
       "dataCy": "marketSelector_proto_mainnet"
     },
-    "EthereumAMMV2": {
-      "name": "Ethereum AMM",
-      "version": "v2",
-      "dataCy": "marketSelector_amm_mainnet"
-    },
     "PolygonV2": {
       "name": "Polygon",
       "version": "v2",

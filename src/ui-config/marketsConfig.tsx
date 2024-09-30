@@ -2,7 +2,6 @@ import { ChainId } from '@aave/contract-helpers';
 import {
   AaveV2Avalanche,
   AaveV2Ethereum,
-  AaveV2EthereumAMM,
   AaveV2Fuji,
   AaveV2Polygon,
   AaveV3Arbitrum,
@@ -100,7 +99,6 @@ export enum CustomMarket {
   proto_avalanche = 'proto_avalanche',
   proto_fuji = 'proto_fuji',
   proto_polygon = 'proto_polygon',
-  amm_mainnet = 'amm_mainnet',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -252,21 +250,7 @@ export const marketsData: {
   //     PERMISSION_MANAGER: '<address here>',
   //   },
   // },
-  [CustomMarket.amm_mainnet]: {
-    marketTitle: 'Ethereum AMM',
-    market: CustomMarket.amm_mainnet,
-    chainId: ChainId.mainnet,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV2EthereumAMM.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV2EthereumAMM.POOL,
-      WETH_GATEWAY: AaveV2EthereumAMM.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: AaveV2EthereumAMM.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV2EthereumAMM.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV2EthereumAMM.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV2EthereumAMM.COLLECTOR,
-      V3_MIGRATOR: AaveV2EthereumAMM.MIGRATION_HELPER,
-    },
-  },
+
   [CustomMarket.proto_polygon]: {
     marketTitle: 'Polygon',
     market: CustomMarket.proto_polygon,
