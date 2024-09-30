@@ -1396,6 +1396,10 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 msgid "Learn more."
 msgstr "Learn more."
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Legacy Markets"
+msgstr "Legacy Markets"
+
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
