@@ -1,7 +1,5 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
-import { Address } from '@ton/core';
 import { useEffect, useState } from 'react';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import {
   actionFilterMap,
   hasCollateralReserve,
@@ -17,8 +15,6 @@ import {
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
-
-import { address_pools, URL_API_BE } from './app-data-provider/useAppDataProviderTon';
 
 export const applyTxHistoryFilters = ({
   searchQuery,
@@ -89,29 +85,11 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     state.currentMarketData,
     state.account,
   ]);
-  const { isConnectedTonWallet } = useTonConnectContext();
-  const checkTonNetwork = isConnectedTonWallet && currentMarketData.marketTitle === 'TON';
 
   const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 
-  const parseAddressWallet = account ? Address.parse(account).toRawString() : '';
-
   // Handle subgraphs with multiple markets (currently only ETH V2 and ETH V2 AMM)
   let selectedPool: string | undefined = undefined;
-  if (checkTonNetwork) {
-    selectedPool = Address.parse(address_pools.toString()).toRawString() ?? '';
-  } else {
-    if (
-      !currentMarketData.v3 &&
-      (currentMarketData.marketTitle === 'Ethereum' ||
-        currentMarketData.marketTitle === 'Ethereum AMM')
-    ) {
-      selectedPool = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER.toLowerCase();
-    } else {
-      selectedPool = Address.parse(address_pools.toString()).toRawString();
-    }
-  }
-
   if (
     !currentMarketData.v3 &&
     (currentMarketData.marketTitle === 'Ethereum' ||
@@ -119,16 +97,15 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   ) {
     selectedPool = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER.toLowerCase();
   }
+
   interface TransactionHistoryParams {
-    account?: string;
-    subgraphUrl?: string;
+    account: string;
+    subgraphUrl: string;
     first: number;
     skip: number;
-    v3?: boolean;
+    v3: boolean;
     pool?: string;
-    parseAddressWallet?: string;
   }
-  const URL_TRANSACTION_HISTORY = `${URL_API_BE}/crawler/transaction-history`;
   const fetchTransactionHistory = async ({
     account,
     subgraphUrl,
@@ -137,44 +114,20 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     v3,
     pool,
   }: TransactionHistoryParams) => {
-    const encodedPool = pool ? encodeURI(pool) : '';
-    const encodedAccount = parseAddressWallet ? encodeURI(parseAddressWallet) : '';
-
-    // Fetch from Ton wallet
-    if (checkTonNetwork) {
-      const url = `${URL_TRANSACTION_HISTORY}?pool=${encodedPool}&address=${encodedAccount}&page=${skip}&limit=${first}`;
-      console.log('Fetching transaction history from:', url);
-
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`Network error: ${response.status} - ${response.statusText}`);
-        }
-        const data = await response.json();
-        return data || [];
-      } catch (error) {
-        console.error('Error fetching transaction history:', error);
-        return [];
-      }
+    let query = '';
+    if (v3) {
+      query = USER_TRANSACTIONS_V3;
+    } else if (pool) {
+      query = USER_TRANSACTIONS_V2_WITH_POOL;
+    } else {
+      query = USER_TRANSACTIONS_V2;
     }
-
-    // Fetch from subgraph
-    const query = v3
-      ? USER_TRANSACTIONS_V3
-      : pool
-      ? USER_TRANSACTIONS_V2_WITH_POOL
-      : USER_TRANSACTIONS_V2;
 
     const requestBody = {
       query,
       variables: { userAddress: account, first, skip, pool },
     };
-
     try {
-      if (!subgraphUrl) {
-        console.error('Error subgraphUrl', subgraphUrl);
-        return [];
-      }
       const response = await fetch(subgraphUrl, {
         method: 'POST',
         headers: {
@@ -182,9 +135,11 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         },
         body: JSON.stringify(requestBody),
       });
+
       if (!response.ok) {
         throw new Error(`Network error: ${response.status} - ${response.statusText}`);
       }
+
       const data = await response.json();
       return data.data.userTransactions || [];
     } catch (error) {
@@ -192,74 +147,6 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       return [];
     }
   };
-
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    isFetchingNextPage,
-    isError,
-    error,
-  }: UseInfiniteQueryResult<TransactionHistoryItemUnion[], Error> = useInfiniteQuery(
-    queryKeysFactory.transactionHistory(
-      checkTonNetwork ? parseAddressWallet : account,
-      currentMarketData
-    ),
-    async ({ pageParam = 0 }) => {
-      if (checkTonNetwork) {
-        const response = await fetchTransactionHistory({
-          parseAddressWallet,
-          first: 100,
-          skip: pageParam,
-          pool: selectedPool,
-        });
-        return response;
-      } else {
-        const response = await fetchTransactionHistory({
-          account,
-          subgraphUrl: currentMarketData.subgraphUrl ?? '',
-          first: 100,
-          skip: pageParam,
-          v3: !!currentMarketData.v3,
-          pool: selectedPool,
-        });
-        return response;
-      }
-    },
-    {
-      enabled: !!parseAddressWallet || !!account || !!currentMarketData.subgraphUrl,
-
-      ...(!checkTonNetwork && {
-        getNextPageParam: (
-          lastPage: TransactionHistoryItemUnion[],
-          allPages: TransactionHistoryItemUnion[][]
-        ) => {
-          const moreDataAvailable = lastPage.length === 100;
-          if (!moreDataAvailable) {
-            return undefined;
-          }
-          return allPages.length * 100;
-        },
-      }),
-    }
-  );
-
-  useEffect(() => {
-    if (!checkTonNetwork) {
-      if (isFilterActive && hasNextPage && !isFetchingNextPage) {
-        setShouldKeepFetching(true);
-      } else {
-        setShouldKeepFetching(false);
-      }
-    }
-  }, [checkTonNetwork, isFilterActive, hasNextPage, isFetchingNextPage]);
-
-  useEffect(() => {
-    if (shouldKeepFetching && !checkTonNetwork) {
-      fetchNextPage();
-    }
-  }, [shouldKeepFetching, checkTonNetwork, fetchNextPage]);
 
   const fetchForDownload = async ({
     searchQuery,
@@ -287,6 +174,59 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: allTransactions });
     return filteredTxns;
   };
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    isError,
+    error,
+  }: UseInfiniteQueryResult<TransactionHistoryItemUnion[], Error> = useInfiniteQuery(
+    queryKeysFactory.transactionHistory(account, currentMarketData),
+    async ({ pageParam = 0 }) => {
+      const response = await fetchTransactionHistory({
+        account,
+        subgraphUrl: currentMarketData.subgraphUrl ?? '',
+        first: 100,
+        skip: pageParam,
+        v3: !!currentMarketData.v3,
+        pool: selectedPool,
+      });
+      return response;
+    },
+    {
+      enabled: !!account && !!currentMarketData.subgraphUrl,
+      getNextPageParam: (
+        lastPage: TransactionHistoryItemUnion[],
+        allPages: TransactionHistoryItemUnion[][]
+      ) => {
+        const moreDataAvailable = lastPage.length === 100;
+        if (!moreDataAvailable) {
+          return undefined;
+        }
+        return allPages.length * 100;
+      },
+    }
+  );
+
+  // If filter is active, keep fetching until all data is returned so that it's guaranteed all filter results will be returned
+  useEffect(() => {
+    if (isFilterActive && hasNextPage && !isFetchingNextPage) {
+      setShouldKeepFetching(true);
+    } else {
+      setShouldKeepFetching(false);
+    }
+  }, [isFilterActive, hasNextPage, isFetchingNextPage]);
+
+  // Trigger a fetch when shouldKeepFetching is set to true
+  useEffect(() => {
+    if (shouldKeepFetching) {
+      fetchNextPage();
+    }
+  }, [shouldKeepFetching, fetchNextPage]);
+
   return {
     data,
     fetchNextPage,

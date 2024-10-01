@@ -34,6 +34,7 @@ import {
 } from './types';
 import { useSocketGetRateUSD } from 'src/hooks/app-data-provider/useSocketGetRateUSD';
 import { useAppDataProviderTon } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { useTransactionHistoryTonNetwork } from 'src/hooks/useTransactionHistoryTonNetwork';
 
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,13 +50,22 @@ export const HistoryWrapper = () => {
   const { reservesTon } = useAppDataProviderTon(ExchangeRateListUSD);
 
   const {
-    data: transactions,
-    isLoading,
+    data: transactionsMain,
+    isLoading: isLoadingMain,
     fetchNextPage,
-    isFetchingNextPage,
-    subgraphUrl,
+    isFetchingNextPage: isFetchingNextPageMain,
     fetchForDownload,
+    subgraphUrl,
   } = useTransactionHistory({ isFilterActive });
+
+  const { data: transactionsTonNetwork, isLoading: isLoadingTonNetwork } =
+    useTransactionHistoryTonNetwork({});
+
+  const transactions: any = checkTonNetwork ? transactionsTonNetwork : transactionsMain;
+  const isLoading = checkTonNetwork ? isLoadingTonNetwork : isLoadingMain;
+  const isFetchingNextPage = checkTonNetwork ? false : isFetchingNextPageMain;
+  console.log('🚀 ~ isLoading web:', isLoading);
+  console.log('🚀 ~ transactions web:', transactions);
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
@@ -76,8 +86,11 @@ export const HistoryWrapper = () => {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
 
   const flatTxns = useMemo(() => {
-    console.log('Transactions updated: ', transactions);
-    return transactions?.pages?.flatMap((page) => page) || [];
+    console.log('Transactions web updated: ', transactions);
+    if (checkTonNetwork) {
+      return transactions || [];
+    }
+    return transactions?.pages?.flatMap((page: any) => page) || [];
   }, [transactions]);
 
   const filteredTxns: TransactionHistoryItemUnion[] = useMemo(() => {
@@ -352,7 +365,7 @@ export const HistoryWrapper = () => {
             Reset Filters
           </Button>
         </Box>
-      ) : !isFetchingNextPage ? (
+      ) : checkTonNetwork && !isFetchingNextPage ? (
         <Box
           sx={{
             display: 'flex',
