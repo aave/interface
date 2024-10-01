@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Button, Typography } from '@mui/material';
+import React from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 

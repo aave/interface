@@ -52,7 +52,7 @@ export const GasStation: React.FC<GasStationProps> = ({
   chainId,
 }) => {
   const { state } = useGasStation();
-  const { gasFeeTonMarketReferenceCurrency } = useAppDataContext();
+  const { gasFeeTonMarketReferenceCurrencyTON, balanceTokenTON } = useAppDataContext();
   const { isConnectedTonWallet } = useTonConnectContext();
   const [currentChainId, account] = useRootStore((store) => [store.currentChainId, store.account]);
   const selectedChainId = chainId ?? currentChainId;
@@ -85,6 +85,16 @@ export const GasStation: React.FC<GasStationProps> = ({
         )
       : undefined;
 
+  const showNotEnoughFeesTON =
+    !disabled &&
+    !isContractAddress &&
+    Number(balanceTokenTON) < Number(gasFeeTonMarketReferenceCurrencyTON);
+
+  const showNotEnoughFeesMain =
+    !disabled && !isContractAddress && Number(nativeBalanceUSD) < Number(totalGasCostsUsd);
+
+  const showNotEnoughFees = isConnectedTonWallet ? showNotEnoughFeesTON : showNotEnoughFeesMain;
+
   return (
     <Stack gap={6} sx={{ width: '100%' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -100,7 +110,7 @@ export const GasStation: React.FC<GasStationProps> = ({
               <FormattedNumber
                 value={
                   isConnectedTonWallet
-                    ? gasFeeTonMarketReferenceCurrency
+                    ? gasFeeTonMarketReferenceCurrencyTON
                     : totalGasCostsUsd
                     ? totalGasCostsUsd
                     : '-'
@@ -117,7 +127,7 @@ export const GasStation: React.FC<GasStationProps> = ({
         </Box>
         {rightComponent}
       </Box>
-      {!disabled && !isContractAddress && Number(nativeBalanceUSD) < Number(totalGasCostsUsd) && (
+      {showNotEnoughFees && (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Warning severity="warning" sx={{ mb: 0, mx: 'auto' }}>
             You do not have enough {baseAssetSymbol} in your account to pay for transaction fees on{' '}

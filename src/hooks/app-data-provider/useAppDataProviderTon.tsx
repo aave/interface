@@ -130,9 +130,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const [setAccount] = useRootStore((store) => [store.setAccount, store.currentChainId]);
   const [loading, setLoading] = useState<boolean>(false);
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
-  const [gasFeeTonMarketReferenceCurrency, setGasFeeTonMarketReferenceCurrency] = useState<
+  const [gasFeeTonMarketReferenceCurrencyTON, setGasFeeTonMarketReferenceCurrencyTON] = useState<
     number | string
   >('0');
+  const [balanceTokenTON, setBalanceTokenTON] = useState<number | string>('0');
   const [poolContractReservesData, setPoolContractReservesData] = useState<
     PoolContractReservesDataType[]
   >([]);
@@ -657,11 +658,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .toString();
 
       if (dataById?.address === address_pools) {
-        setGasFeeTonMarketReferenceCurrency(
+        setGasFeeTonMarketReferenceCurrencyTON(
           valueToBigNumber(formattedPriceInUSD)
             .multipliedBy(GAS_FEE_TON || 0)
             .toString()
         );
+        setBalanceTokenTON(walletBalanceUSD);
       }
 
       return {
@@ -711,6 +713,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     loading: loading,
     getPoolContractGetReservesData,
     setReservesTon,
-    gasFeeTonMarketReferenceCurrency,
+    gasFeeTonMarketReferenceCurrencyTON,
+    balanceTokenTON,
   };
 };

@@ -9,7 +9,8 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -67,20 +68,28 @@ export const TxActionsWrapper = ({
 }: TxActionsWrapperProps) => {
   const { txError } = useModalContext();
   const { readOnlyModeAddress } = useWeb3Context();
+  const { gasFeeTonMarketReferenceCurrencyTON, balanceTokenTON } = useAppDataContext();
   const { isConnectedTonWallet } = useTonConnectContext();
   const hasApprovalError =
     requiresApproval && txError?.txAction === TxAction.APPROVAL && txError?.actionBlocked;
   const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
+
+  const showNotEnoughFeesTON =
+    Number(balanceTokenTON) < Number(gasFeeTonMarketReferenceCurrencyTON) &&
+    !isAmountMissing &&
+    isConnectedTonWallet;
 
   function getMainParams() {
     // start with ton connect
     if (isConnectedTonWallet && isAmountMissing)
       return { disabled: true, content: <Trans>Enter an amount</Trans> };
     if (isConnectedTonWallet && preparingTransactions) return { disabled: true, loading: true };
-    if (isConnectedTonWallet && !mainTxState?.loading)
-      return { content: actionText, handleClick: handleAction };
     if (isConnectedTonWallet && mainTxState?.loading)
       return { loading: true, disabled: true, content: actionInProgressText };
+    if (isConnectedTonWallet && showNotEnoughFeesTON)
+      return { loading: false, disabled: true, content: actionText };
+    if (isConnectedTonWallet && !mainTxState?.loading && !showNotEnoughFeesTON)
+      return { content: actionText, handleClick: handleAction };
     // end with ton connect
 
     if (blocked) return { disabled: true, content: actionText };
@@ -107,11 +116,12 @@ export const TxActionsWrapper = ({
 
   function getApprovalParams() {
     if (
-      !requiresApproval ||
-      isWrongNetwork ||
-      isAmountMissing ||
-      preparingTransactions ||
-      hasApprovalError
+      (!requiresApproval ||
+        isWrongNetwork ||
+        isAmountMissing ||
+        preparingTransactions ||
+        hasApprovalError) &&
+      !showNotEnoughFeesTON
     )
       return null;
     if (approvalTxState?.loading)
