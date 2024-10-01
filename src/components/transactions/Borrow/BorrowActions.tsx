@@ -125,7 +125,11 @@ export const BorrowActions = React.memo(
         if (isConnectedTonWallet) {
           setMainTxState({ ...mainTxState, loading: true });
           try {
-            const resBorrowTop = await onSendBorrowTon(amountToBorrow, poolReserve);
+            const resBorrowTop = await onSendBorrowTon(
+              amountToBorrow,
+              poolReserve,
+              interestRateMode
+            );
 
             await Promise.all([
               retry(async () => getPoolContractGetReservesData(true), {

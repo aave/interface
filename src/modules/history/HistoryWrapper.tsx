@@ -14,6 +14,8 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
+import { useAppDataProviderTon } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { useSocketGetRateUSD } from 'src/hooks/app-data-provider/useSocketGetRateUSD';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -32,8 +34,6 @@ import {
   FilterOptions,
   TransactionHistoryItemUnion,
 } from './types';
-import { useSocketGetRateUSD } from 'src/hooks/app-data-provider/useSocketGetRateUSD';
-import { useAppDataProviderTon } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');

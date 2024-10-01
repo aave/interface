@@ -1,3 +1,4 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Address, beginCell, Cell, OpenedContract, toNano } from '@ton/core';
 import { parseUnits } from 'ethers/lib/utils';
@@ -170,7 +171,11 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const onSendBorrowJettonToken = useCallback(
-    async (amount: string, poolReserve: FormattedReservesAndIncentives) => {
+    async (
+      amount: string,
+      poolReserve: FormattedReservesAndIncentives,
+      interestRateMode: number
+    ) => {
       if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress) return;
       try {
         const decimal = poolReserve.decimals; // poolReserve.decimals
@@ -182,8 +187,6 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         const dataMultiSig = await getMultiSig({
           isMock: false,
         });
-
-        const interestRateMode = 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
 
         const params = {
           queryId: Date.now(),
@@ -208,12 +211,18 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const onSendBorrowTon = useCallback(
-    async (amount: string, poolReserve: FormattedReservesAndIncentives) => {
+    async (
+      amount: string,
+      poolReserve: FormattedReservesAndIncentives,
+      interestRateMode: InterestRate
+    ) => {
+      const rateMode = interestRateMode === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
+
       if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress)
         return { success: false, message: 'error', blocking: false };
 
       try {
-        const res = await onSendBorrowJettonToken(amount, poolReserve);
+        const res = await onSendBorrowJettonToken(amount, poolReserve, rateMode);
 
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);

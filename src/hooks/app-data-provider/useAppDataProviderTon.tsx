@@ -82,6 +82,7 @@ export interface PoolContractReservesDataType {
   underlyingAddress: Address;
   variableBorrowIndex: bigint | 0;
   walletBalance?: string;
+  stableRateBorrowingEnabled?: boolean;
 
   // accruedToTreasury: bigint | 0;
   // image_data?: string | undefined;
@@ -235,6 +236,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           const liquidity = item.liquidity.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
           // const availableLiquidity = valueToBigNumber(liquidity); // SC confirm = liquidity --> remove .minus(totalBorrowed)
           const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+          const stableBorrowRateEnabled = item.stableRateBorrowingEnabled;
 
           const supplyAPYCalculate = calculateCompoundedRate({
             rate: liquidityRate,
@@ -375,7 +377,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             reserveLiquidationBonus: '10750',
             usageAsCollateralEnabled: true,
             borrowingEnabled: true,
-            stableBorrowRateEnabled: false,
+            stableBorrowRateEnabled,
             aTokenAddress: '',
             stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
             variableDebtTokenAddress: '0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b',
@@ -462,7 +464,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               reserveLiquidationBonus: '10750',
               usageAsCollateralEnabled: true,
               borrowingEnabled: true,
-              stableBorrowRateEnabled: false,
+              stableBorrowRateEnabled,
               aTokenAddress: '',
               stableDebtTokenAddress: '0xBDfa7DE5CF7a7DdE4F023Cac842BF520fcF5395C',
               variableDebtTokenAddress: '0x08a8Dc81AeA67F84745623aC6c72CDA3967aab8b',
