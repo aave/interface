@@ -293,10 +293,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
            * the actual availableLiquidity might be lower due to borrowCap
            */
           const availableLiquidity =
-            borrowCap === '0'
-              ? new BigNumber(liquidity)
+            Number(item.borrowCap) === 0
+              ? new BigNumber(item.liquidity.toString())
               : BigNumber.min(
-                  liquidity,
+                  item.liquidity.toString(),
                   new BigNumber(borrowCap).shiftedBy(decimals).minus(
                     // plus 1 as the cap is exclusive
                     totalDebtCalculate.plus(1)
