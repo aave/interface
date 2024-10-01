@@ -17,6 +17,7 @@ import { SearchInput } from 'src/components/SearchInput';
 import { useAppDataProviderTon } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useSocketGetRateUSD } from 'src/hooks/app-data-provider/useSocketGetRateUSD';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
+import { useTransactionHistoryTonNetwork } from 'src/hooks/useTransactionHistoryTonNetwork';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -49,13 +50,23 @@ export const HistoryWrapper = () => {
   const { reservesTon } = useAppDataProviderTon(ExchangeRateListUSD);
 
   const {
-    data: transactions,
-    isLoading,
+    data: transactionsMain,
+    isLoading: isLoadingMain,
     fetchNextPage,
-    isFetchingNextPage,
-    subgraphUrl,
+    isFetchingNextPage: isFetchingNextPageMain,
     fetchForDownload,
+    subgraphUrl,
   } = useTransactionHistory({ isFilterActive });
+
+  const { data: transactionsTonNetwork, isLoading: isLoadingTonNetwork } =
+    useTransactionHistoryTonNetwork({});
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transactions: any = checkTonNetwork ? transactionsTonNetwork : transactionsMain;
+  const isLoading = checkTonNetwork ? isLoadingTonNetwork : isLoadingMain;
+  const isFetchingNextPage = checkTonNetwork ? false : isFetchingNextPageMain;
+  console.log('🚀 ~ isLoading web:', isLoading);
+  console.log('🚀 ~ transactions web:', transactions);
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
@@ -76,8 +87,12 @@ export const HistoryWrapper = () => {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
 
   const flatTxns = useMemo(() => {
-    console.log('Transactions updated: ', transactions);
-    return transactions?.pages?.flatMap((page) => page) || [];
+    console.log('Transactions web updated: ', transactions);
+    if (checkTonNetwork) {
+      return transactions || [];
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return transactions?.pages?.flatMap((page: any) => page) || [];
   }, [transactions]);
 
   const filteredTxns: TransactionHistoryItemUnion[] = useMemo(() => {
@@ -352,7 +367,7 @@ export const HistoryWrapper = () => {
             Reset Filters
           </Button>
         </Box>
-      ) : !isFetchingNextPage ? (
+      ) : checkTonNetwork && !isFetchingNextPage ? (
         <Box
           sx={{
             display: 'flex',
