@@ -235,6 +235,10 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
                 totalBorrowsMarketReferenceCurrency,
                 0
               ),
+              stableBorrowsMarketReferenceCurrency: normalize(
+                stableBorrowsMarketReferenceCurrency,
+                0
+              ),
 
               reserve: {
                 ...reserve.reserve,
@@ -267,6 +271,10 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
                 ),
                 totalBorrowsMarketReferenceCurrency: normalize(
                   totalBorrowsMarketReferenceCurrency,
+                  0
+                ),
+                stableBorrowsMarketReferenceCurrency: normalize(
+                  stableBorrowsMarketReferenceCurrency,
                   0
                 ),
               },

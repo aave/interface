@@ -31,11 +31,11 @@ export function calculateUserReserveTotals({
 
   userReserves.forEach((userReserveSummary) => {
     totalLiquidityMarketReferenceCurrency = totalLiquidityMarketReferenceCurrency.plus(
-      userReserveSummary.underlyingBalanceUSD
+      userReserveSummary.underlyingBalanceMarketReferenceCurrency
     );
-    totalBorrowsMarketReferenceCurrency = totalBorrowsMarketReferenceCurrency.plus(
-      userReserveSummary.variableBorrowsUSD
-    );
+    totalBorrowsMarketReferenceCurrency = totalBorrowsMarketReferenceCurrency
+      .plus(userReserveSummary.variableBorrowsMarketReferenceCurrency)
+      .plus(userReserveSummary.stableBorrowsMarketReferenceCurrency);
 
     if (
       userReserveSummary.reserve.reserveLiquidationThreshold !== '0' &&
@@ -47,33 +47,32 @@ export function calculateUserReserveTotals({
       }
 
       totalCollateralMarketReferenceCurrency = totalCollateralMarketReferenceCurrency.plus(
-        userReserveSummary.underlyingBalanceUSD
+        userReserveSummary.underlyingBalanceMarketReferenceCurrency
       );
-
       if (
         userEmodeCategoryId &&
         userEmodeCategoryId === userReserveSummary.reserve.eModeCategoryId
       ) {
         currentLtv = currentLtv.plus(
-          valueToBigNumber(userReserveSummary.underlyingBalanceUSD).multipliedBy(
-            userReserveSummary.reserve.eModeLtv
-          )
+          valueToBigNumber(
+            userReserveSummary.underlyingBalanceMarketReferenceCurrency
+          ).multipliedBy(userReserveSummary.reserve.eModeLtv)
         );
         currentLiquidationThreshold = currentLiquidationThreshold.plus(
-          valueToBigNumber(userReserveSummary.underlyingBalanceUSD).multipliedBy(
-            userReserveSummary.reserve.eModeLiquidationThreshold
-          )
+          valueToBigNumber(
+            userReserveSummary.underlyingBalanceMarketReferenceCurrency
+          ).multipliedBy(userReserveSummary.reserve.eModeLiquidationThreshold)
         );
       } else {
         currentLtv = currentLtv.plus(
-          valueToBigNumber(userReserveSummary.underlyingBalanceUSD).multipliedBy(
-            userReserveSummary.reserve.baseLTVasCollateral
-          )
+          valueToBigNumber(
+            userReserveSummary.underlyingBalanceMarketReferenceCurrency
+          ).multipliedBy(userReserveSummary.reserve.baseLTVasCollateral)
         );
         currentLiquidationThreshold = currentLiquidationThreshold.plus(
-          valueToBigNumber(userReserveSummary.underlyingBalanceUSD).multipliedBy(
-            userReserveSummary.reserve.reserveLiquidationThreshold
-          )
+          valueToBigNumber(
+            userReserveSummary.underlyingBalanceMarketReferenceCurrency
+          ).multipliedBy(userReserveSummary.reserve.reserveLiquidationThreshold)
         );
       }
     }
