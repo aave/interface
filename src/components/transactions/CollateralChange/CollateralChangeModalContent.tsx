@@ -1,6 +1,7 @@
 import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -34,6 +35,10 @@ export const CollateralChangeModalContent = ({
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
   const { debtCeiling } = useAssetCaps();
+
+  const [collateralEnabled, setCollateralEnabled] = useState(
+    userReserve.usageAsCollateralEnabledOnUser
+  );
 
   // Health factor calculations
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
@@ -105,10 +110,15 @@ export const CollateralChangeModalContent = ({
     }
   };
 
+  // Effect to handle changes in collateral mode after switch as polling is fetching reserve state different after successful tx
+  useEffect(() => {
+    if (collateralChangeTxState.success) {
+      setCollateralEnabled(usageAsCollateralModeAfterSwitch);
+    }
+  }, [collateralChangeTxState.success, collateralEnabled]);
+
   if (collateralChangeTxState.success)
-    return (
-      <TxSuccessView collateral={usageAsCollateralModeAfterSwitch} symbol={poolReserve.symbol} />
-    );
+    return <TxSuccessView collateral={collateralEnabled} symbol={poolReserve.symbol} />;
 
   return (
     <>
