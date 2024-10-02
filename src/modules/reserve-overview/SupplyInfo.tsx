@@ -1,6 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { AlertTitle, Box, Chip, Typography } from '@mui/material';
+import React from 'react';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';

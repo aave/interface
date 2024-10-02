@@ -1,19 +1,9 @@
 import { Trans } from '@lingui/macro';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackOutlined';
-import {
-  Box,
-  Button,
-  Divider,
-  Skeleton,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Skeleton, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import * as React from 'react';
-import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
+import React, { useState } from 'react';
+import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
@@ -81,6 +71,8 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
 
   const isGho = displayGhoForMintableMarket({ symbol: poolReserve.symbol, currentMarket });
 
+  const isNativeTokenTON = poolReserve.symbol === 'TON';
+
   return (
     <TopInfoPanel
       titleComponent={
@@ -140,38 +132,40 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           {downToSM && (
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 6 }}>
               <ReserveIcon />
-              <Box>
-                {!loading && (
-                  <Typography color="text.primary" variant="body6">
-                    {poolReserve.symbol}
-                  </Typography>
-                )}
-                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                  <ReserveName />
-                  {loading ? (
-                    <Skeleton width={160} height={16} sx={{ ml: 1 }} />
-                  ) : (
-                    <Box sx={{ display: 'flex' }}>
-                      <TokenLinkDropdown
-                        poolReserve={poolReserve}
-                        downToSM={downToSM}
-                        hideAToken={isGho}
-                      />
-                      {connected && (
-                        <AddTokenDropdown
+              {!isNativeTokenTON && (
+                <Box>
+                  {!loading && (
+                    <Typography color="text.primary" variant="body6">
+                      {poolReserve.symbol}
+                    </Typography>
+                  )}
+                  <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                    <ReserveName />
+                    {loading ? (
+                      <Skeleton width={160} height={16} sx={{ ml: 1 }} />
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <TokenLinkDropdown
                           poolReserve={poolReserve}
                           downToSM={downToSM}
-                          switchNetwork={switchNetwork}
-                          addERC20Token={addERC20Token}
-                          currentChainId={currentChainId}
-                          connectedChainId={connectedChainId}
                           hideAToken={isGho}
                         />
-                      )}
-                    </Box>
-                  )}
+                        {connected && (
+                          <AddTokenDropdown
+                            poolReserve={poolReserve}
+                            downToSM={downToSM}
+                            switchNetwork={switchNetwork}
+                            addERC20Token={addERC20Token}
+                            currentChainId={currentChainId}
+                            connectedChainId={connectedChainId}
+                            hideAToken={isGho}
+                          />
+                        )}
+                      </Box>
+                    )}
+                  </Box>
                 </Box>
-              </Box>
+              )}
             </Box>
           )}
         </Box>
@@ -184,24 +178,26 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
               <Box sx={{ display: 'inline-flex', alignItems: 'center', minWidth: 170 }}>
                 <ReserveName />
 
-                <Box sx={{ display: 'flex' }}>
-                  <TokenLinkDropdown
-                    poolReserve={poolReserve}
-                    downToSM={downToSM}
-                    hideAToken={isGho}
-                  />
-                  {connected && (
-                    <AddTokenDropdown
+                {!isNativeTokenTON && (
+                  <Box sx={{ display: 'flex' }}>
+                    <TokenLinkDropdown
                       poolReserve={poolReserve}
                       downToSM={downToSM}
-                      switchNetwork={switchNetwork}
-                      addERC20Token={addERC20Token}
-                      currentChainId={currentChainId}
-                      connectedChainId={connectedChainId}
                       hideAToken={isGho}
                     />
-                  )}
-                </Box>
+                    {connected && (
+                      <AddTokenDropdown
+                        poolReserve={poolReserve}
+                        downToSM={downToSM}
+                        switchNetwork={switchNetwork}
+                        addERC20Token={addERC20Token}
+                        currentChainId={currentChainId}
+                        connectedChainId={connectedChainId}
+                        hideAToken={isGho}
+                      />
+                    )}
+                  </Box>
+                )}
               </Box>
             }
             withoutIconWrapper
