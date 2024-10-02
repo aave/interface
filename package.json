@@ -4,7 +4,8 @@
   "private": true,
   "license": "BSD-3-Clause",
   "scripts": {
-    "preinstall": "yarn --cwd packages/aave-utilities install",
+    "preinstall": "git submodule update --init && yarn --cwd packages/aave-utilities install",
+    "predev": "yarn --cwd packages/aave-utilities build",
     "dev": "next dev",
     "prebuild": "yarn --cwd packages/aave-utilities build",
     "build": "next build",
