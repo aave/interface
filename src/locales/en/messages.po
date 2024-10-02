@@ -380,7 +380,6 @@ msgstr "At a discount"
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/markets/MarketsTopPanel.tsx
 msgid "Available"
 msgstr "Available"
 
@@ -591,10 +590,6 @@ msgstr "Borrowing this amount will reduce your health factor and increase risk o
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
-
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Borrows"
-msgstr "Borrows"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
@@ -1103,11 +1098,6 @@ msgstr "Estimated compounding interest, including discount for Staking {0}AAVE i
 msgid "Estimated time"
 msgstr "Estimated time"
 
-#: src/modules/dashboard/DashboardContentWrapper.tsx
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Ethereum Main"
-msgstr "Ethereum Main"
-
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
 msgstr "Exceeds the discount"
@@ -1414,11 +1404,6 @@ msgstr "Learn more."
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 
-#: src/modules/dashboard/DashboardContentWrapper.tsx
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Lido"
-msgstr "Lido"
-
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr "Linked addresses"
@@ -1492,15 +1477,10 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 msgid "MAX"
 msgstr "MAX"
 
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Main"
-msgstr "Main"
-
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
 msgstr "Manage analytics"
 
-#: src/modules/markets/MarketsTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Market"
@@ -2985,8 +2965,8 @@ msgid "Variable debt supply is not zero"
 msgstr "Variable debt supply is not zero"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
-msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
-msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
+msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."
+msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditions."
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Variable rate"

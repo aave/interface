@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-08-13 18:06\n"
+"PO-Revision-Date: 2024-09-23 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -385,7 +385,6 @@ msgstr "Mit einem Rabatt"
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/markets/MarketsTopPanel.tsx
 msgid "Available"
 msgstr "Verfügbar"
 
@@ -596,10 +595,6 @@ msgstr "Wenn Sie diesen Betrag leihen, verringern Sie Ihren Gesundheitsfaktor un
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Entlehnung {symbol}"
-
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Borrows"
-msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
@@ -1108,11 +1103,6 @@ msgstr "Geschätzter Zinseszins, einschließlich Abschlag für Staking {0}AAVE i
 msgid "Estimated time"
 msgstr ""
 
-#: src/modules/dashboard/DashboardContentWrapper.tsx
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Ethereum Main"
-msgstr ""
-
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
 msgstr "Überschreitet den Rabatt"
@@ -1419,11 +1409,6 @@ msgstr "Weitere Informationen."
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
 
-#: src/modules/dashboard/DashboardContentWrapper.tsx
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Lido"
-msgstr ""
-
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1497,15 +1482,10 @@ msgstr "MAI wurde aufgrund einer Entscheidung der Community pausiert. Angebot, K
 msgid "MAX"
 msgstr ".MAX"
 
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Main"
-msgstr ""
-
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
 msgstr "Verwalten von Analysen"
 
-#: src/modules/markets/MarketsTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Markt"
@@ -2990,8 +2970,8 @@ msgid "Variable debt supply is not zero"
 msgstr "Variables Schuldenangebot ist nicht Null"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
-msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
-msgstr "Der variable Zinssatz <0>schwankt</0> je nach Marktbedingungen. Empfohlen für kurzfristige Positionen."
+msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."
+msgstr ""
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Variable rate"

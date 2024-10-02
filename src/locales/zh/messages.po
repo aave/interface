@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-08-13 18:06\n"
+"PO-Revision-Date: 2024-09-23 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -385,7 +385,6 @@ msgstr "打折"
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/markets/MarketsTopPanel.tsx
 msgid "Available"
 msgstr "可用"
 
@@ -596,10 +595,6 @@ msgstr "借入这笔款项将降低您的健康因素并增加清算风险。"
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "借贷 {symbol}"
-
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Borrows"
-msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
@@ -1108,11 +1103,6 @@ msgstr "估计复利，包括质押折扣 {0}安全模块中的AAVE。"
 msgid "Estimated time"
 msgstr ""
 
-#: src/modules/dashboard/DashboardContentWrapper.tsx
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Ethereum Main"
-msgstr ""
-
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
 msgstr "超出折扣"
@@ -1419,11 +1409,6 @@ msgstr "了解更多信息。"
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
 
-#: src/modules/dashboard/DashboardContentWrapper.tsx
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Lido"
-msgstr ""
-
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1497,15 +1482,10 @@ msgstr "由于社群的决定，MAI 已暂停。供应、借款和还款受到�
 msgid "MAX"
 msgstr ".MAX"
 
-#: src/modules/markets/MarketsTopPanel.tsx
-msgid "Main"
-msgstr ""
-
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
 msgstr "管理分析"
 
-#: src/modules/markets/MarketsTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "市场"
@@ -2990,8 +2970,8 @@ msgid "Variable debt supply is not zero"
 msgstr "可变债务供应量不为零"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
-msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
-msgstr "浮动利率会根据市场情况 <0>而波动</0> 。推荐用于短期头寸。"
+msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."
+msgstr ""
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Variable rate"

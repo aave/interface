@@ -13,7 +13,7 @@ const tokensToRequest: RequestedTokens = {
 const testData = {
   swap: [
     {
-      fromAsset: assets.polygonMarket.MATIC,
+      fromAsset: assets.polygonMarket.POL,
       toAsset: assets.polygonMarket.USDC,
       isCollateralFromAsset: true,
       amount: 10,
@@ -31,7 +31,7 @@ const testData = {
       },
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonMarket.MATIC.shortName,
+        assetName: assets.polygonMarket.POL.shortName,
         amount: 90,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
