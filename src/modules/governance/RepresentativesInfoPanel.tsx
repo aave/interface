@@ -3,6 +3,7 @@ import { PlusIcon } from '@heroicons/react/outline';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, IconButton, Paper, Stack, SvgIcon, Typography } from '@mui/material';
+import React from 'react';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
 import { Link } from 'src/components/primitives/Link';
 import { useRepresentatives } from 'src/hooks/governance/useRepresentatives';

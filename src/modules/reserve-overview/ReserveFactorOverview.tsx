@@ -1,4 +1,3 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, SvgIcon, Typography } from '@mui/material';
@@ -6,6 +5,8 @@ import { ReserveFactorTooltip } from 'src/components/infoTooltips/ReserveFactorT
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useRootStore } from 'src/store/root';
 import { ExplorerLinkBuilderProps } from 'src/ui-config/networksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -26,6 +27,13 @@ export const ReserveFactorOverview = ({
   reserveAsset,
 }: ReserveFactorOverviewProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const { isTonNetwork } = useAppDataContext();
+
+  const explorerLink = isTonNetwork
+    ? `${SCAN_TRANSACTION_TON}/${collectorContract}`
+    : explorerLinkBuilder({
+        address: collectorContract,
+      });
 
   return (
     <Box
@@ -78,9 +86,7 @@ export const ReserveFactorOverview = ({
               assetName: reserveName,
             });
           }}
-          href={explorerLinkBuilder({
-            address: collectorContract,
-          })}
+          href={explorerLink}
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="body6" color="text.primary">

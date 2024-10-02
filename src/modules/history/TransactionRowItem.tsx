@@ -1,11 +1,11 @@
 import { Trans } from '@lingui/macro';
 import ArrowOutward from '@mui/icons-material/ArrowOutward';
-import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -26,13 +26,12 @@ interface TransactionHistoryItemProps {
 }
 
 function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
-  const { isConnectedTonWallet } = useTonConnectContext();
+  const { isConnectNetWorkTon } = useAppDataContext();
   const [copyStatus, setCopyStatus] = useState(false);
   const { currentNetworkConfig, trackEvent } = useRootStore((state) => ({
     currentNetworkConfig: state.currentNetworkConfig,
     trackEvent: state.trackEvent,
   }));
-  const currentMarketData = useRootStore((state) => state.currentMarketData);
   const theme = useTheme();
 
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
@@ -49,12 +48,9 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
     }
   }, [copyStatus]);
 
-  const checkTonNetwork = isConnectedTonWallet && currentMarketData.marketTitle === 'TON';
-
-  const explorerLink =
-    isConnectedTonWallet && currentMarketData.marketTitle === 'TON'
-      ? `${SCAN_TRANSACTION_TON}/transaction/${transaction.txHash}`
-      : currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
+  const explorerLink = isConnectNetWorkTon
+    ? `${SCAN_TRANSACTION_TON}/transaction/${transaction.txHash}`
+    : currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
   return (
     <Box px={0}>
@@ -89,7 +85,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
           <ActionDetails
             transaction={transaction}
             iconSize="24px"
-            isConnectedTonWallet={checkTonNetwork}
+            isConnectedTonWallet={isConnectNetWorkTon}
           />
         </Box>
         <ListColumn align="right">

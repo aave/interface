@@ -2,6 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
+import React from 'react';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -39,7 +40,7 @@ export const BorrowInfo = ({
   const { isConnectedTonWallet } = useTonConnectContext();
 
   const collectorContract = isConnectedTonWallet
-    ? '0xccEa5C65f6d4F465B71501418b88FBe4e7071283'
+    ? reserve.underlyingAssetTon
     : currentMarketData.addresses.COLLECTOR;
 
   const maxAvailableToBorrow = BigNumber.max(

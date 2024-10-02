@@ -14,10 +14,9 @@ import {
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useTransactionHistoryTonNetwork } from 'src/hooks/useTransactionHistoryTonNetwork';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
-import { useRootStore } from 'src/store/root';
 
 import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
@@ -38,9 +37,7 @@ export const HistoryWrapperMobile = () => {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
   const [searchResetKey, setSearchResetKey] = useState(0);
-  const currentMarketData = useRootStore((state) => state.currentMarketData);
-  const { isConnectedTonWallet } = useTonConnectContext();
-  const checkTonNetwork = isConnectedTonWallet && currentMarketData.marketTitle === 'TON';
+  const { isConnectNetWorkTon } = useAppDataContext();
 
   const handleDownloadMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchorEl(event.currentTarget);
@@ -91,9 +88,9 @@ export const HistoryWrapperMobile = () => {
     useTransactionHistoryTonNetwork({});
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const transactions: any = checkTonNetwork ? transactionsTonNetwork : transactionsMain;
-  const isLoading = checkTonNetwork ? isLoadingTonNetwork : isLoadingMain;
-  const isFetchingNextPage = checkTonNetwork ? false : isFetchingNextPageMain;
+  const transactions: any = isConnectNetWorkTon ? transactionsTonNetwork : transactionsMain;
+  const isLoading = isConnectNetWorkTon ? isLoadingTonNetwork : isLoadingMain;
+  const isFetchingNextPage = isConnectNetWorkTon ? false : isFetchingNextPageMain;
   console.log('🚀 ~ isLoading mobile:', isLoading);
   console.log('🚀 ~ transactions mobile:', transactions);
 
@@ -155,12 +152,12 @@ export const HistoryWrapperMobile = () => {
 
   const flatTxns = useMemo(() => {
     console.log('Transactions mobile updated: ', transactions);
-    if (checkTonNetwork) {
+    if (isConnectNetWorkTon) {
       return transactions || [];
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return transactions?.pages?.flatMap((page: any) => page) || [];
-  }, [transactions]);
+  }, [isConnectNetWorkTon, transactions]);
 
   const filteredTxns: TransactionHistoryItemUnion[] = useMemo(() => {
     const txnArray = Array.isArray(flatTxns) ? flatTxns : [];
@@ -234,7 +231,7 @@ export const HistoryWrapperMobile = () => {
           {!showSearchBar && (
             <Box sx={{ display: 'flex', gap: '22px' }}>
               {loadingDownload && <CircularProgress size={20} sx={{ mr: 2 }} color="inherit" />}
-              {!checkTonNetwork && (
+              {!isConnectNetWorkTon && (
                 <Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>
                   <SvgIcon>
                     <DocumentDownloadIcon width={20} height={20} />

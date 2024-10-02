@@ -14,11 +14,11 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAppDataProviderTon } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useSocketGetRateUSD } from 'src/hooks/app-data-provider/useSocketGetRateUSD';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useTransactionHistoryTonNetwork } from 'src/hooks/useTransactionHistoryTonNetwork';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
@@ -41,9 +41,7 @@ export const HistoryWrapper = () => {
   const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [searchResetKey, setSearchResetKey] = useState(0);
-  const currentMarketData = useRootStore((state) => state.currentMarketData);
-  const { isConnectedTonWallet } = useTonConnectContext();
-  const checkTonNetwork = isConnectedTonWallet && currentMarketData.marketTitle === 'TON';
+  const { isConnectNetWorkTon } = useAppDataContext();
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
   const trackEvent = useRootStore((store) => store.trackEvent);
   const { ExchangeRateListUSD } = useSocketGetRateUSD();
@@ -62,9 +60,9 @@ export const HistoryWrapper = () => {
     useTransactionHistoryTonNetwork({});
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const transactions: any = checkTonNetwork ? transactionsTonNetwork : transactionsMain;
-  const isLoading = checkTonNetwork ? isLoadingTonNetwork : isLoadingMain;
-  const isFetchingNextPage = checkTonNetwork ? false : isFetchingNextPageMain;
+  const transactions: any = isConnectNetWorkTon ? transactionsTonNetwork : transactionsMain;
+  const isLoading = isConnectNetWorkTon ? isLoadingTonNetwork : isLoadingMain;
+  const isFetchingNextPage = isConnectNetWorkTon ? false : isFetchingNextPageMain;
   console.log('🚀 ~ isLoading web:', isLoading);
   console.log('🚀 ~ transactions web:', transactions);
 
@@ -88,12 +86,12 @@ export const HistoryWrapper = () => {
 
   const flatTxns = useMemo(() => {
     console.log('Transactions web updated: ', transactions);
-    if (checkTonNetwork) {
+    if (isConnectNetWorkTon) {
       return transactions || [];
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return transactions?.pages?.flatMap((page: any) => page) || [];
-  }, [transactions]);
+  }, [isConnectNetWorkTon, transactions]);
 
   const filteredTxns: TransactionHistoryItemUnion[] = useMemo(() => {
     const txnArray = Array.isArray(flatTxns) ? flatTxns : [];
@@ -171,7 +169,7 @@ export const HistoryWrapper = () => {
     );
   }
 
-  if (!checkTonNetwork && !subgraphUrl) {
+  if (!isConnectNetWorkTon && !subgraphUrl) {
     return (
       <Paper
         sx={{
@@ -256,7 +254,7 @@ export const HistoryWrapper = () => {
           <HistoryFilterMenu
             onFilterChange={setFilterQuery}
             currentFilter={filterQuery}
-            checkTonNetwork
+            checkTonNetwork={isConnectNetWorkTon}
           />
           <SearchInput
             onSearchTermChange={setSearchQuery}
@@ -265,7 +263,7 @@ export const HistoryWrapper = () => {
             key={searchResetKey}
           />
         </Box>
-        {!checkTonNetwork && (
+        {!isConnectNetWorkTon && (
           <>
             <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
               {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
@@ -367,7 +365,7 @@ export const HistoryWrapper = () => {
             Reset Filters
           </Button>
         </Box>
-      ) : checkTonNetwork && !isFetchingNextPage ? (
+      ) : isConnectNetWorkTon && !isFetchingNextPage ? (
         <Box
           sx={{
             display: 'flex',

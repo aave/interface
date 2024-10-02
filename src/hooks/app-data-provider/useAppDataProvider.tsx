@@ -76,6 +76,8 @@ export interface AppDataContextType {
   getPoolContractGetReservesData: (iSPauseReload?: boolean) => void;
   gasFeeTonMarketReferenceCurrencyTON: string | number;
   balanceTokenTON: string | number;
+  isTonNetwork: boolean;
+  isConnectNetWorkTon: boolean;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -225,6 +227,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
         getYourSupplies,
         gasFeeTonMarketReferenceCurrencyTON,
         balanceTokenTON,
+        isTonNetwork,
+        isConnectNetWorkTon,
       }}
     >
       {children}
