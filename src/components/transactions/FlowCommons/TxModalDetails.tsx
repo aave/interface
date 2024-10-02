@@ -32,6 +32,7 @@ export interface TxModalDetailsProps {
   skipLoad?: boolean;
   disabled?: boolean;
   chainId?: number;
+  isGasLimitTokenTon?: boolean;
 }
 
 const ArrowRightIcon = (
@@ -47,6 +48,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   disabled,
   children,
   chainId,
+  isGasLimitTokenTon,
 }) => {
   const theme = useTheme();
   return (
@@ -75,6 +77,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           skipLoad={skipLoad}
           disabled={disabled}
           rightComponent={slippageSelector}
+          isGasLimitTokenTon={isGasLimitTokenTon}
         />
       </Box>
     </Box>

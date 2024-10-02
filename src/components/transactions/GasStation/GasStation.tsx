@@ -27,6 +27,7 @@ export interface GasStationProps {
   disabled?: boolean;
   rightComponent?: ReactNode;
   chainId?: number;
+  isGasLimitTokenTon?: boolean;
 }
 
 export const getGasCosts = (
@@ -49,9 +50,10 @@ export const GasStation: React.FC<GasStationProps> = ({
   disabled,
   rightComponent,
   chainId,
+  isGasLimitTokenTon,
 }) => {
   const { state } = useGasStation();
-  const { gasFeeTonMarketReferenceCurrencyTON, balanceTokenTON, isConnectNetWorkTon } =
+  const { gasFeeTonMarketReferenceCurrencyTON, balanceTokenTONMarket, isConnectNetWorkTon } =
     useAppDataContext();
   const [currentChainId, account] = useRootStore((store) => [store.currentChainId, store.account]);
   const selectedChainId = chainId ?? currentChainId;
@@ -85,9 +87,10 @@ export const GasStation: React.FC<GasStationProps> = ({
       : undefined;
 
   const showNotEnoughFeesTON =
-    !disabled &&
-    !isContractAddress &&
-    Number(balanceTokenTON) < Number(gasFeeTonMarketReferenceCurrencyTON);
+    (!disabled &&
+      !isContractAddress &&
+      Number(balanceTokenTONMarket) < Number(gasFeeTonMarketReferenceCurrencyTON)) ||
+    isGasLimitTokenTon;
 
   const showNotEnoughFeesMain =
     !disabled && !isContractAddress && Number(nativeBalanceUSD) < Number(totalGasCostsUsd);

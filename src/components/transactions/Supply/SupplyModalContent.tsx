@@ -147,7 +147,11 @@ export const SupplyModalContent = React.memo(
     debtCeilingWarning,
     user,
   }: SupplyModalContentProps) => {
-    const { marketReferencePriceInUsd } = useAppDataContext();
+    const {
+      marketReferencePriceInUsd,
+      balanceTokenTONMarket,
+      gasFeeTonMarketReferenceCurrencyTON,
+    } = useAppDataContext();
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
     const minRemainingBaseTokenBalance = useRootStore(
@@ -203,6 +207,12 @@ export const SupplyModalContent = React.memo(
       underlyingAssetTon: poolReserve?.underlyingAssetTon,
       isJetton: poolReserve?.isJetton || false,
     };
+
+    const isGasLimitTokenTon =
+      poolReserve.symbol === 'TON' &&
+      valueToBigNumber(balanceTokenTONMarket)
+        .minus(amountInUsd)
+        .isLessThan(gasFeeTonMarketReferenceCurrencyTON);
 
     if (txError && txError.blocking) {
       return <TxErrorView txError={txError} />;
@@ -263,7 +273,12 @@ export const SupplyModalContent = React.memo(
           }}
         />
 
-        <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(amount) === 0}>
+        <TxModalDetails
+          isGasLimitTokenTon={isGasLimitTokenTon}
+          gasLimit={gasLimit}
+          skipLoad={true}
+          disabled={Number(amount) === 0}
+        >
           <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} percent />
           <DetailsIncentivesLine
             incentives={poolReserve.aIncentivesData}
@@ -296,7 +311,8 @@ export const SupplyWrappedTokenModalContent = ({
   isWrongNetwork,
   user,
 }: SupplyModalContentProps) => {
-  const { marketReferencePriceInUsd } = useAppDataContext();
+  const { marketReferencePriceInUsd, balanceTokenTONMarket, gasFeeTonMarketReferenceCurrencyTON } =
+    useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
   const { walletBalances } = useWalletBalances(currentMarketData);
@@ -401,6 +417,12 @@ export const SupplyWrappedTokenModalContent = ({
 
   const healfthFactorAfterSupply = calculateHFAfterSupply(user, poolReserve, amountInEth);
 
+  const isGasLimitTokenTon =
+    poolReserve.symbol === 'TON' &&
+    valueToBigNumber(balanceTokenTONMarket)
+      .minus(amountInUsd)
+      .isLessThan(gasFeeTonMarketReferenceCurrencyTON);
+
   if (supplyTxState.success) {
     const successModalAmount = supplyingWrappedToken
       ? BigNumber(amount)
@@ -455,7 +477,12 @@ export const SupplyWrappedTokenModalContent = ({
         }
       />
 
-      <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(amount) === 0}>
+      <TxModalDetails
+        isGasLimitTokenTon={isGasLimitTokenTon}
+        gasLimit={gasLimit}
+        skipLoad={true}
+        disabled={Number(amount) === 0}
+      >
         <DetailsNumberLine
           description={<Trans>Supply APY</Trans>}
           value={poolReserve.supplyAPY}
