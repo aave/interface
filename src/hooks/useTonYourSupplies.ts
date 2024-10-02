@@ -1,6 +1,7 @@
 import {
   BigNumberValue,
   getCompoundedBalance,
+  getCompoundedStableBalance,
   getLinearBalance,
   getMarketReferenceCurrencyAndUsdBalance,
   normalize,
@@ -8,7 +9,6 @@ import {
 } from '@aave/math-utils';
 import { Address } from '@ton/core';
 import dayjs from 'dayjs';
-import { BigNumber } from 'ethers';
 import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
@@ -85,6 +85,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
           setContractUserTon(contractUserTon.toString());
 
           // Map the response to the format you need
+
           const data = res.map((item) => ({
             ...item,
             supplyBalance: item.totalSupply.toString(),
@@ -175,25 +176,21 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
                 marketReferencePriceInUsdNormalized: priceInMarketReferenceCurrency,
               });
 
-            // const stableBorrows = getCompoundedStableBalance({
-            //   principalBalance: principalStableDebt,
-            //   userStableRate: stableBorrowRate,
-            //   lastUpdateTimestamp: stableBorrowLastUpdateTimestamp,
-            //   currentTimestamp,
-            // });
+            const stableBorrows = getCompoundedStableBalance({
+              principalBalance: matchedSupply?.stableBorrowBalance.toString() || '0',
+              userStableRate: valueToBigNumber(matchedSupply?.stableBorrowRate.toString() || '0'),
+              lastUpdateTimestamp: Number(matchedSupply?.stableLastUpdateTimestamp),
+              currentTimestamp: dayjs().unix(),
+            });
 
-            // const {
-            //   marketReferenceCurrencyBalance: stableBorrowsMarketReferenceCurrency,
-            //   usdBalance: stableBorrowsUSD,
-            // } = getMarketReferenceCurrencyAndUsdBalance({
-            //   balance: stableBorrows,
-            //   priceInMarketReferenceCurrency,
-            //   marketReferenceCurrencyDecimals,
-            //   decimals,
-            //   marketReferencePriceInUsdNormalized,
-            // });
-
-            const stableBorrowsMarketReferenceCurrency = 0;
+            const { marketReferenceCurrencyBalance: stableBorrowsMarketReferenceCurrency } =
+              getMarketReferenceCurrencyAndUsdBalance({
+                balance: stableBorrows,
+                priceInMarketReferenceCurrency,
+                marketReferenceCurrencyDecimals: decimals,
+                decimals,
+                marketReferencePriceInUsdNormalized: priceInMarketReferenceCurrency,
+              });
 
             const totalBorrowsMarketReferenceCurrency = variableBorrowsMarketReferenceCurrency.plus(
               stableBorrowsMarketReferenceCurrency
@@ -211,6 +208,9 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
               variableBorrows: normalizeWithReserve(variableBorrows),
               variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0),
+
+              stableBorrows: normalizeWithReserve(stableBorrows),
+              stableBorrowsUSD: normalize(stableBorrowsMarketReferenceCurrency, 0),
 
               usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
               usageAsCollateralEnabled: isCollateral,
@@ -243,6 +243,9 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
                 variableBorrows: normalizeWithReserve(variableBorrows),
                 variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0),
+
+                stableBorrows: normalizeWithReserve(stableBorrows),
+                stableBorrowsUSD: normalize(stableBorrowsMarketReferenceCurrency, 0),
 
                 usageAsCollateralEnabled: isCollateral,
 
