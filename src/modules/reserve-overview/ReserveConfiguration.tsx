@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import React from 'react';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';

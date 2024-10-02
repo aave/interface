@@ -4,7 +4,7 @@ import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/
 import React, { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
-import { SCAN_TRANSACTION_TON_HISTORY } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -53,7 +53,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
 
   const explorerLink =
     isConnectedTonWallet && currentMarketData.marketTitle === 'TON'
-      ? `${SCAN_TRANSACTION_TON_HISTORY}/${transaction.txHash}`
+      ? `${SCAN_TRANSACTION_TON}/transaction/${transaction.txHash}`
       : currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
   return (
