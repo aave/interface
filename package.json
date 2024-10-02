@@ -4,8 +4,10 @@
   "private": true,
   "license": "BSD-3-Clause",
   "scripts": {
+    "preinstall": "git submodule update --init && yarn --cwd packages/aave-utilities install",
+    "predev": "yarn --cwd packages/aave-utilities build",
     "dev": "next dev",
-    "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8000' next dev",
+    "prebuild": "yarn --cwd packages/aave-utilities build",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
     "build:static": "next build && next export",
@@ -31,8 +33,8 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.30.2",
-    "@aave/math-utils": "1.30.2",
+    "@aave/contract-helpers": "link:./packages/aave-utilities/packages/contract-helpers",
+    "@aave/math-utils": "link:./packages/aave-utilities/packages/math-utils",
     "@bgd-labs/aave-address-book": "3.5.1",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",

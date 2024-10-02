@@ -1,0 +1,3 @@
+[submodule "packages/aave-utilities"]
+	path = packages/aave-utilities
+	url = git@github.com:aave/aave-utilities.git
