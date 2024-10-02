@@ -10,9 +10,11 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -37,9 +39,9 @@ export const BorrowInfo = ({
   showBorrowCapStatus,
   borrowCap,
 }: BorrowInfoProps) => {
-  const { isConnectedTonWallet } = useTonConnectContext();
+  const { isConnectNetWorkTon } = useAppDataContext();
 
-  const collectorContract = isConnectedTonWallet
+  const collectorContract = isConnectNetWorkTon
     ? reserve.underlyingAssetTon
     : currentMarketData.addresses.COLLECTOR;
 

@@ -5,9 +5,12 @@ import * as React from 'react';
 import { useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 
 import { RESERVE_DETAILS } from '../../utils/mixPanelEvents';
@@ -24,7 +27,7 @@ export const TokenLinkDropdown = ({
   hideAToken: hideATokenMain,
 }: TokenLinkDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { isConnectedTonWallet } = useTonConnectContext();
+  const { isTonNetwork, isConnectNetWorkTon } = useAppDataContext();
 
   const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const open = Boolean(anchorEl);
@@ -48,17 +51,23 @@ export const TokenLinkDropdown = ({
     return null;
   }
 
-  const showVariableDebtToken = isConnectedTonWallet
+  const showVariableDebtToken = isConnectNetWorkTon
     ? false
     : poolReserve.borrowingEnabled || Number(poolReserve.totalVariableDebt) > 0;
 
-  const showStableDebtToken = isConnectedTonWallet
+  const showStableDebtToken = isConnectNetWorkTon
     ? false
     : poolReserve.stableBorrowRateEnabled || Number(poolReserve.totalStableDebt) > 0;
 
   const showDebtTokenHeader = showVariableDebtToken || showStableDebtToken;
 
-  const hideAToken = isConnectedTonWallet ? true : hideATokenMain;
+  const hideAToken = isConnectNetWorkTon ? true : hideATokenMain;
+
+  const explorerLink = isTonNetwork
+    ? `${SCAN_TRANSACTION_TON}/${poolReserve.underlyingAssetTon}`
+    : currentNetworkConfig.explorerLinkBuilder({
+        address: poolReserve?.stableDebtTokenAddress,
+      });
 
   return (
     <>
@@ -106,9 +115,7 @@ export const TokenLinkDropdown = ({
             });
           }}
           component="a"
-          href={currentNetworkConfig.explorerLinkBuilder({
-            address: poolReserve?.underlyingAsset,
-          })}
+          href={explorerLink}
           target="_blank"
           divider
         >

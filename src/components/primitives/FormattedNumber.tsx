@@ -7,6 +7,7 @@ import type {
 } from '@mui/material/Typography/Typography';
 import type { OverridableStringUnion } from '@mui/types';
 import type { ElementType } from 'react';
+import React from 'react';
 
 interface CompactNumberProps {
   value: string | number;

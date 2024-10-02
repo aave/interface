@@ -99,12 +99,13 @@ export const useTransactionHandler = ({
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
-  const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
+  const { walletAddressTonWallet } = useTonConnectContext();
   const { onToggleCollateralTon, onSendWithdrawTon } = useTonTransactions(
     walletAddressTonWallet,
     String(underlyingAssetTon)
   );
-  const { getYourSupplies, getPoolContractGetReservesData } = useAppDataContext();
+  const { getYourSupplies, getPoolContractGetReservesData, isConnectNetWorkTon } =
+    useAppDataContext();
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -293,7 +294,7 @@ export const useTransactionHandler = ({
   };
 
   const action = async () => {
-    if (isConnectedTonWallet) {
+    if (isConnectNetWorkTon) {
       setMainTxState({ ...mainTxState, loading: true });
       if (typeAction === 'isWithdraw') {
         try {
@@ -526,7 +527,7 @@ export const useTransactionHandler = ({
               txHash: undefined,
             });
             const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-            const parsedErrorMatch = isConnectedTonWallet ? undefined : parsedError;
+            const parsedErrorMatch = isConnectNetWorkTon ? undefined : parsedError;
             setTxError(parsedErrorMatch);
             setLoadingTxns(false);
           });

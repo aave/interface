@@ -3,7 +3,7 @@ import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { Fragment, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -12,7 +12,6 @@ import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarnin
 import { useWalletBalancesTon } from 'src/hooks/app-data-provider/useWalletBalancesTon';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
@@ -46,7 +45,6 @@ const head = [
 ];
 
 export const SupplyAssetsList = () => {
-  const { isConnectedTonWallet } = useTonConnectContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
@@ -56,6 +54,7 @@ export const SupplyAssetsList = () => {
     reserves,
     marketReferencePriceInUsd,
     loading: loadingReserves,
+    isConnectNetWorkTon,
   } = useAppDataContext();
 
   const { walletBalancesTon, loading: loadingWalletBalancesTon } = useWalletBalancesTon(
@@ -78,9 +77,9 @@ export const SupplyAssetsList = () => {
     localStorage.getItem(localStorageName) === 'true'
   );
 
-  const loading = isConnectedTonWallet ? loadingWalletBalancesTon : loadingWalletBalances;
+  const loading = isConnectNetWorkTon ? loadingWalletBalancesTon : loadingWalletBalances;
 
-  const walletBalances = isConnectedTonWallet ? walletBalancesTon : walletBalancesDefault;
+  const walletBalances = isConnectNetWorkTon ? walletBalancesTon : walletBalancesDefault;
 
   const tokensToSupply = reserves
     .filter(

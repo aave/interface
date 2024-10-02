@@ -2,7 +2,7 @@ import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Fragment, useMemo, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -10,7 +10,6 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
   displayGhoForMintableMarket,
@@ -95,8 +94,8 @@ const head = [
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-  const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
-  const { isConnectedTonWallet } = useTonConnectContext();
+  const { user, reserves, marketReferencePriceInUsd, loading, isConnectNetWorkTon } =
+    useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
@@ -111,7 +110,7 @@ export const BorrowAssetsList = () => {
         ? Number(getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable))
         : 0;
 
-      const availableBorrowsInUSD = isConnectedTonWallet
+      const availableBorrowsInUSD = isConnectNetWorkTon
         ? valueToBigNumber(availableBorrows)
             .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
             .toFixed(2)

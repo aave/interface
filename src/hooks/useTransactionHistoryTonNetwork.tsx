@@ -1,7 +1,6 @@
 import { Address } from '@ton/core';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import {
   actionFilterMap,
   hasCollateralReserve,
@@ -13,6 +12,7 @@ import {
 import { useRootStore } from 'src/store/root';
 import { retry } from 'ts-retry-promise';
 
+import { useAppDataContext } from './app-data-provider/useAppDataProvider';
 import {
   address_pools,
   MAX_ATTEMPTS_50,
@@ -89,7 +89,7 @@ export const useTransactionHistoryTonNetwork = ({}: any) => {
 
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { isConnectedTonWallet } = useTonConnectContext();
+  const { isConnectNetWorkTon } = useAppDataContext();
 
   const parseAddressWallet = account ? Address.parse(account).toRawString() : '';
   console.log('🚀 ~ parseAddressWallet:', parseAddressWallet);
@@ -102,7 +102,7 @@ export const useTransactionHistoryTonNetwork = ({}: any) => {
 
   const getTransactions = useCallback(
     async (skip = 0, first = 100) => {
-      if (!isConnectedTonWallet) {
+      if (!isConnectNetWorkTon) {
         setTransactions([]);
         setIsLoading(false); // Cập nhật trạng thái về false
         return;
@@ -135,13 +135,13 @@ export const useTransactionHistoryTonNetwork = ({}: any) => {
         setIsLoading(false); // Cập nhật trạng thái về false khi có lỗi xảy ra
       }
     },
-    [isConnectedTonWallet, selectedPool, parseAddressWallet]
+    [isConnectNetWorkTon, selectedPool, parseAddressWallet]
   );
 
   useEffect(() => {
     setIsLoading(true);
     getTransactions();
-  }, [getTransactions, isConnectedTonWallet, parseAddressWallet]);
+  }, [getTransactions, isConnectNetWorkTon, parseAddressWallet]);
 
   return {
     data: transactions,

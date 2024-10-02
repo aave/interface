@@ -14,7 +14,7 @@ import {
   useTheme,
 } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { ComponentProps, ReactNode, useState } from 'react';
+import React, { ComponentProps, ReactNode, useState } from 'react';
 import { WalletIcon2 } from 'src/components/icons/WalletIcon2';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -28,7 +28,6 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
@@ -66,7 +65,6 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
 
   const { currentAccount, loading: loadingWeb3Context } = useWeb3Context();
-  const { isConnectedTonWallet } = useTonConnectContext();
   const { openBorrow, openSupply } = useModalContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
@@ -76,6 +74,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     user,
     loading: loadingReserves,
     marketReferencePriceInUsd,
+    isConnectNetWorkTon,
   } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances(currentMarketData);
 
@@ -88,7 +87,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
   }
 
-  const balanceAmount = isConnectedTonWallet ? `${reserve?.walletBalance}` : balance?.amount;
+  const balanceAmount = isConnectNetWorkTon ? `${reserve?.walletBalance}` : balance?.amount;
 
   let maxAmountToBorrow = '0';
   let maxAmountToSupply = '0';
@@ -139,7 +138,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     return <ConnectWallet loading={loadingWeb3Context} />;
   }
 
-  if ((loadingReserves || loadingWalletBalance) && !isConnectedTonWallet) {
+  if ((loadingReserves || loadingWalletBalance) && !isConnectNetWorkTon) {
     return <ActionsSkeleton />;
   }
 

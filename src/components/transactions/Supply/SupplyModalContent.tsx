@@ -20,7 +20,6 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWrappedTokens, WrappedTokenConfig } from 'src/hooks/useWrappedTokens';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import {
@@ -64,8 +63,8 @@ export const SupplyModalContentWrapper = (
   params: ModalWrapperProps & { user: ExtendedFormattedUser }
 ) => {
   const user = params.user;
-  const { isConnectedTonWallet } = useTonConnectContext();
   const { currentMarketData } = useProtocolDataContext();
+  const { isConnectNetWorkTon } = useAppDataContext();
   const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances } = useWalletBalances(currentMarketData);
   const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCaps();
@@ -108,7 +107,7 @@ export const SupplyModalContentWrapper = (
       user.totalCollateralUSD,
       user.isInIsolationMode,
       debtCeilingUsage.isMaxed,
-      isConnectedTonWallet
+      isConnectNetWorkTon
     ),
     supplyCapWarning: supplyCapUsage.determineWarningDisplay({ supplyCap: supplyCapUsage }),
     debtCeilingWarning: debtCeilingUsage.determineWarningDisplay({ debtCeiling: debtCeilingUsage }),

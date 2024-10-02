@@ -51,8 +51,9 @@ export const SupplyActions = React.memo(
     isJetton,
     ...props
   }: SupplyActionProps) => {
-    const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
-    const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
+    const { walletAddressTonWallet } = useTonConnectContext();
+    const { getPoolContractGetReservesData, getYourSupplies, isConnectNetWorkTon } =
+      useAppDataContext();
     const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions(
       walletAddressTonWallet,
       `${underlyingAssetTon}`
@@ -97,7 +98,7 @@ export const SupplyActions = React.memo(
       isFetchedAfterMount,
     } = usePoolApprovedAmount(currentMarketData, poolAddress);
 
-    const approvedAmount = isConnectedTonWallet ? approvedAmountTonAssume : approvedAmountMain;
+    const approvedAmount = isConnectNetWorkTon ? approvedAmountTonAssume : approvedAmountMain;
 
     setLoadingTxns(fetchingApprovedAmount);
 
@@ -152,7 +153,7 @@ export const SupplyActions = React.memo(
     }, [requiresApproval, approvalTxState, usePermit, setGasLimit]);
     const action = async () => {
       try {
-        if (isConnectedTonWallet) {
+        if (isConnectNetWorkTon) {
           setMainTxState({ ...mainTxState, loading: true });
           try {
             const resSupplyTon = await onSendSupplyTon(

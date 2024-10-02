@@ -10,8 +10,8 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { ReactNode } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { TxAction } from 'src/ui-config/errorMapping';
@@ -67,19 +67,19 @@ export const TxActionsWrapper = ({
 }: TxActionsWrapperProps) => {
   const { txError } = useModalContext();
   const { readOnlyModeAddress } = useWeb3Context();
-  const { isConnectedTonWallet } = useTonConnectContext();
+  const { isConnectNetWorkTon } = useAppDataContext();
   const hasApprovalError =
     requiresApproval && txError?.txAction === TxAction.APPROVAL && txError?.actionBlocked;
   const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
 
   function getMainParams() {
     // start with ton connect
-    if (isConnectedTonWallet && isAmountMissing)
+    if (isConnectNetWorkTon && isAmountMissing)
       return { disabled: true, content: <Trans>Enter an amount</Trans> };
-    if (isConnectedTonWallet && preparingTransactions) return { disabled: true, loading: true };
-    if (isConnectedTonWallet && !mainTxState?.loading)
+    if (isConnectNetWorkTon && preparingTransactions) return { disabled: true, loading: true };
+    if (isConnectNetWorkTon && !mainTxState?.loading)
       return { content: actionText, handleClick: handleAction };
-    if (isConnectedTonWallet && mainTxState?.loading)
+    if (isConnectNetWorkTon && mainTxState?.loading)
       return { loading: true, disabled: true, content: actionInProgressText };
     // end with ton connect
 

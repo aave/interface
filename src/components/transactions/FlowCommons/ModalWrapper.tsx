@@ -11,7 +11,6 @@ import { useWalletBalancesTon } from 'src/hooks/app-data-provider/useWalletBalan
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -50,12 +49,11 @@ export const ModalWrapper: React.FC<{
   title,
   keepWrappedSymbol,
 }) => {
-  const { isConnectedTonWallet } = useTonConnectContext();
   const { readOnlyModeAddress } = useWeb3Context();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { walletBalances } = useWalletBalances(currentMarketData);
-  const { user, reserves } = useAppDataContext();
+  const { user, reserves, isConnectNetWorkTon } = useAppDataContext();
   const { walletBalancesTon } = useWalletBalancesTon(reserves as DashboardReserve[]);
   const { txError, mainTxState } = useModalContext();
 
@@ -88,9 +86,9 @@ export const ModalWrapper: React.FC<{
     ? walletBalancesTon[poolReserve?.underlyingAsset?.toLowerCase()]?.amount
     : '0';
 
-  const tokenBalance = isConnectedTonWallet ? tokenBalanceTonWallet : tokenBalanceAllNet;
+  const tokenBalance = isConnectNetWorkTon ? tokenBalanceTonWallet : tokenBalanceAllNet;
 
-  const isWrongNetworkMat = isConnectedTonWallet ? false : isWrongNetwork;
+  const isWrongNetworkMat = isConnectNetWorkTon ? false : isWrongNetwork;
 
   return (
     <AssetCapsProvider asset={poolReserve}>

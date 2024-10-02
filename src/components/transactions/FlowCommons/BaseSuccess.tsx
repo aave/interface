@@ -2,11 +2,11 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 
 export type BaseSuccessTxViewProps = {
   txHash?: string;
@@ -23,7 +23,7 @@ const ExtLinkIcon = () => (
 export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewProps) => {
   const { close, mainTxState } = useModalContext();
   const { currentNetworkConfig } = useProtocolDataContext();
-  const { isConnectedTonWallet } = useTonConnectContext();
+  const { isConnectNetWorkTon } = useAppDataContext();
 
   const hrefTon = `${SCAN_TRANSACTION_TON}/transaction/${txHash ? txHash : mainTxState.txHash}`;
   const theme = useTheme();
@@ -70,7 +70,7 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
           <Link
             variant="helperText"
             href={
-              isConnectedTonWallet
+              isConnectNetWorkTon
                 ? hrefTon
                 : currentNetworkConfig.explorerLinkBuilder({
                     tx: txHash ? txHash : mainTxState.txHash,

@@ -13,7 +13,6 @@ import { usePoolReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useModalContext } from 'src/hooks/useModal';
-import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
@@ -52,8 +51,8 @@ export const GasStation: React.FC<GasStationProps> = ({
   chainId,
 }) => {
   const { state } = useGasStation();
-  const { gasFeeTonMarketReferenceCurrencyTON, balanceTokenTON } = useAppDataContext();
-  const { isConnectedTonWallet } = useTonConnectContext();
+  const { gasFeeTonMarketReferenceCurrencyTON, balanceTokenTON, isConnectNetWorkTon } =
+    useAppDataContext();
   const [currentChainId, account] = useRootStore((store) => [store.currentChainId, store.account]);
   const selectedChainId = chainId ?? currentChainId;
   // TODO: find a better way to query base token price instead of using a random market.
@@ -93,7 +92,7 @@ export const GasStation: React.FC<GasStationProps> = ({
   const showNotEnoughFeesMain =
     !disabled && !isContractAddress && Number(nativeBalanceUSD) < Number(totalGasCostsUsd);
 
-  const showNotEnoughFees = isConnectedTonWallet ? showNotEnoughFeesTON : showNotEnoughFeesMain;
+  const showNotEnoughFees = isConnectNetWorkTon ? showNotEnoughFeesTON : showNotEnoughFeesMain;
 
   return (
     <Stack gap={6} sx={{ width: '100%' }}>
@@ -105,11 +104,11 @@ export const GasStation: React.FC<GasStationProps> = ({
 
           {loadingTxns && !skipLoad ? (
             <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          ) : (totalGasCostsUsd && !disabled) || isConnectedTonWallet ? (
+          ) : (totalGasCostsUsd && !disabled) || isConnectNetWorkTon ? (
             <>
               <FormattedNumber
                 value={
-                  isConnectedTonWallet
+                  isConnectNetWorkTon
                     ? gasFeeTonMarketReferenceCurrencyTON
                     : totalGasCostsUsd
                     ? totalGasCostsUsd

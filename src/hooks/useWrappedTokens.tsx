@@ -40,9 +40,8 @@ const wrappedTokenConfig: {
 export const useWrappedTokens = () => {
   const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals, reserves } =
     useAppDataContext();
-  const { isConnectedTonWallet } = useTonConnectContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
-  if (!reserves || reserves.length === 0 || isConnectedTonWallet) {
+  if (!reserves || reserves.length === 0) {
     return [];
   }
   const wrappedTokens = wrappedTokenConfig[currentMarket] ?? [];
