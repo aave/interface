@@ -1,11 +1,15 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
+import _ from 'lodash';
 import React from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
-import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import {
+  defaultRateUSDNotValue,
+  SCAN_PRICE_TON,
+} from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -35,8 +39,12 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const valueTypographyVariant = downToSM ? 'main16' : 'body1';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'body1';
 
+  const getViewOracleContractTon = (address: string | undefined) => {
+    return _.find(defaultRateUSDNotValue, { address })?.id || null;
+  };
+
   const linkViewOracleContract = isConnectNetWorkTon
-    ? `${SCAN_TRANSACTION_TON}/${poolReserve.underlyingAssetTon}`
+    ? `${SCAN_PRICE_TON}/en/coins/${getViewOracleContractTon(poolReserve.underlyingAssetTon)}`
     : currentNetworkConfig.explorerLinkBuilder({
         address: poolReserve?.priceOracle,
       });
