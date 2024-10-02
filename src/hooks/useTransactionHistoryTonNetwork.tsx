@@ -92,7 +92,6 @@ export const useTransactionHistoryTonNetwork = ({}: any) => {
   const { isConnectNetWorkTon } = useAppDataContext();
 
   const parseAddressWallet = account ? Address.parse(account).toRawString() : '';
-  console.log('🚀 ~ parseAddressWallet:', parseAddressWallet);
 
   // Handle subgraphs with multiple markets (currently only ETH V2 and ETH V2 AMM)
   let selectedPool: string | undefined = undefined;
@@ -117,10 +116,8 @@ export const useTransactionHistoryTonNetwork = ({}: any) => {
 
             // Fetch from Ton wallet
             const url = `${URL_TRANSACTION_HISTORY}?pool=${encodedPool}&address=${encodedAccount}&page=${skip}&limit=${first}`;
-            console.log('Fetching transaction history from:', url);
             const response = await axios.get(url);
             const data = response?.data ?? [];
-            console.log('🚀 ~ data ===:', data);
             setTransactions(data);
             setIsLoading(false); // Cập nhật trạng thái về false khi lấy dữ liệu thành công
           },
@@ -135,7 +132,7 @@ export const useTransactionHistoryTonNetwork = ({}: any) => {
         setIsLoading(false); // Cập nhật trạng thái về false khi có lỗi xảy ra
       }
     },
-    [isConnectNetWorkTon, selectedPool, parseAddressWallet]
+    [isConnectNetWorkTon, selectedPool, parseAddressWallet, URL_TRANSACTION_HISTORY]
   );
 
   useEffect(() => {

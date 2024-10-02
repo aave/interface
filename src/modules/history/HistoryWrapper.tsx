@@ -38,6 +38,7 @@ import {
 
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [account] = useRootStore((state) => [state.account]);
   const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [searchResetKey, setSearchResetKey] = useState(0);
@@ -61,10 +62,8 @@ export const HistoryWrapper = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const transactions: any = isConnectNetWorkTon ? transactionsTonNetwork : transactionsMain;
-  const isLoading = isConnectNetWorkTon ? isLoadingTonNetwork : isLoadingMain;
+  const isLoading = !!account && (isConnectNetWorkTon ? isLoadingTonNetwork : isLoadingMain);
   const isFetchingNextPage = isConnectNetWorkTon ? false : isFetchingNextPageMain;
-  console.log('🚀 ~ isLoading web:', isLoading);
-  console.log('🚀 ~ transactions web:', transactions);
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
@@ -85,7 +84,6 @@ export const HistoryWrapper = () => {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
 
   const flatTxns = useMemo(() => {
-    console.log('Transactions web updated: ', transactions);
     if (isConnectNetWorkTon) {
       return transactions || [];
     }
@@ -144,7 +142,6 @@ export const HistoryWrapper = () => {
           '1';
       }
       const iconSymbol = item.symbol;
-      console.log('Symbol', item.symbol, 'AssetPriceUSD: ', assetPriceUSD);
       return { ...item, action, iconSymbol, toState: collateralStatus, assetPriceUSD };
     });
 
