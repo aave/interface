@@ -143,12 +143,13 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
         sx={(theme) => ({
           maxWidth: downToMD ? '100%' : 360,
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
           alignItems: 'center',
           color: theme.palette.text.secondary,
           px: 5,
           height: 42,
-          width: 205,
+          width: 'auto',
+          minWidth: 205,
         })}
         onClick={handleClick}
         startIcon={
