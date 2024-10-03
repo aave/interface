@@ -14,26 +14,29 @@ export const SpkAirdropTooltip = () => {
       <>
         <Trans>
           {`This asset is eligible for SPK pre-farming airdrop incentive program. Aave Labs does not
-          guarantee the program and accepts no liability.`}
+          guarantee the program and accepts no liability.\n`}
         </Trans>
-        <Trans>{'Learn more about the SPK rewards'}</Trans>
+        <br />
+        <br />
+        <Trans>{'Learn more about the SPK rewards'}</Trans>{' '}
         <Link
           href="https://forum.sky.money/t/spark-proposal-for-integrations-into-aave/25005"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"
         >
-          {' here '}
-        </Link>
-        <Trans>{'and about SPK program'}</Trans>
+          {'here'}
+        </Link>{' '}
+        <Trans>{'and about SPK program'}</Trans>{' '}
         <Link
           href="https://docs.spark.fi/rewards/spk-token#what-is-the-spk-pre-farming-airdrop"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"
         >
-          {' here.'}
+          {'here'}
         </Link>
+        {'.'}
       </>
     </TextWithTooltip>
   );
