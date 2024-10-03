@@ -60,7 +60,11 @@ export const SuppliedPositionsListMobileItem = ({
       frozen={reserve.isFrozen}
       showSupplyCapTooltips
       showDebtCeilingTooltips
-      showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY)}
+      showExternalIncentivesTooltips={showSuperFestTooltip(
+        reserve.symbol,
+        currentMarket,
+        Side.SUPPLY
+      )}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}

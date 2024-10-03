@@ -140,7 +140,11 @@ const BorrowedPositionsListItemDesktop = ({
       borrowEnabled={reserve.borrowingEnabled}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
-      showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.BORROW)}
+      showExternalIncentivesTooltips={showSuperFestTooltip(
+        reserve.symbol,
+        currentMarket,
+        Side.BORROW
+      )}
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
@@ -223,7 +227,7 @@ const BorrowedPositionsListItemMobile = ({
       frozen={reserve.isFrozen}
       borrowEnabled={reserve.borrowingEnabled}
       showBorrowCapTooltips
-      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.BORROW)}
+      showExternalIncentivesTooltips={showSuperFestTooltip(symbol, currentMarket, Side.BORROW)}
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}

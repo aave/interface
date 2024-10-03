@@ -2,10 +2,12 @@ import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { PausedTooltip } from 'src/components/infoTooltips/PausedTooltip';
+import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
 import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { TooltipsConfig } from 'src/utils/utils';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
@@ -28,7 +30,7 @@ interface ListMobileItemWrapperProps {
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
   isIsolated?: boolean;
-  showSuperFestTooltip?: boolean;
+  showExternalIncentivesTooltips?: TooltipsConfig;
 }
 
 export const ListMobileItemWrapper = ({
@@ -46,7 +48,10 @@ export const ListMobileItemWrapper = ({
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
   isIsolated = false,
-  showSuperFestTooltip = false,
+  showExternalIncentivesTooltips = {
+    superFestRewards: false,
+    spkAirdrop: false,
+  },
 }: ListMobileItemWrapperProps) => {
   const WarningComponent: React.FC = () => {
     const showFrozenTooltip = frozen && symbol !== 'renFIL';
@@ -56,10 +61,13 @@ export const ListMobileItemWrapper = ({
     const offboardingDiscussion =
       currentMarket && symbol ? AssetsBeingOffboarded[currentMarket]?.[symbol] : '';
     const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
+    console.log(showExternalIncentivesTooltips);
+
     return (
       <>
         {paused && <PausedTooltip />}
-        {showSuperFestTooltip && <SuperFestTooltip />}
+        {showExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
+        {showExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}

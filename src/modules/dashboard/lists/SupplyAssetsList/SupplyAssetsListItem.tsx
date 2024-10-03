@@ -153,7 +153,7 @@ export const SupplyAssetsListItemDesktop = ({
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
-      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
+      showExternalIncentivesTooltips={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <ListColumn>
@@ -334,7 +334,7 @@ export const SupplyAssetsListItemMobile = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
-      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
+      showExternalIncentivesTooltips={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <Row

@@ -39,7 +39,7 @@ export const BorrowAssetsListMobileItem = ({
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
-      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.BORROW)}
+      showExternalIncentivesTooltips={showSuperFestTooltip(symbol, currentMarket, Side.BORROW)}
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
