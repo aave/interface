@@ -6,7 +6,6 @@ import {
   MiscBase,
   MiscBNB,
   MiscEthereum,
-  MiscFantom,
   MiscOptimism,
   MiscPolygon,
 } from '@bgd-labs/aave-address-book';
@@ -84,10 +83,6 @@ const paraswapNetworks: ParaswapChainMap = {
   [ChainId.avalanche]: {
     paraswap: ParaSwap(ChainId.avalanche),
     feeClaimer: MiscAvalanche.PARASWAP_FEE_CLAIMER,
-  },
-  [ChainId.fantom]: {
-    paraswap: ParaSwap(ChainId.fantom),
-    feeClaimer: MiscFantom.PARASWAP_FEE_CLAIMER,
   },
   [ChainId.arbitrum_one]: {
     paraswap: ParaSwap(ChainId.arbitrum_one),
