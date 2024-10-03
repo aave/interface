@@ -13,7 +13,7 @@ export const SpkAirdropTooltip = () => {
     >
       <>
         <Trans>
-          {`This asset is eligible for SPK pre-farming airdrop incentive program. Aave Labs does not
+          {`This asset is eligible for SPK incentive program. Aave Labs does not
           guarantee the program and accepts no liability.\n`}
         </Trans>
         <br />
