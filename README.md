@@ -12,7 +12,7 @@
 ```
 
 # Aave protocol interface :ghost:
-test
+
 An open source interface for the decentralized liquidity protocol Aave
 
 Enabling users to:
