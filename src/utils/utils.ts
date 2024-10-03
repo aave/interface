@@ -80,16 +80,20 @@ export enum Side {
   BORROW = 'borrow',
 }
 
-export type TooltipsConfig = {
+export type ExternalIncentivesTooltipsConfig = {
   superFestRewards: boolean;
   spkAirdrop: boolean;
 };
 
-export const showSuperFestTooltip = (symbol: string, currentMarket: string, side?: Side) => {
+export const showExternalIncentivesTooltip = (
+  symbol: string,
+  currentMarket: string,
+  side?: Side
+) => {
   const superFestRewardsEnabled = true;
   const spkRewardsEnabled = true;
 
-  const tooltipsConfig: TooltipsConfig = {
+  const tooltipsConfig: ExternalIncentivesTooltipsConfig = {
     superFestRewards: false,
     spkAirdrop: false,
   };
@@ -114,11 +118,4 @@ export const showSuperFestTooltip = (symbol: string, currentMarket: string, side
   }
 
   return tooltipsConfig;
-
-  // return (
-  //   superFestRewardsEnabled &&
-  //   currentMarket === CustomMarket.proto_base_v3 &&
-  //   side === Side.SUPPLY &&
-  //   (symbol == 'ETH' || symbol == 'WETH' || symbol == 'wstETH')
-  // );
 };

@@ -12,7 +12,7 @@ import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { TooltipsConfig } from 'src/utils/utils';
+import { ExternalIncentivesTooltipsConfig } from 'src/utils/utils';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
@@ -35,7 +35,7 @@ interface ListItemWrapperProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
-  showExternalIncentivesTooltips?: TooltipsConfig;
+  showExternalIncentivesTooltips?: ExternalIncentivesTooltipsConfig;
 }
 
 export const ListItemWrapper = ({
@@ -66,8 +66,6 @@ export const ListItemWrapper = ({
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[symbol];
   const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
   const trackEvent = useRootStore((store) => store.trackEvent);
-
-  console.log(showExternalIncentivesTooltips);
 
   return (
     <ListItem {...rest}>

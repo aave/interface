@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { showSuperFestTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Row } from '../../../../components/primitives/Row';
@@ -60,7 +60,7 @@ export const SuppliedPositionsListMobileItem = ({
       frozen={reserve.isFrozen}
       showSupplyCapTooltips
       showDebtCeilingTooltips
-      showExternalIncentivesTooltips={showSuperFestTooltip(
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         reserve.symbol,
         currentMarket,
         Side.SUPPLY

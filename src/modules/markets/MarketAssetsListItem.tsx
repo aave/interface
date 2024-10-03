@@ -12,7 +12,7 @@ import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarnin
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
-import { showSuperFestTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -29,12 +29,12 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
-  const externalIncentivesTooltipsSupplySide = showSuperFestTooltip(
+  const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
     reserve.symbol,
     currentMarket,
     Side.SUPPLY
   );
-  const externalIncentivesTooltipsBorrowSide = showSuperFestTooltip(
+  const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
     reserve.symbol,
     currentMarket,
     Side.BORROW

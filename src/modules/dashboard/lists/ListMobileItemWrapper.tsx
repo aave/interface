@@ -7,7 +7,7 @@ import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollate
 import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { TooltipsConfig } from 'src/utils/utils';
+import { ExternalIncentivesTooltipsConfig } from 'src/utils/utils';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
@@ -30,7 +30,7 @@ interface ListMobileItemWrapperProps {
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
   isIsolated?: boolean;
-  showExternalIncentivesTooltips?: TooltipsConfig;
+  showExternalIncentivesTooltips?: ExternalIncentivesTooltipsConfig;
 }
 
 export const ListMobileItemWrapper = ({
@@ -61,8 +61,6 @@ export const ListMobileItemWrapper = ({
     const offboardingDiscussion =
       currentMarket && symbol ? AssetsBeingOffboarded[currentMarket]?.[symbol] : '';
     const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
-    console.log(showExternalIncentivesTooltips);
-
     return (
       <>
         {paused && <PausedTooltip />}
