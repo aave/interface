@@ -166,6 +166,7 @@ export const BorrowAssetsList = () => {
     'asset',
     filteredReserves as unknown as DashboardReserve[]
   );
+
   const borrowDisabled = !sortedReserves.length && !ghoReserve;
 
   const RenderHeader: React.FC = () => {

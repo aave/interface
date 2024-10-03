@@ -11,6 +11,7 @@ import { UiGhoService } from 'src/services/UiGhoService';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
+import { UnderlyingYieldService } from 'src/services/UnderlyingYieldService';
 import { VotingMachineService } from 'src/services/VotingMachineService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
@@ -36,6 +37,7 @@ interface SharedDependenciesContext {
   stkAbptMigrationService: StkAbptMigrationService;
   migrationService: MigrationService;
   erc20Service: ERC20Service;
+  underlyingYieldService: UnderlyingYieldService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -78,6 +80,8 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
 
   const uiGhoService = new UiGhoService(getProvider);
 
+  const underlyingYieldService = new UnderlyingYieldService(getProvider);
+
   return (
     <SharedDependenciesContext.Provider
       value={{
@@ -96,6 +100,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         stkAbptMigrationService,
         migrationService,
         erc20Service,
+        underlyingYieldService,
       }}
     >
       {children}

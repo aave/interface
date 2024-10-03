@@ -167,6 +167,11 @@ export const queryKeysFactory = {
     chainId,
     'tokensBalance',
   ],
+  underlyingYields: () => [
+    ...queryKeysFactory.pool,
+    ...queryKeysFactory.incentives,
+    'underlyingYield',
+  ],
 };
 
 export const POLLING_INTERVAL = 60000;

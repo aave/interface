@@ -3457,6 +3457,7 @@ msgstr "withdrew"
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
+#: src/modules/dashboard/lists/ListAPYDetails.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "{0}"

@@ -21,6 +21,7 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
+import { ListAPYDetails } from '../dashboard/lists/ListAPYDetails';
 
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
@@ -82,12 +83,21 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={reserve.supplyAPY}
+          value={
+            reserve.underlyingAPY
+              ? Number(reserve.supplyAPY) + reserve.underlyingAPY
+              : Number(reserve.supplyAPY)
+          }
+          tooltip={apyTooltip({
+            underlyingAPY: reserve.underlyingAPY,
+            isSuperfest: isSuperfestOnSupplySide,
+            apy: reserve.supplyAPY,
+            side: Side.SUPPLY,
+          })}
           incentives={reserve.aIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
-          tooltip={isSuperfestOnSupplySide && <SuperFestTooltip />}
         />
       </ListColumn>
 
@@ -104,30 +114,28 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
+          value={
+            Number(reserve.totalVariableDebtUSD) > 0
+              ? reserve.underlyingAPY
+                ? Number(reserve.variableBorrowAPY) + reserve.underlyingAPY
+                : reserve.variableBorrowAPY
+              : '-1'
+          }
           incentives={reserve.vIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
-          tooltip={isSuperfestOnBorrowSide && <SuperFestTooltip />}
+          tooltip={apyTooltip({
+            underlyingAPY: reserve.underlyingAPY,
+            isSuperfest: isSuperfestOnBorrowSide,
+            apy: reserve.variableBorrowAPY,
+            side: Side.BORROW,
+          })}
         />
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
       </ListColumn>
-      {/*
-      <ListColumn>
-        <IncentivesCard
-          value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}
-          incentives={reserve.sIncentivesData || []}
-          symbol={reserve.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
-        />
-        {!reserve.borrowingEnabled && Number(reserve.totalStableDebt) > 0 && !reserve.isFrozen && (
-          <ReserveSubheader value={'Disabled'} />
-        )}
-      </ListColumn> */}
 
       <ListColumn minWidth={95} maxWidth={95} align="right">
         <Button
@@ -148,4 +156,31 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
     </ListItem>
   );
+};
+
+export const apyTooltip = ({
+  underlyingAPY,
+  isSuperfest,
+  apy,
+  side,
+}: {
+  underlyingAPY: number | null;
+  isSuperfest: boolean;
+  apy: string;
+  side: Side;
+}) => {
+  if (isSuperfest && underlyingAPY) {
+    return (
+      <>
+        <ListAPYDetails apy={Number(apy)} side={side} underlyingAPY={underlyingAPY} />
+        <SuperFestTooltip />
+      </>
+    );
+  } else if (!isSuperfest && underlyingAPY) {
+    return <ListAPYDetails apy={Number(apy)} side={side} underlyingAPY={underlyingAPY} />;
+  } else if (isSuperfest && !underlyingAPY) {
+    return <SuperFestTooltip />;
+  } else {
+    return null;
+  }
 };
