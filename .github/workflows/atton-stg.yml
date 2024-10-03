@@ -19,7 +19,7 @@ jobs:
 
   Build-and-start-application:
     name: Build And Start Application
-    runs-on: dev-runner
+    runs-on: stg-runner
     needs: Copy-source-code
     steps:
       - name: Build and start application
