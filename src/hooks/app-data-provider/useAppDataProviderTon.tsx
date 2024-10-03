@@ -237,7 +237,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           const liquidity = item.liquidity.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
           // const availableLiquidity = valueToBigNumber(liquidity); // SC confirm = liquidity --> remove .minus(totalBorrowed)
           const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
-          const stableBorrowRateEnabled = item.stableRateBorrowingEnabled;
+          // const stableBorrowRateEnabled = item.stableRateBorrowingEnabled;
+          const stableBorrowRateEnabled = false;
 
           const supplyAPYCalculate = calculateCompoundedRate({
             rate: liquidityRate,
