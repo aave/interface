@@ -2672,8 +2672,8 @@ msgid "This asset has reached its supply cap. Nothing is available to be supplie
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 
 #: src/components/infoTooltips/SpkAirdropTooltip.tsx
-msgid "This asset is eligible for SPK pre-farming airdrop incentive program. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This asset is eligible for SPK pre-farming airdrop incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."

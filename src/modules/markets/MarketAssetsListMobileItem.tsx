@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
+import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
@@ -20,12 +21,12 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
   const { currentMarket } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const isSuperfestOnSupplySide = showExternalIncentivesTooltip(
+  const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
     reserve.symbol,
     currentMarket,
     Side.SUPPLY
   );
-  const isSuperfestOnBorrowSide = showExternalIncentivesTooltip(
+  const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
     reserve.symbol,
     currentMarket,
     Side.BORROW
@@ -66,7 +67,12 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           incentives={reserve.aIncentivesData || []}
           symbol={reserve.symbol}
           variant="secondary14"
-          tooltip={isSuperfestOnSupplySide && <SuperFestTooltip />}
+          tooltip={
+            <>
+              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
+              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
+            </>
+          }
         />
       </Row>
 
@@ -111,7 +117,12 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             incentives={reserve.vIncentivesData || []}
             symbol={reserve.symbol}
             variant="secondary14"
-            tooltip={isSuperfestOnBorrowSide && <SuperFestTooltip />}
+            tooltip={
+              <>
+                {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
+                {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
+              </>
+            }
           />
           {!reserve.borrowingEnabled &&
             Number(reserve.totalVariableDebt) > 0 &&
