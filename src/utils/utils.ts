@@ -90,7 +90,7 @@ export const showExternalIncentivesTooltip = (
   currentMarket: string,
   side?: Side
 ) => {
-  const superFestRewardsEnabled = true;
+  const superFestRewardsEnabled = false;
   const spkRewardsEnabled = true;
 
   const tooltipsConfig: ExternalIncentivesTooltipsConfig = {
