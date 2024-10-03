@@ -2,7 +2,8 @@ name: fpp-fe-user
 
 on:
   push:
-    branch: ton-chain
+    branches: 
+      - ton-chain
 env:
   FE_SERVICE: fe
 jobs:
