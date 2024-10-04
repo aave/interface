@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
+import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
@@ -7,7 +8,7 @@ import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
-import { showSuperFestTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -20,8 +21,16 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
   const { currentMarket } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const isSuperfestOnSupplySide = showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY);
-  const isSuperfestOnBorrowSide = showSuperFestTooltip(reserve.symbol, currentMarket, Side.BORROW);
+  const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
+    reserve.symbol,
+    currentMarket,
+    Side.SUPPLY
+  );
+  const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
+    reserve.symbol,
+    currentMarket,
+    Side.BORROW
+  );
 
   return (
     <ListMobileItemWrapper
@@ -58,7 +67,12 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           incentives={reserve.aIncentivesData || []}
           symbol={reserve.symbol}
           variant="secondary14"
-          tooltip={isSuperfestOnSupplySide && <SuperFestTooltip />}
+          tooltip={
+            <>
+              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
+              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
+            </>
+          }
         />
       </Row>
 
@@ -103,7 +117,12 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             incentives={reserve.vIncentivesData || []}
             symbol={reserve.symbol}
             variant="secondary14"
-            tooltip={isSuperfestOnBorrowSide && <SuperFestTooltip />}
+            tooltip={
+              <>
+                {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
+                {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
+              </>
+            }
           />
           {!reserve.borrowingEnabled &&
             Number(reserve.totalVariableDebt) > 0 &&

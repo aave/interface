@@ -1392,6 +1392,10 @@ msgstr "Learn more"
 msgid "Learn more about risks involved"
 msgstr "Learn more about risks involved"
 
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "Learn more about the SPK rewards"
+msgstr "Learn more about the SPK rewards"
+
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
@@ -2667,6 +2671,10 @@ msgstr "This asset has reached its borrow cap. Nothing is available to be borrow
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
@@ -3347,6 +3355,10 @@ msgstr "Zero address not valid"
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "about SuperFest."
 msgstr "about SuperFest."
+
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "and about SPK program"
+msgstr "and about SPK program"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"
