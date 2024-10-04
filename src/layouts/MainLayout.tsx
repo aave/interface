@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import ZeebuBG from 'public/bg.png';
 import React, { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
 import { FeedbackModal } from 'src/layouts/FeedbackDialog';
@@ -12,7 +13,19 @@ export function MainLayout({ children }: { children: ReactNode }) {
   const APP_BANNER_VERSION = '3.0.0';
 
   return (
-    <>
+    <Box
+      sx={{
+        backgroundImage: `url(${ZeebuBG.src})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundAttachment: 'fixed',
+        minHeight: '100vh',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: '1',
+      }}
+    >
       <TopBarNotify
         learnMoreLink="/markets/?marketName=proto_zksync_v3"
         buttonText="View Market"
@@ -28,6 +41,6 @@ export function MainLayout({ children }: { children: ReactNode }) {
       <AppFooter />
       <FeedbackModal />
       {FORK_ENABLED ? null : <AnalyticsConsent />}
-    </>
+    </Box>
   );
 }
