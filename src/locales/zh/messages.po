@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-09-23 18:05\n"
+"PO-Revision-Date: 2024-10-04 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -1397,6 +1397,10 @@ msgstr "了解更多信息"
 msgid "Learn more about risks involved"
 msgstr "了解更多有关风险的信息"
 
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "Learn more about the SPK rewards"
+msgstr ""
+
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "在我们的<0>常见问题解答指南</0>中了解更多信息"
@@ -2672,6 +2676,10 @@ msgstr "该资产已达到其借款上限。没有任何东西可以从这个市
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "该资产已达到其供应上限。这个市场没有任何东西可以供应。"
 
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
@@ -3351,6 +3359,10 @@ msgstr "零地址无效"
 
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "about SuperFest."
+msgstr ""
+
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "and about SPK program"
 msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
