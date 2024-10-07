@@ -27,6 +27,14 @@ export const IncentivesCard = ({
   color,
   tooltip,
 }: IncentivesCardProps) => {
+  const isUSDSFixedSavingsRate = symbol === 'USDS';
+  const USDSFixedSavingsRate = 6.5 / 100; // USDS Fixed Savings Rate 6.5%
+
+  if (isUSDSFixedSavingsRate) {
+    const numericalValue = Number(value);
+    value = (numericalValue + USDSFixedSavingsRate).toString();
+  }
+
   return (
     <Box
       sx={{

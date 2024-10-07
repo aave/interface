@@ -8,6 +8,7 @@ import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
 import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
+import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
@@ -39,6 +40,16 @@ export const SupplyInfo = ({
   supplyCap,
   debtCeiling,
 }: SupplyInfoProps) => {
+  const isUSDSFixedSavingsRate = reserve.symbol === 'USDS';
+  const USDSFixedSavingsRate = 6.5 / 100; // USDS Fixed Savings Rate 6.5%
+
+  let displayAPY = reserve.supplyAPY;
+
+  if (isUSDSFixedSavingsRate) {
+    const numericalValue = Number(reserve.supplyAPY);
+    displayAPY = (numericalValue + USDSFixedSavingsRate).toString();
+  }
+
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box
@@ -148,7 +159,12 @@ export const SupplyInfo = ({
           </PanelItem>
         )}
         <PanelItem title={<Trans>APY</Trans>}>
-          <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
+          <Box display={'flex'}>
+            {' '}
+            <FormattedNumber value={displayAPY} percent variant="main16" />{' '}
+            {isUSDSFixedSavingsRate && <SpkAirdropTooltip />}
+          </Box>
+
           <IncentivesButton
             symbol={reserve.symbol}
             incentives={reserve.aIncentivesData}
