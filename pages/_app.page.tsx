@@ -1,4 +1,4 @@
-import '/public/fonts/inter/inter.css';
+import '/public/fonts/sora/sora.css';
 import '/src/styles/variables.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
