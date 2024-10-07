@@ -11,7 +11,7 @@ import { useBridgeTransactionHistory } from 'src/hooks/useBridgeTransactionHisto
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import LandingGhost from '/public/resting-gho-hat-purple.svg';
+import ZeebuToken from '/public/ZeebuToken.svg';
 
 import { BridgeTransactionListItemWrapper } from './BridgeTransactionListItem';
 import {
@@ -51,7 +51,7 @@ export function BridgeWrapper() {
           flex: 1,
         }}
       >
-        <LandingGhost style={{ marginBottom: '16px' }} />
+        <ZeebuToken style={{ marginBottom: '16px' }} />
         <Typography variant={'h3'}>
           <Trans>You don&apos;t have any bridge transactions</Trans>
         </Typography>{' '}

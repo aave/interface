@@ -19,7 +19,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
 
-import LandingGhost from '/public/resting-gho-hat-purple.svg';
+import ZeebuToken from '/public/ZeebuToken.svg';
 
 import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
@@ -130,7 +130,7 @@ export const HistoryWrapper = () => {
           flex: 1,
         }}
       >
-        <LandingGhost style={{ marginBottom: '16px' }} />
+        <ZeebuToken style={{ marginBottom: '16px' }} />
         <Typography variant={downToMD ? 'h4' : 'h3'}>
           <Trans>Transaction history is not currently available for this market</Trans>
         </Typography>
