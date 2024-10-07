@@ -54,7 +54,6 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         <Box mb={4}>
           <ChainAvailabilityText wrapperSx={{ mb: 4 }} chainId={ChainId.mainnet} />
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-            {/* <img src={`/aave-logo-purple.svg`} width="64px" height="64px" alt="" /> */}
             <Typography
               variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
