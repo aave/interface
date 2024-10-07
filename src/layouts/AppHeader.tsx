@@ -1,8 +1,4 @@
-import {
-  InformationCircleIcon,
-  SparklesIcon,
-  SwitchHorizontalIcon,
-} from '@heroicons/react/outline';
+import { InformationCircleIcon, SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Badge,
@@ -89,7 +85,7 @@ export function AppHeader() {
   const sm = useMediaQuery(breakpoints.down('sm'));
   const smd = useMediaQuery('(max-width:1120px)');
 
-  const [visitedSwitch, setVisitedSwitch] = useState(() => {
+  const [, setVisitedSwitch] = useState(() => {
     if (typeof window === 'undefined') return true;
     return Boolean(localStorage.getItem(SWITCH_VISITED_KEY));
   });
@@ -99,7 +95,7 @@ export function AppHeader() {
     state.setMobileDrawerOpen,
   ]);
 
-  const { openSwitch, openBridge } = useModalContext();
+  const { openSwitch } = useModalContext();
 
   const { currentMarketData } = useProtocolDataContext();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
@@ -147,10 +143,6 @@ export function AppHeader() {
     localStorage.setItem(SWITCH_VISITED_KEY, 'true');
     setVisitedSwitch(true);
     openSwitch();
-  };
-
-  const handleBridgeClick = () => {
-    openBridge();
   };
 
   const testnetTooltip = (
@@ -270,31 +262,6 @@ export function AppHeader() {
         </Box>
 
         <Box sx={{ flexGrow: 1 }} />
-
-        <NoSsr>
-          <StyledBadge
-            invisible={visitedSwitch}
-            variant="dot"
-            badgeContent=""
-            color="secondary"
-            sx={{ mr: 2 }}
-          >
-            <Button
-              onClick={handleBridgeClick}
-              variant="surface"
-              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
-            >
-              {!smd && (
-                <Typography component="span" typography="subheader1">
-                  Bridge GHO
-                </Typography>
-              )}
-              <SvgIcon fontSize="small">
-                <SparklesIcon />
-              </SvgIcon>
-            </Button>
-          </StyledBadge>
-        </NoSsr>
 
         <NoSsr>
           <StyledBadge
