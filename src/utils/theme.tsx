@@ -188,6 +188,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         surface2: getColor('#F9F9FB', '#383D51'),
         header: getColor('#2B2D3C', '#1B2030'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
+        glass: getColor('#ffffff8f', '#292e4144'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
       action: {

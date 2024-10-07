@@ -93,7 +93,11 @@ export const ListWrapper = ({
       sx={{
         mt: withTopMargin ? 4 : 0,
         border: 1,
-        borderColor: 'divider',
+        borderColor: '#ffffff' + '30',
+        bgcolor: 'background.glass',
+        boxShadow: ' 0px 3px 4px 0px rgba(20, 292, 201, 0.15) inset',
+        backdropFilter: 'blur(2px)',
+        borderRadius: '1rem',
         ...paperSx,
       }}
     >
