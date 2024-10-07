@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-09-23 18:05\n"
+"PO-Revision-Date: 2024-10-04 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -1397,6 +1397,10 @@ msgstr "Подробнее"
 msgid "Learn more about risks involved"
 msgstr "Узнайте больше о связанных с этим рисках"
 
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "Learn more about the SPK rewards"
+msgstr ""
+
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Узнайте больше в нашем <0>руководстве по часто задаваемым вопросам</0>"
@@ -2672,6 +2676,10 @@ msgstr "Этот актив достиг своего лимита заимст�
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "Этот актив достиг своего лимита предложения. С этого рынка ничего не поставляется."
 
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
@@ -3351,6 +3359,10 @@ msgstr "Нулевой адрес недействителен"
 
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "about SuperFest."
+msgstr ""
+
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "and about SPK program"
 msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
