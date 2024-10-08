@@ -65,11 +65,6 @@ export const BorrowAssetsListItem = ({
         incentives={vIncentivesData}
         symbol={symbol}
       />
-      {/* <ListAPRColumn
-        value={Number(stableBorrowRate)}
-        incentives={sIncentivesData}
-        symbol={symbol}
-      /> */}
       <ListButtonsColumn>
         <Button
           disabled={disableBorrow}
