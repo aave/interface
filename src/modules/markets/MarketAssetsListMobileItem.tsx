@@ -7,7 +7,6 @@ import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
-import { showSuperFestTooltip, Side } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -20,8 +19,8 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
   const { currentMarket } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const isSuperfestOnSupplySide = showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY);
-  const isSuperfestOnBorrowSide = showSuperFestTooltip(reserve.symbol, currentMarket, Side.BORROW);
+  const isSuperfestOnSupplySide = false;
+  const isSuperfestOnBorrowSide = false;
 
   return (
     <ListMobileItemWrapper

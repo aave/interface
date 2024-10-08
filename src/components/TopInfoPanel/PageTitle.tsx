@@ -1,13 +1,8 @@
-import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { useRootStore } from '../../store/root';
-import { selectIsMigrationAvailable } from '../../store/v3MigrationSelectors';
 import { NetworkConfig } from '../../ui-config/networksConfig';
-// import { BridgeButton } from '../BridgeButton';
 import { MarketSwitcher } from '../MarketSwitcher';
-import { Link, ROUTES } from '../primitives/Link';
 
 export interface PageTitleProps extends Pick<NetworkConfig, 'bridge'> {
   pageTitle?: ReactNode;
@@ -15,12 +10,9 @@ export interface PageTitleProps extends Pick<NetworkConfig, 'bridge'> {
   withMigrateButton?: boolean;
 }
 
-export const PageTitle = ({ pageTitle, withMarketSwitcher, withMigrateButton }: PageTitleProps) => {
-  const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
-
+export const PageTitle = ({ pageTitle, withMarketSwitcher }: PageTitleProps) => {
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  // const upToMD = useMediaQuery(theme.breakpoints.up('md'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   return (
@@ -56,15 +48,6 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher, withMigrateButton }: 
         }}
       >
         {withMarketSwitcher && <MarketSwitcher />}
-        {/* <BridgeButton bridge={bridge} variant="surface" withoutIcon={!upToMD} /> */}
-        {/* NOTE:// Removing for now  */}
-        {isMigrateToV3Available && withMigrateButton && (
-          <Link href={ROUTES.migrationTool} sx={{ mt: { xs: 2, xsm: 0 } }}>
-            <Button variant="gradient" size="small">
-              <Trans>Migrate to V3</Trans>
-            </Button>
-          </Link>
-        )}
       </Box>
     </Box>
   );

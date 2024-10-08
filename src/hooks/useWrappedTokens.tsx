@@ -27,7 +27,7 @@ const wrappedTokenConfig: {
     tokenWrapperContractAddress: string;
   }>;
 } = {
-  [CustomMarket.proto_mainnet_v3]: [
+  [CustomMarket.proto_mainnet]: [
     {
       tokenIn: AaveV3Ethereum.ASSETS.DAI.UNDERLYING.toLowerCase(),
       tokenOut: AaveV3Ethereum.ASSETS.sDAI.UNDERLYING.toLowerCase(),
