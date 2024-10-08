@@ -1416,14 +1416,11 @@ msgstr "Linked addresses"
 msgid "Links"
 msgstr "Links"
 
-#: src/modules/history/HistoryFilterMenu.tsx
-msgid "Liqudation"
-msgstr "Liqudation"
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidated collateral"
 msgstr "Liquidated collateral"
 
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidation"
 msgstr "Liquidation"
