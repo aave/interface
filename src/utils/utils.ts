@@ -109,8 +109,7 @@ export const showExternalIncentivesTooltip = (
 
   if (
     spkRewardsEnabled &&
-    (currentMarket === CustomMarket.proto_mainnet_v3 ||
-      currentMarket === CustomMarket.proto_lido_v3) &&
+    currentMarket === CustomMarket.proto_mainnet_v3 &&
     side === Side.SUPPLY &&
     symbol == 'USDS'
   ) {
