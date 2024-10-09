@@ -23,6 +23,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDC',
     aToken: true,
   },
+  aEthUSDS: {
+    tokenIconSymbol: 'usds',
+    symbol: 'aUSDS',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
