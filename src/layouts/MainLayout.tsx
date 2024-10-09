@@ -1,5 +1,6 @@
-import { Box } from '@mui/material';
-import ZeebuBG from 'public/bg.png';
+import { Box, useTheme } from '@mui/material';
+import ZeebuBG_dark from 'public/bg-dark.png';
+import ZeebuBG_light from 'public/bg-light.png';
 import React, { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
 import { FeedbackModal } from 'src/layouts/FeedbackDialog';
@@ -11,11 +12,13 @@ import TopBarNotify from './TopBarNotify';
 
 export function MainLayout({ children }: { children: ReactNode }) {
   const APP_BANNER_VERSION = '3.0.0';
+  const theme = useTheme();
 
   return (
     <Box
       sx={{
-        backgroundImage: `url(${ZeebuBG.src})`,
+        backgroundImage:
+          theme.palette.mode === 'dark' ? `url(${ZeebuBG_dark.src})` : `url(${ZeebuBG_light.src})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundAttachment: 'fixed',

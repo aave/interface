@@ -1,4 +1,4 @@
-import { Box, BoxProps } from '@mui/material';
+import { Box, BoxProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface ListHeaderWrapperProps extends BoxProps {
@@ -7,6 +7,7 @@ interface ListHeaderWrapperProps extends BoxProps {
 }
 
 export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapperProps) => {
+  const theme = useTheme();
   return (
     <Box
       {...rest}
@@ -19,7 +20,7 @@ export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapp
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        bgcolor: 'background.paper',
+        bgcolor: theme.palette.mode === 'dark' ? '#ffffff1f' : '#ffffff45',
         borderBottom: '1px solid',
         borderColor: 'divider',
         ...rest.sx,

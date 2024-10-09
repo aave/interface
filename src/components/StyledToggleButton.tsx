@@ -19,12 +19,12 @@ const CustomToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) =
     justifyContent: 'center',
 
     '.MuiTypography-subheader1': {
-      background: theme.palette.gradients.aaveGradient,
+      background: theme.palette.gradients.newGradient,
       backgroundClip: 'text',
       textFillColor: 'transparent',
     },
     '.MuiTypography-secondary14': {
-      background: theme.palette.gradients.aaveGradient,
+      background: theme.palette.gradients.newGradient,
       backgroundClip: 'text',
       textFillColor: 'transparent',
     },

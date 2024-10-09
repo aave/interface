@@ -191,7 +191,7 @@ export function AppHeader() {
           top: 0,
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
-          bgcolor: theme.palette.background.header + '50',
+          bgcolor: theme.palette.background.header + '15',
           padding: {
             xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
             xsm: '8px 20px',
@@ -224,8 +224,8 @@ export function AppHeader() {
                 size="small"
                 color="primary"
                 sx={{
-                  backgroundColor: '#B6509E',
-                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
+                  backgroundColor: '#c26f21',
+                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(202, 151, 74, 0.7)' },
                 }}
               >
                 TESTNET

@@ -17,7 +17,7 @@ const {
   typography: { pxToRem },
 } = theme;
 
-const FONT = 'Inter, Arial';
+const FONT = 'Sora, Arial';
 
 declare module '@mui/material/styles/createPalette' {
   interface PaletteColor extends ColorPartial {}
@@ -176,7 +176,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       text: {
         primary: getColor('#303549', '#F1F1F3'),
-        secondary: getColor('#62677B', '#A5A8B6'),
+        secondary: getColor('#62677B', '#c3cae9'),
         disabled: getColor('#D2D4DC', '#62677B'),
         muted: getColor('#A5A8B6', '#8E92A3'),
         highlight: getColor('#383D51', '#C9B3F9'),
@@ -204,7 +204,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       gradients: {
         aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
-        newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
+        newGradient: 'linear-gradient(79.67deg, rgb(200 107 81) 0%, rgb(111 68 141) 95.82%)',
       },
     },
     spacing: 4,
@@ -435,12 +435,19 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { variant: 'surface' },
             style: {
-              color: theme.palette.common.white,
+              color:
+                theme.palette.mode === 'light'
+                  ? 'theme.palette.primary'
+                  : 'theme.palette.common.white',
               border: '1px solid',
-              borderColor: '#EBEBED1F',
-              backgroundColor: '#383D51',
+              borderColor: theme.palette.common.white,
+              background:
+                'linear-gradient(rgba(255, 255, 255, 0.25) 6.67%, rgba(255, 255, 255, 0) 100%);',
+              borderRadius: '3rem',
+              transition:
+                'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1), border-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1)',
               '&:hover, &.Mui-focusVisible': {
-                backgroundColor: theme.palette.background.header,
+                backgroundColor: theme.palette.primary,
               },
             },
           },
@@ -448,10 +455,10 @@ export function getThemedComponents(theme: Theme) {
             props: { variant: 'gradient' },
             style: {
               color: theme.palette.common.white,
-              background: theme.palette.gradients.aaveGradient,
+              background: theme.palette.gradients.newGradient,
               transition: 'all 0.2s ease',
               '&:hover, &.Mui-focusVisible': {
-                background: theme.palette.gradients.aaveGradient,
+                background: theme.palette.gradients.newGradient,
                 opacity: '0.9',
               },
             },
@@ -837,10 +844,10 @@ export function getThemedComponents(theme: Theme) {
       MuiLinearProgress: {
         styleOverrides: {
           bar1Indeterminate: {
-            background: theme.palette.gradients.aaveGradient,
+            background: theme.palette.gradients.newGradient,
           },
           bar2Indeterminate: {
-            background: theme.palette.gradients.aaveGradient,
+            background: theme.palette.gradients.newGradient,
           },
         },
       },

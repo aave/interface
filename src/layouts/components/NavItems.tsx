@@ -80,7 +80,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                     height: '2px',
                     bottom: '-6px',
                     left: '0',
-                    background: theme.palette.gradients.aaveGradient,
+                    background: theme.palette.gradients.newGradient,
                     transformOrigin: 'bottom right',
                     transition: 'transform 0.25s ease-out',
                   },

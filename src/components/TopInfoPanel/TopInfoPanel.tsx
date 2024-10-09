@@ -23,7 +23,7 @@ export const TopInfoPanel = ({
       sx={{
         pt: { xs: 10, md: 12 },
         pb: { xs: 18, md: 20, lg: '94px', xl: '92px', xxl: '96px' },
-        color: '#F1F1F3',
+        color: 'text.secondary',
       }}
     >
       <Container {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>
