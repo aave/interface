@@ -1,5 +1,5 @@
 import { XIcon } from '@heroicons/react/outline';
-import { Box, IconButton, Modal, Paper, SvgIcon } from '@mui/material';
+import { Box, IconButton, Modal, Paper, SvgIcon, useTheme } from '@mui/material';
 import React from 'react';
 
 export interface BasicModalProps {
@@ -19,6 +19,7 @@ export const BasicModal = ({
   ...props
 }: BasicModalProps) => {
   const handleClose = () => setOpen(false);
+  const theme = useTheme();
 
   return (
     <Modal
@@ -29,6 +30,8 @@ export const BasicModal = ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        backdropFilter: 'blur(10px)',
+        backgroundColor: theme.palette.background.surface + '5',
         '.MuiPaper-root': {
           outline: 'none',
         },
@@ -47,6 +50,12 @@ export const BasicModal = ({
           width: '100%',
           maxWidth: { xs: '359px', xsm: `${contentMaxWidth}px` },
           maxHeight: 'calc(100vh - 20px)',
+          background:
+            'linear-gradient(127.43deg, rgba(255, 255, 255, 0.35) 2.54%, rgba(153, 153, 153, 0.35) 97.47%)',
+          border: '1px solid rgb(255, 138, 92)',
+          boxShadow: 'rgba(42, 128, 234, 0.15) 0px 3px 4px 0px inset',
+          backdropFilter: 'blur(12px)',
+          borderRadius: '12px',
           p: 6,
         }}
       >

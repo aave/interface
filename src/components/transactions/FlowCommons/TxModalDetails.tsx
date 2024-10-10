@@ -42,7 +42,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 }) => {
   return (
     <Box sx={{ pt: 5 }}>
-      <Typography sx={{ mb: 1 }} color="text.secondary">
+      <Typography sx={{ mb: 1 }} color="white">
         <Trans>Transaction overview</Trans>
       </Typography>
 

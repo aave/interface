@@ -65,7 +65,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 onClick={() => handleClick(item.title, false)}
                 href={item.link}
                 sx={(theme) => ({
-                  color: '#F1F1F3',
+                  // color: theme.palette.primary,
                   p: '6px 8px',
                   position: 'relative',
                   '.active&:after, &:hover&:after': {
