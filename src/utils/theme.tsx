@@ -178,7 +178,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         primary: getColor('#303549', '#F1F1F3'),
         secondary: getColor('#555868', '#d5daf3'),
         disabled: getColor('#656874', '#62677B'),
-        muted: getColor('#A5A8B6', '#8E92A3'),
+        muted: getColor('#A5A8B6', '#b9bbc5'),
         highlight: getColor('#383D51', '#d19e40'),
       },
       background: {
@@ -447,7 +447,8 @@ export function getThemedComponents(theme: Theme) {
               transition:
                 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1), border-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1)',
               '&:hover, &.Mui-focusVisible': {
-                backgroundColor: theme.palette.primary,
+                borderColor: '#FF895B',
+                opacity: '0.9',
               },
             },
           },
@@ -466,8 +467,32 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              background: theme.palette.background.surface,
-              borderColor: theme.palette.divider,
+              background:
+                'linear-gradient(180deg, rgba(255, 255, 255, 0.25) 6.67%, rgba(255, 255, 255, 0) 100%)',
+              borderColor: theme.palette.common.white,
+              transition: 'all 0.2s ease',
+              borderWidth: '1px',
+              borderRadius: '3rem',
+              '&:hover, &.Mui-focusVisible': {
+                borderColor: '#FF895B',
+                opacity: '0.9',
+              },
+            },
+          },
+          {
+            props: { color: 'primary', variant: 'contained' },
+            style: {
+              background: 'linear-gradient(0deg,#ff895b,#ff895b)',
+              borderTop: '1px solid',
+              color: theme.palette.common.white,
+              boxShadow: '0 2px #d3390b',
+              borderRadius: '3rem',
+              '&:hover, &.Mui-focusVisible': {
+                borderColor: '#ff895b94',
+                borderTop: '1px solid',
+                boxShadow: '0 3px #a02b07',
+                opacity: '0.9',
+              },
             },
           },
         ],
@@ -507,6 +532,16 @@ export function getThemedComponents(theme: Theme) {
         },
       },
       MuiMenu: {
+        styleOverrides: {
+          root: {
+            '.MuiPaper-root': {
+              background:
+                'radial-gradient(61.2% 18.19% at 52.96% 0, hsla(0, 0%, 100%, .3) 0, hsla(0, 0%, 60%, 0) 100%), linear-gradient(127deg, hsla(0, 0%, 100%, .15) 2.54%, hsla(0, 0%, 60%, .15) 97.47%);',
+              boxShadow: ' 0px 3px 4px 0px rgba(41, 127, 234, 0.15) inset',
+              backdropFilter: 'blur(4px)',
+            },
+          },
+        },
         defaultProps: {
           PaperProps: {
             elevation: 0,

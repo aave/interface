@@ -62,8 +62,8 @@ export const ListHeaderTitle = ({
               borderWidth: '0 4px 4px 4px',
               borderColor: `transparent transparent ${
                 sortName === sortKey && sortDesc
-                  ? theme.palette.text.secondary
-                  : theme.palette.divider
+                  ? theme.palette.text.primary
+                  : theme.palette.text.muted
               } transparent`,
               mb: 0.5,
             })}
@@ -77,8 +77,8 @@ export const ListHeaderTitle = ({
               borderWidth: '4px 4px 0 4px',
               borderColor: `${
                 sortName === sortKey && !sortDesc
-                  ? theme.palette.text.secondary
-                  : theme.palette.divider
+                  ? theme.palette.text.primary
+                  : theme.palette.text.muted
               } transparent transparent transparent`,
             })}
           />
