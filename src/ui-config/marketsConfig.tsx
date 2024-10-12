@@ -1,6 +1,8 @@
 import { ChainId } from '@aave/contract-helpers';
-import { AaveV2Ethereum, AaveV3Sepolia } from '@bgd-labs/aave-address-book';
+import { AaveV2Ethereum } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
+
+import { Sepolia } from './addresses';
 
 // Enable for premissioned market
 // import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
@@ -94,13 +96,13 @@ export const marketsData: {
       faucet: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3Sepolia.POOL,
-      WETH_GATEWAY: AaveV3Sepolia.WETH_GATEWAY,
-      FAUCET: AaveV3Sepolia.FAUCET,
-      WALLET_BALANCE_PROVIDER: AaveV3Sepolia.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
+      LENDING_POOL_ADDRESS_PROVIDER: Sepolia.LENDING_POOL_ADDRESS_PROVIDER,
+      LENDING_POOL: Sepolia.LENDING_POOL,
+      WETH_GATEWAY: Sepolia.WETH_GATEWAY,
+      FAUCET: Sepolia.FAUCET,
+      WALLET_BALANCE_PROVIDER: Sepolia.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: Sepolia.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: Sepolia.UI_INCENTIVE_DATA_PROVIDER,
       GHO_TOKEN_ADDRESS: '0xc4bF5CbDaBE595361438F8c6a187bDc330539c60',
       GHO_UI_DATA_PROVIDER: '0x69B9843A16a6E9933125EBD97659BA3CCbE2Ef8A',
     },
