@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-04 18:06\n"
+"PO-Revision-Date: 2024-10-14 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1421,14 +1421,11 @@ msgstr "Direcciones vinculadas"
 msgid "Links"
 msgstr "Enlaces"
 
-#: src/modules/history/HistoryFilterMenu.tsx
-msgid "Liqudation"
-msgstr "Liquidación"
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidated collateral"
 msgstr "Garantía liquidada"
 
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidation"
 msgstr "Liquidación"

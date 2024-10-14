@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-04 18:06\n"
+"PO-Revision-Date: 2024-10-14 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -1421,14 +1421,11 @@ msgstr ""
 msgid "Links"
 msgstr "链接"
 
-#: src/modules/history/HistoryFilterMenu.tsx
-msgid "Liqudation"
-msgstr "液化"
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidated collateral"
 msgstr "清算抵押品"
 
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidation"
 msgstr "清算"
