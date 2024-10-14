@@ -26,7 +26,7 @@ export const BasicModal = ({
     <Modal
       open={open}
       onClose={handleClose}
-      disableEnforceFocus={disableEnforceFocus ? disableEnforceFocus : false} // Used for wallet modal connection
+      disableEnforceFocus={disableEnforceFocus} // Used for wallet modal connection
       sx={{
         display: 'flex',
         flexDirection: 'column',
