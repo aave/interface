@@ -1,8 +1,23 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, IconButton, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  IconButton,
+  Skeleton,
+  Stack,
+  SvgIcon,
+  Typography,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from '@mui/material';
+
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -26,6 +41,7 @@ import { TokenInfo } from 'src/ui-config/TokenList';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
@@ -39,9 +55,56 @@ import {
   SupportedNetworkWithChainId,
 } from './BridgeConfig';
 import { BridgeDestinationInput } from './BridgeDestinationInput';
+import { SwitchAssetInput } from 'src/components/transactions/Switch/SwitchAssetInput';
+
 import { useGetBridgeLimit, useGetRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
 import { useTimeToDestination } from './useGetFinalityTime';
+
+const feeTokens = [
+  {
+    name: 'Gho Token',
+    address: '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f',
+    symbol: 'GHO',
+    decimals: 18,
+    chainId: 1,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+  },
+  {
+    name: 'Gho Token',
+    address: '0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33',
+    symbol: 'GHO',
+    decimals: 18,
+    chainId: 42161,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+  },
+  {
+    name: 'Ethereum',
+    symbol: 'ETH',
+    decimals: 18,
+    address: API_ETH_MOCK_ADDRESS,
+    chainId: 1,
+    logoURI:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    extensions: {
+      isNative: true,
+    },
+  },
+  {
+    name: 'Ethereum',
+    symbol: 'ETH',
+    decimals: 18,
+    address: API_ETH_MOCK_ADDRESS,
+    chainId: 42161, // Arb
+    logoURI:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    extensions: {
+      isNative: true,
+    },
+  },
+];
 
 const defaultNetwork = supportedNetworksWithBridge[0]; // TODO Remove for Production
 const defaultNetworkMarket = marketsData[defaultNetwork.chainId];
@@ -71,6 +134,26 @@ export const BridgeModalContent = () => {
 
   const { data: estimatedTimeToDestination, isFetching: loadingEstimatedTime } =
     useTimeToDestination(sourceNetworkObj.chainId);
+
+  console.log('PARM', sourceNetworkObj.chainId, user);
+
+  const filteredFeeTokensByChainId = feeTokens.filter(
+    (token) => token.chainId === sourceNetworkObj.chainId
+  );
+
+  const { data: baseTokenList, error } = useTokensBalance(
+    filteredFeeTokensByChainId,
+    sourceNetworkObj.chainId,
+    user
+  );
+
+  const [selectedToken, setSelectedToken] = useState(filteredFeeTokensByChainId[0]);
+  const handleTokenChange = (event) => {
+    const token = filteredFeeTokensByChainId.find((token) => token.address === event.target.value);
+    setSelectedToken(token);
+  };
+
+  console.log('baseTokenList', baseTokenList, error);
 
   useEffect(() => {
     // reset when source network changes
@@ -248,7 +331,12 @@ export const BridgeModalContent = () => {
     </TextWithTooltip>
   );
 
+  const handleFeeChange = () => {
+    // handle state
+  };
   const amountUsd = Number(amount) * sourceTokenInfo.tokenPriceUSD;
+
+  console.log('filteredFeeTokensByChainId', filteredFeeTokensByChainId);
 
   return (
     <>
@@ -355,6 +443,7 @@ export const BridgeModalContent = () => {
             loading={fetchingBridgeTokenBalance || loadingLimits}
             isMaxSelected={maxSelected}
           />
+
           {amount !== '' &&
             maxAmountReducedDueToBridgeLimit &&
             maxSelected &&
@@ -372,6 +461,7 @@ export const BridgeModalContent = () => {
                 </Stack>
               </Warning>
             )}
+
           <Box sx={{ mt: 3 }}>
             <BridgeDestinationInput
               connectedAccount={user}
@@ -381,6 +471,44 @@ export const BridgeModalContent = () => {
               onInputError={() => setDestinationAccount('')}
               sourceChainId={sourceNetworkObj.chainId}
             />
+            <FormControl fullWidth>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <Typography color="text.secondary">
+                  <Trans>Fee Token</Trans>
+                </Typography>
+              </Box>
+              <Select
+                labelId="token-select-label"
+                value={selectedToken.address}
+                onChange={handleTokenChange}
+                label="Token"
+                // MenuProps={{
+                //   sx: {
+                //     maxHeight: '240px',
+                //     '.MuiPaper-root': {
+                //       // border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
+                //       boxShadow: '0px 2px 10px 0px #0000001A',
+                //     },
+                //   },
+                // }}
+                sx={{
+                  padding: '8px 12px',
+                  border: '1px solid #EAEBEF',
+                  borderRadius: '6px',
+                  width: '100%',
+                  marginBottom: '4px',
+                }}
+              >
+                {filteredFeeTokensByChainId.map((token) => (
+                  <MenuItem key={token.address} value={token.address}>
+                    <Box display="flex" alignItems="center">
+                      <TokenIcon symbol={token.symbol} logoURI={token.logoURI} sx={{ mr: 2 }} />
+                      {token.symbol} - Balance: {baseTokenList?.[token.address]?.balance || '0'}
+                    </Box>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
           <TxModalDetails gasLimit={gasLimit} chainId={sourceNetworkObj.chainId}>
             <DetailsNumberLine
