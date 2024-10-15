@@ -28,6 +28,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDS',
     aToken: true,
   },
+  aEthLidowstETH: {
+    tokenIconSymbol: 'wstETH',
+    symbol: 'awstETH',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
