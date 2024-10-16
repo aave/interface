@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.30.3":
-  version "1.30.3"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.30.3.tgz#f91f68c6f318db2ace9101c0012cfbeaacbc902b"
-  integrity sha512-xONje75WW371PQ/m2TZxswJMVJpN/l5RRi11CqH349EFqauR+6LdhoOC/wo3+qGdmoWKhLoEKKdceRktezVLKA==
+"@aave/contract-helpers@1.30.4-0d58abeed0967e86bd0bf03f3f63972dd39a0268.0":
+  version "1.30.4-0d58abeed0967e86bd0bf03f3f63972dd39a0268.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.30.4-0d58abeed0967e86bd0bf03f3f63972dd39a0268.0.tgz#f2734cd3664f4faadb191c2aa4017d3185622209"
+  integrity sha512-k+QP6Xf6zqhhcJ+Wa9bg9R+1BUtHVQ2bjeRs0tgTWR9QG4zP/ssne5EIGbpatF7SX7aCVWEozKhGrhswZizYBg==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.30.3":
-  version "1.30.3"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.30.3.tgz#c9c96bcbadb3d5e056aac074bd221481555a1f84"
-  integrity sha512-L8Utyvon6gAHzwB/KQrSSdrHEQ9FNtGcZhQHEHkDk/tfcQidXHItwywM1taNmC5ZwFLJ10PL9c14OZh5fZNvLg==
+"@aave/math-utils@1.30.4-0d58abeed0967e86bd0bf03f3f63972dd39a0268.0":
+  version "1.30.4-0d58abeed0967e86bd0bf03f3f63972dd39a0268.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.30.4-0d58abeed0967e86bd0bf03f3f63972dd39a0268.0.tgz#ee52fbd376b5350aac9bc5bd8fd429c398b5e185"
+  integrity sha512-zm6BuEdDKtKChmM4bO3TzaiYtiRZaA+JGG/dbdnOmrec7+N4R++nIOIe7a+bdtDqjTcvpJjVAfWA+zDO4NKLNg==
 
 "@adobe/css-tools@^4.0.1":
   version "4.0.1"
@@ -3174,17 +3174,17 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@paraswap/core@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@paraswap/core/-/core-1.1.0.tgz#5ec7415be69dc657a9d82b0fde4e20f632cca1b6"
-  integrity sha512-ecnX8ezlhYWFwolZxYEz+K+RfLr8xaxQqiJKlxJ8Yf00tXTGxDGn6/Acy00t4+9Kv0apewd7++J33eJt9yNfwg==
+"@paraswap/core@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@paraswap/core/-/core-2.2.0.tgz#848175c7729f1064e715019269b1c193a23a5be8"
+  integrity sha512-aENl5zjS0y4ag7PLEq/hHgaAH4XpN5M4Zc7Igt/03D+W6t6tgScG9on2gXKkEUErcgnZ79qnvzKhaU6QgzoBAQ==
 
-"@paraswap/sdk@6.2.4":
-  version "6.2.4"
-  resolved "https://registry.yarnpkg.com/@paraswap/sdk/-/sdk-6.2.4.tgz#df6cf7c6acf04b40c4efd678d1aa7326e5e8d219"
-  integrity sha512-Ow7MArOXYeE0xrAYclCxPUyBCsPlk+Jm3k1+jsxXF0jUQgucSXZ4yfFzA/nxlRd6xjpoljX5V05Nir1nOAINsQ==
+"@paraswap/sdk@6.10.0":
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/@paraswap/sdk/-/sdk-6.10.0.tgz#fffba05a8ecc0bda91cc2ee07c0f5a4a79ff53f2"
+  integrity sha512-FhzJs1HYTGDnjYOxJmZ0+Qk0WHnshTgHpP2QdhiJYIkIF/2zYzI1OLTseO3XXhkQfmg4ZmZbTm6ZuutTg6c3zg==
   dependencies:
-    "@paraswap/core" "1.1.0"
+    "@paraswap/core" "2.2.0"
     bignumber.js "^9.0.2"
     ts-essentials "^9.1.2"
 
