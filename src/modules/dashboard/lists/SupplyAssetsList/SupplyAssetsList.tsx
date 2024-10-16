@@ -218,7 +218,7 @@ export const SupplyAssetsList = () => {
               setSortName={setSortName}
               setSortDesc={setSortDesc}
               sortKey={col.sortKey}
-              source="Supplies Dashbaord"
+              source="Supplies Dashboard"
             >
               {col.title}
             </ListHeaderTitle>
