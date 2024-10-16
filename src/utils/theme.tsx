@@ -195,7 +195,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         active: getColor('#8E92A3', '#EBEBEF8F'),
         hover: getColor('#F1F1F3', '#EBEBEF14'),
         selected: getColor('#EAEBEF', '#EBEBEF29'),
-        disabled: getColor('#BBBECA', '#EBEBEF4D'),
+        disabled: getColor('#BBBECA', '#f0ede9bc'),
         disabledBackground: getColor('#EAEBEF', '#EBEBEF1F'),
         focus: getColor('#F1F1F3', '#EBEBEF1F'),
       },

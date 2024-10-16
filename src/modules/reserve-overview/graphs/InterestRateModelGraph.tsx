@@ -157,12 +157,13 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
 
     // Tooltip Styles
     const accentColorDark = theme.palette.mode === 'light' ? '#383D511F' : '#a5a8b647';
+    const TextsOnGraph = theme.palette.mode === 'light' ? '#292929' : '#f1f4fdeb';
     const tooltipStyles = {
       ...defaultStyles,
       padding: '8px 12px',
       boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
       borderRadius: '4px',
-      color: '#62677B',
+      color: '#b9bdce',
       fontSize: '12px',
       lineHeight: '16px',
       letterSpacing: '0.15px',
@@ -252,7 +253,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
 
             {/* Variable Borrow APR Line */}
             <LinePath
-              stroke="#B6509E"
+              stroke="#FF895B"
               strokeWidth={2}
               data={data}
               x={(d) => dateScale(getDate(d)) ?? 0}
@@ -263,7 +264,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
             {/* Stable Borrow APR Line */}
             {reserve.stableBorrowRateEnabled && (
               <LinePath
-                stroke="#E7C6DF"
+                stroke="#e7bdac"
                 strokeWidth={2}
                 data={data}
                 x={(d) => dateScale(getDate(d)) ?? 0}
@@ -280,7 +281,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               strokeWidth={0}
               tickStroke={theme.palette.text.secondary}
               tickLabelProps={() => ({
-                fill: theme.palette.text.muted,
+                fill: theme.palette.text.primary,
                 fontSize: 10,
                 textAnchor: 'middle',
               })}
@@ -292,7 +293,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               scale={yValueScale}
               strokeWidth={0}
               tickLabelProps={() => ({
-                fill: theme.palette.text.muted,
+                fill: theme.palette.text.primary,
                 fontSize: 8,
                 dx: -margin.left + 10,
               })}
@@ -327,7 +328,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               textAnchor="middle"
               verticalAnchor="middle"
               fontSize="10px"
-              fill="#62677B"
+              fill={TextsOnGraph}
             >
               {`Current ${formattedCurrentUtilizationRate}%`}
             </Text>
@@ -336,7 +337,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
             <Line
               from={{ x: dateScale(ticks[0].value), y: margin.top + 8 }}
               to={{ x: dateScale(ticks[0].value), y: innerHeight }}
-              stroke="#0062D2"
+              stroke="#00aa17"
               strokeWidth={1}
               pointerEvents="none"
               strokeDasharray="5,2"
@@ -348,7 +349,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               textAnchor="middle"
               verticalAnchor="middle"
               fontSize="10px"
-              fill="#62677B"
+              fill={TextsOnGraph}
             >
               {`Optimal ${formattedOptimalUtilizationRate}%`}
             </Text>
