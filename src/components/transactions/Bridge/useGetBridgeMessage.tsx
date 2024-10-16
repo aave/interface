@@ -15,12 +15,16 @@ export const useGetBridgeMessage = ({
   amount,
   sourceTokenAddress,
   destinationAccount,
+  feeToken,
+  feeTokenOracle,
 }: {
   sourceChainId: number;
   destinationChainId: number;
   amount: string;
   sourceTokenAddress: string;
   destinationAccount: string;
+  feeToken: string;
+  feeTokenOracle: string;
 }) => {
   const [message, setMessage] = useState<MessageDetails>();
   const [bridgeFee, setBridgeFee] = useState('');
@@ -54,7 +58,7 @@ export const useGetBridgeMessage = ({
           receiver: utils.defaultAbiCoder.encode(['address'], [destinationAccount]),
           data: '0x', // no data
           tokenAmounts: tokenAmounts,
-          feeToken: constants.AddressZero, // Zero address means use the native token as fee
+          feeToken: feeToken,
           extraArgs: encodedExtraArgs,
         };
 
@@ -69,20 +73,51 @@ export const useGetBridgeMessage = ({
           setLoading(false);
           throw Error(`No lane config found for chain ${sourceChainId}`);
         }
+        let transactionCostUsd;
 
-        const sourceAssetOracle = new Contract(
-          sourceLaneConfig.wrappedNativeOracle,
-          oracleAbi,
-          provider
-        );
+        if (feeToken === constants.AddressZero) {
+          // Handling for Ether (native token)
+          const sourceLaneConfig = laneConfig.find(
+            (config) => config.sourceChainId === sourceChainId
+          );
+          if (!sourceLaneConfig) {
+            setLoading(false);
+            throw Error(`No lane config found for chain ${sourceChainId}`);
+          }
 
-        const [latestPrice, decimals]: [BigNumber, number] = await Promise.all([
-          sourceAssetOracle.latestAnswer(),
-          sourceAssetOracle.decimals(),
-        ]);
+          const sourceAssetOracle = new Contract(
+            sourceLaneConfig.wrappedNativeOracle,
+            oracleAbi,
+            provider
+          );
 
-        const ethUsdPrice = formatUnits(latestPrice, decimals);
-        const transactionCostUsd = Number(formatUnits(fees, 18)) * Number(ethUsdPrice);
+          const [latestPrice, decimals]: [BigNumber, number] = await Promise.all([
+            sourceAssetOracle.latestAnswer(),
+            sourceAssetOracle.decimals(),
+          ]);
+
+          const ethUsdPrice = formatUnits(latestPrice, decimals);
+          transactionCostUsd = Number(formatUnits(fees, 18)) * Number(ethUsdPrice);
+        } else {
+          // Handling for GHO or other tokens
+          const sourceLaneConfig = laneConfig.find(
+            (config) => config.sourceChainId === sourceChainId
+          );
+          if (!sourceLaneConfig) {
+            setLoading(false);
+            throw Error(`No lane config found for chain ${sourceChainId}`);
+          }
+
+          const sourceTokenOracle = new Contract(feeTokenOracle, oracleAbi, provider);
+
+          const [latestPrice, decimals]: [BigNumber, number] = await Promise.all([
+            sourceTokenOracle.latestAnswer(),
+            sourceTokenOracle.decimals(),
+          ]);
+
+          const tokenUsdPrice = formatUnits(latestPrice, decimals);
+          transactionCostUsd = Number(formatUnits(fees, 18)) * Number(tokenUsdPrice);
+        }
 
         setLatestAnswer(transactionCostUsd.toString());
         setMessage(message);
