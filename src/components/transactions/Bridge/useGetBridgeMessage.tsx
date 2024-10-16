@@ -76,6 +76,7 @@ export const useGetBridgeMessage = ({
         let transactionCostUsd;
 
         if (feeToken === constants.AddressZero) {
+          console.log('fee token ETH');
           // Handling for Ether (native token)
           const sourceLaneConfig = laneConfig.find(
             (config) => config.sourceChainId === sourceChainId
@@ -129,7 +130,7 @@ export const useGetBridgeMessage = ({
         setLoading(false);
       }
     }, 500);
-  }, [amount, destinationChainId, sourceChainId, sourceTokenAddress, destinationAccount]);
+  }, [amount, destinationChainId, sourceChainId, sourceTokenAddress, destinationAccount, feeToken]);
 
   useEffect(() => {
     if (amount && sourceTokenAddress) {
@@ -145,7 +146,7 @@ export const useGetBridgeMessage = ({
     return () => {
       debounced.cancel();
     };
-  }, [amount, debounced, sourceTokenAddress]);
+  }, [amount, debounced, sourceTokenAddress, feeToken]);
 
   return {
     message,

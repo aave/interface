@@ -3221,6 +3221,10 @@ msgstr "You cancelled the transaction."
 msgid "You did not participate in this proposal"
 msgstr "You did not participate in this proposal"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
+msgstr "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
+
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
 msgstr "You do not have supplies in this currency"

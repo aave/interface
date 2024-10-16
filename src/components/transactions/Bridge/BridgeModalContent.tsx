@@ -69,6 +69,7 @@ const feeTokens = [
     extensions: {
       isNative: false,
     },
+    balance: '0',
   },
   {
     name: 'Gho Token',
@@ -82,6 +83,7 @@ const feeTokens = [
     extensions: {
       isNative: false,
     },
+    balance: '0',
   },
   {
     name: 'Ethereum',
@@ -94,6 +96,7 @@ const feeTokens = [
     extensions: {
       isNative: true,
     },
+    balance: '0',
   },
   {
     name: 'Ethereum',
@@ -106,6 +109,7 @@ const feeTokens = [
     extensions: {
       isNative: true,
     },
+    balance: '0',
   },
 ];
 
@@ -138,21 +142,30 @@ export const BridgeModalContent = () => {
     (token) => token.chainId === sourceNetworkObj.chainId
   );
 
-  const { data: baseTokenList } = useTokensBalance(
+  const { data: feeTokenListWithBalance } = useTokensBalance(
     filteredFeeTokensByChainId,
     sourceNetworkObj.chainId,
     user
   );
 
-  const [selectedFeeToken, setSelectedFeeToken] = useState(filteredFeeTokensByChainId[0]);
+  const [selectedFeeToken, setSelectedFeeToken] = useState(
+    feeTokenListWithBalance?.[0] || filteredFeeTokensByChainId[0]
+  );
   const handleTokenChange = (event: SelectChangeEvent) => {
-    const token = filteredFeeTokensByChainId.find((token) => token.address === event.target.value);
+    const token = feeTokenListWithBalance?.find((token) => token.address === event.target.value);
+
     if (token) {
       setSelectedFeeToken(token);
     } else {
       setSelectedFeeToken(filteredFeeTokensByChainId[0]);
     }
   };
+
+  useEffect(() => {
+    if (feeTokenListWithBalance && feeTokenListWithBalance.length > 0 && !selectedFeeToken) {
+      setSelectedFeeToken(feeTokenListWithBalance[0]);
+    }
+  }, [feeTokenListWithBalance, selectedFeeToken]);
 
   useEffect(() => {
     // reset when source network changes
@@ -180,8 +193,8 @@ export const BridgeModalContent = () => {
     amount,
     sourceTokenAddress: sourceTokenInfo?.address || '',
     destinationAccount,
-    feeToken: selectedFeeToken.address,
-    feeTokenOracle: selectedFeeToken.oracle as string,
+    feeToken: selectedFeeToken?.address || '',
+    feeTokenOracle: selectedFeeToken?.oracle || ('' as string),
   });
 
   const { data: bridgeLimits, isFetching: fetchingBridgeLimits } = useGetBridgeLimit(
@@ -531,8 +544,8 @@ export const BridgeModalContent = () => {
                     },
                   }}
                 >
-                  {baseTokenList &&
-                    baseTokenList.map((token) => (
+                  {feeTokenListWithBalance &&
+                    feeTokenListWithBalance.map((token) => (
                       <MenuItem
                         sx={{ background: 'white' }}
                         key={token.address}
@@ -561,10 +574,10 @@ export const BridgeModalContent = () => {
               ) : (
                 <Stack direction="column" alignItems="flex-end" position="relative">
                   <Stack direction="row" alignItems="center">
-                    <TokenIcon symbol={selectedFeeToken.symbol} sx={{ mr: 1, fontSize: '16px' }} />
+                    <TokenIcon symbol={selectedFeeToken?.symbol} sx={{ mr: 1, fontSize: '16px' }} />
                     <FormattedNumber
                       value={bridgeFeeFormatted}
-                      symbol={selectedFeeToken.symbol}
+                      symbol={selectedFeeToken?.symbol}
                       variant="secondary14"
                     />
                   </Stack>
@@ -614,6 +627,18 @@ export const BridgeModalContent = () => {
                   again later or reduce the amount to bridge.
                 </Trans>
               </Typography>
+            </Warning>
+          )}
+          {selectedFeeToken && parseFloat(selectedFeeToken.balance) < 0 && (
+            <Warning severity="warning" sx={{ my: 2 }}>
+              <Stack direction="row">
+                <Typography variant="caption">
+                  <Trans>
+                    You do not have a balance to pay for CCIP fee with your {selectedFeeToken.name},
+                    try changing to another token.
+                  </Trans>
+                </Typography>
+              </Stack>
             </Warning>
           )}
 

@@ -7,11 +7,10 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
+  oracle?: string;
 }
 
 export const useTokensBalance = (tokenList: TokenInfo[], chainId: number, user: string) => {
-  console.log('do I have the setup', tokenList, chainId, user);
-
   return useQuery<TokenInfoWithBalance[]>({
     queryKey: queryKeysFactory.tokensBalance(tokenList, chainId, user),
     enabled: tokenList.length > 0,
