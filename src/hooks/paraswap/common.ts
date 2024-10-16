@@ -211,7 +211,7 @@ export async function fetchExactInRate(
   };
 
   if (max) {
-    options.includeContractMethods = [ContractMethod.multiSwap, ContractMethod.megaSwap];
+    options.includeContractMethods = [ContractMethod.swapExactAmountIn];
   }
 
   const swapper = ExactInSwapper(chainId);
@@ -292,7 +292,7 @@ export async function fetchExactOutRate(
   };
 
   if (max) {
-    options.includeContractMethods = [ContractMethod.buy];
+    options.includeContractMethods = [ContractMethod.swapExactAmountOut];
   }
 
   const swapper = ExactOutSwapper(chainId);
