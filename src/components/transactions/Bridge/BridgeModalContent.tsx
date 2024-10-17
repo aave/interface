@@ -1,4 +1,3 @@
-import { AaveV3Arbitrum, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -48,6 +47,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActionProps, BridgeActions } from './BridgeActions';
 import {
   getConfigFor,
+  laneConfig,
   supportedNetworksWithBridge,
   SupportedNetworkWithChainId,
 } from './BridgeConfig';
@@ -55,63 +55,6 @@ import { BridgeDestinationInput } from './BridgeDestinationInput';
 import { useGetBridgeLimit, useGetRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
 import { useTimeToDestination } from './useGetFinalityTime';
-
-const feeTokens = [
-  {
-    name: 'Gho Token',
-    address: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-    symbol: 'GHO',
-    decimals: 18,
-    chainId: 1,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-    oracle: AaveV3Ethereum.ASSETS.GHO.ORACLE,
-    extensions: {
-      isNative: false,
-    },
-    balance: '0',
-  },
-  {
-    name: 'Gho Token',
-    address: AaveV3Arbitrum.ASSETS.GHO.UNDERLYING,
-    symbol: 'GHO',
-    decimals: 18,
-    chainId: 42161,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-    oracle: AaveV3Arbitrum.ASSETS.GHO.ORACLE,
-    extensions: {
-      isNative: false,
-    },
-    balance: '0',
-  },
-  {
-    name: 'Ethereum',
-    symbol: 'ETH',
-    decimals: 18,
-    address: constants.AddressZero, // Use zero address for network token ccip
-    chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-    extensions: {
-      isNative: true,
-    },
-    balance: '0',
-  },
-  {
-    name: 'Ethereum',
-    symbol: 'ETH',
-    decimals: 18,
-    address: constants.AddressZero, // Use zero address for network token ccip
-    chainId: 42161, // Arb
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-    extensions: {
-      isNative: true,
-    },
-    balance: '0',
-  },
-];
 
 const defaultNetwork = supportedNetworksWithBridge[0]; // TODO Remove for Production
 const defaultNetworkMarket = marketsData[defaultNetwork.chainId];
@@ -138,9 +81,9 @@ export const BridgeModalContent = () => {
   const { data: estimatedTimeToDestination, isFetching: loadingEstimatedTime } =
     useTimeToDestination(sourceNetworkObj.chainId);
 
-  const filteredFeeTokensByChainId = feeTokens.filter(
-    (token) => token.chainId === sourceNetworkObj.chainId
-  );
+  const filteredFeeTokensByChainId = laneConfig
+    .filter((token) => token.sourceChainId === sourceNetworkObj.chainId)
+    .flatMap((config) => config.feeTokens);
 
   const { data: feeTokenListWithBalance } = useTokensBalance(
     filteredFeeTokensByChainId,
@@ -264,7 +207,12 @@ export const BridgeModalContent = () => {
   };
 
   const bridgeActionsProps: BridgeActionProps = {
-    amountToBridge: amount,
+    amountToBridge:
+      selectedFeeToken.address === constants.AddressZero
+        ? amount // If it's network token (ETH), do not subtract the fee from the amount
+        : bridgeFee
+        ? Number(formatUnits(parsedAmount.sub(bridgeFee), 18)).toFixed(2) // subtract the fee from the amount
+        : amount,
     isWrongNetwork,
     symbol: GHO_SYMBOL,
     blocked:
@@ -346,7 +294,21 @@ export const BridgeModalContent = () => {
     </TextWithTooltip>
   );
 
+  const amountWithFee = (
+    <TextWithTooltip text={<Trans>Amount After Fee</Trans>}>
+      <Trans>
+        The total amount bridged minus CCIP fees. Paying in network token does not impact gho
+        amount.
+      </Trans>
+    </TextWithTooltip>
+  );
+
+  // string formatting for tx display
   const amountUsd = Number(amount) * sourceTokenInfo.tokenPriceUSD;
+  const parsedAmountFee = new BigNumber(amount || '0');
+  const parsedBridgeFee = new BigNumber(bridgeFeeFormatted || '0');
+  const amountAfterFee = parsedAmountFee.minus(parsedBridgeFee);
+  const amountAfterFeeFormatted = amountAfterFee.toString();
 
   return (
     <>
@@ -483,12 +445,123 @@ export const BridgeModalContent = () => {
             />
           </Box>
           <TxModalDetails gasLimit={gasLimit} chainId={sourceNetworkObj.chainId}>
-            <DetailsNumberLine
-              description={<Trans>Amount</Trans>}
-              iconSymbol={GHO_SYMBOL}
-              symbol={GHO_SYMBOL}
-              value={amount}
-            />
+            <>
+              <DetailsNumberLine
+                description={'Amount'}
+                iconSymbol={GHO_SYMBOL}
+                symbol={GHO_SYMBOL}
+                value={amount}
+              />
+              <Row caption={feeTooltip} captionVariant="description" mb={4}>
+                <FormControl fullWidth>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    {/* <Typography color="text.secondary">
+                    <Trans>Fee Token</Trans>
+                  </Typography> */}
+                  </Box>
+                  <Select
+                    labelId="token-select-label"
+                    value={selectedFeeToken.address}
+                    onChange={handleTokenChange}
+                    sx={{
+                      fontSize: '1.0em',
+                      width: 'auto',
+                      height: '24px',
+                      minWidth: '70px',
+                      borderRadius: '4px',
+                      maxWidth: '100px',
+                      '.MuiSelect-select': {
+                        backgroundColor: '#FFFFFF',
+                        paddingLeft: '2px',
+                      },
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        border: 'none',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        border: 'none',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        border: 'none',
+                      },
+                    }}
+                    MenuProps={{
+                      PaperProps: {
+                        sx: {
+                          backgroundColor: '#FFFFFF',
+                          fontSize: '1.0em',
+                        },
+                      },
+                    }}
+                  >
+                    {feeTokenListWithBalance &&
+                      feeTokenListWithBalance.map((token) => (
+                        <MenuItem
+                          sx={{ background: 'white' }}
+                          key={token.address}
+                          value={token.address}
+                        >
+                          <Box display="flex" alignItems={'center'}>
+                            <TokenIcon
+                              sx={{ fontSize: '1em', paddingRight: '4px' }}
+                              symbol={token.symbol}
+                            />
+                            {token.symbol}
+                          </Box>
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
+                {!message && !loadingBridgeMessage ? (
+                  <NoData variant="secondary14" color="text.secondary" />
+                ) : loadingBridgeMessage ? (
+                  <Skeleton
+                    variant="rectangular"
+                    height={20}
+                    width={100}
+                    sx={{ borderRadius: '4px' }}
+                  />
+                ) : (
+                  <Stack direction="column" alignItems="flex-end" position="relative">
+                    <Stack direction="row" alignItems="center">
+                      <TokenIcon
+                        symbol={selectedFeeToken?.symbol}
+                        sx={{ mr: 1, fontSize: '16px' }}
+                      />
+                      <FormattedNumber
+                        value={bridgeFeeFormatted}
+                        symbol={selectedFeeToken?.symbol}
+                        variant="secondary14"
+                      />
+                    </Stack>
+                    <FormattedNumber
+                      value={bridgeFeeUSD}
+                      variant="helperText"
+                      compact
+                      symbol="USD"
+                      color="text.secondary"
+                      sx={{ position: 'absolute', top: '20px' }}
+                    />
+                  </Stack>
+                )}
+              </Row>
+            </>
+            {selectedFeeToken.address !== constants.AddressZero ? (
+              loadingBridgeMessage ? (
+                <Skeleton
+                  variant="rectangular"
+                  height={20}
+                  width={100}
+                  sx={{ borderRadius: '4px' }}
+                />
+              ) : (
+                <DetailsNumberLine
+                  description={amountWithFee}
+                  iconSymbol={GHO_SYMBOL}
+                  symbol={GHO_SYMBOL}
+                  value={amountAfterFeeFormatted}
+                />
+              )
+            ) : null}
             <Row caption={estimatedTimeTooltip} captionVariant="description" mb={4}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {loadingEstimatedTime ? (
@@ -503,95 +576,19 @@ export const BridgeModalContent = () => {
                 )}
               </Box>
             </Row>
-            <Row caption={feeTooltip} captionVariant="description" mb={4}>
-              <FormControl fullWidth>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  {/* <Typography color="text.secondary">
-                    <Trans>Fee Token</Trans>
-                  </Typography> */}
-                </Box>
-                <Select
-                  labelId="token-select-label"
-                  value={selectedFeeToken.address}
-                  onChange={handleTokenChange}
-                  sx={{
-                    fontSize: '1.0em',
-                    width: 'auto',
-                    height: '24px',
-                    minWidth: '70px',
-                    borderRadius: '4px',
-                    maxWidth: '100px',
-                    '.MuiSelect-select': {
-                      backgroundColor: '#FFFFFF',
-                      paddingLeft: '2px',
-                    },
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      border: 'none',
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      border: 'none',
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      border: 'none',
-                    },
-                  }}
-                  MenuProps={{
-                    PaperProps: {
-                      sx: {
-                        backgroundColor: '#FFFFFF',
-                        fontSize: '1.0em',
-                      },
-                    },
-                  }}
-                >
-                  {feeTokenListWithBalance &&
-                    feeTokenListWithBalance.map((token) => (
-                      <MenuItem
-                        sx={{ background: 'white' }}
-                        key={token.address}
-                        value={token.address}
-                      >
-                        <Box display="flex" alignItems={'center'}>
-                          <TokenIcon
-                            sx={{ fontSize: '1em', paddingRight: '4px' }}
-                            symbol={token.symbol}
-                          />
-                          {token.symbol}
-                        </Box>
-                      </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
-              {!message && !loadingBridgeMessage ? (
-                <NoData variant="secondary14" color="text.secondary" />
-              ) : loadingBridgeMessage ? (
-                <Skeleton
-                  variant="rectangular"
-                  height={20}
-                  width={100}
-                  sx={{ borderRadius: '4px' }}
-                />
-              ) : (
-                <Stack direction="column" alignItems="flex-end" position="relative">
-                  <Stack direction="row" alignItems="center">
-                    <TokenIcon symbol={selectedFeeToken?.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                    <FormattedNumber
-                      value={bridgeFeeFormatted}
-                      symbol={selectedFeeToken?.symbol}
-                      variant="secondary14"
-                    />
-                  </Stack>
-                  <FormattedNumber
-                    value={bridgeFeeUSD}
-                    variant="helperText"
-                    compact
-                    symbol="USD"
-                    color="text.secondary"
-                    sx={{ position: 'absolute', top: '20px' }}
+            {/* <Row caption={'Bridged Amount'} captionVariant="description" mb={4}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {loadingBridgeMessage ? (
+                  <Skeleton
+                    variant="rectangular"
+                    height={20}
+                    width={100}
+                    sx={{ borderRadius: '4px' }}
                   />
-                </Stack>
-              )}
-            </Row>
+                ) : (
+                  <Typography variant="secondary14">{estimatedTimeToDestination}</Typography>
+                )}
+              </Box> */}
             <Row /> {/* Spacer */}
           </TxModalDetails>
           {txError && <GasEstimationError txError={txError} />}
