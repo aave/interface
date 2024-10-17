@@ -42,6 +42,7 @@ export interface BridgeActionProps extends BoxProps {
   tokenAddress: string;
   fees: string;
   message: MessageDetails | undefined;
+  isCustomFeeToken: boolean;
 }
 
 export const BridgeActions = React.memo(
@@ -57,6 +58,7 @@ export const BridgeActions = React.memo(
     destinationChainId,
     message,
     fees,
+    isCustomFeeToken,
     ...props
   }: BridgeActionProps) => {
     const { provider } = useWeb3Context();
@@ -149,12 +151,19 @@ export const BridgeActions = React.memo(
 
         const destinationChainSelector = getChainSelectorFor(destinationChainId);
 
+        const txFeeOptions: { value?: string } = {};
+
+        if (!isCustomFeeToken) {
+          txFeeOptions.value = fees;
+        }
+
         const sendTx: TransactionResponse = await sourceRouter.ccipSend(
           destinationChainSelector,
           message,
-          {
-            value: fees,
-          }
+          txFeeOptions
+          // {
+          //   value: fees,
+          // }
         );
 
         await sendTx.wait(1);
