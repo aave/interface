@@ -229,6 +229,7 @@ export const BridgeModalContent = () => {
     sourceChainId: sourceNetworkObj.chainId,
     destinationChainId: destinationNetworkObj.chainId,
     tokenAddress: sourceTokenInfo?.address || constants.AddressZero,
+    isCustomFeeToken: selectedFeeToken.address !== constants.AddressZero,
   };
 
   if (txError && txError.blocking) {
