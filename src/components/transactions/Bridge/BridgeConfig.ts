@@ -136,7 +136,7 @@ const testnetConfig: Config[] = [
     lockReleaseTokenPool: '0x7768248E1Ff75612c18324bad06bb393c1206980',
     chainSelector: '16015286601757825753',
     router: '0x11c008349c41fb5c78e544397fb4613605ec1a74',
-    tokenOracle: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59', // mock oracle
+    tokenOracle: '0x98458D6A99489F15e6eB5aFa67ACFAcf6F211051', // mock oracle
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-sepolia/version/latest',
     destinations: [
