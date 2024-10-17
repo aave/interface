@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Typography, useTheme } from '@mui/material';
+import { Button, Paper, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
@@ -32,9 +32,9 @@ export default function Aave404Page() {
             backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : '',
           }}
         >
-          <Box sx={{ maxWidth: 444, m: '0 auto' }}>
-            <img width="100%" height="auto" src="/404/404.svg" alt="404 - Page not found" />
-          </Box>
+          <Typography variant="h1" sx={{ mt: 2, fontSize: '6rem', opacity: '.5' }}>
+            404
+          </Typography>
           <Typography variant="display1" sx={{ mt: 2 }}>
             <Trans>Page not found</Trans>
           </Typography>

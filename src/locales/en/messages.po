@@ -1873,10 +1873,6 @@ msgstr "Select slippage tolerance"
 msgid "Send Feedback"
 msgstr "Send Feedback"
 
-#: src/layouts/AppFooter.tsx
-msgid "Send feedback"
-msgstr "Send feedback"
-
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
 msgstr "Set up delegation"

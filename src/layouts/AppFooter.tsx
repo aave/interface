@@ -1,18 +1,15 @@
 import { Trans } from '@lingui/macro';
-import { GitHub, Twitter } from '@mui/icons-material';
+import { Instagram, LinkedIn, Telegram, Twitter } from '@mui/icons-material';
 import { Box, styled, SvgIcon, Typography } from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
-
-import DiscordIcon from '/public/icons/discord.svg';
-import LensLogoIcon from '/public/icons/lens-logo.svg';
 
 interface StyledLinkProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
 const StyledLink = styled(Link)<StyledLinkProps>(({ theme }) => ({
-  color: theme.palette.text.muted,
+  color: theme.palette.text.primary + '90',
   '&:hover': {
     color: theme.palette.text.primary,
   },
@@ -22,46 +19,46 @@ const StyledLink = styled(Link)<StyledLinkProps>(({ theme }) => ({
 
 const FOOTER_ICONS = [
   {
-    href: 'https://hey.xyz/u/aave',
-    icon: <LensLogoIcon />,
-    title: 'Aave',
-  },
-  {
-    href: 'https://twitter.com/aave',
+    href: 'https://x.com/zeebuofficial',
     icon: <Twitter />,
-    title: 'Lens',
+    title: 'Twitter',
   },
   {
-    href: 'https://discord.com/invite/aave',
-    icon: <DiscordIcon />,
-    title: 'Discord',
+    href: 'https://www.instagram.com/zeebu.official/',
+    icon: <Instagram />,
+    title: 'Instagram',
   },
   {
-    href: 'https://github.com/aave',
-    icon: <GitHub />,
-    title: 'Github',
+    href: 'https://www.linkedin.com/company/zeebuofficial/',
+    icon: <LinkedIn />,
+    title: 'Linkedin',
+  },
+  {
+    href: 'https://t.me/+QdDCbYC_HsRhMjg0',
+    icon: <Telegram />,
+    title: 'Telegram',
   },
 ];
 
 export function AppFooter() {
-  const [setAnalyticsConfigOpen, setFeedbackOpen] = useRootStore((store) => [
+  const [setAnalyticsConfigOpen] = useRootStore((store) => [
     store.setAnalyticsConfigOpen,
     store.setFeedbackOpen,
   ]);
 
   const FOOTER_LINKS = [
     {
-      href: 'https://aave.com/terms-of-service',
+      href: 'https://www.zeebu.com/terms-conditions',
       label: <Trans>Terms</Trans>,
       key: 'Terms',
     },
     {
-      href: 'https://aave.com/privacy-policy/',
+      href: 'https://www.zeebu.com/privacy-policy',
       label: <Trans>Privacy</Trans>,
       key: 'Privacy',
     },
     {
-      href: 'https://docs.aave.com/hub/',
+      href: 'https://zeebu.gitbook.io/zbu-protocol-1.0/hvKFvzLoONc5kSQNlboc',
       label: <Trans>Docs</Trans>,
       key: 'Docs',
     },
@@ -69,15 +66,6 @@ export function AppFooter() {
       href: 'https://docs.aave.com/faq/',
       label: <Trans>FAQS</Trans>,
       key: 'FAQS',
-    },
-    {
-      href: 'https://discord.com/invite/aave',
-      label: <Trans>Send feedback</Trans>,
-      key: 'Send feedback',
-      onClick: (event: React.MouseEvent) => {
-        event.preventDefault();
-        setFeedbackOpen(true);
-      },
     },
     {
       href: '/',
