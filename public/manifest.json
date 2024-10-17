@@ -1,8 +1,8 @@
 {
-  "short_name": "Aave",
-  "name": "Aave",
+  "short_name": "Zeebu",
+  "name": "Zeebu",
   "description": "Non-custodial liquidity protocol",
-  "iconPath": "aave.svg",
+  "iconPath": "ZeebuToken.svg",
   "icons": [
     {
       "src": "favicon32.png",
