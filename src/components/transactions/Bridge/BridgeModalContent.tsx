@@ -207,12 +207,14 @@ export const BridgeModalContent = () => {
   };
 
   const bridgeActionsProps: BridgeActionProps = {
-    amountToBridge:
-      selectedFeeToken.address === constants.AddressZero
-        ? amount // If it's network token (ETH), do not subtract the fee from the amount
-        : bridgeFee
-        ? Number(formatUnits(parsedAmount.sub(bridgeFee), 18)).toFixed(2) // subtract the fee from the amount
-        : amount,
+    // amountToBridge:
+    //   selectedFeeToken.address === constants.AddressZero
+    //     ? amount // If it's network token (ETH), do not subtract the fee from the amount
+    //     : bridgeFee
+    //     ? Number(formatUnits(parsedAmount.add(bridgeFee), 18)).toFixed(2) // subtract the fee from the amount
+    //     : amount,
+
+    amountToBridge: amount,
     isWrongNetwork,
     symbol: GHO_SYMBOL,
     blocked:

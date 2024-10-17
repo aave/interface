@@ -65,6 +65,19 @@ export const useGetBridgeMessage = ({
         const destinationChainSelector = getChainSelectorFor(destinationChainId);
         const fees: BigNumber = await sourceRouter.getFee(destinationChainSelector, message);
 
+        const amountBN = utils.parseUnits(amount, 18);
+        const updatedAmount = amountBN.sub(fees);
+
+        // If the fee token is not the native token, we need to update the tokenAmounts to subtract fees
+        if (feeToken !== constants.AddressZero) {
+          message.tokenAmounts = [
+            {
+              token: sourceTokenAddress,
+              amount: updatedAmount.toString(),
+            },
+          ];
+        }
+
         const sourceLaneConfig = laneConfig.find(
           (config) => config.sourceChainId === sourceChainId
         );
