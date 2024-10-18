@@ -12,6 +12,7 @@ import {
   Stack,
   SvgIcon,
   Typography,
+  useTheme,
 } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
@@ -65,6 +66,7 @@ export const BridgeModalContent = () => {
   const [destinationAccount, setDestinationAccount] = useState(user);
   const [amount, setAmount] = useState('');
   const [maxSelected, setMaxSelected] = useState(false);
+  const theme = useTheme();
 
   const { readOnlyModeAddress, chainId: currentChainId } = useWeb3Context();
 
@@ -207,13 +209,6 @@ export const BridgeModalContent = () => {
   };
 
   const bridgeActionsProps: BridgeActionProps = {
-    // amountToBridge:
-    //   selectedFeeToken.address === constants.AddressZero
-    //     ? amount // If it's network token (ETH), do not subtract the fee from the amount
-    //     : bridgeFee
-    //     ? Number(formatUnits(parsedAmount.add(bridgeFee), 18)).toFixed(2) // subtract the fee from the amount
-    //     : amount,
-
     amountToBridge: amount,
     isWrongNetwork,
     symbol: GHO_SYMBOL,
@@ -455,6 +450,7 @@ export const BridgeModalContent = () => {
                 symbol={GHO_SYMBOL}
                 value={amount}
               />
+
               <Row caption={feeTooltip} captionVariant="description" mb={4}>
                 <FormControl fullWidth>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
@@ -474,7 +470,8 @@ export const BridgeModalContent = () => {
                       borderRadius: '4px',
                       maxWidth: '100px',
                       '.MuiSelect-select': {
-                        backgroundColor: '#FFFFFF',
+                        backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
+
                         paddingLeft: '2px',
                       },
                       '& .MuiOutlinedInput-notchedOutline': {
@@ -490,7 +487,7 @@ export const BridgeModalContent = () => {
                     MenuProps={{
                       PaperProps: {
                         sx: {
-                          backgroundColor: '#FFFFFF',
+                          backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
                           fontSize: '1.0em',
                         },
                       },
@@ -499,9 +496,20 @@ export const BridgeModalContent = () => {
                     {feeTokenListWithBalance &&
                       feeTokenListWithBalance.map((token) => (
                         <MenuItem
-                          sx={{ background: 'white' }}
                           key={token.address}
                           value={token.address}
+                          sx={{
+                            backgroundColor: theme.palette.mode === 'dark' ? '#383D51' : '#FFFFFF',
+                            '&:hover': {
+                              backgroundColor:
+                                theme.palette.mode === 'dark' ? '#292E41' : '#EAEBEF',
+                            },
+                            '&.Mui-selected, &.Mui-selected:hover': {
+                              backgroundColor:
+                                theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
+                              boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
+                            },
+                          }}
                         >
                           <Box display="flex" alignItems={'center'}>
                             <TokenIcon
@@ -549,21 +557,12 @@ export const BridgeModalContent = () => {
               </Row>
             </>
             {selectedFeeToken.address !== constants.AddressZero ? (
-              loadingBridgeMessage ? (
-                <Skeleton
-                  variant="rectangular"
-                  height={20}
-                  width={100}
-                  sx={{ borderRadius: '4px' }}
-                />
-              ) : (
-                <DetailsNumberLine
-                  description={amountWithFee}
-                  iconSymbol={GHO_SYMBOL}
-                  symbol={GHO_SYMBOL}
-                  value={amountAfterFeeFormatted}
-                />
-              )
+              <DetailsNumberLine
+                description={amountWithFee}
+                iconSymbol={GHO_SYMBOL}
+                symbol={GHO_SYMBOL}
+                value={amountAfterFeeFormatted}
+              />
             ) : null}
             <Row caption={estimatedTimeTooltip} captionVariant="description" mb={4}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>

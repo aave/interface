@@ -161,9 +161,6 @@ export const BridgeActions = React.memo(
           destinationChainSelector,
           message,
           txFeeOptions
-          // {
-          //   value: fees,
-          // }
         );
 
         await sendTx.wait(1);
