@@ -475,7 +475,8 @@ export const BridgeModalContent = () => {
                       height: '24px',
                       minWidth: '70px',
                       borderRadius: '4px',
-                      maxWidth: '100px',
+                      mb: 0.5,
+                      maxWidth: '80px',
                       '.MuiSelect-select': {
                         backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
 
