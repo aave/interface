@@ -78,7 +78,7 @@ export const useParaswapSellTxParams = (chainId: number) => {
       deadline,
       partner,
     }: UseParaswapSellTxParams) => {
-      const { paraswap, feeClaimer } = getParaswap(chainId);
+      const { paraswap, feeTarget: feeClaimer } = getParaswap(chainId);
       const response = await paraswap.buildTx(
         {
           srcToken,
@@ -94,6 +94,7 @@ export const useParaswapSellTxParams = (chainId: number) => {
           partnerAddress: feeClaimer,
           permit,
           deadline,
+          isDirectFeeTransfer: true,
         },
         { ignoreChecks: true }
       );
