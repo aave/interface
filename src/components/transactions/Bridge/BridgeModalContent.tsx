@@ -83,9 +83,13 @@ export const BridgeModalContent = () => {
   const { data: estimatedTimeToDestination, isFetching: loadingEstimatedTime } =
     useTimeToDestination(sourceNetworkObj.chainId);
 
-  const filteredFeeTokensByChainId = laneConfig
-    .filter((token) => token.sourceChainId === sourceNetworkObj.chainId)
-    .flatMap((config) => config.feeTokens);
+  const getFilteredFeeTokens = (chainId: number) => {
+    return laneConfig
+      .filter((token) => token.sourceChainId === chainId)
+      .flatMap((config) => config.feeTokens);
+  };
+
+  const filteredFeeTokensByChainId = getFilteredFeeTokens(sourceNetworkObj.chainId);
 
   const { data: feeTokenListWithBalance } = useTokensBalance(
     filteredFeeTokensByChainId,
@@ -110,7 +114,7 @@ export const BridgeModalContent = () => {
     if (feeTokenListWithBalance && feeTokenListWithBalance.length > 0 && !selectedFeeToken) {
       setSelectedFeeToken(feeTokenListWithBalance[0]);
     }
-  }, [feeTokenListWithBalance, selectedFeeToken]);
+  }, [feeTokenListWithBalance, sourceNetworkObj]);
 
   useEffect(() => {
     // reset when source network changes
@@ -206,6 +210,9 @@ export const BridgeModalContent = () => {
     const currentSourceNetworkObj = sourceNetworkObj;
     setSourceNetworkObj(destinationNetworkObj);
     setDestinationNetworkObj(currentSourceNetworkObj);
+
+    const newFilteredFeeTokens = getFilteredFeeTokens(destinationNetworkObj.chainId);
+    setSelectedFeeToken(newFilteredFeeTokens[0]);
   };
 
   const bridgeActionsProps: BridgeActionProps = {
