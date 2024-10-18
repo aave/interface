@@ -32,7 +32,7 @@ import {
 import { NetworkSelect } from 'src/components/transactions/NetworkSelect';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useBridgeTokens } from 'src/hooks/bridge/useBridgeWalletBalance';
-import { useTokensBalance } from 'src/hooks/generic/useTokensBalance';
+import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -97,9 +97,14 @@ export const BridgeModalContent = () => {
     user
   );
 
+  const getGHOToken = (tokenList: TokenInfoWithBalance[]) => {
+    return tokenList.find((token: TokenInfoWithBalance) => token.symbol === 'GHO') || tokenList[0];
+  };
+
   const [selectedFeeToken, setSelectedFeeToken] = useState(
-    feeTokenListWithBalance?.[0] || filteredFeeTokensByChainId[0]
+    getGHOToken(feeTokenListWithBalance || filteredFeeTokensByChainId)
   );
+
   const handleTokenChange = (event: SelectChangeEvent) => {
     const token = feeTokenListWithBalance?.find((token) => token.address === event.target.value);
 
