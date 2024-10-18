@@ -45,11 +45,7 @@ const SwitchModalContentWrapper = ({
 }: SwitchModalContentWrapperProps) => {
   const filteredTokens = useMemo(() => getFilteredTokens(chainId), [chainId]);
 
-  console.log('filteredTokens', filteredTokens);
-
   const { data: baseTokenList } = useTokensBalance(filteredTokens, chainId, user);
-
-  console.log('baseTokenList', baseTokenList);
 
   const { defaultInputToken, defaultOutputToken } = useMemo(() => {
     if (baseTokenList) {
