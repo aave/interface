@@ -40,7 +40,7 @@ export const useParaswapSellRates = ({
         side: SwapSide.SELL,
         options: {
           ...options,
-          excludeDEXS: ['ParaSwapPool', 'ParaSwapLimitOrders'],
+          excludeDEXS: ['ParaSwapPool', 'ParaSwapLimitOrders', 'SwaapV2', 'Hashflow', 'Dexalot'],
         },
       });
     },
@@ -78,7 +78,7 @@ export const useParaswapSellTxParams = (chainId: number) => {
       deadline,
       partner,
     }: UseParaswapSellTxParams) => {
-      const { paraswap, feeTarget: feeClaimer } = getParaswap(chainId);
+      const { paraswap, feeTarget } = getParaswap(chainId);
       const response = await paraswap.buildTx(
         {
           srcToken,
@@ -91,7 +91,7 @@ export const useParaswapSellTxParams = (chainId: number) => {
           slippage: maxSlippage,
           takeSurplus: true,
           partner,
-          partnerAddress: feeClaimer,
+          partnerAddress: feeTarget,
           permit,
           deadline,
           isDirectFeeTransfer: true,

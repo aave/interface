@@ -309,7 +309,7 @@ export async function fetchExactOutRate(
 }
 
 export const ExactInSwapper = (chainId: ChainId) => {
-  const { paraswap, feeTarget: feeClaimer } = getParaswap(chainId);
+  const { paraswap, feeTarget } = getParaswap(chainId);
 
   const getRate = async (
     amount: string,
@@ -354,7 +354,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
           slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
-          partnerAddress: feeClaimer,
+          partnerAddress: feeTarget,
           takeSurplus: true,
           isDirectFeeTransfer: true,
         },
@@ -378,7 +378,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
 };
 
 const ExactOutSwapper = (chainId: ChainId) => {
-  const { paraswap, feeTarget: feeClaimer } = getParaswap(chainId);
+  const { paraswap, feeTarget } = getParaswap(chainId);
 
   const getRate = async (
     amount: string,
@@ -421,7 +421,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
           slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
-          partnerAddress: feeClaimer,
+          partnerAddress: feeTarget,
           takeSurplus: true,
           srcDecimals,
           destDecimals,
