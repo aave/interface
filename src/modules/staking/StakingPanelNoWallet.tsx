@@ -1,15 +1,14 @@
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
-import { DefaultMeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
-import { MeritAction } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export interface StakingPanelNoWalletProps {
   description?: React.ReactNode;
@@ -82,13 +81,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           </Typography>
           {stakedToken === 'GHO' && (
             <Box sx={{ mx: 2 }}>
-              <DefaultMeritIncentivesButton
-                meritReserveIncentiveData={{
-                  rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-                  rewardTokenSymbol: stakedToken,
-                  action: MeritAction.ETHEREUM_STKGHO,
-                }}
-              />
+              <MeritIncentivesButton symbol={stakedToken} market={CustomMarket.proto_mainnet_v3} />
             </Box>
           )}
         </Stack>

@@ -1,16 +1,10 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
-import {
-  MeritAction,
-  useMeritIncentives,
-  useUserMeritIncentives,
-} from 'src/hooks/useMeritIncentives';
+import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 import { Side } from 'src/utils/utils';
 
@@ -43,48 +37,9 @@ const BlankIncentives = () => {
   );
 };
 
-export const UserMeritIncentivesButton = ({
-  meritReserveIncentiveData,
-}: {
-  meritReserveIncentiveData: MeritReserveIncentiveData;
-}) => {
+export const MeritIncentivesButton = (params: { symbol: string; market: string; side?: Side }) => {
   const [open, setOpen] = useState(false);
-  const { data: meritIncentives } = useUserMeritIncentives();
-
-  if (!meritIncentives) {
-    return null;
-  }
-
-  const incentives = {
-    incentiveAPR: (meritIncentives.actionsAPR[meritReserveIncentiveData.action] / 100).toString(),
-    rewardTokenSymbol: 'GHO', // rewards alwasy in gho, for now
-    rewardTokenAddress: '0x', // not used for merit program
-  };
-
-  return (
-    <ContentWithTooltip
-      tooltipContent={
-        <MeritIncentivesTooltipContent
-          incentiveAPR={incentives.incentiveAPR}
-          rewardTokenSymbol={incentives.rewardTokenSymbol}
-        />
-      }
-      withoutHover
-      setOpen={setOpen}
-      open={open}
-    >
-      <Content incentives={[incentives]} incentivesNetAPR={+incentives.incentiveAPR} />
-    </ContentWithTooltip>
-  );
-};
-
-export const DefaultMeritIncentivesButton = ({
-  meritReserveIncentiveData,
-}: {
-  meritReserveIncentiveData: MeritReserveIncentiveData;
-}) => {
-  const [open, setOpen] = useState(false);
-  const { data: meritIncentives } = useMeritIncentives(meritReserveIncentiveData);
+  const { data: meritIncentives } = useMeritIncentives(params);
 
   if (!meritIncentives) {
     return null;
@@ -105,71 +60,6 @@ export const DefaultMeritIncentivesButton = ({
       <Content incentives={[meritIncentives]} incentivesNetAPR={+meritIncentives.incentiveAPR} />
     </ContentWithTooltip>
   );
-};
-
-export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
-  action: MeritAction;
-  side?: Side;
-};
-
-const symbolToMeritData = (
-  symbol: string,
-  market: string
-): MeritReserveIncentiveData | undefined => {
-  switch (market) {
-    case CustomMarket.proto_mainnet_v3:
-      // return symbolToActionMapEthereum.get(symbol);
-      switch (symbol) {
-        case 'GHO':
-          return {
-            action: MeritAction.ETHEREUM_STKGHO,
-            rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-            rewardTokenSymbol: 'GHO',
-          };
-        case 'cbBTC':
-          return {
-            action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
-            rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
-            rewardTokenSymbol: 'aEthUSDC',
-            side: Side.SUPPLY,
-          };
-        case 'USDC':
-          return {
-            action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
-            rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
-            rewardTokenSymbol: 'aEthUSDC',
-            side: Side.BORROW,
-          };
-        default:
-          return undefined;
-      }
-    default:
-      return undefined;
-  }
-};
-
-export const MeritIncentivesButton = ({
-  symbol,
-  market,
-  side,
-}: {
-  symbol: string;
-  market: string;
-  side?: Side;
-}) => {
-  const meritReserveIncentiveData = symbolToMeritData(symbol, market);
-  if (!meritReserveIncentiveData) {
-    return null;
-  }
-  if (meritReserveIncentiveData.side !== side) {
-    return null;
-  }
-  return <DefaultMeritIncentivesButton meritReserveIncentiveData={meritReserveIncentiveData} />;
-  // if (hasBalance) {
-  //   return <UserMeritIncentivesButton meritReserveIncentiveData={meritReserveIncentiveData} />;
-  // } else {
-  //   return <DefaultMeritIncentivesButton meritReserveIncentiveData={meritReserveIncentiveData} />;
-  // }
 };
 
 export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {

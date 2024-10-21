@@ -25,7 +25,6 @@ export const ListAPRColumn = ({
   tooltip,
   children,
 }: ListAPRColumnProps) => {
-  console.log('ListAPRColumnProps:', { value, incentives, symbol, tooltip, children, market });
   return (
     <ListColumn>
       <Box sx={{ display: 'flex' }}>
