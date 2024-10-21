@@ -47,12 +47,7 @@ export const MeritIncentivesButton = (params: { symbol: string; market: string; 
 
   return (
     <ContentWithTooltip
-      tooltipContent={
-        <MeritIncentivesTooltipContent
-          incentiveAPR={meritIncentives.incentiveAPR}
-          rewardTokenSymbol={meritIncentives.rewardTokenSymbol}
-        />
-      }
+      tooltipContent={<MeritIncentivesTooltipContent meritIncentives={meritIncentives} />}
       withoutHover
       setOpen={setOpen}
       open={open}
@@ -200,6 +195,7 @@ const Content = ({
           {incentives.length < 5 ? (
             <>
               {incentives.map(getSymbolMap).map((incentive) => {
+                console.log('### incentive', incentive);
                 return (
                   <TokenIcon
                     aToken={incentive.aToken}
@@ -215,13 +211,16 @@ const Content = ({
               {incentives
                 .slice(0, 3)
                 .map(getSymbolMap)
-                .map((incentive) => (
-                  <TokenIcon
-                    symbol={incentive.tokenIconSymbol}
-                    sx={{ fontSize: `${iconSize}px`, ml: -1 }}
-                    key={incentive.tokenIconSymbol}
-                  />
-                ))}
+                .map((incentive) => {
+                  console.log('@@@ incentive', incentive);
+                  return (
+                    <TokenIcon
+                      symbol={incentive.tokenIconSymbol}
+                      sx={{ fontSize: `${iconSize}px`, ml: -1 }}
+                      key={incentive.tokenIconSymbol}
+                    />
+                  );
+                })}
               <SvgIcon
                 sx={{
                   fontSize: `${iconSize}px`,

@@ -33,6 +33,11 @@ const IncentivesSymbolMap: {
     symbol: 'awstETH',
     aToken: true,
   },
+  aEthUSDC: {
+    tokenIconSymbol: 'USDC',
+    symbol: 'aUSDC',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
@@ -102,6 +107,7 @@ export const IncentivesTooltipContent = ({
 
       <Box sx={{ width: '100%' }}>
         {incentives.map(getSymbolMap).map((incentive) => {
+          console.log('==> incentive', incentive);
           return (
             <Row
               height={32}
