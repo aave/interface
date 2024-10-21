@@ -17,10 +17,7 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
-import {
-  MeritIncentivesButton,
-  UserMeritIncentivesButton,
-} from 'src/components/incentives/IncentivesButton';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -333,11 +330,10 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               variant="secondary14"
             />
             {stakedToken === 'GHO' ? (
-              stakeUserData.stakeTokenUserBalance !== '0' ? (
-                <UserMeritIncentivesButton action={MeritAction.ETHEREUM_STKGHO} />
-              ) : (
-                <MeritIncentivesButton action={MeritAction.ETHEREUM_STKGHO} />
-              )
+              <MeritIncentivesButton
+                action={MeritAction.ETHEREUM_STKGHO}
+                hasBalance={stakeUserData.stakeTokenUserBalance !== '0'}
+              />
             ) : null}
           </Stack>
         </Box>

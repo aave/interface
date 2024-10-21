@@ -71,7 +71,7 @@ export const UserMeritIncentivesButton = ({ action }: { action: MeritAction }) =
   );
 };
 
-export const MeritIncentivesButton = ({ action }: { action: MeritAction }) => {
+export const DefaultMeritIncentivesButton = ({ action }: { action: MeritAction }) => {
   const [open, setOpen] = useState(false);
   const { data: meritIncentives } = useMeritIncentives(action);
 
@@ -94,6 +94,20 @@ export const MeritIncentivesButton = ({ action }: { action: MeritAction }) => {
       <Content incentives={[meritIncentives]} incentivesNetAPR={+meritIncentives.incentiveAPR} />
     </ContentWithTooltip>
   );
+};
+
+export const MeritIncentivesButton = ({
+  action,
+  hasBalance,
+}: {
+  action: MeritAction;
+  hasBalance: boolean;
+}) => {
+  if (hasBalance) {
+    return <UserMeritIncentivesButton action={action} />;
+  } else {
+    return <DefaultMeritIncentivesButton action={action} />;
+  }
 };
 
 export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {

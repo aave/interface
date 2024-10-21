@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { DefaultMeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -81,7 +81,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           </Typography>
           {stakedToken === 'GHO' && (
             <Box sx={{ mx: 2 }}>
-              <MeritIncentivesButton action={MeritAction.ETHEREUM_STKGHO} />
+              <DefaultMeritIncentivesButton action={MeritAction.ETHEREUM_STKGHO} />
             </Box>
           )}
         </Stack>
