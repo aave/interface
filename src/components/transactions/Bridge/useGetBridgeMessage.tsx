@@ -15,12 +15,16 @@ export const useGetBridgeMessage = ({
   amount,
   sourceTokenAddress,
   destinationAccount,
+  feeToken,
+  feeTokenOracle,
 }: {
   sourceChainId: number;
   destinationChainId: number;
   amount: string;
   sourceTokenAddress: string;
   destinationAccount: string;
+  feeToken: string;
+  feeTokenOracle: string;
 }) => {
   const [message, setMessage] = useState<MessageDetails>();
   const [bridgeFee, setBridgeFee] = useState('');
@@ -54,12 +58,25 @@ export const useGetBridgeMessage = ({
           receiver: utils.defaultAbiCoder.encode(['address'], [destinationAccount]),
           data: '0x', // no data
           tokenAmounts: tokenAmounts,
-          feeToken: constants.AddressZero, // Zero address means use the native token as fee
+          feeToken: feeToken,
           extraArgs: encodedExtraArgs,
         };
 
         const destinationChainSelector = getChainSelectorFor(destinationChainId);
         const fees: BigNumber = await sourceRouter.getFee(destinationChainSelector, message);
+
+        const amountBN = utils.parseUnits(amount, 18);
+        const updatedAmount = amountBN.sub(fees);
+
+        // If the fee token is not the native token, we need to update the tokenAmounts to subtract fees
+        if (feeToken !== constants.AddressZero) {
+          message.tokenAmounts = [
+            {
+              token: sourceTokenAddress,
+              amount: updatedAmount.toString(),
+            },
+          ];
+        }
 
         const sourceLaneConfig = laneConfig.find(
           (config) => config.sourceChainId === sourceChainId
@@ -69,20 +86,52 @@ export const useGetBridgeMessage = ({
           setLoading(false);
           throw Error(`No lane config found for chain ${sourceChainId}`);
         }
+        let transactionCostUsd;
 
-        const sourceAssetOracle = new Contract(
-          sourceLaneConfig.wrappedNativeOracle,
-          oracleAbi,
-          provider
-        );
+        if (feeToken === constants.AddressZero) {
+          console.log('fee token ETH');
+          // Handling for Ether (native token)
+          const sourceLaneConfig = laneConfig.find(
+            (config) => config.sourceChainId === sourceChainId
+          );
+          if (!sourceLaneConfig) {
+            setLoading(false);
+            throw Error(`No lane config found for chain ${sourceChainId}`);
+          }
 
-        const [latestPrice, decimals]: [BigNumber, number] = await Promise.all([
-          sourceAssetOracle.latestAnswer(),
-          sourceAssetOracle.decimals(),
-        ]);
+          const sourceAssetOracle = new Contract(
+            sourceLaneConfig.wrappedNativeOracle,
+            oracleAbi,
+            provider
+          );
 
-        const ethUsdPrice = formatUnits(latestPrice, decimals);
-        const transactionCostUsd = Number(formatUnits(fees, 18)) * Number(ethUsdPrice);
+          const [latestPrice, decimals]: [BigNumber, number] = await Promise.all([
+            sourceAssetOracle.latestAnswer(),
+            sourceAssetOracle.decimals(),
+          ]);
+
+          const ethUsdPrice = formatUnits(latestPrice, decimals);
+          transactionCostUsd = Number(formatUnits(fees, 18)) * Number(ethUsdPrice);
+        } else {
+          // Handling for GHO or other tokens
+          const sourceLaneConfig = laneConfig.find(
+            (config) => config.sourceChainId === sourceChainId
+          );
+          if (!sourceLaneConfig) {
+            setLoading(false);
+            throw Error(`No lane config found for chain ${sourceChainId}`);
+          }
+
+          const sourceTokenOracle = new Contract(feeTokenOracle, oracleAbi, provider);
+
+          const [latestPrice, decimals]: [BigNumber, number] = await Promise.all([
+            sourceTokenOracle.latestAnswer(),
+            sourceTokenOracle.decimals(),
+          ]);
+
+          const tokenUsdPrice = formatUnits(latestPrice, decimals);
+          transactionCostUsd = Number(formatUnits(fees, 18)) * Number(tokenUsdPrice);
+        }
 
         setLatestAnswer(transactionCostUsd.toString());
         setMessage(message);
@@ -94,7 +143,7 @@ export const useGetBridgeMessage = ({
         setLoading(false);
       }
     }, 500);
-  }, [amount, destinationChainId, sourceChainId, sourceTokenAddress, destinationAccount]);
+  }, [amount, destinationChainId, sourceChainId, sourceTokenAddress, destinationAccount, feeToken]);
 
   useEffect(() => {
     if (amount && sourceTokenAddress) {
@@ -110,7 +159,7 @@ export const useGetBridgeMessage = ({
     return () => {
       debounced.cancel();
     };
-  }, [amount, debounced, sourceTokenAddress]);
+  }, [amount, debounced, sourceTokenAddress, feeToken]);
 
   return {
     message,
