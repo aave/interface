@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-14 18:06\n"
+"PO-Revision-Date: 2024-10-21 18:06\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -228,11 +228,14 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "Vous permet de basculer entre les taux d'intérêt <0>variable</0> et <1>stable</1> où le taux variable peut augmenter et diminuer en fonction du montant de liquidité dans la pool, et le taux stable restera le même pour la durée de votre prêt."
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Montant"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Amount After Fee"
+msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
@@ -2593,6 +2596,10 @@ msgstr "Le montant demandé est supérieur au montant maximum du prêt en mode t
 msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
 msgstr ""
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The total amount bridged minus CCIP fees. Paying in network token does not impact gho amount."
+msgstr ""
+
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "Le montant total de vos actifs libellés en USD qui peut être utilisé comme garantie pour emprunter des actifs."
@@ -2698,7 +2705,7 @@ msgid "This asset is planned to be offboarded due to an Aave Protocol Governance
 msgstr "Il est prévu que cet actif soit désactivé en raison d’une décision de gouvernance du protocole Aave. <0>Plus d’informations</0>"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. <0>Learn more</0>"
+msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/infoTooltips/GasTooltip.tsx
@@ -3225,6 +3232,10 @@ msgstr "Vous avez annulé la transaction."
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "Vous n'avez pas participé à cette proposition"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
+msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"

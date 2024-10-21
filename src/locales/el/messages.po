@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-14 18:06\n"
+"PO-Revision-Date: 2024-10-21 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -228,11 +228,14 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "Σας επιτρέπει την εναλλαγή μεταξύ <0>μεταβλητού</0> και <1>σταθερού</1> επιτοκίου, όπου το μεταβλητό επιτόκιο μπορεί να αυξάνεται και να μειώνεται ανάλογα με την ποσότητα ρευστότητας στο αποθεματικό, ενώ το σταθερό επιτόκιο θα παραμείνει το ίδιο για τη διάρκεια του δανείου σας."
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Ποσό"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Amount After Fee"
+msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
@@ -2594,6 +2597,10 @@ msgstr "Το αιτούμενο ποσό είναι μεγαλύτερο από 
 msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
 msgstr ""
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The total amount bridged minus CCIP fees. Paying in network token does not impact gho amount."
+msgstr ""
+
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "Το συνολικό ποσό των περιουσιακών σας στοιχείων σε δολάρια ΗΠΑ που μπορούν να χρησιμοποιηθούν ως εγγύηση για δανεισμό περιουσιακών στοιχείων."
@@ -2699,7 +2706,7 @@ msgid "This asset is planned to be offboarded due to an Aave Protocol Governance
 msgstr ""
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. <0>Learn more</0>"
+msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/infoTooltips/GasTooltip.tsx
@@ -3226,6 +3233,10 @@ msgstr "Ακυρώσατε τη συναλλαγή."
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "Δεν συμμετείχατε στην παρούσα πρόταση"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
+msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
