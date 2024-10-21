@@ -39,16 +39,6 @@ const listHeaders = [
     ),
     sortKey: 'variableBorrowAPY',
   },
-  // {
-  //   title: (
-  //     <StableAPYTooltip
-  //       text={<Trans>Borrow APY, stable</Trans>}
-  //       key="APY_list_stable_type"
-  //       variant="subheader2"
-  //     />
-  //   ),
-  //   sortKey: 'stableBorrowAPY',
-  // },
 ];
 
 type MarketAssetsListProps = {

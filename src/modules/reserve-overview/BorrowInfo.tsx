@@ -168,32 +168,6 @@ export const BorrowInfo = ({
             displayBlank={true}
           />
         </PanelItem>
-        {/* {reserve.stableBorrowRateEnabled && (
-          <PanelItem
-            title={
-              <StableAPYTooltip
-                event={{
-                  eventName: GENERAL.TOOL_TIP,
-                  eventParams: {
-                    tooltip: 'APY, stable',
-                    asset: reserve.underlyingAsset,
-                    assetName: reserve.name,
-                  },
-                }}
-                text={<Trans>APY, stable</Trans>}
-                key="APY_res_stable_type"
-                variant="description"
-              />
-            }
-          >
-            <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
-            <IncentivesButton
-              symbol={reserve.symbol}
-              incentives={reserve.sIncentivesData}
-              displayBlank={true}
-            />
-          </PanelItem>
-        )} */}
         {reserve.borrowCapUSD && reserve.borrowCapUSD !== '0' && (
           <PanelItem title={<Trans>Borrow cap</Trans>}>
             <FormattedNumber value={reserve.borrowCap} variant="main16" />
