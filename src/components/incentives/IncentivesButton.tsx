@@ -3,7 +3,11 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useMeritIncentives, useUserMeritIncentives } from 'src/hooks/useMeritIncentives';
+import {
+  MeritAction,
+  useMeritIncentives,
+  useUserMeritIncentives,
+} from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
@@ -36,7 +40,7 @@ const BlankIncentives = () => {
   );
 };
 
-export const UserMeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho' }) => {
+export const UserMeritIncentivesButton = ({ action }: { action: MeritAction }) => {
   const [open, setOpen] = useState(false);
   const { data: meritIncentives } = useUserMeritIncentives();
 
@@ -45,7 +49,7 @@ export const UserMeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho'
   }
 
   const incentives = {
-    incentiveAPR: (meritIncentives.actionsAPR[symbol] / 100).toString(),
+    incentiveAPR: (meritIncentives.actionsAPR[action] / 100).toString(),
     rewardTokenSymbol: 'GHO', // rewards alwasy in gho, for now
     rewardTokenAddress: '0x', // not used for merit program
   };
@@ -67,9 +71,9 @@ export const UserMeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho'
   );
 };
 
-export const MeritIncentivesButton = ({ symbol }: { symbol: 'gho' | 'stkgho' }) => {
+export const MeritIncentivesButton = ({ action }: { action: MeritAction }) => {
   const [open, setOpen] = useState(false);
-  const { data: meritIncentives } = useMeritIncentives(symbol);
+  const { data: meritIncentives } = useMeritIncentives(action);
 
   if (!meritIncentives) {
     return null;

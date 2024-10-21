@@ -12,7 +12,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
-import { useUserMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { MeritAction, useUserMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -59,7 +59,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
   const { data: meritIncentives } = useUserMeritIncentives();
-  const usersStkGhoIncentives = meritIncentives?.actionsAPR.stkgho || 0;
+  const usersStkGhoIncentives = meritIncentives?.actionsAPR[MeritAction.ETHEREUM_STKGHO] || 0;
 
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
