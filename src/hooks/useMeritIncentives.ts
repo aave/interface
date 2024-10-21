@@ -75,7 +75,6 @@ export const useMeritIncentives = ({
       let meritIncentives: MeritIncentives | null = null;
 
       if (user) {
-        console.log('USER APRS');
         // const response = await fetch(`${url}?user=${user}`);
         // const data = await response.json();
         // meritIncentives = data.currentAPR as MeritIncentives;
@@ -101,7 +100,6 @@ export const useMeritIncentives = ({
       }
 
       if (!meritIncentives) {
-        console.log('GLOBAL APRS');
         const response = await fetch(url);
         const data = await response.json();
         meritIncentives = data.currentAPR as MeritIncentives;

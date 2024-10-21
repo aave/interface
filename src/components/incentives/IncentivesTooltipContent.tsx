@@ -107,7 +107,6 @@ export const IncentivesTooltipContent = ({
 
       <Box sx={{ width: '100%' }}>
         {incentives.map(getSymbolMap).map((incentive) => {
-          console.log('==> incentive', incentive);
           return (
             <Row
               height={32}

@@ -195,7 +195,6 @@ const Content = ({
           {incentives.length < 5 ? (
             <>
               {incentives.map(getSymbolMap).map((incentive) => {
-                console.log('### incentive', incentive);
                 return (
                   <TokenIcon
                     aToken={incentive.aToken}
@@ -211,16 +210,13 @@ const Content = ({
               {incentives
                 .slice(0, 3)
                 .map(getSymbolMap)
-                .map((incentive) => {
-                  console.log('@@@ incentive', incentive);
-                  return (
-                    <TokenIcon
-                      symbol={incentive.tokenIconSymbol}
-                      sx={{ fontSize: `${iconSize}px`, ml: -1 }}
-                      key={incentive.tokenIconSymbol}
-                    />
-                  );
-                })}
+                .map((incentive) => (
+                  <TokenIcon
+                    symbol={incentive.tokenIconSymbol}
+                    sx={{ fontSize: `${iconSize}px`, ml: -1 }}
+                    key={incentive.tokenIconSymbol}
+                  />
+                ))}
               <SvgIcon
                 sx={{
                   fontSize: `${iconSize}px`,
