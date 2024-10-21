@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-14 18:06\n"
+"PO-Revision-Date: 2024-10-21 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -228,11 +228,14 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "Позволяет переключаться между переменными и <1>стабильными процентными ставками</1>, где <0>переменная</0> ставка может увеличиваться и уменьшаться в зависимости от объема ликвидности в резерве, а стабильная ставка будет оставаться неизменной в течение всего срока действия вашего кредита."
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Количество"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Amount After Fee"
+msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
@@ -2593,6 +2596,10 @@ msgstr "Запрашиваемая сумма превышает максима�
 msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
 msgstr ""
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The total amount bridged minus CCIP fees. Paying in network token does not impact gho amount."
+msgstr ""
+
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "Общая сумма ваших активов, номинированных в долларах США, которые могут быть использованы в качестве обеспечения для заимствования активов."
@@ -2698,7 +2705,7 @@ msgid "This asset is planned to be offboarded due to an Aave Protocol Governance
 msgstr "Этот актив планируется вывести из эксплуатации из-за решения Aave Protocol Governance. <0>Подробнее</0>"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. <0>Learn more</0>"
+msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/infoTooltips/GasTooltip.tsx
@@ -3225,6 +3232,10 @@ msgstr "Вы отменили транзакцию."
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "Вы не участвовали в этом предложении"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
+msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"

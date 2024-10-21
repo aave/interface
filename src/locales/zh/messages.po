@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-14 18:06\n"
+"PO-Revision-Date: 2024-10-21 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -228,11 +228,14 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "允许您在浮动利率和稳定利率之间切换，其中 <0>浮</0> 动利率可以根据储备中的流动性增加和减少， <1>稳定</1> 利率将在您的贷款期限内保持不变。"
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "量"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Amount After Fee"
+msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
@@ -2593,6 +2596,10 @@ msgstr "请求的金额大于稳定利率模式下的最大贷款规模"
 msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
 msgstr ""
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The total amount bridged minus CCIP fees. Paying in network token does not impact gho amount."
+msgstr ""
+
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "以美元计价的资产总额，可用作借入资产的抵押品。"
@@ -2698,7 +2705,7 @@ msgid "This asset is planned to be offboarded due to an Aave Protocol Governance
 msgstr "由于 Aave 协议治理决策，该资产计划被卸载。 <0>更多详情</0>"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. <0>Learn more</0>"
+msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/infoTooltips/GasTooltip.tsx
@@ -3225,6 +3232,10 @@ msgstr "您取消了交易。"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "您没有参与此提案"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
+msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
