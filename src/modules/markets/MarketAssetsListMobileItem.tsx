@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -74,6 +75,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             </>
           }
         />
+        <MeritIncentivesButton symbol={reserve.symbol} market={currentMarket} side={Side.SUPPLY} />
       </Row>
 
       <Divider sx={{ mb: 3 }} />
@@ -123,6 +125,11 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
                 {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
               </>
             }
+          />
+          <MeritIncentivesButton
+            symbol={reserve.symbol}
+            market={currentMarket}
+            side={Side.BORROW}
           />
           {!reserve.borrowingEnabled &&
             Number(reserve.totalVariableDebt) > 0 &&

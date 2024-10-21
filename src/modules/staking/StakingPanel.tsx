@@ -25,8 +25,8 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
-import { MeritAction } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { StakeActionBox } from './StakeActionBox';
@@ -330,10 +330,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               variant="secondary14"
             />
             {stakedToken === 'GHO' ? (
-              <MeritIncentivesButton
-                action={MeritAction.ETHEREUM_STKGHO}
-                hasBalance={stakeUserData.stakeTokenUserBalance !== '0'}
-              />
+              <MeritIncentivesButton symbol={stakedToken} market={CustomMarket.proto_mainnet_v3} />
             ) : null}
           </Stack>
         </Box>

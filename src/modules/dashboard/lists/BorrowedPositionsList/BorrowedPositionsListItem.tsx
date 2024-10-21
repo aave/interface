@@ -148,7 +148,12 @@ const BorrowedPositionsListItemDesktop = ({
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
-      <ListAPRColumn value={borrowAPY} incentives={incentives} symbol={reserve.symbol} />
+      <ListAPRColumn
+        value={borrowAPY}
+        market={currentMarket}
+        incentives={incentives}
+        symbol={reserve.symbol}
+      />
 
       <ListColumn>
         <ListItemAPYButton

@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -85,6 +86,7 @@ export const SuppliedPositionsListMobileItem = ({
           symbol={symbol}
           variant="secondary14"
         />
+        <MeritIncentivesButton symbol={symbol} market={currentMarket} side={Side.SUPPLY} />
       </Row>
 
       <Row

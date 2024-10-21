@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -77,6 +78,7 @@ export const BorrowAssetsListMobileItem = ({
           symbol={symbol}
           variant="secondary14"
         />
+        <MeritIncentivesButton symbol={symbol} market={currentMarket} side={Side.SUPPLY} />
       </Row>
       {/* <Row
         caption={

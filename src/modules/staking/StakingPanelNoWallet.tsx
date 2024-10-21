@@ -1,3 +1,4 @@
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
@@ -81,7 +82,13 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           </Typography>
           {stakedToken === 'GHO' && (
             <Box sx={{ mx: 2 }}>
-              <DefaultMeritIncentivesButton action={MeritAction.ETHEREUM_STKGHO} />
+              <DefaultMeritIncentivesButton
+                meritReserveIncentiveData={{
+                  rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
+                  rewardTokenSymbol: stakedToken,
+                  action: MeritAction.ETHEREUM_STKGHO,
+                }}
+              />
             </Box>
           )}
         </Stack>

@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
@@ -103,6 +104,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             </>
           }
         />
+        <MeritIncentivesButton symbol={reserve.symbol} market={currentMarket} side={Side.SUPPLY} />
       </ListColumn>
 
       <ListColumn>
@@ -130,6 +132,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             </>
           }
         />
+        <MeritIncentivesButton symbol={reserve.symbol} market={currentMarket} side={Side.BORROW} />
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}

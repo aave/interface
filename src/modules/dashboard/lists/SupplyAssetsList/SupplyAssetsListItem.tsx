@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -217,7 +218,12 @@ export const SupplyAssetsListItemDesktop = ({
         />
       )}
 
-      <ListAPRColumn value={Number(supplyAPY)} incentives={aIncentivesData} symbol={symbol} />
+      <ListAPRColumn
+        value={Number(supplyAPY)}
+        market={currentMarket}
+        incentives={aIncentivesData}
+        symbol={symbol}
+      />
 
       <ListColumn>
         {debtCeiling.isMaxed ? (
@@ -418,6 +424,7 @@ export const SupplyAssetsListItemMobile = ({
           symbol={symbol}
           variant="secondary14"
         />
+        <MeritIncentivesButton symbol={symbol} market={currentMarket} side={Side.SUPPLY} />
       </Row>
 
       <Row
