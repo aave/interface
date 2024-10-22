@@ -135,14 +135,14 @@ const testnetConfig: Config[] = [
     sourceChainId: ChainId.sepolia,
     lockReleaseTokenPool: '0x7768248E1Ff75612c18324bad06bb393c1206980',
     chainSelector: '16015286601757825753',
-    router: '0x11c008349c41fb5c78e544397fb4613605ec1a74',
+    router: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59',
     tokenOracle: '0x98458D6A99489F15e6eB5aFa67ACFAcf6F211051', // mock oracle
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-sepolia/version/latest',
     destinations: [
       {
         destinationChainId: ChainId.arbitrum_sepolia,
-        onRamp: '0x1f41c443cf68750d5c195e2ea7051521d981fc77',
+        onRamp: '0xBc09627e58989Ba8F1eDA775e486467d2A00944F',
       },
     ],
     feeTokens: [
@@ -179,14 +179,14 @@ const testnetConfig: Config[] = [
     sourceChainId: ChainId.arbitrum_sepolia,
     burnMintTokenPool: '0x3eC2b6F818B72442fc36561e9F930DD2b60957D2',
     chainSelector: '3478487238524512106',
-    router: '0x22356aec4cf05ec0ec63daa576c6b2ce1dc64701',
+    router: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165',
     tokenOracle: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165', // mock oracle
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-arb-sepolia/version/latest',
     destinations: [
       {
         destinationChainId: ChainId.sepolia,
-        onRamp: '0xc1ebd046a4086142479be3fc16a4791e2022909a',
+        onRamp: '0x64d78F20aD987c7D52FdCB8FB0777bD00de53210',
       },
     ],
     feeTokens: [
