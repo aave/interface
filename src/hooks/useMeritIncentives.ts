@@ -7,7 +7,7 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
-  SUPPLY_CBBTC_BORROW_USDC = 'supply-cbtc-borrow-usdc',
+  SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
 }
 
 type MeritIncentives = {
@@ -68,39 +68,12 @@ export const useMeritIncentives = ({
         const response = await fetch(`${url}?user=${user}`);
         const data = await response.json();
         meritIncentives = data.currentAPR as MeritIncentives;
-        let mockedAprs;
-        if (user == '0xf8E0D20E5548f3b607547ACec4149Ef9d951Df73'.toLowerCase()) {
-          mockedAprs = {
-            totalAPR: 8,
-            actionsAPR: {
-              ...meritIncentives.actionsAPR,
-              'supply-cbtc-borrow-usdc': 10,
-            },
-          } as MeritIncentives;
-        } else {
-          mockedAprs = {
-            totalAPR: 8,
-            actionsAPR: {
-              ...meritIncentives.actionsAPR,
-              'supply-cbtc-borrow-usdc': 5,
-            },
-          } as MeritIncentives;
-        }
-        meritIncentives = mockedAprs;
       }
 
       if (!meritIncentives) {
         const response = await fetch(url);
         const data = await response.json();
         meritIncentives = data.currentAPR as MeritIncentives;
-        const mockedAprs = {
-          totalAPR: meritIncentives.totalAPR,
-          actionsAPR: {
-            ...meritIncentives.actionsAPR,
-            'supply-cbtc-borrow-usdc': 8,
-          },
-        } as MeritIncentives;
-        meritIncentives = mockedAprs;
       }
 
       return meritIncentives;
