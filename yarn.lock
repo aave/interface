@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.30.3-80f77e2593b1d53810f604025df48934a18710f5.0":
-  version "1.30.3-80f77e2593b1d53810f604025df48934a18710f5.0"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.30.3-80f77e2593b1d53810f604025df48934a18710f5.0.tgz#210a917562259697906870791154bab5c257bbcf"
-  integrity sha512-ARjJ6qPt8yTgmydFsV2ridt6si9BO7m0DgcCGOAfGpdSDX1/eryESx/6ffs4gRC1gqPMrFCavu9g9Rq0OA1n4g==
+"@aave/contract-helpers@1.30.5-b9eef2344cf5a890a3eaeba354e8c3890e66b908.0":
+  version "1.30.5-b9eef2344cf5a890a3eaeba354e8c3890e66b908.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.30.5-b9eef2344cf5a890a3eaeba354e8c3890e66b908.0.tgz#bd37b93a3267d446bcb44a87eef4b449de3c62af"
+  integrity sha512-i2/P1NNB0DzxOSOoZ/tlr0jO9A5OLbgYkLmr1hKCBPeb9zNVmu0qu96hotZa5awHFySTGFWUFf41y+C04eqaFQ==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.30.3-80f77e2593b1d53810f604025df48934a18710f5.0":
-  version "1.30.3-80f77e2593b1d53810f604025df48934a18710f5.0"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.30.3-80f77e2593b1d53810f604025df48934a18710f5.0.tgz#ddf2c7d36d8e410f380079e7b090136ed3986b24"
-  integrity sha512-0BP8/dVxhap2F3RDz+1CUuqxkRYmL+7A4p0m+XF4kTSKUMl9D8lEzSvW9krcOEzdL1fPJNKI8R064huFa07Vnw==
+"@aave/math-utils@1.30.5-b9eef2344cf5a890a3eaeba354e8c3890e66b908.0":
+  version "1.30.5-b9eef2344cf5a890a3eaeba354e8c3890e66b908.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.30.5-b9eef2344cf5a890a3eaeba354e8c3890e66b908.0.tgz#a6569f1a3da43f67b1bf8345ad030bbd9e4e75b0"
+  integrity sha512-VuQqbpji3usJRqquVF3AZMihsKFvi0sgqOcOeOhoOF12c/j0K0LZaBjQtkDoDTyF7cwWeXZrdHo5IHhazAf0eA==
 
 "@adobe/css-tools@^4.0.1":
   version "4.0.1"
@@ -1317,10 +1317,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@3.5.1":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-3.5.1.tgz#25ed53b25bcf1ff3d8f476f40fd38c1afe3a8ec2"
-  integrity sha512-XONdy82J2CzDM1+qFNyxOmE/qd9l+/g2nL0OcNQB25lU0KQ+dBwbB4oyF+lUnz8gFyGcuH1Pe1HZNDg/BdsSFA==
+"@bgd-labs/aave-address-book@4.2":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.2.0.tgz#768b069a264491c381647679f8daf761e69200d3"
+  integrity sha512-FBMeAySqu4oBfefJpuNR9KVy0qvL+hr/N05BiqHhI+uma0EleGl1SvHo3mtb0Faqjq71krEXRYAdwGer5F7o9g==
 
 "@coinbase/wallet-sdk@3.1.0", "@coinbase/wallet-sdk@^3.0.4":
   version "3.1.0"
