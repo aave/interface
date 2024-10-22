@@ -321,8 +321,6 @@ export const BridgeModalContent = () => {
   const amountAfterFee = parsedAmountFee.minus(parsedBridgeFee);
   const amountAfterFeeFormatted = amountAfterFee.toString();
 
-  console.log('txErrorBridgeMessage', txErrorBridgeMessage);
-
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
