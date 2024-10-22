@@ -31,6 +31,7 @@ export const useGetBridgeMessage = ({
   const [bridgeFeeFormatted, setBridgeFeeFormatted] = useState('');
   const [latestAnswer, setLatestAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
 
   const debounced = useMemo(() => {
     return debounce(async () => {
@@ -138,6 +139,7 @@ export const useGetBridgeMessage = ({
         setBridgeFeeFormatted(formatEther(fees));
         setBridgeFee(fees.toString());
       } catch (e) {
+        setError(e.message);
         console.error(e);
       } finally {
         setLoading(false);
@@ -167,5 +169,6 @@ export const useGetBridgeMessage = ({
     bridgeFeeFormatted,
     loading,
     latestAnswer,
+    error,
   };
 };
