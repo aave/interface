@@ -175,9 +175,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [disconnectWallet, currentChainId]
   );
 
-  const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
-    // @ts-expect-error ethereum doesn't necessarily exist
-    const { ethereum } = window;
+  const activateInjectedProvider = (providerName: string | 'CoinBase') => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ethereum = (window as any).ethereum as any;
 
     if (!ethereum?.providers) {
       return true;
@@ -191,12 +191,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           ({ isCoinbaseWallet, isCoinbaseBrowser }) => isCoinbaseWallet || isCoinbaseBrowser
         );
         break;
-      case 'MetaMask':
-        //@ts-expect-error no type
-        provider = ethereum.providers.find(({ isMetaMask }) => isMetaMask);
-        break;
-      default:
-        return false;
     }
 
     if (provider) {
@@ -258,8 +252,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           return false;
         }
       } else {
-        // @ts-expect-error ethereum might not be in window
-        const { ethereum } = window;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const ethereum = (window as any).ethereum as any;
 
         if (ethereum) {
           try {
@@ -347,7 +341,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         setSwitchNetworkError(undefined);
       } catch (switchError) {
         const networkInfo = getNetworkConfig(newChainId);
-        if (switchError.code === 4902) {
+        if (
+          switchError.code === 4902 ||
+          // Unwrapping for MetaMask Mobile
+          // https://github.com/MetaMask/metamask-mobile/issues/2944#issuecomment-976988719
+          (switchError as { data: { originalError?: { code: number } } })?.data?.originalError
+            ?.code === 4902
+        ) {
           try {
             try {
               await provider.send('wallet_addEthereumChain', [

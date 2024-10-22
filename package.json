@@ -42,6 +42,7 @@
     "@gnosis.pm/safe-apps-web3-react": "^1.2.0",
     "@heroicons/react": "^1.0.6",
     "@lingui/react": "^3.14.0",
+    "@metamask/sdk": "^0.31.2",
     "@mui/icons-material": "^5.10.14",
     "@mui/lab": "5.0.0-alpha.103",
     "@mui/material": "^5.10.9",

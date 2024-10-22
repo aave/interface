@@ -43,6 +43,15 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
+      case WalletType.METAMASK_SDK:
+        return (
+          <img
+            src={`/icons/wallets/metaMask.svg`}
+            width="24px"
+            height="24px"
+            alt={`browser wallet icon`}
+          />
+        );
       case WalletType.WALLET_LINK:
         return (
           <img
@@ -176,6 +185,11 @@ export const WalletSelector = () => {
         key="browser_wallet"
         walletName="Browser wallet"
         walletType={WalletType.INJECTED}
+      />
+      <WalletRow
+        key="metamasksdk_wallet"
+        walletName="MetaMask"
+        walletType={WalletType.METAMASK_SDK}
       />
       <WalletRow
         key="walletconnect_wallet"

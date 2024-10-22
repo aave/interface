@@ -9,12 +9,14 @@ import { ConnectorUpdate } from '@web3-react/types';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { MetaMaskSDKConnector } from './MetaMaskSDKConnector';
 // import { LedgerHQFrameConnector } from 'web3-ledgerhq-frame-connector';
 import { WalletConnectConnector } from './WalletConnectConnector';
 
 export enum WalletType {
   INJECTED = 'injected',
   WALLET_CONNECT = 'wallet_connect',
+  METAMASK_SDK = 'metamask_sdk',
   WALLET_LINK = 'wallet_link',
   TORUS = 'torus',
   FRAME = 'frame',
@@ -77,6 +79,8 @@ export const getWallet = (
   chainId: ChainId = ChainId.mainnet,
   currentChainId: ChainId = ChainId.mainnet
 ): AbstractConnector => {
+  const networkConfig = getNetworkConfig(chainId);
+
   switch (wallet) {
     case WalletType.READ_ONLY_MODE:
       return new ReadOnlyModeConnector();
@@ -84,8 +88,18 @@ export const getWallet = (
     //   return new LedgerHQFrameConnector({});
     case WalletType.INJECTED:
       return new InjectedConnector({});
+    case WalletType.METAMASK_SDK:
+      return new MetaMaskSDKConnector({
+        dappMetadata: {
+          name: APP_NAME,
+          iconUrl: APP_LOGO_URL,
+        },
+        readonlyRPCMap: {
+          [`0x${chainId.toString(16)}`]:
+            networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
+        },
+      });
     case WalletType.WALLET_LINK:
-      const networkConfig = getNetworkConfig(chainId);
       return new WalletLinkConnector({
         appName: APP_NAME,
         appLogoUrl: APP_LOGO_URL,
