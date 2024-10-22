@@ -65,15 +65,15 @@ export const useMeritIncentives = ({
       let meritIncentives: MeritIncentives | null = null;
 
       if (user) {
-        // const response = await fetch(`${url}?user=${user}`);
-        // const data = await response.json();
-        // meritIncentives = data.currentAPR as MeritIncentives;
+        const response = await fetch(`${url}?user=${user}`);
+        const data = await response.json();
+        meritIncentives = data.currentAPR as MeritIncentives;
         let mockedAprs;
         if (user == '0xf8E0D20E5548f3b607547ACec4149Ef9d951Df73'.toLowerCase()) {
           mockedAprs = {
             totalAPR: 8,
             actionsAPR: {
-              // ...aprs.actionsAPR,
+              ...meritIncentives.actionsAPR,
               'supply-cbtc-borrow-usdc': 10,
             },
           } as MeritIncentives;
@@ -81,7 +81,7 @@ export const useMeritIncentives = ({
           mockedAprs = {
             totalAPR: 8,
             actionsAPR: {
-              // ...aprs.actionsAPR,
+              ...meritIncentives.actionsAPR,
               'supply-cbtc-borrow-usdc': 5,
             },
           } as MeritIncentives;
