@@ -75,6 +75,7 @@ export const SuppliedPositionsListItem = ({
       <ListAPRColumn
         value={Number(reserve.supplyAPY)}
         market={currentMarket}
+        side={Side.SUPPLY}
         incentives={aIncentivesData}
         symbol={reserve.symbol}
       />

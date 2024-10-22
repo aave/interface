@@ -78,7 +78,7 @@ export const BorrowAssetsListMobileItem = ({
           symbol={symbol}
           variant="secondary14"
         />
-        <MeritIncentivesButton symbol={symbol} market={currentMarket} side={Side.SUPPLY} />
+        <MeritIncentivesButton symbol={symbol} market={currentMarket} side={Side.BORROW} />
       </Row>
       {/* <Row
         caption={

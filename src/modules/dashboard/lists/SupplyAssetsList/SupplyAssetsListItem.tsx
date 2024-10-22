@@ -221,6 +221,7 @@ export const SupplyAssetsListItemDesktop = ({
       <ListAPRColumn
         value={Number(supplyAPY)}
         market={currentMarket}
+        side={Side.SUPPLY}
         incentives={aIncentivesData}
         symbol={symbol}
       />

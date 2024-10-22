@@ -11,6 +11,7 @@ import { ListColumn } from '../../../components/lists/ListColumn';
 interface ListAPRColumnProps {
   value: number;
   market: CustomMarket;
+  side: Side;
   incentives?: ReserveIncentiveResponse[];
   symbol: string;
   tooltip?: ReactNode;
@@ -20,6 +21,7 @@ interface ListAPRColumnProps {
 export const ListAPRColumn = ({
   value,
   market,
+  side,
   incentives,
   symbol,
   tooltip,
@@ -29,7 +31,7 @@ export const ListAPRColumn = ({
     <ListColumn>
       <Box sx={{ display: 'flex column' }}>
         <IncentivesCard value={value} incentives={incentives} symbol={symbol} />
-        <MeritIncentivesButton symbol={symbol} market={market} side={Side.SUPPLY} />
+        <MeritIncentivesButton symbol={symbol} market={market} side={side} />
         {tooltip}
       </Box>
       {children}

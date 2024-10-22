@@ -67,6 +67,7 @@ export const BorrowAssetsListItem = ({
       <ListAPRColumn
         value={Number(variableBorrowRate)}
         market={currentMarket}
+        side={Side.BORROW}
         incentives={vIncentivesData}
         symbol={symbol}
       />
