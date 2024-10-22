@@ -2,7 +2,6 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
-import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export enum MeritAction {
@@ -58,23 +57,11 @@ export const useMeritIncentives = ({
   market: string;
   protocolAction?: ProtocolAction;
 }) => {
-  const user = useRootStore((store) => store.account);
-
   return useQuery({
     queryFn: async () => {
-      let meritIncentives: MeritIncentives | null = null;
-
-      if (user) {
-        const response = await fetch(`${url}?user=${user}`);
-        const data = await response.json();
-        meritIncentives = data.currentAPR as MeritIncentives;
-      }
-
-      if (!meritIncentives) {
-        const response = await fetch(url);
-        const data = await response.json();
-        meritIncentives = data.currentAPR as MeritIncentives;
-      }
+      const response = await fetch(url);
+      const data = await response.json();
+      const meritIncentives = data.currentAPR as MeritIncentives;
 
       return meritIncentives;
     },
