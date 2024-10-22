@@ -27,7 +27,7 @@ export const ListAPRColumn = ({
 }: ListAPRColumnProps) => {
   return (
     <ListColumn>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex column' }}>
         <IncentivesCard value={value} incentives={incentives} symbol={symbol} />
         <MeritIncentivesButton symbol={symbol} market={market} side={Side.SUPPLY} />
         {tooltip}
