@@ -7,7 +7,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
-import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -63,7 +63,7 @@ export const SuppliedPositionsListItem = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         reserve.symbol,
         currentMarket,
-        Side.SUPPLY
+        ProtocolAction.supply
       )}
     >
       <ListValueColumn

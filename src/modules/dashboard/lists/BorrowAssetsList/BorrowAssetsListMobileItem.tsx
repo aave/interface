@@ -5,7 +5,7 @@ import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButto
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -44,7 +44,7 @@ export const BorrowAssetsListMobileItem = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         symbol,
         currentMarket,
-        Side.BORROW
+        ProtocolAction.borrow
       )}
     >
       <ListValueRow

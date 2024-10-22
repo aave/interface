@@ -10,7 +10,7 @@ import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
-import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -26,12 +26,12 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
   const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
     reserve.symbol,
     currentMarket,
-    Side.SUPPLY
+    ProtocolAction.supply
   );
   const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
     reserve.symbol,
     currentMarket,
-    Side.BORROW
+    ProtocolAction.borrow
   );
 
   return (

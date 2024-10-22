@@ -5,7 +5,7 @@ import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButto
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Row } from '../../../../components/primitives/Row';
@@ -65,7 +65,7 @@ export const SuppliedPositionsListMobileItem = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         reserve.symbol,
         currentMarket,
-        Side.SUPPLY
+        ProtocolAction.supply
       )}
     >
       <ListValueRow

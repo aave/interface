@@ -11,7 +11,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -144,7 +144,7 @@ const BorrowedPositionsListItemDesktop = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         reserve.symbol,
         currentMarket,
-        Side.BORROW
+        ProtocolAction.borrow
       )}
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
@@ -237,7 +237,7 @@ const BorrowedPositionsListItemMobile = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         symbol,
         currentMarket,
-        Side.BORROW
+        ProtocolAction.borrow
       )}
     >
       <ListValueRow

@@ -31,7 +31,7 @@ import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -158,7 +158,7 @@ export const SupplyAssetsListItemDesktop = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         symbol,
         currentMarket,
-        Side.SUPPLY
+        ProtocolAction.supply
       )}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
@@ -349,7 +349,7 @@ export const SupplyAssetsListItemMobile = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         symbol,
         currentMarket,
-        Side.SUPPLY
+        ProtocolAction.supply
       )}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
