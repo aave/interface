@@ -141,6 +141,7 @@ export const BridgeModalContent = () => {
     bridgeFeeFormatted,
     loading: loadingBridgeMessage,
     latestAnswer: bridgeFeeUSD,
+    error: txErrorBridgeMessage,
   } = useGetBridgeMessage({
     sourceChainId: sourceNetworkObj.chainId,
     destinationChainId: destinationNetworkObj?.chainId || 0,
@@ -319,6 +320,8 @@ export const BridgeModalContent = () => {
   const parsedBridgeFee = new BigNumber(bridgeFeeFormatted || '0');
   const amountAfterFee = parsedAmountFee.minus(parsedBridgeFee);
   const amountAfterFeeFormatted = amountAfterFee.toString();
+
+  console.log('txErrorBridgeMessage', txErrorBridgeMessage);
 
   return (
     <>
@@ -607,6 +610,14 @@ export const BridgeModalContent = () => {
             <Row /> {/* Spacer */}
           </TxModalDetails>
           {txError && <GasEstimationError txError={txError} />}
+
+          {txErrorBridgeMessage && (
+            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+              <Typography variant="caption">
+                <Trans>Something went wrong fetching bridge message, please try again later.</Trans>
+              </Typography>
+            </Warning>
+          )}
 
           {/* {bridgeLimitExceeded && (
             <Warning severity="error" sx={{ mt: 4 }} icon={false}>

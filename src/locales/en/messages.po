@@ -2232,6 +2232,10 @@ msgstr "Some migrated assets will not be used as collateral due to enabled isola
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Something went wrong fetching bridge message, please try again later."
+msgstr "Something went wrong fetching bridge message, please try again later."
+
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 msgstr "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
