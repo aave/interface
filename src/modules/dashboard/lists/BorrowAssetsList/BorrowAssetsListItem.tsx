@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
@@ -67,7 +68,7 @@ export const BorrowAssetsListItem = ({
       <ListAPRColumn
         value={Number(variableBorrowRate)}
         market={currentMarket}
-        side={Side.BORROW}
+        protocolAction={ProtocolAction.borrow}
         incentives={vIncentivesData}
         symbol={symbol}
       />

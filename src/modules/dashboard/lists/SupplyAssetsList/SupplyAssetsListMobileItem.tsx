@@ -1,10 +1,10 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { Side } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -80,7 +80,11 @@ export const SupplyAssetsListMobileItem = ({
           symbol={symbol}
           variant="secondary14"
         />
-        <MeritIncentivesButton symbol={symbol} market={currentMarket} side={Side.SUPPLY} />
+        <MeritIncentivesButton
+          symbol={symbol}
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
+        />
       </Row>
 
       <Row

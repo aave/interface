@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
 import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
@@ -75,7 +76,11 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             </>
           }
         />
-        <MeritIncentivesButton symbol={reserve.symbol} market={currentMarket} side={Side.SUPPLY} />
+        <MeritIncentivesButton
+          symbol={reserve.symbol}
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
+        />
       </Row>
 
       <Divider sx={{ mb: 3 }} />
@@ -129,7 +134,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           <MeritIncentivesButton
             symbol={reserve.symbol}
             market={currentMarket}
-            side={Side.BORROW}
+            protocolAction={ProtocolAction.borrow}
           />
           {!reserve.borrowingEnabled &&
             Number(reserve.totalVariableDebt) > 0 &&

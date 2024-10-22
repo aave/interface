@@ -1,9 +1,9 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { Side } from 'src/utils/utils';
 
 export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
@@ -21,7 +21,7 @@ const url = 'https://apps.aavechan.com/api/merit/aprs';
 
 export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
   action: MeritAction;
-  side?: Side;
+  protocolAction?: ProtocolAction;
 };
 
 const symbolToMeritData = (
@@ -42,14 +42,14 @@ const symbolToMeritData = (
             action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
             rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
             rewardTokenSymbol: 'aEthUSDC',
-            side: Side.SUPPLY,
+            protocolAction: ProtocolAction.supply,
           };
         case 'USDC':
           return {
             action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
             rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
             rewardTokenSymbol: 'aEthUSDC',
-            side: Side.BORROW,
+            protocolAction: ProtocolAction.borrow,
           };
         default:
           return undefined;
@@ -62,11 +62,11 @@ const symbolToMeritData = (
 export const useMeritIncentives = ({
   symbol,
   market,
-  side,
+  protocolAction,
 }: {
   symbol: string;
   market: string;
-  side?: Side;
+  protocolAction?: ProtocolAction;
 }) => {
   const user = useRootStore((store) => store.account);
 
@@ -122,7 +122,7 @@ export const useMeritIncentives = ({
       if (!meritReserveIncentiveData) {
         return null;
       }
-      if (meritReserveIncentiveData.side !== side) {
+      if (meritReserveIncentiveData.protocolAction !== protocolAction) {
         return null;
       }
 

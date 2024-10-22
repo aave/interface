@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { EyeIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
@@ -221,7 +222,7 @@ export const SupplyAssetsListItemDesktop = ({
       <ListAPRColumn
         value={Number(supplyAPY)}
         market={currentMarket}
-        side={Side.SUPPLY}
+        protocolAction={ProtocolAction.supply}
         incentives={aIncentivesData}
         symbol={symbol}
       />
@@ -425,7 +426,11 @@ export const SupplyAssetsListItemMobile = ({
           symbol={symbol}
           variant="secondary14"
         />
-        <MeritIncentivesButton symbol={symbol} market={currentMarket} side={Side.SUPPLY} />
+        <MeritIncentivesButton
+          symbol={symbol}
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
+        />
       </Row>
 
       <Row

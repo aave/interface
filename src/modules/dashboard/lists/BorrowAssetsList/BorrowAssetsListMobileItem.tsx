@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
@@ -78,7 +79,11 @@ export const BorrowAssetsListMobileItem = ({
           symbol={symbol}
           variant="secondary14"
         />
-        <MeritIncentivesButton symbol={symbol} market={currentMarket} side={Side.BORROW} />
+        <MeritIncentivesButton
+          symbol={symbol}
+          market={currentMarket}
+          protocolAction={ProtocolAction.borrow}
+        />
       </Row>
       {/* <Row
         caption={

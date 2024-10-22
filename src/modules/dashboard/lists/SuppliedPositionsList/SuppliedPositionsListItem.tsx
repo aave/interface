@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -75,7 +76,7 @@ export const SuppliedPositionsListItem = ({
       <ListAPRColumn
         value={Number(reserve.supplyAPY)}
         market={currentMarket}
-        side={Side.SUPPLY}
+        protocolAction={ProtocolAction.supply}
         incentives={aIncentivesData}
         symbol={reserve.symbol}
       />

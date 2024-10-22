@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
@@ -6,7 +7,6 @@ import { useState } from 'react';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { Side } from 'src/utils/utils';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
@@ -37,7 +37,11 @@ const BlankIncentives = () => {
   );
 };
 
-export const MeritIncentivesButton = (params: { symbol: string; market: string; side?: Side }) => {
+export const MeritIncentivesButton = (params: {
+  symbol: string;
+  market: string;
+  protocolAction?: ProtocolAction;
+}) => {
   const [open, setOpen] = useState(false);
   const { data: meritIncentives } = useMeritIncentives(params);
 

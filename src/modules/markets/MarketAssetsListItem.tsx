@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -104,7 +105,11 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             </>
           }
         />
-        <MeritIncentivesButton symbol={reserve.symbol} market={currentMarket} side={Side.SUPPLY} />
+        <MeritIncentivesButton
+          symbol={reserve.symbol}
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
+        />
       </ListColumn>
 
       <ListColumn>
@@ -132,7 +137,11 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             </>
           }
         />
-        <MeritIncentivesButton symbol={reserve.symbol} market={currentMarket} side={Side.BORROW} />
+        <MeritIncentivesButton
+          symbol={reserve.symbol}
+          market={currentMarket}
+          protocolAction={ProtocolAction.borrow}
+        />
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}

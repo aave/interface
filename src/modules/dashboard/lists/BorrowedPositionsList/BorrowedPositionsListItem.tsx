@@ -1,4 +1,4 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { InterestRate, ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
@@ -152,7 +152,7 @@ const BorrowedPositionsListItemDesktop = ({
       <ListAPRColumn
         value={borrowAPY}
         market={currentMarket}
-        side={Side.BORROW}
+        protocolAction={ProtocolAction.borrow}
         incentives={incentives}
         symbol={reserve.symbol}
       />
@@ -254,7 +254,11 @@ const BorrowedPositionsListItemMobile = ({
           symbol={symbol}
           variant="secondary14"
         />
-        <MeritIncentivesButton symbol={symbol} market={currentMarket} side={Side.BORROW} />
+        <MeritIncentivesButton
+          symbol={symbol}
+          market={currentMarket}
+          protocolAction={ProtocolAction.borrow}
+        />
       </Row>
 
       <Row
