@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-09-23 18:05\n"
+"PO-Revision-Date: 2024-10-21 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -228,11 +228,14 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "Σας επιτρέπει την εναλλαγή μεταξύ <0>μεταβλητού</0> και <1>σταθερού</1> επιτοκίου, όπου το μεταβλητό επιτόκιο μπορεί να αυξάνεται και να μειώνεται ανάλογα με την ποσότητα ρευστότητας στο αποθεματικό, ενώ το σταθερό επιτόκιο θα παραμείνει το ίδιο για τη διάρκεια του δανείου σας."
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Ποσό"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Amount After Fee"
+msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
@@ -1397,6 +1400,10 @@ msgstr "Μάθετε περισσότερα"
 msgid "Learn more about risks involved"
 msgstr "Μάθετε περισσότερα για τους κινδύνους"
 
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "Learn more about the SPK rewards"
+msgstr ""
+
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Μάθετε περισσότερα στον οδηγό <0>Συχνών Ερωτήσεων</0>"
@@ -1417,14 +1424,11 @@ msgstr ""
 msgid "Links"
 msgstr "Σύνδεσμοι"
 
-#: src/modules/history/HistoryFilterMenu.tsx
-msgid "Liqudation"
-msgstr ""
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidated collateral"
 msgstr ""
 
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidation"
 msgstr ""
@@ -2593,6 +2597,10 @@ msgstr "Το αιτούμενο ποσό είναι μεγαλύτερο από 
 msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
 msgstr ""
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The total amount bridged minus CCIP fees. Paying in network token does not impact gho amount."
+msgstr ""
+
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "Το συνολικό ποσό των περιουσιακών σας στοιχείων σε δολάρια ΗΠΑ που μπορούν να χρησιμοποιηθούν ως εγγύηση για δανεισμό περιουσιακών στοιχείων."
@@ -2673,6 +2681,10 @@ msgstr "Αυτό το περιουσιακό στοιχείο έχει φθάσ�
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "Αυτό το περιουσιακό στοιχείο έχει φτάσει στο όριο της προσφοράς του. Τίποτα δεν είναι διαθέσιμο για προμήθεια από αυτή την αγορά."
 
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
@@ -2694,7 +2706,7 @@ msgid "This asset is planned to be offboarded due to an Aave Protocol Governance
 msgstr ""
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. <0>Learn more</0>"
+msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/infoTooltips/GasTooltip.tsx
@@ -3222,6 +3234,10 @@ msgstr "Ακυρώσατε τη συναλλαγή."
 msgid "You did not participate in this proposal"
 msgstr "Δεν συμμετείχατε στην παρούσα πρόταση"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
+msgstr ""
+
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
 msgstr "Δεν έχετε προμήθειες σε αυτό το νόμισμα"
@@ -3352,6 +3368,10 @@ msgstr "Η μηδενική διεύθυνση δεν είναι έγκυρη"
 
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "about SuperFest."
+msgstr ""
+
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "and about SPK program"
 msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx

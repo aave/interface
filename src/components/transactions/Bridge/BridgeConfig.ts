@@ -5,6 +5,8 @@ import {
   AaveV3Ethereum,
   AaveV3Sepolia,
 } from '@bgd-labs/aave-address-book';
+import { constants } from 'ethers';
+import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { BaseNetworkConfig, networkConfigs } from 'src/ui-config/networksConfig';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
@@ -23,6 +25,7 @@ type Config = {
     destinationChainId: ChainId;
     onRamp: string;
   }[];
+  feeTokens: TokenInfoWithBalance[];
 };
 
 export enum MessageExecutionState {
@@ -51,6 +54,35 @@ const prodConfig: Config[] = [
         onRamp: '0x925228d7b82d883dde340a55fe8e6da56244a22c',
       },
     ],
+    feeTokens: [
+      {
+        name: 'Gho Token',
+        address: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: 1,
+        logoURI:
+          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+        oracle: AaveV3Ethereum.ASSETS.GHO.ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
+      {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: 1,
+        logoURI:
+          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
+      },
+    ],
   },
   {
     sourceChainId: ChainId.arbitrum_one,
@@ -66,6 +98,35 @@ const prodConfig: Config[] = [
         onRamp: '0xce11020d56e5fdbfe46d9fc3021641ffbbb5adee',
       },
     ],
+    feeTokens: [
+      {
+        name: 'Gho Token',
+        address: AaveV3Arbitrum.ASSETS.GHO.UNDERLYING,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: 42161,
+        logoURI:
+          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+        oracle: AaveV3Arbitrum.ASSETS.GHO.ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
+      {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: 42161, // Arb
+        logoURI:
+          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
+      },
+    ],
   },
 ];
 
@@ -74,14 +135,43 @@ const testnetConfig: Config[] = [
     sourceChainId: ChainId.sepolia,
     lockReleaseTokenPool: '0x7768248E1Ff75612c18324bad06bb393c1206980',
     chainSelector: '16015286601757825753',
-    router: '0x11c008349c41fb5c78e544397fb4613605ec1a74',
+    router: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59',
     tokenOracle: '0x98458D6A99489F15e6eB5aFa67ACFAcf6F211051', // mock oracle
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-sepolia/version/latest',
     destinations: [
       {
         destinationChainId: ChainId.arbitrum_sepolia,
-        onRamp: '0x1f41c443cf68750d5c195e2ea7051521d981fc77',
+        onRamp: '0xBc09627e58989Ba8F1eDA775e486467d2A00944F',
+      },
+    ],
+    feeTokens: [
+      {
+        name: 'Gho Token',
+        address: AaveV3Sepolia.ASSETS.GHO.UNDERLYING,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: 11155111,
+        logoURI:
+          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+        oracle: AaveV3Sepolia.ASSETS.GHO.ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
+      {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: 11155111,
+        logoURI:
+          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
       },
     ],
   },
@@ -89,14 +179,43 @@ const testnetConfig: Config[] = [
     sourceChainId: ChainId.arbitrum_sepolia,
     burnMintTokenPool: '0x3eC2b6F818B72442fc36561e9F930DD2b60957D2',
     chainSelector: '3478487238524512106',
-    router: '0x22356aec4cf05ec0ec63daa576c6b2ce1dc64701',
-    tokenOracle: '0x0153002d20B96532C639313c2d54c3dA09109309', // mock oracle
+    router: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165',
+    tokenOracle: '0x1f885520b7BD528E46b390040F12E753Dce43004', // mock oracle
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-arb-sepolia/version/latest',
     destinations: [
       {
         destinationChainId: ChainId.sepolia,
-        onRamp: '0xc1ebd046a4086142479be3fc16a4791e2022909a',
+        onRamp: '0x64d78F20aD987c7D52FdCB8FB0777bD00de53210',
+      },
+    ],
+    feeTokens: [
+      {
+        name: 'Gho Token',
+        address: AaveV3Sepolia.ASSETS.GHO.UNDERLYING,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: 421614,
+        logoURI:
+          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+        oracle: AaveV3Sepolia.ASSETS.GHO.ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
+      {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: 421614, // Arb
+        logoURI:
+          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
       },
     ],
   },

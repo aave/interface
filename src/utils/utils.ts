@@ -74,17 +74,47 @@ export const roundToTokenDecimals = (inputValue: string, tokenDecimals: number) 
   // Combine the whole and adjusted decimal parts
   return whole + '.' + adjustedDecimals;
 };
+
 export enum Side {
   SUPPLY = 'supply',
   BORROW = 'borrow',
 }
-export const showSuperFestTooltip = (symbol: string, currentMarket: string, side?: Side) => {
-  const superFestRewardsEnabled = false;
 
-  return (
+export type ExternalIncentivesTooltipsConfig = {
+  superFestRewards: boolean;
+  spkAirdrop: boolean;
+};
+
+export const showExternalIncentivesTooltip = (
+  symbol: string,
+  currentMarket: string,
+  side?: Side
+) => {
+  const superFestRewardsEnabled = false;
+  const spkRewardsEnabled = true;
+
+  const tooltipsConfig: ExternalIncentivesTooltipsConfig = {
+    superFestRewards: false,
+    spkAirdrop: false,
+  };
+
+  if (
     superFestRewardsEnabled &&
     currentMarket === CustomMarket.proto_base_v3 &&
     side === Side.SUPPLY &&
     (symbol == 'ETH' || symbol == 'WETH' || symbol == 'wstETH')
-  );
+  ) {
+    tooltipsConfig.superFestRewards = true;
+  }
+
+  if (
+    spkRewardsEnabled &&
+    currentMarket === CustomMarket.proto_mainnet_v3 &&
+    side === Side.SUPPLY &&
+    symbol == 'USDS'
+  ) {
+    tooltipsConfig.spkAirdrop = true;
+  }
+
+  return tooltipsConfig;
 };

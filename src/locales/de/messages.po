@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-09-23 18:05\n"
+"PO-Revision-Date: 2024-10-21 18:06\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -228,11 +228,14 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "Ermöglicht es Ihnen, zwischen <0>variablen</0> und <1>stabilen</1> Zinssätzen zu wechseln, wobei der variable Zinssatz je nach Liquidität in der Reserve steigen und sinken kann und der stabile Zinssatz für die Dauer Ihres Darlehens gleich bleibt."
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Menge"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Amount After Fee"
+msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
@@ -1397,6 +1400,10 @@ msgstr "Weitere Informationen"
 msgid "Learn more about risks involved"
 msgstr "Erfahren Sie mehr über die damit verbundenen Risiken"
 
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "Learn more about the SPK rewards"
+msgstr ""
+
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Erfahren Sie mehr in unserem <0>FAQ-Leitfaden</0>"
@@ -1417,14 +1424,11 @@ msgstr ""
 msgid "Links"
 msgstr "Verknüpfungen"
 
-#: src/modules/history/HistoryFilterMenu.tsx
-msgid "Liqudation"
-msgstr "Verflüssigung"
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidated collateral"
 msgstr "Liquidierte Sicherheiten"
 
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidation"
 msgstr "Liquidation"
@@ -2592,6 +2596,10 @@ msgstr "Der angeforderte Betrag ist höher als die maximale Darlehensgröße im 
 msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
 msgstr ""
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "The total amount bridged minus CCIP fees. Paying in network token does not impact gho amount."
+msgstr ""
+
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "Der Gesamtbetrag Ihrer Vermögenswerte in USD, der als Sicherheit für die Kreditaufnahme von Vermögenswerten verwendet werden kann."
@@ -2672,6 +2680,10 @@ msgstr "Dieser Vermögenswert hat seine Kreditobergrenze erreicht. Es gibt nicht
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "Dieser Vermögenswert hat seine Angebotsobergrenze erreicht. Auf diesem Markt kann nichts geliefert werden."
 
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
@@ -2693,7 +2705,7 @@ msgid "This asset is planned to be offboarded due to an Aave Protocol Governance
 msgstr "Es ist geplant, dass dieser Vermögenswert aufgrund einer Entscheidung der Aave Protocol Governance ausgelagert wird. <0>Mehr Details</0>"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. <0>Learn more</0>"
+msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/infoTooltips/GasTooltip.tsx
@@ -3221,6 +3233,10 @@ msgstr "Sie haben die Transaktion abgebrochen."
 msgid "You did not participate in this proposal"
 msgstr "Sie haben an diesem Vorschlag nicht teilgenommen"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
+msgstr ""
+
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
 msgstr "Sie haben keine Vorräte in dieser Währung"
@@ -3351,6 +3367,10 @@ msgstr "Nulladresse ungültig"
 
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "about SuperFest."
+msgstr ""
+
+#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+msgid "and about SPK program"
 msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
