@@ -63,24 +63,26 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         mb={3}
         align="flex-start"
       >
-        <IncentivesCard
-          align="flex-end"
-          value={reserve.supplyAPY}
-          incentives={reserve.aIncentivesData || []}
-          symbol={reserve.symbol}
-          variant="secondary14"
-          tooltip={
-            <>
-              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
-            </>
-          }
-        />
-        <MeritIncentivesButton
-          symbol={reserve.symbol}
-          market={currentMarket}
-          protocolAction={ProtocolAction.supply}
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <IncentivesCard
+            align="flex-end"
+            value={reserve.supplyAPY}
+            incentives={reserve.aIncentivesData || []}
+            symbol={reserve.symbol}
+            variant="secondary14"
+            tooltip={
+              <>
+                {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
+                {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
+              </>
+            }
+          />
+          <MeritIncentivesButton
+            symbol={reserve.symbol}
+            market={currentMarket}
+            protocolAction={ProtocolAction.supply}
+          />
+        </Box>
       </Row>
 
       <Divider sx={{ mb: 3 }} />
