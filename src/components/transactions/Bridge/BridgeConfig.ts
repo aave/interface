@@ -180,7 +180,7 @@ const testnetConfig: Config[] = [
     burnMintTokenPool: '0x3eC2b6F818B72442fc36561e9F930DD2b60957D2',
     chainSelector: '3478487238524512106',
     router: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165',
-    tokenOracle: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165', // mock oracle
+    tokenOracle: '0x1f885520b7BD528E46b390040F12E753Dce43004', // mock oracle
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-arb-sepolia/version/latest',
     destinations: [
