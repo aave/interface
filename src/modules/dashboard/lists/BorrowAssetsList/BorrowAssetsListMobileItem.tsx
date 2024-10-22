@@ -73,17 +73,19 @@ export const BorrowAssetsListMobileItem = ({
         captionVariant="description"
         mb={2}
       >
-        <IncentivesCard
-          value={Number(variableBorrowRate)}
-          incentives={vIncentivesData}
-          symbol={symbol}
-          variant="secondary14"
-        />
-        <MeritIncentivesButton
-          symbol={symbol}
-          market={currentMarket}
-          protocolAction={ProtocolAction.borrow}
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <IncentivesCard
+            value={Number(variableBorrowRate)}
+            incentives={vIncentivesData}
+            symbol={symbol}
+            variant="secondary14"
+          />
+          <MeritIncentivesButton
+            symbol={symbol}
+            market={currentMarket}
+            protocolAction={ProtocolAction.borrow}
+          />
+        </Box>
       </Row>
       {/* <Row
         caption={

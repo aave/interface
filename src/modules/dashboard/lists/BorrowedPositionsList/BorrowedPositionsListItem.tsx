@@ -248,17 +248,19 @@ const BorrowedPositionsListItemMobile = ({
       />
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
-        <IncentivesCard
-          value={borrowAPY}
-          incentives={incentives}
-          symbol={symbol}
-          variant="secondary14"
-        />
-        <MeritIncentivesButton
-          symbol={symbol}
-          market={currentMarket}
-          protocolAction={ProtocolAction.borrow}
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <IncentivesCard
+            value={borrowAPY}
+            incentives={incentives}
+            symbol={symbol}
+            variant="secondary14"
+          />
+          <MeritIncentivesButton
+            symbol={symbol}
+            market={currentMarket}
+            protocolAction={ProtocolAction.borrow}
+          />
+        </Box>
       </Row>
 
       <Row

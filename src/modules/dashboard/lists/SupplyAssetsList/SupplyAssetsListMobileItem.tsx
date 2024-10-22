@@ -74,17 +74,19 @@ export const SupplyAssetsListMobileItem = ({
         captionVariant="description"
         mb={2}
       >
-        <IncentivesCard
-          value={Number(supplyAPY)}
-          incentives={aIncentivesData}
-          symbol={symbol}
-          variant="secondary14"
-        />
-        <MeritIncentivesButton
-          symbol={symbol}
-          market={currentMarket}
-          protocolAction={ProtocolAction.supply}
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <IncentivesCard
+            value={Number(supplyAPY)}
+            incentives={aIncentivesData}
+            symbol={symbol}
+            variant="secondary14"
+          />
+          <MeritIncentivesButton
+            symbol={symbol}
+            market={currentMarket}
+            protocolAction={ProtocolAction.supply}
+          />
+        </Box>
       </Row>
 
       <Row
