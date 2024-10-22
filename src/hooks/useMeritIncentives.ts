@@ -24,39 +24,29 @@ export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiv
   protocolAction?: ProtocolAction;
 };
 
-const symbolToMeritData = (
-  symbol: string,
-  market: string
-): MeritReserveIncentiveData | undefined => {
-  switch (market) {
-    case CustomMarket.proto_mainnet_v3:
-      switch (symbol) {
-        case 'GHO':
-          return {
-            action: MeritAction.ETHEREUM_STKGHO,
-            rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-            rewardTokenSymbol: 'GHO',
-          };
-        case 'cbBTC':
-          return {
-            action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
-            rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
-            rewardTokenSymbol: 'aEthUSDC',
-            protocolAction: ProtocolAction.supply,
-          };
-        case 'USDC':
-          return {
-            action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
-            rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
-            rewardTokenSymbol: 'aEthUSDC',
-            protocolAction: ProtocolAction.borrow,
-          };
-        default:
-          return undefined;
-      }
-    default:
-      return undefined;
-  }
+const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData | undefined =>
+  MERIT_DATA_MAP[market]?.[symbol];
+
+const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData>> = {
+  [CustomMarket.proto_mainnet_v3]: {
+    GHO: {
+      action: MeritAction.ETHEREUM_STKGHO,
+      rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
+      rewardTokenSymbol: 'GHO',
+    },
+    cbBTC: {
+      action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+      rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
+      rewardTokenSymbol: 'aEthUSDC',
+      protocolAction: ProtocolAction.supply,
+    },
+    USDC: {
+      action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+      rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
+      rewardTokenSymbol: 'aEthUSDC',
+      protocolAction: ProtocolAction.borrow,
+    },
+  },
 };
 
 export const useMeritIncentives = ({
@@ -118,7 +108,7 @@ export const useMeritIncentives = ({
     queryKey: ['meritIncentives'],
     staleTime: 1000 * 60 * 5,
     select: (data) => {
-      const meritReserveIncentiveData = symbolToMeritData(symbol, market);
+      const meritReserveIncentiveData = getMeritData(market, symbol);
       if (!meritReserveIncentiveData) {
         return null;
       }
