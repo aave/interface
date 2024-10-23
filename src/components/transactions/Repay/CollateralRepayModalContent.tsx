@@ -83,10 +83,7 @@ export function CollateralRepayModalContent({
     (reserve) => reserve.underlyingAsset === tokenToRepayWith.address
   ) as ComputedReserveData;
 
-  const debt =
-    debtType === InterestRate.Stable
-      ? userReserve?.stableBorrows || '0'
-      : userReserve?.variableBorrows || '0';
+  const debt = userReserve?.variableBorrows || '0';
 
   let safeAmountToRepayAll = valueToBigNumber(debt);
   // Add in the approximate interest accrued over the next 30 minutes

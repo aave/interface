@@ -397,7 +397,6 @@ export const createPoolSlice: StateCreator<
       return JSON.stringify(typedData);
     },
     debtSwitch: ({
-      currentRateMode,
       poolReserve,
       amountToSwap,
       targetReserve,
@@ -435,7 +434,7 @@ export const createPoolSlice: StateCreator<
         user,
         debtAssetUnderlying: poolReserve.underlyingAsset,
         debtRepayAmount: isMaxSelected ? MAX_UINT_AMOUNT : amountToSwap,
-        debtRateMode: currentRateMode,
+        debtRateMode: 2, // variable
         newAssetUnderlying: targetReserve.underlyingAsset,
         newAssetDebtToken: targetReserve.variableDebtTokenAddress,
         maxNewDebtAmount: amountToReceive,
@@ -662,9 +661,6 @@ export const createPoolSlice: StateCreator<
         }
         if (reserve.vIncentivesData && reserve.vIncentivesData.length > 0) {
           allReserves.push(reserve.variableDebtTokenAddress);
-        }
-        if (reserve.sIncentivesData && reserve.sIncentivesData.length > 0) {
-          allReserves.push(reserve.stableDebtTokenAddress);
         }
       });
 

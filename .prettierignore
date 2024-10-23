@@ -5,6 +5,7 @@
 .gitattributes
 node_modules/
 public/
+.nvmrc
 
 # Artifacts
 .next/

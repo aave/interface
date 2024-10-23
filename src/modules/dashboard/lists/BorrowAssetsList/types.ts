@@ -7,15 +7,12 @@ export type BorrowAssetsItem = {
   name: string;
   iconSymbol: string;
   underlyingAsset: string;
-  stableBorrowRate: number | string;
   variableBorrowRate: number | string;
   availableBorrows: number | string;
   availableBorrowsInUSD: number | string;
-  stableBorrowRateEnabled?: boolean;
   isFreezed?: boolean;
   aIncentivesData?: ReserveIncentiveResponse[];
   vIncentivesData?: ReserveIncentiveResponse[];
-  sIncentivesData?: ReserveIncentiveResponse[];
   borrowCap: string;
   borrowableInIsolation: boolean;
   totalBorrows: string;

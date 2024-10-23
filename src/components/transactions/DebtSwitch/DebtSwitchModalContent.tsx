@@ -1,4 +1,3 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { MaxUint256 } from '@ethersproject/constants';
 import { ArrowDownIcon } from '@heroicons/react/outline';
@@ -72,9 +71,8 @@ export const DebtSwitchModalContent = ({
   poolReserve,
   userReserve,
   isWrongNetwork,
-  currentRateMode,
   user,
-}: ModalWrapperProps & { currentRateMode: InterestRate; user: ExtendedFormattedUser }) => {
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { reserves, ghoReserveData, ghoUserData, ghoUserLoadingData } = useAppDataContext();
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
@@ -117,10 +115,7 @@ export const DebtSwitchModalContent = ({
     (r) => r.underlyingAsset === targetReserve.address
   ) as ComputedUserReserveData;
 
-  const maxAmountToSwitch =
-    currentRateMode === InterestRate.Variable
-      ? userReserve.variableBorrows
-      : userReserve.stableBorrows;
+  const maxAmountToSwitch = userReserve.variableBorrows;
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwitch : _amount;
@@ -377,13 +372,8 @@ export const DebtSwitchModalContent = ({
           fromAmount={amount === '' ? '0' : amount}
           loading={loadingSkeleton}
           sourceBalance={maxAmountToSwitch}
-          sourceBorrowAPY={
-            currentRateMode === InterestRate.Variable
-              ? poolReserve.variableBorrowAPY
-              : poolReserve.stableBorrowAPY
-          }
+          sourceBorrowAPY={poolReserve.variableBorrowAPY}
           targetBorrowAPY={switchTarget.reserve.variableBorrowAPY}
-          showAPYTypeChange={currentRateMode === InterestRate.Stable}
           ghoData={ghoTargetData}
           currentMarket={currentMarket}
         />
@@ -413,7 +403,6 @@ export const DebtSwitchModalContent = ({
         blocked={blockingError !== undefined || error !== '' || insufficientCollateral}
         loading={routeLoading}
         buildTxFn={buildTxFn}
-        currentRateMode={currentRateMode === InterestRate.Variable ? 2 : 1}
       />
     </>
   );

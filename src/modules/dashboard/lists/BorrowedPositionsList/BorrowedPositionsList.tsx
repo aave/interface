@@ -90,21 +90,6 @@ export const BorrowedPositionsList = () => {
           },
         });
       }
-      if (userReserve.stableBorrows !== '0') {
-        acc.push({
-          ...userReserve,
-          borrowRateMode: InterestRate.Stable,
-          reserve: {
-            ...userReserve.reserve,
-            ...(userReserve.reserve.isWrappedBaseAsset
-              ? fetchIconSymbolAndName({
-                  symbol: currentNetworkConfig.baseAssetSymbol,
-                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-                })
-              : {}),
-          },
-        });
-      }
       return acc;
     }, [] as (ComputedUserReserveData & { borrowRateMode: InterestRate })[]) || [];
 

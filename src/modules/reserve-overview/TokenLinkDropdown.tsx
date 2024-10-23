@@ -49,11 +49,6 @@ export const TokenLinkDropdown = ({
   const showVariableDebtToken =
     poolReserve.borrowingEnabled || Number(poolReserve.totalVariableDebt) > 0;
 
-  const showStableDebtToken =
-    poolReserve.stableBorrowRateEnabled || Number(poolReserve.totalStableDebt) > 0;
-
-  const showDebtTokenHeader = showVariableDebtToken || showStableDebtToken;
-
   return (
     <>
       <Box onClick={handleClick}>
@@ -137,7 +132,7 @@ export const TokenLinkDropdown = ({
                 address: poolReserve?.aTokenAddress,
               })}
               target="_blank"
-              divider={showDebtTokenHeader}
+              divider={showVariableDebtToken}
             >
               <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
               <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
@@ -147,7 +142,7 @@ export const TokenLinkDropdown = ({
           </Box>
         )}
 
-        {showDebtTokenHeader && (
+        {showVariableDebtToken && (
           <Box sx={{ px: 4, pt: 3, pb: 2 }}>
             <Typography variant="secondary12" color="text.secondary">
               <Trans>Aave debt token</Trans>
@@ -175,31 +170,6 @@ export const TokenLinkDropdown = ({
             <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
             <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
               {'Variable debt ' + poolReserve.symbol}
-            </Typography>
-          </MenuItem>
-        )}
-        {showStableDebtToken && (
-          <MenuItem
-            component="a"
-            href={currentNetworkConfig.explorerLinkBuilder({
-              address: poolReserve?.stableDebtTokenAddress,
-            })}
-            target="_blank"
-            onClick={() => {
-              trackEvent(RESERVE_DETAILS.RESERVE_TOKEN_ACTIONS, {
-                type: 'Stable Debt',
-                assetName: poolReserve.name,
-                asset: poolReserve.underlyingAsset,
-                aToken: poolReserve.aTokenAddress,
-                market: currentMarket,
-                variableDebtToken: poolReserve.variableDebtTokenAddress,
-                stableDebtToken: poolReserve.stableDebtTokenAddress,
-              });
-            }}
-          >
-            <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
-            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-              {'Stable debt ' + poolReserve.symbol}
             </Typography>
           </MenuItem>
         )}

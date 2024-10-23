@@ -1,14 +1,13 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Skeleton, SvgIcon } from '@mui/material';
 import React from 'react';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { DetailsIncentivesLine } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { displayGhoForMintableMarket, weightedAverageAPY } from 'src/utils/ghoUtilities';
@@ -25,7 +24,6 @@ export type DebtSwitchModalDetailsProps = {
   sourceBalance: string;
   sourceBorrowAPY: string;
   targetBorrowAPY: string;
-  showAPYTypeChange: boolean;
   ghoData?: GhoRange;
   currentMarket: CustomMarket;
 };
@@ -44,7 +42,6 @@ export const DebtSwitchModalDetails = ({
   sourceBalance,
   sourceBorrowAPY,
   targetBorrowAPY,
-  showAPYTypeChange,
   ghoData,
   currentMarket,
 }: DebtSwitchModalDetailsProps) => {
@@ -142,53 +139,7 @@ export const DebtSwitchModalDetails = ({
           )}
         </Box>
       </Row>
-      {showAPYTypeChange && (
-        <Row
-          caption={
-            <Stack direction="row">
-              <Trans>APY type</Trans>
-              <TextWithTooltip>
-                <Trans>
-                  You can only switch to tokens with variable APY types. After this transaction, you
-                  may change the variable rate to a stable one if available.
-                </Trans>
-              </TextWithTooltip>
-            </Stack>
-          }
-          captionVariant="description"
-          mb={4}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              justifyContent: 'flex-end',
-            }}
-          >
-            {loading ? (
-              <Skeleton
-                variant="rectangular"
-                height={20}
-                width={100}
-                sx={{ borderRadius: '4px' }}
-              />
-            ) : (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="secondary14">
-                  <Trans>Stable</Trans>
-                </Typography>
-                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                  <ArrowNarrowRightIcon />
-                </SvgIcon>
-                <Typography variant="secondary14">
-                  <Trans>Variable</Trans>
-                </Typography>
-              </Box>
-            )}
-          </Box>
-        </Row>
-      )}
+
       <DetailsIncentivesLine
         incentives={switchSource.reserve.aIncentivesData}
         symbol={switchSource.reserve.symbol}

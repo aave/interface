@@ -51,9 +51,7 @@ export const RepayModal = () => {
                   {collateralRepayPossible && !mainTxState.txHash && (
                     <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
                   )}
-                  {repayType === RepayType.BALANCE && (
-                    <RepayModalContent {...params} debtType={args.currentRateMode} user={user} />
-                  )}
+                  {repayType === RepayType.BALANCE && <RepayModalContent {...params} user={user} />}
                   {repayType === RepayType.COLLATERAL && (
                     <CollateralRepayModalContent
                       {...params}

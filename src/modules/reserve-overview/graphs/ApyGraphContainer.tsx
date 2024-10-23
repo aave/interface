@@ -11,7 +11,7 @@ import { ApyGraph, PlaceholderChart } from './ApyGraph';
 import { GraphLegend } from './GraphLegend';
 import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
 
-type Field = 'liquidityRate' | 'stableBorrowRate' | 'variableBorrowRate';
+type Field = 'liquidityRate' | 'variableBorrowRate';
 
 type Fields = { name: Field; color: string; text: string }[];
 
@@ -59,15 +59,6 @@ export const ApyGraphContainer = ({
 
   // Borrow fields
   const borrowFields: Fields = [
-    ...(reserve.stableBorrowRateEnabled
-      ? ([
-          {
-            name: 'stableBorrowRate',
-            color: '#E7C6DF',
-            text: 'Borrow APR, stable',
-          },
-        ] as const)
-      : []),
     {
       name: 'variableBorrowRate',
       color: '#B6509E',

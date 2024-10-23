@@ -154,7 +154,13 @@ export const AppDataProvider: React.FC = ({ children }) => {
         reserves: formattedPoolReserves || [],
         eModes,
         user,
-        userReserves: userReserves || [],
+        userReserves:
+          userReserves?.map((r) => ({
+            ...r,
+            stableBorrowRate: '0',
+            principalStableDebt: '0',
+            stableBorrowLastUpdateTimestamp: 0,
+          })) || [],
         marketReferencePriceInUsd: baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0',
         marketReferenceCurrencyDecimals: baseCurrencyData?.marketReferenceCurrencyDecimals || 0,
         // TODO: we should consider removing this from the context and use zustand instead. If we had a selector that would return the formatted gho data, I think that

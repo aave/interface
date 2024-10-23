@@ -1,4 +1,3 @@
-import { InterestRate } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   USD_DECIMALS,
@@ -12,14 +11,11 @@ import {
   GhoIncentivesCard,
   GhoIncentivesCardProps,
 } from 'src/components/incentives/GhoIncentivesCard';
-import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
-import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
-import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import {
   ExtendedFormattedUser,
   useAppDataContext,
@@ -51,69 +47,10 @@ export enum ErrorType {
   NOT_ENOUGH_BORROWED,
 }
 
-interface BorrowModeSwitchProps {
-  interestRateMode: InterestRate;
-  setInterestRateMode: (value: InterestRate) => void;
-  variableRate: string;
-  stableRate: string;
-}
-
-const BorrowModeSwitch = ({
-  setInterestRateMode,
-  interestRateMode,
-  variableRate,
-  stableRate,
-}: BorrowModeSwitchProps) => {
-  return (
-    <Row
-      caption={
-        <APYTypeTooltip
-          text={<Trans>Borrow APY rate</Trans>}
-          key="APY type_modal"
-          variant="description"
-        />
-      }
-      captionVariant="description"
-      mb={5}
-      flexDirection="column"
-      align="flex-start"
-      captionColor="text.secondary"
-    >
-      <StyledTxModalToggleGroup
-        color="primary"
-        value={interestRateMode}
-        exclusive
-        onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ mt: 0.5 }}
-      >
-        <StyledTxModalToggleButton
-          value={InterestRate.Variable}
-          disabled={interestRateMode === InterestRate.Variable}
-        >
-          <Typography variant="buttonM" sx={{ mr: 1 }}>
-            <Trans>Variable</Trans>
-          </Typography>
-          <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </StyledTxModalToggleButton>
-        <StyledTxModalToggleButton
-          value={InterestRate.Stable}
-          disabled={interestRateMode === InterestRate.Stable}
-        >
-          <Typography variant="buttonM" sx={{ mr: 1 }}>
-            <Trans>Stable</Trans>
-          </Typography>
-          <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </StyledTxModalToggleButton>
-      </StyledTxModalToggleGroup>
-    </Row>
-  );
-};
-
 export const GhoBorrowModalContent = ({
   underlyingAsset,
   isWrongNetwork,
   poolReserve,
-  userReserve,
   symbol,
   user,
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
@@ -126,7 +63,6 @@ export const GhoBorrowModalContent = ({
   const { data: _ghoReserveData } = useGhoPoolReserve(currentMarketData);
   const { borrowCap } = useAssetCaps();
 
-  const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
 
@@ -203,15 +139,7 @@ export const GhoBorrowModalContent = ({
 
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
-  if (interestRateMode === InterestRate.Stable && !poolReserve.stableBorrowRateEnabled) {
-    blockingError = ErrorType.STABLE_RATE_NOT_ENABLED;
-  } else if (
-    interestRateMode === InterestRate.Stable &&
-    userReserve?.usageAsCollateralEnabledOnUser &&
-    valueToBigNumber(amount).lt(userReserve?.underlyingBalance || 0)
-  ) {
-    blockingError = ErrorType.NOT_ENOUGH_BORROWED;
-  } else if (!poolReserve.borrowingEnabled) {
+  if (!poolReserve.borrowingEnabled) {
     blockingError = ErrorType.BORROWING_NOT_AVAILABLE;
   }
 
@@ -220,15 +148,6 @@ export const GhoBorrowModalContent = ({
     switch (blockingError) {
       case ErrorType.BORROWING_NOT_AVAILABLE:
         return <Trans>Borrowing is currently unavailable for {poolReserve.symbol}.</Trans>;
-      case ErrorType.NOT_ENOUGH_BORROWED:
-        return (
-          <Trans>
-            You can borrow this asset with a stable rate only if you borrow more than the amount you
-            are supplying as collateral.
-          </Trans>
-        );
-      case ErrorType.STABLE_RATE_NOT_ENABLED:
-        return <Trans>The Stable Rate is not enabled for this currency</Trans>;
       default:
         return <></>;
     }
@@ -244,15 +163,6 @@ export const GhoBorrowModalContent = ({
   return (
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
-
-      {poolReserve.stableBorrowRateEnabled && (
-        <BorrowModeSwitch
-          interestRateMode={interestRateMode}
-          setInterestRateMode={setInterestRateMode}
-          variableRate={poolReserve.variableBorrowAPY}
-          stableRate={poolReserve.stableBorrowAPY}
-        />
-      )}
 
       <AssetInput
         value={amount}
@@ -348,7 +258,6 @@ export const GhoBorrowModalContent = ({
         poolReserve={poolReserve}
         amountToBorrow={amount}
         poolAddress={poolReserve.underlyingAsset}
-        interestRateMode={interestRateMode}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}

@@ -105,8 +105,7 @@ export const EmodeModalContent = ({
     // check if user has open positions different than future emode
     const hasIncompatiblePositions = user.userReservesData.some(
       (userReserve) =>
-        (Number(userReserve.scaledVariableDebt) > 0 ||
-          Number(userReserve.principalStableDebt) > 0) &&
+        Number(userReserve.scaledVariableDebt) > 0 &&
         userReserve.reserve.eModeCategoryId !== selectedEmode?.id
     );
     if (hasIncompatiblePositions) {

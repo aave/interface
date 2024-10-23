@@ -97,18 +97,6 @@ const formatUserYield = memoize(
               }
             }
           }
-          if (value.stableBorrowsUSD !== '0') {
-            acc.negativeProportion = acc.negativeProportion.plus(
-              new BigNumber(value.stableBorrowAPY).multipliedBy(value.stableBorrowsUSD)
-            );
-            if (reserve.sIncentivesData) {
-              reserve.sIncentivesData.forEach((incentive) => {
-                acc.positiveProportion = acc.positiveProportion.plus(
-                  new BigNumber(incentive.incentiveAPR).multipliedBy(value.stableBorrowsUSD)
-                );
-              });
-            }
-          }
         } else {
           throw new Error('no possible to calculate net apy');
         }
