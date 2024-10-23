@@ -1,14 +1,36 @@
 import { formatUserSummary } from '@aave/math-utils';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Link, SvgIcon, Typography } from '@mui/material';
-import { useState } from 'react';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
-import { EmodeCategory } from 'src/helpers/types';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import CloseIcon from '@mui/icons-material/Close';
 import {
-  AppDataContextType,
+  Box,
+  Divider,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  SvgIcon,
+  Switch,
+  Table,
+  TableBody,
+  TableCell,
+  tableCellClasses,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
+import { useState } from 'react';
+import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
+import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
+import { Row } from 'src/components/primitives/Row';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { Warning } from 'src/components/primitives/Warning';
+import {
   ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -16,6 +38,7 @@ import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { NewEModeCategory } from 'src/store/poolSelectors';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
@@ -26,9 +49,7 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { EmodeActions } from './EmodeActions';
 import { getEmodeMessage } from './EmodeNaming';
-import { EmodeSelect } from './EmodeSelect';
 
 export enum ErrorType {
   EMODE_DISABLED_LIQUIDATION,
@@ -45,22 +66,26 @@ export interface EmodeModalContentProps {
   mode: EmodeModalType;
 }
 
-function getInitialEmode(
-  mode: EmodeModalType,
-  eModes: AppDataContextType['eModes'],
-  currentEmode: number
-) {
-  const eModesNumber = Object.keys(eModes).length;
-  if (mode === EmodeModalType.ENABLE) {
-    if (eModesNumber > 2) return undefined;
-    return eModes[1];
-  }
-  if (mode === EmodeModalType.SWITCH) {
-    if (eModesNumber > 3) return undefined;
-    if (currentEmode === 1) return eModes[2];
-    return eModes[1];
-  }
-  return eModes[0];
+interface EModeCategoryData {
+  ltv: string;
+  liquidationThreshold: string;
+  liquidationBonus: string;
+  collateralBitmap: string;
+  label: string;
+  borrowableBitmap: string;
+}
+
+interface FormattedEModeCategory extends EModeCategoryData {
+  formattedLtv: string;
+  formattedLiquidationThreshold: string;
+  formattedLiquidationBonus: string;
+}
+
+export interface ReserveEmode {
+  id: number;
+  collateralEnabled: boolean;
+  borrowingEnabled: boolean;
+  eMode: FormattedEModeCategory;
 }
 
 export const EmodeModalContent = ({
@@ -78,9 +103,10 @@ export const EmodeModalContent = ({
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
+  const [exitEmode, setExitEmode] = useState(false);
 
-  const [selectedEmode, setSelectedEmode] = useState<EmodeCategory | undefined>(
-    getInitialEmode(mode, eModes, user.userEmodeCategoryId)
+  const [selectedEmode, setSelectedEmode] = useState<NewEModeCategory>(
+    user.userEmodeCategoryId === 0 ? eModes[1] : eModes[user.userEmodeCategoryId]
   );
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -102,12 +128,13 @@ export const EmodeModalContent = ({
       blockingError = ErrorType.EMODE_DISABLED_LIQUIDATION; // intl.formatMessage(messages.eModeDisabledLiquidation);
     }
   } else if (selectedEmode && user.userEmodeCategoryId !== selectedEmode?.id) {
+    const hasIncompatiblePositions = false; // TODO
     // check if user has open positions different than future emode
-    const hasIncompatiblePositions = user.userReservesData.some(
-      (userReserve) =>
-        Number(userReserve.scaledVariableDebt) > 0 &&
-        userReserve.reserve.eModeCategoryId !== selectedEmode?.id
-    );
+    // const hasIncompatiblePositions = user.userReservesData.some(
+    //   (userReserve) =>
+    //     Number(userReserve.scaledVariableDebt) > 0 &&
+    //     userReserve.reserve.eModeCategoryId !== selectedEmode?.id
+    // );
     if (hasIncompatiblePositions) {
       blockingError = ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING;
     }
@@ -146,11 +173,6 @@ export const EmodeModalContent = ({
     }
   };
 
-  // The selector only shows if there are 2 options for the user, which happens when there are 3 emodeCategories (including disable) for mode.enable, and 4 emodeCategories in mode.switch
-  const showModal: boolean =
-    (Object.keys(eModes).length >= 3 && mode === EmodeModalType.ENABLE) ||
-    (Object.keys(eModes).length >= 4 && mode === EmodeModalType.SWITCH);
-
   // is Network mismatched
   const isWrongNetwork: boolean = currentChainId !== connectedChainId;
 
@@ -177,6 +199,16 @@ export const EmodeModalContent = ({
     return <TxErrorView txError={txError} />;
   }
   if (emodeTxState.success) return <TxSuccessView action={<Trans>Emode</Trans>} />;
+
+  function selectEMode(id: number) {
+    const emode = eModes[id];
+    if (!emode) {
+      throw new Error(`EMode with id ${id} not found`);
+    }
+
+    setSelectedEmode(emode);
+  }
+
   return (
     <>
       <TxModalTitle title={`${mode} E-Mode`} />
@@ -184,33 +216,20 @@ export const EmodeModalContent = ({
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {user.userEmodeCategoryId === 0 && (
-        <Warning severity="warning">
-          <Typography variant="caption">
-            <Trans>
-              Enabling E-Mode only allows you to borrow assets belonging to the selected category.
-              Please visit our{' '}
-              <Link
-                href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
-                target="_blank"
-                rel="noopener"
-              >
-                FAQ guide
-              </Link>{' '}
-              to learn more about how it works and the applied restrictions.
-            </Trans>
-          </Typography>
-        </Warning>
-      )}
-
-      {showModal && (
-        <EmodeSelect
-          emodeCategories={eModes}
-          selectedEmode={selectedEmode?.id}
-          setSelectedEmode={setSelectedEmode}
-          userEmode={user.userEmodeCategoryId}
-        />
-      )}
+      <Typography variant="caption">
+        <Trans>
+          Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is
+          restricted to assets within the selected category. Please visit our{' '}
+          <Link
+            href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+            target="_blank"
+            rel="noopener"
+          >
+            FAQ guide
+          </Link>{' '}
+          to learn more about how it works and the applied restrictions.
+        </Trans>
+      </Typography>
 
       {blockingError === ErrorType.EMODE_DISABLED_LIQUIDATION && <Blocked />}
       {showLiquidationRiskWarning && (
@@ -228,100 +247,140 @@ export const EmodeModalContent = ({
       )}
 
       <TxModalDetails gasLimit={gasLimit}>
-        {!showModal && (
-          <Row caption={<Trans>E-Mode category</Trans>} captionVariant="description" mb={4}>
-            <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-              <Box sx={{ display: 'inline-flex', alignItems: 'center', mx: 1 }}>
-                {user.userEmodeCategoryId !== 0 ? (
-                  <>
-                    <SvgIcon sx={{ fontSize: '12px' }}>
-                      <LightningBoltGradient />
-                    </SvgIcon>
-                    <Typography variant="subheader1">
-                      {getEmodeMessage(eModes[user.userEmodeCategoryId].label)}
-                    </Typography>
-                  </>
-                ) : (
-                  <Typography variant="subheader1">
-                    <Trans>None</Trans>
-                  </Typography>
-                )}
-              </Box>
-              {selectedEmode && (
-                <>
-                  <ArrowRight />
-                  <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                    {selectedEmode.id !== 0 ? (
-                      <>
-                        <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
-                          <LightningBoltGradient />
-                        </SvgIcon>
-                        <Typography variant="subheader1">
-                          {getEmodeMessage(eModes[selectedEmode.id].label)}
-                        </Typography>
-                      </>
-                    ) : (
-                      <Typography variant="subheader1">
-                        <Trans>None</Trans>
-                      </Typography>
-                    )}
-                  </Box>
-                </>
-              )}
-            </Box>
+        {user.userEmodeCategoryId !== 0 && (
+          <Row caption={<Trans>Exit E-Mode</Trans>} captionVariant="description" mb={4}>
+            <Switch disableRipple checked={exitEmode} onClick={() => setExitEmode(!exitEmode)} />
           </Row>
         )}
+        <Box sx={exitEmode ? { opacity: 0.5, pointerEvents: 'none' } : null}>
+          <Row caption={<Trans>Category</Trans>} captionVariant="description" mb={4}>
+            <Select
+              value={selectedEmode.id}
+              onChange={(e) => selectEMode(Number(e.target.value))}
+              sx={{ maxWidth: '270px' }}
+            >
+              {Object.values(eModes)
+                .filter((emode) => emode.id !== 0)
+                .sort((a, b) => {
+                  // TODO: determine if user is able to enter this category
+                  // if (a.available !== b.available) {
+                  //   return a.available ? -1 : 1;
+                  // }
 
-        <Row
-          caption={<Trans>Available assets</Trans>}
-          captionVariant="description"
-          mb={4}
-          sx={{ alignContent: 'flex-end' }}
-        >
-          <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-            {eModes[user.userEmodeCategoryId] && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  textAlign: 'end',
-                }}
-              >
-                {user.userEmodeCategoryId !== 0 ? (
-                  <Typography sx={{ textAlign: 'end' }}>
-                    {eModes[user.userEmodeCategoryId].assets.join(', ')}
-                  </Typography>
-                ) : (
-                  <Typography>
-                    <Trans>All Assets</Trans>
-                  </Typography>
-                )}
-              </Box>
-            )}
-            {selectedEmode && (
-              <>
-                <ArrowRight />
-                <Box
+                  return a.id - b.id;
+                })
+                .map((emode) => (
+                  <MenuItem key={emode.id} value={emode.id} sx={{ maxWidth: '270px' }}>
+                    <Typography
+                      sx={{ opacity: true ? 1 : 0.5 }}
+                      fontStyle={true ? 'normal' : 'italic'}
+                    >
+                      {emode.label} {emode.id === user.userEmodeCategoryId && '(current)'}
+                    </Typography>
+                  </MenuItem>
+                ))}
+            </Select>
+          </Row>
+          {!true && (
+            <Typography variant="caption" sx={{ mb: 3 }}>
+              <Trans>
+                All borrow positions outside of this category must be closed to enable this
+                category.
+              </Trans>
+            </Typography>
+          )}
+          <Divider />
+          <Row
+            captionVariant="description"
+            my={2}
+            caption={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+          >
+            <FormattedNumber percent value={selectedEmode.ltv} variant="secondary12" />
+          </Row>
+          <Row
+            captionVariant="description"
+            mb={2}
+            caption={
+              <LiquidationThresholdTooltip
+                variant="description"
+                text={<Trans>Liquidation threshold</Trans>}
+              />
+            }
+          >
+            <FormattedNumber
+              percent
+              value={selectedEmode.liquidationThreshold}
+              variant="secondary12"
+            />
+          </Row>
+
+          <TableContainer component={Paper}>
+            <Table size="small">
+              <TableHead>
+                <TableRow
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    textAlign: 'end',
+                    [`& .${tableCellClasses.root}`]: {
+                      py: 2,
+                      lineHeight: 0,
+                    },
                   }}
                 >
-                  {selectedEmode?.id !== 0 ? (
-                    <Typography sx={{ textAlign: 'end' }}>
-                      {selectedEmode.assets.join(', ')}
+                  <TableCell align="center" sx={{ pl: 0, width: '120px' }}>
+                    <Typography variant="helperText">
+                      <Trans>Asset</Trans>
                     </Typography>
-                  ) : (
-                    <Typography>
-                      <Trans>All Assets</Trans>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="helperText">
+                      <Trans>Collateral</Trans>
                     </Typography>
-                  )}
-                </Box>
-              </>
-            )}
-          </Box>
-        </Row>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="helperText">
+                      <Trans>Borrowable</Trans>
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody sx={{ width: '100%' }}>
+                {selectedEmode.assets.map((asset, index) => (
+                  <TableRow
+                    key={index}
+                    sx={{
+                      pt: 8,
+                      [`& .${tableCellClasses.root}`]: {
+                        borderBottom: 'none',
+                        pt: 3,
+                        pb: 2,
+                      },
+                    }}
+                  >
+                    <TableCell align="center" sx={{ py: 1 }}>
+                      <Stack direction="row" gap={1} alignItems="center">
+                        <TokenIcon symbol={asset.symbol} sx={{ fontSize: '16px' }} />
+                        <Typography variant="secondary12">{asset.symbol}</Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="center">
+                      {asset.collateral ? (
+                        <CheckRoundedIcon fontSize="small" color="success" />
+                      ) : (
+                        <CloseIcon fontSize="small" color="error" />
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
+                      {asset.borrowable ? (
+                        <CheckRoundedIcon fontSize="small" color="success" />
+                      ) : (
+                        <CloseIcon fontSize="small" color="error" />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
         <DetailsHFLine
           visibleHfChange={!!selectedEmode}
           healthFactor={user.healthFactor}
@@ -369,13 +428,13 @@ export const EmodeModalContent = ({
 
       {txError && <GasEstimationError txError={txError} />}
 
-      <EmodeActions
+      {/* <EmodeActions
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !selectedEmode}
         selectedEmode={selectedEmode?.id || 0}
         activeEmode={user.userEmodeCategoryId}
         eModes={eModes}
-      />
+      /> */}
     </>
   );
 };

@@ -7,12 +7,11 @@ import {
 } from '@aave/math-utils';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useContext } from 'react';
-import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { GHO_MINTING_MARKETS } from 'src/utils/ghoUtilities';
 
-import { formatEmodes } from '../../store/poolSelectors';
+import { formatEmodes, NewEModeCategory } from '../../store/poolSelectors';
 import {
   ExtendedFormattedUser as _ExtendedFormattedUser,
   useExtendedUserSummaryAndIncentives,
@@ -54,7 +53,7 @@ export type ExtendedFormattedUser = _ExtendedFormattedUser;
 export interface AppDataContextType {
   loading: boolean;
   reserves: ComputedReserveData[];
-  eModes: Record<number, EmodeCategory>;
+  eModes: Record<number, NewEModeCategory>;
   user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
@@ -85,7 +84,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const baseCurrencyData = reservesData?.baseCurrencyData;
   // user hooks
 
-  const eModes = reservesData?.reservesData ? formatEmodes(reservesData.reservesData) : {};
+  console.log('formattedPoolReserves', formattedPoolReserves);
+  const eModes = formattedPoolReserves ? formatEmodes(formattedPoolReserves) : {};
 
   const { data: userReservesData, isLoading: userReservesDataLoading } =
     useUserPoolReservesHumanized(currentMarketData);
