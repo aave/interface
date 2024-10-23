@@ -15,9 +15,8 @@ export function MainLayout({ children }: { children: ReactNode }) {
     <>
       <TopBarNotify
         learnMoreLink="/markets/?marketName=proto_mainnet_v3"
-        notifyText="New merit incentives are now available for supplying cbBTC and borrowing USDC (both required)"
+        notifyText="Merit incentives are available for users who both supply chBTC and borrow USDC."
         bannerVersion={APP_BANNER_VERSION}
-        // icon={'/icons/networks/zksync.svg'}
       />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>

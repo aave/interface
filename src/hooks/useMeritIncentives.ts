@@ -16,6 +16,10 @@ type MeritIncentives = {
   };
 };
 
+type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
+  customMessage?: string;
+};
+
 const url = 'https://apps.aavechan.com/api/merit/aprs';
 
 export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
@@ -85,7 +89,7 @@ export const useMeritIncentives = ({
         rewardTokenAddress: meritReserveIncentiveData.rewardTokenAddress,
         rewardTokenSymbol: meritReserveIncentiveData.rewardTokenSymbol,
         customMessage: meritReserveIncentiveData.customMessage,
-      } as ReserveIncentiveResponse;
+      } as ExtendedReserveIncentiveResponse;
     },
   });
 };
