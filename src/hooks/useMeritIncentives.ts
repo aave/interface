@@ -43,14 +43,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData>> 
       rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
       rewardTokenSymbol: 'aEthUSDC',
       protocolAction: ProtocolAction.supply,
-      customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards',
+      customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
     },
     USDC: {
       action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
       rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
       rewardTokenSymbol: 'aEthUSDC',
       protocolAction: ProtocolAction.borrow,
-      customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards',
+      customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
     },
   },
 };

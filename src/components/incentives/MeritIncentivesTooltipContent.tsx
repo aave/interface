@@ -59,7 +59,7 @@ export const MeritIncentivesTooltipContent = ({
       </Typography>
       {meritIncentives.customMessage ? (
         <Typography variant="caption" color="text.strong" mb={3}>
-          <Trans>{meritIncentives.customMessage}</Trans> {'.'}
+          <Trans>{meritIncentives.customMessage}</Trans>
         </Typography>
       ) : null}
 
