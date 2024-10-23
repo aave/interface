@@ -15,7 +15,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
     <>
       <TopBarNotify
         learnMoreLink="/markets/?marketName=proto_mainnet_v3"
-        notifyText="Merit incentives are available for users who both supply chBTC and borrow USDC."
+        notifyText="Merit incentives are available for users who both supply cbBTC and borrow USDC."
         bannerVersion={APP_BANNER_VERSION}
       />
       <AppHeader />
