@@ -16,8 +16,8 @@ type MeritIncentives = {
   };
 };
 
-type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
-  customMessage?: string;
+export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
+  customMessage: string;
 };
 
 const url = 'https://apps.aavechan.com/api/merit/aprs';
