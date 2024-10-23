@@ -1,7 +1,8 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { InterestRate, ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { Row } from 'src/components/primitives/Row';
@@ -10,7 +11,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -143,12 +144,18 @@ const BorrowedPositionsListItemDesktop = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         reserve.symbol,
         currentMarket,
-        Side.BORROW
+        ProtocolAction.borrow
       )}
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
-      <ListAPRColumn value={borrowAPY} incentives={incentives} symbol={reserve.symbol} />
+      <ListAPRColumn
+        value={borrowAPY}
+        market={currentMarket}
+        protocolAction={ProtocolAction.borrow}
+        incentives={incentives}
+        symbol={reserve.symbol}
+      />
 
       <ListColumn>
         <ListItemAPYButton
@@ -230,7 +237,7 @@ const BorrowedPositionsListItemMobile = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         symbol,
         currentMarket,
-        Side.BORROW
+        ProtocolAction.borrow
       )}
     >
       <ListValueRow
@@ -241,12 +248,19 @@ const BorrowedPositionsListItemMobile = ({
       />
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
-        <IncentivesCard
-          value={borrowAPY}
-          incentives={incentives}
-          symbol={symbol}
-          variant="secondary14"
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <IncentivesCard
+            value={borrowAPY}
+            incentives={incentives}
+            symbol={symbol}
+            variant="secondary14"
+          />
+          <MeritIncentivesButton
+            symbol={symbol}
+            market={currentMarket}
+            protocolAction={ProtocolAction.borrow}
+          />
+        </Box>
       </Row>
 
       <Row
