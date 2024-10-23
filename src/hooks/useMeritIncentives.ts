@@ -21,6 +21,7 @@ const url = 'https://apps.aavechan.com/api/merit/aprs';
 export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
   action: MeritAction;
   protocolAction?: ProtocolAction;
+  customMessage?: string;
 };
 
 const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData | undefined =>
@@ -38,12 +39,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData>> 
       rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
       rewardTokenSymbol: 'aEthUSDC',
       protocolAction: ProtocolAction.supply,
+      customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards',
     },
     USDC: {
       action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
       rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
       rewardTokenSymbol: 'aEthUSDC',
       protocolAction: ProtocolAction.borrow,
+      customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards',
     },
   },
 };
@@ -81,6 +84,7 @@ export const useMeritIncentives = ({
         incentiveAPR: (APR / 100).toString(),
         rewardTokenAddress: meritReserveIncentiveData.rewardTokenAddress,
         rewardTokenSymbol: meritReserveIncentiveData.rewardTokenSymbol,
+        customMessage: meritReserveIncentiveData.customMessage,
       } as ReserveIncentiveResponse;
     },
   });

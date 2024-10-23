@@ -57,6 +57,11 @@ export const MeritIncentivesTooltipContent = ({
         </Link>
         {'.'}
       </Typography>
+      {meritIncentives.customMessage ? (
+        <Typography variant="caption" color="text.strong" mb={3}>
+          <Trans>{meritIncentives.customMessage}</Trans> {'.'}
+        </Typography>
+      ) : null}
 
       <Box sx={{ width: '100%' }}>
         <Row

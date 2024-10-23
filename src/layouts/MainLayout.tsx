@@ -9,16 +9,15 @@ import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  const APP_BANNER_VERSION = '3.0.0';
+  const APP_BANNER_VERSION = '4.0.0';
 
   return (
     <>
       <TopBarNotify
-        learnMoreLink="/markets/?marketName=proto_zksync_v3"
-        buttonText="View Market"
-        notifyText="Aave Governance has deployed a new ZkSync market"
+        learnMoreLink="/markets/?marketName=proto_mainnet_v3"
+        notifyText="New merit incentives are now available for supplying cbBTC and borrowing USDC (both required)"
         bannerVersion={APP_BANNER_VERSION}
-        icon={'/icons/networks/zksync.svg'}
+        // icon={'/icons/networks/zksync.svg'}
       />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
