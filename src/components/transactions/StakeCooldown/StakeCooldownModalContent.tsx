@@ -12,12 +12,12 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
-import { useUserMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { formattedTime, timeText } from '../../../helpers/timeHelper';
@@ -58,8 +58,11 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
-  const { data: meritIncentives } = useUserMeritIncentives();
-  const usersStkGhoIncentives = meritIncentives?.actionsAPR.stkgho || 0;
+  const { data: meritIncentives } = useMeritIncentives({
+    symbol: 'GHO',
+    market: CustomMarket.proto_mainnet_v3,
+  });
+  const usersStkGhoIncentives = meritIncentives?.incentiveAPR || 0;
 
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);

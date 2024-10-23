@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
@@ -5,7 +6,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -46,7 +47,7 @@ export const BorrowAssetsListItem = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         symbol,
         currentMarket,
-        Side.BORROW
+        ProtocolAction.borrow
       )}
     >
       <ListValueColumn
@@ -66,6 +67,8 @@ export const BorrowAssetsListItem = ({
       />
       <ListAPRColumn
         value={Number(variableBorrowRate)}
+        market={currentMarket}
+        protocolAction={ProtocolAction.borrow}
         incentives={vIncentivesData}
         symbol={symbol}
       />

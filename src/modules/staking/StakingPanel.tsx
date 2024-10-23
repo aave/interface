@@ -17,10 +17,7 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
-import {
-  MeritIncentivesButton,
-  UserMeritIncentivesButton,
-} from 'src/components/incentives/IncentivesButton';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -29,6 +26,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { StakeActionBox } from './StakeActionBox';
@@ -332,11 +330,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               variant="secondary14"
             />
             {stakedToken === 'GHO' ? (
-              stakeUserData.stakeTokenUserBalance !== '0' ? (
-                <UserMeritIncentivesButton symbol="stkgho" />
-              ) : (
-                <MeritIncentivesButton symbol="stkgho" />
-              )
+              <MeritIncentivesButton symbol={stakedToken} market={CustomMarket.proto_mainnet_v3} />
             ) : null}
           </Stack>
         </Box>
