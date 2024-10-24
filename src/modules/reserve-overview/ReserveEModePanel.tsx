@@ -26,64 +26,69 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
     <PanelRow>
       <PanelTitle>E-Mode info</PanelTitle>
       <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Typography variant="secondary14" color="text.secondary">
-            <Trans>E-Mode Category</Trans>
-          </Typography>
-          <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
-            <LightningBoltGradient />
-          </SvgIcon>
-          <Typography variant="subheader1">{getEmodeMessage(reserve.eModeLabel)}</Typography>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            pt: '12px',
-          }}
-        >
-          <ReserveOverviewBox
-            title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
-          >
-            <FormattedNumber
-              value={reserve.formattedEModeLtv}
-              percent
-              variant="secondary14"
-              visibleDecimals={2}
-            />
-          </ReserveOverviewBox>
-          <ReserveOverviewBox
-            title={
-              <LiquidationThresholdTooltip
-                variant="description"
-                text={<Trans>Liquidation threshold</Trans>}
-              />
-            }
-          >
-            <FormattedNumber
-              value={reserve.formattedEModeLiquidationThreshold}
-              percent
-              variant="secondary14"
-              visibleDecimals={2}
-            />
-          </ReserveOverviewBox>
-          <ReserveOverviewBox
-            title={
-              <LiquidationPenaltyTooltip
-                variant="description"
-                text={<Trans>Liquidation penalty</Trans>}
-              />
-            }
-          >
-            <FormattedNumber
-              value={reserve.formattedEModeLiquidationBonus}
-              percent
-              variant="secondary14"
-              visibleDecimals={2}
-            />
-          </ReserveOverviewBox>
-        </Box>
+        {reserve.eModes.map((e) => (
+          <>
+            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              <Typography variant="secondary14" color="text.secondary">
+                <Trans>E-Mode Category</Trans>
+              </Typography>
+              <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
+                <LightningBoltGradient />
+              </SvgIcon>
+              <Typography variant="subheader1">{getEmodeMessage(e.eMode.label)}</Typography>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+                pt: '12px',
+              }}
+            >
+              <ReserveOverviewBox
+                title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+              >
+                <FormattedNumber
+                  value={e.eMode.formattedLtv}
+                  percent
+                  variant="secondary14"
+                  visibleDecimals={2}
+                />
+              </ReserveOverviewBox>
+              <ReserveOverviewBox
+                title={
+                  <LiquidationThresholdTooltip
+                    variant="description"
+                    text={<Trans>Liquidation threshold</Trans>}
+                  />
+                }
+              >
+                <FormattedNumber
+                  value={e.eMode.formattedLiquidationThreshold}
+                  percent
+                  variant="secondary14"
+                  visibleDecimals={2}
+                />
+              </ReserveOverviewBox>
+              <ReserveOverviewBox
+                title={
+                  <LiquidationPenaltyTooltip
+                    variant="description"
+                    text={<Trans>Liquidation penalty</Trans>}
+                  />
+                }
+              >
+                <FormattedNumber
+                  value={e.eMode.formattedLiquidationBonus}
+                  percent
+                  variant="secondary14"
+                  visibleDecimals={2}
+                />
+              </ReserveOverviewBox>
+            </Box>
+          </>
+        ))}
+
         <Typography variant="caption" color="text.secondary" paddingTop="24px">
           <Trans>
             E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is
