@@ -377,8 +377,8 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
               futureHealthFactor={newSummary.healthFactor}
             />
 
-            <TableContainer component={Paper}>
-              <Table size="small">
+            <TableContainer sx={{ maxHeight: '270px' }}>
+              <Table size="small" stickyHeader>
                 <TableHead>
                   <TableRow
                     sx={{
