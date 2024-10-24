@@ -11,6 +11,7 @@ export type NewEModeCategory = {
   liquidationThreshold: string;
   liquidationBonus: string;
   assets: Array<{
+    underlyingAsset: string;
     symbol: string;
     collateral: boolean;
     borrowable: boolean;
@@ -77,6 +78,7 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
           liquidationBonus: e.eMode.liquidationBonus,
           assets: [
             {
+              underlyingAsset: r.underlyingAsset,
               symbol: r.symbol,
               collateral: e.collateralEnabled,
               borrowable: e.borrowingEnabled,
@@ -85,6 +87,7 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
         };
       } else {
         eModes[e.id].assets.push({
+          underlyingAsset: r.underlyingAsset,
           symbol: r.symbol,
           collateral: e.collateralEnabled,
           borrowable: e.borrowingEnabled,

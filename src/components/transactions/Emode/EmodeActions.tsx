@@ -1,19 +1,18 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { EmodeCategory } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { getEmodeMessage } from './EmodeNaming';
-import { NewEModeCategory } from 'src/store/poolSelectors';
+import { EModeCategoryDisplay } from './EmodeModalContent';
 
 export type EmodeActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
   selectedEmode: number;
   activeEmode: number;
-  eModes: Record<number, NewEModeCategory>;
+  eModes: Record<number, EModeCategoryDisplay>;
 };
 
 export const EmodeActions = ({

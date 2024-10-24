@@ -3,7 +3,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import React, { useState } from 'react';
-import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
@@ -214,7 +213,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
                   data: userEmodeCategoryId,
                 });
 
-                openEmode(EmodeModalType.ENABLE);
+                openEmode();
                 handleClose();
               }}
               data-cy={'emode-enable'}
@@ -233,7 +232,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
                     data: userEmodeCategoryId,
                   });
 
-                  openEmode(EmodeModalType.SWITCH);
+                  openEmode();
                   handleClose();
                 }}
                 data-cy={'emode-switch'}

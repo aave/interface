@@ -1,6 +1,5 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
-import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
@@ -41,7 +40,6 @@ export interface ModalArgsType {
   power?: string;
   icon?: string;
   stakeAssetName?: Stake;
-  emode?: EmodeModalType;
   isFrozen?: boolean;
   representatives?: Array<{ chainId: ChainId; representative: string }>;
   chainId?: number;
@@ -97,7 +95,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openStakeRewardsClaim: (stakeAssetName: Stake, icon: string) => void;
   openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
   openClaimRewards: () => void;
-  openEmode: (mode: EmodeModalType) => void;
+  openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
   openSwap: (underlyingAsset: string) => void;
   openDebtSwitch: (underlyingAsset: string) => void;
@@ -264,10 +262,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim' });
           setType(ModalType.ClaimRewards);
         },
-        openEmode: (mode) => {
+        openEmode: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'eMode' });
           setType(ModalType.Emode);
-          setArgs({ emode: mode });
         },
         openFaucet: (underlyingAsset) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Faucet' });
