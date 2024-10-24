@@ -106,6 +106,5 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
     };
   }
 
-  console.log('eModes', eModes);
   return eModes;
 };

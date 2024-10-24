@@ -210,7 +210,6 @@ export const EmodeModalContent = ({
     setSelectedEmode(emode);
   }
 
-  console.log(selectedEmode.ltv);
   return (
     <>
       <TxModalTitle title={`${mode} E-Mode`} />
