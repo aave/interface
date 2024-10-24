@@ -12716,6 +12716,14 @@ export const TOKEN_LIST: TokenList = {
       chainId: 1,
       logoURI: 'https://assets.coingecko.com/coins/images/39926/standard/usds.webp?1726666683',
     },
+    {
+      name: 'Savings Dai',
+      address: '0x83f20f44975d03b1b09e64809b757c47f942beea',
+      symbol: 'SDAI',
+      decimals: 18,
+      chainId: 1,
+      logoURI: 'https://assets.coingecko.com/coins/images/32254/standard/sdai.png?1697015278',
+    },
   ],
 };
 

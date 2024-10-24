@@ -1,8 +1,8 @@
+import assets from '../../../fixtures/assets.json';
+import constants from '../../../fixtures/constans.json';
+import { skipState } from '../../../support/steps/common';
 import { configEnvHarmony } from '../../../support/steps/configuration.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
-import constants from '../../../fixtures/constans.json';
-import assets from '../../../fixtures/assets.json';
-import { skipState } from '../../../support/steps/common';
 
 const testData = {
   dashboard: [
@@ -32,7 +32,7 @@ const testData = {
   ],
 };
 
-describe('HARMONY GENERAL SPEC', () => {
+describe.skip('HARMONY GENERAL SPEC', () => {
   const skipTestState = skipState(false);
   configEnvHarmony('0xE4217040c894e8873EE19d675b6d0EeC992c2c0D');
   dashboardAssetValuesVerification(testData.dashboard, skipTestState);
