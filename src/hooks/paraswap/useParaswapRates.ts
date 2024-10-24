@@ -40,7 +40,14 @@ export const useParaswapSellRates = ({
         side: SwapSide.SELL,
         options: {
           ...options,
-          excludeDEXS: ['ParaSwapPool', 'ParaSwapLimitOrders', 'SwaapV2', 'Hashflow', 'Dexalot'],
+          excludeDEXS: [
+            'ParaSwapPool',
+            'ParaSwapLimitOrders',
+            'SwaapV2',
+            'Hashflow',
+            'Dexalot',
+            'Bebop',
+          ],
         },
       });
     },
