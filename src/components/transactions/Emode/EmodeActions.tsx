@@ -6,13 +6,14 @@ import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { getEmodeMessage } from './EmodeNaming';
+import { NewEModeCategory } from 'src/store/poolSelectors';
 
 export type EmodeActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
   selectedEmode: number;
   activeEmode: number;
-  eModes: Record<number, EmodeCategory>;
+  eModes: Record<number, NewEModeCategory>;
 };
 
 export const EmodeActions = ({

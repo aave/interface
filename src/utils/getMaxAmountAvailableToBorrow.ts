@@ -148,14 +148,18 @@ export function assetCanBeBorrowedByUser(
     borrowingEnabled,
     isActive,
     borrowableInIsolation,
-    eModeCategoryId,
+    eModes,
     isFrozen,
     isPaused,
   }: ComputedReserveData,
   user: ExtendedFormattedUser
 ) {
   if (!borrowingEnabled || !isActive || isFrozen || isPaused) return false;
-  if (user?.isInEmode && eModeCategoryId !== user.userEmodeCategoryId) return false;
+  if (user?.isInEmode) {
+    const reserveEmode = eModes.find((emode) => emode.id === user.userEmodeCategoryId);
+    if (!reserveEmode) return false;
+    return reserveEmode.borrowingEnabled;
+  }
   if (user?.isInIsolationMode && !borrowableInIsolation) return false;
   return true;
 }

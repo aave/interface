@@ -229,13 +229,13 @@ const Content = ({
         <>
           {incentives.length < 5 ? (
             <>
-              {incentives.map(getSymbolMap).map((incentive) => {
+              {incentives.map(getSymbolMap).map((incentive, index) => {
                 return (
                   <TokenIcon
                     aToken={incentive.aToken}
                     symbol={incentive.tokenIconSymbol}
                     sx={{ fontSize: `${iconSize}px`, ml: -1 }}
-                    key={incentive.tokenIconSymbol}
+                    key={index}
                   />
                 );
               })}
@@ -245,11 +245,11 @@ const Content = ({
               {incentives
                 .slice(0, 3)
                 .map(getSymbolMap)
-                .map((incentive) => (
+                .map((incentive, index) => (
                   <TokenIcon
                     symbol={incentive.tokenIconSymbol}
                     sx={{ fontSize: `${iconSize}px`, ml: -1 }}
-                    key={incentive.tokenIconSymbol}
+                    key={index}
                   />
                 ))}
               <SvgIcon

@@ -50,6 +50,7 @@ import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { getEmodeMessage } from './EmodeNaming';
+import { EmodeActions } from './EmodeActions';
 
 export enum ErrorType {
   EMODE_DISABLED_LIQUIDATION,
@@ -428,13 +429,13 @@ export const EmodeModalContent = ({
 
       {txError && <GasEstimationError txError={txError} />}
 
-      {/* <EmodeActions
+      <EmodeActions
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !selectedEmode}
         selectedEmode={selectedEmode?.id || 0}
         activeEmode={user.userEmodeCategoryId}
         eModes={eModes}
-      /> */}
+      />
     </>
   );
 };
