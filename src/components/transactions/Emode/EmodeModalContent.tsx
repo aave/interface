@@ -210,6 +210,7 @@ export const EmodeModalContent = ({
     setSelectedEmode(emode);
   }
 
+  console.log(selectedEmode.ltv);
   return (
     <>
       <TxModalTitle title={`${mode} E-Mode`} />
@@ -296,7 +297,11 @@ export const EmodeModalContent = ({
             my={2}
             caption={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
           >
-            <FormattedNumber percent value={selectedEmode.ltv} variant="secondary12" />
+            <FormattedNumber
+              percent
+              value={Number(selectedEmode.ltv) / 10000}
+              variant="secondary12"
+            />
           </Row>
           <Row
             captionVariant="description"
@@ -310,7 +315,7 @@ export const EmodeModalContent = ({
           >
             <FormattedNumber
               percent
-              value={selectedEmode.liquidationThreshold}
+              value={Number(selectedEmode.liquidationThreshold) / 10000}
               variant="secondary12"
             />
           </Row>
@@ -432,7 +437,7 @@ export const EmodeModalContent = ({
       <EmodeActions
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !selectedEmode}
-        selectedEmode={selectedEmode?.id || 0}
+        selectedEmode={exitEmode ? 0 : selectedEmode.id}
         activeEmode={user.userEmodeCategoryId}
         eModes={eModes}
       />
