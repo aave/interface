@@ -1,5 +1,4 @@
 import { formatUserSummary } from '@aave/math-utils';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
@@ -212,7 +211,7 @@ export const EmodeModalContent = ({
 
   return (
     <>
-      <TxModalTitle title={`${mode} E-Mode`} />
+      <TxModalTitle title={<Trans>Manage E-Mode</Trans>} />
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
@@ -249,7 +248,7 @@ export const EmodeModalContent = ({
 
       <TxModalDetails gasLimit={gasLimit}>
         {user.userEmodeCategoryId !== 0 && (
-          <Row caption={<Trans>Exit E-Mode</Trans>} captionVariant="description" mb={4}>
+          <Row caption={<Trans>Disable E-Mode</Trans>} captionVariant="description" mb={4}>
             <Switch disableRipple checked={exitEmode} onClick={() => setExitEmode(!exitEmode)} />
           </Row>
         )}
@@ -435,7 +434,11 @@ export const EmodeModalContent = ({
 
       <EmodeActions
         isWrongNetwork={isWrongNetwork}
-        blocked={blockingError !== undefined || !selectedEmode}
+        blocked={
+          blockingError !== undefined ||
+          !selectedEmode ||
+          (!exitEmode && selectedEmode.id === user.userEmodeCategoryId)
+        }
         selectedEmode={exitEmode ? 0 : selectedEmode.id}
         activeEmode={user.userEmodeCategoryId}
         eModes={eModes}

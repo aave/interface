@@ -44,8 +44,6 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
     <Trans>{getEmodeMessage(_eModes[userEmodeCategoryId].label)}</Trans>
   );
 
-  const eModes = Object.keys(_eModes).length;
-
   return (
     <Box
       sx={{ display: 'inline-flex', alignItems: 'center' }}
@@ -225,40 +223,22 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
             </Button>
           ) : (
             <>
-              {eModes > 2 && (
-                <Button
-                  fullWidth
-                  sx={{ mb: '6px' }}
-                  variant={'outlined'}
-                  onClick={() => {
-                    trackEvent(GENERAL.OPEN_MODAL, {
-                      modal: 'Switch E-Mode',
-                      data: userEmodeCategoryId,
-                    });
-
-                    openEmode(EmodeModalType.SWITCH);
-                    handleClose();
-                  }}
-                  data-cy={'emode-switch'}
-                >
-                  <Trans>Switch E-Mode category</Trans>
-                </Button>
-              )}
               <Button
                 fullWidth
+                sx={{ mb: '6px' }}
                 variant={'outlined'}
                 onClick={() => {
-                  trackEvent(DASHBOARD.E_MODE, {
-                    type: 'Disable E-Mode',
+                  trackEvent(GENERAL.OPEN_MODAL, {
+                    modal: 'Switch E-Mode',
                     data: userEmodeCategoryId,
                   });
 
-                  openEmode(EmodeModalType.DISABLE);
+                  openEmode(EmodeModalType.SWITCH);
                   handleClose();
                 }}
-                data-cy={'emode-disable'}
+                data-cy={'emode-switch'}
               >
-                <Trans>Disable E-Mode</Trans>
+                <Trans>Manage E-Mode</Trans>
               </Button>
             </>
           )}
