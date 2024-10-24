@@ -1,6 +1,6 @@
-import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
+import { ExtendedReserveIncentiveResponse } from 'src/hooks/useMeritIncentives';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
@@ -11,7 +11,7 @@ import { getSymbolMap } from './IncentivesTooltipContent';
 export const MeritIncentivesTooltipContent = ({
   meritIncentives,
 }: {
-  meritIncentives: ReserveIncentiveResponse;
+  meritIncentives: ExtendedReserveIncentiveResponse;
 }) => {
   const typographyVariant = 'secondary12';
 
@@ -57,6 +57,11 @@ export const MeritIncentivesTooltipContent = ({
         </Link>
         {'.'}
       </Typography>
+      {meritIncentives.customMessage ? (
+        <Typography variant="caption" color="text.strong" mb={3}>
+          <Trans>{meritIncentives.customMessage}</Trans>
+        </Typography>
+      ) : null}
 
       <Box sx={{ width: '100%' }}>
         <Row
