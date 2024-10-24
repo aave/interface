@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-22 18:06\n"
+"PO-Revision-Date: 2024-10-24 12:08\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -3472,6 +3472,7 @@ msgid "withdrew"
 msgstr "撤回"
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
