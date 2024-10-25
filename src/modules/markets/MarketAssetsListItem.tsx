@@ -1,6 +1,8 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
@@ -12,7 +14,7 @@ import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarnin
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
-import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -32,12 +34,12 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
     reserve.symbol,
     currentMarket,
-    Side.SUPPLY
+    ProtocolAction.supply
   );
   const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
     reserve.symbol,
     currentMarket,
-    Side.BORROW
+    ProtocolAction.borrow
   );
 
   return (
@@ -103,6 +105,11 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             </>
           }
         />
+        <MeritIncentivesButton
+          symbol={reserve.symbol}
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
+        />
       </ListColumn>
 
       <ListColumn>
@@ -129,6 +136,11 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
               {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
             </>
           }
+        />
+        <MeritIncentivesButton
+          symbol={reserve.symbol}
+          market={currentMarket}
+          protocolAction={ProtocolAction.borrow}
         />
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&

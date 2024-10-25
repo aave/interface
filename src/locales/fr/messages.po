@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-21 18:06\n"
+"PO-Revision-Date: 2024-10-24 12:08\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -2237,6 +2237,10 @@ msgstr "Certaines ressources migrées ne seront pas utilisées comme garantie en
 msgid "Something went wrong"
 msgstr "Quelque chose s’est mal passé"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Something went wrong fetching bridge message, please try again later."
+msgstr ""
+
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 msgstr "Désolé, une erreur inattendue s’est produite. En attendant, vous pouvez essayer de recharger la page, ou revenir plus tard."
@@ -3468,6 +3472,7 @@ msgid "withdrew"
 msgstr "Retiré"
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx

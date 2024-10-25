@@ -1,47 +1,95 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
-import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
+
+export enum MeritAction {
+  ETHEREUM_STKGHO = 'ethereum-stkgho',
+  SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
+}
 
 type MeritIncentives = {
   totalAPR: number;
   actionsAPR: {
-    stkgho: number;
-    gho: number;
+    [key in MeritAction]: number;
   };
+};
+
+export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
+  customMessage: string;
 };
 
 const url = 'https://apps.aavechan.com/api/merit/aprs';
 
-export const useMeritIncentives = (asset: 'gho' | 'stkgho') => {
+export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
+  action: MeritAction;
+  protocolAction?: ProtocolAction;
+  customMessage?: string;
+};
+
+const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData | undefined =>
+  MERIT_DATA_MAP[market]?.[symbol];
+
+const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData>> = {
+  [CustomMarket.proto_mainnet_v3]: {
+    GHO: {
+      action: MeritAction.ETHEREUM_STKGHO,
+      rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
+      rewardTokenSymbol: 'GHO',
+    },
+    cbBTC: {
+      action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+      rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
+      rewardTokenSymbol: 'aEthUSDC',
+      protocolAction: ProtocolAction.supply,
+      customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+    },
+    USDC: {
+      action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+      rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
+      rewardTokenSymbol: 'aEthUSDC',
+      protocolAction: ProtocolAction.borrow,
+      customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+    },
+  },
+};
+
+export const useMeritIncentives = ({
+  symbol,
+  market,
+  protocolAction,
+}: {
+  symbol: string;
+  market: string;
+  protocolAction?: ProtocolAction;
+}) => {
   return useQuery({
     queryFn: async () => {
       const response = await fetch(url);
       const data = await response.json();
-      return data.currentAPR as MeritIncentives;
+      const meritIncentives = data.currentAPR as MeritIncentives;
+
+      return meritIncentives;
     },
     queryKey: ['meritIncentives'],
     staleTime: 1000 * 60 * 5,
     select: (data) => {
-      // rewards are always in GHO, for now
-      return {
-        incentiveAPR: (data.actionsAPR[asset] / 100).toString(),
-        rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-        rewardTokenSymbol: 'GHO',
-      } as ReserveIncentiveResponse;
-    },
-  });
-};
+      const meritReserveIncentiveData = getMeritData(market, symbol);
+      if (!meritReserveIncentiveData) {
+        return null;
+      }
+      if (meritReserveIncentiveData.protocolAction !== protocolAction) {
+        return null;
+      }
 
-export const useUserMeritIncentives = () => {
-  const user = useRootStore((store) => store.account);
-  return useQuery({
-    queryFn: async () => {
-      const response = await fetch(`${url}?user=${user}`);
-      const data = await response.json();
-      return data.currentAPR as MeritIncentives;
+      const APR = data.actionsAPR[meritReserveIncentiveData.action];
+      return {
+        incentiveAPR: (APR / 100).toString(),
+        rewardTokenAddress: meritReserveIncentiveData.rewardTokenAddress,
+        rewardTokenSymbol: meritReserveIncentiveData.rewardTokenSymbol,
+        customMessage: meritReserveIncentiveData.customMessage,
+      } as ExtendedReserveIncentiveResponse;
     },
-    queryKey: ['meritIncentives', user],
-    staleTime: 1000 * 60 * 5,
   });
 };

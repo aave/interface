@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-21 18:06\n"
+"PO-Revision-Date: 2024-10-24 12:08\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -2237,6 +2237,10 @@ msgstr "由于在 {marketName} V3 市场。访问 <0>{marketName} 用于</0> 管
 msgid "Something went wrong"
 msgstr "出了点问题"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Something went wrong fetching bridge message, please try again later."
+msgstr ""
+
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 msgstr "对不起，发生了意外错误。在此期间，您可以尝试重新加载页面，或稍后再回来。"
@@ -3468,6 +3472,7 @@ msgid "withdrew"
 msgstr "撤回"
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
