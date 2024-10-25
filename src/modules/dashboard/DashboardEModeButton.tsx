@@ -191,9 +191,9 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
 
           <Typography variant="caption" color="text.secondary" mb={4}>
             <Trans>
-              E-Mode increases your LTV for a selected category of assets up to 97%.{' '}
+              E-Mode increases your LTV for a selected category of assets.{' '}
               <Link
-                href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+                href="https://aave.com/help/borrowing/e-mode"
                 sx={{ textDecoration: 'underline' }}
                 variant="caption"
                 color="text.secondary"

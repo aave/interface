@@ -153,8 +153,8 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
   // Shown only if the user is disabling eMode, is not blocked from disabling, and has a health factor that is decreasing
   // HF will never decrease on enable or switch because all borrow positions must initially be in the eMode category
   const showLiquidationRiskWarning: boolean =
-    !!selectedEmode &&
-    selectedEmode.id === 0 &&
+    user.userEmodeCategoryId !== 0 &&
+    disableEmode &&
     blockingError === undefined &&
     Number(newSummary.healthFactor).toFixed(3) < Number(user.healthFactor).toFixed(3); // Comparing without rounding causes stuttering, HFs update asyncronously
 
@@ -188,15 +188,17 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
       <Typography variant="caption">
         <Trans>
           Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is
-          restricted to assets within the selected category. Please visit our{' '}
+          restricted to assets within the selected category.{' '}
           <Link
-            href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+            sx={{ textDecoration: 'underline' }}
+            variant="caption"
+            href="https://aave.com/help/borrowing/e-mode"
             target="_blank"
             rel="noopener"
           >
-            FAQ guide
+            Learn more
           </Link>{' '}
-          to learn more about how it works and the applied restrictions.
+          about how it works and the applied restrictions.
         </Trans>
       </Typography>
 
