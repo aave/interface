@@ -8,7 +8,6 @@ import {
   Collapse,
   Divider,
   MenuItem,
-  Paper,
   Select,
   Stack,
   SvgIcon,
