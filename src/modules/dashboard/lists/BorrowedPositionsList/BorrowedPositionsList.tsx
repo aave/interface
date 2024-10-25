@@ -121,8 +121,8 @@ export const BorrowedPositionsList = () => {
 
   const disableEModeSwitch =
     user.isInEmode &&
-    reserves.filter(
-      (reserve) => reserve.eModeCategoryId === user.userEmodeCategoryId && reserve.borrowingEnabled
+    reserves.filter((reserve) =>
+      reserve.eModes.find((e) => e.id === user.userEmodeCategoryId && e.borrowingEnabled)
     ).length < 2;
 
   const RenderHeader: React.FC = () => {

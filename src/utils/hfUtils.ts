@@ -46,8 +46,8 @@ export function calculateHFAfterSwap({
   toAssetData,
   user,
 }: CalculateHFAfterSwapProps) {
-  const fromEmode = fromAssetData.eModes.find(elem => elem.id === user.userEmodeCategoryId);
-  const toEMode = toAssetData.eModes.find(elem => elem.id === user.userEmodeCategoryId);
+  const fromEmode = fromAssetData.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
+  const toEMode = toAssetData.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
   const reserveLiquidationThreshold =
     user.isInEmode && fromEmode
       ? fromEmode.eMode.formattedLiquidationThreshold
@@ -109,7 +109,7 @@ export const calculateHFAfterRepay = ({
   repayWithUserReserve,
   debt,
 }: CalculateHFAfterSwapRepayProps) => {
-  const fromEmode = fromAssetData.eModes.find(elem => elem.id === user.userEmodeCategoryId);
+  const fromEmode = fromAssetData.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
   // it takes into account if in emode as threshold is different
   const reserveLiquidationThreshold =
     user.isInEmode && fromEmode
@@ -185,7 +185,7 @@ export const calculateHFAfterWithdraw = ({
   let liquidationThresholdAfterWithdraw = user.currentLiquidationThreshold;
   let healthFactorAfterWithdraw = valueToBigNumber(user.healthFactor);
 
-  const userEMode = poolReserve.eModes.find(elem => elem.id === user.userEmodeCategoryId);
+  const userEMode = poolReserve.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
 
   const reserveLiquidationThreshold =
     user.isInEmode && userEMode

@@ -394,11 +394,7 @@ export const selectSelectedBorrowReservesForMigrationV3 = (
       );
 
       if (borrowReserveV3) {
-        if (borrowReserve.interestRate == InterestRate.Variable) {
-          debtKey = borrowReserveV3.reserve.variableDebtTokenAddress;
-        } else {
-          debtKey = borrowReserveV3.reserve.stableDebtTokenAddress;
-        }
+        debtKey = borrowReserveV3.reserve.variableDebtTokenAddress;
       }
 
       return {

@@ -130,11 +130,11 @@ const select = memoize(
         );
 
         let ltv = v3SupplyAsset.reserve.formattedBaseLTVasCollateral;
-        if (
-          userEmodeCategoryId !== 0 &&
-          v3SupplyAsset.reserve.eModeCategoryId !== userEmodeCategoryId
-        ) {
-          ltv = v3SupplyAsset.reserve.formattedEModeLtv;
+        const eModeCategory = v3SupplyAsset.reserve.eModes.find(
+          (e) => e.id === userEmodeCategoryId
+        );
+        if (userEmodeCategoryId !== 0 && eModeCategory) {
+          ltv = eModeCategory.eMode.formattedLtv;
         }
 
         v3Rates = {
@@ -189,9 +189,12 @@ const select = memoize(
       if (v3BorrowAsset) {
         let liquidationThreshold = v3BorrowAsset.reserve.formattedReserveLiquidationThreshold;
 
-        if (userEmodeCategoryId !== 0 && selectedReserve?.eModeCategoryId !== userEmodeCategoryId) {
+        const eModeCategory = v3BorrowAsset.reserve.eModes.find(
+          (e) => e.id === userEmodeCategoryId
+        );
+        if (userEmodeCategoryId !== 0 && eModeCategory) {
           disabledForMigration = MigrationDisabled.EModeBorrowDisabled;
-          liquidationThreshold = v3BorrowAsset.reserve.formattedEModeLiquidationThreshold;
+          liquidationThreshold = eModeCategory.eMode.formattedLiquidationThreshold;
         }
 
         v3Rates = {

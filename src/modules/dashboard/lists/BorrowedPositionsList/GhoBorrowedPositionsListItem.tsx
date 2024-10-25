@@ -1,4 +1,3 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
@@ -28,10 +27,7 @@ import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { ListValueRow } from '../ListValueRow';
 
-export const GhoBorrowedPositionsListItem = ({
-  reserve,
-  borrowRateMode,
-}: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
+export const GhoBorrowedPositionsListItem = ({ reserve }: ComputedUserReserveData) => {
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
@@ -67,7 +63,6 @@ export const GhoBorrowedPositionsListItem = ({
 
   const props: GhoBorrowedPositionsListItemProps = {
     reserve,
-    borrowRateMode,
     userGhoBorrowBalance: ghoUserData.userGhoBorrowBalance,
     hasDiscount,
     ghoLoadingData,
@@ -86,17 +81,10 @@ export const GhoBorrowedPositionsListItem = ({
     disableSwitch: !isActive || isPaused,
     disableRepay: !isActive || isPaused,
     onRepayClick: () =>
-      openRepay(
-        reserve.underlyingAsset,
-        borrowRateMode,
-        isFrozen,
-        currentMarket,
-        reserve.name,
-        'dashboard'
-      ),
+      openRepay(reserve.underlyingAsset, isFrozen, currentMarket, reserve.name, 'dashboard'),
     onBorrowClick: () =>
       openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'dashboard'),
-    onSwitchClick: () => openDebtSwitch(reserve.underlyingAsset, borrowRateMode),
+    onSwitchClick: () => openDebtSwitch(reserve.underlyingAsset),
   };
 
   if (downToXSM) {
@@ -108,7 +96,6 @@ export const GhoBorrowedPositionsListItem = ({
 
 interface GhoBorrowedPositionsListItemProps {
   reserve: ComputedReserveData;
-  borrowRateMode: InterestRate;
   userGhoBorrowBalance: number;
   hasDiscount: boolean;
   ghoLoadingData: boolean;
@@ -127,7 +114,6 @@ interface GhoBorrowedPositionsListItemProps {
 
 const GhoBorrowedPositionsListItemDesktop = ({
   reserve,
-  borrowRateMode,
   userGhoBorrowBalance,
   hasDiscount,
   ghoLoadingData,
@@ -153,7 +139,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
       detailsAddress={underlyingAsset}
       currentMarket={currentMarket}
       frozen={isFrozen}
-      data-cy={`dashboardBorrowedListItem_${symbol.toUpperCase()}_${borrowRateMode}`}
+      data-cy={`dashboardBorrowedListItem_${symbol.toUpperCase()}_Variable`}
       showBorrowCapTooltips
     >
       <ListValueColumn

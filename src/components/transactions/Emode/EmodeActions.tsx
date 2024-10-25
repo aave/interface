@@ -4,8 +4,8 @@ import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
-import { getEmodeMessage } from './EmodeNaming';
 import { EModeCategoryDisplay } from './EmodeModalContent';
+import { getEmodeMessage } from './EmodeNaming';
 
 export type EmodeActionsProps = {
   isWrongNetwork: boolean;

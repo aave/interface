@@ -13,7 +13,7 @@ import { defaultStyles, TooltipWithBounds, withTooltip } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { BigNumber } from 'bignumber.js';
 import { bisector, max } from 'd3-array';
-import React, { Fragment, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import type { Fields } from './InterestRateModelGraphContainer';
 

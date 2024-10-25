@@ -131,7 +131,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </>
       )}
 
-      {reserve.eModeCategoryId !== 0 && (
+      {reserve.eModes.length && (
         <>
           <Divider sx={{ my: { xs: 6, sm: 10 } }} />
           <ReserveEModePanel reserve={reserve} />
