@@ -1,9 +1,8 @@
 import assets from '../../fixtures/assets.json';
 
 export class DashboardHelpers {
-  public static getApyBorrowedRate(tokenName: string, isVariable = true) {
-    const typeToken = isVariable ? 'Variable' : 'Stable';
-    const _selector = `[data-cy="dashboardBorrowedListItem_${tokenName}_${typeToken}"]`;
+  public static getApyBorrowedRate(tokenName: string) {
+    const _selector = `[data-cy="dashboardBorrowedListItem_${tokenName}"]`;
     cy.doSwitchToDashboardBorrowView();
     return this.getApyRate(_selector);
   }

@@ -139,7 +139,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
       detailsAddress={underlyingAsset}
       currentMarket={currentMarket}
       frozen={isFrozen}
-      data-cy={`dashboardBorrowedListItem_${symbol.toUpperCase()}_Variable`}
+      data-cy={`dashboardBorrowedListItem_${symbol.toUpperCase()}`}
       showBorrowCapTooltips
     >
       <ListValueColumn

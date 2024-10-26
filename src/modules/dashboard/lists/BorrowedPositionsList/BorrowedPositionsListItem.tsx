@@ -93,7 +93,6 @@ interface BorrowedPositionsListItemProps extends DashboardReserve {
 
 const BorrowedPositionsListItemDesktop = ({
   reserve,
-  borrowRateMode,
   disableBorrow,
   disableSwitch,
   disableRepay,
@@ -118,7 +117,7 @@ const BorrowedPositionsListItemDesktop = ({
       frozen={reserve.isFrozen}
       paused={reserve.isPaused}
       borrowEnabled={reserve.borrowingEnabled}
-      data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
+      data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}`}
       showBorrowCapTooltips
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         reserve.symbol,
