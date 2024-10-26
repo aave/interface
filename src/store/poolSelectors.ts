@@ -1,22 +1,8 @@
+import { EmodeCategory } from 'src/helpers/types';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { CustomMarket, marketsData, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
-
-// TODO: refactor existing utils type EmodeCategory
-export type NewEModeCategory = {
-  id: number;
-  label: string;
-  ltv: string;
-  liquidationThreshold: string;
-  liquidationBonus: string;
-  assets: Array<{
-    underlyingAsset: string;
-    symbol: string;
-    collateral: boolean;
-    borrowable: boolean;
-  }>;
-};
 
 export const selectCurrentChainIdMarkets = (
   chainId: number,
@@ -65,7 +51,7 @@ export const reserveSortFn = (
 };
 
 export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
-  const eModes: Record<number, NewEModeCategory> = {};
+  const eModes: Record<number, EmodeCategory> = {};
 
   reserves.forEach((r) => {
     r.eModes.forEach((e) => {

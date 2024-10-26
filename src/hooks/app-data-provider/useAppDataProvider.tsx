@@ -7,11 +7,12 @@ import {
 } from '@aave/math-utils';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useContext } from 'react';
+import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { GHO_MINTING_MARKETS } from 'src/utils/ghoUtilities';
 
-import { formatEmodes, NewEModeCategory } from '../../store/poolSelectors';
+import { formatEmodes } from '../../store/poolSelectors';
 import {
   ExtendedFormattedUser as _ExtendedFormattedUser,
   useExtendedUserSummaryAndIncentives,
@@ -53,7 +54,7 @@ export type ExtendedFormattedUser = _ExtendedFormattedUser;
 export interface AppDataContextType {
   loading: boolean;
   reserves: ComputedReserveData[];
-  eModes: Record<number, NewEModeCategory>;
+  eModes: Record<number, EmodeCategory>;
   user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;

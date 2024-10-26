@@ -28,6 +28,7 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
+import { EmodeCategory } from 'src/helpers/types';
 import {
   ExtendedFormattedUser,
   useAppDataContext,
@@ -36,7 +37,6 @@ import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { NewEModeCategory } from 'src/store/poolSelectors';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
@@ -52,12 +52,12 @@ export enum ErrorType {
   CLOSE_POSITIONS_BEFORE_SWITCHING,
 }
 
-export type EModeCategoryDisplay = NewEModeCategory & {
+export type EModeCategoryDisplay = EmodeCategory & {
   available: boolean; // indicates if the user can enter this category
 };
 
 // An E-Mode category is available if the user has no borrow positions outside of the category
-function isEModeCategoryAvailable(user: ExtendedFormattedUser, eMode: NewEModeCategory): boolean {
+function isEModeCategoryAvailable(user: ExtendedFormattedUser, eMode: EmodeCategory): boolean {
   const borrowableReserves = eMode.assets
     .filter((asset) => asset.borrowable)
     .map((asset) => asset.underlyingAsset);
