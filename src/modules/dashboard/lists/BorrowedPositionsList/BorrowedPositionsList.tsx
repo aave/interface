@@ -11,7 +11,6 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
-import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
@@ -43,20 +42,6 @@ const head = [
   {
     title: <Trans key="APY">APY</Trans>,
     sortKey: 'borrowAPY',
-  },
-  {
-    title: (
-      <APYTypeTooltip
-        event={{
-          eventName: GENERAL.TOOL_TIP,
-          eventParams: { tooltip: 'APY Type Borrow' },
-        }}
-        text={<Trans>APY type</Trans>}
-        key="APY type"
-        variant="subheader2"
-      />
-    ),
-    sortKey: 'typeAPY',
   },
 ];
 
