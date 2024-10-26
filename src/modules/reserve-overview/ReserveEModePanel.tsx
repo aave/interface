@@ -107,9 +107,9 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
             >
               Dashboard
             </Link>
-            . To learn more about E-Mode and applied restrictions in{' '}
+            . To learn more about E-Mode and applied restrictionn, see the{' '}
             <Link
-              href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+              href="https://aave.com/help/borrowing/e-mode"
               sx={{ textDecoration: 'underline' }}
               variant="caption"
               color="text.secondary"
@@ -117,9 +117,9 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'E-mode FAQ' });
               }}
             >
-              FAQ
+              help guide
             </Link>{' '}
-            or{' '}
+            or the{' '}
             <Link
               href="https://github.com/aave/aave-v3-core/blob/master/techpaper/Aave_V3_Technical_Paper.pdf"
               sx={{ textDecoration: 'underline' }}
