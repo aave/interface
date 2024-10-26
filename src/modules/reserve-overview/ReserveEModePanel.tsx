@@ -1,5 +1,8 @@
 import { Trans } from '@lingui/macro';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import CloseIcon from '@mui/icons-material/Close';
 import { Box, SvgIcon, Typography } from '@mui/material';
+import { Fragment } from 'react';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
 import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
@@ -27,15 +30,14 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
       <PanelTitle>E-Mode info</PanelTitle>
       <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
         {reserve.eModes.map((e) => (
-          <>
+          <Fragment key={e.id}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <Typography variant="secondary14" color="text.secondary">
-                <Trans>E-Mode Category</Trans>
-              </Typography>
               <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
                 <LightningBoltGradient />
               </SvgIcon>
               <Typography variant="subheader1">{getEmodeMessage(e.eMode.label)}</Typography>
+              <ConfigStatus enabled={e.collateralEnabled} label="Collateral" />
+              <ConfigStatus enabled={e.borrowingEnabled} label="Borrowable" />
             </Box>
             <Box
               sx={{
@@ -86,7 +88,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 />
               </ReserveOverviewBox>
             </Box>
-          </>
+          </Fragment>
         ))}
 
         <Typography variant="caption" color="text.secondary" paddingTop="24px">
@@ -134,5 +136,20 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
         </Typography>
       </Box>
     </PanelRow>
+  );
+};
+
+const ConfigStatus = ({ enabled, label }: { enabled: boolean; label: string }) => {
+  return (
+    <>
+      {enabled ? (
+        <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
+      ) : (
+        <CloseIcon fontSize="small" color="error" sx={{ ml: 2 }} />
+      )}
+      <Typography variant="subheader1" sx={{ color: enabled ? '#46BC4B' : '#F24E4E' }}>
+        <Trans>{label}</Trans>
+      </Typography>
+    </>
   );
 };
