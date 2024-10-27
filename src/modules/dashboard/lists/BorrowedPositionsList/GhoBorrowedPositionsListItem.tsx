@@ -1,6 +1,6 @@
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Stack, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { FixedAPYTooltipText } from 'src/components/infoTooltips/FixedAPYTooltip';
@@ -148,30 +148,30 @@ const GhoBorrowedPositionsListItemDesktop = ({
         subValue={userGhoBorrowBalance}
       />
       <ListColumn>
-        <GhoIncentivesCard
-          withTokenIcon={hasDiscount}
-          value={ghoLoadingData || !ghoUserDataFetched ? -1 : borrowRateAfterDiscount}
-          data-cy={`apyType`}
-          stkAaveBalance={userDiscountTokenBalance}
-          ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
-          userQualifiesForDiscount={hasDiscount}
-        />
-      </ListColumn>
-      <ListColumn>
-        <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            disabled
-            data-cy={`apyButton_fixed`}
-          >
-            GHO RATE
-            <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
-              <InformationCircleIcon />
-            </SvgIcon>
-          </Button>
-        </ContentWithTooltip>
+        <Stack direction="row" gap={1}>
+          <GhoIncentivesCard
+            withTokenIcon={hasDiscount}
+            value={ghoLoadingData || !ghoUserDataFetched ? -1 : borrowRateAfterDiscount}
+            data-cy={`apyType`}
+            stkAaveBalance={userDiscountTokenBalance}
+            ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
+            userQualifiesForDiscount={hasDiscount}
+          />
+          <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
+            <Button
+              variant="outlined"
+              size="small"
+              color="primary"
+              disabled
+              data-cy={`apyButton_fixed`}
+            >
+              GHO RATE
+              {/* <SvgIcon sx={{ marginLeft: '2px', fontSize: '12px' }}>
+                <InformationCircleIcon />
+              </SvgIcon> */}
+            </Button>
+          </ContentWithTooltip>
+        </Stack>
       </ListColumn>
       <ListButtonsColumn>
         {showSwitchButton ? (

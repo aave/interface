@@ -22,6 +22,7 @@ export type EmodeCategory = {
   assets: Array<{
     underlyingAsset: string;
     symbol: string;
+    iconSymbol: string;
     collateral: boolean;
     borrowable: boolean;
   }>;

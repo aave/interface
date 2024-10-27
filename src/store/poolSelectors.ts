@@ -3,6 +3,7 @@ import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedR
 import { CustomMarket, marketsData, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 export const selectCurrentChainIdMarkets = (
   chainId: number,
@@ -54,6 +55,10 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
   const eModes: Record<number, EmodeCategory> = {};
 
   reserves.forEach((r) => {
+    const { symbol, iconSymbol } = fetchIconSymbolAndName({
+      underlyingAsset: r.underlyingAsset,
+      symbol: r.symbol,
+    });
     r.eModes.forEach((e) => {
       if (!eModes[e.id]) {
         eModes[e.id] = {
@@ -65,7 +70,8 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
           assets: [
             {
               underlyingAsset: r.underlyingAsset,
-              symbol: r.symbol,
+              symbol,
+              iconSymbol,
               collateral: e.collateralEnabled && r.baseLTVasCollateral !== '0',
               borrowable: e.borrowingEnabled,
             },
@@ -74,7 +80,8 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
       } else {
         eModes[e.id].assets.push({
           underlyingAsset: r.underlyingAsset,
-          symbol: r.symbol,
+          symbol,
+          iconSymbol,
           collateral: e.collateralEnabled && r.baseLTVasCollateral !== '0',
           borrowable: e.borrowingEnabled,
         });

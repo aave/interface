@@ -4,7 +4,7 @@ import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
 import { ListButtonsColumn } from './ListButtonsColumn';
 
-export const ListItemLoader = () => {
+export const ListItemLoader = ({ columns }: { columns: number }) => {
   return (
     <ListItem>
       <ListColumn maxWidth={160} isRow>
@@ -14,13 +14,11 @@ export const ListItemLoader = () => {
         </Box>
       </ListColumn>
 
-      <ListColumn>
-        <Skeleton width={70} height={20} />
-      </ListColumn>
-
-      <ListColumn>
-        <Skeleton width={70} height={20} />
-      </ListColumn>
+      {Array.from({ length: columns - 1 }).map((_, index) => (
+        <ListColumn key={index}>
+          <Skeleton width={70} height={20} />
+        </ListColumn>
+      ))}
 
       <ListButtonsColumn>
         <Skeleton height={38} width={74} />

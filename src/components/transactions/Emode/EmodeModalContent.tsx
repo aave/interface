@@ -421,7 +421,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                     >
                       <TableCell align="center" sx={{ py: 1 }}>
                         <Stack direction="row" gap={1} alignItems="center">
-                          <TokenIcon symbol={asset.symbol} sx={{ fontSize: '16px' }} />
+                          <TokenIcon symbol={asset.iconSymbol} sx={{ fontSize: '16px' }} />
                           <Typography variant="secondary12">{asset.symbol}</Typography>
                         </Stack>
                       </TableCell>
