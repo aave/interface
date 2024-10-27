@@ -1,10 +1,10 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { EmodeCategory } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { EModeCategoryDisplay } from './EmodeModalContent';
 import { getEmodeMessage } from './EmodeNaming';
 
 export type EmodeActionsProps = {
@@ -12,7 +12,7 @@ export type EmodeActionsProps = {
   blocked: boolean;
   selectedEmode: number;
   activeEmode: number;
-  eModes: Record<number, EmodeCategory>;
+  eModes: Record<number, EModeCategoryDisplay>;
 };
 
 export const EmodeActions = ({

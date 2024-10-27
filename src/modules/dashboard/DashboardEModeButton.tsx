@@ -3,7 +3,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import React, { useState } from 'react';
-import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
@@ -43,8 +42,6 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
   const EModeLabelMessage = () => (
     <Trans>{getEmodeMessage(_eModes[userEmodeCategoryId].label)}</Trans>
   );
-
-  const eModes = Object.keys(_eModes).length;
 
   return (
     <Box
@@ -194,9 +191,9 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
 
           <Typography variant="caption" color="text.secondary" mb={4}>
             <Trans>
-              E-Mode increases your LTV for a selected category of assets up to 97%.{' '}
+              E-Mode increases your LTV for a selected category of assets.{' '}
               <Link
-                href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+                href="https://aave.com/help/borrowing/e-mode"
                 sx={{ textDecoration: 'underline' }}
                 variant="caption"
                 color="text.secondary"
@@ -216,7 +213,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
                   data: userEmodeCategoryId,
                 });
 
-                openEmode(EmodeModalType.ENABLE);
+                openEmode();
                 handleClose();
               }}
               data-cy={'emode-enable'}
@@ -225,40 +222,22 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
             </Button>
           ) : (
             <>
-              {eModes > 2 && (
-                <Button
-                  fullWidth
-                  sx={{ mb: '6px' }}
-                  variant={'outlined'}
-                  onClick={() => {
-                    trackEvent(GENERAL.OPEN_MODAL, {
-                      modal: 'Switch E-Mode',
-                      data: userEmodeCategoryId,
-                    });
-
-                    openEmode(EmodeModalType.SWITCH);
-                    handleClose();
-                  }}
-                  data-cy={'emode-switch'}
-                >
-                  <Trans>Switch E-Mode category</Trans>
-                </Button>
-              )}
               <Button
                 fullWidth
+                sx={{ mb: '6px' }}
                 variant={'outlined'}
                 onClick={() => {
-                  trackEvent(DASHBOARD.E_MODE, {
-                    type: 'Disable E-Mode',
+                  trackEvent(GENERAL.OPEN_MODAL, {
+                    modal: 'Switch E-Mode',
                     data: userEmodeCategoryId,
                   });
 
-                  openEmode(EmodeModalType.DISABLE);
+                  openEmode();
                   handleClose();
                 }}
-                data-cy={'emode-disable'}
+                data-cy={'emode-switch'}
               >
-                <Trans>Disable E-Mode</Trans>
+                <Trans>Manage E-Mode</Trans>
               </Button>
             </>
           )}

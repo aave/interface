@@ -5,7 +5,6 @@ import { configEnvWithTenderlyFantomFork } from '../../../../support/steps/confi
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import {
   dashboardAssetValuesVerification,
-  switchApyBlocked,
 } from '../../../../support/steps/verification.steps';
 
 const testData = {
@@ -87,7 +86,6 @@ describe('LINK INTEGRATION SPEC, FANTOM V3 MARKET', () => {
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);
   });
-  switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

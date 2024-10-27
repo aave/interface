@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
@@ -97,11 +97,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     ).toString();
     maxAmountToSupply = '0';
   } else if (user) {
-    maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-      reserve,
-      user,
-      InterestRate.Variable
-    ).toString();
+    maxAmountToBorrow = getMaxAmountAvailableToBorrow(reserve, user).toString();
 
     maxAmountToSupply = getMaxAmountAvailableToSupply(
       balance?.amount || '0',

@@ -25,7 +25,6 @@ export interface RepayActionProps extends BoxProps {
   customGasPrice?: string;
   poolAddress: string;
   symbol: string;
-  debtType: InterestRate;
   repayWithATokens: boolean;
   blocked?: boolean;
   maxApproveNeeded: string;
@@ -38,7 +37,6 @@ export const RepayActions = ({
   isWrongNetwork,
   sx,
   symbol,
-  debtType,
   repayWithATokens,
   blocked,
   maxApproveNeeded,
@@ -143,7 +141,7 @@ export const RepayActions = ({
               ? amountToRepay
               : parseUnits(amountToRepay, poolReserve.decimals).toString(),
           reserve: poolAddress,
-          interestRateMode: debtType,
+          interestRateMode: InterestRate.Variable,
           signature: signatureParams.signature,
           deadline: signatureParams.deadline,
         };
@@ -170,7 +168,7 @@ export const RepayActions = ({
               : parseUnits(amountToRepay, poolReserve.decimals).toString(),
           poolAddress,
           repayWithATokens,
-          debtType,
+          debtType: InterestRate.Variable,
         };
 
         let encodedParams: string | undefined;

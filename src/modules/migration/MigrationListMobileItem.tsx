@@ -1,4 +1,3 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
@@ -56,14 +55,10 @@ export const MigrationListMobileItem = ({
   isSupplyList,
 }: MigrationListMobileItemProps) => {
   const v2APY = borrowApyType
-    ? borrowApyType === InterestRate.Stable
-      ? userReserve.stableBorrowAPY
-      : userReserve.reserve.variableBorrowAPY
+    ? userReserve.reserve.variableBorrowAPY
     : userReserve.reserve.supplyAPY;
   const v2Incentives = borrowApyType
-    ? borrowApyType === InterestRate.Stable
-      ? userReserve.reserve.sIncentivesData
-      : userReserve.reserve.vIncentivesData
+    ? userReserve.reserve.vIncentivesData
     : userReserve.reserve.aIncentivesData;
   const v3APY = borrowApyType ? v3Rates?.variableBorrowAPY || '-1' : v3Rates?.supplyAPY || '-1';
   const v3Incentives = borrowApyType

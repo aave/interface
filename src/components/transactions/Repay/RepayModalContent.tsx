@@ -1,8 +1,4 @@
-import {
-  API_ETH_MOCK_ADDRESS,
-  InterestRate,
-  synthetixProxyByChainId,
-} from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, synthetixProxyByChainId } from '@aave/contract-helpers';
 import {
   BigNumberValue,
   calculateHealthFactorFromBalancesBigUnits,
@@ -45,9 +41,8 @@ export const RepayModalContent = ({
   tokenBalance,
   nativeBalance,
   isWrongNetwork,
-  debtType,
   user,
-}: ModalWrapperProps & { debtType: InterestRate; user: ExtendedFormattedUser }) => {
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
@@ -74,10 +69,7 @@ export const RepayModalContent = ({
 
   const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
 
-  const debt =
-    debtType === InterestRate.Stable
-      ? userReserve?.stableBorrows || '0'
-      : userReserve?.variableBorrows || '0';
+  const debt = userReserve?.variableBorrows || '0';
   const debtUSD = new BigNumber(debt)
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
@@ -291,7 +283,6 @@ export const RepayModalContent = ({
         }
         isWrongNetwork={isWrongNetwork}
         symbol={modalSymbol}
-        debtType={debtType}
         repayWithATokens={repayWithATokens}
       />
     </>

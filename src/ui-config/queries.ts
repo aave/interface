@@ -167,6 +167,11 @@ export const queryKeysFactory = {
     chainId,
     'tokensBalance',
   ],
+  poolEModes: (marketData: MarketDataType) => [
+    ...queryKeysFactory.pool,
+    ...queryKeysFactory.market(marketData),
+    'poolEModes',
+  ],
 };
 
 export const POLLING_INTERVAL = 60000;
