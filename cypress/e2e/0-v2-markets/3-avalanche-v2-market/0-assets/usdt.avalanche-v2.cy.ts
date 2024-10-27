@@ -4,9 +4,7 @@ import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../../support/steps/configuration.steps';
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import {
-  changeBorrowTypeBlocked,
   dashboardAssetValuesVerification,
-  switchApyBlocked,
 } from '../../../../support/steps/verification.steps';
 import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
 
@@ -87,7 +85,5 @@ describe.skip('USDT INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
     repay(repayCase, skipTestState, false);
   });
   withdraw(testData.testCases.withdraw, skipTestState, false);
-  switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
-  changeBorrowTypeBlocked(testData.testCases.checkBorrowTypeBlocked, skipTestState);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

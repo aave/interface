@@ -1,8 +1,9 @@
-import { ReserveDataHumanized } from '@aave/contract-helpers';
 import { EmodeCategory } from 'src/helpers/types';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { CustomMarket, marketsData, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 export const selectCurrentChainIdMarkets = (
   chainId: number,
@@ -50,32 +51,53 @@ export const reserveSortFn = (
   return numB > numA ? 1 : -1;
 };
 
-export const formatEmodes = (reserves: ReserveDataHumanized[]) => {
-  const eModes = reserves?.reduce((acc, r) => {
-    if (!acc[r.eModeCategoryId])
-      acc[r.eModeCategoryId] = {
-        liquidationBonus: r.eModeLiquidationBonus,
-        id: r.eModeCategoryId,
-        label: r.eModeLabel,
-        liquidationThreshold: r.eModeLiquidationThreshold,
-        ltv: r.eModeLtv,
-        priceSource: r.eModePriceSource,
-        assets: [r.symbol],
-      };
-    else acc[r.eModeCategoryId].assets.push(r.symbol);
-    return acc;
-  }, {} as Record<number, EmodeCategory>);
+export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
+  const eModes: Record<number, EmodeCategory> = {};
+
+  reserves.forEach((r) => {
+    const { symbol, iconSymbol } = fetchIconSymbolAndName({
+      underlyingAsset: r.underlyingAsset,
+      symbol: r.symbol,
+    });
+    r.eModes.forEach((e) => {
+      if (!eModes[e.id]) {
+        eModes[e.id] = {
+          id: e.id,
+          label: e.eMode.label,
+          ltv: e.eMode.ltv,
+          liquidationThreshold: e.eMode.liquidationThreshold,
+          liquidationBonus: e.eMode.liquidationBonus,
+          assets: [
+            {
+              underlyingAsset: r.underlyingAsset,
+              symbol,
+              iconSymbol,
+              collateral: e.collateralEnabled && r.baseLTVasCollateral !== '0',
+              borrowable: e.borrowingEnabled,
+            },
+          ],
+        };
+      } else {
+        eModes[e.id].assets.push({
+          underlyingAsset: r.underlyingAsset,
+          symbol,
+          iconSymbol,
+          collateral: e.collateralEnabled && r.baseLTVasCollateral !== '0',
+          borrowable: e.borrowingEnabled,
+        });
+      }
+    });
+  });
 
   // If all reserves have an eMode cateogry other than 0, we need to add the default empty one.
   // The UI assumes that there is always an eMode category 0, which is 'none'.
   if (!eModes[0]) {
     eModes[0] = {
-      liquidationBonus: 0,
       id: 0,
       label: '',
-      liquidationThreshold: 0,
-      ltv: 0,
-      priceSource: '0x0000000000000000000000000000000000000000',
+      liquidationBonus: '0',
+      liquidationThreshold: '0',
+      ltv: '0',
       assets: [],
     };
   }

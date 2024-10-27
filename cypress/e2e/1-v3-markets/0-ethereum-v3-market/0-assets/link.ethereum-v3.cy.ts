@@ -5,7 +5,6 @@ import { configEnvWithTenderlyAEthereumV3Fork } from '../../../../support/steps/
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import {
   dashboardAssetValuesVerification,
-  switchApyBlocked,
 } from '../../../../support/steps/verification.steps';
 import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
 
@@ -85,7 +84,6 @@ describe('LINK INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
-  switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);

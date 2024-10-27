@@ -47,7 +47,7 @@ export const useReserveActionState = ({
   const userHasNoCollateralSupplied = user?.totalCollateralMarketReferenceCurrency === '0';
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !reserve.borrowableInIsolation;
   const eModeBorrowDisabled =
-    user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
+    user?.isInEmode && !reserve.eModes.find((e) => e.id === user.userEmodeCategoryId);
 
   const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 

@@ -1,4 +1,5 @@
 import {
+  EmodeDataHumanized,
   LegacyUiPoolDataProvider,
   ReservesDataHumanized,
   UiPoolDataProvider,
@@ -59,6 +60,13 @@ export class UiPoolService {
     const uiPoolDataProvider = await this.getUiPoolDataService(marketData);
     return uiPoolDataProvider.getUserReservesHumanized({
       user,
+      lendingPoolAddressProvider: marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+    });
+  }
+
+  async getEModesHumanized(marketData: MarketDataType): Promise<EmodeDataHumanized[]> {
+    const uiPoolDataProvider = await this.getUiPoolDataService(marketData);
+    return uiPoolDataProvider.getEModesHumanized({
       lendingPoolAddressProvider: marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
     });
   }

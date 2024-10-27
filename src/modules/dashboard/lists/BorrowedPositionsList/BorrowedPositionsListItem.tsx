@@ -1,10 +1,9 @@
-import { InterestRate, ProtocolAction } from '@aave/contract-helpers';
+import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
-import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { Row } from 'src/components/primitives/Row';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -13,10 +12,8 @@ import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
-import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
-import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -31,7 +28,7 @@ export const BorrowedPositionsListItem = ({
   const { currentMarket, currentMarketData } = useProtocolDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const { openBorrow, openRepay, openRateSwitch, openDebtSwitch } = useModalContext();
+  const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
 
   const reserve = item.reserve;
 
@@ -54,22 +51,12 @@ export const BorrowedPositionsListItem = ({
     disableSwitch,
     disableRepay,
     showSwitchButton,
-    totalBorrows:
-      item.borrowRateMode === InterestRate.Variable ? item.variableBorrows : item.stableBorrows,
-    totalBorrowsUSD:
-      item.borrowRateMode === InterestRate.Variable
-        ? item.variableBorrowsUSD
-        : item.stableBorrowsUSD,
-    borrowAPY:
-      item.borrowRateMode === InterestRate.Variable
-        ? Number(reserve.variableBorrowAPY)
-        : Number(item.stableBorrowAPY),
-    incentives:
-      item.borrowRateMode === InterestRate.Variable
-        ? reserve.vIncentivesData
-        : reserve.sIncentivesData,
+    totalBorrows: item.variableBorrows,
+    totalBorrowsUSD: item.variableBorrowsUSD,
+    borrowAPY: Number(reserve.variableBorrowAPY),
+    incentives: reserve.vIncentivesData,
     onDetbSwitchClick: () => {
-      openDebtSwitch(reserve.underlyingAsset, item.borrowRateMode);
+      openDebtSwitch(reserve.underlyingAsset);
     },
     onOpenBorrow: () => {
       openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'dashboard');
@@ -77,15 +64,11 @@ export const BorrowedPositionsListItem = ({
     onOpenRepay: () => {
       openRepay(
         reserve.underlyingAsset,
-        item.borrowRateMode,
         reserve.isFrozen,
         currentMarket,
         reserve.name,
         'dashboard'
       );
-    },
-    onOpenRateSwitch: () => {
-      openRateSwitch(reserve.underlyingAsset, item.borrowRateMode);
     },
   };
 
@@ -106,12 +89,10 @@ interface BorrowedPositionsListItemProps extends DashboardReserve {
   onDetbSwitchClick: () => void;
   onOpenBorrow: () => void;
   onOpenRepay: () => void;
-  onOpenRateSwitch: () => void;
 }
 
 const BorrowedPositionsListItemDesktop = ({
   reserve,
-  borrowRateMode,
   disableBorrow,
   disableSwitch,
   disableRepay,
@@ -123,23 +104,20 @@ const BorrowedPositionsListItemDesktop = ({
   onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
-  onOpenRateSwitch,
 }: BorrowedPositionsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
-
-  const { isActive, isFrozen, isPaused, stableBorrowRateEnabled, name } = reserve;
 
   return (
     <ListItemWrapper
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
-      name={name}
+      name={reserve.name}
       detailsAddress={reserve.underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
       paused={reserve.isPaused}
       borrowEnabled={reserve.borrowingEnabled}
-      data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
+      data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}`}
       showBorrowCapTooltips
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         reserve.symbol,
@@ -156,19 +134,6 @@ const BorrowedPositionsListItemDesktop = ({
         incentives={incentives}
         symbol={reserve.symbol}
       />
-
-      <ListColumn>
-        <ListItemAPYButton
-          stableBorrowRateEnabled={stableBorrowRateEnabled}
-          borrowRateMode={borrowRateMode}
-          disabled={!stableBorrowRateEnabled || isFrozen || !isActive || isPaused}
-          onClick={onOpenRateSwitch}
-          stableBorrowAPY={reserve.stableBorrowAPY}
-          variableBorrowAPY={reserve.variableBorrowAPY}
-          underlyingAsset={reserve.underlyingAsset}
-          currentMarket={currentMarket}
-        />
-      </ListColumn>
 
       <ListButtonsColumn>
         {showSwitchButton ? (
@@ -195,7 +160,6 @@ const BorrowedPositionsListItemDesktop = ({
 
 const BorrowedPositionsListItemMobile = ({
   reserve,
-  borrowRateMode,
   totalBorrows,
   totalBorrowsUSD,
   disableBorrow,
@@ -207,22 +171,10 @@ const BorrowedPositionsListItemMobile = ({
   onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
-  onOpenRateSwitch,
 }: BorrowedPositionsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
 
-  const {
-    symbol,
-    iconSymbol,
-    name,
-    isActive,
-    isFrozen,
-    isPaused,
-    stableBorrowRateEnabled,
-    variableBorrowAPY,
-    stableBorrowAPY,
-    underlyingAsset,
-  } = reserve;
+  const { symbol, iconSymbol, name } = reserve;
 
   return (
     <ListMobileItemWrapper
@@ -261,25 +213,6 @@ const BorrowedPositionsListItemMobile = ({
             protocolAction={ProtocolAction.borrow}
           />
         </Box>
-      </Row>
-
-      <Row
-        caption={
-          <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="description" />
-        }
-        captionVariant="description"
-        mb={2}
-      >
-        <ListItemAPYButton
-          stableBorrowRateEnabled={stableBorrowRateEnabled}
-          borrowRateMode={borrowRateMode}
-          disabled={!stableBorrowRateEnabled || isFrozen || !isActive || isPaused}
-          onClick={onOpenRateSwitch}
-          stableBorrowAPY={stableBorrowAPY}
-          variableBorrowAPY={variableBorrowAPY}
-          underlyingAsset={underlyingAsset}
-          currentMarket={currentMarket}
-        />
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
