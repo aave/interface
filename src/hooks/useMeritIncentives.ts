@@ -53,7 +53,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData>> 
       protocolAction: ProtocolAction.borrow,
       customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
     },
-    wBTC: {
+    WBTC: {
       action: MeritAction.SUPPLY_WBTC_BORROW_USDT,
       rewardTokenAddress: AaveV3Ethereum.ASSETS.USDT.A_TOKEN,
       rewardTokenSymbol: 'aEthUSDT',
