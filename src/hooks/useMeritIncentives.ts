@@ -7,6 +7,7 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
+  SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
 }
 
 type MeritIncentives = {
@@ -51,6 +52,20 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData>> 
       rewardTokenSymbol: 'aEthUSDC',
       protocolAction: ProtocolAction.borrow,
       customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+    },
+    wBTC: {
+      action: MeritAction.SUPPLY_WBTC_BORROW_USDT,
+      rewardTokenAddress: AaveV3Ethereum.ASSETS.USDT.A_TOKEN,
+      rewardTokenSymbol: 'aEthUSDT',
+      protocolAction: ProtocolAction.supply,
+      customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
+    },
+    USDT: {
+      action: MeritAction.SUPPLY_WBTC_BORROW_USDT,
+      rewardTokenAddress: AaveV3Ethereum.ASSETS.USDT.A_TOKEN,
+      rewardTokenSymbol: 'aEthUSDT',
+      protocolAction: ProtocolAction.borrow,
+      customMessage: 'You must supply cbBTC and borrow USDT in order to receive merit rewards.',
     },
   },
 };
