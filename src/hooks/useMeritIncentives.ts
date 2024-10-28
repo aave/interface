@@ -98,7 +98,11 @@ export const useMeritIncentives = ({
         return null;
       }
 
-      const APR = data.actionsAPR[meritReserveIncentiveData.action];
+      const APR =
+        meritReserveIncentiveData.action == MeritAction.SUPPLY_WBTC_BORROW_USDT
+          ? 5
+          : data.actionsAPR[meritReserveIncentiveData.action];
+
       return {
         incentiveAPR: (APR / 100).toString(),
         rewardTokenAddress: meritReserveIncentiveData.rewardTokenAddress,
