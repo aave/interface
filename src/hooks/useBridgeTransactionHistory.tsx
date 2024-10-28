@@ -1,10 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
-import {
-  getDestinationChainFor,
-  laneConfig,
-} from 'src/components/transactions/Bridge/BridgeConfig';
+import { getChainIdFor, laneConfig } from 'src/components/transactions/Bridge/BridgeConfig';
 
 type SubgraphBridgeTransaction = {
   id: string;
@@ -20,6 +17,7 @@ type SubgraphBridgeTransaction = {
     token: string;
   }[];
   transactionHash: string;
+  destChainSelector: string;
 };
 
 export type BridgeTransaction = {
@@ -64,6 +62,7 @@ const sendRequestsQuery = gql`
         token
       }
       transactionHash
+      destChainSelector
     }
   }
 `;
@@ -80,7 +79,7 @@ const getSendRequests = async (url: string, sender: string) => {
   return result.ccipsendRequests
     .map<BridgeTransaction>((tx) => {
       const sourceChainId = networkNameToChainId[tx.network];
-      const destinationChainId = getDestinationChainFor(sourceChainId, tx.address);
+      const destinationChainId = getChainIdFor(tx.destChainSelector);
       if (!destinationChainId) {
         throw new Error(`No destination chain found`);
       }
