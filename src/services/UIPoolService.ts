@@ -7,6 +7,7 @@ import {
 } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 export type UserReservesDataHumanized = {
   userReserves: UserReserveDataHumanized[];
@@ -35,6 +36,7 @@ export class UiPoolService {
 
   private useLegacyUiPoolDataProvider(marketData: MarketDataType) {
     if (
+      ENABLE_TESTNET ||
       !marketData.v3 ||
       marketData.marketTitle === 'Fantom' ||
       marketData.marketTitle === 'Harmony'
