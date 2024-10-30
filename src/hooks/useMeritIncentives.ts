@@ -65,7 +65,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData>> 
       rewardTokenAddress: AaveV3Ethereum.ASSETS.USDT.A_TOKEN,
       rewardTokenSymbol: 'aEthUSDT',
       protocolAction: ProtocolAction.borrow,
-      customMessage: 'You must supply cbBTC and borrow USDT in order to receive merit rewards.',
+      customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
     },
   },
 };
