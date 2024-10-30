@@ -269,7 +269,7 @@ export const MigrationListItem = ({
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ width: '50px', background: 'white' }}
+                sx={{ width: '50px', background: theme.palette.background.paper }}
                 disabled
               >
                 <Typography variant="buttonS" color={baseColor}>
@@ -287,7 +287,7 @@ export const MigrationListItem = ({
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ width: '50px', background: 'white' }}
+                sx={{ width: '50px', background: theme.palette.background.paper }}
                 disabled
               >
                 <Typography variant="buttonS" color={baseColor}>
