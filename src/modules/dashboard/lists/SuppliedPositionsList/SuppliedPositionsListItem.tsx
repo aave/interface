@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -6,7 +7,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
-import { showExternalIncentivesTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -62,7 +63,7 @@ export const SuppliedPositionsListItem = ({
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         reserve.symbol,
         currentMarket,
-        Side.SUPPLY
+        ProtocolAction.supply
       )}
     >
       <ListValueColumn
@@ -74,6 +75,8 @@ export const SuppliedPositionsListItem = ({
 
       <ListAPRColumn
         value={Number(reserve.supplyAPY)}
+        market={currentMarket}
+        protocolAction={ProtocolAction.supply}
         incentives={aIncentivesData}
         symbol={reserve.symbol}
       />

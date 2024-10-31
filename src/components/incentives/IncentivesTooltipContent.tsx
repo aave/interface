@@ -33,6 +33,16 @@ const IncentivesSymbolMap: {
     symbol: 'awstETH',
     aToken: true,
   },
+  aEthUSDC: {
+    tokenIconSymbol: 'USDC',
+    symbol: 'aUSDC',
+    aToken: true,
+  },
+  aEthUSDT: {
+    tokenIconSymbol: 'USDT',
+    symbol: 'aUSDT',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {

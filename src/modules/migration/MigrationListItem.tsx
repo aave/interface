@@ -1,4 +1,3 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
@@ -65,14 +64,10 @@ export const MigrationListItem = ({
   const loadingRates = v3Rates?.ltv === undefined && v3Rates?.liquidationThreshold === undefined;
 
   const v2APY = borrowApyType
-    ? borrowApyType === InterestRate.Stable
-      ? userReserve.stableBorrowAPY
-      : userReserve.reserve.variableBorrowAPY
+    ? userReserve.reserve.variableBorrowAPY
     : userReserve.reserve.supplyAPY;
   const v2Incentives = borrowApyType
-    ? borrowApyType === InterestRate.Stable
-      ? userReserve.reserve.sIncentivesData
-      : userReserve.reserve.vIncentivesData
+    ? userReserve.reserve.vIncentivesData
     : userReserve.reserve.aIncentivesData;
   const v3APY = borrowApyType ? v3Rates?.variableBorrowAPY || '-1' : v3Rates?.supplyAPY || '-1';
   const v3Incentives = borrowApyType
@@ -274,7 +269,7 @@ export const MigrationListItem = ({
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ width: '50px', background: 'white' }}
+                sx={{ width: '50px', background: theme.palette.background.paper }}
                 disabled
               >
                 <Typography variant="buttonS" color={baseColor}>
@@ -292,7 +287,7 @@ export const MigrationListItem = ({
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ width: '50px', background: 'white' }}
+                sx={{ width: '50px', background: theme.palette.background.paper }}
                 disabled
               >
                 <Typography variant="buttonS" color={baseColor}>

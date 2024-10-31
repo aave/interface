@@ -29,8 +29,8 @@ export const ListLoader = ({ title, withTopMargin, head }: ListLoaderProps) => {
         {!downToXSM && <ListHeader head={head} />}
         {!downToXSM ? (
           <>
-            <ListItemLoader />
-            <ListItemLoader />
+            <ListItemLoader columns={head.length} />
+            <ListItemLoader columns={head.length} />
           </>
         ) : (
           <MobileListItemLoader />
