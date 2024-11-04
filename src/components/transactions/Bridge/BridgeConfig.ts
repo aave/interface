@@ -122,7 +122,7 @@ const testnetConfig: Config[] = [
     router: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59',
     tokenOracle: '0x98458D6A99489F15e6eB5aFa67ACFAcf6F211051', // mock oracle
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
-    subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-sepolia/version/latest',
+    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8NWTrc4S6xwaBbajongofytQfQisqYm1zR2ghGEtRFSc`,
     feeTokens: [
       {
         name: 'Gho Token',
@@ -160,7 +160,7 @@ const testnetConfig: Config[] = [
     router: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165',
     tokenOracle: '0x1f885520b7BD528E46b390040F12E753Dce43004', // mock oracle
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
-    subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-arb-sepolia/version/latest',
+    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8bpqvL6XBCVhN4heE9rdEwgTketeZ2U5vVGEh5fDoUEH`,
     feeTokens: [
       {
         name: 'Gho Token',
