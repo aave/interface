@@ -12,6 +12,7 @@ type SubgraphBridgeTransaction = {
   message_sender: string;
   message_receiver: string;
   message_sequenceNumber: string;
+  message_sourceChainSelector: string;
   message_tokenAmounts: {
     amount: string;
     token: string;
@@ -37,15 +38,6 @@ export type BridgeTransaction = {
   transactionHash: string;
 };
 
-const networkNameToChainId: { [networkName: string]: ChainId } = {
-  'base-sepolia': ChainId.base_sepolia,
-  'arbitrum-sepolia': ChainId.arbitrum_sepolia,
-  sepolia: ChainId.sepolia,
-  'avalanche-testnet': ChainId.fuji,
-  mainnet: ChainId.mainnet,
-  'arbitrum-one': ChainId.arbitrum_one,
-};
-
 const sendRequestsQuery = gql`
   query getSendRequests($sender: String!) {
     ccipsendRequests(where: { message_sender: $sender }) {
@@ -57,6 +49,7 @@ const sendRequestsQuery = gql`
       message_sender
       message_receiver
       message_sequenceNumber
+      message_sourceChainSelector
       message_tokenAmounts {
         amount
         token
@@ -77,27 +70,32 @@ const getSendRequests = async (url: string, sender: string) => {
   );
 
   return result.ccipsendRequests
-    .map<BridgeTransaction>((tx) => {
-      const sourceChainId = networkNameToChainId[tx.network];
-      const destinationChainId = getChainIdFor(tx.destChainSelector);
-      if (!destinationChainId) {
-        throw new Error(`No destination chain found`);
-      }
+    .map((tx) => {
+      try {
+        // If this throws, it's because there was a tx to a chain that is not currently
+        // supported in the UI (should mainly just be testnets). Just filter out those txs.
+        const sourceChainId = getChainIdFor(tx.message_sourceChainSelector);
+        const destinationChainId = getChainIdFor(tx.destChainSelector);
 
-      return {
-        id: tx.id,
-        onRampAddress: tx.address,
-        sourceNetwork: tx.network,
-        sourceChainId,
-        destinationChainId,
-        blockTimestamp: Number(tx.blockTimestamp),
-        sender: tx.message_sender,
-        receiver: tx.message_receiver,
-        sequenceNumber: tx.message_sequenceNumber,
-        tokenAmounts: tx.message_tokenAmounts,
-        transactionHash: tx.transactionHash,
-      };
+        return {
+          id: tx.id,
+          onRampAddress: tx.address,
+          sourceNetwork: tx.network,
+          sourceChainId,
+          destinationChainId,
+          blockTimestamp: Number(tx.blockTimestamp),
+          sender: tx.message_sender,
+          receiver: tx.message_receiver,
+          sequenceNumber: tx.message_sequenceNumber,
+          tokenAmounts: tx.message_tokenAmounts,
+          transactionHash: tx.transactionHash,
+        };
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
     })
+    .filter((tx): tx is BridgeTransaction => tx !== null)
     .sort((a, b) => b.blockTimestamp - a.blockTimestamp);
 };
 
