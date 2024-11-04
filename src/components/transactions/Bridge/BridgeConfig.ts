@@ -146,20 +146,20 @@ const testnetConfig: Config[] = [
       },
     ],
     feeTokens: [
-      {
-        name: 'Gho Token',
-        address: AaveV3Sepolia.ASSETS.GHO.UNDERLYING,
-        symbol: 'GHO',
-        decimals: 18,
-        chainId: 11155111,
-        logoURI:
-          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-        oracle: AaveV3Sepolia.ASSETS.GHO.ORACLE,
-        extensions: {
-          isNative: false,
-        },
-        balance: '0',
-      },
+      // {
+      //   name: 'Gho Token',
+      //   address: AaveV3Sepolia.ASSETS.GHO.UNDERLYING,
+      //   symbol: 'GHO',
+      //   decimals: 18,
+      //   chainId: 11155111,
+      //   logoURI:
+      //     'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+      //   oracle: AaveV3Sepolia.ASSETS.GHO.ORACLE,
+      //   extensions: {
+      //     isNative: false,
+      //   },
+      //   balance: '0',
+      // },
       {
         name: 'Ethereum',
         symbol: 'ETH',
@@ -190,20 +190,20 @@ const testnetConfig: Config[] = [
       },
     ],
     feeTokens: [
-      {
-        name: 'Gho Token',
-        address: AaveV3Sepolia.ASSETS.GHO.UNDERLYING,
-        symbol: 'GHO',
-        decimals: 18,
-        chainId: 421614,
-        logoURI:
-          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-        oracle: AaveV3Sepolia.ASSETS.GHO.ORACLE,
-        extensions: {
-          isNative: false,
-        },
-        balance: '0',
-      },
+      // {
+      //   name: 'Gho Token',
+      //   address: AaveV3Sepolia.ASSETS.GHO.UNDERLYING,
+      //   symbol: 'GHO',
+      //   decimals: 18,
+      //   chainId: 421614,
+      //   logoURI:
+      //     'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+      //   oracle: AaveV3Sepolia.ASSETS.GHO.ORACLE,
+      //   extensions: {
+      //     isNative: false,
+      //   },
+      //   balance: '0',
+      // },
       {
         name: 'Ethereum',
         symbol: 'ETH',
