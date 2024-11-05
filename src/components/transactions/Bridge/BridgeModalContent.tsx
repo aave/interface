@@ -295,11 +295,10 @@ export const BridgeModalContent = () => {
     </TextWithTooltip>
   );
 
-  // string formatting for tx display
   const amountUsd = Number(amount) * sourceTokenInfo.tokenPriceUSD;
-  const parsedAmountBn = new BigNumber(amount || '0'); // 20 GHO
-  const parsedBridgeFee = new BigNumber(bridgeFeeFormatted || '0'); // 15.59 GHO
-  const parsedWalletBalance = new BigNumber(selectedFeeToken.balance || '0'); // 24.11 GHO
+  const parsedAmountBn = new BigNumber(amount || '0');
+  const parsedBridgeFee = new BigNumber(bridgeFeeFormatted || '0');
+  const parsedWalletBalance = new BigNumber(selectedFeeToken.balance || '0');
 
   // Calculate amount after fee (this is the amount that will actually be bridged)
   const amountAfterFee =
