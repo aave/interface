@@ -38,7 +38,6 @@ export const useGetBridgeMessage = ({
       const provider = getProvider(sourceChainId);
       const sourceRouterAddress = getRouterFor(sourceChainId);
       const sourceRouter = new Contract(sourceRouterAddress, routerAbi, provider);
-
       try {
         const tokenAmounts: TokenAmount[] = [
           {
@@ -67,7 +66,16 @@ export const useGetBridgeMessage = ({
         const fees: BigNumber = await sourceRouter.getFee(destinationChainSelector, message);
 
         const amountBN = utils.parseUnits(amount, 18);
-        const updatedAmount = amountBN.sub(fees);
+
+        let updatedAmount;
+
+        // If amount is less than fees, keep the original amount and take fees from balance
+        if (amountBN.lt(fees)) {
+          updatedAmount = amountBN;
+        } else {
+          // Subtract fees from amount
+          updatedAmount = amountBN.sub(fees);
+        }
 
         // If the fee token is not the native token, we need to update the tokenAmounts to subtract fees
         if (feeToken !== constants.AddressZero) {

@@ -221,25 +221,6 @@ export const BridgeModalContent = () => {
     setSelectedFeeToken(newFilteredFeeTokens[0]);
   };
 
-  const bridgeActionsProps: BridgeActionProps = {
-    amountToBridge: amount,
-    isWrongNetwork,
-    symbol: GHO_SYMBOL,
-    blocked:
-      loadingBridgeMessage ||
-      !destinationAccount ||
-      bridgeLimitExceeded ||
-      rateLimitExceeded ||
-      loadingLimits,
-    decimals: 18,
-    message,
-    fees: bridgeFee,
-    sourceChainId: sourceNetworkObj.chainId,
-    destinationChainId: destinationNetworkObj.chainId,
-    tokenAddress: sourceTokenInfo?.address || constants.AddressZero,
-    isCustomFeeToken: selectedFeeToken.address !== constants.AddressZero,
-  };
-
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
@@ -316,10 +297,43 @@ export const BridgeModalContent = () => {
 
   // string formatting for tx display
   const amountUsd = Number(amount) * sourceTokenInfo.tokenPriceUSD;
-  const parsedAmountFee = new BigNumber(amount || '0');
-  const parsedBridgeFee = new BigNumber(bridgeFeeFormatted || '0');
-  const amountAfterFee = parsedAmountFee.minus(parsedBridgeFee);
+  const parsedAmountBn = new BigNumber(amount || '0'); // 20 GHO
+  const parsedBridgeFee = new BigNumber(bridgeFeeFormatted || '0'); // 15.59 GHO
+  const parsedWalletBalance = new BigNumber(selectedFeeToken.balance || '0'); // 24.11 GHO
+
+  // Calculate amount after fee (this is the amount that will actually be bridged)
+  const amountAfterFee =
+    selectedFeeToken.address !== constants.AddressZero
+      ? BigNumber.max(parsedAmountBn.minus(parsedBridgeFee), new BigNumber(0))
+      : parsedAmountBn;
   const amountAfterFeeFormatted = amountAfterFee.toString();
+
+  // Check if we have enough balance for both amount and fee
+  let hasSufficientBalance = true;
+  if (selectedFeeToken.address !== constants.AddressZero) {
+    const totalRequired = parsedAmountBn.plus(parsedBridgeFee);
+    hasSufficientBalance = parsedWalletBalance.gte(totalRequired);
+  }
+
+  const bridgeActionsProps: BridgeActionProps = {
+    amountToBridge: amount,
+    isWrongNetwork,
+    symbol: GHO_SYMBOL,
+    blocked:
+      loadingBridgeMessage ||
+      !destinationAccount ||
+      bridgeLimitExceeded ||
+      rateLimitExceeded ||
+      loadingLimits ||
+      !hasSufficientBalance,
+    decimals: 18,
+    message,
+    fees: bridgeFee,
+    sourceChainId: sourceNetworkObj.chainId,
+    destinationChainId: destinationNetworkObj.chainId,
+    tokenAddress: sourceTokenInfo?.address || constants.AddressZero,
+    isCustomFeeToken: selectedFeeToken.address !== constants.AddressZero,
+  };
 
   return (
     <>
@@ -616,6 +630,20 @@ export const BridgeModalContent = () => {
               </Typography>
             </Warning>
           )}
+
+          {selectedFeeToken.address !== constants.AddressZero &&
+            !hasSufficientBalance &&
+            amount !== '' &&
+            !loadingBridgeMessage && (
+              <Warning severity="warning" sx={{ mt: 4 }} icon={false}>
+                <Typography variant="caption">
+                  <Trans>
+                    You dont have enough balance to cover with fees. Switch the fee token to network
+                    token.
+                  </Trans>
+                </Typography>
+              </Warning>
+            )}
 
           {/* {bridgeLimitExceeded && (
             <Warning severity="error" sx={{ mt: 4 }} icon={false}>

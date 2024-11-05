@@ -3157,6 +3157,10 @@ msgstr "You do not have supplies in this currency"
 msgid "You don't have any bridge transactions"
 msgstr "You don't have any bridge transactions"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "You dont have enough balance to cover with fees. Switch the fee token to network token."
+msgstr "You dont have enough balance to cover with fees. Switch the fee token to network token."
+
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
