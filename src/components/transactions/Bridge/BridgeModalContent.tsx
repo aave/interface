@@ -3,16 +3,12 @@ import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
-  FormControl,
   IconButton,
-  MenuItem,
-  Select,
   SelectChangeEvent,
   Skeleton,
   Stack,
   SvgIcon,
   Typography,
-  useTheme,
 } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
@@ -20,9 +16,7 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
-import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
@@ -53,6 +47,7 @@ import {
   SupportedNetworkWithChainId,
 } from './BridgeConfig';
 import { BridgeDestinationInput } from './BridgeDestinationInput';
+import { BridgeFeeTokenSelector } from './BridgeFeeTokenSelector';
 import { useGetBridgeLimit, useGetRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
 import { useTimeToDestination } from './useGetFinalityTime';
@@ -66,7 +61,6 @@ export const BridgeModalContent = () => {
   const [destinationAccount, setDestinationAccount] = useState(user);
   const [amount, setAmount] = useState('');
   const [maxSelected, setMaxSelected] = useState(false);
-  const theme = useTheme();
 
   const { readOnlyModeAddress, chainId: currentChainId } = useWeb3Context();
 
@@ -91,7 +85,7 @@ export const BridgeModalContent = () => {
 
   const filteredFeeTokensByChainId = getFilteredFeeTokens(sourceNetworkObj.chainId);
 
-  const { data: feeTokenListWithBalance } = useTokensBalance(
+  const { data: feeTokenListWithBalance, isFetching: loadingTokenBalances } = useTokensBalance(
     filteredFeeTokensByChainId,
     sourceNetworkObj.chainId,
     user
@@ -106,7 +100,7 @@ export const BridgeModalContent = () => {
   );
 
   const handleTokenChange = (event: SelectChangeEvent) => {
-    const token = feeTokenListWithBalance?.find((token) => token.address === event.target.value);
+    const token = feeTokenListWithBalance?.find((token) => token.symbol === event.target.value);
 
     if (token) {
       setSelectedFeeToken(token);
@@ -221,16 +215,34 @@ export const BridgeModalContent = () => {
     setSelectedFeeToken(newFilteredFeeTokens[0]);
   };
 
+  // string formatting for tx display
+  const amountUsd = Number(amount) * sourceTokenInfo.tokenPriceUSD;
+  const parsedAmountFee = new BigNumber(amount || '0');
+  const parsedBridgeFee = new BigNumber(bridgeFeeFormatted || '0');
+  const amountAfterFee = BigNumber.max(0, parsedAmountFee.minus(parsedBridgeFee));
+  const amountAfterFeeFormatted = amountAfterFee.toString();
+  const feeTokenBalance =
+    feeTokenListWithBalance?.find((t) => t.address === selectedFeeToken.address)?.balance || '0';
+
+  const feesExceedWalletBalance =
+    !loadingBridgeMessage &&
+    !loadingTokenBalances &&
+    amountUsd !== 0 &&
+    ((selectedFeeToken.address !== constants.AddressZero && amountAfterFee.lte(0)) ||
+      (selectedFeeToken.address === constants.AddressZero && parsedBridgeFee.gte(feeTokenBalance)));
+
   const bridgeActionsProps: BridgeActionProps = {
     amountToBridge: amount,
     isWrongNetwork,
     symbol: GHO_SYMBOL,
     blocked:
       loadingBridgeMessage ||
+      loadingTokenBalances ||
       !destinationAccount ||
       bridgeLimitExceeded ||
       rateLimitExceeded ||
-      loadingLimits,
+      loadingLimits ||
+      feesExceedWalletBalance,
     decimals: 18,
     message,
     fees: bridgeFee,
@@ -271,23 +283,6 @@ export const BridgeModalContent = () => {
     );
   }
 
-  const feeTooltip = (
-    <TextWithTooltip text={<Trans>Fee</Trans>}>
-      <Trans>
-        This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You
-        can chose to pay in the network token or GHO.{' '}
-        <Link
-          href="https://docs.chain.link/ccip/billing"
-          sx={{ textDecoration: 'underline' }}
-          variant="caption"
-          color="text.secondary"
-        >
-          Learn more
-        </Link>
-      </Trans>
-    </TextWithTooltip>
-  );
-
   const estimatedTimeTooltip = (
     <TextWithTooltip text={<Trans>Estimated time</Trans>}>
       <Trans>
@@ -313,13 +308,6 @@ export const BridgeModalContent = () => {
       </Trans>
     </TextWithTooltip>
   );
-
-  // string formatting for tx display
-  const amountUsd = Number(amount) * sourceTokenInfo.tokenPriceUSD;
-  const parsedAmountFee = new BigNumber(amount || '0');
-  const parsedBridgeFee = new BigNumber(bridgeFeeFormatted || '0');
-  const amountAfterFee = parsedAmountFee.minus(parsedBridgeFee);
-  const amountAfterFeeFormatted = amountAfterFee.toString();
 
   return (
     <>
@@ -456,128 +444,29 @@ export const BridgeModalContent = () => {
             />
           </Box>
           <TxModalDetails gasLimit={gasLimit} chainId={sourceNetworkObj.chainId}>
-            <>
-              <DetailsNumberLine
-                description={'Amount'}
-                iconSymbol={GHO_SYMBOL}
-                symbol={GHO_SYMBOL}
-                value={amount}
-              />
-
-              <Row caption={feeTooltip} captionVariant="description" mb={4}>
-                <FormControl fullWidth>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    {/* <Typography color="text.secondary">
-                    <Trans>Fee Token</Trans>
-                  </Typography> */}
-                  </Box>
-                  <Select
-                    labelId="token-select-label"
-                    value={selectedFeeToken.address}
-                    onChange={handleTokenChange}
-                    sx={{
-                      fontSize: '1.0em',
-                      width: 'auto',
-                      height: '24px',
-                      minWidth: '70px',
-                      borderRadius: '4px',
-                      mb: 0.5,
-                      maxWidth: '80px',
-                      '.MuiSelect-select': {
-                        backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-
-                        paddingLeft: '2px',
-                      },
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        border: 'none',
-                      },
-                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                        border: 'none',
-                      },
-                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        border: 'none',
-                      },
-                    }}
-                    MenuProps={{
-                      PaperProps: {
-                        sx: {
-                          backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-                          fontSize: '1.0em',
-                        },
-                      },
-                    }}
-                  >
-                    {feeTokenListWithBalance &&
-                      feeTokenListWithBalance.map((token) => (
-                        <MenuItem
-                          key={token.address}
-                          value={token.address}
-                          sx={{
-                            backgroundColor: theme.palette.mode === 'dark' ? '#383D51' : '#FFFFFF',
-                            '&:hover': {
-                              backgroundColor:
-                                theme.palette.mode === 'dark' ? '#292E41' : '#EAEBEF',
-                            },
-                            '&.Mui-selected, &.Mui-selected:hover': {
-                              backgroundColor:
-                                theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-                              boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
-                            },
-                          }}
-                        >
-                          <Box display="flex" alignItems={'center'}>
-                            <TokenIcon
-                              sx={{ fontSize: '1em', paddingRight: '4px' }}
-                              symbol={token.symbol}
-                            />
-                            {token.symbol}
-                          </Box>
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
-                {!message && !loadingBridgeMessage ? (
-                  <NoData variant="secondary14" color="text.secondary" />
-                ) : loadingBridgeMessage ? (
-                  <Skeleton
-                    variant="rectangular"
-                    height={20}
-                    width={100}
-                    sx={{ borderRadius: '4px' }}
-                  />
-                ) : (
-                  <Stack direction="column" alignItems="flex-end" position="relative">
-                    <Stack direction="row" alignItems="center">
-                      <TokenIcon
-                        symbol={selectedFeeToken?.symbol}
-                        sx={{ mr: 1, fontSize: '16px' }}
-                      />
-                      <FormattedNumber
-                        value={bridgeFeeFormatted}
-                        symbol={selectedFeeToken?.symbol}
-                        variant="secondary14"
-                      />
-                    </Stack>
-                    <FormattedNumber
-                      value={bridgeFeeUSD}
-                      variant="helperText"
-                      compact
-                      symbol="USD"
-                      color="text.secondary"
-                      sx={{ position: 'absolute', top: '20px' }}
-                    />
-                  </Stack>
-                )}
-              </Row>
-            </>
-            {selectedFeeToken.address !== constants.AddressZero ? (
+            <DetailsNumberLine
+              description={'Amount'}
+              iconSymbol={GHO_SYMBOL}
+              symbol={GHO_SYMBOL}
+              value={amount}
+            />
+            <BridgeFeeTokenSelector
+              feeTokens={feeTokenListWithBalance || []}
+              selectedFeeToken={selectedFeeToken}
+              onFeeTokenChanged={handleTokenChange}
+              bridgeFeeFormatted={bridgeFeeFormatted}
+              bridgeFeeUSD={bridgeFeeUSD}
+              loading={loadingBridgeMessage || loadingTokenBalances}
+            />
+            {selectedFeeToken.address !== constants.AddressZero && (
               <DetailsNumberLine
                 description={amountWithFee}
                 iconSymbol={GHO_SYMBOL}
                 symbol={GHO_SYMBOL}
                 value={amountAfterFeeFormatted}
+                loading={loadingBridgeMessage || loadingTokenBalances}
               />
-            ) : null}
+            )}
             <Row caption={estimatedTimeTooltip} captionVariant="description" mb={4}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {loadingEstimatedTime ? (
@@ -606,6 +495,13 @@ export const BridgeModalContent = () => {
                 )}
               </Box> */}
             <Row /> {/* Spacer */}
+            {feesExceedWalletBalance && (
+              <Warning severity="warning" sx={{ my: 0 }}>
+                <Typography variant="caption">
+                  <Trans>Fees exceed wallet balance</Trans>
+                </Typography>
+              </Warning>
+            )}
           </TxModalDetails>
           {txError && <GasEstimationError txError={txError} />}
 
@@ -650,7 +546,7 @@ export const BridgeModalContent = () => {
               </Typography>
             </Warning>
           )}
-          {selectedFeeToken && parseFloat(selectedFeeToken.balance) < 0 && (
+          {/* {selectedFeeToken && parseFloat(selectedFeeToken.balance) < 0 && (
             <Warning severity="warning" sx={{ my: 2 }}>
               <Stack direction="row">
                 <Typography variant="caption">
@@ -661,7 +557,7 @@ export const BridgeModalContent = () => {
                 </Typography>
               </Stack>
             </Warning>
-          )}
+          )} */}
 
           <BridgeActions {...bridgeActionsProps} />
         </>
