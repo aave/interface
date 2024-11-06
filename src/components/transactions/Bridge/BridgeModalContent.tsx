@@ -546,18 +546,6 @@ export const BridgeModalContent = () => {
               </Typography>
             </Warning>
           )}
-          {/* {selectedFeeToken && parseFloat(selectedFeeToken.balance) < 0 && (
-            <Warning severity="warning" sx={{ my: 2 }}>
-              <Stack direction="row">
-                <Typography variant="caption">
-                  <Trans>
-                    You do not have a balance to pay for CCIP fee with your {selectedFeeToken.name},
-                    try changing to another token.
-                  </Trans>
-                </Typography>
-              </Stack>
-            </Warning>
-          )} */}
 
           <BridgeActions {...bridgeActionsProps} />
         </>
