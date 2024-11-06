@@ -21,10 +21,6 @@ type Config = {
   wrappedNativeOracle: string; // Used to get the fee price in USD
   lockReleaseTokenPool?: string; // Only exists on Ethereum
   burnMintTokenPool?: string; // Only exists on non-Ethereum networks
-  destinations: {
-    destinationChainId: ChainId;
-    onRamp: string;
-  }[];
   feeTokens: TokenInfoWithBalance[];
 };
 
@@ -48,12 +44,6 @@ const prodConfig: Config[] = [
     tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc',
     wrappedNativeOracle: AaveV3Ethereum.ASSETS.WETH.ORACLE,
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/E11p8T4Ff1DHZbwSUC527hkUb5innVMdTuP6A2s1xtm1`,
-    destinations: [
-      {
-        destinationChainId: ChainId.arbitrum_one,
-        onRamp: '0x925228d7b82d883dde340a55fe8e6da56244a22c',
-      },
-    ],
     feeTokens: [
       {
         name: 'Gho Token',
@@ -92,12 +82,6 @@ const prodConfig: Config[] = [
     tokenOracle: '0xb05984ad83c20b3ade7bf97a9a0cb539dde28dbb',
     wrappedNativeOracle: AaveV3Arbitrum.ASSETS.WETH.ORACLE,
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/GPpZfiGoDChLsiWoMG5fxXdRNEYrsVDrKJ39moGcbz6i`,
-    destinations: [
-      {
-        destinationChainId: ChainId.mainnet,
-        onRamp: '0xce11020d56e5fdbfe46d9fc3021641ffbbb5adee',
-      },
-    ],
     feeTokens: [
       {
         name: 'Gho Token',
@@ -138,13 +122,7 @@ const testnetConfig: Config[] = [
     router: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59',
     tokenOracle: '0x98458D6A99489F15e6eB5aFa67ACFAcf6F211051', // mock oracle
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
-    subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-sepolia/version/latest',
-    destinations: [
-      {
-        destinationChainId: ChainId.arbitrum_sepolia,
-        onRamp: '0xBc09627e58989Ba8F1eDA775e486467d2A00944F',
-      },
-    ],
+    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8NWTrc4S6xwaBbajongofytQfQisqYm1zR2ghGEtRFSc`,
     feeTokens: [
       // {
       //   name: 'Gho Token',
@@ -182,13 +160,7 @@ const testnetConfig: Config[] = [
     router: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165',
     tokenOracle: '0x1f885520b7BD528E46b390040F12E753Dce43004', // mock oracle
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
-    subgraphUrl: 'https://api.studio.thegraph.com/query/75867/gho-ccip-arb-sepolia/version/latest',
-    destinations: [
-      {
-        destinationChainId: ChainId.sepolia,
-        onRamp: '0x64d78F20aD987c7D52FdCB8FB0777bD00de53210',
-      },
-    ],
+    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8bpqvL6XBCVhN4heE9rdEwgTketeZ2U5vVGEh5fDoUEH`,
     feeTokens: [
       // {
       //   name: 'Gho Token',
@@ -233,6 +205,16 @@ export function getChainSelectorFor(chainId: ChainId) {
   return chainSelector;
 }
 
+export function getChainIdFor(chainSelector: string) {
+  const chainId = laneConfig.find(
+    (config) => config.chainSelector === chainSelector
+  )?.sourceChainId;
+  if (!chainId) {
+    throw new Error(`No chainId found for chainSelector ${chainSelector}`);
+  }
+  return chainId;
+}
+
 export function getRouterFor(chainId: ChainId) {
   const router = laneConfig.find((config) => config.sourceChainId === chainId)?.router;
   if (!router) {
@@ -243,16 +225,6 @@ export function getRouterFor(chainId: ChainId) {
 
 export function getSupportedSourceChains() {
   return laneConfig.map((config) => config.sourceChainId);
-}
-
-export function getDestinationChainFor(sourceChainId: ChainId, onRamp: string) {
-  const destinationChainId = laneConfig
-    .find((config) => config.sourceChainId === sourceChainId)
-    ?.destinations.find((dest) => dest.onRamp === onRamp)?.destinationChainId;
-  if (!destinationChainId) {
-    throw new Error(`No destination chain found for onRamp ${onRamp}`);
-  }
-  return destinationChainId;
 }
 
 export function getConfigFor(sourceChainId: ChainId) {
