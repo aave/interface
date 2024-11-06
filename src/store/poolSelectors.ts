@@ -1,9 +1,9 @@
 import { EmodeCategory } from 'src/helpers/types';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { CustomMarket, marketsData, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 export const selectCurrentChainIdMarkets = (
   chainId: number,
