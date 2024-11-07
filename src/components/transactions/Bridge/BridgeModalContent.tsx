@@ -12,9 +12,8 @@ import {
 } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { constants } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
@@ -40,6 +39,7 @@ import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActionProps, BridgeActions } from './BridgeActions';
+import { BridgeAmount } from './BridgeAmount';
 import {
   getConfigFor,
   laneConfig,
@@ -52,7 +52,7 @@ import { useGetBridgeLimit, useGetRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
 import { useTimeToDestination } from './useGetFinalityTime';
 
-const defaultNetwork = supportedNetworksWithBridge[0]; // TODO Remove for Production
+const defaultNetwork = supportedNetworksWithBridge[0];
 const defaultNetworkMarket = marketsData[defaultNetwork.chainId];
 
 export const BridgeModalContent = () => {
@@ -150,24 +150,10 @@ export const BridgeModalContent = () => {
     sourceNetworkObj.chainId
   );
 
-  const parsedAmount = parseUnits(amount || '0', 18);
-
   const { data: rateLimit, isFetching: fetchingRateLimit } = useGetRateLimit({
     destinationChainId: destinationNetworkObj?.chainId || 0,
     sourceChainId: sourceNetworkObj.chainId,
   });
-
-  let bridgeLimitExceeded = false;
-  if (!fetchingBridgeLimits && bridgeLimits && bridgeLimits.bridgeLimit.gt(0)) {
-    bridgeLimitExceeded = bridgeLimits.currentBridgedAmount
-      .add(parsedAmount)
-      .gt(bridgeLimits.bridgeLimit);
-  }
-
-  let rateLimitExceeded = false;
-  if (!fetchingRateLimit && rateLimit) {
-    rateLimitExceeded = rateLimit.gt(0) && parsedAmount.gt(rateLimit);
-  }
 
   const loadingLimits = fetchingBridgeLimits || fetchingRateLimit;
 
@@ -181,16 +167,21 @@ export const BridgeModalContent = () => {
       }
     };
 
-  const hasBridgeLimit = bridgeLimits?.bridgeLimit.gt(-1);
-
   let maxAmountReducedDueToBridgeLimit = false;
+  let maxAmountReducedDueToRateLimit = false;
   let maxAmountToBridge = sourceTokenInfo?.bridgeTokenBalance || '0';
-  const remainingBridgeLimit =
-    bridgeLimits?.bridgeLimit.sub(bridgeLimits?.currentBridgedAmount) || BigNumber(0);
-  if (!fetchingBridgeLimits && hasBridgeLimit) {
-    if (remainingBridgeLimit.lt(maxAmountToBridge)) {
-      maxAmountToBridge = remainingBridgeLimit.toString();
+  const hasBridgeLimit = bridgeLimits?.bridgeLimit !== '-1';
+  const remainingBridgeLimit = BigNumber(bridgeLimits?.remainingAmount || '0');
+
+  if (!fetchingBridgeLimits && bridgeLimits) {
+    if (hasBridgeLimit && remainingBridgeLimit.lt(maxAmountToBridge)) {
+      maxAmountToBridge = bridgeLimits.remainingAmount;
       maxAmountReducedDueToBridgeLimit = true;
+      maxAmountReducedDueToRateLimit = false;
+    } else if (rateLimit && BigNumber(rateLimit.tokens).lt(maxAmountToBridge)) {
+      maxAmountToBridge = rateLimit.tokens;
+      maxAmountReducedDueToRateLimit = true;
+      maxAmountReducedDueToBridgeLimit = false;
     }
   }
 
@@ -239,8 +230,6 @@ export const BridgeModalContent = () => {
       loadingBridgeMessage ||
       loadingTokenBalances ||
       !destinationAccount ||
-      bridgeLimitExceeded ||
-      rateLimitExceeded ||
       loadingLimits ||
       feesExceedWalletBalance,
     decimals: 18,
@@ -403,35 +392,13 @@ export const BridgeModalContent = () => {
                 iconSymbol: GHO_SYMBOL,
               },
             ]}
-            maxValue={
-              hasBridgeLimit
-                ? formatUnits(remainingBridgeLimit.toString(), 18)
-                : sourceTokenInfo.bridgeTokenBalanceFormatted
-            }
+            maxValue={maxAmountToBridgeFormatted}
             inputTitle={<Trans>Amount to Bridge</Trans>}
             balanceText={<Trans>GHO balance</Trans>}
             sx={{ width: '100%' }}
             loading={fetchingBridgeTokenBalance || loadingLimits}
             isMaxSelected={maxSelected}
           />
-
-          {amount !== '' &&
-            maxAmountReducedDueToBridgeLimit &&
-            maxSelected &&
-            !rateLimitExceeded && (
-              <Warning severity="warning" sx={{ my: 2 }}>
-                <Stack direction="row">
-                  <Typography variant="caption">
-                    Due to bridging limits, the maximum amount currently available to bridge is{' '}
-                    <FormattedNumber
-                      variant="caption"
-                      value={maxAmountToBridgeFormatted}
-                      visibleDecimals={2}
-                    />
-                  </Typography>
-                </Stack>
-              </Warning>
-            )}
 
           <Box sx={{ mt: 3 }}>
             <BridgeDestinationInput
@@ -444,11 +411,13 @@ export const BridgeModalContent = () => {
             />
           </Box>
           <TxModalDetails gasLimit={gasLimit} chainId={sourceNetworkObj.chainId}>
-            <DetailsNumberLine
-              description={'Amount'}
-              iconSymbol={GHO_SYMBOL}
-              symbol={GHO_SYMBOL}
-              value={amount}
+            <BridgeAmount
+              amount={amount}
+              maxAmountToBridgeFormatted={maxAmountToBridgeFormatted}
+              maxAmountReducedDueToBridgeLimit={maxSelected && maxAmountReducedDueToBridgeLimit}
+              maxAmountReducedDueToRateLimit={maxSelected && maxAmountReducedDueToRateLimit}
+              refillRate={rateLimit?.rate || '0'}
+              maxRateLimitCapacity={rateLimit?.capacity || '0'}
             />
             <BridgeFeeTokenSelector
               feeTokens={feeTokenListWithBalance || []}
@@ -509,40 +478,6 @@ export const BridgeModalContent = () => {
             <Warning severity="error" sx={{ mt: 4 }} icon={false}>
               <Typography variant="caption">
                 <Trans>Something went wrong fetching bridge message, please try again later.</Trans>
-              </Typography>
-            </Warning>
-          )}
-
-          {/* {bridgeLimitExceeded && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
-              <Typography variant="caption">
-                <Trans>
-                  The selected amount is not available to bridge due to the bridge limit of
-                </Trans>{' '}
-                {formatUnits(bridgeLimits?.bridgeLimit || 0, 18)}.{' '}
-                <Trans>Please try again later or reduce the amount to bridge</Trans>
-              </Typography>
-            </Warning>
-          )}
-
-          {rateLimitExceeded && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
-              <Typography variant="caption">
-                <Trans>
-                  The selected amount is not available to bridge due to CCIP rate limit of
-                </Trans>
-                <Trans>Please try again later or reduce the amount to bridge to less than</Trans>{' '}
-                {rateLimit}
-              </Typography>
-            </Warning>
-          )} */}
-          {rateLimitExceeded && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
-              <Typography variant="caption">
-                <Trans>
-                  Bridging is currently unavailable due to the rate limit being exceeded. Please try
-                  again later or reduce the amount to bridge.
-                </Trans>
               </Typography>
             </Warning>
           )}

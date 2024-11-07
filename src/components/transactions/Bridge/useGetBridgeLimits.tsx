@@ -20,8 +20,9 @@ export const useGetBridgeLimit = (sourceChainId: number) => {
       if (!tokenPoolAddress) {
         // only applies to the lock release token pool on Ethereum
         return {
-          bridgeLimit: BigNumber.from(-1),
-          currentBridgedAmount: BigNumber.from(-1),
+          bridgeLimit: '-1',
+          currentBridgedAmount: '-1',
+          remainingAmount: '-1',
         };
       }
 
@@ -33,8 +34,9 @@ export const useGetBridgeLimit = (sourceChainId: number) => {
       ]);
 
       return {
-        bridgeLimit,
-        currentBridgedAmount,
+        bridgeLimit: bridgeLimit.toString(),
+        currentBridgedAmount: currentBridgedAmount.toString(),
+        remainingAmount: bridgeLimit.sub(currentBridgedAmount).toString(),
       };
     },
     queryKey: ['getBridgeLimit', sourceChainId],
@@ -61,17 +63,30 @@ export const useGetRateLimit = ({ destinationChainId, sourceChainId }: RateLimit
         sourceLaneConfig.lockReleaseTokenPool ?? sourceLaneConfig.burnMintTokenPool;
 
       if (!tokenPoolAddress) {
-        return BigNumber.from(0);
+        return {
+          tokens: '0',
+          capacity: '0',
+          rate: '0',
+        };
       }
 
       const provider = getProvider(sourceChainId);
       const tokenPool = new Contract(tokenPoolAddress, TokenPoolAbi, provider);
       const destinationChainSelector = getChainSelectorFor(destinationChainId);
 
-      const [tokens, , isEnabled, ,]: [BigNumber, number, boolean, BigNumber, BigNumber] =
-        await tokenPool.getCurrentOutboundRateLimiterState(destinationChainSelector);
+      const [tokens, , isEnabled, capacity, rate]: [
+        BigNumber,
+        number,
+        boolean,
+        BigNumber,
+        BigNumber
+      ] = await tokenPool.getCurrentOutboundRateLimiterState(destinationChainSelector);
 
-      return isEnabled ? tokens : BigNumber.from(0);
+      return {
+        tokens: isEnabled ? tokens.toString() : '0',
+        capacity: capacity.toString(),
+        rate: rate.toString(),
+      };
     },
     queryKey: ['getRateLimit', destinationChainId, sourceChainId],
     cacheTime: 0,
