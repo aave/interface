@@ -210,6 +210,8 @@ msgid "Allows you to decide whether to use a supplied asset as collateral. An as
 msgstr "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Bridge/BridgeAmount.tsx
+#: src/components/transactions/Bridge/BridgeAmount.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
@@ -596,10 +598,6 @@ msgstr "Bridge {symbol}"
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Bridged Via CCIP"
 msgstr "Bridged Via CCIP"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "Bridging is currently unavailable due to the rate limit being exceeded. Please try again later or reduce the amount to bridge."
-msgstr "Bridging is currently unavailable due to the rate limit being exceeded. Please try again later or reduce the amount to bridge."
 
 #: src/components/transactions/Bridge/BridgeActions.tsx
 msgid "Bridging {symbol}"
@@ -1125,7 +1123,7 @@ msgstr "Faucet"
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
+#: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
 msgid "Fee"
 msgstr "Fee"
 
@@ -1133,6 +1131,10 @@ msgstr "Fee"
 #: src/layouts/FeedbackDialog.tsx
 msgid "Feedback"
 msgstr "Feedback"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Fees exceed wallet balance"
+msgstr "Fees exceed wallet balance"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
@@ -2516,6 +2518,10 @@ msgstr "The cooldown period is {0}. After {1} of cooldown, you will enter unstak
 msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 msgstr "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 
+#: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
+msgid "The fee includes the gas cost to complete the transaction on the destination chain and the fee paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
+msgstr "The fee includes the gas cost to complete the transaction on the destination chain and the fee paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
 msgstr "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
@@ -2635,10 +2641,6 @@ msgstr "This asset is frozen due to an Aave community decision. <0>More details<
 #: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
-msgstr "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
 
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
@@ -3144,10 +3146,6 @@ msgstr "You cancelled the transaction."
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "You did not participate in this proposal"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
-msgstr "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
