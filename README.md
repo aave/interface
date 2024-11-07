@@ -69,6 +69,6 @@ Just go to `<your favorite public ipfs gateway>/ipns/app.aave.com`
 
 [All Rights Reserved © Aave Labs](./LICENSE.md)
 
-## Credit
+## Credits
 
 To all the Ethereum community
