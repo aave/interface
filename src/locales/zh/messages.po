@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-27 12:07\n"
+"PO-Revision-Date: 2024-11-08 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -975,10 +975,6 @@ msgstr ""
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
 msgstr "由于变基支持需要内部 stETH 机制，因此无法执行 stETH 作为源代币的抵押品切换。"
 
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
-msgstr "由于 Horizon 桥的漏洞利用，Harmony 网络上的某些资产与以太坊不对等，这影响了 Aave V3 Harmony 市场。"
-
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
 msgstr ""
@@ -1389,6 +1385,10 @@ msgstr "在我们的<0>常见问题解答指南</0>中了解更多信息"
 msgid "Learn more."
 msgstr "了解更多信息。"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Legacy Markets"
+msgstr ""
+
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
@@ -1765,12 +1765,8 @@ msgid "Pending..."
 msgstr "待定。。。"
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Per the community, the Fantom market has been frozen."
-msgstr "根据社区的说法，Fantom 市场已被冻结。"
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Per the community, the V2 AMM market has been deprecated."
-msgstr "根据社区的说法，V2 AMM 市场已被弃用。"
+msgid "Per the community, the {market} has been frozen."
+msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
@@ -1920,10 +1916,6 @@ msgstr "达到"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
 msgstr "重新激活冷却期以解除质押 {0} {stakedToken}"
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Read more here."
-msgstr "在此处阅读更多内容。"
 
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
@@ -2830,10 +2822,6 @@ msgstr "未质押"
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "Unstaking {symbol}"
 msgstr "取消质押 {symbol}"
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
-msgstr "更新：WETH、WBTC、WMATIC 和 USDT 报告了中断。AIP 230 将解决中断问题，市场将于 UTC 时间 ~26 日 13：00 正常运作。"
 
 #: src/components/transactions/Bridge/BridgeDestinationInput.tsx
 msgid "Use connected account"

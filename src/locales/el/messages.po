@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-27 12:07\n"
+"PO-Revision-Date: 2024-11-08 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -975,10 +975,6 @@ msgstr ""
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
 msgstr ""
 
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
-msgstr ""
-
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
 msgstr ""
@@ -1389,6 +1385,10 @@ msgstr "Μάθετε περισσότερα στον οδηγό <0>Συχνών 
 msgid "Learn more."
 msgstr "Μάθετε περισσότερα."
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Legacy Markets"
+msgstr ""
+
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
@@ -1765,11 +1765,7 @@ msgid "Pending..."
 msgstr "Εκκρεμεί..."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Per the community, the Fantom market has been frozen."
-msgstr ""
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Per the community, the V2 AMM market has been deprecated."
+msgid "Per the community, the {market} has been frozen."
 msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
@@ -1919,10 +1915,6 @@ msgstr "Επιτεύχθηκε"
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
-msgstr ""
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Read more here."
 msgstr ""
 
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
@@ -2830,10 +2822,6 @@ msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "Unstaking {symbol}"
-msgstr ""
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
 msgstr ""
 
 #: src/components/transactions/Bridge/BridgeDestinationInput.tsx
