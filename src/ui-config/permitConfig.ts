@@ -13,6 +13,7 @@ export const permitByChainAndToken: {
     '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0': true, // wstETH
     '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f': true, // GHO
     '0x5f98805a4e8be255a32880fdec7f6728c6568ba0': true, // LUSD
+    '0xdc035d45d973e3ec169d2276ddab16f1e407384f': true, // USDS
   },
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1a5a0dbb814af92458539fb4': true,

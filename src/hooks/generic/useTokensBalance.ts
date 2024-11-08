@@ -7,6 +7,7 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
+  oracle?: string;
 }
 
 export const useTokensBalance = (tokenList: TokenInfo[], chainId: number, user: string) => {

@@ -33,7 +33,6 @@ interface DebtSwitchBaseProps extends BoxProps {
   blocked?: boolean;
   isMaxSelected: boolean;
   loading?: boolean;
-  currentRateMode: number;
   signatureParams?: SignedParams;
 }
 
@@ -59,7 +58,6 @@ export const DebtSwitchActions = ({
   loading,
   blocked,
   buildTxFn,
-  currentRateMode,
 }: DebtSwitchBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
   const [
     getCreditDelegationApprovedAmount,
@@ -172,7 +170,6 @@ export const DebtSwitchActions = ({
       let debtSwitchTxData = debtSwitch({
         poolReserve,
         targetReserve,
-        currentRateMode,
         amountToReceive: parseUnits(amountToReceive, targetReserve.decimals).toString(),
         amountToSwap: parseUnits(amountToSwap, poolReserve.decimals).toString(),
         isMaxSelected,
@@ -192,12 +189,8 @@ export const DebtSwitchActions = ({
       addTransaction(response.hash, {
         action: 'debtSwitch',
         txState: 'success',
-        previousState:
-          route.outputAmount +
-          (currentRateMode === 2
-            ? ' variable' + poolReserve.symbol
-            : ' stable' + poolReserve.symbol),
-        newState: route.inputAmount + ' variable' + targetReserve.symbol,
+        previousState: `${route.outputAmount} variable ${poolReserve.symbol}`,
+        newState: `${route.inputAmount} variable ${targetReserve.symbol}`,
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });

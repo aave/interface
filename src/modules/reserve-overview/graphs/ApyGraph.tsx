@@ -51,7 +51,7 @@ const getDate = (d: FormattedReserveHistoryItem) => new Date(d.date);
 const bisectDate = bisector<FormattedReserveHistoryItem, Date>((d) => new Date(d.date)).left;
 const getData = (d: FormattedReserveHistoryItem, fieldName: Field) => d[fieldName] * 100;
 
-type Field = 'liquidityRate' | 'stableBorrowRate' | 'variableBorrowRate';
+type Field = 'liquidityRate' | 'variableBorrowRate';
 
 export type AreaProps = {
   width: number;

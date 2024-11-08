@@ -130,20 +130,18 @@ const select = memoize(
         );
 
         let ltv = v3SupplyAsset.reserve.formattedBaseLTVasCollateral;
-        if (
-          userEmodeCategoryId !== 0 &&
-          v3SupplyAsset.reserve.eModeCategoryId !== userEmodeCategoryId
-        ) {
-          ltv = v3SupplyAsset.reserve.formattedEModeLtv;
+        const eModeCategory = v3SupplyAsset.reserve.eModes.find(
+          (e) => e.id === userEmodeCategoryId
+        );
+        if (userEmodeCategoryId !== 0 && eModeCategory) {
+          ltv = eModeCategory.eMode.formattedLtv;
         }
 
         v3Rates = {
-          stableBorrowAPY: v3SupplyAsset.stableBorrowAPY,
           variableBorrowAPY: v3SupplyAsset.reserve.variableBorrowAPY,
           supplyAPY: v3SupplyAsset.reserve.supplyAPY,
           aIncentivesData: v3SupplyAsset.reserve.aIncentivesData,
           vIncentivesData: v3SupplyAsset.reserve.vIncentivesData,
-          sIncentivesData: v3SupplyAsset.reserve.sIncentivesData,
           priceInUSD: v3SupplyAsset.reserve.priceInUSD,
           ltv,
         };
@@ -191,26 +189,25 @@ const select = memoize(
       if (v3BorrowAsset) {
         let liquidationThreshold = v3BorrowAsset.reserve.formattedReserveLiquidationThreshold;
 
-        if (userEmodeCategoryId !== 0 && selectedReserve?.eModeCategoryId !== userEmodeCategoryId) {
+        const eModeCategory = v3BorrowAsset.reserve.eModes.find(
+          (e) => e.id === userEmodeCategoryId
+        );
+        if (userEmodeCategoryId !== 0 && eModeCategory) {
           disabledForMigration = MigrationDisabled.EModeBorrowDisabled;
-          liquidationThreshold = v3BorrowAsset.reserve.formattedEModeLiquidationThreshold;
+          liquidationThreshold = eModeCategory.eMode.formattedLiquidationThreshold;
         }
 
         v3Rates = {
-          stableBorrowAPY: v3BorrowAsset.stableBorrowAPY,
           variableBorrowAPY: v3BorrowAsset.reserve.variableBorrowAPY,
-          supplyAPY: v3BorrowAsset.reserve.stableBorrowAPY,
+          supplyAPY: v3BorrowAsset.reserve.supplyAPY,
           aIncentivesData: v3BorrowAsset.reserve.aIncentivesData,
           vIncentivesData: v3BorrowAsset.reserve.vIncentivesData,
-          sIncentivesData: v3BorrowAsset.reserve.sIncentivesData,
           priceInUSD: v3BorrowAsset.reserve.priceInUSD,
           liquidationThreshold,
         };
         const notEnoughLiquidityOnV3 = valueToBigNumber(
-          valueToWei(userReserve.increasedStableBorrows, userReserve.reserve.decimals)
-        )
-          .plus(valueToWei(userReserve.increasedVariableBorrows, userReserve.reserve.decimals))
-          .isGreaterThan(v3BorrowAsset.reserve.availableLiquidity);
+          valueToWei(userReserve.increasedVariableBorrows, userReserve.reserve.decimals)
+        ).isGreaterThan(v3BorrowAsset.reserve.availableLiquidity);
 
         if (notEnoughLiquidityOnV3) {
           disabledForMigration = MigrationDisabled.InsufficientLiquidity;

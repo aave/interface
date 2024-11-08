@@ -12708,6 +12708,22 @@ export const TOKEN_LIST: TokenList = {
       logoURI:
         'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
     },
+    {
+      name: 'USDS Stablecoin',
+      address: '0xdc035d45d973e3ec169d2276ddab16f1e407384f',
+      symbol: 'USDS',
+      decimals: 18,
+      chainId: 1,
+      logoURI: 'https://assets.coingecko.com/coins/images/39926/standard/usds.webp?1726666683',
+    },
+    {
+      name: 'Savings Dai',
+      address: '0x83f20f44975d03b1b09e64809b757c47f942beea',
+      symbol: 'SDAI',
+      decimals: 18,
+      chainId: 1,
+      logoURI: 'https://assets.coingecko.com/coins/images/32254/standard/sdai.png?1697015278',
+    },
   ],
 };
 

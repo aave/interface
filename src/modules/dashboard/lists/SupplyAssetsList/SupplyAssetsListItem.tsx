@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { EyeIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
@@ -14,6 +15,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -29,7 +31,7 @@ import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { showSuperFestTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -153,7 +155,11 @@ export const SupplyAssetsListItemDesktop = ({
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
-      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <ListColumn>
@@ -213,7 +219,13 @@ export const SupplyAssetsListItemDesktop = ({
         />
       )}
 
-      <ListAPRColumn value={Number(supplyAPY)} incentives={aIncentivesData} symbol={symbol} />
+      <ListAPRColumn
+        value={Number(supplyAPY)}
+        market={currentMarket}
+        protocolAction={ProtocolAction.supply}
+        incentives={aIncentivesData}
+        symbol={symbol}
+      />
 
       <ListColumn>
         {debtCeiling.isMaxed ? (
@@ -334,7 +346,11 @@ export const SupplyAssetsListItemMobile = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
-      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <Row
@@ -404,12 +420,19 @@ export const SupplyAssetsListItemMobile = ({
         captionVariant="description"
         mb={2}
       >
-        <IncentivesCard
-          value={Number(supplyAPY)}
-          incentives={aIncentivesData}
-          symbol={symbol}
-          variant="secondary14"
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <IncentivesCard
+            value={Number(supplyAPY)}
+            incentives={aIncentivesData}
+            symbol={symbol}
+            variant="secondary14"
+          />
+          <MeritIncentivesButton
+            symbol={symbol}
+            market={currentMarket}
+            protocolAction={ProtocolAction.supply}
+          />
+        </Box>
       </Row>
 
       <Row
