@@ -91,5 +91,6 @@ export const useGetRateLimit = ({ destinationChainId, sourceChainId }: RateLimit
     queryKey: ['getRateLimit', destinationChainId, sourceChainId],
     cacheTime: 0,
     staleTime: 0,
+    refetchInterval: 5000, // fetch ever 5 seconds to get the latest rate limits
   });
 };

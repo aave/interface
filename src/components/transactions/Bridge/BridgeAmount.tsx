@@ -36,7 +36,7 @@ export const BridgeAmount = ({
       The amount you can bridge is currently reduced because of the rate limit. The limit is raised
       at a rate of{' '}
       <FormattedNumber variant="caption" value={formatEther(refillRate)} visibleDecimals={2} /> GHO
-      per second, until the maximum capacity of{' '}
+      per second, until the maximum amount of{' '}
       <FormattedNumber
         variant="caption"
         value={formatEther(maxRateLimitCapacity)}

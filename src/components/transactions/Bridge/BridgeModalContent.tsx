@@ -146,16 +146,16 @@ export const BridgeModalContent = () => {
     feeTokenOracle: selectedFeeToken?.oracle || ('' as string),
   });
 
-  const { data: bridgeLimits, isFetching: fetchingBridgeLimits } = useGetBridgeLimit(
+  const { data: bridgeLimits, isInitialLoading: loadingBridgeLimit } = useGetBridgeLimit(
     sourceNetworkObj.chainId
   );
 
-  const { data: rateLimit, isFetching: fetchingRateLimit } = useGetRateLimit({
+  const { data: rateLimit, isInitialLoading: loadingRateLimit } = useGetRateLimit({
     destinationChainId: destinationNetworkObj?.chainId || 0,
     sourceChainId: sourceNetworkObj.chainId,
   });
 
-  const loadingLimits = fetchingBridgeLimits || fetchingRateLimit;
+  const loadingLimits = loadingBridgeLimit || loadingRateLimit;
 
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: SupportedNetworkWithChainId) => {
@@ -173,12 +173,12 @@ export const BridgeModalContent = () => {
   const hasBridgeLimit = bridgeLimits?.bridgeLimit !== '-1';
   const remainingBridgeLimit = BigNumber(bridgeLimits?.remainingAmount || '0');
 
-  if (!fetchingBridgeLimits && bridgeLimits) {
+  if (!loadingLimits && bridgeLimits && rateLimit) {
     if (hasBridgeLimit && remainingBridgeLimit.lt(maxAmountToBridge)) {
       maxAmountToBridge = bridgeLimits.remainingAmount;
       maxAmountReducedDueToBridgeLimit = true;
       maxAmountReducedDueToRateLimit = false;
-    } else if (rateLimit && BigNumber(rateLimit.tokens).lt(maxAmountToBridge)) {
+    } else if (BigNumber(rateLimit.tokens).lt(maxAmountToBridge)) {
       maxAmountToBridge = rateLimit.tokens;
       maxAmountReducedDueToRateLimit = true;
       maxAmountReducedDueToBridgeLimit = false;
