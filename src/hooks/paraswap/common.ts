@@ -6,7 +6,6 @@ import {
   AaveV3Base,
   AaveV3BNB,
   AaveV3Ethereum,
-  AaveV3Fantom,
   AaveV3Optimism,
   AaveV3Polygon,
 } from '@bgd-labs/aave-address-book';
@@ -85,10 +84,6 @@ const paraswapNetworks: ParaswapChainMap = {
   [ChainId.avalanche]: {
     paraswap: ParaSwap(ChainId.avalanche),
     feeTarget: AaveV3Avalanche.COLLECTOR,
-  },
-  [ChainId.fantom]: {
-    paraswap: ParaSwap(ChainId.fantom),
-    feeTarget: AaveV3Fantom.COLLECTOR,
   },
   [ChainId.arbitrum_one]: {
     paraswap: ParaSwap(ChainId.arbitrum_one),

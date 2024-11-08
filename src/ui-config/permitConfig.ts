@@ -25,21 +25,10 @@ export const permitByChainAndToken: {
     '0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33': true, // GHO
     '0xd22a58f79e9481d1a88e00c343885a588b34b68b': false, // eurs
   },
-  [ChainId.fantom]: {
-    '0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e': true,
-    '0xb3654dc3d10ea7645f8319668e8f54d2574fbdc8': true,
-    '0x04068da6c83afcfa0e13ba15a6696662335d5b75': true,
-    '0x321162cd933e2be498cd2267a90534a804051b11': true,
-    '0x74b23882a30290451a17c44f4f05243b6b58c76d': true,
-    '0x049d68029688eabf473097a2fc38ef61633a3c7a': true,
-    '0x6a07a792ab2965c72a5b8088d3a069a7ac3a993b': true,
-    '0xae75a438b2e0cb8bb01ec1e1e376de11d44477cc': false, // sushi
-    '0x1e4f97b9f9f913c46f1632781732927b9019c68b': true,
-  },
+
   [ChainId.polygon]: {
     '0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c': true,
   },
-  [ChainId.harmony]: {},
   [ChainId.avalanche]: {
     '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7': true,
   },

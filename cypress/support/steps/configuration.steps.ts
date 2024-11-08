@@ -128,10 +128,7 @@ export const configEnvWithTenderlyOptimismFork = createConfigWithTenderlyFork(
   ChainId.optimism,
   'fork_proto_optimism_v3'
 );
-export const configEnvWithTenderlyFantomFork = createConfigWithTenderlyFork(
-  ChainId.fantom,
-  'fork_proto_fantom_v3'
-);
+
 export const configEnvWithTenderlyBaseFork = createConfigWithTenderlyFork(
   ChainId.base,
   'fork_proto_base_v3'
@@ -174,8 +171,6 @@ const createConfigWithOrigin = (market: string, mockedAddress: string) => {
   });
 };
 
-export const configEnvHarmony = (mockedAddress: string) =>
-  createConfigWithOrigin('proto_harmony_v3', mockedAddress);
 export const configEnvMetis = (mockedAddress: string) =>
   createConfigWithOrigin('proto_metis_v3', mockedAddress);
 export const configEnvScroll = (mockedAddress: string) =>

@@ -43,7 +43,6 @@ export const skipSetup = ({
 
 export const MARKETS = {
   fork_proto_mainnet: 'fork_proto_mainnet',
-  fork_amm_mainnet: 'fork_amm_mainnet',
   fork_proto_matic: 'fork_proto_matic',
   fork_proto_avalanche: 'fork_proto_avalanche',
 };

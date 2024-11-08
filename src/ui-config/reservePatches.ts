@@ -28,13 +28,6 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   UNIWBTCWETH: 'UNI_WBTC_WETH',
   UNIYFIWETH: 'UNI_YFI_WETH',
   fUSDT: 'USDT',
-  // harmony
-  '1DAI': 'DAI',
-  '1USDC': 'USDC',
-  '1USDT': 'USDT',
-  '1AAVE': 'AAVE',
-  '1ETH': 'ETH',
-  '1WBTC': 'WBTC',
   // avalanche
   'DAI.e': 'DAI',
   'LINK.e': 'LINK',

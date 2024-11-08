@@ -2,7 +2,6 @@ import { ChainId } from '@aave/contract-helpers';
 import {
   AaveV2Avalanche,
   AaveV2Ethereum,
-  AaveV2EthereumAMM,
   AaveV2Fuji,
   AaveV2Polygon,
   AaveV3Arbitrum,
@@ -13,10 +12,7 @@ import {
   AaveV3Ethereum,
   AaveV3EthereumEtherFi,
   AaveV3EthereumLido,
-  AaveV3Fantom,
-  AaveV3FantomTestnet,
   AaveV3Gnosis,
-  AaveV3Harmony,
   AaveV3Metis,
   AaveV3Optimism,
   AaveV3OptimismSepolia,
@@ -77,7 +73,6 @@ export type MarketDataType = {
 export enum CustomMarket {
   // v3 test networks, all v3.0.1
   proto_arbitrum_sepolia_v3 = 'proto_arbitrum_sepolia_v3',
-  proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_optimism_sepolia_v3 = 'proto_optimism_sepolia_v3',
   proto_scroll_sepolia_v3 = 'proto_scroll_sepolia_v3',
@@ -86,8 +81,6 @@ export enum CustomMarket {
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',
   proto_optimism_v3 = 'proto_optimism_v3',
-  proto_fantom_v3 = 'proto_fantom_v3',
-  proto_harmony_v3 = 'proto_harmony_v3',
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
@@ -104,7 +97,6 @@ export enum CustomMarket {
   proto_avalanche = 'proto_avalanche',
   proto_fuji = 'proto_fuji',
   proto_polygon = 'proto_polygon',
-  amm_mainnet = 'amm_mainnet',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -256,21 +248,7 @@ export const marketsData: {
   //     PERMISSION_MANAGER: '<address here>',
   //   },
   // },
-  [CustomMarket.amm_mainnet]: {
-    marketTitle: 'Ethereum AMM',
-    market: CustomMarket.amm_mainnet,
-    chainId: ChainId.mainnet,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV2EthereumAMM.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV2EthereumAMM.POOL,
-      WETH_GATEWAY: AaveV2EthereumAMM.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: AaveV2EthereumAMM.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV2EthereumAMM.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV2EthereumAMM.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV2EthereumAMM.COLLECTOR,
-      V3_MIGRATOR: AaveV2EthereumAMM.MIGRATION_HELPER,
-    },
-  },
+
   [CustomMarket.proto_polygon]: {
     marketTitle: 'Polygon',
     market: CustomMarket.proto_polygon,
@@ -518,67 +496,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3ScrollSepolia.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3ScrollSepolia.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: AaveV3ScrollSepolia.L2_ENCODER,
-    },
-  },
-  [CustomMarket.proto_fantom_v3]: {
-    marketTitle: 'Fantom',
-    market: CustomMarket.proto_fantom_v3,
-    v3: true,
-    chainId: ChainId.fantom,
-    enabledFeatures: {
-      incentives: true,
-      collateralRepay: true,
-      liquiditySwap: true,
-    },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/6L1vPqyE3xvkzkWjh6wUKc1ABWYYps5HJahoxhrv2PJn`,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Fantom.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3Fantom.POOL,
-      WETH_GATEWAY: AaveV3Fantom.WETH_GATEWAY,
-      SWAP_COLLATERAL_ADAPTER: AaveV3Fantom.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Fantom.REPAY_WITH_COLLATERAL_ADAPTER,
-      WALLET_BALANCE_PROVIDER: AaveV3Fantom.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3Fantom.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3Fantom.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Fantom.COLLECTOR,
-    },
-  },
-  [CustomMarket.proto_fantom_testnet_v3]: {
-    marketTitle: 'Fantom Testnet',
-    market: CustomMarket.proto_fantom_testnet_v3,
-    v3: true,
-    chainId: ChainId.fantom_testnet,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true,
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3FantomTestnet.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3FantomTestnet.POOL,
-      WETH_GATEWAY: AaveV3FantomTestnet.WETH_GATEWAY,
-      FAUCET: AaveV3FantomTestnet.FAUCET,
-      WALLET_BALANCE_PROVIDER: AaveV3FantomTestnet.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3FantomTestnet.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3FantomTestnet.UI_INCENTIVE_DATA_PROVIDER,
-    },
-  },
-  [CustomMarket.proto_harmony_v3]: {
-    marketTitle: 'Harmony',
-    market: CustomMarket.proto_harmony_v3,
-    v3: true,
-    chainId: ChainId.harmony,
-    enabledFeatures: {
-      incentives: false,
-    },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/FifJapBdCqT9vgNqJ5axmr6eNyUpUSaRAbbZTfsViNsT`,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Harmony.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3Harmony.POOL,
-      WETH_GATEWAY: AaveV3Harmony.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: AaveV3Harmony.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3Harmony.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3Harmony.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Harmony.COLLECTOR,
     },
   },
   [CustomMarket.proto_optimism_v3]: {
