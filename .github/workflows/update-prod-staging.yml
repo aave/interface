@@ -28,9 +28,6 @@ jobs:
         uses: ./.github/actions/production-ipfs-pin
         with:
           DOMAIN: app.aave.com
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
           IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
           IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
           IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
@@ -88,9 +85,6 @@ jobs:
         uses: ./.github/actions/production-ipfs-pin
         with:
           DOMAIN: staging.aave.com
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
           IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
           IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
           IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
