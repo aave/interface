@@ -25,9 +25,8 @@ jobs:
 
       - name: Pin to primary IPFS server
         id: ipfs-primary
-        uses: ./.github/actions/production-ipfs-pin
+        uses: ./.github/actions/ipfs-pin
         with:
-          DOMAIN: app.aave.com
           IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
           IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
           IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
@@ -82,9 +81,8 @@ jobs:
 
       - name: Pin to primary IPFS server
         id: ipfs-primary
-        uses: ./.github/actions/production-ipfs-pin
+        uses: ./.github/actions/ipfs-pin
         with:
-          DOMAIN: staging.aave.com
           IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
           IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
           IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'

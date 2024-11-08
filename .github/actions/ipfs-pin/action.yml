@@ -1,20 +1,8 @@
-name: Pin to private cluster
-description: Upload build to ipfs nodes running in GKE
+name: Pin to ipfs cluster and nodes
+description: Upload build to ipfs node
 inputs:
   BUILD_PATH:
     description: path to the build directory
-    required: true
-  DOMAIN:
-    description: Domain to unpin
-    required: true
-  GCP_SA_KEY:
-    description: ''
-    required: true
-  GKE_CLUSTER:
-    description: ''
-    required: true
-  GKE_CLUSTER_REGION:
-    description: ''
     required: true
   PINATA_HASH:
     description: ''
@@ -37,9 +25,9 @@ runs:
       continue-on-error: false
       shell: bash
       run: |
+        tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
         rm -rf ./key
-        echo -n "${{ inputs.IPFS_SERVER_KEY }}" | base64 -d >> ./key
-        chmod 400 ./key
+        echo -n "${{ inputs.IPFS_SERVER_KEY }}" | base64 -d >> ./key && chmod 400 ./key
 
     - name: Upload build to IPFS Primary Server
       id: ipfs-scp-primary
