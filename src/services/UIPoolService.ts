@@ -35,12 +35,7 @@ export class UiPoolService {
   }
 
   private useLegacyUiPoolDataProvider(marketData: MarketDataType) {
-    if (
-      ENABLE_TESTNET ||
-      !marketData.v3 ||
-      marketData.marketTitle === 'Fantom' ||
-      marketData.marketTitle === 'Harmony'
-    ) {
+    if (ENABLE_TESTNET || !marketData.v3) {
       // it's a v2 market, or it does not have v3.1 upgrade
       return true;
     }
