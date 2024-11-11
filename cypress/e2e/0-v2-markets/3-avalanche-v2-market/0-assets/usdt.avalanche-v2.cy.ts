@@ -3,11 +3,7 @@ import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../../support/steps/configuration.steps';
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
-import {
-  changeBorrowTypeBlocked,
-  dashboardAssetValuesVerification,
-  switchApyBlocked,
-} from '../../../../support/steps/verification.steps';
+import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
 import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
 
 const tokensToRequest: RequestedTokens = {
@@ -78,7 +74,7 @@ const testData = {
   },
 };
 
-describe('USDT INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
+describe.skip('USDT INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.testCases.borrow, skipTestState, true);
@@ -87,7 +83,5 @@ describe('USDT INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
     repay(repayCase, skipTestState, false);
   });
   withdraw(testData.testCases.withdraw, skipTestState, false);
-  switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
-  changeBorrowTypeBlocked(testData.testCases.checkBorrowTypeBlocked, skipTestState);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

@@ -9,6 +9,7 @@ export interface BasicModalProps {
   withCloseButton?: boolean;
   contentMaxWidth?: number;
   closeCallback?: () => void;
+  disableEnforceFocus?: boolean;
 }
 
 export const BasicModal = ({
@@ -18,6 +19,7 @@ export const BasicModal = ({
   contentMaxWidth = 420,
   children,
   closeCallback,
+  disableEnforceFocus,
   ...props
 }: BasicModalProps) => {
   const handleClose = () => {
@@ -29,6 +31,7 @@ export const BasicModal = ({
     <Modal
       open={open}
       onClose={handleClose}
+      disableEnforceFocus={disableEnforceFocus} // Used for wallet modal connection
       sx={{
         display: 'flex',
         flexDirection: 'column',

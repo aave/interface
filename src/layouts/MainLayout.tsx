@@ -9,16 +9,14 @@ import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  const APP_BANNER_VERSION = '1.0.0';
+  const APP_BANNER_VERSION = '4.0.0';
 
   return (
     <>
       <TopBarNotify
-        learnMoreLink="/markets/?marketName=proto_lido_v3"
-        buttonText="View Market"
-        notifyText="Aave Governance has deployed a new Lido market on Ethereum V3"
+        learnMoreLink="/markets/?marketName=proto_mainnet_v3"
+        notifyText="Merit incentives are available for users who both supply cbBTC and borrow USDC."
         bannerVersion={APP_BANNER_VERSION}
-        icon={'/markets/lido.svg'}
       />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>

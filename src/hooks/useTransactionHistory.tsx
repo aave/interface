@@ -90,11 +90,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
 
   // Handle subgraphs with multiple markets (currently only ETH V2 and ETH V2 AMM)
   let selectedPool: string | undefined = undefined;
-  if (
-    !currentMarketData.v3 &&
-    (currentMarketData.marketTitle === 'Ethereum' ||
-      currentMarketData.marketTitle === 'Ethereum AMM')
-  ) {
+  if (!currentMarketData.v3 && currentMarketData.marketTitle === 'Ethereum') {
     selectedPool = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER.toLowerCase();
   }
 

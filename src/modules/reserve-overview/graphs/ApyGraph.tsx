@@ -51,7 +51,7 @@ const getDate = (d: FormattedReserveHistoryItem) => new Date(d.date);
 const bisectDate = bisector<FormattedReserveHistoryItem, Date>((d) => new Date(d.date)).left;
 const getData = (d: FormattedReserveHistoryItem, fieldName: Field) => d[fieldName] * 100;
 
-type Field = 'liquidityRate' | 'stableBorrowRate' | 'variableBorrowRate';
+type Field = 'liquidityRate' | 'variableBorrowRate';
 
 export type AreaProps = {
   width: number;
@@ -340,3 +340,84 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
     );
   }
 );
+
+export const PlaceholderChart = ({
+  width,
+  height,
+  margin = { top: 20, right: 10, bottom: 20, left: 40 },
+}: {
+  width: number;
+  height: number;
+  margin?: { top: number; right: number; bottom: number; left: number };
+}) => {
+  const theme = useTheme();
+
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+
+  return (
+    <svg width={width} height={height}>
+      <Group left={margin.left} top={margin.top}>
+        <GridRows
+          scale={scaleLinear({
+            range: [115, 0],
+            domain: [0, 5],
+            nice: true,
+          })}
+          width={innerWidth}
+          strokeDasharray="3,3"
+          stroke={theme.palette.divider}
+          pointerEvents="none"
+          numTicks={3}
+        />
+
+        <LinePath
+          data={[
+            { x: 0, y: 100 },
+            { x: 100, y: 60 },
+            { x: 200, y: 80 },
+            { x: 300, y: 50 },
+            { x: 400, y: 80 },
+            { x: 500, y: 40 },
+            { x: 600, y: 60 },
+            { x: 700, y: 40 },
+            { x: 800, y: 30 },
+          ]}
+          x={(d) => d.x}
+          y={(d) => d.y}
+          stroke={theme.palette.divider}
+          strokeWidth={2}
+          curve={curveMonotoneX}
+        />
+
+        <Annotation x={width / 2} y={height / 2}>
+          <HtmlLabel showAnchorLine={false}>
+            <Typography noWrap variant="subheader1" color="text.muted">
+              No data available
+            </Typography>
+          </HtmlLabel>
+        </Annotation>
+
+        {/* Y Axis */}
+        <AxisLeft
+          left={0}
+          scale={scaleLinear({
+            range: [115, 0],
+            domain: [0, 5],
+            nice: true,
+          })} // Placeholder scale
+          strokeWidth={0}
+          numTicks={3}
+          tickFormat={(value) => `${value}%`}
+          tickLabelProps={() => ({
+            fill: theme.palette.text.muted,
+            fontSize: 10,
+            dx: -margin.left + 10,
+          })}
+        />
+
+        <Bar width={innerWidth} height={innerHeight} fill="transparent" pointerEvents="none" />
+      </Group>
+    </svg>
+  );
+};

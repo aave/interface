@@ -18,6 +18,31 @@ const IncentivesSymbolMap: {
     symbol: 'aWETH',
     aToken: true,
   },
+  aBasUSDC: {
+    tokenIconSymbol: 'usdc',
+    symbol: 'aUSDC',
+    aToken: true,
+  },
+  aEthUSDS: {
+    tokenIconSymbol: 'usds',
+    symbol: 'aUSDS',
+    aToken: true,
+  },
+  aEthLidowstETH: {
+    tokenIconSymbol: 'wstETH',
+    symbol: 'awstETH',
+    aToken: true,
+  },
+  aEthUSDC: {
+    tokenIconSymbol: 'USDC',
+    symbol: 'aUSDC',
+    aToken: true,
+  },
+  aEthUSDT: {
+    tokenIconSymbol: 'USDT',
+    symbol: 'aUSDT',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
@@ -25,6 +50,23 @@ interface IncentivesTooltipContentProps {
   incentivesNetAPR: 'Infinity' | number;
   symbol: string;
 }
+
+export const getSymbolMap = (incentive: ReserveIncentiveResponse) => {
+  const rewardTokenSymbol = incentive.rewardTokenSymbol;
+
+  return IncentivesSymbolMap[rewardTokenSymbol]
+    ? {
+        ...IncentivesSymbolMap[rewardTokenSymbol],
+        rewardTokenAddress: incentive.rewardTokenAddress,
+        incentiveAPR: incentive.incentiveAPR,
+      }
+    : {
+        ...incentive,
+        tokenIconSymbol: rewardTokenSymbol,
+        symbol: rewardTokenSymbol,
+        aToken: false,
+      };
+};
 
 export const IncentivesTooltipContent = ({
   incentives,
@@ -55,22 +97,6 @@ export const IncentivesTooltipContent = ({
     );
   };
 
-  const getSymbolMap = (incentive: ReserveIncentiveResponse) => {
-    const rewardTokenSymbol = incentive.rewardTokenSymbol;
-    return IncentivesSymbolMap[rewardTokenSymbol]
-      ? {
-          ...IncentivesSymbolMap[rewardTokenSymbol],
-          rewardTokenAddress: incentive.rewardTokenAddress,
-          incentiveAPR: incentive.incentiveAPR,
-        }
-      : {
-          ...incentive,
-          tokenIconSymbol: rewardTokenSymbol,
-          symbol: rewardTokenSymbol,
-          aToken: false,
-        };
-  };
-
   return (
     <Box
       sx={{
@@ -85,34 +111,36 @@ export const IncentivesTooltipContent = ({
       </Typography>
 
       <Box sx={{ width: '100%' }}>
-        {incentives.map(getSymbolMap).map((incentive) => (
-          <Row
-            height={32}
-            caption={
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  mb: incentives.length > 1 ? 2 : 0,
-                }}
-              >
-                <TokenIcon
-                  aToken={incentive.aToken}
-                  symbol={incentive.tokenIconSymbol}
-                  sx={{ fontSize: '20px', mr: 1 }}
-                />
-                <Typography variant={typographyVariant}>{incentive.symbol}</Typography>
-              </Box>
-            }
-            key={incentive.rewardTokenAddress}
-            width="100%"
-          >
-            <Number incentiveAPR={incentive.incentiveAPR} />
-          </Row>
-        ))}
+        {incentives.map(getSymbolMap).map((incentive) => {
+          return (
+            <Row
+              height={32}
+              caption={
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    mb: incentives.length > 1 ? 2 : 0,
+                  }}
+                >
+                  <TokenIcon
+                    aToken={incentive.aToken}
+                    symbol={incentive.tokenIconSymbol}
+                    sx={{ fontSize: '20px', mr: 1 }}
+                  />
+                  <Typography variant={typographyVariant}>{incentive.symbol}</Typography>
+                </Box>
+              }
+              key={incentive.rewardTokenAddress}
+              width="100%"
+            >
+              <Number incentiveAPR={incentive.incentiveAPR} />
+            </Row>
+          );
+        })}
 
         {incentives.length > 1 && (
-          <Box sx={(theme) => ({ pt: 1, mt: 1, border: `1px solid ${theme.palette.divider}` })}>
+          <Box sx={() => ({ pt: 1, mt: 1 })}>
             <Row caption={<Trans>Net APR</Trans>} height={32}>
               <Number incentiveAPR={incentivesNetAPR} />
             </Row>

@@ -28,13 +28,6 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   UNIWBTCWETH: 'UNI_WBTC_WETH',
   UNIYFIWETH: 'UNI_YFI_WETH',
   fUSDT: 'USDT',
-  // harmony
-  '1DAI': 'DAI',
-  '1USDC': 'USDC',
-  '1USDT': 'USDT',
-  '1AAVE': 'AAVE',
-  '1ETH': 'ETH',
-  '1WBTC': 'WBTC',
   // avalanche
   'DAI.e': 'DAI',
   'LINK.e': 'LINK',
@@ -82,7 +75,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   WBTC: 'Wrapped BTC',
   WETH: 'Wrapped ETH',
   WFTM: 'Wrapped FTM',
-  WMATIC: 'Wrapped Matic',
+  WPOL: 'Wrapped POL',
   WONE: 'Wrapped ONE',
   YFI: 'yearn.finance',
   ZRX: '0x Coin',
@@ -104,6 +97,11 @@ export interface IconMapInterface {
 
 export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSymbolInterface) {
   const underlyingAssetMap: Record<string, IconMapInterface> = {
+    '0x18084fba666a33d37592fa2633fd49a74dd93a88': {
+      name: 'tBTC',
+      symbol: 'tBTC',
+      iconSymbol: 'tBTC',
+    },
     '0xdd974d5c2e2928dea5f71b9825b8b646686bd200': {
       name: 'Kyber Legacy',
       symbol: 'KNCL',

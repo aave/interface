@@ -1,4 +1,3 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { useMemo } from 'react';
 import { MigrationUserReserve, V3Rates } from 'src/store/v3MigrationSelectors';
 import { MigrationSelectedBorrowAsset } from 'src/store/v3MigrationSlice';
@@ -23,27 +22,22 @@ export const MigrationListBorrowItem = ({
   const isChecked = useMemo(() => {
     return (
       !userReserve.migrationDisabled &&
-      selectedBorrowAssets.findIndex((selectedAsset) =>
-        userReserve.interestRate == InterestRate.Stable
-          ? selectedAsset.debtKey == userReserve.reserve.stableDebtTokenAddress
-          : selectedAsset.debtKey == userReserve.reserve.variableDebtTokenAddress
+      selectedBorrowAssets.findIndex(
+        (selectedAsset) => selectedAsset.debtKey === userReserve.reserve.variableDebtTokenAddress
       ) >= 0
     );
-  }, [selectedBorrowAssets]);
+  }, [
+    selectedBorrowAssets,
+    userReserve.migrationDisabled,
+    userReserve.reserve.variableDebtTokenAddress,
+  ]);
 
   const handleCheckboxClick = () => {
     toggleSelectedBorrowPosition(userReserve);
   };
 
-  const amount =
-    userReserve.interestRate == InterestRate.Stable
-      ? userReserve.stableBorrows
-      : userReserve.variableBorrows;
-
-  const amountInUSD =
-    userReserve.interestRate == InterestRate.Stable
-      ? userReserve.stableBorrowsUSD
-      : userReserve.variableBorrowsUSD;
+  const amount = userReserve.variableBorrows;
+  const amountInUSD = userReserve.variableBorrowsUSD;
 
   return (
     <MigrationListItem

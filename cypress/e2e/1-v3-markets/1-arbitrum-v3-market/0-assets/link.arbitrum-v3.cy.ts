@@ -3,10 +3,7 @@ import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyArbitrumFork } from '../../../../support/steps/configuration.steps';
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
-import {
-  dashboardAssetValuesVerification,
-  switchApyBlocked,
-} from '../../../../support/steps/verification.steps';
+import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
 import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
 
 const tokensToRequest: RequestedTokens = {
@@ -85,7 +82,6 @@ describe('LINK INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
-  switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);

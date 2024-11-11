@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -5,9 +6,8 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { GHO_SWITCH_FEATURE_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
-import { showSuperFestTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -32,13 +32,7 @@ export const SuppliedPositionsListItem = ({
   const { debtCeiling } = useAssetCaps();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  let showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
-  if (
-    reserve.symbol === GHO_SYMBOL &&
-    !GHO_SWITCH_FEATURE_MARKETS.includes(currentMarketData.marketTitle)
-  ) {
-    showSwitchButton = false;
-  }
+  const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   const canBeEnabledAsCollateral = user
     ? !debtCeiling.isMaxed &&
@@ -66,7 +60,11 @@ export const SuppliedPositionsListItem = ({
       }`}
       showSupplyCapTooltips
       showDebtCeilingTooltips
-      showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY)}
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        reserve.symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       <ListValueColumn
         symbol={reserve.iconSymbol}
@@ -77,6 +75,8 @@ export const SuppliedPositionsListItem = ({
 
       <ListAPRColumn
         value={Number(reserve.supplyAPY)}
+        market={currentMarket}
+        protocolAction={ProtocolAction.supply}
         incentives={aIncentivesData}
         symbol={reserve.symbol}
       />

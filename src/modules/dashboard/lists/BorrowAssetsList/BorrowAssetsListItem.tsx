@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
@@ -5,7 +6,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { showSuperFestTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -43,7 +44,11 @@ export const BorrowAssetsListItem = ({
       detailsAddress={underlyingAsset}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
-      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.BORROW)}
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        symbol,
+        currentMarket,
+        ProtocolAction.borrow
+      )}
     >
       <ListValueColumn
         symbol={symbol}
@@ -62,14 +67,11 @@ export const BorrowAssetsListItem = ({
       />
       <ListAPRColumn
         value={Number(variableBorrowRate)}
+        market={currentMarket}
+        protocolAction={ProtocolAction.borrow}
         incentives={vIncentivesData}
         symbol={symbol}
       />
-      {/* <ListAPRColumn
-        value={Number(stableBorrowRate)}
-        incentives={sIncentivesData}
-        symbol={symbol}
-      /> */}
       <ListButtonsColumn>
         <Button
           disabled={disableBorrow}

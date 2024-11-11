@@ -1,6 +1,14 @@
 import { ChainId, valueToWei } from '@aave/contract-helpers';
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
-import { MiscBase, MiscEthereum } from '@bgd-labs/aave-address-book';
+import {
+  AaveV3Arbitrum,
+  AaveV3Avalanche,
+  AaveV3Base,
+  AaveV3BNB,
+  AaveV3Ethereum,
+  AaveV3Optimism,
+  AaveV3Polygon,
+} from '@bgd-labs/aave-address-book';
 import {
   BuildTxFunctions,
   constructBuildTx,
@@ -53,6 +61,7 @@ const ParaSwap = (chainId: number) => {
     {
       chainId,
       fetcher,
+      version: '6.2',
     },
     constructBuildTx,
     constructGetRate
@@ -60,18 +69,32 @@ const ParaSwap = (chainId: number) => {
 };
 
 type ParaswapChainMap = {
-  [key in ChainId]?: BuildTxFunctions & GetRateFunctions;
+  [key in ChainId]?: { paraswap: BuildTxFunctions & GetRateFunctions; feeTarget: string };
 };
 
 const paraswapNetworks: ParaswapChainMap = {
-  [ChainId.mainnet]: ParaSwap(ChainId.mainnet),
-  [ChainId.polygon]: ParaSwap(ChainId.polygon),
-  [ChainId.avalanche]: ParaSwap(ChainId.avalanche),
-  [ChainId.fantom]: ParaSwap(ChainId.fantom),
-  [ChainId.arbitrum_one]: ParaSwap(ChainId.arbitrum_one),
-  [ChainId.optimism]: ParaSwap(ChainId.optimism),
-  [ChainId.base]: ParaSwap(ChainId.base),
-  [ChainId.bnb]: ParaSwap(ChainId.bnb),
+  [ChainId.mainnet]: {
+    paraswap: ParaSwap(ChainId.mainnet),
+    feeTarget: AaveV3Ethereum.COLLECTOR,
+  },
+  [ChainId.polygon]: {
+    paraswap: ParaSwap(ChainId.polygon),
+    feeTarget: AaveV3Polygon.COLLECTOR,
+  },
+  [ChainId.avalanche]: {
+    paraswap: ParaSwap(ChainId.avalanche),
+    feeTarget: AaveV3Avalanche.COLLECTOR,
+  },
+  [ChainId.arbitrum_one]: {
+    paraswap: ParaSwap(ChainId.arbitrum_one),
+    feeTarget: AaveV3Arbitrum.COLLECTOR,
+  },
+  [ChainId.optimism]: {
+    paraswap: ParaSwap(ChainId.optimism),
+    feeTarget: AaveV3Optimism.COLLECTOR,
+  },
+  [ChainId.base]: { paraswap: ParaSwap(ChainId.base), feeTarget: AaveV3Base.COLLECTOR },
+  [ChainId.bnb]: { paraswap: ParaSwap(ChainId.bnb), feeTarget: AaveV3BNB.COLLECTOR },
 };
 
 export const getParaswap = (chainId: ChainId) => {
@@ -81,12 +104,6 @@ export const getParaswap = (chainId: ChainId) => {
   }
 
   throw new Error('Chain not supported');
-};
-
-export const getFeeClaimerAddress = (chainId: ChainId) => {
-  if (ChainId.base === chainId) return MiscBase.PARASWAP_FEE_CLAIMER;
-
-  return MiscEthereum.PARASWAP_FEE_CLAIMER;
 };
 
 const MESSAGE_MAP: { [key: string]: string } = {
@@ -189,7 +206,7 @@ export async function fetchExactInRate(
   };
 
   if (max) {
-    options.includeContractMethods = [ContractMethod.multiSwap, ContractMethod.megaSwap];
+    options.includeContractMethods = [ContractMethod.swapExactAmountIn];
   }
 
   const swapper = ExactInSwapper(chainId);
@@ -270,7 +287,7 @@ export async function fetchExactOutRate(
   };
 
   if (max) {
-    options.includeContractMethods = [ContractMethod.buy];
+    options.includeContractMethods = [ContractMethod.swapExactAmountOut];
   }
 
   const swapper = ExactOutSwapper(chainId);
@@ -287,8 +304,7 @@ export async function fetchExactOutRate(
 }
 
 export const ExactInSwapper = (chainId: ChainId) => {
-  const paraSwap = getParaswap(chainId);
-  const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
+  const { paraswap, feeTarget } = getParaswap(chainId);
 
   const getRate = async (
     amount: string,
@@ -299,7 +315,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
     userAddress: string,
     options: RateOptions
   ) => {
-    const priceRoute = await paraSwap.getRate({
+    const priceRoute = await paraswap.getRate({
       amount,
       srcToken,
       srcDecimals,
@@ -323,7 +339,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
     maxSlippage: number
   ) => {
     try {
-      const params = await paraSwap.buildTx(
+      const params = await paraswap.buildTx(
         {
           srcToken,
           srcDecimals,
@@ -333,8 +349,9 @@ export const ExactInSwapper = (chainId: ChainId) => {
           slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
-          partnerAddress: FEE_CLAIMER_ADDRESS,
+          partnerAddress: feeTarget,
           takeSurplus: true,
+          isDirectFeeTransfer: true,
         },
         { ignoreChecks: true }
       );
@@ -356,7 +373,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
 };
 
 const ExactOutSwapper = (chainId: ChainId) => {
-  const paraSwap = getParaswap(chainId);
+  const { paraswap, feeTarget } = getParaswap(chainId);
 
   const getRate = async (
     amount: string,
@@ -367,7 +384,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
     userAddress: string,
     options: RateOptions
   ) => {
-    const priceRoute = await paraSwap.getRate({
+    const priceRoute = await paraswap.getRate({
       amount,
       srcToken,
       srcDecimals,
@@ -390,10 +407,8 @@ const ExactOutSwapper = (chainId: ChainId) => {
     route: OptimalRate,
     maxSlippage: number
   ) => {
-    const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
-
     try {
-      const params = await paraSwap.buildTx(
+      const params = await paraswap.buildTx(
         {
           srcToken,
           destToken,
@@ -401,10 +416,11 @@ const ExactOutSwapper = (chainId: ChainId) => {
           slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
-          partnerAddress: FEE_CLAIMER_ADDRESS,
+          partnerAddress: feeTarget,
           takeSurplus: true,
           srcDecimals,
           destDecimals,
+          isDirectFeeTransfer: true,
         },
         { ignoreChecks: true }
       );

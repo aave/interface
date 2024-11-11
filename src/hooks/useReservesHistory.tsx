@@ -149,7 +149,7 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
   return {
     loading,
     data,
-    error: error || BROKEN_ASSETS.includes(reserveAddress) || (!loading && data.length === 0),
+    error: error || BROKEN_ASSETS.includes(reserveAddress),
     refetch: refetchData,
   };
 }

@@ -1,4 +1,3 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -74,12 +73,8 @@ export const MigrateV3ModalContent = ({
       underlyingAsset: asset.debtKey,
       iconSymbol: asset.reserve.iconSymbol,
       symbol: asset.reserve.symbol,
-      amount:
-        asset.interestRate == InterestRate.Stable ? asset.stableBorrows : asset.variableBorrows,
-      amountInUSD:
-        asset.interestRate == InterestRate.Stable
-          ? asset.stableBorrowsUSD
-          : asset.variableBorrowsUSD,
+      amount: asset.variableBorrows,
+      amountInUSD: asset.variableBorrowsUSD,
     };
   });
 

@@ -9,10 +9,7 @@ import {
   supply,
   withdraw,
 } from '../../../../support/steps/main.steps';
-import {
-  changeBorrowTypeBlocked,
-  dashboardAssetValuesVerification,
-} from '../../../../support/steps/verification.steps';
+import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
 import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
 
 const tokensToRequest: RequestedTokens = {
@@ -123,6 +120,5 @@ describe.skip('USDT INTEGRATION SPEC, AAVE V2 MARKET', () => {
     repay(repayCase, skipTestState, false);
   });
   withdraw(testData.testCases.withdraw, skipTestState, false);
-  changeBorrowTypeBlocked(testData.testCases.checkBorrowTypeBlocked, skipTestState);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

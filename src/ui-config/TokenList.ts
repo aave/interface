@@ -76,7 +76,7 @@ const NETWORK_ASSETS: TokenInfo[] = [
   },
   {
     name: 'Polygon',
-    symbol: 'MATIC',
+    symbol: 'POL',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
     chainId: 137,
@@ -187,7 +187,8 @@ export const TOKEN_LIST: TokenList = {
       name: 'Aave',
       symbol: 'AAVE',
       decimals: 18,
-      logoURI: 'https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1601374110',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
       extensions: {
         bridgeInfo: {
           '10': {
@@ -9284,9 +9285,9 @@ export const TOKEN_LIST: TokenList = {
       },
     },
     {
-      name: 'Wrapped Matic',
+      name: 'Wrapped POL',
       address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-      symbol: 'WMATIC',
+      symbol: 'WPOL',
       decimals: 18,
       chainId: 137,
       logoURI:
@@ -12706,6 +12707,22 @@ export const TOKEN_LIST: TokenList = {
       chainId: 42161,
       logoURI:
         'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+    },
+    {
+      name: 'USDS Stablecoin',
+      address: '0xdc035d45d973e3ec169d2276ddab16f1e407384f',
+      symbol: 'USDS',
+      decimals: 18,
+      chainId: 1,
+      logoURI: 'https://assets.coingecko.com/coins/images/39926/standard/usds.webp?1726666683',
+    },
+    {
+      name: 'Savings Dai',
+      address: '0x83f20f44975d03b1b09e64809b757c47f942beea',
+      symbol: 'SDAI',
+      decimals: 18,
+      chainId: 1,
+      logoURI: 'https://assets.coingecko.com/coins/images/32254/standard/sdai.png?1697015278',
     },
   ],
 };
