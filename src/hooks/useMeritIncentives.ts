@@ -29,44 +29,54 @@ export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiv
   customMessage?: string;
 };
 
-const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData | undefined =>
+const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData[] | undefined =>
   MERIT_DATA_MAP[market]?.[symbol];
 
-const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData>> = {
+const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
-    GHO: {
-      action: MeritAction.ETHEREUM_STKGHO,
-      rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-      rewardTokenSymbol: 'GHO',
-    },
-    cbBTC: {
-      action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
-      rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
-      rewardTokenSymbol: 'aEthUSDC',
-      protocolAction: ProtocolAction.supply,
-      customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
-    },
-    USDC: {
-      action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
-      rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
-      rewardTokenSymbol: 'aEthUSDC',
-      protocolAction: ProtocolAction.borrow,
-      customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
-    },
-    WBTC: {
-      action: MeritAction.SUPPLY_WBTC_BORROW_USDT,
-      rewardTokenAddress: AaveV3Ethereum.ASSETS.USDT.A_TOKEN,
-      rewardTokenSymbol: 'aEthUSDT',
-      protocolAction: ProtocolAction.supply,
-      customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
-    },
-    USDT: {
-      action: MeritAction.SUPPLY_WBTC_BORROW_USDT,
-      rewardTokenAddress: AaveV3Ethereum.ASSETS.USDT.A_TOKEN,
-      rewardTokenSymbol: 'aEthUSDT',
-      protocolAction: ProtocolAction.borrow,
-      customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
-    },
+    GHO: [
+      {
+        action: MeritAction.ETHEREUM_STKGHO,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
+        rewardTokenSymbol: 'GHO',
+      },
+    ],
+    cbBTC: [
+      {
+        action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
+        rewardTokenSymbol: 'aEthUSDC',
+        protocolAction: ProtocolAction.supply,
+        customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+      },
+    ],
+    USDC: [
+      {
+        action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
+        rewardTokenSymbol: 'aEthUSDC',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+      },
+    ],
+    WBTC: [
+      {
+        action: MeritAction.SUPPLY_WBTC_BORROW_USDT,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.USDT.A_TOKEN,
+        rewardTokenSymbol: 'aEthUSDT',
+        protocolAction: ProtocolAction.supply,
+        customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
+      },
+    ],
+    USDT: [
+      {
+        action: MeritAction.SUPPLY_WBTC_BORROW_USDT,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.USDT.A_TOKEN,
+        rewardTokenSymbol: 'aEthUSDT',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
+      },
+    ],
   },
 };
 
@@ -94,17 +104,21 @@ export const useMeritIncentives = ({
       if (!meritReserveIncentiveData) {
         return null;
       }
-      if (meritReserveIncentiveData.protocolAction !== protocolAction) {
+      const incentive = meritReserveIncentiveData.find(
+        (item) => item.protocolAction === protocolAction
+      );
+
+      if (!incentive) {
         return null;
       }
 
-      const APR = data.actionsAPR[meritReserveIncentiveData.action];
+      const APR = data.actionsAPR[incentive.action];
 
       return {
         incentiveAPR: (APR / 100).toString(),
-        rewardTokenAddress: meritReserveIncentiveData.rewardTokenAddress,
-        rewardTokenSymbol: meritReserveIncentiveData.rewardTokenSymbol,
-        customMessage: meritReserveIncentiveData.customMessage,
+        rewardTokenAddress: incentive.rewardTokenAddress,
+        rewardTokenSymbol: incentive.rewardTokenSymbol,
+        customMessage: incentive.customMessage,
       } as ExtendedReserveIncentiveResponse;
     },
   });
