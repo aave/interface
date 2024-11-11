@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-11-08 18:06\n"
+"PO-Revision-Date: 2024-11-11 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -215,6 +215,8 @@ msgid "Allows you to decide whether to use a supplied asset as collateral. An as
 msgstr "允许您决定是否使用提供的资产作为抵押品。用作抵押品的资产将影响您的借贷能力和健康因素。"
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Bridge/BridgeAmount.tsx
+#: src/components/transactions/Bridge/BridgeAmount.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
@@ -600,10 +602,6 @@ msgstr ""
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Bridged Via CCIP"
-msgstr ""
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "Bridging is currently unavailable due to the rate limit being exceeded. Please try again later or reduce the amount to bridge."
 msgstr ""
 
 #: src/components/transactions/Bridge/BridgeActions.tsx
@@ -1126,13 +1124,17 @@ msgstr "龙头"
 msgid "Faucet {0}"
 msgstr "龙头 {0}"
 
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
+#: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
 msgid "Fee"
 msgstr ""
 
 #: src/layouts/FeedbackDialog.tsx
 #: src/layouts/FeedbackDialog.tsx
 msgid "Feedback"
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Fees exceed wallet balance"
 msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
@@ -2513,6 +2515,10 @@ msgstr "冷却时间是 {0}.后 {1} 冷却时间，您将进入 {2}.您将在冷
 msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 msgstr ""
 
+#: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
+msgid "The fee includes the gas cost to complete the transaction on the destination chain and the fee paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
+msgstr ""
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
 msgstr "贷款与迁移头寸的价值之比将导致清算。增加迁移的抵押品或减少迁移的借款以继续。"
@@ -2632,10 +2638,6 @@ msgstr "由于 Aave 社区的决定，该资产被冻结。 <0>更多详情</0>"
 #: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "由于 Aave 协议治理决策，该资产计划被卸载。 <0>更多详情</0>"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
-msgstr ""
 
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
@@ -3137,10 +3139,6 @@ msgstr "您取消了交易。"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "您没有参与此提案"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
-msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
