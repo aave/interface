@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-11-08 18:06\n"
+"PO-Revision-Date: 2024-11-11 18:06\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -215,6 +215,8 @@ msgid "Allows you to decide whether to use a supplied asset as collateral. An as
 msgstr "Hier können Sie entscheiden, ob ein bereitgestelltes Asset als Sicherheit verwendet werden soll. Ein Vermögenswert, der als Sicherheit verwendet wird, wirkt sich auf Ihre Kreditkraft und Ihren Gesundheitsfaktor aus."
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Bridge/BridgeAmount.tsx
+#: src/components/transactions/Bridge/BridgeAmount.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
@@ -600,10 +602,6 @@ msgstr ""
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Bridged Via CCIP"
-msgstr ""
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "Bridging is currently unavailable due to the rate limit being exceeded. Please try again later or reduce the amount to bridge."
 msgstr ""
 
 #: src/components/transactions/Bridge/BridgeActions.tsx
@@ -1126,13 +1124,17 @@ msgstr "Hahn"
 msgid "Faucet {0}"
 msgstr "Hahn {0}"
 
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
+#: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
 msgid "Fee"
 msgstr ""
 
 #: src/layouts/FeedbackDialog.tsx
 #: src/layouts/FeedbackDialog.tsx
 msgid "Feedback"
+msgstr ""
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Fees exceed wallet balance"
 msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
@@ -2513,6 +2515,10 @@ msgstr "Die Abklingzeit beträgt {0}. Nach {1} der Abklingzeit, gelangen Sie in 
 msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 msgstr ""
 
+#: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
+msgid "The fee includes the gas cost to complete the transaction on the destination chain and the fee paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
+msgstr ""
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
 msgstr "Der Beleihungsauslauf der migrierten Positionen würde zu einer Liquidation führen. Erhöhen Sie die migrierten Sicherheiten oder reduzieren Sie die migrierten Kredite, um fortzufahren."
@@ -2632,10 +2638,6 @@ msgstr "Dieses Asset ist aufgrund einer Entscheidung der Aave-Community eingefro
 #: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "Es ist geplant, dass dieser Vermögenswert aufgrund einer Entscheidung der Aave Protocol Governance ausgelagert wird. <0>Mehr Details</0>"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
-msgstr ""
 
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
@@ -3137,10 +3139,6 @@ msgstr "Sie haben die Transaktion abgebrochen."
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "Sie haben an diesem Vorschlag nicht teilgenommen"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "You do not have a balance to pay for CCIP fee with your {0}, try changing to another token."
-msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
