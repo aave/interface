@@ -258,9 +258,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.base_sepolia]: {
     name: 'Base Sepolia',
     publicJsonRPCUrl: [
-      'https://rpc.notadegen.com/base/sepolia',
       'https://base-sepolia.blockpi.network/v1/rpc/public',
-      'https://public.stackup.sh/api/v1/node/base-sepolia',
+      'https://sepolia.base.org',
+      'https://base-sepolia.gateway.tenderly.co',
     ],
     publicJsonRPCWSUrl: 'wss://base-sepolia-rpc.publicnode.com',
     baseUniswapAdapter: '0x0',
