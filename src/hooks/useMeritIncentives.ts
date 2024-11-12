@@ -82,24 +82,28 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
   },
   [CustomMarket.proto_base_v3]: {
-    cbBTC: {
-      action: MeritAction.BASE_SUPPLY_CBBTC,
-      rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
-      rewardTokenSymbol: 'aBasUSDC',
-      protocolAction: ProtocolAction.supply,
-    },
-    USDC: {
-      action: MeritAction.BASE_SUPPLY_USDC,
-      rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
-      rewardTokenSymbol: 'aBasUSDC',
-      protocolAction: ProtocolAction.supply,
-    },
-    USDCBorrow: {
-      action: MeritAction.BASE_BORROW_USDC,
-      rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
-      rewardTokenSymbol: 'aBasUSDC',
-      protocolAction: ProtocolAction.borrow,
-    },
+    cbBTC: [
+      {
+        action: MeritAction.BASE_SUPPLY_CBBTC,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
+        rewardTokenSymbol: 'aBasUSDC',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+    USDC: [
+      {
+        action: MeritAction.BASE_SUPPLY_USDC,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
+        rewardTokenSymbol: 'aBasUSDC',
+        protocolAction: ProtocolAction.supply,
+      },
+      {
+        action: MeritAction.BASE_BORROW_USDC,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
+        rewardTokenSymbol: 'aBasUSDC',
+        protocolAction: ProtocolAction.borrow,
+      },
+    ],
   },
 };
 
