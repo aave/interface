@@ -1,6 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import { AaveV3Base, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
@@ -8,6 +8,9 @@ export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
+  BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
+  BASE_SUPPLY_USDC = 'base-supply-usdc',
+  BASE_BORROW_USDC = 'base-borrow-usdc',
 }
 
 type MeritIncentives = {
@@ -75,6 +78,30 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aEthUSDT',
         protocolAction: ProtocolAction.borrow,
         customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
+      },
+    ],
+  },
+  [CustomMarket.proto_base_v3]: {
+    cbBTC: [
+      {
+        action: MeritAction.BASE_SUPPLY_CBBTC,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
+        rewardTokenSymbol: 'aBasUSDC',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+    USDC: [
+      {
+        action: MeritAction.BASE_SUPPLY_USDC,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
+        rewardTokenSymbol: 'aBasUSDC',
+        protocolAction: ProtocolAction.supply,
+      },
+      {
+        action: MeritAction.BASE_BORROW_USDC,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
+        rewardTokenSymbol: 'aBasUSDC',
+        protocolAction: ProtocolAction.borrow,
       },
     ],
   },
