@@ -234,7 +234,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.base]: {
     name: 'Base',
-    privateJsonRPCUrl: 'https://base-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://base.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://mainnet.base.org',
       'https://1rpc.io/base',

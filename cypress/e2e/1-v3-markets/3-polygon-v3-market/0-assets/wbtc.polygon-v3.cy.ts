@@ -7,7 +7,7 @@ import { dashboardAssetValuesVerification } from '../../../../support/steps/veri
 import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
 
 const tokensToRequest: RequestedTokens = {
-  aMATICPolygonV3: 9000,
+  aMATICPolygonV3: 20000,
 };
 
 const testData = {
