@@ -90,7 +90,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',
-    privateJsonRPCUrl: 'https://eth-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://eth.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://rpc.ankr.com/eth',
       'https://rpc.flashbots.net',
@@ -109,7 +109,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.polygon]: {
     name: 'Polygon POS',
     displayName: 'Polygon',
-    privateJsonRPCUrl: 'https://poly-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://polygon.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://polygon-rpc.com',
       'https://polygon-mainnet.public.blastapi.io',
@@ -152,7 +152,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.avalanche]: {
     name: 'Avalanche',
-    privateJsonRPCUrl: 'https://avax-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://avax.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://api.avax.network/ext/bc/C/rpc',
       'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc',
@@ -273,7 +273,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.optimism]: {
     name: 'Optimism',
-    privateJsonRPCUrl: 'https://optimism-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://optimism.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io', 'https://1rpc.io/op'],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
     baseUniswapAdapter: '0x0',
@@ -318,7 +318,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.metis_andromeda]: {
     name: 'Metis Andromeda',
-    privateJsonRPCUrl: 'https://metis-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://metis.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://andromeda.metis.io/?owner=1088'],
     baseAssetSymbol: '', // N/A
     wrappedBaseAssetSymbol: '', // N/A
@@ -329,8 +329,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.xdai]: {
     name: 'Gnosis Chain',
-    privateJsonRPCUrl: 'https://gnosischain-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
-
+    privateJsonRPCUrl: 'https://gnosis.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://rpc.ankr.com/gnosis', 'https://rpc.gnosischain.com'],
     publicJsonRPCWSUrl: 'wss://rpc.gnosischain.com/wss',
     baseUniswapAdapter: '0x0',
@@ -349,7 +348,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.bnb]: {
     name: 'Binance Smart Chain',
-    privateJsonRPCUrl: 'https://bsc-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://bsc.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://bsc.publicnode.com	', 'wss://bsc.publicnode.com'],
     publicJsonRPCWSUrl: 'wss://bsc.publicnode.com',
     baseAssetSymbol: 'BNB',
@@ -366,7 +365,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.scroll]: {
     name: 'Scroll',
-    // privateJsonRPCUrl: 'https://scroll-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://scroll.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://rpc.scroll.io', 'https://rpc.ankr.com/scroll'],
     publicJsonRPCWSUrl: 'wss://bsc.publicnode.com',
     baseAssetSymbol: 'ETH',
