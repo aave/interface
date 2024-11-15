@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
@@ -8,7 +8,6 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
-import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
@@ -76,24 +75,10 @@ const head = [
     ),
     sortKey: 'variableBorrowAPY',
   },
-  // {
-  //   title: (
-  //     <StableAPYTooltip
-  //       event={{
-  //         eventName: GENERAL.TOOL_TIP,
-  //         eventParams: { tooltip: 'Stable Borrow APY' },
-  //       }}
-  //       text={<Trans>APY, stable</Trans>}
-  //       key="stableBorrowAPY"
-  //       variant="subheader2"
-  //     />
-  //   ),
-  //   sortKey: 'stableBorrowAPY',
-  // },
 ];
 
 export const BorrowAssetsList = () => {
-  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -105,9 +90,7 @@ export const BorrowAssetsList = () => {
   const tokensToBorrow = reserves
     .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
     .map((reserve: ComputedReserveData) => {
-      const availableBorrows = user
-        ? Number(getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable))
-        : 0;
+      const availableBorrows = user ? Number(getMaxAmountAvailableToBorrow(reserve, user)) : 0;
 
       const availableBorrowsInUSD = valueToBigNumber(availableBorrows)
         .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
@@ -121,10 +104,6 @@ export const BorrowAssetsList = () => {
         totalBorrows: reserve.totalDebt,
         availableBorrows,
         availableBorrowsInUSD,
-        stableBorrowRate:
-          reserve.stableBorrowRateEnabled && reserve.borrowingEnabled
-            ? Number(reserve.stableBorrowAPY)
-            : -1,
         variableBorrowRate: reserve.borrowingEnabled ? Number(reserve.variableBorrowAPY) : -1,
         iconSymbol: reserve.iconSymbol,
         ...(reserve.isWrappedBaseAsset
@@ -216,17 +195,6 @@ export const BorrowAssetsList = () => {
       subChildrenComponent={
         <>
           <Box sx={{ px: 6, mb: 4 }}>
-            {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
-              <MarketWarning marketName="Harmony" />
-            )}
-
-            {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
-              <MarketWarning marketName="Fantom" />
-            )}
-            {borrowDisabled && currentMarketData.marketTitle === 'Ethereum AMM' && (
-              <MarketWarning marketName="Ethereum AMM" />
-            )}
-
             {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
               <Warning severity="error">
                 <Trans>

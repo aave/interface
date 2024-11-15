@@ -1,4 +1,5 @@
 import {
+  EmodeDataHumanized,
   ReserveDataHumanized,
   ReservesDataHumanized,
   ReservesIncentiveDataHumanized,
@@ -12,6 +13,7 @@ import { fetchIconSymbolAndName, IconMapInterface } from 'src/ui-config/reserveP
 import { getNetworkConfig, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { selectBaseCurrencyData, selectReserves } from './selectors';
+import { usePoolsEModes } from './usePoolEModes';
 import { usePoolsReservesHumanized } from './usePoolReserves';
 import { usePoolsReservesIncentivesHumanized } from './usePoolReservesIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
@@ -20,7 +22,6 @@ export type FormattedReservesAndIncentives = ReturnType<
   typeof formatReservesAndIncentives
 >[number] &
   IconMapInterface & {
-    isEmodeEnabled: boolean;
     isWrappedBaseAsset: boolean;
   } & ReserveDataHumanized;
 
@@ -28,6 +29,7 @@ const formatReserves = memoize(
   (
     reservesData: ReservesDataHumanized,
     incentivesData: ReservesIncentiveDataHumanized[],
+    poolsEModesData: EmodeDataHumanized[],
     networkConfig: NetworkConfig
   ) => {
     const reserves = selectReserves(reservesData);
@@ -38,11 +40,11 @@ const formatReserves = memoize(
       marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
       marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
       reserveIncentives: incentivesData,
+      eModes: poolsEModesData,
     })
       .map((r) => ({
         ...r,
         ...fetchIconSymbolAndName(r),
-        isEmodeEnabled: r.eModeCategoryId !== 0,
         isWrappedBaseAsset:
           r.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase(),
       }))
@@ -55,18 +57,24 @@ export const usePoolsFormattedReserves = (
 ): SimplifiedUseQueryResult<FormattedReservesAndIncentives[]>[] => {
   const poolsReservesQueries = usePoolsReservesHumanized(marketsData);
   const poolsReservesIncentivesQueries = usePoolsReservesIncentivesHumanized(marketsData);
+  const poolsEModesQueries = usePoolsEModes(marketsData);
 
   return poolsReservesQueries.map((poolReservesQuery, index) => {
     const marketData = marketsData[index];
     const poolReservesIncentivesQuery = poolsReservesIncentivesQueries[index];
+    const poolEModesQuery = poolsEModesQueries[index];
     const networkConfig = getNetworkConfig(marketData.chainId);
     const selector = (
       reservesData: ReservesDataHumanized,
-      incentivesData: ReservesIncentiveDataHumanized[]
+      incentivesData: ReservesIncentiveDataHumanized[],
+      poolsEModesData: EmodeDataHumanized[]
     ) => {
-      return formatReserves(reservesData, incentivesData, networkConfig);
+      return formatReserves(reservesData, incentivesData, poolsEModesData, networkConfig);
     };
-    return combineQueries([poolReservesQuery, poolReservesIncentivesQuery] as const, selector);
+    return combineQueries(
+      [poolReservesQuery, poolReservesIncentivesQuery, poolEModesQuery] as const,
+      selector
+    );
   });
 };
 

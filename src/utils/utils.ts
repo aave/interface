@@ -1,4 +1,4 @@
-import { ChainId } from '@aave/contract-helpers';
+import { ChainId, ProtocolAction } from '@aave/contract-helpers';
 import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 
 import { CustomMarket } from './marketsAndNetworksConfig';
@@ -75,11 +75,6 @@ export const roundToTokenDecimals = (inputValue: string, tokenDecimals: number) 
   return whole + '.' + adjustedDecimals;
 };
 
-export enum Side {
-  SUPPLY = 'supply',
-  BORROW = 'borrow',
-}
-
 export type ExternalIncentivesTooltipsConfig = {
   superFestRewards: boolean;
   spkAirdrop: boolean;
@@ -88,7 +83,7 @@ export type ExternalIncentivesTooltipsConfig = {
 export const showExternalIncentivesTooltip = (
   symbol: string,
   currentMarket: string,
-  side?: Side
+  protocolAction?: ProtocolAction
 ) => {
   const superFestRewardsEnabled = false;
   const spkRewardsEnabled = true;
@@ -101,7 +96,7 @@ export const showExternalIncentivesTooltip = (
   if (
     superFestRewardsEnabled &&
     currentMarket === CustomMarket.proto_base_v3 &&
-    side === Side.SUPPLY &&
+    protocolAction === ProtocolAction.supply &&
     (symbol == 'ETH' || symbol == 'WETH' || symbol == 'wstETH')
   ) {
     tooltipsConfig.superFestRewards = true;
@@ -109,9 +104,8 @@ export const showExternalIncentivesTooltip = (
 
   if (
     spkRewardsEnabled &&
-    (currentMarket === CustomMarket.proto_mainnet_v3 ||
-      currentMarket === CustomMarket.proto_lido_v3) &&
-    side === Side.SUPPLY &&
+    currentMarket === CustomMarket.proto_mainnet_v3 &&
+    protocolAction === ProtocolAction.supply &&
     symbol == 'USDS'
   ) {
     tooltipsConfig.spkAirdrop = true;

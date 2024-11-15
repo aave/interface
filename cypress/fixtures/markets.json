@@ -10,16 +10,6 @@
       "version": "v3",
       "dataCy": "marketSelector_proto_avalanche_v3"
     },
-    "FantomV3": {
-      "name": "Fantom",
-      "version": "v3",
-      "dataCy": "marketSelector_proto_fantom_v3"
-    },
-    "HarmonyV3": {
-      "name": "Harmony",
-      "version": "v3",
-      "dataCy": "marketSelector_proto_harmony_v3"
-    },
     "OptimismV3": {
       "name": "Optimism",
       "version": "v3",
@@ -34,11 +24,6 @@
       "name": "Ethereum",
       "version": "v2",
       "dataCy": "marketSelector_proto_mainnet"
-    },
-    "EthereumAMMV2": {
-      "name": "Ethereum AMM",
-      "version": "v2",
-      "dataCy": "marketSelector_amm_mainnet"
     },
     "PolygonV2": {
       "name": "Polygon",
@@ -66,11 +51,6 @@
       "name": "Avalanche",
       "version": "v3",
       "dataCy": "marketSelector_proto_fuji_v3"
-    },
-    "FantomTestnetV3Market": {
-      "name": "Fantom",
-      "version": "v3",
-      "dataCy": "marketSelector_proto_fantom_testnet_v3"
     },
     "OptimismGoerliV3Market": {
       "name": "Optimism",

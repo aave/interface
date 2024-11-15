@@ -90,7 +90,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',
-    privateJsonRPCUrl: 'https://eth-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://eth.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://rpc.ankr.com/eth',
       'https://rpc.flashbots.net',
@@ -109,7 +109,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.polygon]: {
     name: 'Polygon POS',
     displayName: 'Polygon',
-    privateJsonRPCUrl: 'https://poly-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://polygon.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://polygon-rpc.com',
       'https://polygon-mainnet.public.blastapi.io',
@@ -152,7 +152,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.avalanche]: {
     name: 'Avalanche',
-    privateJsonRPCUrl: 'https://avax-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://avax.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://api.avax.network/ext/bc/C/rpc',
       'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc',
@@ -234,7 +234,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.base]: {
     name: 'Base',
-    privateJsonRPCUrl: 'https://base-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://base.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://mainnet.base.org',
       'https://1rpc.io/base',
@@ -258,9 +258,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.base_sepolia]: {
     name: 'Base Sepolia',
     publicJsonRPCUrl: [
-      'https://rpc.notadegen.com/base/sepolia',
       'https://base-sepolia.blockpi.network/v1/rpc/public',
-      'https://public.stackup.sh/api/v1/node/base-sepolia',
+      'https://sepolia.base.org',
+      'https://base-sepolia.gateway.tenderly.co',
     ],
     publicJsonRPCWSUrl: 'wss://base-sepolia-rpc.publicnode.com',
     baseUniswapAdapter: '0x0',
@@ -271,33 +271,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/base.svg',
   },
-
-  [ChainId.harmony]: {
-    name: 'Harmony',
-    privateJsonRPCUrl: 'https://harmony-0.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: [
-      'https://api.s0.t.hmny.io',
-      'https://api.harmony.one',
-      'https://rpc.ankr.com/harmony',
-    ],
-    publicJsonRPCWSUrl: 'wss://ws.s0.t.hmny.io',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ONE',
-    wrappedBaseAssetSymbol: 'WONE',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://explorer.harmony.one',
-    // usdMarket: true,
-    networkLogoPath: '/icons/networks/harmony.svg',
-    bridge: {
-      icon: '/icons/bridge/harmony.svg',
-      name: 'Harmony Bridge',
-      url: 'https://bridge.harmony.one',
-    },
-    ratesHistoryApiUrl,
-  },
   [ChainId.optimism]: {
     name: 'Optimism',
-    privateJsonRPCUrl: 'https://optimism-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://optimism.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io', 'https://1rpc.io/op'],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
     baseUniswapAdapter: '0x0',
@@ -340,53 +316,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/scroll.svg',
   },
-  [ChainId.fantom]: {
-    name: 'Fantom',
-    privateJsonRPCUrl: 'https://fantom-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: [
-      'https://rpc.fantom.network',
-      'https://rpc.ankr.com/fantom',
-      'https://fantom-mainnet.public.blastapi.io',
-    ],
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'FTM',
-    wrappedBaseAssetSymbol: 'WFTM',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://ftmscan.com',
-    // usdMarket: true,
-    networkLogoPath: '/icons/networks/fantom.svg',
-    bridge: {
-      icon: '/icons/bridge/fantom.svg',
-      name: 'Fantom Bridge',
-      url: 'https://app.multichain.org/#/router',
-    },
-    ratesHistoryApiUrl,
-  },
-  [ChainId.fantom_testnet]: {
-    name: 'Fantom Testnet',
-    publicJsonRPCUrl: [
-      'https://rpc.testnet.fantom.network',
-      'https://fantom-testnet.public.blastapi.io',
-      'https://rpc.ankr.com/fantom_testnet',
-    ],
-    publicJsonRPCWSUrl: '',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'FTM',
-    wrappedBaseAssetSymbol: 'WFTM',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://testnet.ftmscan.com',
-    // usdMarket: true,
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/fantom.svg',
-    bridge: {
-      icon: '/icons/bridge/fantom.svg',
-      name: 'Fantom Bridge',
-      url: 'https://app.multichain.org/#/router',
-    },
-  },
   [ChainId.metis_andromeda]: {
     name: 'Metis Andromeda',
-    privateJsonRPCUrl: 'https://metis-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://metis.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://andromeda.metis.io/?owner=1088'],
     baseAssetSymbol: '', // N/A
     wrappedBaseAssetSymbol: '', // N/A
@@ -397,8 +329,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.xdai]: {
     name: 'Gnosis Chain',
-    privateJsonRPCUrl: 'https://gnosischain-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
-
+    privateJsonRPCUrl: 'https://gnosis.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://rpc.ankr.com/gnosis', 'https://rpc.gnosischain.com'],
     publicJsonRPCWSUrl: 'wss://rpc.gnosischain.com/wss',
     baseUniswapAdapter: '0x0',
@@ -417,7 +348,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.bnb]: {
     name: 'Binance Smart Chain',
-    privateJsonRPCUrl: 'https://bsc-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://bsc.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://bsc.publicnode.com	', 'wss://bsc.publicnode.com'],
     publicJsonRPCWSUrl: 'wss://bsc.publicnode.com',
     baseAssetSymbol: 'BNB',
@@ -434,7 +365,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.scroll]: {
     name: 'Scroll',
-    // privateJsonRPCUrl: 'https://scroll-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://scroll.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://rpc.scroll.io', 'https://rpc.ankr.com/scroll'],
     publicJsonRPCWSUrl: 'wss://bsc.publicnode.com',
     baseAssetSymbol: 'ETH',
