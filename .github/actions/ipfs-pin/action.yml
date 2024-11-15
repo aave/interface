@@ -1,0 +1,51 @@
+name: Pin to ipfs cluster and nodes
+description: Upload build to ipfs node
+inputs:
+  BUILD_PATH:
+    description: path to the build directory
+    required: true
+  PINATA_HASH:
+    description: ''
+    required: true
+  IPFS_SERVER_PORT:
+    description: ''
+    required: true
+  IPFS_SERVER:
+    description: ''
+    required: true
+  IPFS_SERVER_KEY:
+    description: ''
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Prepare env and Compress build on IPFS servers
+      id: ipfs-prepare
+      continue-on-error: false
+      shell: bash
+      run: |
+        tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
+        rm -rf ./key
+        echo -n "${{ inputs.IPFS_SERVER_KEY }}" | base64 -d >> ./key && chmod 400 ./key
+
+    - name: Upload build to IPFS Primary Server
+      id: ipfs-scp-primary
+      continue-on-error: false
+      shell: bash
+      run: |
+        scp -o StrictHostKeyChecking=no \
+        -i ./key \
+        -P \${{ inputs.IPFS_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_SERVER }}:.
+        ssh -o StrictHostKeyChecking=no \
+        -p \${{ inputs.IPFS_SERVER_PORT }} \
+        -i ./key ipfs@\${{ inputs.IPFS_SERVER }} "tar zxf app.tar.gz  && ipfs add -rQ --cid-version=1 ./${{ inputs.BUILD_PATH }}/"
+
+    - name: Clean build and tmp directory on Servers
+      continue-on-error: false
+      id: ipfs-clean
+      shell: bash
+      run: |
+        ssh -o StrictHostKeyChecking=no \
+        -p \${{ inputs.IPFS_SERVER_PORT }} \
+        -i ./key ipfs@\${{ inputs.IPFS_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/ app.tar.gz"
