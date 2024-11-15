@@ -35,7 +35,7 @@ export function Meta({ title, description, imageUrl, timestamp }: MetaProps) {
         content="Decentralized Finance, DeFi, lending, borrowing, stablecoins, Ethereum, assets, erc-20, smart contracts, open finance, trustless"
       />
 
-      <link rel="apple-touch-icon" href="/favicon.ico" />
+      <link rel="apple-touch-icon" href="/aave-apple-icon.png" />
 
       <meta name="apple-mobile-web-app-title" content={`Aave`} />
       <meta name="apple-mobile-web-app-capable" content="yes" />
