@@ -45,20 +45,20 @@ const prodConfig: Config[] = [
     wrappedNativeOracle: AaveV3Ethereum.ASSETS.WETH.ORACLE,
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/E11p8T4Ff1DHZbwSUC527hkUb5innVMdTuP6A2s1xtm1`,
     feeTokens: [
-      // {
-      //   name: 'Gho Token',
-      //   address: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-      //   symbol: 'GHO',
-      //   decimals: 18,
-      //   chainId: 1,
-      //   logoURI:
-      //     'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-      //   oracle: AaveV3Ethereum.ASSETS.GHO.ORACLE,
-      //   extensions: {
-      //     isNative: false,
-      //   },
-      //   balance: '0',
-      // },
+      {
+        name: 'Gho Token',
+        address: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: 1,
+        logoURI:
+          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+        oracle: AaveV3Ethereum.ASSETS.GHO.ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
       {
         name: 'Ethereum',
         symbol: 'ETH',
@@ -124,20 +124,20 @@ const testnetConfig: Config[] = [
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8NWTrc4S6xwaBbajongofytQfQisqYm1zR2ghGEtRFSc`,
     feeTokens: [
-      {
-        name: 'Gho Token',
-        address: AaveV3Sepolia.ASSETS.GHO.UNDERLYING,
-        symbol: 'GHO',
-        decimals: 18,
-        chainId: 11155111,
-        logoURI:
-          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-        oracle: AaveV3Sepolia.ASSETS.GHO.ORACLE,
-        extensions: {
-          isNative: false,
-        },
-        balance: '0',
-      },
+      // {
+      //   name: 'Gho Token',
+      //   address: AaveV3Sepolia.ASSETS.GHO.UNDERLYING,
+      //   symbol: 'GHO',
+      //   decimals: 18,
+      //   chainId: 11155111,
+      //   logoURI:
+      //     'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+      //   oracle: AaveV3Sepolia.ASSETS.GHO.ORACLE,
+      //   extensions: {
+      //     isNative: false,
+      //   },
+      //   balance: '0',
+      // },
       {
         name: 'Ethereum',
         symbol: 'ETH',
