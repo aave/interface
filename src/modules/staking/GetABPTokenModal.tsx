@@ -37,7 +37,7 @@ export const GetABPTokenModal = ({ open, close }: GetABPTokenModalProps) => {
           }
           fullWidth
           sx={{ px: 4 }}
-          href="https://app.balancer.fi/#/ethereum/pool/0x3de27efa2f1aa663ae5d458857e731c129069f29000200000000000000000588"
+          href="https://balancer.fi/pools/ethereum/v2/0x3de27efa2f1aa663ae5d458857e731c129069f29000200000000000000000588"
           target="_blank"
           rel="noopener"
           onClick={() =>
