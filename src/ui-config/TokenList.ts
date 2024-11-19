@@ -5553,6 +5553,16 @@ export const TOKEN_LIST: TokenList = {
       decimals: 6,
       logoURI: 'https://ethereum-optimism.github.io/data/USDC/logo.png',
     },
+
+    {
+      chainId: 43114,
+      address: '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664',
+      name: 'Bridged USDC',
+      symbol: 'USDC.e',
+      decimals: 6,
+      logoURI: 'https://ethereum-optimism.github.io/data/USDC/logo.png',
+    },
+
     {
       name: 'Tether USD',
       address: '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58',
