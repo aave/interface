@@ -4893,7 +4893,8 @@ export const TOKEN_LIST: TokenList = {
       name: 'Aave',
       symbol: 'AAVE',
       decimals: 18,
-      logoURI: 'https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1601374110',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
       extensions: {
         bridgeInfo: {
           '1': {
@@ -5552,6 +5553,16 @@ export const TOKEN_LIST: TokenList = {
       decimals: 6,
       logoURI: 'https://ethereum-optimism.github.io/data/USDC/logo.png',
     },
+
+    {
+      chainId: 43114,
+      address: '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664',
+      name: 'Bridged USDC',
+      symbol: 'USDC.e',
+      decimals: 6,
+      logoURI: 'https://ethereum-optimism.github.io/data/USDC/logo.png',
+    },
+
     {
       name: 'Tether USD',
       address: '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58',
@@ -5702,7 +5713,8 @@ export const TOKEN_LIST: TokenList = {
       name: 'Aave',
       symbol: 'AAVE',
       decimals: 18,
-      logoURI: 'https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1601374110',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
       extensions: {
         bridgeInfo: {
           '1': {
@@ -6802,7 +6814,8 @@ export const TOKEN_LIST: TokenList = {
       name: 'Aave',
       symbol: 'AAVE',
       decimals: 18,
-      logoURI: 'https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1601374110',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
       extensions: {
         bridgeInfo: {
           '1': {
@@ -9764,7 +9777,8 @@ export const TOKEN_LIST: TokenList = {
       name: 'Aave',
       symbol: 'AAVE',
       decimals: 18,
-      logoURI: 'https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1601374110',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
       extensions: {
         bridgeInfo: {
           '1': {
@@ -11954,7 +11968,8 @@ export const TOKEN_LIST: TokenList = {
       name: 'Aave',
       symbol: 'AAVE',
       decimals: 18,
-      logoURI: 'https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1601374110',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
       extensions: {
         bridgeInfo: {
           '1': {
