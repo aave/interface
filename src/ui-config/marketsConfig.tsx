@@ -166,7 +166,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3EthereumLido.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       WITHDRAW_SWITCH_ADAPTER: AaveV3EthereumLido.WITHDRAW_SWAP_ADAPTER,
-      DEBT_SWITCH_ADAPTER: '0xd1B2dec98A95B773C4909B5CD8FB455F467A527f',
+      DEBT_SWITCH_ADAPTER: AaveV3EthereumLido.DEBT_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_etherfi_v3]: {
@@ -197,7 +197,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3EthereumEtherFi.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3EthereumEtherFi.COLLECTOR,
       WITHDRAW_SWITCH_ADAPTER: AaveV3EthereumEtherFi.WITHDRAW_SWAP_ADAPTER,
-      DEBT_SWITCH_ADAPTER: '0x40ede12b44d98Fc4E53A2fB027D1BD1846e1690C',
+      DEBT_SWITCH_ADAPTER: AaveV3EthereumEtherFi.DEBT_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_mainnet]: {
