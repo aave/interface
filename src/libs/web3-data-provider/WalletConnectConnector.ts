@@ -36,7 +36,7 @@ export class WalletConnectConnector extends AbstractConnector {
         name: 'Aave',
         description: 'Non-custodial liquidity protocol',
         url: 'https://app.aave.com',
-        icons: ['https://app.aave.com/favicon.ico'],
+        icons: ['https://avatars.githubusercontent.com/u/47617460?s=200&v=4'],
       },
     };
 
