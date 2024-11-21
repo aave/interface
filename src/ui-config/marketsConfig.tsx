@@ -151,7 +151,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
       withdrawAndSwitch: true,
-      debtSwitch: false,
+      debtSwitch: true,
       switch: true,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/5vxMbXRhG1oQr55MWC5j6qg78waWujx1wjeuEWDA6j3`,
@@ -166,6 +166,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3EthereumLido.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       WITHDRAW_SWITCH_ADAPTER: AaveV3EthereumLido.WITHDRAW_SWAP_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3EthereumLido.DEBT_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_etherfi_v3]: {
@@ -181,7 +182,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
       withdrawAndSwitch: true,
-      debtSwitch: false,
+      debtSwitch: true,
       switch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/8o4HGApJkAqnvxAHShG4w5xiXihHyL7HkeDdQdRUYmqZ`,
@@ -196,6 +197,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3EthereumEtherFi.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3EthereumEtherFi.COLLECTOR,
       WITHDRAW_SWITCH_ADAPTER: AaveV3EthereumEtherFi.WITHDRAW_SWAP_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3EthereumEtherFi.DEBT_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_mainnet]: {
