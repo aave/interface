@@ -91,7 +91,8 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         protocolAction: ProtocolAction.supply,
         customForumLink:
           'https://governance.aave.com/t/arfc-pyusd-reserve-configuration-update-incentive-campaign/19573',
-        customMessage: 'You must supply PYUSD in order to receive merit rewards.',
+        customMessage:
+          'You must supply PYUSD in order to receive merit rewards. Note that there is a undesire debt token list. If you borrow any of these tokens you will get your rewards reduced. Please check the forum post for more information.',
       },
     ],
   },
