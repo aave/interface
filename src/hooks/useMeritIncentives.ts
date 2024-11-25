@@ -23,6 +23,7 @@ type MeritIncentives = {
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customMessage: string;
+  customForumLink: string;
 };
 
 const url = 'https://apps.aavechan.com/api/merit/aprs';
@@ -31,6 +32,7 @@ export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiv
   action: MeritAction;
   protocolAction?: ProtocolAction;
   customMessage?: string;
+  customForumLink?: string;
 };
 
 const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData[] | undefined =>
@@ -87,6 +89,8 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Ethereum.ASSETS.PYUSD.A_TOKEN,
         rewardTokenSymbol: 'aEthPYUSD',
         protocolAction: ProtocolAction.supply,
+        customForumLink:
+          'https://governance.aave.com/t/arfc-pyusd-reserve-configuration-update-incentive-campaign/19573',
       },
     ],
   },
@@ -155,6 +159,7 @@ export const useMeritIncentives = ({
         rewardTokenAddress: incentive.rewardTokenAddress,
         rewardTokenSymbol: incentive.rewardTokenSymbol,
         customMessage: incentive.customMessage,
+        customForumLink: incentive.customForumLink,
       } as ExtendedReserveIncentiveResponse;
     },
   });
