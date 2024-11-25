@@ -27,7 +27,7 @@ export const MeritIncentivesTooltipContent = ({
       }}
     >
       <Typography variant="caption" color="text.primary" mb={3}>
-        <Trans>Eligible for the merit program.</Trans>
+        <Trans>Eligible for the Merit program.</Trans>
       </Typography>
 
       <Typography variant="caption" color="text.secondary" mb={3}>
