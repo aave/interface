@@ -6,6 +6,7 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
+  ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
   BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
@@ -78,6 +79,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aEthUSDT',
         protocolAction: ProtocolAction.borrow,
         customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
+      },
+    ],
+    PYUSD: [
+      {
+        action: MeritAction.ETHEREUM_SUPPLY_PYUSD,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.PYUSD.A_TOKEN,
+        rewardTokenSymbol: 'aEthPYUSD',
+        protocolAction: ProtocolAction.supply,
       },
     ],
   },
