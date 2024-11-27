@@ -43,11 +43,6 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDT',
     aToken: true,
   },
-  aEthPYUSD: {
-    tokenIconSymbol: 'PYUSD',
-    symbol: 'aPYUSD',
-    aToken: true,
-  },
 };
 
 interface IncentivesTooltipContentProps {

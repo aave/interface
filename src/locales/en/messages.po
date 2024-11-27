@@ -1001,8 +1001,8 @@ msgid "Efficiency mode (E-Mode)"
 msgstr "Efficiency mode (E-Mode)"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Eligible for the Merit program."
-msgstr "Eligible for the Merit program."
+msgid "Eligible for the merit program."
+msgstr "Eligible for the merit program."
 
 #: src/layouts/FeedbackDialog.tsx
 msgid "Email"
