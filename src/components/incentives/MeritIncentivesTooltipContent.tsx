@@ -27,7 +27,7 @@ export const MeritIncentivesTooltipContent = ({
       }}
     >
       <Typography variant="caption" color="text.primary" mb={3}>
-        <Trans>Eligible for the Merit program.</Trans>
+        <Trans>Eligible for the merit program.</Trans>
       </Typography>
 
       <Typography variant="caption" color="text.secondary" mb={3}>
@@ -36,11 +36,7 @@ export const MeritIncentivesTooltipContent = ({
           does not guarantee the program and accepts no liability.
         </Trans>{' '}
         <Link
-          href={
-            meritIncentives.customForumLink
-              ? meritIncentives.customForumLink
-              : 'https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646'
-          }
+          href="https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"
