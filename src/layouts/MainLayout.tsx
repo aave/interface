@@ -14,8 +14,8 @@ export function MainLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <TopBarNotify
-        learnMoreLink="/markets/?marketName=proto_base_v3"
-        notifyText="Merit incentives are available for users who both supply cbBTC and borrow USDC."
+        learnMoreLink="https://governance.aave.com/t/arfc-pyusd-reserve-configuration-update-incentive-campaign/19573/1"
+        notifyText="Merit incentives are available for users using PYUSD on mainnet. Learn more."
         bannerVersion={APP_BANNER_VERSION}
       />
       <AppHeader />
