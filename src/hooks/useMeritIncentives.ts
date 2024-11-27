@@ -6,6 +6,7 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
+  ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
   BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
@@ -22,6 +23,7 @@ type MeritIncentives = {
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customMessage: string;
+  customForumLink: string;
 };
 
 const url = 'https://apps.aavechan.com/api/merit/aprs';
@@ -30,6 +32,7 @@ export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiv
   action: MeritAction;
   protocolAction?: ProtocolAction;
   customMessage?: string;
+  customForumLink?: string;
 };
 
 const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData[] | undefined =>
@@ -78,6 +81,18 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aEthUSDT',
         protocolAction: ProtocolAction.borrow,
         customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
+      },
+    ],
+    PYUSD: [
+      {
+        action: MeritAction.ETHEREUM_SUPPLY_PYUSD,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.PYUSD.A_TOKEN,
+        rewardTokenSymbol: 'aEthPYUSD',
+        protocolAction: ProtocolAction.supply,
+        customForumLink:
+          'https://governance.aave.com/t/arfc-pyusd-reserve-configuration-update-incentive-campaign/19573',
+        customMessage:
+          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.'
       },
     ],
   },
@@ -146,6 +161,7 @@ export const useMeritIncentives = ({
         rewardTokenAddress: incentive.rewardTokenAddress,
         rewardTokenSymbol: incentive.rewardTokenSymbol,
         customMessage: incentive.customMessage,
+        customForumLink: incentive.customForumLink,
       } as ExtendedReserveIncentiveResponse;
     },
   });
