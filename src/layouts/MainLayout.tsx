@@ -15,7 +15,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
     <>
       <TopBarNotify
         learnMoreLink="https://governance.aave.com/t/arfc-pyusd-reserve-configuration-update-incentive-campaign/19573/1"
-        notifyText="Merit incentives are available for users PYUSD on mainnet. Learn more."
+        notifyText="Merit incentives are available for users using PYUSD on mainnet. Learn more."
         bannerVersion={APP_BANNER_VERSION}
       />
       <AppHeader />
