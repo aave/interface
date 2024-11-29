@@ -8,9 +8,14 @@ import { TorusConnector } from '@web3-react/torus-connector';
 import { ConnectorUpdate } from '@web3-react/types';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-
+import { Connector } from '@web3-react/types';
 // import { LedgerHQFrameConnector } from 'web3-ledgerhq-frame-connector';
 import { WalletConnectConnector } from './WalletConnectConnector';
+import { coinbaseWallet } from './connectors/CoinbaseConnector';
+import { gnosisSafe } from './connectors/GnosisSafeConnector';
+import { metaMask } from './connectors/MetamaskConnector';
+import { readOnly } from './connectors/ReadonlyConnector';
+import { walletConnect } from './connectors/WalletConnectConnector';
 
 export enum WalletType {
   INJECTED = 'injected',
@@ -21,6 +26,7 @@ export enum WalletType {
   GNOSIS = 'gnosis',
   LEDGER = 'ledger',
   READ_ONLY_MODE = 'read_only_mode',
+  COINBASE_WALLET = 'coinbase_wallet',
 }
 
 const APP_NAME = 'Aave';
@@ -78,12 +84,14 @@ export const getWallet = (
   currentChainId: ChainId = ChainId.mainnet
 ): AbstractConnector => {
   switch (wallet) {
-    case WalletType.READ_ONLY_MODE:
-      return new ReadOnlyModeConnector();
+    // case WalletType.READ_ONLY_MODE:
+    //   return new ReadOnlyModeConnector();
     // case WalletType.LEDGER:
     //   return new LedgerHQFrameConnector({});
     case WalletType.INJECTED:
-      return new InjectedConnector({});
+      return metaMask;
+    case WalletType.COINBASE_WALLET:
+      return coinbaseWallet;
     case WalletType.WALLET_LINK:
       const networkConfig = getNetworkConfig(chainId);
       return new WalletLinkConnector({
@@ -92,10 +100,10 @@ export const getWallet = (
         url: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
       });
     case WalletType.WALLET_CONNECT:
-      return new WalletConnectConnector(currentChainId);
+      return walletConnect;
     case WalletType.GNOSIS:
       if (window) {
-        return new SafeAppConnector();
+        return gnosisSafe;
       }
       throw new Error('Safe app not working');
     case WalletType.TORUS:

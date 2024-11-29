@@ -12,6 +12,12 @@ import { useRootStore } from 'src/store/root';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
+import { NoMetaMaskError } from '@web3-react/metamask';
+import { initializeConnector } from '@web3-react/core';
+import { MetaMask } from '@web3-react/metamask';
+import { WalletConnect } from '@web3-react/walletconnect-v2';
+import { CoinbaseWallet } from '@web3-react/coinbase-wallet';
+
 import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
 
@@ -43,7 +49,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
-      case WalletType.WALLET_LINK:
+      case WalletType.COINBASE_WALLET:
         return (
           <img
             src={`/icons/wallets/coinbase.svg`}
@@ -52,15 +58,15 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
-      case WalletType.TORUS:
-        return (
-          <img
-            src={`/icons/wallets/torus.svg`}
-            width="24px"
-            height="24px"
-            alt={`browser wallet icon`}
-          />
-        );
+      // case WalletType.TORUS:
+      //   return (
+      //     <img
+      //       src={`/icons/wallets/torus.svg`}
+      //       width="24px"
+      //       height="24px"
+      //       alt={`browser wallet icon`}
+      //     />
+      //   );
       // case WalletType.FRAME:
       //   return (
       //     <img
@@ -107,7 +113,7 @@ export enum ErrorType {
 }
 
 export const WalletSelector = () => {
-  const { error, connectReadOnlyMode } = useWeb3Context();
+  const { error, connectReadOnlyMode, connectWallet } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
   const { breakpoints } = useTheme();
@@ -117,11 +123,11 @@ export const WalletSelector = () => {
 
   let blockingError: ErrorType | undefined = undefined;
   if (error) {
-    if (error instanceof UnsupportedChainIdError) {
+    if (error instanceof UserRejectedRequestError) {
       blockingError = ErrorType.UNSUPORTED_CHAIN;
     } else if (error instanceof UserRejectedRequestError) {
       blockingError = ErrorType.USER_REJECTED_REQUEST;
-    } else if (error instanceof NoEthereumProviderError) {
+    } else if (error instanceof NoMetaMaskError) {
       blockingError = ErrorType.NO_WALLET_DETECTED;
     } else {
       blockingError = ErrorType.UNDETERMINED_ERROR;
@@ -183,9 +189,9 @@ export const WalletSelector = () => {
         walletType={WalletType.WALLET_CONNECT}
       />
       <WalletRow
-        key="walletlink_wallet"
+        key="coinbase_wallet"
         walletName="Coinbase Wallet"
-        walletType={WalletType.WALLET_LINK}
+        walletType={WalletType.COINBASE_WALLET}
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       {/* <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} /> */}

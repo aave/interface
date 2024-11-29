@@ -20,6 +20,7 @@ import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
+import { connectors } from 'src/libs/web3-data-provider/connectors';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -133,7 +134,7 @@ export default function MyApp(props: MyAppProps) {
       />
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
-          <Web3ReactProvider getLibrary={getWeb3Library}>
+          <Web3ReactProvider connectors={connectors}>
             <Web3ContextProvider>
               <AppGlobalStyles>
                 <AddressBlocked>
