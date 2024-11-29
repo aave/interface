@@ -1,7 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { UnsupportedChainIdError } from '@web3-react/core';
+import { CoinbaseWallet } from '@web3-react/coinbase-wallet';
+import { initializeConnector, UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError } from '@web3-react/injected-connector';
+import { MetaMask, NoMetaMaskError } from '@web3-react/metamask';
+import { WalletConnect } from '@web3-react/walletconnect-v2';
 import { utils } from 'ethers';
 import { useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
@@ -11,12 +14,6 @@ import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { useRootStore } from 'src/store/root';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 import { AUTH } from 'src/utils/mixPanelEvents';
-
-import { NoMetaMaskError } from '@web3-react/metamask';
-import { initializeConnector } from '@web3-react/core';
-import { MetaMask } from '@web3-react/metamask';
-import { WalletConnect } from '@web3-react/walletconnect-v2';
-import { CoinbaseWallet } from '@web3-react/coinbase-wallet';
 
 import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
