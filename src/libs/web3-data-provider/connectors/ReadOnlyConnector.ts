@@ -4,7 +4,7 @@ import { Actions, Connector, Provider } from '@web3-react/types';
 
 export class MockProvider implements Provider {
   request() {
-    return Promise.resolve();
+    return Promise.resolve(null);
   }
   on() {
     return this;
@@ -14,19 +14,42 @@ export class MockProvider implements Provider {
   }
 }
 
-interface ReadOnlyConnectorConstructorArgs {
-  actions: Actions;
-}
-
 export class ReadOnly extends Connector {
-  constructor({ actions }: ReadOnlyConnectorConstructorArgs) {
-    super(actions);
+  private readAddress = '';
+  provider: MockProvider;
+
+  constructor({ actions, onError }: { actions: Actions; onError?: (error: Error) => void }) {
+    super(actions, onError);
+    this.provider = new MockProvider();
   }
 
-  async activate(address: string): Promise<void> {
-    this.actions.startActivation();
-    const accounts = [address];
-    this.actions.update({ chainId: ChainId.mainnet, accounts });
+  async activate(): Promise<void> {
+    const address = localStorage.getItem('readOnlyModeAddress');
+    if (!address || address === 'undefined') {
+      throw new Error('No address found in local storage for read-only mode');
+    }
+
+    this.readAddress = address;
+    const cancelActivation = this.actions.startActivation();
+
+    try {
+      this.actions.update({ chainId: ChainId.mainnet, accounts: [this.readAddress] });
+    } catch (error) {
+      cancelActivation();
+      throw error;
+    }
+  }
+
+  deactivate(): void {
+    const storedReadAddress = localStorage.getItem('readOnlyModeAddress');
+    if (storedReadAddress === this.readAddress) {
+      localStorage.removeItem('readOnlyModeAddress');
+    }
+    this.actions.resetState();
+  }
+
+  connectEagerly(): void {
+    return;
   }
 }
 
