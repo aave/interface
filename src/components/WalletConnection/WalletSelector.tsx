@@ -187,7 +187,6 @@ export const WalletSelector = () => {
         walletName="Coinbase Wallet"
         walletType={WalletType.COINBASE_WALLET}
       />
-      <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       {/* <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} /> */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
         <Typography variant="subheader1" color="text.secondary">

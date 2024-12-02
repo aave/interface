@@ -90,7 +90,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',
-    privateJsonRPCUrl: 'https://eth-mainnet.g.alchemy.com/v2/AzTaJ6VxaQiUQaJGmOi8Nc0asNkIwmXl',
+    privateJsonRPCUrl: 'https://eth-mainnet.g.alchemy.com/v2/ZiMMq2478EVIEJdsxC5dMal_ccQwtb31',
     publicJsonRPCUrl: [
       'https://rpc.ankr.com/eth',
       'https://rpc.flashbots.net',
