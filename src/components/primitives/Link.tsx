@@ -4,20 +4,24 @@ import clsx from 'clsx';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { AnchorHTMLAttributes } from 'react';
+import { AnchorHTMLAttributes, TouchEventHandler } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({});
 
 interface NextLinkComposedProps
-  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick' | 'onMouseEnter'>,
-    Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter'> {
+  extends Omit<
+      AnchorHTMLAttributes<HTMLAnchorElement>,
+      'href' | 'onClick' | 'onMouseEnter' | 'onTouchStart'
+    >,
+    Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter' | 'onTouchStart'> {
   to: NextLinkProps['href'];
   linkAs?: NextLinkProps['as'];
   href?: NextLinkProps['href'];
   onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
   onMouseEnter?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  onTouchStart?: TouchEventHandler<HTMLAnchorElement>;
 }
 
 export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComposedProps>(
