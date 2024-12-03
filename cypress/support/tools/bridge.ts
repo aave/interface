@@ -15,7 +15,7 @@ export class CustomizedBridge extends Eip1193Bridge {
   chainId: number;
 
   constructor(signer: Signer, provider?: providers.Provider, chainId?: number) {
-    super(signer, provider);
+    super(signer as any, provider);
     this.chainId = chainId || 3030;
   }
 
