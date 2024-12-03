@@ -1913,13 +1913,13 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/transactions" "^5.7.0"
 
-"@ethersproject/experimental@^5.5.0":
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/@ethersproject/experimental/-/experimental-5.5.0.tgz#3fdf8d51112c1074f401ef3c6c9e57f8a3cf12e3"
-  integrity sha512-Q62IjbhlgVmeFHRI6JSU/mZbtVGd8mNgkuIU0IxyTVszUzNblocVctIngAiWm8gGqr/ytj7hN1FRadCRMY4zIA==
+"@ethersproject/experimental@^5.7.0":
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/@ethersproject/experimental/-/experimental-5.7.0.tgz#9759639434d37beaedfd8acab6f3af7db246b92d"
+  integrity sha512-DWvhuw7Dg8JPyhMbh/CNYOwsTLjXRx/HGkacIL5rBocG8jJC0kmixwoK/J3YblO4vtcyBLMa+sV74RJZK2iyHg==
   dependencies:
-    "@ethersproject/web" "^5.5.0"
-    ethers "^5.5.0"
+    "@ethersproject/web" "^5.7.0"
+    ethers "^5.7.0"
     scrypt-js "3.0.1"
 
 "@ethersproject/hash@5.5.0", "@ethersproject/hash@^5.0.4", "@ethersproject/hash@^5.5.0":
@@ -7631,7 +7631,7 @@ ethers@6.7.0:
     tslib "2.4.0"
     ws "8.5.0"
 
-ethers@^5.0.15:
+ethers@^5.0.15, ethers@^5.7.0:
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
@@ -7667,7 +7667,7 @@ ethers@^5.0.15:
     "@ethersproject/web" "5.7.1"
     "@ethersproject/wordlists" "5.7.0"
 
-ethers@^5.4.7, ethers@^5.5.0, ethers@^5.5.4:
+ethers@^5.4.7, ethers@^5.5.4:
   version "5.5.4"
   resolved "https://registry.npmjs.org/ethers/-/ethers-5.5.4.tgz"
   integrity sha512-N9IAXsF8iKhgHIC6pquzRgPBJEzc9auw3JoRkaKe+y4Wl/LFBtDDunNe7YmdomontECAcC5APaAgWZBiu1kirw==

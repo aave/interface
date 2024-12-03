@@ -76,14 +76,17 @@ export class CustomizedBridge extends Eip1193Bridge {
       );
       return tx;
     }
-    if (method === 'eth_chainId') {
-      if (isCallbackForm) {
-        // @ts-ignore
-        callback(null, { result: this.chainId });
-      } else {
-        return Promise.resolve(this.chainId);
-      }
-    }
+    // if (method === 'eth_chainId') {
+    //   const result = await this.provider.getNetwork();
+    //   const chainId = utils.hexValue(result.chainId);
+
+    //   if (isCallbackForm) {
+    //     // @ts-ignore
+    //     callback(null, { result: chainId });
+    //   } else {
+    //     return Promise.resolve(chainId);
+    //   }
+    // }
     if (method === 'eth_sendTransaction') {
       if (!this.signer) {
         throw new Error('eth_sendTransaction requires an account');
