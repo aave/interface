@@ -13,7 +13,7 @@ export const reserveRateTimeRangeOptions = [
   ESupportedTimeRanges.SixMonths,
   ESupportedTimeRanges.OneYear,
 ];
-export type ReserveRateTimeRange = typeof reserveRateTimeRangeOptions[number];
+export type ReserveRateTimeRange = (typeof reserveRateTimeRangeOptions)[number];
 
 type RatesHistoryParams = {
   from: number;

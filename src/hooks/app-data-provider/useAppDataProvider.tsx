@@ -6,7 +6,7 @@ import {
   UserReserveData,
 } from '@aave/math-utils';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { useContext } from 'react';
+import React, { PropsWithChildren, useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -71,7 +71,7 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  * This is the only provider you'll ever need.
  * It fetches reserves /incentives & walletbalances & keeps them updated.
  */
-export const AppDataProvider: React.FC = ({ children }) => {
+export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { currentAccount } = useWeb3Context();
 
   const currentMarketData = useRootStore((state) => state.currentMarketData);

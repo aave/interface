@@ -1,5 +1,5 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
-import { createContext, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
@@ -129,7 +129,7 @@ export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
   {} as ModalContextType<ModalArgsType>
 );
 
-export const ModalContextProvider: React.FC = ({ children }) => {
+export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { setSwitchNetworkError } = useWeb3Context();
   // contains the current modal open state if any
   const [type, setType] = useState<ModalType>();

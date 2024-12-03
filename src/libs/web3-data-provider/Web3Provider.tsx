@@ -48,7 +48,7 @@ interface ConnectWalletOpts {
 }
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
-  const { account, chainId, connector, provider, isActivating, isActive } = useWeb3React();
+  const { account, chainId: chainId, connector, provider, isActivating, isActive } = useWeb3React();
 
   const [error, setError] = useState<Error>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
