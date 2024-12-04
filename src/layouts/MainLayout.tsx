@@ -9,14 +9,15 @@ import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  const APP_BANNER_VERSION = '4.0.0';
+  const APP_BANNER_VERSION = '5.0.0';
 
   return (
     <>
       <TopBarNotify
-        learnMoreLink="/markets/?marketName=proto_base_v3"
-        notifyText="Merit incentives are available for users who both supply cbBTC and borrow USDC."
+        learnMoreLink="https://oh7vm38ynd2.typeform.com/to/Fnw3rMyw"
+        notifyText="Looking to provide product feedback? We'd love to hear from you! 👉"
         bannerVersion={APP_BANNER_VERSION}
+        buttonText="Share feedback"
       />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
