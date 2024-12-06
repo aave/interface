@@ -34,7 +34,13 @@ export const UserNameText: React.FC<UserNameTextProps> = ({
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+    <Box
+      onClick={() => {
+        trackEvent(GENERAL.EXTERNAL_LINK, { funnel: funnel, Link: 'Etherscan' });
+        window.open(link, '_blank');
+      }}
+      sx={{ display: 'flex', alignItems: 'center', gap: 1, cursor: 'pointer' }}
+    >
       <CompactableTypography
         compactMode={domainName ? domainCompactMode : addressCompactMode}
         compact={shouldCompact}
@@ -45,12 +51,7 @@ export const UserNameText: React.FC<UserNameTextProps> = ({
       </CompactableTypography>
       {link && (
         <DarkTooltip title="View on Etherscan">
-          <Link
-            href={link}
-            target="_blank"
-            sx={{ display: 'flex' }}
-            onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { funnel: funnel, Link: 'Etherscan' })}
-          >
+          <Link href={link} target="_blank" sx={{ display: 'flex' }}>
             <SvgIcon sx={{ fontSize: iconSize }}>
               <ExternalLinkIcon />
             </SvgIcon>
