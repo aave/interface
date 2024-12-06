@@ -77,6 +77,7 @@ export const useParaSwapTransactionHandler = ({
     asset: string;
     amount: string;
   }
+  // @ts-expect-error TODO: need think about "tx" type
   const [previousDeps, setPreviousDeps] = useState<Dependency>({ asset: deps[0], amount: deps[1] });
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
@@ -291,6 +292,7 @@ export const useParaSwapTransactionHandler = ({
           if (Number(deps[1]) < Number(previousDeps.amount)) {
             setTxError(undefined);
           }
+          // @ts-expect-error TODO: need think about "tx" type
           setPreviousDeps({ asset: deps[0], amount: deps[1] });
           if (approval && preferPermit) {
             setUsePermit(true);
