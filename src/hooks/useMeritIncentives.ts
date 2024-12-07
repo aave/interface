@@ -160,11 +160,6 @@ export const useMeritIncentives = ({
       const data = await response.json();
       const meritIncentives = data.currentAPR as MeritIncentives;
 
-      meritIncentives.actionsAPR['avalanche-supply-btcb'] = 1;
-      meritIncentives.actionsAPR['avalanche-supply-usdc'] = 2;
-      meritIncentives.actionsAPR['avalanche-supply-usdt'] = 3;
-      meritIncentives.actionsAPR['avalanche-supply-savax'] = 4;
-
       return meritIncentives;
     },
     queryKey: ['meritIncentives'],
