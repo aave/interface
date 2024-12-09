@@ -20,7 +20,7 @@ export enum MeritAction {
 type MeritIncentives = {
   totalAPR: number;
   actionsAPR: {
-    [key in MeritAction]: number;
+    [key in MeritAction]: number | null | undefined;
   };
 };
 
@@ -178,6 +178,10 @@ export const useMeritIncentives = ({
       }
 
       const APR = data.actionsAPR[incentive.action];
+
+      if (!APR) {
+        return null;
+      }
 
       return {
         incentiveAPR: (APR / 100).toString(),
