@@ -101,6 +101,10 @@ export class CustomizedBridge extends Eip1193Bridge {
       const req = JsonRpcProvider.hexlifyTransaction(params[0], { from: true, gas: true });
 
       req.gasLimit = req.gas;
+      // @ts-ignore
+      // Work around to force the chainId to be used for the fork environments
+      req.chainId = this.chainId;
+
       delete req.gas;
 
       const tx = await this.signer.sendTransaction(req);
