@@ -13,7 +13,7 @@ jobs:
   download-from-crowdin:
     name: Download sources from Crowdin
     runs-on: ubuntu-latest
-    if: github.repository == 'AaveChan/aave-interface'
+    if: github.repository == 'aave/interface'
 
     steps:
       - name: Checkout
