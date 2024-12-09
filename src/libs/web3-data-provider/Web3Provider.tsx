@@ -72,12 +72,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     async (wallet: WalletType, opts?: ConnectWalletOpts) => {
       try {
         const connector: Connector = getWallet(wallet);
-        await connector.activate(opts?.address);
         if (wallet === WalletType.READ_ONLY_MODE && opts?.address) {
           localStorage.setItem('readOnlyModeAddress', opts.address);
         } else {
           localStorage.removeItem('readOnlyModeAddress');
         }
+        await connector.activate(opts?.address);
         setSwitchNetworkError(undefined);
         setWalletType(wallet);
         localStorage.setItem('walletProvider', wallet.toString());
@@ -114,7 +114,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         .catch();
     };
     try {
-      console.log('do we go here?');
       const lastWalletProvider = localStorage.getItem('walletProvider');
       const lastReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
       if (lastWalletProvider) {
@@ -123,14 +122,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           silently: true,
         });
       } else {
-        console.log('we SHOULD NOT GO HERE');
         tryAppWalletsSilently();
       }
     } catch {
       localStorage.removeItem('walletProvider');
       localStorage.removeItem('readOnlyModeAddress');
     }
-  }, [connectWallet, disconnectWallet]);
+  }, [connectWallet]);
   /*
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {

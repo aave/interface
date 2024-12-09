@@ -128,7 +128,7 @@ export default function MyApp(props: MyAppProps) {
       <NoSsr>
         <LanguageProvider>
           <QueryClientProvider client={queryClient}>
-            <Web3ReactProvider connectors={connectors}>
+            <Web3ReactProvider connectors={connectors} lookupENS={false}>
               <Web3ContextProvider>
                 <AppGlobalStyles>
                   <AddressBlocked>
