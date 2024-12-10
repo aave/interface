@@ -78,6 +78,9 @@ const StakingMigrateModal = dynamic(() =>
     (module) => module.StakingMigrateModal
   )
 );
+const ReadOnlyModal = dynamic(() =>
+  import('src/components/WalletConnection/ReadOnlyModal').then((module) => module.ReadOnlyModal)
+);
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -164,6 +167,7 @@ export default function MyApp(props: MyAppProps) {
                               <SwitchModal />
                               <StakingMigrateModal />
                               <BridgeModal />
+                              <ReadOnlyModal />
                             </GasStationProvider>
                           </AppDataProvider>
                         </SharedDependenciesProvider>
