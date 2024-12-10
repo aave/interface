@@ -31,6 +31,7 @@ export enum ModalType {
   StakingMigrate,
   GovRepresentatives,
   Bridge,
+  ReadMode,
 }
 
 export interface ModalArgsType {
@@ -123,6 +124,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   setLoadingTxns: (loading: boolean) => void;
   txError: TxErrorType | undefined;
   setTxError: (error: TxErrorType | undefined) => void;
+  openReadMode: () => void;
 }
 
 export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
@@ -145,6 +147,9 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
   return (
     <ModalContext.Provider
       value={{
+        openReadMode: () => {
+          setType(ModalType.ReadMode);
+        },
         openSupply: (underlyingAsset, currentMarket, name, funnel, isReserve) => {
           setType(ModalType.Supply);
           setArgs({ underlyingAsset });
