@@ -1,32 +1,44 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import dynamic from 'next/dynamic';
+import { ConnectKitButton } from 'connectkit';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useRootStore } from 'src/store/root';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
-const WalletModal = dynamic(() => import('./WalletModal').then((module) => module.WalletModal));
+import { AvatarSize } from '../Avatar';
+import { UserDisplay } from '../UserDisplay';
 
 export interface ConnectWalletProps {
   funnel?: string;
 }
 
 export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) => {
-  const { setWalletModalOpen } = useWalletModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <>
-      <Button
-        variant="gradient"
-        onClick={() => {
-          trackEvent(AUTH.CONNECT_WALLET, { funnel: funnel });
-          setWalletModalOpen(true);
+      <ConnectKitButton.Custom>
+        {({ isConnected, show }) => {
+          return (
+            <Button
+              variant={isConnected ? 'surface' : 'gradient'}
+              onClick={() => {
+                show && show();
+              }}
+            >
+              {isConnected ? (
+                <UserDisplay
+                  avatarProps={{ size: AvatarSize.SM }}
+                  oneLiner={true}
+                  titleProps={{ variant: 'buttonM' }}
+                />
+              ) : (
+                <Trans>Connect wallet</Trans>
+              )}
+            </Button>
+          );
         }}
-      >
-        <Trans>Connect wallet</Trans>
-      </Button>
-      <WalletModal />
+      </ConnectKitButton.Custom>
     </>
   );
 };

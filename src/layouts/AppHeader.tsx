@@ -20,6 +20,7 @@ import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
@@ -322,14 +323,14 @@ export function AppHeader() {
           </StyledBadge>
         </NoSsr>
 
-        {!mobileMenuOpen && (
+        {/* {!mobileMenuOpen && (
           <WalletWidget
             open={walletWidgetOpen}
             setOpen={toggleWalletWigit}
             headerHeight={headerHeight}
           />
-        )}
-
+        )} */}
+        <ConnectWalletButton />
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <SettingsMenu />
         </Box>

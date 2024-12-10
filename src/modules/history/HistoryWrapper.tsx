@@ -92,7 +92,7 @@ export const HistoryWrapper = () => {
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
-    (node) => {
+    (node: HTMLDivElement | null) => {
       if (isLoading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
