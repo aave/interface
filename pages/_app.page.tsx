@@ -5,7 +5,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import { NoSsr } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Web3ReactProvider } from '@web3-react/core';
+import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -17,10 +17,11 @@ import { TransactionEventHandler } from 'src/components/TransactionEventHandler'
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
-import { connectors } from 'src/libs/web3-data-provider/connectors';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
+import { createConfig, WagmiProvider } from 'wagmi';
+import { mainnet, optimism } from 'wagmi/chains';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -85,6 +86,17 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
+const config = createConfig(
+  getDefaultConfig({
+    chains: [mainnet, optimism],
+    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
+    appName: 'Aave',
+    appDescription: 'Non-custodial liquidity protocol',
+    appUrl: 'https://app.aave.com',
+    appIcon: 'https://avatars.githubusercontent.com/u/47617460?s=200&v=4',
+  })
+);
+
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
@@ -127,40 +139,42 @@ export default function MyApp(props: MyAppProps) {
       />
       <NoSsr>
         <LanguageProvider>
-          <QueryClientProvider client={queryClient}>
-            <Web3ReactProvider connectors={connectors} lookupENS={false}>
-              <Web3ContextProvider>
-                <AppGlobalStyles>
-                  <AddressBlocked>
-                    <ModalContextProvider>
-                      <SharedDependenciesProvider>
-                        <AppDataProvider>
-                          <GasStationProvider>
-                            {getLayout(<Component {...pageProps} />)}
-                            <SupplyModal />
-                            <WithdrawModal />
-                            <BorrowModal />
-                            <RepayModal />
-                            <CollateralChangeModal />
-                            <DebtSwitchModal />
-                            <ClaimRewardsModal />
-                            <EmodeModal />
-                            <SwapModal />
-                            <FaucetModal />
-                            <TransactionEventHandler />
-                            <SwitchModal />
-                            <StakingMigrateModal />
-                            <BridgeModal />
-                          </GasStationProvider>
-                        </AppDataProvider>
-                      </SharedDependenciesProvider>
-                    </ModalContextProvider>
-                  </AddressBlocked>
-                </AppGlobalStyles>
-              </Web3ContextProvider>
-            </Web3ReactProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
+          <WagmiProvider config={config}>
+            <QueryClientProvider client={queryClient}>
+              <ConnectKitProvider>
+                <Web3ContextProvider>
+                  <AppGlobalStyles>
+                    <AddressBlocked>
+                      <ModalContextProvider>
+                        <SharedDependenciesProvider>
+                          <AppDataProvider>
+                            <GasStationProvider>
+                              {getLayout(<Component {...pageProps} />)}
+                              <SupplyModal />
+                              <WithdrawModal />
+                              <BorrowModal />
+                              <RepayModal />
+                              <CollateralChangeModal />
+                              <DebtSwitchModal />
+                              <ClaimRewardsModal />
+                              <EmodeModal />
+                              <SwapModal />
+                              <FaucetModal />
+                              <TransactionEventHandler />
+                              <SwitchModal />
+                              <StakingMigrateModal />
+                              <BridgeModal />
+                            </GasStationProvider>
+                          </AppDataProvider>
+                        </SharedDependenciesProvider>
+                      </ModalContextProvider>
+                    </AddressBlocked>
+                  </AppGlobalStyles>
+                </Web3ContextProvider>
+              </ConnectKitProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+          </WagmiProvider>
         </LanguageProvider>
       </NoSsr>
     </CacheProvider>
