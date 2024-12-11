@@ -18,7 +18,7 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
     const newState = !testnetsEnabled;
     setTestnetsMode(!testnetsEnabled);
     localStorage.setItem(testnetsEnabledId, newState ? 'true' : 'false');
-    // Set window.location to trigger a page reload when navigating to the the dashboard
+    // Set window.location to trigger a page reload when navigating to the dashboard
     window.location.href = '/';
   };
 
