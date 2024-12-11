@@ -48,6 +48,11 @@ const IncentivesSymbolMap: {
     symbol: 'aPYUSD',
     aToken: true,
   },
+  aAvaSAVAX: {
+    tokenIconSymbol: 'sAVAX',
+    symbol: 'asAVAX',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {

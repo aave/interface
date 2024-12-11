@@ -1,6 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { AaveV3Base, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import { AaveV3Avalanche, AaveV3Base, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
@@ -12,12 +12,16 @@ export enum MeritAction {
   BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
   BASE_SUPPLY_USDC = 'base-supply-usdc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
+  AVALANCHE_SUPPLY_BTCB = 'avalanche-supply-btcb',
+  AVALANCHE_SUPPLY_USDC = 'avalanche-supply-usdc',
+  AVALANCHE_SUPPLY_USDT = 'avalanche-supply-usdt',
+  AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
 }
 
 type MeritIncentives = {
   totalAPR: number;
   actionsAPR: {
-    [key in MeritAction]: number;
+    [key in MeritAction]: number | null | undefined;
   };
 };
 
@@ -120,6 +124,40 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       },
     ],
   },
+  [CustomMarket.proto_avalanche_v3]: {
+    ['BTC.b']: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_BTCB,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.BTCb.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+    USDC: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_USDC,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.USDC.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+    USDt: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_USDT,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.USDt.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+    sAVAX: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_SAVAX,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+  },
 };
 
 export const useMeritIncentives = ({
@@ -155,6 +193,10 @@ export const useMeritIncentives = ({
       }
 
       const APR = data.actionsAPR[incentive.action];
+
+      if (!APR) {
+        return null;
+      }
 
       return {
         incentiveAPR: (APR / 100).toString(),
