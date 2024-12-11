@@ -116,7 +116,7 @@ export const DashboardTopPanel = () => {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <PageTitle
               pageTitle={<Trans>Dashboard</Trans>}
-              withMarketSwitcher={true}
+              withMarketSwitcher={false}
               bridge={currentNetworkConfig.bridge}
             />
             {showMigrateButton && !downToSM && (
