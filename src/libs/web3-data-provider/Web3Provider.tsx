@@ -2,17 +2,15 @@ import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contr
 import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
 import { BigNumber, PopulatedTransaction } from 'ethers';
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { hexToAscii } from 'src/utils/utils';
 
 // import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 import { Web3Context } from '../hooks/useWeb3Context';
-import { ReadOnly } from './connectors/ReadOnlyConnector';
-import { getWallet, WalletType } from './WalletOptions';
-import { useAccount, useSendTransaction, useSwitchChain } from 'wagmi';
-import { useEthersProvider, useEthersSigner } from './adapters/EthersAdapter';
+import { useAccount, useClient, useConnectorClient, useSwitchChain, useWatchAsset } from 'wagmi';
+import { clientToSigner, useEthersProvider, useEthersSigner } from './adapters/EthersAdapter';
+import { UserRejectedRequestError } from 'viem';
 
 export type ERC20TokenType = {
   address: string;
@@ -48,10 +46,18 @@ interface ConnectWalletOpts {
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   // const { chainId: chainId, connector, provider, isActivating, isActive } = useWeb3React();
   const { switchChainAsync } = useSwitchChain();
+  const { watchAssetAsync } = useWatchAsset();
   const { chainId, address, isConnected, isConnecting, connector } = useAccount();
+  const client = useClient({ chainId });
+  const { data: connectorClient } = useConnectorClient({ chainId });
+
+  console.log(connector?.getChainId());
+  console.log(client);
+  console.log(connectorClient);
+
   // const { sendTransaction } = useSendTransaction();
   const provider = useEthersProvider({ chainId });
-  const signer = useEthersSigner({ chainId });
+  // const signer = useEthersSigner({ chainId });
   const account = address;
 
   const [error, setError] = useState<Error>();
@@ -150,9 +156,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const sendTx = async (
     txData: transactionType | PopulatedTransaction
   ): Promise<TransactionResponse> => {
-    if (provider) {
-      console.log(provider);
+    if (provider && connectorClient) {
       const { from, ...data } = txData;
+      const signer = clientToSigner(connectorClient);
       if (signer) {
         const txResponse: TransactionResponse = await signer.sendTransaction({
           ...data,
@@ -178,41 +184,14 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   };
 
   const switchNetwork = async (newChainId: number) => {
-    if (provider) {
-      try {
-        await switchChainAsync({ chainId: newChainId });
+    try {
+      await switchChainAsync({ chainId: newChainId });
+      setSwitchNetworkError(undefined);
+    } catch (switchError) {
+      if (switchError.code === UserRejectedRequestError.code) {
         setSwitchNetworkError(undefined);
-      } catch (switchError) {
-        const networkInfo = getNetworkConfig(newChainId);
-        if (switchError.code === 4902) {
-          try {
-            try {
-              await provider.send('wallet_addEthereumChain', [
-                {
-                  chainId: `0x${newChainId.toString(16)}`,
-                  chainName: networkInfo.name,
-                  nativeCurrency: {
-                    symbol: networkInfo.baseAssetSymbol,
-                    decimals: networkInfo.baseAssetDecimals,
-                  },
-                  rpcUrls: [...networkInfo.publicJsonRPCUrl, networkInfo.publicJsonRPCWSUrl],
-                  blockExplorerUrls: [networkInfo.explorerLink],
-                },
-              ]);
-            } catch (error) {
-              if (error.code !== 4001) {
-                throw error;
-              }
-            }
-            setSwitchNetworkError(undefined);
-          } catch (addError) {
-            setSwitchNetworkError(addError);
-          }
-        } else if (switchError.code === 4001) {
-          setSwitchNetworkError(undefined);
-        } else {
-          setSwitchNetworkError(switchError);
-        }
+      } else {
+        setSwitchNetworkError(switchError);
       }
     }
   };
@@ -234,11 +213,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     decimals,
     image,
   }: ERC20TokenType): Promise<boolean> => {
-    // using window.ethereum as looks like its only supported for metamask
-    // and didn't manage to make the call with ethersjs
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const injectedProvider = (window as any).ethereum;
-    if (provider && account && window && injectedProvider) {
+    if (provider) {
       if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
         let tokenSymbol = symbol;
         if (!tokenSymbol) {
@@ -247,16 +222,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           tokenSymbol = symbol;
         }
 
-        await injectedProvider.request({
-          method: 'wallet_watchAsset',
-          params: {
-            type: 'ERC20',
-            options: {
-              address,
-              symbol: tokenSymbol,
-              decimals,
-              image,
-            },
+        await watchAssetAsync({
+          type: 'ERC20',
+          options: {
+            address,
+            symbol: tokenSymbol,
+            decimals,
+            image,
           },
         });
 

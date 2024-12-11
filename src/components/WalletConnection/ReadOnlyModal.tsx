@@ -1,12 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, InputBase, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { NoMetaMaskError } from '@web3-react/metamask';
 import { utils } from 'ethers';
 import { useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { UserRejectedRequestError } from 'src/libs/web3-data-provider/connectors/WalletConnectConnector';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { useRootStore } from 'src/store/root';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -28,8 +26,12 @@ export enum ErrorType {
   NO_WALLET_DETECTED,
 }
 
+// TODO: remove
+class NoMetaMaskError {}
+class UserRejectedRequestError {}
+
 export const ReadOnlyModal = () => {
-  const { error, connectWallet } = useWeb3Context();
+  const { error } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
   const { type, close } = useModalContext();
@@ -70,14 +72,14 @@ export const ReadOnlyModal = () => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
       console.log('connect the read only wallethere');
-      connectWallet(WalletType.READ_ONLY_MODE, { address: inputMockWalletAddress });
+      // connectWallet(WalletType.READ_ONLY_MODE, { address: inputMockWalletAddress });
     } else {
       // Check if address could be valid ENS before trying to resolve
       if (inputMockWalletAddress.slice(-4) === '.eth') {
         // Attempt to resolve ENS name and use resolved address if valid
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          connectWallet(WalletType.READ_ONLY_MODE, { address: resolvedAddress });
+          // connectWallet(WalletType.READ_ONLY_MODE, { address: resolvedAddress });
         } else {
           setValidAddressError(true);
         }
