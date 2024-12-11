@@ -12,7 +12,6 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
@@ -36,7 +35,6 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   const router = useRouter();
   const { reserves, loading } = useAppDataContext();
   const { currentMarket, currentChainId } = useProtocolDataContext();
-  const { market, logo } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
 
   const theme = useTheme();
@@ -110,26 +108,6 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
             >
               <Trans>Go Back</Trans>
             </Button>
-
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <MarketLogo size={20} logo={logo} />
-              <Typography variant="subheader1" sx={{ color: 'common.white' }}>
-                {market.marketTitle} <Trans>Market</Trans>
-              </Typography>
-              {market.v3 && (
-                <Box
-                  sx={{
-                    color: '#fff',
-                    px: 2,
-                    mx: 2,
-                    borderRadius: '12px',
-                    background: (theme) => theme.palette.gradients.aaveGradient,
-                  }}
-                >
-                  <Typography variant="subheader2">Version 3</Typography>
-                </Box>
-              )}
-            </Box>
           </Box>
 
           {downToSM && (

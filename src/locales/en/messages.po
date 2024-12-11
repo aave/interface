@@ -1469,10 +1469,6 @@ msgstr "Manage E-Mode"
 msgid "Manage analytics"
 msgstr "Manage analytics"
 
-#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
-msgid "Market"
-msgstr "Market"
-
 #: src/modules/markets/MarketsTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Markets"
