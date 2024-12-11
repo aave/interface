@@ -43,6 +43,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDT',
     aToken: true,
   },
+  aEthPYUSD: {
+    tokenIconSymbol: 'PYUSD',
+    symbol: 'aPYUSD',
+    aToken: true,
+  },
   aAvaSAVAX: {
     tokenIconSymbol: 'sAVAX',
     symbol: 'asAVAX',
