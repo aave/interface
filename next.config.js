@@ -25,6 +25,7 @@ module.exports = withBundleAnalyzer({
       ],
     });
     config.experiments = { topLevelAwait: true };
+    config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },
   reactStrictMode: true,

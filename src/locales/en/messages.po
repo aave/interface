@@ -1060,6 +1060,7 @@ msgstr "Enter a valid address"
 msgid "Enter an amount"
 msgstr "Enter an amount"
 
+#: src/components/WalletConnection/ReadOnlyModal.tsx
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
@@ -1652,6 +1653,7 @@ msgstr "Net worth"
 msgid "Network"
 msgstr "Network"
 
+#: src/components/WalletConnection/ReadOnlyModal.tsx
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Network not supported for this wallet"
 msgstr "Network not supported for this wallet"
@@ -1801,6 +1803,7 @@ msgstr "Please connect your wallet to see your supplies, borrowings, and open po
 msgid "Please connect your wallet to view transaction history."
 msgstr "Please connect your wallet to view transaction history."
 
+#: src/components/WalletConnection/ReadOnlyModal.tsx
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Please enter a valid wallet address."
 msgstr "Please enter a valid wallet address."
@@ -1914,6 +1917,10 @@ msgstr "Reached"
 msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
 msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
 
+#: src/layouts/SettingsMenu.tsx
+msgid "Read mode"
+msgstr "Read mode"
+
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
 msgstr "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
@@ -1943,6 +1950,7 @@ msgstr "Recent Transactions"
 msgid "Recipient address"
 msgstr "Recipient address"
 
+#: src/components/WalletConnection/ReadOnlyModal.tsx
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
@@ -2741,10 +2749,12 @@ msgstr "Total supplied"
 msgid "Total worth"
 msgstr "Total worth"
 
+#: src/components/WalletConnection/ReadOnlyModal.tsx
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet"
 msgstr "Track wallet"
 
+#: src/components/WalletConnection/ReadOnlyModal.tsx
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet balance in read-only mode"
 msgstr "Track wallet balance in read-only mode"
@@ -3008,6 +3018,7 @@ msgstr "Wallet Balance"
 msgid "Wallet balance"
 msgstr "Wallet balance"
 
+#: src/components/WalletConnection/ReadOnlyModal.tsx
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallet not detected. Connect or install wallet and retry"
 msgstr "Wallet not detected. Connect or install wallet and retry"
