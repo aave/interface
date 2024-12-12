@@ -1,6 +1,14 @@
 import { getDefaultConfig } from 'connectkit';
-import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
-import { createConfig, CreateConfigParameters } from 'wagmi';
+import {
+  ENABLE_TESTNET,
+  FORK_BASE_CHAIN_ID,
+  FORK_CHAIN_ID,
+  FORK_ENABLED,
+  FORK_RPC_URL,
+  networkConfigs,
+} from 'src/utils/marketsAndNetworksConfig';
+import { type Chain } from 'viem';
+import { createConfig, CreateConfigParameters, injected } from 'wagmi';
 import {
   arbitrum,
   arbitrumSepolia,
@@ -30,7 +38,7 @@ const testnetChains: CreateConfigParameters['chains'] = [
   scrollSepolia,
 ];
 
-const prodChains: CreateConfigParameters['chains'] = [
+let prodChains: CreateConfigParameters['chains'] = [
   mainnet,
   base,
   arbitrum,
@@ -44,13 +52,49 @@ const prodChains: CreateConfigParameters['chains'] = [
   zksync,
 ];
 
-export const wagmiConfig = createConfig(
+const { name, baseAssetDecimals, baseAssetSymbol } = networkConfigs[FORK_BASE_CHAIN_ID];
+
+const forkChain: Chain = {
+  id: FORK_CHAIN_ID,
+  name,
+  nativeCurrency: {
+    decimals: baseAssetDecimals,
+    name: baseAssetSymbol,
+    symbol: baseAssetSymbol,
+  },
+  rpcUrls: {
+    default: { http: [FORK_RPC_URL] },
+  },
+  testnet: false,
+};
+
+if (FORK_ENABLED) {
+  prodChains = [forkChain, ...prodChains];
+}
+
+const defaultConfig = {
+  walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
+  appName: 'Aave',
+  appDescription: 'Non-custodial liquidity protocol',
+  appUrl: 'https://app.aave.com',
+  appIcon: 'https://avatars.githubusercontent.com/u/47617460?s=200&v=4',
+};
+
+const cypressConfig = createConfig(
   getDefaultConfig({
-    chains: ENABLE_TESTNET ? testnetChains : prodChains,
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
-    appName: 'Aave',
-    appDescription: 'Non-custodial liquidity protocol',
-    appUrl: 'https://app.aave.com',
-    appIcon: 'https://avatars.githubusercontent.com/u/47617460?s=200&v=4',
+    chains: [forkChain],
+    connectors: [injected()],
+    ...defaultConfig,
   })
 );
+
+const prodConfig = createConfig(
+  getDefaultConfig({
+    chains: ENABLE_TESTNET ? testnetChains : prodChains,
+    ...defaultConfig,
+  })
+);
+
+const isCypressEnabled = process.env.NEXT_PUBLIC_IS_CYPRESS_ENABLED === 'true';
+
+export const wagmiConfig = isCypressEnabled ? cypressConfig : prodConfig;

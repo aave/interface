@@ -30,14 +30,14 @@ export const FORK_ENABLED =
   !!process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   global?.window?.localStorage.getItem('forkEnabled') === 'true';
 // specifies which network was forked
-const FORK_BASE_CHAIN_ID =
+export const FORK_BASE_CHAIN_ID =
   Number(process.env.NEXT_PUBLIC_FORK_BASE_CHAIN_ID) ||
   Number(global?.window?.localStorage.getItem('forkBaseChainId') || 1);
 // specifies on which chainId the fork is running
-const FORK_CHAIN_ID =
+export const FORK_CHAIN_ID =
   Number(process.env.NEXT_PUBLIC_FORK_CHAIN_ID) ||
   Number(global?.window?.localStorage.getItem('forkNetworkId') || 3030);
-const FORK_RPC_URL =
+export const FORK_RPC_URL =
   process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   global?.window?.localStorage.getItem('forkRPCUrl') ||
   'http://127.0.0.1:8545';
