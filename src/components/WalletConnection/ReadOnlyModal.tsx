@@ -82,6 +82,7 @@ export const ReadOnlyModal = () => {
     if (utils.isAddress(inputMockWalletAddress)) {
       localStorage.setItem('readOnlyModeAddress', inputMockWalletAddress);
       connect({ connector: mock({ accounts: [ inputMockWalletAddress as `0x${string}` ] }) });
+      close();
     } else {
       // Check if address could be valid ENS before trying to resolve
       if (inputMockWalletAddress.slice(-4) === '.eth') {
@@ -90,6 +91,7 @@ export const ReadOnlyModal = () => {
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
           localStorage.setItem('readOnlyModeAddress', inputMockWalletAddress);
           connect({ connector: mock({ accounts: [ inputMockWalletAddress as `0x${string}` ] }) });
+          close();
         } else {
           setValidAddressError(true);
         }
