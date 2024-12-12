@@ -47,7 +47,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // const { chainId: chainId, connector, provider, isActivating, isActive } = useWeb3React();
   const { switchChainAsync } = useSwitchChain();
   const { watchAssetAsync } = useWatchAsset();
-  const { chainId, address, isConnected, isConnecting, connector } = useAccount();
+  const { chainId, address, isConnected, connector } = useAccount();
   const client = useClient({ chainId });
   const { data: connectorClient } = useConnectorClient({ chainId });
 
@@ -252,7 +252,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       value={{
         web3ProviderData: {
           connected: isConnected,
-          loading: isConnecting,
+          loading: false,
           chainId: chainId || 1,
           switchNetwork,
           getTxError,

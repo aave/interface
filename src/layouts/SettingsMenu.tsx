@@ -99,7 +99,7 @@ export function SettingsMenu() {
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
         <MenuItem onClick={handleOpenReadMode}>
           <ListItemText>
-            <Trans>Read mode</Trans>
+            <Trans>Watch wallet</Trans>
           </ListItemText>
         </MenuItem>
       </Menu>

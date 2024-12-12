@@ -59,7 +59,7 @@ export const ReadOnlyModal = () => {
   useEffect(() => {
     const readOnlyAddress = localStorage.getItem('readOnlyModeAddress');
     if (readOnlyAddress) {
-      connect({ connector: mock({ accounts: [ readOnlyAddress as `0x${string}` ] }) });
+      connect({ connector: mock({ accounts: [readOnlyAddress as `0x${string}`] }) });
     }
   }, [connect]);
 
@@ -81,7 +81,7 @@ export const ReadOnlyModal = () => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
       localStorage.setItem('readOnlyModeAddress', inputMockWalletAddress);
-      connect({ connector: mock({ accounts: [ inputMockWalletAddress as `0x${string}` ] }) });
+      connect({ connector: mock({ accounts: [inputMockWalletAddress as `0x${string}`] }) });
       close();
     } else {
       // Check if address could be valid ENS before trying to resolve
@@ -90,7 +90,7 @@ export const ReadOnlyModal = () => {
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
           localStorage.setItem('readOnlyModeAddress', inputMockWalletAddress);
-          connect({ connector: mock({ accounts: [ inputMockWalletAddress as `0x${string}` ] }) });
+          connect({ connector: mock({ accounts: [inputMockWalletAddress as `0x${string}`] }) });
           close();
         } else {
           setValidAddressError(true);
@@ -109,11 +109,11 @@ export const ReadOnlyModal = () => {
   return (
     <BasicModal open={type === ModalType.ReadMode} setOpen={close}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <TxModalTitle title="Connect a wallet" />
+        <TxModalTitle title="Watch Wallet" />
         {error && <Warning severity="error">{handleBlocking()}</Warning>}
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
           <Typography variant="subheader1" color="text.secondary">
-            <Trans>Track wallet balance in read-only mode</Trans>
+            <Trans>Watch a wallet balance in read-only mode</Trans>
           </Typography>
           <ReadOnlyModeTooltip />
         </Box>
