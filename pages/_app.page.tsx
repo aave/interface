@@ -117,6 +117,10 @@ export default function MyApp(props: MyAppProps) {
     }
   }, []);
 
+  const cleanLocalStorage = () => {
+    localStorage.removeItem('readOnlyModeAddress');
+  };
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -133,7 +137,7 @@ export default function MyApp(props: MyAppProps) {
         <LanguageProvider>
           <WagmiProvider config={wagmiConfig}>
             <QueryClientProvider client={queryClient}>
-              <ConnectKitProvider>
+              <ConnectKitProvider onDisconnect={cleanLocalStorage}>
                 <Web3ContextProvider>
                   <AppGlobalStyles>
                     <AddressBlocked>

@@ -56,6 +56,7 @@ export function SettingsMenu() {
   };
 
   const handleOpenReadMode = () => {
+    setSettingsOpen(false);
     openReadMode();
   };
 

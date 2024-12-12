@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, InputBase, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { utils } from 'ethers';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -13,6 +13,7 @@ import { AUTH } from 'src/utils/mixPanelEvents';
 import { BasicModal } from '../primitives/BasicModal';
 import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
+import { mock, useConnect } from 'wagmi';
 
 export type WalletRowProps = {
   walletName: string;
@@ -31,6 +32,7 @@ class NoMetaMaskError {}
 class UserRejectedRequestError {}
 
 export const ReadOnlyModal = () => {
+  const { connect } = useConnect();
   const { error } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
@@ -54,6 +56,13 @@ export const ReadOnlyModal = () => {
     // TODO: add other errors
   }
 
+  useEffect(() => {
+    const readOnlyAddress = localStorage.getItem('readOnlyModeAddress');
+    if (readOnlyAddress) {
+      connect({ connector: mock({ accounts: [ readOnlyAddress as `0x${string}` ] }) });
+    }
+  }, [connect]);
+
   const handleBlocking = () => {
     switch (blockingError) {
       case ErrorType.UNSUPORTED_CHAIN:
@@ -71,15 +80,18 @@ export const ReadOnlyModal = () => {
   const handleReadAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
-      console.log('connect the read only wallethere');
-      // connectWallet(WalletType.READ_ONLY_MODE, { address: inputMockWalletAddress });
+      localStorage.setItem('readOnlyModeAddress', inputMockWalletAddress);
+      connect({ connector: mock({ accounts: [ inputMockWalletAddress as `0x${string}` ] }) });
+      close();
     } else {
       // Check if address could be valid ENS before trying to resolve
       if (inputMockWalletAddress.slice(-4) === '.eth') {
         // Attempt to resolve ENS name and use resolved address if valid
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          // connectWallet(WalletType.READ_ONLY_MODE, { address: resolvedAddress });
+          localStorage.setItem('readOnlyModeAddress', inputMockWalletAddress);
+          connect({ connector: mock({ accounts: [ inputMockWalletAddress as `0x${string}` ] }) });
+          close();
         } else {
           setValidAddressError(true);
         }
