@@ -3,7 +3,7 @@ import {
   FormattedGhoUserData,
   FormatUserSummaryAndIncentivesResponse,
 } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import memoize from 'micro-memoize';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import {

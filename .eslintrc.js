@@ -19,7 +19,7 @@ module.exports = {
     'import/first': 'error',
     'import/newline-after-import': 'error',
     'import/no-duplicates': 'error',
-    'import/no-named-as-default': 'warn',
+    'import/no-named-as-default': 'error',
     'import/no-unresolved': 'warn',
     // disabled as with the static export Image does not make to much sense
     '@next/next/no-img-element': 'off',
