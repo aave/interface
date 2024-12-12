@@ -96,7 +96,10 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
-  const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
+  const [initializeMixpanel, setWalletType] = useRootStore((store) => [
+    store.initializeMixpanel,
+    store.setWalletType,
+  ]);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -137,7 +140,10 @@ export default function MyApp(props: MyAppProps) {
         <LanguageProvider>
           <WagmiProvider config={wagmiConfig}>
             <QueryClientProvider client={queryClient}>
-              <ConnectKitProvider onDisconnect={cleanLocalStorage}>
+              <ConnectKitProvider
+                onDisconnect={cleanLocalStorage}
+                onConnect={({ connectorId }) => setWalletType(connectorId)}
+              >
                 <Web3ContextProvider>
                   <AppGlobalStyles>
                     <AddressBlocked>

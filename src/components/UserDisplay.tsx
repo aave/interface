@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { useAccount } from 'wagmi';
 import { shallow } from 'zustand/shallow';
 
 import { Avatar, AvatarProps } from './Avatar';
@@ -27,12 +28,12 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
   withLink,
   funnel,
 }) => {
-  const { account, defaultDomain, domainsLoading, accountLoading } = useRootStore(
+  const { isConnecting } = useAccount();
+  const { account, defaultDomain, domainsLoading } = useRootStore(
     (state) => ({
       account: state.account,
       defaultDomain: state.defaultDomain,
       domainsLoading: state.domainsLoading,
-      accountLoading: state.accountLoading,
     }),
     shallow
   );
@@ -41,7 +42,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
     () => (account ? blo(account as `0x${string}`) : undefined),
     [account]
   );
-  const loading = domainsLoading || accountLoading;
+  const loading = domainsLoading || isConnecting;
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

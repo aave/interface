@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
-import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useRootStore } from 'src/store/root';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
@@ -10,6 +9,7 @@ import { UserDisplay } from '../UserDisplay';
 
 export interface ConnectWalletProps {
   funnel?: string;
+  onIsConnecting?: (isConnecting: boolean) => void;
 }
 
 export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) => {
@@ -24,6 +24,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) =>
               variant={isConnected ? 'surface' : 'gradient'}
               onClick={() => {
                 show && show();
+                trackEvent(AUTH.CONNECT_WALLET, { funnel: funnel });
               }}
             >
               {isConnected ? (

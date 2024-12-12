@@ -8,7 +8,6 @@ import { hexToAscii } from 'src/utils/utils';
 import { UserRejectedRequestError } from 'viem';
 import { useAccount, useConnect, useConnectorClient, useSwitchChain, useWatchAsset } from 'wagmi';
 
-// import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 import { Web3Context } from '../hooks/useWeb3Context';
 import { clientToSigner, useEthersProvider } from './adapters/EthersAdapter';
 
@@ -38,31 +37,28 @@ export type Web3Data = {
   provider: JsonRpcProvider | undefined;
 };
 
-interface ConnectWalletOpts {
-  silently?: boolean;
-  address?: string | null;
-}
-
 let didConnect = false;
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
-  // const { chainId: chainId, connector, provider, isActivating, isActive } = useWeb3React();
   const { switchChainAsync } = useSwitchChain();
   const { watchAssetAsync } = useWatchAsset();
-  const { chainId, address, isConnected, isConnecting } = useAccount();
+  const { chainId, address, isConnected, isConnecting, isReconnecting } = useAccount();
   const { data: connectorClient } = useConnectorClient({ chainId });
   const { connect, connectors } = useConnect();
 
+  console.log('isConnected', isConnected);
+  console.log('isConnecting', isConnecting);
+  console.log('isReconnecting', isReconnecting);
   // const { sendTransaction } = useSendTransaction();
   const provider = useEthersProvider({ chainId });
   // const signer = useEthersSigner({ chainId });
   const account = address;
 
   const [error, setError] = useState<Error>();
+  console.log('TODO', setError);
+
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
-  const setAccountLoading = useRootStore((store) => store.setAccountLoading);
-  const setWalletType = useRootStore((store) => store.setWalletType);
 
   useEffect(() => {
     // If running cypress tests, then we try to auto connect on app load
@@ -76,91 +72,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     connect({ connector: injected });
     didConnect = true;
   });
-
-  // const disconnectWallet = useCallback(async () => {
-  //   localStorage.removeItem('walletProvider');
-  //   localStorage.removeItem('readOnlyModeAddress');
-  //   connector.resetState();
-  //   if (connector.deactivate) {
-  //     connector.deactivate();
-  //   }
-  //   setWalletType(undefined);
-  //   setSwitchNetworkError(undefined);
-  // }, [connector, setWalletType]);
-
-  // connect to the wallet specified by wallet type
-  // const connectWallet = useCallback(
-  //   async (wallet: WalletType, opts?: ConnectWalletOpts) => {
-  //     try {
-  //       const connector: Connector = getWallet(wallet);
-  //       if (wallet === WalletType.READ_ONLY_MODE && opts?.address) {
-  //         localStorage.setItem('readOnlyModeAddress', opts.address);
-  //       } else {
-  //         localStorage.removeItem('readOnlyModeAddress');
-  //       }
-  //       await connector.activate(opts?.address);
-  //       setSwitchNetworkError(undefined);
-  //       setWalletType(wallet);
-  //       localStorage.setItem('walletProvider', wallet.toString());
-  //     } catch (e) {
-  //       if (!opts?.silently) {
-  //         console.log('error on activation', e);
-  //         setError(e);
-  //       }
-  //       localStorage.removeItem('readOnlyModeAddress');
-  //       localStorage.removeItem('walletProvider');
-  //       setWalletType(undefined);
-  //     }
-  //   },
-  //   [setWalletType]
-  // );
-
-  // handle logic to eagerly connect to the injected ethereum provider,
-  // if it exists and has granted access already
-
-  // useEffect(() => {
-  //   const tryAppWalletsSilently = async () => {
-  //     await connectWallet(WalletType.GNOSIS, { silently: true })
-  //       .catch(async () => {
-  //         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //         const provider = (window as any)?.ethereum;
-
-  //         if (provider && provider.isCoinbaseBrowser) {
-  //           await connectWallet(WalletType.INJECTED);
-  //         } else {
-  //           // TODO check other providers? family
-  //           throw new Error('No provider detected');
-  //         }
-  //       })
-  //       .catch();
-  //   };
-  //   try {
-  //     const lastWalletProvider = localStorage.getItem('walletProvider');
-  //     const lastReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
-  //     if (lastWalletProvider) {
-  //       connectWallet(lastWalletProvider as WalletType, {
-  //         address: lastReadOnlyAddress,
-  //         silently: true,
-  //       });
-  //     } else {
-  //       tryAppWalletsSilently();
-  //     }
-  //   } catch {
-  //     localStorage.removeItem('walletProvider');
-  //     localStorage.removeItem('readOnlyModeAddress');
-  //   }
-  // }, [connectWallet]);
-  /*
-  // if the connection worked, wait until we get confirmation of that to flip the flag
-  useEffect(() => {
-    if (!tried && active) {
-      setTried(true);
-    }
-  }, [tried, active]);
-
-  */
-
-  // Tx methods
 
   // TODO: we use from instead of currentAccount because of the mock wallet.
   // If we used current account then the tx could get executed
@@ -263,7 +174,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       value={{
         web3ProviderData: {
           connected: isConnected,
-          loading: false,
+          loading: isConnecting && !isConnected,
           chainId: chainId || 1,
           switchNetwork,
           getTxError,

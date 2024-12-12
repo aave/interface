@@ -30,7 +30,9 @@ export function useEthersSigner({ chainId }: { chainId?: number } = {}) {
 }
 
 function getNetwork(chain: Chain) {
-  // if chain is undefined, it means that the client is connected to a chain that is not supported by the app
+  // If chain is undefined, it means that the client is connected to a chain that is not supported by the app.
+  // Just stub out the network so no errors are thrown, we show a message in the UI if they are not connected
+  // to the right network.
   const network = {
     chainId: chain?.id || -1,
     name: chain?.name || 'unknown',

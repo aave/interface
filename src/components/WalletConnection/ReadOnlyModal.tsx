@@ -5,20 +5,14 @@ import { useEffect, useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { useRootStore } from 'src/store/root';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 import { AUTH } from 'src/utils/mixPanelEvents';
+import { mock, useConnect } from 'wagmi';
 
 import { BasicModal } from '../primitives/BasicModal';
 import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
-import { mock, useConnect } from 'wagmi';
-
-export type WalletRowProps = {
-  walletName: string;
-  walletType: WalletType;
-};
 
 export enum ErrorType {
   UNSUPORTED_CHAIN,
