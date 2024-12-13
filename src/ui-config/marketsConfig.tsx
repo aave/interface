@@ -73,30 +73,30 @@ export type MarketDataType = {
 export enum CustomMarket {
   // v3 test networks, all v3.0.1
   proto_arbitrum_sepolia_v3 = 'proto_arbitrum_sepolia_v3',
-  // proto_fuji_v3 = 'proto_fuji_v3',
-  // proto_optimism_sepolia_v3 = 'proto_optimism_sepolia_v3',
-  // proto_scroll_sepolia_v3 = 'proto_scroll_sepolia_v3',
-  // proto_sepolia_v3 = 'proto_sepolia_v3',
-  // proto_base_sepolia_v3 = 'proto_base_sepolia_v3',
+  proto_fuji_v3 = 'proto_fuji_v3',
+  proto_optimism_sepolia_v3 = 'proto_optimism_sepolia_v3',
+  proto_scroll_sepolia_v3 = 'proto_scroll_sepolia_v3',
+  proto_sepolia_v3 = 'proto_sepolia_v3',
+  proto_base_sepolia_v3 = 'proto_base_sepolia_v3',
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',
-  // proto_optimism_v3 = 'proto_optimism_v3',
-  // proto_avalanche_v3 = 'proto_avalanche_v3',
-  // proto_polygon_v3 = 'proto_polygon_v3',
-  // proto_arbitrum_v3 = 'proto_arbitrum_v3',
-  // proto_metis_v3 = 'proto_metis_v3',
-  // proto_base_v3 = 'proto_base_v3',
-  // proto_gnosis_v3 = 'proto_gnosis_v3',
-  // proto_bnb_v3 = 'proto_bnb_v3',
-  // proto_scroll_v3 = 'proto_scroll_v3',
-  // proto_lido_v3 = 'proto_lido_v3',
-  // proto_zksync_v3 = 'proto_zksync_v3',
-  // proto_etherfi_v3 = 'proto_etherfi_v3',
-  // // v2
-  // proto_mainnet = 'proto_mainnet',
-  // proto_avalanche = 'proto_avalanche',
-  // proto_fuji = 'proto_fuji',
-  // proto_polygon = 'proto_polygon',
+  proto_optimism_v3 = 'proto_optimism_v3',
+  proto_avalanche_v3 = 'proto_avalanche_v3',
+  proto_polygon_v3 = 'proto_polygon_v3',
+  proto_arbitrum_v3 = 'proto_arbitrum_v3',
+  proto_metis_v3 = 'proto_metis_v3',
+  proto_base_v3 = 'proto_base_v3',
+  proto_gnosis_v3 = 'proto_gnosis_v3',
+  proto_bnb_v3 = 'proto_bnb_v3',
+  proto_scroll_v3 = 'proto_scroll_v3',
+  proto_lido_v3 = 'proto_lido_v3',
+  proto_zksync_v3 = 'proto_zksync_v3',
+  proto_etherfi_v3 = 'proto_etherfi_v3',
+  // v2
+  proto_mainnet = 'proto_mainnet',
+  proto_avalanche = 'proto_avalanche',
+  proto_fuji = 'proto_fuji',
+  proto_polygon = 'proto_polygon',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -104,7 +104,8 @@ export enum CustomMarket {
 const apiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
 
 export const marketsData: {
-  [key in keyof typeof CustomMarket]: MarketDataType;
+  [key in any]: MarketDataType;
+  // [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
   [CustomMarket.proto_mainnet_v3]: {
     marketTitle: 'Ethereum',
