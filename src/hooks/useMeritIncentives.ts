@@ -1,27 +1,33 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { AaveV3Base, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import { AaveV3Avalanche, AaveV3Base, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
+  ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
   BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
   BASE_SUPPLY_USDC = 'base-supply-usdc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
+  AVALANCHE_SUPPLY_BTCB = 'avalanche-supply-btcb',
+  AVALANCHE_SUPPLY_USDC = 'avalanche-supply-usdc',
+  AVALANCHE_SUPPLY_USDT = 'avalanche-supply-usdt',
+  AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
 }
 
 type MeritIncentives = {
   totalAPR: number;
   actionsAPR: {
-    [key in MeritAction]: number;
+    [key in MeritAction]: number | null | undefined;
   };
 };
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customMessage: string;
+  customForumLink: string;
 };
 
 const url = 'https://apps.aavechan.com/api/merit/aprs';
@@ -30,6 +36,7 @@ export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiv
   action: MeritAction;
   protocolAction?: ProtocolAction;
   customMessage?: string;
+  customForumLink?: string;
 };
 
 const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData[] | undefined =>
@@ -80,6 +87,18 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
       },
     ],
+    PYUSD: [
+      {
+        action: MeritAction.ETHEREUM_SUPPLY_PYUSD,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.PYUSD.A_TOKEN,
+        rewardTokenSymbol: 'aEthPYUSD',
+        protocolAction: ProtocolAction.supply,
+        customForumLink:
+          'https://governance.aave.com/t/arfc-pyusd-reserve-configuration-update-incentive-campaign/19573',
+        customMessage:
+          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
+      },
+    ],
   },
   [CustomMarket.proto_base_v3]: {
     cbBTC: [
@@ -102,6 +121,40 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
         rewardTokenSymbol: 'aBasUSDC',
         protocolAction: ProtocolAction.borrow,
+      },
+    ],
+  },
+  [CustomMarket.proto_avalanche_v3]: {
+    ['BTC.b']: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_BTCB,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.BTCb.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+    USDC: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_USDC,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.USDC.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+    USDt: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_USDT,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.USDt.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+    sAVAX: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_SAVAX,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
       },
     ],
   },
@@ -141,11 +194,16 @@ export const useMeritIncentives = ({
 
       const APR = data.actionsAPR[incentive.action];
 
+      if (!APR) {
+        return null;
+      }
+
       return {
         incentiveAPR: (APR / 100).toString(),
         rewardTokenAddress: incentive.rewardTokenAddress,
         rewardTokenSymbol: incentive.rewardTokenSymbol,
         customMessage: incentive.customMessage,
+        customForumLink: incentive.customForumLink,
       } as ExtendedReserveIncentiveResponse;
     },
   });

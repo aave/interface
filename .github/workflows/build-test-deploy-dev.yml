@@ -31,6 +31,7 @@ jobs:
           NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
           NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
           NEXT_PUBLIC_SUBGRAPH_API_KEY: ${{ secrets.NEXT_PUBLIC_SUBGRAPH_API_KEY }}
+          NEXT_PUBLIC_IS_CYPRESS_ENABLED: 'true'
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts

@@ -1,14 +1,20 @@
 import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
-import { BigNumber, PopulatedTransaction } from 'ethers';
+import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { hexToAscii } from 'src/utils/utils';
 import { UserRejectedRequestError } from 'viem';
-import { useAccount, useConnect, useConnectorClient, useSwitchChain, useWatchAsset } from 'wagmi';
+import {
+  useAccount,
+  useConnect,
+  useConnectorClient,
+  useDisconnect,
+  useSwitchChain,
+  useWatchAsset,
+} from 'wagmi';
 
-// import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 import { Web3Context } from '../hooks/useWeb3Context';
 import { clientToSigner, useEthersProvider } from './adapters/EthersAdapter';
 
@@ -36,131 +42,73 @@ export type Web3Data = {
   readOnlyMode: boolean;
   readOnlyModeAddress: string | undefined;
   provider: JsonRpcProvider | undefined;
+  setReadOnlyModeAddress: (address: string) => void;
 };
 
-interface ConnectWalletOpts {
-  silently?: boolean;
-  address?: string | null;
-}
-
-let didConnect = false;
+let didInit = false;
+let didAutoConnectForCypress = false;
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
-  // const { chainId: chainId, connector, provider, isActivating, isActive } = useWeb3React();
   const { switchChainAsync } = useSwitchChain();
   const { watchAssetAsync } = useWatchAsset();
   const { chainId, address, isConnected, isConnecting } = useAccount();
   const { data: connectorClient } = useConnectorClient({ chainId });
   const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
+  // const { } = useConnectorClient({ chainId });
+  const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
 
-  // const { sendTransaction } = useSendTransaction();
   const provider = useEthersProvider({ chainId });
   // const signer = useEthersSigner({ chainId });
   const account = address;
 
   const [error, setError] = useState<Error>();
+  console.log('TODO', setError);
+
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
-  const setAccountLoading = useRootStore((store) => store.setAccountLoading);
-  const setWalletType = useRootStore((store) => store.setWalletType);
+
+  const readOnlyMode = utils.isAddress(readOnlyModeAddress || '');
+  let currentAccount = account?.toLowerCase() || '';
+  if (readOnlyMode && readOnlyModeAddress) {
+    currentAccount = readOnlyModeAddress;
+  }
+
+  useEffect(() => {
+    if (didInit) {
+      // If user connects a wallet after the app is loaded, then we need to reset the readOnlyModeAddress
+      if (isConnected && readOnlyMode) {
+        localStorage.removeItem('readOnlyModeAddress');
+        setReadOnlyModeAddress(undefined);
+      }
+
+      return;
+    }
+
+    // If the app loads in readOnlyMode, then we disconnect the wallet if it auto connected
+    const storedReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
+    if (storedReadOnlyAddress && utils.isAddress(storedReadOnlyAddress)) {
+      setReadOnlyModeAddress(storedReadOnlyAddress);
+      if (isConnected) {
+        disconnect();
+      }
+    }
+
+    didInit = true;
+  }, [disconnect, isConnected, readOnlyMode]);
 
   useEffect(() => {
     // If running cypress tests, then we try to auto connect on app load
     // so it doesn't have to be driven through the UI.
     const isCypressEnabled = process.env.NEXT_PUBLIC_IS_CYPRESS_ENABLED === 'true';
-    if (!isCypressEnabled || didConnect) {
+    if (!isCypressEnabled || didAutoConnectForCypress) {
       return;
     }
 
     const injected = connectors[0];
     connect({ connector: injected });
-    didConnect = true;
+    didAutoConnectForCypress = true;
   });
-
-  // const disconnectWallet = useCallback(async () => {
-  //   localStorage.removeItem('walletProvider');
-  //   localStorage.removeItem('readOnlyModeAddress');
-  //   connector.resetState();
-  //   if (connector.deactivate) {
-  //     connector.deactivate();
-  //   }
-  //   setWalletType(undefined);
-  //   setSwitchNetworkError(undefined);
-  // }, [connector, setWalletType]);
-
-  // connect to the wallet specified by wallet type
-  // const connectWallet = useCallback(
-  //   async (wallet: WalletType, opts?: ConnectWalletOpts) => {
-  //     try {
-  //       const connector: Connector = getWallet(wallet);
-  //       if (wallet === WalletType.READ_ONLY_MODE && opts?.address) {
-  //         localStorage.setItem('readOnlyModeAddress', opts.address);
-  //       } else {
-  //         localStorage.removeItem('readOnlyModeAddress');
-  //       }
-  //       await connector.activate(opts?.address);
-  //       setSwitchNetworkError(undefined);
-  //       setWalletType(wallet);
-  //       localStorage.setItem('walletProvider', wallet.toString());
-  //     } catch (e) {
-  //       if (!opts?.silently) {
-  //         console.log('error on activation', e);
-  //         setError(e);
-  //       }
-  //       localStorage.removeItem('readOnlyModeAddress');
-  //       localStorage.removeItem('walletProvider');
-  //       setWalletType(undefined);
-  //     }
-  //   },
-  //   [setWalletType]
-  // );
-
-  // handle logic to eagerly connect to the injected ethereum provider,
-  // if it exists and has granted access already
-
-  // useEffect(() => {
-  //   const tryAppWalletsSilently = async () => {
-  //     await connectWallet(WalletType.GNOSIS, { silently: true })
-  //       .catch(async () => {
-  //         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //         const provider = (window as any)?.ethereum;
-
-  //         if (provider && provider.isCoinbaseBrowser) {
-  //           await connectWallet(WalletType.INJECTED);
-  //         } else {
-  //           // TODO check other providers? family
-  //           throw new Error('No provider detected');
-  //         }
-  //       })
-  //       .catch();
-  //   };
-  //   try {
-  //     const lastWalletProvider = localStorage.getItem('walletProvider');
-  //     const lastReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
-  //     if (lastWalletProvider) {
-  //       connectWallet(lastWalletProvider as WalletType, {
-  //         address: lastReadOnlyAddress,
-  //         silently: true,
-  //       });
-  //     } else {
-  //       tryAppWalletsSilently();
-  //     }
-  //   } catch {
-  //     localStorage.removeItem('walletProvider');
-  //     localStorage.removeItem('readOnlyModeAddress');
-  //   }
-  // }, [connectWallet]);
-  /*
-  // if the connection worked, wait until we get confirmation of that to flip the flag
-  useEffect(() => {
-    if (!tried && active) {
-      setTried(true);
-    }
-  }, [tried, active]);
-
-  */
-
-  // Tx methods
 
   // TODO: we use from instead of currentAccount because of the mock wallet.
   // If we used current account then the tx could get executed
@@ -254,6 +202,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setAccount(account?.toLowerCase());
   }, [account, setAccount]);
 
+  useEffect(() => {
+    if (readOnlyModeAddress) {
+      setAccount(readOnlyModeAddress);
+    }
+  }, [readOnlyModeAddress, setAccount]);
+
   // useEffect(() => {
   //   setAccountLoading(isActivating);
   // }, [isActivating, setAccountLoading]);
@@ -263,20 +217,21 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       value={{
         web3ProviderData: {
           connected: isConnected,
-          loading: false,
+          loading: isConnecting && !isConnected,
           chainId: chainId || 1,
           switchNetwork,
           getTxError,
           sendTx,
           signTxData,
-          currentAccount: account?.toLowerCase() || '',
+          currentAccount,
           addERC20Token,
           error,
           switchNetworkError,
           setSwitchNetworkError,
-          readOnlyMode: false, // connector instanceof ReadOnly,
+          readOnlyMode,
           provider,
-          readOnlyModeAddress: undefined, //  connector instanceof ReadOnly ? account?.toLowerCase() : undefined,
+          readOnlyModeAddress,
+          setReadOnlyModeAddress,
         },
       }}
     >

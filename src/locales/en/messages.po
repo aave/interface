@@ -132,10 +132,6 @@ msgstr "Aave per month"
 msgid "About GHO"
 msgstr "About GHO"
 
-#: src/layouts/WalletWidget.tsx
-msgid "Account"
-msgstr "Account"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is frozen"
 msgstr "Action cannot be performed because the reserve is frozen"
@@ -770,7 +766,6 @@ msgid "Connect"
 msgstr "Connect"
 
 #: src/components/WalletConnection/ConnectWalletButton.tsx
-#: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
 msgstr "Connect wallet"
 
@@ -794,10 +789,6 @@ msgstr "Cooldown to unstake"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooling down..."
 msgstr "Cooling down..."
-
-#: src/layouts/WalletWidget.tsx
-msgid "Copy address"
-msgstr "Copy address"
 
 #: pages/500.page.tsx
 msgid "Copy error message"
@@ -1001,8 +992,8 @@ msgid "Efficiency mode (E-Mode)"
 msgstr "Efficiency mode (E-Mode)"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Eligible for the merit program."
-msgstr "Eligible for the merit program."
+msgid "Eligible for the Merit program."
+msgstr "Eligible for the Merit program."
 
 #: src/layouts/FeedbackDialog.tsx
 msgid "Email"
@@ -1061,7 +1052,6 @@ msgid "Enter an amount"
 msgstr "Enter an amount"
 
 #: src/components/WalletConnection/ReadOnlyModal.tsx
-#: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
 
@@ -1629,10 +1619,6 @@ msgstr "More"
 msgid "NAY"
 msgstr "NAY"
 
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
-msgstr "Need help connecting a wallet? <0>Read our FAQ</0>"
-
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
 msgstr "Net APR"
@@ -1649,12 +1635,7 @@ msgstr "Net APY is the combined effect of all supply and borrow positions on net
 msgid "Net worth"
 msgstr "Net worth"
 
-#: src/layouts/WalletWidget.tsx
-msgid "Network"
-msgstr "Network"
-
 #: src/components/WalletConnection/ReadOnlyModal.tsx
-#: src/components/WalletConnection/WalletSelector.tsx
 msgid "Network not supported for this wallet"
 msgstr "Network not supported for this wallet"
 
@@ -1804,7 +1785,6 @@ msgid "Please connect your wallet to view transaction history."
 msgstr "Please connect your wallet to view transaction history."
 
 #: src/components/WalletConnection/ReadOnlyModal.tsx
-#: src/components/WalletConnection/WalletSelector.tsx
 msgid "Please enter a valid wallet address."
 msgstr "Please enter a valid wallet address."
 
@@ -1917,17 +1897,9 @@ msgstr "Reached"
 msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
 msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
 
-#: src/layouts/SettingsMenu.tsx
-msgid "Read mode"
-msgstr "Read mode"
-
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
 msgstr "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
-
-#: src/layouts/WalletWidget.tsx
-msgid "Read-only mode."
-msgstr "Read-only mode."
 
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
@@ -1951,7 +1923,6 @@ msgid "Recipient address"
 msgstr "Recipient address"
 
 #: src/components/WalletConnection/ReadOnlyModal.tsx
-#: src/components/WalletConnection/WalletSelector.tsx
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
 
@@ -2750,14 +2721,8 @@ msgid "Total worth"
 msgstr "Total worth"
 
 #: src/components/WalletConnection/ReadOnlyModal.tsx
-#: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet"
 msgstr "Track wallet"
-
-#: src/components/WalletConnection/ReadOnlyModal.tsx
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Track wallet balance in read-only mode"
-msgstr "Track wallet balance in read-only mode"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
@@ -2957,10 +2922,6 @@ msgstr "View contract"
 msgid "View details"
 msgstr "View details"
 
-#: src/layouts/WalletWidget.tsx
-msgid "View on Explorer"
-msgstr "View on Explorer"
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
 msgstr "Vote NAY"
@@ -3019,13 +2980,16 @@ msgid "Wallet balance"
 msgstr "Wallet balance"
 
 #: src/components/WalletConnection/ReadOnlyModal.tsx
-#: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallet not detected. Connect or install wallet and retry"
 msgstr "Wallet not detected. Connect or install wallet and retry"
 
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
-msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
+#: src/components/WalletConnection/ReadOnlyModal.tsx
+msgid "Watch a wallet balance in read-only mode"
+msgstr "Watch a wallet balance in read-only mode"
+
+#: src/layouts/SettingsMenu.tsx
+msgid "Watch wallet"
+msgstr "Watch wallet"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
