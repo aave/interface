@@ -56,7 +56,7 @@ const { name, baseAssetDecimals, baseAssetSymbol } = networkConfigs[FORK_BASE_CH
 
 const forkChain: Chain = {
   id: FORK_CHAIN_ID,
-  name,
+  name: `${name} Fork`,
   nativeCurrency: {
     decimals: baseAssetDecimals,
     name: baseAssetSymbol,

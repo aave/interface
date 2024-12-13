@@ -16,7 +16,7 @@ import {
 } from 'wagmi';
 
 import { Web3Context } from '../hooks/useWeb3Context';
-import { clientToSigner, useEthersProvider } from './adapters/EthersAdapter';
+import { clientToSigner, useEthersProvider, useEthersSigner } from './adapters/EthersAdapter';
 
 export type ERC20TokenType = {
   address: string;
@@ -59,7 +59,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
 
   const provider = useEthersProvider({ chainId });
-  // const signer = useEthersSigner({ chainId });
+  const signer = useEthersSigner({ chainId });
   const account = address;
 
   const [error, setError] = useState<Error>();
@@ -131,8 +131,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // TODO: recheck that it works on all wallets
   const signTxData = async (unsignedData: string): Promise<SignatureLike> => {
-    if (provider && account) {
-      const signature: SignatureLike = await provider.send('eth_signTypedData_v4', [
+    if (signer && account) {
+      console.log(signer);
+      const signature: SignatureLike = await signer.provider.send('eth_signTypedData_v4', [
         account,
         unsignedData,
       ]);
