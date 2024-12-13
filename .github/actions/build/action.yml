@@ -41,6 +41,10 @@ inputs:
     description: subgraph api key
     required: false
     default: ''
+  NEXT_PUBLIC_IS_CYPRESS_ENABLED:
+    description: enables cypress
+    required: false
+    default: 'true'
 
 runs:
   using: 'composite'
