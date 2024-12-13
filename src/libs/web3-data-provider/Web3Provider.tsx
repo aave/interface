@@ -42,7 +42,7 @@ export type Web3Data = {
   readOnlyMode: boolean;
   readOnlyModeAddress: string | undefined;
   provider: JsonRpcProvider | undefined;
-  setReadOnlyModeAddress: (address: string) => void;
+  setReadOnlyModeAddress: (address: string | undefined) => void;
 };
 
 let didInit = false;

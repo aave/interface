@@ -72,7 +72,7 @@ export const ReadOnlyModal = () => {
 
   const handleRemoveWatchedAddress = async () => {
     localStorage.removeItem('readOnlyModeAddress');
-    setReadOnlyModeAddress('');
+    setReadOnlyModeAddress(undefined);
     handleClose();
   };
 
