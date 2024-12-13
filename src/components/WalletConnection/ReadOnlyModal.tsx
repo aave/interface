@@ -62,8 +62,7 @@ export const ReadOnlyModal = () => {
 
     setReadOnlyModeAddress(address);
     localStorage.setItem('readOnlyModeAddress', address);
-    setInputMockWalletAddress('');
-    close();
+    handleClose();
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -74,11 +73,16 @@ export const ReadOnlyModal = () => {
   const handleRemoveWatchedAddress = async () => {
     localStorage.removeItem('readOnlyModeAddress');
     setReadOnlyModeAddress('');
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setInputMockWalletAddress('');
     close();
   };
 
   return (
-    <BasicModal open={type === ModalType.ReadMode} setOpen={close}>
+    <BasicModal open={type === ModalType.ReadMode} setOpen={handleClose}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <TxModalTitle title="Watch Wallet" />
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
@@ -135,7 +139,9 @@ export const ReadOnlyModal = () => {
         {readOnlyMode && (
           <>
             <Divider />
-            <Button onClick={handleRemoveWatchedAddress}>Remove watched address</Button>
+            <Button sx={{ mt: 2 }} variant="outlined" onClick={handleRemoveWatchedAddress}>
+              Remove watched address
+            </Button>
           </>
         )}
       </Box>
