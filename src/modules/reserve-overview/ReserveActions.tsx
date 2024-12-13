@@ -12,7 +12,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import React, { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';

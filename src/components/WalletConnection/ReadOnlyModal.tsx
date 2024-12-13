@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { useRootStore } from 'src/store/root';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 import { AUTH } from 'src/utils/mixPanelEvents';
@@ -14,11 +13,6 @@ import { mock, useConnect } from 'wagmi';
 import { BasicModal } from '../primitives/BasicModal';
 import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
-
-export type WalletRowProps = {
-  walletName: string;
-  walletType: WalletType;
-};
 
 export enum ErrorType {
   UNSUPORTED_CHAIN,
@@ -109,11 +103,11 @@ export const ReadOnlyModal = () => {
   return (
     <BasicModal open={type === ModalType.ReadMode} setOpen={close}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <TxModalTitle title="Connect a wallet" />
+        <TxModalTitle title="Watch Wallet" />
         {error && <Warning severity="error">{handleBlocking()}</Warning>}
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
           <Typography variant="subheader1" color="text.secondary">
-            <Trans>Track wallet balance in read-only mode</Trans>
+            <Trans>Watch a wallet balance in read-only mode</Trans>
           </Typography>
           <ReadOnlyModeTooltip />
         </Box>
