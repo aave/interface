@@ -9,11 +9,11 @@ import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { useRootStore } from 'src/store/root';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 import { AUTH } from 'src/utils/mixPanelEvents';
+import { mock, useConnect } from 'wagmi';
 
 import { BasicModal } from '../primitives/BasicModal';
 import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
-import { mock, useConnect } from 'wagmi';
 
 export type WalletRowProps = {
   walletName: string;
@@ -59,7 +59,7 @@ export const ReadOnlyModal = () => {
   useEffect(() => {
     const readOnlyAddress = localStorage.getItem('readOnlyModeAddress');
     if (readOnlyAddress) {
-      connect({ connector: mock({ accounts: [ readOnlyAddress as `0x${string}` ] }) });
+      connect({ connector: mock({ accounts: [readOnlyAddress as `0x${string}`] }) });
     }
   }, [connect]);
 
@@ -81,7 +81,7 @@ export const ReadOnlyModal = () => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
       localStorage.setItem('readOnlyModeAddress', inputMockWalletAddress);
-      connect({ connector: mock({ accounts: [ inputMockWalletAddress as `0x${string}` ] }) });
+      connect({ connector: mock({ accounts: [inputMockWalletAddress as `0x${string}`] }) });
       close();
     } else {
       // Check if address could be valid ENS before trying to resolve
@@ -89,8 +89,8 @@ export const ReadOnlyModal = () => {
         // Attempt to resolve ENS name and use resolved address if valid
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          localStorage.setItem('readOnlyModeAddress', inputMockWalletAddress);
-          connect({ connector: mock({ accounts: [ inputMockWalletAddress as `0x${string}` ] }) });
+          localStorage.setItem('readOnlyModeAddress', resolvedAddress);
+          connect({ connector: mock({ accounts: [resolvedAddress as `0x${string}`] }) });
           close();
         } else {
           setValidAddressError(true);

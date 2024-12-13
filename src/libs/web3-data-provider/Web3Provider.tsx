@@ -5,12 +5,12 @@ import { BigNumber, PopulatedTransaction } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { hexToAscii } from 'src/utils/utils';
+import { UserRejectedRequestError } from 'viem';
+import { useAccount, useClient, useConnectorClient, useSwitchChain, useWatchAsset } from 'wagmi';
 
 // import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 import { Web3Context } from '../hooks/useWeb3Context';
-import { useAccount, useClient, useConnectorClient, useSwitchChain, useWatchAsset } from 'wagmi';
 import { clientToSigner, useEthersProvider, useEthersSigner } from './adapters/EthersAdapter';
-import { UserRejectedRequestError } from 'viem';
 
 export type ERC20TokenType = {
   address: string;
