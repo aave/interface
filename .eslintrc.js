@@ -10,7 +10,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-unused-vars': ['warn', { ignoreRestSiblings: true }],
+    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     'prettier/prettier': 'warn',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
@@ -21,7 +21,6 @@ module.exports = {
     'import/no-duplicates': 'error',
     'import/no-named-as-default': 'error',
     'import/no-unresolved': 'warn',
-    'import/no-unused-modules': ['warn', { unusedExports: true }], // Changed to warn
     // disabled as with the static export Image does not make to much sense
     '@next/next/no-img-element': 'off',
     'react/self-closing-comp': 'warn',
