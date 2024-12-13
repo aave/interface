@@ -1,12 +1,19 @@
 import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
-import { BigNumber, PopulatedTransaction } from 'ethers';
+import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { hexToAscii } from 'src/utils/utils';
 import { UserRejectedRequestError } from 'viem';
-import { useAccount, useConnect, useConnectorClient, useSwitchChain, useWatchAsset } from 'wagmi';
+import {
+  useAccount,
+  useConnect,
+  useConnectorClient,
+  useDisconnect,
+  useSwitchChain,
+  useWatchAsset,
+} from 'wagmi';
 
 import { Web3Context } from '../hooks/useWeb3Context';
 import { clientToSigner, useEthersProvider } from './adapters/EthersAdapter';
@@ -35,21 +42,22 @@ export type Web3Data = {
   readOnlyMode: boolean;
   readOnlyModeAddress: string | undefined;
   provider: JsonRpcProvider | undefined;
+  setReadOnlyModeAddress: (address: string) => void;
 };
 
-let didConnect = false;
+let didInit = false;
+let didAutoConnectForCypress = false;
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const { switchChainAsync } = useSwitchChain();
   const { watchAssetAsync } = useWatchAsset();
-  const { chainId, address, isConnected, isConnecting, isReconnecting } = useAccount();
+  const { chainId, address, isConnected, isConnecting } = useAccount();
   const { data: connectorClient } = useConnectorClient({ chainId });
   const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
+  // const { } = useConnectorClient({ chainId });
+  const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
 
-  console.log('isConnected', isConnected);
-  console.log('isConnecting', isConnecting);
-  console.log('isReconnecting', isReconnecting);
-  // const { sendTransaction } = useSendTransaction();
   const provider = useEthersProvider({ chainId });
   // const signer = useEthersSigner({ chainId });
   const account = address;
@@ -60,17 +68,46 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
 
+  const readOnlyMode = utils.isAddress(readOnlyModeAddress || '');
+  let currentAccount = account?.toLowerCase() || '';
+  if (readOnlyMode && readOnlyModeAddress) {
+    currentAccount = readOnlyModeAddress;
+  }
+
+  useEffect(() => {
+    if (didInit) {
+      // If user connects a wallet after the app is loaded, then we need to reset the readOnlyModeAddress
+      if (isConnected && readOnlyMode) {
+        localStorage.removeItem('readOnlyModeAddress');
+        setReadOnlyModeAddress(undefined);
+      }
+
+      return;
+    }
+
+    // If the app loads in readOnlyMode, then we disconnect the wallet if it auto connected
+    const storedReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
+    if (storedReadOnlyAddress && utils.isAddress(storedReadOnlyAddress)) {
+      setReadOnlyModeAddress(storedReadOnlyAddress);
+      if (isConnected) {
+        disconnect();
+      }
+    }
+
+    didInit = true;
+  }, [disconnect, isConnected, readOnlyMode]);
+
   useEffect(() => {
     // If running cypress tests, then we try to auto connect on app load
     // so it doesn't have to be driven through the UI.
     const isCypressEnabled = process.env.NEXT_PUBLIC_IS_CYPRESS_ENABLED === 'true';
-    if (!isCypressEnabled || didConnect) {
+    if (!isCypressEnabled || didAutoConnectForCypress) {
       return;
     }
 
     const injected = connectors[0];
     connect({ connector: injected });
-    didConnect = true;
+    didAutoConnectForCypress = true;
   });
 
   // TODO: we use from instead of currentAccount because of the mock wallet.
@@ -165,6 +202,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setAccount(account?.toLowerCase());
   }, [account, setAccount]);
 
+  useEffect(() => {
+    if (readOnlyModeAddress) {
+      setAccount(readOnlyModeAddress);
+    }
+  }, [readOnlyModeAddress, setAccount]);
+
   // useEffect(() => {
   //   setAccountLoading(isActivating);
   // }, [isActivating, setAccountLoading]);
@@ -180,14 +223,15 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           getTxError,
           sendTx,
           signTxData,
-          currentAccount: account?.toLowerCase() || '',
+          currentAccount,
           addERC20Token,
           error,
           switchNetworkError,
           setSwitchNetworkError,
-          readOnlyMode: false, // connector instanceof ReadOnly,
+          readOnlyMode,
           provider,
-          readOnlyModeAddress: undefined, //  connector instanceof ReadOnly ? account?.toLowerCase() : undefined,
+          readOnlyModeAddress,
+          setReadOnlyModeAddress,
         },
       }}
     >

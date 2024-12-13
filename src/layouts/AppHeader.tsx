@@ -19,9 +19,12 @@ import {
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { AvatarSize } from 'src/components/Avatar';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { UserDisplay } from 'src/components/UserDisplay';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
@@ -99,8 +102,8 @@ export function AppHeader() {
     state.setMobileDrawerOpen,
   ]);
 
-  const { openSwitch, openBridge } = useModalContext();
-
+  const { openSwitch, openBridge, openReadMode } = useModalContext();
+  const { readOnlyMode } = useWeb3Context();
   const { currentMarketData } = useProtocolDataContext();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -317,14 +320,23 @@ export function AppHeader() {
           </StyledBadge>
         </NoSsr>
 
-        {/* {!mobileMenuOpen && (
-          <WalletWidget
-            open={walletWidgetOpen}
-            setOpen={toggleWalletWigit}
-            headerHeight={headerHeight}
-          />
-        )} */}
-        <ConnectWalletButton />
+        {readOnlyMode ? (
+          <Button
+            variant="surface"
+            onClick={() => {
+              openReadMode();
+            }}
+          >
+            <UserDisplay
+              avatarProps={{ size: AvatarSize.SM }}
+              oneLiner={true}
+              titleProps={{ variant: 'buttonM' }}
+            />
+          </Button>
+        ) : (
+          <ConnectWalletButton />
+        )}
+
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <SettingsMenu />
         </Box>
