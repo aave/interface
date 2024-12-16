@@ -3129,8 +3129,8 @@ msgid "You can only withdraw your assets from the Security Module after the cool
 msgstr "Вы можете вывести свои активы из модуля безопасности только после того, как закончится период охлаждения и станет активным окно вывода средств из стейкинга."
 
 #: src/components/transactions/FlowCommons/Error.tsx
-msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
-msgstr "Вы можете сообщить об инциденте в наш <0>Discord</0> или<1>Github</1>."
+msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
+msgstr "Вы можете сообщить об инциденте в наш <0>Discord</0> или <1>Github</1>."
 
 #: src/ui-config/errorMapping.tsx
 msgid "You cancelled the transaction."

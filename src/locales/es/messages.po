@@ -3129,7 +3129,7 @@ msgid "You can only withdraw your assets from the Security Module after the cool
 msgstr "Solo puedes retirar tus activos del Módulo de Seguridad después de que finalice el período de cooldown y la ventana de unstakeo esté activa."
 
 #: src/components/transactions/FlowCommons/Error.tsx
-msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
+msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
 msgstr "Puedes reportar cualquier incidente a nuestro <0>Discord</0> o <1>Github</1>."
 
 #: src/ui-config/errorMapping.tsx

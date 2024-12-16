@@ -3129,8 +3129,8 @@ msgid "You can only withdraw your assets from the Security Module after the cool
 msgstr "Sie können Ihr Vermögen erst dann aus dem Sicherheitsmodul abheben, wenn die Abklingzeit abgelaufen ist und das Unstake-Fenster aktiv ist."
 
 #: src/components/transactions/FlowCommons/Error.tsx
-msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
-msgstr "Sie können den Vorfall auf unserem <0>Discord</0> oder<1>Github</1> melden."
+msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
+msgstr "Sie können den Vorfall auf unserem <0>Discord</0> oder <1>Github</1> melden."
 
 #: src/ui-config/errorMapping.tsx
 msgid "You cancelled the transaction."
