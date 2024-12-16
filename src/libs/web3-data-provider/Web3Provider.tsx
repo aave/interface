@@ -36,13 +36,12 @@ export type Web3Data = {
   sendTx: (txData: transactionType | PopulatedTransaction) => Promise<TransactionResponse>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
-  error: Error | undefined;
   switchNetworkError: Error | undefined;
   setSwitchNetworkError: (err: Error | undefined) => void;
   readOnlyMode: boolean;
   readOnlyModeAddress: string | undefined;
   provider: JsonRpcProvider | undefined;
-  setReadOnlyModeAddress: (address: string) => void;
+  setReadOnlyModeAddress: (address: string | undefined) => void;
 };
 
 let didInit = false;
@@ -55,15 +54,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const { data: connectorClient } = useConnectorClient({ chainId });
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
-  // const { } = useConnectorClient({ chainId });
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
 
   const provider = useEthersProvider({ chainId });
   const signer = useEthersSigner({ chainId });
   const account = address;
-
-  const [error, setError] = useState<Error>();
-  console.log('TODO', setError);
 
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
@@ -226,7 +221,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           signTxData,
           currentAccount,
           addERC20Token,
-          error,
           switchNetworkError,
           setSwitchNetworkError,
           readOnlyMode,
