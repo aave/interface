@@ -3129,8 +3129,8 @@ msgid "You can only withdraw your assets from the Security Module after the cool
 msgstr "您只能在冷却期结束后且解除质押窗口激活后从安全模块中提取您的资产。"
 
 #: src/components/transactions/FlowCommons/Error.tsx
-msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
-msgstr "您可以向我们的 <0>Discord</0> 或<1>Github</1> 报告事件。"
+msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
+msgstr "您可以向我们的 <0>Discord</0> 或 <1>Github</1> 报告事件。"
 
 #: src/ui-config/errorMapping.tsx
 msgid "You cancelled the transaction."
