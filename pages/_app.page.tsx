@@ -10,7 +10,7 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
@@ -26,6 +26,22 @@ import { WagmiProvider } from 'wagmi';
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+
+if (process.env.NODE_ENV === 'development') {
+  if (typeof window !== 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    //const whyDidYouRender = require('@welldone-software/why-did-you-render');
+    import('@welldone-software/why-did-you-render').then((module) => {
+      module.default(React, {
+        trackAllPureComponents: true,
+      });
+    });
+    // console.log(whyDidYouRender);
+    // whyDidYouRender(React, {
+    //   trackAllPureComponents: true
+    // });
+  }
+}
 
 const SwitchModal = dynamic(() =>
   import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)

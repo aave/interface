@@ -1051,10 +1051,6 @@ msgstr "Enter a valid address"
 msgid "Enter an amount"
 msgstr "Enter an amount"
 
-#: src/components/WalletConnection/ReadOnlyModal.tsx
-msgid "Error connecting. Try refreshing the page."
-msgstr "Error connecting. Try refreshing the page."
-
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 msgstr "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
@@ -1635,10 +1631,6 @@ msgstr "Net APY is the combined effect of all supply and borrow positions on net
 msgid "Net worth"
 msgstr "Net worth"
 
-#: src/components/WalletConnection/ReadOnlyModal.tsx
-msgid "Network not supported for this wallet"
-msgstr "Network not supported for this wallet"
-
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
@@ -1921,10 +1913,6 @@ msgstr "Recent Transactions"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "Recipient address"
-
-#: src/components/WalletConnection/ReadOnlyModal.tsx
-msgid "Rejected connection request"
-msgstr "Rejected connection request"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Reload"
@@ -2978,10 +2966,6 @@ msgstr "Wallet Balance"
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Wallet balance"
 msgstr "Wallet balance"
-
-#: src/components/WalletConnection/ReadOnlyModal.tsx
-msgid "Wallet not detected. Connect or install wallet and retry"
-msgstr "Wallet not detected. Connect or install wallet and retry"
 
 #: src/components/WalletConnection/ReadOnlyModal.tsx
 msgid "Watch a wallet balance in read-only mode"
