@@ -28,7 +28,7 @@ module.exports = withBundleAnalyzer({
     config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
   // assetPrefix: "./",
   trailingSlash: true,
   pageExtensions,

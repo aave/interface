@@ -10,7 +10,7 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
@@ -18,7 +18,6 @@ import { GasStationProvider } from 'src/components/transactions/GasStation/GasSt
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
-import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { WagmiProvider } from 'wagmi';
@@ -93,38 +92,48 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
 }
-export default function MyApp(props: MyAppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+// let didInit = false;
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+export default function MyApp({
+  Component,
+  emotionCache = clientSideEmotionCache,
+  pageProps,
+}: MyAppProps) {
+  // TODO: adding this in breaks the app, why?
+  // const [initializeMixpanel] = useRootStore((store) => [store.initializeMixpanel]);
+  // console.log('initializeMixpanel', initializeMixpanel);
+
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
-  const [initializeMixpanel, setWalletType] = useRootStore((store) => [
-    store.initializeMixpanel,
-    store.setWalletType,
-  ]);
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            refetchOnWindowFocus: false,
-          },
-        },
-      })
-  );
 
-  const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
-  useEffect(() => {
-    if (MIXPANEL_TOKEN) {
-      initializeMixpanel();
-    } else {
-      console.log('no analytics tracking');
-    }
-  }, []);
+  // const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
+  // useEffect(() => {
+  //   if (didInit) {
+  //     return;
+  //   }
 
-  const cleanLocalStorage = () => {
-    localStorage.removeItem('readOnlyModeAddress');
-  };
+  //   if (MIXPANEL_TOKEN) {
+  //     initializeMixpanel();
+  //   } else {
+  //     console.log('no analytics tracking');
+  //   }
 
-  return (
+  //   didInit = true;
+  // }, [MIXPANEL_TOKEN, initializeMixpanel]);
+
+  // const cleanLocalStorage = () => {
+  //   localStorage.removeItem('readOnlyModeAddress');
+  // };
+
+  const AppProviders = ({ children }: { children: ReactNode }) => (
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
@@ -140,34 +149,14 @@ export default function MyApp(props: MyAppProps) {
         <LanguageProvider>
           <WagmiProvider config={wagmiConfig}>
             <QueryClientProvider client={queryClient}>
-              <ConnectKitProvider
-                onDisconnect={cleanLocalStorage}
-                onConnect={({ connectorId }) => setWalletType(connectorId)}
-              >
+              <ConnectKitProvider>
                 <Web3ContextProvider>
                   <AppGlobalStyles>
                     <AddressBlocked>
                       <ModalContextProvider>
                         <SharedDependenciesProvider>
                           <AppDataProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <TransactionEventHandler />
-                              <SwitchModal />
-                              <StakingMigrateModal />
-                              <BridgeModal />
-                              <ReadOnlyModal />
-                            </GasStationProvider>
+                            <GasStationProvider>{children}</GasStationProvider>
                           </AppDataProvider>
                         </SharedDependenciesProvider>
                       </ModalContextProvider>
@@ -181,5 +170,28 @@ export default function MyApp(props: MyAppProps) {
         </LanguageProvider>
       </NoSsr>
     </CacheProvider>
+  );
+
+  return (
+    <AppProviders>
+      <>
+        {getLayout(<Component {...pageProps} />)}
+        <SupplyModal />
+        <WithdrawModal />
+        <BorrowModal />
+        <RepayModal />
+        <CollateralChangeModal />
+        <DebtSwitchModal />
+        <ClaimRewardsModal />
+        <EmodeModal />
+        <SwapModal />
+        <FaucetModal />
+        <TransactionEventHandler />
+        <SwitchModal />
+        <StakingMigrateModal />
+        <BridgeModal />
+        <ReadOnlyModal />
+      </>
+    </AppProviders>
   );
 }
