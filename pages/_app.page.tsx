@@ -140,6 +140,8 @@ export default function MyApp(props: MyAppProps) {
     localStorage.removeItem('readOnlyModeAddress');
   };
 
+  console.log('render');
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>

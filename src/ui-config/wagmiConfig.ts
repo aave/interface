@@ -92,6 +92,7 @@ const prodConfig = createConfig(
   getDefaultConfig({
     chains: ENABLE_TESTNET ? testnetChains : prodChains,
     ...defaultConfig,
+    ssr: true,
   })
 );
 
