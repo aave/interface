@@ -133,6 +133,13 @@ export const MarketSwitcher = () => {
     setCurrentMarket(e.target.value as unknown as CustomMarket);
   };
 
+  const marketBlurbs: { [key: string]: string } = {
+    proto_mainnet_v3: 'The most liquid and risk-adjusted market with diverse yield options.',
+    proto_lido_v3: 'Focused on blue-chip collaterals and high leverage use cases.',
+  };
+
+  console.log('currentMarket', currentMarket);
+
   return (
     <TextField
       select
@@ -149,60 +156,100 @@ export const MarketSwitcher = () => {
       SelectProps={{
         native: false,
         className: 'MarketSwitcher__select',
-        IconComponent: (props) => (
-          <SvgIcon fontSize="medium" {...props}>
-            <ChevronDownIcon />
-          </SvgIcon>
-        ),
+        IconComponent: (props) => null,
         renderValue: (marketId) => {
           const { market, logo } = getMarketInfoById(marketId as CustomMarket);
 
           return (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <MarketLogo
-                size={upToLG ? 32 : 28}
-                logo={logo}
-                testChainName={getMarketHelpData(market.marketTitle).testChainName}
-              />
-              <Box sx={{ mr: 1, display: 'inline-flex', alignItems: 'flex-start' }}>
+            <Box>
+              {/* Main Row with Market Name */}
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <MarketLogo
+                  size={upToLG ? 32 : 28}
+                  logo={logo}
+                  testChainName={getMarketHelpData(market.marketTitle).testChainName}
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography
+                    variant={upToLG ? 'display1' : 'h1'}
+                    sx={{
+                      fontSize: downToXSM ? '1.55rem' : undefined,
+                      color: 'common.white',
+                      mr: 1,
+                    }}
+                  >
+                    {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
+                    {upToLG && ' Market'}
+                  </Typography>
+                  {market.v3 ? (
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Box
+                        sx={{
+                          color: '#fff',
+                          px: 2,
+                          borderRadius: '12px',
+                          background: (theme) => theme.palette.gradients.aaveGradient,
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Typography variant="subheader2">V3</Typography>
+                      </Box>
+                      <SvgIcon
+                        fontSize="medium"
+                        sx={{
+                          ml: 1,
+                          color: '#F1F1F3',
+                        }}
+                      >
+                        <ChevronDownIcon />
+                      </SvgIcon>
+                    </Box>
+                  ) : (
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Box
+                        sx={{
+                          color: '#A5A8B6',
+                          px: 2,
+                          borderRadius: '12px',
+                          backgroundColor: '#383D51',
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Typography variant="subheader2">V2</Typography>
+                      </Box>
+                      <SvgIcon
+                        fontSize="medium"
+                        sx={{
+                          ml: 1,
+                          color: '#F1F1F3',
+                        }}
+                      >
+                        <ChevronDownIcon />
+                      </SvgIcon>
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+
+              {marketBlurbs[currentMarket] && (
                 <Typography
-                  variant={upToLG ? 'display1' : 'h1'}
+                  variant="body2"
                   sx={{
-                    fontSize: downToXSM ? '1.55rem' : undefined,
                     color: 'common.white',
-                    mr: 1,
+                    mt: 0.5, // Small spacing below the market title
+                    // ml: upToLG ? '42px' : '36px', // Align with the market text
+                    fontSize: '0.85rem',
                   }}
                 >
-                  {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
-                  {upToLG && ' Market'}
+                  {marketBlurbs[currentMarket]}
                 </Typography>
-                {market.v3 ? (
-                  <Box
-                    sx={{
-                      color: '#fff',
-                      px: 2,
-                      borderRadius: '12px',
-                      background: (theme) => theme.palette.gradients.aaveGradient,
-                    }}
-                  >
-                    <Typography variant="subheader2">V3</Typography>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      color: '#A5A8B6',
-                      px: 2,
-                      borderRadius: '12px',
-                      backgroundColor: '#383D51',
-                    }}
-                  >
-                    <Typography variant="subheader2">V2</Typography>
-                  </Box>
-                )}
-              </Box>
+              )}
             </Box>
           );
         },
+
         sx: {
           '&.MarketSwitcher__select .MuiSelect-outlined': {
             pl: 0,
@@ -219,6 +266,7 @@ export const MarketSwitcher = () => {
           PaperProps: {
             style: {
               minWidth: 240,
+              transform: 'translateX(-84px)',
             },
             variant: 'outlined',
             elevation: 0,
