@@ -28,13 +28,10 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
   title,
 }: TitleWithSearchBarProps<T>) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
-
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
-
   const showSearchIcon = sm && !showSearchBar;
-  const showMarketTitle = !sm || !showSearchBar;
-
+  const showMarketTitle = (!sm || !showSearchBar) && !!title;
   const handleCancelClick = () => {
     setShowSearchBar(false);
     onSearchTermChange('');
@@ -46,7 +43,7 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
         width: '100%',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: showMarketTitle && title ? 'space-between' : 'center',
       }}
     >
       {showMarketTitle && (
