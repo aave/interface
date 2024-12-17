@@ -138,8 +138,6 @@ export const MarketSwitcher = () => {
     proto_lido_v3: 'Focused on blue-chip collaterals and high leverage use cases.',
   };
 
-  console.log('currentMarket', currentMarket);
-
   return (
     <TextField
       select
@@ -156,7 +154,7 @@ export const MarketSwitcher = () => {
       SelectProps={{
         native: false,
         className: 'MarketSwitcher__select',
-        IconComponent: (props) => null,
+        IconComponent: () => null,
         renderValue: (marketId) => {
           const { market, logo } = getMarketInfoById(marketId as CustomMarket);
 
@@ -235,11 +233,9 @@ export const MarketSwitcher = () => {
 
               {marketBlurbs[currentMarket] && (
                 <Typography
-                  variant="body2"
                   sx={{
                     color: 'common.white',
-                    mt: 0.5, // Small spacing below the market title
-                    // ml: upToLG ? '42px' : '36px', // Align with the market text
+                    mt: 0.5,
                     fontSize: '0.85rem',
                   }}
                 >
@@ -263,10 +259,13 @@ export const MarketSwitcher = () => {
             vertical: 'bottom',
             horizontal: 'right',
           },
+          transformOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
           PaperProps: {
             style: {
               minWidth: 240,
-              transform: 'translateX(-84px)',
             },
             variant: 'outlined',
             elevation: 0,
