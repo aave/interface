@@ -13,12 +13,12 @@ export function MainLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <TopBarNotify
+      {/* <TopBarNotify
         learnMoreLink="https://oh7vm38ynd2.typeform.com/to/Fnw3rMyw"
         notifyText="Looking to provide product feedback? We'd love to hear from you! 👉"
         bannerVersion={APP_BANNER_VERSION}
         buttonText="Share feedback"
-      />
+      /> */}
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {children}
