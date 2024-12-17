@@ -51,7 +51,7 @@ const selectableMarkets = [
 ];
 
 export default function V3Migration() {
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const router = useRouter();
   const [fromMarketData, setFromMarketData] = useState<MarketDataType>(() => {
     if (router.query.market) {
@@ -255,7 +255,6 @@ export default function V3Migration() {
         </ContentContainer>
       ) : (
         <ConnectWalletPaper
-          loading={web3Loading}
           description={<Trans> Please connect your wallet to see migration tool.</Trans>}
         />
       )}

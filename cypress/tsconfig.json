@@ -3,6 +3,7 @@
   "compilerOptions": {
     "noEmit": true,
     "types": ["cypress", "cypress-wait-until"],
+    "sourceMap": false,
   },
   "include": [
     "../node_modules/cypress",
