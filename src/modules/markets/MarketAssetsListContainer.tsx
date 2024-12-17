@@ -16,6 +16,11 @@ import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUti
 
 import { GENERAL } from '../../utils/mixPanelEvents';
 import { GhoBanner } from './Gho/GhoBanner';
+import {
+  ESupportedAPYTimeRanges,
+  HistoricalAPYRow,
+  ReserveHistoricalRateTimeRange,
+} from 'src/components/HistoricalAPYRow';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -75,6 +80,9 @@ export const MarketAssetsListContainer = () => {
   //   marketFrozen && ['Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
   const [showFrozenMarketsToggle, setShowFrozenMarketsToggle] = useState(false);
+  const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveHistoricalRateTimeRange>(
+    ESupportedAPYTimeRanges.Now
+  );
 
   const handleChange = () => {
     setShowFrozenMarketsToggle((prevState) => !prevState);
@@ -85,15 +93,38 @@ export const MarketAssetsListContainer = () => {
   return (
     <ListWrapper
       titleComponent={
-        <TitleWithSearchBar
-          onSearchTermChange={setSearchTerm}
-          title={
-            <>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          {/* Left: Title */}
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+            <Typography variant="h2" component="div">
               {currentMarketData.marketTitle} <Trans>assets</Trans>
-            </>
-          }
-          searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
-        />
+            </Typography>
+          </div>
+
+          {/* Center: Search Bar */}
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+            <TitleWithSearchBar
+              onSearchTermChange={setSearchTerm}
+              title={null}
+              searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
+            />
+          </div>
+
+          {/* Right: Historical APY */}
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+            <HistoricalAPYRow
+              disabled={false}
+              selectedTimeRange={selectedTimeRange}
+              onTimeRangeChanged={setSelectedTimeRange}
+            />
+          </div>
+        </div>
       }
     >
       {displayGhoBanner && (
