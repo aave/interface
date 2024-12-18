@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-12-11 18:06\n"
+"PO-Revision-Date: 2024-12-18 12:08\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -1465,6 +1465,10 @@ msgstr "由于社群的决定，MAI 已暂停。供应、借款和还款受到�
 msgid "MAX"
 msgstr ".MAX"
 
+#: src/components/MarketSwitcher.tsx
+msgid "Main Ethereum market with the largest selection of assets and yield options"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Manage E-Mode"
@@ -1744,6 +1748,10 @@ msgstr "好的，关闭"
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "不支持操作"
+
+#: src/components/MarketSwitcher.tsx
+msgid "Optimized for efficiency and risk by supporting blue-chip collateral assets"
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
