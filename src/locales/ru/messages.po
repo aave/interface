@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-12-11 18:06\n"
+"PO-Revision-Date: 2024-12-18 12:08\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -1465,6 +1465,10 @@ msgstr "MAI был приостановлен из-за решения сооб�
 msgid "MAX"
 msgstr ".MAX"
 
+#: src/components/MarketSwitcher.tsx
+msgid "Main Ethereum market with the largest selection of assets and yield options"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Manage E-Mode"
@@ -1744,6 +1748,10 @@ msgstr "Хорошо, Закрыть"
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Операция не поддерживается"
+
+#: src/components/MarketSwitcher.tsx
+msgid "Optimized for efficiency and risk by supporting blue-chip collateral assets"
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
