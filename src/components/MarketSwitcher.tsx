@@ -244,6 +244,10 @@ export const MarketSwitcher = () => {
                     color: 'common.white',
                     mt: 0.5,
                     fontSize: '0.85rem',
+                    wordWrap: 'break-word',
+                    whiteSpace: 'normal',
+                    lineHeight: 1.3,
+                    maxWidth: '100%',
                   }}
                 >
                   {marketBlurbs[currentMarket]}
