@@ -133,9 +133,13 @@ export const MarketSwitcher = () => {
     setCurrentMarket(e.target.value as unknown as CustomMarket);
   };
 
-  const marketBlurbs: { [key: string]: string } = {
-    proto_mainnet_v3: 'The most liquid and risk-adjusted market with diverse yield options.',
-    proto_lido_v3: 'Focused on blue-chip collaterals and high leverage use cases.',
+  const marketBlurbs: { [key: string]: JSX.Element } = {
+    proto_mainnet_v3: (
+      <Trans>Main Ethereum market with the largest selection of assets and yield options</Trans>
+    ),
+    proto_lido_v3: (
+      <Trans>Optimized for efficiency and risk by supporting blue-chip collateral assets</Trans>
+    ),
   };
 
   return (
@@ -177,7 +181,10 @@ export const MarketSwitcher = () => {
                     }}
                   >
                     {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
-                    {upToLG && ' Market'}
+                    {upToLG &&
+                    (currentMarket === 'proto_mainnet_v3' || currentMarket === 'proto_lido_v3')
+                      ? 'Instance'
+                      : ' Market'}
                   </Typography>
                   {market.v3 ? (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
