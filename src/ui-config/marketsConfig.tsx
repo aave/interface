@@ -107,7 +107,7 @@ export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
   [CustomMarket.proto_mainnet_v3]: {
-    marketTitle: 'Ethereum',
+    marketTitle: 'Core',
     market: CustomMarket.proto_mainnet_v3,
     chainId: ChainId.mainnet,
     v3: true,
@@ -139,7 +139,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_lido_v3]: {
-    marketTitle: 'Lido',
+    marketTitle: 'Prime',
     market: CustomMarket.proto_lido_v3,
     chainId: ChainId.mainnet,
     v3: true,

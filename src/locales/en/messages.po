@@ -1460,6 +1460,10 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 msgid "MAX"
 msgstr "MAX"
 
+#: src/components/MarketSwitcher.tsx
+msgid "Main Ethereum market with the largest selection of assets and yield options"
+msgstr "Main Ethereum market with the largest selection of assets and yield options"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Manage E-Mode"
@@ -1739,6 +1743,10 @@ msgstr "Ok, Close"
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Operation not supported"
+
+#: src/components/MarketSwitcher.tsx
+msgid "Optimized for efficiency and risk by supporting blue-chip collateral assets"
+msgstr "Optimized for efficiency and risk by supporting blue-chip collateral assets"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
