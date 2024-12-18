@@ -4,19 +4,13 @@ import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
 import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
+import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { hexToAscii } from 'src/utils/utils';
-import { UserRejectedRequestError } from 'viem';
-import {
-  useAccount,
-  useConnect,
-  useConnectorClient,
-  useDisconnect,
-  useSwitchChain,
-  useWatchAsset,
-} from 'wagmi';
+import { Hash, UserRejectedRequestError } from 'viem';
+import { useAccount, useConnect, useDisconnect, useSwitchChain, useWatchAsset } from 'wagmi';
 
 import { Web3Context } from '../hooks/useWeb3Context';
-import { clientToSigner, useEthersProvider, useEthersSigner } from './adapters/EthersAdapter';
+import { getEthersProvider } from './adapters/EthersAdapter';
 
 export type ERC20TokenType = {
   address: string;
@@ -33,7 +27,7 @@ export type Web3Data = {
   chainId: number;
   switchNetwork: (chainId: number) => Promise<void>;
   getTxError: (txHash: string) => Promise<string>;
-  sendTx: (txData: transactionType | PopulatedTransaction) => Promise<TransactionResponse>;
+  sendTx: (txData: transactionType | PopulatedTransaction) => Promise<{ hash: Hash }>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
   switchNetworkError: Error | undefined;
@@ -51,13 +45,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const { switchChainAsync } = useSwitchChain();
   const { watchAssetAsync } = useWatchAsset();
   const { chainId, address, isConnected, isConnecting } = useAccount();
-  const { data: connectorClient } = useConnectorClient({ chainId });
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
 
-  const provider = useEthersProvider({ chainId });
-  const signer = useEthersSigner({ chainId });
   const account = address;
 
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
@@ -105,30 +96,26 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     didAutoConnectForCypress = true;
   });
 
-  // TODO: we use from instead of currentAccount because of the mock wallet.
-  // If we used current account then the tx could get executed
   const sendTx = async (
     txData: transactionType | PopulatedTransaction
   ): Promise<TransactionResponse> => {
-    if (provider && connectorClient) {
+    const provider = await getEthersProvider(wagmiConfig, { chainId });
+    if (provider) {
       const { from, ...data } = txData;
-      const signer = clientToSigner(connectorClient);
-      if (signer) {
-        const txResponse: TransactionResponse = await signer.sendTransaction({
-          ...data,
-          value: data.value ? BigNumber.from(data.value) : undefined,
-        });
-        return txResponse;
-      }
+      const signer = provider.getSigner(from);
+      const txResponse: TransactionResponse = await signer.sendTransaction({
+        ...data,
+        value: data.value ? BigNumber.from(data.value) : undefined,
+      });
+      return txResponse;
     }
     throw new Error('Error sending transaction. Provider not found');
   };
 
-  // TODO: recheck that it works on all wallets
   const signTxData = async (unsignedData: string): Promise<SignatureLike> => {
-    if (signer && account) {
-      console.log(signer);
-      const signature: SignatureLike = await signer.provider.send('eth_signTypedData_v4', [
+    const provider = await getEthersProvider(wagmiConfig, { chainId });
+    if (provider && account) {
+      const signature: SignatureLike = await provider.send('eth_signTypedData_v4', [
         account,
         unsignedData,
       ]);
@@ -152,6 +139,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   };
 
   const getTxError = async (txHash: string): Promise<string> => {
+    const provider = await getEthersProvider(wagmiConfig, { chainId });
     if (provider) {
       const tx = await provider.getTransaction(txHash);
       // @ts-expect-error TODO: need think about "tx" type
@@ -168,6 +156,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     decimals,
     image,
   }: ERC20TokenType): Promise<boolean> => {
+    const provider = await getEthersProvider(wagmiConfig, { chainId });
     if (provider) {
       if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
         let tokenSymbol = symbol;
@@ -224,7 +213,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           switchNetworkError,
           setSwitchNetworkError,
           readOnlyMode,
-          provider,
+          provider: undefined,
           readOnlyModeAddress,
           setReadOnlyModeAddress,
         },

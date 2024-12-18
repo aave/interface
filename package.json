@@ -58,6 +58,7 @@
     "@visx/scale": "^2.2.2",
     "@visx/shape": "^2.12.2",
     "@visx/tooltip": "^2.16.0",
+    "@wagmi/core": "^2.16.0",
     "blo": "^1.1.1",
     "connectkit": "^1.8.2",
     "d3-array": "^3.2.0",
