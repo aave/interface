@@ -6,10 +6,10 @@ import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
 import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
-import TopBarNotify from './TopBarNotify';
+// import TopBarNotify from './TopBarNotify';
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  const APP_BANNER_VERSION = '5.0.0';
+  // const APP_BANNER_VERSION = '5.0.0';
 
   return (
     <>
