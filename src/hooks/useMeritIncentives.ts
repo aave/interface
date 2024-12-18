@@ -96,7 +96,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customForumLink:
           'https://governance.aave.com/t/arfc-pyusd-reserve-configuration-update-incentive-campaign/19573',
         customMessage:
-          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.'
+          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
       },
     ],
   },
