@@ -1,17 +1,10 @@
 // src/index.js
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
-import { el, en, es, fr } from 'make-plural/plurals';
 import React, { PropsWithChildren, useEffect } from 'react';
 
 import { messages } from '../locales/en/messages.js';
 
-i18n.loadLocaleData({
-  en: { plurals: en },
-  es: { plurals: es },
-  fr: { plurals: fr },
-  el: { plurals: el },
-});
 i18n.load('en', messages);
 i18n.activate('en');
 
@@ -43,9 +36,5 @@ export const LanguageProvider: React.FC<PropsWithChildren> = ({ children }) => {
     if (i18n.locale !== savedLocale) dynamicActivateLanguage(savedLocale);
   }, []);
 
-  return (
-    <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
-      {children}
-    </I18nProvider>
-  );
+  return <I18nProvider i18n={i18n}>{children}</I18nProvider>;
 };

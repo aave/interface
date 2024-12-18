@@ -41,9 +41,9 @@ export const useGetExecutionState = (
     },
     queryKey: ['executionState', chainId, sequenceNumber],
     enabled: offRamps?.length > 0,
-    refetchInterval: (data) => {
+    refetchInterval: (query) => {
       // Retry every 60 seconds if the transaction state is not SUCCESS
-      if (data === MessageExecutionState.SUCCESS) {
+      if (query.state.data === MessageExecutionState.SUCCESS) {
         return false;
       }
 

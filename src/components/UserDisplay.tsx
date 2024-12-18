@@ -4,8 +4,6 @@ import { useMemo } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { useAccount } from 'wagmi';
-import { shallow } from 'zustand/shallow';
 
 import { Avatar, AvatarProps } from './Avatar';
 import { BadgeSize, ExclamationBadge } from './badges/ExclamationBadge';
@@ -28,21 +26,18 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
   withLink,
   funnel,
 }) => {
-  const { isConnecting } = useAccount();
-  const { account, defaultDomain, domainsLoading } = useRootStore(
-    (state) => ({
-      account: state.account,
-      defaultDomain: state.defaultDomain,
-      domainsLoading: state.domainsLoading,
-    }),
-    shallow
-  );
+  const [account, defaultDomain, domainsLoading] = useRootStore((state) => [
+    state.account,
+    state.defaultDomain,
+    state.domainsLoading,
+  ]);
   const { readOnlyMode } = useWeb3Context();
+
   const fallbackImage = useMemo(
     () => (account ? blo(account as `0x${string}`) : undefined),
     [account]
   );
-  const loading = domainsLoading || isConnecting;
+  const loading = domainsLoading;
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

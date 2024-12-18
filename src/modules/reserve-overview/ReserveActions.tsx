@@ -1,17 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Divider,
-  Paper,
-  Skeleton,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Divider, Paper, Skeleton, Stack, Typography, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import React, { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
@@ -63,7 +53,7 @@ interface ReserveActionsProps {
 export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
 
-  const { currentAccount, loading: loadingWeb3Context } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { openBorrow, openSupply } = useModalContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
@@ -127,7 +117,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   });
 
   if (!currentAccount) {
-    return <ConnectWallet loading={loadingWeb3Context} />;
+    return <ConnectWallet />;
   }
 
   if (loadingReserves || loadingWalletBalance) {
@@ -267,22 +257,18 @@ const PaperWrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const ConnectWallet = ({ loading }: { loading: boolean }) => {
+const ConnectWallet = () => {
   return (
     <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <>
-          <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
-            <Trans>Your info</Trans>
-          </Typography>
-          <Typography sx={{ mb: 6 }} color="text.secondary">
-            <Trans>Please connect a wallet to view your personal information here.</Trans>
-          </Typography>
-          <ConnectWalletButton />
-        </>
-      )}
+      <>
+        <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
+          <Trans>Your info</Trans>
+        </Typography>
+        <Typography sx={{ mb: 6 }} color="text.secondary">
+          <Trans>Please connect a wallet to view your personal information here.</Trans>
+        </Typography>
+        <ConnectWalletButton />
+      </>
     </Paper>
   );
 };
