@@ -706,6 +706,10 @@ msgstr "This asset is frozen due to an Aave community decision. <0>More details<
 msgid "Faucet"
 msgstr "Faucet"
 
+#: src/components/MarketSwitcher.tsx
+msgid "Optimized for efficiency and risk by supporting blue-chip collateral assets"
+msgstr "Optimized for efficiency and risk by supporting blue-chip collateral assets"
+
 #: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
 msgid "The fee includes the gas cost to complete the transaction on the destination chain and the fee paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
 msgstr "The fee includes the gas cost to complete the transaction on the destination chain and the fee paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
@@ -810,6 +814,10 @@ msgstr "Collateralization"
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
 msgstr "You can report incident to our <0>Discord</0> or<1>Github</1>."
+
+#: src/components/MarketSwitcher.tsx
+msgid "Main Ethereum market with the largest selection of assets and yield options"
+msgstr "Main Ethereum market with the largest selection of assets and yield options"
 
 #: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
