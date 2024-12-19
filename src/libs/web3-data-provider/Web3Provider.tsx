@@ -96,7 +96,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         ...data,
         value: data.value ? BigNumber.from(data.value) : undefined,
       });
-      console.log('txResponse', txResponse);
       return txResponse;
     }
     throw new Error('Error sending transaction. Provider not found');
@@ -173,7 +172,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   };
 
   useEffect(() => {
-    console.log('setting store account', account);
     setAccount(account?.toLowerCase());
   }, [account, setAccount]);
 
