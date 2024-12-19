@@ -92,7 +92,7 @@ export const HistoryWrapper = () => {
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
-    (node) => {
+    (node: HTMLDivElement | null) => {
       if (isLoading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
@@ -106,7 +106,7 @@ export const HistoryWrapper = () => {
   );
   const theme = useTheme();
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
 
   const flatTxns = useMemo(
     () => transactions?.pages?.flatMap((page) => page) || [],
@@ -141,7 +141,6 @@ export const HistoryWrapper = () => {
   if (!currentAccount) {
     return (
       <ConnectWalletPaper
-        loading={web3Loading}
         description={<Trans> Please connect your wallet to view transaction history.</Trans>}
       />
     );

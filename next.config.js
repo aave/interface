@@ -25,10 +25,33 @@ module.exports = withBundleAnalyzer({
       ],
     });
     config.experiments = { topLevelAwait: true };
+    config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },
   reactStrictMode: true,
   // assetPrefix: "./",
   trailingSlash: true,
   pageExtensions,
+  // NOTE: Needed for SAFE testing locally
+  // async headers() {
+  //   return [
+  //     {
+  //       source: '/manifest.json',
+  //       headers: [
+  //         {
+  //           key: 'Access-Control-Allow-Origin',
+  //           value: '*',
+  //         },
+  //         {
+  //           key: 'Access-Control-Allow-Methods',
+  //           value: 'GET',
+  //         },
+  //         {
+  //           key: 'Access-Control-Allow-Headers',
+  //           value: 'X-Requested-With, content-type, Authorization',
+  //         },
+  //       ],
+  //     },
+  //   ];
+  // },
 });

@@ -37,7 +37,12 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   const { reserves, loading } = useAppDataContext();
   const { currentMarket, currentChainId } = useProtocolDataContext();
   const { market, logo } = getMarketInfoById(currentMarket);
-  const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
+  const {
+    addERC20Token,
+    switchNetwork,
+    chainId: connectedChainId,
+    currentAccount,
+  } = useWeb3Context();
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -152,7 +157,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                         downToSM={downToSM}
                         hideAToken={isGho}
                       />
-                      {connected && (
+                      {currentAccount && (
                         <AddTokenDropdown
                           poolReserve={poolReserve}
                           downToSM={downToSM}
@@ -189,7 +194,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                   downToSM={downToSM}
                   hideAToken={isGho}
                 />
-                {connected && (
+                {currentAccount && (
                   <AddTokenDropdown
                     poolReserve={poolReserve}
                     downToSM={downToSM}

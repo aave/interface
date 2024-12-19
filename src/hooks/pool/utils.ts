@@ -1,9 +1,9 @@
 import { UseQueryResult } from '@tanstack/react-query';
 
 export type SimplifiedUseQueryResult<TData = unknown, TError = unknown> =
-  | Pick<UseQueryResult<TData, TError>, 'data' | 'error' | 'isLoading'>
+  | Pick<UseQueryResult<TData, TError>, 'data' | 'error' | 'isPending'>
   | {
-      isLoading: false;
+      isPending: false;
       data: TData;
       error: null;
     };
@@ -18,21 +18,21 @@ export const combineQueries = <Queries extends readonly SimplifiedUseQueryResult
     }
   ) => P
 ): SimplifiedUseQueryResult<P, Queries[number]['error']> => {
-  const isLoading = queries.some((elem) => elem.isLoading);
+  const isPending = queries.some((elem) => elem.isPending);
   const isAllDataDefined = queries.every((elem) => elem.data);
   const allData = queries.map((elem) => elem.data) as {
     [K in keyof Queries]: NonUndefined<Queries[K]['data']>;
   };
   const error = queries.find((elem) => elem.error)?.error;
-  if (!error && !isLoading) {
+  if (!error && !isPending) {
     return {
-      isLoading: false,
+      isPending: false,
       data: combiner(...allData),
       error: null,
     };
   }
   return {
-    isLoading: isLoading,
+    isPending,
     data: isAllDataDefined ? combiner(...allData) : undefined,
     error,
   };

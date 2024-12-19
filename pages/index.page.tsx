@@ -14,7 +14,7 @@ import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardConte
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 
 export default function Home() {
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { currentMarket } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -63,7 +63,7 @@ export default function Home() {
         {currentAccount ? (
           <DashboardContentWrapper isBorrow={mode === 'borrow'} />
         ) : (
-          <ConnectWalletPaper loading={web3Loading} />
+          <ConnectWalletPaper />
         )}
       </ContentContainer>
     </>

@@ -51,7 +51,7 @@ const selectableMarkets = [
 ];
 
 export default function V3Migration() {
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const router = useRouter();
   const [fromMarketData, setFromMarketData] = useState<MarketDataType>(() => {
     if (router.query.market) {
@@ -82,23 +82,23 @@ export default function V3Migration() {
     getNetworkConfig(fromMarketData.chainId)
   );
 
-  const { data: userMigrationReserves, isLoading: userMigrationReservesLoading } =
+  const { data: userMigrationReserves, isPending: userMigrationReservesLoading } =
     useUserMigrationReserves(fromMarketData, toMarketData);
 
   const supplyReserves = userMigrationReserves?.supplyReserves || [];
   const borrowReserves = userMigrationReserves?.borrowReserves || [];
   const isolatedReserveV3 = userMigrationReserves?.isolatedReserveV3;
 
-  const { data: fromUserSummaryAndIncentives, isLoading: fromUserSummaryAndIncentivesLoading } =
+  const { data: fromUserSummaryAndIncentives, isPending: fromUserSummaryAndIncentivesLoading } =
     useUserSummaryAndIncentives(fromMarketData);
 
-  const { data: toUserReservesData, isLoading: toUserReservesDataLoading } =
+  const { data: toUserReservesData, isPending: toUserReservesDataLoading } =
     useUserPoolReservesHumanized(toMarketData);
-  const { data: toUserSummaryForMigration, isLoading: toUserSummaryForMigrationLoading } =
+  const { data: toUserSummaryForMigration, isPending: toUserSummaryForMigrationLoading } =
     useUserSummaryAndIncentives(toMarketData);
   const toUserEModeCategoryId = toUserReservesData?.userEmodeCategoryId || 0;
 
-  const { data: userSummaryAfterMigration, isLoading: userSummaryAfterMigrationLoading } =
+  const { data: userSummaryAfterMigration, isPending: userSummaryAfterMigrationLoading } =
     useUserSummaryAfterMigration(fromMarketData, toMarketData);
 
   const loading =
@@ -255,7 +255,6 @@ export default function V3Migration() {
         </ContentContainer>
       ) : (
         <ConnectWalletPaper
-          loading={web3Loading}
           description={<Trans> Please connect your wallet to see migration tool.</Trans>}
         />
       )}

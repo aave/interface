@@ -4,7 +4,7 @@ import { ArrowDownIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, ListItemText, ListSubheader, Stack, SvgIcon, Typography } from '@mui/material';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
