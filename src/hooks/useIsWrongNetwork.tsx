@@ -7,6 +7,7 @@ export function useIsWrongNetwork(_requiredChainId?: number) {
   const { chainId: connectedChainId } = useWeb3Context();
 
   const requiredChainId = _requiredChainId ? _requiredChainId : currentChainId;
+
   const isWrongNetwork = connectedChainId !== requiredChainId;
 
   return {
