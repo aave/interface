@@ -78,25 +78,25 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const currentMarket = useRootStore((state) => state.currentMarket);
   // pool hooks
 
-  const { data: reservesData, isLoading: reservesDataLoading } =
+  const { data: reservesData, isPending: reservesDataLoading } =
     usePoolReservesHumanized(currentMarketData);
-  const { data: formattedPoolReserves, isLoading: formattedPoolReservesLoading } =
+  const { data: formattedPoolReserves, isPending: formattedPoolReservesLoading } =
     usePoolFormattedReserves(currentMarketData);
   const baseCurrencyData = reservesData?.baseCurrencyData;
   // user hooks
 
   const eModes = formattedPoolReserves ? formatEmodes(formattedPoolReserves) : {};
 
-  const { data: userReservesData, isLoading: userReservesDataLoading } =
+  const { data: userReservesData, isPending: userReservesDataLoading } =
     useUserPoolReservesHumanized(currentMarketData);
-  const { data: userSummary, isLoading: userSummaryLoading } =
+  const { data: userSummary, isPending: userSummaryLoading } =
     useExtendedUserSummaryAndIncentives(currentMarketData);
   const userReserves = userReservesData?.userReserves;
 
   // gho hooks
-  const { data: formattedGhoUserData, isLoading: isGhoUserDataLoading } =
+  const { data: formattedGhoUserData, isPending: isGhoUserDataLoading } =
     useUserGhoPoolFormattedReserve(currentMarketData);
-  const { data: formattedGhoReserveData, isLoading: ghoReserveDataLoading } =
+  const { data: formattedGhoReserveData, isPending: ghoReserveDataLoading } =
     useGhoPoolFormattedReserve(currentMarketData);
 
   const formattedGhoReserveDataWithDefault = formattedGhoReserveData || {

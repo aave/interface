@@ -8,9 +8,9 @@ import { useDisconnect } from 'wagmi';
 import { AddressBlockedModal } from './AddressBlockedModal';
 
 export const AddressBlocked = ({ children }: { children: ReactNode }) => {
-  const { currentAccount, readOnlyMode, loading } = useWeb3Context();
+  const { currentAccount, readOnlyMode } = useWeb3Context();
   const { disconnect } = useDisconnect();
-  const screenAddress = readOnlyMode || loading || ENABLE_TESTNET ? '' : currentAccount;
+  const screenAddress = readOnlyMode || ENABLE_TESTNET ? '' : currentAccount;
   const { isAllowed } = useAddressAllowed(screenAddress);
 
   if (!isAllowed) {

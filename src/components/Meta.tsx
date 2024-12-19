@@ -37,7 +37,7 @@ export function Meta({ title, description, imageUrl, timestamp }: MetaProps) {
       />
       <link rel="apple-touch-icon" href="/aave_icon180.png" />
       <meta name="apple-mobile-web-app-title" content={`Aave`} />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     </Head>
   );

@@ -6,7 +6,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { hexToAscii } from 'src/utils/utils';
-import { Hash, UserRejectedRequestError } from 'viem';
+import { UserRejectedRequestError } from 'viem';
 import { useAccount, useConnect, useDisconnect, useSwitchChain, useWatchAsset } from 'wagmi';
 
 import { Web3Context } from '../hooks/useWeb3Context';
@@ -22,12 +22,10 @@ export type ERC20TokenType = {
 
 export type Web3Data = {
   currentAccount: string;
-  connected: boolean;
-  loading: boolean;
   chainId: number;
   switchNetwork: (chainId: number) => Promise<void>;
   getTxError: (txHash: string) => Promise<string>;
-  sendTx: (txData: transactionType | PopulatedTransaction) => Promise<{ hash: Hash }>;
+  sendTx: (txData: transactionType | PopulatedTransaction) => Promise<TransactionResponse>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
   switchNetworkError: Error | undefined;
@@ -44,16 +42,15 @@ let didAutoConnectForCypress = false;
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const { switchChainAsync } = useSwitchChain();
   const { watchAssetAsync } = useWatchAsset();
-  const { chainId, address, isConnected, isConnecting } = useAccount();
-  const { connect, connectors } = useConnect();
+  const { chainId, address } = useAccount();
   const { disconnect } = useDisconnect();
+  const { connect, connectors } = useConnect();
+
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
-
-  const account = address;
-
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
 
+  const account = address;
   const readOnlyMode = utils.isAddress(readOnlyModeAddress || '');
   let currentAccount = account?.toLowerCase() || '';
   if (readOnlyMode && readOnlyModeAddress) {
@@ -62,12 +59,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   useEffect(() => {
     if (didInit) {
-      // If user connects a wallet after the app is loaded, then we need to reset the readOnlyModeAddress
-      if (isConnected && readOnlyMode) {
-        localStorage.removeItem('readOnlyModeAddress');
-        setReadOnlyModeAddress(undefined);
-      }
-
       return;
     }
 
@@ -75,13 +66,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const storedReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
     if (storedReadOnlyAddress && utils.isAddress(storedReadOnlyAddress)) {
       setReadOnlyModeAddress(storedReadOnlyAddress);
-      if (isConnected) {
-        disconnect();
-      }
+      disconnect();
     }
 
     didInit = true;
-  }, [disconnect, isConnected, readOnlyMode]);
+  }, [disconnect, readOnlyMode]);
 
   useEffect(() => {
     // If running cypress tests, then we try to auto connect on app load
@@ -94,7 +83,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const injected = connectors[0];
     connect({ connector: injected });
     didAutoConnectForCypress = true;
-  });
+  }, [connect, connectors]);
 
   const sendTx = async (
     txData: transactionType | PopulatedTransaction
@@ -182,7 +171,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     return false;
   };
 
-  // inject account into zustand as long as aave itnerface is using old web3 providers
   useEffect(() => {
     setAccount(account?.toLowerCase());
   }, [account, setAccount]);
@@ -193,16 +181,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }
   }, [readOnlyModeAddress, setAccount]);
 
-  // useEffect(() => {
-  //   setAccountLoading(isActivating);
-  // }, [isActivating, setAccountLoading]);
-
   return (
     <Web3Context.Provider
       value={{
         web3ProviderData: {
-          connected: isConnected,
-          loading: isConnecting && !isConnected,
           chainId: chainId || 1,
           switchNetwork,
           getTxError,
