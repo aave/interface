@@ -27,9 +27,9 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../components/primitives/Link';
-import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
@@ -97,14 +97,16 @@ export function AppHeader() {
     return Boolean(localStorage.getItem(SWITCH_VISITED_KEY));
   });
 
-  const [mobileDrawerOpen, setMobileDrawerOpen] = useRootStore((state) => [
-    state.mobileDrawerOpen,
-    state.setMobileDrawerOpen,
-  ]);
+  const [mobileDrawerOpen, setMobileDrawerOpen, currentMarketData] = useRootStore(
+    useShallow((state) => [
+      state.mobileDrawerOpen,
+      state.setMobileDrawerOpen,
+      state.currentMarketData,
+    ])
+  );
 
   const { openSwitch, openBridge, openReadMode } = useModalContext();
   const { readOnlyMode } = useWeb3Context();
-  const { currentMarketData } = useProtocolDataContext();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 

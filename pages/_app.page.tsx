@@ -22,6 +22,7 @@ import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { WagmiProvider } from 'wagmi';
+import { useShallow } from 'zustand/shallow';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -94,12 +95,12 @@ interface MyAppProps extends AppProps {
   Component: NextPageWithLayout;
 }
 export default function MyApp(props: MyAppProps) {
+  console.log('render');
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
-  const [initializeMixpanel, setWalletType] = useRootStore((store) => [
-    store.initializeMixpanel,
-    store.setWalletType,
-  ]);
+  const [initializeMixpanel, setWalletType] = useRootStore(
+    useShallow((store) => [store.initializeMixpanel, store.setWalletType])
+  );
   const [queryClient] = useState(
     () =>
       new QueryClient({

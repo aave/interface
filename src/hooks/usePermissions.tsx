@@ -1,9 +1,9 @@
 import { PERMISSION, PermissionManager } from '@aave/contract-helpers';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { getProvider, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-
-import { useProtocolDataContext } from './useProtocolDataContext';
+import { useShallow } from 'zustand/shallow';
 
 type PermissionsContext = {
   permissions: PERMISSION[];
@@ -16,7 +16,9 @@ const Context = React.createContext<PermissionsContext>({
 });
 
 export const PermissionProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
+  const [chainId, currentMarketData] = useRootStore(
+    useShallow((state) => [state.currentChainId, state.currentMarketData])
+  );
   const { currentAccount: walletAddress } = useWeb3Context();
   const [isPermissionsLoading, setIsPermissionsLoading] = useState<boolean>(true);
   const [permissions, setPermissions] = useState<PERMISSION[]>([]);

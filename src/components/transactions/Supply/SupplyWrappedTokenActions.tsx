@@ -14,6 +14,7 @@ import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -42,12 +43,14 @@ export const SupplyWrappedTokenActions = ({
   sx,
   ...props
 }: SupplyWrappedTokenActionProps) => {
-  const [user, estimateGasLimit, addTransaction, marketData] = useRootStore((state) => [
-    state.account,
-    state.estimateGasLimit,
-    state.addTransaction,
-    state.currentMarketData,
-  ]);
+  const [user, estimateGasLimit, addTransaction, marketData] = useRootStore(
+    useShallow((state) => [
+      state.account,
+      state.estimateGasLimit,
+      state.addTransaction,
+      state.currentMarketData,
+    ])
+  );
 
   const { tokenWrapperService } = useSharedDependencies();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();

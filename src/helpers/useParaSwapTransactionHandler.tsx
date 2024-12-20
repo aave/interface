@@ -10,6 +10,7 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
@@ -66,8 +67,13 @@ export const useParaSwapTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { sendTx, getTxError, signTxData } = useWeb3Context();
-  const { walletApprovalMethodPreference, generateSignatureRequest, addTransaction } =
-    useRootStore();
+  const [walletApprovalMethodPreference, generateSignatureRequest, addTransaction] = useRootStore(
+    useShallow((state) => [
+      state.walletApprovalMethodPreference,
+      state.generateSignatureRequest,
+      state.addTransaction,
+    ])
+  );
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();

@@ -16,6 +16,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
+import { useShallow } from 'zustand/shallow';
 
 import { MigrationListItemToggler } from './MigrationListItemToggler';
 import { StETHMigrationWarning } from './StETHMigrationWarning';
@@ -65,7 +66,9 @@ export const MigrationListMobileItem = ({
     ? v3Rates?.vIncentivesData || []
     : v3Rates?.aIncentivesData || [];
 
-  const { currentMarket, currentMarketData } = useRootStore();
+  const [currentMarket, currentMarketData] = useRootStore(
+    useShallow((store) => [store.currentMarket, store.currentMarketData])
+  );
   const theme = useTheme();
   const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
   const baseColorPrimary = disabled === undefined ? 'text.primary' : 'text.muted';

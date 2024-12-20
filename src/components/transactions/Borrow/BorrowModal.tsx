@@ -2,10 +2,10 @@ import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
@@ -16,10 +16,11 @@ export const BorrowModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
-  const { currentMarket } = useProtocolDataContext();
 
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
-  const [trackEvent] = useRootStore((store) => [store.trackEvent]);
+  const [trackEvent, currentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarket])
+  );
 
   const handleBorrowUnwrapped = (borrowUnWrapped: boolean) => {
     trackEvent(GENERAL.OPEN_MODAL, {

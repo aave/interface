@@ -27,6 +27,7 @@ import {
   MarketDataType,
   marketsData,
 } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 const MigrateV3Modal = dynamic(() =>
   import('src/components/transactions/MigrateV3/MigrateV3Modal').then(
@@ -66,16 +67,27 @@ export default function V3Migration() {
     }
     return AAVE_MARKETS_TO_MIGRATE[0];
   });
-  const {
+  const [
     selectAllSupply,
     selectAllBorrow,
-    toggleMigrationSelectedSupplyAsset: toggleSelectedSupplyPosition,
-    selectedMigrationSupplyAssets: selectedSupplyAssets,
-    toggleMigrationSelectedBorrowAsset: toggleSelectedBorrowPosition,
-    selectedMigrationBorrowAssets: selectedBorrowAssets,
+    toggleSelectedSupplyPosition,
+    selectedSupplyAssets,
+    toggleSelectedBorrowPosition,
+    selectedBorrowAssets,
     resetMigrationSelectedAssets,
     enforceAsCollateral,
-  } = useRootStore();
+  ] = useRootStore(
+    useShallow((store) => [
+      store.selectAllSupply,
+      store.selectAllBorrow,
+      store.toggleMigrationSelectedSupplyAsset,
+      store.selectedMigrationSupplyAssets,
+      store.toggleMigrationSelectedBorrowAsset,
+      store.selectedMigrationBorrowAssets,
+      store.resetMigrationSelectedAssets,
+      store.enforceAsCollateral,
+    ])
+  );
 
   const toMarketData = selectCurrentChainIdV3MarketData(
     fromMarketData.chainId,

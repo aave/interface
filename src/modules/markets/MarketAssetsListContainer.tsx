@@ -8,11 +8,11 @@ import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/mixPanelEvents';
 import { GhoBanner } from './Gho/GhoBanner';
@@ -36,11 +36,17 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
 
 export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
-  const { currentMarket, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [
+      store.trackEvent,
+      store.currentMarket,
+      store.currentMarketData,
+      store.currentNetworkConfig,
+    ])
+  );
   const [searchTerm, setSearchTerm] = useState('');
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const ghoReserve = getGhoReserve(reserves);
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
