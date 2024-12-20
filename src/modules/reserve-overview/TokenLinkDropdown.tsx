@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 import { RESERVE_DETAILS } from '../../utils/mixPanelEvents';
 
@@ -24,9 +24,10 @@ export const TokenLinkDropdown = ({
 }: TokenLinkDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const open = Boolean(anchorEl);
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentNetworkConfig, currentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentNetworkConfig, store.currentMarket])
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_DROPDOWN, {

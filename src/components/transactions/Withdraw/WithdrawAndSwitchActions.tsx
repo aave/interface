@@ -15,6 +15,7 @@ import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
@@ -70,18 +71,20 @@ export const WithdrawAndSwitchActions = ({
     generateSignatureRequest,
     addTransaction,
     trackEvent,
-  ] = useRootStore((state) => [
-    state.withdrawAndSwitch,
-    state.currentMarketData,
-    state.jsonRpcProvider,
-    state.account,
-    state.generateApproval,
-    state.estimateGasLimit,
-    state.walletApprovalMethodPreference,
-    state.generateSignatureRequest,
-    state.addTransaction,
-    state.trackEvent,
-  ]);
+  ] = useRootStore(
+    useShallow((state) => [
+      state.withdrawAndSwitch,
+      state.currentMarketData,
+      state.jsonRpcProvider,
+      state.account,
+      state.generateApproval,
+      state.estimateGasLimit,
+      state.walletApprovalMethodPreference,
+      state.generateSignatureRequest,
+      state.addTransaction,
+      state.trackEvent,
+    ])
+  );
   const {
     approvalTxState,
     mainTxState,

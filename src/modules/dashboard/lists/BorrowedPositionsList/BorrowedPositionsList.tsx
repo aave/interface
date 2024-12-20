@@ -6,10 +6,11 @@ import { useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
@@ -47,7 +48,9 @@ const head = [
 
 export const BorrowedPositionsList = () => {
   const { user, loading, eModes, reserves } = useAppDataContext();
-  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const [currentMarketData, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [store.currentMarketData, store.currentNetworkConfig])
+  );
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
   const theme = useTheme();

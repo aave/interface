@@ -16,7 +16,6 @@ import { minimumReceivedAfterSlippage } from 'src/hooks/paraswap/common';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useTokenInForTokenOut } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -25,6 +24,7 @@ import { useRootStore } from 'src/store/root';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -52,13 +52,14 @@ export const WithdrawAndSwitchModalContent = ({
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { currentAccount } = useWeb3Context();
   const { reserves } = useAppDataContext();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const wrappedTokenReserves = useWrappedTokens();
 
   const [_amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const amountRef = useRef<string>('');
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentNetworkConfig, currentChainId] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentNetworkConfig, store.currentChainId])
+  );
   const [maxSlippage, setMaxSlippage] = useState('0.1');
 
   let swapTargets = reserves

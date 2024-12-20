@@ -9,12 +9,14 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
   displayGhoForMintableMarket,
   findAndFilterMintableGhoReserve,
 } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -24,7 +26,6 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
@@ -78,7 +79,9 @@ const head = [
 ];
 
 export const BorrowAssetsList = () => {
-  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
+  const [currentNetworkConfig, currentMarket] = useRootStore(
+    useShallow((store) => [store.currentNetworkConfig, store.currentMarket])
+  );
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));

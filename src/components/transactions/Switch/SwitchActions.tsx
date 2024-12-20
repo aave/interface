@@ -15,6 +15,7 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
@@ -61,15 +62,17 @@ export const SwitchActions = ({
     generateSignatureRequest,
     addTransaction,
     currentMarketData,
-  ] = useRootStore((state) => [
-    state.account,
-    state.generateApproval,
-    state.estimateGasLimit,
-    state.walletApprovalMethodPreference,
-    state.generateSignatureRequest,
-    state.addTransaction,
-    state.currentMarketData,
-  ]);
+  ] = useRootStore(
+    useShallow((state) => [
+      state.account,
+      state.generateApproval,
+      state.estimateGasLimit,
+      state.walletApprovalMethodPreference,
+      state.generateSignatureRequest,
+      state.addTransaction,
+      state.currentMarketData,
+    ])
+  );
 
   const {
     approvalTxState,

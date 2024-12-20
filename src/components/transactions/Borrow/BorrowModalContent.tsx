@@ -13,8 +13,8 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
@@ -56,7 +56,7 @@ export const BorrowModalContent = ({
 }) => {
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { marketReferencePriceInUsd } = useAppDataContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { borrowCap } = useAssetCaps();
 
   const [amount, setAmount] = useState('');

@@ -20,7 +20,6 @@ import { ReactNode, useRef, useState } from 'react';
 import { HeyIcon } from 'src/components/icons/HeyIcon';
 import { compactNumber, FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { GHO_SUCCESS_MODAL } from 'src/utils/mixPanelEvents';
 
@@ -107,7 +106,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
   const [generatedBlob, setGeneratedBlob] = useState<Blob | null>();
   const [clickedCopyImage, setClickedCopyImage] = useState(false);
   const { mainTxState } = useModalContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));

@@ -1,5 +1,5 @@
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
@@ -15,7 +15,7 @@ export const BorrowedPositionsListItemWrapper = ({
   item,
   disableEModeSwitch,
 }: BorrowedPositionsListItemWrapperProps) => {
-  const { currentMarket } = useProtocolDataContext();
+  const currentMarket = useRootStore((state) => state.currentMarket);
 
   return (
     <AssetCapsProvider asset={item.reserve}>

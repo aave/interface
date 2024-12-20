@@ -13,14 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        environment: [
-          {
-            name: 'Production',
-            domain: 'app.aave.com',
-            artifact: 'out',
-            build_path: 'out'
-          }
-        ]
+        environment:
+          [{ name: 'Production', domain: 'app.aave.com', artifact: 'out', build_path: 'out' }]
     environment:
       name: ${{ matrix.environment.name }}
       url: https://${{ matrix.environment.domain }}

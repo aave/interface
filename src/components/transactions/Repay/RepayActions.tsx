@@ -14,6 +14,7 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -53,18 +54,20 @@ export const RepayActions = ({
     addTransaction,
     optimizedPath,
     currentMarketData,
-  ] = useRootStore((store) => [
-    store.repay,
-    store.repayWithPermit,
-    store.encodeRepayParams,
-    store.encodeRepayWithPermitParams,
-    store.tryPermit,
-    store.walletApprovalMethodPreference,
-    store.estimateGasLimit,
-    store.addTransaction,
-    store.useOptimizedPath,
-    store.currentMarketData,
-  ]);
+  ] = useRootStore(
+    useShallow((store) => [
+      store.repay,
+      store.repayWithPermit,
+      store.encodeRepayParams,
+      store.encodeRepayWithPermitParams,
+      store.tryPermit,
+      store.walletApprovalMethodPreference,
+      store.estimateGasLimit,
+      store.addTransaction,
+      store.useOptimizedPath,
+      store.currentMarketData,
+    ])
+  );
   const { sendTx } = useWeb3Context();
   const queryClient = useQueryClient();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();

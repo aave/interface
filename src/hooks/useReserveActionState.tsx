@@ -13,6 +13,7 @@ import { WalletEmptyInfo } from 'src/modules/dashboard/lists/SupplyAssetsList/Wa
 import { useRootStore } from 'src/store/root';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { useShallow } from 'zustand/shallow';
 
 import { useModalContext } from './useModal';
 
@@ -32,12 +33,12 @@ export const useReserveActionState = ({
   const { user, eModes } = useAppDataContext();
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const [currentMarket, currentNetworkConfig, currentChainId, currentMarketData] = useRootStore(
-    (store) => [
+    useShallow((store) => [
       store.currentMarket,
       store.currentNetworkConfig,
       store.currentChainId,
       store.currentMarketData,
-    ]
+    ])
   );
   const { openFaucet } = useModalContext();
 

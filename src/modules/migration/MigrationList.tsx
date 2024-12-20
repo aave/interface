@@ -9,6 +9,7 @@ import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
 import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
+import { useShallow } from 'zustand/shallow';
 
 import { MigrationMobileList } from './MigrationMobileList';
 import { MigrationSelectionBox } from './MigrationSelectionBox';
@@ -58,7 +59,9 @@ export const MigrationList = ({
   isolatedReserveV3,
 }: MigrationListProps) => {
   const theme = useTheme();
-  const { currentMarket, currentMarketData } = useRootStore();
+  const [currentMarket, currentMarketData] = useRootStore(
+    useShallow((store) => [store.currentMarket, store.currentMarketData])
+  );
   const marketName = currentMarketData.marketTitle;
   const marketLink = ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3';
 

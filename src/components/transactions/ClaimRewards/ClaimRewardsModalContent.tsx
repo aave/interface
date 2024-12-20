@@ -12,9 +12,10 @@ import {
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -40,7 +41,9 @@ interface ClaimRewardsModalContentProps {
 
 export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalContentProps) => {
   const { gasLimit, mainTxState: claimRewardsTxState, txError } = useModalContext();
-  const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const [currentChainId, currentMarketData] = useRootStore(
+    useShallow((store) => [store.currentChainId, store.currentMarketData])
+  );
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const [claimableUsd, setClaimableUsd] = useState('0');
   const [selectedRewardSymbol, setSelectedRewardSymbol] = useState<string>('all');

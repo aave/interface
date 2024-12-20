@@ -1,7 +1,7 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, SvgIcon, Typography } from '@mui/material';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -15,14 +15,15 @@ import { minimumReceivedAfterSlippage } from 'src/hooks/paraswap/common';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { useRootStore } from 'src/store/root';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { amountToUsd } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import {
   ComputedUserReserveData,
@@ -47,7 +48,9 @@ export const SwapModalContent = ({
   user,
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { reserves, marketReferencePriceInUsd } = useAppDataContext();
-  const { currentChainId, currentMarket, currentNetworkConfig } = useProtocolDataContext();
+  const [currentChainId, currentMarket, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [store.currentChainId, store.currentMarket, store.currentNetworkConfig])
+  );
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
