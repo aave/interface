@@ -28,12 +28,12 @@ import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableTo
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { amountToUsd } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { useReserveActionState } from '../../hooks/useReserveActionState';
-import { useShallow } from 'zustand/shallow';
 
 const amountToUSD = (
   amount: BigNumberValue,
