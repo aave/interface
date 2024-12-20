@@ -33,6 +33,7 @@ import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { useReserveActionState } from '../../hooks/useReserveActionState';
+import { useShallow } from 'zustand/shallow';
 
 const amountToUSD = (
   amount: BigNumberValue,
@@ -55,9 +56,15 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
   const { currentAccount } = useWeb3Context();
   const { openBorrow, openSupply } = useModalContext();
-  const currentMarket = useRootStore((store) => store.currentMarket);
-  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const [currentMarket, currentNetworkConfig, currentMarketData, minRemainingBaseTokenBalance] =
+    useRootStore(
+      useShallow((store) => [
+        store.currentMarket,
+        store.currentNetworkConfig,
+        store.currentMarketData,
+        store.poolComputed.minRemainingBaseTokenBalance,
+      ])
+    );
   const {
     ghoReserveData,
     user,
@@ -65,10 +72,6 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     marketReferencePriceInUsd,
   } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances(currentMarketData);
-
-  const [minRemainingBaseTokenBalance] = useRootStore((store) => [
-    store.poolComputed.minRemainingBaseTokenBalance,
-  ]);
   const { baseAssetSymbol } = currentNetworkConfig;
   let balance = walletBalances[reserve.underlyingAsset];
   if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
