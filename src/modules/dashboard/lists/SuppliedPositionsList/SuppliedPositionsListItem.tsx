@@ -8,9 +8,9 @@ import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
-import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
@@ -27,10 +27,11 @@ export const SuppliedPositionsListItem = ({
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { isIsolated, aIncentivesData, isFrozen, isActive, isPaused } = reserve;
-  const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentMarketData, currentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarketData, store.currentMarket])
+  );
 
   const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 

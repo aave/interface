@@ -16,8 +16,8 @@ import React, { useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
-import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import {
   availableMarkets,
   CustomMarket,
@@ -111,14 +111,15 @@ enum SelectedMarketVersion {
 }
 
 export const MarketSwitcher = () => {
-  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
     SelectedMarketVersion.V3
   );
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
+  );
 
   const isV3MarketsAvailable = availableMarkets
     .map((marketId: CustomMarket) => {

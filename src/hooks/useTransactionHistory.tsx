@@ -15,6 +15,7 @@ import {
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 export const applyTxHistoryFilters = ({
   searchQuery,
@@ -81,10 +82,9 @@ export const applyTxHistoryFilters = ({
 };
 
 export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: boolean }) => {
-  const [currentMarketData, account] = useRootStore((state) => [
-    state.currentMarketData,
-    state.account,
-  ]);
+  const [currentMarketData, account] = useRootStore(
+    useShallow((state) => [state.currentMarketData, state.account])
+  );
 
   const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 

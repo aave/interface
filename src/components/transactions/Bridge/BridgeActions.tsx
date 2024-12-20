@@ -63,7 +63,7 @@ export const BridgeActions = React.memo(
   }: BridgeActionProps) => {
     const { sendTx } = useWeb3Context();
     const queryClient = useQueryClient();
-    const [addTransaction] = useRootStore((state) => [state.addTransaction]);
+    const addTransaction = useRootStore((state) => state.addTransaction);
 
     const {
       approvalTxState,
@@ -75,7 +75,7 @@ export const BridgeActions = React.memo(
       setGasLimit,
       setTxError,
     } = useModalContext();
-    const [user] = useRootStore((state) => [state.account]);
+    const user = useRootStore((state) => state.account);
 
     const {
       data: approvedAmount,

@@ -7,6 +7,7 @@ import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { UIRepresentative } from './GovRepresentativesModalContent';
@@ -24,11 +25,9 @@ export const GovRepresentativesActions = ({
   const { governanceV3Service } = useSharedDependencies();
   const { sendTx } = useWeb3Context();
   const queryClient = useQueryClient();
-  const [account, estimateGasLimit, addTransaction] = useRootStore((state) => [
-    state.account,
-    state.estimateGasLimit,
-    state.addTransaction,
-  ]);
+  const [account, estimateGasLimit, addTransaction] = useRootStore(
+    useShallow((state) => [state.account, state.estimateGasLimit, state.addTransaction])
+  );
 
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });

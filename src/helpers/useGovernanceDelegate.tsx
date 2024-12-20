@@ -18,6 +18,7 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import { useShallow } from 'zustand/shallow';
 
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
@@ -27,13 +28,17 @@ export const useGovernanceDelegate = (
   skip: boolean,
   delegatee: string
 ) => {
-  const delegateByType = useRootStore((state) => state.delegateByType);
-  const delegate = useRootStore((state) => state.delegate);
-
   const getTokenNonce = useRootStore((state) => state.getTokenNonce);
   // const delegateTokensBySig = useRootStore((state) => state.delegateTokensBySig);
   // const delegateTokensByTypeBySig = useRootStore((state) => state.delegateTokensByTypeBySig);
-  const [user, estimateGasLimit] = useRootStore((state) => [state.account, state.estimateGasLimit]);
+  const [user, estimateGasLimit, delegateByType, delegate] = useRootStore(
+    useShallow((state) => [
+      state.account,
+      state.estimateGasLimit,
+      state.delegateByType,
+      state.delegate,
+    ])
+  );
   const { signTxData, sendTx, chainId: connectedChainId, getTxError } = useWeb3Context();
 
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
