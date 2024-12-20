@@ -131,9 +131,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       setSwitchNetworkError(undefined);
     } catch (switchError) {
       if (switchError.code === UserRejectedRequestError.code) {
-        setSwitchNetworkError(undefined);
-      } else {
         setSwitchNetworkError(switchError);
+      } else {
+        setSwitchNetworkError(undefined);
       }
     }
   };
