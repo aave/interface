@@ -10,6 +10,8 @@ import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
+import { useHistoricalAPYData } from 'src/hooks/useHistoricalAPYData';
+
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
@@ -50,12 +52,21 @@ export const MarketAssetsListContainer = () => {
   const ghoReserve = getGhoReserve(reserves);
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
 
+  const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveHistoricalRateTimeRange>(
+    ESupportedAPYTimeRanges.Now
+  );
+
+  const historicalAPYData = useHistoricalAPYData(
+    currentMarketData.subgraphUrl ?? '',
+    selectedTimeRange
+  );
+
   const filteredData = reserves
     // Filter out any non-active reserves
     .filter((res) => res.isActive)
     // Filter out GHO if the banner is being displayed
     .filter((res) => (displayGhoBanner ? res !== ghoReserve : true))
-    // filter out any that don't meet search term criteria
+    // Filter out any reserves that don't meet the search term criteria
     .filter((res) => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase().trim();
@@ -66,23 +77,37 @@ export const MarketAssetsListContainer = () => {
       );
     })
     // Transform the object for list to consume it
-    .map((reserve) => ({
-      ...reserve,
-      ...(reserve.isWrappedBaseAsset
-        ? fetchIconSymbolAndName({
-            symbol: currentNetworkConfig.baseAssetSymbol,
-            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-          })
-        : {}),
-    }));
+    .map((reserve) => {
+      const historicalData = historicalAPYData[reserve.underlyingAsset.toLowerCase()];
+
+      return {
+        ...reserve,
+        ...(reserve.isWrappedBaseAsset
+          ? fetchIconSymbolAndName({
+              symbol: currentNetworkConfig.baseAssetSymbol,
+              underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+            })
+          : {}),
+        supplyAPY:
+          selectedTimeRange === ESupportedAPYTimeRanges.Now
+            ? reserve.supplyAPY
+            : !!historicalData
+            ? historicalData.supplyAPY
+            : 'N/A',
+        variableBorrowAPY:
+          selectedTimeRange === ESupportedAPYTimeRanges.Now
+            ? reserve.variableBorrowAPY
+            : !!historicalData
+            ? historicalData.variableBorrowAPY
+            : 'N/A',
+      };
+    });
+
   // const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
   // const showFrozenMarketWarning =
   //   marketFrozen && ['Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
   const [showFrozenMarketsToggle, setShowFrozenMarketsToggle] = useState(false);
-  const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveHistoricalRateTimeRange>(
-    ESupportedAPYTimeRanges.Now
-  );
 
   const handleChange = () => {
     setShowFrozenMarketsToggle((prevState) => !prevState);
