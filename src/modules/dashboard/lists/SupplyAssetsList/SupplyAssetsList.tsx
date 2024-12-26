@@ -31,6 +31,7 @@ import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { WalletEmptyInfo } from './WalletEmptyInfo';
+import { getBalance } from 'src/utils/ca';
 
 const head = [
   { title: <Trans key="assets">Assets</Trans>, sortKey: 'symbol' },
@@ -236,7 +237,8 @@ export const SupplyAssetsList = () => {
         withTopMargin
       />
     );
-
+  let caBalance = getBalance();
+  // find token blanace from caBalance and assign to tokenBalance
   const supplyDisabled = !tokensToSupply.length;
 
   return (

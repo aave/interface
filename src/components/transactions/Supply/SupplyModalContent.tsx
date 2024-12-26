@@ -53,6 +53,7 @@ import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyActions } from './SupplyActions';
 import { SupplyWrappedTokenActions } from './SupplyWrappedTokenActions';
+import { getBalance } from 'src/utils/ca';
 
 export enum ErrorType {
   CAP_REACHED,
@@ -158,16 +159,23 @@ export const SupplyModalContent = React.memo(
     const walletBalance = supplyUnWrapped ? nativeBalance : tokenBalance;
 
     const supplyApy = poolReserve.supplyAPY;
-    const { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt } =
-      poolReserve;
+    // const { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt } =
+    //   poolReserve;
 
     // Calculate max amount to supply
-    const maxAmountToSupply = getMaxAmountAvailableToSupply(
-      walletBalance,
-      { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt },
-      underlyingAsset,
-      minRemainingBaseTokenBalance
-    );
+    // const maxAmountToSupply = getMaxAmountAvailableToSupply(
+    //   walletBalance,
+    //   { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt },
+    //   underlyingAsset,
+    //   minRemainingBaseTokenBalance
+    // );
+    let caBalance = getBalance();
+    // search cabalance for current symbol and print the amount current amount
+    let maxAmountToSupply = '0.5';
+    // search caBalance for current symbol and assign MaxAmountToSupply
+    caBalance?.map((item) => item.symbol === poolReserve.symbol ? maxAmountToSupply = item.balanceInFiat.toString() : '');
+
+    
 
     const handleChange = (value: string) => {
       if (value === '-1') {
@@ -243,7 +251,7 @@ export const SupplyModalContent = React.memo(
           isMaxSelected={isMaxSelected}
           disabled={supplyTxState.loading}
           maxValue={maxAmountToSupply}
-          balanceText={<Trans>Wallet balance</Trans>}
+          balanceText={<Trans>Unified Wallet balance</Trans>}
           event={{
             eventName: GENERAL.MAX_INPUT_SELECTION,
             eventParams: {
@@ -269,7 +277,7 @@ export const SupplyModalContent = React.memo(
 
         {txError && <GasEstimationError txError={txError} />}
 
-        <SupplyActions {...supplyActionsProps} />
+        <SupplyActions chainId={currentMarketData.chainId} {...supplyActionsProps} />
       </>
     );
   }
@@ -423,7 +431,7 @@ export const SupplyWrappedTokenModalContent = ({
         capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
-        balanceText={<Trans>Wallet balance</Trans>}
+        balanceText={<Trans>Unified Wallet balance</Trans>}
         event={{
           eventName: GENERAL.MAX_INPUT_SELECTION,
           eventParams: {
@@ -475,14 +483,13 @@ export const SupplyWrappedTokenModalContent = ({
         />
       ) : (
         <SupplyActions
-          isWrongNetwork={isWrongNetwork}
-          amountToSupply={amount}
-          poolAddress={poolReserve.underlyingAsset}
-          symbol={poolReserve.symbol}
-          blocked={false}
-          decimals={poolReserve.decimals}
-          isWrappedBaseAsset={false}
-        />
+            isWrongNetwork={isWrongNetwork}
+            amountToSupply={amount}
+            poolAddress={poolReserve.underlyingAsset}
+            symbol={poolReserve.symbol}
+            blocked={false}
+            decimals={poolReserve.decimals}
+            isWrappedBaseAsset={false} chainId={currentMarketData.chainId}        />
       )}
     </>
   );

@@ -16,6 +16,7 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
+import { useBridge } from 'src/utils/ca';
 
 export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;
@@ -26,6 +27,7 @@ export interface SupplyActionProps extends BoxProps {
   blocked: boolean;
   decimals: number;
   isWrappedBaseAsset: boolean;
+  chainId: number;
 }
 
 export const SupplyActions = React.memo(
@@ -38,6 +40,7 @@ export const SupplyActions = React.memo(
     blocked,
     decimals,
     isWrappedBaseAsset,
+    chainId,
     ...props
   }: SupplyActionProps) => {
     const [
@@ -134,6 +137,12 @@ export const SupplyActions = React.memo(
 
     const action = async () => {
       try {
+
+        console.log("button clicked");
+        await useBridge(amountToSupply, chainId, symbol).then(() => {
+          console.log("bridging done");
+        }
+        );
         setMainTxState({ ...mainTxState, loading: true });
 
         let response: TransactionResponse;

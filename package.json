@@ -31,7 +31,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@arcana/ca-sdk": "0.0.1-beta.16",
+    "@arcana/ca-sdk": "0.0.1-beta.23",
     "@aave/contract-helpers": "1.30.5",
     "@aave/math-utils": "1.30.5",
     "@bgd-labs/aave-address-book": "4.5.0",

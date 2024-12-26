@@ -12,6 +12,7 @@ import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardContentWrapper';
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
+import { useCaSdkAuth } from 'src/utils/ca';
 
 export default function Home() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
@@ -25,6 +26,13 @@ export default function Home() {
       Market: currentMarket,
     });
   }, [trackEvent]);
+
+  let ca = null;
+
+  if(currentAccount) {
+    console.log('currentAccount:', currentAccount);
+    ca = useCaSdkAuth();
+  }
 
   return (
     <>
