@@ -100,7 +100,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
           'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
       },
     ],
-    ETHX: [
+    ETHx: [
       {
         action: MeritAction.ETHEREUM_SUPPLY_ETHX,
         rewardTokenAddress: '0x30D20208d987713f46DFD34EF128Bb16C404D10f', // Stader (SD)
