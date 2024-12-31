@@ -7,6 +7,7 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
   ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
+  ETHEREUM_SUPPLY_ETHX = 'ethereum-supply-ethx',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
   BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
@@ -97,6 +98,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
           'https://governance.aave.com/t/arfc-pyusd-reserve-configuration-update-incentive-campaign/19573',
         customMessage:
           'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
+      },
+    ],
+    ETHx: [
+      {
+        action: MeritAction.ETHEREUM_SUPPLY_ETHX,
+        rewardTokenAddress: '0x30D20208d987713f46DFD34EF128Bb16C404D10f', // Stader (SD)
+        rewardTokenSymbol: 'SD',
+        protocolAction: ProtocolAction.supply,
       },
     ],
   },
