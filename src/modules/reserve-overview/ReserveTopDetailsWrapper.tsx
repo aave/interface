@@ -13,9 +13,10 @@ import {
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { useShallow } from 'zustand/shallow';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
@@ -35,9 +36,16 @@ interface ReserveTopDetailsProps {
 export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const router = useRouter();
   const { reserves, loading } = useAppDataContext();
-  const { currentMarket, currentChainId } = useProtocolDataContext();
+  const [currentMarket, currentChainId] = useRootStore(
+    useShallow((state) => [state.currentMarket, state.currentChainId])
+  );
   const { market, logo } = getMarketInfoById(currentMarket);
-  const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
+  const {
+    addERC20Token,
+    switchNetwork,
+    chainId: connectedChainId,
+    currentAccount,
+  } = useWeb3Context();
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -152,7 +160,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                         downToSM={downToSM}
                         hideAToken={isGho}
                       />
-                      {connected && (
+                      {currentAccount && (
                         <AddTokenDropdown
                           poolReserve={poolReserve}
                           downToSM={downToSM}
@@ -189,7 +197,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                   downToSM={downToSM}
                   hideAToken={isGho}
                 />
-                {connected && (
+                {currentAccount && (
                   <AddTokenDropdown
                     poolReserve={poolReserve}
                     downToSM={downToSM}

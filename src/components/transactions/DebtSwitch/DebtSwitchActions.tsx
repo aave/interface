@@ -18,6 +18,7 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -68,16 +69,18 @@ export const DebtSwitchActions = ({
     debtSwitch,
     walletApprovalMethodPreference,
     generateCreditDelegationSignatureRequest,
-  ] = useRootStore((state) => [
-    state.getCreditDelegationApprovedAmount,
-    state.currentMarketData,
-    state.generateApproveDelegation,
-    state.estimateGasLimit,
-    state.addTransaction,
-    state.debtSwitch,
-    state.walletApprovalMethodPreference,
-    state.generateCreditDelegationSignatureRequest,
-  ]);
+  ] = useRootStore(
+    useShallow((state) => [
+      state.getCreditDelegationApprovedAmount,
+      state.currentMarketData,
+      state.generateApproveDelegation,
+      state.estimateGasLimit,
+      state.addTransaction,
+      state.debtSwitch,
+      state.walletApprovalMethodPreference,
+      state.generateCreditDelegationSignatureRequest,
+    ])
+  );
   const {
     approvalTxState,
     mainTxState,

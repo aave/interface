@@ -2,11 +2,11 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -30,11 +30,12 @@ export const BorrowAssetsListItem = ({
   isFreezed,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
-  const { currentMarket } = useProtocolDataContext();
 
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarket])
+  );
 
   return (
     <ListItemWrapper

@@ -41,7 +41,7 @@ export const useGetBridgeLimit = (sourceChainId: number) => {
     },
     queryKey: ['getBridgeLimit', sourceChainId],
     // always fetch data to get most recent bridged amounts
-    cacheTime: 0,
+    gcTime: 0,
     staleTime: 0,
   });
 };
@@ -89,7 +89,6 @@ export const useGetRateLimit = ({ destinationChainId, sourceChainId }: RateLimit
       };
     },
     queryKey: ['getRateLimit', destinationChainId, sourceChainId],
-    cacheTime: 0,
     staleTime: 0,
     refetchInterval: 5000, // fetch ever 5 seconds to get the latest rate limits
   });

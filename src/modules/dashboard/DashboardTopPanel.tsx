@@ -11,11 +11,11 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
 import { DASHBOARD, GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
 import { NoData } from '../../components/primitives/NoData';
@@ -25,15 +25,26 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
-  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-
-  const { market } = getMarketInfoById(currentMarket);
   const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
-  const trackEvent = useRootStore((store) => store.trackEvent);
-  const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
+  const [
+    trackEvent,
+    currentNetworkConfig,
+    currentMarketData,
+    currentMarket,
+    isMigrateToV3Available,
+  ] = useRootStore(
+    useShallow((store) => [
+      store.trackEvent,
+      store.currentNetworkConfig,
+      store.currentMarketData,
+      store.currentMarket,
+      selectIsMigrationAvailable(store),
+    ])
+  );
+  const { market } = getMarketInfoById(currentMarket);
   const showMigrateButton = user
     ? isMigrateToV3Available && currentAccount !== '' && Number(user.totalLiquidityUSD) > 0
     : false;

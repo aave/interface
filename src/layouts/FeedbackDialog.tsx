@@ -6,12 +6,12 @@ import { BasicModal } from 'src/components/primitives/BasicModal';
 import { Link } from 'src/components/primitives/Link';
 import { BaseSuccessView } from 'src/components/transactions/FlowCommons/BaseSuccess';
 import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 export const FeedbackModal = () => {
-  const [feedbackDialogOpen, setFeedbackOpen] = useRootStore((state) => [
-    state.feedbackDialogOpen,
-    state.setFeedbackOpen,
-  ]);
+  const [feedbackDialogOpen, setFeedbackOpen] = useRootStore(
+    useShallow((state) => [state.feedbackDialogOpen, state.setFeedbackOpen])
+  );
 
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);

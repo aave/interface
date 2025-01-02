@@ -11,10 +11,10 @@ import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -27,8 +27,9 @@ import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataPro
 
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
-  const { currentMarket } = useProtocolDataContext();
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarket])
+  );
 
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
   const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(

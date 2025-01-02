@@ -49,6 +49,7 @@ testCases.forEach(
       const skipTestState = skipState(false);
       configEnvWithTenderlyMainnetFork({
         tokens: [{ tokenAddress: testCase.asset.address }],
+        urlSuffix: '/staking',
       });
       stake(
         {

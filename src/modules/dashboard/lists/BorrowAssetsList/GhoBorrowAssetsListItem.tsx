@@ -10,7 +10,7 @@ import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
@@ -33,7 +33,7 @@ export const GhoBorrowAssetsListItem = ({
 }: GhoBorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
   const { user } = useAppDataContext();
-  const { currentMarket } = useProtocolDataContext();
+  const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData, ghoUserData, ghoUserLoadingData, ghoLoadingData } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));

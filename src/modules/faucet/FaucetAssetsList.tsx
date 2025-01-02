@@ -24,7 +24,7 @@ import { FaucetMobileItemLoader } from './FaucetMobileItemLoader';
 export default function FaucetAssetsList() {
   const { reserves, loading } = useAppDataContext();
   const { openFaucet } = useModalContext();
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { walletBalances } = useWalletBalances(currentMarketData);
@@ -46,10 +46,9 @@ export default function FaucetAssetsList() {
       };
     });
 
-  if (!currentAccount || web3Loading) {
+  if (!currentAccount) {
     return (
       <ConnectWalletPaper
-        loading={web3Loading}
         description={<Trans>Please connect your wallet to get free testnet assets.</Trans>}
       />
     );

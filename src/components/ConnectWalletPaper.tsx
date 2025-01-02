@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
+import { useModal } from 'connectkit';
 import { ReactNode } from 'react';
 
 import LandingGhost from '/public/resting-gho-hat-purple.svg';
@@ -7,16 +8,12 @@ import LandingGhost from '/public/resting-gho-hat-purple.svg';
 import { ConnectWalletButton } from './WalletConnection/ConnectWalletButton';
 
 interface ConnectWalletPaperProps extends PaperProps {
-  loading?: boolean;
   description?: ReactNode;
 }
 
-export const ConnectWalletPaper = ({
-  loading,
-  description,
-  sx,
-  ...rest
-}: ConnectWalletPaperProps) => {
+export const ConnectWalletPaper = ({ description, sx, ...rest }: ConnectWalletPaperProps) => {
+  const { open } = useModal();
+
   return (
     <Paper
       {...rest}
@@ -35,7 +32,7 @@ export const ConnectWalletPaper = ({
         <LandingGhost />
       </Box>
       <>
-        {loading ? (
+        {open ? (
           <CircularProgress />
         ) : (
           <>

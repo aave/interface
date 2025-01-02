@@ -3,7 +3,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, SvgIcon, Typography } from '@mui/material';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -20,11 +20,12 @@ import {
 } from 'src/hooks/paraswap/common';
 import { useCollateralRepaySwap } from 'src/hooks/paraswap/useCollateralRepaySwap';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { useRootStore } from 'src/store/root';
 import { calculateHFAfterRepay } from 'src/utils/hfUtils';
+import { useShallow } from 'zustand/shallow';
 
 import { Asset, AssetInput } from '../AssetInput';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -48,7 +49,9 @@ export function CollateralRepayModalContent({
 }: ModalWrapperProps & { debtType: InterestRate; user: ExtendedFormattedUser }) {
   const { reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const [currentChainId, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [store.currentChainId, store.currentNetworkConfig])
+  );
   const { currentAccount } = useWeb3Context();
 
   // List of tokens eligble to repay with, ordered by USD value

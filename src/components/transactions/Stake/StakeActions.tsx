@@ -2,6 +2,7 @@ import { ProtocolAction, Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -26,7 +27,9 @@ export const StakeActions = ({
   event,
   ...props
 }: StakeActionProps) => {
-  const { stake, stakeWithPermit } = useRootStore();
+  const [stake, stakeWithPermit] = useRootStore(
+    useShallow((state) => [state.stake, state.stakeWithPermit])
+  );
 
   // once stk abpt v1 is deprecated, this check can be removed and we can always try permit
   const tryPermit = selectedToken !== Stake.bpt;

@@ -4,7 +4,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 
 export type BaseSuccessTxViewProps = {
   txHash?: string;
@@ -20,7 +20,7 @@ const ExtLinkIcon = () => (
 
 export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewProps) => {
   const { close, mainTxState } = useModalContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
   return (
     <>

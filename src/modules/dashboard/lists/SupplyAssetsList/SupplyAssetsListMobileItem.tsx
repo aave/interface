@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
@@ -34,7 +34,7 @@ export const SupplyAssetsListMobileItem = ({
   detailsAddress,
   isPaused,
 }: DashboardReserve) => {
-  const { currentMarket } = useProtocolDataContext();
+  const currentMarket = useRootStore((state) => state.currentMarket);
   const { openSupply } = useModalContext();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached

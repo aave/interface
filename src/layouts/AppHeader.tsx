@@ -19,18 +19,21 @@ import {
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { AvatarSize } from 'src/components/Avatar';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { UserDisplay } from 'src/components/UserDisplay';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../components/primitives/Link';
-import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
-import WalletWidget from './WalletWidget';
 
 interface Props {
   children: React.ReactElement;
@@ -94,14 +97,16 @@ export function AppHeader() {
     return Boolean(localStorage.getItem(SWITCH_VISITED_KEY));
   });
 
-  const [mobileDrawerOpen, setMobileDrawerOpen] = useRootStore((state) => [
-    state.mobileDrawerOpen,
-    state.setMobileDrawerOpen,
-  ]);
+  const [mobileDrawerOpen, setMobileDrawerOpen, currentMarketData] = useRootStore(
+    useShallow((state) => [
+      state.mobileDrawerOpen,
+      state.setMobileDrawerOpen,
+      state.currentMarketData,
+    ])
+  );
 
-  const { openSwitch, openBridge } = useModalContext();
-
-  const { currentMarketData } = useProtocolDataContext();
+  const { openSwitch, openBridge, openReadMode } = useModalContext();
+  const { readOnlyMode } = useWeb3Context();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -116,11 +121,6 @@ export function AppHeader() {
   }, [md]);
 
   const headerHeight = 48;
-
-  const toggleWalletWigit = (state: boolean) => {
-    if (md) setMobileDrawerOpen(state);
-    setWalletWidgetOpen(state);
-  };
 
   const toggleMobileMenu = (state: boolean) => {
     if (md) setMobileDrawerOpen(state);
@@ -322,12 +322,21 @@ export function AppHeader() {
           </StyledBadge>
         </NoSsr>
 
-        {!mobileMenuOpen && (
-          <WalletWidget
-            open={walletWidgetOpen}
-            setOpen={toggleWalletWigit}
-            headerHeight={headerHeight}
-          />
+        {readOnlyMode ? (
+          <Button
+            variant="surface"
+            onClick={() => {
+              openReadMode();
+            }}
+          >
+            <UserDisplay
+              avatarProps={{ size: AvatarSize.SM }}
+              oneLiner={true}
+              titleProps={{ variant: 'buttonM' }}
+            />
+          </Button>
+        ) : (
+          <ConnectWalletButton />
         )}
 
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>

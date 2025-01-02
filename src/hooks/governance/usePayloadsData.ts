@@ -7,7 +7,6 @@ export const usePayloadsData = (params: PayloadParams[]) => {
   return useQuery({
     queryFn: () => governanceV3Service.getMultiChainPayloadsData(params),
     queryKey: ['payloadsData'],
-    cacheTime: 0,
     enabled: params.length > 0,
   });
 };

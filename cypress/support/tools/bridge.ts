@@ -15,7 +15,7 @@ export class CustomizedBridge extends Eip1193Bridge {
   chainId: number;
 
   constructor(signer: Signer, provider?: providers.Provider, chainId?: number) {
-    super(signer, provider);
+    super(signer as any, provider);
     this.chainId = chainId || 3030;
   }
 
@@ -76,14 +76,17 @@ export class CustomizedBridge extends Eip1193Bridge {
       );
       return tx;
     }
-    if (method === 'eth_chainId') {
-      if (isCallbackForm) {
-        // @ts-ignore
-        callback(null, { result: this.chainId });
-      } else {
-        return Promise.resolve(this.chainId);
-      }
-    }
+    // if (method === 'eth_chainId') {
+    //   const result = await this.provider.getNetwork();
+    //   const chainId = utils.hexValue(result.chainId);
+
+    //   if (isCallbackForm) {
+    //     // @ts-ignore
+    //     callback(null, { result: chainId });
+    //   } else {
+    //     return Promise.resolve(chainId);
+    //   }
+    // }
     if (method === 'eth_sendTransaction') {
       if (!this.signer) {
         throw new Error('eth_sendTransaction requires an account');
@@ -98,6 +101,10 @@ export class CustomizedBridge extends Eip1193Bridge {
       const req = JsonRpcProvider.hexlifyTransaction(params[0], { from: true, gas: true });
 
       req.gasLimit = req.gas;
+      // @ts-ignore
+      // Work around to force the chainId to be used for the fork environments
+      req.chainId = this.chainId;
+
       delete req.gas;
 
       const tx = await this.signer.sendTransaction(req);

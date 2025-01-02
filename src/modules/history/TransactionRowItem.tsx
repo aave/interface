@@ -6,6 +6,7 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { unixTimestampToFormattedTime } from './helpers';
@@ -25,10 +26,9 @@ interface TransactionHistoryItemProps {
 
 function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
   const [copyStatus, setCopyStatus] = useState(false);
-  const { currentNetworkConfig, trackEvent } = useRootStore((state) => ({
-    currentNetworkConfig: state.currentNetworkConfig,
-    trackEvent: state.trackEvent,
-  }));
+  const [currentNetworkConfig, trackEvent] = useRootStore(
+    useShallow((state) => [state.currentNetworkConfig, state.trackEvent])
+  );
   const theme = useTheme();
 
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));

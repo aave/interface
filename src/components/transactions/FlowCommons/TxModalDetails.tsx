@@ -24,6 +24,7 @@ export interface TxModalDetailsProps {
   skipLoad?: boolean;
   disabled?: boolean;
   chainId?: number;
+  children?: ReactNode;
 }
 
 const ArrowRightIcon = (

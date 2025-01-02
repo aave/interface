@@ -1,4 +1,4 @@
-import { alpha, experimental_sx, Skeleton, styled } from '@mui/material';
+import { alpha, Skeleton, styled } from '@mui/material';
 import invariant from 'tiny-invariant';
 
 import { ProposalLifecycleStep, ProposalVoteInfo } from './utils/formatProposal';
@@ -55,7 +55,7 @@ const Badge = styled('span')<BadgeProps>(({ theme, state }) => {
     [ProposalBadgeState.Failed]: theme.palette.error.main,
   };
   const color = COLOR_MAP[state] || '#000';
-  return experimental_sx({
+  return theme.unstable_sx({
     ...theme.typography.subheader2,
     color,
     border: '1px solid',

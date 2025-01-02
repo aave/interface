@@ -31,6 +31,7 @@ jobs:
           NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
           NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
           NEXT_PUBLIC_SUBGRAPH_API_KEY: ${{ secrets.NEXT_PUBLIC_SUBGRAPH_API_KEY }}
+          NEXT_PUBLIC_IS_CYPRESS_ENABLED: 'false'
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
@@ -113,7 +114,7 @@ jobs:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: download build
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        uses: actions/download-artifact@v4.1.8 # v3.0.0
         with:
           name: nextjs_build
           path: .next
@@ -136,7 +137,7 @@ jobs:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: download build
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        uses: actions/download-artifact@v4.1.8 # v3.0.0
         with:
           name: out
           path: out

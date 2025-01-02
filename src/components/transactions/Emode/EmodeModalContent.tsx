@@ -35,8 +35,8 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
@@ -79,7 +79,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     marketReferencePriceInUsd,
     userReserves,
   } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
+  const currentChainId = useRootStore((store) => store.currentChainId);
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();

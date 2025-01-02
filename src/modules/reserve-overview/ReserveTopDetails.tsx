@@ -4,9 +4,9 @@ import { Box, Skeleton, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import {
@@ -20,8 +20,9 @@ interface ReserveTopDetailsProps {
 
 export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const { reserves, loading } = useAppDataContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentNetworkConfig])
+  );
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));

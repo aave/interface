@@ -24,7 +24,6 @@ export const useTimeToDestination = (sourceChainId: number) => {
       }
     },
     queryKey: ['getFinalityTime', sourceChainId],
-    cacheTime: 0,
     staleTime: 0,
   });
 };

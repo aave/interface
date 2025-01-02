@@ -13,6 +13,7 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -48,15 +49,17 @@ export const SupplyActions = React.memo(
       estimateGasLimit,
       addTransaction,
       currentMarketData,
-    ] = useRootStore((state) => [
-      state.tryPermit,
-      state.supply,
-      state.supplyWithPermit,
-      state.walletApprovalMethodPreference,
-      state.estimateGasLimit,
-      state.addTransaction,
-      state.currentMarketData,
-    ]);
+    ] = useRootStore(
+      useShallow((state) => [
+        state.tryPermit,
+        state.supply,
+        state.supplyWithPermit,
+        state.walletApprovalMethodPreference,
+        state.estimateGasLimit,
+        state.addTransaction,
+        state.currentMarketData,
+      ])
+    );
     const {
       approvalTxState,
       mainTxState,

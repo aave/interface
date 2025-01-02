@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 import { ApprovalMethodToggleButton } from 'src/components/transactions/FlowCommons/ApprovalMethodToggleButton';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
+import { useShallow } from 'zustand/shallow';
 
 export type RightHelperTextProps = {
   approvalHash?: string;
@@ -21,16 +21,21 @@ const ExtLinkIcon = () => (
 );
 
 export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProps) => {
-  const [account, walletApprovalMethodPreference, setWalletApprovalMethodPreference] = useRootStore(
-    (store) => [
+  const [
+    account,
+    walletApprovalMethodPreference,
+    setWalletApprovalMethodPreference,
+    currentNetworkConfig,
+  ] = useRootStore(
+    useShallow((store) => [
       store.account,
       store.walletApprovalMethodPreference,
       store.setWalletApprovalMethodPreference,
-    ]
+      store.currentNetworkConfig,
+    ])
   );
   const { data: isContractAddress } = useIsContractAddress(account);
   const usingPermit = tryPermit && walletApprovalMethodPreference;
-  const { currentNetworkConfig } = useProtocolDataContext();
   const isSigned = approvalHash === MOCK_SIGNED_HASH;
 
   /**

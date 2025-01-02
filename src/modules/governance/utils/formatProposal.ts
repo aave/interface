@@ -6,7 +6,7 @@ import {
   VotingMachineProposalState,
 } from '@aave/contract-helpers';
 import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import {
   EnhancedSubgraphProposal,
   Proposal,

@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
@@ -30,7 +30,7 @@ export const BorrowAssetsListMobileItem = ({
   isFreezed,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
-  const { currentMarket } = useProtocolDataContext();
+  const currentMarket = useRootStore((state) => state.currentMarket);
 
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 

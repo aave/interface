@@ -3,13 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { CookieConsent as AnalyticsConsentBanner } from 'react-cookie-consent';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 export default function AnalyticsBanner() {
-  const [optInAnalytics, optOutAnalytics, analyticsConfigOpen] = useRootStore((store) => [
-    store.acceptAnalytics,
-    store.rejectAnalytics,
-    store.analyticsConfigOpen,
-  ]);
+  const [optInAnalytics, optOutAnalytics, analyticsConfigOpen] = useRootStore(
+    useShallow((store) => [store.acceptAnalytics, store.rejectAnalytics, store.analyticsConfigOpen])
+  );
 
   const [bannerVisible, setBannerVisible] = useState(false);
 

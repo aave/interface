@@ -2,11 +2,11 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { BasicModal } from 'src/components/primitives/BasicModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { onRampServices } from 'src/ui-config/onRampServicesConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 type BuyWithFiatModalProps = {
   cryptoSymbol: string;
@@ -16,10 +16,10 @@ type BuyWithFiatModalProps = {
 
 export const BuyWithFiatModal = ({ cryptoSymbol, open, close }: BuyWithFiatModalProps) => {
   const { currentAccount: walletAddress } = useWeb3Context();
-  const trackEvent = useRootStore((store) => store.trackEvent);
-  const {
-    currentNetworkConfig: { name: network },
-  } = useProtocolDataContext();
+  const [trackEvent, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentNetworkConfig])
+  );
+  const network = currentNetworkConfig.name;
 
   return (
     <BasicModal open={open} setOpen={close}>
