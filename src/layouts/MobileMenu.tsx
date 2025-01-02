@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { ReactNode, useEffect, useState } from 'react';
+import { useModalContext } from 'src/hooks/useModal';
 import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
@@ -47,8 +48,14 @@ const MenuItemsWrapper = ({ children, title }: { children: ReactNode; title: Rea
 export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => {
   const { i18n } = useLingui();
   const [isLanguagesListOpen, setIsLanguagesListOpen] = useState(false);
+  const { openReadMode } = useModalContext();
 
   useEffect(() => setIsLanguagesListOpen(false), [open]);
+
+  const handleOpenReadMode = () => {
+    setOpen(false);
+    openReadMode();
+  };
 
   return (
     <>
@@ -82,6 +89,11 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             </MenuItemsWrapper>
             <MenuItemsWrapper title={<Trans>Links</Trans>}>
               <List>
+                <ListItem sx={{ cursor: 'pointer' }} onClick={handleOpenReadMode}>
+                  <ListItemText>
+                    <Trans>Watch wallet</Trans>
+                  </ListItemText>
+                </ListItem>
                 <ListItem
                   sx={{ color: '#F1F1F3' }}
                   component={Link}
