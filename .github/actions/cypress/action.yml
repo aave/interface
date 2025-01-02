@@ -36,7 +36,7 @@ runs:
 
     - name: Download static build
       if: github.event_name == 'workflow_run'
-      uses: dawidd6/action-download-artifact@v7
+      uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
       with:
         workflow: build-fork.yml
         run_id: ${{ github.event.workflow_run.id }}
