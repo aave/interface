@@ -29,7 +29,7 @@ runs:
 
     - name: download build
       if: github.event_name != 'workflow_run'
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      uses: actions/download-artifact@v4.1.8
       with:
         name: out
         path: out
@@ -60,7 +60,7 @@ runs:
         CYPRESS_TENDERLY_PROJECT: ${{ inputs.CYPRESS_TENDERLY_PROJECT }}
 
     - name: upload screenshots
-      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      uses: actions/upload-artifact@v4.5.0
       if: failure()
       with:
         name: cypress-fail-screenshots-${{ github.job }}-${{ matrix.market }}
