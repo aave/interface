@@ -89,7 +89,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             </MenuItemsWrapper>
             <MenuItemsWrapper title={<Trans>Links</Trans>}>
               <List>
-                <ListItem sx={{ cursor: 'pointer' }} onClick={handleOpenReadMode}>
+                <ListItem sx={{ cursor: 'pointer', color: '#F1F1F3' }} onClick={handleOpenReadMode}>
                   <ListItemText>
                     <Trans>Watch wallet</Trans>
                   </ListItemText>
