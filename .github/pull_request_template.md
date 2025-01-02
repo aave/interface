@@ -17,5 +17,5 @@ Please ensure you, as the reviewer(s), have gone through this checklist to ensur
 - [ ]  End-to-end tests are passing without any errors
 - [ ]  Code changes do not significantly increase the application bundle size
 - [ ]  If there are new 3rd-party packages, they do not introduce potential security threats
-- [ ]  If there are new environment variables being added, they have been added to the `.env.example` file as well as the pertinant `.github/actions/*` files
+- [ ]  If there are new environment variables being added, they have been added to the `.env.example` file as well as the pertinent `.github/actions/*` files
 - [ ]  There are no CI changes, or they have been approved by the DevOps and Engineering team(s)

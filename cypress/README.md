@@ -6,7 +6,7 @@ based on cypress(8.5.0) with `cypress-repeat` and tenderly
 
 ## Development mode
 
-there is command for development/debuging/local executing tests:
+there is command for development/debugging/local executing tests:
 
 - `yarn run test:open` - it's open visual window with all test and manual executing
 
@@ -22,7 +22,7 @@ TENDERLY_ACCOUNT=Aave
 TENDERLY_PROJECT=QA
 ```
 
-`cp .env.example .env` - execute before spining up environment if you want to check Stake / Governance pages.
+`cp .env.example .env` - execute before spinning up environment if you want to check Stake / Governance pages.
 
 3. run `yarn run test:open`
 
@@ -32,10 +32,10 @@ TENDERLY_PROJECT=QA
 
 there are 2 types of suites:
 
-- `yarn run test:${marketName}-${marketVersion}-smoke` - executing only main specs, using for brunch pr
+- `yarn run test:${marketName}-${marketVersion}-smoke` - executing only main specs, using for branch pr
 - `yarn run test:${marketName}-${marketVersion}-full` - executing all specs, using for before live deployment
 
-P.C. for execute those commands locally need to:
+P.S.. for execute those commands locally need to:
 
 1. install dependencies `yarn`
 2. add .env.local file to the root folder with:
@@ -67,7 +67,7 @@ yarn run test:headless
 ```
 or for separate markets:
 - ethereum v2 `DOTENV_CONFIG_PATH='.env.local' cypress run --spec 'cypress/e2e/0-v2-markets/0-main-v2-market/**/*'`
-- amm v2 `DOTENV_CONFIG_PATH='.env.local' cypress run --spec 'cypress/e2e/0-v2-markets/1-amm-v2-market/**/*'`
+- AMM v2 `DOTENV_CONFIG_PATH='.env.local' cypress run --spec 'cypress/e2e/0-v2-markets/1-AMM-v2-market/**/*'`
 - avalanche v2 `DOTENV_CONFIG_PATH='.env.local' cypress run --spec 'cypress/e2e/0-v2-markets/3-avalanche-v2-market/**/*'`
 - polygon v2 `DOTENV_CONFIG_PATH='.env.local' cypress run --spec 'cypress/e2e/0-v2-markets/2-polygon-v2-market/**/*'`
 - ethereum v3 `DOTENV_CONFIG_PATH='.env.local' cypress run --spec 'cypress/e2e/1-v3-markets/0-ethereum-v3-market/**/*'`

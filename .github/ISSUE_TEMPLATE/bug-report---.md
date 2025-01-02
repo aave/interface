@@ -5,7 +5,7 @@ labels: 'new issue, bug'
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is, including the exact market(e.g. polygon v3) on which it was observed.
+A clear and concise description of what the bug is, including the exact marketplace(e.g. polygon v3) on which it was observed.
 
 **To Reproduce**
 Steps to reproduce the behavior:
