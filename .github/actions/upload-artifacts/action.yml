@@ -29,14 +29,14 @@ runs:
         name: pr
         path: __pr/
         retention-days: 10
-        overwrite: true
+
     - name: store static build
       uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
       with:
         name: '${{ inputs.BUILD_ARTIFACT_NAME }}'
         path: out/
         retention-days: 10
-        overwrite: true
+
     - name: store nextjs build
       if: inputs.NEXTJS_BUILD == 'true'
       uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
@@ -46,4 +46,4 @@ runs:
           .next
           !.next/cache
         retention-days: 10
-        overwrite: true
+
