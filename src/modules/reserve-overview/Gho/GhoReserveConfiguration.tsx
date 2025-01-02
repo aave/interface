@@ -3,7 +3,9 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
+import { ApyGraphContainer } from '../graphs/ApyGraphContainer';
 import { ReserveEModePanel } from '../ReserveEModePanel';
 import { PanelRow, PanelTitle } from '../ReservePanels';
 import { GhoBorrowInfo } from './GhoBorrowInfo';
@@ -14,6 +16,8 @@ type GhoReserveConfigurationProps = {
 };
 
 export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = ({ reserve }) => {
+  const { currentMarketData } = useProtocolDataContext();
+
   return (
     <>
       <PanelRow>
@@ -88,6 +92,13 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
         </PanelTitle>
         <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
           <GhoBorrowInfo reserve={reserve} />
+
+          <ApyGraphContainer
+            graphKey="borrow"
+            reserve={reserve}
+            currentMarketData={currentMarketData}
+          />
+
           <Box sx={{ mt: 8 }}>
             <GhoDiscountCalculator />
           </Box>

@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ESupportedTimeRanges } from 'src/modules/reserve-overview/TimeRangeSelector';
 import { makeCancelable } from 'src/utils/utils';
+// import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 
 export const reserveRateTimeRangeOptions = [
   ESupportedTimeRanges.OneMonth,
@@ -105,6 +106,8 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
   const [data, setData] = useState<FormattedReserveHistoryItem[]>([]);
 
   const ratesHistoryApiUrl = currentNetworkConfig?.ratesHistoryApiUrl;
+  // const isGhoAsset =
+  //   reserveAddress.toLowerCase() === AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase();
 
   const refetchData = useCallback<() => () => void>(() => {
     // reset
@@ -153,3 +156,19 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
     refetch: refetchData,
   };
 }
+
+// const fetchReserveParamsHistory = async (
+//   address: string,
+//   timeRange: ReserveRateTimeRange,
+//   endpointURL: string
+// ) => {
+//   const { from, resolutionInHours } = resolutionForTimeRange(timeRange);
+//   try {
+//     const url = `${endpointURL}?action=reserveParamsHistory&reserveId=${address}&from=${from}&resolutionInHours=${resolutionInHours}`;
+//     const result = await fetch(url);
+//     const json = await result.json();
+//     return json;
+//   } catch (e) {
+//     return [];
+//   }
+// };
