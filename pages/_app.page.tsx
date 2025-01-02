@@ -95,7 +95,6 @@ interface MyAppProps extends AppProps {
   Component: NextPageWithLayout;
 }
 export default function MyApp(props: MyAppProps) {
-  console.log('render');
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
   const [initializeMixpanel, setWalletType] = useRootStore(
