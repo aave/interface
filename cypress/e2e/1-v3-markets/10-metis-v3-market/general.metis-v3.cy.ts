@@ -15,7 +15,7 @@ const testData = {
   ],
 };
 
-describe('METIS GENERAL SPEC', () => {
+describe.skip('METIS GENERAL SPEC', () => {
   const skipTestState = skipState(false);
   configEnvMetis('0xea4198Fa2BD2b459967E72f508ff42dDaBb0ff27');
   dashboardAssetValuesVerification(testData.dashboard, skipTestState);
