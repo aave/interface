@@ -10,7 +10,7 @@ runs:
   steps:
     - name: Download PR bundle stats
       if: github.event.workflow_run.id
-      uses: dawidd6/action-download-artifact@v7
+      uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
       with:
         workflow: build-fork.yml
         run_id: ${{ github.event.workflow_run.id }}
@@ -24,13 +24,13 @@ runs:
 
     - name: Upload bundle
       if: github.event_name == 'push'
-      uses: actions/upload-artifact@v4.5.0
+      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
       with:
         name: bundle
         path: .next/analyze/__bundle_analysis.json
 
     - name: Download base branch bundle stats
-      uses: dawidd6/action-download-artifact@v7
+      uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
       if: github.event_name != 'push'
       with:
         workflow: build-test-deploy.yml
