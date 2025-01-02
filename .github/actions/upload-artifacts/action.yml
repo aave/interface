@@ -39,7 +39,7 @@ runs:
       if: inputs.NEXTJS_BUILD == 'true'
       uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
       with:
-        name: 'nextjs_build
+        name: 'nextjs_${{ github.job }}'
         path: |
           .next
           !.next/cache
