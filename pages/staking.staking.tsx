@@ -51,7 +51,7 @@ const UnStakeModal = dynamic(() =>
 );
 
 export default function Staking() {
-  const { currentAccount, loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
@@ -327,7 +327,6 @@ export default function Staking() {
                 We couldn’t detect a wallet. Connect a wallet to stake and view your balance.
               </Trans>
             }
-            loading={loading}
           />
         )}
       </ContentContainer>

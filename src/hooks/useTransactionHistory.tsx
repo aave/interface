@@ -1,4 +1,4 @@
-import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
   actionFilterMap,
@@ -15,6 +15,7 @@ import {
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 export const applyTxHistoryFilters = ({
   searchQuery,
@@ -81,10 +82,9 @@ export const applyTxHistoryFilters = ({
 };
 
 export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: boolean }) => {
-  const [currentMarketData, account] = useRootStore((state) => [
-    state.currentMarketData,
-    state.account,
-  ]);
+  const [currentMarketData, account] = useRootStore(
+    useShallow((state) => [state.currentMarketData, state.account])
+  );
 
   const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 
@@ -171,28 +171,20 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     return filteredTxns;
   };
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    isFetchingNextPage,
-    isError,
-    error,
-  }: UseInfiniteQueryResult<TransactionHistoryItemUnion[], Error> = useInfiniteQuery(
-    queryKeysFactory.transactionHistory(account, currentMarketData),
-    async ({ pageParam = 0 }) => {
-      const response = await fetchTransactionHistory({
-        account,
-        subgraphUrl: currentMarketData.subgraphUrl ?? '',
-        first: 100,
-        skip: pageParam,
-        v3: !!currentMarketData.v3,
-        pool: selectedPool,
-      });
-      return response;
-    },
-    {
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage, isError, error } =
+    useInfiniteQuery({
+      queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
+      queryFn: async ({ pageParam = 0 }) => {
+        const response = await fetchTransactionHistory({
+          account,
+          subgraphUrl: currentMarketData.subgraphUrl ?? '',
+          first: 100,
+          skip: pageParam,
+          v3: !!currentMarketData.v3,
+          pool: selectedPool,
+        });
+        return response;
+      },
       enabled: !!account && !!currentMarketData.subgraphUrl,
       getNextPageParam: (
         lastPage: TransactionHistoryItemUnion[],
@@ -204,8 +196,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         }
         return allPages.length * 100;
       },
-    }
-  );
+      initialPageParam: 0,
+    });
 
   // If filter is active, keep fetching until all data is returned so that it's guaranteed all filter results will be returned
   useEffect(() => {

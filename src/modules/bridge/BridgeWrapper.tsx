@@ -20,7 +20,7 @@ import {
 } from './TransactionListItemLoader';
 
 export function BridgeWrapper() {
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { openBridge } = useModalContext();
 
   const theme = useTheme();
@@ -32,7 +32,6 @@ export function BridgeWrapper() {
   if (!currentAccount) {
     return (
       <ConnectWalletPaper
-        loading={web3Loading}
         description={<Trans> Please connect your wallet to view transaction history.</Trans>}
       />
     );

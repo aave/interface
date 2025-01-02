@@ -10,7 +10,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
@@ -57,7 +57,7 @@ const defaultNetworkMarket = marketsData[defaultNetwork.chainId];
 
 export const BridgeModalContent = () => {
   const { mainTxState: bridgeTxState, txError, close, gasLimit } = useModalContext();
-  const [user] = useRootStore((state) => [state.account]);
+  const user = useRootStore((state) => state.account);
   const [destinationAccount, setDestinationAccount] = useState(user);
   const [amount, setAmount] = useState('');
   const [maxSelected, setMaxSelected] = useState(false);

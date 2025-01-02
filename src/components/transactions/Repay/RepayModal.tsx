@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { BasicModal } from '../../primitives/BasicModal';
@@ -20,7 +20,7 @@ export const RepayModal = () => {
     isFrozen: boolean;
   }>;
   const { userReserves } = useAppDataContext();
-  const { currentMarketData } = useProtocolDataContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const [repayType, setRepayType] = useState(RepayType.BALANCE);
 
   // repay with collateral is only possible:

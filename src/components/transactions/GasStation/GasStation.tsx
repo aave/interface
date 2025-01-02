@@ -15,6 +15,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
+import { useShallow } from 'zustand/shallow';
 
 import { GasPriceData, useGasPrice } from '../../../hooks/useGetGasPrices';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
@@ -50,7 +51,9 @@ export const GasStation: React.FC<GasStationProps> = ({
   chainId,
 }) => {
   const { state } = useGasStation();
-  const [currentChainId, account] = useRootStore((store) => [store.currentChainId, store.account]);
+  const [currentChainId, account] = useRootStore(
+    useShallow((store) => [store.currentChainId, store.account])
+  );
   const selectedChainId = chainId ?? currentChainId;
   // TODO: find a better way to query base token price instead of using a random market.
   const marketOnNetwork = Object.values(marketsData).find(

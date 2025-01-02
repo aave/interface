@@ -4,8 +4,8 @@
  */
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ESupportedTimeRanges } from 'src/modules/reserve-overview/TimeRangeSelector';
+import { useRootStore } from 'src/store/root';
 import { makeCancelable } from 'src/utils/utils';
 
 export const reserveRateTimeRangeOptions = [
@@ -13,7 +13,7 @@ export const reserveRateTimeRangeOptions = [
   ESupportedTimeRanges.SixMonths,
   ESupportedTimeRanges.OneYear,
 ];
-export type ReserveRateTimeRange = typeof reserveRateTimeRangeOptions[number];
+export type ReserveRateTimeRange = (typeof reserveRateTimeRangeOptions)[number];
 
 type RatesHistoryParams = {
   from: number;
@@ -99,7 +99,7 @@ export const BROKEN_ASSETS = [
 
 // TODO: api need to be altered to expect chainId underlying asset and poolConfig
 export function useReserveRatesHistory(reserveAddress: string, timeRange: ReserveRateTimeRange) {
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState<FormattedReserveHistoryItem[]>([]);

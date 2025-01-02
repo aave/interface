@@ -22,10 +22,7 @@ export const getErrorTextFromError = (
 ): TxErrorType => {
   let errorNumber = 1;
 
-  if (
-    error.message === 'MetaMask Tx Signature: User denied transaction signature.' ||
-    error.message === 'MetaMask Message Signature: User denied message signature.'
-  ) {
+  if (error.message.startsWith('user rejected transaction')) {
     return {
       error: errorMapping[4001],
       blocking: false,
