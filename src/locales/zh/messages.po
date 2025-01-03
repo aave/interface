@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-02 18:06\n"
+"PO-Revision-Date: 2025-01-03 12:08\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -769,6 +769,7 @@ msgstr "请连接您的钱包以查看迁移工具。"
 msgid "{networkName} Faucet"
 msgstr "{networkName} 龙头"
 
+#: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Watch wallet"
 msgstr ""
