@@ -764,6 +764,7 @@ msgstr "Please connect your wallet to see migration tool."
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
 
+#: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Watch wallet"
 msgstr "Watch wallet"
