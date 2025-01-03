@@ -1,10 +1,11 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
-import { IncentivesButton } from './IncentivesButton';
+import { IncentivesButton, MeritIncentivesButton } from './IncentivesButton';
 
 interface IncentivesCardProps {
   symbol: string;
@@ -15,6 +16,8 @@ interface IncentivesCardProps {
   align?: 'center' | 'flex-end';
   color?: string;
   tooltip?: ReactNode;
+  market: string;
+  protocolAction?: ProtocolAction;
 }
 
 export const IncentivesCard = ({
@@ -26,7 +29,10 @@ export const IncentivesCard = ({
   align,
   color,
   tooltip,
+  market,
+  protocolAction,
 }: IncentivesCardProps) => {
+  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   return (
     <Box
       sx={{
@@ -53,8 +59,22 @@ export const IncentivesCard = ({
       ) : (
         <NoData variant={variant} color={color || 'text.secondary'} />
       )}
-
-      <IncentivesButton incentives={incentives} symbol={symbol} />
+      <Box
+        sx={
+          isTableChangedToCards
+            ? { display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }
+            : {
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '4px',
+                flexWrap: 'wrap',
+                flex: '0 0 50%', // 2 items per row
+              }
+        }
+      >
+        <IncentivesButton incentives={incentives} symbol={symbol} />
+        <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+      </Box>
     </Box>
   );
 };

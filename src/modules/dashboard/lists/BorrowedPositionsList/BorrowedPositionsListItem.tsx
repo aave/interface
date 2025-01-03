@@ -2,7 +2,6 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { Row } from 'src/components/primitives/Row';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -203,19 +202,14 @@ const BorrowedPositionsListItemMobile = ({
       />
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <IncentivesCard
-            value={borrowAPY}
-            incentives={incentives}
-            symbol={symbol}
-            variant="secondary14"
-          />
-          <MeritIncentivesButton
-            symbol={symbol}
-            market={currentMarket}
-            protocolAction={ProtocolAction.borrow}
-          />
-        </Box>
+        <IncentivesCard
+          value={borrowAPY}
+          incentives={incentives}
+          symbol={symbol}
+          variant="secondary14"
+          market={currentMarket}
+          protocolAction={ProtocolAction.borrow}
+        />
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
