@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-02 18:06\n"
+"PO-Revision-Date: 2025-01-03 12:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -769,6 +769,7 @@ msgstr "Por favor conecta tu cartera para ver la herramienta de migración."
 msgid "{networkName} Faucet"
 msgstr "Faucet {networkName}"
 
+#: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Watch wallet"
 msgstr ""
