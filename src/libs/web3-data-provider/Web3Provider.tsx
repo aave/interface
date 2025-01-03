@@ -188,7 +188,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   useEffect(() => {
     if (readOnlyModeAddress) {
-      setAccount(readOnlyModeAddress);
+      setAccount(readOnlyModeAddress.toLowerCase());
     }
   }, [readOnlyModeAddress, setAccount]);
 
