@@ -33,6 +33,7 @@ runs:
     - name: Download base branch bundle stats
       uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
       if: github.event_name != 'push'
+      continue-on-error: true
       with:
         workflow: build-test-deploy.yml
         branch: main
