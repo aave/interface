@@ -15,6 +15,13 @@ jobs:
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       (github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name &&
       !contains(github.head_ref, 'dependabot'))
+    strategy:
+      matrix:
+        build:
+          - name: 'out'
+            cypress_enabled: 'false'
+          - name: 'out_cypress'
+            cypress_enabled: 'true'
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
@@ -31,12 +38,12 @@ jobs:
           NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
           NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
           NEXT_PUBLIC_SUBGRAPH_API_KEY: ${{ secrets.NEXT_PUBLIC_SUBGRAPH_API_KEY }}
-          NEXT_PUBLIC_IS_CYPRESS_ENABLED: 'false'
+          NEXT_PUBLIC_IS_CYPRESS_ENABLED: ${{ matrix.build.cypress_enabled }}
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
         with:
-          BUILD_ARTIFACT_NAME: 'out'
+          BUILD_ARTIFACT_NAME: ${{ matrix.build.name }}
 
   build_staging:
     runs-on: ubuntu-latest
