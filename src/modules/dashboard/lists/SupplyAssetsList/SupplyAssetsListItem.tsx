@@ -25,7 +25,6 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { WalletBalancesMap } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -326,7 +325,7 @@ export const SupplyAssetsListItemMobile = ({
   canSupplyAsWrappedToken,
   walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
-  const { currentMarket } = useProtocolDataContext();
+  const currentMarket = useRootStore((store) => store.currentMarket);
   const { openSupply } = useModalContext();
   const wrappedTokenReserves = useWrappedTokens();
 

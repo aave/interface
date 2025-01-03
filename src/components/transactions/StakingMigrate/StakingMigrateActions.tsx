@@ -18,6 +18,7 @@ import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -36,13 +37,15 @@ export const StakingMigrateActions = ({
     user,
     estimateGasLimit,
     addTransaction,
-  ] = useRootStore((store) => [
-    store.walletApprovalMethodPreference,
-    store.currentMarketData,
-    store.account,
-    store.estimateGasLimit,
-    store.addTransaction,
-  ]);
+  ] = useRootStore(
+    useShallow((store) => [
+      store.walletApprovalMethodPreference,
+      store.currentMarketData,
+      store.account,
+      store.estimateGasLimit,
+      store.addTransaction,
+    ])
+  );
   const { sendTx } = useWeb3Context();
   const queryClient = useQueryClient();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();

@@ -1,7 +1,8 @@
 import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Button, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
+import { Button, ListItemText, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { useModalContext } from 'src/hooks/useModal';
 import { DEFAULT_LOCALE } from 'src/libs/LanguageProvider';
 import { useRootStore } from 'src/store/root';
 import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
@@ -26,6 +27,7 @@ type LanguageCode = keyof typeof LANG_MAP;
 export function SettingsMenu() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [languagesOpen, setLanguagesOpen] = useState(false);
+  const { openReadMode } = useModalContext();
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const trackEvent = useRootStore((store) => store.trackEvent);
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -51,6 +53,11 @@ export function SettingsMenu() {
     setAnchorEl(null);
     setSettingsOpen(false);
     setLanguagesOpen(false);
+  };
+
+  const handleOpenReadMode = () => {
+    setSettingsOpen(false);
+    openReadMode();
   };
 
   return (
@@ -90,6 +97,11 @@ export function SettingsMenu() {
         <DarkModeSwitcher component={MenuItem} />
         {PROD_ENV && <TestNetModeSwitcher />}
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
+        <MenuItem onClick={handleOpenReadMode}>
+          <ListItemText>
+            <Trans>Watch wallet</Trans>
+          </ListItemText>
+        </MenuItem>
       </Menu>
 
       <Menu

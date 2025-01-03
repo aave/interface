@@ -6,6 +6,7 @@ import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { useShallow } from 'zustand/shallow';
 
 import { useModalContext } from './useModal';
 
@@ -41,12 +42,14 @@ export const useApprovalTx = ({
   amountToApprove?: string;
 }) => {
   const [generateApproval, generateSignatureRequest, estimateGasLimit, addTransaction] =
-    useRootStore((store) => [
-      store.generateApproval,
-      store.generateSignatureRequest,
-      store.estimateGasLimit,
-      store.addTransaction,
-    ]);
+    useRootStore(
+      useShallow((store) => [
+        store.generateApproval,
+        store.generateSignatureRequest,
+        store.estimateGasLimit,
+        store.addTransaction,
+      ])
+    );
 
   const { signTxData, sendTx } = useWeb3Context();
 

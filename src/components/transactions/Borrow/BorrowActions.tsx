@@ -17,6 +17,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -47,14 +48,16 @@ export const BorrowActions = React.memo(
       generateApproveDelegation,
       estimateGasLimit,
       addTransaction,
-    ] = useRootStore((state) => [
-      state.borrow,
-      state.getCreditDelegationApprovedAmount,
-      state.currentMarketData,
-      state.generateApproveDelegation,
-      state.estimateGasLimit,
-      state.addTransaction,
-    ]);
+    ] = useRootStore(
+      useShallow((state) => [
+        state.borrow,
+        state.getCreditDelegationApprovedAmount,
+        state.currentMarketData,
+        state.generateApproveDelegation,
+        state.estimateGasLimit,
+        state.addTransaction,
+      ])
+    );
     const {
       approvalTxState,
       mainTxState,

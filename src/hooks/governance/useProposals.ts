@@ -354,6 +354,7 @@ export const useProposals = (proposalStateFilter?: ProposalV3State) => {
 
       return allPages.length;
     },
+    initialPageParam: 0,
   });
 };
 

@@ -3,7 +3,7 @@ import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { Link } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 
@@ -11,7 +11,7 @@ export const FaucetTopPanel = () => {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const xsm = useMediaQuery(breakpoints.down('xsm'));
-  const { currentMarketData } = useProtocolDataContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   return (
     <TopInfoPanel
       pageTitle={<></>}

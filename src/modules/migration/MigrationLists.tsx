@@ -7,6 +7,7 @@ import {
 } from 'src/hooks/migration/useUserMigrationReserves';
 import { useRootStore } from 'src/store/root';
 import { computeSelections, IsolatedReserve } from 'src/store/v3MigrationSelectors';
+import { useShallow } from 'zustand/shallow';
 
 import { MigrationList } from './MigrationList';
 
@@ -37,10 +38,12 @@ export const MigrationLists = ({
   supplyReserves,
   borrowReserves,
 }: MigrationListsProps) => {
-  const {
-    selectedMigrationSupplyAssets: selectedSupplyAssets,
-    selectedMigrationBorrowAssets: selectedBorrowAssets,
-  } = useRootStore();
+  const [selectedSupplyAssets, selectedBorrowAssets] = useRootStore(
+    useShallow((store) => [
+      store.selectedMigrationSupplyAssets,
+      store.selectedMigrationBorrowAssets,
+    ])
+  );
 
   const allSuppliesDisabled =
     supplyReserves.find((reserve) => reserve.migrationDisabled === undefined) === undefined;

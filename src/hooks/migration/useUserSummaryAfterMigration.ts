@@ -111,12 +111,12 @@ const select = memoize(
     const suppliesMap = supplies.reduce((obj, item) => {
       obj[item.underlyingAsset] = item;
       return obj;
-    }, {} as Record<string, typeof userMigrationReserves.supplyReserves[0]>);
+    }, {} as Record<string, (typeof userMigrationReserves.supplyReserves)[0]>);
 
     const borrowsMap = borrows.reduce((obj, item) => {
       obj[item.debtKey] = item;
       return obj;
-    }, {} as Record<string, typeof userMigrationReserves.borrowReserves[0]>);
+    }, {} as Record<string, (typeof userMigrationReserves.borrowReserves)[0]>);
 
     const userReserves = toUserSummary.userReservesData.map((userReserveData) => {
       const variableBorrowAsset = borrowsMap[userReserveData.reserve.variableDebtTokenAddress];
