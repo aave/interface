@@ -43,7 +43,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const { switchChainAsync } = useSwitchChain();
   const { watchAssetAsync } = useWatchAsset();
   const { chainId, address } = useAccount();
-  // const { disconnect } = useDisconnect();
   const { connect, connectors } = useConnect();
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
@@ -57,22 +56,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     currentAccount = readOnlyModeAddress;
   }
 
-  // console.log('isConnecting', isConnecting);
-  // console.log('isConnected', isConnected);
-
   useEffect(() => {
     if (didInit) {
       return;
     }
-    // if (didInit) {
-    //   // If user connects a wallet after the app is loaded, then we need to reset the readOnlyModeAddress
-    //   if (isConnected && readOnlyMode) {
-    //     localStorage.removeItem('readOnlyModeAddress');
-    //     setReadOnlyModeAddress(undefined);
-    //   }
-
-    //   return;
-    // }
 
     // If the app loads in readOnlyMode, then we disconnect the wallet if it auto connected
     const storedReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
