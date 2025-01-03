@@ -8,7 +8,7 @@ import {
   networkConfigs,
 } from 'src/utils/marketsAndNetworksConfig';
 import { type Chain } from 'viem';
-import { createConfig, CreateConfigParameters, injected } from 'wagmi';
+import { createConfig, CreateConfigParameters, http, injected } from 'wagmi';
 import {
   arbitrum,
   arbitrumSepolia,
@@ -88,9 +88,17 @@ const cypressConfig = createConfig(
   })
 );
 
+const getTransport = (chainId: number) => {
+  return networkConfigs[chainId].publicJsonRPCUrl[0];
+};
+
+const buildTransports = (chains: CreateConfigParameters['chains']) =>
+  Object.fromEntries(chains.map((chain) => [chain.id, http(getTransport(chain.id))]));
+
 const prodConfig = createConfig(
   getDefaultConfig({
     chains: ENABLE_TESTNET ? testnetChains : prodChains,
+    transports: ENABLE_TESTNET ? undefined : buildTransports(prodChains),
     ...defaultConfig,
   })
 );
