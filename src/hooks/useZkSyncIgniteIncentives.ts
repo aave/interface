@@ -79,17 +79,11 @@ export const useZkSyncIgniteIncentives = ({
     queryFn: async () => {
       const response = await fetch(url);
       const merklOpportunities: MerklOpportunity[] = await response.json();
-
-      console.log('MerklOpportunities', merklOpportunities);
-
       return merklOpportunities;
     },
     queryKey: ['zkIgniteIncentives'],
     staleTime: 1000 * 60 * 5,
     select: (merklOpportunities) => {
-      console.log(merklOpportunities.map((opportunity) => opportunity.identifier));
-      console.log('asset', asset);
-
       const opportunities = merklOpportunities.filter(
         (opportunitiy) =>
           asset &&
@@ -97,8 +91,6 @@ export const useZkSyncIgniteIncentives = ({
           protocolAction &&
           checkOpportunityAction(opportunitiy.action, protocolAction)
       );
-
-      console.log('opportunities', opportunities);
 
       if (opportunities.length === 0) {
         return null;
@@ -111,12 +103,6 @@ export const useZkSyncIgniteIncentives = ({
       }
 
       const apr = opportunity.apr / 100;
-
-      console.log({
-        incentiveAPR: apr.toString(),
-        rewardTokenAddress: rewardToken,
-        rewardTokenSymbol: rewardTokenSymbol,
-      });
 
       return {
         incentiveAPR: apr.toString(),
