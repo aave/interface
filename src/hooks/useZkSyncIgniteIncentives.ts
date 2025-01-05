@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { AaveV3ZkSync } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { Address } from 'viem';
 
 enum OpportunityAction {
@@ -68,17 +69,23 @@ const checkOpportunityAction = (
 };
 
 export const useZkSyncIgniteIncentives = ({
+  market,
   asset,
   protocolAction,
 }: {
+  market: string;
   asset?: string;
   protocolAction?: ProtocolAction;
 }) => {
   return useQuery({
     queryFn: async () => {
-      const response = await fetch(url);
-      const merklOpportunities: MerklOpportunity[] = await response.json();
-      return merklOpportunities;
+      if (market === CustomMarket.proto_zksync_v3) {
+        const response = await fetch(url);
+        const merklOpportunities: MerklOpportunity[] = await response.json();
+        return merklOpportunities;
+      } else {
+        return [];
+      }
     },
     queryKey: ['zkIgniteIncentives'],
     staleTime: 1000 * 60 * 5,

@@ -2,7 +2,6 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Box, useMediaQuery } from '@mui/material';
 import { ReactNode } from 'react';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
@@ -81,9 +80,7 @@ export const IncentivesCard = ({
       >
         <IncentivesButton incentives={incentives} symbol={symbol} />
         <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-        {market === CustomMarket.proto_zksync_v3 && (
-          <ZkIgniteIncentivesButton asset={address} protocolAction={protocolAction} />
-        )}
+        <ZkIgniteIncentivesButton market={market} asset={address} protocolAction={protocolAction} />
       </Box>
     </Box>
   );

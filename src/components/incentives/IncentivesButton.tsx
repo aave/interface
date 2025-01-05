@@ -64,6 +64,7 @@ export const MeritIncentivesButton = (params: {
 };
 
 export const ZkIgniteIncentivesButton = (params: {
+  market: string;
   asset?: string;
   protocolAction?: ProtocolAction;
 }) => {
