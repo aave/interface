@@ -48,8 +48,7 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customForumLink: string;
 };
 
-const url =
-  'https://api.merkl.xyz/v4/opportunities?items=50&test=true&tags=zksync&mainProtocolId=aave'; // Merkl API for ZK Ignite opportunities
+const url = 'https://api.merkl.xyz/v4/opportunities?tags=zksync&mainProtocolId=aave'; // Merkl API for ZK Ignite opportunities
 
 const rewardToken = AaveV3ZkSync.ASSETS.ZK.UNDERLYING;
 const rewardTokenSymbol = 'ZK';
