@@ -1,14 +1,15 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { AaveV3ZkSync } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { Address } from 'viem';
 
-enum Action {
+enum OpportunityAction {
   LEND = 'LEND',
   BORROW = 'BORROW',
 }
 
-enum Status {
+enum OpportunityStatus {
   LIVE = 'LIVE',
   PAST = 'PAST',
   UPCOMING = 'UPCOMING',
@@ -19,8 +20,8 @@ type MerklOpportunity = {
   type: string;
   identifier: Address;
   name: string;
-  status: Status;
-  action: Action;
+  status: OpportunityStatus;
+  action: OpportunityAction;
   tvl: number;
   apr: number;
   dailyRewards: number;
@@ -53,7 +54,27 @@ const url =
 const rewardToken = AaveV3ZkSync.ASSETS.ZK.UNDERLYING;
 const rewardTokenSymbol = 'ZK';
 
-export const useZkSyncIgniteIncentives = ({ asset }: { asset?: string }) => {
+const checkOpportunityAction = (
+  opportunityAction: OpportunityAction,
+  protocolAction: ProtocolAction
+) => {
+  switch (opportunityAction) {
+    case OpportunityAction.LEND:
+      return protocolAction === ProtocolAction.supply;
+    case OpportunityAction.BORROW:
+      return protocolAction === ProtocolAction.borrow;
+    default:
+      return false;
+  }
+};
+
+export const useZkSyncIgniteIncentives = ({
+  asset,
+  protocolAction,
+}: {
+  asset?: string;
+  protocolAction?: ProtocolAction;
+}) => {
   return useQuery({
     queryFn: async () => {
       const response = await fetch(url);
@@ -70,7 +91,11 @@ export const useZkSyncIgniteIncentives = ({ asset }: { asset?: string }) => {
       console.log('asset', asset);
 
       const opportunities = merklOpportunities.filter(
-        (opportunitiy) => opportunitiy.identifier.toLowerCase() === asset?.toLowerCase()
+        (opportunitiy) =>
+          asset &&
+          opportunitiy.identifier.toLowerCase() === asset.toLowerCase() &&
+          protocolAction &&
+          checkOpportunityAction(opportunitiy.action, protocolAction)
       );
 
       console.log('opportunities', opportunities);
@@ -81,7 +106,7 @@ export const useZkSyncIgniteIncentives = ({ asset }: { asset?: string }) => {
 
       const opportunity = opportunities[0];
 
-      if (opportunity.status !== Status.LIVE) {
+      if (opportunity.status !== OpportunityStatus.LIVE) {
         return null;
       }
 

@@ -63,7 +63,10 @@ export const MeritIncentivesButton = (params: {
   );
 };
 
-export const ZkIgniteIncentivesButton = (params: { asset?: string }) => {
+export const ZkIgniteIncentivesButton = (params: {
+  asset?: string;
+  protocolAction?: ProtocolAction;
+}) => {
   const [open, setOpen] = useState(false);
   const { data: zkSyncIgniteIncentives } = useZkSyncIgniteIncentives(params);
 

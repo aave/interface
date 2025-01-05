@@ -81,7 +81,9 @@ export const IncentivesCard = ({
       >
         <IncentivesButton incentives={incentives} symbol={symbol} />
         <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-        {market === CustomMarket.proto_zksync_v3 && <ZkIgniteIncentivesButton asset={address} />}
+        {market === CustomMarket.proto_zksync_v3 && (
+          <ZkIgniteIncentivesButton asset={address} protocolAction={protocolAction} />
+        )}
       </Box>
     </Box>
   );
