@@ -95,6 +95,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         <IncentivesCard
           value={reserve.supplyAPY}
           incentives={reserve.aIncentivesData || []}
+          address={reserve.aTokenAddress}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
@@ -124,6 +125,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         <IncentivesCard
           value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
           incentives={reserve.vIncentivesData || []}
+          address={reserve.variableDebtTokenAddress}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"

@@ -97,6 +97,7 @@ export const SupplyAssetsListItemDesktop = ({
   totalLiquidity,
   supplyAPY,
   aIncentivesData,
+  aTokenAddress,
   underlyingAsset,
   isIsolated,
   usageAsCollateralEnabledOnUser,
@@ -221,6 +222,7 @@ export const SupplyAssetsListItemDesktop = ({
         value={Number(supplyAPY)}
         market={currentMarket}
         protocolAction={ProtocolAction.supply}
+        address={aTokenAddress}
         incentives={aIncentivesData}
         symbol={symbol}
       />
@@ -316,6 +318,7 @@ export const SupplyAssetsListItemMobile = ({
   totalLiquidity,
   supplyAPY,
   aIncentivesData,
+  aTokenAddress,
   isIsolated,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
@@ -421,6 +424,7 @@ export const SupplyAssetsListItemMobile = ({
         <IncentivesCard
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
+          address={aTokenAddress}
           symbol={symbol}
           variant="secondary14"
           market={currentMarket}

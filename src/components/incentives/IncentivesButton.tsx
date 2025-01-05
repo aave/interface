@@ -5,6 +5,7 @@ import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
@@ -13,6 +14,7 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
+import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
 
 interface IncentivesButtonProps {
   symbol: string;
@@ -57,6 +59,31 @@ export const MeritIncentivesButton = (params: {
       open={open}
     >
       <Content incentives={[meritIncentives]} incentivesNetAPR={+meritIncentives.incentiveAPR} />
+    </ContentWithTooltip>
+  );
+};
+
+export const ZkIgniteIncentivesButton = (params: { asset?: string }) => {
+  const [open, setOpen] = useState(false);
+  const { data: zkSyncIgniteIncentives } = useZkSyncIgniteIncentives(params);
+
+  if (!zkSyncIgniteIncentives) {
+    return null;
+  }
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={
+        <ZkSyncIgniteIncentivesTooltipContent zkSyncIgniteIncentives={zkSyncIgniteIncentives} />
+      }
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <Content
+        incentives={[zkSyncIgniteIncentives]}
+        incentivesNetAPR={+zkSyncIgniteIncentives.incentiveAPR}
+      />
     </ContentWithTooltip>
   );
 };

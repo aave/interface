@@ -25,6 +25,7 @@ export const SupplyAssetsListMobileItem = ({
   totalLiquidity,
   supplyAPY,
   aIncentivesData,
+  aTokenAddress,
   isIsolated,
   usageAsCollateralEnabledOnUser,
   isActive,
@@ -76,6 +77,7 @@ export const SupplyAssetsListMobileItem = ({
         <IncentivesCard
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
+          address={aTokenAddress}
           symbol={symbol}
           variant="secondary14"
           market={currentMarket}

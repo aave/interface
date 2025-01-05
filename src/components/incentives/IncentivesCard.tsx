@@ -2,15 +2,21 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Box, useMediaQuery } from '@mui/material';
 import { ReactNode } from 'react';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
-import { IncentivesButton, MeritIncentivesButton } from './IncentivesButton';
+import {
+  IncentivesButton,
+  MeritIncentivesButton,
+  ZkIgniteIncentivesButton,
+} from './IncentivesButton';
 
 interface IncentivesCardProps {
   symbol: string;
   value: string | number;
   incentives?: ReserveIncentiveResponse[];
+  address?: string;
   variant?: 'main14' | 'main16' | 'secondary14';
   symbolsVariant?: 'secondary14' | 'secondary16';
   align?: 'center' | 'flex-end';
@@ -24,6 +30,7 @@ export const IncentivesCard = ({
   symbol,
   value,
   incentives,
+  address,
   variant = 'secondary14',
   symbolsVariant,
   align,
@@ -74,6 +81,7 @@ export const IncentivesCard = ({
       >
         <IncentivesButton incentives={incentives} symbol={symbol} />
         <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+        {market === CustomMarket.proto_zksync_v3 && <ZkIgniteIncentivesButton asset={address} />}
       </Box>
     </Box>
   );

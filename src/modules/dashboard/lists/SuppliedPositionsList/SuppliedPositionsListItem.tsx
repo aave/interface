@@ -26,7 +26,7 @@ export const SuppliedPositionsListItem = ({
   underlyingAsset,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
-  const { isIsolated, aIncentivesData, isFrozen, isActive, isPaused } = reserve;
+  const { isIsolated, aIncentivesData, aTokenAddress, isFrozen, isActive, isPaused } = reserve;
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
   const [trackEvent, currentMarketData, currentMarket] = useRootStore(
@@ -78,6 +78,7 @@ export const SuppliedPositionsListItem = ({
         value={Number(reserve.supplyAPY)}
         market={currentMarket}
         protocolAction={ProtocolAction.supply}
+        address={aTokenAddress}
         incentives={aIncentivesData}
         symbol={reserve.symbol}
       />

@@ -11,6 +11,7 @@ interface ListAPRColumnProps {
   value: number;
   market: CustomMarket;
   protocolAction: ProtocolAction;
+  address: string;
   incentives?: ReserveIncentiveResponse[];
   symbol: string;
   tooltip?: ReactNode;
@@ -21,6 +22,7 @@ export const ListAPRColumn = ({
   value,
   market,
   protocolAction,
+  address,
   incentives,
   symbol,
   tooltip,
@@ -32,6 +34,7 @@ export const ListAPRColumn = ({
         <IncentivesCard
           value={value}
           incentives={incentives}
+          address={address}
           symbol={symbol}
           market={market}
           protocolAction={protocolAction}

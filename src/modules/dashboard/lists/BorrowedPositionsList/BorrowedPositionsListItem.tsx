@@ -102,6 +102,7 @@ const BorrowedPositionsListItemDesktop = ({
   totalBorrows,
   totalBorrowsUSD,
   borrowAPY,
+  variableDebtTokenAddress,
   incentives,
   onDetbSwitchClick,
   onOpenBorrow,
@@ -133,6 +134,7 @@ const BorrowedPositionsListItemDesktop = ({
         value={borrowAPY}
         market={currentMarket}
         protocolAction={ProtocolAction.borrow}
+        address={variableDebtTokenAddress}
         incentives={incentives}
         symbol={reserve.symbol}
       />
@@ -169,6 +171,7 @@ const BorrowedPositionsListItemMobile = ({
   disableSwitch,
   borrowAPY,
   incentives,
+  variableDebtTokenAddress,
   disableRepay,
   onDetbSwitchClick,
   onOpenBorrow,
@@ -205,6 +208,7 @@ const BorrowedPositionsListItemMobile = ({
         <IncentivesCard
           value={borrowAPY}
           incentives={incentives}
+          address={variableDebtTokenAddress}
           symbol={symbol}
           variant="secondary14"
           market={currentMarket}

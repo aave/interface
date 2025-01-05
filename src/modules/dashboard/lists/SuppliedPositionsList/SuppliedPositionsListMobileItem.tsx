@@ -37,6 +37,7 @@ export const SuppliedPositionsListMobileItem = ({
     supplyAPY,
     isIsolated,
     aIncentivesData,
+    aTokenAddress,
     isFrozen,
     isActive,
     isPaused,
@@ -86,6 +87,7 @@ export const SuppliedPositionsListMobileItem = ({
         <IncentivesCard
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
+          address={aTokenAddress}
           symbol={symbol}
           variant="secondary14"
           market={currentMarket}
