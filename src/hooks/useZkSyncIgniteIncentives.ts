@@ -87,7 +87,7 @@ export const useZkSyncIgniteIncentives = ({
         return [];
       }
     },
-    queryKey: ['zkIgniteIncentives'],
+    queryKey: ['zkIgniteIncentives', market],
     staleTime: 1000 * 60 * 5,
     select: (merklOpportunities) => {
       const opportunities = merklOpportunities.filter(
