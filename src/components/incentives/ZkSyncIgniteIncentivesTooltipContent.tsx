@@ -50,7 +50,7 @@ export const ZkSyncIgniteIncentivesTooltipContent = ({
       <Typography variant="caption" color="text.secondary" mb={3}>
         <Trans>ZKSync Ignite Program rewards are claimed through the</Trans>{' '}
         <Link
-          href="https://app.zksyncignite.xyz/"
+          href="https://app.zksyncignite.xyz/users/"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"
