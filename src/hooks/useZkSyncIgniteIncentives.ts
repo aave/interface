@@ -70,11 +70,11 @@ const checkOpportunityAction = (
 
 export const useZkSyncIgniteIncentives = ({
   market,
-  asset,
+  rewardedAsset,
   protocolAction,
 }: {
   market: string;
-  asset?: string;
+  rewardedAsset?: string;
   protocolAction?: ProtocolAction;
 }) => {
   return useQuery({
@@ -92,8 +92,8 @@ export const useZkSyncIgniteIncentives = ({
     select: (merklOpportunities) => {
       const opportunities = merklOpportunities.filter(
         (opportunitiy) =>
-          asset &&
-          opportunitiy.identifier.toLowerCase() === asset.toLowerCase() &&
+          rewardedAsset &&
+          opportunitiy.identifier.toLowerCase() === rewardedAsset.toLowerCase() &&
           protocolAction &&
           checkOpportunityAction(opportunitiy.action, protocolAction)
       );
