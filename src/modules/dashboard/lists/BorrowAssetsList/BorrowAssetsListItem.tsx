@@ -26,6 +26,7 @@ export const BorrowAssetsListItem = ({
   totalBorrows,
   variableBorrowRate,
   vIncentivesData,
+  variableDebtTokenAddress,
   underlyingAsset,
   isFreezed,
 }: DashboardReserve) => {
@@ -70,6 +71,7 @@ export const BorrowAssetsListItem = ({
         value={Number(variableBorrowRate)}
         market={currentMarket}
         protocolAction={ProtocolAction.borrow}
+        address={variableDebtTokenAddress}
         incentives={vIncentivesData}
         symbol={symbol}
       />

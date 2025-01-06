@@ -169,6 +169,7 @@ export const MigrationListItem = ({
               incentives={v2Incentives}
               variant="main14"
               color={baseColor}
+              market={currentMarket}
             />
             <SvgIcon sx={{ px: 1.5 }}>
               <ArrowNarrowRightIcon
@@ -184,6 +185,7 @@ export const MigrationListItem = ({
               incentives={v3Incentives}
               variant="main14"
               color={baseColor}
+              market={currentMarket}
             />
           </Box>
         </ListColumn>

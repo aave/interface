@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -98,6 +97,7 @@ export const SupplyAssetsListItemDesktop = ({
   totalLiquidity,
   supplyAPY,
   aIncentivesData,
+  aTokenAddress,
   underlyingAsset,
   isIsolated,
   usageAsCollateralEnabledOnUser,
@@ -222,6 +222,7 @@ export const SupplyAssetsListItemDesktop = ({
         value={Number(supplyAPY)}
         market={currentMarket}
         protocolAction={ProtocolAction.supply}
+        address={aTokenAddress}
         incentives={aIncentivesData}
         symbol={symbol}
       />
@@ -317,6 +318,7 @@ export const SupplyAssetsListItemMobile = ({
   totalLiquidity,
   supplyAPY,
   aIncentivesData,
+  aTokenAddress,
   isIsolated,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
@@ -419,19 +421,15 @@ export const SupplyAssetsListItemMobile = ({
         captionVariant="description"
         mb={2}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <IncentivesCard
-            value={Number(supplyAPY)}
-            incentives={aIncentivesData}
-            symbol={symbol}
-            variant="secondary14"
-          />
-          <MeritIncentivesButton
-            symbol={symbol}
-            market={currentMarket}
-            protocolAction={ProtocolAction.supply}
-          />
-        </Box>
+        <IncentivesCard
+          value={Number(supplyAPY)}
+          incentives={aIncentivesData}
+          address={aTokenAddress}
+          symbol={symbol}
+          variant="secondary14"
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
+        />
       </Row>
 
       <Row

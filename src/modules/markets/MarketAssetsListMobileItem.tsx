@@ -1,7 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -64,26 +63,22 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         mb={3}
         align="flex-start"
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <IncentivesCard
-            align="flex-end"
-            value={reserve.supplyAPY}
-            incentives={reserve.aIncentivesData || []}
-            symbol={reserve.symbol}
-            variant="secondary14"
-            tooltip={
-              <>
-                {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
-                {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
-              </>
-            }
-          />
-          <MeritIncentivesButton
-            symbol={reserve.symbol}
-            market={currentMarket}
-            protocolAction={ProtocolAction.supply}
-          />
-        </Box>
+        <IncentivesCard
+          align="flex-end"
+          value={reserve.supplyAPY}
+          incentives={reserve.aIncentivesData || []}
+          address={reserve.aTokenAddress}
+          symbol={reserve.symbol}
+          variant="secondary14"
+          tooltip={
+            <>
+              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
+              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
+            </>
+          }
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
+        />
       </Row>
 
       <Divider sx={{ mb: 3 }} />
@@ -120,29 +115,25 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         mb={3}
         align="flex-start"
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <IncentivesCard
-            align="flex-end"
-            value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
-            incentives={reserve.vIncentivesData || []}
-            symbol={reserve.symbol}
-            variant="secondary14"
-            tooltip={
-              <>
-                {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
-                {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
-              </>
-            }
-          />
-          <MeritIncentivesButton
-            symbol={reserve.symbol}
-            market={currentMarket}
-            protocolAction={ProtocolAction.borrow}
-          />
-          {!reserve.borrowingEnabled &&
-            Number(reserve.totalVariableDebt) > 0 &&
-            !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
-        </Box>
+        <IncentivesCard
+          align="flex-end"
+          value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
+          incentives={reserve.vIncentivesData || []}
+          address={reserve.variableDebtTokenAddress}
+          symbol={reserve.symbol}
+          variant="secondary14"
+          tooltip={
+            <>
+              {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
+              {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
+            </>
+          }
+          market={currentMarket}
+          protocolAction={ProtocolAction.borrow}
+        />
+        {!reserve.borrowingEnabled &&
+          Number(reserve.totalVariableDebt) > 0 &&
+          !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
       </Row>
       <Button
         variant="outlined"
