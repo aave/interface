@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-03 12:08\n"
+"PO-Revision-Date: 2025-01-06 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -442,6 +442,7 @@ msgstr ""
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 msgid "APR"
 msgstr "АПР"
 
@@ -960,6 +961,10 @@ msgstr "{tooltipText}"
 msgid "Rewards can be claimed through"
 msgstr ""
 
+#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+msgid "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
@@ -1020,6 +1025,7 @@ msgid "Liquidation at"
 msgstr "Ликвидация в"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
@@ -1928,6 +1934,10 @@ msgstr ""
 msgid "Cooldown period warning"
 msgstr "Предупреждение о периоде перезарядки"
 
+#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+msgid "ZKSync Ignite Program rewards are claimed through the"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
@@ -2750,6 +2760,10 @@ msgstr ""
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
 msgstr "Доступно к поставке"
+
+#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+msgid "Eligible for the ZKSync Ignite program."
+msgstr ""
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the {market} has been frozen."
