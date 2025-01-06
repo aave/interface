@@ -2,7 +2,6 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
@@ -96,6 +95,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         <IncentivesCard
           value={reserve.supplyAPY}
           incentives={reserve.aIncentivesData || []}
+          address={reserve.aTokenAddress}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
@@ -105,9 +105,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
               {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
             </>
           }
-        />
-        <MeritIncentivesButton
-          symbol={reserve.symbol}
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
@@ -128,6 +125,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         <IncentivesCard
           value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
           incentives={reserve.vIncentivesData || []}
+          address={reserve.variableDebtTokenAddress}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
@@ -137,9 +135,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
               {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
             </>
           }
-        />
-        <MeritIncentivesButton
-          symbol={reserve.symbol}
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />
