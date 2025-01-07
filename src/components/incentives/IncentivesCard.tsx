@@ -25,7 +25,7 @@ interface IncentivesCardProps {
   protocolAction?: ProtocolAction;
 }
 
-const hasIncentivesCheck = (incentives: IncentivesCardProps) => {
+export const hasIncentivesCheck = (incentives: IncentivesBoxProps) => {
   const lmIncentives = IncentivesButton({
     symbol: incentives.symbol,
     incentives: incentives.incentives,
@@ -47,6 +47,74 @@ const hasIncentivesCheck = (incentives: IncentivesCardProps) => {
   }
 };
 
+interface IncentivesBoxProps {
+  symbol: string;
+  market: string;
+  incentives?: ReserveIncentiveResponse[];
+  address?: string;
+  protocolAction?: ProtocolAction;
+  isInModal?: boolean;
+  displayBlank?: boolean;
+  displayNone?: boolean;
+}
+
+export const IncentivesBox = ({
+  symbol,
+  incentives,
+  address,
+  market,
+  protocolAction,
+  isInModal,
+  displayBlank = true,
+}: IncentivesBoxProps) => {
+  const incentivesBoxProps: IncentivesBoxProps = {
+    symbol,
+    incentives,
+    address,
+    market,
+    protocolAction,
+    isInModal,
+    displayBlank,
+  };
+
+  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const hasIncentives = hasIncentivesCheck(incentivesBoxProps);
+
+  return (
+    <Box
+      sx={
+        isTableChangedToCards && !isInModal
+          ? {
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              gap: '4px',
+            }
+          : {
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '4px',
+              flexWrap: 'wrap',
+              flex: '0 0 50%', // 2 items per row
+              width: isInModal ? 'min-content' : 'auto', // 1 item per row in modal mode
+            }
+      }
+    >
+      <IncentivesButton
+        incentives={incentives}
+        symbol={symbol}
+        displayBlank={displayBlank && !hasIncentives}
+      />
+      <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+      <ZkIgniteIncentivesButton
+        market={market}
+        rewardedAsset={address}
+        protocolAction={protocolAction}
+      />
+    </Box>
+  );
+};
+
 export const IncentivesCard = (incentivesCardProps: IncentivesCardProps) => {
   const {
     symbol,
@@ -61,9 +129,6 @@ export const IncentivesCard = (incentivesCardProps: IncentivesCardProps) => {
     market,
     protocolAction,
   } = incentivesCardProps;
-
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
-  const hasIncentives = hasIncentivesCheck(incentivesCardProps);
 
   return (
     <Box
@@ -91,27 +156,13 @@ export const IncentivesCard = (incentivesCardProps: IncentivesCardProps) => {
       ) : (
         <NoData variant={variant} color={color || 'text.secondary'} />
       )}
-      <Box
-        sx={
-          isTableChangedToCards
-            ? { display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }
-            : {
-                display: 'flex',
-                justifyContent: 'center',
-                gap: '4px',
-                flexWrap: 'wrap',
-                flex: '0 0 50%', // 2 items per row
-              }
-        }
-      >
-        <IncentivesButton incentives={incentives} symbol={symbol} displayBlank={!hasIncentives} />
-        <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-        <ZkIgniteIncentivesButton
-          market={market}
-          rewardedAsset={address}
-          protocolAction={protocolAction}
-        />
-      </Box>
+      <IncentivesBox
+        symbol={symbol}
+        incentives={incentives}
+        address={address}
+        market={market}
+        protocolAction={protocolAction}
+      />
     </Box>
   );
 };

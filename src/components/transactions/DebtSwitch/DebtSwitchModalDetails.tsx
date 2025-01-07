@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
@@ -143,6 +144,9 @@ export const DebtSwitchModalDetails = ({
       <DetailsIncentivesLine
         incentives={switchSource.reserve.aIncentivesData}
         symbol={switchSource.reserve.symbol}
+        market={currentMarket}
+        address={switchSource.reserve.aTokenAddress}
+        protocolAction={ProtocolAction.supply}
         futureIncentives={switchSource.reserve.aIncentivesData}
         futureSymbol={switchSource.reserve.symbol}
         loading={loading}
