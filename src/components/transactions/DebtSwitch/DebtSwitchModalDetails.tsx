@@ -142,12 +142,12 @@ export const DebtSwitchModalDetails = ({
       </Row>
 
       <DetailsIncentivesLine
-        incentives={switchSource.reserve.aIncentivesData}
+        incentives={switchSource.reserve.vIncentivesData}
         symbol={switchSource.reserve.symbol}
         market={currentMarket}
-        address={switchSource.reserve.aTokenAddress}
-        protocolAction={ProtocolAction.supply}
-        futureIncentives={switchSource.reserve.aIncentivesData}
+        address={switchSource.reserve.variableDebtTokenAddress}
+        protocolAction={ProtocolAction.borrow}
+        futureIncentives={switchSource.reserve.vIncentivesData}
         futureSymbol={switchSource.reserve.symbol}
         loading={loading}
       />
