@@ -156,6 +156,7 @@ export const SupplyInfo = ({
             market={currentMarketData.market}
             address={reserve.aTokenAddress}
             protocolAction={ProtocolAction.supply}
+            displayBlank={true}
             variant="main16"
             align="start"
           />

@@ -23,6 +23,7 @@ interface IncentivesCardProps {
   tooltip?: ReactNode;
   market: string;
   protocolAction?: ProtocolAction;
+  displayBlank?: boolean;
 }
 
 export const hasIncentivesCheck = (incentives: IncentivesBoxProps) => {
@@ -65,7 +66,7 @@ export const IncentivesBox = ({
   market,
   protocolAction,
   isInModal,
-  displayBlank = true,
+  displayBlank,
 }: IncentivesBoxProps) => {
   const incentivesBoxProps: IncentivesBoxProps = {
     symbol,
@@ -128,6 +129,7 @@ export const IncentivesCard = (incentivesCardProps: IncentivesCardProps) => {
     tooltip,
     market,
     protocolAction,
+    displayBlank,
   } = incentivesCardProps;
 
   return (
@@ -162,6 +164,7 @@ export const IncentivesCard = (incentivesCardProps: IncentivesCardProps) => {
         address={address}
         market={market}
         protocolAction={protocolAction}
+        displayBlank={displayBlank}
       />
     </Box>
   );

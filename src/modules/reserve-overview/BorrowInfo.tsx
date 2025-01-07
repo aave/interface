@@ -169,6 +169,7 @@ export const BorrowInfo = ({
             market={currentMarketData.market}
             address={reserve.variableDebtTokenAddress}
             protocolAction={ProtocolAction.borrow}
+            displayBlank={true}
             variant="main16"
             align="start"
           />
