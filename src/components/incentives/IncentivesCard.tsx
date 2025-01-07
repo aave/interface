@@ -18,27 +18,53 @@ interface IncentivesCardProps {
   address?: string;
   variant?: 'main14' | 'main16' | 'secondary14';
   symbolsVariant?: 'secondary14' | 'secondary16';
-  align?: 'center' | 'flex-end';
+  align?: 'center' | 'flex-end' | 'start';
   color?: string;
   tooltip?: ReactNode;
   market: string;
   protocolAction?: ProtocolAction;
 }
 
-export const IncentivesCard = ({
-  symbol,
-  value,
-  incentives,
-  address,
-  variant = 'secondary14',
-  symbolsVariant,
-  align,
-  color,
-  tooltip,
-  market,
-  protocolAction,
-}: IncentivesCardProps) => {
+const hasIncentivesCheck = (incentives: IncentivesCardProps) => {
+  const lmIncentives = IncentivesButton({
+    symbol: incentives.symbol,
+    incentives: incentives.incentives,
+  });
+  const meritIncentives = MeritIncentivesButton({
+    symbol: incentives.symbol,
+    market: incentives.market,
+    protocolAction: incentives.protocolAction,
+  });
+  const zkIgniteIncentives = ZkIgniteIncentivesButton({
+    market: incentives.market,
+    rewardedAsset: incentives.address,
+    protocolAction: incentives.protocolAction,
+  });
+  if (lmIncentives || meritIncentives || zkIgniteIncentives) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const IncentivesCard = (incentivesCardProps: IncentivesCardProps) => {
+  const {
+    symbol,
+    value,
+    incentives,
+    address,
+    variant = 'secondary14',
+    symbolsVariant,
+    align,
+    color,
+    tooltip,
+    market,
+    protocolAction,
+  } = incentivesCardProps;
+
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const hasIncentives = hasIncentivesCheck(incentivesCardProps);
+
   return (
     <Box
       sx={{
@@ -78,7 +104,7 @@ export const IncentivesCard = ({
               }
         }
       >
-        <IncentivesButton incentives={incentives} symbol={symbol} />
+        <IncentivesButton incentives={incentives} symbol={symbol} displayBlank={!hasIncentives} />
         <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
         <ZkIgniteIncentivesButton
           market={market}
