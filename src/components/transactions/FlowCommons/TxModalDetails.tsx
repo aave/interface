@@ -270,14 +270,14 @@ export const DetailsIncentivesLine = ({
     protocolAction,
   });
 
-  if (!hasIncentives) return null;
-
   const hasFutureIncentives = hasIncentivesCheck({
     symbol: futureSymbol || '',
     incentives: futureIncentives,
     market,
     protocolAction,
   });
+
+  if (!hasIncentives && !hasFutureIncentives) return null;
 
   return (
     <Row caption={<Trans>Rewards APR</Trans>} captionVariant="description" mb={4} minHeight={24}>
@@ -293,27 +293,31 @@ export const DetailsIncentivesLine = ({
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
         ) : (
           <>
-            <IncentivesBox
-              symbol={symbol}
-              incentives={incentives || []}
-              market={market}
-              address={address}
-              protocolAction={protocolAction}
-            />
+            {hasIncentives ? (
+              <IncentivesBox
+                symbol={symbol}
+                incentives={incentives || []}
+                market={market}
+                address={address}
+                protocolAction={protocolAction}
+              />
+            ) : (
+              <Typography variant="secondary14">
+                <Trans>None</Trans>
+              </Typography>
+            )}
             {futureSymbol && (
               <>
                 {ArrowRightIcon}
                 {hasFutureIncentives ? (
-                  <>
-                    <IncentivesBox
-                      symbol={futureSymbol || ''}
-                      incentives={futureIncentives || []}
-                      market={market}
-                      address={futureAddress}
-                      protocolAction={protocolAction}
-                      isInModal={true}
-                    />
-                  </>
+                  <IncentivesBox
+                    symbol={futureSymbol || ''}
+                    incentives={futureIncentives || []}
+                    market={market}
+                    address={futureAddress}
+                    protocolAction={protocolAction}
+                    isInModal={true}
+                  />
                 ) : (
                   <Typography variant="secondary14">
                     <Trans>None</Trans>
