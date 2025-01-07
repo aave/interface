@@ -300,22 +300,26 @@ export const DetailsIncentivesLine = ({
               address={address}
               protocolAction={protocolAction}
             />
-            {ArrowRightIcon}
-            {hasFutureIncentives ? (
+            {futureSymbol && (
               <>
-                <IncentivesBox
-                  symbol={futureSymbol || ''}
-                  incentives={futureIncentives || []}
-                  market={market}
-                  address={futureAddress}
-                  protocolAction={protocolAction}
-                  isInModal={true}
-                />
+                {ArrowRightIcon}
+                {hasFutureIncentives ? (
+                  <>
+                    <IncentivesBox
+                      symbol={futureSymbol || ''}
+                      incentives={futureIncentives || []}
+                      market={market}
+                      address={futureAddress}
+                      protocolAction={protocolAction}
+                      isInModal={true}
+                    />
+                  </>
+                ) : (
+                  <Typography variant="secondary14">
+                    <Trans>None</Trans>
+                  </Typography>
+                )}
               </>
-            ) : (
-              <Typography variant="secondary14">
-                <Trans>None</Trans>
-              </Typography>
             )}
           </>
         )}
