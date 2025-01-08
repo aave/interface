@@ -26,28 +26,6 @@ interface IncentivesCardProps {
   displayBlank?: boolean;
 }
 
-export const hasIncentivesCheck = (incentives: IncentivesBoxProps) => {
-  const lmIncentives = IncentivesButton({
-    symbol: incentives.symbol,
-    incentives: incentives.incentives,
-  });
-  const meritIncentives = MeritIncentivesButton({
-    symbol: incentives.symbol,
-    market: incentives.market,
-    protocolAction: incentives.protocolAction,
-  });
-  const zkIgniteIncentives = ZkIgniteIncentivesButton({
-    market: incentives.market,
-    rewardedAsset: incentives.address,
-    protocolAction: incentives.protocolAction,
-  });
-  if (lmIncentives || meritIncentives || zkIgniteIncentives) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 interface IncentivesBoxProps {
   symbol: string;
   market: string;
@@ -58,6 +36,28 @@ interface IncentivesBoxProps {
   displayBlank?: boolean;
   displayNone?: boolean;
 }
+
+export const hasIncentivesCheck = (incentives: IncentivesBoxProps) => {
+  const lmIncentivesCheck =
+    incentives.incentives && incentives.incentives.filter((i) => i.incentiveAPR !== '0').length > 0;
+
+  const meritIncentives = MeritIncentivesButton({
+    symbol: incentives.symbol,
+    market: incentives.market,
+    protocolAction: incentives.protocolAction,
+  });
+
+  const zkIgniteIncentives = ZkIgniteIncentivesButton({
+    market: incentives.market,
+    rewardedAsset: incentives.address,
+    protocolAction: incentives.protocolAction,
+  });
+  if (lmIncentivesCheck || meritIncentives || zkIgniteIncentives) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 export const IncentivesBox = ({
   symbol,
