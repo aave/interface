@@ -5,7 +5,6 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
@@ -65,11 +64,6 @@ export const SuppliedPositionsListMobileItem = ({
       frozen={reserve.isFrozen}
       showSupplyCapTooltips
       showDebtCeilingTooltips
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        reserve.symbol,
-        currentMarket,
-        ProtocolAction.supply
-      )}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}

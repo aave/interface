@@ -6,7 +6,7 @@ import { TextWithTooltip } from '../TextWithTooltip';
 export const SuperFestTooltip = () => {
   return (
     <TextWithTooltip
-      wrapperProps={{ ml: 2 }}
+      wrapperProps={{ alignSelf: 'center' }}
       color="warning.main"
       iconSize={20}
       icon={<image href="/icons/other/superfest.svg" width={25} height={25} />}

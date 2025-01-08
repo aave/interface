@@ -1,14 +1,11 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
-import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
-import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
@@ -21,17 +18,6 @@ import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper'
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
-  );
-
-  const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
-    reserve.symbol,
-    currentMarket,
-    ProtocolAction.supply
-  );
-  const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
-    reserve.symbol,
-    currentMarket,
-    ProtocolAction.borrow
   );
 
   return (
@@ -70,12 +56,6 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           address={reserve.aTokenAddress}
           symbol={reserve.symbol}
           variant="secondary14"
-          tooltip={
-            <>
-              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
-            </>
-          }
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
@@ -122,12 +102,6 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           address={reserve.variableDebtTokenAddress}
           symbol={reserve.symbol}
           variant="secondary14"
-          tooltip={
-            <>
-              {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
-            </>
-          }
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />

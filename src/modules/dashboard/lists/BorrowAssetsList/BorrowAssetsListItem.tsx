@@ -5,7 +5,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
@@ -46,11 +45,6 @@ export const BorrowAssetsListItem = ({
       detailsAddress={underlyingAsset}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        symbol,
-        currentMarket,
-        ProtocolAction.borrow
-      )}
     >
       <ListValueColumn
         symbol={symbol}

@@ -9,7 +9,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -121,11 +120,6 @@ const BorrowedPositionsListItemDesktop = ({
       borrowEnabled={reserve.borrowingEnabled}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}`}
       showBorrowCapTooltips
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        reserve.symbol,
-        currentMarket,
-        ProtocolAction.borrow
-      )}
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
@@ -189,11 +183,6 @@ const BorrowedPositionsListItemMobile = ({
       frozen={reserve.isFrozen}
       borrowEnabled={reserve.borrowingEnabled}
       showBorrowCapTooltips
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        symbol,
-        currentMarket,
-        ProtocolAction.borrow
-      )}
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}

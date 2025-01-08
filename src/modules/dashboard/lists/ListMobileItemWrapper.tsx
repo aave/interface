@@ -2,12 +2,9 @@ import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { PausedTooltip } from 'src/components/infoTooltips/PausedTooltip';
-import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
-import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { ExternalIncentivesTooltipsConfig } from 'src/utils/utils';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
@@ -30,7 +27,6 @@ interface ListMobileItemWrapperProps {
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
   isIsolated?: boolean;
-  showExternalIncentivesTooltips?: ExternalIncentivesTooltipsConfig;
 }
 
 export const ListMobileItemWrapper = ({
@@ -48,10 +44,6 @@ export const ListMobileItemWrapper = ({
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
   isIsolated = false,
-  showExternalIncentivesTooltips = {
-    superFestRewards: false,
-    spkAirdrop: false,
-  },
 }: ListMobileItemWrapperProps) => {
   const WarningComponent: React.FC = () => {
     const showFrozenTooltip = frozen && symbol !== 'renFIL';
@@ -64,8 +56,6 @@ export const ListMobileItemWrapper = ({
     return (
       <>
         {paused && <PausedTooltip />}
-        {showExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
-        {showExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}

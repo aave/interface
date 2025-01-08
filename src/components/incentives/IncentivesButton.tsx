@@ -8,8 +8,11 @@ import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { getNoAprExternalIncentivesTooltipConfig } from 'src/utils/utils';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
+import { SpkAirdropTooltip } from '../infoTooltips/SpkAirdropTooltip';
+import { SuperFestTooltip } from '../infoTooltips/SuperFestTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
@@ -20,6 +23,12 @@ interface IncentivesButtonProps {
   symbol: string;
   incentives?: ReserveIncentiveResponse[];
   displayBlank?: boolean;
+}
+
+interface NoAprExternalIncentiveTooltipProps {
+  market: string;
+  symbol?: string;
+  protocolAction?: ProtocolAction;
 }
 
 const BlankIncentives = () => {
@@ -89,6 +98,29 @@ export const ZkIgniteIncentivesButton = (params: {
         incentivesNetAPR={+zkSyncIgniteIncentives.incentiveAPR}
       />
     </ContentWithTooltip>
+  );
+};
+
+export const NoAprExternalIncentiveTooltip = ({
+  market,
+  symbol,
+  protocolAction,
+}: NoAprExternalIncentiveTooltipProps) => {
+  if (!symbol || !protocolAction) {
+    return null;
+  }
+
+  const noAprExternalIncentivesTooltips = getNoAprExternalIncentivesTooltipConfig(
+    symbol,
+    market,
+    protocolAction
+  );
+
+  return (
+    <>
+      {noAprExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
+      {noAprExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
+    </>
   );
 };
 

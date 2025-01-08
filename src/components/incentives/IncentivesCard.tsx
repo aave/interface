@@ -8,12 +8,14 @@ import { NoData } from '../primitives/NoData';
 import {
   IncentivesButton,
   MeritIncentivesButton,
+  NoAprExternalIncentiveTooltip,
   ZkIgniteIncentivesButton,
 } from './IncentivesButton';
 
 interface IncentivesCardProps {
   symbol: string;
   value: string | number;
+  market: string;
   incentives?: ReserveIncentiveResponse[];
   address?: string;
   variant?: 'main14' | 'main16' | 'secondary14';
@@ -21,7 +23,6 @@ interface IncentivesCardProps {
   align?: 'center' | 'flex-end' | 'start';
   color?: string;
   tooltip?: ReactNode;
-  market: string;
   protocolAction?: ProtocolAction;
   displayBlank?: boolean;
 }
@@ -113,6 +114,11 @@ export const IncentivesBox = ({
       <ZkIgniteIncentivesButton
         market={market}
         rewardedAsset={address}
+        protocolAction={protocolAction}
+      />
+      <NoAprExternalIncentiveTooltip
+        market={market}
+        symbol={symbol}
         protocolAction={protocolAction}
       />
     </Box>
