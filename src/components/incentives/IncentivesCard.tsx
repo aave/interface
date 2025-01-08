@@ -38,8 +38,10 @@ interface IncentivesBoxProps {
 }
 
 export const hasIncentivesCheck = (incentives: IncentivesBoxProps) => {
-  const lmIncentivesCheck =
-    incentives.incentives && incentives.incentives.filter((i) => i.incentiveAPR !== '0').length > 0;
+  const lmIncentives = IncentivesButton({
+    symbol: incentives.symbol,
+    incentives: incentives.incentives,
+  });
 
   const meritIncentives = MeritIncentivesButton({
     symbol: incentives.symbol,
@@ -52,7 +54,8 @@ export const hasIncentivesCheck = (incentives: IncentivesBoxProps) => {
     rewardedAsset: incentives.address,
     protocolAction: incentives.protocolAction,
   });
-  if (lmIncentivesCheck || meritIncentives || zkIgniteIncentives) {
+
+  if (lmIncentives || meritIncentives || zkIgniteIncentives) {
     return true;
   } else {
     return false;

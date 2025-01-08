@@ -95,7 +95,7 @@ export const ZkIgniteIncentivesButton = (params: {
 export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
   const [open, setOpen] = useState(false);
 
-  if (!(incentives && incentives.length > 0)) {
+  if (!(incentives && incentives.filter((i) => i.incentiveAPR !== '0').length > 0)) {
     if (displayBlank) {
       return <BlankIncentives />;
     } else {
