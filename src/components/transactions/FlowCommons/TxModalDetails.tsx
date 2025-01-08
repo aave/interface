@@ -265,6 +265,7 @@ export const DetailsIncentivesLine = ({
 }: DetailsIncentivesLineProps) => {
   const hasIncentives = hasIncentivesCheck({
     symbol: symbol,
+    address,
     incentives: incentives,
     market,
     protocolAction,
@@ -272,6 +273,7 @@ export const DetailsIncentivesLine = ({
 
   const hasFutureIncentives = hasIncentivesCheck({
     symbol: futureSymbol || '',
+    address: futureAddress,
     incentives: futureIncentives,
     market,
     protocolAction,
