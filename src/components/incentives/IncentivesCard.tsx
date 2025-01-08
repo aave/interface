@@ -37,22 +37,22 @@ interface IncentivesBoxProps {
   displayNone?: boolean;
 }
 
-export const hasIncentivesCheck = (incentives: IncentivesBoxProps) => {
+export const hasIncentivesCheck = (props: IncentivesBoxProps) => {
   const lmIncentives = IncentivesButton({
-    symbol: incentives.symbol,
-    incentives: incentives.incentives,
+    symbol: props.symbol,
+    incentives: props.incentives,
   });
 
   const meritIncentives = MeritIncentivesButton({
-    symbol: incentives.symbol,
-    market: incentives.market,
-    protocolAction: incentives.protocolAction,
+    symbol: props.symbol,
+    market: props.market,
+    protocolAction: props.protocolAction,
   });
 
   const zkIgniteIncentives = ZkIgniteIncentivesButton({
-    market: incentives.market,
-    rewardedAsset: incentives.address,
-    protocolAction: incentives.protocolAction,
+    market: props.market,
+    rewardedAsset: props.address,
+    protocolAction: props.protocolAction,
   });
 
   if (lmIncentives || meritIncentives || zkIgniteIncentives) {
