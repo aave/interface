@@ -13,7 +13,9 @@ import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { MarketAssetsListContainer } from 'src/modules/umbrella/UmbrellaAssetsListContainer';
+import { UmbrellaStakedAssetsListContainer } from 'src/modules/umbrella/UmbrellaStakedAssetsListContainer';
+import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/UmbrellaAssetsListContainer';
+
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
@@ -149,7 +151,10 @@ export default function UmbrellaStaking() {
         }}
       >
         <MarketContainer>
-          <MarketAssetsListContainer />
+          <UmbrellaStakedAssetsListContainer />
+        </MarketContainer>
+        <MarketContainer>
+          <UmbrellaAssetsListContainer />
         </MarketContainer>
       </Box>
     </>

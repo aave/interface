@@ -33,7 +33,7 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
   );
 }
 
-export const UmbrellaAssetsListContainer = () => {
+export const UmbrellaStakedAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
   const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [
@@ -83,7 +83,7 @@ export const UmbrellaAssetsListContainer = () => {
           onSearchTermChange={setSearchTerm}
           title={
             <>
-              <Trans>Assets to stake</Trans>
+              <Trans>Your staked assets</Trans>
             </>
           }
           searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
