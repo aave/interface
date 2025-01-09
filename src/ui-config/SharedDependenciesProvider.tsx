@@ -1,4 +1,5 @@
 import { createContext, PropsWithChildren, useContext } from 'react';
+import { StakeDataProviderService } from 'src/modules/umbrella/services/StakeDataProviderService';
 import { ApprovedAmountService } from 'src/services/ApprovedAmountService';
 import { DelegationTokenService } from 'src/services/DelegationTokenService';
 import { ERC20Service } from 'src/services/Erc20Service';
@@ -36,6 +37,7 @@ interface SharedDependenciesContext {
   stkAbptMigrationService: StkAbptMigrationService;
   migrationService: MigrationService;
   erc20Service: ERC20Service;
+  stakeDataService: StakeDataProviderService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -67,6 +69,7 @@ export const SharedDependenciesProvider: React.FC<PropsWithChildren> = ({ childr
   const delegationTokenService = new DelegationTokenService(getGovernanceProvider);
   const stkAbptMigrationService = new StkAbptMigrationService();
   const migrationService = new MigrationService(getProvider);
+  const stakeDataService = new StakeDataProviderService(getProvider);
 
   const uiPoolService = new UiPoolService(getProvider);
   const uiIncentivesService = new UiIncentivesService(getProvider);
@@ -96,6 +99,7 @@ export const SharedDependenciesProvider: React.FC<PropsWithChildren> = ({ childr
         stkAbptMigrationService,
         migrationService,
         erc20Service,
+        stakeDataService,
       }}
     >
       {children}

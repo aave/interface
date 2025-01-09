@@ -6,7 +6,10 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
+import { useStakeData, useUserStakeData } from './hooks/useStakeData';
 import { UmbrellaAssetsListItem } from './UmbrellaAssetsListItem';
 import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
@@ -50,6 +53,15 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
+  const [currentMarketData, user] = useRootStore(
+    useShallow((store) => [store.currentMarketData, store.account])
+  );
+
+  const { data: stakeData } = useStakeData(currentMarketData);
+  const { data: userStakeData } = useUserStakeData(currentMarketData, user);
+  console.log(stakeData);
+  console.log(userStakeData);
+
   if (sortDesc) {
     if (sortName === 'symbol') {
       reserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
