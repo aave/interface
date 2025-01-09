@@ -1066,10 +1066,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@4.7.0":
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.7.0.tgz#4d64ff67dd83f32fcff71ffe7498bf9477c8586f"
-  integrity sha512-oxLDYy36woE1AuW97aXI7bk+v+/my0YAqaWbGokLJGc+An7/ABfF89cbn9aJqAx3fyT8DDRojGyrcGIeocnNBg==
+"@bgd-labs/aave-address-book@4.6.1-cee1c3d0f722d997f9cf5047b066186145847a41.0":
+  version "4.6.1-cee1c3d0f722d997f9cf5047b066186145847a41.0"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.6.1-cee1c3d0f722d997f9cf5047b066186145847a41.0.tgz#9583ab1ae69e602f3e633b746ce854e2b220c0ee"
+  integrity sha512-z6s9G6Pd2hKazxVwnYD/6bRTQxnxPsyv1g71WKSKXfxlfjzuK8jnyhIzZjXG19hxRSY/BvSe8Y16z/DHsUoLkQ==
 
 "@coinbase/wallet-sdk@4.2.3":
   version "4.2.3"
