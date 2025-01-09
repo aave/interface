@@ -32,6 +32,7 @@ export enum ModalType {
   GovRepresentatives,
   Bridge,
   ReadMode,
+  Umbrella,
 }
 
 export interface ModalArgsType {
@@ -44,6 +45,7 @@ export interface ModalArgsType {
   isFrozen?: boolean;
   representatives?: Array<{ chainId: ChainId; representative: string }>;
   chainId?: number;
+  umbrellaAssetName?: string;
 }
 
 export type TxStateType = {
@@ -95,6 +97,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openStakeCooldown: (stakeAssetName: Stake, icon: string) => void;
   openStakeRewardsClaim: (stakeAssetName: Stake, icon: string) => void;
   openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
+  openUmbrella: (umbrellaAssetName: string, icon: string) => void;
   openClaimRewards: () => void;
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
@@ -262,6 +265,13 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           });
           setType(ModalType.StakeRewardsClaimRestake);
           setArgs({ stakeAssetName, icon });
+        },
+        openUmbrella: (umbrellaAssetName, icon) => {
+          console.log('HELLO!!!');
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella', assetName: umbrellaAssetName });
+
+          setType(ModalType.Umbrella);
+          setArgs({ umbrellaAssetName, icon });
         },
         openClaimRewards: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim' });

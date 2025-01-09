@@ -31,12 +31,21 @@ export const navigation: Navigation[] = [
   },
   {
     link: ROUTES.staking,
-    title: t`Stake`,
+    title: t`Safety Module`,
     dataCy: 'menuStake',
     isVisible: () =>
       process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
       process.env.NEXT_PUBLIC_ENV === 'prod' &&
       !ENABLE_TESTNET,
+  },
+  {
+    link: ROUTES.umbrella,
+    title: t`Umbrella`,
+    // dataCy: 'menuGovernance',
+    // isVisible: () =>
+    //   process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true' &&
+    //   process.env.NEXT_PUBLIC_ENV === 'prod' &&
+    //   !ENABLE_TESTNET,
   },
   {
     link: ROUTES.governance,
@@ -47,6 +56,7 @@ export const navigation: Navigation[] = [
     //   process.env.NEXT_PUBLIC_ENV === 'prod' &&
     //   !ENABLE_TESTNET,
   },
+
   {
     link: ROUTES.faucet,
     title: t`Faucet`,
