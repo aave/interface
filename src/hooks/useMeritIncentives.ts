@@ -17,6 +17,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_USDC = 'avalanche-supply-usdc',
   AVALANCHE_SUPPLY_USDT = 'avalanche-supply-usdt',
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
+  AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
 }
 
 type MeritIncentives = {
@@ -162,6 +163,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       {
         action: MeritAction.AVALANCHE_SUPPLY_SAVAX,
         rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+    AUSD: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_AUSD,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.AUSD.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
       },
