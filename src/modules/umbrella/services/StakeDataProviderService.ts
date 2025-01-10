@@ -4,7 +4,7 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0x508b0d26b00bcfa1b1e9783d1194d4a5efe9d19e';
+const STAKE_DATA_PROVIDER = '0xf102028324f28bc500c354a276b3da13d7463ae6';
 
 export interface StakeData {
   stakeToken: string;
@@ -31,13 +31,24 @@ export interface Rewards {
 export interface StakeUserData {
   stakeToken: string;
   stakeTokenName: string;
+  balances: StakeUserBalances;
+  cooldown: StakeUserCooldown;
+  underlyingTokenDecimals: number;
+  rewards: UserRewards[];
+}
+
+export interface StakeUserBalances {
   stakeTokenBalance: string;
   stakeTokenRedeemableAmount: string;
   underlyingTokenBalance: string;
+  underlyingWaTokenBalance: string;
+  underlyingWaTokenATokenBalance: string;
+}
+
+export interface StakeUserCooldown {
   cooldownAmount: string;
   endOfCooldown: number;
   withdrawalWindow: number;
-  rewards: UserRewards[];
 }
 
 export interface UserRewards {
@@ -94,12 +105,20 @@ export class StakeDataProviderService {
       return {
         stakeToken: userStakeData.stakeToken.toLowerCase(),
         stakeTokenName: userStakeData.stakeTokenName,
-        stakeTokenBalance: userStakeData.stakeTokenBalance.toString(),
-        stakeTokenRedeemableAmount: userStakeData.stakeTokenRedeemableAmount.toString(),
-        underlyingTokenBalance: userStakeData.underlyingTokenBalance.toString(),
-        cooldownAmount: userStakeData.cooldownAmount.toString(),
-        endOfCooldown: userStakeData.endOfCooldown,
-        withdrawalWindow: userStakeData.withdrawalWindow,
+        balances: {
+          stakeTokenBalance: userStakeData.balances.stakeTokenBalance.toString(),
+          stakeTokenRedeemableAmount: userStakeData.balances.stakeTokenRedeemableAmount.toString(),
+          underlyingTokenBalance: userStakeData.balances.underlyingTokenBalance.toString(),
+          underlyingWaTokenBalance: userStakeData.balances.underlyingWaTokenBalance.toString(),
+          underlyingWaTokenATokenBalance:
+            userStakeData.balances.underlyingWaTokenATokenBalance.toString(),
+        },
+        cooldown: {
+          cooldownAmount: userStakeData.cooldown.cooldownAmount.toString(),
+          endOfCooldown: userStakeData.cooldown.endOfCooldown,
+          withdrawalWindow: userStakeData.cooldown.withdrawalWindow,
+        },
+        underlyingTokenDecimals: userStakeData.underlyingTokenDecimals,
         rewards: userStakeData.rewards.map((reward, index) => ({
           rewardAddress: reward.toLowerCase(),
           accrued: userStakeData.rewardsAccrued[index].toString(),
