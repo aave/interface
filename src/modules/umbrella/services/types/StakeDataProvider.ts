@@ -15,20 +15,34 @@ import type { FunctionFragment, Result } from '@ethersproject/abi';
 import type { Listener, Provider } from '@ethersproject/providers';
 import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
+export type WaTokenDataStruct = {
+  waTokenUnderlying: string;
+  waTokenAToken: string;
+  waTokenPrice: BigNumberish;
+};
+
+export type WaTokenDataStructOutput = [string, string, BigNumber] & {
+  waTokenUnderlying: string;
+  waTokenAToken: string;
+  waTokenPrice: BigNumber;
+};
+
 export type RewardStruct = {
   rewardAddress: string;
   index: BigNumberish;
   maxEmissionPerSecond: BigNumberish;
   distributionEnd: BigNumberish;
   currentEmissionPerSecond: BigNumberish;
+  apy: BigNumberish;
 };
 
-export type RewardStructOutput = [string, BigNumber, BigNumber, BigNumber, BigNumber] & {
+export type RewardStructOutput = [string, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
   rewardAddress: string;
   index: BigNumber;
   maxEmissionPerSecond: BigNumber;
   distributionEnd: BigNumber;
   currentEmissionPerSecond: BigNumber;
+  apy: BigNumber;
 };
 
 export type StakeDataStruct = {
@@ -39,9 +53,7 @@ export type StakeDataStruct = {
   unstakeWindowSeconds: BigNumberish;
   stakeTokenUnderlying: string;
   underlyingIsWaToken: boolean;
-  waTokenUnderlying: string;
-  waTokenAToken: string;
-  waTokenPrice: BigNumberish;
+  waTokenData: WaTokenDataStruct;
   rewards: RewardStruct[];
 };
 
@@ -53,9 +65,7 @@ export type StakeDataStructOutput = [
   BigNumber,
   string,
   boolean,
-  string,
-  string,
-  BigNumber,
+  WaTokenDataStructOutput,
   RewardStructOutput[]
 ] & {
   stakeToken: string;
@@ -65,9 +75,7 @@ export type StakeDataStructOutput = [
   unstakeWindowSeconds: BigNumber;
   stakeTokenUnderlying: string;
   underlyingIsWaToken: boolean;
-  waTokenUnderlying: string;
-  waTokenAToken: string;
-  waTokenPrice: BigNumber;
+  waTokenData: WaTokenDataStructOutput;
   rewards: RewardStructOutput[];
 };
 

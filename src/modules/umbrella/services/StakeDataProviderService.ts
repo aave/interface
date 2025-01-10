@@ -1,10 +1,11 @@
+import { normalize } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0xf102028324f28bc500c354a276b3da13d7463ae6';
+const STAKE_DATA_PROVIDER = '0x3e965db7b1baa260b65208e3f508ed84344ebd75';
 
 export interface StakeData {
   stakeToken: string;
@@ -14,10 +15,14 @@ export interface StakeData {
   unstakeWindowSeconds: string;
   stakeTokenUnderlying: string;
   underlyingIsWaToken: boolean;
+  waTokenData: WaTokenData;
+  rewards: Rewards[];
+}
+
+export interface WaTokenData {
   waTokenUnderlying: string;
   waTokenAToken: string;
   waTokenPrice: string;
-  rewards: Rewards[];
 }
 
 export interface Rewards {
@@ -26,6 +31,7 @@ export interface Rewards {
   maxEmissionPerSecond: string;
   distributionEnd: string;
   currentEmissionPerSecond: string;
+  apy: string;
 }
 
 export interface StakeUserData {
@@ -86,15 +92,18 @@ export class StakeDataProviderService {
         unstakeWindowSeconds: stakeData.unstakeWindowSeconds.toString(),
         stakeTokenUnderlying: stakeData.stakeTokenUnderlying.toLowerCase(),
         underlyingIsWaToken: stakeData.underlyingIsWaToken,
-        waTokenUnderlying: stakeData.waTokenUnderlying.toLowerCase(),
-        waTokenAToken: stakeData.waTokenAToken.toLowerCase(),
-        waTokenPrice: stakeData.waTokenPrice.toString(), // 8 decimals
+        waTokenData: {
+          waTokenUnderlying: stakeData.waTokenData.waTokenUnderlying.toLowerCase(),
+          waTokenAToken: stakeData.waTokenData.waTokenAToken.toLowerCase(),
+          waTokenPrice: stakeData.waTokenData.waTokenPrice.toString(), // 8 decimals
+        },
         rewards: stakeData.rewards.map((reward) => ({
           rewardAddress: reward.rewardAddress.toLowerCase(),
           index: reward.index.toString(),
           maxEmissionPerSecond: reward.maxEmissionPerSecond.toString(),
           distributionEnd: reward.distributionEnd.toString(),
           currentEmissionPerSecond: reward.currentEmissionPerSecond.toString(),
+          apy: normalize(reward.apy.toString(), 18),
         })),
       };
     });
