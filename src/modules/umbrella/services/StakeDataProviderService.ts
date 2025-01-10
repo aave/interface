@@ -4,18 +4,19 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0x7ac3ffaa30455a06df9719f57956bc4bb33d29a0';
+const STAKE_DATA_PROVIDER = '0x508b0d26b00bcfa1b1e9783d1194d4a5efe9d19e';
 
 export interface StakeData {
-  stkToken: string;
-  stkTokenName: string;
-  stkTokenTotalSupply: string;
+  stakeToken: string;
+  stakeTokenName: string;
+  stakeTokenTotalSupply: string;
   cooldownSeconds: string;
   unstakeWindowSeconds: string;
-  asset: string;
-  isStataToken: boolean;
-  stataTokenUnderlying: string;
-  stataTokenAToken: string;
+  stakeTokenUnderlying: string;
+  underlyingIsWaToken: boolean;
+  waTokenUnderlying: string;
+  waTokenAToken: string;
+  waTokenPrice: string;
   rewards: Rewards[];
 }
 
@@ -29,7 +30,7 @@ export interface Rewards {
 
 export interface StakeUserData {
   stakeToken: string;
-  stkTokenName: string;
+  stakeTokenName: string;
   stakeTokenBalance: string;
   stakeTokenRedeemableAmount: string;
   underlyingTokenBalance: string;
@@ -67,15 +68,16 @@ export class StakeDataProviderService {
   humanizeStakeData(stakeData: StakeDataStructOutput[]): StakeData[] {
     return stakeData.map((stakeData) => {
       return {
-        stkToken: stakeData.stkToken.toLowerCase(),
-        stkTokenName: stakeData.stkTokenName,
-        stkTokenTotalSupply: stakeData.stkTokenTotalSupply.toString(),
+        stakeToken: stakeData.stakeToken.toLowerCase(),
+        stakeTokenName: stakeData.stakeTokenName,
+        stakeTokenTotalSupply: stakeData.stakeTokenTotalSupply.toString(),
         cooldownSeconds: stakeData.cooldownSeconds.toString(),
         unstakeWindowSeconds: stakeData.unstakeWindowSeconds.toString(),
-        asset: stakeData.asset.toLowerCase(),
-        isStataToken: stakeData.isStataToken,
-        stataTokenUnderlying: stakeData.stataTokenUnderlying.toLowerCase(),
-        stataTokenAToken: stakeData.stataTokenAToken.toLowerCase(),
+        stakeTokenUnderlying: stakeData.stakeTokenUnderlying.toLowerCase(),
+        underlyingIsWaToken: stakeData.underlyingIsWaToken,
+        waTokenUnderlying: stakeData.waTokenUnderlying.toLowerCase(),
+        waTokenAToken: stakeData.waTokenAToken.toLowerCase(),
+        waTokenPrice: stakeData.waTokenPrice.toString(), // 8 decimals
         rewards: stakeData.rewards.map((reward) => ({
           rewardAddress: reward.rewardAddress.toLowerCase(),
           index: reward.index.toString(),
@@ -91,7 +93,7 @@ export class StakeDataProviderService {
     return userStakeData.map((userStakeData) => {
       return {
         stakeToken: userStakeData.stakeToken.toLowerCase(),
-        stkTokenName: userStakeData.stkTokenName,
+        stakeTokenName: userStakeData.stakeTokenName,
         stakeTokenBalance: userStakeData.stakeTokenBalance.toString(),
         stakeTokenRedeemableAmount: userStakeData.stakeTokenRedeemableAmount.toString(),
         underlyingTokenBalance: userStakeData.underlyingTokenBalance.toString(),
