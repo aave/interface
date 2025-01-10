@@ -1,7 +1,7 @@
 import { Divider, Skeleton } from '@mui/material';
 
-import { Row } from '../../components/primitives/Row';
-import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
+import { Row } from '../../../components/primitives/Row';
+import { ListMobileItemWrapper } from '../../dashboard/lists/ListMobileItemWrapper';
 
 export const UmbrellaAssetsListMobileItemLoader = () => {
   return (

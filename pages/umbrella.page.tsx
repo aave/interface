@@ -13,8 +13,8 @@ import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { UmbrellaStakedAssetsListContainer } from 'src/modules/umbrella/UmbrellaStakedAssetsListContainer';
-import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/UmbrellaAssetsListContainer';
+import { UmbrellaStakedAssetsListContainer } from 'src/modules/umbrella/UserStakedAssets/UmbrellaStakedAssetsListContainer';
+import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer';
 
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 
@@ -151,7 +151,8 @@ export default function UmbrellaStaking() {
         }}
       >
         <MarketContainer>
-          <UmbrellaStakedAssetsListContainer />
+          <h2 style={{ color: 'white' }}> TODO but can reuse most of existing</h2>
+          {/* <UmbrellaStakedAssetsListContainer /> */}
         </MarketContainer>
         <MarketContainer>
           <UmbrellaAssetsListContainer />

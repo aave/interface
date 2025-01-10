@@ -19,6 +19,7 @@ import { TxSuccessView } from 'src/components/transactions/FlowCommons/Success';
 import {
   DetailsNumberLine,
   TxModalDetails,
+  DetailsCooldownLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
@@ -103,13 +104,15 @@ export const UmbrellaModalContent = ({ umbrellaAssetName, icon }: StakeProps) =>
   return (
     <>
       <TxModalTitle title="Stake" symbol={umbrellaAssetName} />
-      {isWrongNetwork && !readOnlyModeAddress && (
+
+      {/* TODO do we handle this for markets? */}
+      {/* {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={networkConfig.name}
           chainId={stakingChain}
           funnel={'Stake Modal'}
         />
-      )}
+      )} */}
 
       <CooldownWarning />
 
@@ -139,6 +142,7 @@ export const UmbrellaModalContent = ({ umbrellaAssetName, icon }: StakeProps) =>
           value={Number(stakeData?.stakeApy || '0') / 10000}
           percent
         />
+        <DetailsCooldownLine cooldownDays={10} />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}

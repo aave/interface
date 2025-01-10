@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
 import { useState } from 'react';
@@ -8,12 +9,19 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
+import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 
-import { useStakeData, useUserStakeData } from './hooks/useStakeData';
+import {
+  useStakeData,
+  useUserStakeData,
+  useStakedDataWithTokenBalances,
+} from '../hooks/useStakeData';
 import { UmbrellaAssetsListItem } from './UmbrellaAssetsListItem';
+import { UmbrellaStakeAssetsListItem } from './UmbrellaStakeAssetsListItem';
 import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
 import { UmbrellaAssetsListMobileItemLoader } from './UmbrellaAssetsListMobileItemLoader';
+import { ChainId } from '@aave/contract-helpers';
 
 const listHeaders = [
   {
@@ -30,7 +38,7 @@ const listHeaders = [
   //   },
   {
     title: <Trans>Wallet Balance</Trans>,
-    sortKey: 'totalDebtUSD',
+    sortKey: 'totalUnderlyingBalance',
   },
   //   {
   //     title: (
@@ -49,6 +57,8 @@ type MarketAssetsListProps = {
   loading: boolean;
 };
 
+// cast call 0x508b0d26b00bcfa1b1e9783d1194d4a5efe9d19e "rewardsController()("address")" --rpc-url https://virtual.base.rpc.tenderly.co/acca7349-4377-43ab-ba85-84530976e4e0
+
 export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
@@ -56,12 +66,24 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   const [currentMarketData, user] = useRootStore(
     useShallow((store) => [store.currentMarketData, store.account])
   );
+  const currentChainId = useRootStore((store) => store.currentChainId);
 
   const { data: stakeData } = useStakeData(currentMarketData);
   const { data: userStakeData } = useUserStakeData(currentMarketData, user);
-  console.log(stakeData);
-  console.log(userStakeData);
+  const { data: stakedDataWithTokenBalances } = useStakedDataWithTokenBalances(
+    stakeData,
+    currentChainId,
+    user
+  );
+  console.log('useStakeData --->', stakeData);
+  console.log('userStakeData --->', userStakeData);
+  console.log('stakedDataWithTokenBalances', stakedDataWithTokenBalances);
 
+  //   const underlyingStakedAssets = useMemo(() => {
+  //     return userStakeData?.map((stakeData) => stakeData.stakeTokenUnderlying);
+  //   }, [userStakeData]);
+
+  //   console.log('underlyingStakedAssets', underlyingStakedAssets);
   if (sortDesc) {
     if (sortName === 'symbol') {
       reserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
@@ -131,7 +153,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
         isTableChangedToCards ? (
           <UmbrellaAssetsListMobileItem {...reserve} key={reserve.id} />
         ) : (
-          <UmbrellaAssetsListItem {...reserve} key={reserve.id} />
+          <UmbrellaStakeAssetsListItem {...reserve} key={reserve.id} />
         )
       )}
     </>

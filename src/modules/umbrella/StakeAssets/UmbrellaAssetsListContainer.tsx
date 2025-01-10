@@ -14,7 +14,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
-import { GENERAL } from '../../utils/mixPanelEvents';
+import { GENERAL } from '../../../utils/mixPanelEvents';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -33,7 +33,7 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
   );
 }
 
-export const UmbrellaStakedAssetsListContainer = () => {
+export const UmbrellaAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
   const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [
@@ -83,7 +83,7 @@ export const UmbrellaStakedAssetsListContainer = () => {
           onSearchTermChange={setSearchTerm}
           title={
             <>
-              <Trans>Your staked assets</Trans>
+              <Trans>Assets to stake</Trans>
             </>
           }
           searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}

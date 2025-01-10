@@ -8,13 +8,13 @@ import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import UmbrellaAssetsList from './UmbrellaAssetsList';
+import UmbrellaAssetsList from '../StakeAssets/UmbrellaAssetsList';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
-import { GENERAL } from '../../utils/mixPanelEvents';
+import { GENERAL } from '../../../utils/mixPanelEvents';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -33,7 +33,7 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
   );
 }
 
-export const UmbrellaAssetsListContainer = () => {
+export const UmbrellaStakedAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
   const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [
@@ -83,7 +83,7 @@ export const UmbrellaAssetsListContainer = () => {
           onSearchTermChange={setSearchTerm}
           title={
             <>
-              <Trans>Assets to stake</Trans>
+              <Trans>Your staked assets</Trans>
             </>
           }
           searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}

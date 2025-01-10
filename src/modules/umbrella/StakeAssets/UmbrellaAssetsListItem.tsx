@@ -15,14 +15,14 @@ import { MARKETS } from 'src/utils/mixPanelEvents';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
-import { IncentivesCard } from '../../components/incentives/IncentivesCard';
-import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
-import { ListColumn } from '../../components/lists/ListColumn';
-import { ListItem } from '../../components/lists/ListItem';
-import { FormattedNumber } from '../../components/primitives/FormattedNumber';
-import { Link, ROUTES } from '../../components/primitives/Link';
-import { TokenIcon } from '../../components/primitives/TokenIcon';
-import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
+import { IncentivesCard } from '../../../components/incentives/IncentivesCard';
+import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
+import { ListColumn } from '../../../components/lists/ListColumn';
+import { ListItem } from '../../../components/lists/ListItem';
+import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
+import { Link, ROUTES } from '../../../components/primitives/Link';
+import { TokenIcon } from '../../../components/primitives/TokenIcon';
+import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 
 export const UmbrellaAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
@@ -42,8 +42,6 @@ export const UmbrellaAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
     currentMarket,
     ProtocolAction.borrow
   );
-
-  console.log('reserve', reserve);
 
   return (
     <ListItem

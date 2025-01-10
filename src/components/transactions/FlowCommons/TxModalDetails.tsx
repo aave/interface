@@ -362,3 +362,35 @@ export const DetailsUnwrapSwitch = ({
     </Row>
   );
 };
+
+interface DetailsCooldownLineProps {
+  cooldownDays: number;
+  loading?: boolean;
+}
+
+export const DetailsCooldownLine = ({
+  cooldownDays,
+  loading = false,
+}: DetailsCooldownLineProps) => {
+  return (
+    <Row caption={<Trans>Cooldown</Trans>} captionVariant="description" mb={4}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <FormattedNumber
+              value={cooldownDays}
+              variant="secondary14"
+              visibleDecimals={0}
+              compact={false}
+            />
+            <Typography ml={1} variant="secondary14">
+              <Trans>Days</Trans>
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    </Row>
+  );
+};
