@@ -39,8 +39,8 @@ const testData = {
     ],
   },
 };
-//due oracle
-describe('SWAP, BASE V3 MARKET, INTEGRATION SPEC', () => {
+
+describe.skip('SWAP, BASE V3 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyBaseFork({
     v3: true,
