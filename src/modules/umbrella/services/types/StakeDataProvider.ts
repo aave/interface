@@ -55,6 +55,7 @@ export type StakeDataStruct = {
   underlyingIsWaToken: boolean;
   waTokenData: WaTokenDataStruct;
   rewards: RewardStruct[];
+  underlyingTokenDecimals: BigNumberish;
 };
 
 export type StakeDataStructOutput = [
@@ -66,7 +67,8 @@ export type StakeDataStructOutput = [
   string,
   boolean,
   WaTokenDataStructOutput,
-  RewardStructOutput[]
+  RewardStructOutput[],
+  number
 ] & {
   stakeToken: string;
   stakeTokenName: string;
@@ -77,6 +79,7 @@ export type StakeDataStructOutput = [
   underlyingIsWaToken: boolean;
   waTokenData: WaTokenDataStructOutput;
   rewards: RewardStructOutput[];
+  underlyingTokenDecimals: number;
 };
 
 export type StakeUserBalancesStruct = {
@@ -118,7 +121,6 @@ export type StakeUserDataStruct = {
   stakeTokenName: string;
   balances: StakeUserBalancesStruct;
   cooldown: StakeUserCooldownStruct;
-  underlyingTokenDecimals: BigNumberish;
   rewards: string[];
   rewardsAccrued: BigNumberish[];
 };
@@ -128,7 +130,6 @@ export type StakeUserDataStructOutput = [
   string,
   StakeUserBalancesStructOutput,
   StakeUserCooldownStructOutput,
-  number,
   string[],
   BigNumber[]
 ] & {
@@ -136,7 +137,6 @@ export type StakeUserDataStructOutput = [
   stakeTokenName: string;
   balances: StakeUserBalancesStructOutput;
   cooldown: StakeUserCooldownStructOutput;
-  underlyingTokenDecimals: number;
   rewards: string[];
   rewardsAccrued: BigNumber[];
 };

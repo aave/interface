@@ -5,7 +5,7 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0x3e965db7b1baa260b65208e3f508ed84344ebd75';
+const STAKE_DATA_PROVIDER = '0x9f35cc835458fed692862fd96cfd3445cbd8ef9e';
 
 export interface StakeData {
   stakeToken: string;
@@ -14,6 +14,7 @@ export interface StakeData {
   cooldownSeconds: string;
   unstakeWindowSeconds: string;
   stakeTokenUnderlying: string;
+  underlyingTokenDecimals: number;
   underlyingIsWaToken: boolean;
   waTokenData: WaTokenData;
   rewards: Rewards[];
@@ -39,7 +40,6 @@ export interface StakeUserData {
   stakeTokenName: string;
   balances: StakeUserBalances;
   cooldown: StakeUserCooldown;
-  underlyingTokenDecimals: number;
   rewards: UserRewards[];
 }
 
@@ -91,6 +91,7 @@ export class StakeDataProviderService {
         cooldownSeconds: stakeData.cooldownSeconds.toString(),
         unstakeWindowSeconds: stakeData.unstakeWindowSeconds.toString(),
         stakeTokenUnderlying: stakeData.stakeTokenUnderlying.toLowerCase(),
+        underlyingTokenDecimals: stakeData.underlyingTokenDecimals,
         underlyingIsWaToken: stakeData.underlyingIsWaToken,
         waTokenData: {
           waTokenUnderlying: stakeData.waTokenData.waTokenUnderlying.toLowerCase(),
@@ -127,7 +128,6 @@ export class StakeDataProviderService {
           endOfCooldown: userStakeData.cooldown.endOfCooldown,
           withdrawalWindow: userStakeData.cooldown.withdrawalWindow,
         },
-        underlyingTokenDecimals: userStakeData.underlyingTokenDecimals,
         rewards: userStakeData.rewards.map((reward, index) => ({
           rewardAddress: reward.toLowerCase(),
           accrued: userStakeData.rewardsAccrued[index].toString(),
