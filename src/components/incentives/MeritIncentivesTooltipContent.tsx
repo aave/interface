@@ -39,7 +39,7 @@ export const MeritIncentivesTooltipContent = ({
           href={
             meritIncentives.customForumLink
               ? meritIncentives.customForumLink
-              : 'https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646'
+              : 'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898'
           }
           sx={{ textDecoration: 'underline' }}
           variant="caption"
