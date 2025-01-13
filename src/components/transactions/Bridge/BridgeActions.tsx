@@ -1,4 +1,3 @@
-import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -12,6 +11,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -42,6 +42,7 @@ export interface BridgeActionProps extends BoxProps {
   tokenAddress: string;
   fees: string;
   message: MessageDetails | undefined;
+  isCustomFeeToken: boolean;
 }
 
 export const BridgeActions = React.memo(
@@ -57,11 +58,12 @@ export const BridgeActions = React.memo(
     destinationChainId,
     message,
     fees,
+    isCustomFeeToken,
     ...props
   }: BridgeActionProps) => {
-    const { provider } = useWeb3Context();
+    const { sendTx } = useWeb3Context();
     const queryClient = useQueryClient();
-    const [addTransaction] = useRootStore((state) => [state.addTransaction]);
+    const addTransaction = useRootStore((state) => state.addTransaction);
 
     const {
       approvalTxState,
@@ -73,7 +75,7 @@ export const BridgeActions = React.memo(
       setGasLimit,
       setTxError,
     } = useModalContext();
-    const [user] = useRootStore((state) => [state.account]);
+    const user = useRootStore((state) => state.account);
 
     const {
       data: approvedAmount,
@@ -140,34 +142,36 @@ export const BridgeActions = React.memo(
     const action = async () => {
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        if (!provider) return;
-
-        const signer = provider.getSigner();
+        const provider = getProvider(sourceChainId);
 
         const sourceRouterAddress = getRouterFor(sourceChainId);
-        const sourceRouter = new Contract(sourceRouterAddress, routerAbi, signer);
+        const sourceRouter = new Contract(sourceRouterAddress, routerAbi, provider);
 
         const destinationChainSelector = getChainSelectorFor(destinationChainId);
 
-        const sendTx: TransactionResponse = await sourceRouter.ccipSend(
+        const txFeeOptions: { value?: string } = {};
+
+        if (!isCustomFeeToken) {
+          txFeeOptions.value = fees;
+        }
+
+        const populatedTransaction = await sourceRouter.populateTransaction.ccipSend(
           destinationChainSelector,
           message,
-          {
-            value: fees,
-          }
+          txFeeOptions
         );
 
-        await sendTx.wait(1);
+        const response = await sendTx(populatedTransaction);
 
         queryClient.invalidateQueries({ queryKey: ['sendRequests', user] });
 
         setMainTxState({
-          txHash: sendTx.hash,
+          txHash: response.hash,
           loading: false,
           success: true,
         });
 
-        addTransaction(sendTx.hash, {
+        addTransaction(response.hash, {
           action: 'bridge',
           txState: 'success',
           asset: tokenAddress,

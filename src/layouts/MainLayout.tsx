@@ -6,20 +6,19 @@ import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
 import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
-import TopBarNotify from './TopBarNotify';
+// import TopBarNotify from './TopBarNotify';
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  const APP_BANNER_VERSION = '2.0.0';
+  // const APP_BANNER_VERSION = '5.0.0';
 
   return (
     <>
-      <TopBarNotify
-        learnMoreLink="/markets/?marketName=proto_etherfi_v3"
-        buttonText="View Market"
-        notifyText="Aave Governance has deployed a new EtherFi market on Ethereum V3"
+      {/* <TopBarNotify
+        learnMoreLink="https://oh7vm38ynd2.typeform.com/to/Fnw3rMyw"
+        notifyText="Looking to provide product feedback? We'd love to hear from you! 👉"
         bannerVersion={APP_BANNER_VERSION}
-        icon={'/icons/markets/etherfi.svg'}
-      />
+        buttonText="Share feedback"
+      /> */}
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {children}

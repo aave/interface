@@ -10,6 +10,7 @@ import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -32,10 +33,9 @@ export const GovRepresentativesContent = ({
 }) => {
   const { mainTxState, txError } = useModalContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
-  const [currentNetworkConfig, currentChainId] = useRootStore((state) => [
-    state.currentNetworkConfig,
-    state.currentChainId,
-  ]);
+  const [currentNetworkConfig, currentChainId] = useRootStore(
+    useShallow((state) => [state.currentNetworkConfig, state.currentChainId])
+  );
   const [reps, setReps] = useState<UIRepresentative[]>(
     representatives.map((r) => {
       if (r.representative === ZERO_ADDRESS) {

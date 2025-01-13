@@ -3,7 +3,7 @@ import {
   FormattedGhoUserData,
   FormatUserSummaryAndIncentivesResponse,
 } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import memoize from 'micro-memoize';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import {
@@ -95,18 +95,6 @@ const formatUserYield = memoize(
                   );
                 });
               }
-            }
-          }
-          if (value.stableBorrowsUSD !== '0') {
-            acc.negativeProportion = acc.negativeProportion.plus(
-              new BigNumber(value.stableBorrowAPY).multipliedBy(value.stableBorrowsUSD)
-            );
-            if (reserve.sIncentivesData) {
-              reserve.sIncentivesData.forEach((incentive) => {
-                acc.positiveProportion = acc.positiveProportion.plus(
-                  new BigNumber(incentive.incentiveAPR).multipliedBy(value.stableBorrowsUSD)
-                );
-              });
             }
           }
         } else {

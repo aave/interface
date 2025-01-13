@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -6,10 +7,10 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
-import { showSuperFestTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
-import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
@@ -25,11 +26,12 @@ export const SuppliedPositionsListItem = ({
   underlyingAsset,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
-  const { isIsolated, aIncentivesData, isFrozen, isActive, isPaused } = reserve;
-  const { currentMarketData, currentMarket } = useProtocolDataContext();
+  const { isIsolated, aIncentivesData, aTokenAddress, isFrozen, isActive, isPaused } = reserve;
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentMarketData, currentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarketData, store.currentMarket])
+  );
 
   const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
@@ -59,7 +61,11 @@ export const SuppliedPositionsListItem = ({
       }`}
       showSupplyCapTooltips
       showDebtCeilingTooltips
-      showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.SUPPLY)}
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        reserve.symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       <ListValueColumn
         symbol={reserve.iconSymbol}
@@ -70,6 +76,9 @@ export const SuppliedPositionsListItem = ({
 
       <ListAPRColumn
         value={Number(reserve.supplyAPY)}
+        market={currentMarket}
+        protocolAction={ProtocolAction.supply}
+        address={aTokenAddress}
         incentives={aIncentivesData}
         symbol={reserve.symbol}
       />

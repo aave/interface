@@ -1,14 +1,14 @@
 import { ChainId, valueToWei } from '@aave/contract-helpers';
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import {
-  MiscArbitrum,
-  MiscAvalanche,
-  MiscBase,
-  MiscBNB,
-  MiscEthereum,
-  MiscFantom,
-  MiscOptimism,
-  MiscPolygon,
+  AaveV3Arbitrum,
+  AaveV3Avalanche,
+  AaveV3Base,
+  AaveV3BNB,
+  AaveV3Ethereum,
+  AaveV3Gnosis,
+  AaveV3Optimism,
+  AaveV3Polygon,
 } from '@bgd-labs/aave-address-book';
 import {
   BuildTxFunctions,
@@ -62,6 +62,7 @@ const ParaSwap = (chainId: number) => {
     {
       chainId,
       fetcher,
+      version: '6.2',
     },
     constructBuildTx,
     constructGetRate
@@ -69,36 +70,33 @@ const ParaSwap = (chainId: number) => {
 };
 
 type ParaswapChainMap = {
-  [key in ChainId]?: { paraswap: BuildTxFunctions & GetRateFunctions; feeClaimer: string };
+  [key in ChainId]?: { paraswap: BuildTxFunctions & GetRateFunctions; feeTarget: string };
 };
 
 const paraswapNetworks: ParaswapChainMap = {
   [ChainId.mainnet]: {
     paraswap: ParaSwap(ChainId.mainnet),
-    feeClaimer: MiscEthereum.PARASWAP_FEE_CLAIMER,
+    feeTarget: AaveV3Ethereum.COLLECTOR,
   },
   [ChainId.polygon]: {
     paraswap: ParaSwap(ChainId.polygon),
-    feeClaimer: MiscPolygon.PARASWAP_FEE_CLAIMER,
+    feeTarget: AaveV3Polygon.COLLECTOR,
   },
   [ChainId.avalanche]: {
     paraswap: ParaSwap(ChainId.avalanche),
-    feeClaimer: MiscAvalanche.PARASWAP_FEE_CLAIMER,
-  },
-  [ChainId.fantom]: {
-    paraswap: ParaSwap(ChainId.fantom),
-    feeClaimer: MiscFantom.PARASWAP_FEE_CLAIMER,
+    feeTarget: AaveV3Avalanche.COLLECTOR,
   },
   [ChainId.arbitrum_one]: {
     paraswap: ParaSwap(ChainId.arbitrum_one),
-    feeClaimer: MiscArbitrum.PARASWAP_FEE_CLAIMER,
+    feeTarget: AaveV3Arbitrum.COLLECTOR,
   },
   [ChainId.optimism]: {
     paraswap: ParaSwap(ChainId.optimism),
-    feeClaimer: MiscOptimism.PARASWAP_FEE_CLAIMER,
+    feeTarget: AaveV3Optimism.COLLECTOR,
   },
-  [ChainId.base]: { paraswap: ParaSwap(ChainId.base), feeClaimer: MiscBase.PARASWAP_FEE_CLAIMER },
-  [ChainId.bnb]: { paraswap: ParaSwap(ChainId.bnb), feeClaimer: MiscBNB.PARASWAP_FEE_CLAIMER },
+  [ChainId.base]: { paraswap: ParaSwap(ChainId.base), feeTarget: AaveV3Base.COLLECTOR },
+  [ChainId.bnb]: { paraswap: ParaSwap(ChainId.bnb), feeTarget: AaveV3BNB.COLLECTOR },
+  [ChainId.xdai]: { paraswap: ParaSwap(ChainId.xdai), feeTarget: AaveV3Gnosis.COLLECTOR },
 };
 
 export const getParaswap = (chainId: ChainId) => {
@@ -210,7 +208,7 @@ export async function fetchExactInRate(
   };
 
   if (max) {
-    options.includeContractMethods = [ContractMethod.multiSwap, ContractMethod.megaSwap];
+    options.includeContractMethods = [ContractMethod.swapExactAmountIn];
   }
 
   const swapper = ExactInSwapper(chainId);
@@ -291,7 +289,7 @@ export async function fetchExactOutRate(
   };
 
   if (max) {
-    options.includeContractMethods = [ContractMethod.buy];
+    options.includeContractMethods = [ContractMethod.swapExactAmountOut];
   }
 
   const swapper = ExactOutSwapper(chainId);
@@ -308,7 +306,7 @@ export async function fetchExactOutRate(
 }
 
 export const ExactInSwapper = (chainId: ChainId) => {
-  const { paraswap, feeClaimer } = getParaswap(chainId);
+  const { paraswap, feeTarget } = getParaswap(chainId);
 
   const getRate = async (
     amount: string,
@@ -353,8 +351,9 @@ export const ExactInSwapper = (chainId: ChainId) => {
           slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
-          partnerAddress: feeClaimer,
+          partnerAddress: feeTarget,
           takeSurplus: true,
+          isDirectFeeTransfer: true,
         },
         { ignoreChecks: true }
       );
@@ -376,7 +375,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
 };
 
 const ExactOutSwapper = (chainId: ChainId) => {
-  const { paraswap, feeClaimer } = getParaswap(chainId);
+  const { paraswap, feeTarget } = getParaswap(chainId);
 
   const getRate = async (
     amount: string,
@@ -419,10 +418,11 @@ const ExactOutSwapper = (chainId: ChainId) => {
           slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
-          partnerAddress: feeClaimer,
+          partnerAddress: feeTarget,
           takeSurplus: true,
           srcDecimals,
           destDecimals,
+          isDirectFeeTransfer: true,
         },
         { ignoreChecks: true }
       );

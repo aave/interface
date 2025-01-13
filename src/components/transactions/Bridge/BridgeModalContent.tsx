@@ -1,15 +1,21 @@
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, IconButton, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
-import BigNumber from 'bignumber.js';
+import {
+  Box,
+  Button,
+  IconButton,
+  SelectChangeEvent,
+  Skeleton,
+  Stack,
+  SvgIcon,
+  Typography,
+} from '@mui/material';
+import { BigNumber } from 'bignumber.js';
 import { constants } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
-import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
@@ -19,10 +25,10 @@ import {
 import { NetworkSelect } from 'src/components/transactions/NetworkSelect';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useBridgeTokens } from 'src/hooks/bridge/useBridgeWalletBalance';
+import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { TokenInfo } from 'src/ui-config/TokenList';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -33,26 +39,25 @@ import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActionProps, BridgeActions } from './BridgeActions';
+import { BridgeAmount } from './BridgeAmount';
 import {
   getConfigFor,
+  laneConfig,
   supportedNetworksWithBridge,
   SupportedNetworkWithChainId,
 } from './BridgeConfig';
 import { BridgeDestinationInput } from './BridgeDestinationInput';
+import { BridgeFeeTokenSelector } from './BridgeFeeTokenSelector';
 import { useGetBridgeLimit, useGetRateLimit } from './useGetBridgeLimits';
 import { useGetBridgeMessage } from './useGetBridgeMessage';
 import { useTimeToDestination } from './useGetFinalityTime';
 
-const defaultNetwork = supportedNetworksWithBridge[0]; // TODO Remove for Production
+const defaultNetwork = supportedNetworksWithBridge[0];
 const defaultNetworkMarket = marketsData[defaultNetwork.chainId];
-
-export interface TokenInfoWithBalance extends TokenInfo {
-  balance: string;
-}
 
 export const BridgeModalContent = () => {
   const { mainTxState: bridgeTxState, txError, close, gasLimit } = useModalContext();
-  const [user] = useRootStore((state) => [state.account]);
+  const user = useRootStore((state) => state.account);
   const [destinationAccount, setDestinationAccount] = useState(user);
   const [amount, setAmount] = useState('');
   const [maxSelected, setMaxSelected] = useState(false);
@@ -71,6 +76,44 @@ export const BridgeModalContent = () => {
 
   const { data: estimatedTimeToDestination, isFetching: loadingEstimatedTime } =
     useTimeToDestination(sourceNetworkObj.chainId);
+
+  const getFilteredFeeTokens = (chainId: number) => {
+    return laneConfig
+      .filter((token) => token.sourceChainId === chainId)
+      .flatMap((config) => config.feeTokens);
+  };
+
+  const filteredFeeTokensByChainId = getFilteredFeeTokens(sourceNetworkObj.chainId);
+
+  const { data: feeTokenListWithBalance, isFetching: loadingTokenBalances } = useTokensBalance(
+    filteredFeeTokensByChainId,
+    sourceNetworkObj.chainId,
+    user
+  );
+
+  const getGHOToken = (tokenList: TokenInfoWithBalance[]) => {
+    return tokenList.find((token: TokenInfoWithBalance) => token.symbol === 'GHO') || tokenList[0];
+  };
+
+  const [selectedFeeToken, setSelectedFeeToken] = useState(
+    getGHOToken(feeTokenListWithBalance || filteredFeeTokensByChainId)
+  );
+
+  const handleTokenChange = (event: SelectChangeEvent) => {
+    const token = feeTokenListWithBalance?.find((token) => token.symbol === event.target.value);
+
+    if (token) {
+      setSelectedFeeToken(token);
+    } else {
+      setSelectedFeeToken(filteredFeeTokensByChainId[0]);
+    }
+  };
+
+  useEffect(() => {
+    if (feeTokenListWithBalance && feeTokenListWithBalance.length > 0 && !selectedFeeToken) {
+      setSelectedFeeToken(feeTokenListWithBalance[0]);
+    }
+  }, [feeTokenListWithBalance, sourceNetworkObj]);
 
   useEffect(() => {
     // reset when source network changes
@@ -92,38 +135,27 @@ export const BridgeModalContent = () => {
     bridgeFeeFormatted,
     loading: loadingBridgeMessage,
     latestAnswer: bridgeFeeUSD,
+    error: txErrorBridgeMessage,
   } = useGetBridgeMessage({
     sourceChainId: sourceNetworkObj.chainId,
     destinationChainId: destinationNetworkObj?.chainId || 0,
     amount,
     sourceTokenAddress: sourceTokenInfo?.address || '',
     destinationAccount,
+    feeToken: selectedFeeToken?.address || '',
+    feeTokenOracle: selectedFeeToken?.oracle || ('' as string),
   });
 
-  const { data: bridgeLimits, isFetching: fetchingBridgeLimits } = useGetBridgeLimit(
+  const { data: bridgeLimits, isInitialLoading: loadingBridgeLimit } = useGetBridgeLimit(
     sourceNetworkObj.chainId
   );
 
-  const parsedAmount = parseUnits(amount || '0', 18);
-
-  const { data: rateLimit, isFetching: fetchingRateLimit } = useGetRateLimit({
+  const { data: rateLimit, isInitialLoading: loadingRateLimit } = useGetRateLimit({
     destinationChainId: destinationNetworkObj?.chainId || 0,
     sourceChainId: sourceNetworkObj.chainId,
   });
 
-  let bridgeLimitExceeded = false;
-  if (!fetchingBridgeLimits && bridgeLimits && bridgeLimits.bridgeLimit.gt(0)) {
-    bridgeLimitExceeded = bridgeLimits.currentBridgedAmount
-      .add(parsedAmount)
-      .gt(bridgeLimits.bridgeLimit);
-  }
-
-  let rateLimitExceeded = false;
-  if (!fetchingRateLimit && rateLimit) {
-    rateLimitExceeded = rateLimit.gt(0) && parsedAmount.gt(rateLimit);
-  }
-
-  const loadingLimits = fetchingBridgeLimits || fetchingRateLimit;
+  const loadingLimits = loadingBridgeLimit || loadingRateLimit;
 
   const handleSelectedNetworkChange =
     (networkAction: string) => (network: SupportedNetworkWithChainId) => {
@@ -135,16 +167,21 @@ export const BridgeModalContent = () => {
       }
     };
 
-  const hasBridgeLimit = bridgeLimits?.bridgeLimit.gt(-1);
-
   let maxAmountReducedDueToBridgeLimit = false;
+  let maxAmountReducedDueToRateLimit = false;
   let maxAmountToBridge = sourceTokenInfo?.bridgeTokenBalance || '0';
-  const remainingBridgeLimit =
-    bridgeLimits?.bridgeLimit.sub(bridgeLimits?.currentBridgedAmount) || BigNumber(0);
-  if (!fetchingBridgeLimits && hasBridgeLimit) {
-    if (remainingBridgeLimit.lt(maxAmountToBridge)) {
-      maxAmountToBridge = remainingBridgeLimit.toString();
+  const hasBridgeLimit = bridgeLimits?.bridgeLimit !== '-1';
+  const remainingBridgeLimit = BigNumber(bridgeLimits?.remainingAmount || '0');
+
+  if (!loadingLimits && bridgeLimits && rateLimit) {
+    if (hasBridgeLimit && remainingBridgeLimit.lt(maxAmountToBridge)) {
+      maxAmountToBridge = bridgeLimits.remainingAmount;
       maxAmountReducedDueToBridgeLimit = true;
+      maxAmountReducedDueToRateLimit = false;
+    } else if (BigNumber(rateLimit.tokens).lt(maxAmountToBridge)) {
+      maxAmountToBridge = rateLimit.tokens;
+      maxAmountReducedDueToRateLimit = true;
+      maxAmountReducedDueToBridgeLimit = false;
     }
   }
 
@@ -164,7 +201,26 @@ export const BridgeModalContent = () => {
     const currentSourceNetworkObj = sourceNetworkObj;
     setSourceNetworkObj(destinationNetworkObj);
     setDestinationNetworkObj(currentSourceNetworkObj);
+
+    const newFilteredFeeTokens = getFilteredFeeTokens(destinationNetworkObj.chainId);
+    setSelectedFeeToken(newFilteredFeeTokens[0]);
   };
+
+  // string formatting for tx display
+  const amountUsd = Number(amount) * sourceTokenInfo.tokenPriceUSD;
+  const parsedAmountFee = new BigNumber(amount || '0');
+  const parsedBridgeFee = new BigNumber(bridgeFeeFormatted || '0');
+  const amountAfterFee = BigNumber.max(0, parsedAmountFee.minus(parsedBridgeFee));
+  const amountAfterFeeFormatted = amountAfterFee.toString();
+  const feeTokenBalance =
+    feeTokenListWithBalance?.find((t) => t.address === selectedFeeToken.address)?.balance || '0';
+
+  const feesExceedWalletBalance =
+    !loadingBridgeMessage &&
+    !loadingTokenBalances &&
+    amountUsd !== 0 &&
+    ((selectedFeeToken.address !== constants.AddressZero && amountAfterFee.lte(0)) ||
+      (selectedFeeToken.address === constants.AddressZero && parsedBridgeFee.gte(feeTokenBalance)));
 
   const bridgeActionsProps: BridgeActionProps = {
     amountToBridge: amount,
@@ -172,16 +228,17 @@ export const BridgeModalContent = () => {
     symbol: GHO_SYMBOL,
     blocked:
       loadingBridgeMessage ||
+      loadingTokenBalances ||
       !destinationAccount ||
-      bridgeLimitExceeded ||
-      rateLimitExceeded ||
-      loadingLimits,
+      loadingLimits ||
+      feesExceedWalletBalance,
     decimals: 18,
     message,
     fees: bridgeFee,
     sourceChainId: sourceNetworkObj.chainId,
     destinationChainId: destinationNetworkObj.chainId,
     tokenAddress: sourceTokenInfo?.address || constants.AddressZero,
+    isCustomFeeToken: selectedFeeToken.address !== constants.AddressZero,
   };
 
   if (txError && txError.blocking) {
@@ -215,22 +272,6 @@ export const BridgeModalContent = () => {
     );
   }
 
-  const feeTooltip = (
-    <TextWithTooltip text={<Trans>Fee</Trans>}>
-      <Trans>
-        This fee is in addition to gas costs, which is paid to Chainlink CCIP service providers.{' '}
-        <Link
-          href="https://docs.chain.link/ccip/billing"
-          sx={{ textDecoration: 'underline' }}
-          variant="caption"
-          color="text.secondary"
-        >
-          Learn more
-        </Link>
-      </Trans>
-    </TextWithTooltip>
-  );
-
   const estimatedTimeTooltip = (
     <TextWithTooltip text={<Trans>Estimated time</Trans>}>
       <Trans>
@@ -248,7 +289,14 @@ export const BridgeModalContent = () => {
     </TextWithTooltip>
   );
 
-  const amountUsd = Number(amount) * sourceTokenInfo.tokenPriceUSD;
+  const amountWithFee = (
+    <TextWithTooltip text={<Trans>Amount After Fee</Trans>}>
+      <Trans>
+        The total amount bridged minus CCIP fees. Paying in network token does not impact gho
+        amount.
+      </Trans>
+    </TextWithTooltip>
+  );
 
   return (
     <>
@@ -344,34 +392,14 @@ export const BridgeModalContent = () => {
                 iconSymbol: GHO_SYMBOL,
               },
             ]}
-            maxValue={
-              hasBridgeLimit
-                ? formatUnits(remainingBridgeLimit.toString(), 18)
-                : sourceTokenInfo.bridgeTokenBalanceFormatted
-            }
+            maxValue={maxAmountToBridgeFormatted}
             inputTitle={<Trans>Amount to Bridge</Trans>}
             balanceText={<Trans>GHO balance</Trans>}
             sx={{ width: '100%' }}
             loading={fetchingBridgeTokenBalance || loadingLimits}
             isMaxSelected={maxSelected}
           />
-          {amount !== '' &&
-            maxAmountReducedDueToBridgeLimit &&
-            maxSelected &&
-            !rateLimitExceeded && (
-              <Warning severity="warning" sx={{ my: 2 }}>
-                <Stack direction="row">
-                  <Typography variant="caption">
-                    Due to bridging limits, the maximum amount currently available to bridge is{' '}
-                    <FormattedNumber
-                      variant="caption"
-                      value={maxAmountToBridgeFormatted}
-                      visibleDecimals={2}
-                    />
-                  </Typography>
-                </Stack>
-              </Warning>
-            )}
+
           <Box sx={{ mt: 3 }}>
             <BridgeDestinationInput
               connectedAccount={user}
@@ -383,12 +411,31 @@ export const BridgeModalContent = () => {
             />
           </Box>
           <TxModalDetails gasLimit={gasLimit} chainId={sourceNetworkObj.chainId}>
-            <DetailsNumberLine
-              description={<Trans>Amount</Trans>}
-              iconSymbol={GHO_SYMBOL}
-              symbol={GHO_SYMBOL}
-              value={amount}
+            <BridgeAmount
+              amount={amount}
+              maxAmountToBridgeFormatted={maxAmountToBridgeFormatted}
+              maxAmountReducedDueToBridgeLimit={maxSelected && maxAmountReducedDueToBridgeLimit}
+              maxAmountReducedDueToRateLimit={maxSelected && maxAmountReducedDueToRateLimit}
+              refillRate={rateLimit?.rate || '0'}
+              maxRateLimitCapacity={rateLimit?.capacity || '0'}
             />
+            <BridgeFeeTokenSelector
+              feeTokens={feeTokenListWithBalance || []}
+              selectedFeeToken={selectedFeeToken}
+              onFeeTokenChanged={handleTokenChange}
+              bridgeFeeFormatted={bridgeFeeFormatted}
+              bridgeFeeUSD={bridgeFeeUSD}
+              loading={loadingBridgeMessage || loadingTokenBalances}
+            />
+            {selectedFeeToken.address !== constants.AddressZero && (
+              <DetailsNumberLine
+                description={amountWithFee}
+                iconSymbol={GHO_SYMBOL}
+                symbol={GHO_SYMBOL}
+                value={amountAfterFeeFormatted}
+                loading={loadingBridgeMessage || loadingTokenBalances}
+              />
+            )}
             <Row caption={estimatedTimeTooltip} captionVariant="description" mb={4}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {loadingEstimatedTime ? (
@@ -403,71 +450,34 @@ export const BridgeModalContent = () => {
                 )}
               </Box>
             </Row>
-            <Row caption={feeTooltip} captionVariant="description" mb={4}>
-              {!message && !loadingBridgeMessage ? (
-                <NoData variant="secondary14" color="text.secondary" />
-              ) : loadingBridgeMessage ? (
-                <Skeleton
-                  variant="rectangular"
-                  height={20}
-                  width={100}
-                  sx={{ borderRadius: '4px' }}
-                />
-              ) : (
-                <Stack direction="column" alignItems="flex-end" position="relative">
-                  <Stack direction="row" alignItems="center">
-                    <TokenIcon symbol="ETH" sx={{ mr: 1, fontSize: '16px' }} />
-                    <FormattedNumber
-                      value={bridgeFeeFormatted}
-                      symbol="ETH"
-                      variant="secondary14"
-                    />
-                  </Stack>
-                  <FormattedNumber
-                    value={bridgeFeeUSD}
-                    variant="helperText"
-                    compact
-                    symbol="USD"
-                    color="text.secondary"
-                    sx={{ position: 'absolute', top: '20px' }}
+            {/* <Row caption={'Bridged Amount'} captionVariant="description" mb={4}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {loadingBridgeMessage ? (
+                  <Skeleton
+                    variant="rectangular"
+                    height={20}
+                    width={100}
+                    sx={{ borderRadius: '4px' }}
                   />
-                </Stack>
-              )}
-            </Row>
+                ) : (
+                  <Typography variant="secondary14">{estimatedTimeToDestination}</Typography>
+                )}
+              </Box> */}
             <Row /> {/* Spacer */}
+            {feesExceedWalletBalance && (
+              <Warning severity="warning" sx={{ my: 0 }}>
+                <Typography variant="caption">
+                  <Trans>Fees exceed wallet balance</Trans>
+                </Typography>
+              </Warning>
+            )}
           </TxModalDetails>
           {txError && <GasEstimationError txError={txError} />}
 
-          {/* {bridgeLimitExceeded && (
+          {txErrorBridgeMessage && (
             <Warning severity="error" sx={{ mt: 4 }} icon={false}>
               <Typography variant="caption">
-                <Trans>
-                  The selected amount is not available to bridge due to the bridge limit of
-                </Trans>{' '}
-                {formatUnits(bridgeLimits?.bridgeLimit || 0, 18)}.{' '}
-                <Trans>Please try again later or reduce the amount to bridge</Trans>
-              </Typography>
-            </Warning>
-          )}
-
-          {rateLimitExceeded && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
-              <Typography variant="caption">
-                <Trans>
-                  The selected amount is not available to bridge due to CCIP rate limit of
-                </Trans>
-                <Trans>Please try again later or reduce the amount to bridge to less than</Trans>{' '}
-                {rateLimit}
-              </Typography>
-            </Warning>
-          )} */}
-          {rateLimitExceeded && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
-              <Typography variant="caption">
-                <Trans>
-                  Bridging is currently unavailable due to the rate limit being exceeded. Please try
-                  again later or reduce the amount to bridge.
-                </Trans>
+                <Trans>Something went wrong fetching bridge message, please try again later.</Trans>
               </Typography>
             </Warning>
           )}

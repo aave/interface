@@ -16,8 +16,8 @@ import React, { useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
-import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import {
   availableMarkets,
   CustomMarket,
@@ -111,14 +111,15 @@ enum SelectedMarketVersion {
 }
 
 export const MarketSwitcher = () => {
-  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
     SelectedMarketVersion.V3
   );
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
+  );
 
   const isV3MarketsAvailable = availableMarkets
     .map((marketId: CustomMarket) => {
@@ -131,6 +132,15 @@ export const MarketSwitcher = () => {
   const handleMarketSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     trackEvent(DASHBOARD.CHANGE_MARKET, { market: e.target.value });
     setCurrentMarket(e.target.value as unknown as CustomMarket);
+  };
+
+  const marketBlurbs: { [key: string]: JSX.Element } = {
+    proto_mainnet_v3: (
+      <Trans>Main Ethereum market with the largest selection of assets and yield options</Trans>
+    ),
+    proto_lido_v3: (
+      <Trans>Optimized for efficiency and risk by supporting blue-chip collateral assets</Trans>
+    ),
   };
 
   return (
@@ -149,60 +159,105 @@ export const MarketSwitcher = () => {
       SelectProps={{
         native: false,
         className: 'MarketSwitcher__select',
-        IconComponent: (props) => (
-          <SvgIcon fontSize="medium" {...props}>
-            <ChevronDownIcon />
-          </SvgIcon>
-        ),
+        IconComponent: () => null,
         renderValue: (marketId) => {
           const { market, logo } = getMarketInfoById(marketId as CustomMarket);
 
           return (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <MarketLogo
-                size={upToLG ? 32 : 28}
-                logo={logo}
-                testChainName={getMarketHelpData(market.marketTitle).testChainName}
-              />
-              <Box sx={{ mr: 1, display: 'inline-flex', alignItems: 'flex-start' }}>
+            <Box>
+              {/* Main Row with Market Name */}
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <MarketLogo
+                  size={upToLG ? 32 : 28}
+                  logo={logo}
+                  testChainName={getMarketHelpData(market.marketTitle).testChainName}
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography
+                    variant={upToLG ? 'display1' : 'h1'}
+                    sx={{
+                      fontSize: downToXSM ? '1.55rem' : undefined,
+                      color: 'common.white',
+                      mr: 1,
+                    }}
+                  >
+                    {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
+                    {upToLG &&
+                    (currentMarket === 'proto_mainnet_v3' || currentMarket === 'proto_lido_v3')
+                      ? 'Instance'
+                      : ' Market'}
+                  </Typography>
+                  {market.v3 ? (
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Box
+                        sx={{
+                          color: '#fff',
+                          px: 2,
+                          borderRadius: '12px',
+                          background: (theme) => theme.palette.gradients.aaveGradient,
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Typography variant="subheader2">V3</Typography>
+                      </Box>
+                      <SvgIcon
+                        fontSize="medium"
+                        sx={{
+                          ml: 1,
+                          color: '#F1F1F3',
+                        }}
+                      >
+                        <ChevronDownIcon />
+                      </SvgIcon>
+                    </Box>
+                  ) : (
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Box
+                        sx={{
+                          color: '#A5A8B6',
+                          px: 2,
+                          borderRadius: '12px',
+                          backgroundColor: '#383D51',
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Typography variant="subheader2">V2</Typography>
+                      </Box>
+                      <SvgIcon
+                        fontSize="medium"
+                        sx={{
+                          ml: 1,
+                          color: '#F1F1F3',
+                        }}
+                      >
+                        <ChevronDownIcon />
+                      </SvgIcon>
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+
+              {marketBlurbs[currentMarket] && (
                 <Typography
-                  variant={upToLG ? 'display1' : 'h1'}
                   sx={{
-                    fontSize: downToXSM ? '1.55rem' : undefined,
                     color: 'common.white',
-                    mr: 1,
+                    mt: 0.5,
+                    fontSize: '0.85rem',
+                    wordWrap: 'break-word',
+                    whiteSpace: 'normal',
+                    lineHeight: 1.3,
+                    maxWidth: '100%',
                   }}
                 >
-                  {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
-                  {upToLG && ' Market'}
+                  {marketBlurbs[currentMarket]}
                 </Typography>
-                {market.v3 ? (
-                  <Box
-                    sx={{
-                      color: '#fff',
-                      px: 2,
-                      borderRadius: '12px',
-                      background: (theme) => theme.palette.gradients.aaveGradient,
-                    }}
-                  >
-                    <Typography variant="subheader2">V3</Typography>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      color: '#A5A8B6',
-                      px: 2,
-                      borderRadius: '12px',
-                      backgroundColor: '#383D51',
-                    }}
-                  >
-                    <Typography variant="subheader2">V2</Typography>
-                  </Box>
-                )}
-              </Box>
+              )}
             </Box>
           );
         },
+
         sx: {
           '&.MarketSwitcher__select .MuiSelect-outlined': {
             pl: 0,
@@ -214,6 +269,10 @@ export const MarketSwitcher = () => {
         MenuProps: {
           anchorOrigin: {
             vertical: 'bottom',
+            horizontal: 'right',
+          },
+          transformOrigin: {
+            vertical: 'top',
             horizontal: 'right',
           },
           PaperProps: {

@@ -14,6 +14,7 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -25,7 +26,6 @@ export interface RepayActionProps extends BoxProps {
   customGasPrice?: string;
   poolAddress: string;
   symbol: string;
-  debtType: InterestRate;
   repayWithATokens: boolean;
   blocked?: boolean;
   maxApproveNeeded: string;
@@ -38,7 +38,6 @@ export const RepayActions = ({
   isWrongNetwork,
   sx,
   symbol,
-  debtType,
   repayWithATokens,
   blocked,
   maxApproveNeeded,
@@ -55,18 +54,20 @@ export const RepayActions = ({
     addTransaction,
     optimizedPath,
     currentMarketData,
-  ] = useRootStore((store) => [
-    store.repay,
-    store.repayWithPermit,
-    store.encodeRepayParams,
-    store.encodeRepayWithPermitParams,
-    store.tryPermit,
-    store.walletApprovalMethodPreference,
-    store.estimateGasLimit,
-    store.addTransaction,
-    store.useOptimizedPath,
-    store.currentMarketData,
-  ]);
+  ] = useRootStore(
+    useShallow((store) => [
+      store.repay,
+      store.repayWithPermit,
+      store.encodeRepayParams,
+      store.encodeRepayWithPermitParams,
+      store.tryPermit,
+      store.walletApprovalMethodPreference,
+      store.estimateGasLimit,
+      store.addTransaction,
+      store.useOptimizedPath,
+      store.currentMarketData,
+    ])
+  );
   const { sendTx } = useWeb3Context();
   const queryClient = useQueryClient();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
@@ -143,7 +144,7 @@ export const RepayActions = ({
               ? amountToRepay
               : parseUnits(amountToRepay, poolReserve.decimals).toString(),
           reserve: poolAddress,
-          interestRateMode: debtType,
+          interestRateMode: InterestRate.Variable,
           signature: signatureParams.signature,
           deadline: signatureParams.deadline,
         };
@@ -170,7 +171,7 @@ export const RepayActions = ({
               : parseUnits(amountToRepay, poolReserve.decimals).toString(),
           poolAddress,
           repayWithATokens,
-          debtType,
+          debtType: InterestRate.Variable,
         };
 
         let encodedParams: string | undefined;

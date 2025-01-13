@@ -2,10 +2,10 @@ import '/public/fonts/inter/inter.css';
 import '/src/styles/variables.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import { NoSsr } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Web3ReactProvider } from '@web3-react/core';
-import { providers } from 'ethers';
+import { ConnectKitProvider } from 'connectkit';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -20,6 +20,9 @@ import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
+import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { WagmiProvider } from 'wagmi';
+import { useShallow } from 'zustand/shallow';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -57,11 +60,6 @@ const EmodeModal = dynamic(() =>
 const FaucetModal = dynamic(() =>
   import('src/components/transactions/Faucet/FaucetModal').then((module) => module.FaucetModal)
 );
-const RateSwitchModal = dynamic(() =>
-  import('src/components/transactions/RateSwitch/RateSwitchModal').then(
-    (module) => module.RateSwitchModal
-  )
-);
 const RepayModal = dynamic(() =>
   import('src/components/transactions/Repay/RepayModal').then((module) => module.RepayModal)
 );
@@ -81,6 +79,9 @@ const StakingMigrateModal = dynamic(() =>
     (module) => module.StakingMigrateModal
   )
 );
+const ReadOnlyModal = dynamic(() =>
+  import('src/components/WalletConnection/ReadOnlyModal').then((module) => module.ReadOnlyModal)
+);
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -89,13 +90,6 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getWeb3Library(provider: any): providers.Web3Provider {
-  const library = new providers.Web3Provider(provider);
-  library.pollingInterval = 12000;
-  return library;
-}
-
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
@@ -103,7 +97,9 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
-  const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
+  const [initializeMixpanel, setWalletType] = useRootStore(
+    useShallow((store) => [store.initializeMixpanel, store.setWalletType])
+  );
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -124,6 +120,10 @@ export default function MyApp(props: MyAppProps) {
     }
   }, []);
 
+  const cleanLocalStorage = () => {
+    localStorage.removeItem('readOnlyModeAddress');
+  };
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -136,43 +136,50 @@ export default function MyApp(props: MyAppProps) {
         }
         imageUrl="https://app.aave.com/aave-com-opengraph.png"
       />
-      <LanguageProvider>
-        <QueryClientProvider client={queryClient}>
-          <Web3ReactProvider getLibrary={getWeb3Library}>
-            <Web3ContextProvider>
-              <AppGlobalStyles>
-                <AddressBlocked>
-                  <ModalContextProvider>
-                    <SharedDependenciesProvider>
-                      <AppDataProvider>
-                        <GasStationProvider>
-                          {getLayout(<Component {...pageProps} />)}
-                          <SupplyModal />
-                          <WithdrawModal />
-                          <BorrowModal />
-                          <RepayModal />
-                          <CollateralChangeModal />
-                          <RateSwitchModal />
-                          <DebtSwitchModal />
-                          <ClaimRewardsModal />
-                          <EmodeModal />
-                          <SwapModal />
-                          <FaucetModal />
-                          <TransactionEventHandler />
-                          <SwitchModal />
-                          <StakingMigrateModal />
-                          <BridgeModal />
-                        </GasStationProvider>
-                      </AppDataProvider>
-                    </SharedDependenciesProvider>
-                  </ModalContextProvider>
-                </AddressBlocked>
-              </AppGlobalStyles>
-            </Web3ContextProvider>
-          </Web3ReactProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </LanguageProvider>
+      <NoSsr>
+        <LanguageProvider>
+          <WagmiProvider config={wagmiConfig}>
+            <QueryClientProvider client={queryClient}>
+              <ConnectKitProvider
+                onDisconnect={cleanLocalStorage}
+                onConnect={({ connectorId }) => setWalletType(connectorId)}
+              >
+                <Web3ContextProvider>
+                  <AppGlobalStyles>
+                    <AddressBlocked>
+                      <ModalContextProvider>
+                        <SharedDependenciesProvider>
+                          <AppDataProvider>
+                            <GasStationProvider>
+                              {getLayout(<Component {...pageProps} />)}
+                              <SupplyModal />
+                              <WithdrawModal />
+                              <BorrowModal />
+                              <RepayModal />
+                              <CollateralChangeModal />
+                              <DebtSwitchModal />
+                              <ClaimRewardsModal />
+                              <EmodeModal />
+                              <SwapModal />
+                              <FaucetModal />
+                              <TransactionEventHandler />
+                              <SwitchModal />
+                              <StakingMigrateModal />
+                              <BridgeModal />
+                              <ReadOnlyModal />
+                            </GasStationProvider>
+                          </AppDataProvider>
+                        </SharedDependenciesProvider>
+                      </ModalContextProvider>
+                    </AddressBlocked>
+                  </AppGlobalStyles>
+                </Web3ContextProvider>
+              </ConnectKitProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+          </WagmiProvider>
+        </LanguageProvider>
+      </NoSsr>
     </CacheProvider>
   );
 }

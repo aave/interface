@@ -18,7 +18,7 @@ const tokensToRequest: RequestedTokens = {
 const testData = {
   testCases: {
     deposit1: {
-      asset: assets.polygonV3Market.MATIC,
+      asset: assets.polygonV3Market.POL,
       amount: 100,
       hasApproval: true,
     },

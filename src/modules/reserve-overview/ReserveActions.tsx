@@ -1,18 +1,8 @@
-import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Divider,
-  Paper,
-  Skeleton,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
-import BigNumber from 'bignumber.js';
+import { Box, Button, Divider, Paper, Skeleton, Stack, Typography, useTheme } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
 import React, { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
@@ -38,6 +28,7 @@ import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableTo
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { amountToUsd } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
@@ -63,11 +54,17 @@ interface ReserveActionsProps {
 export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
 
-  const { currentAccount, loading: loadingWeb3Context } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { openBorrow, openSupply } = useModalContext();
-  const currentMarket = useRootStore((store) => store.currentMarket);
-  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const [currentMarket, currentNetworkConfig, currentMarketData, minRemainingBaseTokenBalance] =
+    useRootStore(
+      useShallow((store) => [
+        store.currentMarket,
+        store.currentNetworkConfig,
+        store.currentMarketData,
+        store.poolComputed.minRemainingBaseTokenBalance,
+      ])
+    );
   const {
     ghoReserveData,
     user,
@@ -75,10 +72,6 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     marketReferencePriceInUsd,
   } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances(currentMarketData);
-
-  const [minRemainingBaseTokenBalance] = useRootStore((store) => [
-    store.poolComputed.minRemainingBaseTokenBalance,
-  ]);
   const { baseAssetSymbol } = currentNetworkConfig;
   let balance = walletBalances[reserve.underlyingAsset];
   if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
@@ -97,11 +90,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     ).toString();
     maxAmountToSupply = '0';
   } else if (user) {
-    maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-      reserve,
-      user,
-      InterestRate.Variable
-    ).toString();
+    maxAmountToBorrow = getMaxAmountAvailableToBorrow(reserve, user).toString();
 
     maxAmountToSupply = getMaxAmountAvailableToSupply(
       balance?.amount || '0',
@@ -131,7 +120,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   });
 
   if (!currentAccount) {
-    return <ConnectWallet loading={loadingWeb3Context} />;
+    return <ConnectWallet />;
   }
 
   if (loadingReserves || loadingWalletBalance) {
@@ -271,22 +260,18 @@ const PaperWrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const ConnectWallet = ({ loading }: { loading: boolean }) => {
+const ConnectWallet = () => {
   return (
     <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <>
-          <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
-            <Trans>Your info</Trans>
-          </Typography>
-          <Typography sx={{ mb: 6 }} color="text.secondary">
-            <Trans>Please connect a wallet to view your personal information here.</Trans>
-          </Typography>
-          <ConnectWalletButton />
-        </>
-      )}
+      <>
+        <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
+          <Trans>Your info</Trans>
+        </Typography>
+        <Typography sx={{ mb: 6 }} color="text.secondary">
+          <Trans>Please connect a wallet to view your personal information here.</Trans>
+        </Typography>
+        <ConnectWalletButton />
+      </>
     </Paper>
   );
 };

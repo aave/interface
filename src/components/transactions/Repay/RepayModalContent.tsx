@@ -1,8 +1,4 @@
-import {
-  API_ETH_MOCK_ADDRESS,
-  InterestRate,
-  synthetixProxyByChainId,
-} from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, synthetixProxyByChainId } from '@aave/contract-helpers';
 import {
   BigNumberValue,
   calculateHealthFactorFromBalancesBigUnits,
@@ -11,17 +7,17 @@ import {
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import Typography from '@mui/material/Typography';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -45,16 +41,20 @@ export const RepayModalContent = ({
   tokenBalance,
   nativeBalance,
   isWrongNetwork,
-  debtType,
   user,
-}: ModalWrapperProps & { debtType: InterestRate; user: ExtendedFormattedUser }) => {
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd } = useAppDataContext();
-  const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
 
-  const [minRemainingBaseTokenBalance] = useRootStore((store) => [
-    store.poolComputed.minRemainingBaseTokenBalance,
-  ]);
+  const [minRemainingBaseTokenBalance, currentChainId, currentMarketData, currentMarket] =
+    useRootStore(
+      useShallow((store) => [
+        store.poolComputed.minRemainingBaseTokenBalance,
+        store.currentChainId,
+        store.currentMarketData,
+        store.currentMarket,
+      ])
+    );
 
   // states
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
@@ -74,10 +74,7 @@ export const RepayModalContent = ({
 
   const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
 
-  const debt =
-    debtType === InterestRate.Stable
-      ? userReserve?.stableBorrows || '0'
-      : userReserve?.variableBorrows || '0';
+  const debt = userReserve?.variableBorrows || '0';
   const debtUSD = new BigNumber(debt)
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
@@ -291,7 +288,6 @@ export const RepayModalContent = ({
         }
         isWrongNetwork={isWrongNetwork}
         symbol={modalSymbol}
-        debtType={debtType}
         repayWithATokens={repayWithATokens}
       />
     </>

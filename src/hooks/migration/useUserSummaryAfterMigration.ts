@@ -1,4 +1,4 @@
-import { InterestRate, valueToWei } from '@aave/contract-helpers';
+import { valueToWei } from '@aave/contract-helpers';
 import { rayDiv, valueToBigNumber } from '@aave/math-utils';
 import dayjs from 'dayjs';
 import memoize from 'micro-memoize';
@@ -50,7 +50,6 @@ const select = memoize(
     const userReservesFrom =
       fromPoolReserve?.userReserves?.map((userReserve) => {
         let scaledATokenBalance = userReserve.scaledATokenBalance;
-        let principalStableDebt = userReserve.principalStableDebt;
         let scaledVariableDebt = userReserve.scaledVariableDebt;
 
         const isSupplyAsset =
@@ -75,17 +74,12 @@ const select = memoize(
             return false; // exclude asset if V3 reserve does not exist
           });
 
-        borrowAssets.forEach((borrowAsset) => {
-          if (borrowAsset.interestRate == InterestRate.Stable) {
-            principalStableDebt = '0';
-          } else {
-            scaledVariableDebt = '0';
-          }
-        });
+        if (borrowAssets.length > 0) {
+          scaledVariableDebt = '0';
+        }
 
         return {
           ...userReserve,
-          principalStableDebt,
           scaledATokenBalance,
           scaledVariableDebt,
         };
@@ -117,15 +111,14 @@ const select = memoize(
     const suppliesMap = supplies.reduce((obj, item) => {
       obj[item.underlyingAsset] = item;
       return obj;
-    }, {} as Record<string, typeof userMigrationReserves.supplyReserves[0]>);
+    }, {} as Record<string, (typeof userMigrationReserves.supplyReserves)[0]>);
 
     const borrowsMap = borrows.reduce((obj, item) => {
       obj[item.debtKey] = item;
       return obj;
-    }, {} as Record<string, typeof userMigrationReserves.borrowReserves[0]>);
+    }, {} as Record<string, (typeof userMigrationReserves.borrowReserves)[0]>);
 
     const userReserves = toUserSummary.userReservesData.map((userReserveData) => {
-      const stableBorrowAsset = borrowsMap[userReserveData.reserve.stableDebtTokenAddress];
       const variableBorrowAsset = borrowsMap[userReserveData.reserve.variableDebtTokenAddress];
 
       const supplyUnderlyingAssetAddress = selectMigrationUnderluingAssetWithExceptionsByV3Key(
@@ -149,15 +142,6 @@ const select = memoize(
         );
         combinedScaledDownVariableDebtV3 = valueToBigNumber(combinedScaledDownVariableDebtV3)
           .plus(scaledDownVariableDebtV2Balance)
-          .toString();
-      }
-      if (stableBorrowAsset && stableBorrowAsset.migrationDisabled === undefined) {
-        const scaledDownStableDebtV2Balance = rayDiv(
-          valueToWei(stableBorrowAsset.increasedStableBorrows, userReserveData.reserve.decimals),
-          variableBorrowIndexV3
-        );
-        combinedScaledDownVariableDebtV3 = valueToBigNumber(combinedScaledDownVariableDebtV3)
-          .plus(scaledDownStableDebtV2Balance)
           .toString();
       }
 

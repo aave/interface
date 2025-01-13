@@ -32,7 +32,7 @@ export default function TopBarNotify({
 
   const [showWarning, setShowWarning] = useState(true);
 
-  const [mobileDrawerOpen] = useRootStore((state) => [state.mobileDrawerOpen]);
+  const mobileDrawerOpen = useRootStore((state) => state.mobileDrawerOpen);
 
   useEffect(() => {
     const storedBannerVersion = localStorage.getItem('bannerVersion');

@@ -73,12 +73,12 @@ const donors: Donors = {
   },
   aMATICPolygonV2: {
     name: 'aMATIC',
-    donorWalletAddress: '0x7068Ea5255cb05931EFa8026Bd04b18F3DeB8b0B',
+    donorWalletAddress: '0xaFDAbFb6227507fF6522b8a242168F6b5F353a6E',
     tokenAddress: '0x8dF3aad3a84da6b69A4DA8aeC3eA40d9091B2Ac4',
   },
   aAVAXAvalancheV2: {
     name: 'aAVAX',
-    donorWalletAddress: '0xe5dbFF893E6120C0d013FB046cd755990E4BE9a9',
+    donorWalletAddress: '0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6',
     tokenAddress: '0xDFE521292EcE2A4f44242efBcD66Bc594CA9714B',
   },
 };

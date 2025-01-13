@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { EyeIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
@@ -23,13 +24,12 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { WalletBalancesMap } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { showSuperFestTooltip, Side } from 'src/utils/utils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -97,6 +97,7 @@ export const SupplyAssetsListItemDesktop = ({
   totalLiquidity,
   supplyAPY,
   aIncentivesData,
+  aTokenAddress,
   underlyingAsset,
   isIsolated,
   usageAsCollateralEnabledOnUser,
@@ -153,7 +154,11 @@ export const SupplyAssetsListItemDesktop = ({
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
-      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <ListColumn>
@@ -213,7 +218,14 @@ export const SupplyAssetsListItemDesktop = ({
         />
       )}
 
-      <ListAPRColumn value={Number(supplyAPY)} incentives={aIncentivesData} symbol={symbol} />
+      <ListAPRColumn
+        value={Number(supplyAPY)}
+        market={currentMarket}
+        protocolAction={ProtocolAction.supply}
+        address={aTokenAddress}
+        incentives={aIncentivesData}
+        symbol={symbol}
+      />
 
       <ListColumn>
         {debtCeiling.isMaxed ? (
@@ -306,6 +318,7 @@ export const SupplyAssetsListItemMobile = ({
   totalLiquidity,
   supplyAPY,
   aIncentivesData,
+  aTokenAddress,
   isIsolated,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
@@ -314,7 +327,7 @@ export const SupplyAssetsListItemMobile = ({
   canSupplyAsWrappedToken,
   walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
-  const { currentMarket } = useProtocolDataContext();
+  const currentMarket = useRootStore((store) => store.currentMarket);
   const { openSupply } = useModalContext();
   const wrappedTokenReserves = useWrappedTokens();
 
@@ -334,7 +347,11 @@ export const SupplyAssetsListItemMobile = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
-      showSuperFestTooltip={showSuperFestTooltip(symbol, currentMarket, Side.SUPPLY)}
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <Row
@@ -407,8 +424,11 @@ export const SupplyAssetsListItemMobile = ({
         <IncentivesCard
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
+          address={aTokenAddress}
           symbol={symbol}
           variant="secondary14"
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
         />
       </Row>
 

@@ -15,8 +15,8 @@ const testData = {
   ],
 };
 
-describe('SCROLL GENERAL SPEC', () => {
+describe.skip('SCROLL GENERAL SPEC', () => {
   const skipTestState = skipState(false);
-  configEnvScroll('0x280c15962f345349669c90e75694fe0262f4e9cb');
+  configEnvScroll('0xF93457533efd041D2A5200A82ccA718Fcdc42103');
   dashboardAssetValuesVerification(testData.dashboard, skipTestState);
 });

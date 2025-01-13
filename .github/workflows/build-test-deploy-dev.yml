@@ -15,6 +15,13 @@ jobs:
       (github.event_name == 'push' && github.event_name == 'pull_request') ||
       (github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name &&
       !contains(github.head_ref, 'dependabot'))
+    strategy:
+        matrix:
+          build:
+            - name: 'out'
+              cypress_enabled: 'false'
+            - name: 'out_cypress'
+              cypress_enabled: 'true'
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
@@ -31,11 +38,12 @@ jobs:
           NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
           NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
           NEXT_PUBLIC_SUBGRAPH_API_KEY: ${{ secrets.NEXT_PUBLIC_SUBGRAPH_API_KEY }}
+          NEXT_PUBLIC_IS_CYPRESS_ENABLED: ${{ matrix.build.cypress_enabled }}
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
         with:
-          BUILD_ARTIFACT_NAME: 'out'
+          BUILD_ARTIFACT_NAME: ${{ matrix.build.name }}
 
   cypress_smoke_v2:
     runs-on: ubuntu-latest
@@ -117,7 +125,7 @@ jobs:
 
       - name: pinata
         id: pinata
-        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
+        uses: aave/pinata-action@35662944e92cf082457973f10aa42e48df179b47
         with:
           PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
           PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
@@ -127,11 +135,8 @@ jobs:
 
       - name: Pin to primary IPFS server
         id: ipfs-primary
-        uses: ./.github/actions/dev-ipfs-pin
+        uses: ./.github/actions/ipfs-pin
         with:
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
           IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
           IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
           IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'

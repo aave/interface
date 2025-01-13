@@ -7,7 +7,7 @@ The Interface serves as an informational gateway, which allows users to:
 - Monitor their positions on the Aave Safety Module; and
 - Monitor and coordinate participation in Aave Governance.
 
-Given the nature of decentralized blockchain technology, the Aave Prococol can either be accessed though the Interface, directly through smart contracts, or through third party protocol integrators. The Interface is a public good, along with the hundreds of other, unaffiliated on-ramps into the Aave Protocol.  Our aim, in the interest of decentralization, is transparency and contributions from all community members only enhance the Aave Protocol ecosystem. This document and the below guidelines will constantly evolve – including with input from the community – but will endeavor to provide you with information about navigating the Interface smoothly.
+Given the nature of decentralized blockchain technology, the Aave Protocol can either be accessed though the Interface, directly through smart contracts, or through third party protocol integrators. The Interface is a public good, along with the hundreds of other, unaffiliated on-ramps into the Aave Protocol.  Our aim, in the interest of decentralization, is transparency and contributions from all community members only enhance the Aave Protocol ecosystem. This document and the below guidelines will constantly evolve – including with input from the community – but will endeavor to provide you with information about navigating the Interface smoothly.
 
 # Aave Team Responsibilities on the Aave Interface
 The Aave team has certain responsibilities with respect to the Aave Interface. This includes the following:

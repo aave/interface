@@ -1,4 +1,5 @@
 import 'cypress-wait-until';
+// import { Provider } from '@ethersproject/providers';
 
 import { CustomizedBridge } from './tools/bridge';
 
@@ -97,10 +98,8 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add('getDashBoardBorrowedRow', (assetName: string, apyType: string) => {
-  return cy
-    .get(`[data-cy='dashboardBorrowedListItem_${assetName.toUpperCase()}_${apyType}']`)
-    .first();
+Cypress.Commands.add('getDashBoardBorrowedRow', (assetName: string) => {
+  return cy.get(`[data-cy='dashboardBorrowedListItem_${assetName.toUpperCase()}']`).first();
 });
 
 Cypress.Commands.add('getDashBoardSuppliedRow', (assetName: string, isCollateralType?: boolean) => {

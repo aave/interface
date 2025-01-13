@@ -45,7 +45,6 @@ export const useProposalsSearch = (query: string) => {
       return fetchProposals(proposals, votingMachineSerivce, governanceV3Service);
     },
     queryKey: ['proposals_by_id', ids],
-    cacheTime: 0,
     enabled: ids !== undefined && ids.length > 0,
   });
 

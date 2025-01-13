@@ -7,13 +7,12 @@ import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
-import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/mixPanelEvents';
 import { GhoBanner } from './Gho/GhoBanner';
@@ -37,11 +36,17 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
 
 export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
-  const { currentMarket, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [
+      store.trackEvent,
+      store.currentMarket,
+      store.currentMarketData,
+      store.currentNetworkConfig,
+    ])
+  );
   const [searchTerm, setSearchTerm] = useState('');
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const ghoReserve = getGhoReserve(reserves);
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
@@ -71,9 +76,9 @@ export const MarketAssetsListContainer = () => {
           })
         : {}),
     }));
-  const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
-  const showFrozenMarketWarning =
-    marketFrozen && ['Harmony', 'Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
+  // const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
+  // const showFrozenMarketWarning =
+  //   marketFrozen && ['Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
   const [showFrozenMarketsToggle, setShowFrozenMarketsToggle] = useState(false);
 
@@ -97,12 +102,6 @@ export const MarketAssetsListContainer = () => {
         />
       }
     >
-      {showFrozenMarketWarning && (
-        <Box mx={6}>
-          <MarketWarning marketName={currentMarketData.marketTitle} forum />
-        </Box>
-      )}
-
       {displayGhoBanner && (
         <Box mb={4}>
           <GhoBanner reserve={ghoReserve} />

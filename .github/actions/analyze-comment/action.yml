@@ -10,6 +10,7 @@ runs:
   steps:
     - name: Download PR bundle stats
       if: github.event.workflow_run.id
+      continue-on-error: true
       uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
       with:
         workflow: build-fork.yml
@@ -32,16 +33,40 @@ runs:
     - name: Download base branch bundle stats
       uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
       if: github.event_name != 'push'
+      continue-on-error: true
       with:
         workflow: build-test-deploy.yml
         branch: main
         name: bundle
         path: .next/analyze/base/bundle/
 
-    - name: Compare with base branch bundle
+    - name: Handle missing bundle
       if: github.event_name != 'push'
+      shell: bash
+      run: |
+        if [ ! -d ".next/analyze/base/bundle" ]; then
+          echo "No base bundle found, creating baseline"
+          mkdir -p .next/analyze/base/bundle
+          if [ -f ".next/analyze/__bundle_analysis.json" ]; then
+            cp .next/analyze/__bundle_analysis.json .next/analyze/base/bundle/
+            echo "Baseline bundle created successfully"
+          else
+            echo "Warning: Source bundle analysis file not found"
+            echo "{}" > .next/analyze/base/bundle/__bundle_analysis.json
+            echo "Created empty baseline bundle"
+          fi
+        fi
+
+    - name: Compare with base branch bundle
+      if: github.event_name != 'push' && !contains(github.ref, 'main')
       shell: sh
-      run: ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis compare
+      run: |
+        if [ -d ".next/analyze/base/bundle" ]; then
+          ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis compare
+        else
+          echo "No base bundle found for comparison. Skipping comparison step."
+          cp .next/analyze/__bundle_analysis.json .next/analyze/__bundle_analysis_comment.txt
+        fi
 
     - name: Get comment body
       id: get-comment-body

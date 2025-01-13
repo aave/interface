@@ -1,4 +1,9 @@
-import { BookOpenIcon, CreditCardIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
+import {
+  ArrowCircleRightIcon,
+  BookOpenIcon,
+  CreditCardIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/react/outline';
 import { t } from '@lingui/macro';
 import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
@@ -64,6 +69,11 @@ const moreMenuItems: MoreMenuItem[] = [
     link: 'https://docs.aave.com/portal/',
     title: t`Developers`,
     icon: <BookOpenIcon />,
+  },
+  {
+    link: 'https://legacy-markets.aave.com/',
+    title: t`Legacy Markets`,
+    icon: <ArrowCircleRightIcon />,
   },
 ];
 

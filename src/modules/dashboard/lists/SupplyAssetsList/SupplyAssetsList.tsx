@@ -2,13 +2,12 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import { Fragment, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
-import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
@@ -253,13 +252,7 @@ export const SupplyAssetsList = () => {
       subChildrenComponent={
         <>
           <Box sx={{ px: 6 }}>
-            {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
-              <MarketWarning marketName="Harmony" />
-            ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
-              <MarketWarning marketName="Fantom" />
-            ) : supplyDisabled && currentMarketData.marketTitle === 'Ethereum AMM' ? (
-              <MarketWarning marketName="Ethereum AMM" />
-            ) : user?.isInIsolationMode ? (
+            {user?.isInIsolationMode ? (
               <Warning severity="warning">
                 <Trans>
                   Collateral usage is limited because of isolation mode.{' '}

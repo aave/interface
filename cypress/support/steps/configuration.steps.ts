@@ -15,6 +15,7 @@ export const configEnvWithTenderly = ({
   unpause,
   wallet,
   enableTestnet = false,
+  urlSuffix = '',
 }: {
   chainId: number;
   market: string;
@@ -22,6 +23,7 @@ export const configEnvWithTenderly = ({
   unpause?: boolean;
   wallet?: { address: string; privateKey: string };
   enableTestnet?: boolean;
+  urlSuffix?: string;
 }) => {
   const tenderly = new TenderlyFork({ forkNetworkID: chainId });
   const walletAddress: string = wallet != null ? wallet.address : DEFAULT_TEST_ACCOUNT.address;
@@ -51,10 +53,15 @@ export const configEnvWithTenderly = ({
     }
   });
   before('Open main page', () => {
+    let url = URL as string;
+    if (urlSuffix) {
+      url = `${url}/${urlSuffix}`;
+    }
+
     const rpc = tenderly.get_rpc_url();
     provider = new JsonRpcProvider(rpc, 3030);
     signer = new Wallet(privateKey, provider);
-    cy.visit(URL, {
+    cy.visit(url, {
       onBeforeLoad(win) {
         // eslint-disable-next-line
         (win as any).ethereum = new CustomizedBridge(signer, provider);
@@ -100,13 +107,15 @@ const createConfigWithTenderlyFork =
     tokens,
     v3,
     wallet,
+    urlSuffix,
   }: {
     market?: string;
     tokens?: { tokenAddress: string }[];
     v3?: boolean;
     wallet?: { address: string; privateKey: string };
+    urlSuffix?: string;
   }) =>
-    configEnvWithTenderly({ chainId, market, tokens, unpause: v3, wallet });
+    configEnvWithTenderly({ chainId, market, tokens, unpause: v3, wallet, urlSuffix });
 
 export const configEnvWithTenderlyMainnetFork = createConfigWithTenderlyFork(
   ChainId.mainnet,
@@ -128,10 +137,7 @@ export const configEnvWithTenderlyOptimismFork = createConfigWithTenderlyFork(
   ChainId.optimism,
   'fork_proto_optimism_v3'
 );
-export const configEnvWithTenderlyFantomFork = createConfigWithTenderlyFork(
-  ChainId.fantom,
-  'fork_proto_fantom_v3'
-);
+
 export const configEnvWithTenderlyBaseFork = createConfigWithTenderlyFork(
   ChainId.base,
   'fork_proto_base_v3'
@@ -174,8 +180,6 @@ const createConfigWithOrigin = (market: string, mockedAddress: string) => {
   });
 };
 
-export const configEnvHarmony = (mockedAddress: string) =>
-  createConfigWithOrigin('proto_harmony_v3', mockedAddress);
 export const configEnvMetis = (mockedAddress: string) =>
   createConfigWithOrigin('proto_metis_v3', mockedAddress);
 export const configEnvScroll = (mockedAddress: string) =>

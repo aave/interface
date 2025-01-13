@@ -12,7 +12,7 @@ const tokensToRequest: RequestedTokens = {
 
 const testData = {
   depositBaseAmount: {
-    asset: assets.polygonMarket.MATIC,
+    asset: assets.polygonMarket.POL,
     amount: 800,
     hasApproval: true,
   },

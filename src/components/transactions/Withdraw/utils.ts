@@ -1,5 +1,5 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
@@ -15,9 +15,10 @@ export const calculateMaxWithdrawAmount = (
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
   let maxAmountToWithdraw = BigNumber.min(underlyingBalance, unborrowedLiquidity);
   let maxCollateralToWithdrawInETH = valueToBigNumber('0');
+  const userEMode = poolReserve.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
   const reserveLiquidationThreshold =
-    user.isInEmode && user.userEmodeCategoryId === poolReserve.eModeCategoryId
-      ? poolReserve.formattedEModeLiquidationThreshold
+    user.isInEmode && userEMode
+      ? userEMode.eMode.formattedLiquidationThreshold
       : poolReserve.formattedReserveLiquidationThreshold;
   if (
     userReserve?.usageAsCollateralEnabledOnUser &&

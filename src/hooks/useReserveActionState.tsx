@@ -13,6 +13,7 @@ import { WalletEmptyInfo } from 'src/modules/dashboard/lists/SupplyAssetsList/Wa
 import { useRootStore } from 'src/store/root';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { useShallow } from 'zustand/shallow';
 
 import { useModalContext } from './useModal';
 
@@ -32,12 +33,12 @@ export const useReserveActionState = ({
   const { user, eModes } = useAppDataContext();
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const [currentMarket, currentNetworkConfig, currentChainId, currentMarketData] = useRootStore(
-    (store) => [
+    useShallow((store) => [
       store.currentMarket,
       store.currentNetworkConfig,
       store.currentChainId,
       store.currentMarketData,
-    ]
+    ])
   );
   const { openFaucet } = useModalContext();
 
@@ -47,7 +48,7 @@ export const useReserveActionState = ({
   const userHasNoCollateralSupplied = user?.totalCollateralMarketReferenceCurrency === '0';
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !reserve.borrowableInIsolation;
   const eModeBorrowDisabled =
-    user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
+    user?.isInEmode && !reserve.eModes.find((e) => e.id === user.userEmodeCategoryId);
 
   const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 
