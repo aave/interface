@@ -95,7 +95,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc.ankr.com/eth',
       'https://rpc.flashbots.net',
       'https://eth-mainnet.public.blastapi.io',
-      'https://cloudflare-eth.com/v1/mainnet',
+      //'https://cloudflare-eth.com/v1/mainnet',
     ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
     baseUniswapAdapter: '0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f',

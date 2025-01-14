@@ -1,7 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -26,6 +25,7 @@ export const BorrowAssetsListMobileItem = ({
   totalBorrows,
   variableBorrowRate,
   vIncentivesData,
+  variableDebtTokenAddress,
   underlyingAsset,
   isFreezed,
 }: DashboardReserve) => {
@@ -73,19 +73,15 @@ export const BorrowAssetsListMobileItem = ({
         captionVariant="description"
         mb={2}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <IncentivesCard
-            value={Number(variableBorrowRate)}
-            incentives={vIncentivesData}
-            symbol={symbol}
-            variant="secondary14"
-          />
-          <MeritIncentivesButton
-            symbol={symbol}
-            market={currentMarket}
-            protocolAction={ProtocolAction.borrow}
-          />
-        </Box>
+        <IncentivesCard
+          value={Number(variableBorrowRate)}
+          incentives={vIncentivesData}
+          address={variableDebtTokenAddress}
+          symbol={symbol}
+          variant="secondary14"
+          market={currentMarket}
+          protocolAction={ProtocolAction.borrow}
+        />
       </Row>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button

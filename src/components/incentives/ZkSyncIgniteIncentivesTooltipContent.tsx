@@ -8,14 +8,14 @@ import { Row } from '../primitives/Row';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { getSymbolMap } from './IncentivesTooltipContent';
 
-export const MeritIncentivesTooltipContent = ({
-  meritIncentives,
+export const ZkSyncIgniteIncentivesTooltipContent = ({
+  zkSyncIgniteIncentives,
 }: {
-  meritIncentives: ExtendedReserveIncentiveResponse;
+  zkSyncIgniteIncentives: ExtendedReserveIncentiveResponse;
 }) => {
   const typographyVariant = 'secondary12';
 
-  const meritIncentivesFormatted = getSymbolMap(meritIncentives);
+  const zkSyncIgniteIncentivesFormatted = getSymbolMap(zkSyncIgniteIncentives);
 
   return (
     <Box
@@ -26,21 +26,19 @@ export const MeritIncentivesTooltipContent = ({
         flexDirection: 'column',
       }}
     >
+      <img src={`/icons/other/zksync-ignite.svg`} width="100px" height="40px" alt="" />
+
       <Typography variant="caption" color="text.primary" mb={3}>
-        <Trans>Eligible for the Merit program.</Trans>
+        <Trans>Eligible for the ZKSync Ignite program.</Trans>
       </Typography>
 
       <Typography variant="caption" color="text.secondary" mb={3}>
         <Trans>
-          This is a program initiated and implemented by the decentralised Aave community. Aave Labs
-          does not guarantee the program and accepts no liability.
+          This is a program initiated and implemented by the decentralised ZKSync community. Aave
+          Labs does not guarantee the program and accepts no liability.
         </Trans>{' '}
         <Link
-          href={
-            meritIncentives.customForumLink
-              ? meritIncentives.customForumLink
-              : 'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898'
-          }
+          href={'https://zksyncignite.xyz/'}
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"
@@ -50,20 +48,20 @@ export const MeritIncentivesTooltipContent = ({
       </Typography>
 
       <Typography variant="caption" color="text.secondary" mb={3}>
-        <Trans>Merit Program rewards are claimed through the</Trans>{' '}
+        <Trans>ZKSync Ignite Program rewards are claimed through the</Trans>{' '}
         <Link
-          href="https://apps.aavechan.com/merit"
+          href="https://app.zksyncignite.xyz/users/"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"
         >
-          Aave Chan Initiative interface
+          official app
         </Link>
         {'.'}
       </Typography>
-      {meritIncentives.customMessage ? (
+      {zkSyncIgniteIncentives.customMessage ? (
         <Typography variant="caption" color="text.strong" mb={3}>
-          <Trans>{meritIncentives.customMessage}</Trans>
+          <Trans>{zkSyncIgniteIncentives.customMessage}</Trans>
         </Typography>
       ) : null}
 
@@ -79,18 +77,20 @@ export const MeritIncentivesTooltipContent = ({
               }}
             >
               <TokenIcon
-                aToken={meritIncentivesFormatted.aToken}
-                symbol={meritIncentivesFormatted.tokenIconSymbol}
+                aToken={zkSyncIgniteIncentivesFormatted.aToken}
+                symbol={zkSyncIgniteIncentivesFormatted.tokenIconSymbol}
                 sx={{ fontSize: '20px', mr: 1 }}
               />
-              <Typography variant={typographyVariant}>{meritIncentivesFormatted.symbol}</Typography>
+              <Typography variant={typographyVariant}>
+                {zkSyncIgniteIncentivesFormatted.symbol}
+              </Typography>
             </Box>
           }
           width="100%"
         >
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
             <FormattedNumber
-              value={+meritIncentivesFormatted.incentiveAPR}
+              value={+zkSyncIgniteIncentivesFormatted.incentiveAPR}
               percent
               variant={typographyVariant}
             />

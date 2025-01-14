@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-02 18:06\n"
+"PO-Revision-Date: 2025-01-06 18:06\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -442,6 +442,7 @@ msgstr ""
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 msgid "APR"
 msgstr "Effektiver Jahreszins"
 
@@ -769,6 +770,7 @@ msgstr "Bitte verbinden Sie Ihre Wallet, um das Migrationstool anzuzeigen."
 msgid "{networkName} Faucet"
 msgstr "{networkName} Hahn"
 
+#: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Watch wallet"
 msgstr ""
@@ -959,6 +961,10 @@ msgstr "{tooltipText}"
 msgid "Rewards can be claimed through"
 msgstr ""
 
+#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+msgid "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
@@ -1019,6 +1025,7 @@ msgid "Liquidation at"
 msgstr "Liquidation am"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
@@ -1927,6 +1934,10 @@ msgstr ""
 msgid "Cooldown period warning"
 msgstr "Warnung vor der Abklingzeit"
 
+#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+msgid "ZKSync Ignite Program rewards are claimed through the"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
@@ -2749,6 +2760,10 @@ msgstr ""
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
 msgstr "Verfügbar für die Lieferung"
+
+#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+msgid "Eligible for the ZKSync Ignite program."
+msgstr ""
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the {market} has been frozen."
