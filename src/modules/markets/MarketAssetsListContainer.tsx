@@ -43,12 +43,21 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
 
 export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
-  const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
+  const [
+    trackEvent,
+    currentMarket,
+    currentMarketData,
+    currentNetworkConfig,
+    selectedTimeRange,
+    setSelectedTimeRange,
+  ] = useRootStore(
     useShallow((store) => [
       store.trackEvent,
       store.currentMarket,
       store.currentMarketData,
       store.currentNetworkConfig,
+      store.selectedTimeRange,
+      store.setSelectedTimeRange,
     ])
   );
   const [searchTerm, setSearchTerm] = useState('');
@@ -57,10 +66,6 @@ export const MarketAssetsListContainer = () => {
 
   const ghoReserve = getGhoReserve(reserves);
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
-
-  const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveHistoricalRateTimeRange>(
-    ESupportedAPYTimeRanges.Now
-  );
 
   const underlyingAssets = reserves.map((a) => a.underlyingAsset);
   const historicalAPYData = useHistoricalAPYData(

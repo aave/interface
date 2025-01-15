@@ -23,6 +23,7 @@ interface IncentivesCardProps {
   tooltip?: ReactNode;
   market: string;
   protocolAction?: ProtocolAction;
+  showIncentives?: boolean;
 }
 
 export const IncentivesCard = ({
@@ -37,6 +38,7 @@ export const IncentivesCard = ({
   tooltip,
   market,
   protocolAction,
+  showIncentives = true,
 }: IncentivesCardProps) => {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   return (
@@ -65,27 +67,29 @@ export const IncentivesCard = ({
       ) : (
         <NoData variant={variant} color={color || 'text.secondary'} />
       )}
-      <Box
-        sx={
-          isTableChangedToCards
-            ? { display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }
-            : {
-                display: 'flex',
-                justifyContent: 'center',
-                gap: '4px',
-                flexWrap: 'wrap',
-                flex: '0 0 50%', // 2 items per row
-              }
-        }
-      >
-        <IncentivesButton incentives={incentives} symbol={symbol} />
-        <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-        <ZkIgniteIncentivesButton
-          market={market}
-          rewardedAsset={address}
-          protocolAction={protocolAction}
-        />
-      </Box>
+      {Boolean(showIncentives) && (
+        <Box
+          sx={
+            isTableChangedToCards
+              ? { display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }
+              : {
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: '4px',
+                  flexWrap: 'wrap',
+                  flex: '0 0 50%', // 2 items per row
+                }
+          }
+        >
+          <IncentivesButton incentives={incentives} symbol={symbol} />
+          <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+          <ZkIgniteIncentivesButton
+            market={market}
+            rewardedAsset={address}
+            protocolAction={protocolAction}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

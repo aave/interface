@@ -12,6 +12,7 @@ import { CustomMarket, MarketDataType } from '../ui-config/marketsConfig';
 import { NetworkConfig } from '../ui-config/networksConfig';
 import { RootStore } from './root';
 import { setQueryParameter } from './utils/queryParams';
+import { ESupportedAPYTimeRanges } from 'src/components/HistoricalAPYRow';
 
 type TypePermitParams = {
   reserveAddress: string;
@@ -25,6 +26,8 @@ export interface ProtocolDataSlice {
   currentNetworkConfig: NetworkConfig;
   jsonRpcProvider: (chainId?: number) => providers.Provider;
   setCurrentMarket: (market: CustomMarket, omitQueryParameterUpdate?: boolean) => void;
+  selectedTimeRange: ESupportedAPYTimeRanges;
+  setSelectedTimeRange: (timeRange: ESupportedAPYTimeRanges) => void;
   tryPermit: ({ reserveAddress, isWrappedBaseAsset }: TypePermitParams) => boolean;
 }
 
@@ -41,7 +44,11 @@ export const createProtocolDataSlice: StateCreator<
     currentMarketData: marketsData[initialMarket],
     currentChainId: initialMarketData.chainId,
     currentNetworkConfig: getNetworkConfig(initialMarketData.chainId),
+    selectedTimeRange: ESupportedAPYTimeRanges.Now,
     jsonRpcProvider: (chainId) => getProvider(chainId ?? get().currentChainId),
+    setSelectedTimeRange: (timeRange: ESupportedAPYTimeRanges) => {
+      set({ selectedTimeRange: timeRange })
+    },
     setCurrentMarket: (market, omitQueryParameterUpdate) => {
       if (!availableMarkets.includes(market as CustomMarket)) return;
       const nextMarketData = marketsData[market];

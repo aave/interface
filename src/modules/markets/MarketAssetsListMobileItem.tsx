@@ -17,10 +17,11 @@ import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
+import { ESupportedAPYTimeRanges } from 'src/components/HistoricalAPYRow';
 
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
-  const [trackEvent, currentMarket] = useRootStore(
-    useShallow((store) => [store.trackEvent, store.currentMarket])
+  const [trackEvent, currentMarket, selectedTimeRange] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarket, store.selectedTimeRange])
   );
 
   const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
@@ -33,6 +34,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
     currentMarket,
     ProtocolAction.borrow
   );
+  const showIncentives = selectedTimeRange === ESupportedAPYTimeRanges.Now;
 
   return (
     <ListMobileItemWrapper
@@ -72,12 +74,17 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           variant="secondary14"
           tooltip={
             <>
-              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
+              {externalIncentivesTooltipsSupplySide.superFestRewards && showIncentives && (
+                <SuperFestTooltip />
+              )}
+              {externalIncentivesTooltipsSupplySide.spkAirdrop && showIncentives && (
+                <SpkAirdropTooltip />
+              )}
             </>
           }
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
+          showIncentives={showIncentives}
         />
       </Row>
 
@@ -124,12 +131,17 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           variant="secondary14"
           tooltip={
             <>
-              {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
+              {externalIncentivesTooltipsBorrowSide.superFestRewards && showIncentives && (
+                <SuperFestTooltip />
+              )}
+              {externalIncentivesTooltipsBorrowSide.spkAirdrop && showIncentives && (
+                <SpkAirdropTooltip />
+              )}
             </>
           }
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
+          showIncentives={selectedTimeRange === ESupportedAPYTimeRanges.Now}
         />
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
