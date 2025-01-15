@@ -1,4 +1,5 @@
 import { providers, utils } from 'ethers';
+import { ESupportedAPYTimeRanges } from 'src/components/HistoricalAPYRow';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import {
   availableMarkets,
@@ -12,7 +13,6 @@ import { CustomMarket, MarketDataType } from '../ui-config/marketsConfig';
 import { NetworkConfig } from '../ui-config/networksConfig';
 import { RootStore } from './root';
 import { setQueryParameter } from './utils/queryParams';
-import { ESupportedAPYTimeRanges } from 'src/components/HistoricalAPYRow';
 
 type TypePermitParams = {
   reserveAddress: string;
@@ -47,7 +47,7 @@ export const createProtocolDataSlice: StateCreator<
     selectedTimeRange: ESupportedAPYTimeRanges.Now,
     jsonRpcProvider: (chainId) => getProvider(chainId ?? get().currentChainId),
     setSelectedTimeRange: (timeRange: ESupportedAPYTimeRanges) => {
-      set({ selectedTimeRange: timeRange })
+      set({ selectedTimeRange: timeRange });
     },
     setCurrentMarket: (market, omitQueryParameterUpdate) => {
       if (!availableMarkets.includes(market as CustomMarket)) return;

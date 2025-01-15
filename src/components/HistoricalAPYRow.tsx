@@ -16,7 +16,7 @@ export const reserveHistoricalRateTimeRangeOptions = [
   ESupportedAPYTimeRanges.OneYear,
 ];
 
-export type ReserveHistoricalRateTimeRange = typeof reserveHistoricalRateTimeRangeOptions[number];
+export type ReserveHistoricalRateTimeRange = (typeof reserveHistoricalRateTimeRangeOptions)[number];
 
 export interface TimeRangeSelectorProps {
   disabled?: boolean;

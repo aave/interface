@@ -20,15 +20,15 @@ interface Rates {
 function calculateImpliedAPY(
   currentLiquidityIndex: number,
   previousLiquidityIndex: number,
-  daysBetweenIndexes: number,
+  daysBetweenIndexes: number
 ): string {
   if (previousLiquidityIndex <= 0 || currentLiquidityIndex <= 0) {
-    throw new Error("Liquidity indexes must be positive values.");
+    throw new Error('Liquidity indexes must be positive values.');
   }
 
   const growthFactor = currentLiquidityIndex / previousLiquidityIndex;
   const annualizedGrowthFactor = Math.pow(growthFactor, 365 / daysBetweenIndexes);
-  const impliedAPY = (annualizedGrowthFactor - 1);
+  const impliedAPY = annualizedGrowthFactor - 1;
 
   return impliedAPY.toString();
 }
@@ -165,6 +165,6 @@ export const useHistoricalAPYData = (
     queryKey: ['historicalAPYData', subgraphUrl, selectedTimeRange, underlyingAssets],
     queryFn: () => fetchHistoricalAPYData(subgraphUrl, selectedTimeRange, underlyingAssets),
     staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchInterval: 5 * 60 * 1000,  // 5 minutes
+    refetchInterval: 5 * 60 * 1000, // 5 minutes
   });
 };

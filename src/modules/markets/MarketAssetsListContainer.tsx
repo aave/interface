@@ -2,15 +2,15 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
+import { ESupportedAPYTimeRanges, HistoricalAPYRow } from 'src/components/HistoricalAPYRow';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useHistoricalAPYData } from 'src/hooks/useHistoricalAPYData';
-
+import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
@@ -18,7 +18,6 @@ import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/mixPanelEvents';
 import { GhoBanner } from './Gho/GhoBanner';
-import { ESupportedAPYTimeRanges, HistoricalAPYRow } from 'src/components/HistoricalAPYRow';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)

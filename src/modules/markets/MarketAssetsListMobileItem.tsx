@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
+import { ESupportedAPYTimeRanges } from 'src/components/HistoricalAPYRow';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -17,7 +18,6 @@ import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
-import { ESupportedAPYTimeRanges } from 'src/components/HistoricalAPYRow';
 
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const [trackEvent, currentMarket, selectedTimeRange] = useRootStore(

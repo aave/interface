@@ -1,4 +1,4 @@
-import { generateAliases } from "src/utils/generateSubgraphQueryAlias";
+import { generateAliases } from 'src/utils/generateSubgraphQueryAlias';
 
 export const constructIndexHistoryQuery = (underlyingAssets: string[]): string => {
   const aliases = generateAliases(underlyingAssets.length);
@@ -25,7 +25,7 @@ export const constructIndexHistoryQuery = (underlyingAssets: string[]): string =
 
   return `
     query IndexHistory($timestamp: Int!) {
-      ${queries.join("\n")}
+      ${queries.join('\n')}
     }
   `;
 };
