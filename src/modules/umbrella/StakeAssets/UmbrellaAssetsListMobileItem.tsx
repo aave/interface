@@ -6,6 +6,7 @@ import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
@@ -17,8 +18,6 @@ import { Link, ROUTES } from '../../../components/primitives/Link';
 import { Row } from '../../../components/primitives/Row';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ListMobileItemWrapper } from '../../dashboard/lists/ListMobileItemWrapper';
-
-import { useModalContext } from 'src/hooks/useModal';
 
 export const UmbrellaAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const [trackEvent, currentMarket] = useRootStore(

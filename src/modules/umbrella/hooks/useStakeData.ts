@@ -1,10 +1,10 @@
+import { formatUnits } from '@ethersproject/units';
 import { useQuery } from '@tanstack/react-query';
+import { Multicall } from 'ethereum-multicall';
+import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
-import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
-import { Multicall } from 'ethereum-multicall';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
-import { formatUnits } from '@ethersproject/units';
 
 export const useStakeData = (marketData: MarketDataType) => {
   const { stakeDataService } = useSharedDependencies();

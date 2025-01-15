@@ -1,10 +1,15 @@
-import { ProtocolAction, Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { useRootStore } from 'src/store/root';
-import { useShallow } from 'zustand/shallow';
-import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
+import { useApprovalTx } from 'src/hooks/useApprovalTx';
+import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
+import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { useShallow } from 'zustand/shallow';
+
+import { StakeGatewayService } from './services/StakeGatewayService';
 
 export interface StakeActionProps extends BoxProps {
   amountToStake: string;
@@ -26,39 +31,69 @@ export const UmbrellaActions = ({
   event,
   ...props
 }: StakeActionProps) => {
-  const [stake, stakeWithPermit] = useRootStore(
-    useShallow((state) => [state.stake, state.stakeWithPermit])
+  const [estimateGasLimit, tryPermit] = useRootStore(
+    useShallow((state) => [state.estimateGasLimit, state.tryPermit])
   );
 
-  // once stk abpt v1 is deprecated, this check can be removed and we can always try permit
-  const tryPermit = selectedToken !== Stake.bpt;
+  const {
+    approvalTxState,
+    mainTxState,
+    loadingTxns,
+    setLoadingTxns,
+    setApprovalTxState,
+    setMainTxState,
+    setGasLimit,
+    setTxError,
+  } = useModalContext();
 
-  const { action, approval, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
-    useTransactionHandler({
-      tryPermit,
-      permitAction: ProtocolAction.stakeWithPermit,
-      protocolAction: ProtocolAction.stake,
-      handleGetTxns: async () => {
-        return stake({
-          token: selectedToken,
-          amount: amountToStake.toString(),
-        });
-      },
-      handleGetPermitTxns: async (signature, deadline) => {
-        return stakeWithPermit({
-          token: selectedToken,
-          amount: amountToStake.toString(),
-          signature: signature[0],
-          deadline,
-        });
-      },
-      eventTxInfo: {
-        amount: amountToStake,
-        assetName: selectedToken,
-      },
-      skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
-      deps: [amountToStake, selectedToken],
-    });
+  const { data: approvedAmount } = useApprovedAmount({
+    chainId: 1,
+    token: selectedToken,
+    spender: '',
+  });
+
+  const {} = useApprovalTx({});
+
+  const { currentAccount, sendTx } = useWeb3Context();
+
+  const requiresApproval = false;
+
+  const permitAvailable = tryPermit({ reserveAddress: selectedToken, os });
+
+  const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+
+  const action = async () => {
+    try {
+      setMainTxState({ ...mainTxState, loading: true });
+      const stakeService = new StakeGatewayService('');
+      let stakeTxData = stakeService.stake(currentAccount, '', '');
+      stakeTxData = await estimateGasLimit(stakeTxData);
+      const tx = await sendTx(stakeTxData);
+      await tx.wait(1);
+      setMainTxState({
+        txHash: tx.hash,
+        loading: false,
+        success: true,
+      });
+
+      // addTransaction(response.hash, {
+      //   action,
+      //   txState: 'success',
+      //   asset: poolAddress,
+      //   amount: amountToSupply,
+      //   assetName: symbol,
+      // });
+
+      // queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+    } catch (error) {
+      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+      setTxError(parsedError);
+      setMainTxState({
+        txHash: undefined,
+        loading: false,
+      });
+    }
+  };
 
   return (
     <TxActionsWrapper

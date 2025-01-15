@@ -13,11 +13,10 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { useShallow } from 'zustand/shallow';
-
 import {
   availableMarkets,
   CustomMarket,
@@ -27,8 +26,8 @@ import {
   networkConfigs,
   STAGING_ENV,
 } from 'src/utils/marketsAndNetworksConfig';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
