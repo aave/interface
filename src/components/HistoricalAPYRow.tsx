@@ -1,19 +1,19 @@
 import { SxProps, Theme, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 
-const supportedHistoricalTimeRangeOptions = ['Now', '30D', '60D', '90D'] as const;
+const supportedHistoricalTimeRangeOptions = ['Now', '30D', '180D', '1Y'] as const;
 
 export enum ESupportedAPYTimeRanges {
   Now = 'Now',
   ThirtyDays = '30D',
-  SixtyDays = '60D',
-  NinetyDays = '90D',
+  OneHunredEightyDays = '180D',
+  OneYear = '1Y',
 }
 
 export const reserveHistoricalRateTimeRangeOptions = [
   ESupportedAPYTimeRanges.Now,
   ESupportedAPYTimeRanges.ThirtyDays,
-  ESupportedAPYTimeRanges.SixtyDays,
-  ESupportedAPYTimeRanges.NinetyDays,
+  ESupportedAPYTimeRanges.OneHunredEightyDays,
+  ESupportedAPYTimeRanges.OneYear,
 ];
 
 export type ReserveHistoricalRateTimeRange = typeof reserveHistoricalRateTimeRangeOptions[number];

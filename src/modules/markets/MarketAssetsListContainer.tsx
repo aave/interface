@@ -62,9 +62,11 @@ export const MarketAssetsListContainer = () => {
     ESupportedAPYTimeRanges.Now
   );
 
+  const underlyingAssets = reserves.map((a) => a.underlyingAsset);
   const historicalAPYData = useHistoricalAPYData(
     currentMarketData.subgraphUrl ?? '',
-    selectedTimeRange
+    selectedTimeRange,
+    underlyingAssets
   );
 
   const filteredData = reserves
