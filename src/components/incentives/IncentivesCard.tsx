@@ -51,7 +51,7 @@ export const IncentivesCard = ({
         textAlign: 'center',
       }}
     >
-      {value.toString() !== '-1' ? (
+      {value.toString() !== '-1' && value.toString() !== 'N/A' ? (
         <Box sx={{ display: 'flex' }}>
           <FormattedNumber
             data-cy={`apy`}

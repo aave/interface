@@ -18,11 +18,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/mixPanelEvents';
 import { GhoBanner } from './Gho/GhoBanner';
-import {
-  ESupportedAPYTimeRanges,
-  HistoricalAPYRow,
-  ReserveHistoricalRateTimeRange,
-} from 'src/components/HistoricalAPYRow';
+import { ESupportedAPYTimeRanges, HistoricalAPYRow } from 'src/components/HistoricalAPYRow';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -68,11 +64,13 @@ export const MarketAssetsListContainer = () => {
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
 
   const underlyingAssets = reserves.map((a) => a.underlyingAsset);
-  const historicalAPYData = useHistoricalAPYData(
+  const { data: historicalAPYData, isLoading: isHistoricalDataLoading } = useHistoricalAPYData(
     currentMarketData.subgraphUrl ?? '',
     selectedTimeRange,
     underlyingAssets
   );
+  const showHistoricalDataLoading =
+    selectedTimeRange !== ESupportedAPYTimeRanges.Now && isHistoricalDataLoading;
 
   const filteredData = reserves
     // Filter out any non-active reserves
@@ -91,7 +89,7 @@ export const MarketAssetsListContainer = () => {
     })
     // Transform the object for list to consume it
     .map((reserve) => {
-      const historicalData = historicalAPYData[reserve.underlyingAsset.toLowerCase()];
+      const historicalData = historicalAPYData?.[reserve.underlyingAsset.toLowerCase()];
 
       return {
         ...reserve,
@@ -172,7 +170,10 @@ export const MarketAssetsListContainer = () => {
       )}
 
       {/* Unfrozen assets list */}
-      <MarketAssetsList reserves={unfrozenReserves} loading={loading} />
+      <MarketAssetsList
+        reserves={unfrozenReserves}
+        loading={loading || showHistoricalDataLoading}
+      />
 
       {/* Frozen or paused assets list */}
       {frozenOrPausedReserves.length > 0 && (
@@ -211,7 +212,10 @@ export const MarketAssetsListContainer = () => {
         </Box>
       )}
       {showFrozenMarketsToggle && (
-        <MarketAssetsList reserves={frozenOrPausedReserves} loading={loading} />
+        <MarketAssetsList
+          reserves={frozenOrPausedReserves}
+          loading={loading || showHistoricalDataLoading}
+        />
       )}
 
       {/* Show no search results message if nothing hits in either list */}
