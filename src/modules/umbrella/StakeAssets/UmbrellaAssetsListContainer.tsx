@@ -10,28 +10,11 @@ import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../../utils/mixPanelEvents';
 import UmbrellaAssetsList from './UmbrellaAssetsList';
-
-function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
-  // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
-  // If GHO is listed as a reserve, then it will be displayed in the normal market asset list
-  if (!GHO_MINTING_MARKETS.includes(marketTitle)) {
-    return false;
-  }
-
-  if (!searchTerm) {
-    return true;
-  }
-
-  const normalizedSearchTerm = searchTerm.toLowerCase().trim();
-  return (
-    normalizedSearchTerm.length <= 3 && GHO_SYMBOL.toLowerCase().includes(normalizedSearchTerm)
-  );
-}
+import { useStakeData } from '../hooks/useStakeData';
 
 export const UmbrellaAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
@@ -47,14 +30,11 @@ export const UmbrellaAssetsListContainer = () => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
 
-  const ghoReserve = getGhoReserve(reserves);
-  const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
+  const { data } = useStakeData(currentMarketData);
 
   const filteredData = reserves
     // Filter out any non-active reserves
     .filter((res) => res.isActive)
-    // Filter out GHO if the banner is being displayed
-    .filter((res) => (displayGhoBanner ? res !== ghoReserve : true))
     // filter out any that don't meet search term criteria
     .filter((res) => {
       if (!searchTerm) return true;
@@ -94,7 +74,7 @@ export const UmbrellaAssetsListContainer = () => {
       <UmbrellaAssetsList reserves={filteredData} loading={loading} />
 
       {/* Show no search results message if nothing hits in either list */}
-      {!loading && filteredData.length === 0 && !displayGhoBanner && (
+      {!loading && filteredData.length === 0 && (
         <NoSearchResults
           searchTerm={searchTerm}
           subtitle={

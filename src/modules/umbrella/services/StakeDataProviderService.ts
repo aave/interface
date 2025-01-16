@@ -10,6 +10,7 @@ const STAKE_DATA_PROVIDER = '0x9f35cc835458fed692862fd96cfd3445cbd8ef9e';
 export interface StakeData {
   stakeToken: string;
   stakeTokenName: string;
+  stakeTokenSymbol: string;
   stakeTokenTotalSupply: string;
   cooldownSeconds: string;
   unstakeWindowSeconds: string;
@@ -22,7 +23,11 @@ export interface StakeData {
 
 export interface WaTokenData {
   waTokenUnderlying: string;
+  waTokenUnderlyingName: string;
+  waTokenUnderlyingSymbol: string;
   waTokenAToken: string;
+  waTokenATokenName: string;
+  waTokenATokenSymbol: string;
   waTokenPrice: string;
 }
 
@@ -87,6 +92,7 @@ export class StakeDataProviderService {
       return {
         stakeToken: stakeData.stakeToken.toLowerCase(),
         stakeTokenName: stakeData.stakeTokenName,
+        stakeTokenSymbol: stakeData.stakeTokenSymbol,
         stakeTokenTotalSupply: stakeData.stakeTokenTotalSupply.toString(),
         cooldownSeconds: stakeData.cooldownSeconds.toString(),
         unstakeWindowSeconds: stakeData.unstakeWindowSeconds.toString(),
@@ -95,7 +101,11 @@ export class StakeDataProviderService {
         underlyingIsWaToken: stakeData.underlyingIsWaToken,
         waTokenData: {
           waTokenUnderlying: stakeData.waTokenData.waTokenUnderlying.toLowerCase(),
+          waTokenUnderlyingName: stakeData.waTokenData.waTokenUnderlyingName,
+          waTokenUnderlyingSymbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
           waTokenAToken: stakeData.waTokenData.waTokenAToken.toLowerCase(),
+          waTokenATokenName: stakeData.waTokenData.waTokenATokenName,
+          waTokenATokenSymbol: stakeData.waTokenData.waTokenATokenSymbol,
           waTokenPrice: stakeData.waTokenData.waTokenPrice.toString(), // 8 decimals
         },
         rewards: stakeData.rewards.map((reward) => ({

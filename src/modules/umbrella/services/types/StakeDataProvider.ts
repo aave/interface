@@ -10,20 +10,41 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers';
-import type { FunctionFragment, Result } from '@ethersproject/abi';
-import type { Listener, Provider } from '@ethersproject/providers';
-import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
+} from "ethers";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from "./common";
 
 export type WaTokenDataStruct = {
   waTokenUnderlying: string;
+  waTokenUnderlyingName: string;
+  waTokenUnderlyingSymbol: string;
   waTokenAToken: string;
+  waTokenATokenName: string;
+  waTokenATokenSymbol: string;
   waTokenPrice: BigNumberish;
 };
 
-export type WaTokenDataStructOutput = [string, string, BigNumber] & {
+export type WaTokenDataStructOutput = [
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  BigNumber
+] & {
   waTokenUnderlying: string;
+  waTokenUnderlyingName: string;
+  waTokenUnderlyingSymbol: string;
   waTokenAToken: string;
+  waTokenATokenName: string;
+  waTokenATokenSymbol: string;
   waTokenPrice: BigNumber;
 };
 
@@ -36,7 +57,14 @@ export type RewardStruct = {
   apy: BigNumberish;
 };
 
-export type RewardStructOutput = [string, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+export type RewardStructOutput = [
+  string,
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  BigNumber
+] & {
   rewardAddress: string;
   index: BigNumber;
   maxEmissionPerSecond: BigNumber;
@@ -48,6 +76,7 @@ export type RewardStructOutput = [string, BigNumber, BigNumber, BigNumber, BigNu
 export type StakeDataStruct = {
   stakeToken: string;
   stakeTokenName: string;
+  stakeTokenSymbol: string;
   stakeTokenTotalSupply: BigNumberish;
   cooldownSeconds: BigNumberish;
   unstakeWindowSeconds: BigNumberish;
@@ -61,6 +90,7 @@ export type StakeDataStruct = {
 export type StakeDataStructOutput = [
   string,
   string,
+  string,
   BigNumber,
   BigNumber,
   BigNumber,
@@ -72,6 +102,7 @@ export type StakeDataStructOutput = [
 ] & {
   stakeToken: string;
   stakeTokenName: string;
+  stakeTokenSymbol: string;
   stakeTokenTotalSupply: BigNumber;
   cooldownSeconds: BigNumber;
   unstakeWindowSeconds: BigNumber;
@@ -143,33 +174,57 @@ export type StakeUserDataStructOutput = [
 
 export interface StakeDataProviderInterface extends utils.Interface {
   functions: {
-    'getStakeData()': FunctionFragment;
-    'getUserStakeData(address)': FunctionFragment;
-    'rewardsController()': FunctionFragment;
-    'stataTokenFactory()': FunctionFragment;
-    'umbrella()': FunctionFragment;
+    "getStakeData()": FunctionFragment;
+    "getUserStakeData(address)": FunctionFragment;
+    "rewardsController()": FunctionFragment;
+    "stataTokenFactory()": FunctionFragment;
+    "umbrella()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | 'getStakeData'
-      | 'getUserStakeData'
-      | 'rewardsController'
-      | 'stataTokenFactory'
-      | 'umbrella'
+      | "getStakeData"
+      | "getUserStakeData"
+      | "rewardsController"
+      | "stataTokenFactory"
+      | "umbrella"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: 'getStakeData', values?: undefined): string;
-  encodeFunctionData(functionFragment: 'getUserStakeData', values: [string]): string;
-  encodeFunctionData(functionFragment: 'rewardsController', values?: undefined): string;
-  encodeFunctionData(functionFragment: 'stataTokenFactory', values?: undefined): string;
-  encodeFunctionData(functionFragment: 'umbrella', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getStakeData",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getUserStakeData",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "rewardsController",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "stataTokenFactory",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "umbrella", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: 'getStakeData', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'getUserStakeData', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'rewardsController', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'stataTokenFactory', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'umbrella', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getStakeData",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getUserStakeData",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "rewardsController",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "stataTokenFactory",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "umbrella", data: BytesLike): Result;
 
   events: {};
 }
@@ -191,7 +246,9 @@ export interface StakeDataProvider extends BaseContract {
     eventFilter?: TypedEventFilter<TEvent>
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -215,7 +272,10 @@ export interface StakeDataProvider extends BaseContract {
 
   getStakeData(overrides?: CallOverrides): Promise<StakeDataStructOutput[]>;
 
-  getUserStakeData(user: string, overrides?: CallOverrides): Promise<StakeUserDataStructOutput[]>;
+  getUserStakeData(
+    user: string,
+    overrides?: CallOverrides
+  ): Promise<StakeUserDataStructOutput[]>;
 
   rewardsController(overrides?: CallOverrides): Promise<string>;
 
@@ -226,7 +286,10 @@ export interface StakeDataProvider extends BaseContract {
   callStatic: {
     getStakeData(overrides?: CallOverrides): Promise<StakeDataStructOutput[]>;
 
-    getUserStakeData(user: string, overrides?: CallOverrides): Promise<StakeUserDataStructOutput[]>;
+    getUserStakeData(
+      user: string,
+      overrides?: CallOverrides
+    ): Promise<StakeUserDataStructOutput[]>;
 
     rewardsController(overrides?: CallOverrides): Promise<string>;
 
@@ -240,7 +303,10 @@ export interface StakeDataProvider extends BaseContract {
   estimateGas: {
     getStakeData(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getUserStakeData(user: string, overrides?: CallOverrides): Promise<BigNumber>;
+    getUserStakeData(
+      user: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     rewardsController(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -252,7 +318,10 @@ export interface StakeDataProvider extends BaseContract {
   populateTransaction: {
     getStakeData(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getUserStakeData(user: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getUserStakeData(
+      user: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     rewardsController(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

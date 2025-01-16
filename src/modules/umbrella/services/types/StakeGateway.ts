@@ -24,6 +24,8 @@ import type {
 
 export interface StakeGatewayInterface extends utils.Interface {
   functions: {
+    "redeem(address,uint256)": FunctionFragment;
+    "redeemATokens(address,uint256)": FunctionFragment;
     "stake(address,uint256)": FunctionFragment;
     "stakeATokens(address,uint256)": FunctionFragment;
     "stakeATokensWithPermit(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
@@ -33,6 +35,8 @@ export interface StakeGatewayInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "redeem"
+      | "redeemATokens"
       | "stake"
       | "stakeATokens"
       | "stakeATokensWithPermit"
@@ -40,6 +44,14 @@ export interface StakeGatewayInterface extends utils.Interface {
       | "stataTokenFactory"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "redeem",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "redeemATokens",
+    values: [string, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "stake",
     values: [string, BigNumberish]
@@ -75,6 +87,11 @@ export interface StakeGatewayInterface extends utils.Interface {
     values?: undefined
   ): string;
 
+  decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "redeemATokens",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "stakeATokens",
@@ -123,6 +140,18 @@ export interface StakeGateway extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    redeem(
+      stakeToken: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    redeemATokens(
+      stakeToken: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
     stake(
       stakeToken: string,
       amount: BigNumberish,
@@ -157,6 +186,18 @@ export interface StakeGateway extends BaseContract {
 
     stataTokenFactory(overrides?: CallOverrides): Promise<[string]>;
   };
+
+  redeem(
+    stakeToken: string,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  redeemATokens(
+    stakeToken: string,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   stake(
     stakeToken: string,
@@ -193,17 +234,29 @@ export interface StakeGateway extends BaseContract {
   stataTokenFactory(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
+    redeem(
+      stakeToken: string,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    redeemATokens(
+      stakeToken: string,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     stake(
       stakeToken: string,
       amount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     stakeATokens(
       stakeToken: string,
       amount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     stakeATokensWithPermit(
       stakeToken: string,
@@ -213,7 +266,7 @@ export interface StakeGateway extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     stakeWithPermit(
       stakeToken: string,
@@ -223,7 +276,7 @@ export interface StakeGateway extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     stataTokenFactory(overrides?: CallOverrides): Promise<string>;
   };
@@ -231,6 +284,18 @@ export interface StakeGateway extends BaseContract {
   filters: {};
 
   estimateGas: {
+    redeem(
+      stakeToken: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    redeemATokens(
+      stakeToken: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
     stake(
       stakeToken: string,
       amount: BigNumberish,
@@ -267,6 +332,18 @@ export interface StakeGateway extends BaseContract {
   };
 
   populateTransaction: {
+    redeem(
+      stakeToken: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    redeemATokens(
+      stakeToken: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
     stake(
       stakeToken: string,
       amount: BigNumberish,
