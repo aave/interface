@@ -21,6 +21,7 @@ import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
 import { UmbrellaAssetsListMobileItemLoader } from './UmbrellaAssetsListMobileItemLoader';
 import { UmbrellaStakeAssetsListItem } from './UmbrellaStakeAssetsListItem';
+import { StakeData } from '../services/StakeDataProviderService';
 
 const listHeaders = [
   {
@@ -52,13 +53,13 @@ const listHeaders = [
 ];
 
 type MarketAssetsListProps = {
-  reserves: ComputedReserveData[];
+  stakeTokens: StakeData[];
   loading: boolean;
 };
 
 // cast call 0x508b0d26b00bcfa1b1e9783d1194d4a5efe9d19e "rewardsController()("address")" --rpc-url https://virtual.base.rpc.tenderly.co/acca7349-4377-43ab-ba85-84530976e4e0
 
-export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
+export default function MarketAssetsList({ stakeTokens, loading }: MarketAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
@@ -67,39 +68,32 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   );
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeData } = useStakeData(currentMarketData);
   const { data: userStakeData } = useUserStakeData(currentMarketData, user);
-  const { data: stakedDataWithTokenBalances } = useStakedDataWithTokenBalances(
-    stakeData,
-    currentChainId,
-    user
-  );
-  console.log('useStakeData --->', stakeData);
+
   console.log('userStakeData --->', userStakeData);
-  console.log('stakedDataWithTokenBalances', stakedDataWithTokenBalances);
 
   //   const underlyingStakedAssets = useMemo(() => {
   //     return userStakeData?.map((stakeData) => stakeData.stakeTokenUnderlying);
   //   }, [userStakeData]);
 
   //   console.log('underlyingStakedAssets', underlyingStakedAssets);
-  if (sortDesc) {
-    if (sortName === 'symbol') {
-      reserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      reserves.sort((a, b) => a[sortName] - b[sortName]);
-    }
-  } else {
-    if (sortName === 'symbol') {
-      reserves.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      reserves.sort((a, b) => b[sortName] - a[sortName]);
-    }
-  }
+  // if (sortDesc) {
+  //   if (sortName === 'symbol') {
+  //     stakeTokens.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
+  //   } else {
+  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //     // @ts-ignore
+  //     reserves.sort((a, b) => a[sortName] - b[sortName]);
+  //   }
+  // } else {
+  //   if (sortName === 'symbol') {
+  //     reserves.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
+  //   } else {
+  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //     // @ts-ignore
+  //     reserves.sort((a, b) => b[sortName] - a[sortName]);
+  //   }
+  // }
 
   // Show loading state when loading
   if (loading) {
@@ -120,7 +114,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   }
 
   // Hide list when no results, via search term or if a market has all/no frozen/unfrozen assets
-  if (reserves.length === 0) return null;
+  if (stakeTokens.length === 0) return null;
 
   return (
     <>
@@ -148,11 +142,11 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
         </ListHeaderWrapper>
       )}
 
-      {reserves.map((reserve) =>
+      {stakeTokens.map((stakeToken) =>
         isTableChangedToCards ? (
           <UmbrellaAssetsListMobileItem {...reserve} key={reserve.id} />
         ) : (
-          <UmbrellaStakeAssetsListItem {...reserve} key={reserve.id} />
+          <UmbrellaStakeAssetsListItem {...stakeToken} key={stakeToken.stakeToken} />
         )
       )}
     </>

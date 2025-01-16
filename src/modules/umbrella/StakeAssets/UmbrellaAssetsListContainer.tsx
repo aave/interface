@@ -1,4 +1,3 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
@@ -9,7 +8,6 @@ import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../../utils/mixPanelEvents';
@@ -17,7 +15,6 @@ import UmbrellaAssetsList from './UmbrellaAssetsList';
 import { useStakeData } from '../hooks/useStakeData';
 
 export const UmbrellaAssetsListContainer = () => {
-  const { reserves, loading } = useAppDataContext();
   const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [
       store.trackEvent,
@@ -30,31 +27,24 @@ export const UmbrellaAssetsListContainer = () => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
 
-  const { data } = useStakeData(currentMarketData);
+  const { data, isLoading } = useStakeData(currentMarketData);
 
-  const filteredData = reserves
-    // Filter out any non-active reserves
-    .filter((res) => res.isActive)
+  const stakeData = data || [];
+
+  const filteredData = stakeData
     // filter out any that don't meet search term criteria
     .filter((res) => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase().trim();
+      const mainTokenSymbol = res.underlyingIsWaToken ? res.waTokenData.waTokenUnderlyingSymbol : res.stakeTokenSymbol;
+      const mainTokenName = res.underlyingIsWaToken ? res.waTokenData.waTokenUnderlyingName : res.stakeTokenName;
+      const mainUnderlying = res.underlyingIsWaToken ? res.waTokenData.waTokenUnderlying : res.stakeTokenUnderlying;
       return (
-        res.symbol.toLowerCase().includes(term) ||
-        res.name.toLowerCase().includes(term) ||
-        res.underlyingAsset.toLowerCase().includes(term)
+        mainTokenSymbol.includes(term) ||
+        mainTokenName.includes(term) ||
+        mainUnderlying.toLowerCase().includes(term)
       );
-    })
-    // Transform the object for list to consume it
-    .map((reserve) => ({
-      ...reserve,
-      ...(reserve.isWrappedBaseAsset
-        ? fetchIconSymbolAndName({
-            symbol: currentNetworkConfig.baseAssetSymbol,
-            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-          })
-        : {}),
-    }));
+    });
 
   return (
     <ListWrapper
@@ -71,10 +61,10 @@ export const UmbrellaAssetsListContainer = () => {
       }
     >
       {/* Unfrozen assets list */}
-      <UmbrellaAssetsList reserves={filteredData} loading={loading} />
+      <UmbrellaAssetsList stakeTokens={filteredData} loading={isLoading} />
 
       {/* Show no search results message if nothing hits in either list */}
-      {!loading && filteredData.length === 0 && (
+      {!isLoading && filteredData.length === 0 && (
         <NoSearchResults
           searchTerm={searchTerm}
           subtitle={

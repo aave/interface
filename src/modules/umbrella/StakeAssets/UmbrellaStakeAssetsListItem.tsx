@@ -24,24 +24,29 @@ import { FormattedNumber } from '../../../components/primitives/FormattedNumber'
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
+import { StakeData } from '../services/StakeDataProviderService';
 
-export const UmbrellaStakeAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
+export const UmbrellaStakeAssetsListItem = ({ ...stakeToken }: StakeData) => {
   const router = useRouter();
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );
   const { openUmbrella } = useModalContext();
 
-  const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
-    reserve.symbol,
-    currentMarket,
-    ProtocolAction.supply
-  );
-  const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
-    reserve.symbol,
-    currentMarket,
-    ProtocolAction.borrow
-  );
+  // const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
+  //   reserve.symbol,
+  //   currentMarket,
+  //   ProtocolAction.supply
+  // );
+  // const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
+  //   reserve.symbol,
+  //   currentMarket,
+  //   ProtocolAction.borrow
+  // );
+
+  const mainTokenSymbol = stakeToken.underlyingIsWaToken ? stakeToken.waTokenData.waTokenUnderlyingSymbol : stakeToken.stakeTokenSymbol;
+  const mainTokenName = stakeToken.underlyingIsWaToken ? stakeToken.waTokenData.waTokenUnderlyingName : stakeToken.stakeTokenName;
+  const mainUnderlying = stakeToken.underlyingIsWaToken ? stakeToken.waTokenData.waTokenUnderlying : stakeToken.stakeTokenUnderlying;
 
   return (
     <ListItem
@@ -58,13 +63,13 @@ export const UmbrellaStakeAssetsListItem = ({ ...reserve }: ComputedReserveData)
       // }}
       sx={{ cursor: 'pointer' }}
       button
-      data-cy={`marketListItemListItem_${reserve.symbol.toUpperCase()}`}
+      data-cy={`marketListItemListItem_${mainTokenSymbol.toUpperCase()}`}
     >
       <ListColumn isRow maxWidth={280}>
-        <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
+        <TokenIcon symbol={mainTokenSymbol} fontSize="large" />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
           <Typography variant="h4" noWrap>
-            {reserve.name}
+            {mainTokenName}
           </Typography>
 
           <Box
@@ -73,7 +78,7 @@ export const UmbrellaStakeAssetsListItem = ({ ...reserve }: ComputedReserveData)
             }}
           >
             <Typography variant="subheader2" color="text.muted" noWrap>
-              {reserve.symbol}
+              {mainTokenSymbol}
             </Typography>
           </Box>
         </Box>
@@ -102,22 +107,11 @@ export const UmbrellaStakeAssetsListItem = ({ ...reserve }: ComputedReserveData)
           protocolAction={ProtocolAction.supply}
         />
       </ListColumn> */}
-
-      <ListColumn>
-        {reserve.borrowingEnabled || Number(reserve.totalDebt) > 0 ? (
-          <>
-            <FormattedNumber compact value={reserve.totalDebt} variant="main16" />{' '}
-            <ReserveSubheader value={reserve.totalDebtUSD} />
-          </>
-        ) : (
-          <NoData variant={'secondary14'} color="text.secondary" />
-        )}
-      </ListColumn>
-
+{/* 
       <ListColumn>
         TODO: DECIMALS
         <FormattedNumber compact value={reserve.totalUnderlyingBalance} variant="main16" />{' '}
-      </ListColumn>
+      </ListColumn> */}
 
       <ListColumn minWidth={95} maxWidth={95} align="right">
         {/* TODO: Open Modal for staking */}
@@ -143,7 +137,7 @@ export const UmbrellaStakeAssetsListItem = ({ ...reserve }: ComputedReserveData)
             // e.preventDefault();
             console.log('fo');
 
-            openUmbrella(reserve.name, reserve.symbol);
+            openUmbrella(stakeToken.stakeToken, mainTokenSymbol);
           }}
         >
           <Trans>Stake</Trans>
