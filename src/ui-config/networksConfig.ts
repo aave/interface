@@ -267,7 +267,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://sepolia.basescan.org/',
+    explorerLink: 'https://sepolia.basescan.org',
     isTestnet: true,
     networkLogoPath: '/icons/networks/base.svg',
   },
@@ -354,7 +354,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetSymbol: 'BNB',
     wrappedBaseAssetSymbol: 'WBNB',
     baseAssetDecimals: 18,
-    explorerLink: 'https://bscscan.com/',
+    explorerLink: 'https://bscscan.com',
     networkLogoPath: '/icons/networks/binance.svg',
     bridge: {
       icon: '/icons/networks/binance.svg',
@@ -371,7 +371,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://scrollscan.com/',
+    explorerLink: 'https://scrollscan.com',
     networkLogoPath: '/icons/networks/scroll.svg',
     bridge: {
       icon: '/icons/networks/scroll.svg',
@@ -387,7 +387,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://era.zksync.network/',
+    explorerLink: 'https://era.zksync.network',
     networkLogoPath: '/icons/networks/zksync.svg',
     bridge: {
       icon: '/icons/networks/zksync.svg',
