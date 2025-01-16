@@ -1,6 +1,7 @@
 import React from 'react';
-import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { BasicModal } from 'src/components/primitives/BasicModal';
+import { ModalType, useModalContext } from 'src/hooks/useModal';
+
 import { UmbrellaModalContent } from './UmbrellaModalContent';
 
 export const UmbrellaModal = () => {

@@ -1,27 +1,26 @@
-import { useMemo } from 'react';
+import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
-import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 
 import {
   useStakeData,
-  useUserStakeData,
   useStakedDataWithTokenBalances,
+  useUserStakeData,
 } from '../hooks/useStakeData';
-import { UmbrellaUserStakeAssetsListItem } from './UmbrellaUserStakeAssetsListItem';
-// import { UmbrellaStakeAssetsListItem } from './UmbrellaStakeAssetsListItem';
-import { UmbrellaUserAssetsListItemLoader } from './UmbrellaUserAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
 import { UmbrellaAssetsListMobileItemLoader } from './UmbrellaAssetsListMobileItemLoader';
-import { ChainId } from '@aave/contract-helpers';
+// import { UmbrellaStakeAssetsListItem } from './UmbrellaStakeAssetsListItem';
+import { UmbrellaUserAssetsListItemLoader } from './UmbrellaUserAssetsListItemLoader';
+import { UmbrellaUserStakeAssetsListItem } from './UmbrellaUserStakeAssetsListItem';
 
 const listHeaders = [
   {

@@ -3,6 +3,18 @@ import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import React, { useRef, useState } from 'react';
+import { AssetInput } from 'src/components/transactions/AssetInput';
+import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
+import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
+import { TxSuccessView } from 'src/components/transactions/FlowCommons/Success';
+import {
+  DetailsCooldownLine,
+  DetailsNumberLine,
+  TxModalDetails,
+} from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
+import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
+import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -11,19 +23,15 @@ import { useRootStore } from 'src/store/root';
 import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { STAKE } from 'src/utils/mixPanelEvents';
-import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
-import { AssetInput } from 'src/components/transactions/AssetInput';
-import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
-import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
-import { TxSuccessView } from 'src/components/transactions/FlowCommons/Success';
+
 import {
-  DetailsNumberLine,
-  TxModalDetails,
-  DetailsCooldownLine,
-} from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
-import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
+  selectStakeDataByAddress,
+  selectUserStakeDataByAddress,
+  useStakeData,
+  useUserStakeData,
+} from './hooks/useStakeData';
 import { UmbrellaActions } from './UmbrellaActions';
+
 export type StakeProps = {
   umbrellaAssetName: string;
   icon: string;
@@ -38,12 +46,14 @@ export const UmbrellaModalContent = ({ umbrellaAssetName, icon }: StakeProps) =>
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
+  const user = useRootStore((store) => store.account);
 
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, umbrellaAssetName);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, umbrellaAssetName);
-
-  const stakeData = stakeGeneralResult?.[0];
-  const stakeUserData = stakeUserResult?.[0];
+  const { data: stakeData } = useStakeData(currentMarketData, {
+    select: (stakeData) => selectStakeDataByAddress(stakeData, umbrellaAssetName),
+  });
+  const { data: userStakeData } = useUserStakeData(currentMarketData, user, {
+    select: (userStakeData) => selectUserStakeDataByAddress(userStakeData, umbrellaAssetName),
+  });
 
   // states
   const [_amount, setAmount] = useState('');

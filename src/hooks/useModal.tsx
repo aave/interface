@@ -42,6 +42,7 @@ export interface ModalArgsType {
   power?: string;
   icon?: string;
   stakeAssetName?: Stake;
+  uStakeToken?: string;
   isFrozen?: boolean;
   representatives?: Array<{ chainId: ChainId; representative: string }>;
   chainId?: number;
@@ -97,7 +98,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openStakeCooldown: (stakeAssetName: Stake, icon: string) => void;
   openStakeRewardsClaim: (stakeAssetName: Stake, icon: string) => void;
   openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
-  openUmbrella: (umbrellaAssetName: string, icon: string) => void;
+  openUmbrella: (uStakeToken: string, icon: string) => void;
   openClaimRewards: () => void;
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
@@ -266,12 +267,12 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           setType(ModalType.StakeRewardsClaimRestake);
           setArgs({ stakeAssetName, icon });
         },
-        openUmbrella: (umbrellaAssetName, icon) => {
+        openUmbrella: (uStakeToken, icon) => {
           console.log('HELLO!!!');
-          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella', assetName: umbrellaAssetName });
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella', uStakeToken: uStakeToken });
 
           setType(ModalType.Umbrella);
-          setArgs({ umbrellaAssetName, icon });
+          setArgs({ uStakeToken, icon });
         },
         openClaimRewards: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim' });

@@ -6,6 +6,8 @@ import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
+import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
@@ -17,9 +19,6 @@ import { Link, ROUTES } from '../../../components/primitives/Link';
 import { Row } from '../../../components/primitives/Row';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ListMobileItemWrapper } from '../../dashboard/lists/ListMobileItemWrapper';
-
-import { useModalContext } from 'src/hooks/useModal';
-import { MergedStakeData } from '../hooks/useStakeData';
 
 export const UmbrellaAssetsListMobileItem = ({ ...reserve }: MergedStakeData) => {
   const [trackEvent, currentMarket] = useRootStore(
@@ -43,9 +42,8 @@ export const UmbrellaAssetsListMobileItem = ({ ...reserve }: MergedStakeData) =>
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
       name={reserve.name}
-      underlyingAsset={reserve.underlyingAsset}
+      underlyingAsset={reserve.stakeTokenUnderlying}
       currentMarket={currentMarket}
-      isIsolated={reserve.isIsolated}
     >
       <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
         <Box

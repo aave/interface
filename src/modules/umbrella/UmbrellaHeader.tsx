@@ -6,9 +6,10 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
-import { MarketSwitcher } from './UmbrellaMarketSwitcher';
+
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
+import { MarketSwitcher } from './UmbrellaMarketSwitcher';
 
 interface StakingHeaderProps {
   tvl: {
