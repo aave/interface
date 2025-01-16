@@ -12,6 +12,8 @@ import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
+import { useRewardsApy } from 'src/modules/umbrella/hooks/useStakeData';
+
 import { useModalContext } from 'src/hooks/useModal';
 import { UmbrellaAssetBreakdown } from 'src/modules/umbrella/helpers/Helpers';
 import { useRootStore } from 'src/store/root';
@@ -36,7 +38,7 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
 
   const { openUmbrella } = useModalContext();
 
-  console.log('umbrellaStakeAsset', umbrellaStakeAsset);
+  const APY = useRewardsApy(umbrellaStakeAsset.rewards);
 
   return (
     <ListItem
@@ -74,7 +76,9 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
         </Box>
       </ListColumn>
 
-      <ListColumn>TODO: APY</ListColumn>
+      <ListColumn>
+        <FormattedNumber value={APY} percent variant="main16" visibleDecimals={2} />
+      </ListColumn>
 
       <ListColumn>
         <FormattedNumber
