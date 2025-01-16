@@ -25,6 +25,7 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { STAKE } from 'src/utils/mixPanelEvents';
 
 import { UmbrellaActions } from './UmbrellaActions';
+import { selectStakeDataByAddress, selectUserStakeDataByAddress, useStakeData, useUserStakeData } from './hooks/useStakeData';
 
 export type StakeProps = {
   umbrellaAssetName: string;
@@ -40,12 +41,10 @@ export const UmbrellaModalContent = ({ umbrellaAssetName, icon }: StakeProps) =>
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
+  const user = useRootStore((store) => store.account);
 
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, umbrellaAssetName);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, umbrellaAssetName);
-
-  const stakeData = stakeGeneralResult?.[0];
-  const stakeUserData = stakeUserResult?.[0];
+  const { data: stakeData } = useStakeData(currentMarketData, { select: (stakeData) => selectStakeDataByAddress(stakeData, umbrellaAssetName)});
+  const { data: userStakeData } = useUserStakeData(currentMarketData, user, { select: (userStakeData) => selectUserStakeDataByAddress(userStakeData, umbrellaAssetName)});
 
   // states
   const [_amount, setAmount] = useState('');

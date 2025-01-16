@@ -1,22 +1,27 @@
 import { formatUnits } from '@ethersproject/units';
 import { useQuery } from '@tanstack/react-query';
 import { Multicall } from 'ethereum-multicall';
-import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
+import { HookOpts } from 'src/hooks/commonTypes';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { StakeData, StakeUserData } from '../services/StakeDataProviderService';
 
-export const useStakeData = (marketData: MarketDataType) => {
+export const selectStakeDataByAddress = (stakeData: StakeData[], address: string) => stakeData.find(elem => elem.stakeToken === address);
+export const selectUserStakeDataByAddress = (stakeData: StakeUserData[], address: string) => stakeData.find(elem => elem.stakeToken === address);
+
+export const useStakeData = <T = StakeData[]>(marketData: MarketDataType, opts?: HookOpts<StakeData[], T>) => {
   const { stakeDataService } = useSharedDependencies();
   return useQuery({
     queryFn: () => {
       return stakeDataService.getStakeData(marketData);
     },
     queryKey: ['getStkTokens', marketData.marketTitle],
+    ...opts,
   });
 };
 
-export const useUserStakeData = (marketData: MarketDataType, user: string) => {
+export const useUserStakeData = <T = StakeUserData[]>(marketData: MarketDataType, user: string, opts?:HookOpts<StakeUserData[], T>) => {
   const { stakeDataService } = useSharedDependencies();
   return useQuery({
     queryFn: () => {
@@ -24,6 +29,7 @@ export const useUserStakeData = (marketData: MarketDataType, user: string) => {
     },
     queryKey: ['getUserStakeData', marketData.marketTitle, user],
     enabled: !!user,
+    ...opts,
   });
 };
 
