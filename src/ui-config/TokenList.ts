@@ -12729,8 +12729,7 @@ export const TOKEN_LIST: TokenList = {
       symbol: 'stkGHO',
       decimals: 18,
       chainId: 1,
-      logoURI:
-        'https://raw.githubusercontent.com/aave/interface/937b265e2d141f3636d59d827e270ea0df3afe29/public/icons/tokens/stkaave.svg',
+      logoURI: 'https://assets.coingecko.com/coins/images/34849/standard/staked-gho.png?1736975912',
     },
     {
       name: 'USDS Stablecoin',
