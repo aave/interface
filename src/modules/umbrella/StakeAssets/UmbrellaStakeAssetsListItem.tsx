@@ -1,4 +1,5 @@
 import { ProtocolAction } from '@aave/contract-helpers';
+import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -10,12 +11,13 @@ import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
+import { UmbrellaAssetBreakdown } from 'src/modules/umbrella/helpers/Helpers';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
-import { normalize } from '@aave/math-utils';
 
 import { IncentivesCard } from '../../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
@@ -25,9 +27,6 @@ import { FormattedNumber } from '../../../components/primitives/FormattedNumber'
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
-import { UmbrellaAssetBreakdown } from 'src/modules/umbrella/helpers/Helpers';
-
-import { MergedStakeData } from '../hooks/useStakeData';
 
 export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
   const router = useRouter();

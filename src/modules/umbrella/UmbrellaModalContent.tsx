@@ -24,8 +24,13 @@ import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig'
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { STAKE } from 'src/utils/mixPanelEvents';
 
+import {
+  selectStakeDataByAddress,
+  selectUserStakeDataByAddress,
+  useStakeData,
+  useUserStakeData,
+} from './hooks/useStakeData';
 import { UmbrellaActions } from './UmbrellaActions';
-import { selectStakeDataByAddress, selectUserStakeDataByAddress, useStakeData, useUserStakeData } from './hooks/useStakeData';
 
 export type StakeProps = {
   umbrellaAssetName: string;
@@ -43,8 +48,12 @@ export const UmbrellaModalContent = ({ umbrellaAssetName, icon }: StakeProps) =>
   const currentChainId = useRootStore((store) => store.currentChainId);
   const user = useRootStore((store) => store.account);
 
-  const { data: stakeData } = useStakeData(currentMarketData, { select: (stakeData) => selectStakeDataByAddress(stakeData, umbrellaAssetName)});
-  const { data: userStakeData } = useUserStakeData(currentMarketData, user, { select: (userStakeData) => selectUserStakeDataByAddress(userStakeData, umbrellaAssetName)});
+  const { data: stakeData } = useStakeData(currentMarketData, {
+    select: (stakeData) => selectStakeDataByAddress(stakeData, umbrellaAssetName),
+  });
+  const { data: userStakeData } = useUserStakeData(currentMarketData, user, {
+    select: (userStakeData) => selectUserStakeDataByAddress(userStakeData, umbrellaAssetName),
+  });
 
   // states
   const [_amount, setAmount] = useState('');

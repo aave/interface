@@ -1,13 +1,11 @@
-import { useState } from 'react';
-import { Trans } from '@lingui/macro';
-
-import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import { Box, Typography } from '@mui/material';
-
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { normalize } from '@aave/math-utils';
-
+import { Trans } from '@lingui/macro';
+import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
+import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
 
 export const UmbrellaAssetBreakdown = ({

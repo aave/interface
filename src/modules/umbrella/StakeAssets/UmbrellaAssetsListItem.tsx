@@ -10,6 +10,7 @@ import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
@@ -24,8 +25,6 @@ import { FormattedNumber } from '../../../components/primitives/FormattedNumber'
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
-
-import { MergedStakeData } from '../hooks/useStakeData';
 
 export const UmbrellaAssetsListItem = ({ ...reserve }: MergedStakeData) => {
   const router = useRouter();
@@ -82,11 +81,11 @@ export const UmbrellaAssetsListItem = ({ ...reserve }: MergedStakeData) => {
         </Box>
       </ListColumn>
 
-      <ListColumn>
+      {/* <ListColumn>
         <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
         <ReserveSubheader value={reserve.totalLiquidityUSD} />
         HELLO
-      </ListColumn>
+      </ListColumn> */}
 
       {/* <ListColumn>
         <IncentivesCard
@@ -164,7 +163,7 @@ export const UmbrellaAssetsListItem = ({ ...reserve }: MergedStakeData) => {
             // e.preventDefault();
             console.log('fo');
 
-            openUmbrella(reserve.name, reserve.symbol);
+            openUmbrella(reserve.stakeToken, reserve.symbol);
           }}
         >
           <Trans>Stake</Trans>
