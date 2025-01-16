@@ -7,6 +7,7 @@ import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider'
 // import { formatUnits } from '@ethersproject/units';
 import { useMemo } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { Rewards } from '../services/StakeDataProviderService';
 
 import {
   StakeData,
@@ -95,6 +96,21 @@ export const useMergedStakeData = (
 
     return mergedData;
   }, [stakingData, userStakeToken, reserveData]);
+};
+
+export const useRewardsApy = (rewards: Rewards[]) => {
+  return useMemo(() => {
+    if (!rewards.length || rewards[0].currentEmissionPerSecond === '0') {
+      return '0';
+    }
+
+    const now = Math.floor(Date.now() / 1000);
+    if (Number(rewards[0].distributionEnd) < now) {
+      return '0';
+    }
+
+    return rewards[0].apy;
+  }, [rewards]);
 };
 
 // TODO LINT
