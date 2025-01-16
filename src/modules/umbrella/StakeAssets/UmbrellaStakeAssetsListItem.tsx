@@ -12,6 +12,8 @@ import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
+import { useRewardsApy } from 'src/modules/umbrella/hooks/useStakeData';
+
 import { useModalContext } from 'src/hooks/useModal';
 import { UmbrellaAssetBreakdown } from 'src/modules/umbrella/helpers/Helpers';
 import { useRootStore } from 'src/store/root';
@@ -27,7 +29,6 @@ import { FormattedNumber } from '../../../components/primitives/FormattedNumber'
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
-import { MergedStakeData, useRewardsApy } from '../hooks/useStakeData';
 
 export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
   const router = useRouter();
