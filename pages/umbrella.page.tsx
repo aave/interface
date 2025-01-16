@@ -136,8 +136,6 @@ export default function UmbrellaStaking() {
       .mul('86400')
   );
 
-  console.log('UmbrellaStakeModal', UmbrellaStakeModal);
-
   return (
     <>
       <UmbrellaHeader tvl={tvl} stkEmission={stkEmission} loading={stakeGeneralResultLoading} />

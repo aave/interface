@@ -139,6 +139,7 @@ ATokenIcon.displayName = 'ATokenIcon';
 interface TokenIconProps extends IconProps {
   symbol: string;
   aToken?: boolean;
+  aTokens?: boolean[];
 }
 
 /**
@@ -205,9 +206,18 @@ interface MultiTokenIconProps extends IconProps {
   symbols: string[];
   badgeSymbol?: string;
   aToken?: boolean;
+  aTokens?: boolean[];
 }
 
-export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIconProps) {
+export function MultiTokenIcon({
+  symbols,
+  badgeSymbol,
+  aToken = false,
+  aTokens: providedATokens,
+  ...rest
+}: MultiTokenIconProps) {
+  const aTokens = providedATokens || symbols.map((_, index) => (index === 0 ? aToken : false));
+
   if (!badgeSymbol)
     return (
       <Box sx={{ display: 'inline-flex', position: 'relative' }}>
@@ -216,6 +226,7 @@ export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIcon
             {...rest}
             key={symbol}
             symbol={symbol}
+            aToken={aTokens[ix]}
             sx={{ ml: ix === 0 ? 0 : `calc(-1 * 0.5em)`, ...rest.sx }}
           />
         ))}
@@ -233,6 +244,7 @@ export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIcon
           {...rest}
           key={symbol}
           symbol={symbol}
+          aToken={aTokens[ix]}
           sx={{ ml: ix === 0 ? 0 : 'calc(-1 * 0.5em)', ...rest.sx }}
         />
       ))}
@@ -240,11 +252,14 @@ export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIcon
   );
 }
 
-export function TokenIcon({ symbol, ...rest }: TokenIconProps) {
+export function TokenIcon({ symbol, aToken, aTokens, ...rest }: TokenIconProps) {
   const symbolChunks = symbol.split('_');
   if (symbolChunks.length > 1) {
-    const [badge, ...symbols] = symbolChunks;
-    return <MultiTokenIcon {...rest} symbols={symbols} badgeSymbol={'/pools/' + badge} />;
+    if (symbolChunks[0].startsWith('pools/')) {
+      const [badge, ...symbols] = symbolChunks;
+      return <MultiTokenIcon {...rest} symbols={symbols} badgeSymbol={'/pools/' + badge} />;
+    }
+    return <MultiTokenIcon {...rest} symbols={symbolChunks} aToken={aToken} aTokens={aTokens} />;
   }
-  return <SingleTokenIcon symbol={symbol} {...rest} />;
+  return <SingleTokenIcon symbol={symbol} aToken={aToken} {...rest} />;
 }

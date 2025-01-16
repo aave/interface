@@ -25,23 +25,26 @@ import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 
-export const UmbrellaAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
+import { MergedStakeData } from '../hooks/useStakeData';
+
+export const UmbrellaAssetsListItem = ({ ...reserve }: MergedStakeData) => {
   const router = useRouter();
+  console.log('what the reserve look lit', reserve);
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );
   const { openUmbrella } = useModalContext();
 
-  const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
-    reserve.symbol,
-    currentMarket,
-    ProtocolAction.supply
-  );
-  const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
-    reserve.symbol,
-    currentMarket,
-    ProtocolAction.borrow
-  );
+  // const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
+  //   reserve.symbol,
+  //   currentMarket,
+  //   ProtocolAction.supply
+  // );
+  // const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
+  //   reserve.symbol,
+  //   currentMarket,
+  //   ProtocolAction.borrow
+  // );
 
   return (
     <ListItem
@@ -78,11 +81,12 @@ export const UmbrellaAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           </Box>
         </Box>
       </ListColumn>
-      {/* 
+
       <ListColumn>
         <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
         <ReserveSubheader value={reserve.totalLiquidityUSD} />
-      </ListColumn> */}
+        HELLO
+      </ListColumn>
 
       {/* <ListColumn>
         <IncentivesCard
@@ -103,7 +107,7 @@ export const UmbrellaAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         />
       </ListColumn> */}
 
-      <ListColumn>
+      {/* <ListColumn>
         {reserve.borrowingEnabled || Number(reserve.totalDebt) > 0 ? (
           <>
             <FormattedNumber compact value={reserve.totalDebt} variant="main16" />{' '}
@@ -112,9 +116,9 @@ export const UmbrellaAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         ) : (
           <NoData variant={'secondary14'} color="text.secondary" />
         )}
-      </ListColumn>
+      </ListColumn> */}
 
-      <ListColumn>
+      {/* <ListColumn>
         <IncentivesCard
           value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
           incentives={reserve.vIncentivesData || []}
@@ -134,7 +138,7 @@ export const UmbrellaAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
-      </ListColumn>
+      </ListColumn> */}
 
       <ListColumn minWidth={95} maxWidth={95} align="right">
         {/* TODO: Open Modal for staking */}
