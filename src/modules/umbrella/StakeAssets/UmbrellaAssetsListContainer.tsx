@@ -13,8 +13,29 @@ import { useShallow } from 'zustand/shallow';
 import { GENERAL } from '../../../utils/mixPanelEvents';
 import UmbrellaAssetsList from './UmbrellaAssetsList';
 import { useStakeData } from '../hooks/useStakeData';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
+
+function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
+  // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
+  // If GHO is listed as a reserve, then it will be displayed in the normal market asset list
+  if (!GHO_MINTING_MARKETS.includes(marketTitle)) {
+    return false;
+  }
+
+  if (!searchTerm) {
+    return true;
+  }
+
+  const normalizedSearchTerm = searchTerm.toLowerCase().trim();
+  return (
+    normalizedSearchTerm.length <= 3 && GHO_SYMBOL.toLowerCase().includes(normalizedSearchTerm)
+  );
+}
 
 export const UmbrellaAssetsListContainer = () => {
+  const { reserves, loading } = useAppDataContext();
   const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [
       store.trackEvent,
@@ -27,24 +48,34 @@ export const UmbrellaAssetsListContainer = () => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
 
-  const { data, isLoading } = useStakeData(currentMarketData);
+  const ghoReserve = getGhoReserve(reserves);
+  const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
 
-  const stakeData = data || [];
-
-  const filteredData = stakeData
+  const filteredData = reserves
+    // Filter out any non-active reserves
+    .filter((res) => res.isActive)
+    // Filter out GHO if the banner is being displayed
+    .filter((res) => (displayGhoBanner ? res !== ghoReserve : true))
     // filter out any that don't meet search term criteria
     .filter((res) => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase().trim();
-      const mainTokenSymbol = res.underlyingIsWaToken ? res.waTokenData.waTokenUnderlyingSymbol : res.stakeTokenSymbol;
-      const mainTokenName = res.underlyingIsWaToken ? res.waTokenData.waTokenUnderlyingName : res.stakeTokenName;
-      const mainUnderlying = res.underlyingIsWaToken ? res.waTokenData.waTokenUnderlying : res.stakeTokenUnderlying;
       return (
-        mainTokenSymbol.includes(term) ||
-        mainTokenName.includes(term) ||
-        mainUnderlying.toLowerCase().includes(term)
+        res.symbol.toLowerCase().includes(term) ||
+        res.name.toLowerCase().includes(term) ||
+        res.underlyingAsset.toLowerCase().includes(term)
       );
-    });
+    })
+    // Transform the object for list to consume it
+    .map((reserve) => ({
+      ...reserve,
+      ...(reserve.isWrappedBaseAsset
+        ? fetchIconSymbolAndName({
+            symbol: currentNetworkConfig.baseAssetSymbol,
+            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+          })
+        : {}),
+    }));
 
   return (
     <ListWrapper
@@ -61,10 +92,10 @@ export const UmbrellaAssetsListContainer = () => {
       }
     >
       {/* Unfrozen assets list */}
-      <UmbrellaAssetsList stakeTokens={filteredData} loading={isLoading} />
+      <UmbrellaAssetsList reserves={filteredData} loading={loading} />
 
       {/* Show no search results message if nothing hits in either list */}
-      {!isLoading && filteredData.length === 0 && (
+      {!loading && filteredData.length === 0 && (
         <NoSearchResults
           searchTerm={searchTerm}
           subtitle={

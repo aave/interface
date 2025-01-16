@@ -5,7 +5,7 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0x9f35cc835458fed692862fd96cfd3445cbd8ef9e';
+const STAKE_DATA_PROVIDER = '0x8aC1CC9ba5a8d2ACa779cc9dB78AD9F493731886';
 
 export interface StakeData {
   stakeToken: string;

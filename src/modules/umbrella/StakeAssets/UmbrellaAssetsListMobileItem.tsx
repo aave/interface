@@ -19,7 +19,9 @@ import { Row } from '../../../components/primitives/Row';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ListMobileItemWrapper } from '../../dashboard/lists/ListMobileItemWrapper';
 
-export const UmbrellaAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
+import { MergedStakeData } from '../hooks/useStakeData';
+
+export const UmbrellaAssetsListMobileItem = ({ ...reserve }: MergedStakeData) => {
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );

@@ -2,7 +2,7 @@ import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
 import { useMemo, useState } from 'react';
-import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+// import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -13,15 +13,22 @@ import { useShallow } from 'zustand/shallow';
 
 import {
   useStakeData,
-  useStakedDataWithTokenBalances,
   useUserStakeData,
+  useMergedStakeData,
+  MergedStakeData,
 } from '../hooks/useStakeData';
-import { UmbrellaAssetsListItem } from './UmbrellaAssetsListItem';
+
+import {
+  StakeData,
+  // StakeUserData,
+  // StakeUserBalances,
+  // StakeUserCooldown,
+} from '../services/StakeDataProviderService';
+
+import { UmbrellaStakeAssetsListItem } from './UmbrellaStakeAssetsListItem';
 import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
 import { UmbrellaAssetsListMobileItemLoader } from './UmbrellaAssetsListMobileItemLoader';
-import { UmbrellaStakeAssetsListItem } from './UmbrellaStakeAssetsListItem';
-import { StakeData } from '../services/StakeDataProviderService';
 
 const listHeaders = [
   {
@@ -53,13 +60,11 @@ const listHeaders = [
 ];
 
 type MarketAssetsListProps = {
-  stakeTokens: StakeData[];
+  reserves: ComputedReserveData[];
   loading: boolean;
 };
 
-// cast call 0x508b0d26b00bcfa1b1e9783d1194d4a5efe9d19e "rewardsController()("address")" --rpc-url https://virtual.base.rpc.tenderly.co/acca7349-4377-43ab-ba85-84530976e4e0
-
-export default function MarketAssetsList({ stakeTokens, loading }: MarketAssetsListProps) {
+export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
@@ -68,32 +73,65 @@ export default function MarketAssetsList({ stakeTokens, loading }: MarketAssetsL
   );
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: userStakeData } = useUserStakeData(currentMarketData, user);
+  const { data: stakeData } = useStakeData(currentMarketData);
+  const { data: userStakeData = [] } = useUserStakeData(currentMarketData, user);
+  // const { data: stakedDataWithTokenBalances } = useStakedDataWithTokenBalances(
+  //   userStakeData,
+  //   currentChainId,
+  //   user
+  // );
 
+  // const filteredGhoToken = useMemo(() => {
+
+  //  }
+
+  // sum all three for every case for available to stake
+
+  // underlyingTokenBalance
+  // :
+  // "0"
+  // underlyingWaTokenATokenBalance
+  // :
+  // "0" // underling USDC
+  // underlyingWaTokenBalance
+  // :
+  // "49002102" // underling USDC
+
+  // TODO: Handle GHO Situation
+  const filteredGhoToken: StakeData[] = useMemo(() => {
+    if (!stakeData) return [];
+    return stakeData?.filter(
+      (item) => item.waTokenData.waTokenUnderlying !== '0x0000000000000000000000000000000000000000'
+    );
+  }, [stakeData]);
+
+  const stakedDataWithTokenBalances: MergedStakeData[] = useMergedStakeData(
+    filteredGhoToken,
+    userStakeData,
+    reserves
+  );
+  console.log('useStakeData --->', stakeData);
   console.log('userStakeData --->', userStakeData);
 
-  //   const underlyingStakedAssets = useMemo(() => {
-  //     return userStakeData?.map((stakeData) => stakeData.stakeTokenUnderlying);
-  //   }, [userStakeData]);
+  console.log('reserves ---', reserves);
 
-  //   console.log('underlyingStakedAssets', underlyingStakedAssets);
-  // if (sortDesc) {
-  //   if (sortName === 'symbol') {
-  //     stakeTokens.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
-  //   } else {
-  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //     // @ts-ignore
-  //     reserves.sort((a, b) => a[sortName] - b[sortName]);
-  //   }
-  // } else {
-  //   if (sortName === 'symbol') {
-  //     reserves.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
-  //   } else {
-  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //     // @ts-ignore
-  //     reserves.sort((a, b) => b[sortName] - a[sortName]);
-  //   }
-  // }
+  if (sortDesc) {
+    if (sortName === 'symbol') {
+      reserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      reserves.sort((a, b) => a[sortName] - b[sortName]);
+    }
+  } else {
+    if (sortName === 'symbol') {
+      reserves.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      reserves.sort((a, b) => b[sortName] - a[sortName]);
+    }
+  }
 
   // Show loading state when loading
   if (loading) {
@@ -114,7 +152,7 @@ export default function MarketAssetsList({ stakeTokens, loading }: MarketAssetsL
   }
 
   // Hide list when no results, via search term or if a market has all/no frozen/unfrozen assets
-  if (stakeTokens.length === 0) return null;
+  if (stakedDataWithTokenBalances.length === 0) return null;
 
   return (
     <>
@@ -142,11 +180,17 @@ export default function MarketAssetsList({ stakeTokens, loading }: MarketAssetsL
         </ListHeaderWrapper>
       )}
 
-      {stakeTokens.map((stakeToken) =>
+      {stakedDataWithTokenBalances.map((umbrellaStakeAsset) =>
         isTableChangedToCards ? (
-          <UmbrellaAssetsListMobileItem {...reserve} key={reserve.id} />
+          <UmbrellaAssetsListMobileItem
+            {...umbrellaStakeAsset}
+            key={umbrellaStakeAsset.stakeToken}
+          />
         ) : (
-          <UmbrellaStakeAssetsListItem {...stakeToken} key={stakeToken.stakeToken} />
+          <UmbrellaStakeAssetsListItem
+            {...umbrellaStakeAsset}
+            key={umbrellaStakeAsset.stakeToken}
+          />
         )
       )}
     </>

@@ -15,6 +15,7 @@ import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
+import { normalize } from '@aave/math-utils';
 
 import { IncentivesCard } from '../../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
@@ -24,29 +25,19 @@ import { FormattedNumber } from '../../../components/primitives/FormattedNumber'
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
-import { StakeData } from '../services/StakeDataProviderService';
+import { UmbrellaAssetBreakdown } from 'src/modules/umbrella/helpers/Helpers';
 
-export const UmbrellaStakeAssetsListItem = ({ ...stakeToken }: StakeData) => {
+import { MergedStakeData } from '../hooks/useStakeData';
+
+export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
   const router = useRouter();
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );
+
   const { openUmbrella } = useModalContext();
 
-  // const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
-  //   reserve.symbol,
-  //   currentMarket,
-  //   ProtocolAction.supply
-  // );
-  // const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
-  //   reserve.symbol,
-  //   currentMarket,
-  //   ProtocolAction.borrow
-  // );
-
-  const mainTokenSymbol = stakeToken.underlyingIsWaToken ? stakeToken.waTokenData.waTokenUnderlyingSymbol : stakeToken.stakeTokenSymbol;
-  const mainTokenName = stakeToken.underlyingIsWaToken ? stakeToken.waTokenData.waTokenUnderlyingName : stakeToken.stakeTokenName;
-  const mainUnderlying = stakeToken.underlyingIsWaToken ? stakeToken.waTokenData.waTokenUnderlying : stakeToken.stakeTokenUnderlying;
+  console.log('umbrellaStakeAsset', umbrellaStakeAsset);
 
   return (
     <ListItem
@@ -55,21 +46,21 @@ export const UmbrellaStakeAssetsListItem = ({ ...stakeToken }: StakeData) => {
       // onClick={() => {
       //   trackEvent(MARKETS.DETAILS_NAVIGATION, {
       //     type: 'Row',
-      //     assetName: reserve.name,
-      //     asset: reserve.underlyingAsset,
+      //     assetName: umbrellaStakeAsset.name,
+      //     asset: umbrellaStakeAsset.underlyingAsset,
       //     market: currentMarket,
       //   });
-      //   router.push(ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket));
+      //   router.push(ROUTES.umbrellaStakeAssetOverview(umbrellaStakeAsset.underlyingAsset, currentMarket));
       // }}
       sx={{ cursor: 'pointer' }}
       button
-      data-cy={`marketListItemListItem_${mainTokenSymbol.toUpperCase()}`}
+      // data-cy={`marketListItemListItem_${umbrellaStakeAsset.symbol.toUpperCase()}`}
     >
       <ListColumn isRow maxWidth={280}>
-        <TokenIcon symbol={mainTokenSymbol} fontSize="large" />
+        <TokenIcon symbol={umbrellaStakeAsset.iconSymbol} fontSize="large" />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
           <Typography variant="h4" noWrap>
-            {mainTokenName}
+            {umbrellaStakeAsset.name}
           </Typography>
 
           <Box
@@ -78,66 +69,59 @@ export const UmbrellaStakeAssetsListItem = ({ ...stakeToken }: StakeData) => {
             }}
           >
             <Typography variant="subheader2" color="text.muted" noWrap>
-              {mainTokenSymbol}
+              {umbrellaStakeAsset.symbol}
             </Typography>
           </Box>
         </Box>
       </ListColumn>
-      {/* 
-      <ListColumn>
-        <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
-        <ReserveSubheader value={reserve.totalLiquidityUSD} />
-      </ListColumn> */}
 
-      {/* <ListColumn>
-        <IncentivesCard
-          value={reserve.supplyAPY}
-          incentives={reserve.aIncentivesData || []}
-          address={reserve.aTokenAddress}
-          symbol={reserve.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
-          tooltip={
-            <>
-              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
-            </>
-          }
-          market={currentMarket}
-          protocolAction={ProtocolAction.supply}
-        />
-      </ListColumn> */}
-{/* 
+      <ListColumn>TODO: APY</ListColumn>
+
       <ListColumn>
-        TODO: DECIMALS
-        <FormattedNumber compact value={reserve.totalUnderlyingBalance} variant="main16" />{' '}
-      </ListColumn> */}
+        <FormattedNumber
+          value={normalize(
+            Number(umbrellaStakeAsset.balances.underlyingTokenBalance) +
+              Number(umbrellaStakeAsset.balances.underlyingWaTokenBalance) +
+              Number(umbrellaStakeAsset.balances.underlyingWaTokenATokenBalance),
+            umbrellaStakeAsset.underlyingTokenDecimals
+          )}
+          compact
+          variant="main16"
+        />
+        <UmbrellaAssetBreakdown
+          underlyingTokenBalance={umbrellaStakeAsset.balances.underlyingTokenBalance}
+          underlyingWaTokenATokenBalance={
+            umbrellaStakeAsset.balances.underlyingWaTokenATokenBalance
+          }
+          underlyingWaTokenBalance={umbrellaStakeAsset.balances.underlyingWaTokenBalance}
+          aToken
+          underlyingTokenDecimals={umbrellaStakeAsset.underlyingTokenDecimals}
+          symbol={`${umbrellaStakeAsset.iconSymbol}`}
+        />
+      </ListColumn>
 
       <ListColumn minWidth={95} maxWidth={95} align="right">
         {/* TODO: Open Modal for staking */}
         <Button
           variant="outlined"
           // component={Link}
-          // href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
+          // href={ROUTES.umbrellaStakeAssetOverview(umbrellaStakeAsset.underlyingAsset, currentMarket)}
           // onClick={
           //   () => {
           //     console.log('hello');
 
-          //     openUmbrella(reserve.name, 'USDC');
+          //     openUmbrella(umbrellaStakeAsset.name, 'USDC');
           //   }
           //   // trackEvent(MARKETS.DETAILS_NAVIGATION, {
           //   //   type: 'Button',
-          //   //   assetName: reserve.name,
-          //   //   asset: reserve.underlyingAsset,
+          //   //   assetName: umbrellaStakeAsset.name,
+          //   //   asset: umbrellaStakeAsset.underlyingAsset,
           //   //   market: currentMarket,
           //   // }
           //   //)
           // }
           onClick={(e) => {
-            // e.preventDefault();
-            console.log('fo');
-
-            openUmbrella(stakeToken.stakeToken, mainTokenSymbol);
+            openUmbrella(umbrellaStakeAsset.stakeToken, umbrellaStakeAsset.symbol);
           }}
         >
           <Trans>Stake</Trans>
