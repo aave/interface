@@ -5,7 +5,7 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0x8aC1CC9ba5a8d2ACa779cc9dB78AD9F493731886';
+const STAKE_DATA_PROVIDER = '0x0C491F6F7b3F967aFb9Bf58Ce6B4001ce4978d9f';
 
 export interface StakeData {
   stakeToken: string;
@@ -33,6 +33,8 @@ export interface WaTokenData {
 
 export interface Rewards {
   rewardAddress: string;
+  rewardName: string;
+  rewardSymbol: string;
   index: string;
   maxEmissionPerSecond: string;
   distributionEnd: string;
@@ -110,6 +112,8 @@ export class StakeDataProviderService {
         },
         rewards: stakeData.rewards.map((reward) => ({
           rewardAddress: reward.rewardAddress.toLowerCase(),
+          rewardName: reward.rewardName,
+          rewardSymbol: reward.rewardSymbol,
           index: reward.index.toString(),
           maxEmissionPerSecond: reward.maxEmissionPerSecond.toString(),
           distributionEnd: reward.distributionEnd.toString(),

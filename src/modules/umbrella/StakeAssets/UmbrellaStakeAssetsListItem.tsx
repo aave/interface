@@ -28,6 +28,8 @@ import { FormattedNumber } from '../../../components/primitives/FormattedNumber'
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
+import { StakingApyItem } from '../StakingApyItem';
+import { AvailableToStakeItem } from '../AvailableToStakeItem';
 
 export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
   const router = useRouter();
@@ -76,30 +78,11 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber value={APY} percent variant="main16" visibleDecimals={2} />
+        <StakingApyItem rewards={umbrellaStakeAsset.rewards} />
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber
-          value={normalize(
-            Number(umbrellaStakeAsset.balances.underlyingTokenBalance) +
-              Number(umbrellaStakeAsset.balances.underlyingWaTokenBalance) +
-              Number(umbrellaStakeAsset.balances.underlyingWaTokenATokenBalance),
-            umbrellaStakeAsset.underlyingTokenDecimals
-          )}
-          compact
-          variant="main16"
-        />
-        <UmbrellaAssetBreakdown
-          underlyingTokenBalance={umbrellaStakeAsset.balances.underlyingTokenBalance}
-          underlyingWaTokenATokenBalance={
-            umbrellaStakeAsset.balances.underlyingWaTokenATokenBalance
-          }
-          underlyingWaTokenBalance={umbrellaStakeAsset.balances.underlyingWaTokenBalance}
-          aToken
-          underlyingTokenDecimals={umbrellaStakeAsset.underlyingTokenDecimals}
-          symbol={`${umbrellaStakeAsset.iconSymbol}`}
-        />
+        <AvailableToStakeItem stakeData={umbrellaStakeAsset} />
       </ListColumn>
 
       <ListColumn minWidth={95} maxWidth={95} align="right">

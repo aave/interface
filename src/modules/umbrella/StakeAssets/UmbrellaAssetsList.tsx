@@ -38,7 +38,7 @@ const listHeaders = [
   //     sortKey: 'supplyAPY',
   //   },
   {
-    title: <Trans>Wallet Balance</Trans>,
+    title: <Trans>Available to Stake</Trans>,
     sortKey: 'totalUnderlyingBalance',
   },
   //   {
