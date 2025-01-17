@@ -5,7 +5,7 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0x0C491F6F7b3F967aFb9Bf58Ce6B4001ce4978d9f';
+const STAKE_DATA_PROVIDER = '0xd9b01e5732F84E6f371F817dd286C8243654da86';
 
 export interface StakeData {
   stakeToken: string;
@@ -16,6 +16,8 @@ export interface StakeData {
   unstakeWindowSeconds: string;
   stakeTokenUnderlying: string;
   underlyingTokenDecimals: number;
+  underlyingTokenName: string;
+  underlyingTokenSymbol: string;
   underlyingIsWaToken: boolean;
   waTokenData: WaTokenData;
   rewards: Rewards[];
@@ -100,6 +102,8 @@ export class StakeDataProviderService {
         unstakeWindowSeconds: stakeData.unstakeWindowSeconds.toString(),
         stakeTokenUnderlying: stakeData.stakeTokenUnderlying.toLowerCase(),
         underlyingTokenDecimals: stakeData.underlyingTokenDecimals,
+        underlyingTokenName: stakeData.underlyingTokenName,
+        underlyingTokenSymbol: stakeData.underlyingTokenSymbol,
         underlyingIsWaToken: stakeData.underlyingIsWaToken,
         waTokenData: {
           waTokenUnderlying: stakeData.waTokenData.waTokenUnderlying.toLowerCase(),

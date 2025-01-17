@@ -93,8 +93,8 @@ export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: Merge
         )}
         {underlyingTokenBalance && (
           <AssetRow
-            symbol={stakeData.stakeTokenSymbol}
-            name={stakeData.stakeTokenSymbol}
+            symbol={stakeData.underlyingTokenSymbol}
+            name={stakeData.underlyingTokenSymbol}
             value={underlyingTokenBalance}
           />
         )}

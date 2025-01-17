@@ -78,6 +78,8 @@ export type StakeDataStruct = {
   stakeToken: string;
   stakeTokenName: string;
   stakeTokenSymbol: string;
+  underlyingTokenName: string;
+  underlyingTokenSymbol: string;
   stakeTokenTotalSupply: BigNumberish;
   cooldownSeconds: BigNumberish;
   unstakeWindowSeconds: BigNumberish;
@@ -89,6 +91,8 @@ export type StakeDataStruct = {
 };
 
 export type StakeDataStructOutput = [
+  string,
+  string,
   string,
   string,
   string,
@@ -104,6 +108,8 @@ export type StakeDataStructOutput = [
   stakeToken: string;
   stakeTokenName: string;
   stakeTokenSymbol: string;
+  underlyingTokenName: string;
+  underlyingTokenSymbol: string;
   stakeTokenTotalSupply: BigNumber;
   cooldownSeconds: BigNumber;
   unstakeWindowSeconds: BigNumber;
