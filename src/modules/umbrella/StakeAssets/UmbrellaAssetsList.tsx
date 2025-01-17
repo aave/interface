@@ -17,6 +17,7 @@ import {
   // StakeUserData,
   // StakeUserBalances,
   // StakeUserCooldown,
+  Rewards,
 } from '../services/StakeDataProviderService';
 import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
@@ -64,9 +65,31 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   const [currentMarketData, user] = useRootStore(
     useShallow((store) => [store.currentMarketData, store.account])
   );
-  const currentChainId = useRootStore((store) => store.currentChainId);
-
   const { data: stakedDataWithTokenBalances } = useUmbrellaSummary(currentMarketData);
+
+  const sortedData = useMemo(() => {
+    if (!stakedDataWithTokenBalances) return [];
+
+    return [...stakedDataWithTokenBalances].sort((a, b) => {
+      if (sortName === 'symbol') {
+        return sortDesc ? b.symbol.localeCompare(a.symbol) : a.symbol.localeCompare(b.symbol);
+      }
+
+      if (sortName === 'totalLiquidityUSD') {
+        const apyA = Number(calculateRewardsApy(a.rewards));
+        const apyB = Number(calculateRewardsApy(b.rewards));
+        return sortDesc ? apyB - apyA : apyA - apyB;
+      }
+
+      if (sortName === 'totalUnderlyingBalance') {
+        const balanceA = Number(a.balances?.underlyingTokenBalance || '0');
+        const balanceB = Number(b.balances?.underlyingTokenBalance || '0');
+        return sortDesc ? balanceB - balanceA : balanceA - balanceB;
+      }
+
+      return 0;
+    });
+  }, [stakedDataWithTokenBalances, sortName, sortDesc]);
 
   // Show loading state when loading
   if (loading) {
@@ -116,7 +139,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
         </ListHeaderWrapper>
       )}
 
-      {stakedDataWithTokenBalances.map((umbrellaStakeAsset) =>
+      {sortedData.map((umbrellaStakeAsset) =>
         isTableChangedToCards ? (
           <UmbrellaAssetsListMobileItem
             {...umbrellaStakeAsset}
@@ -132,3 +155,16 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
     </>
   );
 }
+
+const calculateRewardsApy = (rewards: Rewards[]): string => {
+  if (!rewards.length || rewards[0].currentEmissionPerSecond === '0') {
+    return '0';
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  if (Number(rewards[0].distributionEnd) < now) {
+    return '0';
+  }
+
+  return rewards[0].apy;
+};

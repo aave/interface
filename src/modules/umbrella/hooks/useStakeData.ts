@@ -63,56 +63,56 @@ export interface MergedStakeData extends StakeData {
   iconSymbol: string;
 }
 
-export const useMergedStakeData = (
-  stakingData: StakeData[],
-  userStakeToken: StakeUserData[],
-  reserveData: ComputedReserveData[]
-): MergedStakeData[] => {
-  return useMemo(() => {
-    if (
-      !Array.isArray(stakingData) ||
-      !Array.isArray(userStakeToken) ||
-      !Array.isArray(reserveData)
-    ) {
-      return [];
-    }
+// export const useMergedStakeData = (
+//   stakingData: StakeData[],
+//   userStakeToken: StakeUserData[],
+//   reserveData: ComputedReserveData[]
+// ): MergedStakeData[] => {
+//   return useMemo(() => {
+//     if (
+//       !Array.isArray(stakingData) ||
+//       !Array.isArray(userStakeToken) ||
+//       !Array.isArray(reserveData)
+//     ) {
+//       return [];
+//     }
 
-    if (!stakingData.length || !userStakeToken.length || !reserveData.length) {
-      return [];
-    }
+//     if (!stakingData.length || !userStakeToken.length || !reserveData.length) {
+//       return [];
+//     }
 
-    const mergedData = stakingData.reduce<MergedStakeData[]>((acc, stakeItem) => {
-      const matchingBalance = userStakeToken.find(
-        (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.stakeToken.toLowerCase()
-      );
+//     const mergedData = stakingData.reduce<MergedStakeData[]>((acc, stakeItem) => {
+//       const matchingBalance = userStakeToken.find(
+//         (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.stakeToken.toLowerCase()
+//       );
 
-      const matchingReserve = reserveData.find(
-        (reserveItem) =>
-          reserveItem.underlyingAsset.toLowerCase() ===
-          stakeItem.waTokenData.waTokenUnderlying.toLowerCase()
-      );
+//       const matchingReserve = reserveData.find(
+//         (reserveItem) =>
+//           reserveItem.underlyingAsset.toLowerCase() ===
+//           stakeItem.waTokenData.waTokenUnderlying.toLowerCase()
+//       );
 
-      if (!matchingBalance || !matchingReserve) {
-        return acc;
-      }
+//       if (!matchingBalance || !matchingReserve) {
+//         return acc;
+//       }
 
-      acc.push({
-        ...stakeItem,
-        balances: matchingBalance.balances,
-        cooldownData: matchingBalance.cooldown,
-        name: matchingReserve.name,
-        symbol: matchingReserve.symbol,
-        decimals: matchingReserve.decimals,
-        priceInUSD: matchingReserve.priceInUSD || '0',
-        iconSymbol: matchingReserve.iconSymbol || 'USDC',
-      });
+//       acc.push({
+//         ...stakeItem,
+//         balances: matchingBalance.balances,
+//         cooldownData: matchingBalance.cooldown,
+//         name: matchingReserve.name,
+//         symbol: matchingReserve.symbol,
+//         decimals: matchingReserve.decimals,
+//         priceInUSD: matchingReserve.priceInUSD || '0',
+//         iconSymbol: matchingReserve.iconSymbol || 'USDC',
+//       });
 
-      return acc;
-    }, []);
+//       return acc;
+//     }, []);
 
-    return mergedData;
-  }, [stakingData, userStakeToken, reserveData]);
-};
+//     return mergedData;
+//   }, [stakingData, userStakeToken, reserveData]);
+// };
 
 export const useRewardsApy = (rewards: Rewards[]) => {
   return useMemo(() => {
