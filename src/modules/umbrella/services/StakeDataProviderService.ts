@@ -5,7 +5,7 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0xd9b01e5732F84E6f371F817dd286C8243654da86';
+const STAKE_DATA_PROVIDER = '0x14AA09449fac437b5c0110614be2C08610e38f62';
 
 export interface StakeData {
   stakeToken: string;
@@ -37,6 +37,7 @@ export interface Rewards {
   rewardAddress: string;
   rewardName: string;
   rewardSymbol: string;
+  decimals: number;
   index: string;
   maxEmissionPerSecond: string;
   distributionEnd: string;
@@ -118,6 +119,7 @@ export class StakeDataProviderService {
           rewardAddress: reward.rewardAddress.toLowerCase(),
           rewardName: reward.rewardName,
           rewardSymbol: reward.rewardSymbol,
+          decimals: reward.decimals,
           index: reward.index.toString(),
           maxEmissionPerSecond: reward.maxEmissionPerSecond.toString(),
           distributionEnd: reward.distributionEnd.toString(),

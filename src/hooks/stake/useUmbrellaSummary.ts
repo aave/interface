@@ -21,11 +21,8 @@ interface FormattedBalance {
 interface FormattedReward {
   accrued: string;
   rewardToken: string;
+  rewardTokenName: string;
   rewardTokenSymbol: string;
-  // TODO
-  // rewardTokenSymbol: string;
-  // rewardTokenDecimals: number;
-  // rewardTokenPrice: string; ?
 }
 
 export interface MergedStakeData extends StakeData {
@@ -76,11 +73,22 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
           stakeItem.underlyingTokenDecimals
         ),
       },
-      formattedRewards: matchingBalance.rewards.map((reward) => ({
-        accrued: normalize(reward.accrued, 8), // TODO: need to normalize using reward decimal
-        rewardToken: reward.rewardAddress,
-        rewardTokenSymbol: 'USDC',
-      })),
+      formattedRewards: matchingBalance.rewards.map((reward) => {
+        const rewardData = stakeItem.rewards.find(
+          (rewardItem) => rewardItem.rewardAddress === reward.rewardAddress
+        );
+
+        if (!rewardData) {
+          throw new Error('Reward data not found');
+        }
+
+        return {
+          accrued: normalize(reward.accrued, rewardData.decimals),
+          rewardToken: reward.rewardAddress,
+          rewardTokenSymbol: rewardData.rewardSymbol,
+          rewardTokenName: rewardData.rewardName,
+        };
+      }),
       cooldownData: matchingBalance.cooldown,
       name: stakeItem.underlyingIsWaToken
         ? stakeItem.waTokenData.waTokenUnderlyingName

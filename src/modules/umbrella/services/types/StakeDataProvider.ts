@@ -47,6 +47,7 @@ export type RewardStruct = {
   rewardAddress: string;
   rewardName: string;
   rewardSymbol: string;
+  decimals: BigNumberish;
   index: BigNumberish;
   maxEmissionPerSecond: BigNumberish;
   distributionEnd: BigNumberish;
@@ -58,6 +59,7 @@ export type RewardStructOutput = [
   string,
   string,
   string,
+  number,
   BigNumber,
   BigNumber,
   BigNumber,
@@ -67,6 +69,7 @@ export type RewardStructOutput = [
   rewardAddress: string;
   rewardName: string;
   rewardSymbol: string;
+  decimals: number;
   index: BigNumber;
   maxEmissionPerSecond: BigNumber;
   distributionEnd: BigNumber;
