@@ -7,15 +7,7 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
-import { useRootStore } from 'src/store/root';
-import { useShallow } from 'zustand/shallow';
 
-import {
-  useStakeData,
-  useStakedDataWithTokenBalances,
-  useUserStakeData,
-} from '../hooks/useStakeData';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
 import { UmbrellaAssetsListMobileItemLoader } from './UmbrellaAssetsListMobileItemLoader';
 // import { UmbrellaStakeAssetsListItem } from './UmbrellaStakeAssetsListItem';
@@ -62,27 +54,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
-  const [currentMarketData, user] = useRootStore(
-    useShallow((store) => [store.currentMarketData, store.account])
-  );
-  const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeData } = useStakeData(currentMarketData);
-  const { data: userStakeData } = useUserStakeData(currentMarketData, user);
-  const { data: stakedDataWithTokenBalances } = useStakedDataWithTokenBalances(
-    stakeData,
-    currentChainId,
-    user
-  );
-  console.log('useStakeData --->', stakeData);
-  console.log('userStakeData --->', userStakeData);
-  console.log('stakedDataWithTokenBalances', stakedDataWithTokenBalances);
-
-  //   const underlyingStakedAssets = useMemo(() => {
-  //     return userStakeData?.map((stakeData) => stakeData.stakeTokenUnderlying);
-  //   }, [userStakeData]);
-
-  //   console.log('underlyingStakedAssets', underlyingStakedAssets);
   if (sortDesc) {
     if (sortName === 'symbol') {
       reserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));

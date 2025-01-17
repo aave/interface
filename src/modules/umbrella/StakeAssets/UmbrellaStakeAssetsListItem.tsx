@@ -12,10 +12,9 @@ import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
-import { useRewardsApy } from 'src/modules/umbrella/hooks/useStakeData';
-
 import { useModalContext } from 'src/hooks/useModal';
 import { UmbrellaAssetBreakdown } from 'src/modules/umbrella/helpers/Helpers';
+import { useRewardsApy } from 'src/modules/umbrella/hooks/useStakeData';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';

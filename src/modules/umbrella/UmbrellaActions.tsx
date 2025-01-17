@@ -1,6 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
+import { checkRequiresApproval } from 'src/components/transactions/utils';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -10,6 +13,7 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { useShallow } from 'zustand/shallow';
 
 import { StakeGatewayService } from './services/StakeGatewayService';
+import { StakeInputAsset } from './UmbrellaModalContent';
 
 export interface StakeActionProps extends BoxProps {
   amountToStake: string;
@@ -17,9 +21,12 @@ export interface StakeActionProps extends BoxProps {
   customGasPrice?: string;
   symbol: string;
   blocked: boolean;
-  selectedToken: string;
+  stakeData: MergedStakeData;
+  selectedToken: StakeInputAsset;
   event: string;
 }
+
+const STAKE_GATEWAY_CONTRACT = '0x169e71ef44e0f67d21a4722eb51a6119f23da421';
 
 export const UmbrellaActions = ({
   amountToStake,
@@ -29,11 +36,15 @@ export const UmbrellaActions = ({
   blocked,
   selectedToken,
   event,
+  stakeData,
   ...props
 }: StakeActionProps) => {
   const [estimateGasLimit, tryPermit] = useRootStore(
     useShallow((state) => [state.estimateGasLimit, state.tryPermit])
   );
+
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const user = useRootStore((store) => store.account);
 
   const {
     approvalTxState,
@@ -46,27 +57,59 @@ export const UmbrellaActions = ({
     setTxError,
   } = useModalContext();
 
-  const { data: approvedAmount } = useApprovedAmount({
-    chainId: 1,
-    token: selectedToken,
-    spender: '',
+  const { data: approvedAmount, refetch: fetchApprovedAmount } = useApprovedAmount({
+    chainId: currentChainId,
+    token: selectedToken.address,
+    spender: STAKE_GATEWAY_CONTRACT,
   });
 
-  const {} = useApprovalTx({});
+  const amountToApprove =
+    amountToStake === '-1'
+      ? (selectedToken.aToken
+          ? Number(selectedToken.balance) * 1.1
+          : selectedToken.balance
+        ).toString()
+      : amountToStake;
+
+  const requiresApproval =
+    Number(amountToStake) !== 0 &&
+    checkRequiresApproval({
+      approvedAmount: approvedAmount?.toString() || '0',
+      amount: amountToApprove,
+      signedAmount: '0',
+    });
+
+  const tokenApproval = {
+    user,
+    token: selectedToken.address,
+    spender: STAKE_GATEWAY_CONTRACT,
+    amount: amountToApprove,
+  };
+
+  const { approval } = useApprovalTx({
+    usePermit: false,
+    approvedAmount: tokenApproval,
+    requiresApproval,
+    assetAddress: selectedToken.address,
+    symbol: selectedToken.symbol,
+    decimals: stakeData.decimals,
+    onApprovalTxConfirmed: fetchApprovedAmount,
+    signatureAmount: '0',
+  });
 
   const { currentAccount, sendTx } = useWeb3Context();
-
-  const requiresApproval = false;
-
-  const permitAvailable = tryPermit({ reserveAddress: selectedToken, os });
-
-  const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
-      const stakeService = new StakeGatewayService('');
-      let stakeTxData = stakeService.stake(currentAccount, '', '');
+      const stakeService = new StakeGatewayService(STAKE_GATEWAY_CONTRACT);
+      let stakeTxData = stakeService.stake(
+        currentAccount,
+        stakeData.stakeToken,
+        amountToStake === '-1'
+          ? parseUnits(selectedToken.balance, stakeData.decimals).toString()
+          : parseUnits(amountToStake, stakeData.decimals).toString()
+      );
       stakeTxData = await estimateGasLimit(stakeTxData);
       const tx = await sendTx(stakeTxData);
       await tx.wait(1);
@@ -104,13 +147,11 @@ export const UmbrellaActions = ({
       isWrongNetwork={isWrongNetwork}
       amount={amountToStake}
       handleAction={action}
-      handleApproval={() =>
-        approval([{ amount: amountToStake, underlyingAsset: selectedToken, permitType: 'STAKE' }])
-      }
+      handleApproval={approval}
       symbol={symbol}
       requiresAmount
       actionText={<Trans>Stake</Trans>}
-      tryPermit={tryPermit}
+      tryPermit={false}
       actionInProgressText={<Trans>Staking</Trans>}
       sx={sx}
       // event={STAKE.STAKE_BUTTON_MODAL}

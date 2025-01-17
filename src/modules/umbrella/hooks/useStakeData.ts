@@ -1,22 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { HookOpts } from 'src/hooks/commonTypes';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
-// import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
-// import { Multicall } from 'ethereum-multicall';
-// import { getProvider } from 'src/utils/marketsAndNetworksConfig';
-// import { formatUnits } from '@ethersproject/units';
-import { useMemo } from 'react';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { Rewards } from '../services/StakeDataProviderService';
 
-import {
-  StakeData,
-  StakeUserData,
-  StakeUserBalances,
-  StakeUserCooldown,
-} from '../services/StakeDataProviderService';
+import { Rewards, StakeData, StakeUserData } from '../services/StakeDataProviderService';
 
 export const selectStakeDataByAddress = (stakeData: StakeData[], address: string) =>
   stakeData.find((elem) => elem.stakeToken === address);
@@ -53,15 +42,15 @@ export const useUserStakeData = <T = StakeUserData[]>(
   });
 };
 
-export interface MergedStakeData extends StakeData {
-  balances: StakeUserBalances;
-  cooldownData: StakeUserCooldown;
-  name: string;
-  symbol: string;
-  decimals: number;
-  priceInUSD: string;
-  iconSymbol: string;
-}
+// export interface MergedStakeData extends StakeData {
+//   balances: StakeUserBalances;
+//   cooldownData: StakeUserCooldown;
+//   name: string;
+//   symbol: string;
+//   decimals: number;
+//   priceInUSD: string;
+//   iconSymbol: string;
+// }
 
 // export const useMergedStakeData = (
 //   stakingData: StakeData[],

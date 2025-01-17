@@ -19,6 +19,7 @@ import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
+import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -42,8 +43,13 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-interface StakeInputAsset extends Asset {
+export interface StakeInputAsset {
+  symbol: string;
+  iconSymbol: string;
+  address: string;
+  aToken?: boolean;
   balance: string;
+  rawBalance: string;
 }
 
 const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
@@ -53,13 +59,15 @@ const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
           address: stakeData.waTokenData.waTokenUnderlying,
           symbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
           iconSymbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
-          balance: stakeData.balances.underlyingWaTokenBalance,
+          balance: stakeData.formattedBalances.underlyingWaTokenBalance,
+          rawBalance: stakeData.balances.underlyingWaTokenBalance,
         },
         {
           address: stakeData.waTokenData.waTokenAToken,
           symbol: stakeData.waTokenData.waTokenATokenSymbol,
           iconSymbol: stakeData.waTokenData.waTokenATokenSymbol,
-          balance: stakeData.balances.underlyingWaTokenATokenBalance,
+          balance: stakeData.formattedBalances.underlyingWaTokenATokenBalance,
+          rawBalance: stakeData.balances.underlyingWaTokenATokenBalance,
           aToken: true,
         },
       ]
@@ -68,24 +76,22 @@ const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
           address: stakeData.stakeTokenUnderlying,
           symbol: stakeData.stakeTokenSymbol,
           iconSymbol: stakeData.stakeTokenSymbol,
-          balance: stakeData.balances.underlyingTokenBalance,
+          balance: stakeData.formattedBalances.underlyingTokenBalance,
+          rawBalance: stakeData.balances.underlyingTokenBalance,
         },
       ];
 };
 
 export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
-  const currentChainId = useRootStore((store) => store.currentChainId);
 
   // states
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
   const assets = getInputTokens(stakeData);
-
-  console.log(assets);
 
   const [inputToken, setInputToken] = useState<StakeInputAsset>(assets[0]);
 
@@ -113,39 +119,31 @@ export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
     }
   };
 
-  // is Network mismatched
-  const stakingChain =
-    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
-      ? currentChainId
-      : stakeConfig.chainId;
-  const isWrongNetwork = connectedChainId !== stakingChain;
-
-  const networkConfig = getNetworkConfig(stakingChain);
+  const { isWrongNetwork, requiredChainId } = useIsWrongNetwork();
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  // if (txState.success)
-  //   return (
-  //     <TxSuccessView
-  //       action={<Trans>Staked</Trans>}
-  //       amount={amountRef.current}
-  //       symbol={nameFormatted}
-  //     />
-  //   );
+  if (txState.success)
+    return (
+      <TxSuccessView
+        action={<Trans>Staked</Trans>}
+        amount={amountRef.current}
+        symbol={'test'}
+      />
+    );
 
   return (
     <>
       <TxModalTitle title="Stake" symbol={''} />
 
-      {/* TODO do we handle this for markets? */}
-      {/* {isWrongNetwork && !readOnlyModeAddress && (
+      {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
-          networkName={networkConfig.name}
-          chainId={stakingChain}
+          networkName={currentNetworkConfig.name}
+          chainId={requiredChainId}
           funnel={'Stake Modal'}
         />
-      )} */}
+      )}
 
       <CooldownWarning />
 
@@ -158,21 +156,21 @@ export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
         symbol={inputToken.symbol}
         assets={assets}
         isMaxSelected={isMaxSelected}
-        maxValue={inputToken.balance.toString()}
+        maxValue={inputToken.balance}
         balanceText={<Trans>Wallet balance</Trans>}
       />
-      {/* {blockingError !== undefined && (
+      {blockingError !== undefined && (
         <Typography variant="helperText" color="red">
           {handleBlocked()}
         </Typography>
       )}
       <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
-        <DetailsNumberLine
+        {/* <DetailsNumberLine
           description={<Trans>Staking APR</Trans>}
           value={Number(stakeData?.stakeApy || '0') / 10000}
           percent
-        />
-        <DetailsCooldownLine cooldownDays={10} />
+        /> */}
+        <DetailsCooldownLine cooldownDays={+stakeData.cooldownSeconds} />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
@@ -181,11 +179,12 @@ export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
         sx={{ mt: '48px' }}
         amountToStake={amount}
         isWrongNetwork={isWrongNetwork}
-        symbol={nameFormatted}
+        symbol={''}
         blocked={blockingError !== undefined}
-        selectedToken={umbrellaAssetName}
+        selectedToken={inputToken}
+        stakeData={stakeData}
         event={STAKE.STAKE_TOKEN}
-      /> */}
+      />
     </>
   );
 };
