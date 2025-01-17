@@ -1,22 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { HookOpts } from 'src/hooks/commonTypes';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
-// import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
-// import { Multicall } from 'ethereum-multicall';
-// import { getProvider } from 'src/utils/marketsAndNetworksConfig';
-// import { formatUnits } from '@ethersproject/units';
-import { useMemo } from 'react';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { Rewards } from '../services/StakeDataProviderService';
 
-import {
-  StakeData,
-  StakeUserData,
-  StakeUserBalances,
-  StakeUserCooldown,
-} from '../services/StakeDataProviderService';
+import { Rewards, StakeData, StakeUserData } from '../services/StakeDataProviderService';
 
 export const selectStakeDataByAddress = (stakeData: StakeData[], address: string) =>
   stakeData.find((elem) => elem.stakeToken === address);
@@ -51,67 +40,6 @@ export const useUserStakeData = <T = StakeUserData[]>(
     enabled: !!user,
     ...opts,
   });
-};
-
-export interface MergedStakeData extends StakeData {
-  balances: StakeUserBalances;
-  cooldownData: StakeUserCooldown;
-  name: string;
-  symbol: string;
-  decimals: number;
-  priceInUSD: string;
-  iconSymbol: string;
-}
-
-export const useMergedStakeData = (
-  stakingData: StakeData[],
-  userStakeToken: StakeUserData[],
-  reserveData: ComputedReserveData[]
-): MergedStakeData[] => {
-  return useMemo(() => {
-    if (
-      !Array.isArray(stakingData) ||
-      !Array.isArray(userStakeToken) ||
-      !Array.isArray(reserveData)
-    ) {
-      return [];
-    }
-
-    if (!stakingData.length || !userStakeToken.length || !reserveData.length) {
-      return [];
-    }
-
-    const mergedData = stakingData.reduce<MergedStakeData[]>((acc, stakeItem) => {
-      const matchingBalance = userStakeToken.find(
-        (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.stakeToken.toLowerCase()
-      );
-
-      const matchingReserve = reserveData.find(
-        (reserveItem) =>
-          reserveItem.underlyingAsset.toLowerCase() ===
-          stakeItem.waTokenData.waTokenUnderlying.toLowerCase()
-      );
-
-      if (!matchingBalance || !matchingReserve) {
-        return acc;
-      }
-
-      acc.push({
-        ...stakeItem,
-        balances: matchingBalance.balances,
-        cooldownData: matchingBalance.cooldown,
-        name: matchingReserve.name,
-        symbol: matchingReserve.symbol,
-        decimals: matchingReserve.decimals,
-        priceInUSD: matchingReserve.priceInUSD || '0',
-        iconSymbol: matchingReserve.iconSymbol || 'USDC',
-      });
-
-      return acc;
-    }, []);
-
-    return mergedData;
-  }, [stakingData, userStakeToken, reserveData]);
 };
 
 export const useRewardsApy = (rewards: Rewards[]) => {

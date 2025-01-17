@@ -1,3 +1,4 @@
+import { normalize } from '@aave/math-utils';
 import { useStakeData, useUserStakeData } from 'src/modules/umbrella/hooks/useStakeData';
 import {
   StakeData,
@@ -9,8 +10,17 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import { combineQueries } from '../pool/utils';
 
+interface FormattedBalance {
+  stakeTokenBalance: string;
+  stakeTokenRedeemableAmount: string;
+  underlyingTokenBalance: string;
+  underlyingWaTokenBalance: string;
+  underlyingWaTokenATokenBalance: string;
+}
+
 export interface MergedStakeData extends StakeData {
   balances: StakeUserBalances;
+  formattedBalances: FormattedBalance;
   cooldownData: StakeUserCooldown;
   name: string;
   symbol: string;
@@ -31,6 +41,28 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
     acc.push({
       ...stakeItem,
       balances: matchingBalance.balances,
+      formattedBalances: {
+        stakeTokenBalance: normalize(
+          matchingBalance.balances.stakeTokenBalance,
+          stakeItem.underlyingTokenDecimals
+        ),
+        stakeTokenRedeemableAmount: normalize(
+          matchingBalance.balances.stakeTokenRedeemableAmount,
+          stakeItem.underlyingTokenDecimals
+        ),
+        underlyingTokenBalance: normalize(
+          matchingBalance.balances.underlyingTokenBalance,
+          stakeItem.underlyingTokenDecimals
+        ),
+        underlyingWaTokenBalance: normalize(
+          matchingBalance.balances.underlyingWaTokenBalance,
+          stakeItem.underlyingTokenDecimals
+        ),
+        underlyingWaTokenATokenBalance: normalize(
+          matchingBalance.balances.underlyingWaTokenATokenBalance,
+          stakeItem.underlyingTokenDecimals
+        ),
+      },
       cooldownData: matchingBalance.cooldown,
       name: stakeItem.underlyingIsWaToken
         ? stakeItem.waTokenData.waTokenUnderlyingName
