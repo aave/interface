@@ -13,7 +13,7 @@ export const StakingApyItem = ({ rewards }: { rewards: Rewards[] }) => {
     return (
       <Stack direction="column" alignItems="center" justifyContent="center">
         <FormattedNumber value={reward.apy} percent variant="main16" visibleDecimals={2} />
-        <TokenIcon symbol={reward.rewardSymbol} sx={{ fontSize: '20px', mr: 1 }} />
+        <TokenIcon symbol={reward.rewardSymbol} />
       </Stack>
     );
   }

@@ -13,11 +13,11 @@ import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
 import {
-  StakeData,
   // StakeUserData,
   // StakeUserBalances,
   // StakeUserCooldown,
   Rewards,
+  StakeData,
 } from '../services/StakeDataProviderService';
 import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
@@ -40,6 +40,10 @@ const listHeaders = [
   {
     title: <Trans>Available to Stake</Trans>,
     sortKey: 'totalUnderlyingBalance',
+  },
+  {
+    title: <Trans>Available to Claim</Trans>,
+    sortKey: 'TODO',
   },
   //   {
   //     title: (

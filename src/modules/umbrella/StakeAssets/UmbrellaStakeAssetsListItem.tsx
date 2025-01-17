@@ -30,6 +30,7 @@ import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { StakingApyItem } from '../StakingApyItem';
 import { AvailableToStakeItem } from '../AvailableToStakeItem';
+import { AvailableToClaimItem } from '../AvailableToClaimItem';
 
 export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
   const router = useRouter();
@@ -83,6 +84,10 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
 
       <ListColumn>
         <AvailableToStakeItem stakeData={umbrellaStakeAsset} />
+      </ListColumn>
+
+      <ListColumn>
+        <AvailableToClaimItem stakeData={umbrellaStakeAsset} />
       </ListColumn>
 
       <ListColumn minWidth={95} maxWidth={95} align="right">
