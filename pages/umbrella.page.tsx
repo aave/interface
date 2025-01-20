@@ -1,31 +1,21 @@
-import { Stake } from '@aave/contract-helpers';
+import { ReactNode } from 'react';
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Container, Grid, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
-import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
-import { ContentContainer } from 'src/components/ContentContainer';
-import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { useEffect } from 'react';
+
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
-import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
-import { GetABPToken } from 'src/modules/staking/GetABPToken';
-import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
-import { StakingPanel } from 'src/modules/staking/StakingPanel';
+import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
+
 import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer';
 import { UmbrellaHeader } from 'src/modules/umbrella/UmbrellaHeader';
-import { UmbrellaStakedAssetsListContainer } from 'src/modules/umbrella/UserStakedAssets/UmbrellaStakedAssetsListContainer';
+// import { UmbrellaStakedAssetsListContainer } from 'src/modules/umbrella/UserStakedAssets/UmbrellaStakedAssetsListContainer';
 import { useRootStore } from 'src/store/root';
-import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -133,6 +123,19 @@ export default function UmbrellaStaking() {
       .add(stkBptV2?.distributionPerSecond || '0')
       .mul('86400')
   );
+
+  if (!currentAccount) {
+    return (
+      <ConnectWalletPaper
+        description={
+          <Trans>
+            We couldn’t detect a wallet. Connect a wallet to view your staking positions and
+            rewards.
+          </Trans>
+        }
+      />
+    );
+  }
 
   return (
     <>

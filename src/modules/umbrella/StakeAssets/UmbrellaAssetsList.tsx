@@ -1,4 +1,4 @@
-import { ChainId } from '@aave/contract-helpers';
+// import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
 import { useMemo, useState } from 'react';
@@ -7,7 +7,6 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
@@ -17,7 +16,7 @@ import {
   // StakeUserBalances,
   // StakeUserCooldown,
   Rewards,
-  StakeData,
+  // StakeData,
 } from '../services/StakeDataProviderService';
 import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
@@ -62,11 +61,11 @@ type MarketAssetsListProps = {
   loading: boolean;
 };
 
-export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
+export default function MarketAssetsList({ loading }: MarketAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
-  const [currentMarketData, user] = useRootStore(
+  const [currentMarketData] = useRootStore(
     useShallow((store) => [store.currentMarketData, store.account])
   );
   const { data: stakedDataWithTokenBalances } = useUmbrellaSummary(currentMarketData);

@@ -1,11 +1,11 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { NoSearchResults } from 'src/components/NoSearchResults';
-import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
+// import { Link } from 'src/components/primitives/Link';
+// import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
@@ -13,8 +13,8 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
-import { GENERAL } from '../../../utils/mixPanelEvents';
-import { useStakeData } from '../hooks/useStakeData';
+// import { GENERAL } from '../../../utils/mixPanelEvents';
+// import { useStakeData } from '../hooks/useStakeData';
 import UmbrellaAssetsList from './UmbrellaAssetsList';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
@@ -36,13 +36,8 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
 
 export const UmbrellaAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
-  const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
-    useShallow((store) => [
-      store.trackEvent,
-      store.currentMarket,
-      store.currentMarketData,
-      store.currentNetworkConfig,
-    ])
+  const [currentMarket, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [store.currentMarket, store.currentNetworkConfig])
   );
   const [searchTerm, setSearchTerm] = useState('');
   const { breakpoints } = useTheme();
