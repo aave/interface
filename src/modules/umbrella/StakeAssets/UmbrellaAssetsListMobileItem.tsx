@@ -14,9 +14,7 @@ import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
 
 export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
-  const [trackEvent, currentMarket] = useRootStore(
-    useShallow((store) => [store.trackEvent, store.currentMarket])
-  );
+  const [currentMarket] = useRootStore(useShallow((store) => [store.currentMarket]));
   const { openUmbrella } = useModalContext();
 
   return (

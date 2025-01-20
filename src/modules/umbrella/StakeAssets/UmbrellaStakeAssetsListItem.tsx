@@ -1,46 +1,30 @@
-import { ProtocolAction } from '@aave/contract-helpers';
-import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
-import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
-import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
-import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
-import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
-import { NoData } from 'src/components/primitives/NoData';
-import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
+// import { useRouter } from 'next/router';
+
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
-import { UmbrellaAssetBreakdown } from 'src/modules/umbrella/helpers/Helpers';
 import { useRewardsApy } from 'src/modules/umbrella/hooks/useStakeData';
-import { useRootStore } from 'src/store/root';
-import { MARKETS } from 'src/utils/mixPanelEvents';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
-import { useShallow } from 'zustand/shallow';
+// import { useRootStore } from 'src/store/root';
 
-import { IncentivesCard } from '../../../components/incentives/IncentivesCard';
-import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
+// import { useShallow } from 'zustand/shallow';
+
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
-import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
-import { Link, ROUTES } from '../../../components/primitives/Link';
+
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
-import { ComputedReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { StakingApyItem } from '../StakingApyItem';
 import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
 
 export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
-  const router = useRouter();
-  const [trackEvent, currentMarket] = useRootStore(
-    useShallow((store) => [store.trackEvent, store.currentMarket])
-  );
+  // const [trackEvent, currentMarket] = useRootStore(
+  //   useShallow((store) => [store.trackEvent, store.currentMarket])
+  // );
 
   const { openUmbrella } = useModalContext();
 
-  const APY = useRewardsApy(umbrellaStakeAsset.rewards);
+  // const APY = useRewardsApy(umbrellaStakeAsset.rewards);
 
   return (
     <ListItem
@@ -110,7 +94,7 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
           //   // }
           //   //)
           // }
-          onClick={(e) => {
+          onClick={() => {
             openUmbrella(umbrellaStakeAsset.stakeToken, umbrellaStakeAsset.symbol);
           }}
         >
