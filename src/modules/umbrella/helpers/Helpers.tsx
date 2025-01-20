@@ -6,7 +6,8 @@ import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 
-import { TokenIcon } from '../../../components/primitives/TokenIcon';
+import { MultiTokenIcon, TokenIcon } from '../../../components/primitives/TokenIcon';
+import { MultiIcon, MultiIconWithTooltip } from './MultiIcon';
 
 export const UmbrellaAssetBreakdown = ({
   market,
@@ -26,14 +27,15 @@ export const UmbrellaAssetBreakdown = ({
   underlyingTokenDecimals: number;
   // protocolAction?: ProtocolAction;
 }) => {
-  const [open, setOpen] = useState(false);
   // const { data: zkSyncIgniteIncentives } = useZkSyncIgniteIncentives(params);
 
   return (
-    <ContentWithTooltip
+    <MultiIconWithTooltip
+      icons={[
+        { src: symbol, aToken: false },
+        { src: symbol, aToken: true },
+      ]}
       tooltipContent={
-        // <ZkSyncIgniteIncentivesTooltipContent zkSyncIgniteIncentives={zkSyncIgniteIncentives} />
-
         <Box
           sx={{
             display: 'flex',
@@ -135,33 +137,6 @@ export const UmbrellaAssetBreakdown = ({
           </Box>
         </Box>
       }
-      withoutHover
-      setOpen={setOpen}
-      open={open}
-    >
-      <Box
-        sx={(theme) => ({
-          p: { xs: '0 4px', xsm: '2px 4px' },
-          //   border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
-          //   borderRadius: '4px',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'opacity 0.2s ease',
-          bgcolor: open ? 'action.hover' : 'transparent',
-          '&:hover': {
-            bgcolor: 'action.hover',
-            borderColor: 'action.disabled',
-          },
-        })}
-        onClick={() => {
-          // TODO: How to handle this for event props?
-          setOpen(!open);
-        }}
-      >
-        <TokenIcon symbol={`${symbol}_${symbol}`} aTokens={[true, false]} fontSize="medium" />
-      </Box>
-    </ContentWithTooltip>
+    />
   );
 };

@@ -18,9 +18,17 @@ interface FormattedBalance {
   underlyingWaTokenATokenBalance: string;
 }
 
+interface FormattedReward {
+  accrued: string;
+  rewardToken: string;
+  rewardTokenName: string;
+  rewardTokenSymbol: string;
+}
+
 export interface MergedStakeData extends StakeData {
   balances: StakeUserBalances;
   formattedBalances: FormattedBalance;
+  formattedRewards: FormattedReward[];
   cooldownData: StakeUserCooldown;
   name: string;
   symbol: string;
@@ -29,6 +37,7 @@ export interface MergedStakeData extends StakeData {
 }
 
 const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserData[]) => {
+  console.log(userStakeData);
   const mergedData = stakeData.reduce<MergedStakeData[]>((acc, stakeItem) => {
     const matchingBalance = userStakeData.find(
       (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.stakeToken.toLowerCase()
@@ -38,6 +47,7 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
       return acc;
     }
 
+    console.log(matchingBalance);
     acc.push({
       ...stakeItem,
       balances: matchingBalance.balances,
@@ -63,6 +73,22 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
           stakeItem.underlyingTokenDecimals
         ),
       },
+      formattedRewards: matchingBalance.rewards.map((reward) => {
+        const rewardData = stakeItem.rewards.find(
+          (rewardItem) => rewardItem.rewardAddress === reward.rewardAddress
+        );
+
+        if (!rewardData) {
+          throw new Error('Reward data not found');
+        }
+
+        return {
+          accrued: normalize(reward.accrued, rewardData.decimals),
+          rewardToken: reward.rewardAddress,
+          rewardTokenSymbol: rewardData.rewardSymbol,
+          rewardTokenName: rewardData.rewardName,
+        };
+      }),
       cooldownData: matchingBalance.cooldown,
       name: stakeItem.underlyingIsWaToken
         ? stakeItem.waTokenData.waTokenUnderlyingName

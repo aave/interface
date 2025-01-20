@@ -5,7 +5,7 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0x8aC1CC9ba5a8d2ACa779cc9dB78AD9F493731886';
+const STAKE_DATA_PROVIDER = '0x14AA09449fac437b5c0110614be2C08610e38f62';
 
 export interface StakeData {
   stakeToken: string;
@@ -16,6 +16,8 @@ export interface StakeData {
   unstakeWindowSeconds: string;
   stakeTokenUnderlying: string;
   underlyingTokenDecimals: number;
+  underlyingTokenName: string;
+  underlyingTokenSymbol: string;
   underlyingIsWaToken: boolean;
   waTokenData: WaTokenData;
   rewards: Rewards[];
@@ -33,6 +35,9 @@ export interface WaTokenData {
 
 export interface Rewards {
   rewardAddress: string;
+  rewardName: string;
+  rewardSymbol: string;
+  decimals: number;
   index: string;
   maxEmissionPerSecond: string;
   distributionEnd: string;
@@ -98,6 +103,8 @@ export class StakeDataProviderService {
         unstakeWindowSeconds: stakeData.unstakeWindowSeconds.toString(),
         stakeTokenUnderlying: stakeData.stakeTokenUnderlying.toLowerCase(),
         underlyingTokenDecimals: stakeData.underlyingTokenDecimals,
+        underlyingTokenName: stakeData.underlyingTokenName,
+        underlyingTokenSymbol: stakeData.underlyingTokenSymbol,
         underlyingIsWaToken: stakeData.underlyingIsWaToken,
         waTokenData: {
           waTokenUnderlying: stakeData.waTokenData.waTokenUnderlying.toLowerCase(),
@@ -110,6 +117,9 @@ export class StakeDataProviderService {
         },
         rewards: stakeData.rewards.map((reward) => ({
           rewardAddress: reward.rewardAddress.toLowerCase(),
+          rewardName: reward.rewardName,
+          rewardSymbol: reward.rewardSymbol,
+          decimals: reward.decimals,
           index: reward.index.toString(),
           maxEmissionPerSecond: reward.maxEmissionPerSecond.toString(),
           distributionEnd: reward.distributionEnd.toString(),
