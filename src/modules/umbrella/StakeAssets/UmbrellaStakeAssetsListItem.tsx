@@ -1,21 +1,18 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 // import { useRouter } from 'next/router';
-
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
-import { useRewardsApy } from 'src/modules/umbrella/hooks/useStakeData';
+
+// import { useRewardsApy } from 'src/modules/umbrella/hooks/useStakeData';
 // import { useRootStore } from 'src/store/root';
-
 // import { useShallow } from 'zustand/shallow';
-
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
-
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
-import { StakingApyItem } from '../StakingApyItem';
-import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
+import { AvailableToStakeItem } from '../AvailableToStakeItem';
+import { StakingApyItem } from '../StakingApyItem';
 
 export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
   // const [trackEvent, currentMarket] = useRootStore(

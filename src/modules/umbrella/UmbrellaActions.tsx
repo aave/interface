@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { parseUnits } from 'ethers/lib/utils';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { checkRequiresApproval } from 'src/components/transactions/utils';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
@@ -39,9 +39,7 @@ export const UmbrellaActions = ({
   stakeData,
   ...props
 }: StakeActionProps) => {
-  const [estimateGasLimit, tryPermit] = useRootStore(
-    useShallow((state) => [state.estimateGasLimit, state.tryPermit])
-  );
+  const [estimateGasLimit] = useRootStore(useShallow((state) => [state.estimateGasLimit]));
 
   const currentChainId = useRootStore((store) => store.currentChainId);
   const user = useRootStore((store) => store.account);
@@ -50,10 +48,10 @@ export const UmbrellaActions = ({
     approvalTxState,
     mainTxState,
     loadingTxns,
-    setLoadingTxns,
-    setApprovalTxState,
+    // setLoadingTxns,
+    // setApprovalTxState,
     setMainTxState,
-    setGasLimit,
+    // setGasLimit,
     setTxError,
   } = useModalContext();
 

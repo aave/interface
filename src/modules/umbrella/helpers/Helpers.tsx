@@ -1,17 +1,17 @@
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
-import { useState } from 'react';
-import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+// import { useState } from 'react';
+// import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 
-import { MultiTokenIcon, TokenIcon } from '../../../components/primitives/TokenIcon';
-import { MultiIcon, MultiIconWithTooltip } from './MultiIcon';
+import { TokenIcon } from '../../../components/primitives/TokenIcon';
+import { MultiIconWithTooltip } from './MultiIcon';
 
 export const UmbrellaAssetBreakdown = ({
-  market,
-  rewardedAsset,
+  // market,
+  // rewardedAsset,
   symbol,
   underlyingTokenBalance,
   underlyingWaTokenATokenBalance,

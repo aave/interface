@@ -1,12 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
-
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
 
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
-
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
 
 export const UmbrellaAssetsListItem = ({ ...reserve }: MergedStakeData) => {
@@ -71,9 +69,8 @@ export const UmbrellaAssetsListItem = ({ ...reserve }: MergedStakeData) => {
           //   // }
           //   //)
           // }
-          onClick={(e) => {
+          onClick={() => {
             // e.preventDefault();
-            console.log('fo');
 
             openUmbrella(reserve.stakeToken, reserve.symbol);
           }}

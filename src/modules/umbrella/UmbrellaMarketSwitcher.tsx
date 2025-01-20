@@ -13,8 +13,6 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import {
@@ -115,9 +113,7 @@ enum SelectedMarketVersion {
 // Style to design specifications
 
 export const MarketSwitcher = () => {
-  const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
-    SelectedMarketVersion.V3
-  );
+  const [selectedMarketVersion] = useState<SelectedMarketVersion>(SelectedMarketVersion.V3);
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));

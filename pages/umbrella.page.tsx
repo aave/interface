@@ -1,17 +1,14 @@
-import { ReactNode } from 'react';
-import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
+// import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { Trans } from '@lingui/macro';
 import { Box, Container } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
-import { useEffect } from 'react';
-
-import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
-import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
-import { MainLayout } from 'src/layouts/MainLayout';
+import { ReactNode, useEffect } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
-
+import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+// import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
+import { MainLayout } from 'src/layouts/MainLayout';
 import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer';
 import { UmbrellaHeader } from 'src/modules/umbrella/UmbrellaHeader';
 // import { UmbrellaStakedAssetsListContainer } from 'src/modules/umbrella/UserStakedAssets/UmbrellaStakedAssetsListContainer';
@@ -78,7 +75,7 @@ export default function UmbrellaStaking() {
   const { currentAccount } = useWeb3Context();
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
+  // const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
 
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
     useGeneralStakeUiData(currentMarketData);
@@ -92,13 +89,13 @@ export default function UmbrellaStaking() {
     [stkAave, stkBpt, stkGho, stkBptV2] = stakeGeneralResult;
   }
 
-  let stkAaveUserData: StakeUIUserData | undefined;
-  let stkBptUserData: StakeUIUserData | undefined;
-  let stkGhoUserData: StakeUIUserData | undefined;
-  let stkBptV2UserData: StakeUIUserData | undefined;
-  if (stakeUserResult && Array.isArray(stakeUserResult)) {
-    [stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData] = stakeUserResult;
-  }
+  // let stkAaveUserData: StakeUIUserData | undefined;
+  // let stkBptUserData: StakeUIUserData | undefined;
+  // let stkGhoUserData: StakeUIUserData | undefined;
+  // let stkBptV2UserData: StakeUIUserData | undefined;
+  // if (stakeUserResult && Array.isArray(stakeUserResult)) {
+  //   [stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData] = stakeUserResult;
+  // }
 
   const trackEvent = useRootStore((store) => store.trackEvent);
 

@@ -1,17 +1,15 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-
 import { useShallow } from 'zustand/shallow';
 
 import { Row } from '../../../components/primitives/Row';
 import { ListMobileItemWrapper } from '../../dashboard/lists/ListMobileItemWrapper';
-import { StakingApyItem } from '../StakingApyItem';
-import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
+import { AvailableToStakeItem } from '../AvailableToStakeItem';
+import { StakingApyItem } from '../StakingApyItem';
 
 export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
   const [currentMarket] = useRootStore(useShallow((store) => [store.currentMarket]));

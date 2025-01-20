@@ -1,38 +1,26 @@
-import { ChainId, Stake } from '@aave/contract-helpers';
-import { normalize, valueToBigNumber } from '@aave/math-utils';
+import { ChainId } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
-import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
+import { AssetInput } from 'src/components/transactions/AssetInput';
 import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { TxSuccessView } from 'src/components/transactions/FlowCommons/Success';
 import {
   DetailsCooldownLine,
-  DetailsNumberLine,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
 import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
-import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
-import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { STAKE } from 'src/utils/mixPanelEvents';
 
-import {
-  selectStakeDataByAddress,
-  selectUserStakeDataByAddress,
-  useStakeData,
-  useUserStakeData,
-} from './hooks/useStakeData';
 import { UmbrellaActions } from './UmbrellaActions';
 
 export type StakeProps = {
@@ -126,11 +114,7 @@ export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
   }
   if (txState.success)
     return (
-      <TxSuccessView
-        action={<Trans>Staked</Trans>}
-        amount={amountRef.current}
-        symbol={'test'}
-      />
+      <TxSuccessView action={<Trans>Staked</Trans>} amount={amountRef.current} symbol={'test'} />
     );
 
   return (
