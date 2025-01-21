@@ -1,8 +1,6 @@
-import { Trans } from '@lingui/macro';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 // import { useRouter } from 'next/router';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
-import { useModalContext } from 'src/hooks/useModal';
 
 // import { useRewardsApy } from 'src/modules/umbrella/hooks/useStakeData';
 // import { useRootStore } from 'src/store/root';
@@ -10,6 +8,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
+import { AmountStakedItem } from '../AmountStakedItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
 import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { StakingApyItem } from '../StakingApyItem';
@@ -18,8 +17,6 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
   // const [trackEvent, currentMarket] = useRootStore(
   //   useShallow((store) => [store.trackEvent, store.currentMarket])
   // );
-
-  const { openUmbrella } = useModalContext();
 
   // const APY = useRewardsApy(umbrellaStakeAsset.rewards);
 
@@ -64,39 +61,15 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
       </ListColumn>
 
       <ListColumn>
+        <AmountStakedItem stakeData={umbrellaStakeAsset} />
+      </ListColumn>
+
+      <ListColumn>
         <AvailableToStakeItem stakeData={umbrellaStakeAsset} />
       </ListColumn>
 
       <ListColumn>
         <AvailableToClaimItem stakeData={umbrellaStakeAsset} />
-      </ListColumn>
-
-      <ListColumn minWidth={95} maxWidth={95} align="right">
-        {/* TODO: Open Modal for staking */}
-        <Button
-          variant="outlined"
-          // component={Link}
-          // href={ROUTES.umbrellaStakeAssetOverview(umbrellaStakeAsset.underlyingAsset, currentMarket)}
-          // onClick={
-          //   () => {
-          //     console.log('hello');
-
-          //     openUmbrella(umbrellaStakeAsset.name, 'USDC');
-          //   }
-          //   // trackEvent(MARKETS.DETAILS_NAVIGATION, {
-          //   //   type: 'Button',
-          //   //   assetName: umbrellaStakeAsset.name,
-          //   //   asset: umbrellaStakeAsset.underlyingAsset,
-          //   //   market: currentMarket,
-          //   // }
-          //   //)
-          // }
-          onClick={() => {
-            openUmbrella(umbrellaStakeAsset.stakeToken, umbrellaStakeAsset.symbol);
-          }}
-        >
-          <Trans>Stake</Trans>
-        </Button>
       </ListColumn>
     </ListItem>
   );

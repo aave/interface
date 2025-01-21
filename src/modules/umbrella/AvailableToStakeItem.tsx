@@ -1,29 +1,15 @@
-import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
+import { useModalContext } from 'src/hooks/useModal';
 
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 
 export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
-  if (!stakeData.underlyingIsWaToken) {
-    return (
-      <Stack direction="column" alignItems="center" justifyContent="center">
-        <FormattedNumber
-          value={normalize(
-            Number(stakeData.balances.underlyingTokenBalance),
-            stakeData.underlyingTokenDecimals
-          )}
-          variant="main16"
-          visibleDecimals={2}
-        />
-        <TokenIcon symbol={stakeData.stakeTokenSymbol} sx={{ fontSize: '20px', mr: 1 }} />
-      </Stack>
-    );
-  }
+  const { openUmbrella } = useModalContext();
 
   const { underlyingWaTokenBalance, underlyingWaTokenATokenBalance, underlyingTokenBalance } =
     stakeData.formattedBalances;
@@ -54,12 +40,25 @@ export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData
     Number(underlyingWaTokenATokenBalance);
 
   return (
-    <Stack direction="column" alignItems="center" justifyContent="center">
-      <FormattedNumber value={totalAvailableToStake} variant="main16" visibleDecimals={2} />
-      <MultiIconWithTooltip
-        icons={icons}
-        tooltipContent={<AvailableToStakeTooltipContent stakeData={stakeData} />}
-      />
+    <Stack direction="column" alignItems="center" justifyContent="center" gap={2}>
+      <FormattedNumber compact value={totalAvailableToStake} variant="main16" />
+      {stakeData.underlyingIsWaToken ? (
+        <MultiIconWithTooltip
+          icons={icons}
+          tooltipContent={<AvailableToStakeTooltipContent stakeData={stakeData} />}
+        />
+      ) : (
+        <TokenIcon symbol={stakeData.stakeTokenSymbol} sx={{ fontSize: '20px', mr: 1 }} />
+      )}
+      <Button
+        variant="outlined"
+        size="medium"
+        onClick={() => {
+          openUmbrella(stakeData.stakeToken, stakeData.stakeTokenSymbol);
+        }}
+      >
+        <Trans>Stake</Trans>
+      </Button>
     </Stack>
   );
 };
