@@ -1,4 +1,5 @@
 import { normalize } from '@aave/math-utils';
+import { BigNumber } from 'bignumber.js';
 import { useStakeData, useUserStakeData } from 'src/modules/umbrella/hooks/useStakeData';
 import {
   StakeData,
@@ -12,8 +13,10 @@ import { combineQueries } from '../pool/utils';
 
 interface FormattedBalance {
   stakeTokenBalance: string;
+  stakeTokenBalanceUSD: string;
   stakeTokenRedeemableAmount: string;
   underlyingTokenBalance: string;
+  underlyingTokenBalanceUSD: string;
   underlyingWaTokenBalance: string;
   underlyingWaTokenATokenBalance: string;
 }
@@ -48,22 +51,40 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
     }
 
     console.log(matchingBalance);
+
+    const stakeTokenBalance = normalize(
+      matchingBalance.balances.stakeTokenBalance,
+      stakeItem.underlyingTokenDecimals
+    );
+
+    const stakeTokenBalanceUSD = BigNumber(stakeTokenBalance)
+      .multipliedBy(stakeItem.stakeTokenPrice)
+      .shiftedBy(-8)
+      .toString();
+
+    const underlyingTokenBalance = normalize(
+      matchingBalance.balances.underlyingTokenBalance,
+      stakeItem.underlyingTokenDecimals
+    );
+
+    // assuming the stake token and underlying have the same price
+    const underlyingTokenBalanceUSD = BigNumber(underlyingTokenBalance)
+      .multipliedBy(stakeItem.stakeTokenPrice)
+      .shiftedBy(-8)
+      .toString();
+
     acc.push({
       ...stakeItem,
       balances: matchingBalance.balances,
       formattedBalances: {
-        stakeTokenBalance: normalize(
-          matchingBalance.balances.stakeTokenBalance,
-          stakeItem.underlyingTokenDecimals
-        ),
+        stakeTokenBalance,
+        stakeTokenBalanceUSD,
         stakeTokenRedeemableAmount: normalize(
           matchingBalance.balances.stakeTokenRedeemableAmount,
           stakeItem.underlyingTokenDecimals
         ),
-        underlyingTokenBalance: normalize(
-          matchingBalance.balances.underlyingTokenBalance,
-          stakeItem.underlyingTokenDecimals
-        ),
+        underlyingTokenBalance,
+        underlyingTokenBalanceUSD,
         underlyingWaTokenBalance: normalize(
           matchingBalance.balances.underlyingWaTokenBalance,
           stakeItem.underlyingTokenDecimals

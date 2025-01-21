@@ -5,14 +5,15 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0x14AA09449fac437b5c0110614be2C08610e38f62';
+const STAKE_DATA_PROVIDER = '0x512c8f87ac4af882ec1edaaf60177af5b8b3cfff';
 
 export interface StakeData {
   stakeToken: string;
   stakeTokenName: string;
   stakeTokenSymbol: string;
   stakeTokenTotalSupply: string;
-  cooldownSeconds: string;
+  stakeTokenPrice: string;
+  cooldownSeconds: number;
   unstakeWindowSeconds: string;
   stakeTokenUnderlying: string;
   underlyingTokenDecimals: number;
@@ -30,7 +31,6 @@ export interface WaTokenData {
   waTokenAToken: string;
   waTokenATokenName: string;
   waTokenATokenSymbol: string;
-  waTokenPrice: string;
 }
 
 export interface Rewards {
@@ -99,9 +99,10 @@ export class StakeDataProviderService {
         stakeTokenName: stakeData.stakeTokenName,
         stakeTokenSymbol: stakeData.stakeTokenSymbol,
         stakeTokenTotalSupply: stakeData.stakeTokenTotalSupply.toString(),
-        cooldownSeconds: stakeData.cooldownSeconds.toString(),
+        cooldownSeconds: stakeData.cooldownSeconds.toNumber(),
         unstakeWindowSeconds: stakeData.unstakeWindowSeconds.toString(),
         stakeTokenUnderlying: stakeData.stakeTokenUnderlying.toLowerCase(),
+        stakeTokenPrice: stakeData.stakeTokenPrice.toString(),
         underlyingTokenDecimals: stakeData.underlyingTokenDecimals,
         underlyingTokenName: stakeData.underlyingTokenName,
         underlyingTokenSymbol: stakeData.underlyingTokenSymbol,
@@ -113,7 +114,6 @@ export class StakeDataProviderService {
           waTokenAToken: stakeData.waTokenData.waTokenAToken.toLowerCase(),
           waTokenATokenName: stakeData.waTokenData.waTokenATokenName,
           waTokenATokenSymbol: stakeData.waTokenData.waTokenATokenSymbol,
-          waTokenPrice: stakeData.waTokenData.waTokenPrice.toString(), // 8 decimals
         },
         rewards: stakeData.rewards.map((reward) => ({
           rewardAddress: reward.rewardAddress.toLowerCase(),

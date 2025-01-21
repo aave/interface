@@ -22,25 +22,15 @@ export type WaTokenDataStruct = {
   waTokenAToken: string;
   waTokenATokenName: string;
   waTokenATokenSymbol: string;
-  waTokenPrice: BigNumberish;
 };
 
-export type WaTokenDataStructOutput = [
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  BigNumber
-] & {
+export type WaTokenDataStructOutput = [string, string, string, string, string, string] & {
   waTokenUnderlying: string;
   waTokenUnderlyingName: string;
   waTokenUnderlyingSymbol: string;
   waTokenAToken: string;
   waTokenATokenName: string;
   waTokenATokenSymbol: string;
-  waTokenPrice: BigNumber;
 };
 
 export type RewardStruct = {
@@ -86,6 +76,7 @@ export type StakeDataStruct = {
   stakeTokenTotalSupply: BigNumberish;
   cooldownSeconds: BigNumberish;
   unstakeWindowSeconds: BigNumberish;
+  stakeTokenPrice: BigNumberish;
   stakeTokenUnderlying: string;
   underlyingIsWaToken: boolean;
   waTokenData: WaTokenDataStruct;
@@ -99,6 +90,7 @@ export type StakeDataStructOutput = [
   string,
   string,
   string,
+  BigNumber,
   BigNumber,
   BigNumber,
   BigNumber,
@@ -116,6 +108,7 @@ export type StakeDataStructOutput = [
   stakeTokenTotalSupply: BigNumber;
   cooldownSeconds: BigNumber;
   unstakeWindowSeconds: BigNumber;
+  stakeTokenPrice: BigNumber;
   stakeTokenUnderlying: string;
   underlyingIsWaToken: boolean;
   waTokenData: WaTokenDataStructOutput;
