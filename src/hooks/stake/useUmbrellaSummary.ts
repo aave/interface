@@ -51,7 +51,7 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
       (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.stakeToken.toLowerCase()
     );
 
-    if (matchingBalance) {
+    if (matchingBalance && !valueToBigNumber(matchingBalance.balances.stakeTokenBalance).isZero()) {
       const underlyingBalanceValue = BigNumber(
         normalize(matchingBalance.balances.stakeTokenBalance, stakeItem.underlyingTokenDecimals)
       )
@@ -60,9 +60,11 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
 
       aggregatedTotalStakedUSD = aggregatedTotalStakedUSD.plus(underlyingBalanceValue);
 
-      const apy = valueToBigNumber(stakeItem.rewards[0]?.apy ?? '0');
-      weightedApySum = weightedApySum.plus(underlyingBalanceValue.multipliedBy(apy));
-      apyTotalWeight = apyTotalWeight.plus(underlyingBalanceValue);
+      if (stakeItem.rewards[0]?.apy && stakeItem.rewards[0]?.apy > '0') {
+        const apy = valueToBigNumber(stakeItem.rewards[0].apy);
+        weightedApySum = weightedApySum.plus(underlyingBalanceValue.multipliedBy(apy));
+        apyTotalWeight = apyTotalWeight.plus(underlyingBalanceValue);
+      }
     }
   });
 
