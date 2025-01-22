@@ -167,3 +167,14 @@ export const useUmbrellaSummary = (marketData: MarketDataType) => {
 
   return combineQueries([stakeDataQuery, userStakeDataQuery] as const, formatUmbrellaSummary);
 };
+
+export const useUmbrellaSummaryFor = (uStakeToken: string, marketData: MarketDataType) => {
+  const stakeDataQuery = useStakeData(marketData, {
+    select: (stakeData) => stakeData.filter((s) => s.stakeToken === uStakeToken),
+  });
+  const userStakeDataQuery = useUserStakeData(marketData, {
+    select: (userData) => userData.filter((s) => s.stakeToken === uStakeToken),
+  });
+
+  return combineQueries([stakeDataQuery, userStakeDataQuery] as const, formatUmbrellaSummary);
+};
