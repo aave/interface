@@ -117,7 +117,7 @@ const prodConfig: Config[] = [
 const testnetConfig: Config[] = [
   {
     sourceChainId: ChainId.sepolia,
-    lockReleaseTokenPool: '0x7768248E1Ff75612c18324bad06bb393c1206980',
+    lockReleaseTokenPool: '0xd8bDb685320f7118085d5C8D0c2016A644881D40',
     chainSelector: '16015286601757825753',
     router: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59',
     tokenOracle: '0x98458D6A99489F15e6eB5aFa67ACFAcf6F211051', // mock oracle
@@ -155,7 +155,7 @@ const testnetConfig: Config[] = [
   },
   {
     sourceChainId: ChainId.arbitrum_sepolia,
-    burnMintTokenPool: '0x3eC2b6F818B72442fc36561e9F930DD2b60957D2',
+    burnMintTokenPool: '0xb4A1e95A2FA7ed83195C6c16660fCCa720163FF6',
     chainSelector: '3478487238524512106',
     router: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165',
     tokenOracle: '0x1f885520b7BD528E46b390040F12E753Dce43004', // mock oracle
