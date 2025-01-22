@@ -39,10 +39,13 @@ export interface MergedStakeData extends StakeData {
   iconSymbol: string;
   totalStakedUSD: string;
   aggregatedTotalStakedUSD: string;
+  weightedAverageApy: string;
 }
 
 const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserData[]) => {
   let aggregatedTotalStakedUSD = valueToBigNumber('0');
+  let weightedApySum = valueToBigNumber('0');
+  let apyTotalWeight = valueToBigNumber('0');
   stakeData.forEach((stakeItem) => {
     const matchingBalance = userStakeData.find(
       (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.stakeToken.toLowerCase()
@@ -56,6 +59,10 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
         .shiftedBy(-8);
 
       aggregatedTotalStakedUSD = aggregatedTotalStakedUSD.plus(underlyingBalanceValue);
+
+      const apy = valueToBigNumber(stakeItem.rewards[0]?.apy ?? '0');
+      weightedApySum = weightedApySum.plus(underlyingBalanceValue.multipliedBy(apy));
+      apyTotalWeight = apyTotalWeight.plus(underlyingBalanceValue);
     }
   });
 
@@ -68,7 +75,9 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
       return acc;
     }
 
-    console.log(matchingBalance);
+    const weightedAverageApy = apyTotalWeight.gt(0)
+      ? weightedApySum.dividedBy(apyTotalWeight)
+      : valueToBigNumber('0');
 
     const stakeTokenBalance = normalize(
       matchingBalance.balances.stakeTokenBalance,
@@ -141,6 +150,7 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
         : stakeItem.stakeTokenSymbol,
       totalStakedUSD: `${underlyingTokenBalanceUSD}`,
       aggregatedTotalStakedUSD: `${aggregatedTotalStakedUSD.toFixed(2)}`,
+      weightedAverageApy: `${weightedAverageApy}`,
     });
 
     return acc;

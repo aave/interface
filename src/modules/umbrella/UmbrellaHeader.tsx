@@ -17,18 +17,7 @@ interface StakingHeaderProps {
   loading: boolean;
 }
 
-// TODO: Add APY
-// Fix search on assets
-// Add total value staked
-
-// - Total balance USD Staked
-// - Net APY across my assets. Average yield across all
-//     - amount staked staked
-//     - yield
-//     - create weighted average
-//     - Should show reserve APY + weighted average
-// - if it is a wToken add in APY
-export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ stkEmission, loading }) => {
+export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ loading }) => {
   const theme = useTheme();
   // const { currentAccount } = useWeb3Context();
   const [currentMarketData, trackEvent] = useRootStore(
@@ -46,8 +35,10 @@ export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ stkEmission, load
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
+  const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
-  const totalUSDAggregateStaked = stakedDataWithTokenBalances?.[0];
+  const totalUSDAggregateStaked = stakedDataWithTokenBalances?.[0].aggregatedTotalStakedUSD;
+  const weightedAverageApy = stakedDataWithTokenBalances?.[0].weightedAverageApy;
 
   return (
     <TopInfoPanel
@@ -96,7 +87,7 @@ export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ stkEmission, load
         loading={loading}
       >
         <FormattedNumber
-          value={totalUSDAggregateStaked?.aggregatedTotalStakedUSD || '0'}
+          value={totalUSDAggregateStaked || '0'}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
@@ -105,14 +96,14 @@ export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ stkEmission, load
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem hideIcon title={<Trans>Total emission per day</Trans>} loading={loading}>
+      <TopInfoPanelItem hideIcon title={<Trans>Net APY</Trans>} loading={loading}>
         <FormattedNumber
-          value={stkEmission || 0}
-          symbol="AAVE"
+          value={weightedAverageApy || 0}
           variant={valueTypographyVariant}
-          symbolsVariant={symbolsTypographyVariant}
           symbolsColor="#A5A8B6"
           visibleDecimals={2}
+          percent
+          symbolsVariant={noDataTypographyVariant}
         />
       </TopInfoPanelItem>
     </TopInfoPanel>
