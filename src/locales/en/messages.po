@@ -1538,7 +1538,6 @@ msgid "Enabled"
 msgstr "Enabled"
 
 #: src/modules/staking/StakingHeader.tsx
-#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
 
@@ -2427,6 +2426,10 @@ msgstr "Borrowing {symbol}"
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Borrow balance"
 msgstr "Borrow balance"
+
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Staked Balance"
+msgstr "Staked Balance"
 
 #: src/modules/reserve-overview/Gho/CalculatorInput.tsx
 msgid "You may enter a custom amount in the field."

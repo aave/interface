@@ -1,51 +1,53 @@
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Row } from 'src/components/primitives/Row';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
+// import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { MarketSwitcher } from './UmbrellaMarketSwitcher';
 
 interface StakingHeaderProps {
-  tvl: {
-    [key: string]: number;
-  };
   stkEmission: string;
   loading: boolean;
 }
 
-export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, loading }) => {
+// TODO: Add APY
+// Fix search on assets
+// Add total value staked
+
+// - Total balance USD Staked
+// - Net APY across my assets. Average yield across all
+//     - amount staked staked
+//     - yield
+//     - create weighted average
+//     - Should show reserve APY + weighted average
+// - if it is a wToken add in APY
+export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ stkEmission, loading }) => {
   const theme = useTheme();
+  // const { currentAccount } = useWeb3Context();
+  const [currentMarketData, trackEvent] = useRootStore(
+    useShallow((store) => [store.currentMarketData, store.trackEvent])
+  );
+  // const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
+  //   useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
+  // );
+
+  const { data: stakedDataWithTokenBalances } = useUmbrellaSummary(currentMarketData);
+
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
-  const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const total = Object.values(tvl || {}).reduce((acc, item) => acc + item, 0);
-
-  const TotalFundsTooltip = () => {
-    return (
-      <TextWithTooltip>
-        <Box>
-          {Object.entries(tvl)
-            .sort((a, b) => b[1] - a[1])
-            .map(([key, value]) => (
-              <Row key={key} caption={key} captionVariant="caption">
-                <FormattedNumber value={value} symbol="USD" visibleDecimals={2} variant="caption" />
-              </Row>
-            ))}
-        </Box>
-      </TextWithTooltip>
-    );
-  };
+  const totalUSDAggregateStaked = stakedDataWithTokenBalances?.[0];
 
   return (
     <TopInfoPanel
@@ -88,14 +90,13 @@ export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission,
         hideIcon
         title={
           <Stack direction="row" alignItems="center">
-            <Trans>Funds in the Safety Module</Trans>
-            <TotalFundsTooltip />
+            <Trans>Staked Balance</Trans>
           </Stack>
         }
         loading={loading}
       >
         <FormattedNumber
-          value={total}
+          value={totalUSDAggregateStaked?.aggregatedTotalStakedUSD || '0'}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
