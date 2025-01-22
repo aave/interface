@@ -40,7 +40,7 @@ function secondsToDHMS(seconds: number) {
   return { d, h, m, s };
 }
 
-function SecondsToString({ seconds }: { seconds: number }) {
+export function SecondsToString({ seconds }: { seconds: number }) {
   const { d, h, m, s } = secondsToDHMS(seconds);
   return (
     <>

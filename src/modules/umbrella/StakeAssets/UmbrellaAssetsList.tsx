@@ -32,6 +32,10 @@ const listHeaders = [
     title: <Trans>APY</Trans>,
     sortKey: 'totalLiquidityUSD',
   },
+  {
+    title: <Trans>Amount Staked</Trans>,
+    sortKey: 'TODO',
+  },
   //   {
   //     title: <Trans>Max Slashing</Trans>,
   //     sortKey: 'supplyAPY',
@@ -138,7 +142,6 @@ export default function MarketAssetsList({ loading }: MarketAssetsListProps) {
               </ListHeaderTitle>
             </ListColumn>
           ))}
-          <ListColumn maxWidth={95} minWidth={95} />
         </ListHeaderWrapper>
       )}
 

@@ -1,7 +1,5 @@
-import { Trans } from '@lingui/macro';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
-import { useModalContext } from 'src/hooks/useModal';
 
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
@@ -11,7 +9,6 @@ export const UmbrellaAssetsListItem = ({ ...reserve }: MergedStakeData) => {
   // const [trackEvent, currentMarket] = useRootStore(
   //   useShallow((store) => [store.trackEvent, store.currentMarket])
   // );
-  const { openUmbrella } = useModalContext();
 
   return (
     <ListItem
@@ -47,36 +44,6 @@ export const UmbrellaAssetsListItem = ({ ...reserve }: MergedStakeData) => {
             </Typography>
           </Box>
         </Box>
-      </ListColumn>
-
-      <ListColumn minWidth={95} maxWidth={95} align="right">
-        {/* TODO: Open Modal for staking */}
-        <Button
-          variant="outlined"
-          // component={Link}
-          // href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
-          // onClick={
-          //   () => {
-          //     console.log('hello');
-
-          //     openUmbrella(reserve.name, 'USDC');
-          //   }
-          //   // trackEvent(MARKETS.DETAILS_NAVIGATION, {
-          //   //   type: 'Button',
-          //   //   assetName: reserve.name,
-          //   //   asset: reserve.underlyingAsset,
-          //   //   market: currentMarket,
-          //   // }
-          //   //)
-          // }
-          onClick={() => {
-            // e.preventDefault();
-
-            openUmbrella(reserve.stakeToken, reserve.symbol);
-          }}
-        >
-          <Trans>Stake</Trans>
-        </Button>
       </ListColumn>
     </ListItem>
   );
