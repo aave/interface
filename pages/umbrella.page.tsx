@@ -134,7 +134,7 @@ export default function UmbrellaStaking() {
 
   return (
     <>
-      <UmbrellaHeader tvl={tvl} stkEmission={stkEmission} loading={stakeGeneralResultLoading} />
+      <UmbrellaHeader stkEmission={stkEmission} loading={stakeGeneralResultLoading} />
       <Box
         sx={{
           display: 'flex',
