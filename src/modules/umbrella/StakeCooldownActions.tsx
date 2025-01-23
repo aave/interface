@@ -1,13 +1,14 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
-import { useRootStore } from 'src/store/root';
-import { StakeTokenSercie } from './services/StakeTokenService';
-import { useModalContext } from 'src/hooks/useModal';
-import { useShallow } from 'zustand/shallow';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { useQueryClient } from '@tanstack/react-query';
+import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
+import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { useShallow } from 'zustand/shallow';
+
+import { StakeTokenSercie } from './services/StakeTokenService';
 
 export interface StakeCooldownActionsProps extends BoxProps {
   isWrongNetwork: boolean;

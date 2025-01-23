@@ -18,12 +18,13 @@ import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTit
 import { GasStation } from 'src/components/transactions/GasStation/GasStation';
 import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
 import { formattedTime, timeText } from 'src/helpers/timeHelper';
+import { useUmbrellaSummaryFor } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+
 import { StakeCooldownActions } from './StakeCooldownActions';
-import { useUmbrellaSummaryFor } from 'src/hooks/stake/useUmbrellaSummary';
 
 export type StakeCooldownProps = {
   stakeToken: string;

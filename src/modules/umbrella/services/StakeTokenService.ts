@@ -1,4 +1,5 @@
 import { BigNumber, PopulatedTransaction } from 'ethers';
+
 import { IERC4626StakeTokenInterface } from './types/StakeToken';
 import { IERC4626StakeToken__factory } from './types/StakeToken__factory';
 

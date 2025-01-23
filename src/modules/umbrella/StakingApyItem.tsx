@@ -3,11 +3,11 @@ import { Box, Stack, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 import { Rewards } from './services/StakeDataProviderService';
-import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export const StakingApyItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { reserves } = useAppDataContext();

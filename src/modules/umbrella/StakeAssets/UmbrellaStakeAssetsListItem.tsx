@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 // import { useRouter } from 'next/router';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
+import { StakingDropdown } from 'src/modules/umbrella/helpers/StakingDropdown';
 
 // import { useRewardsApy } from 'src/modules/umbrella/hooks/useStakeData';
 // import { useRootStore } from 'src/store/root';
@@ -12,7 +13,6 @@ import { AmountStakedItem } from '../AmountStakedItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
 import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { StakingApyItem } from '../StakingApyItem';
-import { StakingDropdown } from 'src/modules/umbrella/helpers/StakingDropdown';
 
 export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
   // const theme = useTheme();

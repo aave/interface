@@ -8,8 +8,8 @@ import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer';
 import { UmbrellaHeader } from 'src/modules/umbrella/UmbrellaHeader';
-// import { UmbrellaStakedAssetsListContainer } from 'src/modules/umbrella/UserStakedAssets/UmbrellaStakedAssetsListContainer';
 
+// import { UmbrellaStakedAssetsListContainer } from 'src/modules/umbrella/UserStakedAssets/UmbrellaStakedAssetsListContainer';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 const UmbrellaStakeModal = dynamic(() =>
@@ -93,10 +93,6 @@ export default function UmbrellaStaking() {
           mt: { xs: '-32px', lg: '-46px', xl: '-44px', xxl: '-48px' },
         }}
       >
-        <MarketContainer>
-          <h2 style={{ color: 'white' }}> TODO but can reuse most of existing</h2>
-          {/* <UmbrellaStakedAssetsListContainer /> */}
-        </MarketContainer>
         <MarketContainer>
           <UmbrellaAssetsListContainer />
         </MarketContainer>

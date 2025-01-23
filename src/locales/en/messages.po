@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
 msgstr "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
 
@@ -46,6 +47,7 @@ msgid "Estimated time"
 msgstr "Estimated time"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Remind me"
 msgstr "Remind me"
 
@@ -992,6 +994,8 @@ msgstr "{d}d"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "Unstake window"
 
@@ -1033,7 +1037,8 @@ msgstr "This asset is planned to be offboarded due to an Aave Protocol Governanc
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/AmountStakedItem.tsx
+#: src/modules/umbrella/helpers/StakingDropdown.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Cooldown period"
 msgstr "Cooldown period"
 
@@ -1061,6 +1066,8 @@ msgstr "Liquidation at"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/UmbrellaMarketSwitcher.tsx
 msgid "{0}"
 msgstr "{0}"
@@ -1088,7 +1095,6 @@ msgstr "Reward(s) to claim"
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/AvailableToStakeItem.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
 msgid "Stake"
@@ -1330,6 +1336,7 @@ msgid "Collector Contract"
 msgstr "Collector Contract"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Nothing staked"
 msgstr "Nothing staked"
 
@@ -1705,6 +1712,7 @@ msgid "Details"
 msgstr "Details"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
 msgstr "Stake cooldown activated"
 
@@ -1929,6 +1937,7 @@ msgid "Enter a valid address"
 msgstr "Enter a valid address"
 
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Time left to unstake"
 msgstr "Time left to unstake"
 
@@ -1986,7 +1995,7 @@ msgid "Cooldown period warning"
 msgstr "Cooldown period warning"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/modules/umbrella/AmountStakedItem.tsx
+#: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Cooldown"
 msgstr "Cooldown"
 
@@ -2176,6 +2185,7 @@ msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Amount to unstake"
 msgstr "Amount to unstake"
 
@@ -2376,6 +2386,8 @@ msgstr ".CSV"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
+#: src/modules/umbrella/StakeCooldownActions.tsx
+#: src/modules/umbrella/StakeCooldownActions.tsx
 msgid "Activate Cooldown"
 msgstr "Activate Cooldown"
 
@@ -2411,7 +2423,6 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/AvailableToClaimItem.tsx
 msgid "Claim"
 msgstr "Claim"
 
@@ -2537,6 +2548,7 @@ msgid "{s}s"
 msgstr "{s}s"
 
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Cooldown time left"
 msgstr "Cooldown time left"
 
@@ -2863,6 +2875,7 @@ msgid "Go to Balancer Pool"
 msgstr "Go to Balancer Pool"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 msgstr "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 
@@ -2918,6 +2931,7 @@ msgid "Confirming transaction"
 msgstr "Confirming transaction"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
 
@@ -3095,6 +3109,7 @@ msgid "Exchange rate"
 msgstr "Exchange rate"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "You unstake here"
 msgstr "You unstake here"
 
@@ -3506,6 +3521,7 @@ msgstr "Menu"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Learn more"
 msgstr "Learn more"
 

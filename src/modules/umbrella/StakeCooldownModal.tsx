@@ -1,8 +1,8 @@
 import React from 'react';
+import { BasicModal } from 'src/components/primitives/BasicModal';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 
 import { StakeCooldownModalContent } from './StakeCooldownModalContent';
-import { BasicModal } from 'src/components/primitives/BasicModal';
 
 export const StakeCooldownModal = () => {
   const { type, close, args } = useModalContext();
