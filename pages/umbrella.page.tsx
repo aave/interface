@@ -16,9 +16,7 @@ const UmbrellaStakeModal = dynamic(() =>
   import('../src/modules/umbrella/UmbrellaModal').then((module) => module.UmbrellaModal)
 );
 const StakeCooldownModal = dynamic(() =>
-  import('../src/components/transactions/StakeCooldown/StakeCooldownModal').then(
-    (module) => module.StakeCooldownModal
-  )
+  import('../src/modules/umbrella/StakeCooldownModal').then((module) => module.StakeCooldownModal)
 );
 const StakeRewardClaimModal = dynamic(() =>
   import('../src/components/transactions/StakeRewardClaim/StakeRewardClaimModal').then(

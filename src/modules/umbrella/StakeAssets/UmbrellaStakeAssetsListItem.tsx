@@ -60,7 +60,7 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
       </ListColumn>
 
       <ListColumn>
-        <StakingApyItem rewards={umbrellaStakeAsset.rewards} />
+        <StakingApyItem stakeData={umbrellaStakeAsset} />
       </ListColumn>
 
       <ListColumn>

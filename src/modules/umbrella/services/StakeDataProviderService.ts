@@ -14,7 +14,7 @@ export interface StakeData {
   stakeTokenTotalSupply: string;
   stakeTokenPrice: string;
   cooldownSeconds: number;
-  unstakeWindowSeconds: string;
+  unstakeWindowSeconds: number;
   stakeTokenUnderlying: string;
   underlyingTokenDecimals: number;
   underlyingTokenName: string;
@@ -100,7 +100,7 @@ export class StakeDataProviderService {
         stakeTokenSymbol: stakeData.stakeTokenSymbol,
         stakeTokenTotalSupply: stakeData.stakeTokenTotalSupply.toString(),
         cooldownSeconds: stakeData.cooldownSeconds.toNumber(),
-        unstakeWindowSeconds: stakeData.unstakeWindowSeconds.toString(),
+        unstakeWindowSeconds: stakeData.unstakeWindowSeconds.toNumber(),
         stakeTokenUnderlying: stakeData.stakeTokenUnderlying.toLowerCase(),
         stakeTokenPrice: stakeData.stakeTokenPrice.toString(),
         underlyingTokenDecimals: stakeData.underlyingTokenDecimals,

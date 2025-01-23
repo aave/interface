@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTheme } from '@mui/material';
-
+import { BigNumber } from 'ethers';
+import { Trans } from '@lingui/macro';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -12,6 +13,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { styled } from '@mui/material/styles';
 import { useModalContext } from 'src/hooks/useModal';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
+import { SecondsToString } from '../../staking/StakingPanel';
+import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 
 // Styled component for the menu items to add gap between icon and text
 const StyledMenuItem = styled(MenuItem)({
@@ -29,7 +32,23 @@ const StyledMenuItem = styled(MenuItem)({
 });
 
 export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) => {
-  const { openUmbrella } = useModalContext();
+  const { openUmbrella, openUmbrellaStakeCooldown } = useModalContext();
+  const now = useCurrentTimestamp(1);
+
+  const cooldownSeconds = stakeData?.cooldownSeconds || 0;
+  const endOfCooldown = stakeData?.cooldownData.endOfCooldown || 0;
+  const unstakeWindow = stakeData?.cooldownData.withdrawalWindow || 0;
+  const cooldownTimeRemaining = endOfCooldown - now;
+  const unstakeTimeRemaining = endOfCooldown + unstakeWindow - now;
+
+  const isCooldownActive = cooldownTimeRemaining > 0;
+  const isUnstakeWindowActive = endOfCooldown < now && now < endOfCooldown + unstakeWindow;
+
+  const availableToReactivateCooldown =
+    isCooldownActive &&
+    BigNumber.from(stakeData?.balances.stakeTokenRedeemableAmount || 0).gt(
+      stakeData?.cooldownData.cooldownAmount || 0
+    );
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -43,12 +62,41 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
     setAnchorEl(null);
   };
 
-  //   const handleStakeMoreClick = () => {
-  //     handleClose();
-  //     setStakeMoreModalOpen(true);
-  //   };
+  const getCooldownLabel = () => {
+    console.log('isCooldownActive', isCooldownActive);
+    if (!isCooldownActive) {
+      return <Trans>Cooldown</Trans>;
+    }
 
-  //   console.log('stakeData', stakeData);
+    if (isUnstakeWindowActive) {
+      return (
+        <>
+          <Trans>Time left to unstake</Trans>
+          <span className="timeLabel">
+            <SecondsToString seconds={unstakeTimeRemaining} />
+          </span>
+        </>
+      );
+    }
+    if (isCooldownActive) {
+      return (
+        <>
+          <Trans>Cooldown time left</Trans>
+          <span className="timeLabel">
+            <SecondsToString seconds={cooldownTimeRemaining} />
+          </span>
+        </>
+      );
+    }
+    return (
+      <>
+        <Trans>Cooldown period</Trans>
+        <span className="timeLabel">
+          <SecondsToString seconds={cooldownSeconds} />
+        </span>
+      </>
+    );
+  };
 
   return (
     <div>
@@ -75,10 +123,16 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <StyledMenuItem>
+        <StyledMenuItem
+          onClick={() => {
+            handleClose();
+            openUmbrellaStakeCooldown(stakeData.stakeToken, stakeData.stakeTokenSymbol);
+          }}
+        >
           <TimerOutlinedIcon />
-          <Typography color="text.primary">Cooldown...</Typography>
-          <Typography className="timeLabel">1d</Typography>
+          <Typography color="text.primary">{getCooldownLabel()}</Typography>
+
+          {/* <Typography className="timeLabel">1d</Typography> */}
         </StyledMenuItem>
         <StyledMenuItem
           onClick={() => {

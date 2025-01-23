@@ -12,103 +12,54 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-} from "./common";
+} from 'ethers';
+import type { FunctionFragment, Result } from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
+import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
 export interface StakeGatewayInterface extends utils.Interface {
   functions: {
-    "redeem(address,uint256)": FunctionFragment;
-    "redeemATokens(address,uint256)": FunctionFragment;
-    "stake(address,uint256)": FunctionFragment;
-    "stakeATokens(address,uint256)": FunctionFragment;
-    "stakeATokensWithPermit(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
-    "stakeWithPermit(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
-    "stataTokenFactory()": FunctionFragment;
+    'redeem(address,uint256)': FunctionFragment;
+    'redeemATokens(address,uint256)': FunctionFragment;
+    'stake(address,uint256)': FunctionFragment;
+    'stakeATokens(address,uint256)': FunctionFragment;
+    'stakeATokensWithPermit(address,uint256,uint256,uint8,bytes32,bytes32)': FunctionFragment;
+    'stakeWithPermit(address,uint256,uint256,uint8,bytes32,bytes32)': FunctionFragment;
+    'stataTokenFactory()': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "redeem"
-      | "redeemATokens"
-      | "stake"
-      | "stakeATokens"
-      | "stakeATokensWithPermit"
-      | "stakeWithPermit"
-      | "stataTokenFactory"
+      | 'redeem'
+      | 'redeemATokens'
+      | 'stake'
+      | 'stakeATokens'
+      | 'stakeATokensWithPermit'
+      | 'stakeWithPermit'
+      | 'stataTokenFactory'
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: 'redeem', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'redeemATokens', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'stake', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'stakeATokens', values: [string, BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "redeem",
-    values: [string, BigNumberish]
+    functionFragment: 'stakeATokensWithPermit',
+    values: [string, BigNumberish, BigNumberish, BigNumberish, BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "redeemATokens",
-    values: [string, BigNumberish]
+    functionFragment: 'stakeWithPermit',
+    values: [string, BigNumberish, BigNumberish, BigNumberish, BytesLike, BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "stake",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "stakeATokens",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "stakeATokensWithPermit",
-    values: [
-      string,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BytesLike,
-      BytesLike
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "stakeWithPermit",
-    values: [
-      string,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BytesLike,
-      BytesLike
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "stataTokenFactory",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: 'stataTokenFactory', values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "redeemATokens",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "stakeATokens",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "stakeATokensWithPermit",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "stakeWithPermit",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "stataTokenFactory",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'redeem', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'redeemATokens', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'stake', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'stakeATokens', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'stakeATokensWithPermit', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'stakeWithPermit', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'stataTokenFactory', data: BytesLike): Result;
 
   events: {};
 }
@@ -130,9 +81,7 @@ export interface StakeGateway extends BaseContract {
     eventFilter?: TypedEventFilter<TEvent>
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -234,11 +183,7 @@ export interface StakeGateway extends BaseContract {
   stataTokenFactory(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    redeem(
-      stakeToken: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    redeem(stakeToken: string, amount: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
     redeemATokens(
       stakeToken: string,
@@ -246,11 +191,7 @@ export interface StakeGateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    stake(
-      stakeToken: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    stake(stakeToken: string, amount: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
     stakeATokens(
       stakeToken: string,

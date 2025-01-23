@@ -6,31 +6,43 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 import { Rewards } from './services/StakeDataProviderService';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
-export const StakingApyItem = ({ rewards }: { rewards: Rewards[] }) => {
-  if (rewards.length === 1) {
-    const reward = rewards[0];
-    return (
-      <Stack direction="column" alignItems="center" justifyContent="center">
-        <FormattedNumber value={reward.apy} percent variant="main16" visibleDecimals={2} />
-        <TokenIcon symbol={reward.rewardSymbol} />
-      </Stack>
-    );
-  }
+export const StakingApyItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
+  const { reserves } = useAppDataContext();
+
+  const rewards = stakeData.rewards;
+
   // TODO: do we need to handle the case where aTokens are configured as a reward?
   const icons = rewards.map((reward) => ({ src: reward.rewardSymbol, aToken: false }));
-  const netAPR = rewards
-    .reduce((acc, reward) => {
-      return acc + +reward.apy;
-    }, 0)
-    .toString();
+  let netAPY = rewards.reduce((acc, reward) => {
+    return acc + +reward.apy;
+  }, 0);
+
+  if (stakeData.underlyingIsWaToken) {
+    const underlyingReserve = reserves.find(
+      (reserve) => reserve.underlyingAsset === stakeData.waTokenData.waTokenUnderlying
+    );
+
+    if (!underlyingReserve) {
+      throw new Error(
+        `Underlying reserve not found for waToken underlying ${stakeData.waTokenData.waTokenUnderlying}`
+      );
+    }
+
+    netAPY += +underlyingReserve.supplyAPY;
+    icons.push({ src: underlyingReserve.symbol, aToken: true });
+  }
+
+  console.log(icons);
 
   return (
     <Stack direction="column" alignItems="center" justifyContent="center">
-      <FormattedNumber value={netAPR} percent variant="main16" visibleDecimals={2} />
+      <FormattedNumber value={netAPY} percent variant="main16" visibleDecimals={2} />
       <MultiIconWithTooltip
         icons={icons}
-        tooltipContent={<StakingApyTooltipcontent rewards={rewards} apr={netAPR} />}
+        tooltipContent={<StakingApyTooltipcontent rewards={rewards} apr={netAPY.toString()} />}
       />
     </Stack>
   );

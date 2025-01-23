@@ -1,4 +1,5 @@
 import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { SignatureLike, splitSignature } from '@ethersproject/bytes';
 import { BigNumber, PopulatedTransaction } from 'ethers';
 
 import { StakeGatewayInterface } from './types/StakeGateway';
@@ -18,6 +19,65 @@ export class StakeGatewayService {
     tx.from = user;
     tx.to = this.stakeGatewayAddress;
     // TODO: change properly
+    tx.gasLimit = BigNumber.from(gasLimitRecommendations[ProtocolAction.supply].recommended);
+    return tx;
+  }
+
+  stakeWithPermit(
+    user: string,
+    stakeTokenAddress: string,
+    amount: string,
+    deadline: string,
+    permit: SignatureLike
+  ) {
+    const tx: PopulatedTransaction = {};
+    const signature = splitSignature(permit);
+    const txData = this.interface.encodeFunctionData('stakeWithPermit', [
+      stakeTokenAddress,
+      amount,
+      deadline,
+      signature.v,
+      signature.r,
+      signature.s,
+    ]);
+    tx.data = txData;
+    tx.from = user;
+    tx.to = this.stakeGatewayAddress;
+    tx.gasLimit = BigNumber.from(gasLimitRecommendations[ProtocolAction.supply].recommended);
+    return tx;
+  }
+
+  stakeAToken(user: string, stakeTokenAddress: string, amount: string) {
+    const tx: PopulatedTransaction = {};
+    const txData = this.interface.encodeFunctionData('stakeATokens', [stakeTokenAddress, amount]);
+    tx.data = txData;
+    tx.from = user;
+    tx.to = this.stakeGatewayAddress;
+    // TODO: change properly
+    tx.gasLimit = BigNumber.from(gasLimitRecommendations[ProtocolAction.supply].recommended);
+    return tx;
+  }
+
+  stakeATokenWithPermit(
+    user: string,
+    stakeTokenAddress: string,
+    amount: string,
+    deadline: string,
+    permit: SignatureLike
+  ) {
+    const tx: PopulatedTransaction = {};
+    const signature = splitSignature(permit);
+    const txData = this.interface.encodeFunctionData('stakeATokensWithPermit', [
+      stakeTokenAddress,
+      amount,
+      deadline,
+      signature.v,
+      signature.r,
+      signature.s,
+    ]);
+    tx.data = txData;
+    tx.from = user;
+    tx.to = this.stakeGatewayAddress;
     tx.gasLimit = BigNumber.from(gasLimitRecommendations[ProtocolAction.supply].recommended);
     return tx;
   }

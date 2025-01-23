@@ -161,13 +161,14 @@ export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
 
       <UmbrellaActions
         sx={{ mt: '48px' }}
-        amountToStake={amount}
+        amountToStake={amount || '0'}
         isWrongNetwork={isWrongNetwork}
         symbol={''}
         blocked={blockingError !== undefined}
         selectedToken={inputToken}
         stakeData={stakeData}
         event={STAKE.STAKE_TOKEN}
+        isMaxSelected={isMaxSelected}
       />
     </>
   );

@@ -21,7 +21,7 @@ export const useStakeData = <T = StakeData[]>(
     queryFn: () => {
       return stakeDataService.getStakeData(marketData);
     },
-    queryKey: ['getStkTokens', marketData.marketTitle],
+    queryKey: ['umbrella', 'stakeData', marketData.marketTitle],
     ...opts,
   });
 };
@@ -36,7 +36,7 @@ export const useUserStakeData = <T = StakeUserData[]>(
     queryFn: () => {
       return stakeDataService.getUserTakeData(marketData, user);
     },
-    queryKey: ['getUserStakeData', marketData.marketTitle, user],
+    queryKey: ['umbrella', 'userStakeData', marketData.marketTitle, user],
     enabled: !!user,
     ...opts,
   });
