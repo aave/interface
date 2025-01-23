@@ -33,7 +33,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
             textAlign: 'center',
           }}
         >
-          <StakingApyItem rewards={umbrellaStakeAsset.rewards} />
+          <StakingApyItem stakeData={umbrellaStakeAsset} />
         </Box>
       </Row>
       <Row

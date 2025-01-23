@@ -22,7 +22,7 @@ export const UmbrellaHeader: React.FC = () => {
   //   useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   // );
 
-  const { data: stakedDataWithTokenBalances, isPending: isLoadingStakedDataWithTokenBalances } =
+  const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
     useUmbrellaSummary(currentMarketData);
 
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
