@@ -1,4 +1,4 @@
-import { normalize } from '@aave/math-utils';
+import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import { useStakeData, useUserStakeData } from 'src/modules/umbrella/hooks/useStakeData';
 import {
@@ -37,10 +37,37 @@ export interface MergedStakeData extends StakeData {
   symbol: string;
   decimals: number;
   iconSymbol: string;
+  totalStakedUSD: string;
+  aggregatedTotalStakedUSD: string;
+  weightedAverageApy: string;
 }
 
 const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserData[]) => {
-  console.log(userStakeData);
+  let aggregatedTotalStakedUSD = valueToBigNumber('0');
+  let weightedApySum = valueToBigNumber('0');
+  let apyTotalWeight = valueToBigNumber('0');
+  stakeData.forEach((stakeItem) => {
+    const matchingBalance = userStakeData.find(
+      (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.stakeToken.toLowerCase()
+    );
+
+    if (matchingBalance && !valueToBigNumber(matchingBalance.balances.stakeTokenBalance).isZero()) {
+      const underlyingBalanceValue = BigNumber(
+        normalize(matchingBalance.balances.stakeTokenBalance, stakeItem.underlyingTokenDecimals)
+      )
+        .multipliedBy(stakeItem.stakeTokenPrice)
+        .shiftedBy(-8);
+
+      aggregatedTotalStakedUSD = aggregatedTotalStakedUSD.plus(underlyingBalanceValue);
+
+      if (stakeItem.rewards[0]?.apy && stakeItem.rewards[0]?.apy > '0') {
+        const apy = valueToBigNumber(stakeItem.rewards[0].apy);
+        weightedApySum = weightedApySum.plus(underlyingBalanceValue.multipliedBy(apy));
+        apyTotalWeight = apyTotalWeight.plus(underlyingBalanceValue);
+      }
+    }
+  });
+
   const mergedData = stakeData.reduce<MergedStakeData[]>((acc, stakeItem) => {
     const matchingBalance = userStakeData.find(
       (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.stakeToken.toLowerCase()
@@ -50,7 +77,9 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
       return acc;
     }
 
-    console.log(matchingBalance);
+    const weightedAverageApy = apyTotalWeight.gt(0)
+      ? weightedApySum.dividedBy(apyTotalWeight)
+      : valueToBigNumber('0');
 
     const stakeTokenBalance = normalize(
       matchingBalance.balances.stakeTokenBalance,
@@ -121,6 +150,9 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
       iconSymbol: stakeItem.underlyingIsWaToken
         ? stakeItem.waTokenData.waTokenUnderlyingSymbol
         : stakeItem.stakeTokenSymbol,
+      totalStakedUSD: `${underlyingTokenBalanceUSD}`,
+      aggregatedTotalStakedUSD: `${aggregatedTotalStakedUSD.toFixed(2)}`,
+      weightedAverageApy: `${weightedAverageApy}`,
     });
 
     return acc;
@@ -132,6 +164,17 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
 export const useUmbrellaSummary = (marketData: MarketDataType) => {
   const stakeDataQuery = useStakeData(marketData);
   const userStakeDataQuery = useUserStakeData(marketData);
+
+  return combineQueries([stakeDataQuery, userStakeDataQuery] as const, formatUmbrellaSummary);
+};
+
+export const useUmbrellaSummaryFor = (uStakeToken: string, marketData: MarketDataType) => {
+  const stakeDataQuery = useStakeData(marketData, {
+    select: (stakeData) => stakeData.filter((s) => s.stakeToken === uStakeToken),
+  });
+  const userStakeDataQuery = useUserStakeData(marketData, {
+    select: (userData) => userData.filter((s) => s.stakeToken === uStakeToken),
+  });
 
   return combineQueries([stakeDataQuery, userStakeDataQuery] as const, formatUmbrellaSummary);
 };
