@@ -817,6 +817,10 @@ msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restric
 msgid "Aave per month"
 msgstr "Aave per month"
 
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+msgid "Amount Staked"
+msgstr "Amount Staked"
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -1029,6 +1033,7 @@ msgstr "This asset is planned to be offboarded due to an Aave Protocol Governanc
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/umbrella/AmountStakedItem.tsx
 msgid "Cooldown period"
 msgstr "Cooldown period"
 
@@ -1083,9 +1088,8 @@ msgstr "Reward(s) to claim"
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListItem.tsx
+#: src/modules/umbrella/AvailableToStakeItem.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
-#: src/modules/umbrella/StakeAssets/UmbrellaStakeAssetsListItem.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
 msgid "Stake"
 msgstr "Stake"
@@ -1983,6 +1987,7 @@ msgid "Cooldown period warning"
 msgstr "Cooldown period warning"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/modules/umbrella/AmountStakedItem.tsx
 msgid "Cooldown"
 msgstr "Cooldown"
 
@@ -2406,6 +2411,7 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/umbrella/AvailableToClaimItem.tsx
 msgid "Claim"
 msgstr "Claim"
 
