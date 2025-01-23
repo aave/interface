@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -8,19 +8,28 @@ import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 
 export const AvailableToClaimItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
-  const icons = stakeData.formattedRewards.map((reward) => {
-    return {
-      src: reward.rewardTokenSymbol,
-      aToken: false,
-    };
-  });
+  const icons = stakeData.formattedRewards.map((reward) => ({
+    src: reward.rewardTokenSymbol,
+    aToken: false,
+  }));
 
-  const totalAvailableToClaim = stakeData.formattedRewards.reduce((acc, reward) => {
-    return acc + +reward.accrued;
-  }, 0);
+  const totalAvailableToClaim = stakeData.formattedRewards.reduce(
+    (acc, reward) => acc + +reward.accrued,
+    0
+  );
+
+  const { breakpoints } = useTheme();
+
+  const isMobile = useMediaQuery(breakpoints.down('lg'));
 
   return (
-    <Stack direction="column" alignItems="center" justifyContent="center" gap={2}>
+    <Stack
+      direction={isMobile ? 'row' : 'column'}
+      alignItems="center"
+      justifyContent="center"
+      gap={2}
+      width="100%"
+    >
       <FormattedNumber value={totalAvailableToClaim} variant="main16" visibleDecimals={2} />
       {stakeData.formattedRewards.length > 1 && (
         <MultiIconWithTooltip
@@ -31,17 +40,6 @@ export const AvailableToClaimItem = ({ stakeData }: { stakeData: MergedStakeData
       {stakeData.formattedRewards.length === 1 && (
         <TokenIcon symbol={stakeData.formattedRewards[0].rewardTokenSymbol} />
       )}
-      {/* {totalAvailableToClaim > 0 && (
-        <Button
-          variant="outlined"
-          size="medium"
-          // onClick={() => {
-          //   openUmbrella(stakeData.stakeToken, stakeData.stakeTokenSymbol);
-          // }}
-        >
-          <Trans>Claim</Trans>
-        </Button>
-      )} */}
     </Stack>
   );
 };

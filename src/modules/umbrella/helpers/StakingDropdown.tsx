@@ -4,7 +4,7 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
-import { useTheme } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -36,7 +36,9 @@ const StyledMenuItem = styled(MenuItem)({
 export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { openUmbrella, openUmbrellaStakeCooldown } = useModalContext();
   const now = useCurrentTimestamp(1);
+  const { breakpoints } = useTheme();
 
+  const isMobile = useMediaQuery(breakpoints.down('lg'));
   const cooldownSeconds = stakeData?.cooldownSeconds || 0;
   const endOfCooldown = stakeData?.cooldownData.endOfCooldown || 0;
   const unstakeWindow = stakeData?.cooldownData.withdrawalWindow || 0;
@@ -66,42 +68,6 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
     setAnchorEl(null);
   };
 
-  const getCooldownLabel = () => {
-    console.log('isCooldownActive', isCooldownActive);
-    if (!isCooldownActive) {
-      return <Trans>Cooldown</Trans>;
-    }
-
-    if (isUnstakeWindowActive) {
-      return (
-        <>
-          <Trans>Time left to unstake</Trans>
-          <span className="timeLabel">
-            <SecondsToString seconds={unstakeTimeRemaining} />
-          </span>
-        </>
-      );
-    }
-    if (isCooldownActive) {
-      return (
-        <>
-          <Trans>Cooldown time left</Trans>
-          <span className="timeLabel">
-            <SecondsToString seconds={cooldownTimeRemaining} />
-          </span>
-        </>
-      );
-    }
-    return (
-      <>
-        <Trans>Cooldown period</Trans>
-        <span className="timeLabel">
-          <SecondsToString seconds={cooldownSeconds} />
-        </span>
-      </>
-    );
-  };
-
   return (
     <div>
       {stakeData.balances.stakeTokenBalance === '0' ? (
@@ -109,6 +75,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
           <IconButton
             style={{
               borderRadius: 4,
+              width: isMobile ? '100%' : 'auto',
               color: '#FFFFFF',
               backgroundColor: theme.palette.mode === 'light' ? '#383D51' : '#383D51',
             }}
@@ -122,6 +89,8 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
         <>
           <IconButton
             style={{
+              width: isMobile ? '100%' : 'auto',
+
               backgroundColor: theme.palette.mode === 'light' ? '#F7F7F9' : '#383D51',
               borderRadius: 4,
             }}
@@ -150,7 +119,15 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               }}
             >
               <TimerOutlinedIcon />
-              <Typography color="text.primary">{getCooldownLabel()}</Typography>
+              <Typography color="text.primary">
+                <CooldownLabel
+                  isCooldownActive={isCooldownActive}
+                  isUnstakeWindowActive={isUnstakeWindowActive}
+                  unstakeTimeRemaining={unstakeTimeRemaining}
+                  cooldownTimeRemaining={cooldownTimeRemaining}
+                  cooldownSeconds={cooldownSeconds}
+                />
+              </Typography>
 
               {/* <Typography className="timeLabel">1d</Typography> */}
             </StyledMenuItem>
@@ -171,5 +148,52 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
         </>
       )}
     </div>
+  );
+};
+
+const CooldownLabel = ({
+  isCooldownActive,
+  isUnstakeWindowActive,
+  unstakeTimeRemaining,
+  cooldownTimeRemaining,
+  cooldownSeconds,
+}: {
+  isCooldownActive: boolean;
+  isUnstakeWindowActive: boolean;
+  unstakeTimeRemaining: number;
+  cooldownTimeRemaining: number;
+  cooldownSeconds: number;
+}) => {
+  if (!isCooldownActive) return <Trans>Cooldown</Trans>;
+
+  if (isUnstakeWindowActive) {
+    return (
+      <>
+        <Trans>Time left to unstake</Trans>
+        <span className="timeLabel">
+          <SecondsToString seconds={unstakeTimeRemaining} />
+        </span>
+      </>
+    );
+  }
+
+  if (isCooldownActive) {
+    return (
+      <>
+        <Trans>Cooldown time left</Trans>
+        <span className="timeLabel">
+          <SecondsToString seconds={cooldownTimeRemaining} />
+        </span>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Trans>Cooldown period</Trans>
+      <span className="timeLabel">
+        <SecondsToString seconds={cooldownSeconds} />
+      </span>
+    </>
   );
 };

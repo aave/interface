@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -13,6 +13,10 @@ export const StakingApyItem = ({ stakeData }: { stakeData: MergedStakeData }) =>
   const { reserves } = useAppDataContext();
 
   const rewards = stakeData.rewards;
+
+  const { breakpoints } = useTheme();
+
+  const isMobile = useMediaQuery(breakpoints.down('lg'));
 
   // TODO: do we need to handle the case where aTokens are configured as a reward?
   const icons = rewards.map((reward) => ({ src: reward.rewardSymbol, aToken: false }));
@@ -35,10 +39,13 @@ export const StakingApyItem = ({ stakeData }: { stakeData: MergedStakeData }) =>
     icons.push({ src: underlyingReserve.symbol, aToken: true });
   }
 
-  console.log(icons);
-
   return (
-    <Stack direction="column" alignItems="center" justifyContent="center">
+    <Stack
+      direction={isMobile ? 'row' : 'column'}
+      alignItems="center"
+      justifyContent="center"
+      gap={2}
+    >
       <FormattedNumber value={netAPY} percent variant="main16" visibleDecimals={2} />
       <MultiIconWithTooltip
         icons={icons}
