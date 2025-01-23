@@ -164,6 +164,9 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
 export const useUmbrellaSummary = (marketData: MarketDataType) => {
   const stakeDataQuery = useStakeData(marketData);
   const userStakeDataQuery = useUserStakeData(marketData);
-
-  return combineQueries([stakeDataQuery, userStakeDataQuery] as const, formatUmbrellaSummary);
+  const { data, isPending } = combineQueries(
+    [stakeDataQuery, userStakeDataQuery] as const,
+    formatUmbrellaSummary
+  );
+  return { data, loading: isPending };
 };

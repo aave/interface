@@ -12,8 +12,11 @@ import { AmountStakedItem } from '../AmountStakedItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
 import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { StakingApyItem } from '../StakingApyItem';
+import { StakingDropdown } from 'src/modules/umbrella/helpers/StakingDropdown';
 
 export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
+  // const theme = useTheme();
+
   // const [trackEvent, currentMarket] = useRootStore(
   //   useShallow((store) => [store.trackEvent, store.currentMarket])
   // );
@@ -70,6 +73,9 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
 
       <ListColumn>
         <AvailableToClaimItem stakeData={umbrellaStakeAsset} />
+      </ListColumn>
+      <ListColumn>
+        <StakingDropdown stakeData={umbrellaStakeAsset} />
       </ListColumn>
     </ListItem>
   );

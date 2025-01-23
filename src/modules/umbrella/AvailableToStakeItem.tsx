@@ -1,16 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
-import { useModalContext } from 'src/hooks/useModal';
 
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 
 export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
-  const { openUmbrella } = useModalContext();
-
   const { underlyingWaTokenBalance, underlyingWaTokenATokenBalance, underlyingTokenBalance } =
     stakeData.formattedBalances;
 
@@ -50,7 +47,7 @@ export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData
       ) : (
         <TokenIcon symbol={stakeData.stakeTokenSymbol} sx={{ fontSize: '20px', mr: 1 }} />
       )}
-      <Button
+      {/* <Button
         variant="outlined"
         size="medium"
         onClick={() => {
@@ -58,7 +55,7 @@ export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData
         }}
       >
         <Trans>Stake</Trans>
-      </Button>
+      </Button> */}
     </Stack>
   );
 };

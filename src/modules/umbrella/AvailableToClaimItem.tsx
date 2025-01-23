@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -31,7 +31,7 @@ export const AvailableToClaimItem = ({ stakeData }: { stakeData: MergedStakeData
       {stakeData.formattedRewards.length === 1 && (
         <TokenIcon symbol={stakeData.formattedRewards[0].rewardTokenSymbol} />
       )}
-      {totalAvailableToClaim > 0 && (
+      {/* {totalAvailableToClaim > 0 && (
         <Button
           variant="outlined"
           size="medium"
@@ -41,7 +41,7 @@ export const AvailableToClaimItem = ({ stakeData }: { stakeData: MergedStakeData
         >
           <Trans>Claim</Trans>
         </Button>
-      )}
+      )} */}
     </Stack>
   );
 };

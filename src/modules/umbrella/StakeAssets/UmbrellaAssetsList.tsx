@@ -48,6 +48,10 @@ const listHeaders = [
     title: <Trans>Available to Claim</Trans>,
     sortKey: 'TODO',
   },
+  {
+    title: <></>,
+    // sortKey: 'TODO',
+  },
   //   {
   //     title: (
   //       <VariableAPYTooltip

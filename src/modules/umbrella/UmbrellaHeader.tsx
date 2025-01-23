@@ -12,12 +12,7 @@ import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem
 // import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { MarketSwitcher } from './UmbrellaMarketSwitcher';
 
-interface StakingHeaderProps {
-  stkEmission: string;
-  loading: boolean;
-}
-
-export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ loading }) => {
+export const UmbrellaHeader: React.FC = () => {
   const theme = useTheme();
   // const { currentAccount } = useWeb3Context();
   const [currentMarketData, trackEvent] = useRootStore(
@@ -27,7 +22,8 @@ export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ loading }) => {
   //   useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   // );
 
-  const { data: stakedDataWithTokenBalances } = useUmbrellaSummary(currentMarketData);
+  const { data: stakedDataWithTokenBalances, isPending: isLoadingStakedDataWithTokenBalances } =
+    useUmbrellaSummary(currentMarketData);
 
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -84,7 +80,7 @@ export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ loading }) => {
             <Trans>Staked Balance</Trans>
           </Stack>
         }
-        loading={loading}
+        loading={isLoadingStakedDataWithTokenBalances}
       >
         <FormattedNumber
           value={totalUSDAggregateStaked || '0'}
@@ -96,7 +92,11 @@ export const UmbrellaHeader: React.FC<StakingHeaderProps> = ({ loading }) => {
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem hideIcon title={<Trans>Net APY</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        hideIcon
+        title={<Trans>Net APY</Trans>}
+        loading={isLoadingStakedDataWithTokenBalances}
+      >
         <FormattedNumber
           value={weightedAverageApy || 0}
           variant={valueTypographyVariant}

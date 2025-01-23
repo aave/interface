@@ -1,18 +1,14 @@
 // import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { Trans } from '@lingui/macro';
 import { Box, Container } from '@mui/material';
-import { BigNumber } from 'ethers/lib/ethers';
-import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
-import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 // import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer';
 import { UmbrellaHeader } from 'src/modules/umbrella/UmbrellaHeader';
 // import { UmbrellaStakedAssetsListContainer } from 'src/modules/umbrella/UserStakedAssets/UmbrellaStakedAssetsListContainer';
-import { useRootStore } from 'src/store/root';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -74,53 +70,6 @@ export const MarketContainer = ({ children }: MarketContainerProps) => {
 export default function UmbrellaStaking() {
   const { currentAccount } = useWeb3Context();
 
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  // const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
-
-  const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
-    useGeneralStakeUiData(currentMarketData);
-
-  let stkAave: StakeTokenFormatted | undefined;
-  let stkBpt: StakeTokenFormatted | undefined;
-  let stkGho: StakeTokenFormatted | undefined;
-  let stkBptV2: StakeTokenFormatted | undefined;
-
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult)) {
-    [stkAave, stkBpt, stkGho, stkBptV2] = stakeGeneralResult;
-  }
-
-  // let stkAaveUserData: StakeUIUserData | undefined;
-  // let stkBptUserData: StakeUIUserData | undefined;
-  // let stkGhoUserData: StakeUIUserData | undefined;
-  // let stkBptV2UserData: StakeUIUserData | undefined;
-  // if (stakeUserResult && Array.isArray(stakeUserResult)) {
-  //   [stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData] = stakeUserResult;
-  // }
-
-  const trackEvent = useRootStore((store) => store.trackEvent);
-
-  useEffect(() => {
-    trackEvent('Page Viewed', {
-      'Page Name': 'Staking',
-    });
-  }, [trackEvent]);
-
-  const tvl = {
-    'Staked Aave': Number(stkAave?.totalSupplyUSDFormatted || '0'),
-    'Staked GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
-    'Staked ABPT': Number(stkBpt?.totalSupplyUSDFormatted || '0'),
-    'Staked ABPT V2': Number(stkBptV2?.totalSupplyUSDFormatted || '0'),
-  };
-
-  // Total AAVE Emissions (stkaave dps + stkbpt dps)
-  const stkEmission = formatEther(
-    BigNumber.from(stkAave?.distributionPerSecond || '0')
-      .add(stkBpt?.distributionPerSecond || '0')
-      .add(stkGho?.distributionPerSecond || '0')
-      .add(stkBptV2?.distributionPerSecond || '0')
-      .mul('86400')
-  );
-
   if (!currentAccount) {
     return (
       <ConnectWalletPaper
@@ -136,7 +85,7 @@ export default function UmbrellaStaking() {
 
   return (
     <>
-      <UmbrellaHeader tvl={tvl} stkEmission={stkEmission} loading={stakeGeneralResultLoading} />
+      <UmbrellaHeader />
       <Box
         sx={{
           display: 'flex',

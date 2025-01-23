@@ -1,10 +1,9 @@
-import { Trans } from '@lingui/macro';
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
-import { SecondsToString } from '../staking/StakingPanel';
+// import { SecondsToString } from '../staking/StakingPanel';
 
 export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { stakeTokenBalance, stakeTokenBalanceUSD } = stakeData.formattedBalances;
@@ -13,7 +12,7 @@ export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) 
     <Stack direction="column" alignItems="center" justifyContent="center">
       <FormattedNumber compact value={stakeTokenBalance} variant="main16" />
       <ReserveSubheader value={stakeTokenBalanceUSD} />
-      <Stack direction="column" alignItems="center" justifyContent="center" minWidth={150}>
+      {/* <Stack direction="column" alignItems="center" justifyContent="center" minWidth={150}>
         <Button fullWidth variant="outlined" size="medium" disabled={stakeTokenBalance === '0'}>
           <Trans>Cooldown</Trans>
         </Button>
@@ -25,7 +24,7 @@ export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) 
             <SecondsToString seconds={stakeData.cooldownSeconds} />
           </Typography>
         </Stack>
-      </Stack>
+      </Stack> */}
     </Stack>
   );
 };
