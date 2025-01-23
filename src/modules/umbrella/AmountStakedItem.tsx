@@ -3,6 +3,7 @@ import { Button, Stack, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
+
 import { SecondsToString } from '../staking/StakingPanel';
 
 export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
