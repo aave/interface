@@ -39,7 +39,7 @@ const prodConfig: Config[] = [
   {
     sourceChainId: ChainId.mainnet,
     chainSelector: '5009297550715157269',
-    lockReleaseTokenPool: '0x5756880b6a1eaba0175227bf02a7e87c1e02b28c', // TODO: address book
+    lockReleaseTokenPool: '0x06179f7C1be40863405f374E7f5F8806c728660A', // TODO: address book
     router: '0x80226fc0ee2b096224eeac085bb9a8cba1146f7d',
     tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc',
     wrappedNativeOracle: AaveV3Ethereum.ASSETS.WETH.ORACLE,
@@ -77,7 +77,7 @@ const prodConfig: Config[] = [
   {
     sourceChainId: ChainId.arbitrum_one,
     chainSelector: '4949039107694359620',
-    burnMintTokenPool: '0xf168b83598516a532a85995b52504a2fa058c068', // TODO: address book
+    burnMintTokenPool: '0xB94Ab28c6869466a46a42abA834ca2B3cECCA5eB', // TODO: address book
     router: '0x141fa059441e0ca23ce184b6a78bafd2a517dde8',
     tokenOracle: '0xb05984ad83c20b3ade7bf97a9a0cb539dde28dbb',
     wrappedNativeOracle: AaveV3Arbitrum.ASSETS.WETH.ORACLE,
