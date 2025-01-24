@@ -33,6 +33,9 @@ const UnStakeModal = dynamic(() =>
     (module) => module.UnStakeModal
   )
 );
+const UmbrellaClaimModal = dynamic(() =>
+  import('../src/modules/umbrella/UmbrellaClaimModal').then((module) => module.UmbrellaClaimModal)
+);
 interface MarketContainerProps {
   children: ReactNode;
 }
@@ -111,6 +114,7 @@ UmbrellaStaking.getLayout = function getLayout(page: React.ReactElement) {
       <UnStakeModal />
       <StakeRewardClaimModal />
       <StakeRewardClaimRestakeModal />
+      <UmbrellaClaimModal />
       {/** End of modals */}
     </MainLayout>
   );

@@ -34,6 +34,7 @@ export enum ModalType {
   ReadMode,
   Umbrella,
   UmbrellaStakeCooldown,
+  UmbrellaClaim,
 }
 
 export interface ModalArgsType {
@@ -101,6 +102,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
   openUmbrella: (uStakeToken: string, icon: string) => void;
   openUmbrellaStakeCooldown: (uStakeToken: string, icon: string) => void;
+  openUmbrellaClaim: (uStakeToken: string) => void;
   openClaimRewards: () => void;
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
@@ -284,6 +286,11 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
 
           setType(ModalType.UmbrellaStakeCooldown);
           setArgs({ uStakeToken, icon });
+        },
+        openUmbrellaClaim: (uStakeToken) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella Claim', uStakeToken: uStakeToken });
+          setType(ModalType.UmbrellaClaim);
+          setArgs({ uStakeToken });
         },
         openClaimRewards: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim' });
