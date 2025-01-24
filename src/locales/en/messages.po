@@ -1095,7 +1095,6 @@ msgstr "Reward(s) to claim"
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
 msgid "Stake"
 msgstr "Stake"
@@ -1180,7 +1179,6 @@ msgid "Wrong Network"
 msgstr "Wrong Network"
 
 #: src/components/transactions/Stake/StakeActions.tsx
-#: src/modules/staking/StakingHeader.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
 msgid "Staking"
 msgstr "Staking"
@@ -2088,6 +2086,10 @@ msgstr "Something went wrong fetching bridge message, please try again later."
 msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 msgstr "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
+msgid "Staking APY"
+msgstr "Staking APY"
+
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote YAE"
 msgstr "Vote YAE"
@@ -2477,6 +2479,7 @@ msgstr "You voted {0}"
 msgid "Borrowable"
 msgstr "Borrowable"
 
+#: src/modules/staking/StakingHeader.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Safety Module"
 msgstr "Safety Module"
@@ -2973,6 +2976,10 @@ msgstr "Global settings"
 msgid "Collateral balance after repay"
 msgstr "Collateral balance after repay"
 
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
+msgid "Amount staked"
+msgstr "Amount staked"
+
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copy the error"
@@ -3026,7 +3033,6 @@ msgstr "Selected supply assets"
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 msgid "APY"
 msgstr "APY"
 

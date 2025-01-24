@@ -7,9 +7,7 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
-import { useRootStore } from 'src/store/root';
-import { useShallow } from 'zustand/shallow';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
 import {
   // StakeUserData,
@@ -30,7 +28,7 @@ const listHeaders = [
   },
   {
     title: <Trans>APY</Trans>,
-    sortKey: 'totalLiquidityUSD',
+    sortKey: 'totalAPY',
   },
   {
     title: <Trans>Amount Staked</Trans>,
@@ -46,7 +44,7 @@ const listHeaders = [
   },
   {
     title: <Trans>Available to Claim</Trans>,
-    sortKey: 'TODO',
+    sortKey: 'TODO: claim',
   },
   {
     title: <></>,
@@ -64,19 +62,21 @@ const listHeaders = [
   //   },
 ];
 
-type MarketAssetsListProps = {
+type UmbrelaAssetsListProps = {
   reserves: ComputedReserveData[];
   loading: boolean;
+  stakedDataWithTokenBalances: MergedStakeData[];
+  isLoadingStakedDataWithTokenBalances: boolean;
 };
 
-export default function MarketAssetsList({ loading }: MarketAssetsListProps) {
+export default function UmbrellaAssetsList({
+  loading,
+  stakedDataWithTokenBalances,
+  isLoadingStakedDataWithTokenBalances,
+}: UmbrelaAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
-  const [currentMarketData] = useRootStore(
-    useShallow((store) => [store.currentMarketData, store.account])
-  );
-  const { data: stakedDataWithTokenBalances } = useUmbrellaSummary(currentMarketData);
 
   const sortedData = useMemo(() => {
     if (!stakedDataWithTokenBalances) return [];
@@ -86,7 +86,7 @@ export default function MarketAssetsList({ loading }: MarketAssetsListProps) {
         return sortDesc ? b.symbol.localeCompare(a.symbol) : a.symbol.localeCompare(b.symbol);
       }
 
-      if (sortName === 'totalLiquidityUSD') {
+      if (sortName === 'totalAPY') {
         const apyA = Number(calculateRewardsApy(a.rewards));
         const apyB = Number(calculateRewardsApy(b.rewards));
         return sortDesc ? apyB - apyA : apyA - apyB;
@@ -102,8 +102,7 @@ export default function MarketAssetsList({ loading }: MarketAssetsListProps) {
     });
   }, [stakedDataWithTokenBalances, sortName, sortDesc]);
 
-  // Show loading state when loading
-  if (loading) {
+  if (loading || isLoadingStakedDataWithTokenBalances) {
     return isTableChangedToCards ? (
       <>
         <UmbrellaAssetsListMobileItemLoader />
@@ -119,7 +118,6 @@ export default function MarketAssetsList({ loading }: MarketAssetsListProps) {
       </>
     );
   }
-
   // Hide list when no results, via search term or if a market has all/no frozen/unfrozen assets
   if (stakedDataWithTokenBalances == undefined || stakedDataWithTokenBalances.length === 0)
     return null;

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -10,6 +10,10 @@ import { MultiIconWithTooltip } from './helpers/MultiIcon';
 export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { underlyingWaTokenBalance, underlyingWaTokenATokenBalance, underlyingTokenBalance } =
     stakeData.formattedBalances;
+
+  const { breakpoints } = useTheme();
+
+  const isMobile = useMediaQuery(breakpoints.down('lg'));
 
   const icons = [];
   if (underlyingTokenBalance) {
@@ -37,7 +41,12 @@ export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData
     Number(underlyingWaTokenATokenBalance);
 
   return (
-    <Stack direction="column" alignItems="center" justifyContent="center" gap={2}>
+    <Stack
+      direction={isMobile ? 'row' : 'column'}
+      alignItems="center"
+      justifyContent="center"
+      gap={2}
+    >
       <FormattedNumber compact value={totalAvailableToStake} variant="main16" />
       {stakeData.underlyingIsWaToken ? (
         <MultiIconWithTooltip
@@ -45,17 +54,8 @@ export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData
           tooltipContent={<AvailableToStakeTooltipContent stakeData={stakeData} />}
         />
       ) : (
-        <TokenIcon symbol={stakeData.stakeTokenSymbol} sx={{ fontSize: '20px', mr: 1 }} />
+        <TokenIcon symbol={stakeData.stakeTokenSymbol} sx={{ fontSize: '20px' }} />
       )}
-      {/* <Button
-        variant="outlined"
-        size="medium"
-        onClick={() => {
-          openUmbrella(stakeData.stakeToken, stakeData.stakeTokenSymbol);
-        }}
-      >
-        <Trans>Stake</Trans>
-      </Button> */}
     </Stack>
   );
 };
