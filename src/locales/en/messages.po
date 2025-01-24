@@ -1179,7 +1179,6 @@ msgid "Wrong Network"
 msgstr "Wrong Network"
 
 #: src/components/transactions/Stake/StakeActions.tsx
-#: src/modules/staking/StakingHeader.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
 msgid "Staking"
 msgstr "Staking"
@@ -2480,6 +2479,7 @@ msgstr "You voted {0}"
 msgid "Borrowable"
 msgstr "Borrowable"
 
+#: src/modules/staking/StakingHeader.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Safety Module"
 msgstr "Safety Module"

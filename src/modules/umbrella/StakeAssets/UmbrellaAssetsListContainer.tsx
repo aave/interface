@@ -8,6 +8,7 @@ import { NoSearchResults } from 'src/components/NoSearchResults';
 // import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
@@ -36,9 +37,18 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
 
 export const UmbrellaAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
-  const [currentMarket, currentNetworkConfig] = useRootStore(
-    useShallow((store) => [store.currentMarket, store.currentNetworkConfig])
+
+  const [currentMarket, currentNetworkConfig, currentMarketData] = useRootStore(
+    useShallow((store) => [
+      store.currentMarket,
+      store.currentNetworkConfig,
+      store.currentMarketData,
+    ])
   );
+
+  const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
+    useUmbrellaSummary(currentMarketData);
+
   const [searchTerm, setSearchTerm] = useState('');
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
@@ -86,21 +96,26 @@ export const UmbrellaAssetsListContainer = () => {
         />
       }
     >
-      {/* Unfrozen assets list */}
-      <UmbrellaAssetsList reserves={filteredData} loading={loading} />
+      <UmbrellaAssetsList
+        reserves={filteredData}
+        loading={loading}
+        isLoadingStakedDataWithTokenBalances={isLoadingStakedDataWithTokenBalances}
+        stakedDataWithTokenBalances={stakedDataWithTokenBalances ?? []}
+      />
 
-      {/* Show no search results message if nothing hits in either list */}
-      {!loading && filteredData.length === 0 && (
-        <NoSearchResults
-          searchTerm={searchTerm}
-          subtitle={
-            <Trans>
-              We couldn&apos;t find any assets related to your search. Try again with a different
-              asset name, symbol, or address.
-            </Trans>
-          }
-        />
-      )}
+      {!loading &&
+        !isLoadingStakedDataWithTokenBalances &&
+        (filteredData.length === 0 || !stakedDataWithTokenBalances) && (
+          <NoSearchResults
+            searchTerm={searchTerm}
+            subtitle={
+              <Trans>
+                We couldn&apos;t find any assets related to your search. Try again with a different
+                asset name, symbol, or address.
+              </Trans>
+            }
+          />
+        )}
     </ListWrapper>
   );
 };
