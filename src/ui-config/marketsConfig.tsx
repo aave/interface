@@ -13,6 +13,7 @@ import {
   AaveV3EthereumEtherFi,
   AaveV3EthereumLido,
   AaveV3Gnosis,
+  AaveV3Linea,
   AaveV3Metis,
   AaveV3Optimism,
   AaveV3OptimismSepolia,
@@ -31,7 +32,7 @@ export type MarketDataType = {
   marketTitle: string;
   market: CustomMarket;
   // the network the market operates on
-  chainId: ChainId;
+  chainId: number; // ChainId;
   enabledFeatures?: {
     liquiditySwap?: boolean;
     staking?: boolean;
@@ -92,6 +93,7 @@ export enum CustomMarket {
   proto_lido_v3 = 'proto_lido_v3',
   proto_zksync_v3 = 'proto_zksync_v3',
   proto_etherfi_v3 = 'proto_etherfi_v3',
+  proto_linea_v3 = 'proto_linea_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -678,6 +680,22 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3ZkSync.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3ZkSync.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3ZkSync.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_linea_v3]: {
+    marketTitle: 'Linea',
+    market: CustomMarket.proto_linea_v3,
+    chainId: 59144,
+    v3: true,
+    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/ENYSc8G3WvrbhWH8UZHrqPWYRcuyCaNmaTmoVp7uzabM`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Linea.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Linea.POOL,
+      WETH_GATEWAY: AaveV3Linea.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Linea.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Linea.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Linea.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Linea.COLLECTOR,
     },
   },
 } as const;
