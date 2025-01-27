@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro';
+
 import AddIcon from '@mui/icons-material/Add';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -34,7 +35,7 @@ const StyledMenuItem = styled(MenuItem)({
 });
 
 export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) => {
-  const { openUmbrella, openUmbrellaStakeCooldown } = useModalContext();
+  const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaUnstake } = useModalContext();
   const now = useCurrentTimestamp(1);
   const { breakpoints } = useTheme();
 
@@ -139,6 +140,15 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
             >
               <AddOutlinedIcon />
               <Typography>Stake more...</Typography>
+            </StyledMenuItem>
+            <StyledMenuItem
+              onClick={() => {
+                handleClose();
+                openUmbrellaUnstake(stakeData.stakeToken, stakeData.stakeTokenSymbol);
+              }}
+            >
+              <ArrowForwardIcon />
+              <Typography>Unstake</Typography>
             </StyledMenuItem>
             <StyledMenuItem>
               <ArrowForwardIcon />

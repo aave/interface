@@ -7,8 +7,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { useShallow } from 'zustand/shallow';
-
-import { StakeTokenSercie } from './services/StakeTokenService';
+import { StakeTokenService } from './services/StakeTokenService';
 
 export interface StakeCooldownActionsProps extends BoxProps {
   isWrongNetwork: boolean;
@@ -37,7 +36,7 @@ export const StakeCooldownActions = ({
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
-      const stakeTokenService = new StakeTokenSercie(selectedToken);
+      const stakeTokenService = new StakeTokenService(selectedToken);
       let cooldownTxData = stakeTokenService.cooldown(user);
       cooldownTxData = await estimateGasLimit(cooldownTxData);
       const tx = await sendTx(cooldownTxData);
