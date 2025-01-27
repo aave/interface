@@ -1,6 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { constants, PopulatedTransaction } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
@@ -14,14 +15,13 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { queryKeysFactory } from 'src/ui-config/queries';
+import { roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { StakeGatewayService } from './services/StakeGatewayService';
-import { StakeInputAsset } from './UmbrellaModalContent';
 import { StakeTokenService } from './services/StakeTokenService';
-import { useQueryClient } from '@tanstack/react-query';
-import { queryKeysFactory } from 'src/ui-config/queries';
-import { roundToTokenDecimals } from 'src/utils/utils';
+import { StakeInputAsset } from './UmbrellaModalContent';
 
 export interface StakeActionProps extends BoxProps {
   amountToStake: string;
@@ -96,7 +96,7 @@ export const UmbrellaActions = ({
 
   setLoadingTxns(fetchingApprovedAmount);
 
-  let amountWithMargin = Number(amountToStake) + Number(amountToStake) * 0.1;
+  const amountWithMargin = Number(amountToStake) + Number(amountToStake) * 0.1;
   const amountToApprove =
     isMaxSelected && selectedToken.aToken
       ? roundToTokenDecimals(amountWithMargin.toString(), stakeData.decimals)

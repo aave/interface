@@ -7,6 +7,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { useShallow } from 'zustand/shallow';
+
 import { StakeTokenService } from './services/StakeTokenService';
 
 export interface StakeCooldownActionsProps extends BoxProps {

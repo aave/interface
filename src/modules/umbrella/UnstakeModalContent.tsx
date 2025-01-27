@@ -8,16 +8,17 @@ import { AssetInput } from 'src/components/transactions/AssetInput';
 import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { TxSuccessView } from 'src/components/transactions/FlowCommons/Success';
+import { DetailsUnwrapSwitch } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { GasStation } from 'src/components/transactions/GasStation/GasStation';
 import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { UnStakeActions } from './UnstakeModalActions';
-import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useShallow } from 'zustand/shallow';
-import { DetailsUnwrapSwitch } from 'src/components/transactions/FlowCommons/TxModalDetails';
+
+import { UnStakeActions } from './UnstakeModalActions';
 
 // export type UnStakeProps = {
 //   stakeToken: string;
@@ -43,7 +44,7 @@ export const UnStakeModalContent = ({ stakeData }: { stakeData: MergedStakeData 
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  let balance = stakeData?.formattedBalances.stakeTokenRedeemableAmount || '0';
+  const balance = stakeData?.formattedBalances.stakeTokenRedeemableAmount || '0';
   console.log('amountToUnstake', balance);
   // TODOD
   // if (stakeData?.inPostSlashingPeriod) {

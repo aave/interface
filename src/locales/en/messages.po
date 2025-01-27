@@ -485,6 +485,10 @@ msgstr "Borrowing is unavailable because you’re using Isolation mode. To manag
 msgid "Share on Lens"
 msgstr "Share on Lens"
 
+#: src/modules/umbrella/UnstakeModalContent.tsx
+msgid "Redeem as aToken"
+msgstr "Redeem as aToken"
+
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
 msgstr "Claim all"
@@ -786,6 +790,10 @@ msgstr "Watch wallet"
 msgid "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
 msgstr "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
 
+#: src/modules/umbrella/UnstakeModalContent.tsx
+msgid "Stake balance"
+msgstr "Stake balance"
+
 #: src/components/infoTooltips/PausedTooltip.tsx
 msgid "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
 msgstr "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
@@ -1081,6 +1089,7 @@ msgid "Estimated compounding interest, including discount for Staking {0}AAVE in
 msgstr "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
+#: src/modules/umbrella/UnstakeModalActions.tsx
 msgid "Unstaking {symbol}"
 msgstr "Unstaking {symbol}"
 
@@ -1948,6 +1957,7 @@ msgid "Price"
 msgstr "Price"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
+#: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Unstaked"
 msgstr "Unstaked"
 
@@ -2912,6 +2922,7 @@ msgid "The underlying balance needs to be greater than 0"
 msgstr "The underlying balance needs to be greater than 0"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
+#: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Not enough staked balance"
 msgstr "Not enough staked balance"
 
@@ -3086,6 +3097,7 @@ msgid "You don't have any bridge transactions"
 msgstr "You don't have any bridge transactions"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
+#: src/modules/umbrella/UnstakeModalActions.tsx
 msgid "Unstake {symbol}"
 msgstr "Unstake {symbol}"
 

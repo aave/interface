@@ -1,5 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
+import { PopulatedTransaction } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { checkRequiresApproval } from 'src/components/transactions/utils';
@@ -7,15 +9,14 @@ import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
-import { useRootStore } from 'src/store/root';
-import { StakeGatewayService } from './services/StakeGatewayService';
-import { PopulatedTransaction } from 'ethers';
-import { StakeTokenService } from './services/StakeTokenService';
-import { useShallow } from 'zustand/shallow';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useQueryClient } from '@tanstack/react-query';
+import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
+
+import { StakeGatewayService } from './services/StakeGatewayService';
+import { StakeTokenService } from './services/StakeTokenService';
 
 export interface UnStakeActionProps extends BoxProps {
   amountToUnStake: string;
@@ -37,7 +38,6 @@ export const UnStakeActions = ({
   blocked,
   stakeData,
   redeemATokens,
-  ...props
 }: UnStakeActionProps) => {
   const queryClient = useQueryClient();
   const [currentChainId, user, estimateGasLimit] = useRootStore(

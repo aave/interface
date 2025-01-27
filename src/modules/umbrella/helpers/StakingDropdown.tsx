@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro';
-
 import AddIcon from '@mui/icons-material/Add';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';

@@ -1,8 +1,8 @@
+import { SignatureLike, splitSignature } from '@ethersproject/bytes';
 import { BigNumber, PopulatedTransaction } from 'ethers';
 
 import { IERC4626StakeTokenInterface } from './types/StakeToken';
 import { IERC4626StakeToken__factory } from './types/StakeToken__factory';
-import { SignatureLike, splitSignature } from '@ethersproject/bytes';
 
 export class StakeTokenService {
   private readonly interface: IERC4626StakeTokenInterface;
