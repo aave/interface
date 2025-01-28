@@ -1,14 +1,15 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
-import { UmbrellaRewards } from './UmbrellaClaimModalContent';
-import { useModalContext } from 'src/hooks/useModal';
-import { useRootStore } from 'src/store/root';
-import { RewardsDistributorService } from './services/RewardsDistributorService';
-import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { PopulatedTransaction } from 'ethers';
+import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+
+import { RewardsDistributorService } from './services/RewardsDistributorService';
+import { UmbrellaRewards } from './UmbrellaClaimModalContent';
 
 export interface StakeRewardClaimActionProps extends BoxProps {
   stakeData: MergedStakeData;
@@ -23,7 +24,6 @@ export const UmbrellaClaimActions = ({
   isWrongNetwork,
   ...props
 }: StakeRewardClaimActionProps) => {
-
   const { loadingTxns, mainTxState, setMainTxState, setTxError } = useModalContext();
 
   const user = useRootStore((store) => store.account);
@@ -35,10 +35,14 @@ export const UmbrellaClaimActions = ({
       setMainTxState({ ...mainTxState, loading: true });
       const rewardsDistributorService = new RewardsDistributorService(REWARDS_CONTROLLER);
       let claimTx: PopulatedTransaction = {};
-      if(rewardsToClaim.length > 1) {
+      if (rewardsToClaim.length > 1) {
         claimTx = rewardsDistributorService.claimAllRewards(user, stakeData.stakeToken);
       } else {
-        claimTx = rewardsDistributorService.claimSelectedRewards(user, stakeData.stakeToken, rewardsToClaim.map(reward => reward.address));
+        claimTx = rewardsDistributorService.claimSelectedRewards(
+          user,
+          stakeData.stakeToken,
+          rewardsToClaim.map((reward) => reward.address)
+        );
       }
       claimTx = await estimateGasLimit(claimTx);
       const claimTxReceipt = await sendTx(claimTx);
@@ -57,7 +61,6 @@ export const UmbrellaClaimActions = ({
       });
     }
   };
-  
 
   return (
     <TxActionsWrapper

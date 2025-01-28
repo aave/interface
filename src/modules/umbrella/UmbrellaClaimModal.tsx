@@ -1,10 +1,11 @@
 import React from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
-import { ModalType, useModalContext } from 'src/hooks/useModal';
-import { UmbrellaClaimModalContent } from './UmbrellaClaimModalContent';
 import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
+import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
+
+import { UmbrellaClaimModalContent } from './UmbrellaClaimModalContent';
 
 export const UmbrellaClaimModal = () => {
   const { type, close, args } = useModalContext();
@@ -19,7 +20,7 @@ export const UmbrellaClaimModal = () => {
   return (
     <BasicModal open={type === ModalType.UmbrellaClaim} setOpen={close}>
       <UserAuthenticated>
-        {(user) =>  stakeData && <UmbrellaClaimModalContent user={user} stakeData={stakeData} />}
+        {(user) => stakeData && <UmbrellaClaimModalContent user={user} stakeData={stakeData} />}
       </UserAuthenticated>
     </BasicModal>
   );

@@ -34,7 +34,8 @@ const StyledMenuItem = styled(MenuItem)({
 });
 
 export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) => {
-  const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaUnstake, openUmbrellaClaim } = useModalContext();
+  const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaUnstake, openUmbrellaClaim } =
+    useModalContext();
   const now = useCurrentTimestamp(1);
   const { breakpoints } = useTheme();
 

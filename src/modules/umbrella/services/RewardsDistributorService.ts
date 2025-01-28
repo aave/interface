@@ -1,7 +1,8 @@
-import { IRewardsDistributor__factory } from "./types/IRewardsDistributor__factory";
-import { IRewardsDistributorInterface } from "./types/IRewardsDistributor";
-import { BigNumber, PopulatedTransaction } from "ethers";
-import { gasLimitRecommendations, ProtocolAction } from "@aave/contract-helpers";
+import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { BigNumber, PopulatedTransaction } from 'ethers';
+
+import { IRewardsDistributorInterface } from './types/IRewardsDistributor';
+import { IRewardsDistributor__factory } from './types/IRewardsDistributor__factory';
 
 export class RewardsDistributorService {
   private readonly interface: IRewardsDistributorInterface;
@@ -12,10 +13,7 @@ export class RewardsDistributorService {
 
   claimAllRewards(user: string, stakeToken: string) {
     const tx: PopulatedTransaction = {};
-    const txData = this.interface.encodeFunctionData('claimAllRewards', [
-      stakeToken,
-      user,
-    ]);
+    const txData = this.interface.encodeFunctionData('claimAllRewards', [stakeToken, user]);
     tx.data = txData;
     tx.from = user;
     tx.to = this.rewardsDistributorAddress;
