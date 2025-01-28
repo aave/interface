@@ -10,8 +10,10 @@ export enum MeritAction {
   ETHEREUM_SUPPLY_ETHX = 'ethereum-supply-ethx',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
+  ARBITRUM_SUPPLY_WSTETH = 'arbitrum-supply-wsteth',
   BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
   BASE_SUPPLY_USDC = 'base-supply-usdc',
+  BASE_SUPPLY_WSTETH = 'base-supply-wsteth',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   AVALANCHE_SUPPLY_BTCB = 'avalanche-supply-btcb',
   AVALANCHE_SUPPLY_USDC = 'avalanche-supply-usdc',
@@ -112,6 +114,16 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       },
     ],
   },
+  [CustomMarket.proto_arbitrum_v3]: {
+    wstETH: [
+      {
+        action: MeritAction.ARBITRUM_SUPPLY_WSTETH,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.wstETH.UNDERLYING,
+        rewardTokenSymbol: 'aArbwstETH',
+        protocolAction: ProtocolAction.supply,
+      },
+    ],
+  },
   [CustomMarket.proto_base_v3]: {
     cbBTC: [
       {
@@ -133,6 +145,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
         rewardTokenSymbol: 'aBasUSDC',
         protocolAction: ProtocolAction.borrow,
+      },
+    ],
+    wstETH: [
+      {
+        action: MeritAction.BASE_SUPPLY_WSTETH,
+        rewardTokenAddress: AaveV3Base.ASSETS.wstETH.UNDERLYING,
+        rewardTokenSymbol: 'aBaswstETH',
+        protocolAction: ProtocolAction.supply,
       },
     ],
   },
