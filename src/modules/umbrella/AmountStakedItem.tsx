@@ -1,10 +1,21 @@
+import { ClockIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Stack, Typography } from '@mui/material';
+import { keyframes, Stack, SvgIcon, Typography } from '@mui/material';
+import { formatUnits } from 'ethers/lib/utils';
+import { ReactElement } from 'react';
+import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { formattedTime, timeText } from 'src/helpers/timeHelper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 
 import { ListValueColumn } from '../dashboard/lists/ListValueColumn';
 import { SecondsToString } from '../staking/StakingPanel';
+
+// TODO: move to helpers
+const timeMessage = (time: number) => {
+  return `${formattedTime(time)} ${timeText(time)}`;
+};
 
 export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const now = useCurrentTimestamp(1);
@@ -12,6 +23,10 @@ export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) 
 
   const endOfCooldown = stakeData?.cooldownData.endOfCooldown || 0;
   const unstakeWindow = stakeData?.cooldownData.withdrawalWindow || 0;
+  const cooldownAmount = formatUnits(
+    stakeData?.cooldownData.cooldownAmount || '0',
+    stakeData.decimals
+  );
   const cooldownTimeRemaining = endOfCooldown - now;
 
   const isCooldownActive = cooldownTimeRemaining > 0;
@@ -33,46 +48,95 @@ export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) 
         withTooltip
         disabled={stakeTokenBalance === '0'}
       />
-      {isCooldownActive && <Cooldown cooldownTimeRemaining={cooldownTimeRemaining} />}
-      {isUnstakeWindowActive && <UnstakeWindow unstakeTimeRemaining={unstakeTimeRemaining} />}
+      {isCooldownActive && (
+        <Countdown
+          timeRemaining={cooldownTimeRemaining}
+          tooltipContent={
+            <CooldownTooltip cooldownAmount={cooldownAmount} unstakeWindow={unstakeWindow} />
+          }
+        />
+      )}
+      {isUnstakeWindowActive && (
+        <Countdown
+          animate
+          timeRemaining={unstakeTimeRemaining}
+          tooltipContent={<UnstakeTooltip cooldownAmount={cooldownAmount} />}
+        />
+      )}
     </Stack>
   );
 };
 
-const Cooldown = ({ cooldownTimeRemaining }: { cooldownTimeRemaining: number }) => {
+const pulse = keyframes`
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const Countdown = ({
+  timeRemaining,
+  tooltipContent,
+  animate,
+}: {
+  timeRemaining: number;
+  tooltipContent: ReactElement;
+  animate?: boolean;
+}) => {
   return (
-    <Stack
-      gap={1}
-      minWidth={'125px'}
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-    >
-      <Typography variant="helperText">
-        <Trans>Remaining cooldown</Trans>
-      </Typography>
-      <Typography variant="helperText">
-        <SecondsToString seconds={cooldownTimeRemaining} />
-      </Typography>
+    <ContentWithTooltip tooltipContent={tooltipContent}>
+      <Stack
+        gap={1}
+        direction="row"
+        alignItems="center"
+        sx={{ animation: animate ? `${pulse} 1.5s infinite` : 'none' }}
+      >
+        <SvgIcon>
+          <ClockIcon />
+        </SvgIcon>
+        <Typography variant="helperText">
+          <SecondsToString seconds={timeRemaining} />
+        </Typography>
+      </Stack>
+    </ContentWithTooltip>
+  );
+};
+
+const CooldownTooltip = ({
+  cooldownAmount,
+  unstakeWindow,
+}: {
+  cooldownAmount: string;
+  unstakeWindow: number;
+}) => {
+  return (
+    <Stack gap={2} direction="column">
+      <Trans>
+        After the cooldown period ends, you will enter the unstake window of{' '}
+        {timeMessage(unstakeWindow)}. You will continue receiving rewards during cooldown and the
+        unstake period.
+      </Trans>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Trans>Amount in cooldown</Trans>
+        <FormattedNumber variant="caption" value={cooldownAmount} />
+      </Stack>
     </Stack>
   );
 };
 
-const UnstakeWindow = ({ unstakeTimeRemaining }: { unstakeTimeRemaining: number }) => {
+const UnstakeTooltip = ({ cooldownAmount }: { cooldownAmount: string }) => {
   return (
-    <Stack
-      gap={1}
-      minWidth={'125px'}
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-    >
-      <Typography variant="helperText">
-        <Trans>Remaining time to unstake</Trans>
-      </Typography>
-      <Typography variant="helperText">
-        <SecondsToString seconds={unstakeTimeRemaining} />
-      </Typography>
+    <Stack gap={2} direction="column">
+      <Trans>Time remaining until the withdraw period ends.</Trans>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Trans>Available to withdraw</Trans>
+        <FormattedNumber variant="caption" value={cooldownAmount} />
+      </Stack>
     </Stack>
   );
 };
