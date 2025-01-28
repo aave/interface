@@ -1,10 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
+import { AmountAvailableItem } from './helpers/AmountAvailableItem';
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 
 export const AvailableToClaimItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
@@ -46,13 +46,13 @@ export const AvailableToClaimItem = ({ stakeData }: { stakeData: MergedStakeData
 
 export const AvailableToClaimTooltipContent = ({ stakeData }: { stakeData: MergedStakeData }) => {
   return (
-    <Stack direction="column" alignItems="center" justifyContent="center">
+    <Stack direction="column" alignItems="center" justifyContent="center" minWidth={160}>
       <Typography variant="caption" color="text.secondary" mb={3}>
-        <Trans>lorem ipsum</Trans>
+        <Trans>Rewards available to claim</Trans>
       </Typography>
       <Box sx={{ width: '100%' }}>
         {stakeData.formattedRewards.map((reward, index) => (
-          <AssetRow
+          <AmountAvailableItem
             key={index}
             symbol={reward.rewardTokenSymbol}
             name={reward.rewardTokenSymbol}
@@ -61,39 +61,5 @@ export const AvailableToClaimTooltipContent = ({ stakeData }: { stakeData: Merge
         ))}
       </Box>
     </Stack>
-  );
-};
-
-// TODO: could probably be moved to a shared component, currently copied from AvailableToStakeItem
-const AssetRow = ({
-  symbol,
-  name,
-  value,
-  aToken,
-}: {
-  symbol: string;
-  name: string;
-  value: string;
-  aToken?: boolean;
-}) => {
-  return (
-    <Row
-      height={32}
-      caption={
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            mb: 2,
-          }}
-        >
-          <TokenIcon symbol={symbol} sx={{ fontSize: '20px', mr: 1 }} aToken={aToken} />
-          <Typography variant="secondary12">{name}</Typography>
-        </Box>
-      }
-      width="100%"
-    >
-      <FormattedNumber value={value} compact variant="main16" />
-    </Row>
   );
 };

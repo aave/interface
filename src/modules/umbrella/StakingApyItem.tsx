@@ -111,7 +111,7 @@ export const StakingApyTooltipcontent = ({
     >
       {description}
 
-      <Box sx={{ width: '100%', minWidth: '170px' }}>
+      <Box sx={{ width: '100%', minWidth: '160px' }}>
         {rewards.map((reward) => {
           return (
             <Row
