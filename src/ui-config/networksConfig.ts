@@ -396,4 +396,19 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
   },
+  [59144]: {
+    name: 'Linea',
+    privateJsonRPCUrl: 'https://linea-mainnet.g.alchemy.com/v2/6uk5qBl8QvjpEbgF3TgZBbxWkKlmWZR-',
+    publicJsonRPCUrl: ['https://1rpc.io/linea'],
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://lineascan.build',
+    networkLogoPath: '/icons/networks/linea.svg',
+    bridge: {
+      icon: '/icons/networks/linea.svg',
+      name: 'Linea Bridge',
+      url: 'https://bridge.linea.build/',
+    },
+  },
 } as const;
