@@ -1,28 +1,35 @@
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { ReactElement } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
-import { MultiIconWithTooltip } from './helpers/MultiIcon';
-import { Rewards } from './services/StakeDataProviderService';
+import { IconData, MultiIconWithTooltip } from './helpers/MultiIcon';
 
 export const StakingApyItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { reserves } = useAppDataContext();
-
-  const rewards = stakeData.rewards;
 
   const { breakpoints } = useTheme();
 
   const isMobile = useMediaQuery(breakpoints.down('lg'));
 
-  // TODO: do we need to handle the case where aTokens are configured as a reward?
-  const icons = rewards.map((reward) => ({ src: reward.rewardSymbol, aToken: false }));
-  let netAPY = rewards.reduce((acc, reward) => {
-    return acc + +reward.apy;
-  }, 0);
+  let netAPY = 0;
+  const icons: IconData[] = [];
+  const stakeRewards: StakingReward[] = [];
+  for (const reward of stakeData.rewards) {
+    netAPY += +reward.apy;
+    icons.push({ src: reward.rewardSymbol, aToken: false });
+    stakeRewards.push({
+      address: reward.rewardAddress,
+      symbol: reward.rewardSymbol,
+      name: reward.rewardSymbol,
+      aToken: false,
+      apy: reward.apy,
+    });
+  }
 
   if (stakeData.underlyingIsWaToken) {
     const underlyingReserve = reserves.find(
@@ -37,6 +44,13 @@ export const StakingApyItem = ({ stakeData }: { stakeData: MergedStakeData }) =>
 
     netAPY += +underlyingReserve.supplyAPY;
     icons.push({ src: underlyingReserve.symbol, aToken: true });
+    stakeRewards.push({
+      address: stakeData.waTokenData.waTokenUnderlying,
+      symbol: underlyingReserve.symbol,
+      name: `a${underlyingReserve.symbol}`,
+      aToken: true,
+      apy: underlyingReserve.supplyAPY,
+    });
   }
 
   return (
@@ -49,37 +63,43 @@ export const StakingApyItem = ({ stakeData }: { stakeData: MergedStakeData }) =>
       <FormattedNumber value={netAPY} percent variant="main16" visibleDecimals={2} />
       <MultiIconWithTooltip
         icons={icons}
-        tooltipContent={<StakingApyTooltipcontent rewards={rewards} apr={netAPY.toString()} />}
+        tooltipContent={
+          <StakingApyTooltipcontent
+            description={
+              <Typography variant="caption" color="text.secondary" mb={3}>
+                {stakeData.underlyingIsWaToken ? (
+                  <Trans>
+                    Staking this asset will earn the underlying asset supply yield in additon to
+                    other configured rewards.
+                  </Trans>
+                ) : (
+                  <Trans>Staking Rewards</Trans>
+                )}
+              </Typography>
+            }
+            rewards={stakeRewards}
+          />
+        }
       />
     </Stack>
   );
 };
 
-export const StakingApyTooltipcontent = ({ rewards, apr }: { rewards: Rewards[]; apr: string }) => {
-  const typographyVariant = 'secondary12';
+interface StakingReward {
+  symbol: string;
+  name: string;
+  address: string;
+  aToken: boolean;
+  apy: string;
+}
 
-  const Number = ({ incentiveAPR }: { incentiveAPR: 'Infinity' | number | string }) => {
-    return (
-      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        {incentiveAPR !== 'Infinity' ? (
-          <>
-            <FormattedNumber value={+incentiveAPR} percent variant={typographyVariant} />
-            <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-              <Trans>APR</Trans>
-            </Typography>
-          </>
-        ) : (
-          <>
-            <Typography variant={typographyVariant}>∞ %</Typography>
-            <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-              <Trans>APR</Trans>
-            </Typography>
-          </>
-        )}
-      </Box>
-    );
-  };
-
+export const StakingApyTooltipcontent = ({
+  description,
+  rewards,
+}: {
+  description: ReactElement;
+  rewards: StakingReward[];
+}) => {
   return (
     <Box
       sx={{
@@ -89,42 +109,35 @@ export const StakingApyTooltipcontent = ({ rewards, apr }: { rewards: Rewards[];
         flexDirection: 'column',
       }}
     >
-      <Typography variant="caption" color="text.secondary" mb={3}>
-        <Trans>lorem ipsum</Trans>
-      </Typography>
+      {description}
 
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%', minWidth: '170px' }}>
         {rewards.map((reward) => {
           return (
             <Row
-              height={32}
+              sx={{ mb: 2 }}
               caption={
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    mb: rewards.length > 1 ? 2 : 0,
-                  }}
-                >
-                  <TokenIcon symbol={reward.rewardSymbol} sx={{ fontSize: '20px', mr: 1 }} />
-                  <Typography variant={typographyVariant}>{reward.rewardSymbol}</Typography>
-                </Box>
+                <Stack direction="row" alignItems="center">
+                  <TokenIcon
+                    aToken={reward.aToken}
+                    symbol={reward.symbol}
+                    sx={{ fontSize: '20px', mr: 1 }}
+                  />
+                  <Typography variant="secondary12">{reward.name}</Typography>
+                </Stack>
               }
-              key={reward.rewardAddress}
+              key={reward.address}
               width="100%"
             >
-              <Number incentiveAPR={reward.apy} />
+              <Stack direction="row">
+                <FormattedNumber value={+reward.apy} percent variant="secondary12" />
+                <Typography variant="secondary12" sx={{ ml: 1 }}>
+                  <Trans>APR</Trans>
+                </Typography>
+              </Stack>
             </Row>
           );
         })}
-
-        {rewards.length > 1 && (
-          <Box sx={() => ({ pt: 1, mt: 1 })}>
-            <Row caption={<Trans>Net APR</Trans>} height={32}>
-              <Number incentiveAPR={apr} />
-            </Row>
-          </Box>
-        )}
       </Box>
     </Box>
   );
