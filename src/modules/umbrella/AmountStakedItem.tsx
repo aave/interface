@@ -1,21 +1,16 @@
-import { ClockIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { keyframes, Stack, SvgIcon, Typography } from '@mui/material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { keyframes, Stack, Typography } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import { ReactElement } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { formattedTime, timeText } from 'src/helpers/timeHelper';
+import { timeMessage } from 'src/helpers/timeHelper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 
 import { ListValueColumn } from '../dashboard/lists/ListValueColumn';
 import { SecondsToString } from '../staking/StakingPanel';
-
-// TODO: move to helpers
-const timeMessage = (time: number) => {
-  return `${formattedTime(time)} ${timeText(time)}`;
-};
 
 export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const now = useCurrentTimestamp(1);
@@ -33,13 +28,6 @@ export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) 
   const isUnstakeWindowActive = endOfCooldown < now && now < endOfCooldown + unstakeWindow;
   const unstakeTimeRemaining = endOfCooldown + unstakeWindow - now;
 
-  // const availableToReactivateCooldown =
-  //   isCooldownActive &&
-  //   BigNumber.from(stakeData?.balances.stakeTokenRedeemableAmount || 0).gt(
-  //     stakeData?.cooldownData.cooldownAmount || 0
-  //   );
-
-  // console.log('TODO: availableToReactivateCooldown', availableToReactivateCooldown);
   return (
     <Stack direction="column" alignItems="center" justifyContent="center">
       <ListValueColumn
@@ -96,9 +84,7 @@ const Countdown = ({
         alignItems="center"
         sx={{ animation: animate ? `${pulse} 1.5s infinite` : 'none' }}
       >
-        <SvgIcon>
-          <ClockIcon />
-        </SvgIcon>
+        <AccessTimeIcon fontSize="small" />
         <Typography variant="helperText">
           <SecondsToString seconds={timeRemaining} />
         </Typography>
