@@ -121,6 +121,8 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Ethereum.ASSETS.wstETH.UNDERLYING,
         rewardTokenSymbol: 'aArbwstETH',
         protocolAction: ProtocolAction.supply,
+        customMessage:
+          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
       },
     ],
   },
@@ -153,6 +155,8 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Base.ASSETS.wstETH.UNDERLYING,
         rewardTokenSymbol: 'aBaswstETH',
         protocolAction: ProtocolAction.supply,
+        customMessage:
+          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
       },
     ],
   },
