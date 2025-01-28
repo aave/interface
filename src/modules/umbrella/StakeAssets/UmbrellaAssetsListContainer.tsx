@@ -65,6 +65,7 @@ export const UmbrellaAssetsListContainer = () => {
     .filter((res) => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase().trim();
+
       return (
         res.symbol.toLowerCase().includes(term) ||
         res.name.toLowerCase().includes(term) ||
@@ -81,6 +82,15 @@ export const UmbrellaAssetsListContainer = () => {
           })
         : {}),
     }));
+
+  const filteredStakedData =
+    stakedDataWithTokenBalances?.filter((stakedAsset) =>
+      filteredData.some(
+        (reserve) =>
+          reserve.underlyingAsset.toLowerCase() ===
+          stakedAsset.waTokenData.waTokenUnderlying.toLowerCase()
+      )
+    ) ?? [];
 
   return (
     <ListWrapper
@@ -100,12 +110,12 @@ export const UmbrellaAssetsListContainer = () => {
         reserves={filteredData}
         loading={loading}
         isLoadingStakedDataWithTokenBalances={isLoadingStakedDataWithTokenBalances}
-        stakedDataWithTokenBalances={stakedDataWithTokenBalances ?? []}
+        stakedDataWithTokenBalances={filteredStakedData ?? []}
       />
 
       {!loading &&
         !isLoadingStakedDataWithTokenBalances &&
-        (filteredData.length === 0 || !stakedDataWithTokenBalances) && (
+        (filteredData.length === 0 || !filteredStakedData) && (
           <NoSearchResults
             searchTerm={searchTerm}
             subtitle={

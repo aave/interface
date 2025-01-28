@@ -1,8 +1,9 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { constants, PopulatedTransaction } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { checkRequiresApproval } from 'src/components/transactions/utils';
@@ -14,9 +15,12 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { queryKeysFactory } from 'src/ui-config/queries';
+import { roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { StakeGatewayService } from './services/StakeGatewayService';
+import { StakeTokenService } from './services/StakeTokenService';
 import { StakeInputAsset } from './UmbrellaModalContent';
 
 export interface StakeActionProps extends BoxProps {
@@ -45,6 +49,7 @@ export const UmbrellaActions = ({
   isMaxSelected,
   ...props
 }: StakeActionProps) => {
+  const queryClient = useQueryClient();
   const [estimateGasLimit, tryPermit, walletApprovalMethodPreference] = useRootStore(
     useShallow((state) => [
       state.estimateGasLimit,
@@ -77,6 +82,8 @@ export const UmbrellaActions = ({
     });
   const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
+  const useStakeGateway = stakeData.underlyingIsWaToken;
+
   const {
     data: approvedAmount,
     isFetching: fetchingApprovedAmount,
@@ -84,19 +91,16 @@ export const UmbrellaActions = ({
   } = useApprovedAmount({
     chainId: currentChainId,
     token: selectedToken.address,
-    spender: STAKE_GATEWAY_CONTRACT,
+    spender: useStakeGateway ? STAKE_GATEWAY_CONTRACT : stakeData.stakeToken,
   });
 
   setLoadingTxns(fetchingApprovedAmount);
 
-  const parsedAmountToStake = parseUnits(amountToStake, stakeData.decimals);
-  const parsedBalance = parseUnits(selectedToken.balance, stakeData.decimals);
-
-  const bufferBalanceAmount = parsedBalance.div(10).add(parsedBalance);
-
-  const amountToApprove = isMaxSelected
-    ? (selectedToken.aToken ? bufferBalanceAmount.toString() : parsedBalance.toString()).toString()
-    : parsedAmountToStake.toString();
+  const amountWithMargin = Number(amountToStake) + Number(amountToStake) * 0.1;
+  const amountToApprove =
+    isMaxSelected && selectedToken.aToken
+      ? roundToTokenDecimals(amountWithMargin.toString(), stakeData.decimals)
+      : amountToStake;
 
   const requiresApproval =
     Number(amountToStake) !== 0 &&
@@ -109,8 +113,8 @@ export const UmbrellaActions = ({
   const tokenApproval = {
     user,
     token: selectedToken.address,
-    spender: STAKE_GATEWAY_CONTRACT,
-    amount: amountToApprove,
+    spender: useStakeGateway ? STAKE_GATEWAY_CONTRACT : stakeData.stakeToken,
+    amount: approvedAmount?.toString() || '0',
   };
 
   const { approval } = useApprovalTx({
@@ -120,75 +124,51 @@ export const UmbrellaActions = ({
     assetAddress: selectedToken.address,
     symbol: selectedToken.symbol,
     decimals: stakeData.decimals,
-    amountToApprove,
+    amountToApprove:
+      !amountToApprove || isNaN(+amountToApprove)
+        ? '0'
+        : parseUnits(amountToApprove, stakeData.decimals).toString(),
     onApprovalTxConfirmed: fetchApprovedAmount,
-    signatureAmount: formatUnits(amountToApprove, stakeData.decimals).toString(),
+    signatureAmount: amountToApprove,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
 
   const { currentAccount, sendTx } = useWeb3Context();
 
   const action = async () => {
+    const parsedAmountToStake = parseUnits(amountToStake, stakeData.decimals).toString();
+    const parsedBalance = parseUnits(selectedToken.balance, stakeData.decimals).toString();
+    let amount = parsedAmountToStake;
+    if (isMaxSelected) {
+      if (selectedToken.aToken) {
+        amount = constants.MaxUint256.toString();
+      } else {
+        amount = parsedBalance;
+      }
+    }
+
     try {
-      setMainTxState({ ...mainTxState, loading: true });
-      const stakeService = new StakeGatewayService(STAKE_GATEWAY_CONTRACT);
       let stakeTxData: PopulatedTransaction;
 
-      if (usePermit && signatureParams) {
-        if (selectedToken.aToken) {
-          stakeTxData = stakeService.stakeATokenWithPermit(
-            currentAccount,
-            stakeData.stakeToken,
-            isMaxSelected ? constants.MaxUint256.toString() : parsedAmountToStake.toString(),
-            signatureParams.deadline,
-            signatureParams.signature
-          );
-        } else {
-          stakeTxData = stakeService.stakeWithPermit(
-            user,
-            stakeData.stakeToken,
-            isMaxSelected ? parsedBalance.toString() : parsedAmountToStake.toString(),
-            signatureParams.deadline,
-            signatureParams.signature
-          );
-        }
+      if (useStakeGateway) {
+        stakeTxData = getStakeGatewayTxData(amount);
       } else {
-        if (selectedToken.aToken) {
-          stakeTxData = stakeService.stakeAToken(
-            currentAccount,
-            stakeData.stakeToken,
-            isMaxSelected
-              ? constants.MaxUint256.toString()
-              : parseUnits(amountToStake, stakeData.decimals).toString()
-          );
-        } else {
-          stakeTxData = stakeService.stake(
-            currentAccount,
-            stakeData.stakeToken,
-            isMaxSelected
-              ? parseUnits(selectedToken.balance, stakeData.decimals).toString()
-              : parseUnits(amountToStake, stakeData.decimals).toString()
-          );
-        }
+        stakeTxData = getStakeTokenTxData(amount);
       }
+
       stakeTxData = await estimateGasLimit(stakeTxData);
       const tx = await sendTx(stakeTxData);
+
       await tx.wait(1);
+
       setMainTxState({
         txHash: tx.hash,
         loading: false,
         success: true,
       });
 
-      // addTransaction(response.hash, {
-      //   action,
-      //   txState: 'success',
-      //   asset: poolAddress,
-      //   amount: amountToSupply,
-      //   assetName: symbol,
-      // });
-
-      // queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+      queryClient.invalidateQueries({ queryKey: ['umbrella'] });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
@@ -197,6 +177,58 @@ export const UmbrellaActions = ({
         loading: false,
       });
     }
+  };
+
+  const getStakeGatewayTxData = (amountToStake: string) => {
+    setMainTxState({ ...mainTxState, loading: true });
+    const stakeService = new StakeGatewayService(STAKE_GATEWAY_CONTRACT);
+    let stakeTxData: PopulatedTransaction;
+
+    if (usePermit && signatureParams) {
+      if (selectedToken.aToken) {
+        stakeTxData = stakeService.stakeATokenWithPermit(
+          currentAccount,
+          stakeData.stakeToken,
+          amountToStake,
+          signatureParams.deadline,
+          signatureParams.signature
+        );
+      } else {
+        stakeTxData = stakeService.stakeWithPermit(
+          user,
+          stakeData.stakeToken,
+          amountToStake,
+          signatureParams.deadline,
+          signatureParams.signature
+        );
+      }
+    } else {
+      if (selectedToken.aToken) {
+        stakeTxData = stakeService.stakeAToken(currentAccount, stakeData.stakeToken, amountToStake);
+      } else {
+        stakeTxData = stakeService.stake(currentAccount, stakeData.stakeToken, amountToStake);
+      }
+    }
+
+    return stakeTxData;
+  };
+
+  const getStakeTokenTxData = (amountToStake: string) => {
+    const stakeTokenService = new StakeTokenService(stakeData.stakeToken);
+    let stakeTxData: PopulatedTransaction;
+
+    if (usePermit && signatureParams) {
+      stakeTxData = stakeTokenService.stakeWithPermit(
+        user,
+        amountToStake,
+        signatureParams.deadline,
+        signatureParams.signature
+      );
+    } else {
+      stakeTxData = stakeTokenService.stake(user, amountToStake);
+    }
+
+    return stakeTxData;
   };
 
   return (

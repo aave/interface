@@ -29,9 +29,7 @@ const StakeRewardClaimRestakeModal = dynamic(() =>
   ).then((module) => module.StakeRewardClaimRestakeModal)
 );
 const UnStakeModal = dynamic(() =>
-  import('../src/components/transactions/UnStake/UnStakeModal').then(
-    (module) => module.UnStakeModal
-  )
+  import('../src/modules/umbrella/UnstakeModal').then((module) => module.UnStakeModal)
 );
 const UmbrellaClaimModal = dynamic(() =>
   import('../src/modules/umbrella/UmbrellaClaimModal').then((module) => module.UmbrellaClaimModal)

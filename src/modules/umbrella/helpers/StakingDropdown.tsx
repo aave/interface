@@ -34,7 +34,7 @@ const StyledMenuItem = styled(MenuItem)({
 });
 
 export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) => {
-  const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaClaim } = useModalContext();
+  const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaUnstake, openUmbrellaClaim } = useModalContext();
   const now = useCurrentTimestamp(1);
   const { breakpoints } = useTheme();
 
@@ -139,6 +139,15 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
             >
               <AddOutlinedIcon />
               <Typography>Stake more...</Typography>
+            </StyledMenuItem>
+            <StyledMenuItem
+              onClick={() => {
+                handleClose();
+                openUmbrellaUnstake(stakeData.stakeToken, stakeData.stakeTokenSymbol);
+              }}
+            >
+              <ArrowForwardIcon />
+              <Typography>Unstake</Typography>
             </StyledMenuItem>
             <StyledMenuItem
               onClick={() => {

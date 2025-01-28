@@ -13,7 +13,7 @@ interface MultiIconWithTooltipProps extends MultiIconProps {
   tooltipContent: ReactElement<any, string | JSXElementConstructor<any>>;
 }
 
-interface IconData {
+export interface IconData {
   src: string;
   aToken: boolean;
 }

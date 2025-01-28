@@ -81,4 +81,24 @@ export class StakeGatewayService {
     tx.gasLimit = BigNumber.from(gasLimitRecommendations[ProtocolAction.supply].recommended);
     return tx;
   }
+
+  redeem(user: string, stakeTokenAddress: string, amount: string) {
+    const txData = this.interface.encodeFunctionData('redeem', [stakeTokenAddress, amount]);
+    return {
+      data: txData,
+      from: user,
+      to: this.stakeGatewayAddress,
+      gasLimit: BigNumber.from(gasLimitRecommendations[ProtocolAction.supply].recommended),
+    };
+  }
+
+  redeemATokens(user: string, stakeTokenAddress: string, amount: string) {
+    const txData = this.interface.encodeFunctionData('redeemATokens', [stakeTokenAddress, amount]);
+    return {
+      data: txData,
+      from: user,
+      to: this.stakeGatewayAddress,
+      gasLimit: BigNumber.from(gasLimitRecommendations[ProtocolAction.supply].recommended),
+    };
+  }
 }
