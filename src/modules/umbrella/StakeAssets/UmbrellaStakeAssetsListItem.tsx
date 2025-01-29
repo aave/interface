@@ -1,7 +1,13 @@
-import { Box, Typography } from '@mui/material';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
+import { IconButton, Stack, SvgIcon, Typography } from '@mui/material';
+import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 // import { useRouter } from 'next/router';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { StakingDropdown } from 'src/modules/umbrella/helpers/StakingDropdown';
+import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 // import { useRewardsApy } from 'src/modules/umbrella/hooks/useStakeData';
 // import { useRootStore } from 'src/store/root';
@@ -15,13 +21,20 @@ import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { StakingApyItem } from '../StakingApyItem';
 
 export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
-  // const theme = useTheme();
+  const [currentNetworkConfig] = useRootStore(useShallow((store) => [store.currentNetworkConfig]));
 
-  // const [trackEvent, currentMarket] = useRootStore(
-  //   useShallow((store) => [store.trackEvent, store.currentMarket])
-  // );
-
-  // const APY = useRewardsApy(umbrellaStakeAsset.rewards);
+  const TokenContractTooltip = (
+    <DarkTooltip title="View token contract" sx={{ display: { xsm: 'none' } }}>
+      <IconButton
+        LinkComponent={Link}
+        href={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.stakeToken}`}
+      >
+        <SvgIcon sx={{ fontSize: '14px' }}>
+          <ExternalLinkIcon />
+        </SvgIcon>
+      </IconButton>
+    </DarkTooltip>
+  );
 
   return (
     <ListItem
@@ -40,23 +53,35 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
       button
       // data-cy={`marketListItemListItem_${umbrellaStakeAsset.symbol.toUpperCase()}`}
     >
-      <ListColumn isRow maxWidth={280}>
+      <ListColumn isRow minWidth={250}>
         <TokenIcon symbol={umbrellaStakeAsset.iconSymbol} fontSize="large" />
-        <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
-          <Typography variant="h4" noWrap>
-            {umbrellaStakeAsset.name}
-          </Typography>
-
-          <Box
-            sx={{
-              p: { xs: '0', xsm: '3.625px 0px' },
-            }}
-          >
-            <Typography variant="subheader2" color="text.muted" noWrap>
-              {umbrellaStakeAsset.symbol}
+        <Stack ml={2}>
+          <Stack direction="row" alignItems="center">
+            <Typography variant="h4" noWrap>
+              Stake {umbrellaStakeAsset.symbol}
             </Typography>
-          </Box>
-        </Box>
+            {TokenContractTooltip}
+          </Stack>
+
+          <Stack direction="row">
+            <Typography variant="caption" color="text.secondary">
+              Total staked:{' '}
+              <FormattedNumber
+                variant="caption"
+                value={umbrellaStakeAsset.formattedStakeTokenData.totalAmountStaked}
+                visibleDecimals={2}
+              />
+              {' ('}
+              <FormattedNumber
+                variant="caption"
+                value={umbrellaStakeAsset.formattedStakeTokenData.totalAmountStakedUSD}
+                visibleDecimals={2}
+                symbol="usd"
+              />
+              {')'}
+            </Typography>
+          </Stack>
+        </Stack>
       </ListColumn>
 
       <ListColumn>

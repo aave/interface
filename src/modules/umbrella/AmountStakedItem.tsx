@@ -1,48 +1,128 @@
-import { Stack } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { keyframes, Stack, Typography } from '@mui/material';
+import { formatUnits } from 'ethers/lib/utils';
+import { ReactElement } from 'react';
+import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { timeMessage } from 'src/helpers/timeHelper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
-// import { BigNumber } from 'ethers';
+import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 
-// import { SecondsToString } from '../staking/StakingPanel';
+import { ListValueColumn } from '../dashboard/lists/ListValueColumn';
+import { SecondsToString } from '../staking/StakingPanel';
 
 export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
-  // const now = useCurrentTimestamp(1);
+  const now = useCurrentTimestamp(1);
   const { stakeTokenBalance, stakeTokenBalanceUSD } = stakeData.formattedBalances;
 
-  // const cooldownSeconds = stakeData?.cooldownSeconds || 0;
-  // const endOfCooldown = stakeData?.cooldownData.endOfCooldown || 0;
-  // const unstakeWindow = stakeData?.cooldownData.withdrawalWindow || 0;
-  // const cooldownTimeRemaining = endOfCooldown - now;
-  // const unstakeTimeRemaining = endOfCooldown + unstakeWindow - now;
+  const endOfCooldown = stakeData?.cooldownData.endOfCooldown || 0;
+  const unstakeWindow = stakeData?.cooldownData.withdrawalWindow || 0;
+  const cooldownAmount = formatUnits(
+    stakeData?.cooldownData.cooldownAmount || '0',
+    stakeData.decimals
+  );
+  const cooldownTimeRemaining = endOfCooldown - now;
 
-  // const isCooldownActive = cooldownTimeRemaining > 0;
-  // const isUnstakeWindowActive = endOfCooldown < now && now < endOfCooldown + unstakeWindow;
+  const isCooldownActive = cooldownTimeRemaining > 0;
+  const isUnstakeWindowActive = endOfCooldown < now && now < endOfCooldown + unstakeWindow;
+  const unstakeTimeRemaining = endOfCooldown + unstakeWindow - now;
 
-  // const availableToReactivateCooldown =
-  //   isCooldownActive &&
-  //   BigNumber.from(stakeData?.balances.stakeTokenRedeemableAmount || 0).gt(
-  //     stakeData?.cooldownData.cooldownAmount || 0
-  //   );
-
-  // console.log('TODO: availableToReactivateCooldown', availableToReactivateCooldown);
   return (
     <Stack direction="column" alignItems="center" justifyContent="center">
-      <FormattedNumber compact value={stakeTokenBalance} variant="main16" />
-      <ReserveSubheader value={stakeTokenBalanceUSD} />
-      {/* <Stack direction="column" alignItems="center" justifyContent="center" minWidth={150}>
-        <Button fullWidth variant="outlined" size="medium" disabled={stakeTokenBalance === '0'}>
-          <Trans>Cooldown</Trans>
-        </Button>
-        <Stack width={'100%'} direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="helperText">
-            <Trans>Cooldown period</Trans>
-          </Typography>
-          <Typography variant="helperText">
-            <SecondsToString seconds={stakeData.cooldownSeconds} />
-          </Typography>
-        </Stack>
-      </Stack> */}
+      <ListValueColumn
+        value={stakeTokenBalance}
+        subValue={stakeTokenBalanceUSD}
+        withTooltip
+        disabled={stakeTokenBalance === '0'}
+      />
+      {isCooldownActive && (
+        <Countdown
+          timeRemaining={cooldownTimeRemaining}
+          tooltipContent={
+            <CooldownTooltip cooldownAmount={cooldownAmount} unstakeWindow={unstakeWindow} />
+          }
+        />
+      )}
+      {isUnstakeWindowActive && (
+        <Countdown
+          animate
+          timeRemaining={unstakeTimeRemaining}
+          tooltipContent={<UnstakeTooltip cooldownAmount={cooldownAmount} />}
+        />
+      )}
+    </Stack>
+  );
+};
+
+const pulse = keyframes`
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const Countdown = ({
+  timeRemaining,
+  tooltipContent,
+  animate,
+}: {
+  timeRemaining: number;
+  tooltipContent: ReactElement;
+  animate?: boolean;
+}) => {
+  return (
+    <ContentWithTooltip tooltipContent={tooltipContent}>
+      <Stack
+        gap={1}
+        direction="row"
+        alignItems="center"
+        sx={{ animation: animate ? `${pulse} 1.5s infinite` : 'none' }}
+      >
+        <AccessTimeIcon fontSize="small" />
+        <Typography variant="helperText">
+          <SecondsToString seconds={timeRemaining} />
+        </Typography>
+      </Stack>
+    </ContentWithTooltip>
+  );
+};
+
+const CooldownTooltip = ({
+  cooldownAmount,
+  unstakeWindow,
+}: {
+  cooldownAmount: string;
+  unstakeWindow: number;
+}) => {
+  return (
+    <Stack gap={2} direction="column">
+      <Trans>
+        After the cooldown period ends, you will enter the unstake window of{' '}
+        {timeMessage(unstakeWindow)}. You will continue receiving rewards during cooldown and the
+        unstake period.
+      </Trans>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Trans>Amount in cooldown</Trans>
+        <FormattedNumber variant="caption" value={cooldownAmount} />
+      </Stack>
+    </Stack>
+  );
+};
+
+const UnstakeTooltip = ({ cooldownAmount }: { cooldownAmount: string }) => {
+  return (
+    <Stack gap={2} direction="column">
+      <Trans>Time remaining until the withdraw period ends.</Trans>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Trans>Available to withdraw</Trans>
+        <FormattedNumber variant="caption" value={cooldownAmount} />
+      </Stack>
     </Stack>
   );
 };

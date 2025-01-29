@@ -17,7 +17,7 @@ import { TxSuccessView } from 'src/components/transactions/FlowCommons/Success';
 import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { GasStation } from 'src/components/transactions/GasStation/GasStation';
 import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
-import { formattedTime, timeText } from 'src/helpers/timeHelper';
+import { timeMessage } from 'src/helpers/timeHelper';
 import { useUmbrellaSummaryFor } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -95,10 +95,6 @@ export const StakeCooldownModalContent = ({ stakeToken, icon }: StakeCooldownPro
     return <TxErrorView txError={txError} />;
   }
   if (txState.success) return <TxSuccessView action={<Trans>Stake cooldown activated</Trans>} />;
-
-  const timeMessage = (time: number) => {
-    return `${formattedTime(time)} ${timeText(time)}`;
-  };
 
   const handleOnCoolDownCheckBox = () => {
     // trackEvent(GENERAL.ACCEPT_RISK, {
