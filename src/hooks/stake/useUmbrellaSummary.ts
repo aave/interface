@@ -28,10 +28,16 @@ interface FormattedReward {
   rewardTokenSymbol: string;
 }
 
+interface FormattedStakeTokenData {
+  totalAmountStaked: string;
+  totalAmountStakedUSD: string;
+}
+
 export interface MergedStakeData extends StakeData {
   balances: StakeUserBalances;
   formattedBalances: FormattedBalance;
   formattedRewards: FormattedReward[];
+  formattedStakeTokenData: FormattedStakeTokenData;
   cooldownData: StakeUserCooldown;
   name: string;
   symbol: string;
@@ -102,6 +108,11 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
       .shiftedBy(-8)
       .toString();
 
+    const stakeTokenTotalSupply = normalize(
+      stakeItem.stakeTokenTotalSupply,
+      stakeItem.underlyingTokenDecimals
+    );
+
     acc.push({
       ...stakeItem,
       balances: matchingBalance.balances,
@@ -139,6 +150,12 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
           rewardTokenName: rewardData.rewardName,
         };
       }),
+      formattedStakeTokenData: {
+        totalAmountStaked: stakeTokenTotalSupply,
+        totalAmountStakedUSD: BigNumber(stakeTokenTotalSupply)
+          .multipliedBy(normalize(stakeItem.stakeTokenPrice, 8))
+          .toString(),
+      },
       cooldownData: matchingBalance.cooldown,
       name: stakeItem.underlyingIsWaToken
         ? stakeItem.waTokenData.waTokenUnderlyingName

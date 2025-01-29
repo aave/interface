@@ -30,7 +30,12 @@ export const AvailableToClaimItem = ({ stakeData }: { stakeData: MergedStakeData
       gap={2}
       width="100%"
     >
-      <FormattedNumber value={totalAvailableToClaim} variant="main16" visibleDecimals={2} />
+      <FormattedNumber
+        value={totalAvailableToClaim}
+        variant="main16"
+        compact
+        color={totalAvailableToClaim === 0 ? 'text.disabled' : 'text.main'}
+      />
       {stakeData.formattedRewards.length > 1 && (
         <MultiIconWithTooltip
           icons={icons}

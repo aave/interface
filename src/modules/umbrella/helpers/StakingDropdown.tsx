@@ -12,9 +12,11 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { BigNumber } from 'ethers';
 import { useState } from 'react';
+import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 // Styled component for the menu items to add gap between icon and text
 const StyledMenuItem = styled(MenuItem)({
@@ -36,6 +38,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
     useModalContext();
   const now = useCurrentTimestamp(1);
   const { breakpoints } = useTheme();
+  const { addERC20Token } = useWeb3Context();
 
   const isMobile = useMediaQuery(breakpoints.down('lg'));
 
@@ -143,7 +146,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               }}
             >
               <AddOutlinedIcon />
-              <Typography>Stake more...</Typography>
+              <Typography>Stake more</Typography>
             </StyledMenuItem>
 
             <StyledMenuItem
@@ -153,7 +156,22 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               }}
             >
               <StartIcon />
-              <Typography>Claim...</Typography>
+              <Typography>Claim</Typography>
+            </StyledMenuItem>
+
+            <StyledMenuItem
+              onClick={() => {
+                addERC20Token({
+                  address: stakeData.stakeToken,
+                  decimals: stakeData.decimals,
+                  symbol: stakeData.stakeTokenSymbol,
+                });
+              }}
+            >
+              <WalletIcon
+                sx={{ width: '14px', height: '14px', '&:hover': { stroke: '#F1F1F3' } }}
+              />
+              <Typography>Add token to wallet</Typography>
             </StyledMenuItem>
           </Menu>
         </>
