@@ -52,7 +52,7 @@ const stakeDataToRewards = (stakeData: MergedStakeData): UmbrellaRewards[] => {
   });
 };
 
-export const UmbrellaClaimModalContent = ({ user, stakeData }: UmbrellaClaimModalContentProps) => {
+export const UmbrellaClaimModalContent = ({ stakeData }: UmbrellaClaimModalContentProps) => {
   const { gasLimit, mainTxState: claimRewardsTxState, txError } = useModalContext();
   const { readOnlyModeAddress } = useWeb3Context();
   const [selectedRewardSymbol, setSelectedRewardSymbol] = useState<string>('all');
