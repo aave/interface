@@ -8,6 +8,7 @@ import {
   GovernanceV3BNB,
   GovernanceV3Ethereum,
   GovernanceV3Gnosis,
+  GovernanceV3Linea,
   GovernanceV3Metis,
   GovernanceV3Optimism,
   GovernanceV3Polygon,
@@ -136,6 +137,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.bnb]: GovernanceV3BNB.PC_DATA_HELPER,
       [ChainId.scroll]: GovernanceV3Scroll.PC_DATA_HELPER,
       [ChainId.zksync]: GovernanceV3ZkSync.PC_DATA_HELPER,
+      [59144]: GovernanceV3Linea.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
