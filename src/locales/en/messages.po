@@ -204,6 +204,7 @@ msgstr "Meet GHO"
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
 
@@ -1105,11 +1106,11 @@ msgstr "Reward(s) to claim"
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
+#: src/modules/umbrella/UmbrellaModal.tsx
 msgid "Stake"
 msgstr "Stake"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
-#: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Not enough balance on your wallet"
 msgstr "Not enough balance on your wallet"
 
@@ -2621,6 +2622,10 @@ msgstr "To repay on behalf of a user an explicit amount to repay is needed"
 msgid "Repayment amount to reach {0}% utilization"
 msgstr "Repayment amount to reach {0}% utilization"
 
+#: src/modules/umbrella/UmbrellaModalContent.tsx
+msgid "You can not stake this amount because it will cause collateral call"
+msgstr "You can not stake this amount because it will cause collateral call"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
 msgstr "Supply cap is exceeded"
@@ -2801,6 +2806,7 @@ msgstr "Something went wrong"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 

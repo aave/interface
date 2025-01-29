@@ -255,3 +255,54 @@ export const calculateHFAfterSupply = (
 
   return healthFactorAfterDeposit;
 };
+
+interface CalculateHFAfterStakeProps {
+  user: ExtendedFormattedUser;
+  userReserve: ComputedUserReserveData;
+  poolReserve: ComputedReserveData;
+  stakeAmount: string;
+}
+
+export const calculateHFAfterStake = ({
+  user,
+  userReserve,
+  poolReserve,
+  stakeAmount,
+}: CalculateHFAfterStakeProps) => {
+  let totalCollateralInETHAfterStake = valueToBigNumber(
+    user.totalCollateralMarketReferenceCurrency
+  );
+  let liquidationThresholdAfterStake = user.currentLiquidationThreshold;
+  let healthFactorAfterStake = valueToBigNumber(user.healthFactor);
+
+  const userEMode = poolReserve.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
+
+  const reserveLiquidationThreshold =
+    user.isInEmode && userEMode
+      ? userEMode.eMode.formattedLiquidationThreshold
+      : poolReserve.formattedReserveLiquidationThreshold;
+
+  if (
+    userReserve?.usageAsCollateralEnabledOnUser &&
+    poolReserve.reserveLiquidationThreshold !== '0'
+  ) {
+    const amountToStakeInEth = valueToBigNumber(Number(stakeAmount).toFixed(2)).multipliedBy(
+      poolReserve.formattedPriceInMarketReferenceCurrency
+    );
+    totalCollateralInETHAfterStake = totalCollateralInETHAfterStake.minus(amountToStakeInEth);
+
+    liquidationThresholdAfterStake = valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
+      .multipliedBy(valueToBigNumber(user.currentLiquidationThreshold))
+      .minus(valueToBigNumber(amountToStakeInEth).multipliedBy(reserveLiquidationThreshold))
+      .div(totalCollateralInETHAfterStake)
+      .toFixed(4, BigNumber.ROUND_DOWN);
+
+    healthFactorAfterStake = calculateHealthFactorFromBalancesBigUnits({
+      collateralBalanceMarketReferenceCurrency: totalCollateralInETHAfterStake,
+      borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
+      currentLiquidationThreshold: liquidationThresholdAfterStake,
+    });
+  }
+
+  return healthFactorAfterStake;
+};
