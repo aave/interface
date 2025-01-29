@@ -501,7 +501,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_optimism_v3]: {
-    marketTitle: 'Optimism',
+    marketTitle: 'OP',
     market: CustomMarket.proto_optimism_v3,
     v3: true,
     chainId: ChainId.optimism,
