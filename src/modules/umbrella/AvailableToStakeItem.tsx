@@ -1,10 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
+import { AmountAvailableItem } from './helpers/AmountAvailableItem';
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 
 export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
@@ -28,10 +28,11 @@ export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData
       aToken: true,
     });
   }
-  if (underlyingTokenBalance) {
+  if (underlyingTokenBalance && Number(underlyingTokenBalance) > 0) {
     icons.push({
-      src: stakeData.stakeTokenSymbol,
+      src: stakeData.waTokenData.waTokenUnderlyingSymbol,
       aToken: false,
+      waToken: true,
     });
   }
 
@@ -47,7 +48,12 @@ export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData
       justifyContent="center"
       gap={2}
     >
-      <FormattedNumber compact value={totalAvailableToStake} variant="main16" />
+      <FormattedNumber
+        compact
+        value={totalAvailableToStake}
+        variant="main16"
+        color={totalAvailableToStake === 0 ? 'text.disabled' : 'text.main'}
+      />
       {stakeData.underlyingIsWaToken ? (
         <MultiIconWithTooltip
           icons={icons}
@@ -67,67 +73,35 @@ export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: Merge
   const { waTokenUnderlyingSymbol } = stakeData.waTokenData;
 
   return (
-    <Stack direction="column" alignItems="center" justifyContent="center">
+    <Stack direction="column" alignItems="center" justifyContent="center" minWidth={160}>
       <Typography variant="caption" color="text.secondary" mb={3}>
-        <Trans>lorem ipsum</Trans>
+        <Trans>Your balance of assets that are available to stake</Trans>
       </Typography>
       <Box sx={{ width: '100%' }}>
         {underlyingWaTokenBalance && (
-          <AssetRow
+          <AmountAvailableItem
             symbol={waTokenUnderlyingSymbol}
             name={waTokenUnderlyingSymbol}
             value={underlyingWaTokenBalance}
           />
         )}
         {underlyingWaTokenATokenBalance && (
-          <AssetRow
+          <AmountAvailableItem
             symbol={waTokenUnderlyingSymbol}
             name={`a${waTokenUnderlyingSymbol}`}
             value={underlyingWaTokenATokenBalance}
             aToken
           />
         )}
-        {underlyingTokenBalance && (
-          <AssetRow
-            symbol={stakeData.underlyingTokenSymbol}
+        {underlyingTokenBalance && Number(underlyingTokenBalance) > 0 && (
+          <AmountAvailableItem
+            symbol={waTokenUnderlyingSymbol}
             name={stakeData.underlyingTokenSymbol}
             value={underlyingTokenBalance}
+            waToken
           />
         )}
       </Box>
     </Stack>
-  );
-};
-
-const AssetRow = ({
-  symbol,
-  name,
-  value,
-  aToken,
-}: {
-  symbol: string;
-  name: string;
-  value: string;
-  aToken?: boolean;
-}) => {
-  return (
-    <Row
-      height={32}
-      caption={
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            mb: 2,
-          }}
-        >
-          <TokenIcon symbol={symbol} sx={{ fontSize: '20px', mr: 1 }} aToken={aToken} />
-          <Typography variant="secondary12">{name}</Typography>
-        </Box>
-      }
-      width="100%"
-    >
-      <FormattedNumber value={value} compact variant="main16" />
-    </Row>
   );
 };

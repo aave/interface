@@ -81,6 +81,7 @@ msgid "Stable borrowing is not enabled"
 msgstr "Stable borrowing is not enabled"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Total worth"
 msgstr "Total worth"
 
@@ -142,6 +143,10 @@ msgstr "Approving {symbol}..."
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
+
+#: src/modules/umbrella/AmountStakedItem.tsx
+msgid "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
+msgstr "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 msgid "..."
@@ -446,7 +451,6 @@ msgstr "APY, borrow rate"
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
-#: src/modules/umbrella/StakingApyItem.tsx
 msgid "APR"
 msgstr "APR"
 
@@ -495,6 +499,7 @@ msgid "Claim all"
 msgstr "Claim all"
 
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/umbrella/AmountStakedItem.tsx
 msgid "Time remaining until the withdraw period ends."
 msgstr "Time remaining until the withdraw period ends."
 
@@ -745,6 +750,10 @@ msgstr "The fee includes the gas cost to complete the transaction on the destina
 msgid "of"
 msgstr "of"
 
+#: src/modules/umbrella/AvailableToStakeItem.tsx
+msgid "Your balance of assets that are available to stake"
+msgstr "Your balance of assets that are available to stake"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
 msgstr "Techpaper"
@@ -862,6 +871,10 @@ msgstr "Fixed rate"
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restaking {symbol}"
 msgstr "Restaking {symbol}"
+
+#: src/modules/umbrella/StakingApyItem.tsx
+msgid "Staking this asset will earn the underlying asset supply yield in additon to other configured rewards."
+msgstr "Staking this asset will earn the underlying asset supply yield in additon to other configured rewards."
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"
@@ -1046,7 +1059,6 @@ msgstr "This asset is planned to be offboarded due to an Aave Protocol Governanc
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/helpers/StakingDropdown.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Cooldown period"
 msgstr "Cooldown period"
@@ -1199,6 +1211,7 @@ msgid "Enter ETH address"
 msgstr "Enter ETH address"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
+#: src/modules/umbrella/UmbrellaClaimActions.tsx
 msgid "Claiming"
 msgstr "Claiming"
 
@@ -1517,12 +1530,6 @@ msgstr "State"
 msgid "Proposal details"
 msgstr "Proposal details"
 
-#: src/modules/umbrella/AvailableToClaimItem.tsx
-#: src/modules/umbrella/AvailableToStakeItem.tsx
-#: src/modules/umbrella/StakingApyItem.tsx
-msgid "lorem ipsum"
-msgstr "lorem ipsum"
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
@@ -1569,6 +1576,7 @@ msgid "Show Frozen or paused assets"
 msgstr "Show Frozen or paused assets"
 
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/umbrella/AmountStakedItem.tsx
 msgid "Amount in cooldown"
 msgstr "Amount in cooldown"
 
@@ -1945,7 +1953,6 @@ msgid "Enter a valid address"
 msgstr "Enter a valid address"
 
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Time left to unstake"
 msgstr "Time left to unstake"
 
@@ -2002,6 +2009,10 @@ msgstr "Eligible for the Merit program."
 #: src/components/Warnings/CooldownWarning.tsx
 msgid "Cooldown period warning"
 msgstr "Cooldown period warning"
+
+#: src/modules/umbrella/AmountStakedItem.tsx
+msgid "Available to withdraw"
+msgstr "Available to withdraw"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
@@ -2211,6 +2222,7 @@ msgid "Edit"
 msgstr "Edit"
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/umbrella/StakingApyItem.tsx
 msgid "Staking Rewards"
 msgstr "Staking Rewards"
 
@@ -2271,7 +2283,6 @@ msgid "You've successfully switched borrow position."
 msgstr "You've successfully switched borrow position."
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
-#: src/modules/umbrella/StakingApyItem.tsx
 msgid "Net APR"
 msgstr "Net APR"
 
@@ -2303,6 +2314,7 @@ msgstr "Preview tx and migrate"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Balance"
 msgstr "Balance"
 
@@ -2415,6 +2427,7 @@ msgstr "Net APY"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Claimed"
 msgstr "Claimed"
 
@@ -2436,6 +2449,7 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/umbrella/UmbrellaClaimActions.tsx
 msgid "Claim"
 msgstr "Claim"
 
@@ -2515,6 +2529,10 @@ msgstr "tokens is not the same as staking them. If you wish to stake your"
 msgid "Use it to vote for or against active proposals."
 msgstr "Use it to vote for or against active proposals."
 
+#: src/modules/umbrella/UnstakeModalContent.tsx
+msgid "Amount received"
+msgstr "Amount received"
+
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Collector Info"
 msgstr "Collector Info"
@@ -2562,7 +2580,6 @@ msgid "{s}s"
 msgstr "{s}s"
 
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Cooldown time left"
 msgstr "Cooldown time left"
 
@@ -2928,7 +2945,6 @@ msgid "The underlying balance needs to be greater than 0"
 msgstr "The underlying balance needs to be greater than 0"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
-#: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Not enough staked balance"
 msgstr "Not enough staked balance"
 
@@ -3013,6 +3029,10 @@ msgstr "Invalid expiration"
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Interest accrued"
 msgstr "Interest accrued"
+
+#: src/modules/umbrella/AvailableToClaimItem.tsx
+msgid "Rewards available to claim"
+msgstr "Rewards available to claim"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."

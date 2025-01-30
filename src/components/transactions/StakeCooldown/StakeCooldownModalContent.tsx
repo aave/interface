@@ -20,7 +20,7 @@ import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { CustomMarket, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
-import { formattedTime, timeText } from '../../../helpers/timeHelper';
+import { timeMessage } from '../../../helpers/timeHelper';
 import { Link } from '../../primitives/Link';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -117,10 +117,6 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
     return <TxErrorView txError={txError} />;
   }
   if (txState.success) return <TxSuccessView action={<Trans>Stake cooldown activated</Trans>} />;
-
-  const timeMessage = (time: number) => {
-    return `${formattedTime(time)} ${timeText(time)}`;
-  };
 
   const handleOnCoolDownCheckBox = () => {
     trackEvent(GENERAL.ACCEPT_RISK, {

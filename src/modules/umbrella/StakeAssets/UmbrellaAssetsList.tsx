@@ -32,7 +32,7 @@ const listHeaders = [
   },
   {
     title: <Trans>Amount Staked</Trans>,
-    sortKey: 'TODO',
+    sortKey: 'stakeTokenBalance',
   },
   //   {
   //     title: <Trans>Max Slashing</Trans>,
@@ -40,11 +40,11 @@ const listHeaders = [
   //   },
   {
     title: <Trans>Available to Stake</Trans>,
-    sortKey: 'totalUnderlyingBalance',
+    sortKey: 'totalAvailableToStake',
   },
   {
     title: <Trans>Available to Claim</Trans>,
-    sortKey: 'TODO: claim',
+    sortKey: 'totalAvailableToClaim',
   },
   {
     title: <></>,
@@ -78,6 +78,8 @@ export default function UmbrellaAssetsList({
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
 
+  console.log('stakedDataWithTokenBalances', stakedDataWithTokenBalances);
+
   const sortedData = useMemo(() => {
     if (!stakedDataWithTokenBalances) return [];
 
@@ -92,9 +94,27 @@ export default function UmbrellaAssetsList({
         return sortDesc ? apyB - apyA : apyA - apyB;
       }
 
-      if (sortName === 'totalUnderlyingBalance') {
-        const balanceA = Number(a.balances?.underlyingTokenBalance || '0');
-        const balanceB = Number(b.balances?.underlyingTokenBalance || '0');
+      if (sortName === 'totalAvailableToClaim') {
+        const accruedA =
+          a.formattedRewards?.reduce((sum, reward) => sum + Number(reward.accrued || '0'), 0) || 0;
+        const accruedB =
+          b.formattedRewards?.reduce((sum, reward) => sum + Number(reward.accrued || '0'), 0) || 0;
+        return sortDesc ? accruedB - accruedA : accruedA - accruedB;
+      }
+
+      if (sortName === 'totalAvailableToStake') {
+        const balanceA =
+          Number(a.formattedBalances?.underlyingWaTokenATokenBalance || '0') +
+          Number(a.formattedBalances?.underlyingWaTokenBalance || '0');
+        const balanceB =
+          Number(b.formattedBalances?.underlyingWaTokenATokenBalance || '0') +
+          Number(b.formattedBalances?.underlyingWaTokenBalance || '0');
+        return sortDesc ? balanceB - balanceA : balanceA - balanceB;
+      }
+
+      if (sortName === 'stakeTokenBalance') {
+        const balanceA = Number(a.formattedBalances?.stakeTokenBalance || '0');
+        const balanceB = Number(b.formattedBalances?.stakeTokenBalance || '0');
         return sortDesc ? balanceB - balanceA : balanceA - balanceB;
       }
 
@@ -129,7 +149,7 @@ export default function UmbrellaAssetsList({
           {listHeaders.map((col) => (
             <ListColumn
               isRow={col.sortKey === 'symbol'}
-              maxWidth={col.sortKey === 'symbol' ? 280 : undefined}
+              minWidth={col.sortKey === 'symbol' ? 250 : undefined}
               key={col.sortKey}
             >
               <ListHeaderTitle
