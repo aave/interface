@@ -53,6 +53,7 @@ export interface StakeInputAsset {
 const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
   return stakeData.underlyingIsWaToken
     ? [
+        // stata token
         {
           address: stakeData.waTokenData.waTokenUnderlying,
           symbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
@@ -63,7 +64,7 @@ const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
         {
           address: stakeData.waTokenData.waTokenAToken,
           //  Note: using token symbol the same as underlying for aToken handling given we dont have tokens for "aBasSepUSDC"
-          symbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
+          symbol: `a${stakeData.waTokenData.waTokenUnderlyingSymbol}`,
           iconSymbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
 
           balance: stakeData.formattedBalances.underlyingWaTokenATokenBalance,
@@ -73,10 +74,9 @@ const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
       ]
     : [
         {
-          // stata tokens
           address: stakeData.stakeTokenUnderlying,
-          symbol: stakeData.stakeTokenSymbol,
-          iconSymbol: stakeData.stakeTokenSymbol,
+          symbol: stakeData.underlyingTokenSymbol,
+          iconSymbol: stakeData.underlyingTokenSymbol,
           balance: stakeData.formattedBalances.underlyingTokenBalance,
           rawBalance: stakeData.balances.underlyingTokenBalance,
         },
