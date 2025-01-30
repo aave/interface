@@ -78,7 +78,14 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               color: '#FFFFFF',
               backgroundColor: theme.palette.mode === 'light' ? '#383D51' : '#383D51',
             }}
-            onClick={() => openUmbrella(stakeData.stakeToken, stakeData.stakeTokenSymbol)}
+            onClick={() =>
+              openUmbrella(
+                stakeData.stakeToken,
+                stakeData.stakeTokenSymbol,
+                stakeData.waTokenData.waTokenAToken,
+                stakeData.waTokenData.waTokenUnderlying
+              )
+            }
             size="medium"
           >
             <AddIcon />
@@ -142,7 +149,13 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
             <StyledMenuItem
               onClick={() => {
                 handleClose();
-                openUmbrella(stakeData.stakeToken, stakeData.stakeTokenSymbol);
+                openUmbrella(
+                  stakeData.stakeToken,
+                  stakeData.stakeTokenSymbol,
+
+                  stakeData.waTokenData.waTokenAToken,
+                  stakeData.waTokenData.waTokenUnderlying
+                );
               }}
             >
               <AddOutlinedIcon />
