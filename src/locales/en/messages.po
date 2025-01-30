@@ -2528,6 +2528,10 @@ msgstr "tokens is not the same as staking them. If you wish to stake your"
 msgid "Use it to vote for or against active proposals."
 msgstr "Use it to vote for or against active proposals."
 
+#: src/modules/umbrella/UnstakeModalContent.tsx
+msgid "Amount received"
+msgstr "Amount received"
+
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Collector Info"
 msgstr "Collector Info"
@@ -2935,7 +2939,6 @@ msgid "The underlying balance needs to be greater than 0"
 msgstr "The underlying balance needs to be greater than 0"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
-#: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Not enough staked balance"
 msgstr "Not enough staked balance"
 

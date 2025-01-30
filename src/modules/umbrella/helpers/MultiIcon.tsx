@@ -16,6 +16,7 @@ interface MultiIconWithTooltipProps extends MultiIconProps {
 export interface IconData {
   src: string;
   aToken: boolean;
+  waToken?: boolean;
 }
 
 const IconWrapper = styled(Box)<{ expanded: boolean }>(({ theme, expanded }) => ({
@@ -55,7 +56,7 @@ export function MultiIcon({ icons, onHover }: MultiIconProps) {
       <IconWrapper expanded={expanded}>
         {icons.map((icon, index) => (
           <IconItem key={index} index={index} expanded={expanded} total={icons.length}>
-            <TokenIcon symbol={icon.src} aToken={icon.aToken} />
+            <TokenIcon symbol={icon.src} aToken={icon.aToken} waToken={icon.waToken} />
           </IconItem>
         ))}
       </IconWrapper>

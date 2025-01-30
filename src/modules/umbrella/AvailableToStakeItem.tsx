@@ -28,10 +28,11 @@ export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData
       aToken: true,
     });
   }
-  if (underlyingTokenBalance) {
+  if (underlyingTokenBalance && Number(underlyingTokenBalance) > 0) {
     icons.push({
-      src: stakeData.stakeTokenSymbol,
+      src: stakeData.waTokenData.waTokenUnderlyingSymbol,
       aToken: false,
+      waToken: true,
     });
   }
 
@@ -92,11 +93,12 @@ export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: Merge
             aToken
           />
         )}
-        {underlyingTokenBalance && (
+        {underlyingTokenBalance && Number(underlyingTokenBalance) > 0 && (
           <AmountAvailableItem
-            symbol={stakeData.underlyingTokenSymbol}
+            symbol={waTokenUnderlyingSymbol}
             name={stakeData.underlyingTokenSymbol}
             value={underlyingTokenBalance}
+            waToken
           />
         )}
       </Box>
