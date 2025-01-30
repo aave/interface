@@ -25,7 +25,7 @@ import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { calculateHFAfterStake } from 'src/utils/hfUtils';
+import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { STAKE } from 'src/utils/mixPanelEvents';
 
 import { UmbrellaActions } from './UmbrellaActions';
@@ -115,11 +115,12 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
 
   let healthFactorAfterStake = valueToBigNumber(1.6);
   if (inputToken.aToken) {
-    healthFactorAfterStake = calculateHFAfterStake({
+    // We use same function for checking HF as withdraw
+    healthFactorAfterStake = calculateHFAfterWithdraw({
       user,
       userReserve,
       poolReserve,
-      stakeAmount: amount,
+      withdrawAmount: amount,
     });
   }
 
