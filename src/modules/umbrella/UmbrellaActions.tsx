@@ -247,6 +247,7 @@ export const UmbrellaActions = ({
       tryPermit={permitAvailable}
       actionInProgressText={<Trans>Staking</Trans>}
       sx={sx}
+      blocked={blocked}
       // event={STAKE.STAKE_BUTTON_MODAL}
       {...props}
     />

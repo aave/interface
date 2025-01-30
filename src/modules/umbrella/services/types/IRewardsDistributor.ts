@@ -12,19 +12,10 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-} from "./common";
+} from 'ethers';
+import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
+import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
 export declare namespace IRewardsStructs {
   export type SignatureParamsStruct = {
@@ -42,112 +33,75 @@ export declare namespace IRewardsStructs {
 
 export interface IRewardsDistributorInterface extends utils.Interface {
   functions: {
-    "claimAllRewards(address,address)": FunctionFragment;
-    "claimAllRewardsOnBehalf(address,address,address)": FunctionFragment;
-    "claimAllRewardsPermit(address,address,address,uint256,(uint8,bytes32,bytes32))": FunctionFragment;
-    "claimSelectedRewards(address,address[],address)": FunctionFragment;
-    "claimSelectedRewardsOnBehalf(address,address[],address,address)": FunctionFragment;
-    "claimSelectedRewardsPermit(address,address[],address,address,uint256,(uint8,bytes32,bytes32))": FunctionFragment;
-    "setClaimer(address,bool)": FunctionFragment;
-    "setClaimer(address,address,bool)": FunctionFragment;
+    'claimAllRewards(address,address)': FunctionFragment;
+    'claimAllRewardsOnBehalf(address,address,address)': FunctionFragment;
+    'claimAllRewardsPermit(address,address,address,uint256,(uint8,bytes32,bytes32))': FunctionFragment;
+    'claimSelectedRewards(address,address[],address)': FunctionFragment;
+    'claimSelectedRewardsOnBehalf(address,address[],address,address)': FunctionFragment;
+    'claimSelectedRewardsPermit(address,address[],address,address,uint256,(uint8,bytes32,bytes32))': FunctionFragment;
+    'setClaimer(address,bool)': FunctionFragment;
+    'setClaimer(address,address,bool)': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "claimAllRewards"
-      | "claimAllRewardsOnBehalf"
-      | "claimAllRewardsPermit"
-      | "claimSelectedRewards"
-      | "claimSelectedRewardsOnBehalf"
-      | "claimSelectedRewardsPermit"
-      | "setClaimer(address,bool)"
-      | "setClaimer(address,address,bool)"
+      | 'claimAllRewards'
+      | 'claimAllRewardsOnBehalf'
+      | 'claimAllRewardsPermit'
+      | 'claimSelectedRewards'
+      | 'claimSelectedRewardsOnBehalf'
+      | 'claimSelectedRewardsPermit'
+      | 'setClaimer(address,bool)'
+      | 'setClaimer(address,address,bool)'
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: 'claimAllRewards', values: [string, string]): string;
   encodeFunctionData(
-    functionFragment: "claimAllRewards",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "claimAllRewardsOnBehalf",
+    functionFragment: 'claimAllRewardsOnBehalf',
     values: [string, string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "claimAllRewardsPermit",
-    values: [
-      string,
-      string,
-      string,
-      BigNumberish,
-      IRewardsStructs.SignatureParamsStruct
-    ]
+    functionFragment: 'claimAllRewardsPermit',
+    values: [string, string, string, BigNumberish, IRewardsStructs.SignatureParamsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "claimSelectedRewards",
+    functionFragment: 'claimSelectedRewards',
     values: [string, string[], string]
   ): string;
   encodeFunctionData(
-    functionFragment: "claimSelectedRewardsOnBehalf",
+    functionFragment: 'claimSelectedRewardsOnBehalf',
     values: [string, string[], string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "claimSelectedRewardsPermit",
-    values: [
-      string,
-      string[],
-      string,
-      string,
-      BigNumberish,
-      IRewardsStructs.SignatureParamsStruct
-    ]
+    functionFragment: 'claimSelectedRewardsPermit',
+    values: [string, string[], string, string, BigNumberish, IRewardsStructs.SignatureParamsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "setClaimer(address,bool)",
+    functionFragment: 'setClaimer(address,bool)',
     values: [string, boolean]
   ): string;
   encodeFunctionData(
-    functionFragment: "setClaimer(address,address,bool)",
+    functionFragment: 'setClaimer(address,address,bool)',
     values: [string, string, boolean]
   ): string;
 
+  decodeFunctionResult(functionFragment: 'claimAllRewards', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'claimAllRewardsOnBehalf', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'claimAllRewardsPermit', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'claimSelectedRewards', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'claimSelectedRewardsOnBehalf', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'claimSelectedRewardsPermit', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setClaimer(address,bool)', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "claimAllRewards",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "claimAllRewardsOnBehalf",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "claimAllRewardsPermit",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "claimSelectedRewards",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "claimSelectedRewardsOnBehalf",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "claimSelectedRewardsPermit",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setClaimer(address,bool)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setClaimer(address,address,bool)",
+    functionFragment: 'setClaimer(address,address,bool)',
     data: BytesLike
   ): Result;
 
   events: {
-    "ClaimerSet(address,address,bool)": EventFragment;
+    'ClaimerSet(address,address,bool)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "ClaimerSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ClaimerSet'): EventFragment;
 }
 
 export interface ClaimerSetEventObject {
@@ -155,10 +109,7 @@ export interface ClaimerSetEventObject {
   claimer: string;
   flag: boolean;
 }
-export type ClaimerSetEvent = TypedEvent<
-  [string, string, boolean],
-  ClaimerSetEventObject
->;
+export type ClaimerSetEvent = TypedEvent<[string, string, boolean], ClaimerSetEventObject>;
 
 export type ClaimerSetEventFilter = TypedEventFilter<ClaimerSetEvent>;
 
@@ -179,9 +130,7 @@ export interface IRewardsDistributor extends BaseContract {
     eventFilter?: TypedEventFilter<TEvent>
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -236,13 +185,13 @@ export interface IRewardsDistributor extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    "setClaimer(address,bool)"(
+    'setClaimer(address,bool)'(
       claimer: string,
       flag: boolean,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    "setClaimer(address,address,bool)"(
+    'setClaimer(address,address,bool)'(
       user: string,
       claimer: string,
       flag: boolean,
@@ -297,13 +246,13 @@ export interface IRewardsDistributor extends BaseContract {
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  "setClaimer(address,bool)"(
+  'setClaimer(address,bool)'(
     claimer: string,
     flag: boolean,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  "setClaimer(address,address,bool)"(
+  'setClaimer(address,address,bool)'(
     user: string,
     claimer: string,
     flag: boolean,
@@ -315,18 +264,14 @@ export interface IRewardsDistributor extends BaseContract {
       asset: string,
       receiver: string,
       overrides?: CallOverrides
-    ): Promise<
-      [string[], BigNumber[]] & { rewards: string[]; amounts: BigNumber[] }
-    >;
+    ): Promise<[string[], BigNumber[]] & { rewards: string[]; amounts: BigNumber[] }>;
 
     claimAllRewardsOnBehalf(
       asset: string,
       user: string,
       receiver: string,
       overrides?: CallOverrides
-    ): Promise<
-      [string[], BigNumber[]] & { rewards: string[]; amounts: BigNumber[] }
-    >;
+    ): Promise<[string[], BigNumber[]] & { rewards: string[]; amounts: BigNumber[] }>;
 
     claimAllRewardsPermit(
       asset: string,
@@ -335,9 +280,7 @@ export interface IRewardsDistributor extends BaseContract {
       deadline: BigNumberish,
       sig: IRewardsStructs.SignatureParamsStruct,
       overrides?: CallOverrides
-    ): Promise<
-      [string[], BigNumber[]] & { rewards: string[]; amounts: BigNumber[] }
-    >;
+    ): Promise<[string[], BigNumber[]] & { rewards: string[]; amounts: BigNumber[] }>;
 
     claimSelectedRewards(
       asset: string,
@@ -364,13 +307,13 @@ export interface IRewardsDistributor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber[]>;
 
-    "setClaimer(address,bool)"(
+    'setClaimer(address,bool)'(
       claimer: string,
       flag: boolean,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "setClaimer(address,address,bool)"(
+    'setClaimer(address,address,bool)'(
       user: string,
       claimer: string,
       flag: boolean,
@@ -379,16 +322,12 @@ export interface IRewardsDistributor extends BaseContract {
   };
 
   filters: {
-    "ClaimerSet(address,address,bool)"(
+    'ClaimerSet(address,address,bool)'(
       user?: string | null,
       claimer?: string | null,
       flag?: null
     ): ClaimerSetEventFilter;
-    ClaimerSet(
-      user?: string | null,
-      claimer?: string | null,
-      flag?: null
-    ): ClaimerSetEventFilter;
+    ClaimerSet(user?: string | null, claimer?: string | null, flag?: null): ClaimerSetEventFilter;
   };
 
   estimateGas: {
@@ -439,13 +378,13 @@ export interface IRewardsDistributor extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
-    "setClaimer(address,bool)"(
+    'setClaimer(address,bool)'(
       claimer: string,
       flag: boolean,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
-    "setClaimer(address,address,bool)"(
+    'setClaimer(address,address,bool)'(
       user: string,
       claimer: string,
       flag: boolean,
@@ -501,13 +440,13 @@ export interface IRewardsDistributor extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    "setClaimer(address,bool)"(
+    'setClaimer(address,bool)'(
       claimer: string,
       flag: boolean,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    "setClaimer(address,address,bool)"(
+    'setClaimer(address,address,bool)'(
       user: string,
       claimer: string,
       flag: boolean,

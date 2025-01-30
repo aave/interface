@@ -1,8 +1,9 @@
 import { ChainId } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Box, Checkbox, Typography } from '@mui/material';
 import React, { useRef, useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { AssetInput } from 'src/components/transactions/AssetInput';
 import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
@@ -14,11 +15,17 @@ import {
 import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
 import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
+import {
+  ComputedReserveData,
+  ComputedUserReserveData,
+  ExtendedFormattedUser,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { STAKE } from 'src/utils/mixPanelEvents';
 
 import { UmbrellaActions } from './UmbrellaActions';
@@ -26,6 +33,9 @@ import { UmbrellaActions } from './UmbrellaActions';
 export type StakeProps = {
   stakeData: MergedStakeData;
   icon: string;
+  user: ExtendedFormattedUser;
+  userReserve: ComputedUserReserveData;
+  poolReserve: ComputedReserveData;
 };
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
@@ -73,10 +83,11 @@ const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
       ];
 };
 
-export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
+export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve }: StakeProps) => {
   const { readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
 
   // states
   const [_amount, setAmount] = useState('');
@@ -95,21 +106,6 @@ export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
     setAmount(value);
   };
 
-  // error handler
-  let blockingError: ErrorType | undefined = undefined;
-  if (valueToBigNumber(amount).gt(inputToken.balance)) {
-    blockingError = ErrorType.NOT_ENOUGH_BALANCE;
-  }
-
-  const handleBlocked = () => {
-    switch (blockingError) {
-      case ErrorType.NOT_ENOUGH_BALANCE:
-        return <Trans>Not enough balance on your wallet</Trans>;
-      default:
-        return null;
-    }
-  };
-
   const { isWrongNetwork, requiredChainId } = useIsWrongNetwork();
 
   if (txError && txError.blocking) {
@@ -119,6 +115,27 @@ export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
     return (
       <TxSuccessView action={<Trans>Staked</Trans>} amount={amountRef.current} symbol={'test'} />
     );
+
+  let healthFactorAfterStake = valueToBigNumber(1.6);
+  if (inputToken.aToken) {
+    // We use same function for checking HF as withdraw
+    healthFactorAfterStake = calculateHFAfterWithdraw({
+      user,
+      userReserve,
+      poolReserve,
+      withdrawAmount: amount,
+    });
+  }
+
+  const displayRiskCheckbox =
+    healthFactorAfterStake.toNumber() >= 1 &&
+    healthFactorAfterStake.toNumber() < 1.5 &&
+    userReserve.usageAsCollateralEnabledOnUser;
+
+  let displayBlockingStake = undefined;
+  if (healthFactorAfterStake.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
+    displayBlockingStake = true;
+  }
 
   return (
     <>
@@ -146,9 +163,10 @@ export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
         maxValue={inputToken.balance}
         balanceText={<Trans>Wallet balance</Trans>}
       />
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
-          {handleBlocked()}
+
+      {displayBlockingStake && (
+        <Typography variant="helperText" color="error.main">
+          <Trans>You can not stake this amount because it will cause collateral call</Trans>
         </Typography>
       )}
       <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
@@ -162,12 +180,46 @@ export const UmbrellaModalContent = ({ stakeData }: StakeProps) => {
 
       {txError && <GasEstimationError txError={txError} />}
 
+      {displayRiskCheckbox && (
+        <>
+          <Warning severity="error" sx={{ my: 6 }}>
+            <Trans>
+              Withdrawing this amount will reduce your health factor and increase risk of
+              liquidation.
+            </Trans>
+          </Warning>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mx: '24px',
+              mb: '12px',
+            }}
+          >
+            <Checkbox
+              checked={riskCheckboxAccepted}
+              onChange={() => {
+                setRiskCheckboxAccepted(!riskCheckboxAccepted);
+              }}
+              size="small"
+            />
+            <Typography variant="description">
+              <Trans>I acknowledge the risks involved.</Trans>
+            </Typography>
+          </Box>
+        </>
+      )}
+
       <UmbrellaActions
         sx={{ mt: '48px' }}
         amountToStake={amount || '0'}
         isWrongNetwork={isWrongNetwork}
         symbol={''}
-        blocked={blockingError !== undefined}
+        blocked={
+          displayBlockingStake !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)
+        }
         selectedToken={inputToken}
         stakeData={stakeData}
         event={STAKE.STAKE_TOKEN}
