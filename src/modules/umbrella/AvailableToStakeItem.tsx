@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
@@ -7,13 +7,15 @@ import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { AmountAvailableItem } from './helpers/AmountAvailableItem';
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 
-export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
+export const AvailableToStakeItem = ({
+  stakeData,
+  isMobile,
+}: {
+  stakeData: MergedStakeData;
+  isMobile?: boolean;
+}) => {
   const { underlyingWaTokenBalance, underlyingWaTokenATokenBalance, underlyingTokenBalance } =
     stakeData.formattedBalances;
-
-  const { breakpoints } = useTheme();
-
-  const isMobile = useMediaQuery(breakpoints.down('lg'));
 
   const icons = [];
   if (underlyingTokenBalance) {

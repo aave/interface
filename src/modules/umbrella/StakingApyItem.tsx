@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { ReactElement } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -9,12 +9,14 @@ import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
 import { IconData, MultiIconWithTooltip } from './helpers/MultiIcon';
 
-export const StakingApyItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
+export const StakingApyItem = ({
+  stakeData,
+  isMobile,
+}: {
+  stakeData: MergedStakeData;
+  isMobile?: boolean;
+}) => {
   const { reserves } = useAppDataContext();
-
-  const { breakpoints } = useTheme();
-
-  const isMobile = useMediaQuery(breakpoints.down('lg'));
 
   let netAPY = 0;
   const icons: IconData[] = [];

@@ -1,10 +1,9 @@
 import { Trans } from '@lingui/macro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import AddIcon from '@mui/icons-material/Add';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import StartIcon from '@mui/icons-material/Start';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Button, useMediaQuery, useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -70,27 +69,20 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
   return (
     <div>
       {stakeData.balances.stakeTokenBalance === '0' ? (
-        <>
-          <IconButton
-            style={{
-              borderRadius: 4,
-              width: isMobile ? '100%' : 'auto',
-              color: '#FFFFFF',
-              backgroundColor: theme.palette.mode === 'light' ? '#383D51' : '#383D51',
-            }}
-            onClick={() =>
-              openUmbrella(
-                stakeData.stakeToken,
-                stakeData.stakeTokenSymbol,
-                stakeData.waTokenData.waTokenAToken,
-                stakeData.waTokenData.waTokenUnderlying
-              )
-            }
-            size="medium"
-          >
-            <AddIcon />
-          </IconButton>
-        </>
+        <Button
+          fullWidth={isMobile}
+          variant="contained"
+          onClick={() =>
+            openUmbrella(
+              stakeData.stakeToken,
+              stakeData.stakeTokenSymbol,
+              stakeData.waTokenData.waTokenAToken,
+              stakeData.waTokenData.waTokenUnderlying
+            )
+          }
+        >
+          <Trans>Stake</Trans>
+        </Button>
       ) : (
         <>
           <IconButton

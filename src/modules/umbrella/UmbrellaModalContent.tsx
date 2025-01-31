@@ -107,7 +107,11 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
   }
   if (txState.success)
     return (
-      <TxSuccessView action={<Trans>Staked</Trans>} amount={amountRef.current} symbol={'test'} />
+      <TxSuccessView
+        action={<Trans>Staked</Trans>}
+        amount={amountRef.current}
+        symbol={inputToken.symbol}
+      />
     );
 
   let healthFactorAfterStake = valueToBigNumber(1.6);
