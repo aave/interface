@@ -1,16 +1,25 @@
 import React from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
+import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
 
 import { StakeCooldownModalContent } from './StakeCooldownModalContent';
 
 export const StakeCooldownModal = () => {
   const { type, close, args } = useModalContext();
+
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+
+  const { data } = useUmbrellaSummary(currentMarketData);
+
+  const stakeData = data?.find(
+    (item) => item.stakeToken.toLowerCase() === args?.uStakeToken?.toLowerCase()
+  );
+
   return (
     <BasicModal open={type === ModalType.UmbrellaStakeCooldown} setOpen={close}>
-      {args?.uStakeToken && args.icon && (
-        <StakeCooldownModalContent stakeToken={args.uStakeToken} icon={args.icon} />
-      )}
+      {stakeData && <StakeCooldownModalContent stakeData={stakeData} />}
     </BasicModal>
   );
 };

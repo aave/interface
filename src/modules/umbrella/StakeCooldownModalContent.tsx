@@ -18,18 +18,13 @@ import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTit
 import { GasStation } from 'src/components/transactions/GasStation/GasStation';
 import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
 import { timeMessage } from 'src/helpers/timeHelper';
-import { useUmbrellaSummaryFor } from 'src/hooks/stake/useUmbrellaSummary';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { StakeCooldownActions } from './StakeCooldownActions';
-
-export type StakeCooldownProps = {
-  stakeToken: string;
-  icon: string;
-};
 
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
@@ -43,21 +38,15 @@ type CalendarEvent = {
   description: string;
 };
 
-export const StakeCooldownModalContent = ({ stakeToken, icon }: StakeCooldownProps) => {
+export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
 
-  const { data } = useUmbrellaSummaryFor(stakeToken, currentMarketData);
-  const stakeData = data?.[0];
-
-  // Cooldown logic
   const stakeCooldownSeconds = stakeData?.cooldownSeconds || 0;
   const stakeUnstakeWindow = stakeData?.unstakeWindowSeconds || 0;
 
@@ -182,7 +171,7 @@ export const StakeCooldownModalContent = ({ stakeToken, icon }: StakeCooldownPro
           <Trans>Amount to unstake</Trans>
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
+          <TokenIcon symbol={stakeData.iconSymbol} sx={{ mr: 1, width: 14, height: 14 }} />
           <FormattedNumber value={amountToCooldown} variant="secondary14" color="text.primary" />
         </Box>
       </Box>
@@ -352,7 +341,7 @@ export const StakeCooldownModalContent = ({ stakeToken, icon }: StakeCooldownPro
         sx={{ mt: '48px' }}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !cooldownCheck}
-        selectedToken={stakeToken}
+        selectedToken={stakeData.stakeToken}
         amountToCooldown={amountToCooldown}
       />
     </>

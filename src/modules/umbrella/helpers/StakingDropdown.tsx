@@ -130,7 +130,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               >
                 <AccessTimeIcon />
                 <Typography color="text.primary">
-                  <Trans>Cooldown</Trans>
+                  <Trans>Cooldown to unstake</Trans>
                 </Typography>
               </StyledMenuItem>
             ) : (
