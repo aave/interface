@@ -9,6 +9,10 @@ import {
 } from 'src/modules/umbrella/services/StakeDataProviderService';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
+import {
+  ExtendedFormattedUser,
+  useExtendedUserSummaryAndIncentives,
+} from '../pool/useExtendedUserSummaryAndIncentives';
 import { combineQueries } from '../pool/utils';
 
 interface FormattedBalance {
@@ -48,10 +52,17 @@ export interface MergedStakeData extends StakeData {
   weightedAverageApy: string;
 }
 
-const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserData[]) => {
+const formatUmbrellaSummary = (
+  stakeData: StakeData[],
+  userStakeData: StakeUserData[],
+  user: ExtendedFormattedUser
+) => {
   let aggregatedTotalStakedUSD = valueToBigNumber('0');
   let weightedApySum = valueToBigNumber('0');
   let apyTotalWeight = valueToBigNumber('0');
+
+  const userReservesData = user.userReservesData;
+
   stakeData.forEach((stakeItem) => {
     const matchingBalance = userStakeData.find(
       (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.stakeToken.toLowerCase()
@@ -113,6 +124,12 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
       stakeItem.underlyingTokenDecimals
     );
 
+    // we use the userReserve to get the aToken balance which takes into account accrued interest
+    const userReserve = userReservesData?.find(
+      (r) =>
+        r.reserve.aTokenAddress.toLowerCase() === stakeItem.waTokenData.waTokenAToken.toLowerCase()
+    );
+
     acc.push({
       ...stakeItem,
       balances: matchingBalance.balances,
@@ -129,10 +146,7 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
           matchingBalance.balances.underlyingWaTokenBalance,
           stakeItem.underlyingTokenDecimals
         ),
-        underlyingWaTokenATokenBalance: normalize(
-          matchingBalance.balances.underlyingWaTokenATokenBalance,
-          stakeItem.underlyingTokenDecimals
-        ),
+        underlyingWaTokenATokenBalance: userReserve?.underlyingBalance || '0',
       },
       formattedRewards: matchingBalance.rewards.map((reward) => {
         const rewardData = stakeItem.rewards.find(
@@ -181,20 +195,11 @@ const formatUmbrellaSummary = (stakeData: StakeData[], userStakeData: StakeUserD
 export const useUmbrellaSummary = (marketData: MarketDataType) => {
   const stakeDataQuery = useStakeData(marketData);
   const userStakeDataQuery = useUserStakeData(marketData);
+  const userReservesQuery = useExtendedUserSummaryAndIncentives(marketData);
+
   const { data, isPending } = combineQueries(
-    [stakeDataQuery, userStakeDataQuery] as const,
+    [stakeDataQuery, userStakeDataQuery, userReservesQuery] as const,
     formatUmbrellaSummary
   );
   return { data, loading: isPending };
-};
-
-export const useUmbrellaSummaryFor = (uStakeToken: string, marketData: MarketDataType) => {
-  const stakeDataQuery = useStakeData(marketData, {
-    select: (stakeData) => stakeData.filter((s) => s.stakeToken === uStakeToken),
-  });
-  const userStakeDataQuery = useUserStakeData(marketData, {
-    select: (userData) => userData.filter((s) => s.stakeToken === uStakeToken),
-  });
-
-  return combineQueries([stakeDataQuery, userStakeDataQuery] as const, formatUmbrellaSummary);
 };

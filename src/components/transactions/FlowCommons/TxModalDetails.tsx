@@ -11,6 +11,7 @@ import {
 } from 'src/components/isolationMode/IsolatedBadge';
 import { Row } from 'src/components/primitives/Row';
 import { CollateralType } from 'src/helpers/types';
+import { SecondsToString } from 'src/modules/staking/StakingPanel';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
@@ -364,12 +365,12 @@ export const DetailsUnwrapSwitch = ({
 };
 
 interface DetailsCooldownLineProps {
-  cooldownDays: number;
+  cooldownSeconds: number;
   loading?: boolean;
 }
 
 export const DetailsCooldownLine = ({
-  cooldownDays,
+  cooldownSeconds,
   loading = false,
 }: DetailsCooldownLineProps) => {
   return (
@@ -379,14 +380,8 @@ export const DetailsCooldownLine = ({
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
         ) : (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <FormattedNumber
-              value={cooldownDays}
-              variant="secondary14"
-              visibleDecimals={0}
-              compact={false}
-            />
-            <Typography ml={1} variant="secondary14">
-              <Trans>Days</Trans>
+            <Typography variant="secondary14">
+              <SecondsToString seconds={cooldownSeconds} />
             </Typography>
           </Box>
         )}
