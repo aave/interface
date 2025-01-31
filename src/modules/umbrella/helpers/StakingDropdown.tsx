@@ -37,7 +37,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
   const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaUnstake, openUmbrellaClaim } =
     useModalContext();
   const now = useCurrentTimestamp(1);
-  const { breakpoints } = useTheme();
+  const { breakpoints, palette } = useTheme();
   const { addERC20Token } = useWeb3Context();
 
   const isMobile = useMediaQuery(breakpoints.down('lg'));
@@ -181,9 +181,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                 });
               }}
             >
-              <WalletIcon
-                sx={{ width: '14px', height: '14px', '&:hover': { stroke: '#F1F1F3' } }}
-              />
+              <WalletIcon sx={{ width: '14px', height: '14px', stroke: palette.text.primary }} />
               <Typography>Add token to wallet</Typography>
             </StyledMenuItem>
           </Menu>
