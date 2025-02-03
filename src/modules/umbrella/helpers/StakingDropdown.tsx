@@ -3,7 +3,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import StartIcon from '@mui/icons-material/Start';
-import { Button, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,6 +16,7 @@ import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { SecondsToString } from 'src/modules/staking/StakingPanel';
 
 // Styled component for the menu items to add gap between icon and text
 const StyledMenuItem = styled(MenuItem)({
@@ -44,6 +45,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
   const endOfCooldown = stakeData?.cooldownData.endOfCooldown || 0;
   const unstakeWindow = stakeData?.cooldownData.withdrawalWindow || 0;
   const cooldownTimeRemaining = endOfCooldown - now;
+  const unstakeTimeRemaining = endOfCooldown + unstakeWindow - now;
 
   const isCooldownActive = cooldownTimeRemaining > 0;
   const isUnstakeWindowActive = endOfCooldown < now && now < endOfCooldown + unstakeWindow;
@@ -97,7 +99,6 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
           <IconButton
             style={{
               width: isMobile ? '100%' : 'auto',
-
               backgroundColor: theme.palette.mode === 'light' ? '#F7F7F9' : '#383D51',
               borderRadius: 4,
             }}
@@ -130,9 +131,23 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                 }
               >
                 <AccessTimeIcon />
-                <Typography color="text.primary">
+                {isCooldownActive && !availableToReactivateCooldown ? (
+                  <Stack
+                    sx={{ width: '100%' }}
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Typography color="text.primary">
+                      <Trans>Cooling down</Trans>
+                    </Typography>
+                    <Typography variant="helperText">
+                      <SecondsToString seconds={cooldownTimeRemaining} />
+                    </Typography>
+                  </Stack>
+                ) : (
                   <Trans>Cooldown to unstake</Trans>
-                </Typography>
+                )}
               </StyledMenuItem>
             ) : (
               <StyledMenuItem
@@ -143,7 +158,19 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                 disabled={!isUnstakeWindowActive}
               >
                 <StartIcon sx={{ transform: 'rotate(180deg)' }} />
-                <Typography>Withdraw</Typography>
+                <Stack
+                  sx={{ width: '100%' }}
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Typography color="text.primary">
+                    <Trans>Withdraw</Trans>
+                  </Typography>
+                  <Typography variant="helperText">
+                    <SecondsToString seconds={unstakeTimeRemaining} />
+                  </Typography>
+                </Stack>
               </StyledMenuItem>
             )}
 
