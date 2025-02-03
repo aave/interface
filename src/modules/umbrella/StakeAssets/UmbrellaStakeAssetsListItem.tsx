@@ -16,7 +16,7 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
 
   return (
     <ListItem px={6} minHeight={76} sx={{ cursor: 'default' }} button>
-      <ListColumn isRow minWidth={250}>
+      <ListColumn isRow minWidth={275}>
         <StakeAssetName
           stakeAsset={umbrellaStakeAsset}
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.stakeToken}`}

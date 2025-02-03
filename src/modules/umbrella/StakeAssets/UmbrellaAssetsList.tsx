@@ -147,7 +147,7 @@ export default function UmbrellaAssetsList({
           {listHeaders.map((col) => (
             <ListColumn
               isRow={col.sortKey === 'symbol'}
-              minWidth={col.sortKey === 'symbol' ? 250 : undefined}
+              minWidth={col.sortKey === 'symbol' ? 275 : undefined}
               key={col.sortKey}
             >
               <ListHeaderTitle
