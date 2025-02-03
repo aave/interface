@@ -28,7 +28,7 @@ export interface UnStakeActionProps extends BoxProps {
   redeemATokens: boolean;
 }
 
-const STAKE_GATEWAY_CONTRACT = '0x0E467CeF974b0D46141F1698116b2085E529f7eF';
+const STAKE_GATEWAY_CONTRACT = '0x57c6a660a271A1A23cC1cc283B98Ac2C01Ad3695';
 
 export const UnStakeActions = ({
   amountToUnStake,
