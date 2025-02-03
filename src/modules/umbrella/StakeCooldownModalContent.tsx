@@ -168,7 +168,7 @@ export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStak
         }}
       >
         <Typography variant="description" color="text.primary">
-          <Trans>Amount to unstake</Trans>
+          <Trans>Amount available to unstake</Trans>
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={stakeData.iconSymbol} sx={{ mr: 1, width: 14, height: 14 }} />
