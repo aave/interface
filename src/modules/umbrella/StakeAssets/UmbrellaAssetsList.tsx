@@ -30,7 +30,7 @@ const listHeaders = [
     sortKey: 'totalAPY',
   },
   {
-    title: <Trans>Amount Staked</Trans>,
+    title: <Trans>Your Staked Amount</Trans>,
     sortKey: 'stakeTokenBalance',
   },
   //   {

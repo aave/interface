@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
+import { ListColumn } from 'src/components/lists/ListColumn';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { StakingDropdown } from 'src/modules/umbrella/helpers/StakingDropdown';
 import { useRootStore } from 'src/store/root';
@@ -11,17 +12,19 @@ import { AmountStakedItem } from '../AmountStakedItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
 import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { StakingApyItem } from '../StakingApyItem';
+import { StakeAssetName } from './StakeAssetName';
 
 export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedStakeData) => {
-  const [currentMarket] = useRootStore(useShallow((store) => [store.currentMarket]));
+  const [currentNetworkConfig] = useRootStore(useShallow((store) => [store.currentNetworkConfig]));
+
   return (
-    <ListMobileItemWrapper
-      symbol={umbrellaStakeAsset.symbol}
-      iconSymbol={umbrellaStakeAsset.iconSymbol}
-      name={umbrellaStakeAsset.name}
-      underlyingAsset={umbrellaStakeAsset.stakeTokenUnderlying}
-      currentMarket={currentMarket}
-    >
+    <ListMobileItemWrapper>
+      <ListColumn isRow>
+        <StakeAssetName
+          stakeAsset={umbrellaStakeAsset}
+          explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.stakeToken}`}
+        />
+      </ListColumn>
       <Row caption={<Trans>Staking APY</Trans>} captionVariant="description" mb={3}>
         <Box
           sx={{
@@ -36,7 +39,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
         </Box>
       </Row>
       <Row
-        caption={<Trans>Amount staked</Trans>}
+        caption={<Trans>Your staked amount</Trans>}
         captionVariant="description"
         mb={3}
         align="flex-start"
