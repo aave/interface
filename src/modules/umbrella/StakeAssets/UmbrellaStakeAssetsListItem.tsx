@@ -49,7 +49,7 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
       //   });
       //   router.push(ROUTES.umbrellaStakeAssetOverview(umbrellaStakeAsset.underlyingAsset, currentMarket));
       // }}
-      sx={{ cursor: 'pointer' }}
+      sx={{ cursor: 'default' }}
       button
       // data-cy={`marketListItemListItem_${umbrellaStakeAsset.symbol.toUpperCase()}`}
     >
