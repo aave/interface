@@ -29,14 +29,14 @@ runs:
 
     - name: download build
       if: github.event_name != 'workflow_run'
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      uses: actions/download-artifact@v4
       with:
         name: out_cypress
         path: out
 
     - name: Download static build
       if: github.event_name == 'workflow_run'
-      uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
+      uses: dawidd6/action-download-artifact@v6
       with:
         workflow: build-fork.yml
         run_id: ${{ github.event.workflow_run.id }}
@@ -60,7 +60,7 @@ runs:
         CYPRESS_TENDERLY_PROJECT: ${{ inputs.CYPRESS_TENDERLY_PROJECT }}
 
     - name: upload screenshots
-      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: cypress-fail-screenshots-${{ github.job }}-${{ matrix.market }}
