@@ -1777,6 +1777,11 @@ msgstr "Action cannot be performed because the reserve is paused"
 msgid "Representative smart contract wallet (ie. Safe) addresses on other chains."
 msgstr "Representative smart contract wallet (ie. Safe) addresses on other chains."
 
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "Available Liquidity"
+msgstr "Available Liquidity"
+
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You will exit isolation mode and other tokens can now be used as collateral"
 msgstr "You will exit isolation mode and other tokens can now be used as collateral"
