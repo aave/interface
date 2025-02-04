@@ -24,23 +24,27 @@ runs:
         echo ${{ github.event.number }} > ./__pr/NUM
     - name: store PR info
       if: github.event.number && inputs.PR_INFO == 'true'
-      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      uses: actions/upload-artifact@v4
       with:
         name: pr
         path: __pr/
         retention-days: 10
+        overwrite: true
     - name: store static build
-      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      uses: actions/upload-artifact@v4
       with:
         name: '${{ inputs.BUILD_ARTIFACT_NAME }}'
         path: out/
         retention-days: 10
+        overwrite: true
     - name: store nextjs build
       if: inputs.NEXTJS_BUILD == 'true'
-      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      uses: actions/upload-artifact@v4
       with:
         name: 'nextjs_${{ github.job }}'
         path: |
           .next
           !.next/cache
         retention-days: 10
+        overwrite: true
+        include-hidden-files: true
