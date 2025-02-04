@@ -8,6 +8,7 @@ import {
 import { Provider } from '@ethersproject/providers';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
+import { getCustomReservesHumanized } from 'src/utils/reservesHelper';
 
 export type UserReservesDataHumanized = {
   userReserves: UserReserveDataHumanized[];
@@ -45,9 +46,12 @@ export class UiPoolService {
 
   async getReservesHumanized(marketData: MarketDataType): Promise<ReservesDataHumanized> {
     const uiPoolDataProvider = await this.getUiPoolDataService(marketData);
-    return uiPoolDataProvider.getReservesHumanized({
+    return getCustomReservesHumanized(uiPoolDataProvider, {
       lendingPoolAddressProvider: marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
     });
+    // return uiPoolDataProvider.getReservesHumanized({
+    //   lendingPoolAddressProvider: marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+    // });
   }
 
   async getUserReservesHumanized(
