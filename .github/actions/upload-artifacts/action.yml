@@ -47,3 +47,4 @@ runs:
           !.next/cache
         retention-days: 10
         overwrite: true
+        include-hidden-files: true
