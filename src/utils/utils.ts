@@ -88,6 +88,7 @@ export const showExternalIncentivesTooltip = (
 ) => {
   const superFestRewardsEnabled = false;
   const spkRewardsEnabled = true;
+  const kernelPointsEnabled = true;
 
   const tooltipsConfig: ExternalIncentivesTooltipsConfig = {
     superFestRewards: false,
@@ -114,7 +115,7 @@ export const showExternalIncentivesTooltip = (
   }
 
   if (
-    spkRewardsEnabled &&
+    kernelPointsEnabled &&
     (currentMarket === CustomMarket.proto_mainnet_v3 ||
       currentMarket === CustomMarket.proto_lido_v3 ||
       currentMarket === CustomMarket.proto_base_v3 ||
