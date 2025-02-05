@@ -323,6 +323,10 @@ msgstr "Minimum GHO borrow amount"
 msgid "Sign to continue"
 msgstr "Sign to continue"
 
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Total amount staked"
+msgstr "Total amount staked"
+
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
@@ -402,6 +406,10 @@ msgstr "Repay {symbol}"
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discountable amount"
 msgstr "Discountable amount"
+
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
+msgid "Your staked amount"
+msgstr "Your staked amount"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooling down..."
@@ -837,10 +845,6 @@ msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restric
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
 msgstr "Aave per month"
-
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
-msgid "Amount Staked"
-msgstr "Amount Staked"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/Swap/SwapModalDetails.tsx
@@ -1407,6 +1411,7 @@ msgstr "Website"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Withdraw"
 msgstr "Withdraw"
 
@@ -1930,6 +1935,7 @@ msgid "Before supplying"
 msgstr "Before supplying"
 
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
+#: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "Assets to stake"
 msgstr "Assets to stake"
 
@@ -2028,6 +2034,7 @@ msgstr "ZKSync Ignite Program rewards are claimed through the"
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+#: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "Asset"
 msgstr "Asset"
 
@@ -2106,6 +2113,7 @@ msgid "To submit a proposal for minor changes to the protocol, you'll need at le
 msgstr "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
+#: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "Staking APY"
 msgstr "Staking APY"
 
@@ -2290,6 +2298,10 @@ msgstr "Borrowed"
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Received"
+
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+msgid "Your Staked Amount"
+msgstr "Your Staked Amount"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your current loan to value based on your collateral supplied."
@@ -2549,6 +2561,10 @@ msgstr "Collateral usage is limited because of Isolation mode."
 msgid "Amount After Fee"
 msgstr "Amount After Fee"
 
+#: src/modules/umbrella/helpers/StakingDropdown.tsx
+msgid "Cooling down"
+msgstr "Cooling down"
+
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "Supplying your"
 msgstr "Supplying your"
@@ -2804,10 +2820,6 @@ msgstr "Please switch to {networkName}."
 msgid "Both"
 msgstr "Both"
 
-#: pages/umbrella.page.tsx
-msgid "We couldn’t detect a wallet. Connect a wallet to view your staking positions and rewards."
-msgstr "We couldn’t detect a wallet. Connect a wallet to view your staking positions and rewards."
-
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Discount applied for <0/> staking AAVE"
 msgstr "Discount applied for <0/> staking AAVE"
@@ -3010,10 +3022,6 @@ msgstr "Global settings"
 msgid "Collateral balance after repay"
 msgstr "Collateral balance after repay"
 
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
-msgid "Amount staked"
-msgstr "Amount staked"
-
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copy the error"
@@ -3071,6 +3079,7 @@ msgstr "Selected supply assets"
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+#: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "APY"
 msgstr "APY"
 

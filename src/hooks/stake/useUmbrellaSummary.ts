@@ -13,11 +13,11 @@ import {
   ExtendedFormattedUser,
   useExtendedUserSummaryAndIncentives,
 } from '../pool/useExtendedUserSummaryAndIncentives';
-import { combineQueries } from '../pool/utils';
 import {
   FormattedReservesAndIncentives,
   usePoolFormattedReserves,
 } from '../pool/usePoolFormattedReserves';
+import { combineQueries } from '../pool/utils';
 
 interface FormattedBalance {
   stakeTokenBalance: string;
@@ -56,6 +56,12 @@ export interface MergedStakeData extends StakeData {
   weightedAverageApy: string;
 }
 
+export interface FormattedStakeDataSummary {
+  allStakeAssetsTotalSupply: string;
+  allStakeAssetsToatlSupplyUsd: string;
+  stakeAssets: FormattedStakeData[];
+}
+
 export interface FormattedStakeData {
   tokenAddress: string;
   stakeTokenPrice: string;
@@ -69,8 +75,11 @@ export interface FormattedStakeData {
 const formatStakeData = (
   stakeData: StakeData[],
   reserves: FormattedReservesAndIncentives[]
-): FormattedStakeData[] => {
-  return stakeData.map((stakeItem) => {
+): FormattedStakeDataSummary => {
+  let runningTotal = new BigNumber(0);
+  let runningTotalUsd = new BigNumber(0);
+
+  const stakeAssets = stakeData.map((stakeItem) => {
     const stakeTokenPrice = normalizeBN(stakeItem.stakeTokenPrice, USD_DECIMALS).toString();
     const stakeTokenTotalSupply = normalizeBN(
       stakeItem.stakeTokenTotalSupply,
@@ -79,6 +88,9 @@ const formatStakeData = (
     const totalSupplyUsd = valueToBigNumber(stakeTokenTotalSupply)
       .multipliedBy(stakeTokenPrice)
       .toString();
+
+    runningTotal = runningTotal.plus(stakeTokenTotalSupply);
+    runningTotalUsd = runningTotalUsd.plus(totalSupplyUsd);
 
     let totalRewardApy = stakeItem.rewards.reduce((acc, reward) => {
       return acc.plus(reward.apy);
@@ -111,6 +123,12 @@ const formatStakeData = (
       totalRewardApy: totalRewardApy.toString(),
     };
   });
+
+  return {
+    allStakeAssetsTotalSupply: runningTotal.toString(),
+    allStakeAssetsToatlSupplyUsd: runningTotalUsd.toString(),
+    stakeAssets,
+  };
 };
 
 const formatUmbrellaSummary = (

@@ -2,19 +2,20 @@ import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
-import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
+import { useStakeDataSummary, useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
-// import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { MarketSwitcher } from './UmbrellaMarketSwitcher';
 
 export const UmbrellaHeader: React.FC = () => {
   const theme = useTheme();
-  // const { currentAccount } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const [currentMarketData, trackEvent] = useRootStore(
     useShallow((store) => [store.currentMarketData, store.trackEvent])
   );
@@ -22,19 +23,12 @@ export const UmbrellaHeader: React.FC = () => {
   //   useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   // );
 
-  const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
-    useUmbrellaSummary(currentMarketData);
-
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
-  const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
-
-  const totalUSDAggregateStaked = stakedDataWithTokenBalances?.[0].aggregatedTotalStakedUSD;
-  const weightedAverageApy = stakedDataWithTokenBalances?.[0].weightedAverageApy;
 
   return (
     <TopInfoPanel
@@ -73,6 +67,40 @@ export const UmbrellaHeader: React.FC = () => {
         </Box>
       }
     >
+      {currentAccount ? (
+        <UmbrellaHeaderUserDetails
+          currentMarketData={currentMarketData}
+          valueTypographyVariant={valueTypographyVariant}
+          symbolsTypographyVariant={symbolsTypographyVariant}
+        />
+      ) : (
+        <UmbrellaHeaderDefault
+          currentMarketData={currentMarketData}
+          valueTypographyVariant={valueTypographyVariant}
+          symbolsTypographyVariant={symbolsTypographyVariant}
+        />
+      )}
+    </TopInfoPanel>
+  );
+};
+
+const UmbrellaHeaderUserDetails = ({
+  currentMarketData,
+  valueTypographyVariant,
+  symbolsTypographyVariant,
+}: {
+  currentMarketData: MarketDataType;
+  valueTypographyVariant: 'main16' | 'main21';
+  symbolsTypographyVariant: 'secondary16' | 'secondary21';
+}) => {
+  const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
+    useUmbrellaSummary(currentMarketData);
+
+  const totalUSDAggregateStaked = stakedDataWithTokenBalances?.[0].aggregatedTotalStakedUSD;
+  const weightedAverageApy = stakedDataWithTokenBalances?.[0].weightedAverageApy;
+
+  return (
+    <>
       <TopInfoPanelItem
         hideIcon
         title={
@@ -103,9 +131,45 @@ export const UmbrellaHeader: React.FC = () => {
           symbolsColor="#A5A8B6"
           visibleDecimals={2}
           percent
-          symbolsVariant={noDataTypographyVariant}
+          symbolsVariant={symbolsTypographyVariant}
         />
       </TopInfoPanelItem>
-    </TopInfoPanel>
+    </>
+  );
+};
+
+const UmbrellaHeaderDefault = ({
+  currentMarketData,
+  valueTypographyVariant,
+  symbolsTypographyVariant,
+}: {
+  currentMarketData: MarketDataType;
+  valueTypographyVariant: 'main16' | 'main21';
+  symbolsTypographyVariant: 'secondary16' | 'secondary21';
+}) => {
+  const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
+
+  return (
+    <>
+      <TopInfoPanelItem
+        hideIcon
+        title={
+          <Stack direction="row" alignItems="center">
+            <Trans>Total amount staked</Trans>
+          </Stack>
+        }
+        loading={loading}
+      >
+        <FormattedNumber
+          value={stakeData?.allStakeAssetsToatlSupplyUsd || '0'}
+          symbol="USD"
+          variant={valueTypographyVariant}
+          visibleDecimals={2}
+          compact
+          symbolsColor="#A5A8B6"
+          symbolsVariant={symbolsTypographyVariant}
+        />
+      </TopInfoPanelItem>
+    </>
   );
 };
