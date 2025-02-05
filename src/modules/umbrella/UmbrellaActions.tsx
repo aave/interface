@@ -22,6 +22,7 @@ import { useShallow } from 'zustand/shallow';
 import { StakeGatewayService } from './services/StakeGatewayService';
 import { StakeTokenService } from './services/StakeTokenService';
 import { StakeInputAsset } from './UmbrellaModalContent';
+import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 
 export interface StakeActionProps extends BoxProps {
   amountToStake: string;
@@ -35,7 +36,7 @@ export interface StakeActionProps extends BoxProps {
   isMaxSelected: boolean;
 }
 
-const STAKE_GATEWAY_CONTRACT = '0xd892E331573306F7D3e637FBC26D43c466444789';
+// const STAKE_GATEWAY_CONTRACT = '0xd892E331573306F7D3e637FBC26D43c466444789';
 
 export const UmbrellaActions = ({
   amountToStake,
@@ -91,7 +92,9 @@ export const UmbrellaActions = ({
   } = useApprovedAmount({
     chainId: currentChainId,
     token: selectedToken.address,
-    spender: useStakeGateway ? STAKE_GATEWAY_CONTRACT : stakeData.stakeToken,
+    spender: useStakeGateway
+      ? stakeUmbrellaConfig[currentChainId].stakeGateway
+      : stakeData.stakeToken,
   });
 
   setLoadingTxns(fetchingApprovedAmount);
@@ -113,7 +116,9 @@ export const UmbrellaActions = ({
   const tokenApproval = {
     user,
     token: selectedToken.address,
-    spender: useStakeGateway ? STAKE_GATEWAY_CONTRACT : stakeData.stakeToken,
+    spender: useStakeGateway
+      ? stakeUmbrellaConfig[currentChainId].stakeGateway
+      : stakeData.stakeToken,
     amount: approvedAmount?.toString() || '0',
   };
 
@@ -181,7 +186,7 @@ export const UmbrellaActions = ({
 
   const getStakeGatewayTxData = (amountToStake: string) => {
     setMainTxState({ ...mainTxState, loading: true });
-    const stakeService = new StakeGatewayService(STAKE_GATEWAY_CONTRACT);
+    const stakeService = new StakeGatewayService(stakeUmbrellaConfig[currentChainId].stakeGateway);
     let stakeTxData: PopulatedTransaction;
 
     if (usePermit && signatureParams) {

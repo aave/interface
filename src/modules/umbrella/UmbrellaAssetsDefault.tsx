@@ -16,7 +16,7 @@ export const UmbrellaAssetsDefault = () => {
   const [currentMarketData] = useRootStore(useShallow((store) => [store.currentMarketData]));
   const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
 
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  // const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
 
   return (
     <ListWrapper
@@ -58,7 +58,7 @@ export const UmbrellaAssetsDefault = () => {
   );
 };
 
-const DefaultAssetsListMobile = ({ stakeData }: { stakeData: FormattedStakeData }) => {};
+// const DefaultAssetsListMobile = ({ stakeData }: { stakeData: FormattedStakeData }) => {};
 
 const AssetListItem = ({ stakeData }: { stakeData: FormattedStakeData }) => {
   const [currentNetworkConfig] = useRootStore(useShallow((store) => [store.currentNetworkConfig]));
