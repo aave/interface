@@ -15,9 +15,9 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
+import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 import { StakeGatewayService } from './services/StakeGatewayService';
 import { StakeTokenService } from './services/StakeTokenService';
-import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 
 export interface UnStakeActionProps extends BoxProps {
   amountToUnStake: string;
