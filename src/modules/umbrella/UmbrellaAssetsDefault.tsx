@@ -66,10 +66,10 @@ export const UmbrellaAssetsDefault = () => {
           </ListColumn>
         </ListHeaderWrapper>
       )}
-      {!stakeData || stakeData.length === 0 ? (
+      {!stakeData || stakeData.stakeAssets.length === 0 ? (
         <>no stake assets</>
       ) : (
-        stakeData.map((data) =>
+        stakeData.stakeAssets.map((data) =>
           !isTableChangedToCards ? (
             <AssetListItem stakeData={data} />
           ) : (
