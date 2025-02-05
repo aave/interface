@@ -13,6 +13,7 @@ import { StakeAssetName } from './StakeAssets/StakeAssetName';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
 import { Row } from 'src/components/primitives/Row';
+import { NoStakeAssets } from './NoStakeAssets';
 
 export const UmrellaAssetsDefaultListContainer = () => {
   return (
@@ -50,6 +51,11 @@ export const UmbrellaAssetsDefault = () => {
       </Box>
     );
   }
+
+  if (!loading && (!stakeData || stakeData.stakeAssets.length === 0)) {
+    return <NoStakeAssets />;
+  }
+
   return (
     <>
       {!isTableChangedToCards && (
@@ -66,17 +72,14 @@ export const UmbrellaAssetsDefault = () => {
           </ListColumn>
         </ListHeaderWrapper>
       )}
-      {!stakeData || stakeData.stakeAssets.length === 0 ? (
-        <>no stake assets</>
-      ) : (
+      {stakeData &&
         stakeData.stakeAssets.map((data) =>
           !isTableChangedToCards ? (
             <AssetListItem stakeData={data} />
           ) : (
             <AssetListItemMobile stakeData={data} />
           )
-        )
-      )}
+        )}
     </>
   );
 };
