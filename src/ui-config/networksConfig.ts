@@ -258,11 +258,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.base_sepolia]: {
     name: 'Base Sepolia',
     publicJsonRPCUrl: [
-      'https://base-sepolia.blockpi.network/v1/rpc/public',
-      'https://sepolia.base.org',
       'https://base-sepolia.gateway.tenderly.co',
+      'wss://base-sepolia-rpc.publicnode.com',
     ],
-    publicJsonRPCWSUrl: 'wss://base-sepolia-rpc.publicnode.com',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',

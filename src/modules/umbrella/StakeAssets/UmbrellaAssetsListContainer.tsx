@@ -9,8 +9,8 @@ import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
-import UmbrellaAssetsList from './UmbrellaAssetsList';
 import { NoStakeAssets } from '../NoStakeAssets';
+import UmbrellaAssetsList from './UmbrellaAssetsList';
 
 export const UmbrellaAssetsListContainer = () => {
   const { loading } = useAppDataContext();

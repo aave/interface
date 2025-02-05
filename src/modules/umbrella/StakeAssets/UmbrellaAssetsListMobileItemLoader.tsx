@@ -1,8 +1,8 @@
-import { Box, Divider, Skeleton, Stack } from '@mui/material';
+import { Box, Skeleton, Stack } from '@mui/material';
+import { ListColumn } from 'src/components/lists/ListColumn';
 
 import { Row } from '../../../components/primitives/Row';
 import { ListMobileItemWrapper } from '../../dashboard/lists/ListMobileItemWrapper';
-import { ListColumn } from 'src/components/lists/ListColumn';
 
 export const UmbrellaAssetsListMobileItemLoader = () => {
   return (
