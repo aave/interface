@@ -28,7 +28,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.stakeToken}`}
         />
       </ListColumn>
-      <Row caption={<Trans>Staking APY</Trans>} captionVariant="description" mb={3}>
+      <Row mt={2} caption={<Trans>Staking APY</Trans>} captionVariant="description" mb={3}>
         <Box
           sx={{
             display: 'flex',

@@ -1529,6 +1529,10 @@ msgstr "Invalid signature"
 msgid "State"
 msgstr "State"
 
+#: src/modules/umbrella/NoStakeAssets.tsx
+msgid "There are no stake assets configured for this market"
+msgstr "There are no stake assets configured for this market"
+
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Proposal details"

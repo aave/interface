@@ -3,16 +3,13 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { NoSearchResults } from 'src/components/NoSearchResults';
-// import { Link } from 'src/components/primitives/Link';
-// import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
-// import { GENERAL } from '../../../utils/mixPanelEvents';
-// import { useStakeData } from '../hooks/useStakeData';
+import { NoStakeAssets } from '../NoStakeAssets';
 import UmbrellaAssetsList from './UmbrellaAssetsList';
 
 export const UmbrellaAssetsListContainer = () => {
@@ -34,6 +31,9 @@ export const UmbrellaAssetsListContainer = () => {
     return res.symbol.toLowerCase().includes(term) || res.iconSymbol.toLowerCase().includes(term);
   });
 
+  const noStakeAssetsConfigured =
+    !isLoadingStakedDataWithTokenBalances && !stakedDataWithTokenBalances;
+
   return (
     <ListWrapper
       titleComponent={
@@ -50,16 +50,22 @@ export const UmbrellaAssetsListContainer = () => {
         stakedDataWithTokenBalances={filteredData ?? []}
       />
 
-      {!loading && !isLoadingStakedDataWithTokenBalances && !filteredData && (
-        <NoSearchResults
-          searchTerm={searchTerm}
-          subtitle={
-            <Trans>
-              We couldn&apos;t find any assets related to your search. Try again with a different
-              asset name, symbol, or address.
-            </Trans>
-          }
-        />
+      {noStakeAssetsConfigured ? (
+        <NoStakeAssets />
+      ) : (
+        !loading &&
+        !isLoadingStakedDataWithTokenBalances &&
+        filteredData?.length === 0 && (
+          <NoSearchResults
+            searchTerm={searchTerm}
+            subtitle={
+              <Trans>
+                We couldn&apos;t find any assets related to your search. Try again with a different
+                asset name, symbol, or address.
+              </Trans>
+            }
+          />
+        )
       )}
     </ListWrapper>
   );
