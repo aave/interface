@@ -31,7 +31,7 @@ const listHeaders = [
   },
   {
     title: <Trans>Available Liquidity</Trans>,
-    sortKey: 'totalAvailableLiquidity',
+    sortKey: 'formattedAvailableLiquidity',
   },
   {
     title: (
