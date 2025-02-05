@@ -17,6 +17,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { StakeGatewayService } from './services/StakeGatewayService';
 import { StakeTokenService } from './services/StakeTokenService';
+import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 
 export interface UnStakeActionProps extends BoxProps {
   amountToUnStake: string;
@@ -27,8 +28,6 @@ export interface UnStakeActionProps extends BoxProps {
   stakeData: MergedStakeData;
   redeemATokens: boolean;
 }
-
-const STAKE_GATEWAY_CONTRACT = '0xd892E331573306F7D3e637FBC26D43c466444789';
 
 export const UnStakeActions = ({
   amountToUnStake,
@@ -64,7 +63,7 @@ export const UnStakeActions = ({
   } = useApprovedAmount({
     chainId: currentChainId,
     token: selectedToken,
-    spender: STAKE_GATEWAY_CONTRACT,
+    spender: stakeUmbrellaConfig[currentChainId].stakeGateway,
   });
 
   setLoadingTxns(fetchingApprovedAmount);
@@ -80,7 +79,7 @@ export const UnStakeActions = ({
   const tokenApproval = {
     user,
     token: selectedToken,
-    spender: STAKE_GATEWAY_CONTRACT,
+    spender: stakeUmbrellaConfig[currentChainId].stakeGateway,
     amount: amountToUnStake,
   };
 
@@ -106,7 +105,9 @@ export const UnStakeActions = ({
       let unstakeTxData: PopulatedTransaction;
       if (stakeData.underlyingIsWaToken) {
         // use the stake gateway
-        const stakeService = new StakeGatewayService(STAKE_GATEWAY_CONTRACT);
+        const stakeService = new StakeGatewayService(
+          stakeUmbrellaConfig[currentChainId].stakeGateway
+        );
         if (redeemATokens) {
           unstakeTxData = stakeService.redeemATokens(
             user,

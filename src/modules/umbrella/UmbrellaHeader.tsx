@@ -41,7 +41,7 @@ export const UmbrellaHeader: React.FC = () => {
               variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
             >
-              <Trans>Staking 00</Trans>
+              <Trans>Staking</Trans>
             </Typography>
             <MarketSwitcher />
           </Box>

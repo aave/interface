@@ -19,10 +19,10 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
+import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 import { StakeGatewayService } from './services/StakeGatewayService';
 import { StakeTokenService } from './services/StakeTokenService';
 import { StakeInputAsset } from './UmbrellaModalContent';
-import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 
 export interface StakeActionProps extends BoxProps {
   amountToStake: string;
