@@ -1,12 +1,11 @@
 import { ChainId } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
-import { ExternalLinkIcon, RefreshIcon } from '@heroicons/react/outline';
+import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
-  IconButton,
   Paper,
   Stack,
   SvgIcon,
@@ -19,6 +18,7 @@ import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
 import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
+import { TokenContractTooltip } from 'src/components/infoTooltips/TokenContractTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -165,19 +165,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
 
   const distributionEnded = Date.now() / 1000 > Number(stakeData.distributionEnd);
 
-  const TokenContractTooltip = (
-    <DarkTooltip title="View token contract" sx={{ display: { xsm: 'none' } }}>
-      <IconButton
-        LinkComponent={Link}
-        href={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
-      >
-        <SvgIcon sx={{ fontSize: '14px' }}>
-          <ExternalLinkIcon />
-        </SvgIcon>
-      </IconButton>
-    </DarkTooltip>
-  );
-
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
       <Box
@@ -192,7 +179,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           <Typography variant="h3">
             <Stack direction="row" alignItems="center" gap={1}>
               <Trans>Stake</Trans> {stakeTitle}
-              {TokenContractTooltip}
+              <TokenContractTooltip
+                explorerUrl={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
+              />
             </Stack>
           </Typography>
           <Typography variant="caption" color="text.secondary">
@@ -255,7 +244,11 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <Stack direction="column" ml={2} alignItems="start" justifyContent="center">
               <Stack direction="row">
                 <Typography variant={xsm ? 'subheader1' : 'h4'}>{stakedToken}</Typography>
-                <Box sx={{ display: { xsm: 'none' } }}>{TokenContractTooltip}</Box>
+                <Box sx={{ display: { xsm: 'none' } }}>
+                  <TokenContractTooltip
+                    explorerUrl={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
+                  />
+                </Box>
               </Stack>
               <Typography
                 sx={{ display: { xsm: 'none' } }}

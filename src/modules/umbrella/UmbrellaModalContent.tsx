@@ -1,5 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import { valueToBigNumber } from '@aave/math-utils';
+import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Typography } from '@mui/material';
 import React, { useRef, useState } from 'react';
@@ -10,10 +10,10 @@ import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasE
 import { TxSuccessView } from 'src/components/transactions/FlowCommons/Success';
 import {
   DetailsCooldownLine,
+  DetailsHFLine,
+  DetailsNumberLine,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
-import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
 import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
 import {
   ComputedReserveData,
@@ -23,8 +23,6 @@ import {
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { STAKE } from 'src/utils/mixPanelEvents';
 
@@ -47,46 +45,39 @@ export interface StakeInputAsset {
   address: string;
   aToken?: boolean;
   balance: string;
-  rawBalance: string;
 }
 
 const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
   return stakeData.underlyingIsWaToken
     ? [
+        // stata token
         {
           address: stakeData.waTokenData.waTokenUnderlying,
           symbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
           iconSymbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
           balance: stakeData.formattedBalances.underlyingWaTokenBalance,
-          rawBalance: stakeData.balances.underlyingWaTokenBalance,
         },
         {
           address: stakeData.waTokenData.waTokenAToken,
           //  Note: using token symbol the same as underlying for aToken handling given we dont have tokens for "aBasSepUSDC"
-          symbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
+          symbol: `a${stakeData.waTokenData.waTokenUnderlyingSymbol}`,
           iconSymbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
-
           balance: stakeData.formattedBalances.underlyingWaTokenATokenBalance,
-          rawBalance: stakeData.balances.underlyingWaTokenATokenBalance,
           aToken: true,
         },
       ]
     : [
         {
-          // stata tokens
           address: stakeData.stakeTokenUnderlying,
-          symbol: stakeData.stakeTokenSymbol,
-          iconSymbol: stakeData.stakeTokenSymbol,
+          symbol: stakeData.underlyingTokenSymbol,
+          iconSymbol: stakeData.underlyingTokenSymbol,
           balance: stakeData.formattedBalances.underlyingTokenBalance,
-          rawBalance: stakeData.balances.underlyingTokenBalance,
         },
       ];
 };
 
 export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve }: StakeProps) => {
-  const { readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
 
   // states
@@ -97,8 +88,11 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
 
   const [inputToken, setInputToken] = useState<StakeInputAsset>(assets[0]);
 
+  const underlyingBalance = valueToBigNumber(inputToken.balance || '0');
+
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? inputToken.balance : _amount;
+  const stakingAToken = inputToken.aToken;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
@@ -106,18 +100,22 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
     setAmount(value);
   };
 
-  const { isWrongNetwork, requiredChainId } = useIsWrongNetwork();
+  const { isWrongNetwork } = useIsWrongNetwork();
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
   if (txState.success)
     return (
-      <TxSuccessView action={<Trans>Staked</Trans>} amount={amountRef.current} symbol={'test'} />
+      <TxSuccessView
+        action={<Trans>Staked</Trans>}
+        amount={amountRef.current}
+        symbol={inputToken.symbol}
+      />
     );
 
   let healthFactorAfterStake = valueToBigNumber(1.6);
-  if (inputToken.aToken) {
+  if (stakingAToken) {
     // We use same function for checking HF as withdraw
     healthFactorAfterStake = calculateHFAfterWithdraw({
       user,
@@ -137,26 +135,20 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
     displayBlockingStake = true;
   }
 
+  const amountInUsd = valueToBigNumber(amount || '0')
+    .multipliedBy(stakeData.stakeTokenPrice)
+    .shiftedBy(-USD_DECIMALS)
+    .toString();
+
   return (
     <>
-      <TxModalTitle title="Stake" symbol={''} />
-
-      {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning
-          networkName={currentNetworkConfig.name}
-          chainId={requiredChainId}
-          funnel={'Stake Modal'}
-        />
-      )}
-
-      <CooldownWarning />
+      <CooldownWarning cooldownSeconds={stakeData.cooldownSeconds} />
 
       <AssetInput
         value={amount}
         onChange={handleChange}
         onSelect={setInputToken}
-        // usdValue={amountInUsd.toString()}
-        usdValue="0"
+        usdValue={amountInUsd}
         symbol={inputToken.symbol}
         assets={assets}
         isMaxSelected={isMaxSelected}
@@ -170,12 +162,21 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
         </Typography>
       )}
       <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
-        {/* <DetailsNumberLine
-          description={<Trans>Staking APR</Trans>}
-          value={Number(stakeData?.stakeApy || '0') / 10000}
-          percent
-        /> */}
-        <DetailsCooldownLine cooldownDays={+stakeData.cooldownSeconds} />
+        {stakingAToken && (
+          <>
+            <DetailsNumberLine
+              description={<Trans>Remaining supply</Trans>}
+              value={underlyingBalance.minus(amount || '0').toString(10)}
+              symbol={inputToken.symbol}
+            />
+            <DetailsHFLine
+              visibleHfChange={!!_amount}
+              healthFactor={user ? user.healthFactor : '-1'}
+              futureHealthFactor={healthFactorAfterStake.toString(10)}
+            />
+          </>
+        )}
+        <DetailsCooldownLine cooldownSeconds={stakeData.cooldownSeconds} />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}

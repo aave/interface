@@ -1,10 +1,9 @@
 import { Trans } from '@lingui/macro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import AddIcon from '@mui/icons-material/Add';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import StartIcon from '@mui/icons-material/Start';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,6 +16,7 @@ import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { SecondsToString } from 'src/modules/staking/StakingPanel';
 
 // Styled component for the menu items to add gap between icon and text
 const StyledMenuItem = styled(MenuItem)({
@@ -37,7 +37,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
   const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaUnstake, openUmbrellaClaim } =
     useModalContext();
   const now = useCurrentTimestamp(1);
-  const { breakpoints } = useTheme();
+  const { breakpoints, palette } = useTheme();
   const { addERC20Token } = useWeb3Context();
 
   const isMobile = useMediaQuery(breakpoints.down('lg'));
@@ -45,6 +45,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
   const endOfCooldown = stakeData?.cooldownData.endOfCooldown || 0;
   const unstakeWindow = stakeData?.cooldownData.withdrawalWindow || 0;
   const cooldownTimeRemaining = endOfCooldown - now;
+  const unstakeTimeRemaining = endOfCooldown + unstakeWindow - now;
 
   const isCooldownActive = cooldownTimeRemaining > 0;
   const isUnstakeWindowActive = endOfCooldown < now && now < endOfCooldown + unstakeWindow;
@@ -67,36 +68,37 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
     setAnchorEl(null);
   };
 
+  const { underlyingWaTokenBalance, underlyingWaTokenATokenBalance, underlyingTokenBalance } =
+    stakeData.formattedBalances;
+
+  const totalAvailableToStake =
+    Number(underlyingTokenBalance) +
+    Number(underlyingWaTokenBalance) +
+    Number(underlyingWaTokenATokenBalance);
+
   return (
     <div>
       {stakeData.balances.stakeTokenBalance === '0' ? (
-        <>
-          <IconButton
-            style={{
-              borderRadius: 4,
-              width: isMobile ? '100%' : 'auto',
-              color: '#FFFFFF',
-              backgroundColor: theme.palette.mode === 'light' ? '#383D51' : '#383D51',
-            }}
-            onClick={() =>
-              openUmbrella(
-                stakeData.stakeToken,
-                stakeData.stakeTokenSymbol,
-                stakeData.waTokenData.waTokenAToken,
-                stakeData.waTokenData.waTokenUnderlying
-              )
-            }
-            size="medium"
-          >
-            <AddIcon />
-          </IconButton>
-        </>
+        <Button
+          disabled={totalAvailableToStake === 0}
+          fullWidth={isMobile}
+          variant="contained"
+          onClick={() =>
+            openUmbrella(
+              stakeData.stakeToken,
+              stakeData.stakeTokenSymbol,
+              stakeData.waTokenData.waTokenAToken,
+              stakeData.waTokenData.waTokenUnderlying
+            )
+          }
+        >
+          <Trans>Stake</Trans>
+        </Button>
       ) : (
         <>
           <IconButton
             style={{
               width: isMobile ? '100%' : 'auto',
-
               backgroundColor: theme.palette.mode === 'light' ? '#F7F7F9' : '#383D51',
               borderRadius: 4,
             }}
@@ -129,9 +131,23 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                 }
               >
                 <AccessTimeIcon />
-                <Typography color="text.primary">
-                  <Trans>Cooldown</Trans>
-                </Typography>
+                {isCooldownActive && !availableToReactivateCooldown ? (
+                  <Stack
+                    sx={{ width: '100%' }}
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Typography color="text.primary">
+                      <Trans>Cooling down</Trans>
+                    </Typography>
+                    <Typography variant="helperText">
+                      <SecondsToString seconds={cooldownTimeRemaining} />
+                    </Typography>
+                  </Stack>
+                ) : (
+                  <Trans>Cooldown to unstake</Trans>
+                )}
               </StyledMenuItem>
             ) : (
               <StyledMenuItem
@@ -142,7 +158,19 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                 disabled={!isUnstakeWindowActive}
               >
                 <StartIcon sx={{ transform: 'rotate(180deg)' }} />
-                <Typography>Withdraw</Typography>
+                <Stack
+                  sx={{ width: '100%' }}
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Typography color="text.primary">
+                    <Trans>Withdraw</Trans>
+                  </Typography>
+                  <Typography variant="helperText">
+                    <SecondsToString seconds={unstakeTimeRemaining} />
+                  </Typography>
+                </Stack>
               </StyledMenuItem>
             )}
 
@@ -181,9 +209,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                 });
               }}
             >
-              <WalletIcon
-                sx={{ width: '14px', height: '14px', '&:hover': { stroke: '#F1F1F3' } }}
-              />
+              <WalletIcon sx={{ width: '14px', height: '14px', stroke: palette.text.primary }} />
               <Typography>Add token to wallet</Typography>
             </StyledMenuItem>
           </Menu>

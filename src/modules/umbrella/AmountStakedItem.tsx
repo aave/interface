@@ -5,6 +5,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import { ReactElement } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { timeMessage } from 'src/helpers/timeHelper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
@@ -30,12 +31,19 @@ export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) 
 
   return (
     <Stack direction="column" alignItems="center" justifyContent="center">
-      <ListValueColumn
-        value={stakeTokenBalance}
-        subValue={stakeTokenBalanceUSD}
-        withTooltip
-        disabled={stakeTokenBalance === '0'}
-      />
+      {!isCooldownActive && !isUnstakeWindowActive ? (
+        <>
+          <FormattedNumber compact value={stakeTokenBalance} variant="main16" />
+          <ReserveSubheader value={stakeTokenBalanceUSD} />
+        </>
+      ) : (
+        <ListValueColumn
+          value={stakeTokenBalance}
+          subValue={stakeTokenBalanceUSD}
+          withTooltip
+          disabled={stakeTokenBalance === '0'}
+        />
+      )}
       {isCooldownActive && (
         <Countdown
           timeRemaining={cooldownTimeRemaining}

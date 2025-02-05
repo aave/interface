@@ -22,6 +22,7 @@ export interface IconData {
 const IconWrapper = styled(Box)<{ expanded: boolean }>(({ theme, expanded }) => ({
   display: 'flex',
   alignItems: 'center',
+  gap: expanded ? '2px' : '0',
   transition: theme.transitions.create('width'),
   width: expanded ? 'auto' : 'fit-content',
   maxWidth: '240px',

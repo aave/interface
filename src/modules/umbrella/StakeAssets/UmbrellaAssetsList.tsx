@@ -6,7 +6,6 @@ import { useMemo, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
 import {
@@ -31,7 +30,7 @@ const listHeaders = [
     sortKey: 'totalAPY',
   },
   {
-    title: <Trans>Amount Staked</Trans>,
+    title: <Trans>Your Staked Amount</Trans>,
     sortKey: 'stakeTokenBalance',
   },
   //   {
@@ -63,7 +62,6 @@ const listHeaders = [
 ];
 
 type UmbrelaAssetsListProps = {
-  reserves: ComputedReserveData[];
   loading: boolean;
   stakedDataWithTokenBalances: MergedStakeData[];
   isLoadingStakedDataWithTokenBalances: boolean;
@@ -149,7 +147,7 @@ export default function UmbrellaAssetsList({
           {listHeaders.map((col) => (
             <ListColumn
               isRow={col.sortKey === 'symbol'}
-              minWidth={col.sortKey === 'symbol' ? 250 : undefined}
+              minWidth={col.sortKey === 'symbol' ? 275 : undefined}
               key={col.sortKey}
             >
               <ListHeaderTitle
