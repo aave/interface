@@ -33,10 +33,6 @@ const listHeaders = [
     title: <Trans>Your Staked Amount</Trans>,
     sortKey: 'stakeTokenBalance',
   },
-  //   {
-  //     title: <Trans>Max Slashing</Trans>,
-  //     sortKey: 'supplyAPY',
-  //   },
   {
     title: <Trans>Available to Stake</Trans>,
     sortKey: 'totalAvailableToStake',
@@ -47,18 +43,7 @@ const listHeaders = [
   },
   {
     title: <></>,
-    // sortKey: 'TODO',
   },
-  //   {
-  //     title: (
-  //       <VariableAPYTooltip
-  //         text={<Trans>Borrow APY, variable</Trans>}
-  //         key="APY_list_variable_type"
-  //         variant="subheader2"
-  //       />
-  //     ),
-  //     sortKey: 'variableBorrowAPY',
-  //   },
 ];
 
 type UmbrelaAssetsListProps = {
@@ -75,8 +60,6 @@ export default function UmbrellaAssetsList({
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
-
-  console.log('stakedDataWithTokenBalances', stakedDataWithTokenBalances);
 
   const sortedData = useMemo(() => {
     if (!stakedDataWithTokenBalances) return [];
@@ -136,7 +119,7 @@ export default function UmbrellaAssetsList({
       </>
     );
   }
-  // Hide list when no results, via search term or if a market has all/no frozen/unfrozen assets
+  // Hide list when no results, via search term or if a market has no assets
   if (stakedDataWithTokenBalances == undefined || stakedDataWithTokenBalances.length === 0)
     return null;
 
@@ -156,7 +139,6 @@ export default function UmbrellaAssetsList({
                 setSortName={setSortName}
                 setSortDesc={setSortDesc}
                 sortKey={col.sortKey}
-                source="Markets Page"
               >
                 {col.title}
               </ListHeaderTitle>

@@ -1,43 +1,48 @@
-import { Divider, Skeleton } from '@mui/material';
+import { Box, Divider, Skeleton, Stack } from '@mui/material';
 
 import { Row } from '../../../components/primitives/Row';
 import { ListMobileItemWrapper } from '../../dashboard/lists/ListMobileItemWrapper';
+import { ListColumn } from 'src/components/lists/ListColumn';
 
 export const UmbrellaAssetsListMobileItemLoader = () => {
   return (
-    <ListMobileItemWrapper loading>
-      <Row caption={<Skeleton width={100} height={20} />} captionVariant="description" mb={3}>
-        <Skeleton width={45} height={20} />
-      </Row>
+    <ListMobileItemWrapper>
+      <ListColumn isRow>
+        <Stack direction="row" alignItems="center" height={40}>
+          <Skeleton variant="circular" width={32} height={32} />
+          <Box sx={{ pl: 2, overflow: 'hidden' }}>
+            <Skeleton width={150} height={28} />
+          </Box>
+        </Stack>
+      </ListColumn>
       <Row
-        caption={<Skeleton width={100} height={20} />}
+        caption={<Skeleton width={80} height={20} />}
         captionVariant="description"
+        mt={3}
         mb={3}
         align="flex-start"
       >
-        <Skeleton width={45} height={20} />
+        <Skeleton width={100} height={20} />
       </Row>
 
-      <Divider sx={{ mb: 3 }} />
-
-      <Row caption={<Skeleton width={100} height={20} />} captionVariant="description" mb={3}>
-        <Skeleton width={45} height={20} />
+      <Row caption={<Skeleton width={135} height={20} />} mb={6}>
+        <Skeleton width={55} height={38} />
       </Row>
       <Row
-        caption={<Skeleton width={100} height={20} />}
-        captionVariant="description"
-        mb={3}
-        align="flex-start"
-      >
-        <Skeleton width={45} height={20} />
-      </Row>
-      <Row
-        caption={<Skeleton width={100} height={20} />}
+        caption={<Skeleton width={120} height={20} />}
         captionVariant="description"
         mb={4}
         align="flex-start"
       >
-        <Skeleton width={45} height={20} />
+        <Skeleton width={110} height={20} />
+      </Row>
+      <Row
+        caption={<Skeleton width={120} height={20} />}
+        captionVariant="description"
+        mb={4}
+        align="flex-start"
+      >
+        <Skeleton width={75} height={20} />
       </Row>
 
       <Skeleton width="100%" height={38} />
