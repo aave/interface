@@ -1,4 +1,4 @@
-import { normalize, valueToBigNumber } from '@aave/math-utils';
+import { normalize, normalizeBN, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import { useStakeData, useUserStakeData } from 'src/modules/umbrella/hooks/useStakeData';
 import {
@@ -14,6 +14,10 @@ import {
   useExtendedUserSummaryAndIncentives,
 } from '../pool/useExtendedUserSummaryAndIncentives';
 import { combineQueries } from '../pool/utils';
+import {
+  FormattedReservesAndIncentives,
+  usePoolFormattedReserves,
+} from '../pool/usePoolFormattedReserves';
 
 interface FormattedBalance {
   stakeTokenBalance: string;
@@ -52,6 +56,63 @@ export interface MergedStakeData extends StakeData {
   weightedAverageApy: string;
 }
 
+export interface FormattedStakeData {
+  tokenAddress: string;
+  stakeTokenPrice: string;
+  stakeTokenTotalSupply: string;
+  totalSupplyUsd: string;
+  totalRewardApy: string;
+  iconSymbol: string;
+  symbol: string;
+}
+
+const formatStakeData = (
+  stakeData: StakeData[],
+  reserves: FormattedReservesAndIncentives[]
+): FormattedStakeData[] => {
+  return stakeData.map((stakeItem) => {
+    const stakeTokenPrice = normalizeBN(stakeItem.stakeTokenPrice, USD_DECIMALS).toString();
+    const stakeTokenTotalSupply = normalizeBN(
+      stakeItem.stakeTokenTotalSupply,
+      stakeItem.underlyingTokenDecimals
+    ).toString();
+    const totalSupplyUsd = valueToBigNumber(stakeTokenTotalSupply)
+      .multipliedBy(stakeTokenPrice)
+      .toString();
+
+    let totalRewardApy = stakeItem.rewards.reduce((acc, reward) => {
+      return acc.plus(reward.apy);
+    }, valueToBigNumber('0'));
+
+    if (stakeItem.underlyingIsWaToken) {
+      const matchingReserve = reserves.find(
+        (reserve) =>
+          reserve.aTokenAddress.toLowerCase() === stakeItem.waTokenData.waTokenAToken.toLowerCase()
+      );
+
+      if (!matchingReserve) {
+        throw new Error('Reserve not found');
+      }
+
+      totalRewardApy = totalRewardApy.plus(matchingReserve.supplyAPY);
+    }
+
+    return {
+      tokenAddress: stakeItem.stakeToken,
+      symbol: stakeItem.underlyingIsWaToken
+        ? stakeItem.waTokenData.waTokenUnderlyingSymbol
+        : stakeItem.stakeTokenSymbol,
+      iconSymbol: stakeItem.underlyingIsWaToken
+        ? stakeItem.waTokenData.waTokenUnderlyingSymbol
+        : stakeItem.stakeTokenSymbol,
+      stakeTokenPrice,
+      stakeTokenTotalSupply,
+      totalSupplyUsd,
+      totalRewardApy: totalRewardApy.toString(),
+    };
+  });
+};
+
 const formatUmbrellaSummary = (
   stakeData: StakeData[],
   userStakeData: StakeUserData[],
@@ -77,7 +138,7 @@ const formatUmbrellaSummary = (
 
       aggregatedTotalStakedUSD = aggregatedTotalStakedUSD.plus(underlyingBalanceValue);
 
-      if (stakeItem.rewards[0]?.apy && stakeItem.rewards[0]?.apy > '0') {
+      if (stakeItem.rewards[0]?.apy && stakeItem.rewards[0]?.apy !== '0') {
         const apy = valueToBigNumber(stakeItem.rewards[0].apy);
         weightedApySum = weightedApySum.plus(underlyingBalanceValue.multipliedBy(apy));
         apyTotalWeight = apyTotalWeight.plus(underlyingBalanceValue);
@@ -200,6 +261,17 @@ export const useUmbrellaSummary = (marketData: MarketDataType) => {
   const { data, isPending } = combineQueries(
     [stakeDataQuery, userStakeDataQuery, userReservesQuery] as const,
     formatUmbrellaSummary
+  );
+  return { data, loading: isPending };
+};
+
+export const useStakeDataSummary = (marketData: MarketDataType) => {
+  const reservesQuery = usePoolFormattedReserves(marketData);
+  const stakeDataQuery = useStakeData(marketData);
+
+  const { data, isPending } = combineQueries(
+    [stakeDataQuery, reservesQuery] as const,
+    formatStakeData
   );
   return { data, loading: isPending };
 };

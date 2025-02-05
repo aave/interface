@@ -39,11 +39,7 @@ export const UmbrellaAssetsListContainer = () => {
       titleComponent={
         <TitleWithSearchBar
           onSearchTermChange={setSearchTerm}
-          title={
-            <>
-              <Trans>Assets to stake</Trans>
-            </>
-          }
+          title={<Trans>Assets to stake</Trans>}
           searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
         />
       }

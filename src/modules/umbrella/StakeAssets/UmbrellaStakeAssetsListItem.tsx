@@ -18,7 +18,10 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
     <ListItem px={6} minHeight={76} sx={{ cursor: 'default' }} button>
       <ListColumn isRow minWidth={275}>
         <StakeAssetName
-          stakeAsset={umbrellaStakeAsset}
+          iconSymbol={umbrellaStakeAsset.iconSymbol}
+          symbol={umbrellaStakeAsset.symbol}
+          totalAmountStaked={umbrellaStakeAsset.formattedStakeTokenData.totalAmountStaked}
+          totalAmountStakedUSD={umbrellaStakeAsset.formattedStakeTokenData.totalAmountStakedUSD}
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.stakeToken}`}
         />
       </ListColumn>

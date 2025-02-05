@@ -35,7 +35,7 @@ export interface StakeActionProps extends BoxProps {
   isMaxSelected: boolean;
 }
 
-const STAKE_GATEWAY_CONTRACT = '0x57c6a660a271A1A23cC1cc283B98Ac2C01Ad3695';
+const STAKE_GATEWAY_CONTRACT = '0xd892E331573306F7D3e637FBC26D43c466444789';
 
 export const UmbrellaActions = ({
   amountToStake,
@@ -189,7 +189,10 @@ export const UmbrellaActions = ({
         stakeTxData = stakeService.stakeATokenWithPermit(
           currentAccount,
           stakeData.stakeToken,
-          amountToStake,
+          parseUnits(
+            roundToTokenDecimals(amountWithMargin.toString(), stakeData.decimals),
+            stakeData.decimals
+          ).toString(),
           signatureParams.deadline,
           signatureParams.signature
         );

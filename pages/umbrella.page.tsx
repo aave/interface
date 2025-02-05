@@ -1,15 +1,10 @@
-// import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
-import { Trans } from '@lingui/macro';
-import { Box, Container } from '@mui/material';
 import dynamic from 'next/dynamic';
-import { ReactNode } from 'react';
-import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
-// import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
+import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer';
+import { UmbrellaAssetsDefault } from 'src/modules/umbrella/UmbrellaAssetsDefault';
 import { UmbrellaHeader } from 'src/modules/umbrella/UmbrellaHeader';
 
-// import { UmbrellaStakedAssetsListContainer } from 'src/modules/umbrella/UserStakedAssets/UmbrellaStakedAssetsListContainer';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 const UmbrellaStakeModal = dynamic(() =>
@@ -34,70 +29,16 @@ const UnStakeModal = dynamic(() =>
 const UmbrellaClaimModal = dynamic(() =>
   import('../src/modules/umbrella/UmbrellaClaimModal').then((module) => module.UmbrellaClaimModal)
 );
-interface MarketContainerProps {
-  children: ReactNode;
-}
-export const marketContainerProps = {
-  sx: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-    pb: '39px',
-    px: {
-      xs: 2,
-      xsm: 5,
-      sm: 12,
-      md: 5,
-      lg: 0,
-      xl: '96px',
-      xxl: 0,
-    },
-    maxWidth: {
-      xs: 'unset',
-      lg: '1240px',
-      xl: 'unset',
-      xxl: '1440px',
-    },
-  },
-};
-export const MarketContainer = ({ children }: MarketContainerProps) => {
-  return <Container {...marketContainerProps}>{children}</Container>;
-};
 
-// TODO: Hooks for staking tokens
-// TODO: Hooks for user positions for top panel
 export default function UmbrellaStaking() {
   const { currentAccount } = useWeb3Context();
-
-  if (!currentAccount) {
-    return (
-      <ConnectWalletPaper
-        description={
-          <Trans>
-            We couldn’t detect a wallet. Connect a wallet to view your staking positions and
-            rewards.
-          </Trans>
-        }
-      />
-    );
-  }
 
   return (
     <>
       <UmbrellaHeader />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          flex: 1,
-          mt: { xs: '-32px', lg: '-46px', xl: '-44px', xxl: '-48px' },
-        }}
-      >
-        <MarketContainer>
-          <UmbrellaAssetsListContainer />
-        </MarketContainer>
-      </Box>
+      <ContentContainer>
+        {currentAccount ? <UmbrellaAssetsListContainer /> : <UmbrellaAssetsDefault />}
+      </ContentContainer>
     </>
   );
 }
