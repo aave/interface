@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, Typography, useMediaQuery } from '@mui/material';
+import { Box, Skeleton, Stack, Typography, useMediaQuery } from '@mui/material';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -11,13 +11,10 @@ import { useShallow } from 'zustand/shallow';
 
 import { StakeAssetName } from './StakeAssets/StakeAssetName';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
+import { Row } from 'src/components/primitives/Row';
 
-export const UmbrellaAssetsDefault = () => {
-  const [currentMarketData] = useRootStore(useShallow((store) => [store.currentMarketData]));
-  const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
-
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
-
+export const UmrellaAssetsDefaultListContainer = () => {
   return (
     <ListWrapper
       titleComponent={
@@ -26,39 +23,63 @@ export const UmbrellaAssetsDefault = () => {
         </Typography>
       }
     >
-      {loading ? (
-        <>
-          <DefaultAssetListItemLoader />
-          <DefaultAssetListItemLoader />
-          <DefaultAssetListItemLoader />
-          <DefaultAssetListItemLoader />
-        </>
-      ) : (
-        <>
-          <ListHeaderWrapper>
-            <ListColumn isRow>
-              <ListHeaderTitle>
-                <Trans>Asset</Trans>
-              </ListHeaderTitle>
-            </ListColumn>
-            <ListColumn>
-              <ListHeaderTitle>
-                <Trans>APY</Trans>
-              </ListHeaderTitle>
-            </ListColumn>
-          </ListHeaderWrapper>
-          {!stakeData || stakeData.length === 0 ? (
-            <>no stake assets</>
-          ) : (
-            stakeData.map((data) => <AssetListItem stakeData={data} />)
-          )}
-        </>
-      )}
+      <UmbrellaAssetsDefault />
     </ListWrapper>
   );
 };
+export const UmbrellaAssetsDefault = () => {
+  const [currentMarketData] = useRootStore(useShallow((store) => [store.currentMarketData]));
+  const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
 
-const DefaultAssetsListMobile = ({ stakeData }: { stakeData: FormattedStakeData }) => {};
+  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+
+  if (loading) {
+    return isTableChangedToCards ? (
+      <>
+        <DefaultAssetListItemLoaderMobile />
+        <DefaultAssetListItemLoaderMobile />
+        <DefaultAssetListItemLoaderMobile />
+        <DefaultAssetListItemLoaderMobile />
+      </>
+    ) : (
+      <Box pt={10}>
+        <DefaultAssetListItemLoader />
+        <DefaultAssetListItemLoader />
+        <DefaultAssetListItemLoader />
+        <DefaultAssetListItemLoader />
+      </Box>
+    );
+  }
+  return (
+    <>
+      {!isTableChangedToCards && (
+        <ListHeaderWrapper>
+          <ListColumn isRow>
+            <ListHeaderTitle>
+              <Trans>Asset</Trans>
+            </ListHeaderTitle>
+          </ListColumn>
+          <ListColumn>
+            <ListHeaderTitle>
+              <Trans>APY</Trans>
+            </ListHeaderTitle>
+          </ListColumn>
+        </ListHeaderWrapper>
+      )}
+      {!stakeData || stakeData.length === 0 ? (
+        <>no stake assets</>
+      ) : (
+        stakeData.map((data) =>
+          !isTableChangedToCards ? (
+            <AssetListItem stakeData={data} />
+          ) : (
+            <AssetListItemMobile stakeData={data} />
+          )
+        )
+      )}
+    </>
+  );
+};
 
 const AssetListItem = ({ stakeData }: { stakeData: FormattedStakeData }) => {
   const [currentNetworkConfig] = useRootStore(useShallow((store) => [store.currentNetworkConfig]));
@@ -85,15 +106,78 @@ const AssetListItem = ({ stakeData }: { stakeData: FormattedStakeData }) => {
   );
 };
 
+const AssetListItemMobile = ({ stakeData }: { stakeData: FormattedStakeData }) => {
+  const [currentNetworkConfig] = useRootStore(useShallow((store) => [store.currentNetworkConfig]));
+  return (
+    <ListMobileItemWrapper>
+      <ListColumn isRow>
+        <StakeAssetName
+          iconSymbol={stakeData.iconSymbol}
+          symbol={stakeData.symbol}
+          totalAmountStaked={stakeData.stakeTokenTotalSupply}
+          totalAmountStakedUSD={stakeData.totalSupplyUsd}
+          explorerUrl={`${currentNetworkConfig.explorerLink}/address/${stakeData.tokenAddress}`}
+        />
+      </ListColumn>
+      <Row mt={8} px={2} caption={<Trans>Staking APY</Trans>} captionVariant="description" mb={3}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: { xs: 'flex-end' },
+            justifyContent: 'center',
+            textAlign: 'center',
+          }}
+        >
+          <FormattedNumber
+            value={stakeData.totalRewardApy}
+            percent
+            variant="secondary14"
+            visibleDecimals={2}
+          />
+        </Box>
+      </Row>
+    </ListMobileItemWrapper>
+  );
+};
+
 const DefaultAssetListItemLoader = () => {
   return (
-    <ListItem px={6} minHeight={76}>
-      <ListColumn isRow maxWidth={280}>
+    <ListItem px={4} minHeight={76}>
+      <ListColumn isRow minWidth={275}>
         <Skeleton variant="circular" width={32} height={32} />
-        <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
-          <Skeleton width={75} height={24} />
+        <Box sx={{ pl: 2, overflow: 'hidden' }}>
+          <Skeleton width={150} height={28} />
         </Box>
       </ListColumn>
+      <ListColumn>
+        <Skeleton width={50} height={28} />
+      </ListColumn>
     </ListItem>
+  );
+};
+
+const DefaultAssetListItemLoaderMobile = () => {
+  return (
+    <ListMobileItemWrapper>
+      <ListColumn isRow>
+        <Stack direction="row" alignItems="center" height={40}>
+          <Skeleton variant="circular" width={32} height={32} />
+          <Box sx={{ pl: 2, overflow: 'hidden' }}>
+            <Skeleton width={150} height={28} />
+          </Box>
+        </Stack>
+      </ListColumn>
+      <Row
+        mt={8}
+        mb={3}
+        px={2}
+        caption={<Skeleton width={100} height={20} />}
+        captionVariant="description"
+        align="flex-start"
+      >
+        <Skeleton width={45} height={20} />
+      </Row>
+    </ListMobileItemWrapper>
   );
 };
