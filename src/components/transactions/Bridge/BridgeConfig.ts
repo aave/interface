@@ -2,6 +2,7 @@ import { ChainId } from '@aave/contract-helpers';
 import {
   AaveV3Arbitrum,
   AaveV3ArbitrumSepolia,
+  AaveV3Base,
   AaveV3Ethereum,
   AaveV3Sepolia,
 } from '@bgd-labs/aave-address-book';
@@ -92,6 +93,44 @@ const prodConfig: Config[] = [
         logoURI:
           'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
         oracle: AaveV3Arbitrum.ASSETS.GHO.ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
+      {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: 42161, // Arb
+        logoURI:
+          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
+      },
+    ],
+  },
+  {
+    sourceChainId: ChainId.base,
+    chainSelector: '15971525489660198786',
+    burnMintTokenPool: '0x98217A06721Ebf727f2C8d9aD7718ec28b7aAe34', // TODO: address book
+    router: '0x881e3A65B4d4a04dD529061dd0071cf975F58bCD',
+    tokenOracle: '0xb05984ad83c20b3ade7bf97a9a0cb539dde28dbb',
+    wrappedNativeOracle: AaveV3Base.ASSETS.WETH.ORACLE,
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/GPpZfiGoDChLsiWoMG5fxXdRNEYrsVDrKJ39moGcbz6i`,
+    feeTokens: [
+      {
+        name: 'Gho Token',
+        address: '0x6Bb7a212910682DCFdbd5BCBb3e28FB4E8da10Ee', // AaveV3Base.ASSETS.GHO.UNDERLYING,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: 42161,
+        logoURI:
+          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+        oracle: '0xfc421aD3C883Bf9E7C4f42dE845C4e4405799e73', //AaveV3Arbitrum.ASSETS.GHO.ORACLE,
         extensions: {
           isNative: false,
         },
