@@ -24,7 +24,7 @@ export const UmbrellaAssetsListContainer = () => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
 
-  const filteredData = stakedDataWithTokenBalances?.filter((res) => {
+  const filteredData = stakedDataWithTokenBalances?.stakeData.filter((res) => {
     if (!searchTerm) return true;
     const term = searchTerm.toLowerCase().trim();
 

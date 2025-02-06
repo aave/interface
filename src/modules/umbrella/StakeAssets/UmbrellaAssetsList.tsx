@@ -139,17 +139,11 @@ export default function UmbrellaAssetsList({
         </ListHeaderWrapper>
       )}
 
-      {sortedData.map((umbrellaStakeAsset) =>
+      {sortedData.map((umbrellaStakeAsset, index) =>
         isTableChangedToCards ? (
-          <UmbrellaAssetsListMobileItem
-            {...umbrellaStakeAsset}
-            key={umbrellaStakeAsset.stakeToken}
-          />
+          <UmbrellaAssetsListMobileItem {...umbrellaStakeAsset} key={index} />
         ) : (
-          <UmbrellaStakeAssetsListItem
-            {...umbrellaStakeAsset}
-            key={umbrellaStakeAsset.stakeToken}
-          />
+          <UmbrellaStakeAssetsListItem {...umbrellaStakeAsset} key={index} />
         )
       )}
     </>

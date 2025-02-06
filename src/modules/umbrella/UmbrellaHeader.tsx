@@ -96,8 +96,8 @@ const UmbrellaHeaderUserDetails = ({
   const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
     useUmbrellaSummary(currentMarketData);
 
-  const totalUSDAggregateStaked = stakedDataWithTokenBalances?.[0].aggregatedTotalStakedUSD;
-  const weightedAverageApy = stakedDataWithTokenBalances?.[0].weightedAverageApy;
+  const totalUSDAggregateStaked = stakedDataWithTokenBalances?.aggregatedTotalStakedUSD;
+  const weightedAverageApy = stakedDataWithTokenBalances?.weightedAverageApy;
 
   return (
     <>
