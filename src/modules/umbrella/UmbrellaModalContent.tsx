@@ -2,7 +2,7 @@ import { ChainId } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { AssetInput } from 'src/components/transactions/AssetInput';
 import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
@@ -25,6 +25,7 @@ import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { STAKE } from 'src/utils/mixPanelEvents';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { UmbrellaActions } from './UmbrellaActions';
 
@@ -82,7 +83,6 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
 
   // states
   const [_amount, setAmount] = useState('');
-  const amountRef = useRef<string>();
 
   const assets = getInputTokens(stakeData);
 
@@ -96,8 +96,12 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? inputToken.balance : value;
-    setAmount(value);
+    if (maxSelected) {
+      setAmount(inputToken.balance);
+    } else {
+      const decimalTruncatedValue = roundToTokenDecimals(value, stakeData.decimals);
+      setAmount(decimalTruncatedValue);
+    }
   };
 
   const { isWrongNetwork } = useIsWrongNetwork();
@@ -107,11 +111,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
   }
   if (txState.success)
     return (
-      <TxSuccessView
-        action={<Trans>Staked</Trans>}
-        amount={amountRef.current}
-        symbol={inputToken.symbol}
-      />
+      <TxSuccessView action={<Trans>Staked</Trans>} amount={amount} symbol={inputToken.symbol} />
     );
 
   let healthFactorAfterStake = valueToBigNumber(1.6);

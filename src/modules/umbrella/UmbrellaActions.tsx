@@ -2,7 +2,7 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { constants, PopulatedTransaction } from 'ethers';
+import { PopulatedTransaction } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
@@ -16,7 +16,6 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
@@ -98,16 +97,14 @@ export const UmbrellaActions = ({
   setLoadingTxns(fetchingApprovedAmount);
 
   const amountWithMargin = Number(amountToStake) + Number(amountToStake) * 0.1;
-  const amountToApprove =
-    isMaxSelected && selectedToken.aToken
-      ? roundToTokenDecimals(amountWithMargin.toString(), stakeData.decimals)
-      : amountToStake;
+  const addMargin = selectedToken.aToken && isMaxSelected;
+  const amount = addMargin ? amountWithMargin.toString() : amountToStake;
 
   const requiresApproval =
     Number(amountToStake) !== 0 &&
     checkRequiresApproval({
       approvedAmount: approvedAmount?.toString() || '0',
-      amount: amountToApprove,
+      amount,
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
 
@@ -127,36 +124,24 @@ export const UmbrellaActions = ({
     assetAddress: selectedToken.address,
     symbol: selectedToken.symbol,
     decimals: stakeData.decimals,
-    amountToApprove:
-      !amountToApprove || isNaN(+amountToApprove)
-        ? '0'
-        : parseUnits(amountToApprove, stakeData.decimals).toString(),
+    amountToApprove: parseUnits(amount || '0', stakeData.decimals).toString(),
     onApprovalTxConfirmed: fetchApprovedAmount,
-    signatureAmount: amountToApprove,
+    signatureAmount: amount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
 
   const { currentAccount, sendTx } = useWeb3Context();
 
   const action = async () => {
-    const parsedAmountToStake = parseUnits(amountToStake, stakeData.decimals).toString();
-    const parsedBalance = parseUnits(selectedToken.balance, stakeData.decimals).toString();
-    let amount = parsedAmountToStake;
-    if (isMaxSelected) {
-      if (selectedToken.aToken) {
-        amount = constants.MaxUint256.toString();
-      } else {
-        amount = parsedBalance;
-      }
-    }
+    const parsedAmountToStake = parseUnits(amount, stakeData.decimals).toString();
 
     try {
       let stakeTxData: PopulatedTransaction;
 
       if (useStakeGateway) {
-        stakeTxData = getStakeGatewayTxData(amount);
+        stakeTxData = getStakeGatewayTxData(parsedAmountToStake);
       } else {
-        stakeTxData = getStakeTokenTxData(amount);
+        stakeTxData = getStakeTokenTxData(parsedAmountToStake);
       }
 
       stakeTxData = await estimateGasLimit(stakeTxData);
@@ -192,10 +177,7 @@ export const UmbrellaActions = ({
         stakeTxData = stakeService.stakeATokenWithPermit(
           currentAccount,
           stakeData.stakeToken,
-          parseUnits(
-            roundToTokenDecimals(amountWithMargin.toString(), stakeData.decimals),
-            stakeData.decimals
-          ).toString(),
+          amountToStake,
           signatureParams.deadline,
           signatureParams.signature
         );
