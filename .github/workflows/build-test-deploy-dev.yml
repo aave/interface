@@ -16,12 +16,12 @@ jobs:
       (github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name &&
       !contains(github.head_ref, 'dependabot'))
     strategy:
-        matrix:
-          build:
-            - name: 'out'
-              cypress_enabled: 'false'
-            - name: 'out_cypress'
-              cypress_enabled: 'true'
+      matrix:
+        build:
+          - name: 'out'
+            cypress_enabled: 'false'
+          - name: 'out_cypress'
+            cypress_enabled: 'true'
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
@@ -100,7 +100,7 @@ jobs:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: download build
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        uses: actions/download-artifact@v4
         with:
           name: nextjs_build
           path: .next
@@ -118,7 +118,7 @@ jobs:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: download build
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        uses: actions/download-artifact@v4
         with:
           name: out
           path: out

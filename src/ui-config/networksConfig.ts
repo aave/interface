@@ -398,7 +398,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [59144]: {
     name: 'Linea',
-    privateJsonRPCUrl: '',
+    privateJsonRPCUrl: 'https://linea-mainnet.g.alchemy.com/v2/6uk5qBl8QvjpEbgF3TgZBbxWkKlmWZR-',
     publicJsonRPCUrl: ['https://1rpc.io/linea'],
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
