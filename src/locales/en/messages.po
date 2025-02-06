@@ -481,6 +481,10 @@ msgstr "{stepName}"
 msgid "Health factor"
 msgstr "Health factor"
 
+#: src/components/Warnings/CooldownWarning.tsx
+msgid "The cooldown period is the time required prior to unstaking your tokens (<0/>). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window. <1>Learn more</1>"
+msgstr "The cooldown period is the time required prior to unstaking your tokens (<0/>). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window. <1>Learn more</1>"
+
 #: src/modules/governance/proposal/VotingResults.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Reached"
@@ -1204,6 +1208,7 @@ msgstr "Wrong Network"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
+#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Staking"
 msgstr "Staking"
 
@@ -1283,10 +1288,6 @@ msgstr "Tip: Try increasing slippage or reduce input amount"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Switch"
 msgstr "Switch"
-
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "Staking 00"
-msgstr "Staking 00"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Maximum amount received"
@@ -2387,10 +2388,6 @@ msgstr "Please connect your wallet to get free testnet assets."
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
-
-#: src/components/Warnings/CooldownWarning.tsx
-msgid "The cooldown period is the time required prior to unstaking your tokens (<0/>). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<1>Learn more</1>"
-msgstr "The cooldown period is the time required prior to unstaking your tokens (<0/>). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<1>Learn more</1>"
 
 #: src/components/AddressBlockedModal.tsx
 msgid "This address is blocked on app.aave.com because it is associated with one or more"

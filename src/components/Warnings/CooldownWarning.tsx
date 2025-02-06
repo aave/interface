@@ -23,7 +23,7 @@ export const CooldownWarning = ({ cooldownSeconds }: { cooldownSeconds?: number 
           The cooldown period is the time required prior to unstaking your tokens (
           <SecondsToString seconds={cooldownTime} />
           ). You can only withdraw your assets from the Security Module after the cooldown period
-          and within the unstake window.
+          and within the unstake window.{' '}
           <Link
             href="https://docs.aave.com/faq/migration-and-staking"
             fontWeight={500}
