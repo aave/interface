@@ -14,7 +14,7 @@ export const AvailableToStakeItem = ({
   stakeData: MergedStakeData;
   isMobile?: boolean;
 }) => {
-  const { underlyingWaTokenBalance, underlyingWaTokenATokenBalance, underlyingTokenBalance } =
+  const { underlyingWaTokenBalance, aTokenBalanceAvailableToStake, underlyingTokenBalance } =
     stakeData.formattedBalances;
 
   const icons = [];
@@ -41,7 +41,7 @@ export const AvailableToStakeItem = ({
   const totalAvailableToStake =
     Number(underlyingTokenBalance) +
     Number(underlyingWaTokenBalance) +
-    Number(underlyingWaTokenATokenBalance);
+    Number(aTokenBalanceAvailableToStake);
 
   return (
     <Stack
@@ -69,7 +69,7 @@ export const AvailableToStakeItem = ({
 };
 
 export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: MergedStakeData }) => {
-  const { underlyingWaTokenATokenBalance, underlyingWaTokenBalance, underlyingTokenBalance } =
+  const { aTokenBalanceAvailableToStake, underlyingWaTokenBalance, underlyingTokenBalance } =
     stakeData.formattedBalances;
 
   const { waTokenUnderlyingSymbol } = stakeData.waTokenData;
@@ -87,11 +87,11 @@ export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: Merge
             value={underlyingWaTokenBalance}
           />
         )}
-        {underlyingWaTokenATokenBalance && (
+        {aTokenBalanceAvailableToStake && (
           <AmountAvailableItem
             symbol={waTokenUnderlyingSymbol}
             name={`a${waTokenUnderlyingSymbol}`}
-            value={underlyingWaTokenATokenBalance}
+            value={aTokenBalanceAvailableToStake}
             aToken
           />
         )}

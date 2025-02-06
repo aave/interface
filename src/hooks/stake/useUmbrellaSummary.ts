@@ -1,5 +1,6 @@
 import { normalize, normalizeBN, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
+import { calculateMaxWithdrawAmount } from 'src/components/transactions/Withdraw/utils';
 import { useStakeData, useUserStakeData } from 'src/modules/umbrella/hooks/useStakeData';
 import {
   StakeData,
@@ -8,6 +9,7 @@ import {
   StakeUserData,
 } from 'src/modules/umbrella/services/StakeDataProviderService';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 import {
   ExtendedFormattedUser,
@@ -27,6 +29,7 @@ interface FormattedBalance {
   underlyingTokenBalanceUSD: string;
   underlyingWaTokenBalance: string;
   underlyingWaTokenATokenBalance: string;
+  aTokenBalanceAvailableToStake: string;
 }
 
 interface FormattedReward {
@@ -187,6 +190,14 @@ const formatUmbrellaSummary = (
     weightedApySum = stakeTokenBalance.multipliedBy(totalRewardApy).plus(weightedApySum);
     aggregatedTotalStakedUSD = aggregatedTotalStakedUSD.plus(stakeTokenBalanceUSD);
 
+    let aTokenBalanceAvailableToStake = '0';
+    if (userReserve && reserve) {
+      aTokenBalanceAvailableToStake = roundToTokenDecimals(
+        calculateMaxWithdrawAmount(user, userReserve, reserve).toString(),
+        stakeItem.underlyingTokenDecimals
+      );
+    }
+
     acc.push({
       ...stakeItem,
       balances: matchingBalance.balances,
@@ -205,6 +216,7 @@ const formatUmbrellaSummary = (
           stakeItem.underlyingTokenDecimals
         ),
         underlyingWaTokenATokenBalance: userReserve?.underlyingBalance || '0',
+        aTokenBalanceAvailableToStake,
       },
       formattedRewards: matchingBalance.rewards.map((reward) => {
         const rewardData = stakeItem.rewards.find(
