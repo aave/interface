@@ -396,10 +396,14 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
   },
-  [59144]: {
+  [ChainId.linea]: {
     name: 'Linea',
     privateJsonRPCUrl: 'https://linea-mainnet.g.alchemy.com/v2/6uk5qBl8QvjpEbgF3TgZBbxWkKlmWZR-',
-    publicJsonRPCUrl: ['https://1rpc.io/linea'],
+    publicJsonRPCUrl: [
+      'https://1rpc.io/linea',
+      'https://linea.drpc.org',
+      'https://linea-rpc.publicnode.com',
+    ],
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,

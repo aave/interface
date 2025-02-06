@@ -685,7 +685,7 @@ export const marketsData: {
   [CustomMarket.proto_linea_v3]: {
     marketTitle: 'Linea',
     market: CustomMarket.proto_linea_v3,
-    chainId: 59144,
+    chainId: ChainId.linea,
     v3: true,
     // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/ENYSc8G3WvrbhWH8UZHrqPWYRcuyCaNmaTmoVp7uzabM`,
     addresses: {
