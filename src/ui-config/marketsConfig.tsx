@@ -32,7 +32,7 @@ export type MarketDataType = {
   marketTitle: string;
   market: CustomMarket;
   // the network the market operates on
-  chainId: number; // ChainId;
+  chainId: ChainId;
   enabledFeatures?: {
     liquiditySwap?: boolean;
     staking?: boolean;
