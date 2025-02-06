@@ -76,9 +76,14 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
     Number(underlyingWaTokenBalance) +
     Number(underlyingWaTokenATokenBalance);
 
+  const hasUnclaimedRewards = stakeData.formattedRewards.some(
+    (reward) => Number(reward.accrued) > 0
+  );
+
+  const hasStakeTokenBalance = stakeData.balances.stakeTokenBalance !== '0';
   return (
     <div>
-      {stakeData.balances.stakeTokenBalance === '0' ? (
+      {!hasStakeTokenBalance && !hasUnclaimedRewards ? (
         <Button
           disabled={totalAvailableToStake === 0}
           fullWidth={isMobile}
@@ -127,7 +132,9 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                   openUmbrellaStakeCooldown(stakeData.stakeToken, stakeData.stakeTokenSymbol);
                 }}
                 disabled={
-                  isUnstakeWindowActive || (isCooldownActive && !availableToReactivateCooldown)
+                  !hasStakeTokenBalance ||
+                  isUnstakeWindowActive ||
+                  (isCooldownActive && !availableToReactivateCooldown)
                 }
               >
                 <AccessTimeIcon />
@@ -187,7 +194,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               }}
             >
               <AddOutlinedIcon />
-              <Typography>Stake more</Typography>
+              <Typography>{hasStakeTokenBalance ? 'Stake more' : 'Stake'}</Typography>
             </StyledMenuItem>
 
             <StyledMenuItem
