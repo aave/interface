@@ -15,6 +15,7 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
+import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 import { StakeGatewayService } from './services/StakeGatewayService';
 import { StakeTokenService } from './services/StakeTokenService';
 
@@ -27,8 +28,6 @@ export interface UnStakeActionProps extends BoxProps {
   stakeData: MergedStakeData;
   redeemATokens: boolean;
 }
-
-const STAKE_GATEWAY_CONTRACT = '0xd892E331573306F7D3e637FBC26D43c466444789';
 
 export const UnStakeActions = ({
   amountToUnStake,
@@ -64,7 +63,7 @@ export const UnStakeActions = ({
   } = useApprovedAmount({
     chainId: currentChainId,
     token: selectedToken,
-    spender: STAKE_GATEWAY_CONTRACT,
+    spender: stakeUmbrellaConfig[currentChainId].stakeGateway,
   });
 
   setLoadingTxns(fetchingApprovedAmount);
@@ -80,7 +79,7 @@ export const UnStakeActions = ({
   const tokenApproval = {
     user,
     token: selectedToken,
-    spender: STAKE_GATEWAY_CONTRACT,
+    spender: stakeUmbrellaConfig[currentChainId].stakeGateway,
     amount: amountToUnStake,
   };
 
@@ -106,7 +105,9 @@ export const UnStakeActions = ({
       let unstakeTxData: PopulatedTransaction;
       if (stakeData.underlyingIsWaToken) {
         // use the stake gateway
-        const stakeService = new StakeGatewayService(STAKE_GATEWAY_CONTRACT);
+        const stakeService = new StakeGatewayService(
+          stakeUmbrellaConfig[currentChainId].stakeGateway
+        );
         if (redeemATokens) {
           unstakeTxData = stakeService.redeemATokens(
             user,
@@ -134,7 +135,7 @@ export const UnStakeActions = ({
         loading: false,
         success: true,
       });
-      queryClient.invalidateQueries({ queryKey: ['umbrella'] });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.umbrella });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);

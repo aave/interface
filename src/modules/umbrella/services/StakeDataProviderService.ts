@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -5,7 +6,19 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { StakeDataStructOutput, StakeUserDataStructOutput } from './types/StakeDataProvider';
 import { StakeDataProvider__factory } from './types/StakeDataProvider__factory';
 
-const STAKE_DATA_PROVIDER = '0x512c8f87ac4af882ec1edaaf60177af5b8b3cfff';
+interface StakeUmbrellaConfig {
+  [chain: number]: {
+    stakeDataProvider: string;
+    stakeGateway: string;
+  };
+}
+export const stakeUmbrellaConfig: StakeUmbrellaConfig = {
+  // [ChainId.mainnet]: {}, // TODO: Mainnet addresses
+  [ChainId.base_sepolia]: {
+    stakeDataProvider: '0x3246D6476dCc255b64342911D267F6CA3013068d',
+    stakeGateway: '0x50BAA7eEA31c82F829d5a41DC086391D827bd829',
+  },
+};
 
 export interface StakeData {
   stakeToken: string;
@@ -77,7 +90,10 @@ export class StakeDataProviderService {
 
   private getStakeDataProvider(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
-    return StakeDataProvider__factory.connect(STAKE_DATA_PROVIDER, provider);
+    return StakeDataProvider__factory.connect(
+      stakeUmbrellaConfig[marketData.chainId].stakeDataProvider,
+      provider
+    );
   }
 
   async getStakeData(marketData: MarketDataType) {

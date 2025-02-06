@@ -3,15 +3,15 @@ import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useStakeDataSummary, useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { MarketSwitcher } from './UmbrellaMarketSwitcher';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 export const UmbrellaHeader: React.FC = () => {
   const theme = useTheme();
@@ -41,7 +41,7 @@ export const UmbrellaHeader: React.FC = () => {
               variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
             >
-              <Trans>Staking 00</Trans>
+              <Trans>Staking</Trans>
             </Typography>
             <MarketSwitcher />
           </Box>

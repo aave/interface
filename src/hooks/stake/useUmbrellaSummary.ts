@@ -13,11 +13,11 @@ import {
   ExtendedFormattedUser,
   useExtendedUserSummaryAndIncentives,
 } from '../pool/useExtendedUserSummaryAndIncentives';
-import { combineQueries } from '../pool/utils';
 import {
   FormattedReservesAndIncentives,
   usePoolFormattedReserves,
 } from '../pool/usePoolFormattedReserves';
+import { combineQueries } from '../pool/utils';
 
 interface FormattedBalance {
   stakeTokenBalance: string;

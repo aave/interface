@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
 import { HookOpts } from 'src/hooks/commonTypes';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-import { Rewards, StakeData, StakeUserData } from '../services/StakeDataProviderService';
+import { StakeData, StakeUserData } from '../services/StakeDataProviderService';
 
 export const selectStakeDataByAddress = (stakeData: StakeData[], address: string) =>
   stakeData.find((elem) => elem.stakeToken === address);
@@ -21,7 +21,7 @@ export const useStakeData = <T = StakeData[]>(
     queryFn: () => {
       return stakeDataService.getStakeData(marketData);
     },
-    queryKey: ['umbrella', 'stakeData', marketData.marketTitle],
+    queryKey: queryKeysFactory.umbrellaStakeData(marketData),
     ...opts,
   });
 };
@@ -36,23 +36,8 @@ export const useUserStakeData = <T = StakeUserData[]>(
     queryFn: () => {
       return stakeDataService.getUserTakeData(marketData, user);
     },
-    queryKey: ['umbrella', 'userStakeData', marketData.marketTitle, user],
+    queryKey: queryKeysFactory.umbrellaStakeUserData(user, marketData),
     enabled: !!user,
     ...opts,
   });
-};
-
-export const useRewardsApy = (rewards: Rewards[]) => {
-  return useMemo(() => {
-    if (!rewards.length || rewards[0].currentEmissionPerSecond === '0') {
-      return '0';
-    }
-
-    const now = Math.floor(Date.now() / 1000);
-    if (Number(rewards[0].distributionEnd) < now) {
-      return '0';
-    }
-
-    return rewards[0].apy;
-  }, [rewards]);
 };

@@ -6,6 +6,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
 import { StakeTokenService } from './services/StakeTokenService';
@@ -48,7 +49,7 @@ export const StakeCooldownActions = ({
         success: true,
       });
 
-      queryClient.invalidateQueries({ queryKey: ['umbrella'] });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.umbrella });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);

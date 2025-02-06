@@ -5,11 +5,11 @@ import { ListItem } from '../../../components/lists/ListItem';
 
 export const UmbrellaAssetsListItemLoader = () => {
   return (
-    <ListItem px={6} minHeight={76}>
-      <ListColumn isRow maxWidth={280}>
+    <ListItem px={6} minHeight={76} button>
+      <ListColumn isRow minWidth={275}>
         <Skeleton variant="circular" width={32} height={32} />
-        <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
-          <Skeleton width={75} height={24} />
+        <Box sx={{ pl: 2, overflow: 'hidden' }}>
+          <Skeleton width={175} height={24} />
         </Box>
       </ListColumn>
 
@@ -30,11 +30,7 @@ export const UmbrellaAssetsListItemLoader = () => {
       </ListColumn>
 
       <ListColumn>
-        <Skeleton width={70} height={24} />
-      </ListColumn>
-
-      <ListColumn maxWidth={95} minWidth={95} align="right">
-        <Skeleton width={74} height={38} />
+        <Skeleton width={40} height={40} />
       </ListColumn>
     </ListItem>
   );

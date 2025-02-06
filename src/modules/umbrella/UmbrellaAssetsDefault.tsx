@@ -5,14 +5,15 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListItem } from 'src/components/lists/ListItem';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
 import { FormattedStakeData, useStakeDataSummary } from 'src/hooks/stake/useUmbrellaSummary';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
-import { StakeAssetName } from './StakeAssets/StakeAssetName';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
-import { Row } from 'src/components/primitives/Row';
+import { NoStakeAssets } from './NoStakeAssets';
+import { StakeAssetName } from './StakeAssets/StakeAssetName';
 
 export const UmrellaAssetsDefaultListContainer = () => {
   return (
@@ -50,6 +51,11 @@ export const UmbrellaAssetsDefault = () => {
       </Box>
     );
   }
+
+  if (!loading && (!stakeData || stakeData.stakeAssets.length === 0)) {
+    return <NoStakeAssets />;
+  }
+
   return (
     <>
       {!isTableChangedToCards && (
@@ -66,17 +72,14 @@ export const UmbrellaAssetsDefault = () => {
           </ListColumn>
         </ListHeaderWrapper>
       )}
-      {!stakeData || stakeData.stakeAssets.length === 0 ? (
-        <>no stake assets</>
-      ) : (
-        stakeData.stakeAssets.map((data) =>
+      {stakeData &&
+        stakeData.stakeAssets.map((data, index) =>
           !isTableChangedToCards ? (
-            <AssetListItem stakeData={data} />
+            <AssetListItem key={index} stakeData={data} />
           ) : (
-            <AssetListItemMobile stakeData={data} />
+            <AssetListItemMobile key={index} stakeData={data} />
           )
-        )
-      )}
+        )}
     </>
   );
 };

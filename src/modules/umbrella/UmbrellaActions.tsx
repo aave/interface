@@ -19,6 +19,7 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
+import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 import { StakeGatewayService } from './services/StakeGatewayService';
 import { StakeTokenService } from './services/StakeTokenService';
 import { StakeInputAsset } from './UmbrellaModalContent';
@@ -34,8 +35,6 @@ export interface StakeActionProps extends BoxProps {
   event: string;
   isMaxSelected: boolean;
 }
-
-const STAKE_GATEWAY_CONTRACT = '0xd892E331573306F7D3e637FBC26D43c466444789';
 
 export const UmbrellaActions = ({
   amountToStake,
@@ -91,7 +90,9 @@ export const UmbrellaActions = ({
   } = useApprovedAmount({
     chainId: currentChainId,
     token: selectedToken.address,
-    spender: useStakeGateway ? STAKE_GATEWAY_CONTRACT : stakeData.stakeToken,
+    spender: useStakeGateway
+      ? stakeUmbrellaConfig[currentChainId].stakeGateway
+      : stakeData.stakeToken,
   });
 
   setLoadingTxns(fetchingApprovedAmount);
@@ -113,7 +114,9 @@ export const UmbrellaActions = ({
   const tokenApproval = {
     user,
     token: selectedToken.address,
-    spender: useStakeGateway ? STAKE_GATEWAY_CONTRACT : stakeData.stakeToken,
+    spender: useStakeGateway
+      ? stakeUmbrellaConfig[currentChainId].stakeGateway
+      : stakeData.stakeToken,
     amount: approvedAmount?.toString() || '0',
   };
 
@@ -167,7 +170,7 @@ export const UmbrellaActions = ({
         success: true,
       });
 
-      queryClient.invalidateQueries({ queryKey: ['umbrella'] });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.umbrella });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -181,7 +184,7 @@ export const UmbrellaActions = ({
 
   const getStakeGatewayTxData = (amountToStake: string) => {
     setMainTxState({ ...mainTxState, loading: true });
-    const stakeService = new StakeGatewayService(STAKE_GATEWAY_CONTRACT);
+    const stakeService = new StakeGatewayService(stakeUmbrellaConfig[currentChainId].stakeGateway);
     let stakeTxData: PopulatedTransaction;
 
     if (usePermit && signatureParams) {

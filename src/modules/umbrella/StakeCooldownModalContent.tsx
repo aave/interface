@@ -1,4 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon, CalendarIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
@@ -315,7 +314,7 @@ export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStak
         </Typography>
       </Warning>
 
-      <GasStation chainId={ChainId.mainnet} gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      <GasStation chainId={currentChainId} gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 
       <FormControlLabel
         sx={{ mt: 12 }}
