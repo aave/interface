@@ -1,20 +1,12 @@
-// import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useMemo, useState } from 'react';
-// import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
-import {
-  // StakeUserData,
-  // StakeUserBalances,
-  // StakeUserCooldown,
-  Rewards,
-  // StakeData,
-} from '../services/StakeDataProviderService';
+import { Rewards } from '../services/StakeDataProviderService';
 import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
 import { UmbrellaAssetsListMobileItemLoader } from './UmbrellaAssetsListMobileItemLoader';
@@ -111,12 +103,12 @@ export default function UmbrellaAssetsList({
         <UmbrellaAssetsListMobileItemLoader />
       </>
     ) : (
-      <>
+      <Box mt={11}>
         <UmbrellaAssetsListItemLoader />
         <UmbrellaAssetsListItemLoader />
         <UmbrellaAssetsListItemLoader />
         <UmbrellaAssetsListItemLoader />
-      </>
+      </Box>
     );
   }
   // Hide list when no results, via search term or if a market has no assets

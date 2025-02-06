@@ -135,7 +135,7 @@ export const UnStakeActions = ({
         loading: false,
         success: true,
       });
-      queryClient.invalidateQueries({ queryKey: ['umbrella'] });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.umbrella });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);

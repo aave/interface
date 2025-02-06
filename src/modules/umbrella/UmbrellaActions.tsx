@@ -36,8 +36,6 @@ export interface StakeActionProps extends BoxProps {
   isMaxSelected: boolean;
 }
 
-// const STAKE_GATEWAY_CONTRACT = '0xd892E331573306F7D3e637FBC26D43c466444789';
-
 export const UmbrellaActions = ({
   amountToStake,
   isWrongNetwork,
@@ -172,7 +170,7 @@ export const UmbrellaActions = ({
         success: true,
       });
 
-      queryClient.invalidateQueries({ queryKey: ['umbrella'] });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.umbrella });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
