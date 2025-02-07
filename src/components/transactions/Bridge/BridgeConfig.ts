@@ -5,6 +5,8 @@ import {
   AaveV3Base,
   AaveV3Ethereum,
   AaveV3Sepolia,
+  GhoArbitrum,
+  GhoEthereum,
 } from '@bgd-labs/aave-address-book';
 import { constants } from 'ethers';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
@@ -40,9 +42,9 @@ const prodConfig: Config[] = [
   {
     sourceChainId: ChainId.mainnet,
     chainSelector: '5009297550715157269',
-    lockReleaseTokenPool: '0x06179f7C1be40863405f374E7f5F8806c728660A', // TODO: address book
+    lockReleaseTokenPool: GhoEthereum.GHO_CCIP_TOKEN_POOL,
     router: '0x80226fc0ee2b096224eeac085bb9a8cba1146f7d',
-    tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc',
+    tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc', // CL Feed
     wrappedNativeOracle: AaveV3Ethereum.ASSETS.WETH.ORACLE,
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/E11p8T4Ff1DHZbwSUC527hkUb5innVMdTuP6A2s1xtm1`,
     feeTokens: [
@@ -78,9 +80,9 @@ const prodConfig: Config[] = [
   {
     sourceChainId: ChainId.arbitrum_one,
     chainSelector: '4949039107694359620',
-    burnMintTokenPool: '0xB94Ab28c6869466a46a42abA834ca2B3cECCA5eB', // TODO: address book
+    burnMintTokenPool: GhoArbitrum.GHO_CCIP_TOKEN_POOL,
     router: '0x141fa059441e0ca23ce184b6a78bafd2a517dde8',
-    tokenOracle: '0xb05984ad83c20b3ade7bf97a9a0cb539dde28dbb',
+    tokenOracle: AaveV3Arbitrum.ASSETS.GHO.ORACLE,
     wrappedNativeOracle: AaveV3Arbitrum.ASSETS.WETH.ORACLE,
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/GPpZfiGoDChLsiWoMG5fxXdRNEYrsVDrKJ39moGcbz6i`,
     feeTokens: [
@@ -120,17 +122,17 @@ const prodConfig: Config[] = [
     router: '0x881e3A65B4d4a04dD529061dd0071cf975F58bCD',
     tokenOracle: '0xb05984ad83c20b3ade7bf97a9a0cb539dde28dbb',
     wrappedNativeOracle: AaveV3Base.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/GPpZfiGoDChLsiWoMG5fxXdRNEYrsVDrKJ39moGcbz6i`,
+    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7RqaLvSMWBv4Z3xmv4kb6Jq3t59ikYG3wpcsTnLgBWzt`,
     feeTokens: [
       {
         name: 'Gho Token',
-        address: '0x6Bb7a212910682DCFdbd5BCBb3e28FB4E8da10Ee', // AaveV3Base.ASSETS.GHO.UNDERLYING,
+        address: '0x6Bb7a212910682DCFdbd5BCBb3e28FB4E8da10Ee', // TODO: address book
         symbol: 'GHO',
         decimals: 18,
         chainId: 42161,
         logoURI:
           'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-        oracle: '0xfc421aD3C883Bf9E7C4f42dE845C4e4405799e73', //AaveV3Arbitrum.ASSETS.GHO.ORACLE,
+        oracle: '0xfc421aD3C883Bf9E7C4f42dE845C4e4405799e73', // TODO: address book
         extensions: {
           isNative: false,
         },
