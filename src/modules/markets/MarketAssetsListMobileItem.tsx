@@ -113,7 +113,11 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             textAlign: 'center',
           }}
         >
-          <FormattedNumber compact value={reserve.formattedAvailableLiquidity} variant="main16" />
+          <FormattedNumber
+            compact
+            value={reserve.formattedAvailableLiquidity}
+            variant="secondary14"
+          />
           <ReserveSubheader
             value={Math.max(Number(reserve?.availableLiquidityUSD), 0).toString()}
           />
