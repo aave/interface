@@ -77,10 +77,10 @@ export default function UmbrellaAssetsList({
 
       if (sortName === 'totalAvailableToStake') {
         const balanceA =
-          Number(a.formattedBalances?.underlyingWaTokenATokenBalance || '0') +
+          Number(a.formattedBalances?.aTokenBalanceAvailableToStake || '0') +
           Number(a.formattedBalances?.underlyingWaTokenBalance || '0');
         const balanceB =
-          Number(b.formattedBalances?.underlyingWaTokenATokenBalance || '0') +
+          Number(b.formattedBalances?.aTokenBalanceAvailableToStake || '0') +
           Number(b.formattedBalances?.underlyingWaTokenBalance || '0');
         return sortDesc ? balanceB - balanceA : balanceA - balanceB;
       }
@@ -139,17 +139,11 @@ export default function UmbrellaAssetsList({
         </ListHeaderWrapper>
       )}
 
-      {sortedData.map((umbrellaStakeAsset) =>
+      {sortedData.map((umbrellaStakeAsset, index) =>
         isTableChangedToCards ? (
-          <UmbrellaAssetsListMobileItem
-            {...umbrellaStakeAsset}
-            key={umbrellaStakeAsset.stakeToken}
-          />
+          <UmbrellaAssetsListMobileItem {...umbrellaStakeAsset} key={index} />
         ) : (
-          <UmbrellaStakeAssetsListItem
-            {...umbrellaStakeAsset}
-            key={umbrellaStakeAsset.stakeToken}
-          />
+          <UmbrellaStakeAssetsListItem {...umbrellaStakeAsset} key={index} />
         )
       )}
     </>

@@ -63,7 +63,7 @@ const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
           //  Note: using token symbol the same as underlying for aToken handling given we dont have tokens for "aBasSepUSDC"
           symbol: `a${stakeData.waTokenData.waTokenUnderlyingSymbol}`,
           iconSymbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
-          balance: stakeData.formattedBalances.underlyingWaTokenATokenBalance,
+          balance: stakeData.formattedBalances.aTokenBalanceAvailableToStake,
           aToken: true,
         },
       ]
@@ -185,8 +185,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
         <>
           <Warning severity="error" sx={{ my: 6 }}>
             <Trans>
-              Withdrawing this amount will reduce your health factor and increase risk of
-              liquidation.
+              Staking this amount will reduce your health factor and increase risk of liquidation.
             </Trans>
           </Warning>
           <Box

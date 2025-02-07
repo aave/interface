@@ -13,7 +13,7 @@ export const StakeCooldownModal = () => {
 
   const { data } = useUmbrellaSummary(currentMarketData);
 
-  const stakeData = data?.find(
+  const stakeData = data?.stakeData.find(
     (item) => item.stakeToken.toLowerCase() === args?.uStakeToken?.toLowerCase()
   );
 

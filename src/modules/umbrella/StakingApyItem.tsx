@@ -18,11 +18,9 @@ export const StakingApyItem = ({
 }) => {
   const { reserves } = useAppDataContext();
 
-  let netAPY = 0;
   const icons: IconData[] = [];
   const stakeRewards: StakingReward[] = [];
   for (const reward of stakeData.rewards) {
-    netAPY += +reward.apy;
     icons.push({ src: reward.rewardSymbol, aToken: false });
     stakeRewards.push({
       address: reward.rewardAddress,
@@ -44,7 +42,6 @@ export const StakingApyItem = ({
       );
     }
 
-    netAPY += +underlyingReserve.supplyAPY;
     icons.push({ src: underlyingReserve.symbol, aToken: true });
     stakeRewards.push({
       address: stakeData.waTokenData.waTokenUnderlying,
@@ -62,7 +59,12 @@ export const StakingApyItem = ({
       justifyContent="center"
       gap={2}
     >
-      <FormattedNumber value={netAPY} percent variant="main16" visibleDecimals={2} />
+      <FormattedNumber
+        value={stakeData.totalRewardApy}
+        percent
+        variant="main16"
+        visibleDecimals={2}
+      />
       <MultiIconWithTooltip
         icons={icons}
         tooltipContent={
@@ -114,7 +116,7 @@ export const StakingApyTooltipcontent = ({
       {description}
 
       <Box sx={{ width: '100%', minWidth: '160px' }}>
-        {rewards.map((reward) => {
+        {rewards.map((reward, index) => {
           return (
             <Row
               sx={{ mb: 2 }}
@@ -128,7 +130,7 @@ export const StakingApyTooltipcontent = ({
                   <Typography variant="secondary12">{reward.name}</Typography>
                 </Stack>
               }
-              key={reward.address}
+              key={index}
               width="100%"
             >
               <Stack direction="row">
