@@ -1,3 +1,4 @@
+import { Emitter } from '@wagmi/core/internal';
 import { getDefaultConfig } from 'connectkit';
 import {
   ENABLE_TESTNET,
@@ -8,7 +9,7 @@ import {
   networkConfigs,
 } from 'src/utils/marketsAndNetworksConfig';
 import { type Chain } from 'viem';
-import { createConfig, CreateConfigParameters, http, injected } from 'wagmi';
+import { createConfig, CreateConfigParameters, http } from 'wagmi';
 import {
   arbitrum,
   arbitrumSepolia,
@@ -28,6 +29,7 @@ import {
   sepolia,
   zksync,
 } from 'wagmi/chains';
+import { injected, safe } from 'wagmi/connectors';
 
 const testnetChains: CreateConfigParameters['chains'] = [
   sepolia,
@@ -95,13 +97,28 @@ const getTransport = (chainId: number) => {
 const buildTransports = (chains: CreateConfigParameters['chains']) =>
   Object.fromEntries(chains.map((chain) => [chain.id, http(getTransport(chain.id))]));
 
-const prodConfig = createConfig(
-  getDefaultConfig({
-    chains: ENABLE_TESTNET ? testnetChains : prodChains,
-    transports: ENABLE_TESTNET ? undefined : buildTransports(prodChains),
-    ...defaultConfig,
-  })
-);
+const prodCkConfig = getDefaultConfig({
+  chains: ENABLE_TESTNET ? testnetChains : prodChains,
+  transports: ENABLE_TESTNET ? undefined : buildTransports(prodChains),
+  ...defaultConfig,
+});
+const prodConfig = createConfig({
+  ...prodCkConfig,
+  connectors: prodCkConfig.connectors?.map((connector) => {
+    // initialize the connector with the emitter so we can access the id
+    const c = connector({
+      chains: prodCkConfig.chains,
+      emitter: new Emitter(''),
+    });
+    if (c.id === 'safe') {
+      return safe({
+        allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/, /dhedge.org$/],
+      });
+    } else {
+      return connector;
+    }
+  }),
+});
 
 const isCypressEnabled = process.env.NEXT_PUBLIC_IS_CYPRESS_ENABLED === 'true';
 

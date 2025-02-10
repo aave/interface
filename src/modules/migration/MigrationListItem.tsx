@@ -162,7 +162,7 @@ export const MigrationListItem = ({
         </ListColumn>
 
         <ListColumn>
-          <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IncentivesCard
               value={v2APY}
               symbol={userReserve.reserve.symbol}
