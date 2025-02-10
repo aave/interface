@@ -688,7 +688,7 @@ export const marketsData: {
     market: CustomMarket.proto_linea_v3,
     chainId: ChainId.linea,
     v3: true,
-    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/ENYSc8G3WvrbhWH8UZHrqPWYRcuyCaNmaTmoVp7uzabM`,
+    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/Gz2kjnmRV1fQj3R8cssoZa5y9VTanhrDo4Mh7nWW1wHa`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Linea.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Linea.POOL,
