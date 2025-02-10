@@ -352,6 +352,7 @@ export const marketsData: {
       SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Base.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Base.DEBT_SWAP_ADAPTER,
+      GHO_TOKEN_ADDRESS: '0x6bb7a212910682dcfdbd5bcbb3e28fb4e8da10ee',
     },
   },
   [CustomMarket.proto_arbitrum_sepolia_v3]: {
@@ -503,7 +504,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_optimism_v3]: {
-    marketTitle: 'Optimism',
+    marketTitle: 'OP',
     market: CustomMarket.proto_optimism_v3,
     v3: true,
     chainId: ChainId.optimism,
