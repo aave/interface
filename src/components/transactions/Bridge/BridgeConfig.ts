@@ -3,6 +3,7 @@ import {
   AaveV3Arbitrum,
   AaveV3ArbitrumSepolia,
   AaveV3Base,
+  AaveV3BaseSepolia,
   AaveV3Ethereum,
   AaveV3Sepolia,
   GhoArbitrum,
@@ -210,6 +211,30 @@ const testnetConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: 421614, // Arb
+        logoURI:
+          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
+      },
+    ],
+  },
+  {
+    sourceChainId: ChainId.base_sepolia,
+    burnMintTokenPool: '0x2a33945f942913b730aB36A24150A96c3D0CC9E9',
+    chainSelector: '10344971235874465080',
+    router: '0xD3b06cEbF099CE7DA4AcCf578aaebFDBd6e88a93',
+    tokenOracle: '0xFD5ea2e57CDC98D371D8eA899d1F2C24bfFb39BD',
+    wrappedNativeOracle: AaveV3BaseSepolia.ASSETS.WETH.ORACLE,
+    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8bpqvL6XBCVhN4heE9rdEwgTketeZ2U5vVGEh5fDoUEH`,
+    feeTokens: [
+      {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+        address: constants.AddressZero,
+        chainId: ChainId.base_sepolia,
         logoURI:
           'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
