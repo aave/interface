@@ -12724,6 +12724,15 @@ export const TOKEN_LIST: TokenList = {
         'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
     },
     {
+      name: 'Gho Token',
+      address: '0x6bb7a212910682dcfdbd5bcbb3e28fb4e8da10ee',
+      symbol: 'GHO',
+      decimals: 18,
+      chainId: 8453,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+    },
+    {
       name: 'stk GHO',
       address: '0x1a88Df1cFe15Af22B3c4c783D4e6F7F9e0C1885d',
       symbol: 'stkGHO',

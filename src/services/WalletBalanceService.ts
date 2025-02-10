@@ -90,6 +90,7 @@ export class WalletBalanceService {
       marketData.chainId,
       marketData.addresses.WALLET_BALANCE_PROVIDER
     );
+
     const balances = await walletBalanceService.batchBalanceOf(
       [user],
       [marketData.addresses.GHO_TOKEN_ADDRESS?.toLowerCase() as string] // GHO UNDERLYING
