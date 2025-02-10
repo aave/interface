@@ -6,6 +6,7 @@ import {
   AaveV3Ethereum,
   AaveV3Sepolia,
   GhoArbitrum,
+  GhoBase,
   GhoEthereum,
 } from '@bgd-labs/aave-address-book';
 import { constants } from 'ethers';
@@ -118,32 +119,18 @@ const prodConfig: Config[] = [
   {
     sourceChainId: ChainId.base,
     chainSelector: '15971525489660198786',
-    burnMintTokenPool: '0x98217A06721Ebf727f2C8d9aD7718ec28b7aAe34', // TODO: address book
+    burnMintTokenPool: GhoBase.GHO_CCIP_TOKEN_POOL,
     router: '0x881e3A65B4d4a04dD529061dd0071cf975F58bCD',
-    tokenOracle: '0xb05984ad83c20b3ade7bf97a9a0cb539dde28dbb',
+    tokenOracle: '0x42868EFcee13C0E71af89c04fF7d96f5bec479b0',
     wrappedNativeOracle: AaveV3Base.ASSETS.WETH.ORACLE,
     subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7RqaLvSMWBv4Z3xmv4kb6Jq3t59ikYG3wpcsTnLgBWzt`,
     feeTokens: [
-      {
-        name: 'Gho Token',
-        address: '0x6Bb7a212910682DCFdbd5BCBb3e28FB4E8da10Ee', // TODO: address book
-        symbol: 'GHO',
-        decimals: 18,
-        chainId: 42161,
-        logoURI:
-          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-        oracle: '0xfc421aD3C883Bf9E7C4f42dE845C4e4405799e73', // TODO: address book
-        extensions: {
-          isNative: false,
-        },
-        balance: '0',
-      },
       {
         name: 'Ethereum',
         symbol: 'ETH',
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
-        chainId: 42161, // Arb
+        chainId: 8453, // Base
         logoURI:
           'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
