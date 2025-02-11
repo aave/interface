@@ -19,7 +19,6 @@ import {
   baseSepolia,
   bsc,
   gnosis,
-  linea,
   mainnet,
   metis,
   optimism,
@@ -53,7 +52,6 @@ let prodChains: CreateConfigParameters['chains'] = [
   bsc,
   scroll,
   zksync,
-  linea,
 ];
 
 const { name, baseAssetDecimals, baseAssetSymbol } = networkConfigs[FORK_BASE_CHAIN_ID];
