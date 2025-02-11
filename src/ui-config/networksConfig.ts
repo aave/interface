@@ -1,7 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import {
   arbitrum,
-  arbitrumGoerli,
   arbitrumSepolia,
   avalanche,
   avalancheFuji,
@@ -10,7 +9,6 @@ import {
   bsc,
   Chain,
   gnosis,
-  goerli,
   linea,
   mainnet,
   metis,
@@ -95,23 +93,6 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
     networkLogoPath: '/icons/networks/ethereum.svg',
     wagmiChain: sepolia,
   },
-  [ChainId.goerli]: {
-    name: 'Ethereum Görli',
-    publicJsonRPCUrl: [
-      'https://eth-goerli.public.blastapi.io',
-      'https://rpc.ankr.com/eth_goerli',
-      'https://goerli.prylabs.net',
-    ],
-    publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://goerli.etherscan.io',
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/ethereum.svg',
-    wagmiChain: goerli,
-  },
   [ChainId.fuji]: {
     name: 'Avalanche Fuji',
     publicJsonRPCUrl: [
@@ -133,27 +114,6 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
       url: 'https://bridge.avax.network/',
     },
     wagmiChain: avalancheFuji,
-  },
-  [ChainId.arbitrum_goerli]: {
-    name: 'Arbitrum Görli',
-    publicJsonRPCUrl: [
-      'https://goerli-rollup.arbitrum.io/rpc',
-      'https://arb-goerli.g.alchemy.com/v2/demo',
-    ],
-    publicJsonRPCWSUrl: 'wss://goerli-rollup.arbitrum.io/rpc',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://goerli.arbiscan.io',
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/arbitrum.svg',
-    bridge: {
-      icon: '/icons/bridge/arbitrum.svg',
-      name: 'Arbitrum Bridge',
-      url: 'https://bridge.arbitrum.io',
-    },
-    wagmiChain: arbitrumGoerli,
   },
   [ChainId.arbitrum_sepolia]: {
     name: 'Arbitrum Sepolia',
