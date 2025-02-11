@@ -41,4 +41,9 @@ export const permitByChainAndToken: {
     '0x493257fd37edb34451f62edf8d2a0c418852ba4c': true,
     '0x5aea5775959fbc2557cc8789bc1bf90a239d9a91': true,
   },
+  [ChainId.linea]: {
+    '0xa219439258ca9da29e9cc4ce5596924745e12b93': true, // USDT
+    '0x2416092f143378750bb29b79ed961ab195cceea5': true, // ezETH
+    '0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f': true, // wstETH
+  },
 };
