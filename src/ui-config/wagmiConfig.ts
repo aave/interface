@@ -10,50 +10,18 @@ import {
 } from 'src/utils/marketsAndNetworksConfig';
 import { type Chain } from 'viem';
 import { createConfig, CreateConfigParameters, http } from 'wagmi';
-import {
-  arbitrum,
-  arbitrumSepolia,
-  avalanche,
-  avalancheFuji,
-  base,
-  baseSepolia,
-  bsc,
-  gnosis,
-  linea,
-  mainnet,
-  metis,
-  optimism,
-  optimismSepolia,
-  polygon,
-  scroll,
-  scrollSepolia,
-  sepolia,
-  zksync,
-} from 'wagmi/chains';
 import { injected, safe } from 'wagmi/connectors';
 
-const testnetChains: CreateConfigParameters['chains'] = [
-  sepolia,
-  baseSepolia,
-  arbitrumSepolia,
-  avalancheFuji,
-  optimismSepolia,
-  scrollSepolia,
+import { prodNetworkConfig, testnetConfig } from './networksConfig';
+
+const testnetChains = Object.values(testnetConfig).map((config) => config.wagmiChain) as [
+  Chain,
+  ...Chain[]
 ];
 
-let prodChains: CreateConfigParameters['chains'] = [
-  mainnet,
-  base,
-  arbitrum,
-  avalanche,
-  optimism,
-  polygon,
-  metis,
-  gnosis,
-  bsc,
-  scroll,
-  zksync,
-  linea,
+let prodChains = Object.values(prodNetworkConfig).map((config) => config.wagmiChain) as [
+  Chain,
+  ...Chain[]
 ];
 
 const { name, baseAssetDecimals, baseAssetSymbol } = networkConfigs[FORK_BASE_CHAIN_ID];
