@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, StakeTokenService } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -20,7 +20,6 @@ import { useShallow } from 'zustand/shallow';
 
 import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 import { StakeGatewayService } from './services/StakeGatewayService';
-import { StakeTokenService } from './services/StakeTokenService';
 import { StakeInputAsset } from './UmbrellaModalContent';
 
 export interface StakeActionProps extends BoxProps {
@@ -206,14 +205,14 @@ export const UmbrellaActions = ({
     let stakeTxData: PopulatedTransaction;
 
     if (usePermit && signatureParams) {
-      stakeTxData = stakeTokenService.stakeWithPermit(
-        user,
-        amountToStake,
-        signatureParams.deadline,
-        signatureParams.signature
-      );
+      stakeTxData = stakeTokenService.depositWithPermit({
+        sender: user,
+        amount: amountToStake,
+        deadline: signatureParams.deadline,
+        permit: signatureParams.signature,
+      });
     } else {
-      stakeTxData = stakeTokenService.stake(user, amountToStake);
+      stakeTxData = stakeTokenService.deposit({ sender: user, amount: amountToStake });
     }
 
     return stakeTxData;

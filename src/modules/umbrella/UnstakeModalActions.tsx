@@ -1,3 +1,4 @@
+import { StakeTokenService } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -17,7 +18,6 @@ import { useShallow } from 'zustand/shallow';
 
 import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 import { StakeGatewayService } from './services/StakeGatewayService';
-import { StakeTokenService } from './services/StakeTokenService';
 
 export interface UnStakeActionProps extends BoxProps {
   amountToUnStake: string;
@@ -124,7 +124,10 @@ export const UnStakeActions = ({
       } else {
         // use stake token directly
         const stakeTokenService = new StakeTokenService(stakeData.stakeToken);
-        unstakeTxData = stakeTokenService.redeem(user, parsedAmountToStake.toString());
+        unstakeTxData = stakeTokenService.redeem({
+          amount: parsedAmountToStake.toString(),
+          sender: user,
+        });
       }
 
       unstakeTxData = await estimateGasLimit(unstakeTxData);
