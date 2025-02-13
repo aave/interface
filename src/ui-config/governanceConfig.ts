@@ -137,7 +137,8 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.bnb]: GovernanceV3BNB.PC_DATA_HELPER,
       [ChainId.scroll]: GovernanceV3Scroll.PC_DATA_HELPER,
       [ChainId.zksync]: GovernanceV3ZkSync.PC_DATA_HELPER,
-      [59144]: GovernanceV3Linea.PC_DATA_HELPER,
+      [ChainId.linea]: GovernanceV3Linea.PC_DATA_HELPER,
+      [ChainId.sonic]: '0x6fD45D32375d5aDB8D76275A3932c740F03a8718', // TODO: address book
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
