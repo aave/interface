@@ -272,7 +272,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     networkLogoPath: '/icons/networks/base.svg',
   },
   [ChainId.optimism]: {
-    name: 'Optimism',
+    name: 'OP',
     privateJsonRPCUrl: 'https://opt-mainnet.g.alchemy.com/v2/H8ZBGuz1LZbRsYnCBQHY4YMv_AUAVGeM', //'https://optimism.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io', 'https://1rpc.io/op'],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
@@ -285,7 +285,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
       icon: '/icons/bridge/optimism.svg',
-      name: 'Optimism Bridge',
+      name: 'OP Bridge',
       url: 'https://app.optimism.io/bridge',
     },
     ratesHistoryApiUrl,
@@ -395,5 +395,20 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://portal.zksync.io/bridge/',
     },
     ratesHistoryApiUrl,
+  },
+  [59144]: {
+    name: 'Linea',
+    privateJsonRPCUrl: 'https://linea-mainnet.g.alchemy.com/v2/6uk5qBl8QvjpEbgF3TgZBbxWkKlmWZR-',
+    publicJsonRPCUrl: ['https://1rpc.io/linea'],
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://lineascan.build',
+    networkLogoPath: '/icons/networks/linea.svg',
+    bridge: {
+      icon: '/icons/networks/linea.svg',
+      name: 'Linea Bridge',
+      url: 'https://bridge.linea.build/',
+    },
   },
 } as const;
