@@ -138,6 +138,18 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
           'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56',
       },
     ],
+    WETH: [
+      {
+        action: MeritAction.ETHEREUM_PRIME_SUPPLY_ETH,
+        rewardTokenAddress: AaveV3EthereumLido.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aEthLidoWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage:
+          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
+        customForumLink:
+          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56',
+      },
+    ],
     ezETH: [
       {
         action: MeritAction.ETHEREUM_PRIME_SUPPLY_EZETH,
@@ -153,6 +165,18 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
   },
   [CustomMarket.proto_arbitrum_v3]: {
     ETH: [
+      {
+        action: MeritAction.ARBITRUM_SUPPLY_ETH,
+        rewardTokenAddress: AaveV3Arbitrum.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aArbWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage:
+          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
+        customForumLink:
+          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56',
+      },
+    ],
+    WETH: [
       {
         action: MeritAction.ARBITRUM_SUPPLY_ETH,
         rewardTokenAddress: AaveV3Arbitrum.ASSETS.WETH.A_TOKEN,
