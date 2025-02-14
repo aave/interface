@@ -31,7 +31,7 @@ interface NoAprExternalIncentiveTooltipProps {
   protocolAction?: ProtocolAction;
 }
 
-const BlankIncentives = () => {
+export const BlankIncentives = () => {
   return (
     <Box
       sx={{
@@ -46,6 +46,37 @@ const BlankIncentives = () => {
       </Typography>
     </Box>
   );
+};
+
+export const useAllIncentives = (
+  params: {
+    symbol: string;
+    market: string;
+    protocolAction?: ProtocolAction;
+  },
+  incentives?: ReserveIncentiveResponse[]
+) => {
+  const { data: meritIncentives } = useMeritIncentives(params);
+  const { data: zkSyncIgniteIncentives } = useZkSyncIgniteIncentives(params);
+  const lmIncentives = incentives?.filter((i) => i.incentiveAPR !== '0');
+
+  const meritApr =
+    meritIncentives && meritIncentives.incentiveAPR ? Number(meritIncentives?.incentiveAPR) : 0;
+  const zkSyncApr =
+    zkSyncIgniteIncentives && zkSyncIgniteIncentives.incentiveAPR
+      ? Number(zkSyncIgniteIncentives?.incentiveAPR)
+      : 0;
+  const lmApr = lmIncentives?.reduce((a, b) => a + +b.incentiveAPR, 0) ?? 0;
+
+  const totalApr = meritApr + zkSyncApr + lmApr;
+
+  const allIncentives = [
+    ...(meritIncentives ? [meritIncentives] : []),
+    ...(zkSyncIgniteIncentives ? [zkSyncIgniteIncentives] : []),
+    ...(lmIncentives || []),
+  ];
+
+  return { allIncentives, totalApr };
 };
 
 export const MeritIncentivesButton = (params: {
@@ -170,7 +201,7 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
   );
 };
 
-const Content = ({
+export const Content = ({
   incentives,
   incentivesNetAPR,
   displayBlank,
