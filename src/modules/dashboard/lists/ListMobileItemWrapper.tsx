@@ -52,7 +52,7 @@ export const ListMobileItemWrapper = ({
   showExternalIncentivesTooltips = {
     superFestRewards: false,
     spkAirdrop: false,
-    kernelPoints: true,
+    kernelPoints: false,
   },
 }: ListMobileItemWrapperProps) => {
   const WarningComponent: React.FC = () => {
