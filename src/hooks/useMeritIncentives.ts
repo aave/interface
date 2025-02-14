@@ -1,6 +1,12 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { AaveV3Avalanche, AaveV3Base, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import {
+  AaveV3Arbitrum,
+  AaveV3Avalanche,
+  AaveV3Base,
+  AaveV3Ethereum,
+  AaveV3EthereumLido,
+} from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
@@ -8,9 +14,11 @@ export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
   ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
   ETHEREUM_SUPPLY_ETHX = 'ethereum-supply-ethx',
+  ETHEREUM_PRIME_SUPPLY_ETH = 'ethereum-prime-supply-eth',
   ETHEREUM_PRIME_SUPPLY_EZETH = 'ethereum-prime-supply-ezeth',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
+  ARBITRUM_SUPPLY_ETH = 'arbitrum-supply-eth',
   ARBITRUM_SUPPLY_WSTETH = 'arbitrum-supply-wsteth',
   ARBITRUM_SUPPLY_EZETH = 'arbitrum-supply-ezeth',
   BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
@@ -118,6 +126,18 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
   },
   [CustomMarket.proto_lido_v3]: {
+    ETH: [
+      {
+        action: MeritAction.ETHEREUM_PRIME_SUPPLY_ETH,
+        rewardTokenAddress: AaveV3EthereumLido.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aEthLidoWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage:
+          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
+        customForumLink:
+          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56',
+      },
+    ],
     ezETH: [
       {
         action: MeritAction.ETHEREUM_PRIME_SUPPLY_EZETH,
@@ -132,6 +152,18 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
   },
   [CustomMarket.proto_arbitrum_v3]: {
+    ETH: [
+      {
+        action: MeritAction.ARBITRUM_SUPPLY_ETH,
+        rewardTokenAddress: AaveV3Arbitrum.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aArbWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage:
+          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
+        customForumLink:
+          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56',
+      },
+    ],
     wstETH: [
       {
         action: MeritAction.ARBITRUM_SUPPLY_WSTETH,
