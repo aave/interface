@@ -4,6 +4,7 @@ import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -52,6 +53,11 @@ export const SupplyAssetsListMobileItem = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
