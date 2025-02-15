@@ -45,7 +45,8 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customForumLink: string;
 };
 
-const url = 'https://apps.aavechan.com/api/merit/aprs';
+// const url = 'https://apps.aavechan.com/api/merit/aprs';
+const url = 'http://localhost:3000/api/merit/aprs';
 
 export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
   action: MeritAction;
@@ -194,7 +195,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
     ezETH: [
       {
-        action: MeritAction.ARBITRUM_SUPPLY_WSTETH,
+        action: MeritAction.ARBITRUM_SUPPLY_EZETH,
         rewardTokenAddress: '0x3B50805453023a91a8bf641e279401a0b23FA6F9', // Renzo (REZ)
         rewardTokenSymbol: 'REZ',
         protocolAction: ProtocolAction.supply,
