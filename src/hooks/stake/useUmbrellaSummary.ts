@@ -28,8 +28,8 @@ interface FormattedBalance {
   underlyingTokenBalance: string;
   underlyingTokenBalanceUSD: string;
   underlyingWaTokenBalance: string;
-  underlyingWaTokenATokenBalance: string;
   aTokenBalanceAvailableToStake: string;
+  totalAvailableToStake: string;
 }
 
 interface FormattedReward {
@@ -162,10 +162,10 @@ const formatUmbrellaSummary = (
     const underlyingTokenBalance = normalizeBN(
       matchingBalance.balances.underlyingTokenBalance,
       stakeItem.underlyingTokenDecimals
-    );
+    ).toString();
 
     // assuming the stake token and underlying have the same price
-    const underlyingTokenBalanceUSD = underlyingTokenBalance
+    const underlyingTokenBalanceUSD = BigNumber(underlyingTokenBalance)
       .multipliedBy(stakeItem.price)
       .shiftedBy(-USD_DECIMALS)
       .toString();
@@ -173,7 +173,7 @@ const formatUmbrellaSummary = (
     const stakeTokenTotalSupply = normalizeBN(
       stakeItem.totalSupply,
       stakeItem.underlyingTokenDecimals
-    );
+    ).toString();
 
     // we use the userReserve to get the aToken balance which takes into account accrued interest
     const userReserve = userReservesData?.find(
@@ -198,6 +198,17 @@ const formatUmbrellaSummary = (
       );
     }
 
+    const underlyingWaTokenBalance = normalize(
+      matchingBalance.balances.stataTokenAssetBalance,
+      stakeItem.underlyingTokenDecimals
+    );
+
+    let totalAvailableToStake = Number(underlyingTokenBalance);
+    if (stakeItem.underlyingIsStataToken) {
+      totalAvailableToStake +=
+        Number(underlyingWaTokenBalance) + Number(aTokenBalanceAvailableToStake);
+    }
+
     acc.push({
       ...stakeItem,
       balances: matchingBalance.balances,
@@ -211,12 +222,9 @@ const formatUmbrellaSummary = (
         ),
         underlyingTokenBalance: underlyingTokenBalance.toString(),
         underlyingTokenBalanceUSD,
-        underlyingWaTokenBalance: normalize(
-          matchingBalance.balances.stataTokenAssetBalance,
-          stakeItem.underlyingTokenDecimals
-        ),
-        underlyingWaTokenATokenBalance: userReserve?.underlyingBalance || '0',
+        underlyingWaTokenBalance,
         aTokenBalanceAvailableToStake,
+        totalAvailableToStake: totalAvailableToStake.toString(),
       },
       formattedRewards: matchingBalance.rewards.map((reward) => {
         const rewardData = stakeItem.rewards.find(
@@ -236,7 +244,7 @@ const formatUmbrellaSummary = (
         };
       }),
       formattedStakeTokenData: {
-        totalAmountStaked: stakeTokenTotalSupply.toString(),
+        totalAmountStaked: stakeTokenTotalSupply,
         totalAmountStakedUSD: BigNumber(stakeTokenTotalSupply)
           .multipliedBy(normalize(stakeItem.price, 8))
           .toString(),

@@ -76,12 +76,8 @@ export default function UmbrellaAssetsList({
       }
 
       if (sortName === 'totalAvailableToStake') {
-        const balanceA =
-          Number(a.formattedBalances?.aTokenBalanceAvailableToStake || '0') +
-          Number(a.formattedBalances?.underlyingWaTokenBalance || '0');
-        const balanceB =
-          Number(b.formattedBalances?.aTokenBalanceAvailableToStake || '0') +
-          Number(b.formattedBalances?.underlyingWaTokenBalance || '0');
+        const balanceA = Number(a.formattedBalances.totalAvailableToStake);
+        const balanceB = Number(b.formattedBalances.totalAvailableToStake);
         return sortDesc ? balanceB - balanceA : balanceA - balanceB;
       }
 

@@ -68,13 +68,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
     setAnchorEl(null);
   };
 
-  const { underlyingWaTokenBalance, underlyingWaTokenATokenBalance, underlyingTokenBalance } =
-    stakeData.formattedBalances;
-
-  const totalAvailableToStake =
-    Number(underlyingTokenBalance) +
-    Number(underlyingWaTokenBalance) +
-    Number(underlyingWaTokenATokenBalance);
+  const { totalAvailableToStake } = stakeData.formattedBalances;
 
   const hasUnclaimedRewards = stakeData.formattedRewards.some(
     (reward) => Number(reward.accrued) > 0
@@ -85,7 +79,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
     <div>
       {!hasStakeTokenBalance && !hasUnclaimedRewards ? (
         <Button
-          disabled={totalAvailableToStake === 0}
+          disabled={totalAvailableToStake === '0'}
           fullWidth={isMobile}
           variant="contained"
           onClick={() =>
