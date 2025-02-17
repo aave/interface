@@ -5,7 +5,8 @@ import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
-import { hasIncentivesCheck, IncentivesBox } from 'src/components/incentives/IncentivesCard';
+import { useAllIncentives } from 'src/components/incentives/IncentivesButton';
+import { IncentivesBox } from 'src/components/incentives/IncentivesCard';
 import {
   IsolatedDisabledBadge,
   IsolatedEnabledBadge,
@@ -263,21 +264,26 @@ export const DetailsIncentivesLine = ({
   futureSymbol,
   loading = false,
 }: DetailsIncentivesLineProps) => {
-  const hasIncentives = hasIncentivesCheck({
-    symbol: symbol,
-    address,
-    incentives: incentives,
-    market,
-    protocolAction,
-  });
+  const { allIncentives } = useAllIncentives(
+    {
+      symbol,
+      market,
+      protocolAction,
+    },
+    incentives
+  );
 
-  const hasFutureIncentives = hasIncentivesCheck({
-    symbol: futureSymbol || '',
-    address: futureAddress,
-    incentives: futureIncentives,
-    market,
-    protocolAction,
-  });
+  const { allIncentives: futureAllIncentives } = useAllIncentives(
+    {
+      symbol: futureSymbol || '',
+      market,
+      protocolAction,
+    },
+    futureIncentives
+  );
+
+  const hasIncentives = allIncentives.length > 0;
+  const hasFutureIncentives = futureAllIncentives.length > 0;
 
   if (!hasIncentives && !hasFutureIncentives) return null;
 
