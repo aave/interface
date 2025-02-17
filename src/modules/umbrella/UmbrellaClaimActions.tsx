@@ -1,3 +1,4 @@
+import { RewardsDistributorService } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { PopulatedTransaction } from 'ethers';
@@ -8,7 +9,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 
-import { RewardsDistributorService } from './services/RewardsDistributorService';
 import { UmbrellaRewards } from './UmbrellaClaimModalContent';
 
 export interface StakeRewardClaimActionProps extends BoxProps {
@@ -36,13 +36,16 @@ export const UmbrellaClaimActions = ({
       const rewardsDistributorService = new RewardsDistributorService(REWARDS_CONTROLLER);
       let claimTx: PopulatedTransaction = {};
       if (rewardsToClaim.length > 1) {
-        claimTx = rewardsDistributorService.claimAllRewards(user, stakeData.stakeToken);
+        claimTx = rewardsDistributorService.claimAllRewards({
+          sender: user,
+          stakeToken: stakeData.stakeToken,
+        });
       } else {
-        claimTx = rewardsDistributorService.claimSelectedRewards(
-          user,
-          stakeData.stakeToken,
-          rewardsToClaim.map((reward) => reward.address)
-        );
+        claimTx = rewardsDistributorService.claimSelectedRewards({
+          sender: user,
+          stakeToken: stakeData.stakeToken,
+          rewards: rewardsToClaim.map((reward) => reward.address),
+        });
       }
       claimTx = await estimateGasLimit(claimTx);
       const claimTxReceipt = await sendTx(claimTx);
