@@ -1,7 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
@@ -37,7 +37,6 @@ interface IncentivesBoxProps {
   incentives?: ReserveIncentiveResponse[];
   address?: string;
   protocolAction?: ProtocolAction;
-  isInModal?: boolean;
   displayBlank?: boolean;
   displayNone?: boolean;
 }
@@ -48,11 +47,8 @@ export const IncentivesBox = ({
   address,
   market,
   protocolAction,
-  isInModal,
   displayBlank,
 }: IncentivesBoxProps) => {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
-
   const { allIncentives, totalApr } = useAllIncentives(
     {
       symbol,
@@ -64,23 +60,13 @@ export const IncentivesBox = ({
 
   const Incentives = () => (
     <Box
-      sx={
-        isTableChangedToCards && !isInModal
-          ? {
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              gap: '4px',
-            }
-          : {
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '4px',
-              flexWrap: 'wrap',
-              flex: '0 0 50%', // 2 items per row
-              width: isInModal ? 'min-content' : 'auto', // 1 item per row in modal mode
-            }
-      }
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '4px',
+        flexWrap: 'wrap',
+        width: 'fit-content',
+      }}
     >
       <IncentivesButton
         incentives={incentives}

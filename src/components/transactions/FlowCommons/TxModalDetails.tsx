@@ -308,7 +308,6 @@ export const DetailsIncentivesLine = ({
                 market={market}
                 address={address}
                 protocolAction={protocolAction}
-                isInModal={true}
               />
             ) : (
               <Typography variant="secondary14">
@@ -325,7 +324,6 @@ export const DetailsIncentivesLine = ({
                     market={market}
                     address={futureAddress}
                     protocolAction={protocolAction}
-                    isInModal={true}
                   />
                 ) : (
                   <Typography variant="secondary14">
