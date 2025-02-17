@@ -1,4 +1,4 @@
-import { StakeTokenService } from '@aave/contract-helpers';
+import { StakeGatewayService, StakeTokenService } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -17,7 +17,6 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
 import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
-import { StakeGatewayService } from './services/StakeGatewayService';
 
 export interface UnStakeActionProps extends BoxProps {
   amountToUnStake: string;
@@ -109,17 +108,17 @@ export const UnStakeActions = ({
           stakeUmbrellaConfig[currentChainId].stakeGateway
         );
         if (redeemATokens) {
-          unstakeTxData = stakeService.redeemATokens(
-            user,
-            stakeData.stakeToken,
-            parsedAmountToStake.toString()
-          );
+          unstakeTxData = stakeService.redeemATokens({
+            sender: user,
+            stakeToken: stakeData.stakeToken,
+            amount: parsedAmountToStake.toString(),
+          });
         } else {
-          unstakeTxData = stakeService.redeem(
-            user,
-            stakeData.stakeToken,
-            parsedAmountToStake.toString()
-          );
+          unstakeTxData = stakeService.redeem({
+            sender: user,
+            stakeToken: stakeData.stakeToken,
+            amount: parsedAmountToStake.toString(),
+          });
         }
       } else {
         // use stake token directly

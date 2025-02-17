@@ -1,4 +1,8 @@
-import { API_ETH_MOCK_ADDRESS, StakeTokenService } from '@aave/contract-helpers';
+import {
+  API_ETH_MOCK_ADDRESS,
+  StakeGatewayService,
+  StakeTokenService,
+} from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -19,7 +23,6 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
 import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
-import { StakeGatewayService } from './services/StakeGatewayService';
 import { StakeInputAsset } from './UmbrellaModalContent';
 
 export interface StakeActionProps extends BoxProps {
@@ -173,27 +176,35 @@ export const UmbrellaActions = ({
 
     if (usePermit && signatureParams) {
       if (selectedToken.aToken) {
-        stakeTxData = stakeService.stakeATokenWithPermit(
-          currentAccount,
-          stakeData.stakeToken,
-          amountToStake,
-          signatureParams.deadline,
-          signatureParams.signature
-        );
+        stakeTxData = stakeService.stakeATokensWithPermit({
+          sender: currentAccount,
+          stakeToken: stakeData.stakeToken,
+          amount: amountToStake,
+          deadline: signatureParams.deadline,
+          permit: signatureParams.signature,
+        });
       } else {
-        stakeTxData = stakeService.stakeWithPermit(
-          user,
-          stakeData.stakeToken,
-          amountToStake,
-          signatureParams.deadline,
-          signatureParams.signature
-        );
+        stakeTxData = stakeService.stakeWithPermit({
+          sender: user,
+          stakeToken: stakeData.stakeToken,
+          amount: amountToStake,
+          deadline: signatureParams.deadline,
+          permit: signatureParams.signature,
+        });
       }
     } else {
       if (selectedToken.aToken) {
-        stakeTxData = stakeService.stakeAToken(currentAccount, stakeData.stakeToken, amountToStake);
+        stakeTxData = stakeService.stakeATokens({
+          sender: currentAccount,
+          stakeToken: stakeData.stakeToken,
+          amount: amountToStake,
+        });
       } else {
-        stakeTxData = stakeService.stake(currentAccount, stakeData.stakeToken, amountToStake);
+        stakeTxData = stakeService.stake({
+          sender: currentAccount,
+          stakeToken: stakeData.stakeToken,
+          amount: amountToStake,
+        });
       }
     }
 
