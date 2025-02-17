@@ -42,6 +42,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
       <Avatar
         fallbackImage={fallbackImage}
+        image={defaultDomain?.avatar}
         loading={loading}
         badge={<ExclamationBadge size={BadgeSize.SM} />}
         invisibleBadge={!readOnlyMode}
