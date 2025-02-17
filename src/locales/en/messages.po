@@ -21,10 +21,6 @@ msgstr "If you DO NOT unstake within {0} of unstake window, you will need to act
 msgid "Receive (est.)"
 msgstr "Receive (est.)"
 
-#: src/components/incentives/IncentivesTooltipContent.tsx
-msgid "Participating in this {symbol} reserve gives annualized rewards."
-msgstr "Participating in this {symbol} reserve gives annualized rewards."
-
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 msgstr "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
@@ -1049,6 +1045,10 @@ msgstr "Manage analytics"
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 msgstr "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
+
+#: src/components/incentives/IncentivesTooltipContent.tsx
+msgid "Participating in this {symbol} reserve gives additional annualized rewards through Aave Liquidity Mining"
+msgstr "Participating in this {symbol} reserve gives additional annualized rewards through Aave Liquidity Mining"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "Unstaking {symbol}"
@@ -2316,6 +2316,10 @@ msgstr ".CSV"
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 msgid "Activate Cooldown"
 msgstr "Activate Cooldown"
+
+#: src/components/incentives/IncentivesCard.tsx
+msgid "Participating in this {symbol} reserve gives additional annualized rewards."
+msgstr "Participating in this {symbol} reserve gives additional annualized rewards."
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net APY"

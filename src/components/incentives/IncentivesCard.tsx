@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { Box, useMediaQuery } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
@@ -105,7 +106,20 @@ export const IncentivesBox = ({
 
     return (
       <ContentWithTooltip
-        tooltipContent={<Incentives />}
+        tooltipContent={
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <Box>
+              <Typography variant="caption" color="text.secondary" mb={3}>
+                <Trans>
+                  Participating in this {symbol} reserve gives additional annualized rewards.
+                </Trans>
+              </Typography>
+            </Box>
+            <Box>
+              <Incentives />
+            </Box>
+          </Box>
+        }
         withoutHover
         setOpen={setOpen}
         open={open}
