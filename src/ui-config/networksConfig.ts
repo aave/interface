@@ -18,6 +18,7 @@ import {
   scroll,
   scrollSepolia,
   sepolia,
+  sonic,
   zksync,
 } from 'wagmi/chains';
 
@@ -414,6 +415,26 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
     wagmiChain: linea,
+  },
+  [ChainId.sonic]: {
+    name: 'Sonic',
+    privateJsonRPCUrl: 'https://sonic-mainnet.g.alchemy.com/v2/L7wpvN30xWzkijd2cRwD8n0VLFM9UTmv',
+    publicJsonRPCUrl: [
+      'https://rpc.soniclabs.com',
+      'https://sonic.drpc.org',
+      'https://sonic-rpc.publicnode.com',
+    ],
+    baseAssetSymbol: 'S',
+    wrappedBaseAssetSymbol: 'wS',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sonicscan.org',
+    networkLogoPath: '/icons/networks/sonic.svg',
+    bridge: {
+      icon: '/icons/networks/sonic.svg',
+      name: 'Sonic Bridge',
+      url: 'https://gateway.soniclabs.com',
+    },
+    wagmiChain: sonic,
   },
 };
 
