@@ -11,8 +11,8 @@ interface StakeUmbrellaConfig {
 export const stakeUmbrellaConfig: StakeUmbrellaConfig = {
   // [ChainId.mainnet]: {}, // TODO: Mainnet addresses
   [ChainId.base_sepolia]: {
-    stakeDataProvider: '0x2e2983b7e361Ef17d9b2E0aF5345Ca93F26F33eD',
-    stakeGateway: '0x7B0BD7A76C912bE0a48d5B54227e4bF951B4E4BF',
+    stakeDataProvider: '0x0d84a32a6282DC3232006adeA4e9A9DEe3292aB7',
+    stakeGateway: '0xdb576D674DC849cF5291e046FB4CD80Be8467041',
   },
 };
 

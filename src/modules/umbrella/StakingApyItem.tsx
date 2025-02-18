@@ -6,6 +6,7 @@ import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
+import invariant from 'tiny-invariant';
 
 import { IconData, MultiIconWithTooltip } from './helpers/MultiIcon';
 
@@ -20,31 +21,30 @@ export const StakingApyItem = ({
 
   const icons: IconData[] = [];
   const stakeRewards: StakingReward[] = [];
-  for (const reward of stakeData.rewards) {
-    icons.push({ src: reward.rewardSymbol, aToken: false });
+  for (const reward of stakeData.formattedRewards) {
+    icons.push({ src: reward.rewardTokenSymbol, aToken: false });
     stakeRewards.push({
-      address: reward.rewardAddress,
-      symbol: reward.rewardSymbol,
-      name: reward.rewardSymbol,
+      address: reward.rewardToken,
+      symbol: reward.rewardTokenSymbol,
+      name: reward.rewardTokenSymbol,
       aToken: false,
       apy: reward.apy,
     });
   }
 
-  if (stakeData.underlyingIsWaToken) {
+  if (stakeData.underlyingIsStataToken) {
+    console.log(reserves);
     const underlyingReserve = reserves.find(
-      (reserve) => reserve.underlyingAsset === stakeData.waTokenData.waTokenUnderlying
+      (reserve) => reserve.underlyingAsset === stakeData.stataTokenData.asset.toLowerCase()
     );
-
-    if (!underlyingReserve) {
-      throw new Error(
-        `Underlying reserve not found for waToken underlying ${stakeData.waTokenData.waTokenUnderlying}`
-      );
-    }
+    invariant(
+      underlyingReserve,
+      `Underlying reserve not found for waToken underlying ${stakeData.stataTokenData.asset}`
+    );
 
     icons.push({ src: underlyingReserve.symbol, aToken: true });
     stakeRewards.push({
-      address: stakeData.waTokenData.waTokenUnderlying,
+      address: stakeData.stataTokenData.asset,
       symbol: underlyingReserve.symbol,
       name: `a${underlyingReserve.symbol}`,
       aToken: true,
@@ -71,7 +71,7 @@ export const StakingApyItem = ({
           <StakingApyTooltipcontent
             description={
               <Typography variant="caption" color="text.secondary" mb={3}>
-                {stakeData.underlyingIsWaToken ? (
+                {stakeData.underlyingIsStataToken ? (
                   <Trans>
                     Staking this asset will earn the underlying asset supply yield in additon to
                     other configured rewards.

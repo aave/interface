@@ -37,6 +37,7 @@ interface FormattedReward {
   rewardToken: string;
   rewardTokenName: string;
   rewardTokenSymbol: string;
+  apy: string;
 }
 
 interface FormattedStakeTokenData {
@@ -118,7 +119,7 @@ const formatStakeData = (
       stakeTokenPrice,
       stakeTokenTotalSupply,
       totalSupplyUsd,
-      totalRewardApy: totalRewardApy.toString(),
+      totalRewardApy: normalize(totalRewardApy.toString(), 18),
     };
   });
 
@@ -231,6 +232,7 @@ const formatUmbrellaSummary = (
           rewardToken: reward.rewardAddress,
           rewardTokenSymbol: rewardData.rewardSymbol,
           rewardTokenName: rewardData.rewardName,
+          apy: normalize(rewardData.apy, 18),
         };
       }),
       formattedStakeTokenData: {
@@ -267,11 +269,10 @@ const getTotalStakeRewardApy = (
   reserve: FormattedReservesAndIncentives | undefined,
   stakeData: StakeData
 ): string => {
-  const totalRewardApy = stakeData.rewards.reduce(
-    (acc, reward) => acc.plus(reward.apy),
-    valueToBigNumber('0')
+  const totalRewardApy = normalizeBN(
+    stakeData.rewards.reduce((acc, reward) => acc.plus(reward.apy), valueToBigNumber('0')),
+    18
   );
-
   if (stakeData.underlyingIsStataToken) {
     if (!reserve) {
       throw new Error('Reserve is required when underlying is a stataToken');
