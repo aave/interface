@@ -6,6 +6,7 @@ import { ReactNode } from 'react';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
 import {
+  EthenaIncentivesButton,
   IncentivesButton,
   MeritIncentivesButton,
   ZkIgniteIncentivesButton,
@@ -85,6 +86,7 @@ export const IncentivesCard = ({
           rewardedAsset={address}
           protocolAction={protocolAction}
         />
+        <EthenaIncentivesButton rewardedAsset={address} />
       </Box>
     </Box>
   );

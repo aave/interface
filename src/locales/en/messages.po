@@ -21,6 +21,10 @@ msgstr "If you DO NOT unstake within {0} of unstake window, you will need to act
 msgid "Receive (est.)"
 msgstr "Receive (est.)"
 
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "Aave Labs does not guarantee the program and accepts no liability."
+msgstr "Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Participating in this {symbol} reserve gives annualized rewards."
@@ -123,6 +127,10 @@ msgstr "Collateral change"
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
+
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Ethena Rewards."
+msgstr "This asset is eligible for {0} Ethena Rewards."
 
 #: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
@@ -1166,6 +1174,10 @@ msgstr "Current LTV"
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Market"
+
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "Learn more about Ethena Rewards program"
+msgstr "Learn more about Ethena Rewards program"
 
 #: src/layouts/FeedbackDialog.tsx
 msgid "Send Feedback"
