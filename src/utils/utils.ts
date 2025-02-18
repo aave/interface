@@ -80,7 +80,7 @@ export type ExternalIncentivesTooltipsConfig = {
   spkAirdrop: boolean;
 };
 
-export const showExternalIncentivesTooltip = (
+export const getNoAprExternalIncentivesTooltipConfig = (
   symbol: string,
   currentMarket: string,
   protocolAction?: ProtocolAction

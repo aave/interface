@@ -29,7 +29,6 @@ import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -154,11 +153,6 @@ export const SupplyAssetsListItemDesktop = ({
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        symbol,
-        currentMarket,
-        ProtocolAction.supply
-      )}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <ListColumn>
@@ -347,11 +341,6 @@ export const SupplyAssetsListItemMobile = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        symbol,
-        currentMarket,
-        ProtocolAction.supply
-      )}
     >
       {canSupplyAsWrappedToken && wrappedToken && walletBalance === '0' ? (
         <Row

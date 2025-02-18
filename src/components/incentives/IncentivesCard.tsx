@@ -1,44 +1,146 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { Box, useMediaQuery } from '@mui/material';
-import { ReactNode } from 'react';
+import { Trans } from '@lingui/macro';
+import { Box, Typography } from '@mui/material';
+import { ReactNode, useState } from 'react';
+import { useAllIncentives } from 'src/hooks/useAllIncentives';
 
+import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
 import {
-  IncentivesButton,
+  Content,
+  LmIncentivesButton,
   MeritIncentivesButton,
+  NoAprExternalIncentiveTooltip,
   ZkIgniteIncentivesButton,
 } from './IncentivesButton';
 
 interface IncentivesCardProps {
   symbol: string;
   value: string | number;
+  market: string;
   incentives?: ReserveIncentiveResponse[];
   address?: string;
   variant?: 'main14' | 'main16' | 'secondary14';
   symbolsVariant?: 'secondary14' | 'secondary16';
-  align?: 'center' | 'flex-end';
+  align?: 'center' | 'flex-end' | 'start';
   color?: string;
   tooltip?: ReactNode;
-  market: string;
   protocolAction?: ProtocolAction;
+  displayBlank?: boolean;
 }
 
-export const IncentivesCard = ({
+interface IncentivesBoxProps {
+  symbol: string;
+  market: string;
+  incentives?: ReserveIncentiveResponse[];
+  address?: string;
+  protocolAction?: ProtocolAction;
+  displayBlank?: boolean;
+  displayNone?: boolean;
+}
+
+export const IncentivesBox = ({
   symbol,
-  value,
   incentives,
   address,
-  variant = 'secondary14',
-  symbolsVariant,
-  align,
-  color,
-  tooltip,
   market,
   protocolAction,
-}: IncentivesCardProps) => {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  displayBlank,
+}: IncentivesBoxProps) => {
+  const { allIncentives, totalApr } = useAllIncentives({
+    symbol,
+    market,
+    rewardedAsset: address,
+    protocolAction,
+    lmIncentives: incentives,
+  });
+
+  const Incentives = () => (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '4px',
+        flexWrap: 'wrap',
+        width: 'fit-content',
+      }}
+    >
+      <LmIncentivesButton
+        incentives={incentives}
+        symbol={symbol}
+        displayBlank={displayBlank && allIncentives.length == 0}
+      />
+      <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+      <ZkIgniteIncentivesButton
+        market={market}
+        rewardedAsset={address}
+        protocolAction={protocolAction}
+      />
+      <NoAprExternalIncentiveTooltip
+        market={market}
+        symbol={symbol}
+        protocolAction={protocolAction}
+      />
+    </Box>
+  );
+
+  const AllIncentivesButton = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <ContentWithTooltip
+        tooltipContent={
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <Box>
+              <Typography variant="caption" color="text.secondary" mb={3}>
+                <Trans>
+                  Participating in this {symbol} reserve gives additional annualized rewards.
+                </Trans>
+              </Typography>
+            </Box>
+            <Box>
+              <Incentives />
+            </Box>
+          </Box>
+        }
+        withoutHover
+        setOpen={setOpen}
+        open={open}
+      >
+        <Content
+          incentives={allIncentives}
+          incentivesNetAPR={totalApr}
+          displayBlank={displayBlank}
+        />
+      </ContentWithTooltip>
+    );
+  };
+
+  return allIncentives.length >= 2 ? (
+    <AllIncentivesButton />
+  ) : allIncentives.length === 1 ? (
+    <Incentives />
+  ) : null;
+};
+
+export const IncentivesCard = (incentivesCardProps: IncentivesCardProps) => {
+  const {
+    symbol,
+    value,
+    incentives,
+    address,
+    variant = 'secondary14',
+    symbolsVariant,
+    align,
+    color,
+    tooltip,
+    market,
+    protocolAction,
+    displayBlank,
+  } = incentivesCardProps;
+
   return (
     <Box
       sx={{
@@ -65,27 +167,14 @@ export const IncentivesCard = ({
       ) : (
         <NoData variant={variant} color={color || 'text.secondary'} />
       )}
-      <Box
-        sx={
-          isTableChangedToCards
-            ? { display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }
-            : {
-                display: 'flex',
-                justifyContent: 'center',
-                gap: '4px',
-                flexWrap: 'wrap',
-                flex: '0 0 50%', // 2 items per row
-              }
-        }
-      >
-        <IncentivesButton incentives={incentives} symbol={symbol} />
-        <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-        <ZkIgniteIncentivesButton
-          market={market}
-          rewardedAsset={address}
-          protocolAction={protocolAction}
-        />
-      </Box>
+      <IncentivesBox
+        symbol={symbol}
+        incentives={incentives}
+        address={address}
+        market={market}
+        protocolAction={protocolAction}
+        displayBlank={displayBlank}
+      />
     </Box>
   );
 };

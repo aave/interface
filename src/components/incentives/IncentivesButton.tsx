@@ -8,8 +8,11 @@ import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { getNoAprExternalIncentivesTooltipConfig } from 'src/utils/utils';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
+import { SpkAirdropTooltip } from '../infoTooltips/SpkAirdropTooltip';
+import { SuperFestTooltip } from '../infoTooltips/SuperFestTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
@@ -22,7 +25,13 @@ interface IncentivesButtonProps {
   displayBlank?: boolean;
 }
 
-const BlankIncentives = () => {
+interface NoAprExternalIncentiveTooltipProps {
+  market: string;
+  symbol?: string;
+  protocolAction?: ProtocolAction;
+}
+
+export const BlankIncentives = () => {
   return (
     <Box
       sx={{
@@ -92,10 +101,33 @@ export const ZkIgniteIncentivesButton = (params: {
   );
 };
 
-export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
+export const NoAprExternalIncentiveTooltip = ({
+  market,
+  symbol,
+  protocolAction,
+}: NoAprExternalIncentiveTooltipProps) => {
+  if (!symbol || !protocolAction) {
+    return null;
+  }
+
+  const noAprExternalIncentivesTooltips = getNoAprExternalIncentivesTooltipConfig(
+    symbol,
+    market,
+    protocolAction
+  );
+
+  return (
+    <>
+      {noAprExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
+      {noAprExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
+    </>
+  );
+};
+
+export const LmIncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
   const [open, setOpen] = useState(false);
 
-  if (!(incentives && incentives.length > 0)) {
+  if (!(incentives && incentives.filter((i) => i.incentiveAPR !== '0').length > 0)) {
     if (displayBlank) {
       return <BlankIncentives />;
     } else {
@@ -138,7 +170,7 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
   );
 };
 
-const Content = ({
+export const Content = ({
   incentives,
   incentivesNetAPR,
   displayBlank,
