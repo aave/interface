@@ -23,7 +23,7 @@ export const UmbrellaModal = () => {
   const { data } = useUmbrellaSummary(currentMarketData);
 
   const stakeData = data?.stakeData.find(
-    (item) => item.stakeToken.toLowerCase() === args?.uStakeToken?.toLowerCase()
+    (item) => item.tokenAddress.toLowerCase() === args?.uStakeToken?.toLowerCase()
   );
 
   // If there is no waTokenUnderlying, then just use the mock address so there's no errors thrown.

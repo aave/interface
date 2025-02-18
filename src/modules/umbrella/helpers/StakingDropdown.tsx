@@ -90,10 +90,10 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
           variant="contained"
           onClick={() =>
             openUmbrella(
-              stakeData.stakeToken,
-              stakeData.stakeTokenSymbol,
-              stakeData.waTokenData.waTokenAToken,
-              stakeData.waTokenData.waTokenUnderlying
+              stakeData.tokenAddress,
+              stakeData.symbol,
+              stakeData.stataTokenData.aToken,
+              stakeData.stataTokenData.asset
             )
           }
         >
@@ -129,7 +129,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               <StyledMenuItem
                 onClick={() => {
                   handleClose();
-                  openUmbrellaStakeCooldown(stakeData.stakeToken, stakeData.stakeTokenSymbol);
+                  openUmbrellaStakeCooldown(stakeData.tokenAddress, stakeData.symbol);
                 }}
                 disabled={
                   !hasStakeTokenBalance ||
@@ -160,7 +160,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               <StyledMenuItem
                 onClick={() => {
                   handleClose();
-                  openUmbrellaUnstake(stakeData.stakeToken, stakeData.stakeTokenSymbol);
+                  openUmbrellaUnstake(stakeData.tokenAddress, stakeData.symbol);
                 }}
                 disabled={!isUnstakeWindowActive}
               >
@@ -185,11 +185,11 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               onClick={() => {
                 handleClose();
                 openUmbrella(
-                  stakeData.stakeToken,
-                  stakeData.stakeTokenSymbol,
+                  stakeData.tokenAddress,
+                  stakeData.symbol,
 
-                  stakeData.waTokenData.waTokenAToken,
-                  stakeData.waTokenData.waTokenUnderlying
+                  stakeData.stataTokenData.aToken,
+                  stakeData.stataTokenData.asset
                 );
               }}
             >
@@ -200,7 +200,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
             <StyledMenuItem
               onClick={() => {
                 handleClose();
-                openUmbrellaClaim(stakeData.stakeToken);
+                openUmbrellaClaim(stakeData.tokenAddress);
               }}
             >
               <StartIcon />
@@ -210,9 +210,9 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
             <StyledMenuItem
               onClick={() => {
                 addERC20Token({
-                  address: stakeData.stakeToken,
+                  address: stakeData.tokenAddress,
                   decimals: stakeData.decimals,
-                  symbol: stakeData.stakeTokenSymbol,
+                  symbol: stakeData.symbol,
                 });
               }}
             >

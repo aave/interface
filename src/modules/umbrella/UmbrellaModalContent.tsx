@@ -49,27 +49,27 @@ export interface StakeInputAsset {
 }
 
 const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
-  return stakeData.underlyingIsWaToken
+  return stakeData.underlyingIsStataToken
     ? [
         // stata token
         {
-          address: stakeData.waTokenData.waTokenUnderlying,
-          symbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
-          iconSymbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
+          address: stakeData.stataTokenData.asset,
+          symbol: stakeData.stataTokenData.assetSymbol,
+          iconSymbol: stakeData.stataTokenData.assetSymbol,
           balance: stakeData.formattedBalances.underlyingWaTokenBalance,
         },
         {
-          address: stakeData.waTokenData.waTokenAToken,
+          address: stakeData.stataTokenData.aToken,
           //  Note: using token symbol the same as underlying for aToken handling given we dont have tokens for "aBasSepUSDC"
-          symbol: `a${stakeData.waTokenData.waTokenUnderlyingSymbol}`,
-          iconSymbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
+          symbol: `a${stakeData.stataTokenData.assetSymbol}`,
+          iconSymbol: stakeData.stataTokenData.assetSymbol,
           balance: stakeData.formattedBalances.aTokenBalanceAvailableToStake,
           aToken: true,
         },
       ]
     : [
         {
-          address: stakeData.stakeTokenUnderlying,
+          address: stakeData.underlyingTokenAddress,
           symbol: stakeData.underlyingTokenSymbol,
           iconSymbol: stakeData.underlyingTokenSymbol,
           balance: stakeData.formattedBalances.underlyingTokenBalance,
@@ -136,7 +136,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
   }
 
   const amountInUsd = valueToBigNumber(amount || '0')
-    .multipliedBy(stakeData.stakeTokenPrice)
+    .multipliedBy(stakeData.price)
     .shiftedBy(-USD_DECIMALS)
     .toString();
 

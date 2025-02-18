@@ -1,4 +1,8 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import {
+  API_ETH_MOCK_ADDRESS,
+  StakeGatewayService,
+  StakeTokenService,
+} from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -12,15 +16,13 @@ import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { stakeUmbrellaConfig } from 'src/services/UmbrellaStakeDataService';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
-import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
-import { StakeGatewayService } from './services/StakeGatewayService';
-import { StakeTokenService } from './services/StakeTokenService';
 import { StakeInputAsset } from './UmbrellaModalContent';
 
 export interface StakeActionProps extends BoxProps {
@@ -80,7 +82,7 @@ export const UmbrellaActions = ({
     });
   const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
-  const useStakeGateway = stakeData.underlyingIsWaToken;
+  const useStakeGateway = stakeData.underlyingIsStataToken;
 
   const {
     data: approvedAmount,
@@ -91,7 +93,7 @@ export const UmbrellaActions = ({
     token: selectedToken.address,
     spender: useStakeGateway
       ? stakeUmbrellaConfig[currentChainId].stakeGateway
-      : stakeData.stakeToken,
+      : stakeData.tokenAddress,
   });
 
   setLoadingTxns(fetchingApprovedAmount);
@@ -113,7 +115,7 @@ export const UmbrellaActions = ({
     token: selectedToken.address,
     spender: useStakeGateway
       ? stakeUmbrellaConfig[currentChainId].stakeGateway
-      : stakeData.stakeToken,
+      : stakeData.tokenAddress,
     amount: approvedAmount?.toString() || '0',
   };
 
@@ -174,27 +176,35 @@ export const UmbrellaActions = ({
 
     if (usePermit && signatureParams) {
       if (selectedToken.aToken) {
-        stakeTxData = stakeService.stakeATokenWithPermit(
-          currentAccount,
-          stakeData.stakeToken,
-          amountToStake,
-          signatureParams.deadline,
-          signatureParams.signature
-        );
+        stakeTxData = stakeService.stakeATokensWithPermit({
+          sender: currentAccount,
+          stakeToken: stakeData.tokenAddress,
+          amount: amountToStake,
+          deadline: signatureParams.deadline,
+          permit: signatureParams.signature,
+        });
       } else {
-        stakeTxData = stakeService.stakeWithPermit(
-          user,
-          stakeData.stakeToken,
-          amountToStake,
-          signatureParams.deadline,
-          signatureParams.signature
-        );
+        stakeTxData = stakeService.stakeWithPermit({
+          sender: user,
+          stakeToken: stakeData.tokenAddress,
+          amount: amountToStake,
+          deadline: signatureParams.deadline,
+          permit: signatureParams.signature,
+        });
       }
     } else {
       if (selectedToken.aToken) {
-        stakeTxData = stakeService.stakeAToken(currentAccount, stakeData.stakeToken, amountToStake);
+        stakeTxData = stakeService.stakeATokens({
+          sender: currentAccount,
+          stakeToken: stakeData.tokenAddress,
+          amount: amountToStake,
+        });
       } else {
-        stakeTxData = stakeService.stake(currentAccount, stakeData.stakeToken, amountToStake);
+        stakeTxData = stakeService.stake({
+          sender: currentAccount,
+          stakeToken: stakeData.tokenAddress,
+          amount: amountToStake,
+        });
       }
     }
 
@@ -202,18 +212,18 @@ export const UmbrellaActions = ({
   };
 
   const getStakeTokenTxData = (amountToStake: string) => {
-    const stakeTokenService = new StakeTokenService(stakeData.stakeToken);
+    const stakeTokenService = new StakeTokenService(stakeData.tokenAddress);
     let stakeTxData: PopulatedTransaction;
 
     if (usePermit && signatureParams) {
-      stakeTxData = stakeTokenService.stakeWithPermit(
-        user,
-        amountToStake,
-        signatureParams.deadline,
-        signatureParams.signature
-      );
+      stakeTxData = stakeTokenService.depositWithPermit({
+        sender: user,
+        amount: amountToStake,
+        deadline: signatureParams.deadline,
+        permit: signatureParams.signature,
+      });
     } else {
-      stakeTxData = stakeTokenService.stake(user, amountToStake);
+      stakeTxData = stakeTokenService.deposit({ sender: user, amount: amountToStake });
     }
 
     return stakeTxData;
