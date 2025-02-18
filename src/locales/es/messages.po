@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-06 18:06\n"
+"PO-Revision-Date: 2025-02-18 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -25,6 +25,10 @@ msgstr "Si NO unstakeas entre {0} de la ventana de unstakeo, necesitarás activa
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Receive (est.)"
 msgstr "Recibir (est.)"
+
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
@@ -128,6 +132,10 @@ msgstr "Cambio de garantía"
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "Esta es la cantidad total que puedes suministrar en esta reserva. Puedes suministrar el balance de tu cartera hasta que se alcance el límite de suministro."
+
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Ethena Rewards."
+msgstr ""
 
 #: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
@@ -1171,6 +1179,10 @@ msgstr "LTV actual"
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Mercado"
+
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "Learn more about Ethena Rewards program"
+msgstr ""
 
 #: src/layouts/FeedbackDialog.tsx
 msgid "Send Feedback"
