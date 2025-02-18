@@ -3,16 +3,16 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
+import { useAllIncentives } from 'src/hooks/useAllIncentives';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
 import {
   Content,
-  IncentivesButton,
+  LmIncentivesButton,
   MeritIncentivesButton,
   NoAprExternalIncentiveTooltip,
-  useAllIncentives,
   ZkIgniteIncentivesButton,
 } from './IncentivesButton';
 
@@ -67,7 +67,7 @@ export const IncentivesBox = ({
         width: 'fit-content',
       }}
     >
-      <IncentivesButton
+      <LmIncentivesButton
         incentives={incentives}
         symbol={symbol}
         displayBlank={displayBlank && allIncentives.length == 0}

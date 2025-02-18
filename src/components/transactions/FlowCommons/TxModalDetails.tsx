@@ -5,7 +5,6 @@ import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
-import { useAllIncentives } from 'src/components/incentives/IncentivesButton';
 import { IncentivesBox } from 'src/components/incentives/IncentivesCard';
 import {
   IsolatedDisabledBadge,
@@ -14,6 +13,7 @@ import {
 } from 'src/components/isolationMode/IsolatedBadge';
 import { Row } from 'src/components/primitives/Row';
 import { CollateralType } from 'src/helpers/types';
+import { useAllIncentives } from 'src/hooks/useAllIncentives';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { FormattedNumber, FormattedNumberProps } from '../../primitives/FormattedNumber';
