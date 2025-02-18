@@ -33,7 +33,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
       {currentMarket === 'proto_base_v3' && (
         <TopBarNotify
           // learnMoreLink="https://oh7vm38ynd2.typeform.com/to/Fnw3rMyw"
-          notifyText="Debt swaps are now live on Base!"
+          notifyText="Swap debt to GHO, now live on Base!"
           bannerVersion={APP_BANNER_VERSION}
           customIcon={<SwitchIcon />}
         />
