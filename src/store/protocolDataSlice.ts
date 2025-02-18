@@ -1,4 +1,5 @@
 import { providers, utils } from 'ethers';
+import { ESupportedAPYTimeRanges } from 'src/components/HistoricalAPYRow';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import {
   availableMarkets,
@@ -25,6 +26,8 @@ export interface ProtocolDataSlice {
   currentNetworkConfig: NetworkConfig;
   jsonRpcProvider: (chainId?: number) => providers.Provider;
   setCurrentMarket: (market: CustomMarket, omitQueryParameterUpdate?: boolean) => void;
+  selectedTimeRange: ESupportedAPYTimeRanges;
+  setSelectedTimeRange: (timeRange: ESupportedAPYTimeRanges) => void;
   tryPermit: ({ reserveAddress, isWrappedBaseAsset }: TypePermitParams) => boolean;
 }
 
@@ -41,7 +44,11 @@ export const createProtocolDataSlice: StateCreator<
     currentMarketData: marketsData[initialMarket],
     currentChainId: initialMarketData.chainId,
     currentNetworkConfig: getNetworkConfig(initialMarketData.chainId),
+    selectedTimeRange: ESupportedAPYTimeRanges.Now,
     jsonRpcProvider: (chainId) => getProvider(chainId ?? get().currentChainId),
+    setSelectedTimeRange: (timeRange: ESupportedAPYTimeRanges) => {
+      set({ selectedTimeRange: timeRange });
+    },
     setCurrentMarket: (market, omitQueryParameterUpdate) => {
       if (!availableMarkets.includes(market as CustomMarket)) return;
       const nextMarketData = marketsData[market];

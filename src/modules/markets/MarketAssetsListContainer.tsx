@@ -2,12 +2,14 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
+import { ESupportedAPYTimeRanges, HistoricalAPYRow } from 'src/components/HistoricalAPYRow';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useHistoricalAPYData } from 'src/hooks/useHistoricalAPYData';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -36,12 +38,21 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
 
 export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
-  const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
+  const [
+    trackEvent,
+    currentMarket,
+    currentMarketData,
+    currentNetworkConfig,
+    selectedTimeRange,
+    setSelectedTimeRange,
+  ] = useRootStore(
     useShallow((store) => [
       store.trackEvent,
       store.currentMarket,
       store.currentMarketData,
       store.currentNetworkConfig,
+      store.selectedTimeRange,
+      store.setSelectedTimeRange,
     ])
   );
   const [searchTerm, setSearchTerm] = useState('');
@@ -51,12 +62,21 @@ export const MarketAssetsListContainer = () => {
   const ghoReserve = getGhoReserve(reserves);
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
 
+  const underlyingAssets = reserves.map((a) => a.underlyingAsset);
+  const { data: historicalAPYData, isLoading: isHistoricalDataLoading } = useHistoricalAPYData(
+    currentMarketData.subgraphUrl ?? '',
+    selectedTimeRange,
+    underlyingAssets
+  );
+  const showHistoricalDataLoading =
+    selectedTimeRange !== ESupportedAPYTimeRanges.Now && isHistoricalDataLoading;
+
   const filteredData = reserves
     // Filter out any non-active reserves
     .filter((res) => res.isActive)
     // Filter out GHO if the banner is being displayed
     .filter((res) => (displayGhoBanner ? res !== ghoReserve : true))
-    // filter out any that don't meet search term criteria
+    // Filter out any reserves that don't meet the search term criteria
     .filter((res) => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase().trim();
@@ -67,15 +87,32 @@ export const MarketAssetsListContainer = () => {
       );
     })
     // Transform the object for list to consume it
-    .map((reserve) => ({
-      ...reserve,
-      ...(reserve.isWrappedBaseAsset
-        ? fetchIconSymbolAndName({
-            symbol: currentNetworkConfig.baseAssetSymbol,
-            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-          })
-        : {}),
-    }));
+    .map((reserve) => {
+      const historicalData = historicalAPYData?.[reserve.underlyingAsset.toLowerCase()];
+
+      return {
+        ...reserve,
+        ...(reserve.isWrappedBaseAsset
+          ? fetchIconSymbolAndName({
+              symbol: currentNetworkConfig.baseAssetSymbol,
+              underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+            })
+          : {}),
+        supplyAPY:
+          selectedTimeRange === ESupportedAPYTimeRanges.Now
+            ? reserve.supplyAPY
+            : !!historicalData
+            ? historicalData.supplyAPY
+            : 'N/A',
+        variableBorrowAPY:
+          selectedTimeRange === ESupportedAPYTimeRanges.Now
+            ? reserve.variableBorrowAPY
+            : !!historicalData
+            ? historicalData.variableBorrowAPY
+            : 'N/A',
+      };
+    });
+
   // const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
   // const showFrozenMarketWarning =
   //   marketFrozen && ['Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
@@ -91,15 +128,38 @@ export const MarketAssetsListContainer = () => {
   return (
     <ListWrapper
       titleComponent={
-        <TitleWithSearchBar
-          onSearchTermChange={setSearchTerm}
-          title={
-            <>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          {/* Left: Title */}
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+            <Typography variant="h2" component="div">
               {currentMarketData.marketTitle} <Trans>assets</Trans>
-            </>
-          }
-          searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
-        />
+            </Typography>
+          </div>
+
+          {/* Center: Search Bar */}
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+            <TitleWithSearchBar
+              onSearchTermChange={setSearchTerm}
+              title={null}
+              searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
+            />
+          </div>
+
+          {/* Right: Historical APY */}
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+            <HistoricalAPYRow
+              disabled={false}
+              selectedTimeRange={selectedTimeRange}
+              onTimeRangeChanged={setSelectedTimeRange}
+            />
+          </div>
+        </div>
       }
     >
       {displayGhoBanner && (
@@ -109,7 +169,10 @@ export const MarketAssetsListContainer = () => {
       )}
 
       {/* Unfrozen assets list */}
-      <MarketAssetsList reserves={unfrozenReserves} loading={loading} />
+      <MarketAssetsList
+        reserves={unfrozenReserves}
+        loading={loading || showHistoricalDataLoading}
+      />
 
       {/* Frozen or paused assets list */}
       {frozenOrPausedReserves.length > 0 && (
@@ -148,7 +211,10 @@ export const MarketAssetsListContainer = () => {
         </Box>
       )}
       {showFrozenMarketsToggle && (
-        <MarketAssetsList reserves={frozenOrPausedReserves} loading={loading} />
+        <MarketAssetsList
+          reserves={frozenOrPausedReserves}
+          loading={loading || showHistoricalDataLoading}
+        />
       )}
 
       {/* Show no search results message if nothing hits in either list */}

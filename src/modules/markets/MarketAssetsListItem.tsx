@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { ESupportedAPYTimeRanges } from 'src/components/HistoricalAPYRow';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
@@ -26,8 +27,8 @@ import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataPro
 
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
-  const [trackEvent, currentMarket] = useRootStore(
-    useShallow((store) => [store.trackEvent, store.currentMarket])
+  const [trackEvent, currentMarket, selectedTimeRange] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarket, store.selectedTimeRange])
   );
 
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
@@ -41,6 +42,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
     currentMarket,
     ProtocolAction.borrow
   );
+  const showIncentives = selectedTimeRange === ESupportedAPYTimeRanges.Now;
 
   return (
     <ListItem
@@ -101,12 +103,17 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           symbolsVariant="secondary16"
           tooltip={
             <>
-              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
+              {externalIncentivesTooltipsSupplySide.superFestRewards && showIncentives && (
+                <SuperFestTooltip />
+              )}
+              {externalIncentivesTooltipsSupplySide.spkAirdrop && showIncentives && (
+                <SpkAirdropTooltip />
+              )}
             </>
           }
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
+          showIncentives={showIncentives}
         />
       </ListColumn>
 
@@ -131,12 +138,17 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           symbolsVariant="secondary16"
           tooltip={
             <>
-              {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
+              {externalIncentivesTooltipsBorrowSide.superFestRewards && showIncentives && (
+                <SuperFestTooltip />
+              )}
+              {externalIncentivesTooltipsBorrowSide.spkAirdrop && showIncentives && (
+                <SpkAirdropTooltip />
+              )}
             </>
           }
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
+          showIncentives={showIncentives}
         />
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
