@@ -50,7 +50,7 @@
     "@safe-global/safe-apps-sdk": "^9.1.0",
     "@tanstack/react-query": "^5.62.8",
     "@visx/annotation": "^3.3.0",
-    "@visx/axis": "^2.14.0",
+    "@visx/axis": "^3.12.0",
     "@visx/curve": "^2.1.0",
     "@visx/event": "^2.6.0",
     "@visx/gradient": "^2.10.0",
