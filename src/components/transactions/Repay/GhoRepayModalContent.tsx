@@ -1,0 +1,252 @@
+import { API_ETH_MOCK_ADDRESS, synthetixProxyByChainId } from '@aave/contract-helpers';
+import {
+  BigNumberValue,
+  calculateHealthFactorFromBalancesBigUnits,
+  USD_DECIMALS,
+  valueToBigNumber,
+} from '@aave/math-utils';
+import { Trans } from '@lingui/macro';
+import Typography from '@mui/material/Typography';
+import { BigNumber } from 'bignumber.js';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
+import { Asset, AssetInput } from '../AssetInput';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
+import { TxSuccessView } from '../FlowCommons/Success';
+import {
+  DetailsHFLine,
+  DetailsNumberLineWithSub,
+  TxModalDetails,
+} from '../FlowCommons/TxModalDetails';
+import { RepayActions } from './RepayActions';
+
+interface RepayAsset extends Asset {
+  balance: string;
+}
+
+export const GHORepayModalContent = ({
+  poolReserve,
+  userReserve,
+  symbol: modalSymbol,
+  tokenBalance,
+  nativeBalance,
+  isWrongNetwork,
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
+  const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
+  const { marketReferencePriceInUsd, ghoUserData } = useAppDataContext();
+  const [minRemainingBaseTokenBalance, currentChainId, currentMarketData, currentMarket] =
+    useRootStore(
+      useShallow((store) => [
+        store.poolComputed.minRemainingBaseTokenBalance,
+        store.currentChainId,
+        store.currentMarketData,
+        store.currentMarket,
+      ])
+    );
+  const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
+    address: poolReserve.underlyingAsset,
+    symbol: poolReserve.symbol,
+    iconSymbol: poolReserve.iconSymbol,
+    balance: tokenBalance,
+  });
+  const [assets, setAssets] = useState<RepayAsset[]>([tokenToRepayWith]);
+  const [repayMax, setRepayMax] = useState('');
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
+  const networkConfig = getNetworkConfig(currentChainId);
+  const { underlyingBalance, usageAsCollateralEnabledOnUser, reserve } = userReserve;
+  const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
+  const debt = ghoUserData?.userGhoBorrowBalance || '0';
+  const debtUSD = new BigNumber(debt)
+    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
+    .multipliedBy(marketReferencePriceInUsd)
+    .shiftedBy(-USD_DECIMALS);
+  const safeAmountToRepayAll = valueToBigNumber(debt)
+    .multipliedBy('1.0025')
+    .decimalPlaces(poolReserve.decimals, BigNumber.ROUND_UP);
+  let maxAmountToRepay: BigNumber;
+  let balance: string;
+  if (repayWithATokens) {
+    maxAmountToRepay = BigNumber.min(underlyingBalance, debt);
+    balance = underlyingBalance;
+  } else {
+    const normalizedWalletBalance = valueToBigNumber(tokenToRepayWith.balance).minus(
+      userReserve?.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol
+        ? minRemainingBaseTokenBalance
+        : '0'
+    );
+    balance = normalizedWalletBalance.toString(10);
+    maxAmountToRepay = BigNumber.min(normalizedWalletBalance, debt);
+  }
+  const isMaxSelected = _amount === '-1';
+  const amount = isMaxSelected ? maxAmountToRepay.toString(10) : _amount;
+  const handleChange = (value: string) => {
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected ? maxAmountToRepay.toString(10) : value;
+    setAmount(value);
+    if (maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
+      if (
+        tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase() ||
+        (synthetixProxyByChainId[currentChainId] &&
+          synthetixProxyByChainId[currentChainId].toLowerCase() ===
+            reserve.underlyingAsset.toLowerCase())
+      ) {
+        setRepayMax(safeAmountToRepayAll.toString(10));
+      } else {
+        setRepayMax('-1');
+      }
+    } else {
+      setRepayMax(
+        safeAmountToRepayAll.lt(balance)
+          ? safeAmountToRepayAll.toString(10)
+          : maxAmountToRepay.toString(10)
+      );
+    }
+  };
+  useEffect(() => {
+    const repayTokens: RepayAsset[] = [];
+    if (poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol) {
+      const nativeTokenWalletBalance = valueToBigNumber(nativeBalance);
+      const maxNativeToken = BigNumber.max(
+        nativeTokenWalletBalance,
+        BigNumber.min(nativeTokenWalletBalance, debt)
+      );
+      repayTokens.push({
+        address: API_ETH_MOCK_ADDRESS.toLowerCase(),
+        symbol: networkConfig.baseAssetSymbol,
+        balance: maxNativeToken.toString(10),
+      });
+    }
+    const minReserveTokenRepay = BigNumber.min(valueToBigNumber(tokenBalance), debt);
+    const maxReserveTokenForRepay = BigNumber.max(minReserveTokenRepay, tokenBalance);
+    repayTokens.push({
+      address: poolReserve.underlyingAsset,
+      symbol: poolReserve.symbol,
+      iconSymbol: poolReserve.iconSymbol,
+      balance: maxReserveTokenForRepay.toString(10),
+    });
+    if (
+      currentMarketData.v3 &&
+      !displayGhoForMintableMarket({ symbol: poolReserve.symbol, currentMarket })
+    ) {
+      const aTokenBalance = valueToBigNumber(underlyingBalance);
+      const maxBalance = BigNumber.max(
+        aTokenBalance,
+        BigNumber.min(aTokenBalance, debt).toString(10)
+      );
+      repayTokens.push({
+        address: poolReserve.aTokenAddress,
+        symbol: `a${poolReserve.symbol}`,
+        iconSymbol: poolReserve.iconSymbol,
+        aToken: true,
+        balance: maxBalance.toString(10),
+      });
+    }
+    setAssets(repayTokens);
+    setTokenToRepayWith(repayTokens[0]);
+  }, []);
+  const amountAfterRepay = valueToBigNumber(debt)
+    .minus(amount || '0')
+    .toString(10);
+  const amountAfterRepayInUsd = new BigNumber(amountAfterRepay)
+    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
+    .multipliedBy(marketReferencePriceInUsd)
+    .shiftedBy(-USD_DECIMALS);
+  const maxRepayWithDustRemaining = isMaxSelected && amountAfterRepayInUsd.toNumber() > 0;
+  let newHF = user?.healthFactor;
+  if (amount) {
+    let collateralBalanceMarketReferenceCurrency: BigNumberValue = user?.totalCollateralUSD || '0';
+    if (repayWithATokens && usageAsCollateralEnabledOnUser) {
+      collateralBalanceMarketReferenceCurrency = valueToBigNumber(
+        user?.totalCollateralUSD || '0'
+      ).minus(valueToBigNumber(reserve.priceInUSD).multipliedBy(amount));
+    }
+    const remainingBorrowBalance = valueToBigNumber(user?.totalBorrowsUSD || '0').minus(
+      valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
+    );
+    const borrowBalanceMarketReferenceCurrency = BigNumber.max(remainingBorrowBalance, 0);
+    const calculatedHealthFactor = calculateHealthFactorFromBalancesBigUnits({
+      collateralBalanceMarketReferenceCurrency,
+      borrowBalanceMarketReferenceCurrency,
+      currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
+    });
+    newHF =
+      calculatedHealthFactor.isLessThan(0) && !calculatedHealthFactor.eq(-1)
+        ? '0'
+        : calculatedHealthFactor.toString(10);
+  }
+  const usdValue = valueToBigNumber(amount).multipliedBy(reserve.priceInUSD);
+  if (repayTxState.success)
+    return (
+      <TxSuccessView
+        action={<Trans>repaid</Trans>}
+        amount={amountRef.current}
+        symbol={repayWithATokens ? poolReserve.symbol : tokenToRepayWith.symbol}
+      />
+    );
+  return (
+    <>
+      <AssetInput
+        value={amount}
+        onChange={handleChange}
+        usdValue={usdValue.toString(10)}
+        symbol={tokenToRepayWith.symbol}
+        assets={assets}
+        onSelect={setTokenToRepayWith}
+        isMaxSelected={isMaxSelected}
+        maxValue={maxAmountToRepay.toString(10)}
+        balanceText={<Trans>Wallet balance</Trans>}
+      />
+      {maxRepayWithDustRemaining && (
+        <Typography color="warning.main" variant="helperText">
+          <Trans>
+            You don’t have enough funds in your wallet to repay the full amount. If you proceed to
+            repay with your current amount of funds, you will still have a small borrowing position
+            in your dashboard.
+          </Trans>
+        </Typography>
+      )}
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLineWithSub
+          description={<Trans>Remaining debt</Trans>}
+          futureValue={amountAfterRepay}
+          futureValueUSD={amountAfterRepayInUsd.toString(10)}
+          value={debt.toString()}
+          valueUSD={debtUSD.toString()}
+          symbol={
+            poolReserve.iconSymbol === networkConfig.wrappedBaseAssetSymbol
+              ? networkConfig.baseAssetSymbol
+              : poolReserve.iconSymbol
+          }
+        />
+        <DetailsHFLine
+          visibleHfChange={!!_amount}
+          healthFactor={user?.healthFactor}
+          futureHealthFactor={newHF}
+        />
+      </TxModalDetails>
+      {txError && <GasEstimationError txError={txError} />}
+      <RepayActions
+        maxApproveNeeded={safeAmountToRepayAll.toString()}
+        poolReserve={poolReserve}
+        amountToRepay={isMaxSelected ? repayMax : amount}
+        poolAddress={
+          repayWithATokens ? poolReserve.underlyingAsset : tokenToRepayWith.address ?? ''
+        }
+        isWrongNetwork={isWrongNetwork}
+        symbol={modalSymbol}
+        repayWithATokens={repayWithATokens}
+      />
+    </>
+  );
+};
