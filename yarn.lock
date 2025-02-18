@@ -9,10 +9,10 @@
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.30.5":
-  version "1.30.5"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.30.5.tgz#6c6bbf46d8a422e00504e92cf8b3f6fcad626d04"
-  integrity sha512-aBAHCK6p3sMuyD4mipxH0vF+kn22Ocu7TzotCPzvKgkifVvGWFY7XsM5CNWubvDksL1+uNSoUvX2v3LOr23UHA==
+"@aave/math-utils@1.32.1":
+  version "1.32.1"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.32.1.tgz#9cd4bb9343f2fabb078b6ca61b5845c7044fe643"
+  integrity sha512-uLjwGNEOilWWguW7CX6Dwsk9uP4aT9HmOCzXpHqDrPbR2oGSLV8BlvHWx/8wzY9Cdt5Jr4ofP0vm/Xs4lrgDNg==
 
 "@adobe/css-tools@^4.0.1":
   version "4.4.1"
@@ -1066,10 +1066,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@4.6.1-cee1c3d0f722d997f9cf5047b066186145847a41.0":
-  version "4.6.1-cee1c3d0f722d997f9cf5047b066186145847a41.0"
-  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.6.1-cee1c3d0f722d997f9cf5047b066186145847a41.0.tgz#9583ab1ae69e602f3e633b746ce854e2b220c0ee"
-  integrity sha512-z6s9G6Pd2hKazxVwnYD/6bRTQxnxPsyv1g71WKSKXfxlfjzuK8jnyhIzZjXG19hxRSY/BvSe8Y16z/DHsUoLkQ==
+"@bgd-labs/aave-address-book@4.10.0":
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.10.0.tgz#3df9b6afda47d779f39b78aa48c4f0982a18c6e1"
+  integrity sha512-+WtMRtXLFpic/PLhNn32FIFzNFIgqlgC5Z9RLOsPgbdkvDDAW83w1emoxqxbW0jYGGNcYJUTTrtXqlhDeQGwkg==
 
 "@coinbase/wallet-sdk@4.2.3":
   version "4.2.3"
