@@ -1,10 +1,12 @@
 import {
+  ComputedUserReserve,
   FormattedGhoReserveData,
   FormattedGhoUserData,
   formatUserSummaryWithDiscount,
   USD_DECIMALS,
   UserReserveData,
 } from '@aave/math-utils';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { PropsWithChildren, useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
@@ -140,9 +142,42 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
           formatUnits(baseCurrencyData.marketReferenceCurrencyPriceInUsd, USD_DECIMALS)
         ),
       });
+
+      const userGhoReserve = user.userReservesData.find(
+        (r) => r.reserve.underlyingAsset === AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase()
+      );
+
+      if (!userGhoReserve) {
+        throw new Error('GHO reserve not found in user reserves data');
+      }
+
+      const mergeUserReserves = (reserve: ComputedUserReserve<FormattedReservesAndIncentives>) => {
+        if (reserve.underlyingAsset !== AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase()) {
+          return reserve;
+        }
+
+        if (reserve.variableBorrows === '0') {
+          return reserve;
+        }
+
+        // This amount takes into account the discount applied on the accrued interest.
+        const userGhoDebtBalance = formattedGhoUserData.userGhoBorrowBalance.toString();
+
+        // Merge with the user reserves so the correct debt balance can be shown throughout the app.
+        return {
+          ...reserve,
+          variableBorrows: userGhoDebtBalance,
+          variableBorrowsUSD: userGhoDebtBalance,
+          totalBorrowsUSD: userGhoDebtBalance,
+          totalBorrows: userGhoDebtBalance,
+          totalBorrowsMarketReferenceCurrency: userGhoDebtBalance,
+        };
+      };
+
       user = {
         ...user,
         ...userSummaryWithDiscount,
+        userReservesData: user.userReservesData.map(mergeUserReserves),
       };
     }
   }
