@@ -49,14 +49,13 @@ export const IncentivesBox = ({
   protocolAction,
   displayBlank,
 }: IncentivesBoxProps) => {
-  const { allIncentives, totalApr } = useAllIncentives(
-    {
-      symbol,
-      market,
-      protocolAction,
-    },
-    incentives
-  );
+  const { allIncentives, totalApr } = useAllIncentives({
+    symbol,
+    market,
+    rewardedAsset: address,
+    protocolAction,
+    lmIncentives: incentives,
+  });
 
   const Incentives = () => (
     <Box
