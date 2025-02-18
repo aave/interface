@@ -264,23 +264,21 @@ export const DetailsIncentivesLine = ({
   futureSymbol,
   loading = false,
 }: DetailsIncentivesLineProps) => {
-  const { allIncentives } = useAllIncentives(
-    {
-      symbol,
-      market,
-      protocolAction,
-    },
-    incentives
-  );
+  const { allIncentives } = useAllIncentives({
+    symbol,
+    market,
+    protocolAction,
+    rewardedAsset: address,
+    lmIncentives: incentives,
+  });
 
-  const { allIncentives: futureAllIncentives } = useAllIncentives(
-    {
-      symbol: futureSymbol || '',
-      market,
-      protocolAction,
-    },
-    futureIncentives
-  );
+  const { allIncentives: futureAllIncentives } = useAllIncentives({
+    symbol: futureSymbol || '',
+    market,
+    protocolAction,
+    rewardedAsset: futureAddress,
+    lmIncentives: futureIncentives,
+  });
 
   const hasIncentives = allIncentives.length > 0;
   const hasFutureIncentives = futureAllIncentives.length > 0;
