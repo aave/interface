@@ -11,12 +11,11 @@ import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { stakeUmbrellaConfig } from 'src/services/UmbrellaStakeDataService';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
-
-import { stakeUmbrellaConfig } from './services/StakeDataProviderService';
 
 export interface UnStakeActionProps extends BoxProps {
   amountToUnStake: string;
@@ -53,7 +52,7 @@ export const UnStakeActions = ({
     setTxError,
   } = useModalContext();
 
-  const selectedToken = stakeData.stakeToken;
+  const selectedToken = stakeData.tokenAddress;
 
   const {
     data: approvedAmount,
@@ -102,7 +101,7 @@ export const UnStakeActions = ({
     try {
       setMainTxState({ ...mainTxState, loading: true });
       let unstakeTxData: PopulatedTransaction;
-      if (stakeData.underlyingIsWaToken) {
+      if (stakeData.underlyingIsStataToken) {
         // use the stake gateway
         const stakeService = new StakeGatewayService(
           stakeUmbrellaConfig[currentChainId].stakeGateway
@@ -110,19 +109,19 @@ export const UnStakeActions = ({
         if (redeemATokens) {
           unstakeTxData = stakeService.redeemATokens({
             sender: user,
-            stakeToken: stakeData.stakeToken,
+            stakeToken: stakeData.tokenAddress,
             amount: parsedAmountToStake.toString(),
           });
         } else {
           unstakeTxData = stakeService.redeem({
             sender: user,
-            stakeToken: stakeData.stakeToken,
+            stakeToken: stakeData.tokenAddress,
             amount: parsedAmountToStake.toString(),
           });
         }
       } else {
         // use stake token directly
-        const stakeTokenService = new StakeTokenService(stakeData.stakeToken);
+        const stakeTokenService = new StakeTokenService(stakeData.tokenAddress);
         unstakeTxData = stakeTokenService.redeem({
           amount: parsedAmountToStake.toString(),
           sender: user,

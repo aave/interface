@@ -20,19 +20,19 @@ export const AvailableToStakeItem = ({
   const icons = [];
   if (underlyingTokenBalance) {
     icons.push({
-      src: stakeData.waTokenData.waTokenUnderlyingSymbol,
+      src: stakeData.stataTokenData.assetSymbol,
       aToken: false,
     });
   }
   if (underlyingWaTokenBalance) {
     icons.push({
-      src: stakeData.waTokenData.waTokenUnderlyingSymbol,
+      src: stakeData.stataTokenData.assetSymbol,
       aToken: true,
     });
   }
   if (underlyingTokenBalance && Number(underlyingTokenBalance) > 0) {
     icons.push({
-      src: stakeData.waTokenData.waTokenUnderlyingSymbol,
+      src: stakeData.stataTokenData.assetSymbol,
       aToken: false,
       waToken: true,
     });
@@ -56,13 +56,13 @@ export const AvailableToStakeItem = ({
         variant="main16"
         color={totalAvailableToStake === 0 ? 'text.disabled' : 'text.main'}
       />
-      {stakeData.underlyingIsWaToken ? (
+      {stakeData.underlyingIsStataToken ? (
         <MultiIconWithTooltip
           icons={icons}
           tooltipContent={<AvailableToStakeTooltipContent stakeData={stakeData} />}
         />
       ) : (
-        <TokenIcon symbol={stakeData.stakeTokenSymbol} sx={{ fontSize: '20px' }} />
+        <TokenIcon symbol={stakeData.symbol} sx={{ fontSize: '20px' }} />
       )}
     </Stack>
   );
@@ -72,7 +72,7 @@ export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: Merge
   const { aTokenBalanceAvailableToStake, underlyingWaTokenBalance, underlyingTokenBalance } =
     stakeData.formattedBalances;
 
-  const { waTokenUnderlyingSymbol } = stakeData.waTokenData;
+  const { assetSymbol } = stakeData.stataTokenData;
 
   return (
     <Stack direction="column" alignItems="center" justifyContent="center" minWidth={160}>
@@ -82,22 +82,22 @@ export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: Merge
       <Box sx={{ width: '100%' }}>
         {underlyingWaTokenBalance && (
           <AmountAvailableItem
-            symbol={waTokenUnderlyingSymbol}
-            name={waTokenUnderlyingSymbol}
+            symbol={assetSymbol}
+            name={assetSymbol}
             value={underlyingWaTokenBalance}
           />
         )}
         {aTokenBalanceAvailableToStake && (
           <AmountAvailableItem
-            symbol={waTokenUnderlyingSymbol}
-            name={`a${waTokenUnderlyingSymbol}`}
+            symbol={assetSymbol}
+            name={`a${assetSymbol}`}
             value={aTokenBalanceAvailableToStake}
             aToken
           />
         )}
         {underlyingTokenBalance && Number(underlyingTokenBalance) > 0 && (
           <AmountAvailableItem
-            symbol={waTokenUnderlyingSymbol}
+            symbol={assetSymbol}
             name={stakeData.underlyingTokenSymbol}
             value={underlyingTokenBalance}
             waToken
