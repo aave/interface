@@ -14,8 +14,11 @@ export const AvailableToStakeItem = ({
   stakeData: MergedStakeData;
   isMobile?: boolean;
 }) => {
-  const { underlyingWaTokenBalance, aTokenBalanceAvailableToStake, underlyingTokenBalance } =
-    stakeData.formattedBalances;
+  const {
+    stataTokenAssetBalance: underlyingWaTokenBalance,
+    aTokenBalanceAvailableToStake,
+    underlyingTokenBalance,
+  } = stakeData.formattedBalances;
 
   const icons = [];
   if (underlyingTokenBalance) {
@@ -69,8 +72,11 @@ export const AvailableToStakeItem = ({
 };
 
 export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: MergedStakeData }) => {
-  const { aTokenBalanceAvailableToStake, underlyingWaTokenBalance, underlyingTokenBalance } =
-    stakeData.formattedBalances;
+  const {
+    aTokenBalanceAvailableToStake,
+    stataTokenAssetBalance: underlyingWaTokenBalance,
+    underlyingTokenBalance,
+  } = stakeData.formattedBalances;
 
   const { assetSymbol } = stakeData.stataTokenData;
 

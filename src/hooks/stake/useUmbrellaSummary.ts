@@ -27,7 +27,7 @@ interface FormattedBalance {
   stakeTokenRedeemableAmount: string;
   underlyingTokenBalance: string;
   underlyingTokenBalanceUSD: string;
-  underlyingWaTokenBalance: string;
+  stataTokenAssetBalance: string;
   aTokenBalanceAvailableToStake: string;
   totalAvailableToStake: string;
 }
@@ -198,7 +198,7 @@ const formatUmbrellaSummary = (
       );
     }
 
-    const underlyingWaTokenBalance = normalize(
+    const stataTokenAssetBalance = normalize(
       matchingBalance.balances.stataTokenAssetBalance,
       stakeItem.underlyingTokenDecimals
     );
@@ -206,7 +206,7 @@ const formatUmbrellaSummary = (
     let totalAvailableToStake = Number(underlyingTokenBalance);
     if (stakeItem.underlyingIsStataToken) {
       totalAvailableToStake +=
-        Number(underlyingWaTokenBalance) + Number(aTokenBalanceAvailableToStake);
+        Number(stataTokenAssetBalance) + Number(aTokenBalanceAvailableToStake);
     }
 
     acc.push({
@@ -222,7 +222,7 @@ const formatUmbrellaSummary = (
         ),
         underlyingTokenBalance: underlyingTokenBalance.toString(),
         underlyingTokenBalanceUSD,
-        underlyingWaTokenBalance,
+        stataTokenAssetBalance,
         aTokenBalanceAvailableToStake,
         totalAvailableToStake: totalAvailableToStake.toString(),
       },

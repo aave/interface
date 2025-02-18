@@ -25,7 +25,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
           symbol={umbrellaStakeAsset.symbol}
           totalAmountStaked={umbrellaStakeAsset.formattedStakeTokenData.totalAmountStaked}
           totalAmountStakedUSD={umbrellaStakeAsset.formattedStakeTokenData.totalAmountStakedUSD}
-          explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.stakeToken}`}
+          explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.tokenAddress}`}
         />
       </ListColumn>
       <Row mt={2} caption={<Trans>Staking APY</Trans>} captionVariant="description" mb={3}>

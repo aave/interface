@@ -56,7 +56,7 @@ const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
           address: stakeData.stataTokenData.asset,
           symbol: stakeData.stataTokenData.assetSymbol,
           iconSymbol: stakeData.stataTokenData.assetSymbol,
-          balance: stakeData.formattedBalances.underlyingWaTokenBalance,
+          balance: stakeData.formattedBalances.stataTokenAssetBalance,
         },
         {
           address: stakeData.stataTokenData.aToken,

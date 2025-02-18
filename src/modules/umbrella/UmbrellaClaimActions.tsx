@@ -38,12 +38,12 @@ export const UmbrellaClaimActions = ({
       if (rewardsToClaim.length > 1) {
         claimTx = rewardsDistributorService.claimAllRewards({
           sender: user,
-          stakeToken: stakeData.stakeToken,
+          stakeToken: stakeData.tokenAddress,
         });
       } else {
         claimTx = rewardsDistributorService.claimSelectedRewards({
           sender: user,
-          stakeToken: stakeData.stakeToken,
+          stakeToken: stakeData.tokenAddress,
           rewards: rewardsToClaim.map((reward) => reward.address),
         });
       }

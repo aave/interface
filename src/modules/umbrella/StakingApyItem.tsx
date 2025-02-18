@@ -33,7 +33,6 @@ export const StakingApyItem = ({
   }
 
   if (stakeData.underlyingIsStataToken) {
-    console.log(reserves);
     const underlyingReserve = reserves.find(
       (reserve) => reserve.underlyingAsset === stakeData.stataTokenData.asset.toLowerCase()
     );
