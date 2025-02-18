@@ -4,6 +4,7 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
@@ -12,6 +13,7 @@ import { DASHBOARD } from 'src/utils/mixPanelEvents';
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
+import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
@@ -88,6 +90,26 @@ export const ZkIgniteIncentivesButton = (params: {
         incentives={[zkSyncIgniteIncentives]}
         incentivesNetAPR={+zkSyncIgniteIncentives.incentiveAPR}
       />
+    </ContentWithTooltip>
+  );
+};
+
+export const EthenaIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
+  const [open, setOpen] = useState(false);
+  const points = useEthenaIncentives(rewardedAsset);
+
+  if (!points) {
+    return null;
+  }
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={<EthenaAirdropTooltipContent points={points} />}
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <ContentEthenaButton points={points} />
     </ContentWithTooltip>
   );
 };
@@ -267,6 +289,44 @@ const Content = ({
             </>
           )}
         </>
+      </Box>
+    </Box>
+  );
+};
+
+const ContentEthenaButton = ({ points }: { points: number }) => {
+  const [open, setOpen] = useState(false);
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  return (
+    <Box
+      sx={(theme) => ({
+        p: { xs: '0 4px', xsm: '2px 4px' },
+        border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
+        borderRadius: '4px',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'opacity 0.2s ease',
+        bgcolor: open ? 'action.hover' : 'transparent',
+        '&:hover': {
+          bgcolor: 'action.hover',
+          borderColor: 'action.disabled',
+        },
+      })}
+      onClick={() => {
+        trackEvent(DASHBOARD.VIEW_LM_DETAILS_DASHBOARD, {});
+        setOpen(!open);
+      }}
+    >
+      <Box sx={{ mr: 2 }}>
+        <Typography component="span" variant="secondary12" color="text.secondary">
+          {`${points}x`}
+        </Typography>
+      </Box>
+      <Box sx={{ display: 'inline-flex' }}>
+        <img src={'/icons/other/ethena.svg'} width={12} height={12} alt="ethena-icon" />
       </Box>
     </Box>
   );
