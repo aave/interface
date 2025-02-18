@@ -17,6 +17,7 @@ interface TopBarNotifyProps {
   buttonText?: string;
   bannerVersion: string;
   icon?: string;
+  customIcon?: ReactNode;
 }
 
 export default function TopBarNotify({
@@ -25,6 +26,7 @@ export default function TopBarNotify({
   buttonText,
   bannerVersion,
   icon,
+  customIcon,
 }: TopBarNotifyProps) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
@@ -86,6 +88,8 @@ export default function TopBarNotify({
             >
               <Trans>{notifyText}</Trans>
 
+              {customIcon ? customIcon : null}
+
               {icon && !sm ? <MarketLogo sx={{ ml: 2 }} size={32} logo={icon} /> : ''}
 
               {learnMoreLink && md ? (
@@ -99,6 +103,7 @@ export default function TopBarNotify({
               ) : null}
             </Typography>
           </Box>
+
           <Box>
             {!md && learnMoreLink ? (
               <Button
