@@ -30,6 +30,10 @@ const listHeaders = [
     sortKey: 'totalDebtUSD',
   },
   {
+    title: <Trans>Available Liquidity</Trans>,
+    sortKey: 'formattedAvailableLiquidity',
+  },
+  {
     title: (
       <VariableAPYTooltip
         text={<Trans>Borrow APY, variable</Trans>}

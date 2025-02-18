@@ -120,7 +120,10 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           <NoData variant={'secondary14'} color="text.secondary" />
         )}
       </ListColumn>
-
+      <ListColumn>
+        <FormattedNumber compact value={reserve.formattedAvailableLiquidity} variant="main16" />
+        <ReserveSubheader value={Math.max(Number(reserve?.availableLiquidityUSD), 0).toString()} />
+      </ListColumn>
       <ListColumn>
         <IncentivesCard
           value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
