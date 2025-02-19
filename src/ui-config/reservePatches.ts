@@ -97,6 +97,11 @@ export interface IconMapInterface {
 
 export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSymbolInterface) {
   const underlyingAssetMap: Record<string, IconMapInterface> = {
+    '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9': {
+      name,
+      symbol,
+      iconSymbol: 'usdt0',
+    },
     '0x18084fba666a33d37592fa2633fd49a74dd93a88': {
       name: 'tBTC',
       symbol: 'tBTC',

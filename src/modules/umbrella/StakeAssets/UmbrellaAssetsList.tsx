@@ -1,3 +1,4 @@
+import { Reward } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery } from '@mui/material';
 import { useMemo, useState } from 'react';
@@ -6,7 +7,6 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
-import { Rewards } from '../services/StakeDataProviderService';
 import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
 import { UmbrellaAssetsListMobileItemLoader } from './UmbrellaAssetsListMobileItemLoader';
@@ -76,12 +76,8 @@ export default function UmbrellaAssetsList({
       }
 
       if (sortName === 'totalAvailableToStake') {
-        const balanceA =
-          Number(a.formattedBalances?.aTokenBalanceAvailableToStake || '0') +
-          Number(a.formattedBalances?.underlyingWaTokenBalance || '0');
-        const balanceB =
-          Number(b.formattedBalances?.aTokenBalanceAvailableToStake || '0') +
-          Number(b.formattedBalances?.underlyingWaTokenBalance || '0');
+        const balanceA = Number(a.formattedBalances.totalAvailableToStake);
+        const balanceB = Number(b.formattedBalances.totalAvailableToStake);
         return sortDesc ? balanceB - balanceA : balanceA - balanceB;
       }
 
@@ -150,7 +146,7 @@ export default function UmbrellaAssetsList({
   );
 }
 
-const calculateRewardsApy = (rewards: Rewards[]): string => {
+const calculateRewardsApy = (rewards: Reward[]): string => {
   if (!rewards.length || rewards[0].currentEmissionPerSecond === '0') {
     return '0';
   }

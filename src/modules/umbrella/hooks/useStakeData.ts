@@ -1,3 +1,4 @@
+import { StakeData, StakeUserData } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
 import { HookOpts } from 'src/hooks/commonTypes';
 import { useRootStore } from 'src/store/root';
@@ -5,10 +6,8 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-import { StakeData, StakeUserData } from '../services/StakeDataProviderService';
-
 export const selectStakeDataByAddress = (stakeData: StakeData[], address: string) =>
-  stakeData.find((elem) => elem.stakeToken === address);
+  stakeData.find((elem) => elem.tokenAddress === address);
 export const selectUserStakeDataByAddress = (stakeData: StakeUserData[], address: string) =>
   stakeData.find((elem) => elem.stakeToken === address);
 
@@ -34,7 +33,7 @@ export const useUserStakeData = <T = StakeUserData[]>(
   const user = useRootStore((store) => store.account);
   return useQuery({
     queryFn: () => {
-      return stakeDataService.getUserTakeData(marketData, user);
+      return stakeDataService.getUserStakeData(marketData, user);
     },
     queryKey: queryKeysFactory.umbrellaStakeUserData(user, marketData),
     enabled: !!user,

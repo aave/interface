@@ -155,7 +155,7 @@ export const useUserYields = (
     ) => {
       return formatUserYield(formattedPoolReserves, undefined, undefined, user, marketData.market);
     };
-    if (GHO_MINTING_MARKETS.includes(marketData.marketTitle))
+    if (GHO_MINTING_MARKETS.includes(marketData.market))
       return combineQueries(
         [
           elem,

@@ -7,24 +7,24 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 export const usePreviewRedeem = (
   amount: string,
   decimals: number,
-  waTokenAddress: string,
+  stataTokenAddress: string,
   chainId: ChainId
 ) => {
   return useQuery({
     queryFn: async () => {
-      if (!waTokenAddress) {
+      if (!stataTokenAddress) {
         return formatUnits(amount, decimals);
       }
 
       const provider = getProvider(chainId);
-      const waTokenContract = new Contract(
-        waTokenAddress,
+      const stataTokenContract = new Contract(
+        stataTokenAddress,
         ['function previewRedeem(uint256 shares) external view returns (uint256 assets)'],
         provider
       );
-      const shares: BigNumber = await waTokenContract.previewRedeem(amount);
+      const shares: BigNumber = await stataTokenContract.previewRedeem(amount);
       return formatUnits(shares, decimals);
     },
-    queryKey: ['umbrella', 'previewRedeem', amount, waTokenAddress],
+    queryKey: ['umbrella', 'previewRedeem', amount, stataTokenAddress],
   });
 };

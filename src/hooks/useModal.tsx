@@ -50,8 +50,8 @@ export interface ModalArgsType {
   representatives?: Array<{ chainId: ChainId; representative: string }>;
   chainId?: number;
   umbrellaAssetName?: string;
-  waTokenAToken?: string;
-  waTokenUnderlying?: string;
+  stataTokenAToken?: string;
+  stataTokenAsset?: string;
 }
 
 export type TxStateType = {
@@ -106,8 +106,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   openUmbrella: (
     uStakeToken: string,
     icon: string,
-    waTokenAToken: string,
-    waTokenUnderlying: string
+    stataTokenAToken: string,
+    stataTokenAsset: string
   ) => void;
   openUmbrellaStakeCooldown: (uStakeToken: string, icon: string) => void;
   openUmbrellaClaim: (uStakeToken: string) => void;
@@ -280,16 +280,21 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           setType(ModalType.StakeRewardsClaimRestake);
           setArgs({ stakeAssetName, icon });
         },
-        openUmbrella: (uStakeToken, icon, waTokenAToken, waTokenUnderlying) => {
+        openUmbrella: (uStakeToken, icon, stataTokenAToken, stataTokenAsset) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Umbrella',
             uStakeToken: uStakeToken,
-            waTokenAToken: waTokenAToken,
-            waTokenUnderlying: waTokenUnderlying,
+            stataTokenAToken: stataTokenAToken,
+            stataTokenAsset: stataTokenAsset,
           });
 
           setType(ModalType.Umbrella);
-          setArgs({ uStakeToken, icon, waTokenAToken, waTokenUnderlying });
+          setArgs({
+            uStakeToken,
+            icon,
+            stataTokenAToken: stataTokenAToken,
+            stataTokenAsset: stataTokenAsset,
+          });
         },
         openUmbrellaStakeCooldown: (uStakeToken, icon) => {
           trackEvent(GENERAL.OPEN_MODAL, {

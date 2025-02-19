@@ -1,4 +1,4 @@
-import { ChainId } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ChainId } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Typography } from '@mui/material';
@@ -23,6 +23,8 @@ import {
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
+import { NetworkConfig } from 'src/ui-config/networksConfig';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { STAKE } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
@@ -48,33 +50,45 @@ export interface StakeInputAsset {
   balance: string;
 }
 
-const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
-  return stakeData.underlyingIsWaToken
+const getInputTokens = (
+  stakeData: MergedStakeData,
+  networkConfig: NetworkConfig
+): StakeInputAsset[] => {
+  const assets = stakeData.underlyingIsStataToken
     ? [
         // stata token
         {
-          address: stakeData.waTokenData.waTokenUnderlying,
-          symbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
-          iconSymbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
-          balance: stakeData.formattedBalances.underlyingWaTokenBalance,
+          address: stakeData.stataTokenData.asset,
+          symbol: stakeData.stataTokenData.assetSymbol,
+          iconSymbol: stakeData.stataTokenData.assetSymbol,
+          balance: stakeData.formattedBalances.stataTokenAssetBalance,
         },
         {
-          address: stakeData.waTokenData.waTokenAToken,
+          address: stakeData.stataTokenData.aToken,
           //  Note: using token symbol the same as underlying for aToken handling given we dont have tokens for "aBasSepUSDC"
-          symbol: `a${stakeData.waTokenData.waTokenUnderlyingSymbol}`,
-          iconSymbol: stakeData.waTokenData.waTokenUnderlyingSymbol,
+          symbol: `a${stakeData.stataTokenData.assetSymbol}`,
+          iconSymbol: stakeData.stataTokenData.assetSymbol,
           balance: stakeData.formattedBalances.aTokenBalanceAvailableToStake,
           aToken: true,
         },
       ]
     : [
         {
-          address: stakeData.stakeTokenUnderlying,
+          address: stakeData.underlyingTokenAddress,
           symbol: stakeData.underlyingTokenSymbol,
           iconSymbol: stakeData.underlyingTokenSymbol,
           balance: stakeData.formattedBalances.underlyingTokenBalance,
         },
       ];
+  if (stakeData.stataTokenData.isUnderlyingWrappedBaseToken) {
+    assets.push({
+      address: API_ETH_MOCK_ADDRESS,
+      symbol: networkConfig.baseAssetSymbol,
+      iconSymbol: networkConfig.baseAssetSymbol,
+      balance: stakeData.formattedBalances.nativeTokenBalance,
+    });
+  }
+  return assets;
 };
 
 export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve }: StakeProps) => {
@@ -84,7 +98,9 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
   // states
   const [_amount, setAmount] = useState('');
 
-  const assets = getInputTokens(stakeData);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+
+  const assets = getInputTokens(stakeData, currentNetworkConfig);
 
   const [inputToken, setInputToken] = useState<StakeInputAsset>(assets[0]);
 
@@ -136,7 +152,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
   }
 
   const amountInUsd = valueToBigNumber(amount || '0')
-    .multipliedBy(stakeData.stakeTokenPrice)
+    .multipliedBy(stakeData.price)
     .shiftedBy(-USD_DECIMALS)
     .toString();
 

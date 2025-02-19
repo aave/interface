@@ -1,16 +1,19 @@
-import { normalize, normalizeBN, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
-import { BigNumber } from 'bignumber.js';
-import { calculateMaxWithdrawAmount } from 'src/components/transactions/Withdraw/utils';
-import { useStakeData, useUserStakeData } from 'src/modules/umbrella/hooks/useStakeData';
 import {
+  API_ETH_MOCK_ADDRESS,
   StakeData,
   StakeUserBalances,
   StakeUserCooldown,
   StakeUserData,
-} from 'src/modules/umbrella/services/StakeDataProviderService';
+  StataTokenData,
+} from '@aave/contract-helpers';
+import { normalize, normalizeBN, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
+import { BigNumber } from 'bignumber.js';
+import { calculateMaxWithdrawAmount } from 'src/components/transactions/Withdraw/utils';
+import { useStakeData, useUserStakeData } from 'src/modules/umbrella/hooks/useStakeData';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
+import { useWalletBalances, WalletBalances } from '../app-data-provider/useWalletBalances';
 import {
   ExtendedFormattedUser,
   useExtendedUserSummaryAndIncentives,
@@ -27,9 +30,10 @@ interface FormattedBalance {
   stakeTokenRedeemableAmount: string;
   underlyingTokenBalance: string;
   underlyingTokenBalanceUSD: string;
-  underlyingWaTokenBalance: string;
-  underlyingWaTokenATokenBalance: string;
+  stataTokenAssetBalance: string;
   aTokenBalanceAvailableToStake: string;
+  totalAvailableToStake: string;
+  nativeTokenBalance: string;
 }
 
 interface FormattedReward {
@@ -37,6 +41,7 @@ interface FormattedReward {
   rewardToken: string;
   rewardTokenName: string;
   rewardTokenSymbol: string;
+  apy: string;
 }
 
 interface FormattedStakeTokenData {
@@ -48,6 +53,10 @@ interface FormattedUserStakeData {
   aggregatedTotalStakedUSD: string;
   weightedAverageApy: string;
   stakeData: MergedStakeData[];
+}
+
+interface StataTokenDataExtended extends StataTokenData {
+  isUnderlyingWrappedBaseToken: boolean;
 }
 
 export interface MergedStakeData extends StakeData {
@@ -62,6 +71,7 @@ export interface MergedStakeData extends StakeData {
   iconSymbol: string;
   totalStakedUSD: string;
   totalRewardApy: string;
+  stataTokenData: StataTokenDataExtended;
 }
 
 export interface FormattedStakeDataSummary {
@@ -88,9 +98,9 @@ const formatStakeData = (
   let runningTotalUsd = new BigNumber(0);
 
   const stakeAssets = stakeData.map((stakeItem) => {
-    const stakeTokenPrice = normalizeBN(stakeItem.stakeTokenPrice, USD_DECIMALS).toString();
+    const stakeTokenPrice = normalizeBN(stakeItem.price, USD_DECIMALS).toString();
     const stakeTokenTotalSupply = normalizeBN(
-      stakeItem.stakeTokenTotalSupply,
+      stakeItem.totalSupply,
       stakeItem.underlyingTokenDecimals
     ).toString();
     const totalSupplyUsd = valueToBigNumber(stakeTokenTotalSupply)
@@ -102,23 +112,23 @@ const formatStakeData = (
 
     const matchingReserve = reserves.find(
       (reserve) =>
-        reserve.aTokenAddress.toLowerCase() === stakeItem.waTokenData.waTokenAToken.toLowerCase()
+        reserve.aTokenAddress.toLowerCase() === stakeItem.stataTokenData.aToken.toLowerCase()
     );
 
     const totalRewardApy = getTotalStakeRewardApy(matchingReserve, stakeItem);
 
     return {
-      tokenAddress: stakeItem.stakeToken,
-      symbol: stakeItem.underlyingIsWaToken
-        ? stakeItem.waTokenData.waTokenUnderlyingSymbol
-        : stakeItem.stakeTokenSymbol,
-      iconSymbol: stakeItem.underlyingIsWaToken
-        ? stakeItem.waTokenData.waTokenUnderlyingSymbol
-        : stakeItem.stakeTokenSymbol,
+      tokenAddress: stakeItem.tokenAddress,
+      symbol: stakeItem.underlyingIsStataToken
+        ? stakeItem.stataTokenData.assetSymbol
+        : stakeItem.symbol,
+      iconSymbol: stakeItem.underlyingIsStataToken
+        ? stakeItem.stataTokenData.assetSymbol
+        : stakeItem.symbol,
       stakeTokenPrice,
       stakeTokenTotalSupply,
       totalSupplyUsd,
-      totalRewardApy: totalRewardApy.toString(),
+      totalRewardApy: normalize(totalRewardApy.toString(), 18),
     };
   });
 
@@ -133,7 +143,8 @@ const formatUmbrellaSummary = (
   stakeData: StakeData[],
   userStakeData: StakeUserData[],
   user: ExtendedFormattedUser,
-  reserves: FormattedReservesAndIncentives[]
+  reserves: FormattedReservesAndIncentives[],
+  walletBalances: WalletBalances
 ): FormattedUserStakeData => {
   let aggregatedTotalStakedUSD = valueToBigNumber('0');
   let weightedApySum = valueToBigNumber('0');
@@ -142,7 +153,7 @@ const formatUmbrellaSummary = (
 
   const mergedData = stakeData.reduce<MergedStakeData[]>((acc, stakeItem) => {
     const matchingBalance = userStakeData.find(
-      (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.stakeToken.toLowerCase()
+      (balanceItem) => balanceItem.stakeToken.toLowerCase() === stakeItem.tokenAddress.toLowerCase()
     );
 
     if (!matchingBalance) {
@@ -155,34 +166,33 @@ const formatUmbrellaSummary = (
     );
 
     const stakeTokenBalanceUSD = stakeTokenBalance
-      .multipliedBy(stakeItem.stakeTokenPrice)
+      .multipliedBy(stakeItem.price)
       .shiftedBy(-USD_DECIMALS);
 
     const underlyingTokenBalance = normalizeBN(
       matchingBalance.balances.underlyingTokenBalance,
       stakeItem.underlyingTokenDecimals
-    );
+    ).toString();
 
     // assuming the stake token and underlying have the same price
-    const underlyingTokenBalanceUSD = underlyingTokenBalance
-      .multipliedBy(stakeItem.stakeTokenPrice)
+    const underlyingTokenBalanceUSD = BigNumber(underlyingTokenBalance)
+      .multipliedBy(stakeItem.price)
       .shiftedBy(-USD_DECIMALS)
       .toString();
 
     const stakeTokenTotalSupply = normalizeBN(
-      stakeItem.stakeTokenTotalSupply,
+      stakeItem.totalSupply,
       stakeItem.underlyingTokenDecimals
-    );
+    ).toString();
 
     // we use the userReserve to get the aToken balance which takes into account accrued interest
     const userReserve = userReservesData?.find(
-      (r) =>
-        r.reserve.aTokenAddress.toLowerCase() === stakeItem.waTokenData.waTokenAToken.toLowerCase()
+      (r) => r.reserve.aTokenAddress.toLowerCase() === stakeItem.stataTokenData.aToken.toLowerCase()
     );
 
     const reserve = reserves.find(
       (reserve) =>
-        reserve.aTokenAddress.toLowerCase() === stakeItem.waTokenData.waTokenAToken.toLowerCase()
+        reserve.aTokenAddress.toLowerCase() === stakeItem.stataTokenData.aToken.toLowerCase()
     );
 
     const totalRewardApy = getTotalStakeRewardApy(reserve, stakeItem);
@@ -191,15 +201,40 @@ const formatUmbrellaSummary = (
     aggregatedTotalStakedUSD = aggregatedTotalStakedUSD.plus(stakeTokenBalanceUSD);
 
     let aTokenBalanceAvailableToStake = '0';
+    const nativeTokenBalance = walletBalances.walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]
+      ? walletBalances.walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()].amount
+      : '0';
+    let isUnderlyingWrappedBaseToken = false;
     if (userReserve && reserve) {
       aTokenBalanceAvailableToStake = roundToTokenDecimals(
         calculateMaxWithdrawAmount(user, userReserve, reserve).toString(),
         stakeItem.underlyingTokenDecimals
       );
+      if (reserve.isWrappedBaseAsset) {
+        isUnderlyingWrappedBaseToken = true;
+      }
+    }
+
+    const stataTokenAssetBalance = normalize(
+      matchingBalance.balances.stataTokenAssetBalance,
+      stakeItem.underlyingTokenDecimals
+    );
+
+    let totalAvailableToStake = Number(underlyingTokenBalance);
+    if (stakeItem.underlyingIsStataToken) {
+      totalAvailableToStake +=
+        Number(stataTokenAssetBalance) + Number(aTokenBalanceAvailableToStake);
+    }
+    if (isUnderlyingWrappedBaseToken) {
+      totalAvailableToStake += Number(nativeTokenBalance);
     }
 
     acc.push({
       ...stakeItem,
+      stataTokenData: {
+        ...stakeItem.stataTokenData,
+        isUnderlyingWrappedBaseToken,
+      },
       balances: matchingBalance.balances,
       totalRewardApy,
       formattedBalances: {
@@ -211,12 +246,10 @@ const formatUmbrellaSummary = (
         ),
         underlyingTokenBalance: underlyingTokenBalance.toString(),
         underlyingTokenBalanceUSD,
-        underlyingWaTokenBalance: normalize(
-          matchingBalance.balances.underlyingWaTokenBalance,
-          stakeItem.underlyingTokenDecimals
-        ),
-        underlyingWaTokenATokenBalance: userReserve?.underlyingBalance || '0',
+        stataTokenAssetBalance,
         aTokenBalanceAvailableToStake,
+        totalAvailableToStake: totalAvailableToStake.toString(),
+        nativeTokenBalance,
       },
       formattedRewards: matchingBalance.rewards.map((reward) => {
         const rewardData = stakeItem.rewards.find(
@@ -232,25 +265,24 @@ const formatUmbrellaSummary = (
           rewardToken: reward.rewardAddress,
           rewardTokenSymbol: rewardData.rewardSymbol,
           rewardTokenName: rewardData.rewardName,
+          apy: normalize(rewardData.apy, 18),
         };
       }),
       formattedStakeTokenData: {
-        totalAmountStaked: stakeTokenTotalSupply.toString(),
+        totalAmountStaked: stakeTokenTotalSupply,
         totalAmountStakedUSD: BigNumber(stakeTokenTotalSupply)
-          .multipliedBy(normalize(stakeItem.stakeTokenPrice, 8))
+          .multipliedBy(normalize(stakeItem.price, 8))
           .toString(),
       },
       cooldownData: matchingBalance.cooldown,
-      name: stakeItem.underlyingIsWaToken
-        ? stakeItem.waTokenData.waTokenUnderlyingName
-        : stakeItem.stakeTokenName,
-      symbol: stakeItem.underlyingIsWaToken
-        ? stakeItem.waTokenData.waTokenUnderlyingSymbol
-        : stakeItem.stakeTokenSymbol,
+      name: stakeItem.underlyingIsStataToken ? stakeItem.stataTokenData.assetName : stakeItem.name,
+      symbol: stakeItem.underlyingIsStataToken
+        ? stakeItem.stataTokenData.assetSymbol
+        : stakeItem.symbol,
       decimals: stakeItem.underlyingTokenDecimals,
-      iconSymbol: stakeItem.underlyingIsWaToken
-        ? stakeItem.waTokenData.waTokenUnderlyingSymbol
-        : stakeItem.stakeTokenSymbol,
+      iconSymbol: stakeItem.underlyingIsStataToken
+        ? stakeItem.stataTokenData.assetSymbol
+        : stakeItem.symbol,
       totalStakedUSD: `${underlyingTokenBalanceUSD}`,
     });
 
@@ -270,14 +302,13 @@ const getTotalStakeRewardApy = (
   reserve: FormattedReservesAndIncentives | undefined,
   stakeData: StakeData
 ): string => {
-  const totalRewardApy = stakeData.rewards.reduce(
-    (acc, reward) => acc.plus(reward.apy),
-    valueToBigNumber('0')
+  const totalRewardApy = normalizeBN(
+    stakeData.rewards.reduce((acc, reward) => acc.plus(reward.apy), valueToBigNumber('0')),
+    18
   );
-
-  if (stakeData.underlyingIsWaToken) {
+  if (stakeData.underlyingIsStataToken) {
     if (!reserve) {
-      throw new Error('Reserve is required when underlying is a waToken');
+      throw new Error('Reserve is required when underlying is a stataToken');
     }
     return totalRewardApy.plus(reserve.supplyAPY).toString();
   }
@@ -290,10 +321,20 @@ export const useUmbrellaSummary = (marketData: MarketDataType) => {
   const userStakeDataQuery = useUserStakeData(marketData);
   const userReservesQuery = useExtendedUserSummaryAndIncentives(marketData);
   const reservesQuery = usePoolFormattedReserves(marketData);
+  const walletBalances = useWalletBalances(marketData);
+
+  const selector = (
+    stakeData: StakeData[],
+    userStakeData: StakeUserData[],
+    user: ExtendedFormattedUser,
+    reserves: FormattedReservesAndIncentives[]
+  ) => {
+    return formatUmbrellaSummary(stakeData, userStakeData, user, reserves, walletBalances);
+  };
 
   const { data, isPending } = combineQueries(
     [stakeDataQuery, userStakeDataQuery, userReservesQuery, reservesQuery] as const,
-    formatUmbrellaSummary
+    selector
   );
   return { data, loading: isPending };
 };

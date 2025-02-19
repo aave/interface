@@ -340,7 +340,7 @@ export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStak
         sx={{ mt: '48px' }}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !cooldownCheck}
-        selectedToken={stakeData.stakeToken}
+        selectedToken={stakeData.tokenAddress}
         amountToCooldown={amountToCooldown}
       />
     </>

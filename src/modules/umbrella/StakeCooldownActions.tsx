@@ -1,3 +1,4 @@
+import { StakeTokenService } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -8,8 +9,6 @@ import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
-
-import { StakeTokenService } from './services/StakeTokenService';
 
 export interface StakeCooldownActionsProps extends BoxProps {
   isWrongNetwork: boolean;
@@ -39,7 +38,7 @@ export const StakeCooldownActions = ({
     try {
       setMainTxState({ ...mainTxState, loading: true });
       const stakeTokenService = new StakeTokenService(selectedToken);
-      let cooldownTxData = stakeTokenService.cooldown(user);
+      let cooldownTxData = stakeTokenService.cooldown({ sender: user });
       cooldownTxData = await estimateGasLimit(cooldownTxData);
       const tx = await sendTx(cooldownTxData);
       await tx.wait(1);

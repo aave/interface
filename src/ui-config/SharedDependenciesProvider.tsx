@@ -1,5 +1,4 @@
 import { createContext, PropsWithChildren, useContext } from 'react';
-import { StakeDataProviderService } from 'src/modules/umbrella/services/StakeDataProviderService';
 import { ApprovedAmountService } from 'src/services/ApprovedAmountService';
 import { DelegationTokenService } from 'src/services/DelegationTokenService';
 import { ERC20Service } from 'src/services/Erc20Service';
@@ -12,6 +11,7 @@ import { UiGhoService } from 'src/services/UiGhoService';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
+import { UmbrellaStakeDataService } from 'src/services/UmbrellaStakeDataService';
 import { VotingMachineService } from 'src/services/VotingMachineService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
@@ -37,7 +37,7 @@ interface SharedDependenciesContext {
   stkAbptMigrationService: StkAbptMigrationService;
   migrationService: MigrationService;
   erc20Service: ERC20Service;
-  stakeDataService: StakeDataProviderService;
+  stakeDataService: UmbrellaStakeDataService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -69,7 +69,7 @@ export const SharedDependenciesProvider: React.FC<PropsWithChildren> = ({ childr
   const delegationTokenService = new DelegationTokenService(getGovernanceProvider);
   const stkAbptMigrationService = new StkAbptMigrationService();
   const migrationService = new MigrationService(getProvider);
-  const stakeDataService = new StakeDataProviderService(getProvider);
+  const stakeDataService = new UmbrellaStakeDataService(getProvider);
 
   const uiPoolService = new UiPoolService(getProvider);
   const uiIncentivesService = new UiIncentivesService(getProvider);

@@ -13,7 +13,7 @@ import { UmbrellaModalContent } from './UmbrellaModalContent';
 
 export const UmbrellaModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
-    waTokenUnderlying: string;
+    stataTokenAsset: string;
     uStakeToken: string;
     icon: string;
   }>;
@@ -23,14 +23,16 @@ export const UmbrellaModal = () => {
   const { data } = useUmbrellaSummary(currentMarketData);
 
   const stakeData = data?.stakeData.find(
-    (item) => item.stakeToken.toLowerCase() === args?.uStakeToken?.toLowerCase()
+    (item) => item.tokenAddress.toLowerCase() === args?.uStakeToken?.toLowerCase()
   );
 
-  // If there is no waTokenUnderlying, then just use the mock address so there's no errors thrown.
-  // The underlying asset is only needed in the case when dealing with waTokens anyway, in which
+  // If there is no stataTokenAsset, then just use the mock address so there's no errors thrown.
+  // The underlying asset is only needed in the case when dealing with stataTokens anyway, in which
   // case we need to fetch the user reserves so we can calculate health factor changes on stake.
   const underlyingAsset =
-    args.waTokenUnderlying === zeroAddress ? API_ETH_MOCK_ADDRESS : args.waTokenUnderlying;
+    args.stataTokenAsset === zeroAddress
+      ? API_ETH_MOCK_ADDRESS
+      : args.stataTokenAsset?.toLowerCase();
 
   return (
     <BasicModal open={type === ModalType.Umbrella} setOpen={close}>

@@ -14,7 +14,7 @@ export const UmbrellaClaimModal = () => {
   const { data } = useUmbrellaSummary(currentMarketData);
 
   const stakeData = data?.stakeData.find(
-    (item) => item.stakeToken.toLowerCase() === args?.uStakeToken?.toLowerCase()
+    (item) => item.tokenAddress.toLowerCase() === args?.uStakeToken?.toLowerCase()
   );
 
   return (
