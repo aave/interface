@@ -33,7 +33,7 @@ export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) 
     <Stack direction="column" alignItems="center" justifyContent="center">
       {!isCooldownActive && !isUnstakeWindowActive ? (
         <>
-          <FormattedNumber compact value={stakeTokenBalance} variant="main16" />
+          <FormattedNumber compact value={stakeTokenBalance} variant="secondary14" />
           <ReserveSubheader value={stakeTokenBalanceUSD} />
         </>
       ) : (

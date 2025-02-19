@@ -98,7 +98,6 @@ export const UnStakeActions = ({
     // onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
 
-  console.log('requires approval', requiresApproval);
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
