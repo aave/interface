@@ -48,6 +48,21 @@ const IncentivesSymbolMap: {
     symbol: 'aPYUSD',
     aToken: true,
   },
+  aArbWETH: {
+    tokenIconSymbol: 'WETH',
+    symbol: 'aWETH',
+    aToken: true,
+  },
+  aArbwstETH: {
+    tokenIconSymbol: 'wstETH',
+    symbol: 'awstETH',
+    aToken: true,
+  },
+  aBaswstETH: {
+    tokenIconSymbol: 'wstETH',
+    symbol: 'awstETH',
+    aToken: true,
+  },
   aAvaSAVAX: {
     tokenIconSymbol: 'sAVAX',
     symbol: 'asAVAX',
