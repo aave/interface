@@ -1,4 +1,25 @@
 import { ChainId } from '@aave/contract-helpers';
+import {
+  arbitrum,
+  arbitrumSepolia,
+  avalanche,
+  avalancheFuji,
+  base,
+  baseSepolia,
+  bsc,
+  Chain,
+  gnosis,
+  linea,
+  mainnet,
+  metis,
+  optimism,
+  optimismSepolia,
+  polygon,
+  scroll,
+  scrollSepolia,
+  sepolia,
+  zksync,
+} from 'wagmi/chains';
 
 export type ExplorerLinkBuilderProps = {
   tx?: string;
@@ -46,13 +67,14 @@ export type NetworkConfig = {
     name: string;
     url: string;
   };
+  wagmiChain: Chain;
 };
 
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 const ratesHistoryApiUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/rates-history`;
 
-export const networkConfigs: Record<string, BaseNetworkConfig> = {
+export const testnetConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
     publicJsonRPCUrl: [
@@ -67,27 +89,96 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://sepolia.etherscan.io',
-    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/ethereum.svg',
+    wagmiChain: sepolia,
   },
-  [ChainId.goerli]: {
-    name: 'Ethereum Görli',
+  [ChainId.fuji]: {
+    name: 'Avalanche Fuji',
     publicJsonRPCUrl: [
-      'https://eth-goerli.public.blastapi.io',
-      'https://rpc.ankr.com/eth_goerli',
-      'https://goerli.prylabs.net',
+      'https://api.avax-test.network/ext/bc/C/rpc',
+      'https://rpc.ankr.com/avalanche_fuji',
+      'https://ava-testnet.public.blastapi.io/ext/bc/C/rpc',
     ],
-    publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
+    publicJsonRPCWSUrl: 'wss://api.avax-test.network/ext/bc/C/rpc',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'AVAX',
+    wrappedBaseAssetSymbol: 'WAVAX',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://cchain.explorer.avax-test.network',
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/avalanche.svg',
+    bridge: {
+      icon: '/icons/bridge/avalanche.svg',
+      name: 'Avalanche Bridge',
+      url: 'https://bridge.avax.network/',
+    },
+    wagmiChain: avalancheFuji,
+  },
+  [ChainId.arbitrum_sepolia]: {
+    name: 'Arbitrum Sepolia',
+    publicJsonRPCUrl: [
+      'https://sepolia-rollup.arbitrum.io/rpc',
+      'https://public.stackup.sh/api/v1/node/arbitrum-sepolia',
+    ],
+    publicJsonRPCWSUrl: 'https://sepolia-rollup.arbitrum.io/rpc',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://goerli.etherscan.io',
-    // usdMarket: true,
+    explorerLink: 'https://sepolia.arbiscan.io',
     isTestnet: true,
-    networkLogoPath: '/icons/networks/ethereum.svg',
+    networkLogoPath: '/icons/networks/arbitrum.svg',
+    wagmiChain: arbitrumSepolia,
   },
+  [ChainId.base_sepolia]: {
+    name: 'Base Sepolia',
+    publicJsonRPCUrl: [
+      'https://base-sepolia.blockpi.network/v1/rpc/public',
+      'https://sepolia.base.org',
+      'https://base-sepolia.gateway.tenderly.co',
+    ],
+    publicJsonRPCWSUrl: 'wss://base-sepolia-rpc.publicnode.com',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.basescan.org',
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/base.svg',
+    wagmiChain: baseSepolia,
+  },
+  [ChainId.optimism_sepolia]: {
+    name: 'Optimism Sepolia',
+    publicJsonRPCUrl: ['https://sepolia.optimism.io'],
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia-optimistic.etherscan.io',
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/optimism.svg',
+    wagmiChain: optimismSepolia,
+  },
+  [ChainId.scroll_sepolia]: {
+    name: 'Scroll Sepolia',
+    publicJsonRPCUrl: [
+      'https://sepolia-rpc.scroll.io',
+      'https://scroll-sepolia.blockpi.network/v1/rpc/public',
+    ],
+    publicJsonRPCWSUrl: 'wss://sepolia-rpc.scroll.io',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.scrollscan.dev',
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/scroll.svg',
+    wagmiChain: scrollSepolia,
+  },
+};
+
+export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.mainnet]: {
     name: 'Ethereum',
     privateJsonRPCUrl: 'https://eth-mainnet.g.alchemy.com/v2/ZiMMq2478EVIEJdsxC5dMal_ccQwtb31',
@@ -105,6 +196,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://etherscan.io',
     ratesHistoryApiUrl,
     networkLogoPath: '/icons/networks/ethereum.svg',
+    wagmiChain: mainnet,
   },
   [ChainId.polygon]: {
     name: 'Polygon POS',
@@ -127,28 +219,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://wallet.polygon.technology/polygon/bridge',
     },
     ratesHistoryApiUrl,
-  },
-  [ChainId.fuji]: {
-    name: 'Avalanche Fuji',
-    publicJsonRPCUrl: [
-      'https://api.avax-test.network/ext/bc/C/rpc',
-      'https://rpc.ankr.com/avalanche_fuji',
-      'https://ava-testnet.public.blastapi.io/ext/bc/C/rpc',
-    ],
-    publicJsonRPCWSUrl: 'wss://api.avax-test.network/ext/bc/C/rpc',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'AVAX',
-    wrappedBaseAssetSymbol: 'WAVAX',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://cchain.explorer.avax-test.network',
-    // usdMarket: true,
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/avalanche.svg',
-    bridge: {
-      icon: '/icons/bridge/avalanche.svg',
-      name: 'Avalanche Bridge',
-      url: 'https://bridge.avax.network/',
-    },
+    wagmiChain: polygon,
   },
   [ChainId.avalanche]: {
     name: 'Avalanche',
@@ -164,7 +235,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WAVAX',
     baseAssetDecimals: 18,
     explorerLink: 'https://cchain.explorer.avax.network',
-    // usdMarket: true,
     networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
       icon: '/icons/bridge/avalanche.svg',
@@ -172,42 +242,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://bridge.avax.network/',
     },
     ratesHistoryApiUrl,
-  },
-  [ChainId.arbitrum_goerli]: {
-    name: 'Arbitrum Görli',
-    publicJsonRPCUrl: [
-      'https://goerli-rollup.arbitrum.io/rpc',
-      'https://arb-goerli.g.alchemy.com/v2/demo',
-    ],
-    publicJsonRPCWSUrl: 'wss://goerli-rollup.arbitrum.io/rpc',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://goerli.arbiscan.io',
-    // usdMarket: true,
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/arbitrum.svg',
-    bridge: {
-      icon: '/icons/bridge/arbitrum.svg',
-      name: 'Arbitrum Bridge',
-      url: 'https://bridge.arbitrum.io',
-    },
-  },
-  [ChainId.arbitrum_sepolia]: {
-    name: 'Arbitrum Sepolia',
-    publicJsonRPCUrl: [
-      'https://sepolia-rollup.arbitrum.io/rpc',
-      'https://public.stackup.sh/api/v1/node/arbitrum-sepolia',
-    ],
-    publicJsonRPCWSUrl: 'https://sepolia-rollup.arbitrum.io/rpc',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://sepolia.arbiscan.io',
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/arbitrum.svg',
+    wagmiChain: avalanche,
   },
   [ChainId.arbitrum_one]: {
     name: 'Arbitrum',
@@ -223,7 +258,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://arbiscan.io',
-    // usdMarket: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
       icon: '/icons/bridge/arbitrum.svg',
@@ -231,6 +265,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://bridge.arbitrum.io',
     },
     ratesHistoryApiUrl,
+    wagmiChain: arbitrum,
   },
   [ChainId.base]: {
     name: 'Base',
@@ -246,7 +281,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://basescan.org',
-    // usdMarket: true,
     networkLogoPath: '/icons/networks/base.svg',
     bridge: {
       icon: '/icons/networks/base.svg',
@@ -254,22 +288,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://bridge.base.org/',
     },
     ratesHistoryApiUrl,
-  },
-  [ChainId.base_sepolia]: {
-    name: 'Base Sepolia',
-    publicJsonRPCUrl: [
-      'https://base-sepolia.blockpi.network/v1/rpc/public',
-      'https://sepolia.base.org',
-      'https://base-sepolia.gateway.tenderly.co',
-    ],
-    publicJsonRPCWSUrl: 'wss://base-sepolia-rpc.publicnode.com',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://sepolia.basescan.org',
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/base.svg',
+    wagmiChain: base,
   },
   [ChainId.optimism]: {
     name: 'OP',
@@ -277,11 +296,10 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io', 'https://1rpc.io/op'],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
     baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH', // OETH
+    baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://optimistic.etherscan.io',
-    // usdMarket: true,
     networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
       icon: '/icons/bridge/optimism.svg',
@@ -289,32 +307,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://app.optimism.io/bridge',
     },
     ratesHistoryApiUrl,
-  },
-  [ChainId.optimism_sepolia]: {
-    name: 'Optimism Sepolia',
-    publicJsonRPCUrl: ['https://sepolia.optimism.io'],
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://sepolia-optimistic.etherscan.io',
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/optimism.svg',
-  },
-  [ChainId.scroll_sepolia]: {
-    name: 'Scroll Sepolia',
-    publicJsonRPCUrl: [
-      'https://sepolia-rpc.scroll.io',
-      'https://scroll-sepolia.blockpi.network/v1/rpc/public',
-    ],
-    publicJsonRPCWSUrl: 'wss://sepolia-rpc.scroll.io',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://sepolia.scrollscan.dev',
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/scroll.svg',
+    wagmiChain: optimism,
   },
   [ChainId.metis_andromeda]: {
     name: 'Metis Andromeda',
@@ -326,6 +319,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://andromeda-explorer.metis.io',
     networkLogoPath: '/icons/networks/metis.svg',
     ratesHistoryApiUrl,
+    wagmiChain: metis,
   },
   [ChainId.xdai]: {
     name: 'Gnosis Chain',
@@ -345,6 +339,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://bridge.gnosischain.com/',
     },
     ratesHistoryApiUrl,
+    wagmiChain: gnosis,
   },
   [ChainId.bnb]: {
     name: 'Binance Smart Chain',
@@ -362,6 +357,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://www.bnbchain.org/en/bnb-chain-bridges',
     },
     ratesHistoryApiUrl,
+    wagmiChain: bsc,
   },
   [ChainId.scroll]: {
     name: 'Scroll',
@@ -379,6 +375,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://scroll.io/bridge',
     },
     ratesHistoryApiUrl,
+    wagmiChain: scroll,
   },
   [ChainId.zksync]: {
     name: 'ZKsync',
@@ -395,11 +392,16 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://portal.zksync.io/bridge/',
     },
     ratesHistoryApiUrl,
+    wagmiChain: zksync,
   },
-  [59144]: {
+  [ChainId.linea]: {
     name: 'Linea',
     privateJsonRPCUrl: 'https://linea-mainnet.g.alchemy.com/v2/6uk5qBl8QvjpEbgF3TgZBbxWkKlmWZR-',
-    publicJsonRPCUrl: ['https://1rpc.io/linea'],
+    publicJsonRPCUrl: [
+      'https://1rpc.io/linea',
+      'https://linea.drpc.org',
+      'https://linea-rpc.publicnode.com',
+    ],
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
@@ -410,5 +412,12 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Linea Bridge',
       url: 'https://bridge.linea.build/',
     },
+    ratesHistoryApiUrl,
+    wagmiChain: linea,
   },
-} as const;
+};
+
+export const networkConfigs = {
+  ...testnetConfig,
+  ...prodNetworkConfig,
+};
