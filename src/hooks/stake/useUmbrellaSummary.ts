@@ -285,14 +285,16 @@ const formatUmbrellaSummary = (
           .toString(),
       },
       cooldownData: matchingBalance.cooldown,
-      name: stakeItem.underlyingIsStataToken ? stakeItem.stataTokenData.assetName : stakeItem.name,
+      name: stakeItem.underlyingIsStataToken
+        ? stakeItem.stataTokenData.assetName
+        : stakeItem.underlyingTokenName,
       symbol: stakeItem.underlyingIsStataToken
         ? stakeItem.stataTokenData.assetSymbol
-        : stakeItem.symbol,
+        : stakeItem.underlyingTokenSymbol,
       decimals: stakeItem.underlyingTokenDecimals,
       iconSymbol: stakeItem.underlyingIsStataToken
         ? stakeItem.stataTokenData.assetSymbol
-        : stakeItem.symbol,
+        : stakeItem.underlyingTokenSymbol,
       totalStakedUSD: `${underlyingTokenBalanceUSD}`,
     });
 

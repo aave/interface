@@ -88,6 +88,7 @@ const getInputTokens = (
       balance: stakeData.formattedBalances.nativeTokenBalance,
     });
   }
+  assets.sort((a, b) => +b.balance - +a.balance);
   return assets;
 };
 
