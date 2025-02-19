@@ -1,8 +1,10 @@
 import {
+  API_ETH_MOCK_ADDRESS,
   StakeData,
   StakeUserBalances,
   StakeUserCooldown,
   StakeUserData,
+  StataTokenData,
 } from '@aave/contract-helpers';
 import { normalize, normalizeBN, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
@@ -11,6 +13,7 @@ import { useStakeData, useUserStakeData } from 'src/modules/umbrella/hooks/useSt
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
+import { useWalletBalances, WalletBalances } from '../app-data-provider/useWalletBalances';
 import {
   ExtendedFormattedUser,
   useExtendedUserSummaryAndIncentives,
@@ -30,6 +33,7 @@ interface FormattedBalance {
   stataTokenAssetBalance: string;
   aTokenBalanceAvailableToStake: string;
   totalAvailableToStake: string;
+  nativeTokenBalance: string;
 }
 
 interface FormattedReward {
@@ -51,6 +55,10 @@ interface FormattedUserStakeData {
   stakeData: MergedStakeData[];
 }
 
+interface StataTokenDataExtended extends StataTokenData {
+  isUnderlyingWrappedBaseToken: boolean;
+}
+
 export interface MergedStakeData extends StakeData {
   balances: StakeUserBalances;
   formattedBalances: FormattedBalance;
@@ -63,6 +71,7 @@ export interface MergedStakeData extends StakeData {
   iconSymbol: string;
   totalStakedUSD: string;
   totalRewardApy: string;
+  stataTokenData: StataTokenDataExtended;
 }
 
 export interface FormattedStakeDataSummary {
@@ -134,7 +143,8 @@ const formatUmbrellaSummary = (
   stakeData: StakeData[],
   userStakeData: StakeUserData[],
   user: ExtendedFormattedUser,
-  reserves: FormattedReservesAndIncentives[]
+  reserves: FormattedReservesAndIncentives[],
+  walletBalances: WalletBalances
 ): FormattedUserStakeData => {
   let aggregatedTotalStakedUSD = valueToBigNumber('0');
   let weightedApySum = valueToBigNumber('0');
@@ -191,11 +201,18 @@ const formatUmbrellaSummary = (
     aggregatedTotalStakedUSD = aggregatedTotalStakedUSD.plus(stakeTokenBalanceUSD);
 
     let aTokenBalanceAvailableToStake = '0';
+    const nativeTokenBalance = walletBalances.walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]
+      ? walletBalances.walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()].amount
+      : '0';
+    let isUnderlyingWrappedBaseToken = false;
     if (userReserve && reserve) {
       aTokenBalanceAvailableToStake = roundToTokenDecimals(
         calculateMaxWithdrawAmount(user, userReserve, reserve).toString(),
         stakeItem.underlyingTokenDecimals
       );
+      if (reserve.isWrappedBaseAsset) {
+        isUnderlyingWrappedBaseToken = true;
+      }
     }
 
     const stataTokenAssetBalance = normalize(
@@ -208,9 +225,16 @@ const formatUmbrellaSummary = (
       totalAvailableToStake +=
         Number(stataTokenAssetBalance) + Number(aTokenBalanceAvailableToStake);
     }
+    if (isUnderlyingWrappedBaseToken) {
+      totalAvailableToStake += Number(nativeTokenBalance);
+    }
 
     acc.push({
       ...stakeItem,
+      stataTokenData: {
+        ...stakeItem.stataTokenData,
+        isUnderlyingWrappedBaseToken,
+      },
       balances: matchingBalance.balances,
       totalRewardApy,
       formattedBalances: {
@@ -225,6 +249,7 @@ const formatUmbrellaSummary = (
         stataTokenAssetBalance,
         aTokenBalanceAvailableToStake,
         totalAvailableToStake: totalAvailableToStake.toString(),
+        nativeTokenBalance,
       },
       formattedRewards: matchingBalance.rewards.map((reward) => {
         const rewardData = stakeItem.rewards.find(
@@ -296,10 +321,20 @@ export const useUmbrellaSummary = (marketData: MarketDataType) => {
   const userStakeDataQuery = useUserStakeData(marketData);
   const userReservesQuery = useExtendedUserSummaryAndIncentives(marketData);
   const reservesQuery = usePoolFormattedReserves(marketData);
+  const walletBalances = useWalletBalances(marketData);
+
+  const selector = (
+    stakeData: StakeData[],
+    userStakeData: StakeUserData[],
+    user: ExtendedFormattedUser,
+    reserves: FormattedReservesAndIncentives[]
+  ) => {
+    return formatUmbrellaSummary(stakeData, userStakeData, user, reserves, walletBalances);
+  };
 
   const { data, isPending } = combineQueries(
     [stakeDataQuery, userStakeDataQuery, userReservesQuery, reservesQuery] as const,
-    formatUmbrellaSummary
+    selector
   );
   return { data, loading: isPending };
 };

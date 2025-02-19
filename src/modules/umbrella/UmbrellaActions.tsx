@@ -193,7 +193,13 @@ export const UmbrellaActions = ({
         });
       }
     } else {
-      if (selectedToken.aToken) {
+      if (selectedToken.address === API_ETH_MOCK_ADDRESS) {
+        stakeTxData = stakeService.stakeNativeTokens({
+          sender: currentAccount,
+          stakeToken: stakeData.tokenAddress,
+          amount: amountToStake,
+        });
+      } else if (selectedToken.aToken) {
         stakeTxData = stakeService.stakeATokens({
           sender: currentAccount,
           stakeToken: stakeData.tokenAddress,
