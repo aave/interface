@@ -17,6 +17,8 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
+import { RedeemType } from './UnstakeModalContent';
+
 export interface UnStakeActionProps extends BoxProps {
   amountToUnStake: string;
   isWrongNetwork: boolean;
@@ -24,7 +26,7 @@ export interface UnStakeActionProps extends BoxProps {
   symbol: string;
   blocked: boolean;
   stakeData: MergedStakeData;
-  redeemATokens: boolean;
+  redeemType: RedeemType;
 }
 
 export const UnStakeActions = ({
@@ -34,7 +36,7 @@ export const UnStakeActions = ({
   symbol,
   blocked,
   stakeData,
-  redeemATokens,
+  redeemType,
 }: UnStakeActionProps) => {
   const queryClient = useQueryClient();
   const [currentChainId, user, estimateGasLimit] = useRootStore(
@@ -106,7 +108,13 @@ export const UnStakeActions = ({
         const stakeService = new StakeGatewayService(
           stakeUmbrellaConfig[currentChainId].stakeGateway
         );
-        if (redeemATokens) {
+        if (redeemType === RedeemType.NATIVE) {
+          unstakeTxData = stakeService.redeemNativeTokens({
+            sender: user,
+            stakeToken: stakeData.tokenAddress,
+            amount: parsedAmountToStake.toString(),
+          });
+        } else if (redeemType === RedeemType.ATOKEN) {
           unstakeTxData = stakeService.redeemATokens({
             sender: user,
             stakeToken: stakeData.tokenAddress,

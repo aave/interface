@@ -30,10 +30,16 @@ import { useShallow } from 'zustand/shallow';
 import { usePreviewRedeem } from './hooks/usePreviewRedeem';
 import { UnStakeActions } from './UnstakeModalActions';
 
+export enum RedeemType {
+  NORMAL,
+  ATOKEN,
+  NATIVE,
+}
+
 export const UnStakeModalContent = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const [redeemATokens, setRedeemATokens] = useState(stakeData.underlyingIsStataToken);
+  const [redeemType, setRedeemType] = useState(RedeemType.NORMAL);
   const [currentChainId, currentNetworkConfig] = useRootStore(
     useShallow((store) => [store.currentChainId, store.currentNetworkConfig])
   );
@@ -86,6 +92,14 @@ export const UnStakeModalContent = ({ stakeData }: { stakeData: MergedStakeData 
   //   }
   // };
 
+  const setRedeemATokens = (value: boolean) => {
+    setRedeemType(value ? RedeemType.ATOKEN : RedeemType.NORMAL);
+  };
+
+  const setRedeemNativeTokens = (value: boolean) => {
+    setRedeemType(value ? RedeemType.NATIVE : RedeemType.NORMAL);
+  };
+
   const symbolFormatted = stakeData.underlyingIsStataToken
     ? stakeData.stataTokenData.assetSymbol
     : stakeData.underlyingTokenSymbol;
@@ -93,7 +107,7 @@ export const UnStakeModalContent = ({ stakeData }: { stakeData: MergedStakeData 
   const isWrongNetwork = currentChainId !== connectedChainId;
 
   let hfAfterRedeem = '-1';
-  if (user && stakeData.underlyingIsStataToken && redeemATokens) {
+  if (user && stakeData.underlyingIsStataToken && redeemType === RedeemType.ATOKEN) {
     const poolReserve = reserves.find(
       (r) => r.underlyingAsset.toLowerCase() === stakeData.stataTokenData.asset.toLowerCase()
     );
@@ -146,11 +160,22 @@ export const UnStakeModalContent = ({ stakeData }: { stakeData: MergedStakeData 
 
       {stakeData.underlyingIsStataToken && (
         <DetailsUnwrapSwitch
-          unwrapped={redeemATokens}
+          unwrapped={redeemType === RedeemType.ATOKEN}
           setUnWrapped={setRedeemATokens}
           label={
             <Typography>
               <Trans>Redeem as aToken</Trans>
+            </Typography>
+          }
+        />
+      )}
+      {stakeData.stataTokenData.isUnderlyingWrappedBaseToken && (
+        <DetailsUnwrapSwitch
+          unwrapped={redeemType === RedeemType.NATIVE}
+          setUnWrapped={setRedeemNativeTokens}
+          label={
+            <Typography>
+              <Trans>{`Redeem as ${currentNetworkConfig.baseAssetSymbol}`}</Trans>
             </Typography>
           }
         />
@@ -171,8 +196,12 @@ export const UnStakeModalContent = ({ stakeData }: { stakeData: MergedStakeData 
                 <>
                   <Stack direction="row" alignItems="center">
                     <TokenIcon
-                      aToken={redeemATokens}
-                      symbol={stakeData.stataTokenData.assetSymbol}
+                      aToken={redeemType === RedeemType.ATOKEN}
+                      symbol={
+                        redeemType === RedeemType.NATIVE
+                          ? currentNetworkConfig.baseAssetSymbol
+                          : stakeData.stataTokenData.assetSymbol
+                      }
                       sx={{ mr: 2, ml: 4, fontSize: '20px' }}
                     />
                     <FormattedNumber value={redeemedAmount || '0'} variant="secondary14" compact />
@@ -189,7 +218,7 @@ export const UnStakeModalContent = ({ stakeData }: { stakeData: MergedStakeData 
               )}
             </Stack>
           </Row>
-          {redeemATokens && (
+          {redeemType === RedeemType.ATOKEN && (
             <DetailsHFLine
               healthFactor={user?.healthFactor || '-1'}
               futureHealthFactor={hfAfterRedeem}
@@ -217,7 +246,7 @@ export const UnStakeModalContent = ({ stakeData }: { stakeData: MergedStakeData 
         symbol={symbolFormatted}
         blocked={false}
         stakeData={stakeData}
-        redeemATokens={redeemATokens}
+        redeemType={redeemType}
       />
     </>
   );
