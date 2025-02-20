@@ -9,8 +9,10 @@ import { Reward } from 'src/helpers/types';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { TokenIcon } from '../../primitives/TokenIcon';
 
+export type RewardSelect = Pick<Reward, 'symbol' | 'balanceUsd'>;
+
 export type RewardsSelectProps = {
-  rewards: Reward[];
+  rewards: RewardSelect[];
   setSelectedReward: (key: string) => void;
   selectedReward: string;
 };

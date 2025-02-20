@@ -59,7 +59,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
               variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
             >
-              <Trans>Staking</Trans>
+              <Trans>Safety Module</Trans>
             </Typography>
           </Box>
 
