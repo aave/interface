@@ -17,13 +17,5 @@ export const useEthenaIncentives = (action?: ProtocolAction, rewardedAsset?: str
     return undefined;
   }
 
-  const returnedValue = getEthenaData(action, rewardedAsset);
-
-  if (
-    action === ProtocolAction.supply &&
-    rewardedAsset === AaveV3EthereumLido.ASSETS.sUSDe.A_TOKEN
-  ) {
-    console.log({ returnedValue, action, rewardedAsset });
-  }
-  return returnedValue;
+  return getEthenaData(action, rewardedAsset);
 };
