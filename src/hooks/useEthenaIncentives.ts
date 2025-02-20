@@ -8,6 +8,7 @@ const ETHENA_DATA_MAP: Map<string, number> = new Map([
   [`${ProtocolAction.supply}-${AaveV3Ethereum.ASSETS.USDe.A_TOKEN}`, 25],
   [`${ProtocolAction.supply}-${AaveV3Ethereum.ASSETS.sUSDe.A_TOKEN}`, 5],
   [`${ProtocolAction.supply}-${AaveV3EthereumLido.ASSETS.sUSDe.A_TOKEN}`, 5],
+  [`${ProtocolAction.borrow}-${AaveV3Ethereum.ASSETS.GHO.V_TOKEN}`, 5],
   [`${ProtocolAction.borrow}-${AaveV3EthereumLido.ASSETS.GHO.V_TOKEN}`, 5],
 ]);
 
