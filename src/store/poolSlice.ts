@@ -3,6 +3,7 @@ import {
   ApproveDelegationType,
   ApproveType,
   BaseDebtToken,
+  ChainId,
   DebtSwitchAdapterService,
   ERC20_2612Service,
   ERC20Service,
@@ -701,7 +702,11 @@ export const createPoolSlice: StateCreator<
     poolComputed: {
       get minRemainingBaseTokenBalance() {
         if (!get()) return '0.001';
-        const { currentNetworkConfig, currentChainId } = { ...get() };
+
+        const { currentNetworkConfig, currentChainId, connectedAccountIsContract } = { ...get() };
+
+        if (connectedAccountIsContract) return '0';
+
         const chainId = currentNetworkConfig.underlyingChainId || currentChainId;
         const min = minBaseTokenRemainingByNetwork[chainId];
         return min || '0.001';
@@ -766,7 +771,21 @@ export const createPoolSlice: StateCreator<
       return JSON.stringify(typeData);
     },
     estimateGasLimit: async (tx: PopulatedTransaction, chainId?: number) => {
-      const provider = get().jsonRpcProvider(chainId);
+      const { currentChainId, connectedAccountIsContract, jsonRpcProvider } = get();
+
+      const effectiveChainId = chainId ?? currentChainId;
+
+      /**
+       *  Trying to estimate gas on zkSync when connected with a smart contract address
+       *  will fail. In that case, we'll just return the default value for all transactions.
+       *
+       *  See here for more details: https://github.com/zkSync-Community-Hub/zksync-developers/discussions/144
+       */
+      if (effectiveChainId === ChainId.zksync && connectedAccountIsContract) {
+        return tx;
+      }
+
+      const provider = jsonRpcProvider(chainId);
       const defaultGasLimit: BigNumber = tx.gasLimit ? tx.gasLimit : BigNumber.from('0');
       delete tx.gasLimit;
       let estimatedGas = await provider.estimateGas(tx);
