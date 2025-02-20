@@ -69,7 +69,7 @@ export const AvailableToStakeItem = ({
       <FormattedNumber
         compact
         value={totalAvailableToStake}
-        variant="main16"
+        variant="secondary14"
         color={totalAvailableToStake === 0 ? 'text.disabled' : 'text.main'}
       />
       {stakeData.underlyingIsStataToken ? (

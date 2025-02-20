@@ -22,6 +22,7 @@ import {
   FormattedReservesAndIncentives,
   usePoolFormattedReserves,
 } from '../pool/usePoolFormattedReserves';
+import { PoolOracles, usePoolOracles } from '../pool/usePoolOracles';
 import { combineQueries } from '../pool/utils';
 
 interface FormattedBalance {
@@ -38,6 +39,7 @@ interface FormattedBalance {
 
 interface FormattedReward {
   accrued: string;
+  accruedUsd: string;
   rewardToken: string;
   rewardTokenName: string;
   rewardTokenSymbol: string;
@@ -144,6 +146,7 @@ const formatUmbrellaSummary = (
   userStakeData: StakeUserData[],
   user: ExtendedFormattedUser,
   reserves: FormattedReservesAndIncentives[],
+  poolOracles: PoolOracles,
   walletBalances: WalletBalances
 ): FormattedUserStakeData => {
   let aggregatedTotalStakedUSD = valueToBigNumber('0');
@@ -260,8 +263,15 @@ const formatUmbrellaSummary = (
           throw new Error('Reward data not found');
         }
 
+        const accruedNormalized = normalize(reward.accrued, rewardData.decimals);
+        const oraclePrice = poolOracles[reward.rewardAddress.toLowerCase()]
+          ? poolOracles[reward.rewardAddress.toLowerCase()].formattedPriceInUSD
+          : '0';
+        const accruedUsd = BigNumber(accruedNormalized).multipliedBy(oraclePrice).toString();
+
         return {
-          accrued: normalize(reward.accrued, rewardData.decimals),
+          accruedUsd,
+          accrued: accruedNormalized,
           rewardToken: reward.rewardAddress,
           rewardTokenSymbol: rewardData.rewardSymbol,
           rewardTokenName: rewardData.rewardName,
@@ -322,18 +332,27 @@ export const useUmbrellaSummary = (marketData: MarketDataType) => {
   const userReservesQuery = useExtendedUserSummaryAndIncentives(marketData);
   const reservesQuery = usePoolFormattedReserves(marketData);
   const walletBalances = useWalletBalances(marketData);
+  const poolOracles = usePoolOracles(marketData);
 
   const selector = (
     stakeData: StakeData[],
     userStakeData: StakeUserData[],
     user: ExtendedFormattedUser,
-    reserves: FormattedReservesAndIncentives[]
+    reserves: FormattedReservesAndIncentives[],
+    poolOracles: PoolOracles
   ) => {
-    return formatUmbrellaSummary(stakeData, userStakeData, user, reserves, walletBalances);
+    return formatUmbrellaSummary(
+      stakeData,
+      userStakeData,
+      user,
+      reserves,
+      poolOracles,
+      walletBalances
+    );
   };
 
   const { data, isPending } = combineQueries(
-    [stakeDataQuery, userStakeDataQuery, userReservesQuery, reservesQuery] as const,
+    [stakeDataQuery, userStakeDataQuery, userReservesQuery, reservesQuery, poolOracles] as const,
     selector
   );
   return { data, loading: isPending };

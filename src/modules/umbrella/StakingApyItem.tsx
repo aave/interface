@@ -61,7 +61,7 @@ export const StakingApyItem = ({
       <FormattedNumber
         value={stakeData.totalRewardApy}
         percent
-        variant="main16"
+        variant="secondary14"
         visibleDecimals={2}
       />
       <MultiIconWithTooltip

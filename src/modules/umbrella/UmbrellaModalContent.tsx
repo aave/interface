@@ -1,7 +1,7 @@
-import { API_ETH_MOCK_ADDRESS, ChainId } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Typography } from '@mui/material';
+import { Box, Checkbox, Skeleton, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { AssetInput } from 'src/components/transactions/AssetInput';
@@ -30,6 +30,11 @@ import { STAKE } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { UmbrellaActions } from './UmbrellaActions';
+import { usePreviewStake } from './hooks/usePreviewStake';
+import { useShallow } from 'zustand/shallow';
+import { stakeUmbrellaConfig } from 'src/services/UmbrellaStakeDataService';
+import { Row } from 'src/components/primitives/Row';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 export type StakeProps = {
   stakeData: MergedStakeData;
@@ -98,11 +103,21 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
   // states
   const [_amount, setAmount] = useState('');
 
-  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const [currentChainId, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [store.currentChainId, store.currentNetworkConfig])
+  );
 
   const assets = getInputTokens(stakeData, currentNetworkConfig);
 
   const [inputToken, setInputToken] = useState<StakeInputAsset>(assets[0]);
+
+  const { data: stakeShares, isLoading: loadingPreviewStake } = usePreviewStake(
+    _amount,
+    stakeData.decimals,
+    currentChainId,
+    stakeData.tokenAddress,
+    stakeData.underlyingIsStataToken ? stakeUmbrellaConfig[currentChainId].stakeGateway : ''
+  );
 
   const underlyingBalance = valueToBigNumber(inputToken.balance || '0');
 
@@ -156,6 +171,11 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
     .shiftedBy(-USD_DECIMALS)
     .toString();
 
+  const stakeSharesUsd = valueToBigNumber(stakeShares || '0')
+    .multipliedBy(stakeData.price)
+    .shiftedBy(-USD_DECIMALS)
+    .toString();
+
   return (
     <>
       <CooldownWarning cooldownSeconds={stakeData.cooldownSeconds} />
@@ -177,7 +197,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
           <Trans>You can not stake this amount because it will cause collateral call</Trans>
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
+      <TxModalDetails gasLimit={gasLimit} chainId={currentChainId}>
         {stakingAToken && (
           <>
             <DetailsNumberLine
@@ -192,6 +212,24 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
             />
           </>
         )}
+        <Row caption={<Trans>Stake token shares</Trans>} captionVariant="description" mb={4}>
+          <Stack direction="column" alignItems="flex-end" justifyContent="center">
+            {loadingPreviewStake ? (
+              <Skeleton variant="rectangular" height={20} width={50} sx={{ borderRadius: '4px' }} />
+            ) : (
+              <>
+                <FormattedNumber value={stakeShares || '0'} variant="secondary14" compact />
+                <FormattedNumber
+                  value={stakeSharesUsd}
+                  color="text.secondary"
+                  variant="helperText"
+                  compact
+                  symbol="USD"
+                />
+              </>
+            )}
+          </Stack>
+        </Row>
         <DetailsCooldownLine cooldownSeconds={stakeData.cooldownSeconds} />
       </TxModalDetails>
 

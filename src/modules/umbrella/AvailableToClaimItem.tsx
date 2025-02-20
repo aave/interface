@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography } from '@mui/material';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
+import { ListValueColumn } from '../dashboard/lists/ListValueColumn';
 import { AmountAvailableItem } from './helpers/AmountAvailableItem';
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 
@@ -24,6 +24,11 @@ export const AvailableToClaimItem = ({
     0
   );
 
+  const totalAvailableToClaimUSD = stakeData.formattedRewards.reduce(
+    (acc, reward) => acc + +reward.accruedUsd,
+    0
+  );
+
   return (
     <Stack
       direction={isMobile ? 'row' : 'column'}
@@ -32,11 +37,17 @@ export const AvailableToClaimItem = ({
       gap={2}
       width="100%"
     >
-      <FormattedNumber
+      {/* <FormattedNumber
         value={totalAvailableToClaim}
         variant="main16"
         compact
         color={totalAvailableToClaim === 0 ? 'text.disabled' : 'text.main'}
+      /> */}
+      <ListValueColumn
+        value={totalAvailableToClaim}
+        subValue={totalAvailableToClaimUSD}
+        withTooltip
+        disabled={totalAvailableToClaim === 0}
       />
       {stakeData.formattedRewards.length > 1 && (
         <MultiIconWithTooltip
