@@ -6,13 +6,15 @@ interface StakeUmbrellaConfig {
   [chain: number]: {
     stakeDataProvider: string;
     stakeGateway: string;
+    stakeRewardsController: string;
   };
 }
 export const stakeUmbrellaConfig: StakeUmbrellaConfig = {
   // [ChainId.mainnet]: {}, // TODO: Mainnet addresses
   [ChainId.base_sepolia]: {
-    stakeDataProvider: '0x8aC1CC9ba5a8d2ACa779cc9dB78AD9F493731886',
-    stakeGateway: '0xe2754b298eac661b02100ea1c302fe3117bbf962',
+    stakeDataProvider: '0xAaA87d031d991B6faAb8076AAea518072Fc8E6F2',
+    stakeGateway: '0xa00674dE7337F753FC188b49BeAbD1F437e8EA7f',
+    stakeRewardsController: '0xD1eC142cc2fA5ABf78Be9868F564aC0AAdD6aAB6',
   },
 };
 

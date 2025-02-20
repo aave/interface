@@ -6,8 +6,10 @@ import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { stakeUmbrellaConfig } from 'src/services/UmbrellaStakeDataService';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { useShallow } from 'zustand/shallow';
 
 import { UmbrellaRewards } from './UmbrellaClaimModalContent';
 
@@ -16,7 +18,6 @@ export interface StakeRewardClaimActionProps extends BoxProps {
   rewardsToClaim: UmbrellaRewards[];
   isWrongNetwork: boolean;
 }
-const REWARDS_CONTROLLER = '0xD1eC142cc2fA5ABf78Be9868F564aC0AAdD6aAB6';
 
 export const UmbrellaClaimActions = ({
   stakeData,
@@ -26,14 +27,18 @@ export const UmbrellaClaimActions = ({
 }: StakeRewardClaimActionProps) => {
   const { loadingTxns, mainTxState, setMainTxState, setTxError } = useModalContext();
 
-  const user = useRootStore((store) => store.account);
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx } = useWeb3Context();
+  const [currentChainId, user] = useRootStore(
+    useShallow((store) => [store.currentChainId, store.account])
+  );
 
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
-      const rewardsDistributorService = new RewardsDistributorService(REWARDS_CONTROLLER);
+      const rewardsDistributorService = new RewardsDistributorService(
+        stakeUmbrellaConfig[currentChainId].stakeRewardsController
+      );
       let claimTx: PopulatedTransaction = {};
       if (rewardsToClaim.length > 1) {
         claimTx = rewardsDistributorService.claimAllRewards({
