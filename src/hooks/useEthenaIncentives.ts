@@ -1,18 +1,27 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { AaveV3Ethereum, AaveV3EthereumLido } from '@bgd-labs/aave-address-book';
 
-const getEthenaData = (assetAddress: string): number | undefined =>
-  ETHENA_DATA_MAP.get(assetAddress);
+const getEthenaData = (action: ProtocolAction, assetAddress: string): number | undefined =>
+  ETHENA_DATA_MAP.get(`${action}-${assetAddress}`);
 
 const ETHENA_DATA_MAP: Map<string, number> = new Map([
-  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN, 25],
-  [AaveV3Ethereum.ASSETS.sUSDe.A_TOKEN, 5],
-  [AaveV3EthereumLido.ASSETS.sUSDe.A_TOKEN, 5],
+  [`${ProtocolAction.supply}-${AaveV3Ethereum.ASSETS.USDe.A_TOKEN}`, 25],
+  [`${ProtocolAction.supply}-${AaveV3Ethereum.ASSETS.sUSDe.A_TOKEN}`, 5],
+  [`${ProtocolAction.supply}-${AaveV3EthereumLido.ASSETS.sUSDe.A_TOKEN}`, 5],
 ]);
 
-export const useEthenaIncentives = (rewardedAsset?: string) => {
-  if (!rewardedAsset) {
+export const useEthenaIncentives = (action?: ProtocolAction, rewardedAsset?: string) => {
+  if (!action || !rewardedAsset) {
     return undefined;
   }
 
-  return getEthenaData(rewardedAsset);
+  const returnedValue = getEthenaData(action, rewardedAsset);
+
+  if (
+    action === ProtocolAction.supply &&
+    rewardedAsset === AaveV3EthereumLido.ASSETS.sUSDe.A_TOKEN
+  ) {
+    console.log({ returnedValue, action, rewardedAsset });
+  }
+  return returnedValue;
 };
