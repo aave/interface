@@ -1,4 +1,3 @@
-import { ProtocolAction } from '@aave/contract-helpers';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Tooltip, Typography, TypographyProps } from '@mui/material';
@@ -134,10 +133,7 @@ export const GhoIncentivesCard = ({
       ) : (
         <NoData variant="secondary14" color="text.secondary" />
       )}
-      <EthenaIncentivesButton
-        rewardedAsset={AaveV3Ethereum.ASSETS.GHO.V_TOKEN}
-        protocolAction={ProtocolAction.borrow}
-      />
+      <EthenaIncentivesButton rewardedAsset={AaveV3Ethereum.ASSETS.GHO.V_TOKEN} />
     </Box>
   );
 };

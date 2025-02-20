@@ -94,15 +94,9 @@ export const ZkIgniteIncentivesButton = (params: {
   );
 };
 
-export const EthenaIncentivesButton = ({
-  protocolAction,
-  rewardedAsset,
-}: {
-  protocolAction?: ProtocolAction;
-  rewardedAsset?: string;
-}) => {
+export const EthenaIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
   const [open, setOpen] = useState(false);
-  const points = useEthenaIncentives(protocolAction, rewardedAsset);
+  const points = useEthenaIncentives(rewardedAsset);
 
   if (!points) {
     return null;

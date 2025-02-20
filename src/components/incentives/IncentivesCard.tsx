@@ -86,7 +86,7 @@ export const IncentivesCard = ({
           rewardedAsset={address}
           protocolAction={protocolAction}
         />
-        <EthenaIncentivesButton rewardedAsset={address} protocolAction={protocolAction} />
+        <EthenaIncentivesButton rewardedAsset={address} />
       </Box>
     </Box>
   );
