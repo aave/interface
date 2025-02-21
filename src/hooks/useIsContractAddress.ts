@@ -9,7 +9,7 @@ export const useIsContractAddress = (address: string, chainId?: number) => {
   return useQuery({
     queryFn: () => provider.getCode(address),
     queryKey: ['isContractAddress', address],
-    enabled: true,
+    enabled: address !== '',
     staleTime: Infinity,
     select: (data) => data !== '0x',
   });
