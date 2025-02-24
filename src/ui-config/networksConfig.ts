@@ -134,6 +134,7 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.base_sepolia]: {
     name: 'Base Sepolia',
+    privateJsonRPCUrl: 'https://base-sepolia.g.alchemy.com/v2/IIdPEqieQtPDflf-075haltN8Jy4CYLp',
     publicJsonRPCUrl: [
       'https://base-sepolia.blockpi.network/v1/rpc/public',
       'https://sepolia.base.org',
