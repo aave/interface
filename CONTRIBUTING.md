@@ -42,7 +42,7 @@ Once you’ve identified an issue that you want to pick up, you should:
   8. QA and design review. If anything comes up during testing, or if there are any UI/UX items that need to be addressed, we’ll let you know.
   9. Once there are two approvals, the Pull Request can be merged.
 
-## Develoment Prerequisites
+## Development Prerequisites
 
 ### Install Node
 
