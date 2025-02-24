@@ -106,7 +106,7 @@ const testData = {
   },
 };
 //due oracle
-describe('BNB INTEGRATION SPEC, BNB V3 MARKET', () => {
+describe.skip('BNB INTEGRATION SPEC, BNB V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyBnbFork({ v3: true });
 
