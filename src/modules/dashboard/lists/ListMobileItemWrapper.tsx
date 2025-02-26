@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
+import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { PausedTooltip } from 'src/components/infoTooltips/PausedTooltip';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
@@ -51,6 +52,7 @@ export const ListMobileItemWrapper = ({
   showExternalIncentivesTooltips = {
     superFestRewards: false,
     spkAirdrop: false,
+    kernelPoints: false,
   },
 }: ListMobileItemWrapperProps) => {
   const WarningComponent: React.FC = () => {
@@ -66,6 +68,7 @@ export const ListMobileItemWrapper = ({
         {paused && <PausedTooltip />}
         {showExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
         {showExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
+        {showExternalIncentivesTooltips.kernelPoints && <KernelAirdropTooltip />}
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}
