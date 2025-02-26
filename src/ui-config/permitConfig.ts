@@ -1,5 +1,13 @@
 import { ChainId } from '@aave/contract-helpers';
 
+/**
+ * Maps token permit support by chain and token address.
+ * Permit enables gasless approvals using signed messages (EIP-2612).
+ *
+ * To check if a token supports permit, check if the contract has a permit function in the chain's scanner
+ * or in the contract's source code.
+ * To get the list of tokens supported by market, refer to the governance proposal.
+ */
 export const permitByChainAndToken: {
   [chainId: number]: Record<string, boolean>;
 } = {
@@ -45,5 +53,10 @@ export const permitByChainAndToken: {
     '0xa219439258ca9da29e9cc4ce5596924745e12b93': true, // USDT
     '0x2416092f143378750bb29b79ed961ab195cceea5': true, // ezETH
     '0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f': true, // wstETH
+  },
+  [ChainId.sonic]: {
+    '0x50c42dEAcD8Fc9773493ED674b675bE577f2634b': false, // WETH
+    '0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38': false, // wS
+    '0x29219dd400f2Bf60E5a23d13Be72B486D4038894': false, // USDC.e
   },
 };

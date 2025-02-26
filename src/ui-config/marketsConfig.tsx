@@ -21,6 +21,7 @@ import {
   AaveV3Scroll,
   AaveV3ScrollSepolia,
   AaveV3Sepolia,
+  AaveV3Sonic,
   AaveV3ZkSync,
 } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
@@ -94,6 +95,7 @@ export enum CustomMarket {
   proto_zksync_v3 = 'proto_zksync_v3',
   proto_etherfi_v3 = 'proto_etherfi_v3',
   proto_linea_v3 = 'proto_linea_v3',
+  proto_sonic_v3 = 'proto_sonic_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -697,6 +699,22 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Linea.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Linea.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Linea.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_sonic_v3]: {
+    marketTitle: 'Sonic',
+    market: CustomMarket.proto_sonic_v3,
+    chainId: ChainId.sonic,
+    v3: true,
+    // subgraphUrl: ``, // TODO: add subgraph url (waiting for fix)
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sonic.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Sonic.POOL,
+      WETH_GATEWAY: AaveV3Sonic.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Sonic.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Sonic.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Sonic.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Sonic.COLLECTOR,
     },
   },
 } as const;
