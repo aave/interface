@@ -85,6 +85,18 @@ const NETWORK_ASSETS: TokenInfo[] = [
       isNative: true,
     },
   },
+  {
+    name: 'Sonic',
+    symbol: 'S',
+    decimals: 18,
+    address: API_ETH_MOCK_ADDRESS,
+    chainId: 146,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/38108/standard/200x200_Sonic_Logo.png?1734679256',
+    extensions: {
+      isNative: true,
+    },
+  },
 
   // NOTE L2 ETH
   {
