@@ -1901,6 +1901,10 @@ msgstr "This action will reduce your health factor. Please be mindful of the inc
 msgid "The total amount bridged minus CCIP fees. Paying in network token does not impact gho amount."
 msgstr "The total amount bridged minus CCIP fees. Paying in network token does not impact gho amount."
 
+#: src/modules/umbrella/UmbrellaModalContent.tsx
+msgid "Stake token shares"
+msgstr "Stake token shares"
+
 #: src/layouts/FeedbackDialog.tsx
 #: src/layouts/FeedbackDialog.tsx
 msgid "Feedback"
