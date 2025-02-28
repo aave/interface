@@ -6,7 +6,8 @@ import { ChainId } from '@aave/contract-helpers';
  *
  * To check if a token supports permit, check if the contract has a permit function in the chain's scanner
  * or in the contract's source code.
- * To get the list of tokens supported by market, refer to the governance proposal.
+ *
+ * @dev use addresses in lowercase
  */
 export const permitByChainAndToken: {
   [chainId: number]: Record<string, boolean>;
@@ -55,8 +56,9 @@ export const permitByChainAndToken: {
     '0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f': true, // wstETH
   },
   [ChainId.sonic]: {
-    '0x50c42dEAcD8Fc9773493ED674b675bE577f2634b': false, // WETH
-    '0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38': false, // wS
-    '0x29219dd400f2Bf60E5a23d13Be72B486D4038894': false, // USDC.e
+    // adding these in false for clarity
+    '0x50c42deacd8fc9773493ed674b675be577f2634b': false, // WETH
+    '0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38': false, // wS
+    '0x29219dd400f2bf60e5a23d13be72b486d4038894': false, // USDC.e
   },
 };
