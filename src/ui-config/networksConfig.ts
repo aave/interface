@@ -419,9 +419,11 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.sonic]: {
     name: 'Sonic',
-    privateJsonRPCUrl: 'https://virtual.sonic.rpc.tenderly.co/fe59a8e7-01f8-4685-b8a2-980c7c13476e',
+    privateJsonRPCUrl: 'https://sonic-mainnet.g.alchemy.com/v2/L7wpvN30xWzkijd2cRwD8n0VLFM9UTmv',
     publicJsonRPCUrl: [
-      'https://virtual.sonic.rpc.tenderly.co/fe59a8e7-01f8-4685-b8a2-980c7c13476e',
+      'https://rpc.soniclabs.com',
+      'https://sonic.drpc.org',
+      'https://sonic-rpc.publicnode.com',
     ],
     baseAssetSymbol: 'S',
     wrappedBaseAssetSymbol: 'wS',
