@@ -7,6 +7,7 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
 import {
   EthenaIncentivesButton,
+  EtherfiIncentivesButton,
   IncentivesButton,
   MeritIncentivesButton,
   ZkIgniteIncentivesButton,
@@ -87,6 +88,7 @@ export const IncentivesCard = ({
           protocolAction={protocolAction}
         />
         <EthenaIncentivesButton rewardedAsset={address} />
+        <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
       </Box>
     </Box>
   );

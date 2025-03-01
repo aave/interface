@@ -22,6 +22,7 @@ msgid "Receive (est.)"
 msgstr "Receive (est.)"
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr "Aave Labs does not guarantee the program and accepts no liability."
 
@@ -666,6 +667,10 @@ msgstr "Thank you for voting!!"
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Stable"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "This asset is eligible for the Ether.fi Loyalty program with a x{0} multiplier."
+msgstr "This asset is eligible for the Ether.fi Loyalty program with a x{0} multiplier."
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Variable rate"
@@ -2728,6 +2733,10 @@ msgstr "Debt"
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "Filter"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "Learn more about the Ether.fi program"
+msgstr "Learn more about the Ether.fi program"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown to unstake"
