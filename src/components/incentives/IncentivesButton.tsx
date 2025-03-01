@@ -15,10 +15,7 @@ import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
-import {
-  ContentEtherfiButton,
-  EtherFiAirdropTooltipContent,
-} from './EtherfiIncentivesTooltipContent';
+import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
@@ -324,7 +321,7 @@ const Content = ({
   );
 };
 
-const ContentEthenaButton = ({ points }: { points: number }) => {
+const ContentButton = ({ value, iconSrc }: { value: number; iconSrc: string }) => {
   const [open, setOpen] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -352,12 +349,20 @@ const ContentEthenaButton = ({ points }: { points: number }) => {
     >
       <Box sx={{ mr: 2 }}>
         <Typography component="span" variant="secondary12" color="text.secondary">
-          {`${points}x`}
+          {`${value}x`}
         </Typography>
       </Box>
       <Box sx={{ display: 'inline-flex' }}>
-        <img src={'/icons/other/ethena.svg'} width={12} height={12} alt="ethena-icon" />
+        <img src={iconSrc} width={12} height={12} alt="icon" />
       </Box>
     </Box>
   );
 };
+
+const ContentEthenaButton = ({ points }: { points: number }) => (
+  <ContentButton value={points} iconSrc="/icons/other/ethena.svg" />
+);
+
+const ContentEtherfiButton = ({ multiplier }: { multiplier: number }) => (
+  <ContentButton value={multiplier} iconSrc="/icons/other/ether.fi.svg" />
+);
