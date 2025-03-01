@@ -10,8 +10,9 @@ export const EtherFiAirdropTooltipContent = ({ multiplier }: { multiplier: numbe
   return (
     <Box>
       <Trans>
-        {`This asset is eligible for the Ether.fi Loyalty program with a x
-        ${(<b>{multiplier}</b>)} multiplier.`}
+        {`This asset is eligible for the Ether.fi Loyalty program with a `}
+        <b>x{multiplier} multiplier</b>
+        {`.`}
       </Trans>
       <br />
       <Trans>Learn more about the Ether.fi program</Trans>{' '}
