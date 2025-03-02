@@ -73,7 +73,7 @@ export const GovRepresentativesContent = ({
 
   const isDirty = reps.some((r) => {
     const rep = representatives.find((re) => re.chainId === r.chainId);
-    // dirty if remvoing or changing address from initial value
+    // dirty if removing or changing address from initial value
     if (!rep) return false;
 
     return (
