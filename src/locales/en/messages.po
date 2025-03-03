@@ -22,6 +22,7 @@ msgid "Receive (est.)"
 msgstr "Receive (est.)"
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr "Aave Labs does not guarantee the program and accepts no liability."
 
@@ -480,6 +481,10 @@ msgstr "Borrowing is unavailable because you’re using Isolation mode. To manag
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on Lens"
 msgstr "Share on Lens"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Learn more about Sonic Rewards program"
+msgstr "Learn more about Sonic Rewards program"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -3250,6 +3255,10 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
 msgstr "Get ABP v2 Token"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Sonic Rewards."
+msgstr "This asset is eligible for {0} Sonic Rewards."
 
 #: pages/staking.staking.tsx
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
