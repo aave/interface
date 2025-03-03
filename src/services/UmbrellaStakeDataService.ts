@@ -12,9 +12,9 @@ interface StakeUmbrellaConfig {
 export const stakeUmbrellaConfig: StakeUmbrellaConfig = {
   // [ChainId.mainnet]: {}, // TODO: Mainnet addresses
   [ChainId.base_sepolia]: {
-    stakeDataProvider: '0xAaA87d031d991B6faAb8076AAea518072Fc8E6F2',
+    stakeDataProvider: '0x153Faafe536a00867b9972F3ed88A3E88aFE7Be2',
     stakeGateway: '0xa00674dE7337F753FC188b49BeAbD1F437e8EA7f',
-    stakeRewardsController: '0xD1eC142cc2fA5ABf78Be9868F564aC0AAdD6aAB6',
+    stakeRewardsController: '0x8dd1E13fe050C6319eD74d540ACF2a9603C08Fe8',
   },
 };
 
