@@ -8,31 +8,20 @@ export const usePreviewStake = (
   formattedAmount: string,
   decimals: number,
   chainId: ChainId,
-  stakeTokenAddress: string,
-  stakeTokenGateway?: string
+  stakeTokenAddress: string
 ) => {
   return useQuery({
     queryFn: async () => {
       const provider = getProvider(chainId);
-      let shares: BigNumber;
       const amount = parseUnits(formattedAmount || '0', decimals);
-      if (!stakeTokenGateway) {
-        const contract = new Contract(
-          stakeTokenAddress,
-          ['function previewDeposit(uint256 assets) external view returns (uint256 shares)'],
-          provider
-        );
-        shares = await contract.previewDeposit(amount);
-      } else {
-        const contract = new Contract(
-          stakeTokenGateway,
-          [
-            'function previewStake(address stakeToken, uint256 amount) public view returns (uint256 shares)',
-          ],
-          provider
-        );
-        shares = await contract.previewStake(stakeTokenAddress, amount);
-      }
+      const contract = new Contract(
+        stakeTokenAddress,
+        ['function previewDeposit(uint256 assets) external view returns (uint256 shares)'],
+        provider
+      );
+
+      const shares: BigNumber = await contract.previewDeposit(amount);
+
       return formatUnits(shares, decimals);
     },
     queryKey: ['umbrella', 'previewStake', formattedAmount, stakeTokenAddress],
