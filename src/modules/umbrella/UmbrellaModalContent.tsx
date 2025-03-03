@@ -3,6 +3,8 @@ import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Skeleton, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { AssetInput } from 'src/components/transactions/AssetInput';
 import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
@@ -23,18 +25,16 @@ import {
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
+import { stakeUmbrellaConfig } from 'src/services/UmbrellaStakeDataService';
 import { useRootStore } from 'src/store/root';
 import { NetworkConfig } from 'src/ui-config/networksConfig';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { STAKE } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
-
-import { UmbrellaActions } from './UmbrellaActions';
-import { usePreviewStake } from './hooks/usePreviewStake';
 import { useShallow } from 'zustand/shallow';
-import { stakeUmbrellaConfig } from 'src/services/UmbrellaStakeDataService';
-import { Row } from 'src/components/primitives/Row';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+
+import { usePreviewStake } from './hooks/usePreviewStake';
+import { UmbrellaActions } from './UmbrellaActions';
 
 export type StakeProps = {
   stakeData: MergedStakeData;
@@ -117,7 +117,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
     stakeData.decimals,
     currentChainId,
     stakeData.tokenAddress,
-    stakeData.underlyingIsStataToken ? stakeUmbrellaConfig[currentChainId].stakeGateway : ''
+    stakeData.underlyingIsStataToken ? stakeUmbrellaConfig[currentChainId].batchHelper : ''
   );
 
   const underlyingBalance = valueToBigNumber(inputToken.balance || '0');

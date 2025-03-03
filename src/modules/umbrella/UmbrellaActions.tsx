@@ -1,7 +1,7 @@
 import {
   API_ETH_MOCK_ADDRESS,
-  StakeGatewayService,
   StakeTokenService,
+  UmbrellaBatchHelperService,
 } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -92,7 +92,7 @@ export const UmbrellaActions = ({
     chainId: currentChainId,
     token: selectedToken.address,
     spender: useStakeGateway
-      ? stakeUmbrellaConfig[currentChainId].stakeGateway
+      ? stakeUmbrellaConfig[currentChainId].batchHelper
       : stakeData.tokenAddress,
   });
 
@@ -114,7 +114,7 @@ export const UmbrellaActions = ({
     user,
     token: selectedToken.address,
     spender: useStakeGateway
-      ? stakeUmbrellaConfig[currentChainId].stakeGateway
+      ? stakeUmbrellaConfig[currentChainId].batchHelper
       : stakeData.tokenAddress,
     amount: approvedAmount?.toString() || '0',
   };
@@ -171,47 +171,27 @@ export const UmbrellaActions = ({
 
   const getStakeGatewayTxData = (amountToStake: string) => {
     setMainTxState({ ...mainTxState, loading: true });
-    const stakeService = new StakeGatewayService(stakeUmbrellaConfig[currentChainId].stakeGateway);
+    const batchHelperService = new UmbrellaBatchHelperService(
+      stakeUmbrellaConfig[currentChainId].batchHelper
+    );
     let stakeTxData: PopulatedTransaction;
 
     if (usePermit && signatureParams) {
-      if (selectedToken.aToken) {
-        stakeTxData = stakeService.stakeATokensWithPermit({
-          sender: currentAccount,
-          stakeToken: stakeData.tokenAddress,
-          amount: amountToStake,
-          deadline: signatureParams.deadline,
-          permit: signatureParams.signature,
-        });
-      } else {
-        stakeTxData = stakeService.stakeWithPermit({
-          sender: user,
-          stakeToken: stakeData.tokenAddress,
-          amount: amountToStake,
-          deadline: signatureParams.deadline,
-          permit: signatureParams.signature,
-        });
-      }
+      stakeTxData = batchHelperService.depositWithPermit({
+        sender: currentAccount,
+        stakeToken: stakeData.tokenAddress,
+        amount: amountToStake,
+        edgeToken: selectedToken.address,
+        deadline: signatureParams.deadline,
+        permit: signatureParams.signature,
+      });
     } else {
-      if (selectedToken.address === API_ETH_MOCK_ADDRESS) {
-        stakeTxData = stakeService.stakeNativeTokens({
-          sender: currentAccount,
-          stakeToken: stakeData.tokenAddress,
-          amount: amountToStake,
-        });
-      } else if (selectedToken.aToken) {
-        stakeTxData = stakeService.stakeATokens({
-          sender: currentAccount,
-          stakeToken: stakeData.tokenAddress,
-          amount: amountToStake,
-        });
-      } else {
-        stakeTxData = stakeService.stake({
-          sender: currentAccount,
-          stakeToken: stakeData.tokenAddress,
-          amount: amountToStake,
-        });
-      }
+      stakeTxData = batchHelperService.deposit({
+        sender: currentAccount,
+        stakeToken: stakeData.tokenAddress,
+        amount: amountToStake,
+        edgeToken: selectedToken.address,
+      });
     }
 
     return stakeTxData;
