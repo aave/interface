@@ -6,6 +6,7 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
@@ -16,6 +17,7 @@ import { TokenIcon } from '../primitives/TokenIcon';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
+import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
 import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
 
 interface IncentivesButtonProps {
@@ -109,7 +111,27 @@ export const EthenaIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: stri
       setOpen={setOpen}
       open={open}
     >
-      <ContentEthenaButton points={points} />
+      <ContentPointsButton points={points} icon={'/icons/other/ethena.svg'} />
+    </ContentWithTooltip>
+  );
+};
+
+export const SonicIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
+  const [open, setOpen] = useState(false);
+  const points = useSonicIncentives(rewardedAsset);
+
+  if (!points) {
+    return null;
+  }
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={<SonicAirdropTooltipContent points={points} />}
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <ContentPointsButton points={points} icon={'/icons/networks/sonic.svg'} />
     </ContentWithTooltip>
   );
 };
@@ -294,7 +316,7 @@ const Content = ({
   );
 };
 
-const ContentEthenaButton = ({ points }: { points: number }) => {
+const ContentPointsButton = ({ points, icon }: { points: number; icon: string }) => {
   const [open, setOpen] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -326,7 +348,7 @@ const ContentEthenaButton = ({ points }: { points: number }) => {
         </Typography>
       </Box>
       <Box sx={{ display: 'inline-flex' }}>
-        <img src={'/icons/other/ethena.svg'} width={12} height={12} alt="ethena-icon" />
+        <img src={icon} width={12} height={12} alt="ethena-icon" />
       </Box>
     </Box>
   );
