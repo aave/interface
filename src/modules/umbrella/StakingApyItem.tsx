@@ -21,15 +21,30 @@ export const StakingApyItem = ({
 
   const icons: IconData[] = [];
   const stakeRewards: StakingReward[] = [];
+
   for (const reward of stakeData.formattedRewards) {
-    icons.push({ src: reward.rewardTokenSymbol, aToken: false });
-    stakeRewards.push({
-      address: reward.rewardToken,
-      symbol: reward.rewardTokenSymbol,
-      name: reward.rewardTokenSymbol,
-      aToken: false,
-      apy: reward.apy,
-    });
+    const reserveAToken = reserves.find(
+      (elem) => elem.aTokenAddress.toLowerCase() === reward.rewardToken.toLowerCase()
+    );
+    if (reserveAToken) {
+      icons.push({ src: reserveAToken.symbol, aToken: true });
+      stakeRewards.push({
+        address: reward.rewardToken,
+        symbol: reserveAToken.symbol,
+        name: `a${reserveAToken.symbol}`,
+        aToken: true,
+        apy: reward.apy,
+      });
+    } else {
+      icons.push({ src: reward.rewardTokenSymbol, aToken: false });
+      stakeRewards.push({
+        address: reward.rewardToken,
+        symbol: reward.rewardTokenSymbol,
+        name: reward.rewardTokenSymbol,
+        aToken: false,
+        apy: reward.apy,
+      });
+    }
   }
 
   if (stakeData.underlyingIsStataToken) {

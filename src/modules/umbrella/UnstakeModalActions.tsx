@@ -1,4 +1,4 @@
-import { StakeGatewayService, StakeTokenService } from '@aave/contract-helpers';
+import { UmbrellaBatchHelperService } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -36,7 +36,6 @@ export const UnStakeActions = ({
   symbol,
   blocked,
   stakeData,
-  redeemType,
 }: UnStakeActionProps) => {
   const queryClient = useQueryClient();
   const [currentChainId, user, estimateGasLimit] = useRootStore(
@@ -63,7 +62,7 @@ export const UnStakeActions = ({
   } = useApprovedAmount({
     chainId: currentChainId,
     token: selectedToken,
-    spender: stakeUmbrellaConfig[currentChainId].stakeGateway,
+    spender: stakeUmbrellaConfig[currentChainId].batchHelper,
   });
 
   setLoadingTxns(fetchingApprovedAmount);
@@ -79,7 +78,7 @@ export const UnStakeActions = ({
   const tokenApproval = {
     user,
     token: selectedToken,
-    spender: stakeUmbrellaConfig[currentChainId].stakeGateway,
+    spender: stakeUmbrellaConfig[currentChainId].batchHelper,
     amount: amountToUnStake,
   };
 
@@ -102,39 +101,17 @@ export const UnStakeActions = ({
     try {
       setMainTxState({ ...mainTxState, loading: true });
       let unstakeTxData: PopulatedTransaction;
-      if (stakeData.underlyingIsStataToken) {
-        // use the stake gateway
-        const stakeService = new StakeGatewayService(
-          stakeUmbrellaConfig[currentChainId].stakeGateway
-        );
-        if (redeemType === RedeemType.NATIVE) {
-          unstakeTxData = stakeService.redeemNativeTokens({
-            sender: user,
-            stakeToken: stakeData.tokenAddress,
-            amount: parsedAmountToStake.toString(),
-          });
-        } else if (redeemType === RedeemType.ATOKEN) {
-          unstakeTxData = stakeService.redeemATokens({
-            sender: user,
-            stakeToken: stakeData.tokenAddress,
-            amount: parsedAmountToStake.toString(),
-          });
-        } else {
-          unstakeTxData = stakeService.redeem({
-            sender: user,
-            stakeToken: stakeData.tokenAddress,
-            amount: parsedAmountToStake.toString(),
-          });
-        }
-      } else {
-        // use stake token directly
-        const stakeTokenService = new StakeTokenService(stakeData.tokenAddress);
-        unstakeTxData = stakeTokenService.redeem({
-          amount: parsedAmountToStake.toString(),
-          sender: user,
-        });
-      }
-
+      const batchHelperService = new UmbrellaBatchHelperService(
+        stakeUmbrellaConfig[currentChainId].batchHelper
+      );
+      unstakeTxData = batchHelperService.redeem({
+        sender: user,
+        stakeToken: stakeData.tokenAddress,
+        amount: parsedAmountToStake.toString(),
+        edgeToken: RedeemType.ATOKEN
+          ? stakeData.stataTokenData.aToken
+          : stakeData.stataTokenData.asset,
+      });
       unstakeTxData = await estimateGasLimit(unstakeTxData);
       const tx = await sendTx(unstakeTxData);
       await tx.wait(1);
