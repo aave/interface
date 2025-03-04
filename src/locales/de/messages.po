@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-02-25 06:07\n"
+"PO-Revision-Date: 2025-03-04 00:22\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -27,6 +27,7 @@ msgid "Receive (est.)"
 msgstr "Empfangen (geschätzt)"
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
@@ -485,6 +486,10 @@ msgstr "Die Ausleihe ist nicht verfügbar, da Sie den Isolationsmodus verwenden.
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on Lens"
 msgstr "Auf Lens teilen"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Learn more about Sonic Rewards program"
+msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -3254,6 +3259,10 @@ msgstr "Mit testnet Faucet erhalten Sie kostenlose Assets, um das Aave-Protokoll
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
+msgstr ""
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Sonic Rewards."
 msgstr ""
 
 #: pages/staking.staking.tsx
