@@ -25,7 +25,6 @@ import {
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
-import { stakeUmbrellaConfig } from 'src/services/UmbrellaStakeDataService';
 import { useRootStore } from 'src/store/root';
 import { NetworkConfig } from 'src/ui-config/networksConfig';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
@@ -116,8 +115,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
     _amount,
     stakeData.decimals,
     currentChainId,
-    stakeData.tokenAddress,
-    stakeData.underlyingIsStataToken ? stakeUmbrellaConfig[currentChainId].batchHelper : ''
+    stakeData.tokenAddress
   );
 
   const underlyingBalance = valueToBigNumber(inputToken.balance || '0');

@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
-import { BigNumber } from 'ethers';
 import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -45,7 +44,7 @@ const stakeDataToRewards = (stakeData: MergedStakeData): UmbrellaRewards[] => {
   return stakeData.formattedRewards.map((reward) => {
     return {
       symbol: reward.rewardTokenSymbol,
-      balanceUsd: '1',
+      balanceUsd: reward.accruedUsd,
       balance: reward.accrued,
       address: reward.rewardToken,
     };
@@ -71,8 +70,8 @@ export const UmbrellaClaimModalContent = ({ stakeData }: UmbrellaClaimModalConte
       : rewards.filter((r) => r.symbol === selectedRewardSymbol);
 
   const selectedRewardClaimableBalance = selectedReward.reduce(
-    (acc, reward) => acc.add(BigNumber.from(reward.balanceUsd)),
-    BigNumber.from('0')
+    (acc, reward) => acc + Number(reward.balanceUsd),
+    0
   );
 
   if (txError && txError.blocking) {
