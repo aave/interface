@@ -299,6 +299,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Sonic.ASSETS.USDCe.A_TOKEN,
         rewardTokenSymbol: 'aSonwS',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
       },
     ],
   },
