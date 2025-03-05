@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-06 18:06\n"
+"PO-Revision-Date: 2025-03-04 00:22\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -24,6 +24,11 @@ msgstr "Εάν ΔΕΝ ξεκλειδώσετε εντός {0} του παραθ�
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Receive (est.)"
+msgstr ""
+
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
@@ -128,6 +133,10 @@ msgstr ""
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "Αυτό είναι το συνολικό ποσό που μπορείτε να προμηθεύσετε σε αυτό το αποθεματικό. Μπορείτε να προμηθεύσετε το υπόλοιπο του πορτοφολιού σας μέχρι να επιτευχθεί το ανώτατο όριο προμηθειών."
+
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Ethena Rewards."
+msgstr ""
 
 #: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
@@ -477,6 +486,10 @@ msgstr ""
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on Lens"
+msgstr ""
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Learn more about Sonic Rewards program"
 msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
@@ -1173,6 +1186,10 @@ msgstr "Τρέχον LTV"
 msgid "Market"
 msgstr "Αγορά"
 
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "Learn more about Ethena Rewards program"
+msgstr ""
+
 #: src/layouts/FeedbackDialog.tsx
 msgid "Send Feedback"
 msgstr ""
@@ -1275,6 +1292,10 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Μη έγκυρη τιμή επιστροφής της συνάρτησης εκτελεστή flashloan"
+
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "Learn more about the Kernel points distribution"
+msgstr ""
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
@@ -3147,6 +3168,10 @@ msgstr ""
 msgid "COPY IMAGE"
 msgstr ""
 
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr ""
@@ -3235,6 +3260,10 @@ msgstr ""
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
+msgstr ""
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Sonic Rewards."
 msgstr ""
 
 #: pages/staking.staking.tsx

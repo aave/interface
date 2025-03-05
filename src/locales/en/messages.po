@@ -21,6 +21,11 @@ msgstr "If you DO NOT unstake within {0} of unstake window, you will need to act
 msgid "Receive (est.)"
 msgstr "Receive (est.)"
 
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Aave Labs does not guarantee the program and accepts no liability."
+msgstr "Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 msgstr "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
@@ -119,6 +124,10 @@ msgstr "Collateral change"
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
+
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Ethena Rewards."
+msgstr "This asset is eligible for {0} Ethena Rewards."
 
 #: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
@@ -468,6 +477,10 @@ msgstr "Borrowing is unavailable because you’re using Isolation mode. To manag
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on Lens"
 msgstr "Share on Lens"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Learn more about Sonic Rewards program"
+msgstr "Learn more about Sonic Rewards program"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -1168,6 +1181,10 @@ msgstr "Current LTV"
 msgid "Market"
 msgstr "Market"
 
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "Learn more about Ethena Rewards program"
+msgstr "Learn more about Ethena Rewards program"
+
 #: src/layouts/FeedbackDialog.tsx
 msgid "Send Feedback"
 msgstr "Send Feedback"
@@ -1270,6 +1287,10 @@ msgstr "View Bridge Transactions"
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Invalid return value of the flashloan executor function"
+
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "Learn more about the Kernel points distribution"
+msgstr "Learn more about the Kernel points distribution"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
@@ -3146,6 +3167,10 @@ msgstr "Maximum amount available to borrow is limited because protocol borrow ca
 msgid "COPY IMAGE"
 msgstr "COPY IMAGE"
 
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
@@ -3235,6 +3260,10 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
 msgstr "Get ABP v2 Token"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Sonic Rewards."
+msgstr "This asset is eligible for {0} Sonic Rewards."
 
 #: pages/staking.staking.tsx
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."

@@ -13,6 +13,7 @@ import {
   AaveV3EthereumEtherFi,
   AaveV3EthereumLido,
   AaveV3Gnosis,
+  AaveV3Linea,
   AaveV3Metis,
   AaveV3Optimism,
   AaveV3OptimismSepolia,
@@ -20,6 +21,7 @@ import {
   AaveV3Scroll,
   AaveV3ScrollSepolia,
   AaveV3Sepolia,
+  AaveV3Sonic,
   AaveV3ZkSync,
 } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
@@ -92,6 +94,8 @@ export enum CustomMarket {
   proto_lido_v3 = 'proto_lido_v3',
   proto_zksync_v3 = 'proto_zksync_v3',
   proto_etherfi_v3 = 'proto_etherfi_v3',
+  proto_linea_v3 = 'proto_linea_v3',
+  proto_sonic_v3 = 'proto_sonic_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -350,6 +354,7 @@ export const marketsData: {
       SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Base.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Base.DEBT_SWAP_ADAPTER,
+      GHO_TOKEN_ADDRESS: '0x6bb7a212910682dcfdbd5bcbb3e28fb4e8da10ee',
     },
   },
   [CustomMarket.proto_arbitrum_sepolia_v3]: {
@@ -678,6 +683,38 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3ZkSync.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3ZkSync.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3ZkSync.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_linea_v3]: {
+    marketTitle: 'Linea',
+    market: CustomMarket.proto_linea_v3,
+    chainId: ChainId.linea,
+    v3: true,
+    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/Gz2kjnmRV1fQj3R8cssoZa5y9VTanhrDo4Mh7nWW1wHa`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Linea.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Linea.POOL,
+      WETH_GATEWAY: AaveV3Linea.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Linea.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Linea.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Linea.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Linea.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_sonic_v3]: {
+    marketTitle: 'Sonic',
+    market: CustomMarket.proto_sonic_v3,
+    chainId: ChainId.sonic,
+    v3: true,
+    // subgraphUrl: ``, // TODO: add subgraph url (waiting for fix)
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sonic.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Sonic.POOL,
+      WETH_GATEWAY: AaveV3Sonic.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Sonic.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Sonic.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Sonic.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Sonic.COLLECTOR,
     },
   },
 } as const;

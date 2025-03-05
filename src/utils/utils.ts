@@ -78,6 +78,7 @@ export const roundToTokenDecimals = (inputValue: string, tokenDecimals: number) 
 export type ExternalIncentivesTooltipsConfig = {
   superFestRewards: boolean;
   spkAirdrop: boolean;
+  kernelPoints: boolean;
 };
 
 export const getNoAprExternalIncentivesTooltipConfig = (
@@ -87,10 +88,12 @@ export const getNoAprExternalIncentivesTooltipConfig = (
 ) => {
   const superFestRewardsEnabled = false;
   const spkRewardsEnabled = true;
+  const kernelPointsEnabled = true;
 
   const tooltipsConfig: ExternalIncentivesTooltipsConfig = {
     superFestRewards: false,
     spkAirdrop: false,
+    kernelPoints: false,
   };
 
   if (
@@ -109,6 +112,18 @@ export const getNoAprExternalIncentivesTooltipConfig = (
     symbol == 'USDS'
   ) {
     tooltipsConfig.spkAirdrop = true;
+  }
+
+  if (
+    kernelPointsEnabled &&
+    (currentMarket === CustomMarket.proto_mainnet_v3 ||
+      currentMarket === CustomMarket.proto_lido_v3 ||
+      currentMarket === CustomMarket.proto_base_v3 ||
+      currentMarket === CustomMarket.proto_arbitrum_v3) &&
+    protocolAction === ProtocolAction.supply &&
+    symbol == 'rsETH'
+  ) {
+    tooltipsConfig.kernelPoints = true;
   }
 
   return tooltipsConfig;

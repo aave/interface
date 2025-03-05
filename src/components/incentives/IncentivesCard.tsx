@@ -10,9 +10,11 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
 import {
   Content,
+  EthenaIncentivesButton,
   LmIncentivesButton,
   MeritIncentivesButton,
   NoAprExternalIncentiveTooltip,
+  SonicIncentivesButton,
   ZkIgniteIncentivesButton,
 } from './IncentivesButton';
 
@@ -78,6 +80,8 @@ export const IncentivesBox = ({
         rewardedAsset={address}
         protocolAction={protocolAction}
       />
+      <EthenaIncentivesButton rewardedAsset={address} />
+      <SonicIncentivesButton rewardedAsset={address} />
       <NoAprExternalIncentiveTooltip
         market={market}
         symbol={symbol}

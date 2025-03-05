@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-06 18:06\n"
+"PO-Revision-Date: 2025-03-04 00:22\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -25,6 +25,11 @@ msgstr "Si NO unstakeas entre {0} de la ventana de unstakeo, necesitarás activa
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Receive (est.)"
 msgstr "Recibir (est.)"
+
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
@@ -128,6 +133,10 @@ msgstr "Cambio de garantía"
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "Esta es la cantidad total que puedes suministrar en esta reserva. Puedes suministrar el balance de tu cartera hasta que se alcance el límite de suministro."
+
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Ethena Rewards."
+msgstr ""
 
 #: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
@@ -477,6 +486,10 @@ msgstr "Tomar prestado no está disponible porque estás usando el Isolation mod
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on Lens"
 msgstr "Compartir en Lens"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Learn more about Sonic Rewards program"
+msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -1172,6 +1185,10 @@ msgstr "LTV actual"
 msgid "Market"
 msgstr "Mercado"
 
+#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+msgid "Learn more about Ethena Rewards program"
+msgstr ""
+
 #: src/layouts/FeedbackDialog.tsx
 msgid "Send Feedback"
 msgstr ""
@@ -1274,6 +1291,10 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Valor de retorno inválido en la función executor del préstamo flash"
+
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "Learn more about the Kernel points distribution"
+msgstr ""
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
@@ -3146,6 +3167,10 @@ msgstr "La cantidad máxima disponible para tomar prestado está limitada porque
 msgid "COPY IMAGE"
 msgstr "COPIAR IMAGEN"
 
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr "Garantía insuficiente para cubrir la nueva posición de préstamo. La cartera debe tener poder de préstamo suficiente para realizar el cambio de deuda."
@@ -3235,6 +3260,10 @@ msgstr "Con la testnet Faucet puedes obtener activos gratuitos para probar el Pr
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
 msgstr "Obtener Token ABP v2"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Sonic Rewards."
+msgstr ""
 
 #: pages/staking.staking.tsx
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."

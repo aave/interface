@@ -4,19 +4,24 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 import { getNoAprExternalIncentivesTooltipConfig } from 'src/utils/utils';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
+import { KernelAirdropTooltip } from '../infoTooltips/KernelAirdropTooltip';
 import { SpkAirdropTooltip } from '../infoTooltips/SpkAirdropTooltip';
 import { SuperFestTooltip } from '../infoTooltips/SuperFestTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
+import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
+import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
 import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
 
 interface IncentivesButtonProps {
@@ -120,7 +125,48 @@ export const NoAprExternalIncentiveTooltip = ({
     <>
       {noAprExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
       {noAprExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
+      {noAprExternalIncentivesTooltips.kernelPoints && <KernelAirdropTooltip />}
     </>
+  );
+};
+
+export const EthenaIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
+  const [open, setOpen] = useState(false);
+  const points = useEthenaIncentives(rewardedAsset);
+
+  if (!points) {
+    return null;
+  }
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={<EthenaAirdropTooltipContent points={points} />}
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <ContentPointsButton points={points} icon={'/icons/other/ethena.svg'} />
+    </ContentWithTooltip>
+  );
+};
+
+export const SonicIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
+  const [open, setOpen] = useState(false);
+  const points = useSonicIncentives(rewardedAsset);
+
+  if (!points) {
+    return null;
+  }
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={<SonicAirdropTooltipContent points={points} />}
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <ContentPointsButton points={points} icon={'/icons/networks/sonic.svg'} />
+    </ContentWithTooltip>
   );
 };
 
@@ -299,6 +345,44 @@ export const Content = ({
             </>
           )}
         </>
+      </Box>
+    </Box>
+  );
+};
+
+const ContentPointsButton = ({ points, icon }: { points: number; icon: string }) => {
+  const [open, setOpen] = useState(false);
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  return (
+    <Box
+      sx={(theme) => ({
+        p: { xs: '0 4px', xsm: '2px 4px' },
+        border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
+        borderRadius: '4px',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'opacity 0.2s ease',
+        bgcolor: open ? 'action.hover' : 'transparent',
+        '&:hover': {
+          bgcolor: 'action.hover',
+          borderColor: 'action.disabled',
+        },
+      })}
+      onClick={() => {
+        trackEvent(DASHBOARD.VIEW_LM_DETAILS_DASHBOARD, {});
+        setOpen(!open);
+      }}
+    >
+      <Box sx={{ mr: 2 }}>
+        <Typography component="span" variant="secondary12" color="text.secondary">
+          {`${points}x`}
+        </Typography>
+      </Box>
+      <Box sx={{ display: 'inline-flex' }}>
+        <img src={icon} width={12} height={12} alt="ethena-icon" />
       </Box>
     </Box>
   );
