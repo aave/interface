@@ -49,7 +49,6 @@ export const MeritIncentivesButton = (params: {
   protocolAction?: ProtocolAction;
 }) => {
   const [open, setOpen] = useState(false);
-  console.log({ symbol: params.symbol });
   const { data: meritIncentives } = useMeritIncentives(params);
 
   if (!meritIncentives) {
