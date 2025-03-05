@@ -1,8 +1,8 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
+import { getSimpleExternalIncentivesTooltipConfig } from 'src/components/incentives/IncentivesButton';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
-import { getSimpleExternalIncentivesTooltipConfig } from 'src/utils/utils';
 
 import { useEthenaIncentives } from './useEthenaIncentives';
 import { useSonicIncentives } from './useSonicIncentives';
