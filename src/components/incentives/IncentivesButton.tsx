@@ -6,6 +6,7 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { usePointsIncentives } from 'src/hooks/usePointsIncentives';
 import { useSimpleExternalIncentives } from 'src/hooks/useSimpleExternalIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
@@ -111,6 +112,46 @@ export const SimpleExternalIncentiveTooltip = (params: {
       {simpleExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
       {simpleExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
       {simpleExternalIncentivesTooltips.kernelPoints && <KernelAirdropTooltip />}
+    </>
+  );
+};
+
+export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: string }) => {
+  const [open, setOpen] = useState(false);
+  const pointsIncentivesTooltips = usePointsIncentives(params);
+
+  return (
+    <>
+      {pointsIncentivesTooltips.ethenaPoints && (
+        <ContentWithTooltip
+          tooltipContent={
+            <EthenaAirdropTooltipContent points={pointsIncentivesTooltips.ethenaPoints} />
+          }
+          withoutHover
+          setOpen={setOpen}
+          open={open}
+        >
+          <ContentPointsButton
+            points={pointsIncentivesTooltips.ethenaPoints}
+            icon={'/icons/other/ethena.svg'}
+          />
+        </ContentWithTooltip>
+      )}
+      {pointsIncentivesTooltips.sonicPoints && (
+        <ContentWithTooltip
+          tooltipContent={
+            <SonicAirdropTooltipContent points={pointsIncentivesTooltips.sonicPoints} />
+          }
+          withoutHover
+          setOpen={setOpen}
+          open={open}
+        >
+          <ContentPointsButton
+            points={pointsIncentivesTooltips.sonicPoints}
+            icon={'/icons/networks/sonic.svg'}
+          />
+        </ContentWithTooltip>
+      )}
     </>
   );
 };

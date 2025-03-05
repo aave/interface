@@ -3,9 +3,8 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 
-import { useEthenaIncentives } from './useEthenaIncentives';
+import { usePointsIncentives } from './usePointsIncentives';
 import { useSimpleExternalIncentives } from './useSimpleExternalIncentives';
-import { useSonicIncentives } from './useSonicIncentives';
 
 export const useAllIncentives = ({
   symbol,
@@ -51,10 +50,9 @@ export const useAllIncentives = ({
   ];
   const allAprsIncentivesCount = allIncentives.length;
 
-  // Points incentives
-  const ethenaPoints = useEthenaIncentives(rewardedAsset);
-  const soincPoints = useSonicIncentives(rewardedAsset);
-  const allPoints = [ethenaPoints, soincPoints].filter(Boolean);
+  // Simple external incentives
+  const pointsIncentivesTooltips = usePointsIncentives({ market, rewardedAsset });
+  const pointsIncentivesCount = Object.values(pointsIncentivesTooltips).filter(Boolean).length;
 
   // Simple external incentives
   const simpleExternalIncentivesTooltips = useSimpleExternalIncentives({ market, rewardedAsset });
@@ -62,7 +60,8 @@ export const useAllIncentives = ({
     Boolean
   ).length;
 
-  const incentivesCount = allAprsIncentivesCount + allPoints.length + simpleExternalIncentivesCount;
+  const incentivesCount =
+    allAprsIncentivesCount + pointsIncentivesCount + simpleExternalIncentivesCount;
 
   return { allIncentives, totalApr, incentivesCount };
 };
