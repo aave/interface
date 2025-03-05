@@ -51,7 +51,7 @@ export const IncentivesBox = ({
   protocolAction,
   displayBlank,
 }: IncentivesBoxProps) => {
-  const { allIncentives, totalApr } = useAllIncentives({
+  const { allIncentives, totalApr, incentivesCount } = useAllIncentives({
     symbol,
     market,
     rewardedAsset: address,
@@ -122,9 +122,9 @@ export const IncentivesBox = ({
     );
   };
 
-  return allIncentives.length >= 2 ? (
+  return incentivesCount >= 2 ? (
     <AllIncentivesButton />
-  ) : allIncentives.length === 1 ? (
+  ) : incentivesCount === 1 ? (
     <Incentives />
   ) : null;
 };

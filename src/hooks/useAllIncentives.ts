@@ -3,6 +3,9 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 
+import { useEthenaIncentives } from './useEthenaIncentives';
+import { useSonicIncentives } from './useSonicIncentives';
+
 export const useAllIncentives = ({
   symbol,
   rewardedAsset,
@@ -16,6 +19,7 @@ export const useAllIncentives = ({
   protocolAction?: ProtocolAction;
   lmIncentives?: ReserveIncentiveResponse[];
 }) => {
+  // APR incentives
   const { data: meritIncentives } = useMeritIncentives({
     symbol,
     market,
@@ -26,6 +30,7 @@ export const useAllIncentives = ({
     rewardedAsset,
     protocolAction,
   });
+
   const lmIncentivesFiltered = lmIncentives?.filter((i) => i.incentiveAPR !== '0');
 
   const meritApr =
@@ -44,5 +49,11 @@ export const useAllIncentives = ({
     ...(lmIncentivesFiltered || []),
   ];
 
-  return { allIncentives, totalApr };
+  // Points incentives
+  const ethenaPoints = useEthenaIncentives(rewardedAsset);
+  const soincPoints = useSonicIncentives(rewardedAsset);
+
+  const incentivesCount = [...allIncentives, ethenaPoints, soincPoints].filter(Boolean).length;
+
+  return { allIncentives, totalApr, incentivesCount };
 };
