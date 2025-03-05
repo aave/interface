@@ -390,5 +390,5 @@ const ContentEtherfiButton = ({ multiplier }: { multiplier: number }) => (
 );
 
 const ContentSonicButton = ({ points }: { points: number }) => (
-  <ContentButton value={points} iconSrc="/icons/other/sonic.svg" />
+  <ContentButton value={points} iconSrc="/icons/networks/sonic.svg" />
 );
