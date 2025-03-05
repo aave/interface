@@ -4,7 +4,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
-import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
@@ -141,7 +141,7 @@ const GhoBorrowInfoDesktop = ({
       </PanelItem>
       <Box mt={{ xs: 6, sm: 0 }}>
         <PanelItem title={<FixedAPYTooltip text={<Trans>APY, borrow rate</Trans>} />}>
-          <IncentivesCard
+          <RateAndIncentivesBox
             symbol={reserve.symbol}
             value={ghoReserveData.ghoVariableBorrowAPY}
             incentives={reserve.vIncentivesData || []}
@@ -206,7 +206,7 @@ const GhoBorrowInfoMobile = ({
         </PanelItem>
         <Box mt={{ xs: 6, sm: 0 }}>
           <PanelItem title={<FixedAPYTooltip text={<Trans>APY, borrow rate</Trans>} />}>
-            <IncentivesCard
+            <RateAndIncentivesBox
               symbol={reserve.symbol}
               value={ghoReserveData.ghoVariableBorrowAPY}
               incentives={reserve.vIncentivesData || []}

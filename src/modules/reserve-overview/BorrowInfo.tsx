@@ -4,7 +4,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
-import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -162,7 +162,7 @@ export const BorrowInfo = ({
             />
           }
         >
-          <IncentivesCard
+          <RateAndIncentivesBox
             symbol={reserve.symbol}
             value={reserve.variableBorrowAPY}
             incentives={reserve.vIncentivesData || []}

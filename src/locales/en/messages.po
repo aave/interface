@@ -2338,7 +2338,7 @@ msgstr ".CSV"
 msgid "Activate Cooldown"
 msgstr "Activate Cooldown"
 
-#: src/components/incentives/IncentivesCard.tsx
+#: src/components/incentives/RateAndIncentivesBox.tsx
 msgid "Participating in this {symbol} reserve gives additional annualized rewards."
 msgstr "Participating in this {symbol} reserve gives additional annualized rewards."
 

@@ -5,7 +5,7 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { AlertTitle, Box, Typography } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
-import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
 import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
@@ -149,7 +149,7 @@ export const SupplyInfo = ({
           </PanelItem>
         )}
         <PanelItem title={<Trans>APY</Trans>}>
-          <IncentivesCard
+          <RateAndIncentivesBox
             symbol={reserve.symbol}
             value={reserve.supplyAPY}
             incentives={reserve.aIncentivesData || []}

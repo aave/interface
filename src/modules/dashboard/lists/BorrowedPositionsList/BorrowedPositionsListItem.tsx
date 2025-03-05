@@ -2,7 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
-import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import { Row } from 'src/components/primitives/Row';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -192,7 +192,7 @@ const BorrowedPositionsListItemMobile = ({
       />
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={borrowAPY}
           incentives={incentives}
           address={reserve.variableDebtTokenAddress}

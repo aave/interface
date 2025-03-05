@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
@@ -410,7 +410,7 @@ export const SupplyAssetsListItemMobile = ({
         captionVariant="description"
         mb={2}
       >
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
           address={aTokenAddress}

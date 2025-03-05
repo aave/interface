@@ -3,7 +3,7 @@ import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
-import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import { MigrationDisabledTooltip } from 'src/components/infoTooltips/MigrationDisabledTooltip';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -172,7 +172,7 @@ export const MigrationListMobileItem = ({
           </Typography>
 
           <Box sx={{ display: 'flex' }}>
-            <IncentivesCard
+            <RateAndIncentivesBox
               value={v2APY}
               symbol={userReserve.reserve.symbol}
               incentives={v2Incentives}
@@ -188,7 +188,7 @@ export const MigrationListMobileItem = ({
                 }
               />
             </SvgIcon>
-            <IncentivesCard
+            <RateAndIncentivesBox
               value={v3APY}
               symbol={userReserve.reserve.symbol}
               incentives={v3Incentives}

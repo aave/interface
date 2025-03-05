@@ -5,7 +5,7 @@ import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
-import { IncentivesBox } from 'src/components/incentives/IncentivesCard';
+import { IncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import {
   IsolatedDisabledBadge,
   IsolatedEnabledBadge,

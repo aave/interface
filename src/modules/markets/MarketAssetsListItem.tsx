@@ -12,7 +12,7 @@ import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
 import { useShallow } from 'zustand/shallow';
 
-import { IncentivesCard } from '../../components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from '../../components/incentives/RateAndIncentivesBox';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListItem } from '../../components/lists/ListItem';
@@ -79,7 +79,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={reserve.supplyAPY}
           incentives={reserve.aIncentivesData || []}
           address={reserve.aTokenAddress}
@@ -103,7 +103,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
           incentives={reserve.vIncentivesData || []}
           address={reserve.variableDebtTokenAddress}

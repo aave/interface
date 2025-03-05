@@ -8,7 +8,7 @@ import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/mixPanelEvents';
 import { useShallow } from 'zustand/shallow';
 
-import { IncentivesCard } from '../../components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from '../../components/incentives/RateAndIncentivesBox';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
@@ -49,7 +49,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         mb={3}
         align="flex-start"
       >
-        <IncentivesCard
+        <RateAndIncentivesBox
           align="flex-end"
           value={reserve.supplyAPY}
           incentives={reserve.aIncentivesData || []}
@@ -95,7 +95,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         mb={3}
         align="flex-start"
       >
-        <IncentivesCard
+        <RateAndIncentivesBox
           align="flex-end"
           value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
           incentives={reserve.vIncentivesData || []}

@@ -8,7 +8,7 @@ import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
-import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from '../../../../components/incentives/RateAndIncentivesBox';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
@@ -80,7 +80,7 @@ export const SupplyAssetsListMobileItem = ({
         captionVariant="description"
         mb={2}
       >
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
           address={aTokenAddress}

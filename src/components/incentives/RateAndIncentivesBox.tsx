@@ -129,7 +129,7 @@ export const IncentivesBox = ({
   ) : null;
 };
 
-export const IncentivesCard = (incentivesCardProps: IncentivesCardProps) => {
+export const RateAndIncentivesBox = (incentivesCardProps: IncentivesCardProps) => {
   const {
     symbol,
     value,

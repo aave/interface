@@ -7,7 +7,7 @@ import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { useShallow } from 'zustand/shallow';
 
-import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from '../../../../components/incentives/RateAndIncentivesBox';
 import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
@@ -78,7 +78,7 @@ export const SuppliedPositionsListMobileItem = ({
         captionVariant="description"
         mb={2}
       >
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
           address={aTokenAddress}
