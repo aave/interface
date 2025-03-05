@@ -70,7 +70,13 @@ export const IncentivesCard = ({
       <Box
         sx={
           isTableChangedToCards
-            ? { display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }
+            ? {
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '4px',
+              }
             : {
                 display: 'flex',
                 justifyContent: 'center',
