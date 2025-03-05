@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
@@ -18,6 +19,7 @@ import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
+import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
 import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
 
 interface IncentivesButtonProps {
@@ -137,6 +139,26 @@ export const EtherfiIncentivesButton = (params: {
       open={open}
     >
       <ContentEtherfiButton multiplier={multiplier} />
+    </ContentWithTooltip>
+  );
+};
+
+export const SonicIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
+  const [open, setOpen] = useState(false);
+  const points = useSonicIncentives(rewardedAsset);
+
+  if (!points) {
+    return null;
+  }
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={<SonicAirdropTooltipContent points={points} />}
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <ContentSonicButton points={points} />
     </ContentWithTooltip>
   );
 };
@@ -365,4 +387,8 @@ const ContentEthenaButton = ({ points }: { points: number }) => (
 
 const ContentEtherfiButton = ({ multiplier }: { multiplier: number }) => (
   <ContentButton value={multiplier} iconSrc="/icons/other/ether.fi.svg" />
+);
+
+const ContentSonicButton = ({ points }: { points: number }) => (
+  <ContentButton value={points} iconSrc="/icons/other/sonic.svg" />
 );

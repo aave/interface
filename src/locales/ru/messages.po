@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-02-18 18:06\n"
+"PO-Revision-Date: 2025-03-04 00:22\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -27,6 +27,7 @@ msgid "Receive (est.)"
 msgstr "Получить (приблизительно)"
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
@@ -485,6 +486,10 @@ msgstr "Заимствование недоступно, так как вы ис
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on Lens"
 msgstr "Поделиться на объективе"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Learn more about Sonic Rewards program"
+msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -1286,6 +1291,10 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Недопустимое возвращаемое значение функции исполнителя flashloan"
+
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "Learn more about the Kernel points distribution"
+msgstr ""
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
@@ -3158,6 +3167,10 @@ msgstr "Максимальная сумма, доступная для заим�
 msgid "COPY IMAGE"
 msgstr "СКОПИРОВАТЬ ИЗОБРАЖЕНИЕ"
 
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr "Недостаточное обеспечение для покрытия новой позиции по займу. Кошелек должен иметь оставшуюся кредитную способность для выполнения переключения долга."
@@ -3246,6 +3259,10 @@ msgstr "С помощью тестовой сети Faucet вы можете п�
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
+msgstr ""
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Sonic Rewards."
 msgstr ""
 
 #: pages/staking.staking.tsx

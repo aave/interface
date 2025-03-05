@@ -10,6 +10,7 @@ import {
   EtherfiIncentivesButton,
   IncentivesButton,
   MeritIncentivesButton,
+  SonicIncentivesButton,
   ZkIgniteIncentivesButton,
 } from './IncentivesButton';
 
@@ -89,6 +90,7 @@ export const IncentivesCard = ({
         />
         <EthenaIncentivesButton rewardedAsset={address} />
         <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+        <SonicIncentivesButton rewardedAsset={address} />
       </Box>
     </Box>
   );
