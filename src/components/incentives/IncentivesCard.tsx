@@ -13,7 +13,7 @@ import {
   EthenaIncentivesButton,
   LmIncentivesButton,
   MeritIncentivesButton,
-  NoAprExternalIncentiveTooltip,
+  SimpleExternalIncentiveTooltip,
   SonicIncentivesButton,
   ZkIgniteIncentivesButton,
 } from './IncentivesButton';
@@ -82,7 +82,7 @@ export const IncentivesBox = ({
       />
       <EthenaIncentivesButton rewardedAsset={address} />
       <SonicIncentivesButton rewardedAsset={address} />
-      <NoAprExternalIncentiveTooltip
+      <SimpleExternalIncentiveTooltip
         market={market}
         symbol={symbol}
         protocolAction={protocolAction}

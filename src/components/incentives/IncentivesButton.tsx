@@ -10,7 +10,7 @@ import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
-import { getNoAprExternalIncentivesTooltipConfig } from 'src/utils/utils';
+import { getSimpleExternalIncentivesTooltipConfig } from 'src/utils/utils';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { KernelAirdropTooltip } from '../infoTooltips/KernelAirdropTooltip';
@@ -30,7 +30,7 @@ interface IncentivesButtonProps {
   displayBlank?: boolean;
 }
 
-interface NoAprExternalIncentiveTooltipProps {
+interface SimpleExternalIncentiveTooltipProps {
   market: string;
   symbol?: string;
   protocolAction?: ProtocolAction;
@@ -106,16 +106,16 @@ export const ZkIgniteIncentivesButton = (params: {
   );
 };
 
-export const NoAprExternalIncentiveTooltip = ({
+export const SimpleExternalIncentiveTooltip = ({
   market,
   symbol,
   protocolAction,
-}: NoAprExternalIncentiveTooltipProps) => {
+}: SimpleExternalIncentiveTooltipProps) => {
   if (!symbol || !protocolAction) {
     return null;
   }
 
-  const noAprExternalIncentivesTooltips = getNoAprExternalIncentivesTooltipConfig(
+  const simpleExternalIncentivesTooltips = getSimpleExternalIncentivesTooltipConfig(
     symbol,
     market,
     protocolAction
@@ -123,9 +123,9 @@ export const NoAprExternalIncentiveTooltip = ({
 
   return (
     <>
-      {noAprExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
-      {noAprExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
-      {noAprExternalIncentivesTooltips.kernelPoints && <KernelAirdropTooltip />}
+      {simpleExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
+      {simpleExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
+      {simpleExternalIncentivesTooltips.kernelPoints && <KernelAirdropTooltip />}
     </>
   );
 };

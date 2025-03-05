@@ -81,7 +81,7 @@ export type ExternalIncentivesTooltipsConfig = {
   kernelPoints: boolean;
 };
 
-export const getNoAprExternalIncentivesTooltipConfig = (
+export const getSimpleExternalIncentivesTooltipConfig = (
   symbol: string,
   currentMarket: string,
   protocolAction?: ProtocolAction
