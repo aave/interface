@@ -1,8 +1,10 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { FormattedGhoReserveData, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
+import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
@@ -12,6 +14,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { getBorrowCapData } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { PanelItem } from '../ReservePanels';
@@ -138,7 +141,17 @@ const GhoBorrowInfoDesktop = ({
       </PanelItem>
       <Box mt={{ xs: 6, sm: 0 }}>
         <PanelItem title={<FixedAPYTooltip text={<Trans>APY, borrow rate</Trans>} />}>
-          <FormattedNumber value={ghoReserveData.ghoVariableBorrowAPY} percent variant="main16" />
+          <IncentivesCard
+            symbol={reserve.symbol}
+            value={ghoReserveData.ghoVariableBorrowAPY}
+            incentives={reserve.vIncentivesData || []}
+            market={CustomMarket.proto_mainnet_v3}
+            address={reserve.variableDebtTokenAddress}
+            protocolAction={ProtocolAction.borrow}
+            displayBlank={true}
+            variant="main16"
+            align="start"
+          />
         </PanelItem>
       </Box>
     </Stack>
@@ -193,7 +206,17 @@ const GhoBorrowInfoMobile = ({
         </PanelItem>
         <Box mt={{ xs: 6, sm: 0 }}>
           <PanelItem title={<FixedAPYTooltip text={<Trans>APY, borrow rate</Trans>} />}>
-            <FormattedNumber value={ghoReserveData.ghoVariableBorrowAPY} percent variant="main16" />
+            <IncentivesCard
+              symbol={reserve.symbol}
+              value={ghoReserveData.ghoVariableBorrowAPY}
+              incentives={reserve.vIncentivesData || []}
+              market={CustomMarket.proto_mainnet_v3}
+              address={reserve.variableDebtTokenAddress}
+              protocolAction={ProtocolAction.borrow}
+              displayBlank={true}
+              variant="main16"
+              align="start"
+            />
           </PanelItem>
         </Box>
       </Stack>
