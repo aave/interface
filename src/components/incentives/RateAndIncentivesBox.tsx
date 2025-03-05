@@ -43,7 +43,7 @@ interface IncentivesBoxProps {
   displayNone?: boolean;
 }
 
-export const IncentivesBox = ({
+export const IncentivesCard = ({
   symbol,
   incentives,
   address,
@@ -171,7 +171,7 @@ export const RateAndIncentivesBox = (incentivesCardProps: IncentivesCardProps) =
       ) : (
         <NoData variant={variant} color={color || 'text.secondary'} />
       )}
-      <IncentivesBox
+      <IncentivesCard
         symbol={symbol}
         incentives={incentives}
         address={address}

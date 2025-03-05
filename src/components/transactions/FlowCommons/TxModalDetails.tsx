@@ -5,7 +5,7 @@ import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
-import { IncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
+import { IncentivesCard } from 'src/components/incentives/RateAndIncentivesBox';
 import {
   IsolatedDisabledBadge,
   IsolatedEnabledBadge,
@@ -300,7 +300,7 @@ export const DetailsIncentivesLine = ({
         ) : (
           <>
             {hasIncentives ? (
-              <IncentivesBox
+              <IncentivesCard
                 symbol={symbol}
                 incentives={incentives || []}
                 market={market}
@@ -316,7 +316,7 @@ export const DetailsIncentivesLine = ({
               <>
                 {ArrowRightIcon}
                 {hasFutureIncentives ? (
-                  <IncentivesBox
+                  <IncentivesCard
                     symbol={futureSymbol || ''}
                     incentives={futureIncentives || []}
                     market={market}
