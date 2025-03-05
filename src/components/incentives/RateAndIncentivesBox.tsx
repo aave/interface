@@ -82,11 +82,7 @@ export const IncentivesCard = ({
       />
       <EthenaIncentivesButton rewardedAsset={address} />
       <SonicIncentivesButton rewardedAsset={address} />
-      <SimpleExternalIncentiveTooltip
-        market={market}
-        symbol={symbol}
-        protocolAction={protocolAction}
-      />
+      <SimpleExternalIncentiveTooltip market={market} rewardedAsset={address} />
     </Box>
   );
 

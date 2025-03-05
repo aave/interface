@@ -1,10 +1,10 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { getSimpleExternalIncentivesTooltipConfig } from 'src/components/incentives/IncentivesButton';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 
 import { useEthenaIncentives } from './useEthenaIncentives';
+import { useSimpleExternalIncentives } from './useSimpleExternalIncentives';
 import { useSonicIncentives } from './useSonicIncentives';
 
 export const useAllIncentives = ({
@@ -57,11 +57,7 @@ export const useAllIncentives = ({
   const allPoints = [ethenaPoints, soincPoints].filter(Boolean);
 
   // Simple external incentives
-  const simpleExternalIncentivesTooltips = getSimpleExternalIncentivesTooltipConfig(
-    symbol,
-    market,
-    protocolAction
-  );
+  const simpleExternalIncentivesTooltips = useSimpleExternalIncentives({ market, rewardedAsset });
   const simpleExternalIncentivesCount = Object.values(simpleExternalIncentivesTooltips).filter(
     Boolean
   ).length;
