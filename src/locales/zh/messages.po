@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-04 00:22\n"
+"PO-Revision-Date: 2025-03-06 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -27,6 +27,7 @@ msgid "Receive (est.)"
 msgstr "接收（预估）"
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 #: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
@@ -200,6 +201,10 @@ msgstr "由于供应上限限制，无法迁移资产 {marketName} v3 市场。"
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
 msgstr "被阻止的地址"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
+msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -2742,6 +2747,10 @@ msgstr "债务"
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "滤波器"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "Learn more about the Ether.fi program"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown to unstake"

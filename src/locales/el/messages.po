@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-04 00:22\n"
+"PO-Revision-Date: 2025-03-06 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -27,6 +27,7 @@ msgid "Receive (est.)"
 msgstr ""
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 #: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
@@ -199,6 +200,10 @@ msgstr ""
 
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
+msgstr ""
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
 msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
@@ -2743,6 +2748,10 @@ msgstr "Χρέος"
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "Φίλτρο"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "Learn more about the Ether.fi program"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown to unstake"
