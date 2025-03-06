@@ -68,6 +68,11 @@ const IncentivesSymbolMap: {
     symbol: 'asAVAX',
     aToken: true,
   },
+  aSonwS: {
+    tokenIconSymbol: 'wS',
+    symbol: 'awS',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {

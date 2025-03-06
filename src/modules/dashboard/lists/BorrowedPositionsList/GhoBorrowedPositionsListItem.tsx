@@ -148,7 +148,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
         subValue={userGhoBorrowBalance}
       />
       <ListColumn>
-        <Stack direction="row" gap={1}>
+        <Stack direction="row" gap={1} alignItems="center">
           <GhoIncentivesCard
             withTokenIcon={hasDiscount}
             value={ghoLoadingData || !ghoUserDataFetched ? -1 : borrowRateAfterDiscount}
@@ -164,6 +164,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
               color="primary"
               disabled
               data-cy={`apyButton_fixed`}
+              sx={{ height: '22px' }}
             >
               GHO RATE
               {/* <SvgIcon sx={{ marginLeft: '2px', fontSize: '12px' }}>

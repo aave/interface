@@ -435,6 +435,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'Sonic Bridge',
       url: 'https://gateway.soniclabs.com',
     },
+    ratesHistoryApiUrl,
     wagmiChain: sonic,
   },
 };
