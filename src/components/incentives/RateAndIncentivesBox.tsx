@@ -50,15 +50,22 @@ export const IncentivesCard = ({
   protocolAction,
   displayBlank,
 }: IncentivesBoxProps) => {
-  const { allIncentives, totalApr, allIncentivesCount } = useAllIncentives({
-    symbol,
-    market,
-    rewardedAsset: address,
-    protocolAction,
-    lmIncentives: incentives,
-  });
+  const { allIncentives, totalApr, allIncentivesCount, simpleExternalIncentivesCount } =
+    useAllIncentives({
+      symbol,
+      market,
+      rewardedAsset: address,
+      protocolAction,
+      lmIncentives: incentives,
+    });
 
-  const Incentives = () => (
+  const Incentives = ({
+    hasMultipleIncentives,
+    onlyDisplaySimpleExternalIncentive,
+  }: {
+    hasMultipleIncentives: boolean;
+    onlyDisplaySimpleExternalIncentive: boolean;
+  }) => (
     <Box
       sx={{
         display: 'flex',
@@ -68,68 +75,89 @@ export const IncentivesCard = ({
         width: 'fit-content',
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '4px',
-          flexWrap: 'wrap',
-          width: 'fit-content',
-        }}
-      >
-        <LmIncentivesButton
-          incentives={incentives}
-          symbol={symbol}
-          displayBlank={displayBlank && allIncentives.length == 0}
-        />
-        <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-        <ZkIgniteIncentivesButton
-          market={market}
-          rewardedAsset={address}
-          protocolAction={protocolAction}
-        />
-        <PointsIncentiveButton market={market} rewardedAsset={address} />
-      </Box>
-      <SimpleExternalIncentiveTooltip market={market} rewardedAsset={address} />
+      {!onlyDisplaySimpleExternalIncentive ? (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '4px',
+            flexWrap: 'wrap',
+            width: 'fit-content',
+          }}
+        >
+          <LmIncentivesButton
+            incentives={incentives}
+            symbol={symbol}
+            displayBlank={displayBlank && allIncentives.length == 0}
+          />
+          <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+          <ZkIgniteIncentivesButton
+            market={market}
+            rewardedAsset={address}
+            protocolAction={protocolAction}
+          />
+          <PointsIncentiveButton market={market} rewardedAsset={address} />
+        </Box>
+      ) : null}
+      {!hasMultipleIncentives ? (
+        <SimpleExternalIncentiveTooltip market={market} rewardedAsset={address} />
+      ) : null}
     </Box>
   );
 
-  const AllIncentivesButton = () => {
+  const AllIncentivesButton = ({
+    onlyDisplaySimpleExternalIncentive,
+  }: {
+    onlyDisplaySimpleExternalIncentive: boolean;
+  }) => {
     const [open, setOpen] = useState(false);
 
     return (
-      <ContentWithTooltip
-        tooltipContent={
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <Box>
-              <Typography variant="caption" color="text.secondary" mb={3}>
-                <Trans>
-                  Participating in this {symbol} reserve gives additional annualized rewards.
-                </Trans>
-              </Typography>
+      <Box sx={{ display: 'flex', gap: '4px' }}>
+        <ContentWithTooltip
+          tooltipContent={
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <Box>
+                <Typography variant="caption" color="text.secondary" mb={3}>
+                  <Trans>
+                    Participating in this {symbol} reserve gives additional annualized rewards.
+                  </Trans>
+                </Typography>
+              </Box>
+              <Box>
+                <Incentives
+                  hasMultipleIncentives={true}
+                  onlyDisplaySimpleExternalIncentive={onlyDisplaySimpleExternalIncentive}
+                />
+              </Box>
             </Box>
-            <Box>
-              <Incentives />
-            </Box>
-          </Box>
-        }
-        withoutHover
-        setOpen={setOpen}
-        open={open}
-      >
-        <Content
-          incentives={allIncentives}
-          incentivesNetAPR={totalApr}
-          displayBlank={displayBlank}
-        />
-      </ContentWithTooltip>
+          }
+          withoutHover
+          setOpen={setOpen}
+          open={open}
+        >
+          <Content
+            incentives={allIncentives}
+            incentivesNetAPR={totalApr}
+            displayBlank={displayBlank}
+          />
+        </ContentWithTooltip>
+        <SimpleExternalIncentiveTooltip market={market} rewardedAsset={address} />
+      </Box>
     );
   };
 
-  return allIncentivesCount >= 2 ? (
-    <AllIncentivesButton />
-  ) : allIncentivesCount === 1 ? (
-    <Incentives />
+  const multipleIncentives = allIncentivesCount - simpleExternalIncentivesCount >= 2;
+  const singleIncentives = allIncentivesCount === 1;
+  const onlyDisplaySimpleExternalIncentive = allIncentivesCount == simpleExternalIncentivesCount;
+
+  return multipleIncentives ? (
+    <AllIncentivesButton onlyDisplaySimpleExternalIncentive={onlyDisplaySimpleExternalIncentive} />
+  ) : singleIncentives ? (
+    <Incentives
+      hasMultipleIncentives={false}
+      onlyDisplaySimpleExternalIncentive={onlyDisplaySimpleExternalIncentive}
+    />
   ) : null;
 };
 

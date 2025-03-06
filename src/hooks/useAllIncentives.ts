@@ -4,6 +4,8 @@ import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { usePointsIncentives } from 'src/hooks/usePointsIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 
+import { useSimpleExternalIncentives } from './useSimpleExternalIncentives';
+
 export const useAllIncentives = ({
   symbol,
   rewardedAsset,
@@ -48,15 +50,25 @@ export const useAllIncentives = ({
   ];
   const allAprsIncentivesCount = allIncentives.length;
 
-  // Simple external incentives
+  // Points incentives
   const pointsIncentivesTooltips = usePointsIncentives({ market, rewardedAsset });
   const pointsIncentivesCount = Object.values(pointsIncentivesTooltips).filter(Boolean).length;
 
-  const allIncentivesCount = allAprsIncentivesCount + pointsIncentivesCount;
+  // Simple external incentives
+  const simpleExternalIncentivesTooltips = useSimpleExternalIncentives({ market, rewardedAsset });
+  const simpleExternalIncentivesCount = Object.values(simpleExternalIncentivesTooltips).filter(
+    Boolean
+  ).length;
+
+  const allIncentivesCount =
+    allAprsIncentivesCount + pointsIncentivesCount + simpleExternalIncentivesCount;
 
   return {
     allIncentives,
     totalApr,
     allIncentivesCount,
+    allAprsIncentivesCount,
+    pointsIncentivesCount,
+    simpleExternalIncentivesCount,
   };
 };
