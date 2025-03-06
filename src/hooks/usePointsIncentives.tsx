@@ -39,14 +39,10 @@ export const usePointsIncentives = ({
 
   const key = `${market}-${rewardedAsset}`;
 
-  console.log(key);
-
   const tooltipsConfig: PointsIncentivesTooltipsConfig = {
     ethenaPoints: ethenaPointsEnabled ? ETHENA_DATA_MAP.get(key) : undefined,
     sonicPoints: sonicPointsEnabled ? SONIC_DATA_MAP.get(key) : undefined,
   };
-
-  console.log(rewardedAsset, tooltipsConfig);
 
   return tooltipsConfig;
 };

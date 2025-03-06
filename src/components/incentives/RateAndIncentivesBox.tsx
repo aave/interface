@@ -50,7 +50,7 @@ export const IncentivesCard = ({
   protocolAction,
   displayBlank,
 }: IncentivesBoxProps) => {
-  const { allIncentives, totalApr, allIncentivesCount, simpleExternalIncentivesCount } =
+  const { allAprsIncentives, totalApr, allIncentivesCount, simpleExternalIncentivesCount } =
     useAllIncentives({
       symbol,
       market,
@@ -88,7 +88,7 @@ export const IncentivesCard = ({
           <LmIncentivesButton
             incentives={incentives}
             symbol={symbol}
-            displayBlank={displayBlank && allIncentives.length == 0}
+            displayBlank={displayBlank && allAprsIncentives.length == 0}
           />
           <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
           <ZkIgniteIncentivesButton
@@ -137,7 +137,7 @@ export const IncentivesCard = ({
           open={open}
         >
           <Content
-            incentives={allIncentives}
+            incentives={allAprsIncentives}
             incentivesNetAPR={totalApr}
             displayBlank={displayBlank}
           />

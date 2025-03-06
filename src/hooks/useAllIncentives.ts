@@ -43,12 +43,12 @@ export const useAllIncentives = ({
 
   const totalApr = meritApr + zkSyncApr + lmApr;
 
-  const allIncentives = [
+  const allAprsIncentives = [
     ...(meritIncentives ? [meritIncentives] : []),
     ...(zkSyncIgniteIncentives ? [zkSyncIgniteIncentives] : []),
     ...(lmIncentivesFiltered || []),
   ];
-  const allAprsIncentivesCount = allIncentives.length;
+  const allAprsIncentivesCount = allAprsIncentives.length;
 
   // Points incentives
   const pointsIncentivesTooltips = usePointsIncentives({ market, rewardedAsset });
@@ -64,7 +64,7 @@ export const useAllIncentives = ({
     allAprsIncentivesCount + pointsIncentivesCount + simpleExternalIncentivesCount;
 
   return {
-    allIncentives,
+    allAprsIncentives,
     totalApr,
     allIncentivesCount,
     allAprsIncentivesCount,

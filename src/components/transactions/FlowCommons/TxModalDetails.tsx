@@ -264,7 +264,7 @@ export const DetailsIncentivesLine = ({
   futureSymbol,
   loading = false,
 }: DetailsIncentivesLineProps) => {
-  const { allIncentives } = useAllIncentives({
+  const { allAprsIncentives } = useAllIncentives({
     symbol,
     market,
     protocolAction,
@@ -272,7 +272,7 @@ export const DetailsIncentivesLine = ({
     lmIncentives: incentives,
   });
 
-  const { allIncentives: futureAllIncentives } = useAllIncentives({
+  const { allAprsIncentives: futureAllAprsIncentives } = useAllIncentives({
     symbol: futureSymbol || '',
     market,
     protocolAction,
@@ -280,8 +280,8 @@ export const DetailsIncentivesLine = ({
     lmIncentives: futureIncentives,
   });
 
-  const hasIncentives = allIncentives.length > 0;
-  const hasFutureIncentives = futureAllIncentives.length > 0;
+  const hasIncentives = allAprsIncentives.length > 0;
+  const hasFutureIncentives = futureAllAprsIncentives.length > 0;
 
   if (!hasIncentives && !hasFutureIncentives) return null;
 
