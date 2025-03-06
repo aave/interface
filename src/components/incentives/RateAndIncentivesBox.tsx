@@ -50,27 +50,16 @@ export const IncentivesCard = ({
   protocolAction,
   displayBlank,
 }: IncentivesBoxProps) => {
-  const {
-    allAprsIncentives,
-    totalApr,
-    allIncentivesCount,
-    simpleExternalIncentivesCount,
-    allAprsIncentivesCount,
-  } = useAllIncentives({
-    symbol,
-    market,
-    rewardedAsset: address,
-    protocolAction,
-    lmIncentives: incentives,
-  });
+  const { allAprsIncentives, totalApr, allIncentivesCount, allAprsIncentivesCount } =
+    useAllIncentives({
+      symbol,
+      market,
+      rewardedAsset: address,
+      protocolAction,
+      lmIncentives: incentives,
+    });
 
-  const Incentives = ({
-    hasMultipleIncentives,
-    onlyAprsIncentives,
-  }: {
-    hasMultipleIncentives: boolean;
-    onlyAprsIncentives: boolean;
-  }) => (
+  const Incentives = ({ hasMultipleIncentives }: { hasMultipleIncentives: boolean }) => (
     <Box
       sx={{
         display: 'flex',
@@ -80,29 +69,27 @@ export const IncentivesCard = ({
         width: 'fit-content',
       }}
     >
-      {onlyAprsIncentives ? (
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '4px',
-            flexWrap: 'wrap',
-            width: 'fit-content',
-          }}
-        >
-          <LmIncentivesButton
-            incentives={incentives}
-            symbol={symbol}
-            displayBlank={displayBlank && allAprsIncentives.length == 0}
-          />
-          <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-          <ZkIgniteIncentivesButton
-            market={market}
-            rewardedAsset={address}
-            protocolAction={protocolAction}
-          />
-        </Box>
-      ) : null}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '4px',
+          flexWrap: 'wrap',
+          width: 'fit-content',
+        }}
+      >
+        <LmIncentivesButton
+          incentives={incentives}
+          symbol={symbol}
+          displayBlank={displayBlank && allAprsIncentives.length == 0}
+        />
+        <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+        <ZkIgniteIncentivesButton
+          market={market}
+          rewardedAsset={address}
+          protocolAction={protocolAction}
+        />
+      </Box>
       {!hasMultipleIncentives ? (
         <>
           <PointsIncentiveButton market={market} rewardedAsset={address} />
@@ -112,7 +99,7 @@ export const IncentivesCard = ({
     </Box>
   );
 
-  const AllIncentivesButton = ({ onlyAprsIncentives }: { onlyAprsIncentives: boolean }) => {
+  const AllIncentivesButton = () => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -128,7 +115,7 @@ export const IncentivesCard = ({
                 </Typography>
               </Box>
               <Box>
-                <Incentives hasMultipleIncentives={true} onlyAprsIncentives={onlyAprsIncentives} />
+                <Incentives hasMultipleIncentives={true} />
               </Box>
             </Box>
           }
@@ -148,14 +135,22 @@ export const IncentivesCard = ({
     );
   };
 
-  const multipleIncentives = allIncentivesCount - simpleExternalIncentivesCount >= 2;
-  const singleIncentives = allIncentivesCount === 1;
-  const onlyAprsIncentives = allIncentivesCount === allAprsIncentivesCount;
+  const multipleIncentives = allAprsIncentivesCount >= 2;
+  const singleIncentives = allIncentivesCount >= 1;
+
+  console.log({
+    symbol,
+    allAprsIncentives,
+    totalApr,
+    allIncentivesCount,
+    multipleIncentives,
+    singleIncentives,
+  });
 
   return multipleIncentives ? (
-    <AllIncentivesButton onlyAprsIncentives={onlyAprsIncentives} />
+    <AllIncentivesButton />
   ) : singleIncentives ? (
-    <Incentives hasMultipleIncentives={false} onlyAprsIncentives={onlyAprsIncentives} />
+    <Incentives hasMultipleIncentives={false} />
   ) : null;
 };
 
