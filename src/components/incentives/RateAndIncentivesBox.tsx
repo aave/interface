@@ -50,7 +50,7 @@ export const IncentivesCard = ({
   protocolAction,
   displayBlank,
 }: IncentivesBoxProps) => {
-  const { allIncentives, totalApr, incentivesCount } = useAllIncentives({
+  const { allIncentives, totalApr, allIncentivesCount } = useAllIncentives({
     symbol,
     market,
     rewardedAsset: address,
@@ -68,18 +68,28 @@ export const IncentivesCard = ({
         width: 'fit-content',
       }}
     >
-      <LmIncentivesButton
-        incentives={incentives}
-        symbol={symbol}
-        displayBlank={displayBlank && allIncentives.length == 0}
-      />
-      <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-      <ZkIgniteIncentivesButton
-        market={market}
-        rewardedAsset={address}
-        protocolAction={protocolAction}
-      />
-      <PointsIncentiveButton market={market} rewardedAsset={address} />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '4px',
+          flexWrap: 'wrap',
+          width: 'fit-content',
+        }}
+      >
+        <LmIncentivesButton
+          incentives={incentives}
+          symbol={symbol}
+          displayBlank={displayBlank && allIncentives.length == 0}
+        />
+        <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+        <ZkIgniteIncentivesButton
+          market={market}
+          rewardedAsset={address}
+          protocolAction={protocolAction}
+        />
+        <PointsIncentiveButton market={market} rewardedAsset={address} />
+      </Box>
       <SimpleExternalIncentiveTooltip market={market} rewardedAsset={address} />
     </Box>
   );
@@ -116,9 +126,9 @@ export const IncentivesCard = ({
     );
   };
 
-  return incentivesCount >= 2 ? (
+  return allIncentivesCount >= 2 ? (
     <AllIncentivesButton />
-  ) : incentivesCount === 1 ? (
+  ) : allIncentivesCount === 1 ? (
     <Incentives />
   ) : null;
 };

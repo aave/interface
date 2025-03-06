@@ -1,10 +1,8 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { usePointsIncentives } from 'src/hooks/usePointsIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
-
-import { usePointsIncentives } from './usePointsIncentives';
-import { useSimpleExternalIncentives } from './useSimpleExternalIncentives';
 
 export const useAllIncentives = ({
   symbol,
@@ -54,14 +52,11 @@ export const useAllIncentives = ({
   const pointsIncentivesTooltips = usePointsIncentives({ market, rewardedAsset });
   const pointsIncentivesCount = Object.values(pointsIncentivesTooltips).filter(Boolean).length;
 
-  // Simple external incentives
-  const simpleExternalIncentivesTooltips = useSimpleExternalIncentives({ market, rewardedAsset });
-  const simpleExternalIncentivesCount = Object.values(simpleExternalIncentivesTooltips).filter(
-    Boolean
-  ).length;
+  const allIncentivesCount = allAprsIncentivesCount + pointsIncentivesCount;
 
-  const incentivesCount =
-    allAprsIncentivesCount + pointsIncentivesCount + simpleExternalIncentivesCount;
-
-  return { allIncentives, totalApr, incentivesCount };
+  return {
+    allIncentives,
+    totalApr,
+    allIncentivesCount,
+  };
 };
