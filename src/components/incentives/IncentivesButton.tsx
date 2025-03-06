@@ -12,16 +12,20 @@ import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
-import { KernelAirdropTooltip } from '../infoTooltips/KernelAirdropTooltip';
-import { SpkAirdropTooltip } from '../infoTooltips/SpkAirdropTooltip';
-import { SuperFestTooltip } from '../infoTooltips/SuperFestTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
-import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
-import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
-import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
+import {
+  EthenaAirdropTooltipContent,
+  EtherFiAirdropTooltipContent,
+  SonicAirdropTooltipContent,
+} from './PointsIncentivesTooltipContent';
+import {
+  KernelAirdropTooltip,
+  SpkAirdropTooltip,
+  SuperFestTooltip,
+} from './SimpleExternalIncentivesTooltip';
 import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
 
 interface IncentivesButtonProps {

@@ -21,9 +21,9 @@ msgstr "If you DO NOT unstake within {0} of unstake window, you will need to act
 msgid "Receive (est.)"
 msgstr "Receive (est.)"
 
-#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
-#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
-#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr "Aave Labs does not guarantee the program and accepts no liability."
 
@@ -126,7 +126,7 @@ msgstr "Collateral change"
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 
-#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
 msgid "This asset is eligible for {0} Ethena Rewards."
 msgstr "This asset is eligible for {0} Ethena Rewards."
 
@@ -193,7 +193,7 @@ msgstr "Asset cannot be migrated due to supply cap restriction in {marketName} v
 msgid "Blocked Address"
 msgstr "Blocked Address"
 
-#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
 msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
 msgstr "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
 
@@ -483,7 +483,7 @@ msgstr "Borrowing is unavailable because you’re using Isolation mode. To manag
 msgid "Share on Lens"
 msgstr "Share on Lens"
 
-#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
 msgid "Learn more about Sonic Rewards program"
 msgstr "Learn more about Sonic Rewards program"
 
@@ -967,7 +967,7 @@ msgstr "Discount"
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
 
-#: src/components/infoTooltips/SuperFestTooltip.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
 msgid "Rewards can be claimed through"
 msgstr "Rewards can be claimed through"
 
@@ -1186,7 +1186,7 @@ msgstr "Current LTV"
 msgid "Market"
 msgstr "Market"
 
-#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
 msgid "Learn more about Ethena Rewards program"
 msgstr "Learn more about Ethena Rewards program"
 
@@ -1293,7 +1293,7 @@ msgstr "View Bridge Transactions"
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Invalid return value of the flashloan executor function"
 
-#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
 msgid "Learn more about the Kernel points distribution"
 msgstr "Learn more about the Kernel points distribution"
 
@@ -1431,7 +1431,7 @@ msgstr "Fee"
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
 
-#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
 msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
 
@@ -1692,7 +1692,7 @@ msgstr "Stake cooldown activated"
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
 
-#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
 msgid "Learn more about the SPK rewards"
 msgstr "Learn more about the SPK rewards"
 
@@ -1944,7 +1944,7 @@ msgstr "Exceeds the discount"
 msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
 
-#: src/components/infoTooltips/SuperFestTooltip.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 
@@ -2276,7 +2276,7 @@ msgstr "FAQS"
 msgid "Voted NAY"
 msgstr "Voted NAY"
 
-#: src/components/infoTooltips/SuperFestTooltip.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
 msgid "about SuperFest."
 msgstr "about SuperFest."
 
@@ -2563,7 +2563,7 @@ msgstr "Debt ceiling is not zero"
 msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 
-#: src/components/infoTooltips/SpkAirdropTooltip.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
 msgid "and about SPK program"
 msgstr "and about SPK program"
 
@@ -2748,7 +2748,7 @@ msgstr "Debt"
 msgid "Filter"
 msgstr "Filter"
 
-#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
 msgid "Learn more about the Ether.fi program"
 msgstr "Learn more about the Ether.fi program"
 
@@ -3176,7 +3176,7 @@ msgstr "Maximum amount available to borrow is limited because protocol borrow ca
 msgid "COPY IMAGE"
 msgstr "COPY IMAGE"
 
-#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
 msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
 
@@ -3270,7 +3270,7 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 msgid "Get ABP v2 Token"
 msgstr "Get ABP v2 Token"
 
-#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
 msgid "This asset is eligible for {0} Sonic Rewards."
 msgstr "This asset is eligible for {0} Sonic Rewards."
 
