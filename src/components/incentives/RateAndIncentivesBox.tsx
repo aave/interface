@@ -69,15 +69,7 @@ export const IncentivesCard = ({
         width: 'fit-content',
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '4px',
-          flexWrap: 'wrap',
-          width: 'fit-content',
-        }}
-      >
+      <>
         <LmIncentivesButton
           incentives={incentives}
           symbol={symbol}
@@ -89,7 +81,7 @@ export const IncentivesCard = ({
           rewardedAsset={address}
           protocolAction={protocolAction}
         />
-      </Box>
+      </>
       {!hasMultipleIncentives ? (
         <>
           <PointsIncentiveButton market={market} rewardedAsset={address} />

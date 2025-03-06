@@ -148,7 +148,7 @@ const GhoBorrowInfoDesktop = ({
             market={CustomMarket.proto_mainnet_v3}
             address={reserve.variableDebtTokenAddress}
             protocolAction={ProtocolAction.borrow}
-            displayBlank={true}
+            displayBlank={false}
             variant="main16"
             align="start"
           />
@@ -213,7 +213,7 @@ const GhoBorrowInfoMobile = ({
               market={CustomMarket.proto_mainnet_v3}
               address={reserve.variableDebtTokenAddress}
               protocolAction={ProtocolAction.borrow}
-              displayBlank={true}
+              displayBlank={false}
               variant="main16"
               align="start"
             />
