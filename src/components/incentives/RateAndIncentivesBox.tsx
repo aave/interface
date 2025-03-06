@@ -130,15 +130,6 @@ export const IncentivesCard = ({
   const multipleIncentives = allAprsIncentivesCount >= 2;
   const singleIncentives = allIncentivesCount >= 1;
 
-  console.log({
-    symbol,
-    allAprsIncentives,
-    totalApr,
-    allIncentivesCount,
-    multipleIncentives,
-    singleIncentives,
-  });
-
   return multipleIncentives ? (
     <AllIncentivesButton />
   ) : singleIncentives ? (
