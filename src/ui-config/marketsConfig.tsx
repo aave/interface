@@ -706,7 +706,7 @@ export const marketsData: {
     market: CustomMarket.proto_sonic_v3,
     chainId: ChainId.sonic,
     v3: true,
-    // subgraphUrl: ``, // TODO: add subgraph url (waiting for fix)
+    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/FQcacc4ZJaQVS9euWb76nvpSq2GxavBnUM6DU6tmspbi`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sonic.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Sonic.POOL,
