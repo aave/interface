@@ -6,7 +6,7 @@ import { TextWithTooltip } from '../TextWithTooltip';
 export const KernelAirdropTooltip = () => {
   return (
     <TextWithTooltip
-      wrapperProps={{ ml: 2 }}
+      wrapperProps={{ alignSelf: 'center' }}
       color="warning.main"
       iconSize={20}
       icon={<image href="/icons/other/kernel.svg" width={25} height={25} />}
