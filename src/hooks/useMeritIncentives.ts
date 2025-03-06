@@ -328,16 +328,6 @@ export const useMeritIncentives = ({
     select: (data) => {
       const meritReserveIncentiveData = getMeritData(market, symbol);
 
-      // if (symbol === 'USDS') {
-      //   return {
-      //     incentiveAPR: (5 / 100).toString(),
-      //     rewardTokenAddress: AaveV3Ethereum.ASSETS.USDS.A_TOKEN,
-      //     rewardTokenSymbol: 'USDS',
-      //     customMessage: 'customMessage TEST',
-      //     customForumLink: 'customForumLink TEST',
-      //   };
-      // }
-
       if (!meritReserveIncentiveData) {
         return null;
       }

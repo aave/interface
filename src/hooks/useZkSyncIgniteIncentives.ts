@@ -88,15 +88,6 @@ export const useZkSyncIgniteIncentives = ({
     queryKey: ['zkIgniteIncentives', market],
     staleTime: 1000 * 60 * 5,
     select: (merklOpportunities) => {
-      // if (rewardedAsset === '0x32a6268f9Ba3642Dda7892aDd74f1D34469A4259') {
-      //   console.log('=> USDSSSSSSS');
-      //   return {
-      //     incentiveAPR: '0.1',
-      //     rewardTokenAddress: rewardToken,
-      //     rewardTokenSymbol: rewardTokenSymbol,
-      //   } as ExtendedReserveIncentiveResponse;
-      // }
-
       const opportunities = merklOpportunities.filter(
         (opportunitiy) =>
           rewardedAsset &&
