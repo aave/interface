@@ -18,6 +18,7 @@ import { SuperFestTooltip } from '../infoTooltips/SuperFestTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
+import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
@@ -129,7 +130,7 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
           setOpen={setOpen}
           open={open}
         >
-          <ContentButton
+          <ContentPoints
             value={pointsIncentivesTooltips.ethenaPoints}
             iconSrc={'/icons/other/ethena.svg'}
           />
@@ -144,9 +145,24 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
           setOpen={setOpen}
           open={open}
         >
-          <ContentButton
+          <ContentPoints
             value={pointsIncentivesTooltips.sonicPoints}
             iconSrc={'/icons/networks/sonic.svg'}
+          />
+        </ContentWithTooltip>
+      )}
+      {pointsIncentivesTooltips.etherfiPoints && (
+        <ContentWithTooltip
+          tooltipContent={
+            <EtherFiAirdropTooltipContent multiplier={pointsIncentivesTooltips.etherfiPoints} />
+          }
+          withoutHover
+          setOpen={setOpen}
+          open={open}
+        >
+          <ContentPoints
+            value={pointsIncentivesTooltips.etherfiPoints}
+            iconSrc={'/icons/other/etherfi.svg'}
           />
         </ContentWithTooltip>
       )}
@@ -334,7 +350,7 @@ export const Content = ({
   );
 };
 
-const ContentButton = ({ value, iconSrc }: { value: number; iconSrc: string }) => {
+const ContentPoints = ({ value, iconSrc }: { value: number; iconSrc: string }) => {
   const [open, setOpen] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
