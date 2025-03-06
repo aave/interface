@@ -4,11 +4,9 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { usePointsIncentives } from 'src/hooks/usePointsIncentives';
 import { useSimpleExternalIncentives } from 'src/hooks/useSimpleExternalIncentives';
-import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
@@ -153,46 +151,6 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
         </ContentWithTooltip>
       )}
     </>
-  );
-};
-
-export const EthenaIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
-  const [open, setOpen] = useState(false);
-  const points = useEthenaIncentives(rewardedAsset);
-
-  if (!points) {
-    return null;
-  }
-
-  return (
-    <ContentWithTooltip
-      tooltipContent={<EthenaAirdropTooltipContent points={points} />}
-      withoutHover
-      setOpen={setOpen}
-      open={open}
-    >
-      <ContentPointsButton points={points} icon={'/icons/other/ethena.svg'} />
-    </ContentWithTooltip>
-  );
-};
-
-export const SonicIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
-  const [open, setOpen] = useState(false);
-  const points = useSonicIncentives(rewardedAsset);
-
-  if (!points) {
-    return null;
-  }
-
-  return (
-    <ContentWithTooltip
-      tooltipContent={<SonicAirdropTooltipContent points={points} />}
-      withoutHover
-      setOpen={setOpen}
-      open={open}
-    >
-      <ContentPointsButton points={points} icon={'/icons/networks/sonic.svg'} />
-    </ContentWithTooltip>
   );
 };
 
