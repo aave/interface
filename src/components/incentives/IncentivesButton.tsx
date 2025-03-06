@@ -129,9 +129,9 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
           setOpen={setOpen}
           open={open}
         >
-          <ContentPointsButton
-            points={pointsIncentivesTooltips.ethenaPoints}
-            icon={'/icons/other/ethena.svg'}
+          <ContentButton
+            value={pointsIncentivesTooltips.ethenaPoints}
+            iconSrc={'/icons/other/ethena.svg'}
           />
         </ContentWithTooltip>
       )}
@@ -144,9 +144,9 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
           setOpen={setOpen}
           open={open}
         >
-          <ContentPointsButton
-            points={pointsIncentivesTooltips.sonicPoints}
-            icon={'/icons/networks/sonic.svg'}
+          <ContentButton
+            value={pointsIncentivesTooltips.sonicPoints}
+            iconSrc={'/icons/networks/sonic.svg'}
           />
         </ContentWithTooltip>
       )}
@@ -334,7 +334,7 @@ export const Content = ({
   );
 };
 
-const ContentPointsButton = ({ points, icon }: { points: number; icon: string }) => {
+const ContentButton = ({ value, iconSrc }: { value: number; iconSrc: string }) => {
   const [open, setOpen] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -362,11 +362,11 @@ const ContentPointsButton = ({ points, icon }: { points: number; icon: string })
     >
       <Box sx={{ mr: 2 }}>
         <Typography component="span" variant="secondary12" color="text.secondary">
-          {`${points}x`}
+          {`${value}x`}
         </Typography>
       </Box>
       <Box sx={{ display: 'inline-flex' }}>
-        <img src={icon} width={12} height={12} alt="ethena-icon" />
+        <img src={iconSrc} width={12} height={12} alt="icon" />
       </Box>
     </Box>
   );
