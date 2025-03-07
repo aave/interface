@@ -64,9 +64,9 @@ export const IncentivesCard = ({
       sx={{
         display: 'flex',
         justifyContent: 'center',
-        gap: '4px',
+        rowGap: '4px',
         flexWrap: 'wrap',
-        width: 'fit-content',
+        width: 'min-content',
       }}
     >
       <>
