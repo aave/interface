@@ -1,3 +1,3 @@
 export const uiConfig = {
-  appLogo: '/aave-com-logo-header.svg',
+  appLogo: '/aave-com-logo-header.webp',
 };
