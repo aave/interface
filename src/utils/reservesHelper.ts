@@ -6,8 +6,8 @@ import {
 
 // Define our custom AMM symbol map
 export const customAmmSymbolMap: { [key: string]: string } = {
-  '0x2b9fd97c76580516076f7f2732db140798f36f08': 'UNI_FAVORETH',
-  '0xe94a048f20fe2cb75e608c1c2f4b2cf477410222': 'UNI_FAVORUSDT',
+  '0x2b9fd97c76580516076f7f2732db140798f36f08': 'UNISETHETH',
+  '0xe94a048f20fe2cb75e608c1c2f4b2cf477410222': 'UNIUSDT',
   // Add more mappings as needed
 };
 
