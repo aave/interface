@@ -164,7 +164,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
               color="primary"
               disabled
               data-cy={`apyButton_fixed`}
-              sx={{ height: '22px' }}
+              sx={{ height: '22px', whiteSpace: 'nowrap' }}
             >
               GHO RATE
               {/* <SvgIcon sx={{ marginLeft: '2px', fontSize: '12px' }}>
