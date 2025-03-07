@@ -237,7 +237,7 @@ jobs:
           CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.ts
 
-  update_domains:
+  prepare_release:
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main' &&
@@ -253,7 +253,7 @@ jobs:
       PINATA_HASH: '${{ needs.deploy.outputs.pinata_hash }}'
     secrets: inherit
 
-  update_domains_no_cypress:
+  prepare_release_no_cypress:
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main' &&

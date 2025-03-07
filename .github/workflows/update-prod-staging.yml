@@ -38,13 +38,6 @@ jobs:
           BUILD_PATH: ${{ matrix.environment.build_path }}
           PINATA_HASH: ${{ inputs.PINATA_HASH }}
 
-      - uses: aave/cloudflare-update-action@0f2084730a068fab162853c4e7cc40537233d34a
-        with:
-          CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
-          CF_ZONE_ID: '${{ secrets.CF_ZONE_ID }}'
-          HASH: ${{ inputs.PINATA_HASH }}
-          CF_DEPLOYMENT_DOMAIN: ${{ matrix.environment.domain }}
-
       - name: prepare release
         run: |
           cp .github/release-template.md ./release-notes.md
