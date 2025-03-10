@@ -61,7 +61,7 @@ export const MeritIncentivesTooltipContent = ({
       <Typography variant="caption" color="text.strong" fontSize={13} fontWeight={'600'}>
         <Trans>Merit Program rewards are claimed through the</Trans>
         <Link
-          href="https://apps.aavechan.com/merit"
+          href={`https://apps.aavechan.com/merit/${meritIncentives.action}`}
           sx={{ textDecoration: 'underline', ml: 1 }}
           variant="caption"
         >
