@@ -35,7 +35,7 @@ export const MeritIncentivesTooltipContent = ({
 
       <Typography variant="caption" color="text.secondary">
         <Trans>
-          This is a program initiated and implemented by the decentralised Aave community. Aave Labs
+          This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs
           does not guarantee the program and accepts no liability.
         </Trans>{' '}
         <Link
