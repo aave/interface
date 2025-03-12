@@ -7,6 +7,7 @@ import {
   base,
   baseSepolia,
   bsc,
+  celo,
   Chain,
   gnosis,
   linea,
@@ -437,6 +438,23 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
     wagmiChain: sonic,
+  },
+  [ChainId.celo]: {
+    name: 'Celo',
+    privateJsonRPCUrl: 'https://celo-mainnet.g.alchemy.com/v2/QSIQ93fznmXwv9qEWBnKIOOsQGldk3wL',
+    publicJsonRPCUrl: ['https://rpc.ankr.com/celo', 'https://celo.drpc.org'],
+    baseAssetSymbol: '', // N/A
+    wrappedBaseAssetSymbol: '', // N/A
+    baseAssetDecimals: 0, // N/A
+    explorerLink: 'https://celoscan.io/',
+    networkLogoPath: '/icons/networks/celo.svg',
+    bridge: {
+      icon: '/icons/networks/celo.svg',
+      name: 'Celo Bridge',
+      url: 'https://docs.celo.org/protocol/bridge',
+    },
+    ratesHistoryApiUrl,
+    wagmiChain: celo,
   },
 };
 
