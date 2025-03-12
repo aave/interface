@@ -35,7 +35,7 @@
     "@aave/math-utils": "1.33.0",
     "@bgd-labs/aave-address-book": "^4.15.0",
     "@emotion/cache": "11.10.3",
-    "@emotion/react": "11.10.4",
+    "@emotion/react": "11.14.0",
     "@emotion/server": "latest",
     "@emotion/styled": "11.10.4",
     "@gelatonetwork/relay-sdk": "^5.5.5",
