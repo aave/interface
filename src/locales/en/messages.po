@@ -112,6 +112,10 @@ msgstr "Sorry, we couldn't find the page you were looking for."
 msgid "Recent Transactions"
 msgstr "Recent Transactions"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "BASE APY"
+msgstr "BASE APY"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Liquidation risk"
 msgstr "Liquidation risk"
@@ -450,6 +454,7 @@ msgstr "APY, borrow rate"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 msgid "APR"
