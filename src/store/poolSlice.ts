@@ -50,6 +50,7 @@ import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
 import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { CustomFaucetService } from 'src/utils/faucetHelper';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
@@ -268,7 +269,7 @@ export const createPoolSlice: StateCreator<
         throw Error('currently selected market does not have a faucet attached');
 
       if (currentMarketData.v3) {
-        const v3Service = new V3FaucetService(
+        const v3Service = new CustomFaucetService(
           jsonRpcProvider(),
           currentMarketData.addresses.FAUCET
         );
