@@ -453,7 +453,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'Celo Bridge',
       url: 'https://docs.celo.org/protocol/bridge',
     },
-    ratesHistoryApiUrl,
     wagmiChain: celo,
   },
 };
