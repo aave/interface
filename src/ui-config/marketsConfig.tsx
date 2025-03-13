@@ -724,7 +724,7 @@ export const marketsData: {
     market: CustomMarket.proto_celo_v3,
     chainId: ChainId.celo,
     v3: true,
-    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/72ysXwyqW9CvfqD8keWo2fEfdKZQRWGYdgC6cnvTSFKy`,
+    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/GAVWZzGwQ6d6QbFojyFWxpZ2GB9Rf5hZgGyJHCEry8kn`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Celo.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Celo.POOL,
