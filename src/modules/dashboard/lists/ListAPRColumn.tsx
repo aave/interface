@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
-import { IncentivesCard } from '../../../components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from '../../../components/incentives/RateAndIncentivesBox';
 import { ListColumn } from '../../../components/lists/ListColumn';
 
 interface ListAPRColumnProps {
@@ -31,7 +31,7 @@ export const ListAPRColumn = ({
   return (
     <ListColumn>
       <Box sx={{ display: 'flex column' }}>
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={value}
           incentives={incentives}
           address={address}

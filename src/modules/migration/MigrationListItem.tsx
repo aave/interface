@@ -2,7 +2,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import { MigrationDisabledTooltip } from 'src/components/infoTooltips/MigrationDisabledTooltip';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -163,7 +163,7 @@ export const MigrationListItem = ({
 
         <ListColumn>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IncentivesCard
+            <RateAndIncentivesBox
               value={v2APY}
               symbol={userReserve.reserve.symbol}
               incentives={v2Incentives}
@@ -179,7 +179,7 @@ export const MigrationListItem = ({
                 }
               />
             </SvgIcon>
-            <IncentivesCard
+            <RateAndIncentivesBox
               value={v3APY}
               symbol={userReserve.reserve.symbol}
               incentives={v3Incentives}
