@@ -31,9 +31,9 @@ export const ConnectWalletPaper = ({
         ...sx,
       }}
     >
-      <Box>
+  {/*<Box>
         <LandingGhost />
-      </Box>
+      </Box>*/}
       <>
         {loading ? (
           <CircularProgress />
