@@ -104,7 +104,7 @@ export enum CustomMarket {
 const apiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
 
 export const marketsData: {
-  //[key in any]: MarketDataType;
+  [key in any]: MarketDataType;
   //[key in keyof typeof CustomMarket]: MarketDataType;
 } = {
   [CustomMarket.proto_mainnet_v3]: {
