@@ -1,9 +1,4 @@
-import {
-  ArrowCircleRightIcon,
-  BookOpenIcon,
-  CreditCardIcon,
-  QuestionMarkCircleIcon,
-} from '@heroicons/react/outline';
+import { BookOpenIcon, CreditCardIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { t } from '@lingui/macro';
 import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
@@ -42,10 +37,10 @@ export const navigation: Navigation[] = [
     link: ROUTES.governance,
     title: t`Governance`,
     dataCy: 'menuGovernance',
-    // isVisible: () =>
-    //   process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true' &&
-    //   process.env.NEXT_PUBLIC_ENV === 'prod' &&
-    //   !ENABLE_TESTNET,
+    isVisible: () =>
+      process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true' &&
+      process.env.NEXT_PUBLIC_ENV === 'prod' &&
+      !ENABLE_TESTNET,
   },
   {
     link: ROUTES.faucet,
@@ -61,19 +56,14 @@ interface MoreMenuItem extends Navigation {
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.aave.com/faq/',
+    link: '#',
     title: t`FAQ`,
     icon: <QuestionMarkCircleIcon />,
   },
   {
-    link: 'https://docs.aave.com/portal/',
+    link: '#',
     title: t`Developers`,
     icon: <BookOpenIcon />,
-  },
-  {
-    link: 'https://legacy-markets.aave.com/',
-    title: t`Legacy Markets`,
-    icon: <ArrowCircleRightIcon />,
   },
 ];
 

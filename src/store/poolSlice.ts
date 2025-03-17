@@ -25,7 +25,7 @@ import {
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
   UserReserveDataHumanized,
-  V3FaucetService,
+  //V3FaucetService,
   WithdrawAndSwitchAdapterService,
 } from '@aave/contract-helpers';
 import {

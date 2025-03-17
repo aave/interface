@@ -97,10 +97,7 @@ export const SupplyInfo = ({
                         Asset supply is limited to a certain amount to reduce protocol exposure to
                         the asset and to help manage risks involved.
                       </Trans>{' '}
-                      <Link
-                        href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
-                        underline="always"
-                      >
+                      <Link href="#" underline="always">
                         <Trans>Learn more</Trans>
                       </Link>
                     </>

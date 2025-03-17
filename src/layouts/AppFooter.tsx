@@ -37,7 +37,6 @@ const FOOTER_ICONS = [
 ];
 
 export function AppFooter() {
-
   const FOOTER_LINKS = [
     {
       href: '#',

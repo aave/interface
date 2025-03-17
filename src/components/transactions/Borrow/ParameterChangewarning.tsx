@@ -9,8 +9,8 @@ export const ParameterChangewarning = ({ underlyingAsset }: { underlyingAsset: s
   return (
     <Warning severity="info" sx={{ my: 6 }}>
       <Trans>
-        <b>Attention:</b> Parameter changes via governance can alter your account health factor and
-        risk of liquidation. Follow the{' '}
+        <b>Attention:</b> Parameter changes can alter your account health factor and risk of
+        liquidation. Follow us{' '}
         <a
           onClick={() => {
             trackEvent(GENERAL.EXTERNAL_LINK, {
@@ -18,9 +18,9 @@ export const ParameterChangewarning = ({ underlyingAsset }: { underlyingAsset: s
               Link: 'Governance Link',
             });
           }}
-          href="https://governance.aave.com/"
+          href="#"
         >
-          Aave governance forum
+          In Discord
         </a>{' '}
         for updates.
       </Trans>

@@ -57,7 +57,7 @@ export const createAnalyticsSlice: StateCreator<
     },
 
     isTrackingEnabled: false,
-    analyticsConfigOpen: true,
+    analyticsConfigOpen: false,
     mixpanelInitialized: false,
 
     initializeMixpanel: () => {

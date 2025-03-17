@@ -63,7 +63,7 @@ export const LiquidationRiskParametresInfoModal = ({
               Link: 'HF Risk Link',
             });
           }}
-          href="https://docs.aave.com/faq/"
+          href="#"
           sx={{ textDecoration: 'underline' }}
           color="text.primary"
           variant="description"

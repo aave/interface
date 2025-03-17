@@ -1,15 +1,8 @@
-import {
-  InformationCircleIcon,
-  SparklesIcon,
-  SwitchHorizontalIcon,
-} from '@heroicons/react/outline';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
-  Badge,
   Button,
-  NoSsr,
   Slide,
-  styled,
   SvgIcon,
   Typography,
   useMediaQuery,
@@ -20,7 +13,6 @@ import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
@@ -36,39 +28,6 @@ interface Props {
   children: React.ReactElement;
 }
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  '& .MuiBadge-badge': {
-    top: '2px',
-    right: '2px',
-    borderRadius: '20px',
-    width: '10px',
-    height: '10px',
-    backgroundColor: `${theme.palette.secondary.main}`,
-    color: `${theme.palette.secondary.main}`,
-    '&::after': {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      borderRadius: '50%',
-      animation: 'ripple 1.2s infinite ease-in-out',
-      border: '1px solid currentColor',
-      content: '""',
-    },
-  },
-  '@keyframes ripple': {
-    '0%': {
-      transform: 'scale(.8)',
-      opacity: 1,
-    },
-    '100%': {
-      transform: 'scale(2.4)',
-      opacity: 0,
-    },
-  },
-}));
-
 function HideOnScroll({ children }: Props) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
@@ -81,25 +40,15 @@ function HideOnScroll({ children }: Props) {
   );
 }
 
-const SWITCH_VISITED_KEY = 'switchVisited';
-
 export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const smd = useMediaQuery('(max-width:1120px)');
-
-  const [visitedSwitch, setVisitedSwitch] = useState(() => {
-    if (typeof window === 'undefined') return true;
-    return Boolean(localStorage.getItem(SWITCH_VISITED_KEY));
-  });
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useRootStore((state) => [
     state.mobileDrawerOpen,
     state.setMobileDrawerOpen,
   ]);
-
-  const { openSwitch, openBridge } = useModalContext();
 
   const { currentMarketData } = useProtocolDataContext();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
@@ -143,29 +92,13 @@ export function AppHeader() {
     window.location.href = '/';
   };
 
-  const handleSwitchClick = () => {
-    localStorage.setItem(SWITCH_VISITED_KEY, 'true');
-    setVisitedSwitch(true);
-    openSwitch();
-  };
-
-  const handleBridgeClick = () => {
-    openBridge();
-  };
-
   const testnetTooltip = (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 1 }}>
       <Typography variant="subheader1">
         <Trans>Testnet mode is ON</Trans>
       </Typography>
       <Typography variant="description">
-        <Trans>The app is running in testnet mode. Learn how it works in</Trans>{' '}
-        <Link
-          href="https://aave.com/faq"
-          style={{ fontSize: '14px', fontWeight: 400, textDecoration: 'underline' }}
-        >
-          FAQ.
-        </Link>
+        <Trans>The app is running in testnet mode.</Trans>
       </Typography>
       <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableTestnet}>
         <Trans>Disable testnet</Trans>
@@ -222,8 +155,11 @@ export function AppHeader() {
           }}
           onClick={() => setMobileMenuOpen(false)}
         >
-          <img src={uiConfig.appLogo} alt="AAVE" width={40} height={40} />
+          <img src={uiConfig.appLogo} alt="Better Bank" width={40} height={40} />
         </Box>
+        <Typography variant="h2">
+          <Trans>Better Bank</Trans>
+        </Typography>
         <Box sx={{ mr: sm ? 1 : 3 }}>
           {ENABLE_TESTNET && (
             <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
@@ -232,6 +168,7 @@ export function AppHeader() {
                 size="small"
                 color="primary"
                 sx={{
+                  marginLeft: '20px',
                   backgroundColor: '#B6509E',
                   '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
                 }}
@@ -270,57 +207,6 @@ export function AppHeader() {
         </Box>
 
         <Box sx={{ flexGrow: 1 }} />
-
-        <NoSsr>
-          <StyledBadge
-            invisible={visitedSwitch}
-            variant="dot"
-            badgeContent=""
-            color="secondary"
-            sx={{ mr: 2 }}
-          >
-            <Button
-              onClick={handleBridgeClick}
-              variant="surface"
-              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
-            >
-              {!smd && (
-                <Typography component="span" typography="subheader1">
-                  Bridge GHO
-                </Typography>
-              )}
-              <SvgIcon fontSize="small">
-                <SparklesIcon />
-              </SvgIcon>
-            </Button>
-          </StyledBadge>
-        </NoSsr>
-
-        <NoSsr>
-          <StyledBadge
-            invisible={true}
-            variant="dot"
-            badgeContent=""
-            color="secondary"
-            sx={{ mr: 2 }}
-          >
-            <Button
-              onClick={handleSwitchClick}
-              variant="surface"
-              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
-              aria-label="Switch tool"
-            >
-              {!smd && (
-                <Typography component="span" typography="subheader1">
-                  Switch tokens
-                </Typography>
-              )}
-              <SvgIcon fontSize="small">
-                <SwitchHorizontalIcon />
-              </SvgIcon>
-            </Button>
-          </StyledBadge>
-        </NoSsr>
 
         {!mobileMenuOpen && (
           <WalletWidget
