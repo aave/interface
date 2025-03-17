@@ -62,9 +62,9 @@ export const permitByChainAndToken: {
     '0x29219dd400f2bf60e5a23d13be72b486d4038894': false, // USDC.e
   },
   [ChainId.celo]: {
-    '0xceba9300f2b948710d2653dd7b07f33a8b32118c': true, // USDC
+    // '0xceba9300f2b948710d2653dd7b07f33a8b32118c': true, // USDC
     '0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e': true, // USDT
-    '0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73': true, // cEUR
-    '0x765de816845861e75a25fca122bb6898b8b1282a': true, // cUSD
+    // '0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73': true, // cEUR
+    // '0x765de816845861e75a25fca122bb6898b8b1282a': true, // cUSD
   },
 };
