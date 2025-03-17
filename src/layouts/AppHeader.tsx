@@ -157,7 +157,7 @@ export function AppHeader() {
         >
           <img src={uiConfig.appLogo} alt="Better Bank" width={40} height={40} />
         </Box>
-        <Typography variant="h2">
+        <Typography variant="h2" style={{color:'#fff'}}>
           <Trans>Better Bank</Trans>
         </Typography>
         <Box sx={{ mr: sm ? 1 : 3 }}>
