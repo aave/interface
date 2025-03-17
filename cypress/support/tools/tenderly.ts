@@ -23,20 +23,22 @@ const tenderly = axios.create({
   },
 });
 
-export class TenderlyFork {
+export class TenderlyVnet {
   public _vnetNetworkID: number;
   public _chainID: number;
+  private _vnet_admin_rpc: string;
   private vnet_id?: string;
-  private vnet_admin_rpc?: string;
 
   constructor({ forkNetworkID }: { forkNetworkID: number }) {
     this._vnetNetworkID = forkNetworkID;
     this._chainID = 3030;
+    this._vnet_admin_rpc = '';
   }
 
-  private checkForkInitialized() {
+  private checkVnetInitialized() {
     if (!this.vnet_id) throw new Error('Vnet not initialized!');
-    if (!this.vnet_admin_rpc) throw new Error('Vnet not initialized! Admin RPC url not found!');
+    if (this._vnet_admin_rpc == '')
+      throw new Error('Vnet not initialized! Admin RPC url not found!');
   }
 
   async init() {
@@ -53,18 +55,18 @@ export class TenderlyFork {
       }
     );
     this.vnet_id = response.data.id;
-    this.vnet_admin_rpc = response.data.rpcs.find(
+    this._vnet_admin_rpc = response.data.rpcs.find(
       (rpc: { name: string }) => rpc.name === 'Admin RPC'
     )?.url;
   }
 
   get_rpc_url() {
-    this.checkForkInitialized();
-    return this.vnet_admin_rpc;
+    this.checkVnetInitialized();
+    return this._vnet_admin_rpc;
   }
 
   async add_balance_rpc(address: string) {
-    this.checkForkInitialized();
+    this.checkVnetInitialized();
     return axios({
       url: this.get_rpc_url(),
       method: 'post',
@@ -126,7 +128,7 @@ export class TenderlyFork {
     return res;
   }
 
-  async deleteFork() {
+  async deleteVnet() {
     await tenderly.delete(
       `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets/${this.vnet_id}`
     );
