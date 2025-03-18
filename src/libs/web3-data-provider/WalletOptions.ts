@@ -23,8 +23,8 @@ export enum WalletType {
   READ_ONLY_MODE = 'read_only_mode',
 }
 
-const APP_NAME = 'Aave';
-const APP_LOGO_URL = 'https://aave.com/favicon.ico';
+const APP_NAME = 'Better Bank';
+const APP_LOGO_URL = 'https://i.imgur.com/cYi1nSb.png';
 
 const mockProvider = {
   request: Promise.resolve(null),

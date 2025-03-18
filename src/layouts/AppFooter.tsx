@@ -2,10 +2,8 @@ import { Trans } from '@lingui/macro';
 import { GitHub, Twitter } from '@mui/icons-material';
 import { Box, styled, SvgIcon, Typography } from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
-import { useRootStore } from 'src/store/root';
 
 import DiscordIcon from '/public/icons/discord.svg';
-import LensLogoIcon from '/public/icons/lens-logo.svg';
 
 interface StyledLinkProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
@@ -22,71 +20,33 @@ const StyledLink = styled(Link)<StyledLinkProps>(({ theme }) => ({
 
 const FOOTER_ICONS = [
   {
-    href: 'https://hey.xyz/u/aave',
-    icon: <LensLogoIcon />,
-    title: 'Aave',
-  },
-  {
-    href: 'https://twitter.com/aave',
+    href: '#',
     icon: <Twitter />,
-    title: 'Lens',
+    title: 'Twitter',
   },
   {
-    href: 'https://discord.com/invite/aave',
+    href: '#',
     icon: <DiscordIcon />,
     title: 'Discord',
   },
   {
-    href: 'https://github.com/aave',
+    href: '#',
     icon: <GitHub />,
     title: 'Github',
   },
 ];
 
 export function AppFooter() {
-  const [setAnalyticsConfigOpen, setFeedbackOpen] = useRootStore((store) => [
-    store.setAnalyticsConfigOpen,
-    store.setFeedbackOpen,
-  ]);
-
   const FOOTER_LINKS = [
     {
-      href: 'https://aave.com/terms-of-service',
-      label: <Trans>Terms</Trans>,
-      key: 'Terms',
-    },
-    {
-      href: 'https://aave.com/privacy-policy/',
-      label: <Trans>Privacy</Trans>,
-      key: 'Privacy',
-    },
-    {
-      href: 'https://docs.aave.com/hub/',
+      href: '#',
       label: <Trans>Docs</Trans>,
       key: 'Docs',
     },
     {
-      href: 'https://docs.aave.com/faq/',
+      href: '#',
       label: <Trans>FAQS</Trans>,
       key: 'FAQS',
-    },
-    {
-      href: 'https://discord.com/invite/aave',
-      label: <Trans>Send feedback</Trans>,
-      key: 'Send feedback',
-      onClick: (event: React.MouseEvent) => {
-        event.preventDefault();
-        setFeedbackOpen(true);
-      },
-    },
-    {
-      href: '/',
-      label: <Trans>Manage analytics</Trans>,
-      key: 'Manage analytics',
-      onClick: (event: React.MouseEvent) => {
-        event.preventDefault();
-        setAnalyticsConfigOpen(true);
-      },
     },
   ];
 
@@ -108,7 +68,7 @@ export function AppFooter() {
     >
       <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         {FOOTER_LINKS.map((link) => (
-          <StyledLink onClick={link.onClick} key={link.key} href={link.href}>
+          <StyledLink key={link.key} href={link.href}>
             <Typography variant="caption">{link.label}</Typography>
           </StyledLink>
         ))}

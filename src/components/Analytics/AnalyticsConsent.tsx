@@ -116,7 +116,7 @@ export default function AnalyticsBanner() {
           We may employ on-the-spot tracking techniques during your browsing session to collect data
           on your interactions, preferences, and behaviour. This data helps us personalise your
           experience and improve our services. See our
-          <Link sx={{ color: theme.palette.info.main }} href="https://aave.com/privacy-policy/">
+          <Link sx={{ color: theme.palette.info.main }} href="#">
             {' '}
             Privacy Policy.
           </Link>

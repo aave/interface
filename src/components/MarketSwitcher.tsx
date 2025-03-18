@@ -185,7 +185,7 @@ export const MarketSwitcher = () => {
                       background: (theme) => theme.palette.gradients.aaveGradient,
                     }}
                   >
-                    <Typography variant="subheader2">V3</Typography>
+                    {/*<Typography variant="subheader2">V3</Typography>*/}
                   </Box>
                 ) : (
                   <Box
@@ -228,9 +228,7 @@ export const MarketSwitcher = () => {
     >
       <Box>
         <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
-          <Trans>
-            {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
-          </Trans>
+          <Trans>{ENABLE_TESTNET || STAGING_ENV ? 'Select Testnet Market' : 'Select Market'}</Trans>
         </Typography>
       </Box>
       {isV3MarketsAvailable && (
@@ -282,10 +280,10 @@ export const MarketSwitcher = () => {
                       }
                 }
               >
-                <Trans>Version 3</Trans>
+                <Trans>Arb Testnet</Trans>
               </Typography>
             </StyledToggleButton>
-            <StyledToggleButton
+            {/*} <StyledToggleButton
               value={SelectedMarketVersion.V2}
               data-cy={`markets_switch_button_v2`}
               sx={{
@@ -313,7 +311,7 @@ export const MarketSwitcher = () => {
               >
                 <Trans>Version 2</Trans>
               </Typography>
-            </StyledToggleButton>
+            </StyledToggleButton>*/}
           </StyledToggleButtonGroup>
         </Box>
       )}

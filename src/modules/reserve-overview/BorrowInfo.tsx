@@ -94,10 +94,7 @@ export const BorrowInfo = ({
                         Borrowing of this asset is limited to a certain amount to minimize liquidity
                         pool insolvency.
                       </Trans>{' '}
-                      <Link
-                        href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
-                        underline="always"
-                      >
+                      <Link href="#" underline="always">
                         <Trans>Learn more</Trans>
                       </Link>
                     </>

@@ -1,16 +1,16 @@
 import { ChainId } from '@aave/contract-helpers';
 import {
-  AaveV2Avalanche,
+  //AaveV2Avalanche,
   AaveV2Ethereum,
-  AaveV2Fuji,
+  /*AaveV2Fuji,
   AaveV2Polygon,
   AaveV3Arbitrum,
   AaveV3ArbitrumSepolia,
   AaveV3Avalanche,
   AaveV3Base,
-  AaveV3BNB,
+  AaveV3BNB,*/
   AaveV3Ethereum,
-  AaveV3EthereumEtherFi,
+  /* AaveV3EthereumEtherFi,
   AaveV3EthereumLido,
   AaveV3Gnosis,
   AaveV3Metis,
@@ -20,7 +20,7 @@ import {
   AaveV3Scroll,
   AaveV3ScrollSepolia,
   AaveV3Sepolia,
-  AaveV3ZkSync,
+  AaveV3ZkSync,*/
 } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
 
@@ -105,7 +105,7 @@ const apiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
 
 export const marketsData: {
   [key in any]: MarketDataType;
-  // [key in keyof typeof CustomMarket]: MarketDataType;
+  //[key in keyof typeof CustomMarket]: MarketDataType;
 } = {
   [CustomMarket.proto_mainnet_v3]: {
     marketTitle: 'Ethereum',
@@ -113,8 +113,8 @@ export const marketsData: {
     chainId: ChainId.mainnet,
     v3: true,
     enabledFeatures: {
-      governance: true,
-      staking: true,
+      governance: false,
+      staking: false,
       liquiditySwap: true,
       collateralRepay: true,
       incentives: true,
@@ -206,8 +206,8 @@ export const marketsData: {
     market: CustomMarket.proto_mainnet,
     chainId: ChainId.mainnet,
     enabledFeatures: {
-      governance: true,
-      staking: true,
+      governance: false,
+      staking: false,
       liquiditySwap: true,
       collateralRepay: false,
       incentives: true,
