@@ -12756,6 +12756,202 @@ export const TOKEN_LIST: TokenList = {
       chainId: 1,
       logoURI: 'https://assets.coingecko.com/coins/images/32254/standard/sdai.png?1697015278',
     },
+    {
+      name: 'USDC',
+      address: '0x9e90296a1343258388a6476db1c12d76dd04504e',
+      symbol: 'USDC',
+      decimals: 18,
+      chainId: 1,
+    },
+    {
+      "address": "0x14d44f4457de9bd6435b566543d0a58754ba27b3",
+      "symbol": "FYDE",
+      "name": "FYDE Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0x8707cdf0767a4a956d6ebd7728a2ad483b334968",
+      "symbol": "PEPE",
+      "name": "PEPE Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0x422e3b839e0bcf7c9dbc7df39329e9380096149c",
+      "symbol": "USDT",
+      "name": "Tether",
+      "decimals": 6,
+      "chainId": 42161
+    },
+    {
+      "address": "0xcbc79972198fd73ddb8fdee6dcdec1e6270be357",
+      "symbol": "ETH",
+      "name": "Ether",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xf8d72c9cd50607bdd6fbdce53d6929794c99c959",
+      "symbol": "eth",
+      "name": "Ethereum",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0x1db4E24A2747D0E7b209E9BB4EFe0b7d3Df806B0",
+      "symbol": "AAVE",
+      "name": "Aave Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0x7b6bcfbb49199e16b5c2cd9f1b627575e2fadf6f",
+      "symbol": "CRV",
+      "name": "Curve DAO Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xece654d50a41c1f562e46ecee9334a45a57b918d",
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "decimals": 8,
+      "chainId": 42161
+    },
+    {
+      "address": "0x4dA65b79d0AD30f64e4E06Bc3c7FCa7D263cA8aC",
+      "symbol": "TokenV",
+      "name": "TokenV",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0x10c9cc8aba8c0d9289bee510f3147cc38774b8b0",
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "decimals": 8,
+      "chainId": 42161
+    },
+    {
+      "address": "0xb2785e03e542161d3dfa3ce3ddad4a26d892cd6a",
+      "symbol": "ZAP",
+      "name": "ZAP Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xb29870524503b0D83AB8c57d79e7849883479346",
+      "symbol": "AsoRaD",
+      "name": "AsoRaD Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xe3c861bd8b5deb9ec15e74b96b600db119f765a1",
+      "symbol": "ZAPUSD",
+      "name": "ZAPUSD Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0x00699FE7d5b786d42297670C7Ba7F02373B4F0e3",
+      "symbol": "$SHARBI",
+      "name": "$SHARBI Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xbe3e51fbbcd6e0da945941f4452339bd2f1259e5",
+      "symbol": "TokenV",
+      "name": "TokenV",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xcceea600520f56982e389e97ac6ac1ffc68c3b9d",
+      "symbol": "DAI",
+      "name": "Dai Stablecoin",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xcc9841c942ec72e6ac74da8fb2fb45cf3b1a099c",
+      "symbol": "USDT",
+      "name": "Tether",
+      "decimals": 6,
+      "chainId": 42161
+    },
+    {
+      "address": "0x2d1352df75836a2681f8be063571c8391c04b0dc",
+      "symbol": "ZAP-WETH",
+      "name": "ZAP-WETH",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0x7243bd9e4ace21dbeb4c11e7916505b89ad6b107",
+      "symbol": "ARBWART",
+      "name": "ARBWART Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xb41877593e1eec5a380f8c22d0abfa17b0865527",
+      "symbol": "ARB",
+      "name": "Arbitrum",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xa4cd3c7f8e71115c856dad1dbe042b17722f7807",
+      "symbol": "ARB",
+      "name": "Arbitrum",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xe4251b067c541f12c5032198884306b66122e44e",
+      "symbol": "ARBITRUM",
+      "name": "Arbitrum Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0x2519f2598897d2a93d0ccf368fa565fd3053de1e",
+      "symbol": "GMT",
+      "name": "GMT Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0x7b6c14ccca515d6d1f234054254bdced56ac173e",
+      "symbol": "WBARB",
+      "name": "WBARB Token",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xaed3a2d0aaaaf5e6f54285a004af5036f3fe0eda",
+      "symbol": "ODOD_LP",
+      "name": "ODOD LP",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    {
+      "address": "0xaed3a2d0aaaaf5e6f54285a004af5036f3fe0eda",
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "decimals": 18,
+      "chainId": 42161
+    },
+    { 
+      "address": "0xAE63B6DC1E399c7257E7Aa4e20e334CAA3bab6cc",
+      "symbol": "ETH",
+      "name": "Ether",
+      "decimals": 18,
+      "chainId": 1
+    }
   ],
 };
 
