@@ -29,8 +29,8 @@ export class TenderlyVnet {
   private _vnet_admin_rpc: string;
   private vnet_id?: string;
 
-  constructor({ forkNetworkID }: { forkNetworkID: number }) {
-    this._vnetNetworkID = forkNetworkID;
+  constructor({ vnetNetworkID }: { vnetNetworkID: number }) {
+    this._vnetNetworkID = vnetNetworkID;
     this._chainID = 3030;
     this._vnet_admin_rpc = '';
   }

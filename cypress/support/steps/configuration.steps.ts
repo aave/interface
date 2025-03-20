@@ -25,7 +25,7 @@ export const configEnvWithTenderly = ({
   enableTestnet?: boolean;
   urlSuffix?: string;
 }) => {
-  const tenderly = new TenderlyVnet({ forkNetworkID: chainId });
+  const tenderly = new TenderlyVnet({ vnetNetworkID: chainId });
   const walletAddress: string = wallet != null ? wallet.address : DEFAULT_TEST_ACCOUNT.address;
   const privateKey: string = wallet != null ? wallet.privateKey : DEFAULT_TEST_ACCOUNT.privateKey;
   let provider: JsonRpcProvider;
