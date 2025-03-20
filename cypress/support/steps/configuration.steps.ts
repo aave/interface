@@ -3,7 +3,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
 
 import { CustomizedBridge } from '../tools/bridge';
-import { DEFAULT_TEST_ACCOUNT, TenderlyFork } from '../tools/tenderly';
+import { DEFAULT_TEST_ACCOUNT, TenderlyVnet } from '../tools/tenderly';
 
 const URL = Cypress.env('URL');
 const PERSIST_FORK_AFTER_RUN = Cypress.env('PERSIST_FORK_AFTER_RUN') || false;
@@ -25,7 +25,7 @@ export const configEnvWithTenderly = ({
   enableTestnet?: boolean;
   urlSuffix?: string;
 }) => {
-  const tenderly = new TenderlyFork({ forkNetworkID: chainId });
+  const tenderly = new TenderlyVnet({ vnetNetworkID: chainId });
   const walletAddress: string = wallet != null ? wallet.address : DEFAULT_TEST_ACCOUNT.address;
   const privateKey: string = wallet != null ? wallet.privateKey : DEFAULT_TEST_ACCOUNT.privateKey;
   let provider: JsonRpcProvider;
@@ -94,8 +94,8 @@ export const configEnvWithTenderly = ({
   });
   after(async () => {
     if (!PERSIST_FORK_AFTER_RUN) {
-      cy.log('deleting fork');
-      await tenderly.deleteFork();
+      cy.log('deleting vnet');
+      await tenderly.deleteVnet();
     }
   });
 };
