@@ -25,6 +25,7 @@ export enum MeritAction {
   BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
   BASE_SUPPLY_USDC = 'base-supply-usdc',
   BASE_SUPPLY_WSTETH = 'base-supply-wsteth',
+  BASE_SUPPLY_WEETH = 'base-supply-weeth',
   BASE_SUPPLY_EZETH = 'base-supply-ezeth',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   AVALANCHE_SUPPLY_BTCB = 'avalanche-supply-btcb',
@@ -243,6 +244,16 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         action: MeritAction.BASE_SUPPLY_EZETH,
         rewardTokenAddress: '0x3B50805453023a91a8bf641e279401a0b23FA6F9', // Renzo (REZ)
         rewardTokenSymbol: 'REZ',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      },
+    ],
+    weETH: [
+      {
+        action: MeritAction.BASE_SUPPLY_WEETH,
+        rewardTokenAddress: AaveV3Base.ASSETS.weETH.A_TOKEN,
+        rewardTokenSymbol: 'aBasweETH',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
         customForumLink: joinedEthCorrelatedIncentiveForumLink,
