@@ -60,6 +60,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     currentAccount = readOnlyModeAddress;
   }
 
+  const { data: isContractAddress } = useIsContractAddress(account || '', chainId);
+
   useEffect(() => {
     if (didInit) {
       return;
@@ -183,16 +185,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }
   }, [readOnlyModeAddress, setAccount]);
 
-  console.log('account', account);
-  const { data: isContractAddress } = useIsContractAddress(account || '', chainId);
-
   useEffect(() => {
     if (!account) {
       setConnectedAccountIsContract(false);
       return;
     }
 
-    console.log('isContractAddress', isContractAddress);
     if (isContractAddress) {
       setConnectedAccountIsContract(true);
     }
