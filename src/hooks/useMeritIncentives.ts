@@ -1,6 +1,13 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { AaveV3Avalanche, AaveV3Base, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import {
+  AaveV3Arbitrum,
+  AaveV3Avalanche,
+  AaveV3Base,
+  AaveV3Ethereum,
+  AaveV3EthereumLido,
+  AaveV3Sonic,
+} from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
@@ -8,16 +15,24 @@ export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
   ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
   ETHEREUM_SUPPLY_ETHX = 'ethereum-supply-ethx',
+  ETHEREUM_PRIME_SUPPLY_ETH = 'ethereum-prime-supply-weth',
+  ETHEREUM_PRIME_SUPPLY_EZETH = 'ethereum-prime-supply-ezeth',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
+  ARBITRUM_SUPPLY_ETH = 'arbitrum-supply-weth',
+  ARBITRUM_SUPPLY_WSTETH = 'arbitrum-supply-wsteth',
+  ARBITRUM_SUPPLY_EZETH = 'arbitrum-supply-ezeth',
   BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
   BASE_SUPPLY_USDC = 'base-supply-usdc',
+  BASE_SUPPLY_WSTETH = 'base-supply-wsteth',
+  BASE_SUPPLY_EZETH = 'base-supply-ezeth',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   AVALANCHE_SUPPLY_BTCB = 'avalanche-supply-btcb',
   AVALANCHE_SUPPLY_USDC = 'avalanche-supply-usdc',
   AVALANCHE_SUPPLY_USDT = 'avalanche-supply-usdt',
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
+  SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
 }
 
 type MeritIncentives = {
@@ -43,6 +58,11 @@ export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiv
 
 const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData[] | undefined =>
   MERIT_DATA_MAP[market]?.[symbol];
+
+const antiLoopMessage =
+  'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+const joinedEthCorrelatedIncentiveForumLink =
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
 
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
@@ -99,8 +119,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         protocolAction: ProtocolAction.supply,
         customForumLink:
           'https://governance.aave.com/t/arfc-pyusd-reserve-configuration-update-incentive-campaign/19573',
-        customMessage:
-          'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.',
+        customMessage: antiLoopMessage,
       },
     ],
     ETHx: [
@@ -109,6 +128,80 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: '0x30D20208d987713f46DFD34EF128Bb16C404D10f', // Stader (SD)
         rewardTokenSymbol: 'SD',
         protocolAction: ProtocolAction.supply,
+      },
+    ],
+  },
+  [CustomMarket.proto_lido_v3]: {
+    ETH: [
+      {
+        action: MeritAction.ETHEREUM_PRIME_SUPPLY_ETH,
+        rewardTokenAddress: AaveV3EthereumLido.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aEthLidoWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      },
+    ],
+    WETH: [
+      {
+        action: MeritAction.ETHEREUM_PRIME_SUPPLY_ETH,
+        rewardTokenAddress: AaveV3EthereumLido.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aEthLidoWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      },
+    ],
+    ezETH: [
+      {
+        action: MeritAction.ETHEREUM_PRIME_SUPPLY_EZETH,
+        rewardTokenAddress: '0x3B50805453023a91a8bf641e279401a0b23FA6F9', // Renzo (REZ)
+        rewardTokenSymbol: 'REZ',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      },
+    ],
+  },
+  [CustomMarket.proto_arbitrum_v3]: {
+    ETH: [
+      {
+        action: MeritAction.ARBITRUM_SUPPLY_ETH,
+        rewardTokenAddress: AaveV3Arbitrum.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aArbWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      },
+    ],
+    WETH: [
+      {
+        action: MeritAction.ARBITRUM_SUPPLY_ETH,
+        rewardTokenAddress: AaveV3Arbitrum.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aArbWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      },
+    ],
+    wstETH: [
+      {
+        action: MeritAction.ARBITRUM_SUPPLY_WSTETH,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.wstETH.UNDERLYING,
+        rewardTokenSymbol: 'aArbwstETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      },
+    ],
+    ezETH: [
+      {
+        action: MeritAction.ARBITRUM_SUPPLY_EZETH,
+        rewardTokenAddress: '0x3B50805453023a91a8bf641e279401a0b23FA6F9', // Renzo (REZ)
+        rewardTokenSymbol: 'REZ',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentiveForumLink,
       },
     ],
   },
@@ -133,6 +226,26 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
         rewardTokenSymbol: 'aBasUSDC',
         protocolAction: ProtocolAction.borrow,
+      },
+    ],
+    wstETH: [
+      {
+        action: MeritAction.BASE_SUPPLY_WSTETH,
+        rewardTokenAddress: AaveV3Base.ASSETS.wstETH.UNDERLYING,
+        rewardTokenSymbol: 'aBaswstETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      },
+    ],
+    ezETH: [
+      {
+        action: MeritAction.BASE_SUPPLY_EZETH,
+        rewardTokenAddress: '0x3B50805453023a91a8bf641e279401a0b23FA6F9', // Renzo (REZ)
+        rewardTokenSymbol: 'REZ',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentiveForumLink,
       },
     ],
   },
@@ -175,6 +288,19 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.AUSD.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+      },
+    ],
+  },
+  [CustomMarket.proto_sonic_v3]: {
+    ['USDC.e']: [
+      {
+        action: MeritAction.SONIC_SUPPLY_USDCE,
+        rewardTokenAddress: AaveV3Sonic.ASSETS.USDCe.A_TOKEN,
+        rewardTokenSymbol: 'aSonwS',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink:
+          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/61',
       },
     ],
   },

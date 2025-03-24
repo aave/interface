@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.32.2-cb968509771de56d447c3abf69bfd3da12ee2ce5.0":
-  version "1.32.2-cb968509771de56d447c3abf69bfd3da12ee2ce5.0"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.32.2-cb968509771de56d447c3abf69bfd3da12ee2ce5.0.tgz#d86f6ddaa701b967eda88fff0365976ab31e52a2"
-  integrity sha512-4dZca5Gw4Sp6RSQkUb8Av9LVNWGSbAxOLzOSMwZzbsJ/mef34/zI+DmQ7AEzg9lrxqR/xWCw0cH1Ab38TGBuAA==
+"@aave/contract-helpers@1.33.0":
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.33.0.tgz#d58f44c83737dfe3ab04b3776f1133064e08ebc6"
+  integrity sha512-hwOG+B6LYv8/oZIW3OYPZqr2OwEVYLWXO230h3LfUpG9P4+MhknZeyuJHRA7uGNpj2dpP/KYuLrYYfx4G9D0aQ==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.32.1":
-  version "1.32.1"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.32.1.tgz#9cd4bb9343f2fabb078b6ca61b5845c7044fe643"
-  integrity sha512-uLjwGNEOilWWguW7CX6Dwsk9uP4aT9HmOCzXpHqDrPbR2oGSLV8BlvHWx/8wzY9Cdt5Jr4ofP0vm/Xs4lrgDNg==
+"@aave/math-utils@1.33.0":
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.33.0.tgz#2386f7353dfdc7bdd88079e4fd7351275b1cdbf6"
+  integrity sha512-guDUruuQTmp8QLUNRZJFxzu/VyJPs0Mieebk+tJDplVNq+TzaSZHU3YtAxp/u6tGw166v47ALFrt7yA/oaX1TA==
 
 "@adobe/css-tools@^4.0.1":
   version "4.4.1"
@@ -1066,10 +1066,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@4.10.0":
-  version "4.10.0"
-  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.10.0.tgz#3df9b6afda47d779f39b78aa48c4f0982a18c6e1"
-  integrity sha512-+WtMRtXLFpic/PLhNn32FIFzNFIgqlgC5Z9RLOsPgbdkvDDAW83w1emoxqxbW0jYGGNcYJUTTrtXqlhDeQGwkg==
+"@bgd-labs/aave-address-book@^4.17.1":
+  version "4.17.1"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.17.1.tgz#beac023bcb925bfe51b1b789ba90cf406b2a6183"
+  integrity sha512-QX1Kifpb6J4G85phtnWSndDyPjsG5F6MXiuCEodM+gZ9IqgJOQ9dw3wi3Az2nRlWjdkRlCr7F9xwYqqkDunZsw==
 
 "@coinbase/wallet-sdk@4.2.3":
   version "4.2.3"

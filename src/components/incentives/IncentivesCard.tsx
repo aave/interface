@@ -7,8 +7,10 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
 import {
   EthenaIncentivesButton,
+  EtherfiIncentivesButton,
   IncentivesButton,
   MeritIncentivesButton,
+  SonicIncentivesButton,
   ZkIgniteIncentivesButton,
 } from './IncentivesButton';
 
@@ -69,7 +71,13 @@ export const IncentivesCard = ({
       <Box
         sx={
           isTableChangedToCards
-            ? { display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }
+            ? {
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '4px',
+              }
             : {
                 display: 'flex',
                 justifyContent: 'center',
@@ -87,6 +95,8 @@ export const IncentivesCard = ({
           protocolAction={protocolAction}
         />
         <EthenaIncentivesButton rewardedAsset={address} />
+        <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+        <SonicIncentivesButton rewardedAsset={address} />
       </Box>
     </Box>
   );

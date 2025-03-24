@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-02-18 18:06\n"
+"PO-Revision-Date: 2025-03-06 18:06\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -27,6 +27,8 @@ msgid "Receive (est.)"
 msgstr "Recevoir (est.)"
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
@@ -199,6 +201,10 @@ msgstr "L’actif ne peut pas être migré en raison d’une restriction de plaf
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
 msgstr "Adresse bloquée"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
+msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -485,6 +491,10 @@ msgstr "L’emprunt n’est pas disponible car vous utilisez le mode Isolation. 
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on Lens"
 msgstr "Partager sur Lens"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Learn more about Sonic Rewards program"
+msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -1286,6 +1296,10 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Valeur de retour invalide de la fonction flashloan executor"
+
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "Learn more about the Kernel points distribution"
+msgstr ""
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
@@ -2734,6 +2748,10 @@ msgstr "Dette"
 msgid "Filter"
 msgstr "Filtrer"
 
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "Learn more about the Ether.fi program"
+msgstr ""
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown to unstake"
 msgstr "Temps de recharge pour déstaker"
@@ -3158,6 +3176,10 @@ msgstr "Le montant maximum disponible pour emprunter est limité car le plafond 
 msgid "COPY IMAGE"
 msgstr "COPIER L’IMAGE"
 
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr "Garantie insuffisante pour couvrir une nouvelle position d’emprunt. Le portefeuille doit avoir une capacité d’emprunt restante pour effectuer le transfert de dette."
@@ -3246,6 +3268,10 @@ msgstr "Avec testnet Faucet, vous pouvez obtenir des ressources gratuites pour t
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
+msgstr ""
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Sonic Rewards."
 msgstr ""
 
 #: pages/staking.staking.tsx

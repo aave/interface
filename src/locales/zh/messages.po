@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-02-18 18:06\n"
+"PO-Revision-Date: 2025-03-06 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -27,6 +27,8 @@ msgid "Receive (est.)"
 msgstr "接收（预估）"
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
@@ -199,6 +201,10 @@ msgstr "由于供应上限限制，无法迁移资产 {marketName} v3 市场。"
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
 msgstr "被阻止的地址"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
+msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -485,6 +491,10 @@ msgstr "借用不可用，因为您使用的是隔离模式。要管理隔离模
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on Lens"
 msgstr "在镜头上分享"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Learn more about Sonic Rewards program"
+msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -1286,6 +1296,10 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
 msgstr "flashloan executor 函数的返回值无效"
+
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "Learn more about the Kernel points distribution"
+msgstr ""
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
@@ -2734,6 +2748,10 @@ msgstr "债务"
 msgid "Filter"
 msgstr "滤波器"
 
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "Learn more about the Ether.fi program"
+msgstr ""
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown to unstake"
 msgstr "冷却时间到解除质押"
@@ -3158,6 +3176,10 @@ msgstr "可借入的最大金额是有限的，因为协议借款上限即将达
 msgid "COPY IMAGE"
 msgstr "复制图像"
 
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr "抵押品不足以支付新的借款头寸。钱包必须有剩余的借贷能力才能进行债务转换。"
@@ -3246,6 +3268,10 @@ msgstr "使用测试网水龙头，您可以获得免费资产来测试 Aave 协
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
+msgstr ""
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Sonic Rewards."
 msgstr ""
 
 #: pages/staking.staking.tsx

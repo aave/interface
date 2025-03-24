@@ -7,6 +7,7 @@ import {
   base,
   baseSepolia,
   bsc,
+  celo,
   Chain,
   gnosis,
   linea,
@@ -18,6 +19,7 @@ import {
   scroll,
   scrollSepolia,
   sepolia,
+  sonic,
   zksync,
 } from 'wagmi/chains';
 
@@ -133,6 +135,7 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.base_sepolia]: {
     name: 'Base Sepolia',
+    privateJsonRPCUrl: 'https://base-sepolia.g.alchemy.com/v2/IIdPEqieQtPDflf-075haltN8Jy4CYLp',
     publicJsonRPCUrl: [
       'https://base-sepolia.blockpi.network/v1/rpc/public',
       'https://sepolia.base.org',
@@ -183,10 +186,9 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     name: 'Ethereum',
     privateJsonRPCUrl: 'https://eth-mainnet.g.alchemy.com/v2/ZiMMq2478EVIEJdsxC5dMal_ccQwtb31',
     publicJsonRPCUrl: [
-      'https://rpc.ankr.com/eth',
       'https://rpc.flashbots.net',
+      'https://eth.llamarpc.com',
       'https://eth-mainnet.public.blastapi.io',
-      //'https://cloudflare-eth.com/v1/mainnet',
     ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
     baseUniswapAdapter: '0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f',
@@ -414,6 +416,43 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl,
     wagmiChain: linea,
+  },
+  [ChainId.sonic]: {
+    name: 'Sonic',
+    privateJsonRPCUrl: 'https://sonic-mainnet.g.alchemy.com/v2/L7wpvN30xWzkijd2cRwD8n0VLFM9UTmv',
+    publicJsonRPCUrl: [
+      'https://rpc.soniclabs.com',
+      'https://sonic.drpc.org',
+      'https://sonic-rpc.publicnode.com',
+    ],
+    baseAssetSymbol: 'S',
+    wrappedBaseAssetSymbol: 'wS',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sonicscan.org',
+    networkLogoPath: '/icons/networks/sonic.svg',
+    bridge: {
+      icon: '/icons/networks/sonic.svg',
+      name: 'Sonic Bridge',
+      url: 'https://gateway.soniclabs.com',
+    },
+    ratesHistoryApiUrl,
+    wagmiChain: sonic,
+  },
+  [ChainId.celo]: {
+    name: 'Celo',
+    privateJsonRPCUrl: 'https://celo-mainnet.g.alchemy.com/v2/QSIQ93fznmXwv9qEWBnKIOOsQGldk3wL',
+    publicJsonRPCUrl: ['https://rpc.ankr.com/celo', 'https://celo.drpc.org'],
+    baseAssetSymbol: '', // N/A
+    wrappedBaseAssetSymbol: '', // N/A
+    baseAssetDecimals: 0, // N/A
+    explorerLink: 'https://celoscan.io/',
+    networkLogoPath: '/icons/networks/celo.svg',
+    bridge: {
+      icon: '/icons/networks/celo.svg',
+      name: 'Celo Bridge',
+      url: 'https://docs.celo.org/protocol/bridge',
+    },
+    wagmiChain: celo,
   },
 };
 
