@@ -5,7 +5,9 @@ import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
+import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
@@ -14,8 +16,10 @@ import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
+import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
+import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
 import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
 
 interface IncentivesButtonProps {
@@ -110,6 +114,51 @@ export const EthenaIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: stri
       open={open}
     >
       <ContentEthenaButton points={points} />
+    </ContentWithTooltip>
+  );
+};
+
+export const EtherfiIncentivesButton = (params: {
+  symbol: string;
+  market: string;
+  protocolAction?: ProtocolAction;
+}) => {
+  const [open, setOpen] = useState(false);
+  const { market, protocolAction, symbol } = params;
+  const multiplier = useEtherfiIncentives(market, symbol, protocolAction);
+
+  if (!multiplier) {
+    return null;
+  }
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={<EtherFiAirdropTooltipContent multiplier={multiplier} />}
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <ContentEtherfiButton multiplier={multiplier} />
+    </ContentWithTooltip>
+  );
+};
+
+export const SonicIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
+  const [open, setOpen] = useState(false);
+  const points = useSonicIncentives(rewardedAsset);
+
+  if (!points) {
+    return null;
+  }
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={<SonicAirdropTooltipContent points={points} />}
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <ContentSonicButton points={points} />
     </ContentWithTooltip>
   );
 };
@@ -294,7 +343,7 @@ const Content = ({
   );
 };
 
-const ContentEthenaButton = ({ points }: { points: number }) => {
+const ContentButton = ({ value, iconSrc }: { value: number; iconSrc: string }) => {
   const [open, setOpen] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -322,12 +371,24 @@ const ContentEthenaButton = ({ points }: { points: number }) => {
     >
       <Box sx={{ mr: 2 }}>
         <Typography component="span" variant="secondary12" color="text.secondary">
-          {`${points}x`}
+          {`${value}x`}
         </Typography>
       </Box>
       <Box sx={{ display: 'inline-flex' }}>
-        <img src={'/icons/other/ethena.svg'} width={12} height={12} alt="ethena-icon" />
+        <img src={iconSrc} width={12} height={12} alt="icon" />
       </Box>
     </Box>
   );
 };
+
+const ContentEthenaButton = ({ points }: { points: number }) => (
+  <ContentButton value={points} iconSrc="/icons/other/ethena.svg" />
+);
+
+const ContentEtherfiButton = ({ multiplier }: { multiplier: number }) => (
+  <ContentButton value={multiplier} iconSrc="/icons/other/ether.fi.svg" />
+);
+
+const ContentSonicButton = ({ points }: { points: number }) => (
+  <ContentButton value={points} iconSrc="/icons/networks/sonic.svg" />
+);

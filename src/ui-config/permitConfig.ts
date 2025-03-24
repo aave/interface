@@ -1,5 +1,14 @@
 import { ChainId } from '@aave/contract-helpers';
 
+/**
+ * Maps token permit support by chain and token address.
+ * Permit enables gasless approvals using signed messages (EIP-2612).
+ *
+ * To check if a token supports permit, check if the contract has a permit function in the chain's scanner
+ * or in the contract's source code.
+ *
+ * @dev use addresses in lowercase
+ */
 export const permitByChainAndToken: {
   [chainId: number]: Record<string, boolean>;
 } = {
@@ -45,5 +54,17 @@ export const permitByChainAndToken: {
     '0xa219439258ca9da29e9cc4ce5596924745e12b93': true, // USDT
     '0x2416092f143378750bb29b79ed961ab195cceea5': true, // ezETH
     '0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f': true, // wstETH
+  },
+  [ChainId.sonic]: {
+    // adding these in false for clarity
+    '0x50c42deacd8fc9773493ed674b675be577f2634b': false, // WETH
+    '0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38': false, // wS
+    '0x29219dd400f2bf60e5a23d13be72b486d4038894': false, // USDC.e
+  },
+  [ChainId.celo]: {
+    // '0xceba9300f2b948710d2653dd7b07f33a8b32118c': true, // USDC
+    '0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e': true, // USDT
+    // '0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73': true, // cEUR
+    // '0x765de816845861e75a25fca122bb6898b8b1282a': true, // cUSD
   },
 };

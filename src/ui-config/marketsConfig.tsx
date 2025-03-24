@@ -9,6 +9,7 @@ import {
   AaveV3Avalanche,
   AaveV3Base,
   AaveV3BNB,
+  AaveV3Celo,
   AaveV3Ethereum,
   AaveV3EthereumEtherFi,
   AaveV3EthereumLido,
@@ -21,6 +22,7 @@ import {
   AaveV3Scroll,
   AaveV3ScrollSepolia,
   AaveV3Sepolia,
+  AaveV3Sonic,
   AaveV3ZkSync,
 } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
@@ -94,6 +96,8 @@ export enum CustomMarket {
   proto_zksync_v3 = 'proto_zksync_v3',
   proto_etherfi_v3 = 'proto_etherfi_v3',
   proto_linea_v3 = 'proto_linea_v3',
+  proto_sonic_v3 = 'proto_sonic_v3',
+  proto_celo_v3 = 'proto_celo_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -697,6 +701,37 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Linea.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Linea.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Linea.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_sonic_v3]: {
+    marketTitle: 'Sonic',
+    market: CustomMarket.proto_sonic_v3,
+    chainId: ChainId.sonic,
+    v3: true,
+    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/FQcacc4ZJaQVS9euWb76nvpSq2GxavBnUM6DU6tmspbi`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sonic.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Sonic.POOL,
+      WETH_GATEWAY: AaveV3Sonic.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Sonic.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Sonic.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Sonic.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Sonic.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_celo_v3]: {
+    marketTitle: 'Celo',
+    market: CustomMarket.proto_celo_v3,
+    chainId: ChainId.celo,
+    v3: true,
+    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/GAVWZzGwQ6d6QbFojyFWxpZ2GB9Rf5hZgGyJHCEry8kn`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Celo.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Celo.POOL,
+      WALLET_BALANCE_PROVIDER: AaveV3Celo.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Celo.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Celo.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Celo.COLLECTOR,
     },
   },
 } as const;
