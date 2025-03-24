@@ -43,6 +43,8 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   'm.USDC': 'USDC',
   'm.USDT': 'USDT',
   'm.DAI': 'DAI',
+  // celo
+  'USD₮': 'USDT',
 };
 
 /**
