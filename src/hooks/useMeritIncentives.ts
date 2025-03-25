@@ -249,7 +249,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         action: MeritAction.BASE_BORROW_WSTETH,
         rewardTokenAddress: AaveV3Base.ASSETS.wstETH.A_TOKEN,
         rewardTokenSymbol: 'aBaswstETH',
-        protocolAction: ProtocolAction.supply,
+        protocolAction: ProtocolAction.borrow,
         customMessage: antiLoopBorrowMessage,
         customForumLink: joinedEthCorrelatedIncentivePhase2ForumLink,
       },
