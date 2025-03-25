@@ -104,7 +104,6 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
       />
     );
 
-  console.log(icon);
   return (
     <>
       <TxModalTitle title="Unstake" symbol={nameFormatted} />
