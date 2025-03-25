@@ -8,6 +8,7 @@ import { ReserveEModePanel } from '../ReserveEModePanel';
 import { PanelRow, PanelTitle } from '../ReservePanels';
 import { GhoBorrowInfo } from './GhoBorrowInfo';
 import { GhoDiscountCalculator } from './GhoDiscountCalculator';
+import { GHOInterestRateModelGraphContainer } from '../graphs/GHOInterestRateModelGraphContainer';
 
 type GhoReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -91,6 +92,15 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           <Box sx={{ mt: 8 }}>
             <GhoDiscountCalculator />
           </Box>
+        </Box>
+      </PanelRow>
+      <Divider sx={{ my: { xs: 6, sm: 10 } }} />
+      <PanelRow>
+        <PanelTitle>
+          <Trans>Historical Interest Rate</Trans>
+        </PanelTitle>
+        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+          <GHOInterestRateModelGraphContainer />
         </Box>
       </PanelRow>
       {reserve.eModes.length > 0 && (
