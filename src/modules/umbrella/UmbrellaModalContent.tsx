@@ -1,4 +1,3 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Skeleton, Stack, Typography } from '@mui/material';
@@ -26,7 +25,6 @@ import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { NetworkConfig } from 'src/ui-config/networksConfig';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { STAKE } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
@@ -54,10 +52,7 @@ export interface StakeInputAsset {
   balance: string;
 }
 
-const getInputTokens = (
-  stakeData: MergedStakeData,
-  networkConfig: NetworkConfig
-): StakeInputAsset[] => {
+const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
   const assets = stakeData.underlyingIsStataToken
     ? [
         // stata token
@@ -84,14 +79,6 @@ const getInputTokens = (
           balance: stakeData.formattedBalances.underlyingTokenBalance,
         },
       ];
-  if (stakeData.stataTokenData.isUnderlyingWrappedBaseToken) {
-    assets.push({
-      address: API_ETH_MOCK_ADDRESS,
-      symbol: networkConfig.baseAssetSymbol,
-      iconSymbol: networkConfig.baseAssetSymbol,
-      balance: stakeData.formattedBalances.nativeTokenBalance,
-    });
-  }
   assets.sort((a, b) => +b.balance - +a.balance);
   return assets;
 };
@@ -103,11 +90,11 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
   // states
   const [_amount, setAmount] = useState('');
 
-  const [currentChainId, currentNetworkConfig] = useRootStore(
+  const [currentChainId] = useRootStore(
     useShallow((store) => [store.currentChainId, store.currentNetworkConfig])
   );
 
-  const assets = getInputTokens(stakeData, currentNetworkConfig);
+  const assets = getInputTokens(stakeData);
 
   const [inputToken, setInputToken] = useState<StakeInputAsset>(assets[0]);
 
