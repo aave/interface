@@ -25,6 +25,7 @@ export enum MeritAction {
   BASE_SUPPLY_CBBTC = 'base-supply-cbbtc',
   BASE_SUPPLY_USDC = 'base-supply-usdc',
   BASE_SUPPLY_WSTETH = 'base-supply-wsteth',
+  BASE_SUPPLY_WEETH = 'base-supply-weeth',
   BASE_SUPPLY_EZETH = 'base-supply-ezeth',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   BASE_BORROW_WSTETH = 'base-borrow-wsteth',
@@ -65,6 +66,7 @@ const antiLoopMessage =
 
 const antiLoopBorrowMessage =
   'Supplying of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
@@ -262,6 +264,16 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
         customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      },
+    ],
+    weETH: [
+      {
+        action: MeritAction.BASE_SUPPLY_WEETH,
+        rewardTokenAddress: AaveV3Base.ASSETS.weETH.A_TOKEN,
+        rewardTokenSymbol: 'aBasweETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: joinedEthCorrelatedIncentivePhase2ForumLink,
       },
     ],
   },
