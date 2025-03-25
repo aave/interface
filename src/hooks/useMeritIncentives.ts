@@ -217,7 +217,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     cbBTC: [
       {
         action: MeritAction.BASE_SUPPLY_CBBTC,
-        rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'aBasUSDC',
         protocolAction: ProtocolAction.supply,
       },
@@ -225,13 +225,13 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     USDC: [
       {
         action: MeritAction.BASE_SUPPLY_USDC,
-        rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'aBasUSDC',
         protocolAction: ProtocolAction.supply,
       },
       {
         action: MeritAction.BASE_BORROW_USDC,
-        rewardTokenAddress: AaveV3Base.ASSETS.USDC.UNDERLYING,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'aBasUSDC',
         protocolAction: ProtocolAction.borrow,
       },
@@ -239,7 +239,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     wstETH: [
       {
         action: MeritAction.BASE_SUPPLY_WSTETH,
-        rewardTokenAddress: AaveV3Base.ASSETS.wstETH.UNDERLYING,
+        rewardTokenAddress: AaveV3Base.ASSETS.wstETH.A_TOKEN,
         rewardTokenSymbol: 'aBaswstETH',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -247,7 +247,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       },
       {
         action: MeritAction.BASE_BORROW_WSTETH,
-        rewardTokenAddress: AaveV3Base.ASSETS.wstETH.UNDERLYING,
+        rewardTokenAddress: AaveV3Base.ASSETS.wstETH.A_TOKEN,
         rewardTokenSymbol: 'aBaswstETH',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopBorrowMessage,
