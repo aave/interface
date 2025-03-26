@@ -23,38 +23,50 @@ const tenderly = axios.create({
   },
 });
 
-export class TenderlyFork {
-  public _forkNetworkID: string;
+export class TenderlyVnet {
+  public _vnetNetworkID: number;
   public _chainID: number;
-  private fork_id?: string;
+  private _vnet_admin_rpc: string;
+  private vnet_id?: string;
 
-  constructor({ forkNetworkID }: { forkNetworkID: number }) {
-    this._forkNetworkID = forkNetworkID.toString();
+  constructor({ vnetNetworkID }: { vnetNetworkID: number }) {
+    this._vnetNetworkID = vnetNetworkID;
     this._chainID = 3030;
+    this._vnet_admin_rpc = '';
   }
 
-  private checkForkInitialized() {
-    if (!this.fork_id) throw new Error('Fork not initialized!');
+  private checkVnetInitialized() {
+    if (!this.vnet_id) throw new Error('Vnet not initialized!');
+    if (this._vnet_admin_rpc == '')
+      throw new Error('Vnet not initialized! Admin RPC url not found!');
   }
 
   async init() {
     const response = await tenderly.post(
-      `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/fork`,
+      `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets`,
       {
-        network_id: this._forkNetworkID,
-        chain_config: { chain_id: this._chainID },
+        fork_config: {
+          network_id: this._vnetNetworkID,
+          block_number: 'latest',
+        },
+        virtual_network_config: {
+          chain_config: { chain_id: this._chainID },
+        },
       }
     );
-    this.fork_id = response.data.simulation_fork.id;
+    this.vnet_id = response.data.id;
+    this._vnet_admin_rpc = response.data.rpcs.find(
+      (rpc: { name: string }) => rpc.name === 'Admin RPC'
+    )?.url;
   }
 
   get_rpc_url() {
-    this.checkForkInitialized();
-    return `https://rpc.tenderly.co/fork/${this.fork_id}`;
+    this.checkVnetInitialized();
+    return this._vnet_admin_rpc;
   }
 
   async add_balance_rpc(address: string) {
-    this.checkForkInitialized();
+    this.checkVnetInitialized();
     return axios({
       url: this.get_rpc_url(),
       method: 'post',
@@ -116,9 +128,9 @@ export class TenderlyFork {
     return res;
   }
 
-  async deleteFork() {
+  async deleteVnet() {
     await tenderly.delete(
-      `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/fork/${this.fork_id}`
+      `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets/${this.vnet_id}`
     );
   }
 }
