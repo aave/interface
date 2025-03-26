@@ -7,7 +7,7 @@ import { dashboardAssetValuesVerification } from '../../../../support/steps/veri
 import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
 
 const tokensToRequest: RequestedTokens = {
-  aETHEthereumV3: 900,
+  aETHEthereumV3: 1,
 };
 
 const testData = {
@@ -29,7 +29,7 @@ const testData = {
       {
         asset: assets.ethereumV3Market.USDC,
         apyType: constants.apyType.variable,
-        amount: 2,
+        amount: 25,
         hasApproval: false,
         repayOption: constants.repayType.collateral,
       },
