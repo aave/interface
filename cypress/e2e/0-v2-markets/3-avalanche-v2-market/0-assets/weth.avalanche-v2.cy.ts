@@ -61,7 +61,8 @@ const testData = {
   },
 };
 
-describe('WETH INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
+// borrowing is disabled
+describe.skip('WETH INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.testCases.borrow, skipTestState, true);
