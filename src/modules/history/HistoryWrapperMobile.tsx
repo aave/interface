@@ -1,5 +1,6 @@
-import { DocumentDownloadIcon, SearchIcon } from '@heroicons/react/outline';
+import { CheckIcon, DocumentDownloadIcon, SearchIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import { WarningRounded } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -12,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CustomTooltip } from 'src/components/infoTooltips/CustomToolTip';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
@@ -22,13 +24,22 @@ import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
 import TransactionMobileRowItem from './TransactionMobileRowItem';
 import { FilterOptions, TransactionHistoryItemUnion } from './types';
 
+enum downloadState {
+  NEUTRAL,
+  LOADING,
+  ERROR,
+  SUCCESS,
+}
+
 export const HistoryWrapperMobile = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
   const [searchResetKey, setSearchResetKey] = useState(0);
+
+  const [downloadError, setDownloadError] = useState<JSX.Element | null>(null);
+  const [fileDownload, setFileDownload] = useState(downloadState.NEUTRAL);
 
   const handleDownloadMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchorEl(event.currentTarget);
@@ -75,44 +86,84 @@ export const HistoryWrapperMobile = () => {
   } = useTransactionHistory({ isFilterActive });
 
   const handleJsonDownload = async () => {
-    setLoadingDownload(true);
-    const data = await fetchForDownload({ searchQuery, filterQuery });
-    const formattedData = formatTransactionData({ data, csv: false });
-    const jsonData = JSON.stringify(formattedData, null, 2);
-    downloadData('transactions.json', jsonData, 'application/json');
-    setLoadingDownload(false);
+    setDownloadError(null);
+    setFileDownload(downloadState.LOADING);
+    try {
+      const data = await fetchForDownload({ searchQuery, filterQuery });
+      const formattedData = formatTransactionData({ data, csv: false });
+      const jsonData = JSON.stringify(formattedData, null, 2);
+      downloadData('transactions.json', jsonData, 'application/json');
+
+      setFileDownload(downloadState.SUCCESS);
+    } catch (errors) {
+      console.log('Show an error notification', errors);
+      showDownloadError(errors);
+      setFileDownload(downloadState.ERROR);
+    }
+    setTimeout(() => setFileDownload(downloadState.NEUTRAL), 4000);
   };
 
   const handleCsvDownload = async () => {
-    setLoadingDownload(true);
-    const data: TransactionHistoryItemUnion[] = await fetchForDownload({
-      searchQuery,
-      filterQuery,
-    });
-    const formattedData = formatTransactionData({ data, csv: true });
-
-    // Getting all the unique headers
-    const headersSet = new Set<string>();
-    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
-      Object.keys(transaction).forEach((key) => headersSet.add(key));
-    });
-
-    const headers: string[] = Array.from(headersSet);
-    let csvContent = headers.join(',') + '\n';
-
-    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
-      const row: string[] = headers.map((header) => {
-        const value = transaction[header as keyof TransactionHistoryItemUnion];
-        if (typeof value === 'object') {
-          return JSON.stringify(value) ?? '';
-        }
-        return String(value) ?? '';
+    setDownloadError(null);
+    setFileDownload(downloadState.LOADING);
+    try {
+      const data: TransactionHistoryItemUnion[] = await fetchForDownload({
+        searchQuery,
+        filterQuery,
       });
-      csvContent += row.join(',') + '\n';
-    });
+      const formattedData = formatTransactionData({ data, csv: true });
 
-    downloadData('transactions.csv', csvContent, 'text/csv');
-    setLoadingDownload(false);
+      // Getting all the unique headers
+      const headersSet = new Set<string>();
+      formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
+        Object.keys(transaction).forEach((key) => headersSet.add(key));
+      });
+
+      const headers: string[] = Array.from(headersSet);
+      let csvContent = headers.join(',') + '\n';
+
+      formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
+        const row: string[] = headers.map((header) => {
+          const value = transaction[header as keyof TransactionHistoryItemUnion];
+          if (typeof value === 'object') {
+            return JSON.stringify(value) ?? '';
+          }
+          return String(value) ?? '';
+        });
+        csvContent += row.join(',') + '\n';
+      });
+
+      downloadData('transactions.csv', csvContent, 'text/csv');
+      setFileDownload(downloadState.SUCCESS);
+    } catch (errors) {
+      console.log('Show an error notification', errors);
+      showDownloadError(errors);
+      setFileDownload(downloadState.ERROR);
+    }
+    setTimeout(() => setFileDownload(downloadState.NEUTRAL), 4000);
+  };
+
+  const showDownloadError = (errors: { message: string }[]) => {
+    if (errors[0] && errors[0].message) {
+      const errorMessage = (
+        <>
+          Failed to download file.{' '}
+          <span onClick={() => handleCopyClick(errors[0].message)} style={{ cursor: 'pointer' }}>
+            Copy Error
+          </span>
+        </>
+      );
+      setDownloadError(errorMessage);
+    } else {
+      const errorMessage = (
+        <p>Failed to download file. Please check your internet connection and try again</p>
+      );
+      setDownloadError(errorMessage);
+    }
+  };
+
+  const handleCopyClick = (textToCopy: string) => {
+    navigator.clipboard.writeText(textToCopy);
   };
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -161,12 +212,34 @@ export const HistoryWrapperMobile = () => {
           )}
           {!showSearchBar && (
             <Box sx={{ display: 'flex', gap: '22px' }}>
-              {loadingDownload && <CircularProgress size={20} sx={{ mr: 2 }} color="inherit" />}
-              <Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>
-                <SvgIcon>
-                  <DocumentDownloadIcon width={20} height={20} />
-                </SvgIcon>
-              </Box>
+              <CustomTooltip
+                title={downloadError}
+                arrow={true}
+                wrap={true}
+                placement="top"
+                open={fileDownload === downloadState.ERROR}
+              >
+                <Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>
+                  {fileDownload === downloadState.NEUTRAL ? (
+                    <SvgIcon>
+                      <DocumentDownloadIcon width={22} height={22} />
+                    </SvgIcon>
+                  ) : fileDownload === downloadState.LOADING ? (
+                    <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />
+                  ) : fileDownload === downloadState.ERROR ? (
+                    <SvgIcon>
+                      <WarningRounded width={22} height={22} />
+                    </SvgIcon>
+                  ) : (
+                    fileDownload === downloadState.SUCCESS && (
+                      <SvgIcon>
+                        <CheckIcon width={22} height={22} />
+                      </SvgIcon>
+                    )
+                  )}
+                </Box>
+              </CustomTooltip>
+
               <Menu
                 anchorEl={menuAnchorEl}
                 open={Boolean(menuAnchorEl)}
