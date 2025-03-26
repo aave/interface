@@ -68,7 +68,7 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.ethereumV3Market.USDC.shortName,
-        amount: 44.0,
+        amount: 21.0,
         apyType: constants.borrowAPYType.variable,
       },
     ],
