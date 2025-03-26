@@ -110,7 +110,7 @@ yarn serve:static
 
 ### Test Mode
 
-The integration test suite runs against [Tenderly](https://tenderly.co/) forks of various networks. To setup the local environment, you’ll first need to create an account and obtain an access key. Then fill in the three environment variables accordingly:
+The integration test suite runs against [Tenderly](https://tenderly.co/) virtual testnets of various networks. To setup the local environment, you’ll first need to create an account and obtain an access key. Then fill in the three environment variables accordingly:
 
 ```bash
 TENDERLY_KEY=<your access key>
@@ -118,7 +118,7 @@ TENDERLY_ACCOUNT=<your account/organization name>
 TENDERLY_PROJECT=<your project name>
 
 NEXT_PUBLIC_FORK_BASE_CHAIN_ID=1
-NEXT_PUBLIC_FORK_CHAIN_ID=1 
+NEXT_PUBLIC_FORK_CHAIN_ID=1
 NEXT_PUBLIC_FORK_URL_RPC=<your rpc url>
 ```
 
@@ -149,7 +149,8 @@ NEXT_PUBLIC_ENABLE_STAKING=true
 
 You can run the UI locally against a forked chain network, similar to what the tests do with Tenderly. This will allow you to build and interact with the UI without spending actual funds. This is very useful for testing many protocol scenarios.
 
-First, you’ll need to create a fork of a network, which can be done with a few different tools. We suggest using the one created by Bored Ghost Labs, where you can follow the steps and get set up [here](https://github.com/bgd-labs/aave-tenderly-cli).
+First, you’ll need to create a fork of a network, which can be done with a few different tools. See the Tenderly documentation for how
+to setup a virtual testnet [here](https://docs.tenderly.co/virtual-testnets).
 
 Second, you’ll need to tell the local application which fork to run against. The easiest way to do this is to copy/paste the following statements. With the application running locally, open up the console in the browser and copy/paste the following with the appropriate values.
 

@@ -61,7 +61,8 @@ const testData = {
   },
 };
 
-describe('DAI INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
+// borrowing is disabled
+describe.skip('DAI INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.testCases.borrow, skipTestState, true);
