@@ -89,7 +89,7 @@ export function FormattedNumber({
   if (number === 0) {
     decimals = 0;
   } else if (visibleDecimals === undefined) {
-    if (number > 1 || percent || symbol === 'USD') {
+    if (number >= 1 || percent || symbol === 'USD') {
       decimals = 2;
     } else {
       decimals = 7;
