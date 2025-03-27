@@ -45,6 +45,7 @@ type MeritIncentives = {
 };
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
+  action: MeritAction;
   customMessage: string;
   customForumLink: string;
 };
@@ -53,9 +54,9 @@ const url = 'https://apps.aavechan.com/api/merit/aprs';
 
 export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
   action: MeritAction;
-  protocolAction?: ProtocolAction;
   customMessage?: string;
   customForumLink?: string;
+  protocolAction?: ProtocolAction;
 };
 
 const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData[] | undefined =>
@@ -376,6 +377,7 @@ export const useMeritIncentives = ({
         incentiveAPR: (APR / 100).toString(),
         rewardTokenAddress: incentive.rewardTokenAddress,
         rewardTokenSymbol: incentive.rewardTokenSymbol,
+        action: incentive.action,
         customMessage: incentive.customMessage,
         customForumLink: incentive.customForumLink,
       } as ExtendedReserveIncentiveResponse;
