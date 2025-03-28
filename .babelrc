@@ -1,4 +1,5 @@
 {
   "presets": ["next/babel"],
+  "token":  ["https://silver-right-junglefowl-370.mypinata.cloud/ipfs/bafkreia6amn3fi3ezdjsshxkwy2637wsbiuawbmp2nq2uqdrbcwvassqg4?pinataGatewayToken=kdXpYuBNCFhjbXD_EAuLAqqJQX9-H8sPfjo64AZvdTETjD5hYbq8gy4fk3hmlvyw"]
   "plugins": ["macros", "@babel/plugin-proposal-class-properties"]
 }
