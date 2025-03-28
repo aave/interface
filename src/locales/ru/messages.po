@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-06 18:06\n"
+"PO-Revision-Date: 2025-03-28 12:09\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -2667,10 +2667,6 @@ msgstr "С правом голоса <0/>"
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
 msgstr "Французский"
-
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
-msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
