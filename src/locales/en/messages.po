@@ -2663,10 +2663,6 @@ msgstr "With a voting power of <0/>"
 msgid "French"
 msgstr "French"
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
-msgstr "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
-
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
 msgstr "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
