@@ -1,6 +1,7 @@
 import createEmotionServer from '@emotion/server/create-instance';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import * as React from 'react';
+import { ApplePWSplashScreens } from 'src/components/ApplePWSplashScreens';
 
 import createEmotionCache from '../src/createEmotionCache';
 
@@ -19,6 +20,7 @@ export default class MyDocument extends Document {
           <link rel="apple-touch-icon" sizes="180x180" href="/aave_icon180.png" /> */}
 
           <link rel="manifest" href="/manifest.json" />
+          <ApplePWSplashScreens />
           {
             // Inject MUI styles first to match with the prepend: true configuration.
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
