@@ -96,10 +96,6 @@ export const UnStakeModalContent = ({ stakeData }: { stakeData: MergedStakeData 
     setRedeemType(value ? RedeemType.ATOKEN : RedeemType.NORMAL);
   };
 
-  const setRedeemNativeTokens = (value: boolean) => {
-    setRedeemType(value ? RedeemType.NATIVE : RedeemType.NORMAL);
-  };
-
   const symbolFormatted = stakeData.underlyingIsStataToken
     ? stakeData.stataTokenData.assetSymbol
     : stakeData.underlyingTokenSymbol;
@@ -165,17 +161,6 @@ export const UnStakeModalContent = ({ stakeData }: { stakeData: MergedStakeData 
           label={
             <Typography>
               <Trans>Redeem as aToken</Trans>
-            </Typography>
-          }
-        />
-      )}
-      {stakeData.stataTokenData.isUnderlyingWrappedBaseToken && (
-        <DetailsUnwrapSwitch
-          unwrapped={redeemType === RedeemType.NATIVE}
-          setUnWrapped={setRedeemNativeTokens}
-          label={
-            <Typography>
-              <Trans>{`Redeem as ${currentNetworkConfig.baseAssetSymbol}`}</Trans>
             </Typography>
           }
         />
