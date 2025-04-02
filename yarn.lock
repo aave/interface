@@ -5420,13 +5420,14 @@ confbox@^0.1.8:
   resolved "https://registry.yarnpkg.com/confbox/-/confbox-0.1.8.tgz#820d73d3b3c82d9bd910652c5d4d599ef8ff8b06"
   integrity sha512-RMtmw0iFkeR4YV+fUOSucriAQNb9g8zFR52MWCtl+cCZOFRNL6zeB395vPzFhEjjn4fMxXudmELnl/KF/WrK6w==
 
-connectkit@^1.8.2:
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/connectkit/-/connectkit-1.8.2.tgz#9b350b47720347f0ebb599260fe3a8c964e51321"
-  integrity sha512-Za6jR5RtCimzSFqAH1OgUYES96ThTei6d/TvKWNU3GeZPPnwVojtfhFn9wUOam81RknxylvVpG727BPmjguzbA==
+connectkit@1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/connectkit/-/connectkit-1.9.0.tgz#5696ae5d2ad94a8c9c640e4fcfd6f48ed8303f22"
+  integrity sha512-bkqg8zK35pWWG2q8xeo41J1mnBP8D2ffOd/ItB12aad9QZZU20SlEeiQM9iYfRyl0JAH1tqIDlZbXajqZBFfDw==
   dependencies:
     buffer "^6.0.3"
     detect-browser "^5.3.0"
+    family "^0.1.1"
     framer-motion "^6.3.11"
     qrcode "^1.5.0"
     react-transition-state "^1.1.4"
@@ -6990,6 +6991,11 @@ extsprintf@^1.2.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.1.tgz#8d172c064867f235c0c84a596806d279bf4bcc07"
   integrity sha512-Wrk35e8ydCKDj/ArClo1VrPVmN8zph5V4AtHwIuHhvMXsKf73UT3BOD+azBIW+3wOJ4FhEH7zyaJCFvChjYvMA==
+
+family@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/family/-/family-0.1.1.tgz#5d0721d6e36346d94d1ce4f5dbfd5da6655d005d"
+  integrity sha512-X9gxkV4fm7U6ftSWcrHmNLfIhwwsvyn2uKEtLVgAGXbm+b+IAxXS1YdBC0HqQfooCZSUnw0vtVQg+eXN+kJAlw==
 
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
