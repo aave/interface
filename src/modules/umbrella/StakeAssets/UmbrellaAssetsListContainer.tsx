@@ -28,7 +28,7 @@ export const UmbrellaAssetsListContainer = () => {
     if (!searchTerm) return true;
     const term = searchTerm.toLowerCase().trim();
 
-    return res.symbol.toLowerCase().includes(term) || res.iconSymbol.toLowerCase().includes(term);
+    return res.name.toLowerCase().includes(term) || res.iconSymbol.toLowerCase().includes(term);
   });
 
   const noStakeAssetsConfigured =
@@ -40,7 +40,7 @@ export const UmbrellaAssetsListContainer = () => {
         <TitleWithSearchBar
           onSearchTermChange={setSearchTerm}
           title={<Trans>Assets to stake</Trans>}
-          searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
+          searchPlaceholder={sm ? 'Search asset' : 'Search asset name or symbol'}
         />
       }
     >
