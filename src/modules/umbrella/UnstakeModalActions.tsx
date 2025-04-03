@@ -1,11 +1,16 @@
-import { UmbrellaBatchHelperService } from '@aave/contract-helpers';
+import {
+  gasLimitRecommendations,
+  ProtocolAction,
+  UmbrellaBatchHelperService,
+} from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { PopulatedTransaction } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
+import { useEffect } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
-import { checkRequiresApproval } from 'src/components/transactions/utils';
+import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from 'src/components/transactions/utils';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -36,6 +41,7 @@ export const UnStakeActions = ({
   symbol,
   blocked,
   stakeData,
+  redeemType,
 }: UnStakeActionProps) => {
   const queryClient = useQueryClient();
   const [currentChainId, user, estimateGasLimit] = useRootStore(
@@ -47,9 +53,9 @@ export const UnStakeActions = ({
     mainTxState,
     loadingTxns,
     setLoadingTxns,
-    // setApprovalTxState,
+    setApprovalTxState,
     setMainTxState,
-    // setGasLimit,
+    setGasLimit,
     setTxError,
   } = useModalContext();
 
@@ -75,6 +81,12 @@ export const UnStakeActions = ({
       signedAmount: '0',
     });
 
+  if (requiresApproval && approvalTxState?.success) {
+    // There was a successful approval tx, but the approval amount is not enough.
+    // Clear the state to prompt for another approval.
+    setApprovalTxState({});
+  }
+
   const tokenApproval = {
     user,
     token: selectedToken,
@@ -89,13 +101,33 @@ export const UnStakeActions = ({
     approvedAmount: tokenApproval,
     requiresApproval,
     assetAddress: selectedToken,
-    symbol: 'USDC',
+    symbol,
     decimals: stakeData.decimals,
     amountToApprove: parsedAmountToStake.toString(),
     onApprovalTxConfirmed: fetchApprovedAmount,
     signatureAmount: '0', // formatUnits(amountToApprove, stakeData.decimals).toString(),
     // onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
+
+  useEffect(() => {
+    let unstakeGasLimit = 0;
+
+    switch (redeemType) {
+      case RedeemType.ATOKEN:
+        unstakeGasLimit = Number(
+          gasLimitRecommendations[ProtocolAction.umbrellaStakeGatewayRedeemATokens].recommended
+        );
+      case (RedeemType.NATIVE, RedeemType.NORMAL):
+        unstakeGasLimit = Number(
+          gasLimitRecommendations[ProtocolAction.umbrellaStakeGatewayRedeem].recommended
+        );
+        break;
+    }
+    if (requiresApproval && !approvalTxState.success) {
+      unstakeGasLimit += Number(APPROVAL_GAS_LIMIT);
+    }
+    setGasLimit(unstakeGasLimit.toString());
+  }, [approvalTxState.success, redeemType, requiresApproval, setGasLimit]);
 
   const action = async () => {
     try {

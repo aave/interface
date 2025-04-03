@@ -1,8 +1,13 @@
-import { RewardsDistributorService } from '@aave/contract-helpers';
+import {
+  gasLimitRecommendations,
+  ProtocolAction,
+  RewardsDistributorService,
+} from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { PopulatedTransaction } from 'ethers';
+import { useEffect } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
@@ -28,13 +33,25 @@ export const UmbrellaClaimActions = ({
   ...props
 }: StakeRewardClaimActionProps) => {
   const queryClient = useQueryClient();
-  const { loadingTxns, mainTxState, setMainTxState, setTxError } = useModalContext();
+  const { loadingTxns, mainTxState, setMainTxState, setTxError, setGasLimit } = useModalContext();
 
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx } = useWeb3Context();
   const [currentChainId, user] = useRootStore(
     useShallow((store) => [store.currentChainId, store.account])
   );
+
+  useEffect(() => {
+    let claimGasLimit = Number(
+      gasLimitRecommendations[ProtocolAction.umbrellaClaimSelectedRewards].recommended
+    );
+    if (rewardsToClaim.length > 1) {
+      claimGasLimit = Number(
+        gasLimitRecommendations[ProtocolAction.umbrellaClaimAllRewards].recommended
+      );
+    }
+    setGasLimit(claimGasLimit.toString());
+  }, [rewardsToClaim, setGasLimit]);
 
   const action = async () => {
     try {

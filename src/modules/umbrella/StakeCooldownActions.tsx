@@ -1,7 +1,8 @@
-import { StakeTokenService } from '@aave/contract-helpers';
+import { gasLimitRecommendations, ProtocolAction, StakeTokenService } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -32,7 +33,14 @@ export const StakeCooldownActions = ({
   );
   const { sendTx } = useWeb3Context();
 
-  const { mainTxState, loadingTxns, setMainTxState, setTxError } = useModalContext();
+  const { mainTxState, loadingTxns, setMainTxState, setTxError, setGasLimit } = useModalContext();
+
+  useEffect(() => {
+    const cooldownGasLimit = Number(
+      gasLimitRecommendations[ProtocolAction.umbrellaStakeTokenCooldown].recommended
+    );
+    setGasLimit(cooldownGasLimit.toString());
+  }, [setGasLimit]);
 
   const action = async () => {
     try {

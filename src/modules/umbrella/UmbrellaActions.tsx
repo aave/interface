@@ -1,5 +1,7 @@
 import {
   API_ETH_MOCK_ADDRESS,
+  gasLimitRecommendations,
+  ProtocolAction,
   StakeTokenService,
   UmbrellaBatchHelperService,
 } from '@aave/contract-helpers';
@@ -8,9 +10,9 @@ import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { PopulatedTransaction } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
-import { checkRequiresApproval } from 'src/components/transactions/utils';
+import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from 'src/components/transactions/utils';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -66,9 +68,9 @@ export const UmbrellaActions = ({
     mainTxState,
     loadingTxns,
     setLoadingTxns,
-    // setApprovalTxState,
+    setApprovalTxState,
     setMainTxState,
-    // setGasLimit,
+    setGasLimit,
     setTxError,
   } = useModalContext();
 
@@ -110,6 +112,12 @@ export const UmbrellaActions = ({
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
 
+  if (requiresApproval && approvalTxState?.success) {
+    // There was a successful approval tx, but the approval amount is not enough.
+    // Clear the state to prompt for another approval.
+    setApprovalTxState({});
+  }
+
   const tokenApproval = {
     user,
     token: selectedToken.address,
@@ -133,6 +141,20 @@ export const UmbrellaActions = ({
   });
 
   const { currentAccount, sendTx } = useWeb3Context();
+
+  useEffect(() => {
+    let stakeGasLimit = Number(gasLimitRecommendations[ProtocolAction.umbrellaStake].recommended);
+    if (usePermit) {
+      stakeGasLimit = Number(
+        gasLimitRecommendations[ProtocolAction.umbrellaStakeWithPermit].recommended
+      );
+    } else {
+      if (requiresApproval && !approvalTxState.success) {
+        stakeGasLimit += Number(APPROVAL_GAS_LIMIT);
+      }
+    }
+    setGasLimit(stakeGasLimit.toString());
+  }, [requiresApproval, approvalTxState, usePermit, setGasLimit]);
 
   const action = async () => {
     const parsedAmountToStake = parseUnits(amount, stakeData.decimals).toString();
