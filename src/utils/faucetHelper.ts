@@ -14,8 +14,8 @@ import { providers } from 'ethers';
 
 const extendedMintAmountsPerToken: Record<string, string> = {
   ...mintAmountsPerToken,
-  UNI_FAVORETH: valueToWei('0.01', 18),
-  UNI_FAVORUSDT: valueToWei('0.1', 6),
+  UNI_FAVORETH: valueToWei('0.00005', 18),
+  UNI_FAVORUSDT: valueToWei('0.0000000001', 18),
 };
 
 export class CustomFaucetService extends V3FaucetService {
