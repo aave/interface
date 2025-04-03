@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useStakeDataSummary, useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -96,8 +97,21 @@ const UmbrellaHeaderUserDetails = ({
   const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
     useUmbrellaSummary(currentMarketData);
 
+  const { openUmbrellaClaimAll } = useModalContext();
+
   const totalUSDAggregateStaked = stakedDataWithTokenBalances?.aggregatedTotalStakedUSD;
   const weightedAverageApy = stakedDataWithTokenBalances?.weightedAverageApy;
+
+  const userRewardsUsd = stakedDataWithTokenBalances?.stakeData.reduce((acc, stake) => {
+    const totalAvailableToClaim = stake.formattedRewards.reduce(
+      (sum, reward) => sum + Number(reward.accrued || '0'),
+      0
+    );
+    return acc + totalAvailableToClaim;
+  }, 0);
+
+  const userHasRewards =
+    userRewardsUsd !== undefined && userRewardsUsd > 0 && !isLoadingStakedDataWithTokenBalances;
 
   return (
     <>
@@ -134,6 +148,42 @@ const UmbrellaHeaderUserDetails = ({
           symbolsVariant={symbolsTypographyVariant}
         />
       </TopInfoPanelItem>
+      {userHasRewards && (
+        <TopInfoPanelItem
+          title={<Trans>Available rewards</Trans>}
+          loading={isLoadingStakedDataWithTokenBalances}
+          hideIcon
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: { xs: 'flex-start', xsm: 'center' },
+              flexDirection: { xs: 'column', xsm: 'row' },
+            }}
+          >
+            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              <FormattedNumber
+                value={userRewardsUsd}
+                variant={valueTypographyVariant}
+                visibleDecimals={2}
+                compact
+                symbol="USD"
+                symbolsColor="#A5A8B6"
+                symbolsVariant={symbolsTypographyVariant}
+              />
+            </Box>
+
+            <Button
+              variant="gradient"
+              size="small"
+              onClick={() => openUmbrellaClaimAll()}
+              sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
+            >
+              <Trans>Claim</Trans>
+            </Button>
+          </Box>
+        </TopInfoPanelItem>
+      )}
     </>
   );
 };

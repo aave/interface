@@ -30,6 +30,10 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
+interface UmbrellaClaimAllModalContentProps {
+  stakeData: MergedStakeData[];
+}
+
 interface UmbrellaClaimModalContentProps {
   user: ExtendedFormattedUser;
   stakeData: MergedStakeData;
@@ -49,6 +53,110 @@ const stakeDataToRewards = (stakeData: MergedStakeData): UmbrellaRewards[] => {
       address: reward.rewardToken,
     };
   });
+};
+
+const aggregatedRewards = (data: UmbrellaRewards[]): UmbrellaRewards[] => {
+  const resultMap = new Map<string, UmbrellaRewards>();
+
+  for (const item of data) {
+    const balance = parseFloat(item.balance);
+    if (balance === 0) continue;
+
+    const existing = resultMap.get(item.address);
+    if (existing) {
+      // Aggregate balances and balanceUsd
+      existing.balance = (parseFloat(existing.balance) + balance).toString();
+      existing.balanceUsd = (
+        parseFloat(existing.balanceUsd) + parseFloat(item.balanceUsd)
+      ).toString();
+    } else {
+      resultMap.set(item.address, { ...item });
+    }
+  }
+
+  return Array.from(resultMap.values());
+};
+
+export const UmbrellaClaimAllModalContent = ({ stakeData }: UmbrellaClaimAllModalContentProps) => {
+  const { gasLimit, mainTxState: claimRewardsTxState, txError } = useModalContext();
+  const { readOnlyModeAddress } = useWeb3Context();
+
+  const { isWrongNetwork, requiredChainId } = useIsWrongNetwork();
+
+  const networkConfig = getNetworkConfig(requiredChainId);
+
+  const rewards = stakeData.map(stakeDataToRewards).flat();
+
+  const aggregated = aggregatedRewards(rewards);
+
+  const totalClaimableAmount = aggregated.reduce(
+    (acc, reward) => acc + Number(reward.balanceUsd),
+    0
+  );
+
+  const stakeTokens = stakeData.map((data) => data.tokenAddress);
+
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
+  if (claimRewardsTxState.success)
+    return (
+      <TxSuccessView action={<Trans>Claimed</Trans>} amount={totalClaimableAmount.toString()} />
+    );
+
+  return (
+    <>
+      <TxModalTitle title="Claim rewards" />
+      {isWrongNetwork && !readOnlyModeAddress && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={requiredChainId} />
+      )}
+
+      <TxModalDetails gasLimit={gasLimit}>
+        <Row caption={<Trans>Amount</Trans>} captionVariant="description" align="flex-start" mb={4}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+            {aggregated.map((reward) => (
+              <Box
+                key={`claim-${reward.symbol}`}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  mb: 4,
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <TokenIcon symbol={reward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
+                  <FormattedNumber value={Number(reward.balance)} variant="secondary14" />
+                  <Typography ml={1} variant="secondary14">
+                    {reward.symbol}
+                  </Typography>
+                </Box>
+                <FormattedNumber
+                  value={Number(reward.balanceUsd)}
+                  variant="helperText"
+                  compact
+                  symbol="USD"
+                  color="text.secondary"
+                />
+              </Box>
+            ))}
+          </Box>
+        </Row>
+        <DetailsNumberLine
+          description={<Trans>Total</Trans>}
+          value={totalClaimableAmount.toString()}
+        />
+      </TxModalDetails>
+
+      {txError && <GasEstimationError txError={txError} />}
+
+      <UmbrellaClaimActions
+        stakeTokens={stakeTokens}
+        isWrongNetwork={isWrongNetwork}
+        rewardsToClaim={[]}
+      />
+    </>
+  );
 };
 
 export const UmbrellaClaimModalContent = ({ stakeData }: UmbrellaClaimModalContentProps) => {
@@ -100,12 +208,7 @@ export const UmbrellaClaimModalContent = ({ stakeData }: UmbrellaClaimModalConte
         />
       )}
       <TxModalDetails gasLimit={gasLimit}>
-        <Row
-          caption={<Trans>Balance</Trans>}
-          captionVariant="description"
-          align="flex-start"
-          mb={4}
-        >
+        <Row caption={<Trans>Amount</Trans>} captionVariant="description" align="flex-start" mb={4}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
             {selectedReward.map((reward) => (
               <Box
@@ -136,7 +239,7 @@ export const UmbrellaClaimModalContent = ({ stakeData }: UmbrellaClaimModalConte
           </Box>
         </Row>
         <DetailsNumberLine
-          description={<Trans>Total worth</Trans>}
+          description={<Trans>Total</Trans>}
           value={selectedRewardClaimableBalance.toString()}
         />
       </TxModalDetails>
@@ -144,7 +247,7 @@ export const UmbrellaClaimModalContent = ({ stakeData }: UmbrellaClaimModalConte
       {txError && <GasEstimationError txError={txError} />}
 
       <UmbrellaClaimActions
-        stakeData={stakeData}
+        stakeTokens={[stakeData.tokenAddress]}
         isWrongNetwork={isWrongNetwork}
         rewardsToClaim={selectedReward}
       />

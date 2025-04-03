@@ -9,7 +9,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { PopulatedTransaction } from 'ethers';
 import { useEffect } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
-import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { stakeUmbrellaConfig } from 'src/services/UmbrellaStakeDataService';
@@ -21,13 +20,13 @@ import { useShallow } from 'zustand/shallow';
 import { UmbrellaRewards } from './UmbrellaClaimModalContent';
 
 export interface StakeRewardClaimActionProps extends BoxProps {
-  stakeData: MergedStakeData;
+  stakeTokens: string[];
   rewardsToClaim: UmbrellaRewards[];
   isWrongNetwork: boolean;
 }
 
 export const UmbrellaClaimActions = ({
-  stakeData,
+  stakeTokens,
   rewardsToClaim,
   isWrongNetwork,
   ...props
@@ -60,17 +59,24 @@ export const UmbrellaClaimActions = ({
         stakeUmbrellaConfig[currentChainId].stakeRewardsController
       );
       let claimTx: PopulatedTransaction = {};
-      if (rewardsToClaim.length > 1) {
-        claimTx = rewardsDistributorService.claimAllRewards({
+      if (stakeTokens.length > 1) {
+        claimTx = rewardsDistributorService.claimAllAvailableRewards({
+          stakeTokens,
           sender: user,
-          stakeToken: stakeData.tokenAddress,
         });
       } else {
-        claimTx = rewardsDistributorService.claimSelectedRewards({
-          sender: user,
-          stakeToken: stakeData.tokenAddress,
-          rewards: rewardsToClaim.map((reward) => reward.address),
-        });
+        if (rewardsToClaim.length > 1) {
+          claimTx = rewardsDistributorService.claimAllRewards({
+            sender: user,
+            stakeToken: stakeTokens[0],
+          });
+        } else {
+          claimTx = rewardsDistributorService.claimSelectedRewards({
+            sender: user,
+            stakeToken: stakeTokens[0],
+            rewards: rewardsToClaim.map((reward) => reward.address),
+          });
+        }
       }
       claimTx = await estimateGasLimit(claimTx);
       const claimTxReceipt = await sendTx(claimTx);
