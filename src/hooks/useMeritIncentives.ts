@@ -39,11 +39,9 @@ export enum MeritAction {
   CELO_SUPPLY_CELO = 'celo-supply-celo',
   CELO_SUPPLY_USDT = 'celo-supply-usdt',
   CELO_SUPPLY_USDC = 'celo-supply-usdc',
-  CELO_SUPPLY_WETH = 'celo-supply-weth',
   CELO_BORROW_CELO = 'celo-borrow-celo',
   CELO_BORROW_USDT = 'celo-borrow-usdt',
   CELO_BORROW_USDC = 'celo-borrow-usdc',
-  CELO_BORROW_WETH = 'celo-borrow-weth',
 }
 
 type MeritIncentives = {
@@ -383,22 +381,6 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       },
       {
         action: MeritAction.CELO_BORROW_USDC,
-        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
-        rewardTokenSymbol: 'aCelCELO',
-        protocolAction: ProtocolAction.borrow,
-        customMessage: antiLoopBorrowMessage,
-      },
-    ],
-    WETH: [
-      {
-        action: MeritAction.CELO_SUPPLY_WETH,
-        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
-        rewardTokenSymbol: 'aCelCELO',
-        protocolAction: ProtocolAction.supply,
-        customMessage: antiLoopMessage,
-      },
-      {
-        action: MeritAction.CELO_BORROW_WETH,
         rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
         rewardTokenSymbol: 'aCelCELO',
         protocolAction: ProtocolAction.borrow,
