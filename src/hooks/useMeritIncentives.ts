@@ -27,8 +27,8 @@ export enum MeritAction {
   BASE_SUPPLY_WSTETH = 'base-supply-wsteth',
   BASE_SUPPLY_WEETH = 'base-supply-weeth',
   BASE_SUPPLY_EZETH = 'base-supply-ezeth',
-  BASE_SUPPLY_EUROC = 'base-supply-euroc',
-  BASE_BORROW_EUROC = 'base-borrow-euroc',
+  BASE_SUPPLY_EURC = 'base-supply-eurc',
+  BASE_BORROW_EURC = 'base-borrow-eurc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   BASE_BORROW_WSTETH = 'base-borrow-wsteth',
   AVALANCHE_SUPPLY_BTCB = 'avalanche-supply-btcb',
@@ -280,13 +280,13 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
     EURC: [
       {
-        action: MeritAction.BASE_SUPPLY_EUROC,
+        action: MeritAction.BASE_SUPPLY_EURC,
         rewardTokenAddress: AaveV3Base.ASSETS.EURC.A_TOKEN,
         rewardTokenSymbol: 'aBasEURC',
         protocolAction: ProtocolAction.supply,
       },
       {
-        action: MeritAction.BASE_BORROW_EUROC,
+        action: MeritAction.BASE_BORROW_EURC,
         rewardTokenAddress: AaveV3Base.ASSETS.EURC.A_TOKEN,
         rewardTokenSymbol: 'aBasEURC',
         protocolAction: ProtocolAction.borrow,
