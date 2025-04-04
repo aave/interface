@@ -35,6 +35,14 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
+  CELO_SUPPLY_CELO = 'celo-supply-celo',
+  CELO_SUPPLY_USDT = 'celo-supply-usdt',
+  CELO_SUPPLY_USDC = 'celo-supply-usdc',
+  CELO_SUPPLY_WETH = 'celo-supply-weth',
+  CELO_BORROW_CELO = 'celo-borrow-celo',
+  CELO_BORROW_USDT = 'celo-borrow-usdt',
+  CELO_BORROW_USDC = 'celo-borrow-usdc',
+  CELO_BORROW_WETH = 'celo-borrow-weth',
 }
 
 type MeritIncentives = {
@@ -66,7 +74,6 @@ const antiLoopMessage =
 
 const antiLoopBorrowMessage =
   'Supplying of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
-
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
