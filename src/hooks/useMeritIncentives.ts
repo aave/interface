@@ -357,7 +357,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopBorrowMessage,
       },
     ],
-    USDT: [
+    ['USD₮']: [
       {
         action: MeritAction.CELO_SUPPLY_USDT,
         rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
