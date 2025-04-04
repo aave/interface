@@ -4,6 +4,7 @@ import {
   AaveV3Arbitrum,
   AaveV3Avalanche,
   AaveV3Base,
+  AaveV3Celo,
   AaveV3Ethereum,
   AaveV3EthereumLido,
   AaveV3Sonic,
@@ -336,6 +337,72 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
         customForumLink:
           'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/61',
+      },
+    ],
+  },
+  [CustomMarket.proto_celo_v3]: {
+    CELO: [
+      {
+        action: MeritAction.CELO_SUPPLY_CELO,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
+      {
+        action: MeritAction.CELO_BORROW_CELO,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
+      },
+    ],
+    USDT: [
+      {
+        action: MeritAction.CELO_SUPPLY_USDT,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
+      {
+        action: MeritAction.CELO_BORROW_USDT,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
+      },
+    ],
+    USDC: [
+      {
+        action: MeritAction.CELO_SUPPLY_USDC,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
+      {
+        action: MeritAction.CELO_BORROW_USDC,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
+      },
+    ],
+    WETH: [
+      {
+        action: MeritAction.CELO_SUPPLY_WETH,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
+      {
+        action: MeritAction.CELO_BORROW_WETH,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
       },
     ],
   },
