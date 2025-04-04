@@ -4,6 +4,7 @@ import {
   AaveV3Arbitrum,
   AaveV3Avalanche,
   AaveV3Base,
+  AaveV3Celo,
   AaveV3Ethereum,
   AaveV3EthereumLido,
   AaveV3Sonic,
@@ -35,6 +36,14 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
+  CELO_SUPPLY_CELO = 'celo-supply-celo',
+  CELO_SUPPLY_USDT = 'celo-supply-usdt',
+  CELO_SUPPLY_USDC = 'celo-supply-usdc',
+  CELO_SUPPLY_WETH = 'celo-supply-weth',
+  CELO_BORROW_CELO = 'celo-borrow-celo',
+  CELO_BORROW_USDT = 'celo-borrow-usdt',
+  CELO_BORROW_USDC = 'celo-borrow-usdc',
+  CELO_BORROW_WETH = 'celo-borrow-weth',
 }
 
 type MeritIncentives = {
@@ -66,7 +75,6 @@ const antiLoopMessage =
 
 const antiLoopBorrowMessage =
   'Supplying of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
-
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
@@ -329,6 +337,72 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
         customForumLink:
           'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/61',
+      },
+    ],
+  },
+  [CustomMarket.proto_celo_v3]: {
+    CELO: [
+      {
+        action: MeritAction.CELO_SUPPLY_CELO,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
+      {
+        action: MeritAction.CELO_BORROW_CELO,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
+      },
+    ],
+    ['USD₮']: [
+      {
+        action: MeritAction.CELO_SUPPLY_USDT,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
+      {
+        action: MeritAction.CELO_BORROW_USDT,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
+      },
+    ],
+    USDC: [
+      {
+        action: MeritAction.CELO_SUPPLY_USDC,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
+      {
+        action: MeritAction.CELO_BORROW_USDC,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
+      },
+    ],
+    WETH: [
+      {
+        action: MeritAction.CELO_SUPPLY_WETH,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
+      {
+        action: MeritAction.CELO_BORROW_WETH,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
       },
     ],
   },
