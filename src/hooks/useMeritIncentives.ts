@@ -52,7 +52,6 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
 };
 
 const url = 'https://apps.aavechan.com/api/merit/aprs';
-// const url = 'http://localhost:3000/api/merit/aprs'; // Uncomment for local testing
 
 export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
   action: MeritAction;
