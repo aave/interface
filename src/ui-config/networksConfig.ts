@@ -186,9 +186,11 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     name: 'Ethereum',
     privateJsonRPCUrl: 'https://eth-mainnet.g.alchemy.com/v2/ZiMMq2478EVIEJdsxC5dMal_ccQwtb31',
     publicJsonRPCUrl: [
+      'https://mainnet.gateway.tenderly.co',
       'https://rpc.flashbots.net',
       'https://eth.llamarpc.com',
       'https://eth-mainnet.public.blastapi.io',
+      'https://ethereum-rpc.publicnode.com',
     ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
     baseUniswapAdapter: '0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f',
@@ -203,8 +205,11 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.polygon]: {
     name: 'Polygon POS',
     displayName: 'Polygon',
-    privateJsonRPCUrl: 'https://polygon-mainnet.g.alchemy.com/v2/MbgjyHR1CQiU5Y8CUa2mqfRlYwltE5Zr', //'https://polygon.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://polygon-mainnet.g.alchemy.com/v2/MbgjyHR1CQiU5Y8CUa2mqfRlYwltE5Zr',
     publicJsonRPCUrl: [
+      'https://gateway.tenderly.co/public/polygon',
+      'https://polygon-pokt.nodies.app',
+      'https://polygon-bor-rpc.publicnode.com',
       'https://polygon-rpc.com',
       'https://polygon-mainnet.public.blastapi.io',
       'https://rpc-mainnet.matic.quiknode.pro',
