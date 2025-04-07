@@ -5,7 +5,6 @@ import { ReactNode } from 'react';
 import { useRootStore } from '../../store/root';
 import { selectIsMigrationAvailable } from '../../store/v3MigrationSelectors';
 import { NetworkConfig } from '../../ui-config/networksConfig';
-// import { BridgeButton } from '../BridgeButton';
 import { MarketSwitcher } from '../MarketSwitcher';
 import { Link, ROUTES } from '../primitives/Link';
 
@@ -20,7 +19,6 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher, withMigrateButton }: 
 
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  // const upToMD = useMediaQuery(theme.breakpoints.up('md'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   return (

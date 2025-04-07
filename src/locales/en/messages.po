@@ -119,6 +119,10 @@ msgstr "Aave is a fully decentralized, community governed protocol by the AAVE t
 msgid "Aave per month"
 msgstr "Aave per month"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "About"
+msgstr "About"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "About GHO"
 msgstr "About GHO"
@@ -602,10 +606,6 @@ msgstr "Bridged Via CCIP"
 msgid "Bridging {symbol}"
 msgstr "Bridging {symbol}"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Buy Crypto With Fiat"
-msgstr "Buy Crypto With Fiat"
-
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Buy Crypto with Fiat"
 msgstr "Buy Crypto with Fiat"
@@ -840,7 +840,6 @@ msgid "Dark mode"
 msgstr "Dark mode"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
-#: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -883,10 +882,6 @@ msgstr "Destination"
 #: src/modules/markets/MarketAssetsListItem.tsx
 msgid "Details"
 msgstr "Details"
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Developers"
-msgstr "Developers"
 
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
@@ -991,6 +986,10 @@ msgstr "E-Mode increases your LTV for a selected category of assets. <0>Learn mo
 msgid "Edit"
 msgstr "Edit"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Education"
+msgstr "Education"
+
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Effective interest rate"
 msgstr "Effective interest rate"
@@ -1092,7 +1091,6 @@ msgid "Export data to"
 msgstr "Export data to"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-#: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
 msgstr "FAQ"
 
@@ -1110,7 +1108,6 @@ msgstr "Failed to load proposal voters. Please refresh the page."
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/faucet/FaucetItemLoader.tsx
 #: src/modules/faucet/FaucetMobileItemLoader.tsx
-#: src/ui-config/menu-items/index.tsx
 msgid "Faucet"
 msgstr "Faucet"
 
@@ -1208,10 +1205,6 @@ msgstr "Go to Balancer Pool"
 msgid "Go to V3 Dashboard"
 msgstr "Go to V3 Dashboard"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Governance"
-msgstr "Governance"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "Greek"
@@ -1237,6 +1230,10 @@ msgstr "Hide"
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Holders of stkAAVE receive a discount on the GHO borrowing rate"
 msgstr "Holders of stkAAVE receive a discount on the GHO borrowing rate"
+
+#: src/ui-config/menu-items/index.tsx
+msgid "Home"
+msgstr "Home"
 
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
@@ -1389,10 +1386,6 @@ msgstr "Let us know how we can make the app better for you. For user support rel
 msgid "Linked addresses"
 msgstr "Linked addresses"
 
-#: src/layouts/MobileMenu.tsx
-msgid "Links"
-msgstr "Links"
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidated collateral"
 msgstr "Liquidated collateral"
@@ -1465,7 +1458,6 @@ msgid "Market"
 msgstr "Market"
 
 #: src/modules/markets/MarketsTopPanel.tsx
-#: src/ui-config/menu-items/index.tsx
 msgid "Markets"
 msgstr "Markets"
 
@@ -1606,10 +1598,6 @@ msgstr "Minimum staked Aave amount"
 msgid "Minimum {0} received"
 msgstr "Minimum {0} received"
 
-#: src/layouts/MoreMenu.tsx
-msgid "More"
-msgstr "More"
-
 #: src/modules/governance/VoteBar.tsx
 msgid "NAY"
 msgstr "NAY"
@@ -1746,6 +1734,10 @@ msgstr "Pending..."
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the {market} has been frozen."
 msgstr "Per the community, the {market} has been frozen."
+
+#: src/ui-config/menu-items/index.tsx
+msgid "Playground"
+msgstr "Playground"
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
@@ -2209,7 +2201,6 @@ msgstr "Stablecoin"
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/ui-config/menu-items/index.tsx
 msgid "Stake"
 msgstr "Stake"
 

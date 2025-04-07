@@ -129,32 +129,31 @@ export default function IpfsPreview() {
   const [proposal, setProposal] = useState<Proposal>(mockProposal);
   const [error, setError] = useState(false);
 
-  async function fetchIpfs() {
-    try {
-      setLoading(true);
-      const proposalMetadata = await getProposalMetadata(ipfsHash, ipfsGateway);
-      setProposal((prev) => {
-        return {
-          ...prev,
-          subgraphProposalb: {
-            ...prev.subgraphProposal,
-            proposalMetadata,
-          },
-        };
-      });
-      setLoading(false);
-    } catch (e) {
-      console.error(e);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
+    async function fetchIpfs() {
+      try {
+        setLoading(true);
+        const proposalMetadata = await getProposalMetadata(ipfsHash, ipfsGateway);
+        setProposal((prev) => {
+          return {
+            ...prev,
+            subgraphProposalb: {
+              ...prev.subgraphProposal,
+              proposalMetadata,
+            },
+          };
+        });
+        setLoading(false);
+      } catch (e) {
+        console.error(e);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
     if (!ipfsHash) return;
     fetchIpfs();
-  }, [fetchIpfs, ipfsHash]);
+  }, [ipfsHash]);
 
   return (
     <>
