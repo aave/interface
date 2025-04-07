@@ -44,9 +44,6 @@ msgstr "<0><1><2/></1>Añade stkAAVE</0> para ver la tasa de préstamo con descu
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> es un activo con rebase. Visita la <1>documentación</1> para aprender más."
 
-#: src/components/transactions/Borrow/ParameterChangewarning.tsx
-msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
-msgstr "<0>Atención:</0> Los cambios de parámetros a través de la gobernanza pueden alterar el factor de salud de tu cuenta y el riesgo de liquidación. Sigue el <1>foro de gobierno de Aave</1> para mantenerte actualizado."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -116,14 +113,7 @@ msgstr "El balance de AToken no es cero"
 msgid "Aave Governance"
 msgstr "Gobierno de Aave"
 
-#: src/modules/reserve-overview/AddTokenDropdown.tsx
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave aToken"
-msgstr "aToken de Aave"
 
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave debt token"
-msgstr "Token de deuda de Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -1387,9 +1377,6 @@ msgstr "Aprende más en nuestra guía <0>Preguntas frecuentes</0>"
 msgid "Learn more."
 msgstr "Aprende más."
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Legacy Markets"
-msgstr ""
 
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
@@ -1470,9 +1457,6 @@ msgstr "MAX"
 msgid "Manage E-Mode"
 msgstr ""
 
-#: src/layouts/AppFooter.tsx
-msgid "Manage analytics"
-msgstr "Administrar analíticas"
 
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
@@ -1556,10 +1540,6 @@ msgstr ""
 msgid "Migrate"
 msgstr "Migrar"
 
-#: src/layouts/MobileMenu.tsx
-#: src/layouts/MoreMenu.tsx
-msgid "Migrate to Aave V3"
-msgstr ""
 
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
@@ -1851,9 +1831,7 @@ msgstr "El impacto del precio es la diferencia entre el valor total de los token
 msgid "Price impact {0}%"
 msgstr "Impacto en el precio {0}%"
 
-#: src/layouts/AppFooter.tsx
-msgid "Privacy"
-msgstr "Privacidad"
+
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
@@ -2434,9 +2412,6 @@ msgstr "Cambiando E-Mode"
 msgid "Techpaper"
 msgstr "Documento técnico"
 
-#: src/layouts/AppFooter.tsx
-msgid "Terms"
-msgstr "Términos"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
@@ -2482,9 +2457,6 @@ msgstr "La dirección del proveedor del grupo de direcciones no es válida"
 msgid "The app is running in fork mode."
 msgstr "La aplicación se ejecuta en fork mode."
 
-#: src/layouts/AppHeader.tsx
-msgid "The app is running in testnet mode. Learn how it works in"
-msgstr "La aplicación se está ejecutando en testnet mode. Aprende como funciona en"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
@@ -2913,9 +2885,6 @@ msgstr "Tasa variable"
 msgid "Version 2"
 msgstr "Versión 2"
 
-#: src/components/MarketSwitcher.tsx
-msgid "Version 3"
-msgstr "Versión 3"
 
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"

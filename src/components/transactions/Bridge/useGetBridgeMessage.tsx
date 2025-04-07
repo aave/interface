@@ -145,7 +145,15 @@ export const useGetBridgeMessage = ({
         setLoading(false);
       }
     }, 500);
-  }, [amount, destinationChainId, sourceChainId, sourceTokenAddress, destinationAccount, feeToken]);
+  }, [
+    amount,
+    destinationChainId,
+    sourceChainId,
+    sourceTokenAddress,
+    destinationAccount,
+    feeToken,
+    feeTokenOracle,
+  ]);
 
   useEffect(() => {
     if (amount && sourceTokenAddress) {

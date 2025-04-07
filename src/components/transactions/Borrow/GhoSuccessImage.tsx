@@ -5,7 +5,7 @@ interface GhoSuccessImageProps {
   onSuccessEditing: (svg: SVGSVGElement) => void;
 }
 
-export default ({ text, onSuccessEditing }: GhoSuccessImageProps) => {
+const GhoSuccessImage = ({ text, onSuccessEditing }: GhoSuccessImageProps) => {
   const dynamicGroupRef = useRef<SVGGElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -255,3 +255,4 @@ export default ({ text, onSuccessEditing }: GhoSuccessImageProps) => {
     </svg>
   );
 };
+export default GhoSuccessImage;

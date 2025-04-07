@@ -117,7 +117,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setLoading(false);
     setDeactivated(true);
     setSwitchNetworkError(undefined);
-  }, [provider, connector]);
+  }, [cleanConnectorStorage, deactivate, connector, setWalletType]);
 
   const connectReadOnlyMode = (address: string): Promise<void> => {
     localStorage.setItem('readOnlyModeAddress', address);
@@ -172,7 +172,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         setLoading(false);
       }
     },
-    [disconnectWallet, currentChainId]
+    [chainId, currentChainId, activate, setWalletType, setError]
   );
 
   const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
@@ -432,11 +432,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // inject account into zustand as long as aave itnerface is using old web3 providers
   useEffect(() => {
     setAccount(account?.toLowerCase());
-  }, [account]);
+  }, [account, setAccount]);
 
   useEffect(() => {
     setAccountLoading(loading);
-  }, [loading]);
+  }, [loading, setAccountLoading]);
 
   return (
     <Web3Context.Provider

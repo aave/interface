@@ -44,9 +44,6 @@ msgstr ""
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr ""
 
-#: src/components/transactions/Borrow/ParameterChangewarning.tsx
-msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
-msgstr ""
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -116,14 +113,7 @@ msgstr "Η προσφορά AToken δεν είναι μηδενική"
 msgid "Aave Governance"
 msgstr "Διακυβέρνηση Aave"
 
-#: src/modules/reserve-overview/AddTokenDropdown.tsx
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave aToken"
-msgstr ""
 
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave debt token"
-msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -1387,10 +1377,6 @@ msgstr "Μάθετε περισσότερα στον οδηγό <0>Συχνών 
 msgid "Learn more."
 msgstr "Μάθετε περισσότερα."
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Legacy Markets"
-msgstr ""
-
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
@@ -1470,9 +1456,6 @@ msgstr "ΜΕΓΙΣΤΟ"
 msgid "Manage E-Mode"
 msgstr ""
 
-#: src/layouts/AppFooter.tsx
-msgid "Manage analytics"
-msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
@@ -1556,10 +1539,6 @@ msgstr ""
 msgid "Migrate"
 msgstr ""
 
-#: src/layouts/MobileMenu.tsx
-#: src/layouts/MoreMenu.tsx
-msgid "Migrate to Aave V3"
-msgstr ""
 
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
@@ -1851,10 +1830,6 @@ msgstr ""
 msgid "Price impact {0}%"
 msgstr ""
 
-#: src/layouts/AppFooter.tsx
-msgid "Privacy"
-msgstr ""
-
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Λεπτομέρειες πρότασης"
@@ -2123,13 +2098,8 @@ msgstr ""
 msgid "Selected supply assets"
 msgstr ""
 
-#: src/layouts/FeedbackDialog.tsx
-msgid "Send Feedback"
-msgstr ""
 
-#: src/layouts/AppFooter.tsx
-msgid "Send feedback"
-msgstr ""
+
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
@@ -2435,9 +2405,7 @@ msgstr ""
 msgid "Techpaper"
 msgstr ""
 
-#: src/layouts/AppFooter.tsx
-msgid "Terms"
-msgstr ""
+
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
@@ -2483,9 +2451,7 @@ msgstr "Η διεύθυνση του παρόχου διευθύνσεων κο�
 msgid "The app is running in fork mode."
 msgstr ""
 
-#: src/layouts/AppHeader.tsx
-msgid "The app is running in testnet mode. Learn how it works in"
-msgstr ""
+
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
@@ -2910,13 +2876,7 @@ msgstr ""
 msgid "Variable rate"
 msgstr ""
 
-#: src/components/MarketSwitcher.tsx
-msgid "Version 2"
-msgstr ""
 
-#: src/components/MarketSwitcher.tsx
-msgid "Version 3"
-msgstr ""
 
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
@@ -3051,9 +3011,6 @@ msgstr "Όταν πραγματοποιείται ρευστοποίηση, οι
 msgid "With a voting power of <0/>"
 msgstr "Με δύναμη ψήφου <0/>"
 
-#: src/modules/faucet/FaucetTopPanel.tsx
-msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
-msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx

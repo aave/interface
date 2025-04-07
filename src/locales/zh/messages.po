@@ -44,9 +44,6 @@ msgstr "<0><1><2/></1>添加 stkAAVE</0> 查看带折扣的借贷利率"
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> 是变基资产。请访问 <1>文档</1> 以了解更多信息。"
 
-#: src/components/transactions/Borrow/ParameterChangewarning.tsx
-msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
-msgstr "<0>注意力：</0> 通过监管更改参数可能会改变您的账户健康因素和清算风险。关注 <1>Aave 治理论坛</1> 以获取更新。"
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -120,10 +117,6 @@ msgstr "Aave 治理"
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Aave aToken"
 msgstr "Aave aToken（英语：Aave aToken）"
-
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave debt token"
-msgstr "Aave 债务代币"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -1387,9 +1380,6 @@ msgstr "在我们的<0>常见问题解答指南</0>中了解更多信息"
 msgid "Learn more."
 msgstr "了解更多信息。"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Legacy Markets"
-msgstr ""
 
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
@@ -1470,9 +1460,6 @@ msgstr ".MAX"
 msgid "Manage E-Mode"
 msgstr ""
 
-#: src/layouts/AppFooter.tsx
-msgid "Manage analytics"
-msgstr "管理分析"
 
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
@@ -1556,10 +1543,6 @@ msgstr ""
 msgid "Migrate"
 msgstr "迁移"
 
-#: src/layouts/MobileMenu.tsx
-#: src/layouts/MoreMenu.tsx
-msgid "Migrate to Aave V3"
-msgstr ""
 
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
@@ -1851,9 +1834,7 @@ msgstr "价格影响是转换的入场代币总价值与获得的目标代币（
 msgid "Price impact {0}%"
 msgstr "价格影响 {0}%"
 
-#: src/layouts/AppFooter.tsx
-msgid "Privacy"
-msgstr "隐私"
+
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
@@ -2434,9 +2415,6 @@ msgstr "切换 E 模式"
 msgid "Techpaper"
 msgstr "技术论文"
 
-#: src/layouts/AppFooter.tsx
-msgid "Terms"
-msgstr "条款"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
@@ -2482,9 +2460,6 @@ msgstr "池地址提供程序的地址无效"
 msgid "The app is running in fork mode."
 msgstr ""
 
-#: src/layouts/AppHeader.tsx
-msgid "The app is running in testnet mode. Learn how it works in"
-msgstr "应用在测试网模式下运行。了解它是如何工作的"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
@@ -2909,13 +2884,6 @@ msgstr ""
 msgid "Variable rate"
 msgstr "浮动利率"
 
-#: src/components/MarketSwitcher.tsx
-msgid "Version 2"
-msgstr "版本 2"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Version 3"
-msgstr "版本 3"
 
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
@@ -3050,9 +3018,6 @@ msgstr "发生清算时，清算人代表借款人偿还最多 50% 的未偿还�
 msgid "With a voting power of <0/>"
 msgstr "投票权 <0/>"
 
-#: src/modules/faucet/FaucetTopPanel.tsx
-msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
-msgstr "使用测试网水龙头，您可以获得免费资产来测试 Aave 协议。确保将您的钱包提供商切换到适当的测试网网络，选择所需的资产，然后单击“水龙头”以将代币转移到您的钱包。测试网上的资产不是“真实的”，这意味着它们没有货币价值。 <0>了解更多信息</0>"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx

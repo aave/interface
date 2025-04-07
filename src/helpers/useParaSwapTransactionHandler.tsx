@@ -314,7 +314,20 @@ export const useParaSwapTransactionHandler = ({
       setApprovalTx(undefined);
       setActionTx(undefined);
     }
-  }, [skip, ...deps, walletApprovalMethodPreference]);
+  }, [
+    deps,
+    gasLimitRecommendation,
+    handleGetApprovalTxns,
+    previousDeps.amount,
+    previousDeps.asset,
+    setApprovalTxState,
+    setGasLimit,
+    setLoadingTxns,
+    setMainTxState,
+    setTxError,
+    skip,
+    walletApprovalMethodPreference,
+  ]);
 
   return {
     approval,

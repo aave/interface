@@ -41,7 +41,7 @@ export function AppGlobalStyles({ children }: { children: ReactNode }) {
     } else if (prefersDarkMode) {
       setMode('dark');
     }
-  }, []);
+  }, [prefersDarkMode]);
 
   const theme = useMemo(() => {
     const themeCreate = createTheme(getDesignTokens(mode));

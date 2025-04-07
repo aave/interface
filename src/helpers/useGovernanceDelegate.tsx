@@ -348,7 +348,18 @@ export const useGovernanceDelegate = (
       }
     }, 1000);
     return () => clearTimeout(timeout);
-  }, [delegationTokenType, delegationType, delegatee, skip]);
+  }, [
+    delegationTokenType,
+    delegationType,
+    delegatee,
+    skip,
+    setLoadingTxns,
+    setGasLimit,
+    setMainTxState,
+    setTxError,
+    delegate,
+    delegateByType,
+  ]);
 
   return { approvalTxState, signMetaTxs, mainTxState, loadingTxns, action, isSignatureAction };
 };

@@ -40,8 +40,8 @@ msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to 
 msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 
 #: src/components/transactions/Borrow/ParameterChangewarning.tsx
-msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
-msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
+msgid "<0>Attention:</0> Parameter changes can alter your account health factor and risk of liquidation. Follow us <1>In Discord</1> for updates."
+msgstr "<0>Attention:</0> Parameter changes can alter your account health factor and risk of liquidation. Follow us <1>In Discord</1> for updates."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -110,15 +110,6 @@ msgstr "AToken supply is not zero"
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
 msgstr "Aave Governance"
-
-#: src/modules/reserve-overview/AddTokenDropdown.tsx
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave aToken"
-msgstr "Aave aToken"
-
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave debt token"
-msgstr "Aave debt token"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -265,6 +256,10 @@ msgstr "Approve {symbol} to continue"
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approving {symbol}..."
 msgstr "Approving {symbol}..."
+
+#: src/components/MarketSwitcher.tsx
+msgid "Arb Testnet"
+msgstr "Arb Testnet"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
@@ -436,6 +431,10 @@ msgstr "Because this asset is paused, no actions can be taken until further noti
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
 msgstr "Before supplying"
+
+#: src/layouts/AppHeader.tsx
+msgid "Better Bank"
+msgstr "Better Bank"
 
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
@@ -1382,10 +1381,6 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 msgid "Learn more."
 msgstr "Learn more."
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Legacy Markets"
-msgstr "Legacy Markets"
-
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
@@ -1464,10 +1459,6 @@ msgstr "MAX"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Manage E-Mode"
 msgstr "Manage E-Mode"
-
-#: src/layouts/AppFooter.tsx
-msgid "Manage analytics"
-msgstr "Manage analytics"
 
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
@@ -1551,11 +1542,6 @@ msgstr "Merit Program rewards are claimed through the"
 msgid "Migrate"
 msgstr "Migrate"
 
-#: src/layouts/MobileMenu.tsx
-#: src/layouts/MoreMenu.tsx
-msgid "Migrate to Aave V3"
-msgstr "Migrate to Aave V3"
-
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
@@ -1627,10 +1613,6 @@ msgstr "More"
 #: src/modules/governance/VoteBar.tsx
 msgid "NAY"
 msgstr "NAY"
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
-msgstr "Need help connecting a wallet? <0>Read our FAQ</0>"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
@@ -1845,10 +1827,6 @@ msgstr "Price impact is the spread between the total value of the entry tokens s
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
-
-#: src/layouts/AppFooter.tsx
-msgid "Privacy"
-msgstr "Privacy"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
@@ -2121,10 +2099,6 @@ msgstr "Selected supply assets"
 #: src/layouts/FeedbackDialog.tsx
 msgid "Send Feedback"
 msgstr "Send Feedback"
-
-#: src/layouts/AppFooter.tsx
-msgid "Send feedback"
-msgstr "Send feedback"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
@@ -2429,10 +2403,6 @@ msgstr "Switching E-Mode"
 msgid "Techpaper"
 msgstr "Techpaper"
 
-#: src/layouts/AppFooter.tsx
-msgid "Terms"
-msgstr "Terms"
-
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
 msgstr "Test Assets"
@@ -2478,8 +2448,8 @@ msgid "The app is running in fork mode."
 msgstr "The app is running in fork mode."
 
 #: src/layouts/AppHeader.tsx
-msgid "The app is running in testnet mode. Learn how it works in"
-msgstr "The app is running in testnet mode. Learn how it works in"
+msgid "The app is running in testnet mode."
+msgstr "The app is running in testnet mode."
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
@@ -2904,14 +2874,6 @@ msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditi
 msgid "Variable rate"
 msgstr "Variable rate"
 
-#: src/components/MarketSwitcher.tsx
-msgid "Version 2"
-msgstr "Version 2"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Version 3"
-msgstr "Version 3"
-
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
 msgstr "View"
@@ -3046,8 +3008,8 @@ msgid "With a voting power of <0/>"
 msgstr "With a voting power of <0/>"
 
 #: src/modules/faucet/FaucetTopPanel.tsx
-msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
-msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
+msgid "With testnet Faucet you can get free assets to test the Better Bank. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value."
+msgstr "With testnet Faucet you can get free assets to test the Better Bank. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value."
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
@@ -3259,6 +3221,11 @@ msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
 
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "aToken"
+msgstr "aToken"
+
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "about SuperFest."
 msgstr "about SuperFest."
@@ -3278,6 +3245,10 @@ msgstr "blocked activities"
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copy the error"
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "debt token"
+msgstr "debt token"
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "disabled"

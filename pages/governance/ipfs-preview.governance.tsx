@@ -154,7 +154,7 @@ export default function IpfsPreview() {
   useEffect(() => {
     if (!ipfsHash) return;
     fetchIpfs();
-  }, [ipfsHash]);
+  }, [fetchIpfs, ipfsHash]);
 
   return (
     <>

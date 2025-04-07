@@ -44,7 +44,6 @@ export const useTransactionHandler = ({
   permitAction,
   skip,
   protocolAction,
-  deps = [],
   eventTxInfo,
 }: UseTransactionHandlerProps) => {
   const {
@@ -434,7 +433,18 @@ export const useTransactionHandler = ({
       setApprovalTxes(undefined);
       setActionTx(undefined);
     }
-  }, [skip, ...deps, tryPermit, walletApprovalMethodPreference]);
+  }, [
+    handleGetPermitTxns,
+    handleGetTxns,
+    permitAction,
+    setGasLimit,
+    setLoadingTxns,
+    setMainTxState,
+    setTxError,
+    skip,
+    tryPermit,
+    walletApprovalMethodPreference,
+  ]);
 
   return {
     approval,

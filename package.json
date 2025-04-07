@@ -67,6 +67,7 @@
     "@web3-react/types": "^6.0.7",
     "@web3-react/walletlink-connector": "^6.2.14",
     "blo": "^1.1.1",
+    "caniuse-lite": "^1.0.30001712",
     "d3-array": "^3.2.0",
     "d3-time-format": "^4.1.0",
     "dayjs": "^1.11.5",
