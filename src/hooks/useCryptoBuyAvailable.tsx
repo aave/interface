@@ -25,7 +25,7 @@ export const useCryptoBuyAvailable = (
         }
       })();
     }
-  }, [cryptoCode, networkMarketName]);
+  }, [cryptoCode, isFiatOnRampEnabled, networkMarketName]);
 
   return {
     isAvailable,

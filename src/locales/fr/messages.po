@@ -44,9 +44,6 @@ msgstr "<0><1><2/></1>Ajoutez stkAAVE</0> pour voir le taux d’emprunt avec esc
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> est un actif de rebasage. Consultez la <1>documentation</1> pour en savoir plus."
 
-#: src/components/transactions/Borrow/ParameterChangewarning.tsx
-msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
-msgstr "<0>Attention:</0> Les changements de paramètres via la gouvernance peuvent modifier le facteur de santé de votre compte et le risque de liquidation. Suivez le <1>forum de gouvernance d’Aave</1> pour les mises à jour."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -116,14 +113,6 @@ msgstr "L'approvisionnement en aTokens n'est pas nul"
 msgid "Aave Governance"
 msgstr "Gouvernance Aave"
 
-#: src/modules/reserve-overview/AddTokenDropdown.tsx
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave aToken"
-msgstr "Aave aToken"
-
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave debt token"
-msgstr "Jeton de dette Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -1387,10 +1376,6 @@ msgstr "En savoir plus dans notre <0>guide FAQ</0>"
 msgid "Learn more."
 msgstr "Pour en savoir plus."
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Legacy Markets"
-msgstr ""
-
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
@@ -1470,9 +1455,6 @@ msgstr "MAX"
 msgid "Manage E-Mode"
 msgstr ""
 
-#: src/layouts/AppFooter.tsx
-msgid "Manage analytics"
-msgstr "Gérer l’analytique"
 
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
@@ -1556,10 +1538,6 @@ msgstr ""
 msgid "Migrate"
 msgstr "Émigrer"
 
-#: src/layouts/MobileMenu.tsx
-#: src/layouts/MoreMenu.tsx
-msgid "Migrate to Aave V3"
-msgstr ""
 
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
@@ -1851,9 +1829,6 @@ msgstr "L’impact sur les prix est l’écart entre la valeur totale des tokens
 msgid "Price impact {0}%"
 msgstr "Impact sur les prix {0}%"
 
-#: src/layouts/AppFooter.tsx
-msgid "Privacy"
-msgstr "Vie privée"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
@@ -2434,9 +2409,7 @@ msgstr "Changement de mode E"
 msgid "Techpaper"
 msgstr "Fiche technique"
 
-#: src/layouts/AppFooter.tsx
-msgid "Terms"
-msgstr "Petits caractères"
+
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
@@ -2482,9 +2455,6 @@ msgstr "L'adresse du fournisseur d'adresses du pool n'est pas valide"
 msgid "The app is running in fork mode."
 msgstr ""
 
-#: src/layouts/AppHeader.tsx
-msgid "The app is running in testnet mode. Learn how it works in"
-msgstr "L’application s’exécute en mode réseau de test. Découvrez comment cela fonctionne dans"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
@@ -2909,13 +2879,6 @@ msgstr ""
 msgid "Variable rate"
 msgstr "Taux variable"
 
-#: src/components/MarketSwitcher.tsx
-msgid "Version 2"
-msgstr "Variante 2"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Version 3"
-msgstr "Variante 3"
 
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
@@ -3050,9 +3013,6 @@ msgstr "Lorsqu'une liquidation survient, les liquidateurs remboursent jusqu'à 5
 msgid "With a voting power of <0/>"
 msgstr "Avec un pouvoir de vote de <0/>"
 
-#: src/modules/faucet/FaucetTopPanel.tsx
-msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
-msgstr "Avec testnet Faucet, vous pouvez obtenir des ressources gratuites pour tester le protocole Aave. Assurez-vous de changer votre fournisseur de portefeuille pour le réseau de test approprié, sélectionnez l’actif souhaité et cliquez sur « Faucet » pour obtenir des jetons transférés vers votre portefeuille. Les actifs d’un réseau de test ne sont pas « réels », ce qui signifie qu’ils n’ont aucune valeur monétaire. <0>Pour en savoir plus</0>"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx

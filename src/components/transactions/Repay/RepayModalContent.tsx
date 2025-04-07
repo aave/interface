@@ -175,7 +175,20 @@ export const RepayModalContent = ({
     }
     setAssets(repayTokens);
     setTokenToRepayWith(repayTokens[0]);
-  }, []);
+  }, [
+    currentMarket,
+    currentMarketData.v3,
+    debt,
+    nativeBalance,
+    networkConfig.baseAssetSymbol,
+    networkConfig.wrappedBaseAssetSymbol,
+    poolReserve.aTokenAddress,
+    poolReserve.iconSymbol,
+    poolReserve.symbol,
+    poolReserve.underlyingAsset,
+    tokenBalance,
+    underlyingBalance,
+  ]);
 
   // debt remaining after repay
   const amountAfterRepay = valueToBigNumber(debt)

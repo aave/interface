@@ -41,7 +41,7 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
     if (isContractAddress && walletApprovalMethodPreference === ApprovalMethod.PERMIT) {
       setWalletApprovalMethodPreference(ApprovalMethod.APPROVE);
     }
-  }, [isContractAddress]);
+  }, [isContractAddress, setWalletApprovalMethodPreference, walletApprovalMethodPreference]);
 
   // a signature is not submitted on-chain so there is no link to review
   if (!approvalHash && !isSigned && tryPermit)

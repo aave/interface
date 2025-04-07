@@ -21,22 +21,22 @@ export const PermissionProvider: React.FC = ({ children }) => {
   const [isPermissionsLoading, setIsPermissionsLoading] = useState<boolean>(true);
   const [permissions, setPermissions] = useState<PERMISSION[]>([]);
 
-  async function getPermissionData(permissionManagerAddress: string) {
-    try {
-      const instance = new PermissionManager({
-        provider: getProvider(chainId),
-        permissionManagerAddress: permissionManagerAddress,
-      });
-      const permissions = await instance.getHumanizedUserPermissions(walletAddress);
-      setIsPermissionsLoading(true);
-      setPermissions(permissions);
-    } catch (e) {
-      throw new Error('there was an error fetching your permissions');
-    }
-    setIsPermissionsLoading(false);
-  }
-
   useEffect(() => {
+    async function getPermissionData(permissionManagerAddress: string) {
+      try {
+        const instance = new PermissionManager({
+          provider: getProvider(chainId),
+          permissionManagerAddress: permissionManagerAddress,
+        });
+        const permissions = await instance.getHumanizedUserPermissions(walletAddress);
+        setIsPermissionsLoading(true);
+        setPermissions(permissions);
+      } catch (e) {
+        throw new Error('there was an error fetching your permissions');
+      }
+      setIsPermissionsLoading(false);
+    }
+
     if (
       isFeatureEnabled.permissions(currentMarketData) &&
       walletAddress &&
@@ -46,7 +46,7 @@ export const PermissionProvider: React.FC = ({ children }) => {
     } else {
       setIsPermissionsLoading(false);
     }
-  }, [walletAddress, currentMarketData.addresses.PERMISSION_MANAGER]);
+  }, [walletAddress, currentMarketData.addresses.PERMISSION_MANAGER, currentMarketData, chainId]);
 
   return (
     <Context.Provider

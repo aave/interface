@@ -147,7 +147,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
       background: theme.palette.background.default,
     };
 
-    const data = useMemo(() => getRates(reserve), [JSON.stringify(reserve)]);
+    const data = useMemo(() => getRates(reserve), [reserve]);
 
     // bounds
     const innerWidth = width - margin.left - margin.right;
@@ -170,7 +170,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
         domain: [0, (maxY || 0) * 1.1],
         nice: true,
       });
-    }, [innerHeight, data, reserve]);
+    }, [innerHeight, data]);
 
     // tooltip handler
     const handleTooltip = useCallback(

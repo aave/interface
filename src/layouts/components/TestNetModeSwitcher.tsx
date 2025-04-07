@@ -20,7 +20,7 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
       localStorage.setItem('testnetsEnabled', 'true');
       window.location.href = '/';
     }
-  }, []);
+  }, [testnetsEnabled]);
 
   const toggleTestnetsEnabled = () => {
     const newState = !testnetsEnabled;

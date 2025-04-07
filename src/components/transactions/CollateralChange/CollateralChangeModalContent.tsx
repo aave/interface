@@ -115,7 +115,7 @@ export const CollateralChangeModalContent = ({
     if (collateralChangeTxState.success) {
       setCollateralEnabled(usageAsCollateralModeAfterSwitch);
     }
-  }, [collateralChangeTxState.success, collateralEnabled]);
+  }, [collateralChangeTxState.success, collateralEnabled, usageAsCollateralModeAfterSwitch]);
 
   if (collateralChangeTxState.success)
     return <TxSuccessView collateral={collateralEnabled} symbol={poolReserve.symbol} />;

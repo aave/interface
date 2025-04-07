@@ -20,7 +20,7 @@ export const SwitchRates = ({ rates, srcSymbol, destSymbol }: SwitchRatesProps) 
     const amount1 = normalizeBN(rates.srcAmount, rates.srcDecimals);
     const amount2 = normalizeBN(rates.destAmount, rates.destDecimals);
     return isSwitched ? amount1.div(amount2) : amount2.div(amount1);
-  }, [isSwitched, rates.srcAmount, rates.destAmount]);
+  }, [rates.srcAmount, rates.srcDecimals, rates.destAmount, rates.destDecimals, isSwitched]);
 
   const priceImpact = useMemo(() => {
     const price1 = valueToBigNumber(rates.srcUSD);

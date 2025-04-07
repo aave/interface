@@ -117,7 +117,7 @@ export default function MyApp(props: MyAppProps) {
     } else {
       console.log('no analytics tracking');
     }
-  }, []);
+  }, [MIXPANEL_TOKEN, initializeMixpanel]);
 
   return (
     <CacheProvider value={emotionCache}>

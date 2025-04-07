@@ -113,7 +113,7 @@ export const BridgeModalContent = () => {
     if (feeTokenListWithBalance && feeTokenListWithBalance.length > 0 && !selectedFeeToken) {
       setSelectedFeeToken(feeTokenListWithBalance[0]);
     }
-  }, [feeTokenListWithBalance, sourceNetworkObj]);
+  }, [feeTokenListWithBalance, sourceNetworkObj, selectedFeeToken]);
 
   useEffect(() => {
     // reset when source network changes

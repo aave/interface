@@ -24,7 +24,7 @@ export default function Home() {
       'Page Name': 'Dashboard',
       Market: currentMarket,
     });
-  }, [trackEvent]);
+  }, [currentMarket, trackEvent]);
 
   return (
     <>

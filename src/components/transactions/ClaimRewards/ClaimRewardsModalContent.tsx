@@ -114,7 +114,14 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
 
     setRewards(userIncentives);
     setClaimableUsd(totalClaimableUsd.toString());
-  }, []);
+  }, [
+    claimableUsd,
+    currentMarketData.chainId,
+    currentMarketData.v3,
+    reserves,
+    selectedReward,
+    user.calculatedUserIncentives,
+  ]);
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;

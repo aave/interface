@@ -17,7 +17,7 @@ export const usePolling = (
   useEffect(() => {
     // initial execution
     if (!skip) callback();
-  }, [...deps]);
+  }, [callback, skip]);
 
   useEffect(() => {
     let timeout: number;
