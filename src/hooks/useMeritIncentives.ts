@@ -75,6 +75,9 @@ const joinedEthCorrelatedIncentiveForumLink =
 const joinedEthCorrelatedIncentivePhase2ForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/70';
 
+const eurcForumLink =
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/77';
+
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
@@ -284,6 +287,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aBasEURC',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
+        customForumLink: eurcForumLink,
       },
       {
         action: MeritAction.BASE_BORROW_EURC,
@@ -291,6 +295,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aBasEURC',
         protocolAction: ProtocolAction.borrow,
         customMessage: antiLoopBorrowMessage,
+        customForumLink: eurcForumLink,
       },
     ],
   },
