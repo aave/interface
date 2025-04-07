@@ -1,22 +1,9 @@
 import { MenuIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import {
-  Box,
-  Button,
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Divider, List, SvgIcon, Typography } from '@mui/material';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 
-import { Link } from '../components/primitives/Link';
-import { moreNavigation } from '../ui-config/menu-items';
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
@@ -45,7 +32,6 @@ const MenuItemsWrapper = ({ children, title }: { children: ReactNode; title: Rea
 );
 
 export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => {
-  const { i18n } = useLingui();
   const [isLanguagesListOpen, setIsLanguagesListOpen] = useState(false);
 
   useEffect(() => setIsLanguagesListOpen(false), [open]);
@@ -78,19 +64,6 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
                 <DarkModeSwitcher />
                 {PROD_ENV && <TestNetModeSwitcher />}
                 <LanguageListItem onClick={() => setIsLanguagesListOpen(true)} />
-              </List>
-            </MenuItemsWrapper>
-            <MenuItemsWrapper title={<Trans>Links</Trans>}>
-              <List>
-                {moreNavigation.map((item, index) => (
-                  <ListItem component={Link} href={item.link} sx={{ color: '#F1F1F3' }} key={index}>
-                    <ListItemIcon sx={{ minWidth: 'unset', mr: 3 }}>
-                      <SvgIcon sx={{ fontSize: '20px', color: '#F1F1F3' }}>{item.icon}</SvgIcon>
-                    </ListItemIcon>
-
-                    <ListItemText>{i18n._(item.title)}</ListItemText>
-                  </ListItem>
-                ))}
               </List>
             </MenuItemsWrapper>
           </>
