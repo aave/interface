@@ -14,19 +14,11 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
   const [testnetsEnabled, setTestnetsMode] = useState(testnetsEnabledLocalstorage);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  React.useEffect(() => {
-    // if testnets are disabled, set the localstorage to true and reload the page
-    if (!testnetsEnabled) {
-      localStorage.setItem('testnetsEnabled', 'true');
-      window.location.href = '/';
-    }
-  }, [testnetsEnabled]);
-
   const toggleTestnetsEnabled = () => {
     const newState = !testnetsEnabled;
     setTestnetsMode(!testnetsEnabled);
     localStorage.setItem(testnetsEnabledId, newState ? 'true' : 'false');
-    // Set window.location to trigger a page reload when navigating to the the dashboard
+    // Set window.location to trigger a page reload when navigating to the dashboard
     window.location.href = '/';
   };
 
