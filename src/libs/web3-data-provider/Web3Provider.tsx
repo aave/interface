@@ -3,7 +3,7 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
 import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
+// import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useRootStore } from 'src/store/root';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { hexToAscii } from 'src/utils/utils';
@@ -49,9 +49,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-  const [setAccount, setConnectedAccountIsContract] = useRootStore(
-    useShallow((store) => [store.setAccount, store.setConnectedAccountIsContract])
-  );
+  const [setAccount] = useRootStore(useShallow((store) => [store.setAccount]));
 
   const account = address;
   const readOnlyMode = utils.isAddress(readOnlyModeAddress || '');
@@ -60,7 +58,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     currentAccount = readOnlyModeAddress;
   }
 
-  const { data: isContractAddress } = useIsContractAddress(account || '', chainId);
+  // const { data: isContractAddress } = useIsContractAddress(account || '', chainId);
 
   useEffect(() => {
     if (didInit) {
@@ -77,6 +75,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }, [readOnlyMode]);
 
   useEffect(() => {
+    console.log('connectors', connectors);
     // If running cypress tests, then we try to auto connect on app load
     // so it doesn't have to be driven through the UI.
     const isCypressEnabled = process.env.NEXT_PUBLIC_IS_CYPRESS_ENABLED === 'true';
@@ -185,16 +184,16 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }
   }, [readOnlyModeAddress, setAccount]);
 
-  useEffect(() => {
-    if (!account) {
-      setConnectedAccountIsContract(false);
-      return;
-    }
+  // useEffect(() => {
+  //   if (!account) {
+  //     setConnectedAccountIsContract(false);
+  //     return;
+  //   }
 
-    if (isContractAddress) {
-      setConnectedAccountIsContract(true);
-    }
-  }, [isContractAddress, setConnectedAccountIsContract, account]);
+  //   if (isContractAddress) {
+  //     setConnectedAccountIsContract(true);
+  //   }
+  // }, [isContractAddress, setConnectedAccountIsContract, account]);
 
   useEffect(() => {
     // Checks if in safe iframe or localhost(for debugging)
