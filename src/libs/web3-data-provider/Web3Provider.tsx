@@ -196,6 +196,31 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }
   }, [isContractAddress, setConnectedAccountIsContract, account]);
 
+  useEffect(() => {
+    // Checks if in safe iframe or localhost(for debugging)
+    const isSafeApp =
+      (window.self !== window.top &&
+        (window.location.href.includes('gnosis-safe.io') ||
+          window.location.href.includes('app.safe.global') ||
+          window.location.href.includes('dhedge.org'))) ||
+      window.location.href.includes('localhost'); // for debugging
+
+    // Only proceed if we're in a Safe iframe
+    if (isSafeApp) {
+      console.log('Safe App detected, attempting auto-connection...');
+
+      // Find the Safe connector
+      const safeConnector = connectors.find((c) => c.id === 'safe');
+
+      if (safeConnector) {
+        console.log('Safe connector found, connecting...');
+
+        // Force connect to the Safe connector
+        connect({ connector: safeConnector });
+      }
+    }
+  }, [connect, connectors]);
+
   return (
     <Web3Context.Provider
       value={{
