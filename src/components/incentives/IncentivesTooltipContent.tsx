@@ -63,6 +63,11 @@ const IncentivesSymbolMap: {
     symbol: 'awstETH',
     aToken: true,
   },
+  aBasEURC: {
+    tokenIconSymbol: 'EURC',
+    symbol: 'aEURC',
+    aToken: true,
+  },
   aAvaSAVAX: {
     tokenIconSymbol: 'sAVAX',
     symbol: 'asAVAX',
