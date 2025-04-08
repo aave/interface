@@ -1108,6 +1108,7 @@ msgstr "Failed to load proposal voters. Please refresh the page."
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/faucet/FaucetItemLoader.tsx
 #: src/modules/faucet/FaucetMobileItemLoader.tsx
+#: src/ui-config/menu-items/index.tsx
 msgid "Faucet"
 msgstr "Faucet"
 
