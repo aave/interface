@@ -74,8 +74,6 @@ const joinedEthCorrelatedIncentiveForumLink =
 const joinedEthCorrelatedIncentivePhase2ForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/70';
 
-const aeBTCAddress = '0x5fefd7069a7D91d01f269DADE14526CCF3487810';
-
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
@@ -97,7 +95,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       },
       {
         action: MeritAction.SUPPLY_EBTC_BORROW_WBTC_OR_CBBTC,
-        rewardTokenAddress: aeBTCAddress,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.eBTC.A_TOKEN,
         rewardTokenSymbol: 'aEthCBBTC',
         protocolAction: ProtocolAction.borrow,
         customMessage: 'You must supply eBTC and borrow cbBTC in order to receive merit rewards.',
@@ -122,7 +120,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       },
       {
         action: MeritAction.SUPPLY_EBTC_BORROW_WBTC_OR_CBBTC,
-        rewardTokenAddress: aeBTCAddress,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.eBTC.A_TOKEN,
         rewardTokenSymbol: 'aEtheBTC',
         protocolAction: ProtocolAction.borrow,
         customMessage: 'You must supply eBTC and borrow WBTC in order to receive merit rewards.',
@@ -131,7 +129,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     eBTC: [
       {
         action: MeritAction.SUPPLY_EBTC_BORROW_WBTC_OR_CBBTC,
-        rewardTokenAddress: aeBTCAddress,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.eBTC.A_TOKEN,
         rewardTokenSymbol: 'aEtheBTC',
         protocolAction: ProtocolAction.supply,
         customMessage:
