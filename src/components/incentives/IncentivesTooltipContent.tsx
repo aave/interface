@@ -48,7 +48,7 @@ const IncentivesSymbolMap: {
     symbol: 'aPYUSD',
     aToken: true,
   },
-  aETHeBTC: {
+  aEtheBTC: {
     tokenIconSymbol: 'eBTC',
     symbol: 'aeBTC',
     aToken: true,
