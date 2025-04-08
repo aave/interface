@@ -31,9 +31,9 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.32.1",
-    "@aave/math-utils": "1.32.1",
-    "@bgd-labs/aave-address-book": "^4.15.0",
+    "@aave/contract-helpers": "1.33.1",
+    "@aave/math-utils": "1.33.1",
+    "@bgd-labs/aave-address-book": "^4.17.2",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
@@ -61,7 +61,7 @@
     "@visx/tooltip": "^2.16.0",
     "@wagmi/core": "^2.16.0",
     "blo": "^1.1.1",
-    "connectkit": "^1.8.2",
+    "connectkit": "1.9.0",
     "d3-array": "^3.2.0",
     "d3-time-format": "^4.1.0",
     "dayjs": "^1.11.5",

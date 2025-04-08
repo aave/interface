@@ -78,6 +78,11 @@ const IncentivesSymbolMap: {
     symbol: 'awS',
     aToken: true,
   },
+  aBasweETH: {
+    tokenIconSymbol: 'weETH',
+    symbol: 'aweETH',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
