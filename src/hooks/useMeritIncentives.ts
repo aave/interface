@@ -101,7 +101,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       {
         action: MeritAction.SUPPLY_EBTC_BORROW_WBTC_OR_CBBTC,
         rewardTokenAddress: AaveV3Ethereum.ASSETS.eBTC.A_TOKEN,
-        rewardTokenSymbol: 'aEthCBBTC',
+        rewardTokenSymbol: 'aEtheBTC',
         protocolAction: ProtocolAction.borrow,
         customMessage: 'You must supply eBTC and borrow cbBTC in order to receive merit rewards.',
       },

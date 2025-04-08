@@ -48,7 +48,7 @@ const IncentivesSymbolMap: {
     symbol: 'aPYUSD',
     aToken: true,
   },
-  aETHeBTC: {
+  aEtheBTC: {
     tokenIconSymbol: 'eBTC',
     symbol: 'aeBTC',
     aToken: true,
@@ -98,6 +98,9 @@ interface IncentivesTooltipContentProps {
 
 export const getSymbolMap = (incentive: ReserveIncentiveResponse) => {
   const rewardTokenSymbol = incentive.rewardTokenSymbol;
+
+  console.log('rewardTokenSymbol', rewardTokenSymbol);
+  console.log('icon', IncentivesSymbolMap[rewardTokenSymbol]);
 
   return IncentivesSymbolMap[rewardTokenSymbol]
     ? {
