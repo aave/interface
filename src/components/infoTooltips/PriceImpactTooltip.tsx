@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton } from '@mui/material';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
@@ -27,6 +27,8 @@ export const PriceImpactTooltip = ({
     priceImpact = '0.00';
   }
 
+  const warning = Math.abs(Number(priceImpact)) > 10;
+
   return (
     <TextWithTooltip
       variant="secondary12"
@@ -36,7 +38,9 @@ export const PriceImpactTooltip = ({
         eventParams: { tooltip: 'Price Impact' },
       }}
       text={
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box
+          sx={{ display: 'flex', alignItems: 'center', color: warning ? 'warning.main' : 'unset' }}
+        >
           <Trans>
             Price impact{' '}
             {loading ? (
@@ -52,7 +56,7 @@ export const PriceImpactTooltip = ({
                 visibleDecimals={2}
                 variant="secondary12"
                 color="text.secondary"
-                sx={{ marginLeft: '4px' }}
+                sx={{ marginLeft: '4px', color: warning ? 'warning.main' : 'unset' }}
               />
             )}
             %

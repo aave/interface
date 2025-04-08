@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -6,9 +7,10 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
-import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
@@ -24,19 +26,22 @@ export const SuppliedPositionsListItem = ({
   underlyingAsset,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
-  const { isIsolated, aIncentivesData, isFrozen, isActive, isPaused } = reserve;
-  const { currentMarketData, currentMarket } = useProtocolDataContext();
+  const { isIsolated, aIncentivesData, aTokenAddress, isFrozen, isActive, isPaused } = reserve;
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
-  const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentMarketData, currentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarketData, store.currentMarket])
+  );
 
-  const canBeEnabledAsCollateral =
-    !debtCeiling.isMaxed &&
-    reserve.reserveLiquidationThreshold !== '0' &&
-    ((!reserve.isIsolated && !user.isInIsolationMode) ||
-      user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
-      (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
+  const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+
+  const canBeEnabledAsCollateral = user
+    ? !debtCeiling.isMaxed &&
+      reserve.reserveLiquidationThreshold !== '0' &&
+      ((!reserve.isIsolated && !user.isInIsolationMode) ||
+        user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
+        (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'))
+    : false;
 
   const disableSwap = !isActive || isPaused || reserve.symbol == 'stETH';
   const disableWithdraw = !isActive || isPaused;
@@ -56,6 +61,11 @@ export const SuppliedPositionsListItem = ({
       }`}
       showSupplyCapTooltips
       showDebtCeilingTooltips
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        reserve.symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       <ListValueColumn
         symbol={reserve.iconSymbol}
@@ -66,6 +76,9 @@ export const SuppliedPositionsListItem = ({
 
       <ListAPRColumn
         value={Number(reserve.supplyAPY)}
+        market={currentMarket}
+        protocolAction={ProtocolAction.supply}
+        address={aTokenAddress}
         incentives={aIncentivesData}
         symbol={reserve.symbol}
       />
@@ -90,7 +103,7 @@ export const SuppliedPositionsListItem = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        {isSwapButton ? (
+        {showSwitchButton ? (
           <Button
             disabled={disableSwap}
             variant="contained"

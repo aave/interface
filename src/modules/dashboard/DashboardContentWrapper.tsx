@@ -28,8 +28,6 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
   const downToLg = useMediaQuery(breakpoints.down('lg'));
 
-  const upFromSm = useMediaQuery(breakpoints.up('xsm'));
-
   return (
     <Box>
       {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3}
@@ -49,12 +47,19 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           }}
         >
           {currentAccount && !isBorrow && downToLg && (
-            <Box>
+            <Box
+              sx={{
+                position: { xs: 'static', md: 'relative' },
+                display: 'flex',
+                justifyContent: 'flex-end',
+                mb: { xs: 2, md: 0 },
+              }}
+            >
               <Button
                 sx={{
-                  position: 'absolute',
-                  top: upFromSm ? '-60px' : '-90px',
-                  right: '0px',
+                  position: { xs: 'static', md: 'absolute' },
+                  top: { xs: 'auto', md: '-130px' },
+                  right: { xs: 'auto', md: '0px' },
                 }}
                 onClick={() => {
                   router.push(ROUTES.history);
@@ -84,11 +89,10 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           {currentAccount && (
             <Box
               sx={{
-                position: 'absolute',
-
-                top: upFromSm ? '-60px' : '-90px',
-
-                right: '0px',
+                position: { xs: 'static', md: 'absolute' },
+                top: { xs: 'auto', md: downToLg ? '-130px' : '-90px' },
+                right: { xs: 'auto', md: '0px' },
+                mb: { xs: 2, md: 0 },
               }}
             >
               <Button

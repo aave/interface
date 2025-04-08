@@ -1,10 +1,11 @@
-import { PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
+import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
@@ -15,10 +16,11 @@ export const BorrowModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
-  const { currentMarket } = useProtocolDataContext();
 
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
-  const [trackEvent, displayGho] = useRootStore((store) => [store.trackEvent, store.displayGho]);
+  const [trackEvent, currentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarket])
+  );
 
   const handleBorrowUnwrapped = (borrowUnWrapped: boolean) => {
     trackEvent(GENERAL.OPEN_MODAL, {
@@ -36,19 +38,23 @@ export const BorrowModal = () => {
         title={<Trans>Borrow</Trans>}
         underlyingAsset={args.underlyingAsset}
         keepWrappedSymbol={!borrowUnWrapped}
-        requiredPermission={PERMISSION.BORROWER}
       >
-        {(params) =>
-          displayGho({ symbol: params.symbol, currentMarket }) ? (
-            <GhoBorrowModalContent {...params} />
-          ) : (
-            <BorrowModalContent
-              {...params}
-              unwrap={borrowUnWrapped}
-              setUnwrap={handleBorrowUnwrapped}
-            />
-          )
-        }
+        {(params) => (
+          <UserAuthenticated>
+            {(user) =>
+              displayGhoForMintableMarket({ symbol: params.symbol, currentMarket }) ? (
+                <GhoBorrowModalContent {...params} user={user} />
+              ) : (
+                <BorrowModalContent
+                  {...params}
+                  user={user}
+                  unwrap={borrowUnWrapped}
+                  setUnwrap={handleBorrowUnwrapped}
+                />
+              )
+            }
+          </UserAuthenticated>
+        )}
       </ModalWrapper>
     </BasicModal>
   );

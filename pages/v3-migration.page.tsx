@@ -1,12 +1,15 @@
 import { Trans } from '@lingui/macro';
-import { Box, Divider, useMediaQuery, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
-import { useCallback, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
-import { usePermissions } from 'src/hooks/usePermissions';
+import { getMarketInfoById } from 'src/components/MarketSwitcher';
+import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
+import { useUserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
+import { useUserPoolReservesHumanized } from 'src/hooks/pool/useUserPoolReserves';
+import { useUserSummaryAndIncentives } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { DashboardContentNoData } from 'src/modules/dashboard/DashboardContentNoData';
@@ -16,14 +19,15 @@ import { MigrationListItem } from 'src/modules/migration/MigrationListItem';
 import { MigrationListItemLoader } from 'src/modules/migration/MigrationListItemLoader';
 import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
-import { selectCurrentChainIdV3PoolReserve } from 'src/store/poolSelectors';
-import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
+import { selectCurrentChainIdV3MarketData } from 'src/store/poolSelectors';
+import { useRootStore } from 'src/store/root';
 import {
-  selectUserReservesForMigration,
-  selectV2UserSummaryAfterMigration,
-  selectV3UserSummary,
-  selectV3UserSummaryAfterMigration,
-} from 'src/store/v3MigrationSelectors';
+  CustomMarket,
+  getNetworkConfig,
+  MarketDataType,
+  marketsData,
+} from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 const MigrateV3Modal = dynamic(() =>
   import('src/components/transactions/MigrateV3/MigrateV3Modal').then(
@@ -31,69 +35,96 @@ const MigrateV3Modal = dynamic(() =>
   )
 );
 
+const AAVE_MARKETS_TO_MIGRATE = Object.keys(marketsData)
+  .map((key) => {
+    const market = marketsData[key];
+    return {
+      ...market,
+    };
+  })
+  .filter((market) => market.addresses.V3_MIGRATOR);
+
+const selectableMarkets = [
+  {
+    title: 'Aave V2 Markets',
+    markets: AAVE_MARKETS_TO_MIGRATE,
+  },
+];
+
 export default function V3Migration() {
-  const { loading } = useAppDataContext();
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { isPermissionsLoading } = usePermissions();
-  const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const currentTimeStamp = useCurrentTimestamp(10);
-
-  const {
-    supplyReserves,
-    borrowReserves,
-    healthFactor: v2HealthFactorBeforeMigration,
-    isolatedReserveV3,
-  } = useRootStore(
-    useCallback(
-      (state) => selectUserReservesForMigration(state, currentTimeStamp),
-      [currentTimeStamp]
-    )
-  );
-
-  // health factor calculation
-  const { v3UserSummaryBeforeMigration, v2UserSummaryAfterMigration, poolReserveV3 } = useRootStore(
-    (state) => ({
-      v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
-      v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
-      poolReserveV3: selectCurrentChainIdV3PoolReserve(state),
-    })
-  );
-
-  const v3UserSummaryAfterMigration = useRootStore(
-    useCallback(
-      (state) => selectV3UserSummaryAfterMigration(state, currentTimeStamp),
-      [currentTimeStamp]
-    )
-  );
-
-  // actions
-  const {
+  const { currentAccount } = useWeb3Context();
+  const router = useRouter();
+  const [fromMarketData, setFromMarketData] = useState<MarketDataType>(() => {
+    if (router.query.market) {
+      const { market } = getMarketInfoById(router.query.market as CustomMarket);
+      const migrationMarket = AAVE_MARKETS_TO_MIGRATE.find(
+        (migrationMarket) =>
+          migrationMarket.isFork === market.isFork && migrationMarket.chainId === market.chainId
+      );
+      if (migrationMarket) {
+        return market;
+      }
+    }
+    return AAVE_MARKETS_TO_MIGRATE[0];
+  });
+  const [
     selectAllSupply,
     selectAllBorrow,
-    toggleMigrationSelectedSupplyAsset: toggleSelectedSupplyPosition,
-    selectedMigrationSupplyAssets: selectedSupplyAssets,
-    toggleMigrationSelectedBorrowAsset: toggleSelectedBorrowPosition,
-    selectedMigrationBorrowAssets: selectedBorrowAssets,
+    toggleSelectedSupplyPosition,
+    selectedSupplyAssets,
+    toggleSelectedBorrowPosition,
+    selectedBorrowAssets,
     resetMigrationSelectedAssets,
     enforceAsCollateral,
-    getMigrationExceptionSupplyBalances,
-  } = useRootStore();
+  ] = useRootStore(
+    useShallow((store) => [
+      store.selectAllSupply,
+      store.selectAllBorrow,
+      store.toggleMigrationSelectedSupplyAsset,
+      store.selectedMigrationSupplyAssets,
+      store.toggleMigrationSelectedBorrowAsset,
+      store.selectedMigrationBorrowAssets,
+      store.resetMigrationSelectedAssets,
+      store.enforceAsCollateral,
+    ])
+  );
 
-  useEffect(() => {
-    if (getMigrationExceptionSupplyBalances && supplyReserves.length > 0) {
-      getMigrationExceptionSupplyBalances(supplyReserves);
-    }
-  }, [getMigrationExceptionSupplyBalances, supplyReserves]);
+  const toMarketData = selectCurrentChainIdV3MarketData(
+    fromMarketData.chainId,
+    getNetworkConfig(fromMarketData.chainId)
+  );
+
+  const { data: userMigrationReserves, isPending: userMigrationReservesLoading } =
+    useUserMigrationReserves(fromMarketData, toMarketData);
+
+  const supplyReserves = userMigrationReserves?.supplyReserves || [];
+  const borrowReserves = userMigrationReserves?.borrowReserves || [];
+  const isolatedReserveV3 = userMigrationReserves?.isolatedReserveV3;
+
+  const { data: fromUserSummaryAndIncentives, isPending: fromUserSummaryAndIncentivesLoading } =
+    useUserSummaryAndIncentives(fromMarketData);
+
+  const { data: toUserReservesData, isPending: toUserReservesDataLoading } =
+    useUserPoolReservesHumanized(toMarketData);
+  const { data: toUserSummaryForMigration, isPending: toUserSummaryForMigrationLoading } =
+    useUserSummaryAndIncentives(toMarketData);
+  const toUserEModeCategoryId = toUserReservesData?.userEmodeCategoryId || 0;
+
+  const { data: userSummaryAfterMigration, isPending: userSummaryAfterMigrationLoading } =
+    useUserSummaryAfterMigration(fromMarketData, toMarketData);
+
+  const loading =
+    userMigrationReservesLoading ||
+    fromUserSummaryAndIncentivesLoading ||
+    toUserReservesDataLoading ||
+    toUserSummaryForMigrationLoading ||
+    userSummaryAfterMigrationLoading;
 
   useEffect(() => {
     if (resetMigrationSelectedAssets) {
       resetMigrationSelectedAssets();
     }
   }, [resetMigrationSelectedAssets]);
-
-  usePoolDataV3Subscription();
 
   const enabledAsCollateral = (canBeEnforced: boolean, underlyingAsset: string) => {
     if (canBeEnforced) {
@@ -102,120 +133,140 @@ export default function V3Migration() {
   };
 
   const handleToggleAllSupply = () => {
-    selectAllSupply(currentTimeStamp);
+    selectAllSupply(supplyReserves);
   };
 
   const handleToggleAllBorrow = () => {
-    selectAllBorrow(currentTimeStamp);
+    selectAllBorrow(borrowReserves);
   };
 
   const userControlledCollateral =
-    Object.keys(selectedSupplyAssets).length > 1 &&
-    v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency == '0';
+    selectedSupplyAssets.length > 1 &&
+    toUserSummaryForMigration &&
+    toUserSummaryForMigration.totalCollateralMarketReferenceCurrency == '0';
+
+  const changeFromMarketData = (marketData: MarketDataType) => {
+    resetMigrationSelectedAssets();
+    setFromMarketData(marketData);
+  };
+
+  const bottomPanelProps = fromUserSummaryAndIncentives &&
+    toUserSummaryForMigration && {
+      fromUserSummaryBeforeMigration: fromUserSummaryAndIncentives,
+      toUserSummaryBeforeMigration: toUserSummaryForMigration,
+    };
 
   return (
     <>
       <MigrationTopPanel />
-      {currentAccount && !isPermissionsLoading ? (
+      {currentAccount ? (
         <ContentContainer>
-          <MigrationLists
-            loading={loading}
-            isSupplyPositionsAvailable={supplyReserves.length > 0}
-            isBorrowPositionsAvailable={borrowReserves.length > 0}
-            onSelectAllSupplies={handleToggleAllSupply}
-            onSelectAllBorrows={handleToggleAllBorrow}
-            emodeCategoryId={poolReserveV3?.userEmodeCategoryId}
-            isolatedReserveV3={isolatedReserveV3}
-            suppliesPositions={
-              <>
-                {loading ? (
-                  <>
-                    <MigrationListItemLoader />
-                    <MigrationListItemLoader />
-                  </>
-                ) : supplyReserves.length > 0 ? (
-                  supplyReserves.map((reserve) => (
-                    <MigrationListItem
-                      key={reserve.underlyingAsset}
-                      checked={
-                        selectedSupplyAssets.findIndex(
-                          (selectedAsset) =>
-                            selectedAsset.underlyingAsset == reserve.underlyingAsset
-                        ) >= 0
-                      }
-                      enableAsCollateral={() =>
-                        enabledAsCollateral(reserve.canBeEnforced, reserve.underlyingAsset)
-                      }
-                      userControlledCollateral={userControlledCollateral}
-                      canBeEnforced={
-                        v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency ==
-                          '0' && reserve.canBeEnforced
-                      }
-                      userReserve={reserve}
-                      amount={reserve.underlyingBalance}
-                      amountInUSD={reserve.underlyingBalanceUSD}
-                      onCheckboxClick={() => {
-                        toggleSelectedSupplyPosition(reserve.underlyingAsset);
-                      }}
-                      enabledAsCollateral={reserve.usageAsCollateralEnabledOnUserV3}
-                      isIsolated={reserve.isolatedOnV3}
-                      enteringIsolation={isolatedReserveV3?.enteringIsolationMode || false}
-                      v3Rates={reserve.v3Rates}
-                      disabled={reserve.migrationDisabled}
-                      isSupplyList
-                    />
-                  ))
-                ) : (
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <DashboardContentNoData text={<Trans>Nothing supplied yet</Trans>} />
-                  </Box>
-                )}
-              </>
-            }
-            borrowsPositions={
-              <>
-                {loading ? (
-                  <>
-                    <MigrationListItemLoader />
-                    <MigrationListItemLoader />
-                  </>
-                ) : borrowReserves.length > 0 ? (
-                  borrowReserves.map((reserve) => (
-                    <MigrationListBorrowItem
-                      key={reserve.debtKey}
-                      userReserve={reserve}
-                      selectedBorrowAssets={selectedBorrowAssets}
-                      toggleSelectedBorrowPosition={toggleSelectedBorrowPosition}
-                      v3Rates={reserve.v3Rates}
-                      enteringIsolation={isolatedReserveV3?.enteringIsolationMode || false}
-                    />
-                  ))
-                ) : (
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
-                  </Box>
-                )}
-              </>
-            }
-          />
-
-          {!downToSM && <Divider sx={{ my: 10 }} />}
-
-          <MigrationBottomPanel
-            hfV2Current={v2HealthFactorBeforeMigration}
-            hfV2AfterChange={v2UserSummaryAfterMigration.healthFactor}
-            hfV3Current={v3UserSummaryBeforeMigration.healthFactor}
-            v3SummaryAfterMigration={v3UserSummaryAfterMigration}
-            disableButton={
-              !Object.keys(selectedSupplyAssets).length && !Object.keys(selectedBorrowAssets).length
-            }
-            enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
-            loading={loading}
-          />
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 4,
+              alignItems: 'start',
+              flexDirection: { xs: 'column', lg: 'row' },
+            }}
+          >
+            <MigrationBottomPanel
+              userSummaryAfterMigration={userSummaryAfterMigration}
+              userSummaryBeforeMigration={bottomPanelProps}
+              disableButton={selectedSupplyAssets.length === 0 && selectedBorrowAssets.length === 0}
+              enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
+              loading={loading}
+              fromMarketData={fromMarketData}
+              toMarketData={toMarketData}
+              setFromMarketData={changeFromMarketData}
+              selectableMarkets={selectableMarkets}
+            />
+            <MigrationLists
+              loading={loading}
+              isSupplyPositionsAvailable={supplyReserves.length > 0}
+              isBorrowPositionsAvailable={borrowReserves.length > 0}
+              onSelectAllSupplies={handleToggleAllSupply}
+              onSelectAllBorrows={handleToggleAllBorrow}
+              emodeCategoryId={toUserEModeCategoryId}
+              isolatedReserveV3={isolatedReserveV3}
+              supplyReserves={supplyReserves}
+              borrowReserves={borrowReserves}
+              suppliesPositions={
+                <>
+                  {loading ? (
+                    <>
+                      <MigrationListItemLoader />
+                      <MigrationListItemLoader />
+                    </>
+                  ) : supplyReserves.length > 0 ? (
+                    supplyReserves.map((reserve) => (
+                      <MigrationListItem
+                        key={reserve.underlyingAsset}
+                        checked={
+                          selectedSupplyAssets.findIndex(
+                            (selectedAsset) =>
+                              selectedAsset.underlyingAsset == reserve.underlyingAsset
+                          ) >= 0
+                        }
+                        enableAsCollateral={() =>
+                          enabledAsCollateral(reserve.canBeEnforced, reserve.underlyingAsset)
+                        }
+                        userControlledCollateral={userControlledCollateral}
+                        canBeEnforced={
+                          toUserSummaryForMigration &&
+                          toUserSummaryForMigration.totalCollateralMarketReferenceCurrency == '0' &&
+                          reserve.canBeEnforced
+                        }
+                        userReserve={reserve}
+                        amount={reserve.underlyingBalance}
+                        amountInUSD={reserve.underlyingBalanceUSD}
+                        onCheckboxClick={() => {
+                          toggleSelectedSupplyPosition(reserve.underlyingAsset);
+                        }}
+                        enabledAsCollateral={reserve.usageAsCollateralEnabledOnUserV3}
+                        isIsolated={reserve.isolatedOnV3}
+                        enteringIsolation={isolatedReserveV3?.enteringIsolationMode || false}
+                        v3Rates={reserve.v3Rates}
+                        disabled={reserve.migrationDisabled}
+                        isSupplyList
+                      />
+                    ))
+                  ) : (
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <DashboardContentNoData text={<Trans>Nothing supplied yet</Trans>} />
+                    </Box>
+                  )}
+                </>
+              }
+              borrowsPositions={
+                <>
+                  {loading ? (
+                    <>
+                      <MigrationListItemLoader />
+                      <MigrationListItemLoader />
+                    </>
+                  ) : borrowReserves.length > 0 ? (
+                    borrowReserves.map((reserve) => (
+                      <MigrationListBorrowItem
+                        key={reserve.debtKey}
+                        userReserve={reserve}
+                        selectedBorrowAssets={selectedBorrowAssets}
+                        toggleSelectedBorrowPosition={toggleSelectedBorrowPosition}
+                        v3Rates={reserve.v3Rates}
+                        enteringIsolation={isolatedReserveV3?.enteringIsolationMode || false}
+                      />
+                    ))
+                  ) : (
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
+                    </Box>
+                  )}
+                </>
+              }
+            />
+          </Box>
         </ContentContainer>
       ) : (
         <ConnectWalletPaper
-          loading={web3Loading}
           description={<Trans> Please connect your wallet to see migration tool.</Trans>}
         />
       )}

@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, experimental_sx, Skeleton, styled, Typography } from '@mui/material';
+import { Box, BoxProps, Skeleton, styled, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
-const OuterBar = styled('div')(
-  experimental_sx({
+const OuterBar = styled('div')(({ theme }) =>
+  theme.unstable_sx({
     position: 'relative',
     width: '100%',
     height: '8px',
@@ -15,8 +15,8 @@ const OuterBar = styled('div')(
 
 const InnerBar = styled('span', {
   shouldForwardProp: (prop) => prop !== 'yae' && prop !== 'percent',
-})<{ percent: number; yae?: boolean }>(({ percent, yae }) =>
-  experimental_sx({
+})<{ percent: number; yae?: boolean }>(({ percent, yae, theme }) =>
+  theme.unstable_sx({
     position: 'absolute',
     top: 0,
     left: 0,
@@ -34,9 +34,10 @@ interface VoteBarProps extends BoxProps {
   percent: number;
   yae?: boolean;
   loading?: boolean;
+  compact?: boolean;
 }
 
-export function VoteBar({ percent, yae, votes, loading, ...rest }: VoteBarProps) {
+export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: VoteBarProps) {
   return (
     <Box {...rest}>
       <Box sx={{ display: 'flex' }}>
@@ -55,11 +56,13 @@ export function VoteBar({ percent, yae, votes, loading, ...rest }: VoteBarProps)
               sx={{ mr: 1 }}
               variant="secondary14"
               roundDown
-              compact={false}
+              compact={compact}
             />
-            <Typography variant="description" component="span" color="text.secondary">
-              AAVE
-            </Typography>
+            {!compact && (
+              <Typography variant="description" component="span" color="text.secondary">
+                AAVE
+              </Typography>
+            )}
           </Box>
         )}
         {loading ? (

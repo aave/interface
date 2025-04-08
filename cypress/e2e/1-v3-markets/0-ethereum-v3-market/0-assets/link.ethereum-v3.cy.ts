@@ -3,17 +3,14 @@ import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyAEthereumV3Fork } from '../../../../support/steps/configuration.steps';
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
-import {
-  dashboardAssetValuesVerification,
-  switchApyBlocked,
-} from '../../../../support/steps/verification.steps';
+import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHEthereumV3: 1,
+};
 
 const testData = {
-  depositBaseAmount: {
-    asset: assets.ethereumV3Market.ETH,
-    amount: 9000,
-    hasApproval: true,
-  },
   testCases: {
     borrow: [
       {
@@ -77,13 +74,14 @@ const testData = {
 
 describe('LINK INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAEthereumV3Fork({ v3: true });
+  configEnvWithTenderlyAEthereumV3Fork({
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
 
-  supply(testData.depositBaseAmount, skipTestState, true);
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
-  switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);

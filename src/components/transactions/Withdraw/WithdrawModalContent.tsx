@@ -4,12 +4,13 @@ import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useRootStore } from 'src/store/root';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -21,7 +22,6 @@ import {
   DetailsUnwrapSwitch,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { zeroLTVBlockingWithdraw } from '../utils';
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawActions } from './WithdrawActions';
 import { useWithdrawError } from './WithdrawError';
@@ -39,19 +39,21 @@ export const WithdrawModalContent = ({
   setUnwrap: setWithdrawUnWrapped,
   symbol,
   isWrongNetwork,
+  user,
 }: ModalWrapperProps & {
   unwrap: boolean;
   setUnwrap: (unwrap: boolean) => void;
+  user: ExtendedFormattedUser;
 }) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
-  const { user } = useAppDataContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
 
   const [_amount, setAmount] = useState('');
   const [withdrawMax, setWithdrawMax] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const amountRef = useRef<string>('');
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentNetworkConfig])
+  );
 
   const isMaxSelected = _amount === '-1';
   const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
@@ -71,7 +73,7 @@ export const WithdrawModalContent = ({
     }
   };
 
-  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
   const healthFactorAfterWithdraw = calculateHFAfterWithdraw({
     user,
@@ -85,6 +87,7 @@ export const WithdrawModalContent = ({
     poolReserve,
     healthFactorAfterWithdraw,
     withdrawAmount,
+    user,
   });
 
   const displayRiskCheckbox =

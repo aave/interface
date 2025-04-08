@@ -1,13 +1,13 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Button, SvgIcon, Typography } from '@mui/material';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 
 import { DarkTooltip } from './infoTooltips/DarkTooltip';
 import { Link, ROUTES } from './primitives/Link';
 
 export const FaucetButton = () => {
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
   return (
     <DarkTooltip title="Get free assets to test the Aave Protocol">

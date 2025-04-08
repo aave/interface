@@ -1,10 +1,11 @@
-import { WalletBalanceProvider } from '@aave/contract-helpers';
+import { ChainId, WalletBalanceProvider } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { formatUnits } from 'ethers/lib/utils';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
-interface GovernanceTokensBalance {
+export interface GovernanceTokensBalance {
   aave: string;
   stkAave: string;
   aAave: string;
@@ -18,26 +19,37 @@ export type UserPoolTokensBalances = {
 export class WalletBalanceService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-  private getWalletBalanceService(marketData: MarketDataType) {
-    const provider = this.getProvider(marketData.chainId);
+  private getWalletBalanceService(chainId: ChainId, walletBalanceProviderAddress: string) {
+    const provider = this.getProvider(chainId);
     return new WalletBalanceProvider({
-      walletBalanceProviderAddress: marketData.addresses.WALLET_BALANCE_PROVIDER,
+      walletBalanceProviderAddress,
       provider,
     });
   }
 
   async getGovernanceTokensBalance(
-    marketData: MarketDataType,
-    user: string
+    chainId: ChainId,
+    walletBalanceProviderAddress: string,
+    user: string,
+    blockHash?: string
   ): Promise<GovernanceTokensBalance> {
-    const walletBalanceService = this.getWalletBalanceService(marketData);
+    const walletBalanceService = this.getWalletBalanceService(
+      chainId,
+      walletBalanceProviderAddress
+    );
+
+    const options: { blockTag?: string } = {};
+    if (blockHash) {
+      options.blockTag = blockHash;
+    }
     const balances = await walletBalanceService.batchBalanceOf(
       [user],
       [
-        governanceConfig.aaveTokenAddress,
-        governanceConfig.aAaveTokenAddress,
-        governanceConfig.stkAaveTokenAddress,
-      ]
+        governanceV3Config.votingAssets.aaveTokenAddress,
+        governanceV3Config.votingAssets.aAaveTokenAddress,
+        governanceV3Config.votingAssets.stkAaveTokenAddress,
+      ],
+      options
     );
     return {
       aave: normalize(balances[0].toString(), 18),
@@ -50,7 +62,10 @@ export class WalletBalanceService {
     marketData: MarketDataType,
     user: string
   ): Promise<UserPoolTokensBalances[]> {
-    const walletBalanceService = this.getWalletBalanceService(marketData);
+    const walletBalanceService = this.getWalletBalanceService(
+      marketData.chainId,
+      marketData.addresses.WALLET_BALANCE_PROVIDER
+    );
     const { 0: tokenAddresses, 1: balances } =
       await walletBalanceService.getUserWalletBalancesForLendingPoolProvider(
         user,
@@ -61,5 +76,30 @@ export class WalletBalanceService {
       amount: balances[ix].toString(),
     }));
     return mappedBalances;
+  }
+
+  async getGhoBridgeBalancesTokenBalances(
+    marketData: MarketDataType,
+    user: string
+  ): Promise<{
+    bridgeTokenBalance: string;
+    bridgeTokenBalanceFormatted: string;
+    address: string;
+  }> {
+    const walletBalanceService = this.getWalletBalanceService(
+      marketData.chainId,
+      marketData.addresses.WALLET_BALANCE_PROVIDER
+    );
+
+    const balances = await walletBalanceService.batchBalanceOf(
+      [user],
+      [marketData.addresses.GHO_TOKEN_ADDRESS?.toLowerCase() as string] // GHO UNDERLYING
+    );
+
+    return {
+      bridgeTokenBalance: balances[0].toString(),
+      bridgeTokenBalanceFormatted: formatUnits(balances[0].toString(), 18),
+      address: marketData.addresses.GHO_TOKEN_ADDRESS as string,
+    };
   }
 }

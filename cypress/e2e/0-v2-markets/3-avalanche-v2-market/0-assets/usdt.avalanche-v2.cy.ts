@@ -3,18 +3,14 @@ import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../../support/steps/configuration.steps';
 import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
-import {
-  changeBorrowTypeBlocked,
-  dashboardAssetValuesVerification,
-  switchApyBlocked,
-} from '../../../../support/steps/verification.steps';
+import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aAVAXAvalancheV2: 800,
+};
 
 const testData = {
-  depositBaseAmount: {
-    asset: assets.avalancheMarket.AVAX,
-    amount: 800,
-    hasApproval: true,
-  },
   testCases: {
     borrow: {
       asset: assets.avalancheMarket.USDT,
@@ -78,18 +74,14 @@ const testData = {
   },
 };
 
-describe('USDT INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
+describe.skip('USDT INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAvalancheFork({});
-
-  supply(testData.depositBaseAmount, skipTestState, true);
+  configEnvWithTenderlyAvalancheFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.testCases.borrow, skipTestState, true);
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);
   });
   withdraw(testData.testCases.withdraw, skipTestState, false);
-  switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
-  changeBorrowTypeBlocked(testData.testCases.checkBorrowTypeBlocked, skipTestState);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

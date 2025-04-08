@@ -10,6 +10,7 @@ import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactio
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -50,10 +51,9 @@ export const SwapActions = ({
   buildTxFn,
   ...props
 }: SwapBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
-  const [swapCollateral, currentMarketData] = useRootStore((state) => [
-    state.swapCollateral,
-    state.currentMarketData,
-  ]);
+  const [swapCollateral, currentMarketData] = useRootStore(
+    useShallow((state) => [state.swapCollateral, state.currentMarketData])
+  );
 
   const { approval, action, approvalTxState, mainTxState, loadingTxns, requiresApproval } =
     useParaSwapTransactionHandler({
@@ -61,8 +61,8 @@ export const SwapActions = ({
       handleGetTxns: async (signature, deadline) => {
         const route = await buildTxFn();
         return swapCollateral({
-          amountToSwap: route.inputAmount,
-          amountToReceive: route.outputAmount,
+          amountToSwap,
+          amountToReceive,
           poolReserve,
           targetReserve,
           isWrongNetwork,
@@ -107,6 +107,7 @@ export const SwapActions = ({
       handleAction={action}
       requiresAmount
       amount={amountToSwap}
+      blocked={blocked}
       handleApproval={() =>
         approval({
           amount: calculateSignedAmount(amountToSwap, poolReserve.decimals),

@@ -1,7 +1,8 @@
-import { ProtocolAction } from '@aave/contract-helpers';
+import { ProtocolAction, Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -26,11 +27,16 @@ export const StakeActions = ({
   event,
   ...props
 }: StakeActionProps) => {
-  const { stake, stakeWithPermit } = useRootStore();
+  const [stake, stakeWithPermit] = useRootStore(
+    useShallow((state) => [state.stake, state.stakeWithPermit])
+  );
+
+  // once stk abpt v1 is deprecated, this check can be removed and we can always try permit
+  const tryPermit = selectedToken !== Stake.bpt;
 
   const { action, approval, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      tryPermit: selectedToken === 'aave',
+      tryPermit,
       permitAction: ProtocolAction.stakeWithPermit,
       protocolAction: ProtocolAction.stake,
       handleGetTxns: async () => {
@@ -70,7 +76,7 @@ export const StakeActions = ({
       symbol={symbol}
       requiresAmount
       actionText={<Trans>Stake</Trans>}
-      tryPermit={selectedToken === 'aave'}
+      tryPermit={tryPermit}
       actionInProgressText={<Trans>Staking</Trans>}
       sx={sx}
       // event={STAKE.STAKE_BUTTON_MODAL}

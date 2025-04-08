@@ -1,4 +1,8 @@
-import { InformationCircleIcon, SwitchHorizontalIcon } from '@heroicons/react/outline';
+import {
+  InformationCircleIcon,
+  SparklesIcon,
+  SwitchHorizontalIcon,
+} from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Badge,
@@ -15,17 +19,21 @@ import {
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { AvatarSize } from 'src/components/Avatar';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { UserDisplay } from 'src/components/UserDisplay';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
+import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../components/primitives/Link';
 import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
-import WalletWidget from './WalletWidget';
 
 interface Props {
   children: React.ReactElement;
@@ -82,19 +90,23 @@ export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
+  const smd = useMediaQuery('(max-width:1120px)');
 
   const [visitedSwitch, setVisitedSwitch] = useState(() => {
     if (typeof window === 'undefined') return true;
     return Boolean(localStorage.getItem(SWITCH_VISITED_KEY));
   });
 
-  const [mobileDrawerOpen, setMobileDrawerOpen] = useRootStore((state) => [
-    state.mobileDrawerOpen,
-    state.setMobileDrawerOpen,
-  ]);
+  const [mobileDrawerOpen, setMobileDrawerOpen, currentMarketData] = useRootStore(
+    useShallow((state) => [
+      state.mobileDrawerOpen,
+      state.setMobileDrawerOpen,
+      state.currentMarketData,
+    ])
+  );
 
-  const { openSwitch } = useModalContext();
-
+  const { openSwitch, openBridge, openReadMode } = useModalContext();
+  const { readOnlyMode } = useWeb3Context();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -110,11 +122,6 @@ export function AppHeader() {
 
   const headerHeight = 48;
 
-  const toggleWalletWigit = (state: boolean) => {
-    if (md) setMobileDrawerOpen(state);
-    setWalletWidgetOpen(state);
-  };
-
   const toggleMobileMenu = (state: boolean) => {
     if (md) setMobileDrawerOpen(state);
     setMobileMenuOpen(state);
@@ -126,10 +133,24 @@ export function AppHeader() {
     window.location.href = '/';
   };
 
+  const disableFork = () => {
+    localStorage.setItem('testnetsEnabled', 'false');
+    localStorage.removeItem('forkEnabled');
+    localStorage.removeItem('forkBaseChainId');
+    localStorage.removeItem('forkNetworkId');
+    localStorage.removeItem('forkRPCUrl');
+    // Set window.location to trigger a page reload when navigating to the the dashboard
+    window.location.href = '/';
+  };
+
   const handleSwitchClick = () => {
     localStorage.setItem(SWITCH_VISITED_KEY, 'true');
     setVisitedSwitch(true);
     openSwitch();
+  };
+
+  const handleBridgeClick = () => {
+    openBridge();
   };
 
   const testnetTooltip = (
@@ -140,7 +161,7 @@ export function AppHeader() {
       <Typography variant="description">
         <Trans>The app is running in testnet mode. Learn how it works in</Trans>{' '}
         <Link
-          href="https://docs.aave.com/faq/testing-aave"
+          href="https://aave.com/faq"
           style={{ fontSize: '14px', fontWeight: 400, textDecoration: 'underline' }}
         >
           FAQ.
@@ -148,6 +169,20 @@ export function AppHeader() {
       </Typography>
       <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableTestnet}>
         <Trans>Disable testnet</Trans>
+      </Button>
+    </Box>
+  );
+
+  const forkTooltip = (
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 1 }}>
+      <Typography variant="subheader1">
+        <Trans>Fork mode is ON</Trans>
+      </Typography>
+      <Typography variant="description">
+        <Trans>The app is running in fork mode.</Trans>
+      </Typography>
+      <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableFork}>
+        <Trans>Disable fork</Trans>
       </Button>
     </Box>
   );
@@ -209,15 +244,61 @@ export function AppHeader() {
             </ContentWithTooltip>
           )}
         </Box>
+        <Box sx={{ mr: sm ? 1 : 3 }}>
+          {FORK_ENABLED && currentMarketData?.isFork && (
+            <ContentWithTooltip tooltipContent={forkTooltip} offset={[0, -4]} withoutHover>
+              <Button
+                variant="surface"
+                size="small"
+                color="primary"
+                sx={{
+                  backgroundColor: '#B6509E',
+                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
+                }}
+              >
+                FORK
+                <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
+                  <InformationCircleIcon />
+                </SvgIcon>
+              </Button>
+            </ContentWithTooltip>
+          )}
+        </Box>
 
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <NavItems />
         </Box>
 
         <Box sx={{ flexGrow: 1 }} />
+
         <NoSsr>
           <StyledBadge
             invisible={visitedSwitch}
+            variant="dot"
+            badgeContent=""
+            color="secondary"
+            sx={{ mr: 2 }}
+          >
+            <Button
+              onClick={handleBridgeClick}
+              variant="surface"
+              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
+            >
+              {!smd && (
+                <Typography component="span" typography="subheader1">
+                  Bridge GHO
+                </Typography>
+              )}
+              <SvgIcon fontSize="small">
+                <SparklesIcon />
+              </SvgIcon>
+            </Button>
+          </StyledBadge>
+        </NoSsr>
+
+        <NoSsr>
+          <StyledBadge
+            invisible={true}
             variant="dot"
             badgeContent=""
             color="secondary"
@@ -229,7 +310,7 @@ export function AppHeader() {
               sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
               aria-label="Switch tool"
             >
-              {!md && (
+              {!smd && (
                 <Typography component="span" typography="subheader1">
                   Switch tokens
                 </Typography>
@@ -241,12 +322,21 @@ export function AppHeader() {
           </StyledBadge>
         </NoSsr>
 
-        {!mobileMenuOpen && (
-          <WalletWidget
-            open={walletWidgetOpen}
-            setOpen={toggleWalletWigit}
-            headerHeight={headerHeight}
-          />
+        {readOnlyMode ? (
+          <Button
+            variant="surface"
+            onClick={() => {
+              openReadMode();
+            }}
+          >
+            <UserDisplay
+              avatarProps={{ size: AvatarSize.SM }}
+              oneLiner={true}
+              titleProps={{ variant: 'buttonM' }}
+            />
+          </Button>
+        ) : (
+          <ConnectWalletButton />
         )}
 
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>

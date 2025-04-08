@@ -1,37 +1,90 @@
-import { ProposalState } from '@aave/contract-helpers';
+import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Button, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
+import { constants } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { useVoteOnProposal } from 'src/hooks/governance/useVoteOnProposal';
+import { Proposal } from 'src/hooks/governance/useProposals';
 import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
-import { CustomProposalType } from 'src/static-build/proposal';
 import { useRootStore } from 'src/store/root';
 
-export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
+import { networkConfigs } from '../../../ui-config/networksConfig';
+
+interface VoteInfoProps {
+  proposal: Proposal;
+}
+
+export function VoteInfo({ proposal }: VoteInfoProps) {
   const { openGovVote } = useModalContext();
   const user = useRootStore((state) => state.account);
+  const voteOnProposal = proposal.votingMachineData.votedInfo;
+  const votingChainId = proposal.subgraphProposal.votingPortal.votingMachineChainId;
+  const network = networkConfigs[votingChainId];
 
-  const { data: voteOnProposal } = useVoteOnProposal({ proposalId: id });
-  const { data: powerAtProposalStart } = useVotingPowerAt({ block: startBlock, strategy });
+  const blockHash =
+    proposal.subgraphProposal.snapshotBlockHash === constants.HashZero
+      ? 'latest'
+      : proposal.subgraphProposal.snapshotBlockHash;
 
-  const voteOngoing = state === ProposalState.Active;
+  const { data: powerAtProposalStart } = useVotingPowerAt(
+    blockHash,
+    proposal.votingMachineData.votingAssets
+  );
 
-  // Messages
+  const voteOngoing = proposal.votingMachineData.state === VotingMachineProposalState.Active;
+
   const didVote = powerAtProposalStart && voteOnProposal?.votingPower !== '0';
   const showAlreadyVotedMsg = !!user && voteOnProposal && didVote;
+
   const showCannotVoteMsg = !!user && voteOngoing && Number(powerAtProposalStart) === 0;
   const showCanVoteMsg =
     powerAtProposalStart && !didVote && !!user && voteOngoing && Number(powerAtProposalStart) !== 0;
 
   return (
-    <>
-      <Typography variant="h3" sx={{ mb: 8 }}>
-        <Trans>Your voting info</Trans>
-      </Typography>
+    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+      <Row
+        sx={{ mb: 8 }}
+        caption={
+          <>
+            <Typography variant="h3">
+              <Trans>Your voting info</Trans>
+            </Typography>
+            {network && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: 'text.secondary',
+                }}
+              >
+                <Typography variant="caption">
+                  <Trans>Voting is on</Trans>
+                </Typography>
+                <Box
+                  sx={{
+                    height: 16,
+                    width: 16,
+                    ml: 1,
+                    mr: 1,
+                    mb: 1,
+                  }}
+                >
+                  <img
+                    src={network.networkLogoPath}
+                    alt="network logo"
+                    style={{ height: '100%', width: '100%' }}
+                  />
+                </Box>
+                <Typography variant="caption">{network?.displayName}</Typography>
+              </Box>
+            )}
+          </>
+        }
+      />
       {user ? (
         <>
           {user && !didVote && !voteOngoing && (
@@ -68,7 +121,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
                 <Trans>
                   With a voting power of{' '}
                   <FormattedNumber
-                    value={powerAtProposalStart || 0}
+                    value={formatUnits(proposal.votingMachineData.votedInfo.votingPower, 18) || 0}
                     variant="caption"
                     visibleDecimals={2}
                   />
@@ -87,7 +140,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
                 color="success"
                 variant="contained"
                 fullWidth
-                onClick={() => openGovVote(id, true, powerAtProposalStart)}
+                onClick={() => openGovVote(proposal, true, powerAtProposalStart)}
               >
                 <Trans>Vote YAE</Trans>
               </Button>
@@ -95,7 +148,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
                 color="error"
                 variant="contained"
                 fullWidth
-                onClick={() => openGovVote(id, false, powerAtProposalStart)}
+                onClick={() => openGovVote(proposal, false, powerAtProposalStart)}
                 sx={{ mt: 2 }}
               >
                 <Trans>Vote NAY</Trans>
@@ -106,6 +159,6 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
       ) : (
         <ConnectWalletButton />
       )}
-    </>
+    </Paper>
   );
 }

@@ -1,3 +1,9 @@
+import {
+  AaveV3Arbitrum,
+  AaveV3Gnosis,
+  AaveV3Optimism,
+  AaveV3Polygon,
+} from '@bgd-labs/aave-address-book';
 import { unPrefixSymbol } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 /**
@@ -22,13 +28,6 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   UNIWBTCWETH: 'UNI_WBTC_WETH',
   UNIYFIWETH: 'UNI_YFI_WETH',
   fUSDT: 'USDT',
-  // harmony
-  '1DAI': 'DAI',
-  '1USDC': 'USDC',
-  '1USDT': 'USDT',
-  '1AAVE': 'AAVE',
-  '1ETH': 'ETH',
-  '1WBTC': 'WBTC',
   // avalanche
   'DAI.e': 'DAI',
   'LINK.e': 'LINK',
@@ -44,6 +43,8 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   'm.USDC': 'USDC',
   'm.USDT': 'USDT',
   'm.DAI': 'DAI',
+  // celo
+  'USD₮': 'USDT',
 };
 
 /**
@@ -76,7 +77,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   WBTC: 'Wrapped BTC',
   WETH: 'Wrapped ETH',
   WFTM: 'Wrapped FTM',
-  WMATIC: 'Wrapped Matic',
+  WPOL: 'Wrapped POL',
   WONE: 'Wrapped ONE',
   YFI: 'yearn.finance',
   ZRX: '0x Coin',
@@ -90,7 +91,7 @@ export interface IconSymbolInterface {
   name?: string;
 }
 
-interface IconMapInterface {
+export interface IconMapInterface {
   iconSymbol: string;
   name?: string;
   symbol?: string;
@@ -98,20 +99,45 @@ interface IconMapInterface {
 
 export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSymbolInterface) {
   const underlyingAssetMap: Record<string, IconMapInterface> = {
+    '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9': {
+      name,
+      symbol,
+      iconSymbol: 'usdt0',
+    },
+    '0x18084fba666a33d37592fa2633fd49a74dd93a88': {
+      name: 'tBTC',
+      symbol: 'tBTC',
+      iconSymbol: 'tBTC',
+    },
     '0xdd974d5c2e2928dea5f71b9825b8b646686bd200': {
       name: 'Kyber Legacy',
       symbol: 'KNCL',
       iconSymbol: 'KNCL',
     },
-    '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8': {
+    [AaveV3Arbitrum.ASSETS.USDC.UNDERLYING.toLowerCase()]: {
       name: 'Bridged USDC',
       symbol: 'USDC.e',
       iconSymbol: 'USDC',
     },
-    '0xaf204776c7245bf4147c2612bf6e5972ee483701': {
+    [AaveV3Optimism.ASSETS.USDC.UNDERLYING.toLowerCase()]: {
+      name: 'Bridged USDC',
+      symbol: 'USDC.e',
+      iconSymbol: 'USDC',
+    },
+    [AaveV3Polygon.ASSETS.USDC.UNDERLYING.toLowerCase()]: {
+      name: 'Bridged USDC',
+      symbol: 'USDC.e',
+      iconSymbol: 'USDC',
+    },
+    [AaveV3Gnosis.ASSETS.sDAI.UNDERLYING.toLowerCase()]: {
       name: 'Savings xDAI',
       symbol: 'sDAI',
       iconSymbol: 'gnosissdai',
+    },
+    '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c': {
+      name: 'BTCB Token',
+      symbol: 'BTCB',
+      iconSymbol: 'btc',
     },
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },

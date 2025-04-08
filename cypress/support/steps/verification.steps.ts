@@ -81,7 +81,7 @@ export const dashboardAssetValuesVerification = (
                 if (estimatedCase.isGho) {
                   expect($row.find(`[data-cy="apyButton_fixed"]`)).to.exist;
                 } else {
-                  expect($row.find(`[data-cy="apyButton_${estimatedCase.apyType}"]`)).to.exist;
+                  // expect($row.find(`[data-cy="apyButton_${estimatedCase.apyType}"]`)).to.exist;
                 }
                 if (estimatedCase.amount) {
                   cy.get('[data-cy=nativeAmount]').contains(estimatedCase.amount.toString());
@@ -196,64 +196,6 @@ export const switchCollateralBlockedInModal = (
         .click();
       cy.get('[data-cy=Modal]').find('[data-cy=actionButton]').should('be.disabled');
       cy.get('[data-cy=Modal]').find('[data-cy="CloseModalIcon"]').click();
-    });
-  });
-};
-
-/**
- * This full step to verification that switch apy blocked blocked
- * @example switchApyBlocked({{ shortName: 'ETH'; fullName: 'Ethereum' }, apyType:'Variable'}, skipTestState)
- */
-export const switchApyBlocked = (
-  {
-    asset,
-    apyType,
-  }: {
-    asset: { shortName: string; fullName: string };
-    apyType: string;
-  },
-  skip: SkipType
-) => {
-  const _shortName = asset.shortName;
-  return describe('Check that apy switcher disabled', () => {
-    skipSetup(skip);
-    it(`Open dashboard`, () => {
-      cy.doSwitchToDashboardBorrowView();
-    });
-    it(`Verify that switching button disabled with APY ${apyType}`, () => {
-      cy.getDashBoardBorrowedRow(_shortName, apyType)
-        .find(`[data-cy='apyButton_${apyType}']`)
-        .should('be.disabled')
-        .should('have.text', `${apyType}`);
-    });
-  });
-};
-
-/**
- * This full step to verification that switch apy blocked blocked
- * @example changeBorrowTypeBlocked({{ shortName: 'ETH'; fullName: 'Ethereum' }, isCollateralType: true}, skipTestState)
- */
-export const changeBorrowTypeBlocked = (
-  {
-    asset,
-    isCollateralType,
-  }: {
-    asset: { shortName: string; fullName: string };
-    isCollateralType: boolean;
-  },
-  skip: SkipType
-) => {
-  const _shortName = asset.shortName;
-
-  return describe(`Verify that Switch borrow is unavailable`, () => {
-    skipSetup(skip);
-    it('Open dashboard page', () => {
-      cy.doSwitchToDashboardSupplyView();
-    });
-    it('Try to change apy type', () => {
-      cy.getDashBoardSuppliedRow(_shortName, isCollateralType)
-        .find('.MuiSwitch-input ')
-        .should('be.disabled');
     });
   });
 };

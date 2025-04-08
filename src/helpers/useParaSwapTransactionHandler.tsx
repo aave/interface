@@ -1,16 +1,16 @@
 import { EthereumTransactionTypeExtended, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { queryClient } from 'pages/_app.page';
+import { useQueryClient } from '@tanstack/react-query';
 import { DependencyList, useEffect, useRef, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { SIGNATURE_AMOUNT_MARGIN } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
@@ -67,9 +67,13 @@ export const useParaSwapTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { sendTx, getTxError, signTxData } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
-  const { walletApprovalMethodPreference, generateSignatureRequest, addTransaction } =
-    useRootStore();
+  const [walletApprovalMethodPreference, generateSignatureRequest, addTransaction] = useRootStore(
+    useShallow((state) => [
+      state.walletApprovalMethodPreference,
+      state.generateSignatureRequest,
+      state.addTransaction,
+    ])
+  );
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -79,9 +83,13 @@ export const useParaSwapTransactionHandler = ({
     asset: string;
     amount: string;
   }
-  const [previousDeps, setPreviousDeps] = useState<Dependency>({ asset: deps[0], amount: deps[1] });
+  const [previousDeps, setPreviousDeps] = useState<Dependency>({
+    asset: deps[0] as string,
+    amount: deps[1] as string,
+  });
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -115,9 +123,7 @@ export const useParaSwapTransactionHandler = ({
           txState: 'success',
           action: protocolAction || ProtocolAction.default,
         });
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-        refetchPoolData && refetchPoolData();
-        refetchIncentiveData && refetchIncentiveData();
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       } catch (e) {
         // TODO: what to do with this error?
         try {
@@ -294,7 +300,7 @@ export const useParaSwapTransactionHandler = ({
           if (Number(deps[1]) < Number(previousDeps.amount)) {
             setTxError(undefined);
           }
-          setPreviousDeps({ asset: deps[0], amount: deps[1] });
+          setPreviousDeps({ asset: deps[0] as string, amount: deps[1] as string });
           if (approval && preferPermit) {
             setUsePermit(true);
             setMainTxState({

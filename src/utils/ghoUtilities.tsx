@@ -1,14 +1,18 @@
+import { GhoReserveData, GhoUserData, normalize } from '@aave/math-utils';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export const GHO_SYMBOL = 'GHO';
 
 /**
- * Determines if GHO is available for borrowing (minting) on the provided network, also based off the token symbol being borrowed
- * @param {GhoUtilMintingAvailableParams} - The reserve symbol and current market name
- * @returns {bool} - If the GHO token is available for minting
+ * List of markets where new GHO minting is available.
+ * Note that his is different from markets where GHO is listed as a reserve.
  */
-
-export const GHO_SUPPORTED_MARKETS = ['proto_mainnet_v3', 'fork_proto_mainnet_v3'];
+export const GHO_MINTING_MARKETS = [
+  'proto_mainnet_v3',
+  'fork_proto_mainnet_v3',
+  'proto_sepolia_v3',
+  'fork_proto_sepolia_v3',
+];
 
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
   return reserves.find((reserve) => reserve.symbol === GHO_SYMBOL);
@@ -81,7 +85,12 @@ type FindAndFilterReturn<T> = {
   filtered: Array<T>;
 };
 
-export const findAndFilterGhoReserve = <T extends ReserveWithSymbol>(reserves: Array<T>) => {
+export const findAndFilterMintableGhoReserve = <T extends ReserveWithSymbol>(
+  reserves: Array<T>,
+  currentMarket: string
+) => {
+  if (!GHO_MINTING_MARKETS.includes(currentMarket)) return { value: undefined, filtered: reserves };
+
   return reserves.reduce<FindAndFilterReturn<T>>(
     (acum, reserve) => {
       if (reserve.symbol === GHO_SYMBOL) return { value: reserve, filtered: acum.filtered };
@@ -91,5 +100,41 @@ export const findAndFilterGhoReserve = <T extends ReserveWithSymbol>(reserves: A
       value: undefined,
       filtered: [],
     }
+  );
+};
+
+/**
+ * Determines if the given symbol is GHO and the market supports minting new GHO
+ */
+export const displayGhoForMintableMarket = ({
+  symbol,
+  currentMarket,
+}: GhoUtilMintingAvailableParams): boolean => {
+  return symbol === GHO_SYMBOL && GHO_MINTING_MARKETS.includes(currentMarket);
+};
+
+interface GhoUtilMintingAvailableParams {
+  symbol: string;
+  currentMarket: string;
+}
+
+export const ghoUserQualifiesForDiscount = (
+  ghoReserveData: GhoReserveData,
+  ghoUserData: GhoUserData,
+  futureBorrowAmount = '0'
+) => {
+  const borrowBalance = Number(normalize(ghoUserData.userGhoScaledBorrowBalance, 18));
+  const minBorrowBalanceForDiscount = Number(
+    normalize(ghoReserveData.ghoMinDebtTokenBalanceForDiscount, 18)
+  );
+
+  const stkAaveBalance = Number(normalize(ghoUserData.userDiscountTokenBalance, 18));
+  const minStkAaveBalanceForDiscount = Number(
+    normalize(ghoReserveData.ghoMinDiscountTokenBalanceForDiscount, 18)
+  );
+
+  return (
+    borrowBalance + Number(futureBorrowAmount) >= minBorrowBalanceForDiscount &&
+    stkAaveBalance >= minStkAaveBalanceForDiscount
   );
 };

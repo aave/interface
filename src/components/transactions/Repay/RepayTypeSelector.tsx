@@ -2,9 +2,9 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { REPAY_MODAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
 export enum RepayType {
   BALANCE,
@@ -17,8 +17,9 @@ export function RepayTypeSelector({
   repayType: RepayType;
   setRepayType: (type: RepayType) => void;
 }) {
-  const { currentMarketData } = useProtocolDataContext();
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentMarketData] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarketData])
+  );
 
   if (!currentMarketData.enabledFeatures?.collateralRepay) return null;
   return (

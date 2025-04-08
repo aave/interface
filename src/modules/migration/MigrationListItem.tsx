@@ -1,4 +1,3 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
@@ -15,6 +14,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
+import { useShallow } from 'zustand/shallow';
 
 import { MigrationListItemToggler } from './MigrationListItemToggler';
 import { MigrationListMobileItem } from './MigrationListMobileItem';
@@ -56,7 +56,9 @@ export const MigrationListItem = ({
   isSupplyList,
 }: MigrationListItemProps) => {
   const theme = useTheme();
-  const { currentMarket, currentMarketData } = useRootStore();
+  const [currentMarket, currentMarketData] = useRootStore(
+    useShallow((store) => [store.currentMarket, store.currentMarketData])
+  );
   const isMobile = useMediaQuery(theme.breakpoints.down(1125));
 
   const baseColor = disabled === undefined ? 'text.primary' : 'text.muted';
@@ -65,14 +67,10 @@ export const MigrationListItem = ({
   const loadingRates = v3Rates?.ltv === undefined && v3Rates?.liquidationThreshold === undefined;
 
   const v2APY = borrowApyType
-    ? borrowApyType === InterestRate.Stable
-      ? userReserve.stableBorrowAPY
-      : userReserve.reserve.variableBorrowAPY
+    ? userReserve.reserve.variableBorrowAPY
     : userReserve.reserve.supplyAPY;
   const v2Incentives = borrowApyType
-    ? borrowApyType === InterestRate.Stable
-      ? userReserve.reserve.sIncentivesData
-      : userReserve.reserve.vIncentivesData
+    ? userReserve.reserve.vIncentivesData
     : userReserve.reserve.aIncentivesData;
   const v3APY = borrowApyType ? v3Rates?.variableBorrowAPY || '-1' : v3Rates?.supplyAPY || '-1';
   const v3Incentives = borrowApyType
@@ -164,13 +162,14 @@ export const MigrationListItem = ({
         </ListColumn>
 
         <ListColumn>
-          <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IncentivesCard
               value={v2APY}
               symbol={userReserve.reserve.symbol}
               incentives={v2Incentives}
               variant="main14"
               color={baseColor}
+              market={currentMarket}
             />
             <SvgIcon sx={{ px: 1.5 }}>
               <ArrowNarrowRightIcon
@@ -186,6 +185,7 @@ export const MigrationListItem = ({
               incentives={v3Incentives}
               variant="main14"
               color={baseColor}
+              market={currentMarket}
             />
           </Box>
         </ListColumn>
@@ -274,7 +274,7 @@ export const MigrationListItem = ({
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ width: '50px', background: 'white' }}
+                sx={{ width: '50px', background: theme.palette.background.paper }}
                 disabled
               >
                 <Typography variant="buttonS" color={baseColor}>
@@ -292,7 +292,7 @@ export const MigrationListItem = ({
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ width: '50px', background: 'white' }}
+                sx={{ width: '50px', background: theme.palette.background.paper }}
                 disabled
               >
                 <Typography variant="buttonS" color={baseColor}>

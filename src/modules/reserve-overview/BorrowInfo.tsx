@@ -1,6 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -34,6 +35,16 @@ export const BorrowInfo = ({
   showBorrowCapStatus,
   borrowCap,
 }: BorrowInfoProps) => {
+  const maxAvailableToBorrow = BigNumber.max(
+    valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt)),
+    0
+  ).toNumber();
+
+  const maxAvailableToBorrowUSD = BigNumber.max(
+    valueToBigNumber(reserve.borrowCapUSD).minus(valueToBigNumber(reserve.totalDebtUSD)),
+    0
+  ).toNumber();
+
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box
@@ -51,20 +62,11 @@ export const BorrowInfo = ({
               tooltipContent={
                 <>
                   <Trans>
-                    Maximum amount available to supply is{' '}
-                    <FormattedNumber
-                      value={
-                        valueToBigNumber(reserve.borrowCap).toNumber() -
-                        valueToBigNumber(reserve.totalDebt).toNumber()
-                      }
-                      variant="secondary12"
-                    />{' '}
+                    Maximum amount available to borrow is{' '}
+                    <FormattedNumber value={maxAvailableToBorrow} variant="secondary12" />{' '}
                     {reserve.symbol} (
                     <FormattedNumber
-                      value={
-                        valueToBigNumber(reserve.borrowCapUSD).toNumber() -
-                        valueToBigNumber(reserve.totalDebtUSD).toNumber()
-                      }
+                      value={maxAvailableToBorrowUSD}
                       variant="secondary12"
                       symbol="USD"
                     />
@@ -166,32 +168,6 @@ export const BorrowInfo = ({
             displayBlank={true}
           />
         </PanelItem>
-        {/* {reserve.stableBorrowRateEnabled && (
-          <PanelItem
-            title={
-              <StableAPYTooltip
-                event={{
-                  eventName: GENERAL.TOOL_TIP,
-                  eventParams: {
-                    tooltip: 'APY, stable',
-                    asset: reserve.underlyingAsset,
-                    assetName: reserve.name,
-                  },
-                }}
-                text={<Trans>APY, stable</Trans>}
-                key="APY_res_stable_type"
-                variant="description"
-              />
-            }
-          >
-            <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
-            <IncentivesButton
-              symbol={reserve.symbol}
-              incentives={reserve.sIncentivesData}
-              displayBlank={true}
-            />
-          </PanelItem>
-        )} */}
         {reserve.borrowCapUSD && reserve.borrowCapUSD !== '0' && (
           <PanelItem title={<Trans>Borrow cap</Trans>}>
             <FormattedNumber value={reserve.borrowCap} variant="main16" />

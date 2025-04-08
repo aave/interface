@@ -1,3 +1,4 @@
+import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -6,8 +7,8 @@ import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -21,7 +22,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeRewardClaimRestakeActions } from './StakeRewardClaimRestakeActions';
 
 export type StakeRewardClaimRestakeProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
   icon: string;
 };
 
@@ -29,29 +30,28 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-type StakingType = 'aave' | 'bpt';
-
 export const StakeRewardClaimRestakeModalContent = ({
   stakeAssetName,
   icon,
 }: StakeRewardClaimRestakeProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData();
-  const { data: stakeGeneralResult } = useGeneralStakeUiData();
-  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
+
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  const maxAmountToClaim = normalize(
-    stakeUserResult?.[stakeAssetName as StakingType].userIncentivesToClaim || '0',
-    18
-  );
+  const maxAmountToClaim = normalize(stakeUserData?.userIncentivesToClaim || '0', 18);
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToClaim : _amount;
 
@@ -62,11 +62,7 @@ export const StakeRewardClaimRestakeModalContent = ({
   };
 
   // staking token usd value
-  const amountInUsd =
-    Number(maxAmountToClaim) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
-      Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
-
+  const amountInUsd = Number(maxAmountToClaim) * Number(stakeData?.stakeTokenPriceUSDFormatted);
   // error handler
   let blockingError: ErrorType | undefined = undefined;
   if (maxAmountToClaim === '0') {
@@ -131,7 +127,7 @@ export const StakeRewardClaimRestakeModalContent = ({
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
+      <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
         <DetailsNumberLine
           description={<Trans>Staking APR</Trans>}
           value={Number(stakeData?.stakeApy || '0') / 10000}

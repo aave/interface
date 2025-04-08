@@ -2,18 +2,18 @@ import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
-import { supply, swap } from '../../../support/steps/main.steps';
+import { swap } from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aMATICPolygonV3: 900,
+};
 
 const testData = {
-  deposit: {
-    asset: assets.polygonV3Market.MATIC,
-    amount: 900,
-    hasApproval: true,
-  },
   swap: [
     {
-      fromAsset: assets.polygonV3Market.MATIC,
+      fromAsset: assets.polygonV3Market.POL,
       toAsset: assets.polygonV3Market.USDC,
       isCollateralFromAsset: true,
       amount: 20,
@@ -31,7 +31,7 @@ const testData = {
       },
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonV3Market.MATIC.shortName,
+        assetName: assets.polygonV3Market.POL.shortName,
         amount: 880,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
@@ -42,9 +42,11 @@ const testData = {
 //due frozen assets
 describe.skip('SWAP, POLYGON V3 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
-
-  supply(testData.deposit, skipTestState, true);
+  configEnvWithTenderlyPolygonFork({
+    market: 'fork_proto_polygon_v3',
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   testData.swap.forEach((swapCase) => {
     swap(swapCase, skipTestState, false);
   });

@@ -1,3 +1,4 @@
+import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -5,9 +6,9 @@ import React, { useRef, useState } from 'react';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { useRootStore } from 'src/store/root';
+import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { STAKE } from 'src/utils/mixPanelEvents';
 
@@ -22,7 +23,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeActions } from './StakeActions';
 
 export type StakeProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
   icon: string;
 };
 
@@ -30,26 +31,24 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-type StakingType = 'aave' | 'bpt';
-
 export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData();
-  const { data: stakeGeneralResult } = useGeneralStakeUiData();
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
-  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // states
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  const walletBalance = normalize(
-    stakeUserResult?.[stakeAssetName as StakingType].underlyingTokenUserBalance || '0',
-    18
-  );
+  const walletBalance = normalize(stakeUserData?.underlyingTokenUserBalance || '0', 18);
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? walletBalance : _amount;
@@ -61,10 +60,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   };
 
   // staking token usd value
-  const amountInUsd =
-    Number(amount) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
-      Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
+  const amountInUsd = Number(amount) * Number(stakeData?.stakeTokenPriceUSDFormatted);
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
@@ -81,6 +77,8 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
     }
   };
 
+  const nameFormatted = stakeAssetNameFormatted(stakeAssetName);
+
   // is Network mismatched
   const stakingChain =
     currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
@@ -95,12 +93,16 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   }
   if (txState.success)
     return (
-      <TxSuccessView action={<Trans>Staked</Trans>} amount={amountRef.current} symbol={icon} />
+      <TxSuccessView
+        action={<Trans>Staked</Trans>}
+        amount={amountRef.current}
+        symbol={nameFormatted}
+      />
     );
 
   return (
     <>
-      <TxModalTitle title="Stake" symbol={icon} />
+      <TxModalTitle title="Stake" symbol={nameFormatted} />
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={networkConfig.name}
@@ -115,7 +117,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         value={amount}
         onChange={handleChange}
         usdValue={amountInUsd.toString()}
-        symbol={icon}
+        symbol={nameFormatted}
         assets={[
           {
             balance: walletBalance.toString(),
@@ -131,7 +133,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
+      <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
         <DetailsNumberLine
           description={<Trans>Staking APR</Trans>}
           value={Number(stakeData?.stakeApy || '0') / 10000}
@@ -145,7 +147,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         sx={{ mt: '48px' }}
         amountToStake={amount}
         isWrongNetwork={isWrongNetwork}
-        symbol={icon}
+        symbol={nameFormatted}
         blocked={blockingError !== undefined}
         selectedToken={stakeAssetName}
         event={STAKE.STAKE_TOKEN}

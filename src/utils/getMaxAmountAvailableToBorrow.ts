@@ -1,6 +1,5 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { FormatUserSummaryAndIncentivesResponse, valueToBigNumber } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import { ethers } from 'ethers';
 
 import {
@@ -24,13 +23,11 @@ interface PoolReserveBorrowSubset {
 /**
  * Calculates the maximum amount a user can borrow.
  * @param poolReserve
- * @param userReserve
  * @param user
  */
 export function getMaxAmountAvailableToBorrow(
   poolReserve: PoolReserveBorrowSubset,
-  user: FormatUserSummaryAndIncentivesResponse,
-  rateMode: InterestRate
+  user: FormatUserSummaryAndIncentivesResponse
 ): string {
   const availableInPoolUSD = poolReserve.availableLiquidityUSD;
   const availableForUserUSD = BigNumber.min(user.availableBorrowsUSD, availableInPoolUSD);
@@ -50,18 +47,10 @@ export function getMaxAmountAvailableToBorrow(
     user?.availableBorrowsMarketReferenceCurrency || 0
   ).div(poolReserve.formattedPriceInMarketReferenceCurrency);
 
-  let maxUserAmountToBorrow = BigNumber.min(
+  const maxUserAmountToBorrow = BigNumber.min(
     availableForUserMarketReferenceCurrency,
     availableLiquidity
   );
-
-  if (rateMode === InterestRate.Stable) {
-    maxUserAmountToBorrow = BigNumber.min(
-      maxUserAmountToBorrow,
-      // TODO: put MAX_STABLE_RATE_BORROW_SIZE_PERCENT on uipooldataprovider instead of using the static value here
-      valueToBigNumber(poolReserve.formattedAvailableLiquidity).multipliedBy(0.25)
-    );
-  }
 
   const shouldAddMargin =
     /**
@@ -119,7 +108,10 @@ export function getMaxGhoMintAmount(
           valueToBigNumber(poolReserve.totalDebt)
         );
 
-  const maxAmountUserCanMint = BigNumber.min(userAvailableBorrows, availableBorrowCap);
+  const maxAmountUserCanMint = BigNumber.max(
+    BigNumber.min(userAvailableBorrows, availableBorrowCap),
+    0
+  );
 
   const shouldAddMargin =
     /**
@@ -156,14 +148,18 @@ export function assetCanBeBorrowedByUser(
     borrowingEnabled,
     isActive,
     borrowableInIsolation,
-    eModeCategoryId,
+    eModes,
     isFrozen,
     isPaused,
   }: ComputedReserveData,
   user: ExtendedFormattedUser
 ) {
   if (!borrowingEnabled || !isActive || isFrozen || isPaused) return false;
-  if (user?.isInEmode && eModeCategoryId !== user.userEmodeCategoryId) return false;
+  if (user?.isInEmode) {
+    const reserveEmode = eModes.find((emode) => emode.id === user.userEmodeCategoryId);
+    if (!reserveEmode) return false;
+    return reserveEmode.borrowingEnabled;
+  }
   if (user?.isInIsolationMode && !borrowableInIsolation) return false;
   return true;
 }

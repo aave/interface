@@ -19,7 +19,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
 
-import LoveGhost from '/public/loveGhost.svg';
+import LandingGhost from '/public/resting-gho-hat-purple.svg';
 
 import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
@@ -92,7 +92,7 @@ export const HistoryWrapper = () => {
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
-    (node) => {
+    (node: HTMLDivElement | null) => {
       if (isLoading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
@@ -106,7 +106,7 @@ export const HistoryWrapper = () => {
   );
   const theme = useTheme();
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
 
   const flatTxns = useMemo(
     () => transactions?.pages?.flatMap((page) => page) || [],
@@ -130,7 +130,7 @@ export const HistoryWrapper = () => {
           flex: 1,
         }}
       >
-        <LoveGhost style={{ marginBottom: '16px' }} />
+        <LandingGhost style={{ marginBottom: '16px' }} />
         <Typography variant={downToMD ? 'h4' : 'h3'}>
           <Trans>Transaction history is not currently available for this market</Trans>
         </Typography>
@@ -141,7 +141,6 @@ export const HistoryWrapper = () => {
   if (!currentAccount) {
     return (
       <ConnectWalletPaper
-        loading={web3Loading}
         description={<Trans> Please connect your wallet to view transaction history.</Trans>}
       />
     );

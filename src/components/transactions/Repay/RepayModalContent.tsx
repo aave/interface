@@ -1,8 +1,4 @@
-import {
-  API_ETH_MOCK_ADDRESS,
-  InterestRate,
-  synthetixProxyByChainId,
-} from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, synthetixProxyByChainId } from '@aave/contract-helpers';
 import {
   BigNumberValue,
   calculateHealthFactorFromBalancesBigUnits,
@@ -11,13 +7,17 @@ import {
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import Typography from '@mui/material/Typography';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import React, { useEffect, useRef, useState } from 'react';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -41,16 +41,20 @@ export const RepayModalContent = ({
   tokenBalance,
   nativeBalance,
   isWrongNetwork,
-  debtType,
-}: ModalWrapperProps & { debtType: InterestRate }) => {
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
-  const { marketReferencePriceInUsd, user } = useAppDataContext();
-  const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
+  const { marketReferencePriceInUsd } = useAppDataContext();
 
-  const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
-    store.poolComputed.minRemainingBaseTokenBalance,
-    store.displayGho,
-  ]);
+  const [minRemainingBaseTokenBalance, currentChainId, currentMarketData, currentMarket] =
+    useRootStore(
+      useShallow((store) => [
+        store.poolComputed.minRemainingBaseTokenBalance,
+        store.currentChainId,
+        store.currentMarketData,
+        store.currentMarket,
+      ])
+    );
 
   // states
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
@@ -70,16 +74,15 @@ export const RepayModalContent = ({
 
   const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
 
-  const debt =
-    debtType === InterestRate.Stable
-      ? userReserve?.stableBorrows || '0'
-      : userReserve?.variableBorrows || '0';
+  const debt = userReserve?.variableBorrows || '0';
   const debtUSD = new BigNumber(debt)
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
 
-  const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
+  const safeAmountToRepayAll = valueToBigNumber(debt)
+    .multipliedBy('1.0025')
+    .decimalPlaces(poolReserve.decimals, BigNumber.ROUND_UP);
 
   // calculate max amount abailable to repay
   let maxAmountToRepay: BigNumber;
@@ -158,7 +161,10 @@ export const RepayModalContent = ({
       balance: maxReserveTokenForRepay.toString(10),
     });
     // push reserve aToken
-    if (currentMarketData.v3 && !displayGho({ symbol: poolReserve.symbol, currentMarket })) {
+    if (
+      currentMarketData.v3 &&
+      !displayGhoForMintableMarket({ symbol: poolReserve.symbol, currentMarket })
+    ) {
       const aTokenBalance = valueToBigNumber(underlyingBalance);
       const maxBalance = BigNumber.max(
         aTokenBalance,
@@ -223,7 +229,7 @@ export const RepayModalContent = ({
       <TxSuccessView
         action={<Trans>repaid</Trans>}
         amount={amountRef.current}
-        symbol={tokenToRepayWith.symbol}
+        symbol={repayWithATokens ? poolReserve.symbol : tokenToRepayWith.symbol}
       />
     );
 
@@ -274,6 +280,7 @@ export const RepayModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       <RepayActions
+        maxApproveNeeded={safeAmountToRepayAll.toString()}
         poolReserve={poolReserve}
         amountToRepay={isMaxSelected ? repayMax : amount}
         poolAddress={
@@ -281,7 +288,6 @@ export const RepayModalContent = ({
         }
         isWrongNetwork={isWrongNetwork}
         symbol={modalSymbol}
-        debtType={debtType}
         repayWithATokens={repayWithATokens}
       />
     </>

@@ -1,7 +1,17 @@
 import { ChainId, valueToWei } from '@aave/contract-helpers';
-import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
-import { MiscBase, MiscEthereum } from '@bgd-labs/aave-address-book';
+import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import {
+  AaveV3Arbitrum,
+  AaveV3Avalanche,
+  AaveV3Base,
+  AaveV3BNB,
+  AaveV3Ethereum,
+  AaveV3Gnosis,
+  AaveV3Optimism,
+  AaveV3Polygon,
+} from '@bgd-labs/aave-address-book';
+import {
+  BuildTxFunctions,
   constructBuildTx,
   constructFetchFetcher,
   constructGetRate,
@@ -11,7 +21,7 @@ import {
   SwapSide,
   TransactionParams,
 } from '@paraswap/sdk';
-import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
+import { GetRateFunctions, RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
@@ -52,36 +62,50 @@ const ParaSwap = (chainId: number) => {
     {
       chainId,
       fetcher,
+      version: '6.2',
     },
     constructBuildTx,
     constructGetRate
   );
 };
 
-const mainnetParaswap = ParaSwap(ChainId.mainnet);
-const polygonParaswap = ParaSwap(ChainId.polygon);
-const avalancheParaswap = ParaSwap(ChainId.avalanche);
-const fantomParaswap = ParaSwap(ChainId.fantom);
-const arbitrumParaswap = ParaSwap(ChainId.arbitrum_one);
-const optimismParaswap = ParaSwap(ChainId.optimism);
-const baseParaswap = ParaSwap(ChainId.base);
-
-export const getParaswap = (chainId: ChainId) => {
-  if (ChainId.mainnet === chainId) return mainnetParaswap;
-  if (ChainId.polygon === chainId) return polygonParaswap;
-  if (ChainId.avalanche === chainId) return avalancheParaswap;
-  if (ChainId.fantom === chainId) return fantomParaswap;
-  if (ChainId.arbitrum_one === chainId) return arbitrumParaswap;
-  if (ChainId.optimism === chainId) return optimismParaswap;
-  if (ChainId.base === chainId) return baseParaswap;
-
-  throw new Error('chain not supported');
+type ParaswapChainMap = {
+  [key in ChainId]?: { paraswap: BuildTxFunctions & GetRateFunctions; feeTarget: string };
 };
 
-export const getFeeClaimerAddress = (chainId: ChainId) => {
-  if (ChainId.base === chainId) return MiscBase.PARASWAP_FEE_CLAIMER;
+const paraswapNetworks: ParaswapChainMap = {
+  [ChainId.mainnet]: {
+    paraswap: ParaSwap(ChainId.mainnet),
+    feeTarget: AaveV3Ethereum.COLLECTOR,
+  },
+  [ChainId.polygon]: {
+    paraswap: ParaSwap(ChainId.polygon),
+    feeTarget: AaveV3Polygon.COLLECTOR,
+  },
+  [ChainId.avalanche]: {
+    paraswap: ParaSwap(ChainId.avalanche),
+    feeTarget: AaveV3Avalanche.COLLECTOR,
+  },
+  [ChainId.arbitrum_one]: {
+    paraswap: ParaSwap(ChainId.arbitrum_one),
+    feeTarget: AaveV3Arbitrum.COLLECTOR,
+  },
+  [ChainId.optimism]: {
+    paraswap: ParaSwap(ChainId.optimism),
+    feeTarget: AaveV3Optimism.COLLECTOR,
+  },
+  [ChainId.base]: { paraswap: ParaSwap(ChainId.base), feeTarget: AaveV3Base.COLLECTOR },
+  [ChainId.bnb]: { paraswap: ParaSwap(ChainId.bnb), feeTarget: AaveV3BNB.COLLECTOR },
+  [ChainId.xdai]: { paraswap: ParaSwap(ChainId.xdai), feeTarget: AaveV3Gnosis.COLLECTOR },
+};
 
-  return MiscEthereum.PARASWAP_FEE_CLAIMER;
+export const getParaswap = (chainId: ChainId) => {
+  const paraswap = paraswapNetworks[chainId];
+  if (paraswap) {
+    return paraswap;
+  }
+
+  throw new Error('Chain not supported');
 };
 
 const MESSAGE_MAP: { [key: string]: string } = {
@@ -132,7 +156,7 @@ export async function fetchExactInTxParams(
   maxSlippage: number
 ): Promise<SwapTransactionParams> {
   const swapper = ExactInSwapper(chainId);
-  const { swapCallData, augustus, destAmountWithSlippage } = await swapper.getTransactionParams(
+  const { swapCallData, augustus } = await swapper.getTransactionParams(
     swapIn.underlyingAsset,
     swapIn.decimals,
     swapOut.underlyingAsset,
@@ -146,7 +170,7 @@ export async function fetchExactInTxParams(
     swapCallData,
     augustus,
     inputAmount: normalize(route.srcAmount, swapIn.decimals),
-    outputAmount: normalize(destAmountWithSlippage, swapOut.decimals),
+    outputAmount: normalize(route.destAmount, swapOut.decimals),
     inputAmountUSD: route.srcUSD,
     outputAmountUSD: route.destUSD,
   };
@@ -173,7 +197,7 @@ export async function fetchExactInRate(
   let swapInAmount = valueToBigNumber(swapIn.amount);
   if (max && swapIn.supplyAPY !== '0') {
     swapInAmount = swapInAmount.plus(
-      swapInAmount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24)
+      swapInAmount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24 * 2)
     );
   }
 
@@ -184,14 +208,7 @@ export async function fetchExactInRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [
-      ContractMethod.simpleSwap,
-      ContractMethod.directUniV3Swap,
-      ContractMethod.directBalancerV2GivenInSwap,
-      ContractMethod.directBalancerV2GivenOutSwap,
-      ContractMethod.directCurveV1Swap,
-      ContractMethod.directCurveV2Swap,
-    ];
+    options.includeContractMethods = [ContractMethod.swapExactAmountIn];
   }
 
   const swapper = ExactInSwapper(chainId);
@@ -225,7 +242,7 @@ export async function fetchExactOutTxParams(
   maxSlippage: number
 ): Promise<SwapTransactionParams> {
   const swapper = ExactOutSwapper(chainId);
-  const { swapCallData, augustus, srcAmountWithSlippage } = await swapper.getTransactionParams(
+  const { swapCallData, augustus } = await swapper.getTransactionParams(
     swapIn.underlyingAsset,
     swapIn.decimals,
     swapOut.underlyingAsset,
@@ -238,7 +255,7 @@ export async function fetchExactOutTxParams(
   return {
     swapCallData,
     augustus,
-    inputAmount: normalize(srcAmountWithSlippage, swapIn.decimals),
+    inputAmount: normalize(route.srcAmount, swapIn.decimals),
     outputAmount: normalize(route.destAmount, swapOut.decimals),
     inputAmountUSD: route.srcUSD,
     outputAmountUSD: route.destUSD,
@@ -263,13 +280,8 @@ export async function fetchExactOutRate(
   userAddress: string,
   max: boolean
 ): Promise<OptimalRate> {
-  let swapOutAmount = valueToBigNumber(swapOut.amount);
-  if (max) {
-    // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
-    swapOutAmount = swapOutAmount.plus(
-      swapOutAmount.multipliedBy(swapIn.variableBorrowAPY).dividedBy(360 * 24)
-    );
-  }
+  const swapOutAmount = valueToBigNumber(swapOut.amount);
+
   const amount = normalizeBN(swapOutAmount, swapOut.decimals * -1);
 
   const options: RateOptions = {
@@ -277,11 +289,7 @@ export async function fetchExactOutRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [
-      ContractMethod.simpleBuy,
-      ContractMethod.directUniV3Buy,
-      ContractMethod.directBalancerV2GivenOutSwap,
-    ];
+    options.includeContractMethods = [ContractMethod.swapExactAmountOut];
   }
 
   const swapper = ExactOutSwapper(chainId);
@@ -298,8 +306,7 @@ export async function fetchExactOutRate(
 }
 
 export const ExactInSwapper = (chainId: ChainId) => {
-  const paraSwap = getParaswap(chainId);
-  const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
+  const { paraswap, feeTarget } = getParaswap(chainId);
 
   const getRate = async (
     amount: string,
@@ -310,7 +317,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
     userAddress: string,
     options: RateOptions
   ) => {
-    const priceRoute = await paraSwap.getRate({
+    const priceRoute = await paraswap.getRate({
       amount,
       srcToken,
       srcDecimals,
@@ -333,24 +340,20 @@ export const ExactInSwapper = (chainId: ChainId) => {
     route: OptimalRate,
     maxSlippage: number
   ) => {
-    const destAmountWithSlippage = new BigNumberZeroDecimal(route.destAmount)
-      .multipliedBy(100 - maxSlippage)
-      .dividedBy(100)
-      .toFixed(0);
-
     try {
-      const params = await paraSwap.buildTx(
+      const params = await paraswap.buildTx(
         {
           srcToken,
           srcDecimals,
           srcAmount: route.srcAmount,
           destToken,
           destDecimals,
-          destAmount: destAmountWithSlippage,
+          slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
-          partnerAddress: FEE_CLAIMER_ADDRESS,
+          partnerAddress: feeTarget,
           takeSurplus: true,
+          isDirectFeeTransfer: true,
         },
         { ignoreChecks: true }
       );
@@ -358,7 +361,6 @@ export const ExactInSwapper = (chainId: ChainId) => {
       return {
         swapCallData: (params as TransactionParams).data,
         augustus: (params as TransactionParams).to,
-        destAmountWithSlippage,
       };
     } catch (e) {
       console.error(e);
@@ -373,7 +375,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
 };
 
 const ExactOutSwapper = (chainId: ChainId) => {
-  const paraSwap = getParaswap(chainId);
+  const { paraswap, feeTarget } = getParaswap(chainId);
 
   const getRate = async (
     amount: string,
@@ -384,7 +386,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
     userAddress: string,
     options: RateOptions
   ) => {
-    const priceRoute = await paraSwap.getRate({
+    const priceRoute = await paraswap.getRate({
       amount,
       srcToken,
       srcDecimals,
@@ -407,25 +409,20 @@ const ExactOutSwapper = (chainId: ChainId) => {
     route: OptimalRate,
     maxSlippage: number
   ) => {
-    const srcAmountWithSlippage = new BigNumberZeroDecimal(route.srcAmount)
-      .multipliedBy(100 + maxSlippage)
-      .dividedBy(100)
-      .toFixed(0);
-    const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
-
     try {
-      const params = await paraSwap.buildTx(
+      const params = await paraswap.buildTx(
         {
           srcToken,
           destToken,
-          srcAmount: srcAmountWithSlippage,
           destAmount: route.destAmount,
+          slippage: maxSlippage * 100,
           priceRoute: route,
           userAddress: user,
-          partnerAddress: FEE_CLAIMER_ADDRESS,
+          partnerAddress: feeTarget,
           takeSurplus: true,
           srcDecimals,
           destDecimals,
+          isDirectFeeTransfer: true,
         },
         { ignoreChecks: true }
       );
@@ -433,7 +430,6 @@ const ExactOutSwapper = (chainId: ChainId) => {
       return {
         swapCallData: (params as TransactionParams).data,
         augustus: (params as TransactionParams).to,
-        srcAmountWithSlippage,
       };
     } catch (e) {
       console.log(e);
@@ -455,4 +451,26 @@ export const calculateSignedAmount = (amount: string, decimals: number, margin?:
   const amountWithMargin = Number(amount) + Number(amount) * (margin ?? SIGNATURE_AMOUNT_MARGIN); // 10% margin for aToken interest accrual, custom amount for actions where output amount is variable
   const formattedAmountWithMargin = valueToWei(amountWithMargin.toString(), decimals);
   return formattedAmountWithMargin;
+};
+
+export const maxInputAmountWithSlippage = (
+  inputAmount: string,
+  slippage: string,
+  decimals: number
+) => {
+  if (inputAmount === '0') return '0';
+  return valueToBigNumber(inputAmount)
+    .multipliedBy(1 + Number(slippage) / 100)
+    .toFixed(decimals);
+};
+
+export const minimumReceivedAfterSlippage = (
+  outputAmount: string,
+  slippage: string,
+  decimals: number
+) => {
+  if (outputAmount === '0') return '0';
+  return valueToBigNumber(outputAmount)
+    .multipliedBy(1 - Number(slippage) / 100)
+    .toFixed(decimals);
 };

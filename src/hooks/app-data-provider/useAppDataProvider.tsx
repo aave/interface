@@ -1,36 +1,33 @@
-import { ReserveDataHumanized } from '@aave/contract-helpers';
 import {
   ComputedUserReserve,
-  formatGhoReserveData,
-  formatGhoUserData,
-  formatReservesAndIncentives,
   FormattedGhoReserveData,
   FormattedGhoUserData,
-  FormatUserSummaryAndIncentivesResponse,
   formatUserSummaryWithDiscount,
   USD_DECIMALS,
   UserReserveData,
 } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { useContext } from 'react';
+import React, { PropsWithChildren, useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { GHO_SUPPORTED_MARKETS, GHO_SYMBOL, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { GHO_MINTING_MARKETS } from 'src/utils/ghoUtilities';
 
+import { formatEmodes } from '../../store/poolSelectors';
 import {
-  reserveSortFn,
-  selectCurrentBaseCurrencyData,
-  selectCurrentReserves,
-  selectCurrentUserEmodeCategoryId,
-  selectCurrentUserReserves,
-  selectEmodes,
-  selectFormattedReserves,
-  selectUserSummaryAndIncentives,
-} from '../../store/poolSelectors';
-import { useCurrentTimestamp } from '../useCurrentTimestamp';
-import { useProtocolDataContext } from '../useProtocolDataContext';
+  ExtendedFormattedUser as _ExtendedFormattedUser,
+  useExtendedUserSummaryAndIncentives,
+} from '../pool/useExtendedUserSummaryAndIncentives';
+import { useGhoPoolFormattedReserve } from '../pool/useGhoPoolFormattedReserve';
+import {
+  FormattedReservesAndIncentives,
+  usePoolFormattedReserves,
+} from '../pool/usePoolFormattedReserves';
+import { usePoolReservesHumanized } from '../pool/usePoolReserves';
+import { useUserGhoPoolFormattedReserve } from '../pool/useUserGhoPoolFormattedReserve';
+import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
+import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
 
 /**
  * removes the marketPrefix from a symbol
@@ -41,39 +38,33 @@ export const unPrefixSymbol = (symbol: string, prefix: string) => {
   return symbol.toUpperCase().replace(RegExp(`^(${prefix[0]}?${prefix.slice(1)})`), '');
 };
 
-export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>[0] &
-  ReserveDataHumanized & {
-    iconSymbol: string;
-    isEmodeEnabled: boolean;
-    isWrappedBaseAsset: boolean;
-  };
+/**
+ * @deprecated Use FormattedReservesAndIncentives type from usePoolFormattedReserves hook
+ */
+export type ComputedReserveData = FormattedReservesAndIncentives;
 
-export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
+/**
+ * @deprecated Use FormattedUserReserves type from useUserSummaryAndIncentives hook
+ */
+export type ComputedUserReserveData = FormattedUserReserves;
 
-export type ExtendedFormattedUser = FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
-  earnedAPY: number;
-  debtAPY: number;
-  netAPY: number;
-  isInEmode: boolean;
-  userEmodeCategoryId: number;
-};
+/**
+ * @deprecated Use ExtendedFormattedUser type from useExtendedUserSummaryAndIncentives hook
+ */
+export type ExtendedFormattedUser = _ExtendedFormattedUser;
 
 export interface AppDataContextType {
   loading: boolean;
   reserves: ComputedReserveData[];
   eModes: Record<number, EmodeCategory>;
-  // refreshPoolData?: () => Promise<void[]>;
-  isUserHasDeposits: boolean;
-  user: ExtendedFormattedUser;
-  // refreshIncentives?: () => Promise<void>;
-  // loading: boolean;
-
+  user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
   userReserves: UserReserveData[];
   ghoReserveData: FormattedGhoReserveData;
   ghoUserData: FormattedGhoUserData;
   ghoLoadingData: boolean;
+  ghoUserLoadingData: boolean;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -82,60 +73,68 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  * This is the only provider you'll ever need.
  * It fetches reserves /incentives & walletbalances & keeps them updated.
  */
-export const AppDataProvider: React.FC = ({ children }) => {
-  const currentTimestamp = useCurrentTimestamp(5);
+export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { currentAccount } = useWeb3Context();
-  const { currentMarket } = useProtocolDataContext();
-  const [
-    reserves,
-    baseCurrencyData,
-    userReserves,
-    userEmodeCategoryId,
-    eModes,
-    ghoReserveData,
-    ghoUserData,
-    ghoReserveDataFetched,
-    formattedPoolReserves,
-    userSummary,
-    displayGho,
-  ] = useRootStore((state) => [
-    selectCurrentReserves(state),
-    selectCurrentBaseCurrencyData(state),
-    selectCurrentUserReserves(state),
-    selectCurrentUserEmodeCategoryId(state),
-    selectEmodes(state),
-    state.ghoReserveData,
-    state.ghoUserData,
-    state.ghoReserveDataFetched,
-    selectFormattedReserves(state, currentTimestamp),
-    selectUserSummaryAndIncentives(state, currentTimestamp),
-    state.displayGho,
-  ]);
 
-  const formattedGhoReserveData: FormattedGhoReserveData = formatGhoReserveData({
-    ghoReserveData,
-  });
-  const formattedGhoUserData: FormattedGhoUserData = formatGhoUserData({
-    ghoReserveData,
-    ghoUserData,
-    currentTimestamp,
-  });
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
+  const currentMarket = useRootStore((state) => state.currentMarket);
+  // pool hooks
 
-  let ghoBorrowCap = '0';
-  let aaveFacilitatorRemainingCapacity = Math.max(
-    formattedGhoReserveData.aaveFacilitatorRemainingCapacity - 0.000001,
-    0
-  );
+  const { data: reservesData, isPending: reservesDataLoading } =
+    usePoolReservesHumanized(currentMarketData);
+  const { data: formattedPoolReserves, isPending: formattedPoolReservesLoading } =
+    usePoolFormattedReserves(currentMarketData);
+  const baseCurrencyData = reservesData?.baseCurrencyData;
+  // user hooks
+
+  const eModes = formattedPoolReserves ? formatEmodes(formattedPoolReserves) : {};
+
+  const { data: userReservesData, isPending: userReservesDataLoading } =
+    useUserPoolReservesHumanized(currentMarketData);
+  const { data: userSummary, isPending: userSummaryLoading } =
+    useExtendedUserSummaryAndIncentives(currentMarketData);
+  const userReserves = userReservesData?.userReserves;
+
+  // gho hooks
+  const { data: formattedGhoUserData, isPending: isGhoUserDataLoading } =
+    useUserGhoPoolFormattedReserve(currentMarketData);
+  const { data: formattedGhoReserveData, isPending: ghoReserveDataLoading } =
+    useGhoPoolFormattedReserve(currentMarketData);
+
+  const formattedGhoReserveDataWithDefault = formattedGhoReserveData || {
+    aaveFacilitatorRemainingCapacity: 0,
+    aaveFacilitatorMintedPercent: 0,
+    aaveFacilitatorBucketLevel: 0,
+    aaveFacilitatorBucketMaxCapacity: 0,
+    ghoBorrowAPYWithMaxDiscount: 0,
+    ghoBaseVariableBorrowRate: 0,
+    ghoVariableBorrowAPY: 0,
+    ghoDiscountedPerToken: 0,
+    ghoDiscountRate: 0,
+    ghoMinDebtTokenBalanceForDiscount: 0,
+    ghoMinDiscountTokenBalanceForDiscount: 0,
+  };
+
+  const formattedGhoUserDataWithDefault = formattedGhoUserData || {
+    userGhoDiscountPercent: 0,
+    userDiscountTokenBalance: 0,
+    userGhoBorrowBalance: 0,
+    userDiscountedGhoInterest: 0,
+    userGhoAvailableToBorrowAtDiscount: 0,
+  };
+
+  // loading
+  const isReservesLoading = reservesDataLoading || formattedPoolReservesLoading;
+  const isUserDataLoading = userReservesDataLoading || userSummaryLoading;
+
   let user = userSummary;
   // Factor discounted GHO interest into cumulative user fields
-  if (GHO_SUPPORTED_MARKETS.includes(currentMarket)) {
-    ghoBorrowCap = reserves.find((r) => r.symbol === GHO_SYMBOL)?.borrowCap || '0';
 
-    if (ghoBorrowCap && ghoBorrowCap !== '0') {
-      aaveFacilitatorRemainingCapacity = Number(ghoBorrowCap);
-    }
+  const isGhoInMarket = GHO_MINTING_MARKETS.includes(currentMarket);
 
-    if (formattedGhoUserData.userDiscountedGhoInterest > 0) {
+  if (isGhoInMarket && reservesData && formattedGhoUserData) {
+    const baseCurrencyData = reservesData.baseCurrencyData;
+    if (formattedGhoUserData.userDiscountedGhoInterest > 0 && user) {
       const userSummaryWithDiscount = formatUserSummaryWithDiscount({
         userGhoDiscountedInterest: formattedGhoUserData.userDiscountedGhoInterest,
         user,
@@ -143,136 +142,63 @@ export const AppDataProvider: React.FC = ({ children }) => {
           formatUnits(baseCurrencyData.marketReferenceCurrencyPriceInUsd, USD_DECIMALS)
         ),
       });
+
+      const userGhoReserve = user.userReservesData.find(
+        (r) => r.reserve.underlyingAsset === AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase()
+      );
+
+      if (!userGhoReserve) {
+        throw new Error('GHO reserve not found in user reserves data');
+      }
+
+      const mergeUserReserves = (reserve: ComputedUserReserve<FormattedReservesAndIncentives>) => {
+        if (reserve.underlyingAsset !== AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase()) {
+          return reserve;
+        }
+
+        if (reserve.variableBorrows === '0') {
+          return reserve;
+        }
+
+        // This amount takes into account the discount applied on the accrued interest.
+        const userGhoDebtBalance = formattedGhoUserData.userGhoBorrowBalance.toString();
+
+        // Merge with the user reserves so the correct debt balance can be shown throughout the app.
+        return {
+          ...reserve,
+          variableBorrows: userGhoDebtBalance,
+          variableBorrowsUSD: userGhoDebtBalance,
+          totalBorrowsUSD: userGhoDebtBalance,
+          totalBorrows: userGhoDebtBalance,
+          totalBorrowsMarketReferenceCurrency: userGhoDebtBalance,
+        };
+      };
+
       user = {
         ...user,
         ...userSummaryWithDiscount,
+        userReservesData: user.userReservesData.map(mergeUserReserves),
       };
     }
   }
 
-  const proportions = user.userReservesData.reduce(
-    (acc, value) => {
-      const reserve = formattedPoolReserves.find(
-        (r) => r.underlyingAsset === value.reserve.underlyingAsset
-      );
-
-      if (reserve) {
-        if (value.underlyingBalanceUSD !== '0') {
-          acc.positiveProportion = acc.positiveProportion.plus(
-            new BigNumber(reserve.supplyAPY).multipliedBy(value.underlyingBalanceUSD)
-          );
-          if (reserve.aIncentivesData) {
-            reserve.aIncentivesData.forEach((incentive) => {
-              acc.positiveProportion = acc.positiveProportion.plus(
-                new BigNumber(incentive.incentiveAPR).multipliedBy(value.underlyingBalanceUSD)
-              );
-            });
-          }
-        }
-        if (value.variableBorrowsUSD !== '0') {
-          // TODO: Export to unified helper function
-          if (displayGho({ symbol: reserve.symbol, currentMarket: currentMarket })) {
-            const borrowRateAfterDiscount = weightedAverageAPY(
-              formattedGhoReserveData.ghoVariableBorrowAPY,
-              formattedGhoUserData.userGhoBorrowBalance,
-              formattedGhoUserData.userGhoAvailableToBorrowAtDiscount,
-              formattedGhoReserveData.ghoBorrowAPYWithMaxDiscount
-            );
-            acc.negativeProportion = acc.negativeProportion.plus(
-              new BigNumber(borrowRateAfterDiscount).multipliedBy(
-                formattedGhoUserData.userGhoBorrowBalance
-              )
-            );
-            if (reserve.vIncentivesData) {
-              reserve.vIncentivesData.forEach((incentive) => {
-                acc.positiveProportion = acc.positiveProportion.plus(
-                  new BigNumber(incentive.incentiveAPR).multipliedBy(
-                    formattedGhoUserData.userGhoBorrowBalance
-                  )
-                );
-              });
-            }
-          } else {
-            acc.negativeProportion = acc.negativeProportion.plus(
-              new BigNumber(reserve.variableBorrowAPY).multipliedBy(value.variableBorrowsUSD)
-            );
-            if (reserve.vIncentivesData) {
-              reserve.vIncentivesData.forEach((incentive) => {
-                acc.positiveProportion = acc.positiveProportion.plus(
-                  new BigNumber(incentive.incentiveAPR).multipliedBy(value.variableBorrowsUSD)
-                );
-              });
-            }
-          }
-        }
-        if (value.stableBorrowsUSD !== '0') {
-          acc.negativeProportion = acc.negativeProportion.plus(
-            new BigNumber(value.stableBorrowAPY).multipliedBy(value.stableBorrowsUSD)
-          );
-          if (reserve.sIncentivesData) {
-            reserve.sIncentivesData.forEach((incentive) => {
-              acc.positiveProportion = acc.positiveProportion.plus(
-                new BigNumber(incentive.incentiveAPR).multipliedBy(value.stableBorrowsUSD)
-              );
-            });
-          }
-        }
-      } else {
-        throw new Error('no possible to calculate net apy');
-      }
-
-      return acc;
-    },
-    {
-      positiveProportion: new BigNumber(0),
-      negativeProportion: new BigNumber(0),
-    }
-  );
-
-  const isUserHasDeposits = user.userReservesData.some(
-    (userReserve) => userReserve.scaledATokenBalance !== '0'
-  );
-
-  const earnedAPY = proportions.positiveProportion.dividedBy(user.totalLiquidityUSD).toNumber();
-  const debtAPY = proportions.negativeProportion.dividedBy(user.totalBorrowsUSD).toNumber();
-  const netAPY =
-    (earnedAPY || 0) *
-      (Number(user.totalLiquidityUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1')) -
-    (debtAPY || 0) *
-      (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'));
-
   return (
     <AppDataContext.Provider
       value={{
-        loading: !reserves.length || (!!currentAccount && !userReserves.length),
-        reserves: formattedPoolReserves,
+        loading: isReservesLoading || (!!currentAccount && isUserDataLoading),
+        reserves: formattedPoolReserves || [],
         eModes,
-        user: {
-          ...user,
-          totalBorrowsUSD: user.totalBorrowsUSD,
-          totalBorrowsMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
-          userEmodeCategoryId,
-          isInEmode: userEmodeCategoryId !== 0,
-          userReservesData: user.userReservesData.sort((a, b) =>
-            reserveSortFn(a.reserve, b.reserve)
-          ),
-          earnedAPY,
-          debtAPY,
-          netAPY,
-        },
-        userReserves,
-        isUserHasDeposits,
-        marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-        marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+        user,
+        userReserves: userReserves || [],
+        marketReferencePriceInUsd: baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0',
+        marketReferenceCurrencyDecimals: baseCurrencyData?.marketReferenceCurrencyDecimals || 0,
         // TODO: we should consider removing this from the context and use zustand instead. If we had a selector that would return the formatted gho data, I think that
         // would work out pretty well. We could even extend that pattern for the other reserves, and migrate towards the global store instead of the app data provider.
         // ghoLoadingData for now is just propagated through to reduce changes to other components.
-        ghoReserveData: {
-          ...formattedGhoReserveData,
-          aaveFacilitatorRemainingCapacity,
-        },
-        ghoUserData: formattedGhoUserData,
-        ghoLoadingData: !ghoReserveDataFetched,
+        ghoReserveData: formattedGhoReserveDataWithDefault,
+        ghoUserData: formattedGhoUserDataWithDefault,
+        ghoLoadingData: ghoReserveDataLoading,
+        ghoUserLoadingData: !!currentAccount && isGhoUserDataLoading,
       }}
     >
       {children}

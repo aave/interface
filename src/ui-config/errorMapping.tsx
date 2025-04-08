@@ -22,10 +22,7 @@ export const getErrorTextFromError = (
 ): TxErrorType => {
   let errorNumber = 1;
 
-  if (
-    error.message === 'MetaMask Tx Signature: User denied transaction signature.' ||
-    error.message === 'MetaMask Message Signature: User denied message signature.'
-  ) {
+  if (error.message.startsWith('user rejected transaction')) {
     return {
       error: errorMapping[4001],
       blocking: false,
@@ -130,7 +127,7 @@ export const errorMapping: Record<number, ReactElement> = {
   // 59: <Trans>Price oracle sentinel validation failed</Trans>,
   60: <Trans>Asset is not borrowable in isolation mode</Trans>,
   // 61: <Trans>Reserve has already been initialized</Trans>,
-  62: <Trans>User is in isolation mode</Trans>,
+  62: <Trans>User is in isolation mode or LTV is zero</Trans>,
   // 63: <Trans>Invalid ltv parameter for the reserve</Trans>,
   // 64: <Trans>Invalid liquidity threshold parameter for the reserve</Trans>,
   // 65: <Trans>Invalid liquidity bonus parameter for the reserve</Trans>,

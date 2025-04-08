@@ -8,16 +8,16 @@ import {
 } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -26,7 +26,6 @@ export interface BorrowActionsProps extends BoxProps {
   poolReserve: ComputedReserveData;
   amountToBorrow: string;
   poolAddress: string;
-  interestRateMode: InterestRate;
   isWrongNetwork: boolean;
   symbol: string;
   blocked: boolean;
@@ -38,7 +37,6 @@ export const BorrowActions = React.memo(
     poolReserve,
     amountToBorrow,
     poolAddress,
-    interestRateMode,
     isWrongNetwork,
     blocked,
     sx,
@@ -50,14 +48,16 @@ export const BorrowActions = React.memo(
       generateApproveDelegation,
       estimateGasLimit,
       addTransaction,
-    ] = useRootStore((state) => [
-      state.borrow,
-      state.getCreditDelegationApprovedAmount,
-      state.currentMarketData,
-      state.generateApproveDelegation,
-      state.estimateGasLimit,
-      state.addTransaction,
-    ]);
+    ] = useRootStore(
+      useShallow((state) => [
+        state.borrow,
+        state.getCreditDelegationApprovedAmount,
+        state.currentMarketData,
+        state.generateApproveDelegation,
+        state.estimateGasLimit,
+        state.addTransaction,
+      ])
+    );
     const {
       approvalTxState,
       mainTxState,
@@ -68,8 +68,8 @@ export const BorrowActions = React.memo(
       setLoadingTxns,
       setApprovalTxState,
     } = useModalContext();
-    const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
     const { sendTx } = useWeb3Context();
+    const queryClient = useQueryClient();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
 
@@ -77,10 +77,7 @@ export const BorrowActions = React.memo(
       try {
         if (requiresApproval && approvedAmount) {
           let approveDelegationTxData = generateApproveDelegation({
-            debtTokenAddress:
-              interestRateMode === InterestRate.Variable
-                ? poolReserve.variableDebtTokenAddress
-                : poolReserve.stableDebtTokenAddress,
+            debtTokenAddress: poolReserve.variableDebtTokenAddress,
             delegatee: currentMarketData.addresses.WETH_GATEWAY ?? '',
             amount: MAX_UINT_AMOUNT,
           });
@@ -111,11 +108,8 @@ export const BorrowActions = React.memo(
         let borrowTxData = borrow({
           amount: parseUnits(amountToBorrow, poolReserve.decimals).toString(),
           reserve: poolAddress,
-          interestRateMode,
-          debtTokenAddress:
-            interestRateMode === InterestRate.Variable
-              ? poolReserve.variableDebtTokenAddress
-              : poolReserve.stableDebtTokenAddress,
+          interestRateMode: InterestRate.Variable,
+          debtTokenAddress: poolReserve.variableDebtTokenAddress,
         });
         borrowTxData = await estimateGasLimit(borrowTxData);
         const response = await sendTx(borrowTxData);
@@ -134,10 +128,8 @@ export const BorrowActions = React.memo(
           assetName: poolReserve.name,
         });
 
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-        refetchPoolData && refetchPoolData();
-        refetchIncentiveData && refetchIncentiveData();
-        refetchGhoData && refetchGhoData();
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
@@ -158,10 +150,7 @@ export const BorrowActions = React.memo(
         ) {
           setLoadingTxns(true);
           const approvedAmount = await getCreditDelegationApprovedAmount({
-            debtTokenAddress:
-              interestRateMode === InterestRate.Variable
-                ? poolReserve.variableDebtTokenAddress
-                : poolReserve.stableDebtTokenAddress,
+            debtTokenAddress: poolReserve.variableDebtTokenAddress,
             delegatee: currentMarketData.addresses.WETH_GATEWAY ?? '',
           });
           setApprovedAmount(approvedAmount);
@@ -187,9 +176,7 @@ export const BorrowActions = React.memo(
         approvedAmount,
         currentMarketData.addresses.WETH_GATEWAY,
         getCreditDelegationApprovedAmount,
-        interestRateMode,
         poolAddress,
-        poolReserve.stableDebtTokenAddress,
         poolReserve.variableDebtTokenAddress,
         setApprovalTxState,
         setLoadingTxns,

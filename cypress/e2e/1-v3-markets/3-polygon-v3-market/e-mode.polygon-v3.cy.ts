@@ -9,11 +9,16 @@ import {
   checkEmodeActivatingDisabled,
   verifyCountOfBorrowAssets,
 } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aMATICPolygonV3: 100,
+};
 
 const testData = {
   testCases: {
     deposit1: {
-      asset: assets.polygonV3Market.MATIC,
+      asset: assets.polygonV3Market.POL,
       amount: 100,
       hasApproval: true,
     },
@@ -48,9 +53,12 @@ const testData = {
 //due frozen assets
 describe.skip('E-MODE SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
+  configEnvWithTenderlyPolygonFork({
+    market: 'fork_proto_polygon_v3',
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   describe('Prepare min health factor state, with stable coins', () => {
-    supply(testData.testCases.deposit1, skipTestState, true);
     borrow(testData.testCases.borrow, skipTestState, true);
     supply(testData.testCases.deposit2, skipTestState, true);
     borrow(testData.testCases.borrow, skipTestState, true);

@@ -6,11 +6,10 @@ import {
 import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
@@ -18,7 +17,8 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -34,7 +34,6 @@ interface DebtSwitchBaseProps extends BoxProps {
   blocked?: boolean;
   isMaxSelected: boolean;
   loading?: boolean;
-  currentRateMode: number;
   signatureParams?: SignedParams;
 }
 
@@ -60,7 +59,6 @@ export const DebtSwitchActions = ({
   loading,
   blocked,
   buildTxFn,
-  currentRateMode,
 }: DebtSwitchBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
   const [
     getCreditDelegationApprovedAmount,
@@ -71,16 +69,18 @@ export const DebtSwitchActions = ({
     debtSwitch,
     walletApprovalMethodPreference,
     generateCreditDelegationSignatureRequest,
-  ] = useRootStore((state) => [
-    state.getCreditDelegationApprovedAmount,
-    state.currentMarketData,
-    state.generateApproveDelegation,
-    state.estimateGasLimit,
-    state.addTransaction,
-    state.debtSwitch,
-    state.walletApprovalMethodPreference,
-    state.generateCreditDelegationSignatureRequest,
-  ]);
+  ] = useRootStore(
+    useShallow((state) => [
+      state.getCreditDelegationApprovedAmount,
+      state.currentMarketData,
+      state.generateApproveDelegation,
+      state.estimateGasLimit,
+      state.addTransaction,
+      state.debtSwitch,
+      state.walletApprovalMethodPreference,
+      state.generateCreditDelegationSignatureRequest,
+    ])
+  );
   const {
     approvalTxState,
     mainTxState,
@@ -92,7 +92,7 @@ export const DebtSwitchActions = ({
     setApprovalTxState,
   } = useModalContext();
   const { sendTx, signTxData } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
+  const queryClient = useQueryClient();
   const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
   const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
   const [useSignature, setUseSignature] = useState(false);
@@ -173,9 +173,8 @@ export const DebtSwitchActions = ({
       let debtSwitchTxData = debtSwitch({
         poolReserve,
         targetReserve,
-        currentRateMode: currentRateMode,
-        amountToReceive: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
-        amountToSwap: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
+        amountToReceive: parseUnits(amountToReceive, targetReserve.decimals).toString(),
+        amountToSwap: parseUnits(amountToSwap, poolReserve.decimals).toString(),
         isMaxSelected,
         txCalldata: route.swapCallData,
         augustus: route.augustus,
@@ -193,18 +192,12 @@ export const DebtSwitchActions = ({
       addTransaction(response.hash, {
         action: 'debtSwitch',
         txState: 'success',
-        previousState:
-          route.outputAmount +
-          (currentRateMode === 2
-            ? ' variable' + poolReserve.symbol
-            : ' stable' + poolReserve.symbol),
-        newState: route.inputAmount + ' variable' + targetReserve.symbol,
+        previousState: `${route.outputAmount} variable ${poolReserve.symbol}`,
+        newState: `${route.inputAmount} variable ${targetReserve.symbol}`,
       });
 
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-      refetchGhoData && refetchGhoData();
-      refetchPoolData && refetchPoolData();
-      refetchIncentiveData && refetchIncentiveData();
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);

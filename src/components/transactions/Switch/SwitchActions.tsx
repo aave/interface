@@ -1,8 +1,8 @@
 import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { OptimalRate } from '@paraswap/sdk';
+import { useQueryClient } from '@tanstack/react-query';
 import { defaultAbiCoder, formatUnits, splitSignature } from 'ethers/lib/utils';
-import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { calculateSignedAmount } from 'src/hooks/paraswap/common';
@@ -13,8 +13,9 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
@@ -60,14 +61,18 @@ export const SwitchActions = ({
     walletApprovalMethodPreference,
     generateSignatureRequest,
     addTransaction,
-  ] = useRootStore((state) => [
-    state.account,
-    state.generateApproval,
-    state.estimateGasLimit,
-    state.walletApprovalMethodPreference,
-    state.generateSignatureRequest,
-    state.addTransaction,
-  ]);
+    currentMarketData,
+  ] = useRootStore(
+    useShallow((state) => [
+      state.account,
+      state.generateApproval,
+      state.estimateGasLimit,
+      state.walletApprovalMethodPreference,
+      state.generateSignatureRequest,
+      state.addTransaction,
+      state.currentMarketData,
+    ])
+  );
 
   const {
     approvalTxState,
@@ -81,6 +86,7 @@ export const SwitchActions = ({
   } = useModalContext();
 
   const { sendTx, signTxData } = useWeb3Context();
+  const queryClient = useQueryClient();
   const networkConfig = getNetworkConfig(chainId);
 
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
@@ -150,7 +156,9 @@ export const SwitchActions = ({
             loading: false,
             success: true,
           });
-          queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+          queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
+          });
         } catch (error) {
           const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
           setTxError(parsedError);
@@ -226,8 +234,8 @@ export const SwitchActions = ({
             success: true,
           });
         } else {
-          const tx = generateApproval(approvalData, { chainId });
-          const txWithGasEstimation = await estimateGasLimit(tx);
+          const tx = generateApproval(approvalData, { chainId, amount: amountToApprove });
+          const txWithGasEstimation = await estimateGasLimit(tx, chainId);
           setApprovalTxState({ ...approvalTxState, loading: true });
           const response = await sendTx(txWithGasEstimation);
           await response.wait(1);

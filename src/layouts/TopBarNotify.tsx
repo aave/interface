@@ -7,28 +7,47 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { ReactNode, useEffect, useState } from 'react';
+import { MarketLogo } from 'src/components/MarketSwitcher';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 
 interface TopBarNotifyProps {
   notifyText: ReactNode;
   learnMoreLink?: string;
+  buttonText?: string;
+  bannerVersion: string;
+  icon?: string;
+  customIcon?: ReactNode;
 }
 
-export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotifyProps) {
+export default function TopBarNotify({
+  notifyText,
+  learnMoreLink,
+  buttonText,
+  bannerVersion,
+  icon,
+  customIcon,
+}: TopBarNotifyProps) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
+  const sm = useMediaQuery(breakpoints.down('sm'));
 
   const [showWarning, setShowWarning] = useState(true);
 
-  const [mobileDrawerOpen] = useRootStore((state) => [state.mobileDrawerOpen]);
+  const mobileDrawerOpen = useRootStore((state) => state.mobileDrawerOpen);
 
   useEffect(() => {
+    const storedBannerVersion = localStorage.getItem('bannerVersion');
     const warningBarOpen = localStorage.getItem('warningBarOpen');
-    if (warningBarOpen && warningBarOpen === 'false') {
+
+    if (storedBannerVersion !== bannerVersion) {
+      localStorage.setItem('bannerVersion', bannerVersion);
+      setShowWarning(true);
+      localStorage.setItem('warningBarOpen', 'true');
+    } else if (warningBarOpen === 'false') {
       setShowWarning(false);
     }
-  }, []);
+  }, [bannerVersion]);
 
   const handleClose = () => {
     localStorage.setItem('warningBarOpen', 'false');
@@ -63,25 +82,33 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
           variant="dense"
         >
           <Box sx={{ padding: md ? '20px 10px' : '', paddingRight: 0 }}>
-            <Typography component="div">
+            <Typography
+              sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}
+              component="div"
+            >
               <Trans>{notifyText}</Trans>
+
+              {customIcon ? customIcon : null}
+
+              {icon && !sm ? <MarketLogo sx={{ ml: 2 }} size={32} logo={icon} /> : ''}
 
               {learnMoreLink && md ? (
                 <Link
                   sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
-                  target={'_blank'}
+                  // target={'_blank'} Todo option to pass as prop
                   href={learnMoreLink}
                 >
-                  <Trans>Learn more</Trans>
+                  <Trans>{buttonText ? buttonText : `Learn more`}</Trans>
                 </Link>
               ) : null}
             </Typography>
           </Box>
+
           <Box>
             {!md && learnMoreLink ? (
               <Button
                 component="a"
-                target={'_blank'}
+                // target={'_blank'} Todo option to pass as prop
                 size="small"
                 href={learnMoreLink}
                 sx={{
@@ -92,7 +119,7 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
                   color: '#EAEBEF',
                 }}
               >
-                <Trans>LEARN MORE</Trans>
+                <Trans> {buttonText ? buttonText.toUpperCase() : `LEARN MORE`}</Trans>
               </Button>
             ) : null}
           </Box>

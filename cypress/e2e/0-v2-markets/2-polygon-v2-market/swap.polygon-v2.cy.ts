@@ -2,19 +2,19 @@ import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
-import { supply, swap } from '../../../support/steps/main.steps';
+import { swap } from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aMATICPolygonV2: 100,
+};
 
 const testData = {
-  deposit: {
-    asset: assets.polygonMarket.MATIC,
-    amount: 100,
-    hasApproval: true,
-  },
   swap: [
     {
-      fromAsset: assets.polygonMarket.MATIC,
-      toAsset: assets.polygonMarket.USDC,
+      fromAsset: assets.polygonMarket.POL,
+      toAsset: assets.polygonMarket.DAI,
       isCollateralFromAsset: true,
       amount: 10,
       hasApproval: false,
@@ -24,14 +24,14 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonMarket.USDC.shortName,
-        wrapped: assets.polygonMarket.USDC.wrapped,
+        assetName: assets.polygonMarket.DAI.shortName,
+        wrapped: assets.polygonMarket.DAI.wrapped,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonMarket.MATIC.shortName,
+        assetName: assets.polygonMarket.POL.shortName,
         amount: 90,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
@@ -42,9 +42,7 @@ const testData = {
 
 describe('SWAP, POLYGON V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyPolygonFork({});
-
-  supply(testData.deposit, skipTestState, true);
+  configEnvWithTenderlyPolygonFork({ tokens: tokenSet(tokensToRequest) });
   testData.swap.forEach((swapCase) => {
     swap(swapCase, skipTestState, false);
   });

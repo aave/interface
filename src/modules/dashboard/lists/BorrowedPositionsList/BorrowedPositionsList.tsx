@@ -6,12 +6,12 @@ import { useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useShallow } from 'zustand/shallow';
 
-import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
@@ -44,25 +44,13 @@ const head = [
     title: <Trans key="APY">APY</Trans>,
     sortKey: 'borrowAPY',
   },
-  {
-    title: (
-      <APYTypeTooltip
-        event={{
-          eventName: GENERAL.TOOL_TIP,
-          eventParams: { tooltip: 'APY Type Borrow' },
-        }}
-        text={<Trans>APY type</Trans>}
-        key="APY type"
-        variant="subheader2"
-      />
-    ),
-    sortKey: 'typeAPY',
-  },
 ];
 
 export const BorrowedPositionsList = () => {
-  const { user, loading, eModes } = useAppDataContext();
-  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const { user, loading, eModes, reserves } = useAppDataContext();
+  const [currentMarketData, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [store.currentMarketData, store.currentNetworkConfig])
+  );
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
   const theme = useTheme();
@@ -70,27 +58,15 @@ export const BorrowedPositionsList = () => {
   const showEModeButton = currentMarketData.v3 && Object.keys(eModes).length > 1;
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
 
+  if (loading || !user)
+    return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
+
   let borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
       if (userReserve.variableBorrows !== '0') {
         acc.push({
           ...userReserve,
           borrowRateMode: InterestRate.Variable,
-          reserve: {
-            ...userReserve.reserve,
-            ...(userReserve.reserve.isWrappedBaseAsset
-              ? fetchIconSymbolAndName({
-                  symbol: currentNetworkConfig.baseAssetSymbol,
-                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-                })
-              : {}),
-          },
-        });
-      }
-      if (userReserve.stableBorrows !== '0') {
-        acc.push({
-          ...userReserve,
-          borrowRateMode: InterestRate.Stable,
           reserve: {
             ...userReserve.reserve,
             ...(userReserve.reserve.isWrappedBaseAsset
@@ -131,6 +107,12 @@ export const BorrowedPositionsList = () => {
     true
   );
 
+  const disableEModeSwitch =
+    user.isInEmode &&
+    reserves.filter((reserve) =>
+      reserve.eModes.find((e) => e.id === user.userEmodeCategoryId && e.borrowingEnabled)
+    ).length < 2;
+
   const RenderHeader: React.FC = () => {
     return (
       <ListHeaderWrapper>
@@ -157,9 +139,6 @@ export const BorrowedPositionsList = () => {
     );
   };
 
-  if (loading)
-    return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
-
   return (
     <ListWrapper
       tooltipOpen={tooltipOpen}
@@ -171,7 +150,7 @@ export const BorrowedPositionsList = () => {
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
         showEModeButton ? (
-          <DashboardEModeButton userEmodeCategoryId={user.userEmodeCategoryId} />
+          <DashboardEModeButton userEmodeCategoryId={user ? user.userEmodeCategoryId : 0} />
         ) : undefined
       }
       noData={!sortedReserves.length}
@@ -220,6 +199,7 @@ export const BorrowedPositionsList = () => {
             <BorrowedPositionsListItemWrapper
               item={item}
               key={item.underlyingAsset + item.borrowRateMode}
+              disableEModeSwitch={disableEModeSwitch}
             />
           ))}
         </>

@@ -3,7 +3,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
 
 import { CustomizedBridge } from '../tools/bridge';
-import { DEFAULT_TEST_ACCOUNT, TenderlyFork } from '../tools/tenderly';
+import { DEFAULT_TEST_ACCOUNT, TenderlyVnet } from '../tools/tenderly';
 
 const URL = Cypress.env('URL');
 const PERSIST_FORK_AFTER_RUN = Cypress.env('PERSIST_FORK_AFTER_RUN') || false;
@@ -15,6 +15,7 @@ export const configEnvWithTenderly = ({
   unpause,
   wallet,
   enableTestnet = false,
+  urlSuffix = '',
 }: {
   chainId: number;
   market: string;
@@ -22,8 +23,9 @@ export const configEnvWithTenderly = ({
   unpause?: boolean;
   wallet?: { address: string; privateKey: string };
   enableTestnet?: boolean;
+  urlSuffix?: string;
 }) => {
-  const tenderly = new TenderlyFork({ forkNetworkID: chainId });
+  const tenderly = new TenderlyVnet({ vnetNetworkID: chainId });
   const walletAddress: string = wallet != null ? wallet.address : DEFAULT_TEST_ACCOUNT.address;
   const privateKey: string = wallet != null ? wallet.privateKey : DEFAULT_TEST_ACCOUNT.privateKey;
   let provider: JsonRpcProvider;
@@ -51,10 +53,15 @@ export const configEnvWithTenderly = ({
     }
   });
   before('Open main page', () => {
+    let url = URL as string;
+    if (urlSuffix) {
+      url = `${url}/${urlSuffix}`;
+    }
+
     const rpc = tenderly.get_rpc_url();
     provider = new JsonRpcProvider(rpc, 3030);
     signer = new Wallet(privateKey, provider);
-    cy.visit(URL, {
+    cy.visit(url, {
       onBeforeLoad(win) {
         // eslint-disable-next-line
         (win as any).ethereum = new CustomizedBridge(signer, provider);
@@ -87,8 +94,8 @@ export const configEnvWithTenderly = ({
   });
   after(async () => {
     if (!PERSIST_FORK_AFTER_RUN) {
-      cy.log('deleting fork');
-      await tenderly.deleteFork();
+      cy.log('deleting vnet');
+      await tenderly.deleteVnet();
     }
   });
 };
@@ -100,13 +107,15 @@ const createConfigWithTenderlyFork =
     tokens,
     v3,
     wallet,
+    urlSuffix,
   }: {
     market?: string;
     tokens?: { tokenAddress: string }[];
     v3?: boolean;
     wallet?: { address: string; privateKey: string };
+    urlSuffix?: string;
   }) =>
-    configEnvWithTenderly({ chainId, market, tokens, unpause: v3, wallet });
+    configEnvWithTenderly({ chainId, market, tokens, unpause: v3, wallet, urlSuffix });
 
 export const configEnvWithTenderlyMainnetFork = createConfigWithTenderlyFork(
   ChainId.mainnet,
@@ -128,10 +137,7 @@ export const configEnvWithTenderlyOptimismFork = createConfigWithTenderlyFork(
   ChainId.optimism,
   'fork_proto_optimism_v3'
 );
-export const configEnvWithTenderlyFantomFork = createConfigWithTenderlyFork(
-  ChainId.fantom,
-  'fork_proto_fantom_v3'
-);
+
 export const configEnvWithTenderlyBaseFork = createConfigWithTenderlyFork(
   ChainId.base,
   'fork_proto_base_v3'
@@ -139,6 +145,10 @@ export const configEnvWithTenderlyBaseFork = createConfigWithTenderlyFork(
 export const configEnvWithTenderlyArbitrumFork = createConfigWithTenderlyFork(
   ChainId.arbitrum_one,
   'fork_proto_arbitrum_v3'
+);
+export const configEnvWithTenderlyBnbFork = createConfigWithTenderlyFork(
+  ChainId.bnb,
+  'fork_proto_bnb_v3'
 );
 export const configEnvWithTenderlyAEthereumV3Fork = createConfigWithTenderlyFork(
   ChainId.mainnet,
@@ -156,3 +166,21 @@ export const configEnvWithTenderlySepoliaGhoFork = createConfigWithTenderlyFork(
   ChainId.sepolia,
   'fork_proto_sepolia_gho_v3'
 );
+
+const createConfigWithOrigin = (market: string, mockedAddress: string) => {
+  before('Open main page', () => {
+    cy.visit(URL, {
+      onBeforeLoad(win) {
+        // forks are always expected to run on chainId 3030
+        win.localStorage.setItem('selectedMarket', market);
+        win.localStorage.setItem('walletProvider', 'read_only_mode');
+        win.localStorage.setItem('readOnlyModeAddress', mockedAddress);
+      },
+    });
+  });
+};
+
+export const configEnvMetis = (mockedAddress: string) =>
+  createConfigWithOrigin('proto_metis_v3', mockedAddress);
+export const configEnvScroll = (mockedAddress: string) =>
+  createConfigWithOrigin('proto_scroll_v3', mockedAddress);

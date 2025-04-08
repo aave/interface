@@ -1,10 +1,11 @@
-import { InterestRate } from '@aave/contract-helpers';
-import { createContext, useContext, useState } from 'react';
-import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
+import { ChainId, Stake } from '@aave/contract-helpers';
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+
+import { Proposal } from './governance/useProposals';
 
 export enum ModalType {
   Supply,
@@ -12,7 +13,6 @@ export enum ModalType {
   Borrow,
   Repay,
   CollateralChange,
-  RateSwitch,
   Stake,
   Unstake,
   StakeCooldown,
@@ -28,18 +28,22 @@ export enum ModalType {
   RevokeGovDelegation,
   StakeRewardsClaimRestake,
   Switch,
+  StakingMigrate,
+  GovRepresentatives,
+  Bridge,
+  ReadMode,
 }
 
 export interface ModalArgsType {
   underlyingAsset?: string;
-  proposalId?: number;
+  proposal?: Proposal;
   support?: boolean;
   power?: string;
   icon?: string;
-  stakeAssetName?: string;
-  currentRateMode?: InterestRate;
-  emode?: EmodeModalType;
+  stakeAssetName?: Stake;
   isFrozen?: boolean;
+  representatives?: Array<{ chainId: ChainId; representative: string }>;
+  chainId?: number;
 }
 
 export type TxStateType = {
@@ -48,6 +52,8 @@ export type TxStateType = {
   loading?: boolean;
   success?: boolean;
 };
+
+type CallbackFn = () => void;
 
 export interface ModalContextType<T extends ModalArgsType> {
   openSupply: (
@@ -72,7 +78,6 @@ export interface ModalContextType<T extends ModalArgsType> {
   ) => void;
   openRepay: (
     underlyingAsset: string,
-    currentRateMode: InterestRate,
     isFrozen: boolean,
     currentMarket: string,
     name: string,
@@ -85,23 +90,28 @@ export interface ModalContextType<T extends ModalArgsType> {
     funnel: string,
     usageAsCollateralEnabledOnUser: boolean
   ) => void;
-  openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
-  openStake: (stakeAssetName: string, icon: string) => void;
-  openUnstake: (stakeAssetName: string, icon: string) => void;
-  openStakeCooldown: (stakeAssetName: string) => void;
-  openStakeRewardsClaim: (stakeAssetName: string, icon: string) => void;
-  openStakeRewardsRestakeClaim: (stakeAssetName: string, icon: string) => void;
+  openStake: (stakeAssetName: Stake, icon: string) => void;
+  openUnstake: (stakeAssetName: Stake, icon: string) => void;
+  openStakeCooldown: (stakeAssetName: Stake, icon: string) => void;
+  openStakeRewardsClaim: (stakeAssetName: Stake, icon: string) => void;
+  openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
   openClaimRewards: () => void;
-  openEmode: (mode: EmodeModalType) => void;
+  openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
   openSwap: (underlyingAsset: string) => void;
-  openDebtSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
+  openDebtSwitch: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
   openRevokeGovDelegation: () => void;
   openV3Migration: () => void;
-  openGovVote: (proposalId: number, support: boolean, power: string) => void;
-  openSwitch: (underlyingAsset?: string) => void;
+  openGovVote: (proposal: Proposal, support: boolean, power: string) => void;
+  openSwitch: (underlyingAsset?: string, chainId?: number) => void;
+  openBridge: () => void;
+  openStakingMigrate: () => void;
+  openGovRepresentatives: (
+    representatives: Array<{ chainId: ChainId; representative: string }>
+  ) => void;
   close: () => void;
+  closeWithCb: (callback: CallbackFn) => void;
   type?: ModalType;
   args: T;
   mainTxState: TxStateType;
@@ -114,13 +124,14 @@ export interface ModalContextType<T extends ModalArgsType> {
   setLoadingTxns: (loading: boolean) => void;
   txError: TxErrorType | undefined;
   setTxError: (error: TxErrorType | undefined) => void;
+  openReadMode: () => void;
 }
 
 export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
   {} as ModalContextType<ModalArgsType>
 );
 
-export const ModalContextProvider: React.FC = ({ children }) => {
+export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { setSwitchNetworkError } = useWeb3Context();
   // contains the current modal open state if any
   const [type, setType] = useState<ModalType>();
@@ -136,6 +147,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   return (
     <ModalContext.Provider
       value={{
+        openReadMode: () => {
+          setType(ModalType.ReadMode);
+        },
         openSupply: (underlyingAsset, currentMarket, name, funnel, isReserve) => {
           setType(ModalType.Supply);
           setArgs({ underlyingAsset });
@@ -191,9 +205,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
             });
           }
         },
-        openRepay: (underlyingAsset, currentRateMode, isFrozen, currentMarket, name, funnel) => {
+        openRepay: (underlyingAsset, isFrozen, currentMarket, name, funnel) => {
           setType(ModalType.Repay);
-          setArgs({ underlyingAsset, currentRateMode, isFrozen });
+          setArgs({ underlyingAsset, isFrozen });
 
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Repay',
@@ -221,11 +235,6 @@ export const ModalContextProvider: React.FC = ({ children }) => {
             funnel,
           });
         },
-        openRateSwitch: (underlyingAsset, currentRateMode) => {
-          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Rate Switch' });
-          setType(ModalType.RateSwitch);
-          setArgs({ underlyingAsset, currentRateMode });
-        },
         openStake: (stakeAssetName, icon) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Stake', assetName: stakeAssetName });
           setType(ModalType.Stake);
@@ -236,10 +245,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Unstake);
           setArgs({ stakeAssetName, icon });
         },
-        openStakeCooldown: (stakeAssetName) => {
+        openStakeCooldown: (stakeAssetName, icon) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Cooldown', assetName: stakeAssetName });
           setType(ModalType.StakeCooldown);
-          setArgs({ stakeAssetName });
+          setArgs({ stakeAssetName, icon });
         },
         openStakeRewardsClaim: (stakeAssetName, icon) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Stake Rewards', assetName: stakeAssetName });
@@ -258,10 +267,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim' });
           setType(ModalType.ClaimRewards);
         },
-        openEmode: (mode) => {
+        openEmode: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'eMode' });
           setType(ModalType.Emode);
-          setArgs({ emode: mode });
         },
         openFaucet: (underlyingAsset) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Faucet' });
@@ -273,13 +281,17 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Swap);
           setArgs({ underlyingAsset });
         },
-        openDebtSwitch: (underlyingAsset, currentRateMode) => {
+        openBridge: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Bridge' });
+          setType(ModalType.Bridge);
+        },
+        openDebtSwitch: (underlyingAsset) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Debt Switch',
             asset: underlyingAsset,
           });
           setType(ModalType.DebtSwitch);
-          setArgs({ underlyingAsset, currentRateMode });
+          setArgs({ underlyingAsset });
         },
         openGovDelegation: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Governance Delegation' });
@@ -289,23 +301,32 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Revoke Governance Delegation' });
           setType(ModalType.RevokeGovDelegation);
         },
-        openGovVote: (proposalId, support, power) => {
+        openGovVote: (proposal, support, power) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Vote',
-            proposalId: proposalId,
+            proposalId: proposal.subgraphProposal.id,
             voteSide: support,
           });
           setType(ModalType.GovVote);
-          setArgs({ proposalId, support, power });
+          setArgs({ proposal, support, power });
+        },
+        openGovRepresentatives: (representatives) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Representatives' });
+          setType(ModalType.GovRepresentatives);
+          setArgs({ representatives });
         },
         openV3Migration: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });
           setType(ModalType.V3Migration);
         },
-        openSwitch: (underlyingAsset) => {
+        openSwitch: (underlyingAsset, chainId) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Switch' });
           setType(ModalType.Switch);
-          setArgs({ underlyingAsset });
+          setArgs({ underlyingAsset, chainId });
+        },
+        openStakingMigrate: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Staking V1->V2 Migration' });
+          setType(ModalType.StakingMigrate);
         },
         close: () => {
           setType(undefined);
@@ -315,6 +336,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setGasLimit('');
           setTxError(undefined);
           setSwitchNetworkError(undefined);
+        },
+        closeWithCb: (callback) => {
+          close();
+          callback();
         },
         type,
         args,

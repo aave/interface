@@ -1,16 +1,17 @@
 import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { zeroLTVBlockingWithdraw } from '../utils';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { CollateralChangeActions } from './CollateralChangeActions';
 
@@ -30,10 +31,14 @@ export const CollateralChangeModalContent = ({
   userReserve,
   isWrongNetwork,
   symbol,
-}: ModalWrapperProps) => {
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
-  const { user } = useAppDataContext();
   const { debtCeiling } = useAssetCaps();
+
+  const [collateralEnabled, setCollateralEnabled] = useState(
+    userReserve.usageAsCollateralEnabledOnUser
+  );
 
   // Health factor calculations
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
@@ -57,7 +62,7 @@ export const CollateralChangeModalContent = ({
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
 
-  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
@@ -96,8 +101,8 @@ export const CollateralChangeModalContent = ({
       case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
         return (
           <Trans>
-            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
-            collateral to perform this action
+            Assets with zero LTV ({assetsBlockingWithdraw.join(', ')}) must be withdrawn or disabled
+            as collateral to perform this action
           </Trans>
         );
       default:
@@ -105,10 +110,15 @@ export const CollateralChangeModalContent = ({
     }
   };
 
+  // Effect to handle changes in collateral mode after switch as polling is fetching reserve state different after successful tx
+  useEffect(() => {
+    if (collateralChangeTxState.success) {
+      setCollateralEnabled(usageAsCollateralModeAfterSwitch);
+    }
+  }, [collateralChangeTxState.success, collateralEnabled]);
+
   if (collateralChangeTxState.success)
-    return (
-      <TxSuccessView collateral={usageAsCollateralModeAfterSwitch} symbol={poolReserve.symbol} />
-    );
+    return <TxSuccessView collateral={collateralEnabled} symbol={poolReserve.symbol} />;
 
   return (
     <>

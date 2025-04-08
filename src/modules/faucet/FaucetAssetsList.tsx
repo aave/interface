@@ -1,6 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -23,7 +24,7 @@ import { FaucetMobileItemLoader } from './FaucetMobileItemLoader';
 export default function FaucetAssetsList() {
   const { reserves, loading } = useAppDataContext();
   const { openFaucet } = useModalContext();
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { walletBalances } = useWalletBalances(currentMarketData);
@@ -45,10 +46,9 @@ export default function FaucetAssetsList() {
       };
     });
 
-  if (!currentAccount || web3Loading) {
+  if (!currentAccount) {
     return (
       <ConnectWalletPaper
-        loading={web3Loading}
         description={<Trans>Please connect your wallet to get free testnet assets.</Trans>}
       />
     );
@@ -132,9 +132,24 @@ export default function FaucetAssetsList() {
             )}
 
             <ListColumn maxWidth={280} align="right">
-              <Button variant="contained" onClick={() => openFaucet(reserve.underlyingAsset)}>
-                <Trans>Faucet</Trans>
-              </Button>
+              {!currentMarketData.addresses.FAUCET ? (
+                <Button
+                  href="https://faucet.circle.com/"
+                  component={Link}
+                  variant="contained"
+                  endIcon={
+                    <SvgIcon sx={{ width: 14, height: 14 }}>
+                      <ExternalLinkIcon />
+                    </SvgIcon>
+                  }
+                >
+                  <Trans>Faucet</Trans>
+                </Button>
+              ) : (
+                <Button variant="contained" onClick={() => openFaucet(reserve.underlyingAsset)}>
+                  <Trans>Faucet</Trans>
+                </Button>
+              )}
             </ListColumn>
           </ListItem>
         ))

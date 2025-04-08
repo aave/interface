@@ -4,17 +4,24 @@ import clsx from 'clsx';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { AnchorHTMLAttributes, TouchEventHandler } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({});
 
 interface NextLinkComposedProps
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
-    Omit<NextLinkProps, 'href' | 'as'> {
+  extends Omit<
+      AnchorHTMLAttributes<HTMLAnchorElement>,
+      'href' | 'onClick' | 'onMouseEnter' | 'onTouchStart'
+    >,
+    Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter' | 'onTouchStart'> {
   to: NextLinkProps['href'];
   linkAs?: NextLinkProps['as'];
   href?: NextLinkProps['href'];
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  onMouseEnter?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  onTouchStart?: TouchEventHandler<HTMLAnchorElement>;
 }
 
 export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComposedProps>(
@@ -120,9 +127,11 @@ export const ROUTES = {
   governance: '/governance',
   faucet: '/faucet',
   migrationTool: '/v3-migration',
-  prerenderedProposal: (proposalId: number) => `/governance/proposal/${proposalId}`,
-  dynamicRenderedProposal: (proposalId: number) => `/governance/proposal?proposalId=${proposalId}`,
+  marketMigrationTool: (marketName: CustomMarket) => `/v3-migration/?market=${marketName}`,
+  dynamicRenderedProposal: (proposalId: number) =>
+    `/governance/v3/proposal?proposalId=${proposalId}`,
   reserveOverview: (underlyingAsset: string, marketName: CustomMarket) =>
     `/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${marketName}`,
   history: '/history',
+  bridge: '/bridge',
 };

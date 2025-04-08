@@ -1,5 +1,6 @@
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, SvgIcon, Typography } from '@mui/material';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
@@ -11,6 +12,8 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { WalletEmptyInfo } from 'src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo';
 import { useRootStore } from 'src/store/root';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { useShallow } from 'zustand/shallow';
 
 import { useModalContext } from './useModal';
 
@@ -29,25 +32,25 @@ export const useReserveActionState = ({
 }: ReserveActionStateProps) => {
   const { user, eModes } = useAppDataContext();
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const [currentMarket, currentNetworkConfig, currentChainId, displayGho] = useRootStore(
-    (store) => [
+  const [currentMarket, currentNetworkConfig, currentChainId, currentMarketData] = useRootStore(
+    useShallow((store) => [
       store.currentMarket,
       store.currentNetworkConfig,
       store.currentChainId,
-      store.displayGho,
-    ]
+      store.currentMarketData,
+    ])
   );
   const { openFaucet } = useModalContext();
 
   const { bridge, name: networkName } = currentNetworkConfig;
 
-  const assetCanBeBorrowedFromPool = assetCanBeBorrowedByUser(reserve, user);
+  const assetCanBeBorrowedFromPool = user ? assetCanBeBorrowedByUser(reserve, user) : false;
   const userHasNoCollateralSupplied = user?.totalCollateralMarketReferenceCurrency === '0';
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !reserve.borrowableInIsolation;
   const eModeBorrowDisabled =
-    user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
+    user?.isInEmode && !reserve.eModes.find((e) => e.id === user.userEmodeCategoryId);
 
-  const isGho = displayGho({ symbol: reserve.symbol, currentMarket });
+  const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 
   return {
     disableSupplyButton: balance === '0' || maxAmountToSupply === '0' || isGho,
@@ -66,16 +69,35 @@ export const useReserveActionState = ({
                 <Trans>
                   Your {networkName} wallet is empty. Get free test {reserve.name} at
                 </Trans>{' '}
-                <Button
-                  variant="text"
-                  sx={{ verticalAlign: 'top' }}
-                  onClick={() => openFaucet(reserve.underlyingAsset)}
-                  disableRipple
-                >
-                  <Typography variant="caption">
-                    <Trans>{networkName} Faucet</Trans>
-                  </Typography>
-                </Button>
+                {!currentMarketData.addresses.FAUCET ? (
+                  <Button
+                    variant="text"
+                    href="https://faucet.circle.com/"
+                    component={Link}
+                    sx={{ verticalAlign: 'top' }}
+                    disableRipple
+                    endIcon={
+                      <SvgIcon sx={{ width: 14, height: 14 }}>
+                        <ExternalLinkIcon />
+                      </SvgIcon>
+                    }
+                  >
+                    <Typography variant="caption">
+                      <Trans>{networkName} Faucet</Trans>
+                    </Typography>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="text"
+                    sx={{ verticalAlign: 'top' }}
+                    onClick={() => openFaucet(reserve.underlyingAsset)}
+                    disableRipple
+                  >
+                    <Typography variant="caption">
+                      <Trans>{networkName} Faucet</Trans>
+                    </Typography>
+                  </Button>
+                )}
               </Warning>
             ) : (
               <WalletEmptyInfo

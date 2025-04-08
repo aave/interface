@@ -1,8 +1,10 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -24,6 +26,7 @@ export const SupplyAssetsListMobileItem = ({
   totalLiquidity,
   supplyAPY,
   aIncentivesData,
+  aTokenAddress,
   isIsolated,
   usageAsCollateralEnabledOnUser,
   isActive,
@@ -32,7 +35,7 @@ export const SupplyAssetsListMobileItem = ({
   detailsAddress,
   isPaused,
 }: DashboardReserve) => {
-  const { currentMarket } = useProtocolDataContext();
+  const currentMarket = useRootStore((state) => state.currentMarket);
   const { openSupply } = useModalContext();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
@@ -50,6 +53,11 @@ export const SupplyAssetsListMobileItem = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
@@ -75,8 +83,11 @@ export const SupplyAssetsListMobileItem = ({
         <IncentivesCard
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
+          address={aTokenAddress}
           symbol={symbol}
           variant="secondary14"
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
         />
       </Row>
 

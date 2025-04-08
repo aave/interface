@@ -10,10 +10,12 @@ import { Warning } from 'src/components/primitives/Warning';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { usePoolReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import { useGasStation } from 'src/hooks/useGasStation';
+import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
+import { useShallow } from 'zustand/shallow';
 
 import { GasPriceData, useGasPrice } from '../../../hooks/useGetGasPrices';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
@@ -49,7 +51,9 @@ export const GasStation: React.FC<GasStationProps> = ({
   chainId,
 }) => {
   const { state } = useGasStation();
-  const currentChainId = useRootStore((store) => store.currentChainId);
+  const [currentChainId, account] = useRootStore(
+    useShallow((store) => [store.currentChainId, store.account])
+  );
   const selectedChainId = chainId ?? currentChainId;
   // TODO: find a better way to query base token price instead of using a random market.
   const marketOnNetwork = Object.values(marketsData).find(
@@ -59,6 +63,7 @@ export const GasStation: React.FC<GasStationProps> = ({
   const { data: poolReserves } = usePoolReservesHumanized(marketOnNetwork);
   const { data: gasPrice } = useGasPrice(selectedChainId);
   const { walletBalances } = useWalletBalances(marketOnNetwork);
+  const { data: isContractAddress } = useIsContractAddress(account);
   const nativeBalanceUSD = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amountUSD;
   const { name, baseAssetSymbol } = getNetworkConfig(selectedChainId);
 
@@ -88,7 +93,12 @@ export const GasStation: React.FC<GasStationProps> = ({
             <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
           ) : totalGasCostsUsd && !disabled ? (
             <>
-              <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
+              <FormattedNumber
+                value={totalGasCostsUsd}
+                symbol="USD"
+                color="text.secondary"
+                variant="caption"
+              />
               <GasTooltip />
             </>
           ) : (
@@ -97,7 +107,7 @@ export const GasStation: React.FC<GasStationProps> = ({
         </Box>
         {rightComponent}
       </Box>
-      {!disabled && Number(nativeBalanceUSD) < Number(totalGasCostsUsd) && (
+      {!disabled && !isContractAddress && Number(nativeBalanceUSD) < Number(totalGasCostsUsd) && (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Warning severity="warning" sx={{ mb: 0, mx: 'auto' }}>
             You do not have enough {baseAssetSymbol} in your account to pay for transaction fees on{' '}

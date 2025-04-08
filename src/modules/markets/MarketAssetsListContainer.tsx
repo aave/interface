@@ -7,31 +7,55 @@ import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
-import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { getGhoReserve, GHO_SUPPORTED_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/mixPanelEvents';
 import { GhoBanner } from './Gho/GhoBanner';
 
+function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
+  // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
+  // If GHO is listed as a reserve, then it will be displayed in the normal market asset list
+  if (!GHO_MINTING_MARKETS.includes(marketTitle)) {
+    return false;
+  }
+
+  if (!searchTerm) {
+    return true;
+  }
+
+  const normalizedSearchTerm = searchTerm.toLowerCase().trim();
+  return (
+    normalizedSearchTerm.length <= 3 && GHO_SYMBOL.toLowerCase().includes(normalizedSearchTerm)
+  );
+}
+
 export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
-  const { currentMarket, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [
+      store.trackEvent,
+      store.currentMarket,
+      store.currentMarketData,
+      store.currentNetworkConfig,
+    ])
+  );
   const [searchTerm, setSearchTerm] = useState('');
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const ghoReserve = getGhoReserve(reserves);
+  const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
+
   const filteredData = reserves
     // Filter out any non-active reserves
     .filter((res) => res.isActive)
-    // Filter out all GHO, as we deliberately display it on supported markets
-    .filter((res) => res !== ghoReserve)
+    // Filter out GHO if the banner is being displayed
+    .filter((res) => (displayGhoBanner ? res !== ghoReserve : true))
     // filter out any that don't meet search term criteria
     .filter((res) => {
       if (!searchTerm) return true;
@@ -52,9 +76,9 @@ export const MarketAssetsListContainer = () => {
           })
         : {}),
     }));
-  const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
-  const showFrozenMarketWarning =
-    marketFrozen && ['Harmony', 'Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
+  // const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
+  // const showFrozenMarketWarning =
+  //   marketFrozen && ['Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
   const [showFrozenMarketsToggle, setShowFrozenMarketsToggle] = useState(false);
 
@@ -63,23 +87,6 @@ export const MarketAssetsListContainer = () => {
   };
 
   const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
-
-  // Determine if to show GHO market list item
-  const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
-    if (!GHO_SUPPORTED_MARKETS.includes(marketTitle)) {
-      return false;
-    }
-
-    if (!searchTerm) {
-      return true;
-    }
-
-    const normalizedSearchTerm = searchTerm.toLowerCase().trim();
-    return (
-      normalizedSearchTerm.length <= 3 && GHO_SYMBOL.toLowerCase().includes(normalizedSearchTerm)
-    );
-  };
-  const displayGho: boolean = shouldDisplayGho(currentMarket, searchTerm);
 
   return (
     <ListWrapper
@@ -95,13 +102,7 @@ export const MarketAssetsListContainer = () => {
         />
       }
     >
-      {showFrozenMarketWarning && (
-        <Box mx={6}>
-          <MarketWarning marketName={currentMarketData.marketTitle} forum />
-        </Box>
-      )}
-
-      {displayGho && (
+      {displayGhoBanner && (
         <Box mb={4}>
           <GhoBanner reserve={ghoReserve} />
         </Box>
@@ -151,7 +152,7 @@ export const MarketAssetsListContainer = () => {
       )}
 
       {/* Show no search results message if nothing hits in either list */}
-      {!loading && filteredData.length === 0 && !displayGho && (
+      {!loading && filteredData.length === 0 && !displayGhoBanner && (
         <NoSearchResults
           searchTerm={searchTerm}
           subtitle={

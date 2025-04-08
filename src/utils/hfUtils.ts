@@ -5,7 +5,7 @@ import {
   UserReserveData,
   valueToBigNumber,
 } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
@@ -46,9 +46,11 @@ export function calculateHFAfterSwap({
   toAssetData,
   user,
 }: CalculateHFAfterSwapProps) {
+  const fromEmode = fromAssetData.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
+  const toEMode = toAssetData.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
   const reserveLiquidationThreshold =
-    user.isInEmode && user.userEmodeCategoryId === fromAssetData.eModeCategoryId
-      ? fromAssetData.formattedEModeLiquidationThreshold
+    user.isInEmode && fromEmode
+      ? fromEmode.eMode.formattedLiquidationThreshold
       : fromAssetData.formattedReserveLiquidationThreshold;
 
   // hf indicating how the state would be if we withdrew this amount.
@@ -83,8 +85,8 @@ export function calculateHFAfterSwap({
       ).multipliedBy(toAssetData.formattedPriceInMarketReferenceCurrency),
       borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
       currentLiquidationThreshold:
-        user.isInEmode && user.userEmodeCategoryId === toAssetData.eModeCategoryId
-          ? toAssetData.formattedEModeLiquidationThreshold
+        user.isInEmode && toEMode
+          ? toEMode.eMode.formattedLiquidationThreshold
           : toAssetData.formattedReserveLiquidationThreshold,
     }).toString();
   }
@@ -107,10 +109,11 @@ export const calculateHFAfterRepay = ({
   repayWithUserReserve,
   debt,
 }: CalculateHFAfterSwapRepayProps) => {
+  const fromEmode = fromAssetData.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
   // it takes into account if in emode as threshold is different
   const reserveLiquidationThreshold =
-    user.isInEmode && user.userEmodeCategoryId === fromAssetData.eModeCategoryId
-      ? fromAssetData.formattedEModeLiquidationThreshold
+    user.isInEmode && fromEmode
+      ? fromEmode.eMode.formattedLiquidationThreshold
       : fromAssetData.formattedReserveLiquidationThreshold;
 
   // hf indicating how the state would be if we withdrew this amount.
@@ -182,9 +185,11 @@ export const calculateHFAfterWithdraw = ({
   let liquidationThresholdAfterWithdraw = user.currentLiquidationThreshold;
   let healthFactorAfterWithdraw = valueToBigNumber(user.healthFactor);
 
+  const userEMode = poolReserve.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
+
   const reserveLiquidationThreshold =
-    user.isInEmode && user.userEmodeCategoryId === poolReserve.eModeCategoryId
-      ? poolReserve.formattedEModeLiquidationThreshold
+    user.isInEmode && userEMode
+      ? userEMode.eMode.formattedLiquidationThreshold
       : poolReserve.formattedReserveLiquidationThreshold;
 
   if (
@@ -213,4 +218,40 @@ export const calculateHFAfterWithdraw = ({
   }
 
   return healthFactorAfterWithdraw;
+};
+
+export const calculateHFAfterSupply = (
+  user: ExtendedFormattedUser,
+  poolReserve: ComputedReserveData,
+  supplyAmountInEth: BigNumber
+) => {
+  let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
+
+  const totalCollateralMarketReferenceCurrencyAfter = user
+    ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(supplyAmountInEth)
+    : '-1';
+
+  const liquidationThresholdAfter = user
+    ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
+        .multipliedBy(user.currentLiquidationThreshold)
+        .plus(supplyAmountInEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+    : '-1';
+
+  if (
+    user &&
+    ((!user.isInIsolationMode && !poolReserve.isIsolated) ||
+      (user.isInIsolationMode &&
+        user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset))
+  ) {
+    healthFactorAfterDeposit = calculateHealthFactorFromBalancesBigUnits({
+      collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
+      borrowBalanceMarketReferenceCurrency: valueToBigNumber(
+        user.totalBorrowsMarketReferenceCurrency
+      ),
+      currentLiquidationThreshold: liquidationThresholdAfter,
+    });
+  }
+
+  return healthFactorAfterDeposit;
 };

@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   USD_DECIMALS,
@@ -7,16 +7,14 @@ import {
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
-import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Row } from 'src/components/primitives/Row';
-import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
-import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
@@ -43,84 +41,29 @@ export enum ErrorType {
   NOT_ENOUGH_BORROWED,
 }
 
-interface BorrowModeSwitchProps {
-  interestRateMode: InterestRate;
-  setInterestRateMode: (value: InterestRate) => void;
-  variableRate: string;
-  stableRate: string;
-}
-
-const BorrowModeSwitch = ({
-  setInterestRateMode,
-  interestRateMode,
-  variableRate,
-  stableRate,
-}: BorrowModeSwitchProps) => {
-  return (
-    <Row
-      caption={
-        <APYTypeTooltip
-          text={<Trans>Borrow APY rate</Trans>}
-          key="APY type_modal"
-          variant="description"
-        />
-      }
-      captionVariant="description"
-      mb={5}
-      flexDirection="column"
-      align="flex-start"
-      captionColor="text.secondary"
-    >
-      <StyledTxModalToggleGroup
-        color="primary"
-        value={interestRateMode}
-        exclusive
-        onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ mt: 0.5 }}
-      >
-        <StyledTxModalToggleButton
-          value={InterestRate.Variable}
-          disabled={interestRateMode === InterestRate.Variable}
-        >
-          <Typography variant="buttonM" sx={{ mr: 1 }}>
-            <Trans>Variable</Trans>
-          </Typography>
-          <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </StyledTxModalToggleButton>
-        <StyledTxModalToggleButton
-          value={InterestRate.Stable}
-          disabled={interestRateMode === InterestRate.Stable}
-        >
-          <Typography variant="buttonM" sx={{ mr: 1 }}>
-            <Trans>Stable</Trans>
-          </Typography>
-          <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </StyledTxModalToggleButton>
-      </StyledTxModalToggleGroup>
-    </Row>
-  );
-};
-
 export const BorrowModalContent = ({
   underlyingAsset,
   isWrongNetwork,
   poolReserve,
-  userReserve,
   unwrap: borrowUnWrapped,
   setUnwrap: setBorrowUnWrapped,
   symbol,
-}: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
+  user,
+}: ModalWrapperProps & {
+  unwrap: boolean;
+  setUnwrap: (unwrap: boolean) => void;
+  user: ExtendedFormattedUser;
+}) => {
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
-  const { user, marketReferencePriceInUsd } = useAppDataContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { marketReferencePriceInUsd } = useAppDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { borrowCap } = useAssetCaps();
 
-  const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
 
   // amount calculations
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user);
 
   // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected
@@ -156,15 +99,7 @@ export const BorrowModalContent = ({
 
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
-  if (interestRateMode === InterestRate.Stable && !poolReserve.stableBorrowRateEnabled) {
-    blockingError = ErrorType.STABLE_RATE_NOT_ENABLED;
-  } else if (
-    interestRateMode === InterestRate.Stable &&
-    userReserve?.usageAsCollateralEnabledOnUser &&
-    valueToBigNumber(amount).lt(userReserve?.underlyingBalance || 0)
-  ) {
-    blockingError = ErrorType.NOT_ENOUGH_BORROWED;
-  } else if (valueToBigNumber(amount).gt(poolReserve.formattedAvailableLiquidity)) {
+  if (valueToBigNumber(amount).gt(poolReserve.formattedAvailableLiquidity)) {
     blockingError = ErrorType.NOT_ENOUGH_LIQUIDITY;
   } else if (!poolReserve.borrowingEnabled) {
     blockingError = ErrorType.BORROWING_NOT_AVAILABLE;
@@ -175,13 +110,6 @@ export const BorrowModalContent = ({
     switch (blockingError) {
       case ErrorType.BORROWING_NOT_AVAILABLE:
         return <Trans>Borrowing is currently unavailable for {poolReserve.symbol}.</Trans>;
-      case ErrorType.NOT_ENOUGH_BORROWED:
-        return (
-          <Trans>
-            You can borrow this asset with a stable rate only if you borrow more than the amount you
-            are supplying as collateral.
-          </Trans>
-        );
       case ErrorType.NOT_ENOUGH_LIQUIDITY:
         return (
           <>
@@ -192,8 +120,6 @@ export const BorrowModalContent = ({
             </Trans>
           </>
         );
-      case ErrorType.STABLE_RATE_NOT_ENABLED:
-        return <Trans>The Stable Rate is not enabled for this currency</Trans>;
       default:
         return null;
     }
@@ -221,22 +147,9 @@ export const BorrowModalContent = ({
       />
     );
 
-  const incentive =
-    interestRateMode === InterestRate.Stable
-      ? poolReserve.sIncentivesData
-      : poolReserve.vIncentivesData;
   return (
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
-
-      {poolReserve.stableBorrowRateEnabled && (
-        <BorrowModeSwitch
-          interestRateMode={interestRateMode}
-          setInterestRateMode={setInterestRateMode}
-          variableRate={poolReserve.variableBorrowAPY}
-          stableRate={poolReserve.stableBorrowAPY}
-        />
-      )}
 
       <AssetInput
         value={amount}
@@ -280,7 +193,10 @@ export const BorrowModalContent = ({
       )}
 
       <TxModalDetails gasLimit={gasLimit}>
-        <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
+        <DetailsIncentivesLine
+          incentives={poolReserve.vIncentivesData}
+          symbol={poolReserve.symbol}
+        />
         <DetailsHFLine
           visibleHfChange={!!amount}
           healthFactor={user.healthFactor}
@@ -309,7 +225,6 @@ export const BorrowModalContent = ({
             ? API_ETH_MOCK_ADDRESS
             : poolReserve.underlyingAsset
         }
-        interestRateMode={interestRateMode}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}

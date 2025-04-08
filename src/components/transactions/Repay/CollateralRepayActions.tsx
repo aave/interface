@@ -11,6 +11,7 @@ import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactio
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -54,10 +55,9 @@ export const CollateralRepayActions = ({
   buildTxFn,
   ...props
 }: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
-  const [paraswapRepayWithCollateral, currentMarketData] = useRootStore((state) => [
-    state.paraswapRepayWithCollateral,
-    state.currentMarketData,
-  ]);
+  const [paraswapRepayWithCollateral, currentMarketData] = useRootStore(
+    useShallow((state) => [state.paraswapRepayWithCollateral, state.currentMarketData])
+  );
 
   const { approval, action, loadingTxns, approvalTxState, mainTxState, requiresApproval } =
     useParaSwapTransactionHandler({
@@ -66,9 +66,9 @@ export const CollateralRepayActions = ({
         const route = await buildTxFn();
         return paraswapRepayWithCollateral({
           repayAllDebt,
-          repayAmount: route.outputAmount,
+          repayAmount,
           rateMode,
-          repayWithAmount: route.inputAmount,
+          repayWithAmount,
           fromAssetData,
           poolReserve,
           isWrongNetwork,
@@ -113,6 +113,7 @@ export const CollateralRepayActions = ({
       amount={repayAmount}
       requiresApproval={requiresApproval}
       isWrongNetwork={isWrongNetwork}
+      blocked={blocked}
       sx={sx}
       {...props}
       handleAction={action}

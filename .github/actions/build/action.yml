@@ -37,6 +37,14 @@ inputs:
     description: wallet connect project id
     required: false
     default: ''
+  NEXT_PUBLIC_SUBGRAPH_API_KEY:
+    description: subgraph api key
+    required: false
+    default: ''
+  NEXT_PUBLIC_IS_CYPRESS_ENABLED:
+    description: enables cypress
+    required: false
+    default: 'true'
 
 runs:
   using: 'composite'
@@ -51,7 +59,7 @@ runs:
       run: yarn --frozen-lockfile --prefer-offline
 
     - name: Restore next cache
-      uses: actions/cache@4b0cf6cc4619e737324ddfcec08fff2413359514 # v3.0.0
+      uses: actions/cache@v4
       if: inputs.USE_NEXT_CACHE == 'true'
       id: restore-build-cache
       env:
@@ -79,3 +87,5 @@ runs:
         NEXT_PUBLIC_MIXPANEL: '${{ inputs.NEXT_PUBLIC_MIXPANEL }}'
         NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
         NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: '${{ inputs.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID }}'
+        NEXT_PUBLIC_SUBGRAPH_API_KEY: '${{ inputs.NEXT_PUBLIC_SUBGRAPH_API_KEY }}'
+        NEXT_PUBLIC_IS_CYPRESS_ENABLED: '${{ inputs.NEXT_PUBLIC_IS_CYPRESS_ENABLED }}'

@@ -57,7 +57,7 @@ const switchByTool = ({
       }
       cy.get('[data-cy=Modal]').as('Modal');
       cy.get('@Modal').find(`#switch-slippage-selector-button`).click();
-      cy.get('[value="0.01"]').click();
+      cy.get('[value="1.00"]').click();
       cy.wait(2000);
       cy.doConfirm(hasApproval, 'Switch');
     });
@@ -78,7 +78,7 @@ const testData = {
   ],
   polygon: [
     {
-      fromAsset: assets.polygonV3Market.MATIC,
+      fromAsset: assets.polygonV3Market.POL,
       toAsset: assets.polygonV3Market.USDC,
       amount: 1,
       hasApproval: true,

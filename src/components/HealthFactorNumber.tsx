@@ -2,22 +2,16 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 
 interface HealthFactorNumberProps extends TypographyProps {
   value: string;
   onInfoClick?: () => void;
-  HALIntegrationComponent?: React.ReactNode;
 }
 
-export const HealthFactorNumber = ({
-  value,
-  onInfoClick,
-  HALIntegrationComponent,
-  ...rest
-}: HealthFactorNumberProps) => {
+export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactorNumberProps) => {
   const { palette } = useTheme();
 
   const formattedHealthFactor = Number(valueToBigNumber(value).toFixed(2, BigNumber.ROUND_DOWN));
@@ -62,12 +56,6 @@ export const HealthFactorNumber = ({
         >
           <Trans>Risk details</Trans>
         </Button>
-      )}
-
-      {HALIntegrationComponent && (
-        <Box ml={{ xs: 0, xsm: 2 }} mt={{ xs: 1, xsm: 0 }}>
-          {HALIntegrationComponent}
-        </Box>
       )}
     </Box>
   );

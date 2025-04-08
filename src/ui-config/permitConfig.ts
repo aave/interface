@@ -1,18 +1,28 @@
 import { ChainId } from '@aave/contract-helpers';
 
+/**
+ * Maps token permit support by chain and token address.
+ * Permit enables gasless approvals using signed messages (EIP-2612).
+ *
+ * To check if a token supports permit, check if the contract has a permit function in the chain's scanner
+ * or in the contract's source code.
+ *
+ * @dev use addresses in lowercase
+ */
 export const permitByChainAndToken: {
   [chainId: number]: Record<string, boolean>;
 } = {
   [ChainId.mainnet]: {
-    '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': false,
-    '0x6b175474e89094c44da98b954eedeac495271d0f': false,
-    '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9': true, // wsteth
-    '0x514910771af9ca656af840dff83e8264ecf986ca': false,
-    '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599': false,
-    '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': false,
-    '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0': true, // aave
-    '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f': true, // gho
-    '0x5f98805a4e8be255a32880fdec7f6728c6568ba0': true, // lusd
+    '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': false, // USDC
+    '0x6b175474e89094c44da98b954eedeac495271d0f': false, // DAI
+    '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9': true, // AAVE
+    '0x514910771af9ca656af840dff83e8264ecf986ca': false, // LINK
+    '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599': false, // WBTC
+    '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': false, // WETH
+    '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0': true, // wstETH
+    '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f': true, // GHO
+    '0x5f98805a4e8be255a32880fdec7f6728c6568ba0': true, // LUSD
+    '0xdc035d45d973e3ec169d2276ddab16f1e407384f': true, // USDS
   },
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1a5a0dbb814af92458539fb4': true,
@@ -21,27 +31,40 @@ export const permitByChainAndToken: {
     '0x82af49447d8a07e3bd95bd0d56f35241523fbab1': true,
     '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9': true,
     '0xba5ddd1f9d7f570dc94a51479a000e3bce967196': true,
+    '0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33': true, // GHO
     '0xd22a58f79e9481d1a88e00c343885a588b34b68b': false, // eurs
   },
-  [ChainId.fantom]: {
-    '0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e': true,
-    '0xb3654dc3d10ea7645f8319668e8f54d2574fbdc8': true,
-    '0x04068da6c83afcfa0e13ba15a6696662335d5b75': true,
-    '0x321162cd933e2be498cd2267a90534a804051b11': true,
-    '0x74b23882a30290451a17c44f4f05243b6b58c76d': true,
-    '0x049d68029688eabf473097a2fc38ef61633a3c7a': true,
-    '0x6a07a792ab2965c72a5b8088d3a069a7ac3a993b': true,
-    '0xae75a438b2e0cb8bb01ec1e1e376de11d44477cc': false, // sushi
-    '0x1e4f97b9f9f913c46f1632781732927b9019c68b': true,
-  },
+
   [ChainId.polygon]: {
     '0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c': true,
   },
-  [ChainId.harmony]: {},
   [ChainId.avalanche]: {
     '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7': true,
   },
   [ChainId.optimism]: {
     '0x76fb31fb4af56892a25e32cfc43de717950c9278': false, // aave
+  },
+  [ChainId.zksync]: {
+    '0x5a7d6b2f92c77fad6ccabd7ee0624e64907eaf3e': true,
+    '0x703b52f2b28febcb60e1372858af5b18849fe867': true,
+    '0x493257fd37edb34451f62edf8d2a0c418852ba4c': true,
+    '0x5aea5775959fbc2557cc8789bc1bf90a239d9a91': true,
+  },
+  [ChainId.linea]: {
+    '0xa219439258ca9da29e9cc4ce5596924745e12b93': true, // USDT
+    '0x2416092f143378750bb29b79ed961ab195cceea5': true, // ezETH
+    '0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f': true, // wstETH
+  },
+  [ChainId.sonic]: {
+    // adding these in false for clarity
+    '0x50c42deacd8fc9773493ed674b675be577f2634b': false, // WETH
+    '0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38': false, // wS
+    '0x29219dd400f2bf60e5a23d13be72b486d4038894': false, // USDC.e
+  },
+  [ChainId.celo]: {
+    // '0xceba9300f2b948710d2653dd7b07f33a8b32118c': true, // USDC
+    '0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e': true, // USDT
+    // '0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73': true, // cEUR
+    // '0x765de816845861e75a25fca122bb6898b8b1282a': true, // cUSD
   },
 };

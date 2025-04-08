@@ -15,6 +15,13 @@ jobs:
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       (github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name &&
       !contains(github.head_ref, 'dependabot'))
+    strategy:
+      matrix:
+        build:
+          - name: 'out'
+            cypress_enabled: 'false'
+          - name: 'out_cypress'
+            cypress_enabled: 'true'
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
@@ -30,11 +37,13 @@ jobs:
           NEXT_PUBLIC_MIXPANEL: ${{ secrets.NEXT_PUBLIC_MIXPANEL }}
           NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
           NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
+          NEXT_PUBLIC_SUBGRAPH_API_KEY: ${{ secrets.NEXT_PUBLIC_SUBGRAPH_API_KEY }}
+          NEXT_PUBLIC_IS_CYPRESS_ENABLED: ${{ matrix.build.cypress_enabled }}
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
         with:
-          BUILD_ARTIFACT_NAME: 'out'
+          BUILD_ARTIFACT_NAME: ${{ matrix.build.name }}
 
   build_staging:
     runs-on: ubuntu-latest
@@ -93,6 +102,7 @@ jobs:
           - gho
           - base
           - gnosis
+          - bnb
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -111,7 +121,7 @@ jobs:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: download build
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        uses: actions/download-artifact@v4
         with:
           name: nextjs_build
           path: .next
@@ -134,14 +144,14 @@ jobs:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: download build
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        uses: actions/download-artifact@v4
         with:
           name: out
           path: out
 
       - name: pinata
         id: pinata
-        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
+        uses: aave/pinata-action@35662944e92cf082457973f10aa42e48df179b47
         with:
           PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
           PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
@@ -188,6 +198,7 @@ jobs:
           - optimism
           - ethereum
           - gho
+          - base
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -214,6 +225,7 @@ jobs:
           - mobile
           - governance-stake
           - widgets
+          - general
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -225,7 +237,7 @@ jobs:
           CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.ts
 
-  update_domains:
+  prepare_release:
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main' &&
@@ -241,7 +253,7 @@ jobs:
       PINATA_HASH: '${{ needs.deploy.outputs.pinata_hash }}'
     secrets: inherit
 
-  update_domains_no_cypress:
+  prepare_release_no_cypress:
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main' &&

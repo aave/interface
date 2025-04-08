@@ -10,13 +10,13 @@ import {
   withdrawAndSwitch,
 } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
+
+const tokensToRequest: RequestedTokens = {
+  aETHEthereumV3: 1,
+};
 
 const testData = {
-  depositBaseAmount: {
-    asset: assets.ethereumV3Market.ETH,
-    amount: 9000,
-    hasApproval: true,
-  },
   testCases: {
     borrow: [
       {
@@ -35,7 +35,7 @@ const testData = {
       {
         asset: assets.ethereumV3Market.DAI,
         apyType: constants.apyType.variable,
-        amount: 2,
+        amount: 25,
         hasApproval: false,
         repayOption: constants.repayType.collateral,
       },
@@ -63,7 +63,7 @@ const testData = {
     },
     withdrawAndSwitch: {
       fromAsset: assets.ethereumV3Market.DAI,
-      toAsset: assets.ethereumV3Market.USDC,
+      toAsset: assets.ethereumV3Market.USDT,
       isCollateralFromAsset: true,
       amount: 5,
       hasApproval: false,
@@ -81,7 +81,7 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.ethereumV3Market.DAI.shortName,
-        amount: 44.0,
+        amount: 21.0,
         apyType: constants.borrowAPYType.variable,
       },
     ],
@@ -90,9 +90,10 @@ const testData = {
 
 describe('DAI INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAEthereumV3Fork({ v3: true });
-
-  supply(testData.depositBaseAmount, skipTestState, true);
+  configEnvWithTenderlyAEthereumV3Fork({
+    v3: true,
+    tokens: tokenSet(tokensToRequest),
+  });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });

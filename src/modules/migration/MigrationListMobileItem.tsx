@@ -1,4 +1,3 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
@@ -17,6 +16,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
+import { useShallow } from 'zustand/shallow';
 
 import { MigrationListItemToggler } from './MigrationListItemToggler';
 import { StETHMigrationWarning } from './StETHMigrationWarning';
@@ -56,21 +56,19 @@ export const MigrationListMobileItem = ({
   isSupplyList,
 }: MigrationListMobileItemProps) => {
   const v2APY = borrowApyType
-    ? borrowApyType === InterestRate.Stable
-      ? userReserve.stableBorrowAPY
-      : userReserve.reserve.variableBorrowAPY
+    ? userReserve.reserve.variableBorrowAPY
     : userReserve.reserve.supplyAPY;
   const v2Incentives = borrowApyType
-    ? borrowApyType === InterestRate.Stable
-      ? userReserve.reserve.sIncentivesData
-      : userReserve.reserve.vIncentivesData
+    ? userReserve.reserve.vIncentivesData
     : userReserve.reserve.aIncentivesData;
   const v3APY = borrowApyType ? v3Rates?.variableBorrowAPY || '-1' : v3Rates?.supplyAPY || '-1';
   const v3Incentives = borrowApyType
     ? v3Rates?.vIncentivesData || []
     : v3Rates?.aIncentivesData || [];
 
-  const { currentMarket, currentMarketData } = useRootStore();
+  const [currentMarket, currentMarketData] = useRootStore(
+    useShallow((store) => [store.currentMarket, store.currentMarketData])
+  );
   const theme = useTheme();
   const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
   const baseColorPrimary = disabled === undefined ? 'text.primary' : 'text.muted';
@@ -180,6 +178,7 @@ export const MigrationListMobileItem = ({
               incentives={v2Incentives}
               variant="main14"
               color={baseColorPrimary}
+              market={currentMarket}
             />
             <SvgIcon sx={{ px: 1.5 }}>
               <ArrowNarrowRightIcon
@@ -195,6 +194,7 @@ export const MigrationListMobileItem = ({
               incentives={v3Incentives}
               variant="main14"
               color={baseColorPrimary}
+              market={currentMarket}
             />
           </Box>
         </Box>

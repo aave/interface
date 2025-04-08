@@ -1,34 +1,37 @@
-import { UiStakeDataProvider } from '@aave/contract-helpers';
+import { UiStakeDataProviderV3 } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
-import { Hashable } from 'src/utils/types';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
 
-type GetUserStakeUIDataHumanizedParams = {
-  user: string;
-};
+export class UiStakeDataService {
+  constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-export class UiStakeDataService implements Hashable {
-  private readonly stakeDataService: UiStakeDataProvider;
-
-  constructor(
-    provider: Provider,
-    stakeDataProviderAddress: string,
-    public readonly chainId: number
-  ) {
-    this.stakeDataService = new UiStakeDataProvider({
-      uiStakeDataProvider: stakeDataProviderAddress,
+  private getUiStakeDataService(marketData: MarketDataType) {
+    const provider = this.getProvider(marketData.chainId);
+    return new UiStakeDataProviderV3({
+      uiStakeDataProvider: stakeConfig.stakeDataProvider,
       provider,
     });
   }
 
-  async getGeneralStakeUIDataHumanized() {
-    return this.stakeDataService.getGeneralStakeUIDataHumanized();
+  async getGeneralStakeUIDataHumanized(
+    marketData: MarketDataType,
+    stakedTokens: string[],
+    oracles: string[]
+  ) {
+    const uiStakeDataService = this.getUiStakeDataService(marketData);
+
+    return uiStakeDataService.getStakedAssetDataBatch(stakedTokens, oracles);
   }
 
-  async getUserStakeUIDataHumanized({ user }: GetUserStakeUIDataHumanizedParams) {
-    return this.stakeDataService.getUserStakeUIDataHumanized({ user });
-  }
+  async getUserStakeUIDataHumanized(
+    marketData: MarketDataType,
+    user: string,
+    stakedAssets: string[],
+    oracles: string[]
+  ) {
+    const uiStakeDataService = this.getUiStakeDataService(marketData);
 
-  public toHash() {
-    return this.chainId.toString();
+    return uiStakeDataService.getUserStakeUIDataHumanized({ user, stakedAssets, oracles });
   }
 }

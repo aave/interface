@@ -18,29 +18,29 @@ import {
 const testData = {
   testCases: {
     deposit: {
-      asset: assets.polygonV3Market.MATIC,
+      asset: assets.polygonV3Market.POL,
       amount: 1.09,
       hasApproval: true,
     },
     collateral: {
       switchOff: {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.polygonV3Market.POL,
         isCollateralType: true,
         hasApproval: true,
       },
       switchOn: {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.polygonV3Market.POL,
         isCollateralType: false,
         hasApproval: true,
       },
       switchNegative: {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.polygonV3Market.POL,
         isCollateralType: true,
       },
     },
     borrow: [
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.polygonV3Market.POL,
         amount: 0.06,
         apyType: constants.borrowAPYType.default,
         hasApproval: false,
@@ -48,13 +48,13 @@ const testData = {
     ],
     withdraw: [
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.polygonV3Market.POL,
         isCollateral: true,
         amount: 0.01,
         hasApproval: false,
       },
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.polygonV3Market.POL,
         isCollateral: true,
         amount: 0.01,
         hasApproval: true,
@@ -63,24 +63,24 @@ const testData = {
     ],
     repay: [
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.polygonV3Market.POL,
         apyType: constants.apyType.variable,
         amount: 0.01,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.polygonV3Market.POL,
         apyType: constants.apyType.variable,
-        repayableAsset: assets.polygonV3Market.WMATIC,
+        repayableAsset: assets.polygonV3Market.WPOL,
         amount: 0.01,
         hasApproval: false,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.polygonV3Market.POL,
         apyType: constants.apyType.variable,
-        repayableAsset: assets.polygonV3Market.aWMATIC,
+        repayableAsset: assets.polygonV3Market.aWPOL,
         amount: 0.01,
         hasApproval: true,
         repayOption: constants.repayType.default,
@@ -91,21 +91,21 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonV3Market.MATIC.shortName,
+        assetName: assets.polygonV3Market.POL.shortName,
         amount: 1.06,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonV3Market.MATIC.shortName,
+        assetName: assets.polygonV3Market.POL.shortName,
         amount: 0.03,
         apyType: constants.borrowAPYType.variable,
       },
     ],
   },
 };
-
+//due frozen Matic
 describe('MATIC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });

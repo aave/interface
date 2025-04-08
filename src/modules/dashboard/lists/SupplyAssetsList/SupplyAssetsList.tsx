@@ -2,16 +2,17 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import { Fragment, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
-import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -29,7 +30,6 @@ import { DashboardListTopPanel } from '../../DashboardListTopPanel';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
-import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 import { WalletEmptyInfo } from './WalletEmptyInfo';
 
 const head = [
@@ -53,8 +53,8 @@ export const SupplyAssetsList = () => {
     marketReferencePriceInUsd,
     loading: loadingReserves,
   } = useAppDataContext();
+  const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances, loading } = useWalletBalances(currentMarketData);
-  const [displayGho] = useRootStore((store) => [store.displayGho]);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -72,7 +72,7 @@ export const SupplyAssetsList = () => {
     .filter(
       (reserve: ComputedReserveData) =>
         !(reserve.isFrozen || reserve.isPaused) &&
-        !displayGho({ symbol: reserve.symbol, currentMarket })
+        !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket })
     )
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
@@ -167,9 +167,23 @@ export const SupplyAssetsList = () => {
   const sortedSupplyReserves = tokensToSupply.sort((a, b) =>
     +a.walletBalanceUSD > +b.walletBalanceUSD ? -1 : 1
   );
-  const filteredSupplyReserves = sortedSupplyReserves.filter(
-    (reserve) => reserve.availableToDepositUSD !== '0'
-  );
+
+  const filteredSupplyReserves = sortedSupplyReserves.filter((reserve) => {
+    if (reserve.availableToDepositUSD !== '0') {
+      return true;
+    }
+
+    const wrappedTokenConfig = wrappedTokenReserves.find(
+      (r) => r.tokenOut.underlyingAsset === reserve.underlyingAsset
+    );
+
+    if (!wrappedTokenConfig) {
+      return false;
+    }
+
+    // The asset can be supplied if the user has a 'token in' balance, (DAI as sDAI for example)
+    return walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset]?.amount !== '0';
+  });
 
   // Filter out reserves
   const supplyReserves: unknown = isShowZeroAssets
@@ -238,13 +252,7 @@ export const SupplyAssetsList = () => {
       subChildrenComponent={
         <>
           <Box sx={{ px: 6 }}>
-            {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
-              <MarketWarning marketName="Harmony" />
-            ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
-              <MarketWarning marketName="Fantom" />
-            ) : supplyDisabled && currentMarketData.marketTitle === 'Ethereum AMM' ? (
-              <MarketWarning marketName="Ethereum AMM" />
-            ) : user?.isInIsolationMode ? (
+            {user?.isInIsolationMode ? (
               <Warning severity="warning">
                 <Trans>
                   Collateral usage is limited because of isolation mode.{' '}
@@ -284,11 +292,7 @@ export const SupplyAssetsList = () => {
         {sortedReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
-              {downToXSM ? (
-                <SupplyAssetsListMobileItem {...item} key={item.id} />
-              ) : (
-                <SupplyAssetsListItem {...item} key={item.id} />
-              )}
+              <SupplyAssetsListItem {...item} key={item.id} walletBalances={walletBalances} />
             </AssetCapsProvider>
           </Fragment>
         ))}
