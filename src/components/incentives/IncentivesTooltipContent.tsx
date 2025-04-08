@@ -99,9 +99,6 @@ interface IncentivesTooltipContentProps {
 export const getSymbolMap = (incentive: ReserveIncentiveResponse) => {
   const rewardTokenSymbol = incentive.rewardTokenSymbol;
 
-  console.log('rewardTokenSymbol', rewardTokenSymbol);
-  console.log('icon', IncentivesSymbolMap[rewardTokenSymbol]);
-
   return IncentivesSymbolMap[rewardTokenSymbol]
     ? {
         ...IncentivesSymbolMap[rewardTokenSymbol],
