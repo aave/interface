@@ -116,7 +116,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Polygon.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Polygon.VOTING_MACHINE,
-        subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/32WLrLTQctAgfoshbkteHfxLu3DpAeZwh2vUPWXV6Qxu`,
+        subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/72ysXwyqW9CvfqD8keWo2fEfdKZQRWGYdgC6cnvTSFKy`,
       },
       [ChainId.avalanche]: {
         portalToMachineMap: {
