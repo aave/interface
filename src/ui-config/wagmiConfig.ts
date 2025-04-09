@@ -56,6 +56,7 @@ const cypressConfig = createConfig(
   getDefaultConfig({
     chains: [forkChain],
     connectors: [injected()],
+    enableFamily: false,
     ...defaultConfig,
   })
 );
