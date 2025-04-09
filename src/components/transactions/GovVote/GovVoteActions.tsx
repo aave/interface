@@ -213,36 +213,21 @@ export const GovVoteActions = ({
 
   const assets: Array<{ underlyingAsset: string; isWithDelegatedPower: boolean }> = [];
 
-  if (
-    tokenPowers &&
-    tokenPowers.aAaveTokenPower &&
-    tokenPowers.aAaveTokenPower.votingPower &&
-    tokenPowers.aAaveTokenPower.votingPower.toString() !== '0'
-  ) {
+  if (tokenPowers && tokenPowers.aAaveTokenPower.votingPower.toString() !== '0') {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
       isWithDelegatedPower: tokenPowers.isAAaveTokenWithDelegatedPower || false,
     });
   }
 
-  if (
-    tokenPowers &&
-    tokenPowers.stkAaveTokenPower &&
-    tokenPowers.stkAaveTokenPower.votingPower &&
-    tokenPowers.stkAaveTokenPower.votingPower.toString() !== '0'
-  ) {
+  if (tokenPowers && tokenPowers.stkAaveTokenPower.votingPower.toString() !== '0') {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
       isWithDelegatedPower: tokenPowers.isStkAaveTokenWithDelegatedPower || false,
     });
   }
 
-  if (
-    tokenPowers &&
-    tokenPowers.aaveTokenPower &&
-    tokenPowers.aaveTokenPower.votingPower &&
-    tokenPowers.aaveTokenPower.votingPower.toString() !== '0'
-  ) {
+  if (tokenPowers && tokenPowers.aaveTokenPower.votingPower.toString() !== '0') {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
       isWithDelegatedPower: tokenPowers.isAaveTokenWithDelegatedPower || false,
