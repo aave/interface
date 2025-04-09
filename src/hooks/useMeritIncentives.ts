@@ -19,7 +19,6 @@ export enum MeritAction {
   ETHEREUM_PRIME_SUPPLY_EZETH = 'ethereum-prime-supply-ezeth',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
-  SUPPLY_EBTC_BORROW_WBTC_OR_CBBTC = 'ethereum-supply-ebtc-borrow-wbtc-or-cbbtc',
   ARBITRUM_SUPPLY_ETH = 'arbitrum-supply-weth',
   ARBITRUM_SUPPLY_WSTETH = 'arbitrum-supply-wsteth',
   ARBITRUM_SUPPLY_EZETH = 'arbitrum-supply-ezeth',
@@ -98,13 +97,6 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         protocolAction: ProtocolAction.supply,
         customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
       },
-      {
-        action: MeritAction.SUPPLY_EBTC_BORROW_WBTC_OR_CBBTC,
-        rewardTokenAddress: AaveV3Ethereum.ASSETS.eBTC.A_TOKEN,
-        rewardTokenSymbol: 'aEthCBBTC',
-        protocolAction: ProtocolAction.borrow,
-        customMessage: 'You must supply eBTC and borrow cbBTC in order to receive merit rewards.',
-      },
     ],
     USDC: [
       {
@@ -122,23 +114,6 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aEthUSDT',
         protocolAction: ProtocolAction.supply,
         customMessage: 'You must supply wBTC and borrow USDT in order to receive merit rewards.',
-      },
-      {
-        action: MeritAction.SUPPLY_EBTC_BORROW_WBTC_OR_CBBTC,
-        rewardTokenAddress: AaveV3Ethereum.ASSETS.eBTC.A_TOKEN,
-        rewardTokenSymbol: 'aEtheBTC',
-        protocolAction: ProtocolAction.borrow,
-        customMessage: 'You must supply eBTC and borrow WBTC in order to receive merit rewards.',
-      },
-    ],
-    eBTC: [
-      {
-        action: MeritAction.SUPPLY_EBTC_BORROW_WBTC_OR_CBBTC,
-        rewardTokenAddress: AaveV3Ethereum.ASSETS.eBTC.A_TOKEN,
-        rewardTokenSymbol: 'aEtheBTC',
-        protocolAction: ProtocolAction.supply,
-        customMessage:
-          'You must supply eBTC and borrow WBTC or cbBTC in order to receive merit rewards.',
       },
     ],
     USDT: [
