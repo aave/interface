@@ -50,13 +50,13 @@ const defaultConfig = {
   appDescription: 'Non-custodial liquidity protocol',
   appUrl: 'https://app.aave.com',
   appIcon: 'https://avatars.githubusercontent.com/u/47617460?s=200&v=4',
+  enableFamily: false,
 };
 
 const cypressConfig = createConfig(
   getDefaultConfig({
     chains: [forkChain],
     connectors: [injected()],
-    enableFamily: false,
     ...defaultConfig,
   })
 );
