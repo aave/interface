@@ -249,8 +249,6 @@ export const GovVoteActions = ({
     });
   }
 
-  console.log('assets', assets);
-
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
     try {
