@@ -90,7 +90,7 @@ export const GovernanceTopPanel = () => {
       >
         <ExternalLink text="SNAPSHOTS" href="https://snapshot.org/#/aave.eth" />
         <ExternalLink text="FORUM" href="https://governance.aave.com/" />
-        <ExternalLink text="FAQ" href="https://docs.aave.com/faq/governance" />
+        <ExternalLink text="FAQ" href="https://aave.com/docs/primitives/governance" />
         <ExternalLink text="GOVERNANCE V2" href="https://governance-v2.aave.com/" />
       </Box>
     </TopInfoPanel>
