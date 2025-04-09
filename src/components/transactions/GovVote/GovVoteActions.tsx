@@ -200,6 +200,7 @@ export const GovVoteActions = ({
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx, signTxData } = useWeb3Context();
   const queryClient = useQueryClient();
+
   const tokenPowers = useGovernanceTokensAndPowers(proposal.subgraphProposal.snapshotBlockHash);
   const [signature, setSignature] = useState<string | undefined>(undefined);
   const proposalId = +proposal.subgraphProposal.id;
@@ -212,22 +213,42 @@ export const GovVoteActions = ({
 
   const assets: Array<{ underlyingAsset: string; isWithDelegatedPower: boolean }> = [];
 
-  if (tokenPowers?.aAave !== '0') {
+  if (
+    tokenPowers &&
+    tokenPowers.aAaveTokenPower &&
+    tokenPowers.aAaveTokenPower[0] &&
+    tokenPowers.aAaveTokenPower[0]._hex &&
+    tokenPowers.aAaveTokenPower[0]._hex !== '0x0'
+  ) {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
-      isWithDelegatedPower: tokenPowers?.isAAaveTokenWithDelegatedPower || false,
+      isWithDelegatedPower: tokenPowers.isAAaveTokenWithDelegatedPower || false,
     });
   }
-  if (tokenPowers?.stkAave !== '0') {
+
+  if (
+    tokenPowers &&
+    tokenPowers.stkAaveTokenPower &&
+    tokenPowers.stkAaveTokenPower[0] &&
+    tokenPowers.stkAaveTokenPower[0]._hex &&
+    tokenPowers.stkAaveTokenPower[0]._hex !== '0x0'
+  ) {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
-      isWithDelegatedPower: tokenPowers?.isStkAaveTokenWithDelegatedPower || false,
+      isWithDelegatedPower: tokenPowers.isStkAaveTokenWithDelegatedPower || false,
     });
   }
-  if (tokenPowers?.aave !== '0') {
+
+  if (
+    tokenPowers &&
+    tokenPowers.aaveTokenPower &&
+    tokenPowers.aaveTokenPower[0] &&
+    tokenPowers.aaveTokenPower[0]._hex &&
+    tokenPowers.aaveTokenPower[0]._hex !== '0x0'
+  ) {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
-      isWithDelegatedPower: tokenPowers?.isAaveTokenWithDelegatedPower || false,
+      isWithDelegatedPower: tokenPowers.isAaveTokenWithDelegatedPower || false,
     });
   }
 
