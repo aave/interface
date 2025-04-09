@@ -630,6 +630,10 @@ msgstr "Bridged Via CCIP"
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 
+#: src/components/WalletConnection/ConnectWalletButton.tsx
+msgid "Connecting"
+msgstr "Connecting"
+
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"

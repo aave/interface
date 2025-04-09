@@ -216,9 +216,8 @@ export const GovVoteActions = ({
   if (
     tokenPowers &&
     tokenPowers.aAaveTokenPower &&
-    tokenPowers.aAaveTokenPower[0] &&
-    tokenPowers.aAaveTokenPower[0]._hex &&
-    tokenPowers.aAaveTokenPower[0]._hex !== '0x0'
+    tokenPowers.aAaveTokenPower.votingPower &&
+    tokenPowers.aAaveTokenPower.votingPower.toString() !== '0'
   ) {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
@@ -229,9 +228,8 @@ export const GovVoteActions = ({
   if (
     tokenPowers &&
     tokenPowers.stkAaveTokenPower &&
-    tokenPowers.stkAaveTokenPower[0] &&
-    tokenPowers.stkAaveTokenPower[0]._hex &&
-    tokenPowers.stkAaveTokenPower[0]._hex !== '0x0'
+    tokenPowers.stkAaveTokenPower.votingPower &&
+    tokenPowers.stkAaveTokenPower.votingPower.toString() !== '0'
   ) {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
@@ -242,15 +240,16 @@ export const GovVoteActions = ({
   if (
     tokenPowers &&
     tokenPowers.aaveTokenPower &&
-    tokenPowers.aaveTokenPower[0] &&
-    tokenPowers.aaveTokenPower[0]._hex &&
-    tokenPowers.aaveTokenPower[0]._hex !== '0x0'
+    tokenPowers.aaveTokenPower.votingPower &&
+    tokenPowers.aaveTokenPower.votingPower.toString() !== '0'
   ) {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
       isWithDelegatedPower: tokenPowers.isAaveTokenWithDelegatedPower || false,
     });
   }
+
+  console.log('assets', assets);
 
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
