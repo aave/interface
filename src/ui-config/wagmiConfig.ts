@@ -93,6 +93,8 @@ const connectors = prodCkConfig.connectors
     }
   })
   .sort((a, b) => {
+    // sort connectors so the family connector is last
+    // fixes slow wallet connections when running in the Safe UI
     if (a(connectorConfig).id === familyConnectorId) {
       return 1;
     }
