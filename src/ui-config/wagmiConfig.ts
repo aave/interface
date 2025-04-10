@@ -10,7 +10,7 @@ import {
 } from 'src/utils/marketsAndNetworksConfig';
 import { type Chain } from 'viem';
 import { createConfig, CreateConfigParameters, http } from 'wagmi';
-import { injected, safe } from 'wagmi/connectors';
+import { injected } from 'wagmi/connectors';
 
 import { prodNetworkConfig, testnetConfig } from './networksConfig';
 
@@ -73,22 +73,26 @@ const prodCkConfig = getDefaultConfig({
   transports: ENABLE_TESTNET ? undefined : buildTransports(prodChains),
   ...defaultConfig,
 });
+
+const familyConnectorId = 'familyAccountsProvider';
+
+const connectors = prodCkConfig.connectors?.filter(
+  (connector) =>
+    connector({ chains: prodCkConfig.chains, emitter: new Emitter('') }).id !== familyConnectorId
+);
+
+const familyConnector = prodCkConfig.connectors?.find(
+  (connector) =>
+    connector({ chains: prodCkConfig.chains, emitter: new Emitter('') }).id === familyConnectorId
+);
+
+if (familyConnector) {
+  connectors?.push(familyConnector);
+}
+
 const prodConfig = createConfig({
   ...prodCkConfig,
-  connectors: prodCkConfig.connectors?.map((connector) => {
-    // initialize the connector with the emitter so we can access the id
-    const c = connector({
-      chains: prodCkConfig.chains,
-      emitter: new Emitter(''),
-    });
-    if (c.id === 'safe') {
-      return safe({
-        allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/, /dhedge.org$/],
-      });
-    } else {
-      return connector;
-    }
-  }),
+  connectors,
 });
 
 const isCypressEnabled = process.env.NEXT_PUBLIC_IS_CYPRESS_ENABLED === 'true';
