@@ -72,14 +72,18 @@ const prodCkConfig = getDefaultConfig({
   transports: ENABLE_TESTNET ? undefined : buildTransports(prodChains),
   ...defaultConfig,
 });
-const prodConfig = createConfig({
-  ...prodCkConfig,
-  connectors: prodCkConfig.connectors?.map((connector) => {
+
+const familyConnectorId = 'familyAccountsProvider';
+
+const connectorConfig = {
+  chains: prodCkConfig.chains,
+  emitter: new Emitter(''),
+};
+
+const connectors = prodCkConfig.connectors
+  ?.map((connector) => {
     // initialize the connector with the emitter so we can access the id
-    const c = connector({
-      chains: prodCkConfig.chains,
-      emitter: new Emitter(''),
-    });
+    const c = connector(connectorConfig);
     if (c.id === 'safe') {
       return safe({
         allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/, /dhedge.org$/],
@@ -87,7 +91,22 @@ const prodConfig = createConfig({
     } else {
       return connector;
     }
-  }),
+  })
+  .sort((a, b) => {
+    // sort connectors so the family connector is last
+    // fixes slow wallet connections when running in the Safe UI
+    if (a(connectorConfig).id === familyConnectorId) {
+      return 1;
+    }
+    if (b(connectorConfig).id === familyConnectorId) {
+      return -1;
+    }
+    return 0;
+  });
+
+const prodConfig = createConfig({
+  ...prodCkConfig,
+  connectors,
 });
 
 const isCypressEnabled = process.env.NEXT_PUBLIC_IS_CYPRESS_ENABLED === 'true';
