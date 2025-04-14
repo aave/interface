@@ -364,7 +364,8 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aGnoEURe',
         protocolAction: ProtocolAction.borrow,
         customMessage: antiLoopMessage,
-        customForumLink: '',
+        customForumLink:
+          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/83',
       },
     ],
   },
