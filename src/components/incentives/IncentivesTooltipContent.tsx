@@ -83,6 +83,11 @@ const IncentivesSymbolMap: {
     symbol: 'aweETH',
     aToken: true,
   },
+  aGnoEURe: {
+    tokenIconSymbol: 'EURe',
+    symbol: 'aEURe',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
