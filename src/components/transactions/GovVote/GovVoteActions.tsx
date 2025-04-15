@@ -267,6 +267,7 @@ export const GovVoteActions = ({
               success: true,
             });
             queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
+            queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
             return;
           } else {
             setTimeout(checkForStatus, 5000);
@@ -292,6 +293,7 @@ export const GovVoteActions = ({
         });
 
         queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
+        queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
       }
     } catch (err) {
       setMainTxState({
