@@ -6,6 +6,7 @@ import {
   AaveV3Base,
   AaveV3Ethereum,
   AaveV3EthereumLido,
+  AaveV3Gnosis,
   AaveV3Sonic,
 } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
@@ -37,6 +38,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
+  GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
 }
 
 type MeritIncentives = {
@@ -351,6 +353,19 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
         customForumLink:
           'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/61',
+      },
+    ],
+  },
+  [CustomMarket.proto_gnosis_v3]: {
+    ['EURe']: [
+      {
+        action: MeritAction.GNOSIS_BORROW_EURE,
+        rewardTokenAddress: AaveV3Gnosis.ASSETS.EURe.V_TOKEN,
+        rewardTokenSymbol: 'aGnoEURe',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopMessage,
+        customForumLink:
+          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/83',
       },
     ],
   },
