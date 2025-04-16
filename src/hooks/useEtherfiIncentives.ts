@@ -10,6 +10,7 @@ const getetherfiData = (
 
 const ETHERFI_DATA_MAP: Map<string, number> = new Map([
   [`${CustomMarket.proto_mainnet_v3}-${ProtocolAction.supply}-weETH`, 3],
+  [`${CustomMarket.proto_mainnet_v3}-${ProtocolAction.supply}-eBTC`, 3],
   [`${CustomMarket.proto_etherfi_v3}-${ProtocolAction.supply}-weETH`, 3],
   [`${CustomMarket.proto_lido_v3}-${ProtocolAction.supply}-weETH`, 3],
   [`${CustomMarket.proto_arbitrum_v3}-${ProtocolAction.supply}-weETH`, 3],
