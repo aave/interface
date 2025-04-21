@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-28 12:09\n"
+"PO-Revision-Date: 2025-04-21 18:07\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -674,10 +674,6 @@ msgstr "由于隔离模式，借贷能力和资产受到限制。"
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr "该资产的协议借款上限为 100%。无法进一步借款。"
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Thank you for voting!!"
-msgstr "感谢您的投票！！"
-
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "稳定"
@@ -1027,6 +1023,11 @@ msgstr "声称 {symbol}"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "该资产的借款限制在一定金额内，以尽量减少流动性池的破产。"
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
+msgid "All done"
+msgstr ""
 
 #: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
@@ -2284,11 +2285,6 @@ msgstr "投票 NAY"
 msgid "about SuperFest."
 msgstr ""
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-#: src/components/transactions/FlowCommons/BaseSuccess.tsx
-msgid "All done!"
-msgstr "全部完成！"
-
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
 msgstr "测试网模式"
@@ -2920,6 +2916,10 @@ msgstr "过期无效"
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Interest accrued"
 msgstr "应计利息"
+
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting"
+msgstr ""
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."

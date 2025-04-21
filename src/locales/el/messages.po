@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-28 12:09\n"
+"PO-Revision-Date: 2025-04-21 18:07\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -675,10 +675,6 @@ msgstr "Η δύναμη δανεισμού και τα περιουσιακά σ
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr ""
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Thank you for voting!!"
-msgstr ""
-
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Σταθερό"
@@ -1027,6 +1023,11 @@ msgstr ""
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
+msgstr ""
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
+msgid "All done"
 msgstr ""
 
 #: src/components/Warnings/OffboardingWarning.tsx
@@ -2285,11 +2286,6 @@ msgstr ""
 msgid "about SuperFest."
 msgstr ""
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-#: src/components/transactions/FlowCommons/BaseSuccess.tsx
-msgid "All done!"
-msgstr "Όλα έτοιμα!"
-
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
 msgstr "Λειτουργία Testnet"
@@ -2920,6 +2916,10 @@ msgstr "Μη έγκυρη λήξη"
 
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Interest accrued"
+msgstr ""
+
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting"
 msgstr ""
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx

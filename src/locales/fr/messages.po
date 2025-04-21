@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-28 12:09\n"
+"PO-Revision-Date: 2025-04-21 18:07\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -674,10 +674,6 @@ msgstr "Le pouvoir d'emprunt et les actifs sont limités en raison du mode d'iso
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr "Plafond d’emprunt du protocole à 100% pour cet actif. Il n’est pas possible d’emprunter davantage."
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Thank you for voting!!"
-msgstr "Merci d’avoir voté !!"
-
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Stable"
@@ -1027,6 +1023,11 @@ msgstr "Prétendant {symbol}"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "L’emprunt de cet actif est limité à un certain montant afin de minimiser l’insolvabilité du pool de liquidités."
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
+msgid "All done"
+msgstr ""
 
 #: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
@@ -2284,11 +2285,6 @@ msgstr "A voté NAY"
 msgid "about SuperFest."
 msgstr ""
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-#: src/components/transactions/FlowCommons/BaseSuccess.tsx
-msgid "All done!"
-msgstr "Tout est fait !"
-
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
 msgstr "Mode réseau test"
@@ -2920,6 +2916,10 @@ msgstr "Expiration invalide"
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Interest accrued"
 msgstr "Intérêts courus"
+
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting"
+msgstr ""
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."
