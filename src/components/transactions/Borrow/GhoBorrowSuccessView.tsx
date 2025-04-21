@@ -183,7 +183,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
         </Box>
 
         <Typography sx={{ mt: 4 }} variant="h2">
-          <Trans>All done!</Trans>
+          <Trans>All done</Trans>
         </Typography>
 
         <Box
