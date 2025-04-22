@@ -150,8 +150,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     RLUSD: [
       {
         action: MeritAction.ETHEREUM_SUPPLY_RLUSD,
-        // rewardTokenAddress: AaveV3Ethereum.ASSETS.RLUSD.A_TOKEN, // not available yet
-        rewardTokenAddress: '0xFa82580c16A31D0c1bC632A36F82e83EfEF3Eec0',
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.RLUSD.A_TOKEN,
         rewardTokenSymbol: 'aEthRLUSD',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
