@@ -73,6 +73,11 @@ const IncentivesSymbolMap: {
     symbol: 'asAVAX',
     aToken: true,
   },
+  aEthRLUSD: {
+    tokenIconSymbol: 'RLUSD',
+    symbol: 'aRLUSD',
+    aToken: true,
+  },
   aSonwS: {
     tokenIconSymbol: 'wS',
     symbol: 'awS',

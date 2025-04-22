@@ -16,6 +16,7 @@ export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
   ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
   ETHEREUM_SUPPLY_ETHX = 'ethereum-supply-ethx',
+  ETHEREUM_SUPPLY_RLUSD = 'ethereum-supply-rlusd',
   ETHEREUM_PRIME_SUPPLY_ETH = 'ethereum-prime-supply-weth',
   ETHEREUM_PRIME_SUPPLY_EZETH = 'ethereum-prime-supply-ezeth',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
@@ -144,6 +145,17 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: '0x30D20208d987713f46DFD34EF128Bb16C404D10f', // Stader (SD)
         rewardTokenSymbol: 'SD',
         protocolAction: ProtocolAction.supply,
+      },
+    ],
+    RLUSD: [
+      {
+        action: MeritAction.ETHEREUM_SUPPLY_RLUSD,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.RLUSD.A_TOKEN,
+        rewardTokenSymbol: 'aEthRLUSD',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink:
+          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/85',
       },
     ],
   },
