@@ -16,6 +16,7 @@ export enum MeritAction {
   ETHEREUM_STKGHO = 'ethereum-stkgho',
   ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
   ETHEREUM_SUPPLY_ETHX = 'ethereum-supply-ethx',
+  ETHEREUM_SUPPLY_RLUSD = 'ethereum-supply-rlusd',
   ETHEREUM_PRIME_SUPPLY_ETH = 'ethereum-prime-supply-weth',
   ETHEREUM_PRIME_SUPPLY_EZETH = 'ethereum-prime-supply-ezeth',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
@@ -144,6 +145,16 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: '0x30D20208d987713f46DFD34EF128Bb16C404D10f', // Stader (SD)
         rewardTokenSymbol: 'SD',
         protocolAction: ProtocolAction.supply,
+      },
+    ],
+    RLUSD: [
+      {
+        action: MeritAction.ETHEREUM_SUPPLY_RLUSD,
+        // rewardTokenAddress: AaveV3Ethereum.ASSETS.RLUSD.A_TOKEN, // not available yet
+        rewardTokenAddress: '0xFa82580c16A31D0c1bC632A36F82e83EfEF3Eec0',
+        rewardTokenSymbol: 'aEthRLUSD',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
       },
     ],
   },
