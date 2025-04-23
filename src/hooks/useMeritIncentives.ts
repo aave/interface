@@ -308,6 +308,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.BTCb.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
       },
     ],
     USDC: [
@@ -316,6 +317,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
       },
     ],
     USDt: [
@@ -324,6 +326,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.USDt.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
       },
     ],
     sAVAX: [
@@ -332,6 +335,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
       },
     ],
     AUSD: [
@@ -340,6 +344,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.AUSD.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
       },
     ],
   },
