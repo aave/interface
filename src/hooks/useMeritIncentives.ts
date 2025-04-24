@@ -81,6 +81,11 @@ const joinedEthCorrelatedIncentivePhase2ForumLink =
 const eurcForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/77';
 
+const AusdRenewalForumLink =
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/88';
+const AvalancheRenewalForumLink =
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/89';
+
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
@@ -320,6 +325,8 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.BTCb.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: AvalancheRenewalForumLink,
       },
     ],
     USDC: [
@@ -328,6 +335,8 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: AvalancheRenewalForumLink,
       },
     ],
     USDt: [
@@ -336,6 +345,8 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.USDt.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: AvalancheRenewalForumLink,
       },
     ],
     sAVAX: [
@@ -344,6 +355,8 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: AvalancheRenewalForumLink,
       },
     ],
     AUSD: [
@@ -352,6 +365,8 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Avalanche.ASSETS.AUSD.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+        customForumLink: AusdRenewalForumLink,
       },
     ],
   },
