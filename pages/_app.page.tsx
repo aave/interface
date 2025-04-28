@@ -27,6 +27,7 @@ import { useShallow } from 'zustand/shallow';
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { InfinexConnectConfig, InfinexProvider, initInfinex } from '@connect-poc/sdk';
 
 const SwitchModal = dynamic(() =>
   import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
@@ -111,6 +112,19 @@ export default function MyApp(props: MyAppProps) {
       })
   );
 
+  const infinexConfig: InfinexConnectConfig = {
+    appKey: 'example',
+    debug: {
+      showLogs: true,
+      iframeOptions: {
+        shown: true,
+        width: '250px',
+        height: '135px',
+      },
+    },
+  };
+  const infinexCore = initInfinex(infinexConfig);
+
   const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
   useEffect(() => {
     if (MIXPANEL_TOKEN) {
@@ -139,44 +153,46 @@ export default function MyApp(props: MyAppProps) {
       <NoSsr>
         <LanguageProvider>
           <WagmiProvider config={wagmiConfig}>
-            <QueryClientProvider client={queryClient}>
-              <ConnectKitProvider
-                onDisconnect={cleanLocalStorage}
-                onConnect={({ connectorId }) => setWalletType(connectorId)}
-              >
-                <Web3ContextProvider>
-                  <AppGlobalStyles>
-                    <AddressBlocked>
-                      <ModalContextProvider>
-                        <SharedDependenciesProvider>
-                          <AppDataProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <TransactionEventHandler />
-                              <SwitchModal />
-                              <StakingMigrateModal />
-                              <BridgeModal />
-                              <ReadOnlyModal />
-                            </GasStationProvider>
-                          </AppDataProvider>
-                        </SharedDependenciesProvider>
-                      </ModalContextProvider>
-                    </AddressBlocked>
-                  </AppGlobalStyles>
-                </Web3ContextProvider>
-              </ConnectKitProvider>
-              <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
+            <InfinexProvider core={infinexCore}>
+              <QueryClientProvider client={queryClient}>
+                <ConnectKitProvider
+                  onDisconnect={cleanLocalStorage}
+                  onConnect={({ connectorId }) => setWalletType(connectorId)}
+                >
+                  <Web3ContextProvider>
+                    <AppGlobalStyles>
+                      <AddressBlocked>
+                        <ModalContextProvider>
+                          <SharedDependenciesProvider>
+                            <AppDataProvider>
+                              <GasStationProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                                <SupplyModal />
+                                <WithdrawModal />
+                                <BorrowModal />
+                                <RepayModal />
+                                <CollateralChangeModal />
+                                <DebtSwitchModal />
+                                <ClaimRewardsModal />
+                                <EmodeModal />
+                                <SwapModal />
+                                <FaucetModal />
+                                <TransactionEventHandler />
+                                <SwitchModal />
+                                <StakingMigrateModal />
+                                <BridgeModal />
+                                <ReadOnlyModal />
+                              </GasStationProvider>
+                            </AppDataProvider>
+                          </SharedDependenciesProvider>
+                        </ModalContextProvider>
+                      </AddressBlocked>
+                    </AppGlobalStyles>
+                  </Web3ContextProvider>
+                </ConnectKitProvider>
+                <ReactQueryDevtools initialIsOpen={false} />
+              </QueryClientProvider>
+            </InfinexProvider>
           </WagmiProvider>
         </LanguageProvider>
       </NoSsr>

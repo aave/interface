@@ -1,79 +1,32 @@
-```
-        .///.                .///.     //.            .//  `/////////////-
-       `++:++`              .++:++`    :++`          `++:  `++:......---.`
-      `/+: -+/`            `++- :+/`    /+/         `/+/   `++.
-      /+/   :+/            /+:   /+/    `/+/        /+/`   `++.
-  -::/++::`  /+:       -::/++::` `/+:    `++:      :++`    `++/:::::::::.
-  -:+++::-`  `/+:      --++/---`  `++-    .++-    -++.     `++/:::::::::.
-   -++.       .++-      -++`       .++.    .++.  .++-      `++.
-  .++-         -++.    .++.         -++.    -++``++-       `++.
- `++:           :++`  .++-           :++`    :+//+:        `++:----------`
- -/:             :/-  -/:             :/.     ://:         `/////////////-
-```
-
-# Aave protocol interface :ghost:
-
-An open source interface for the decentralized liquidity protocol Aave
-
-Enabling users to:
-
-- Manage and monitor their positions on the Aave Protocol, and the overall status of it
-- Manage and monitor their positions on the Aave Safety module
-- Participate in the Aave Governance
-
 ## How to use
 
-Install it and run:
+Step 1: install the infinex SDK where `$PATH_TO_AAVE_FORK` is the location of this repo
 
 ```sh
-cp .env.example .env.local
-yarn
-yarn dev
+cd PATH_TO_INFINEX_CONNECT_REPO
+pnpm run pack-external-prod $PATH_TO_AAVE_FORK
 ```
 
-## Contribution
+Step 2: run the connect infra:
 
-For instructions on local development, deployment, configurations & feature proposals, see [Contributing](./CONTRIBUTING.md)
+```sh
+sudo caddy run
+pnpm run dev:noapp
+```
 
-Also, contributors with at least one pull request that has been merged into the main branch are eligible for a unique GitPOAP. Visit [gitpoap.io](https://www.gitpoap.io/gp/638) to claim it.
+Step 3: copy the example env
+```sh
+cp .env.example .env.local
+```
 
-<img src="https://www.gitpoap.io/_next/image?url=https%3A%2F%2Fassets.poap.xyz%2Fgitpoap3a-2022-aave-protocol-interface-contributor-2022-logo-1668012040505.png&w=2048&q=75" width="164">
+Step 4: add the quicknode RPC prefix and API key in the `.env.local`:
 
-## IPFS deployment
+```sh
+NEXT_PUBLIC_QUICKNODE_PREFIX=https://...
+NEXT_PUBLIC_QUICKNODE_API_KEY=...
+```
 
-Each commit gets deployed to IPFS automatically
-
-There's a github action commenting the appropriate IPFS hash embedded in the Cloudflare IPFS gateway after each commit
-
-For ease of use:
-
-- the DNS of [https://app.aave.com](https://app.aave.com) will always point to the latest main IPFS hash.
-
-### Testnet Networks Access
-The interface now includes a feature toggle for testnet networks. Users can enable test networks by:
-1. Opening the Settings menu
-2. Toggling the "Testnet mode" switch
-3. Once enabled, testnet networks (like Sepolia, Mumbai, etc.) will become available in the network selection menu
-
-### Links known to work at some point:
-
-- [https://app-aave-com.ipns.cf-ipfs.com/#/](https://app-aave-com.ipns.cf-ipfs.com/#/)
-- [https://app-aave-com.ipns.dweb.link/#/](https://app-aave-com.ipns.dweb.link/#/)
-
-### Troubleshooting
-
-Issue: Cannot connect to `app.aave.com`
-
-The aave-ui is hosted on IPFS in a decentralized manner. `app.aave.com` just holds a CNAME record to the Cloudflare IPFS gateway. You can use [any](https://ipfs.github.io/public-gateway-checker/) public or private IPFS gateway supporting origin isolation to access aave-ui if for some reason the Cloudflare gateway doesn't work for you
-
-Just go to `<your favorite public ipfs gateway>/ipns/app.aave.com`
-
-⚠️ Make sure the gateway supports origin isolation to avoid possible security issues: you should be redirected to URL that looks like `https://app-aave-com.<your gateway>`
-
-## License
-
-[All Rights Reserved © Aave Labs](./LICENSE.md)
-
-## Credits
-
-To all the Ethereum community
+Step 5: run on port 3000
+```sh
+pnpm run dev
+```

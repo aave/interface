@@ -19,16 +19,14 @@ import {
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { AvatarSize } from 'src/components/Avatar';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import { UserDisplay } from 'src/components/UserDisplay';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import UserMenuDropdown from 'src/components/UserMenuDropdown';
 import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
-
 import { Link } from '../components/primitives/Link';
 import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
@@ -105,10 +103,11 @@ export function AppHeader() {
     ])
   );
 
-  const { openSwitch, openBridge, openReadMode } = useModalContext();
+  const { openSwitch, openBridge } = useModalContext();
   const { readOnlyMode } = useWeb3Context();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [account] = useRootStore(useShallow((state) => [state.account]));
 
   useEffect(() => {
     if (mobileDrawerOpen && !md) {
@@ -322,22 +321,7 @@ export function AppHeader() {
           </StyledBadge>
         </NoSsr>
 
-        {readOnlyMode ? (
-          <Button
-            variant="surface"
-            onClick={() => {
-              openReadMode();
-            }}
-          >
-            <UserDisplay
-              avatarProps={{ size: AvatarSize.SM }}
-              oneLiner={true}
-              titleProps={{ variant: 'buttonM' }}
-            />
-          </Button>
-        ) : (
-          <ConnectWalletButton />
-        )}
+        {account ? <UserMenuDropdown /> : <ConnectWalletButton />}
 
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <SettingsMenu />

@@ -33,7 +33,8 @@
   "dependencies": {
     "@aave/contract-helpers": "1.33.1",
     "@aave/math-utils": "1.33.1",
-    "@bgd-labs/aave-address-book": "^4.18.1",
+    "@bgd-labs/aave-address-book": "^4.17.2",
+    "@connect-poc/sdk": "file:/Users/ben/Desktop/work/dapps/jed-demo/packages/sdk/connect-poc-sdk-0.0.0.tgz",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
