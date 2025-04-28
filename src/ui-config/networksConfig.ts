@@ -76,6 +76,55 @@ export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 const ratesHistoryApiUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/rates-history`;
 
+export const CHAINKEY_TO_QUICKNODE_NETWORK = {
+  arbitrum: 'arbitrum-mainnet',
+  blast: 'blast-mainnet',
+  base: 'base-mainnet',
+  ethereum: ' ',
+  optimism: 'optimism',
+  polygon: 'matic',
+  berachain: 'bera-mainnet',
+  unichain: 'unichain-mainnet',
+  bsc: 'bsc',
+  nearIntents: 'near-mainnet',
+} as const;
+type ChainKey = keyof typeof CHAINKEY_TO_QUICKNODE_NETWORK;
+
+export function getChainRPC(chain: ChainKey): string {
+  const prefix = process.env.NEXT_PUBLIC_QUICKNODE_PREFIX;
+  const apiKey = process.env.NEXT_PUBLIC_QUICKNODE_API_KEY;
+
+  if (!prefix) {
+    throw new Error('Missing NEXT_PUBLIC_QUICKNODE_API_KEY in your environment');
+  }
+
+  if (!apiKey) {
+    throw new Error('Missing NEXT_PUBLIC_QUICKNODE_PREFIX in your environment');
+  }
+
+  // Check if this chain is supported by QuickNode before attempting to get URL
+  const quicknodeChainName = CHAINKEY_TO_QUICKNODE_NETWORK[chain];
+
+  // If chain isn't in the QuickNode mapping, immediately fall back
+  if (quicknodeChainName === undefined) {
+    return '';
+  }
+
+  // Chain is supported by QuickNode, generate URL
+  const cleanPrefix = prefix.replace(/\/$/, '');
+
+  let quicknodeUrl: string;
+  // Special case for ethereum mainnet
+  if (quicknodeChainName === ' ') {
+    //else it's ethereum, and no chain-name
+    quicknodeUrl = `${cleanPrefix}.quiknode.pro/${apiKey}`;
+  } else {
+    quicknodeUrl = `${cleanPrefix}.${quicknodeChainName}.quiknode.pro/${apiKey}`;
+  }
+
+  return quicknodeUrl;
+}
+
 export const testnetConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
@@ -184,7 +233,7 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
 export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.mainnet]: {
     name: 'Ethereum',
-    privateJsonRPCUrl: 'https://eth-mainnet.g.alchemy.com/v2/ZiMMq2478EVIEJdsxC5dMal_ccQwtb31',
+    privateJsonRPCUrl: getChainRPC('ethereum'),
     publicJsonRPCUrl: [
       'https://mainnet.gateway.tenderly.co',
       'https://rpc.flashbots.net',
@@ -205,7 +254,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.polygon]: {
     name: 'Polygon POS',
     displayName: 'Polygon',
-    privateJsonRPCUrl: 'https://polygon-mainnet.g.alchemy.com/v2/MbgjyHR1CQiU5Y8CUa2mqfRlYwltE5Zr',
+    privateJsonRPCUrl: getChainRPC('polygon'),
     publicJsonRPCUrl: [
       'https://gateway.tenderly.co/public/polygon',
       'https://polygon-pokt.nodies.app',
@@ -253,7 +302,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.arbitrum_one]: {
     name: 'Arbitrum',
-    privateJsonRPCUrl: 'https://arb-mainnet.g.alchemy.com/v2/2oA-8BGeYqHHpd2uCU49IzeZDL9skdSm', //'https://arbitrum-one.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: getChainRPC('arbitrum'), //'https://arbitrum-one.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://arb1.arbitrum.io/rpc',
       'https://rpc.ankr.com/arbitrum',
@@ -276,7 +325,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.base]: {
     name: 'Base',
-    privateJsonRPCUrl: 'https://base-mainnet.g.alchemy.com/v2/AFu9kulpkXzHO7kQQ9UQDXWRyEhJEXPk', //'https://base.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: getChainRPC('base'), //'https://base.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://mainnet.base.org',
       'https://1rpc.io/base',
@@ -299,7 +348,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.optimism]: {
     name: 'OP',
-    privateJsonRPCUrl: 'https://opt-mainnet.g.alchemy.com/v2/H8ZBGuz1LZbRsYnCBQHY4YMv_AUAVGeM', //'https://optimism.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: getChainRPC('optimism'), //'https://optimism.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io', 'https://1rpc.io/op'],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
     baseUniswapAdapter: '0x0',
