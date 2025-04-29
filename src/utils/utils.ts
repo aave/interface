@@ -115,13 +115,14 @@ export const showExternalIncentivesTooltip = (
   }
 
   if (
-    kernelPointsEnabled &&
-    (currentMarket === CustomMarket.proto_mainnet_v3 ||
-      currentMarket === CustomMarket.proto_lido_v3 ||
-      currentMarket === CustomMarket.proto_base_v3 ||
-      currentMarket === CustomMarket.proto_arbitrum_v3) &&
-    protocolAction === ProtocolAction.supply &&
-    (symbol == 'rsETH' || symbol == 'wrsETH')
+    (kernelPointsEnabled &&
+      (currentMarket === CustomMarket.proto_mainnet_v3 ||
+        currentMarket === CustomMarket.proto_lido_v3 ||
+        currentMarket === CustomMarket.proto_base_v3 ||
+        currentMarket === CustomMarket.proto_arbitrum_v3) &&
+      protocolAction === ProtocolAction.supply &&
+      (symbol == 'rsETH' || symbol == 'wrsETH')) ||
+    (currentMarket === CustomMarket.proto_base_v3 && symbol === 'LBTC')
   ) {
     tooltipsConfig.kernelPoints = true;
   }
