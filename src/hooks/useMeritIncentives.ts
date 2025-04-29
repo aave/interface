@@ -90,7 +90,8 @@ const AusdRenewalForumLink =
 const AvalancheRenewalForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/89';
 
-const lbtcCbbtcForumLink = '';
+const lbtcCbbtcForumLink =
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/91';
 
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
