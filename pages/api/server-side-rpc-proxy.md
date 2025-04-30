@@ -33,8 +33,6 @@ PRIVATE_RPC_AVALANCHE=https://your-private-avalanche-rpc-url
 
 2. **Rate Limiting**: Consider adding rate limiting to the API endpoint to prevent abuse.
 
-3. **Authentication**: For additional security, consider adding authentication to the API endpoint.
-
 ## How it Works
 
 1. When the application needs to make an RPC request, it uses the `getProvider` function in `src/utils/marketsAndNetworksConfig.ts`.
