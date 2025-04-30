@@ -30,6 +30,7 @@ export enum MeritAction {
   BASE_SUPPLY_WEETH = 'base-supply-weeth',
   BASE_SUPPLY_EZETH = 'base-supply-ezeth',
   BASE_SUPPLY_EURC = 'base-supply-eurc',
+  BASE_SUPPLY_LBTC_BORROW_CBBTC = 'base-supply-lbtc-borrow-cbbtc',
   BASE_BORROW_EURC = 'base-borrow-eurc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   BASE_BORROW_WSTETH = 'base-borrow-wsteth',
@@ -72,6 +73,9 @@ const antiLoopMessage =
 const antiLoopBorrowMessage =
   'Supplying of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
+const lbtcCbbtcCampaignMessage =
+  'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
+
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
 
@@ -85,6 +89,9 @@ const AusdRenewalForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/88';
 const AvalancheRenewalForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/89';
+
+const lbtcCbbtcForumLink =
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/91';
 
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
@@ -246,6 +253,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aBasUSDC',
         protocolAction: ProtocolAction.supply,
       },
+      {
+        action: MeritAction.BASE_SUPPLY_LBTC_BORROW_CBBTC,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
+        rewardTokenSymbol: 'aBasUSDC',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: lbtcCbbtcCampaignMessage,
+        customForumLink: lbtcCbbtcForumLink,
+      },
     ],
     USDC: [
       {
@@ -315,6 +330,16 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         protocolAction: ProtocolAction.borrow,
         customMessage: antiLoopBorrowMessage,
         customForumLink: eurcForumLink,
+      },
+    ],
+    LBTC: [
+      {
+        action: MeritAction.BASE_SUPPLY_LBTC_BORROW_CBBTC,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
+        rewardTokenSymbol: 'aBasUSDC',
+        protocolAction: ProtocolAction.supply,
+        customMessage: lbtcCbbtcCampaignMessage,
+        customForumLink: lbtcCbbtcForumLink,
       },
     ],
   },
