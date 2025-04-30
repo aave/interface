@@ -40,8 +40,6 @@ const PRIVATE_RPC_URLS: Record<string, string> = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log('API route handler called:', req.url);
-
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -49,21 +47,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const { chainId, method, params } = req.body;
 
-    console.log('RPC Proxy Request:', { chainId, method });
-    // Convert chainId to number if it's a string
     const chainIdNumber = typeof chainId === 'string' ? parseInt(chainId) : chainId;
 
-    // Get the RPC URL for the specified chain
     const rpcUrl = PRIVATE_RPC_URLS[chainIdNumber];
 
     if (!rpcUrl) {
-      console.log('Unsupported chain ID:', chainIdNumber);
       return res.status(400).json({ error: `Unsupported chain ID: ${chainIdNumber}` });
     }
 
-    console.log(`Forwarding to RPC URL for chain ${chainIdNumber}`);
-
-    // Create the JSON-RPC request
     const rpcRequest = {
       jsonrpc: '2.0',
       id: Date.now(),
@@ -71,7 +62,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       params,
     };
 
-    // Forward the request to the actual RPC endpoint
     const response = await fetch(rpcUrl, {
       method: 'POST',
       headers: {
@@ -81,7 +71,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     const data = await response.json();
-    console.log('RPC response received');
 
     return res.status(200).json(data);
   } catch (error) {
