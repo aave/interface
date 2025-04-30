@@ -74,7 +74,7 @@ const antiLoopBorrowMessage =
   'Supplying of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const lbtcCbbtcCampaignMessage =
-  'You must supply LBTC and borrow cbBTC in order to receive merit rewards. A maximum heath factor can be required. Please check the forum post for the full eligibility criteria.';
+  'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
