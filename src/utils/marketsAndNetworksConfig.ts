@@ -15,6 +15,7 @@ import {
   networkConfigs as _networkConfigs,
 } from '../ui-config/networksConfig';
 import { RotationProvider } from './rotationProvider';
+import { ServerJsonRpcProvider } from './ServerJsonRpcProvider';
 
 export type Pool = {
   address: string;
@@ -169,20 +170,22 @@ const providers: { [network: string]: ProviderWithSend } = {};
 export const getProvider = (chainId: ChainId): ProviderWithSend => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    const chainProviders: string[] = [];
-    if (config.privateJsonRPCUrl) {
-      chainProviders.push(config.privateJsonRPCUrl);
-    }
-    if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
-    }
-    if (!chainProviders.length) {
-      throw new Error(`${chainId} has no jsonRPCUrl configured`);
-    }
-    if (chainProviders.length === 1) {
-      providers[chainId] = new StaticJsonRpcProvider(chainProviders[0], chainId);
+    if (process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED === 'true') {
+      providers[chainId] = new ServerJsonRpcProvider(chainId);
     } else {
-      providers[chainId] = new RotationProvider(chainProviders, chainId);
+      // No private RPC, use public ones directly
+      const chainProviders: string[] = [];
+      if (config.publicJsonRPCUrl.length) {
+        config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
+      }
+      if (!chainProviders.length) {
+        throw new Error(`${chainId} has no jsonRPCUrl configured`);
+      }
+      if (chainProviders.length === 1) {
+        providers[chainId] = new StaticJsonRpcProvider(chainProviders[0], chainId);
+      } else {
+        providers[chainId] = new RotationProvider(chainProviders, chainId);
+      }
     }
   }
   return providers[chainId];
