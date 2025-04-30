@@ -39,11 +39,6 @@ export class ServerJsonRpcProvider extends StaticJsonRpcProvider {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('ServerJsonRpcProvider: Request failed', {
-          status: response.status,
-          statusText: response.statusText,
-          error: errorText,
-        });
         try {
           const errorData = JSON.parse(errorText);
           throw new Error(errorData.error || `Failed with status ${response.status}`);

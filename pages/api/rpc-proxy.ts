@@ -40,15 +40,33 @@ const PRIVATE_RPC_URLS: Record<string, string> = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const allowedOrigins = [
+    'https://app.aave.com',
+    'https://aave.com',
+    'https://interface-git-feat-rpc-avaraxyz.vercel.app',
+  ];
+  const origin = req.headers.origin;
+
+  if (process.env.CORS_DOMAINS_ALLOWED === 'true') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  } else if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
     const { chainId, method, params } = req.body;
-
     const chainIdNumber = typeof chainId === 'string' ? parseInt(chainId) : chainId;
-
     const rpcUrl = PRIVATE_RPC_URLS[chainIdNumber];
 
     if (!rpcUrl) {
