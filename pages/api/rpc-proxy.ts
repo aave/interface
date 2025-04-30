@@ -44,6 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     'https://app.aave.com',
     'https://aave.com',
     'https://interface-git-feat-rpc-avaraxyz.vercel.app',
+    // 'http://localhost:3000',
   ];
   const origin = req.headers.origin;
 
@@ -80,10 +81,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       params,
     };
 
+    console.log('Sending request with headers:', {
+      contentType: 'application/json',
+      origin: origin || 'https://app.aave.com',
+    });
+
     const response = await fetch(rpcUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Origin: origin || 'https://app.aave.com',
+        Referer: 'https://app.aave.com/',
       },
       body: JSON.stringify(rpcRequest),
     });
