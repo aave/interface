@@ -170,9 +170,7 @@ const providers: { [network: string]: ProviderWithSend } = {};
 export const getProvider = (chainId: ChainId): ProviderWithSend => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    // TODO: How we deal with IPFS? Shoudl default to FALSE
-    // Use server-side provider to hide private RPC URLs to avoid exposing them to the client
-    if (config.privateJsonRPCUrl) {
+    if (process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED === 'true') {
       providers[chainId] = new ServerJsonRpcProvider(chainId);
     } else {
       // No private RPC, use public ones directly

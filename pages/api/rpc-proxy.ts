@@ -3,8 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { networkConfigs } from '../../src/ui-config/networksConfig';
 
-// Add environment variables for private RPC URLs
-// These should be set in your server environment and not exposed to the client
+// Documentation: ./server-side-rpc-proxy.md
 const PRIVATE_RPC_URLS: Record<string, string> = {
   [ChainId.mainnet]:
     process.env.PRIVATE_RPC_MAINNET || networkConfigs[ChainId.mainnet].privateJsonRPCUrl || '',
@@ -40,17 +39,23 @@ const PRIVATE_RPC_URLS: Record<string, string> = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const allowedOrigins = [
-    'https://app.aave.com',
-    'https://aave.com',
-    'https://interface-git-feat-rpc-avaraxyz.vercel.app',
-    // 'http://localhost:3000',
-  ];
+  const allowedOrigins = ['https://app.aave.com', 'https://aave.com'];
   const origin = req.headers.origin;
+
+  const isOriginAllowed = (origin: string | undefined): boolean => {
+    if (!origin) return false;
+
+    if (allowedOrigins.includes(origin)) return true;
+
+    // Match any subdomain ending with avaraxyz.vercel.app for deployment urls
+    const allowedPatterns = [/^https:\/\/.*avaraxyz\.vercel\.app$/];
+
+    return allowedPatterns.some((pattern) => pattern.test(origin));
+  };
 
   if (process.env.CORS_DOMAINS_ALLOWED === 'true') {
     res.setHeader('Access-Control-Allow-Origin', '*');
-  } else if (origin && allowedOrigins.includes(origin)) {
+  } else if (origin && isOriginAllowed(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
 
@@ -80,11 +85,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       method,
       params,
     };
-
-    console.log('Sending request with headers:', {
-      contentType: 'application/json',
-      origin: origin || 'https://app.aave.com',
-    });
 
     const response = await fetch(rpcUrl, {
       method: 'POST',
