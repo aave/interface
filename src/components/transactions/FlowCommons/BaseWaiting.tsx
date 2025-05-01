@@ -1,12 +1,11 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
-import { CheckIcon } from '@heroicons/react/solid';
+import { ClockIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
-export type BaseSuccessTxViewProps = {
+export type BaseWaitingTxViewProps = {
   txHash?: string;
   children: ReactNode;
   hideTx?: boolean;
@@ -18,7 +17,7 @@ const ExtLinkIcon = () => (
   </SvgIcon>
 );
 
-export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewProps) => {
+export const BaseWaitingView = ({ txHash, children, hideTx }: BaseWaitingTxViewProps) => {
   const { close, mainTxState } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
@@ -45,13 +44,13 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
             justifyContent: 'center',
           }}
         >
-          <SvgIcon sx={{ color: 'success.main', fontSize: '32px' }}>
-            <CheckIcon />
+          <SvgIcon sx={{ fontSize: '32px' }}>
+            <ClockIcon />
           </SvgIcon>
         </Box>
 
         <Typography sx={{ mt: 4 }} variant="h2">
-          <Trans>All done</Trans>
+          <Trans>Waiting for confirmation</Trans>
         </Typography>
 
         {children}

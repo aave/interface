@@ -1,3 +1,4 @@
+import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, SvgIcon, Typography } from '@mui/material';
@@ -6,6 +7,7 @@ import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { Warning } from 'src/components/primitives/Warning';
 
 import { BorrowRateModeBlock } from '../actions/BorrowRateModeBlock';
 import { fetchIconSymbolAndNameHistorical } from '../helpers';
@@ -30,6 +32,8 @@ export const ActionTextMap = ({ action }: { action: string }) => {
       return <Trans>Borrow rate change</Trans>;
     case 'LiquidationCall':
       return <Trans>Liquidation</Trans>;
+    case 'CowSwap':
+      return <Trans>Swap</Trans>;
     default:
       return <></>;
   }
@@ -568,6 +572,86 @@ export const ActionDetails = <K extends keyof ActionFields>({
               </Box>
             </Box>
           </Box>
+        </Box>
+      );
+    case 'CowSwap':
+      const cowSwapTx = transaction as TransactionHistoryItem<ActionFields['CowSwap']>;
+      const formattedCowSwapSrcToken = fetchIconSymbolAndNameHistorical(cowSwapTx.srcToken);
+      const formattedCowSwapDestToken = fetchIconSymbolAndNameHistorical(cowSwapTx.destToken);
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }} pr={4.5}>
+            <TokenIcon symbol={formattedCowSwapSrcToken.iconSymbol} sx={{ fontSize: iconSize }} />
+            <FormattedNumber
+              value={formatUnits(cowSwapTx.srcAmount, cowSwapTx.srcToken.decimals)}
+              variant="secondary14"
+              color="text.primary"
+              sx={{ mr: 1, ml: 1 }}
+            />
+            <DarkTooltip
+              title={
+                <Typography variant="secondary14" color="common.white">
+                  {formattedCowSwapSrcToken.name} ({formattedCowSwapSrcToken.symbol})
+                </Typography>
+              }
+              arrow
+              placement="top"
+            >
+              <Typography variant="secondary14" color="text.primary">
+                {formattedCowSwapSrcToken.symbol}
+              </Typography>
+            </DarkTooltip>
+          </Box>
+          <SvgIcon sx={{ fontSize: '14px' }}>
+            <ArrowNarrowRightIcon />
+          </SvgIcon>
+          <Box sx={{ display: 'flex', alignItems: 'center' }} pl={4.5}>
+            <TokenIcon symbol={formattedCowSwapDestToken.iconSymbol} sx={{ fontSize: iconSize }} />
+            <FormattedNumber
+              value={formatUnits(cowSwapTx.destAmount, cowSwapTx.destToken.decimals)}
+              variant="secondary14"
+              color="text.primary"
+              sx={{ mr: 1, ml: 1 }}
+            />
+            <DarkTooltip
+              title={
+                <Typography variant="secondary14" color="common.white">
+                  {formattedCowSwapDestToken.name} ({formattedCowSwapDestToken.symbol})
+                </Typography>
+              }
+              arrow
+              placement="top"
+            >
+              <Typography variant="secondary14" color="text.primary">
+                {formattedCowSwapDestToken.symbol}
+              </Typography>
+            </DarkTooltip>
+          </Box>
+
+          {/* Status */}
+          {cowSwapTx.status == OrderStatus.OPEN && (
+            <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
+              <Warning severity="info" sx={{ my: 0 }}>
+                <Trans>In Progress</Trans>
+              </Warning>
+            </Box>
+          )}
+          {cowSwapTx.status == OrderStatus.FULFILLED && (
+            <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
+              <Warning severity="success" sx={{ my: 0 }}>
+                <Trans>Filled</Trans>
+              </Warning>
+            </Box>
+          )}
+
+          {(cowSwapTx.status == OrderStatus.CANCELLED ||
+            cowSwapTx.status == OrderStatus.EXPIRED) && (
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', ml: 4.5 }}>
+              <Warning severity="error" sx={{ my: 0 }}>
+                <Trans>Cancelled</Trans>
+              </Warning>
+            </Box>
+          )}
         </Box>
       );
     default:
