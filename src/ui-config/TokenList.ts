@@ -62,6 +62,19 @@ const NETWORK_ASSETS: TokenInfo[] = [
       isNative: true,
     },
   },
+  // Sepolia
+  {
+    name: 'Ethereum',
+    symbol: 'ETH',
+    decimals: 18,
+    address: API_ETH_MOCK_ADDRESS,
+    chainId: 11155111,
+    logoURI:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    extensions: {
+      isNative: true,
+    },
+  },
   {
     name: 'Avalanche',
     symbol: 'AVAX',
@@ -12704,6 +12717,66 @@ export const TOKEN_LIST: TokenList = {
       decimals: 18,
       chainId: 11155111,
       logoURI: 'https://assets.coingecko.com/coins/images/2518/standard/weth.png?1696503332',
+    },
+    {
+      name: 'Ethereum',
+      address: '0xc558dbdd856501fcd9aaf1e62eae57a9f0629a3c',
+      symbol: 'ETH',
+      decimals: 18,
+      chainId: 11155111,
+      logoURI:
+        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    },
+    {
+      name: 'USD Coin',
+      symbol: 'USDC',
+      decimals: 6,
+      address: '0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8',
+      chainId: 11155111,
+      logoURI: 'https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389',
+    },
+    {
+      name: 'Dai Stablecoin',
+      symbol: 'DAI',
+      decimals: 18,
+      address: '0xFF34B3d4Aee8ddCd6F9AFFFB6Fe49bD371b8a357',
+      chainId: 11155111,
+      logoURI: 'https://assets.coingecko.com/coins/images/9956/thumb/4943.png?1636636734',
+    },
+    {
+      name: 'Tether USD',
+      symbol: 'USDT',
+      decimals: 6,
+      address: '0xaA8E23Fb1079EA71e0a56F48a2aA51851D8433D0',
+      chainId: 11155111,
+      logoURI: 'https://assets.coingecko.com/coins/images/325/thumb/Tether-logo.png?1598003707',
+    },
+    {
+      name: 'Wrapped BTC',
+      symbol: 'WBTC',
+      decimals: 8,
+      address: '0x29f2D40B0605204364af54EC677bD022dA425d03',
+      chainId: 11155111,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/7598/thumb/wrapped_bitcoin_wbtc.png?1548822744',
+    },
+    {
+      name: 'Aave',
+      symbol: 'AAVE',
+      decimals: 18,
+      address: '0x88541670E55cC00bEEFD87eB59EDd1b7C511AC9a',
+      chainId: 11155111,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
+    },
+    {
+      name: 'Chainlink',
+      symbol: 'LINK',
+      decimals: 18,
+      address: '0xf8Fb3713D459D7C1018BD0A49D19b4C44290EBE5',
+      chainId: 11155111,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/877/thumb/chainlink-new-logo.png?1547034700',
     },
     {
       name: 'Gho Token',
