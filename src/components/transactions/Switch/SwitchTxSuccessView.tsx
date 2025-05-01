@@ -1,10 +1,18 @@
-import { ArrowRightIcon } from '@heroicons/react/outline';
+import { ChainIdToNetwork } from '@aave/contract-helpers';
+import { ArrowRightIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, SvgIcon, Typography } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
+import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
 
+import { BaseCancelledView } from '../FlowCommons/BaseCancelled';
 import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
+import { BaseWaitingView } from '../FlowCommons/BaseWaiting';
+import { getOrderStatus, isOrderCancelled, isOrderFilled } from './cowprotocol.helpers';
+import { SwitchProvider } from './switch.types';
 
 export type SwitchTxSuccessViewProps = {
   txHash?: string;
@@ -16,6 +24,8 @@ export type SwitchTxSuccessViewProps = {
   outIconSymbol: string;
   iconUri?: string;
   outIconUri?: string;
+  provider: SwitchProvider;
+  chainId: number;
 };
 
 export const SwitchTxSuccessView = ({
@@ -28,9 +38,46 @@ export const SwitchTxSuccessView = ({
   outIconSymbol,
   iconUri,
   outIconUri,
+  provider,
+  chainId,
 }: SwitchTxSuccessViewProps) => {
+  const switchProvider = useSwitchProvider({ chainId: chainId });
+
+  // Do polling each 10 seconds until the order get's filled
+  const [orderStatus, setOrderStatus] = useState<'succeed' | 'failed' | 'open'>('open');
+
+  // Poll the order status
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (switchProvider === 'cowprotocol' && txHash) {
+        getOrderStatus(txHash, chainId)
+          .then((status) => {
+            if (isOrderFilled(status)) {
+              setOrderStatus('succeed');
+            } else if (isOrderCancelled(status)) {
+              setOrderStatus('failed');
+            } else {
+              setOrderStatus('open');
+            }
+          })
+          .catch(console.error);
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [txHash]);
+
+  const View = useMemo(() => {
+    if (provider === 'cowprotocol' && orderStatus === 'open') {
+      return BaseWaitingView;
+    } else if (provider === 'cowprotocol' && orderStatus === 'failed') {
+      return BaseCancelledView;
+    }
+    return BaseSuccessView; // Default case
+  }, [orderStatus, provider]);
+
   return (
-    <BaseSuccessView txHash={txHash}>
+    <View txHash={txHash} hideTx={provider === 'cowprotocol'}>
       <Box
         sx={{
           mt: 2,
@@ -41,8 +88,39 @@ export const SwitchTxSuccessView = ({
           textAlign: 'center',
         }}
       >
-        <Typography>
-          <Trans>You&apos;ve successfully switched tokens.</Trans>
+        <Typography mb={2}>
+          {provider === 'cowprotocol' ? (
+            <>
+              {orderStatus === 'open' ? (
+                <Trans>
+                  You&apos;ve successfully submitted an order.
+                  <br /> Please wait for it to be filled.
+                </Trans>
+              ) : orderStatus === 'failed' ? (
+                <Trans>The order has been cancelled.</Trans>
+              ) : (
+                <Trans>The order has been filled.</Trans>
+              )}
+              <br />
+              You can see the details{' '}
+              <Link
+                underline="always"
+                href={`https://explorer.cow.fi/${
+                  chainId == 1 ? '' : ChainIdToNetwork[chainId] + '/'
+                }orders/${txHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                here
+                <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              </Link>
+              <br />
+            </>
+          ) : (
+            <Trans>You&apos;ve successfully switched tokens.</Trans>
+          )}
         </Typography>
         <Box
           sx={{
@@ -67,6 +145,6 @@ export const SwitchTxSuccessView = ({
           <Typography variant="secondary14">{outSymbol}</Typography>
         </Box>
       </Box>
-    </BaseSuccessView>
+    </View>
   );
 };
