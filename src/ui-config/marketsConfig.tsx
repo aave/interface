@@ -284,6 +284,7 @@ export const marketsData: {
     v3: true,
     chainId: ChainId.sepolia,
     enabledFeatures: {
+      switch: true,
       faucet: true,
     },
     addresses: {

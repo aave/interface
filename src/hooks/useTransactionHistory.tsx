@@ -1,10 +1,13 @@
+import { OrderBookApi } from '@cowprotocol/cow-sdk';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
 import {
   actionFilterMap,
   hasCollateralReserve,
   hasPrincipalReserve,
   hasReserve,
+  hasSrcOrDestToken,
   HistoryFilters,
   TransactionHistoryItemUnion,
 } from 'src/modules/history/types';
@@ -15,6 +18,7 @@ import {
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { TOKEN_LIST } from 'src/ui-config/TokenList';
 import { useShallow } from 'zustand/shallow';
 
 export const applyTxHistoryFilters = ({
@@ -35,6 +39,8 @@ export const applyTxHistoryFilters = ({
       let principalName = '';
       let symbol = '';
       let name = '';
+      let srcToken = '';
+      let destToken = '';
 
       if (hasCollateralReserve(txn)) {
         collateralSymbol = txn.collateralReserve.symbol.toLowerCase();
@@ -51,6 +57,11 @@ export const applyTxHistoryFilters = ({
         name = txn.reserve.name.toLowerCase();
       }
 
+      if (hasSrcOrDestToken(txn)) {
+        srcToken = txn.srcToken.symbol.toLowerCase();
+        destToken = txn.destToken.symbol.toLowerCase();
+      }
+
       // handle special case where user searches for ethereum but asset names are abbreviated as ether
       const altName = name.includes('ether') && !name.includes('tether') ? 'ethereum' : '';
 
@@ -61,7 +72,9 @@ export const applyTxHistoryFilters = ({
         name.includes(lowerSearchQuery) ||
         altName.includes(lowerSearchQuery) ||
         collateralName.includes(lowerSearchQuery) ||
-        principalName.includes(lowerSearchQuery)
+        principalName.includes(lowerSearchQuery) ||
+        srcToken.includes(lowerSearchQuery) ||
+        destToken.includes(lowerSearchQuery)
       );
     });
   } else {
@@ -153,6 +166,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     let skip = 0;
     let currentBatchSize = batchSize;
 
+    // Pagination over multiple sources is not perfect but since this is not a user facing feature, it's not noticeable
     while (currentBatchSize === batchSize) {
       const currentBatch = await fetchTransactionHistory({
         first: batchSize,
@@ -162,8 +176,9 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         v3: !!currentMarketData.v3,
         pool: selectedPool,
       });
+      const cowSwapOrders = await fetchCowSwapsHistory(batchSize, skip * batchSize);
+      allTransactions.push(...currentBatch, ...cowSwapOrders);
       currentBatchSize = currentBatch.length;
-      allTransactions.push(...currentBatch);
       skip += batchSize;
     }
 
@@ -171,6 +186,66 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     return filteredTxns;
   };
 
+  const fetchCowSwapsHistory = async (first: number, skip: number) => {
+    const chainId = currentMarketData.chainId;
+    if (!isChainIdSupportedByCoWProtocol(chainId)) {
+      return [];
+    }
+
+    const orderBookApi = new OrderBookApi({ chainId: chainId });
+    const orders = await orderBookApi.getOrders({
+      owner: account,
+      limit: first,
+      offset: skip,
+    });
+
+    return orders
+      .map<TransactionHistoryItemUnion | null>((order) => {
+        const srcToken = TOKEN_LIST.tokens.find(
+          (token) =>
+            token.chainId == chainId && token.address.toLowerCase() == order.sellToken.toLowerCase()
+        );
+        const destToken = TOKEN_LIST.tokens.find(
+          (token) =>
+            token.chainId == chainId && token.address.toLowerCase() == order.buyToken.toLowerCase()
+        );
+
+        if (!srcToken || !destToken) {
+          console.error(
+            'Token not found',
+            order.sellToken,
+            order.buyToken,
+            'This should not happen'
+          );
+          return null;
+        }
+
+        return {
+          action: 'CowSwap',
+          id: order.uid,
+          timestamp: new Date(order.creationDate).getTime(),
+          srcToken: {
+            underlyingAsset: srcToken.address,
+            name: srcToken.name,
+            symbol: srcToken.symbol,
+            decimals: srcToken.decimals,
+          },
+          destToken: {
+            underlyingAsset: destToken.address,
+            name: destToken.name,
+            symbol: destToken.symbol,
+            decimals: destToken.decimals,
+          },
+          srcAmount: order.sellAmount,
+          destAmount: order.buyAmount,
+          status: order.status,
+        };
+      })
+      .filter((txn) => txn !== null);
+  };
+
+  const PAGE_SIZE = 100;
+  // Pagination over multiple sources is not perfect but since we are using an infinite query, won't be noticeable
   const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage, isError, error } =
     useInfiniteQuery({
       queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
@@ -178,23 +253,24 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         const response = await fetchTransactionHistory({
           account,
           subgraphUrl: currentMarketData.subgraphUrl ?? '',
-          first: 100,
+          first: PAGE_SIZE,
           skip: pageParam,
           v3: !!currentMarketData.v3,
           pool: selectedPool,
         });
-        return response;
+        const cowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, pageParam * PAGE_SIZE);
+        return [...response, ...cowSwapOrders];
       },
       enabled: !!account && !!currentMarketData.subgraphUrl,
       getNextPageParam: (
         lastPage: TransactionHistoryItemUnion[],
         allPages: TransactionHistoryItemUnion[][]
       ) => {
-        const moreDataAvailable = lastPage.length === 100;
+        const moreDataAvailable = lastPage.length === PAGE_SIZE;
         if (!moreDataAvailable) {
           return undefined;
         }
-        return allPages.length * 100;
+        return allPages.length * PAGE_SIZE;
       },
       initialPageParam: 0,
     });
