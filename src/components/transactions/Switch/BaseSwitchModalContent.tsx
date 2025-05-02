@@ -321,7 +321,8 @@ export const BaseSwitchModalContent = ({
         <Warning severity="info" icon={false} sx={{ mt: 2, mb: 2 }}>
           <Typography variant="caption">
             You have {cowSwitchsInProgress} pending order{cowSwitchsInProgress > 1 ? 's' : ''} for
-            this asset pair. You can track their status in your{' '}
+            this asset pair. You can track {cowSwitchsInProgress > 1 ? 'their' : 'its'} status in
+            your{' '}
             <Link target="_blank" href="/history">
               transaction history
             </Link>
@@ -335,13 +336,11 @@ export const BaseSwitchModalContent = ({
           selectedNetwork={selectedChainId}
           setSelectedNetwork={handleSelectedNetworkChange}
         />
-        {switchProvider !== 'cowprotocol' && (
-          <SwitchSlippageSelector
-            slippageValidation={slippageValidation}
-            slippage={slippage}
-            setSlippage={setSlippage}
-          />
-        )}
+        <SwitchSlippageSelector
+          slippageValidation={slippageValidation}
+          slippage={slippage}
+          setSlippage={setSlippage}
+        />
       </Box>
       {!selectedInputToken || !selectedOutputToken ? (
         <CircularProgress />
@@ -441,6 +440,14 @@ export const BaseSwitchModalContent = ({
               {swapDetailsComponent}
 
               {txError && <ParaswapErrorDisplay txError={txError} />}
+              {switchProvider === 'cowprotocol' && (
+                <Warning severity="info" icon={false} sx={{ mt: 4 }}>
+                  <Typography variant="caption">
+                    This action doesn&apos;t require gas as it&apos;s not an onchain transaction.
+                  </Typography>
+                </Warning>
+              )}
+
               <SwitchActions
                 isWrongNetwork={isWrongNetwork.isWrongNetwork}
                 inputAmount={debounceInputAmount}
