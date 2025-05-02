@@ -193,9 +193,11 @@ export const SwitchActions = ({
       try {
         const provider = await getEthersProvider(wagmiConfig, { chainId });
 
+        const destAmountWithSlippage = Number(switchRates.destAmount) * (1 - Number(slippage));
         const orderId = await sendOrder({
           quote: switchRates.order,
           amount: switchRates.srcAmount,
+          destAmount: destAmountWithSlippage.toString(),
           chainId,
           user,
           provider,
