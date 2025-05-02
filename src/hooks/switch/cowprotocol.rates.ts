@@ -1,6 +1,10 @@
 import { OrderBookApi, OrderQuoteResponse, OrderQuoteSideKindSell } from '@cowprotocol/cow-sdk';
 import { BigNumber } from 'bignumber.js';
-import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
+import { isNativeToken } from 'src/components/transactions/Switch/cowprotocol.helpers';
+import {
+  isChainIdSupportedByCoWProtocol,
+  WrappedNativeTokens,
+} from 'src/components/transactions/Switch/switch.constants';
 import { SwitchParams, SwitchRatesType } from 'src/components/transactions/Switch/switch.types';
 import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
 import { TxAction } from 'src/ui-config/errorMapping';
@@ -26,11 +30,17 @@ export async function getCowProtocolSellRates({
       throw new Error('Chain not supported by CowProtocol');
     }
 
+    // If srcToken is native, we need to use the wrapped token for the quote
+    let srcTokenWrapped = srcToken;
+    if (isNativeToken(srcToken)) {
+      srcTokenWrapped = WrappedNativeTokens[chainId];
+    }
+
     [orderBookQuote, srcTokenPriceUsd, destTokenPriceUsd] = await Promise.all([
       orderBookApi
         .getQuote(
           {
-            sellToken: srcToken,
+            sellToken: srcTokenWrapped,
             buyToken: destToken,
             from: user,
             receiver: user,
@@ -45,7 +55,7 @@ export async function getCowProtocolSellRates({
           throw new Error(cowError.body.errorType);
         }),
       // CoW Quote doesn't return values in USD, so we need to fetch the price from the API separately
-      cowProtocolPricesService.getTokenUsdPrice(chainId, srcToken).catch((cowError) => {
+      cowProtocolPricesService.getTokenUsdPrice(chainId, srcTokenWrapped).catch((cowError) => {
         throw new Error(cowError.body.errorType);
       }),
       cowProtocolPricesService.getTokenUsdPrice(chainId, destToken).catch((cowError) => {
@@ -86,5 +96,6 @@ export async function getCowProtocolSellRates({
     destDecimals,
     provider: 'cowprotocol',
     order: orderBookQuote.quote,
+    quoteId: orderBookQuote.id,
   };
 }

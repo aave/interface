@@ -43,6 +43,7 @@ export type ParaswapRatesType = BaseSwitchRates & {
 export type CowProtocolRatesType = BaseSwitchRates & {
   provider: 'cowprotocol';
   order: OrderParameters;
+  quoteId?: number;
 };
 
 export const isParaswapRates = (rates?: SwitchRatesType): rates is ParaswapRatesType => {
