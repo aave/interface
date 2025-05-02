@@ -25,7 +25,7 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { supportedNetworksWithEnabledMarket, SupportedNetworkWithChainId } from './common';
-import { getOrders } from './cowprotocol.helpers';
+import { getOrders, isNativeToken } from './cowprotocol.helpers';
 import { NetworkSelector } from './NetworkSelector';
 import { SwitchProvider, SwitchRatesType } from './switch.types';
 import { SwitchActions } from './SwitchActions';
@@ -271,6 +271,7 @@ export const BaseSwitchModalContent = ({
         outIconSymbol={selectedOutputToken.symbol}
         outIconUri={selectedOutputToken.logoURI}
         provider={switchProvider ?? 'paraswap'}
+        isEthFlow={isNativeToken(selectedInputToken.address) && switchProvider === 'cowprotocol'}
         chainId={selectedChainId}
         outAmount={(
           Number(normalize(switchRates.destAmount, switchRates.destDecimals)) *
@@ -440,7 +441,7 @@ export const BaseSwitchModalContent = ({
               {swapDetailsComponent}
 
               {txError && <ParaswapErrorDisplay txError={txError} />}
-              {switchProvider === 'cowprotocol' && (
+              {switchProvider === 'cowprotocol' && !isNativeToken(selectedInputToken.address) && (
                 <Warning severity="info" icon={false} sx={{ mt: 4 }}>
                   <Typography variant="caption">
                     This action doesn&apos;t require gas as it&apos;s not an onchain transaction.

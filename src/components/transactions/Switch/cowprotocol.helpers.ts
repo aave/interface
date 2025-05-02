@@ -7,6 +7,7 @@ import {
   UnsignedOrder,
 } from '@cowprotocol/cow-sdk';
 import { JsonRpcProvider } from '@ethersproject/providers';
+import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
 import { getErrorTextFromError, TxAction, TxErrorType } from 'src/ui-config/errorMapping';
 
 import { isChainIdSupportedByCoWProtocol } from './switch.constants';
@@ -15,6 +16,9 @@ import { isChainIdSupportedByCoWProtocol } from './switch.constants';
 const APP_DATA_STRING =
   '{"appCode":"AaveV3","metadata":{"hooks":{"version":"0.1.0"}},"version":"1.3.0"}';
 const APP_DATA_HASH = '0xec632b4acad3a229df259d7e20dbe1046eb56c9d31cc304ea6186c746a6a81e3';
+export const COW_PROTOCOL_ETH_FLOW_ADDRESS = '0xbA3cB449bD2B4ADddBc894D8697F5170800EAdeC';
+const COW_CREATE_ORDER_ABI =
+  'function createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)) returns (bytes32)';
 
 export type CowProtocolActionParams = {
   quote: OrderParameters;
@@ -119,4 +123,71 @@ export const isOrderFilled = (status: CompetitionOrderStatus.type) => {
 
 export const isOrderCancelled = (status: CompetitionOrderStatus.type) => {
   return status === CompetitionOrderStatus.type.CANCELLED;
+};
+
+export const isNativeToken = (token: string) => {
+  return token.toLowerCase() === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase();
+};
+
+export const populateEthFlowTx = (
+  sellAmount: string,
+  buyAmount: string,
+  dstToken: string,
+  user: string,
+  quoteId?: number
+): PopulatedTransaction => {
+  const orderData = {
+    buyToken: dstToken,
+    receiver: user,
+    sellAmount,
+    buyAmount,
+    appData: APP_DATA_HASH,
+    feeAmount: '0',
+    validTo: BigNumber.from(Math.floor(Date.now() / 1000) + 3600), // 1 hour from now
+    partiallyFillable: false,
+    quoteId: quoteId || 0,
+  };
+
+  const value = BigNumber.from(sellAmount);
+
+  // Create the contract interface
+  const iface = new ethers.utils.Interface([COW_CREATE_ORDER_ABI]);
+
+  // Encode the function call
+  const data = iface.encodeFunctionData('createOrder', [
+    [
+      orderData.buyToken,
+      orderData.receiver,
+      orderData.sellAmount,
+      orderData.buyAmount,
+      orderData.appData,
+      orderData.feeAmount,
+      orderData.validTo,
+      orderData.partiallyFillable,
+      orderData.quoteId,
+    ],
+  ]);
+
+  return {
+    to: COW_PROTOCOL_ETH_FLOW_ADDRESS,
+    value,
+    data,
+  };
+};
+
+// Helper function to decode the order ID from the transaction response
+export const decodeOrderId = async (
+  response: ethers.providers.TransactionResponse
+): Promise<string> => {
+  const iface = new ethers.utils.Interface([COW_CREATE_ORDER_ABI]);
+
+  const receipt = await response.wait();
+  console.log('receipt', receipt);
+  const decoded = iface.decodeFunctionResult('createOrder', receipt.logs[0].data);
+  console.log('decoded', decoded);
+
+  // Convert hex to numeric orderId
+  const orderId = BigNumber.from(decoded[0]);
+  console.log('orderId', orderId);
+  return orderId.toString();
 };

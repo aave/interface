@@ -7,6 +7,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { BaseCancelledView } from '../FlowCommons/BaseCancelled';
 import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
@@ -25,7 +26,20 @@ export type SwitchTxSuccessViewProps = {
   iconUri?: string;
   outIconUri?: string;
   provider: SwitchProvider;
+  isEthFlow: boolean;
   chainId: number;
+};
+
+const getCowExplorerUrl = (hashOrId: string, chainId: number, isEthFlow: boolean) => {
+  if (isEthFlow) {
+    return getNetworkConfig(chainId).explorerLinkBuilder({
+      tx: hashOrId,
+    });
+  }
+
+  return `https://explorer.cow.fi/${
+    chainId == 1 ? '' : ChainIdToNetwork[chainId] + '/'
+  }orders/${hashOrId}`;
 };
 
 export const SwitchTxSuccessView = ({
@@ -40,6 +54,7 @@ export const SwitchTxSuccessView = ({
   outIconUri,
   provider,
   chainId,
+  isEthFlow,
 }: SwitchTxSuccessViewProps) => {
   const switchProvider = useSwitchProvider({ chainId: chainId });
 
@@ -105,9 +120,7 @@ export const SwitchTxSuccessView = ({
               You can see the details{' '}
               <Link
                 underline="always"
-                href={`https://explorer.cow.fi/${
-                  chainId == 1 ? '' : ChainIdToNetwork[chainId] + '/'
-                }orders/${txHash}`}
+                href={getCowExplorerUrl(txHash ?? '', chainId, isEthFlow)}
                 target="_blank"
                 rel="noopener noreferrer"
               >

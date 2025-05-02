@@ -12719,6 +12719,14 @@ export const TOKEN_LIST: TokenList = {
       logoURI: 'https://assets.coingecko.com/coins/images/2518/standard/weth.png?1696503332',
     },
     {
+      name: 'Wrapped Ether',
+      address: '0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1',
+      symbol: 'WETH',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/2518/standard/weth.png?1696503332',
+    },
+    {
       name: 'Ethereum',
       address: '0xc558dbdd856501fcd9aaf1e62eae57a9f0629a3c',
       symbol: 'ETH',
