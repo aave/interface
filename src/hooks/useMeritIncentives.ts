@@ -34,6 +34,7 @@ export enum MeritAction {
   BASE_BORROW_EURC = 'base-borrow-eurc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   BASE_BORROW_WSTETH = 'base-borrow-wsteth',
+  BASE_BORROW_GHO = 'base-borrow-gho',
   AVALANCHE_SUPPLY_BTCB = 'avalanche-supply-btcb',
   AVALANCHE_SUPPLY_USDC = 'avalanche-supply-usdc',
   AVALANCHE_SUPPLY_USDT = 'avalanche-supply-usdt',
@@ -340,6 +341,15 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         protocolAction: ProtocolAction.supply,
         customMessage: lbtcCbbtcCampaignMessage,
         customForumLink: lbtcCbbtcForumLink,
+      },
+    ],
+    GHO: [
+      {
+        action: MeritAction.BASE_BORROW_GHO,
+        rewardTokenAddress: AaveV3Base.ASSETS.GHO.A_TOKEN,
+        rewardTokenSymbol: 'aBasGHO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
       },
     ],
   },
