@@ -6,7 +6,6 @@ import { BasicModal } from 'src/components/primitives/BasicModal';
 import { supportedNetworksWithEnabledMarket } from 'src/components/transactions/Switch/common';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
-import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -49,13 +48,7 @@ const BaseSwitchModalContentWrapper = ({
 } & SwitchModalCustomizableProps) => {
   const filteredTokens = useMemo(() => getFilteredTokensForSwitch(chainId), [chainId]);
 
-  let { data: baseTokenList } = useTokensBalance(filteredTokens, chainId, user);
-
-  const swapProvider = useSwitchProvider({ chainId });
-  if (swapProvider === 'cowprotocol') {
-    // Native tokens are not supported by CoW Protocol, we may add a different flow for them later
-    baseTokenList = baseTokenList?.filter((token) => !token.extensions?.isNative);
-  }
+  const { data: baseTokenList } = useTokensBalance(filteredTokens, chainId, user);
 
   const { defaultInputToken, defaultOutputToken } = useMemo(() => {
     let auxInputToken = forcedDefaultInputToken;

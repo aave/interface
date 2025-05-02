@@ -21,7 +21,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
-import { sendOrder } from './cowprotocol.helpers';
+import { decodeOrderId, isNativeToken, populateEthFlowTx, sendOrder } from './cowprotocol.helpers';
 import { isCowProtocolRates, isParaswapRates, SwitchRatesType } from './switch.types';
 
 interface SwitchProps {
@@ -149,7 +149,6 @@ export const SwitchActions = ({
             response.hash,
             {
               txState: 'success',
-              ...txData,
             },
             {
               chainId,
@@ -192,23 +191,77 @@ export const SwitchActions = ({
     } else if (isCowProtocolRates(switchRates)) {
       try {
         const provider = await getEthersProvider(wagmiConfig, { chainId });
+        const destAmountWithSlippage = Math.floor(
+          Number(switchRates.destAmount) * (1 - Number(slippage))
+        );
 
-        const destAmountWithSlippage = Number(switchRates.destAmount) * (1 - Number(slippage));
-        const orderId = await sendOrder({
-          quote: switchRates.order,
-          amount: switchRates.srcAmount,
-          destAmount: destAmountWithSlippage.toString(),
-          chainId,
-          user,
-          provider,
-          setError: setTxError,
-        });
+        // If srcToken is native, we need to use the eth-flow instead of the orderbook
+        if (isNativeToken(inputToken)) {
+          const ethFlowTx = populateEthFlowTx(
+            switchRates.srcAmount,
+            destAmountWithSlippage.toString(),
+            outputToken,
+            user,
+            switchRates.quoteId
+          );
+          const txWithGasEstimation = await estimateGasLimit(ethFlowTx, chainId);
+          console.log('txWithGasEstimation', txWithGasEstimation);
+          let response;
+          try {
+            response = await sendTx(txWithGasEstimation);
+            console.log('response', response);
+            addTransaction(
+              response.hash,
+              {
+                txState: 'success',
+              },
+              {
+                chainId,
+              }
+            );
 
-        setMainTxState({
-          loading: false,
-          success: true,
-          txHash: orderId,
-        });
+            // TODO FIX ORDER ID and set in mainTxState
+            const orderId = await decodeOrderId(response);
+            console.log('orderId', orderId);
+            setMainTxState({
+              txHash: response.hash,
+              loading: false,
+              success: true,
+            });
+          } catch (error) {
+            console.log('error', error);
+            setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
+            if (response?.hash) {
+              setMainTxState({
+                txHash: response?.hash,
+                loading: false,
+              });
+              addTransaction(
+                response?.hash,
+                {
+                  txState: 'failed',
+                },
+                { chainId }
+              );
+            }
+          }
+        } else {
+          const orderId = await sendOrder({
+            quote: switchRates.order,
+            amount: switchRates.srcAmount,
+            destAmount: destAmountWithSlippage.toString(),
+            chainId,
+            user,
+            provider,
+            setError: setTxError,
+          });
+
+          setMainTxState({
+            loading: false,
+            success: true,
+            txHash: orderId,
+          });
+        }
 
         // Invalidate the pool tokens query to refresh the data
         queryClient.invalidateQueries({
