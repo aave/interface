@@ -4,8 +4,8 @@ import { Proposal } from 'src/hooks/governance/useProposals';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { AIP } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { AIP } from 'src/utils/mixPanelEvents';
 
 import { LensIcon } from '../../../components/icons/LensIcon';
 import { TxErrorView } from '../FlowCommons/Error';

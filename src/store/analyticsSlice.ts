@@ -1,9 +1,9 @@
-import mixpanel from 'mixpanel-browser';
+import { init, setOptOut, track } from '@amplitude/analytics-browser';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
 
-const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL || '';
+const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || '';
 
 export type TrackEventProperties = {
   [key: string]: string | number | boolean | Date | undefined;
@@ -17,12 +17,12 @@ export type TrackEventProps = {
 export type AnalyticsSlice = {
   trackEvent: (eventName: string, properties?: TrackEventProperties) => void;
   isTrackingEnabled: boolean;
-  initializeMixpanel: () => void;
+  initializeEventsTracking: () => void;
   acceptAnalytics: () => void;
   rejectAnalytics: () => void;
   analyticsConfigOpen: boolean;
   setAnalyticsConfigOpen: (eventName: boolean) => void;
-  mixpanelInitialized: boolean;
+  eventsTrackingInitialized: boolean;
 };
 
 export const createAnalyticsSlice: StateCreator<
@@ -49,7 +49,7 @@ export const createAnalyticsSlice: StateCreator<
 
       try {
         if (!EXCLUDED_NETWORKS.includes(get().currentMarket)) {
-          mixpanel.track(eventName, eventProperties);
+          track(eventName, eventProperties);
         }
       } catch (err) {
         console.log('something went wrong tracking event', err);
@@ -58,28 +58,45 @@ export const createAnalyticsSlice: StateCreator<
 
     isTrackingEnabled: false,
     analyticsConfigOpen: true,
-    mixpanelInitialized: false,
+    eventsTrackingInitialized: false,
 
-    initializeMixpanel: () => {
+    initializeEventsTracking: () => {
       const userAcceptedAnalytics = localStorage.getItem('userAcceptedAnalytics') === 'true';
-      const isInitialized = get().mixpanelInitialized;
+      const isInitialized = get().eventsTrackingInitialized;
 
-      if (!MIXPANEL_TOKEN) return;
+      if (!AMPLITUDE_API_KEY) return;
 
       if (userAcceptedAnalytics) {
         if (!isInitialized) {
-          mixpanel.init(MIXPANEL_TOKEN, { ip: false });
-          set({ mixpanelInitialized: true });
+          init(AMPLITUDE_API_KEY, {
+            // serverZone: 'EU',
+            autocapture: true, // disable if we don't want to capture every click and page view on the site
+            trackingOptions: {
+              ipAddress: true,
+              language: true,
+              platform: true,
+            },
+          });
+          set({ eventsTrackingInitialized: true });
         }
 
-        mixpanel.opt_in_tracking();
+        setOptOut(false);
         set({ isTrackingEnabled: true });
       } else {
         if (!isInitialized) {
-          mixpanel.init(MIXPANEL_TOKEN, { ip: false });
-          set({ mixpanelInitialized: true });
+          init(AMPLITUDE_API_KEY, {
+            // serverZone: 'EU',
+            autocapture: false,
+            trackingOptions: {
+              ipAddress: false,
+              language: false,
+              platform: false,
+            },
+          });
+          set({ eventsTrackingInitialized: true });
         }
-        mixpanel.opt_out_tracking();
+
+        setOptOut(true);
         set({ isTrackingEnabled: false });
       }
     },
@@ -87,11 +104,11 @@ export const createAnalyticsSlice: StateCreator<
       localStorage.setItem('userAcceptedAnalytics', 'true');
       set({ isTrackingEnabled: true, analyticsConfigOpen: false });
 
-      get().initializeMixpanel();
+      get().initializeEventsTracking();
     },
     rejectAnalytics: () => {
       localStorage.setItem('userAcceptedAnalytics', 'false');
-      // mixpanel.opt_out_tracking();
+      setOptOut(true);
       set({ isTrackingEnabled: false, analyticsConfigOpen: false });
     },
     setAnalyticsConfigOpen: (value: boolean) => {

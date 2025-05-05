@@ -8,7 +8,7 @@ import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
-import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { RESERVE_DETAILS } from 'src/utils/events';
 
 interface AddTokenDropdownProps {
   poolReserve: ComputedReserveData;

@@ -27,7 +27,7 @@ import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { StakeActionBox } from './StakeActionBox';
 import { StakingPanelSkeleton } from './StakingPanelSkeleton';

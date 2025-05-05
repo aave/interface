@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 export const ParameterChangewarning = ({ underlyingAsset }: { underlyingAsset: string }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
