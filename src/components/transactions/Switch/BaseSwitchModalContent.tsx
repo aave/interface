@@ -116,7 +116,9 @@ export const BaseSwitchModalContent = ({
   });
   const switchProvider = useSwitchProvider({ chainId: selectedChainId });
 
-  const [cowSwitchsInProgress, setCowSwitchsInProgress] = useState(0);
+  const [cowOpenOrdersTotalAmountFormatted, setCowOpenOrdersTotalAmountFormatted] = useState<
+    string | undefined
+  >(undefined);
   useEffect(() => {
     if (
       switchProvider == 'cowprotocol' &&
@@ -126,13 +128,16 @@ export const BaseSwitchModalContent = ({
       selectedOutputToken
     ) {
       getOrders(selectedChainId, user).then((orders) => {
-        setCowSwitchsInProgress(
-          orders.filter(
+        const cowOpenOrdersTotalAmount = orders
+          .filter(
             (order) =>
               order.sellToken.toLowerCase() == selectedInputToken.address.toLowerCase() &&
-              order.buyToken.toLowerCase() == selectedOutputToken.address.toLowerCase() &&
               order.status == OrderStatus.OPEN
-          ).length
+          )
+          .map((order) => order.sellAmount)
+          .reduce((acc, curr) => acc + Number(curr), 0);
+        setCowOpenOrdersTotalAmountFormatted(
+          normalize(cowOpenOrdersTotalAmount, selectedInputToken.decimals).toString()
         );
       });
     }
@@ -271,7 +276,6 @@ export const BaseSwitchModalContent = ({
         outIconSymbol={selectedOutputToken.symbol}
         outIconUri={selectedOutputToken.logoURI}
         provider={switchProvider ?? 'paraswap'}
-        isEthFlow={isNativeToken(selectedInputToken.address) && switchProvider === 'cowprotocol'}
         chainId={selectedChainId}
         outAmount={(
           Number(normalize(switchRates.destAmount, switchRates.destDecimals)) *
@@ -318,12 +322,11 @@ export const BaseSwitchModalContent = ({
         />
       )}
 
-      {cowSwitchsInProgress > 0 && (
+      {cowOpenOrdersTotalAmountFormatted && (
         <Warning severity="info" icon={false} sx={{ mt: 2, mb: 2 }}>
           <Typography variant="caption">
-            You have {cowSwitchsInProgress} pending order{cowSwitchsInProgress > 1 ? 's' : ''} for
-            this asset pair. You can track {cowSwitchsInProgress > 1 ? 'their' : 'its'} status in
-            your{' '}
+            You have open orders for {cowOpenOrdersTotalAmountFormatted} {selectedInputToken.symbol}
+            . <br /> You can track them in your{' '}
             <Link target="_blank" href="/history">
               transaction history
             </Link>
