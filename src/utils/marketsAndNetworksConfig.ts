@@ -165,7 +165,7 @@ export const getProvider = (chainId: ChainId): ProviderWithSend => {
     const config = getNetworkConfig(chainId);
     if (
       (FORK_ENABLED && FORK_BASE_CHAIN_ID === chainId) ||
-      process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED === 'false'
+      process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED !== 'true'
     ) {
       // No private RPC or there is a fork configured, use public ones directly
       const chainProviders: string[] = [];
