@@ -136,9 +136,13 @@ export const BaseSwitchModalContent = ({
           )
           .map((order) => order.sellAmount)
           .reduce((acc, curr) => acc + Number(curr), 0);
-        setCowOpenOrdersTotalAmountFormatted(
-          normalize(cowOpenOrdersTotalAmount, selectedInputToken.decimals).toString()
-        );
+        if (cowOpenOrdersTotalAmount > 0) {
+          setCowOpenOrdersTotalAmountFormatted(
+            normalize(cowOpenOrdersTotalAmount, selectedInputToken.decimals).toString()
+          );
+        } else {
+          setCowOpenOrdersTotalAmountFormatted(undefined);
+        }
       });
     }
   }, [selectedInputToken, selectedOutputToken, switchProvider, selectedChainId, user]);
