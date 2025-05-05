@@ -163,10 +163,11 @@ const providers: { [network: string]: ProviderWithSend } = {};
 export const getProvider = (chainId: ChainId): ProviderWithSend => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    if (process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED === 'true' && !FORK_ENABLED) {
-      providers[chainId] = new ServerJsonRpcProvider(chainId);
-    } else {
-      // No private RPC, use public ones directly
+    if (
+      (FORK_ENABLED && FORK_BASE_CHAIN_ID === chainId) ||
+      process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED === 'false'
+    ) {
+      // No private RPC or there is a fork configured, use public ones directly
       const chainProviders: string[] = [];
       if (config.publicJsonRPCUrl.length) {
         config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
@@ -179,6 +180,8 @@ export const getProvider = (chainId: ChainId): ProviderWithSend => {
       } else {
         providers[chainId] = new RotationProvider(chainProviders, chainId);
       }
+    } else {
+      providers[chainId] = new ServerJsonRpcProvider(chainId);
     }
   }
   return providers[chainId];
