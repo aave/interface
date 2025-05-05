@@ -1,5 +1,9 @@
 import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
-import { COW_PROTOCOL_VAULT_RELAYER_ADDRESS, SupportedChainId } from '@cowprotocol/cow-sdk';
+import {
+  calculateUniqueOrderId,
+  COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
+  SupportedChainId,
+} from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import { defaultAbiCoder, formatUnits, splitSignature } from 'ethers/lib/utils';
@@ -21,7 +25,12 @@ import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
-import { decodeOrderId, isNativeToken, populateEthFlowTx, sendOrder } from './cowprotocol.helpers';
+import {
+  getUnsignerOrder,
+  isNativeToken,
+  populateEthFlowTx,
+  sendOrder,
+} from './cowprotocol.helpers';
 import { isCowProtocolRates, isParaswapRates, SwitchRatesType } from './switch.types';
 
 interface SwitchProps {
@@ -197,19 +206,19 @@ export const SwitchActions = ({
 
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(inputToken)) {
+          const validTo = Math.floor(Date.now() / 1000) + 3600;
           const ethFlowTx = populateEthFlowTx(
             switchRates.srcAmount,
             destAmountWithSlippage.toString(),
             outputToken,
             user,
+            validTo,
             switchRates.quoteId
           );
           const txWithGasEstimation = await estimateGasLimit(ethFlowTx, chainId);
-          console.log('txWithGasEstimation', txWithGasEstimation);
           let response;
           try {
             response = await sendTx(txWithGasEstimation);
-            console.log('response', response);
             addTransaction(
               response.hash,
               {
@@ -220,16 +229,21 @@ export const SwitchActions = ({
               }
             );
 
-            // TODO FIX ORDER ID and set in mainTxState
-            const orderId = await decodeOrderId(response);
-            console.log('orderId', orderId);
+            const unsignerOrder = getUnsignerOrder(
+              switchRates.srcAmount,
+              destAmountWithSlippage.toString(),
+              outputToken,
+              user,
+              chainId
+            );
+            const calculatedOrderId = await calculateUniqueOrderId(chainId, unsignerOrder);
+
             setMainTxState({
-              txHash: response.hash,
+              txHash: calculatedOrderId,
               loading: false,
               success: true,
             });
           } catch (error) {
-            console.log('error', error);
             setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
             if (response?.hash) {
               setMainTxState({
@@ -254,6 +268,7 @@ export const SwitchActions = ({
             user,
             provider,
             setError: setTxError,
+            tokenDest: outputToken,
           });
 
           setMainTxState({

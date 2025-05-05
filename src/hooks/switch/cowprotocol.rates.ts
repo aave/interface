@@ -36,12 +36,17 @@ export async function getCowProtocolSellRates({
       srcTokenWrapped = WrappedNativeTokens[chainId];
     }
 
+    let destTokenWrapped = destToken;
+    if (isNativeToken(destToken)) {
+      destTokenWrapped = WrappedNativeTokens[chainId];
+    }
+
     [orderBookQuote, srcTokenPriceUsd, destTokenPriceUsd] = await Promise.all([
       orderBookApi
         .getQuote(
           {
             sellToken: srcTokenWrapped,
-            buyToken: destToken,
+            buyToken: destTokenWrapped,
             from: user,
             receiver: user,
             sellAmountBeforeFee: amount, // decimals?
@@ -58,7 +63,7 @@ export async function getCowProtocolSellRates({
       cowProtocolPricesService.getTokenUsdPrice(chainId, srcTokenWrapped).catch((cowError) => {
         throw new Error(cowError.body.errorType);
       }),
-      cowProtocolPricesService.getTokenUsdPrice(chainId, destToken).catch((cowError) => {
+      cowProtocolPricesService.getTokenUsdPrice(chainId, destTokenWrapped).catch((cowError) => {
         throw new Error(cowError.body.errorType);
       }),
     ]);
