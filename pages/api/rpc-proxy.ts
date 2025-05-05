@@ -1,42 +1,53 @@
 import { ChainId } from '@aave/contract-helpers';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { networkConfigs } from '../../src/ui-config/networksConfig';
-
 // Documentation: ./server-side-rpc-proxy.md
-const PRIVATE_RPC_URLS: Record<string, string> = {
-  [ChainId.mainnet]:
-    process.env.PRIVATE_RPC_MAINNET || networkConfigs[ChainId.mainnet].privateJsonRPCUrl || '',
-  [ChainId.polygon]:
-    process.env.PRIVATE_RPC_POLYGON || networkConfigs[ChainId.polygon].privateJsonRPCUrl || '',
-  [ChainId.avalanche]:
-    process.env.PRIVATE_RPC_AVALANCHE || networkConfigs[ChainId.avalanche].privateJsonRPCUrl || '',
-  [ChainId.arbitrum_one]:
-    process.env.PRIVATE_RPC_ARBITRUM ||
-    networkConfigs[ChainId.arbitrum_one].privateJsonRPCUrl ||
-    '',
-  [ChainId.base]:
-    process.env.PRIVATE_RPC_BASE || networkConfigs[ChainId.base].privateJsonRPCUrl || '',
-  [ChainId.optimism]:
-    process.env.PRIVATE_RPC_OPTIMISM || networkConfigs[ChainId.optimism].privateJsonRPCUrl || '',
-  [ChainId.metis_andromeda]:
-    process.env.PRIVATE_RPC_METIS ||
-    networkConfigs[ChainId.metis_andromeda].privateJsonRPCUrl ||
-    '',
-  [ChainId.xdai]:
-    process.env.PRIVATE_RPC_GNOSIS || networkConfigs[ChainId.xdai].privateJsonRPCUrl || '',
-  [ChainId.bnb]: process.env.PRIVATE_RPC_BNB || networkConfigs[ChainId.bnb].privateJsonRPCUrl || '',
-  [ChainId.scroll]:
-    process.env.PRIVATE_RPC_SCROLL || networkConfigs[ChainId.scroll].privateJsonRPCUrl || '',
-  [ChainId.zksync]:
-    process.env.PRIVATE_RPC_ZKSYNC || networkConfigs[ChainId.zksync].privateJsonRPCUrl || '',
-  [ChainId.linea]:
-    process.env.PRIVATE_RPC_LINEA || networkConfigs[ChainId.linea].privateJsonRPCUrl || '',
-  [ChainId.sonic]:
-    process.env.PRIVATE_RPC_SONIC || networkConfigs[ChainId.sonic].privateJsonRPCUrl || '',
-  [ChainId.celo]:
-    process.env.PRIVATE_RPC_CELO || networkConfigs[ChainId.celo].privateJsonRPCUrl || '',
+const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
+  // Mainnets
+  [ChainId.mainnet]: { network: 'eth-mainnet', apiKey: process.env.MAINNET_RPC_API_KEY || '' },
+  [ChainId.polygon]: { network: 'polygon-mainnet', apiKey: process.env.POLYGON_RPC_API_KEY || '' },
+  [ChainId.avalanche]: { network: 'avax-mainnet', apiKey: process.env.AVALANCHE_RPC_API_KEY || '' },
+  [ChainId.arbitrum_one]: {
+    network: 'arb-mainnet',
+    apiKey: process.env.ARBITRUM_RPC_API_KEY || '',
+  },
+  [ChainId.base]: { network: 'base-mainnet', apiKey: process.env.BASE_RPC_API_KEY || '' },
+  [ChainId.optimism]: { network: 'opt-mainnet', apiKey: process.env.OPTIMISM_RPC_API_KEY || '' },
+  [ChainId.metis_andromeda]: {
+    network: 'metis-mainnet',
+    apiKey: process.env.METIS_RPC_API_KEY || '',
+  },
+  [ChainId.xdai]: { network: 'gnosis-mainnet', apiKey: process.env.GNOSIS_RPC_API_KEY || '' },
+  [ChainId.bnb]: { network: 'bnb-mainnet', apiKey: process.env.BNB_RPC_API_KEY || '' },
+  [ChainId.scroll]: { network: 'scroll-mainnet', apiKey: process.env.SCROLL_RPC_API_KEY || '' },
+  [ChainId.zksync]: { network: 'zksync-mainnet', apiKey: process.env.ZKSYNC_RPC_API_KEY || '' },
+  [ChainId.linea]: { network: 'linea-mainnet', apiKey: process.env.LINEA_RPC_API_KEY || '' },
+  [ChainId.sonic]: { network: 'sonic-mainnet', apiKey: process.env.SONIC_RPC_API_KEY || '' },
+  [ChainId.celo]: { network: 'celo-mainnet', apiKey: process.env.CELO_RPC_API_KEY || '' },
+
+  // Testnets
+  [ChainId.sepolia]: { network: 'eth-sepolia', apiKey: process.env.MAINNET_RPC_API_KEY || '' },
+  [ChainId.fuji]: { network: 'avax-fuji', apiKey: process.env.AVALANCHE_RPC_API_KEY || '' },
+  [ChainId.arbitrum_sepolia]: {
+    network: 'arb-sepolia',
+    apiKey: process.env.ARBITRUM_RPC_API_KEY || '',
+  },
+  [ChainId.base_sepolia]: { network: 'base-sepolia', apiKey: process.env.BASE_RPC_API_KEY || '' },
+  [ChainId.optimism_sepolia]: {
+    network: 'opt-sepolia',
+    apiKey: process.env.OPTIMISM_RPC_API_KEY || '',
+  },
+  [ChainId.scroll_sepolia]: {
+    network: 'scroll-sepolia',
+    apiKey: process.env.SCROLL_RPC_API_KEY || '',
+  },
 };
+
+function getRpcUrl(chainId: number): string | null {
+  const config = NETWORK_CONFIG[chainId];
+  if (!config) return null;
+  return `https://${config.network}.g.alchemy.com/v2/${config.apiKey}`;
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowedOrigins = ['https://app.aave.com', 'https://aave.com'];
@@ -73,7 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const { chainId, method, params } = req.body;
     const chainIdNumber = typeof chainId === 'string' ? parseInt(chainId) : chainId;
-    const rpcUrl = PRIVATE_RPC_URLS[chainIdNumber];
+    const rpcUrl = getRpcUrl(chainIdNumber);
 
     if (!rpcUrl) {
       return res.status(400).json({ error: `Unsupported chain ID: ${chainIdNumber}` });
