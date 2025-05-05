@@ -7,6 +7,7 @@ import { ModalType } from 'src/hooks/useModal';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { BaseSwitchModal } from './BaseSwitchModal';
 import { SwitchDetailsParams as SwitchDetailsParams } from './BaseSwitchModalContent';
+import { isNativeToken } from './cowprotocol.helpers';
 
 export const SwitchModal = () => {
   const switchDetails = ({
@@ -14,16 +15,15 @@ export const SwitchModal = () => {
     switchRates,
     gasLimit,
     selectedChainId,
+    selectedInputToken,
     selectedOutputToken,
     safeSlippage,
     switchProvider,
   }: SwitchDetailsParams) => {
+    const requiresGas =
+      switchProvider !== 'cowprotocol' || isNativeToken(selectedInputToken.address);
     return switchRates && user ? (
-      <TxModalDetails
-        gasLimit={gasLimit}
-        chainId={selectedChainId}
-        showGasStation={switchProvider !== 'cowprotocol'}
-      >
+      <TxModalDetails gasLimit={requiresGas ? gasLimit : undefined} chainId={selectedChainId}>
         <Row
           caption={<Trans>{`Minimum ${selectedOutputToken.symbol} received`}</Trans>}
           captionVariant="caption"
