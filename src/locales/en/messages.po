@@ -2601,6 +2601,10 @@ msgstr "We couldn't find any transactions related to your search. Try again with
 msgid "English"
 msgstr "English"
 
+#: src/components/transactions/GasStation/GasStation.tsx
+msgid "This action does not require gas."
+msgstr "This action does not require gas."
+
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
