@@ -9,7 +9,6 @@ interface SwitchRatesErrorProps {
 }
 
 export const SwitchRatesError = ({ error }: SwitchRatesErrorProps) => {
-  // TODO: (Martin) manage both paraswap and cow errors
   const customErrorMessage =
     error instanceof Error
       ? convertParaswapErrorMessage(error.message) ?? convertCowProtocolErrorMessage(error.message)
