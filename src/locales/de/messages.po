@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-06 18:06\n"
+"PO-Revision-Date: 2025-04-21 18:07\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -674,10 +674,6 @@ msgstr "Die Kreditaufnahme von Macht und Vermögenswerten ist aufgrund des Isola
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr "Die Kreditobergrenze des Protokolls liegt bei 100 % für diesen Vermögenswert. Weitere Ausleihe nicht möglich."
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Thank you for voting!!"
-msgstr "Vielen Dank für Ihre Stimme!!"
-
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Stall"
@@ -1027,6 +1023,11 @@ msgstr "Fordernd {symbol}"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Die Kreditaufnahme dieses Vermögenswerts ist auf einen bestimmten Betrag begrenzt, um die Insolvenz des Liquiditätspools zu minimieren."
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
+msgid "All done"
+msgstr ""
 
 #: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
@@ -2284,11 +2285,6 @@ msgstr "Abgestimmt auf NAY"
 msgid "about SuperFest."
 msgstr ""
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-#: src/components/transactions/FlowCommons/BaseSuccess.tsx
-msgid "All done!"
-msgstr "Fertig!"
-
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
 msgstr "Testnet-Modus"
@@ -2668,10 +2664,6 @@ msgstr "Mit einem Stimmrecht von <0/>"
 msgid "French"
 msgstr "Französisch"
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
-msgstr ""
-
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
 msgstr "Die gleichzeitige Migration mehrerer Sicherheiten und geliehener Vermögenswerte kann ein teures Unterfangen sein und in bestimmten Situationen fehlschlagen. <0>Daher ist es nicht empfehlenswert, Positionen mit mehr als 5 Vermögenswerten (eingezahlt + geliehen) gleichzeitig zu migrieren.</0>"
@@ -2924,6 +2916,10 @@ msgstr "Ungültiger Ablauf"
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Interest accrued"
 msgstr "Aufgelaufene Zinsen"
+
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting"
+msgstr ""
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."

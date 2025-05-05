@@ -139,6 +139,16 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       symbol: 'BTCB',
       iconSymbol: 'btc',
     },
+    '0x50d2c7992b802eef16c04feadab310f31866a545': {
+      symbol: 'PT eUSDe May',
+      name: 'PT eUSDe May',
+      iconSymbol: 'pteusde',
+    },
+    '0x3b3fb9c57858ef816833dc91565efcd85d96f634': {
+      symbol: 'PT sUSDe July',
+      name: 'PT sUSDe July',
+      iconSymbol: 'ptsusde',
+    },
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },
     '0x1eff8af5d577060ba4ac8a29a13525bb0ee2a3d5': { iconSymbol: 'BPT_WBTC_WETH' },
