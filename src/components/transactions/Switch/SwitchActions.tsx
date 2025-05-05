@@ -277,11 +277,6 @@ export const SwitchActions = ({
             txHash: orderId,
           });
         }
-
-        // Invalidate the pool tokens query to refresh the data
-        queryClient.invalidateQueries({
-          queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
-        });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
@@ -295,6 +290,15 @@ export const SwitchActions = ({
         getErrorTextFromError(new Error('No sell rates found'), TxAction.MAIN_ACTION, true)
       );
     }
+
+    // Invalidate the pool tokens query to refresh the data
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.transactionHistory(user, currentMarketData),
+    });
   };
 
   const approval = async () => {
