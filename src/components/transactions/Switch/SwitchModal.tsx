@@ -22,6 +22,11 @@ export const SwitchModal = () => {
   }: SwitchDetailsParams) => {
     const requiresGas =
       switchProvider !== 'cowprotocol' || isNativeToken(selectedInputToken.address);
+
+    const usdValue = Number(switchRates.destUSD) * (1 - safeSlippage);
+    const maxFee = Number(switchRates.srcUSD) - usdValue;
+    const percentFee = (maxFee / Number(switchRates.srcUSD)) * 100;
+
     return switchRates && user ? (
       <TxModalDetails gasLimit={requiresGas ? gasLimit : undefined} chainId={selectedChainId}>
         <Row
@@ -47,9 +52,30 @@ export const SwitchModal = () => {
             symbol="usd"
             symbolsVariant="caption"
             variant="caption"
-            value={Number(switchRates.destUSD) * (1 - safeSlippage)}
+            value={usdValue}
+            visibleDecimals={2}
           />
         </Row>
+        <Row sx={{ mt: 1 }} caption={<Trans>Max fee</Trans>} captionVariant="caption">
+          <FormattedNumber
+            symbol="usd"
+            visibleDecimals={2}
+            symbolsVariant="caption"
+            variant="caption"
+            value={maxFee}
+          />
+        </Row>
+        {percentFee > 5 && (
+          <Row sx={{ mt: 1 }} caption={<Trans>Fee percentage</Trans>} captionVariant="caption">
+            <FormattedNumber
+              color={percentFee > 20 ? 'error' : 'inherit'}
+              symbol="%"
+              symbolsVariant="caption"
+              variant="caption"
+              value={percentFee}
+            />
+          </Row>
+        )}
       </TxModalDetails>
     ) : null;
   };

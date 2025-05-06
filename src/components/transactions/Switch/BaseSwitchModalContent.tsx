@@ -25,7 +25,7 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { supportedNetworksWithEnabledMarket, SupportedNetworkWithChainId } from './common';
-import { getOrders } from './cowprotocol.helpers';
+import { getOrders, getRecommendedSlippage } from './cowprotocol.helpers';
 import { NetworkSelector } from './NetworkSelector';
 import { SwitchProvider, SwitchRatesType } from './switch.types';
 import { SwitchActions } from './SwitchActions';
@@ -267,6 +267,13 @@ export const BaseSwitchModalContent = ({
     isTxSuccess: switchTxState.success,
   });
 
+  // Define default slippage for CoW
+  useEffect(() => {
+    if (switchProvider == 'cowprotocol') {
+      setSlippage(getRecommendedSlippage(switchRates?.srcUSD || '0').toString());
+    }
+  }, [switchRates?.srcUSD, switchProvider]);
+
   // Success View
   if (switchRates && switchTxState.success) {
     return (
@@ -446,6 +453,14 @@ export const BaseSwitchModalContent = ({
               />
 
               {swapDetailsComponent}
+              {switchProvider === 'cowprotocol' &&
+                Number(slippage) < getRecommendedSlippage(switchRates?.srcUSD || '0') && (
+                  <Warning severity="info" icon={false} sx={{ mt: 5 }}>
+                    <Typography variant="caption">
+                      The slippage is below the recommended. The switch may take longer or fail.
+                    </Typography>
+                  </Warning>
+                )}
 
               {txError && <ParaswapErrorDisplay txError={txError} />}
 
