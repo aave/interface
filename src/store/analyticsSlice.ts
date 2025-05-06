@@ -72,7 +72,7 @@ export const createAnalyticsSlice: StateCreator<
             // serverZone: 'EU',
             autocapture: true, // disable if we don't want to capture every click and page view on the site
             trackingOptions: {
-              ipAddress: true,
+              ipAddress: false,
               language: true,
               platform: true,
             },
