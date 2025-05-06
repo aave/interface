@@ -61,12 +61,12 @@ interface MoreMenuItem extends Navigation {
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.aave.com/faq/',
+    link: 'https://aave.com/faq',
     title: t`FAQ`,
     icon: <QuestionMarkCircleIcon />,
   },
   {
-    link: 'https://docs.aave.com/portal/',
+    link: 'https://aave.com/docs',
     title: t`Developers`,
     icon: <BookOpenIcon />,
   },
