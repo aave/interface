@@ -229,6 +229,11 @@ export const SwitchActions = ({
               }
             );
 
+            setMainTxState({
+              loading: false,
+              success: true,
+            });
+
             const unsignerOrder = getUnsignerOrder(
               switchRates.srcAmount,
               destAmountWithSlippage.toString(),
@@ -238,11 +243,14 @@ export const SwitchActions = ({
             );
             const calculatedOrderId = await calculateUniqueOrderId(chainId, unsignerOrder);
 
-            setMainTxState({
-              txHash: calculatedOrderId,
-              loading: false,
-              success: true,
-            });
+            // CoW takes some time to index the order for 'eth-flow' orders
+            setTimeout(() => {
+              setMainTxState({
+                loading: false,
+                success: true,
+                txHash: calculatedOrderId,
+              });
+            }, 1000 * 30); // 30 seconds - if we set less than 30 seconds, the order is not indexed yet and CoW explorer will not find the order
           } catch (error) {
             setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
             if (response?.hash) {

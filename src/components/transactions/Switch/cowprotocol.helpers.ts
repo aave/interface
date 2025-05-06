@@ -206,3 +206,23 @@ export const populateEthFlowTx = (
     data,
   };
 };
+
+export const getRecommendedSlippage = (srcUSD: string) => {
+  try {
+    if (Number(srcUSD) <= 0) {
+      return Number(0.5);
+    }
+
+    if (Number(srcUSD) <= 1) {
+      return Number(5.0);
+    } else if (Number(srcUSD) <= 5) {
+      return Number(2.5);
+    } else if (Number(srcUSD) <= 10) {
+      return Number(1.5);
+    } else {
+      return Number(0.5);
+    }
+  } catch (e) {
+    return Number(0.5);
+  }
+};
