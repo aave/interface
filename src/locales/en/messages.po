@@ -112,6 +112,10 @@ msgstr "Sorry, we couldn't find the page you were looking for."
 msgid "Recent Transactions"
 msgstr "Recent Transactions"
 
+#: src/components/transactions/Switch/SwitchModal.tsx
+msgid "Fee percentage"
+msgstr "Fee percentage"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Liquidation risk"
 msgstr "Liquidation risk"
@@ -1950,6 +1954,10 @@ msgstr "Array parameters that should be equal length are not"
 msgid "Your balance is lower than the selected amount."
 msgstr "Your balance is lower than the selected amount."
 
+#: src/components/transactions/Switch/SwitchModal.tsx
+msgid "Max fee"
+msgstr "Max fee"
+
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "An error has occurred fetching the proposal."
 msgstr "An error has occurred fetching the proposal."
@@ -2222,6 +2230,10 @@ msgstr "Net worth"
 #: src/modules/staking/GetABPToken.tsx
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
+
+#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
+msgid "Details will be available soon."
+msgstr "Details will be available soon."
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"

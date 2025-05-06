@@ -102,21 +102,26 @@ export const SwitchTxSuccessView = ({
                 <Trans>The order has been filled.</Trans>
               )}
               <br />
-              You can see the details{' '}
-              <Link
-                underline="always"
-                href={`https://explorer.cow.fi/${
-                  chainId == 1 ? '' : ChainIdToNetwork[chainId] + '/'
-                }orders/${txHash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                here
-                <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              </Link>
-              <br />
+              {txHash && (
+                <>
+                  You can see the details{' '}
+                  <Link
+                    underline="always"
+                    href={`https://explorer.cow.fi/${
+                      chainId == 1 ? '' : ChainIdToNetwork[chainId] + '/'
+                    }orders/${txHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    here
+                    <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
+                      <ExternalLinkIcon />
+                    </SvgIcon>
+                  </Link>
+                  <br />
+                </>
+              )}
+              {!txHash && <Trans>Details will be available soon.</Trans>}
             </>
           ) : (
             <Trans>You&apos;ve successfully switched tokens.</Trans>
