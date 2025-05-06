@@ -18,12 +18,12 @@ The implementation consists of two main parts:
 
 ### Environment Variables
 
-Add your private RPC URLs to your server's environment variables:
+Add your private alchemy RPC URLs to your server's environment variables:
 
 ```env
-PRIVATE_RPC_MAINNET=https://your-private-mainnet-rpc-url
-PRIVATE_RPC_POLYGON=https://your-private-polygon-rpc-url
-PRIVATE_RPC_AVALANCHE=https://your-private-avalanche-rpc-url
+MAINNET_RPC_API_KEY=<your-mainnet-rpc-api-key>
+POLYGON_RPC_API_KEY=<your-polygon-rpc-api-key>
+AVALANCHE_RPC_API_KEY=<your-avalanche-rpc-api-key>
 # Add more as needed
 ```
 
@@ -49,6 +49,6 @@ PRIVATE_RPC_AVALANCHE=https://your-private-avalanche-rpc-url
 
 To add support for more chains:
 
-1. Add the environment variable in your server environment (e.g., `PRIVATE_RPC_FANTOM`).
+1. Add the environment variable in your server environment (e.g., `ZKSYNC_RPC_API_KEY`).
 
-2. Update the `PRIVATE_RPC_URLS` object in `pages/api/rpc-proxy.ts` to include the new chain. 
+2. Update the `NETWORK_CONFIG` object in `pages/api/rpc-proxy.ts` to include the new chain and network name.
