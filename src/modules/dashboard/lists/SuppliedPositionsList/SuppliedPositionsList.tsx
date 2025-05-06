@@ -8,7 +8,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/CollateralSwitchTooltip';
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';

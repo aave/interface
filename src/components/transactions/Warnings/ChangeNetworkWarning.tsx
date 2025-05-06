@@ -4,7 +4,7 @@ import { AlertProps, Button, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { Warning } from '../../primitives/Warning';
 

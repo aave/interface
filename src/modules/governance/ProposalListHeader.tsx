@@ -9,7 +9,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRootStore } from 'src/store/root';
-import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
+import { GOVERNANCE_PAGE } from 'src/utils/events';
 
 import { SearchInput } from '../../components/SearchInput';
 import { TitleWithSearchBar } from '../../components/TitleWithSearchBar';

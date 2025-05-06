@@ -7,7 +7,7 @@ import { Link } from 'src/components/primitives/Link';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { usePowers } from 'src/hooks/governance/usePowers';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 export function VotingPowerInfoPanel() {
   const { data: powers } = usePowers();

@@ -2,8 +2,8 @@ import { Trans } from '@lingui/macro';
 import { Box, Checkbox, FormControlLabel } from '@mui/material';
 import { FaucetButton } from 'src/components/FaucetButton';
 import { useRootStore } from 'src/store/root';
+import { DASHBOARD } from 'src/utils/events';
 import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { BridgeButton } from '../../components/BridgeButton';
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';

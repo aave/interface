@@ -7,7 +7,7 @@ import { Link } from 'src/components/primitives/Link';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useRootStore } from 'src/store/root';
 import { ExplorerLinkBuilderProps } from 'src/ui-config/networksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 interface ReserveFactorOverviewProps {
   collectorContract: string;

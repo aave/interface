@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { ROUTES } from 'src/components/primitives/Link';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { AUTH } from 'src/utils/mixPanelEvents';
+import { AUTH } from 'src/utils/events';
 
 import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
 import { BorrowedPositionsList } from './lists/BorrowedPositionsList/BorrowedPositionsList';

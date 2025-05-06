@@ -11,7 +11,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
-import { GENERAL, RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { GENERAL, RESERVE_DETAILS } from 'src/utils/events';
 
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
 import { CalculatorInput } from './CalculatorInput';

@@ -5,7 +5,7 @@ import { CircleIcon } from 'src/components/CircleIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';

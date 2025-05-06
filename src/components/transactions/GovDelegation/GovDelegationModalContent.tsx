@@ -11,8 +11,8 @@ import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
+import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';

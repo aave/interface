@@ -7,7 +7,7 @@ import { Row } from 'src/components/primitives/Row';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';

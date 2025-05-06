@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { NAV_BAR } from 'src/utils/mixPanelEvents';
+import { NAV_BAR } from 'src/utils/events';
 
 import { Link } from '../components/primitives/Link';
 import { moreNavigation } from '../ui-config/menu-items';

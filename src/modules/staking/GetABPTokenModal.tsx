@@ -4,7 +4,7 @@ import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 type GetABPTokenModalProps = {
   open: boolean;

@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
 import { useRootStore } from 'src/store/root';
-import { AUTH } from 'src/utils/mixPanelEvents';
+import { AUTH } from 'src/utils/events';
 
 import { AvatarSize } from '../Avatar';
 import { UserDisplay } from '../UserDisplay';

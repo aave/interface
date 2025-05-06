@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Typography } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 interface BorrowAmountWarningProps {
   riskCheckboxAccepted: boolean;

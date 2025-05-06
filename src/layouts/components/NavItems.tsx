@@ -2,7 +2,7 @@ import { useLingui } from '@lingui/react';
 import { Button, List, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useRootStore } from 'src/store/root';
-import { NAV_BAR } from 'src/utils/mixPanelEvents';
+import { NAV_BAR } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../../components/primitives/Link';

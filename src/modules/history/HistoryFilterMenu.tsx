@@ -15,7 +15,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { useRootStore } from 'src/store/root';
-import { TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
+import { TRANSACTION_HISTORY } from 'src/utils/events';
 
 import { FilterOptions } from './types';
 

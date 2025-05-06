@@ -14,7 +14,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
-import { GENERAL } from '../../utils/mixPanelEvents';
+import { GENERAL } from '../../utils/events';
 import { GhoBanner } from './Gho/GhoBanner';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {

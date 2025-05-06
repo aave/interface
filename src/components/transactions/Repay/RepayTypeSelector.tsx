@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useRootStore } from 'src/store/root';
-import { REPAY_MODAL } from 'src/utils/mixPanelEvents';
+import { REPAY_MODAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 export enum RepayType {
