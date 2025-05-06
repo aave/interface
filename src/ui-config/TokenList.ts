@@ -85,6 +85,18 @@ const NETWORK_ASSETS: TokenInfo[] = [
       isNative: true,
     },
   },
+  {
+    name: 'Gnosis',
+    symbol: 'xDAI',
+    decimals: 18,
+    address: API_ETH_MOCK_ADDRESS,
+    chainId: 100,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/11062/thumb/Identity-Primary-DarkBG.png?1696511004',
+    extensions: {
+      isNative: true,
+    },
+  },
 
   // NOTE L2 ETH
   {
@@ -12755,6 +12767,73 @@ export const TOKEN_LIST: TokenList = {
       decimals: 18,
       chainId: 1,
       logoURI: 'https://assets.coingecko.com/coins/images/32254/standard/sdai.png?1697015278',
+    },
+    {
+      name: 'Savings xDAI',
+      address: '0xaf204776c7245bf4147c2612bf6e5972ee483701',
+      symbol: 'sDAI',
+      decimals: 18,
+      chainId: 100,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/32066/thumb/sDAI_Logo_%281%29.png?1696530863',
+    },
+    {
+      name: 'Wrapped liquid staked Ether 2.0',
+      address: '0x6c76971f98945ae98dd7d4dfca8711ebea946ea6',
+      symbol: 'wstETH',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/18834/standard/wstETH.png?1696518295',
+    },
+    {
+      name: 'Gnosis Token on xDai',
+      address: '0x9c58bacc331c9aa871afd802db6379a98e80cedb',
+      symbol: 'GNO',
+      decimals: 18,
+      chainId: 100,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/662/thumb/logo_square_simple_300px.png?1696501854',
+    },
+    {
+      name: 'Wrapped XDAI',
+      address: '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d',
+      symbol: 'WXDAI',
+      decimals: 18,
+      chainId: 100,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/11062/thumb/Identity-Primary-DarkBG.png?1696511004',
+    },
+    {
+      name: 'Wrapped Ether',
+      address: '0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1',
+      symbol: 'WETH',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/2518/standard/weth.png?1696503332',
+    },
+    {
+      name: 'Monerium EUR emoney',
+      address: '0xcb444e90d8198415266c6a2724b7900fb12fc56e',
+      symbol: 'EURe',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/23354/thumb/eur.png?1696522569',
+    },
+    {
+      name: 'USD//C on xDai',
+      address: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
+      symbol: 'USDC',
+      decimals: 6,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/35300/thumb/USDC_Icon.png?1708083625',
+    },
+    {
+      name: 'Bridged USDC (Gnosis)',
+      symbol: 'USDC.e',
+      address: '0x2a22f9c3b484c3629090feed35f17ff8f88f76f0',
+      decimals: 6,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/35300/thumb/USDC_Icon.png?1708083625',
     },
   ],
 };
