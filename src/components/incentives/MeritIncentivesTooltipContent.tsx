@@ -24,15 +24,18 @@ export const MeritIncentivesTooltipContent = ({
         justifyContent: 'center',
         alignItems: 'start',
         flexDirection: 'column',
+        gap: '10px',
       }}
     >
-      <Typography variant="caption" color="text.primary" mb={3}>
+      <img src={`/icons/other/aci.svg`} width="100px" height="40px" alt="" />
+
+      <Typography variant="caption" color="text.primary" fontSize={13}>
         <Trans>Eligible for the Merit program.</Trans>
       </Typography>
 
-      <Typography variant="caption" color="text.secondary" mb={3}>
+      <Typography variant="caption" color="text.secondary">
         <Trans>
-          This is a program initiated and implemented by the decentralised Aave community. Aave Labs
+          This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs
           does not guarantee the program and accepts no liability.
         </Trans>{' '}
         <Link
@@ -49,23 +52,37 @@ export const MeritIncentivesTooltipContent = ({
         </Link>
       </Typography>
 
-      <Typography variant="caption" color="text.secondary" mb={3}>
-        <Trans>Merit Program rewards are claimed through the</Trans>{' '}
-        <Link
-          href="https://apps.aavechan.com/merit"
-          sx={{ textDecoration: 'underline' }}
-          variant="caption"
-          color="text.secondary"
-        >
-          Aave Chan Initiative interface
-        </Link>
-        {'.'}
-      </Typography>
       {meritIncentives.customMessage ? (
-        <Typography variant="caption" color="text.strong" mb={3}>
+        <Typography variant="caption" color="text.primary">
           <Trans>{meritIncentives.customMessage}</Trans>
         </Typography>
       ) : null}
+
+      <Typography variant="caption" color="text.strong" fontSize={13} fontWeight={'600'}>
+        <Trans>Merit Program rewards are claimed through the</Trans>
+        <Link
+          href={`https://apps.aavechan.com/merit/${meritIncentives.action}`}
+          sx={{ textDecoration: 'underline', ml: 1 }}
+          variant="caption"
+        >
+          <span
+            style={{
+              fontSize: '13px',
+              fontWeight: '600',
+            }}
+          >
+            {'Aave Chan Initiative interface'}
+          </span>
+        </Link>
+        <span
+          style={{
+            fontSize: '13px',
+            fontWeight: '600',
+          }}
+        >
+          {'.'}
+        </span>
+      </Typography>
 
       <Box sx={{ width: '100%' }}>
         <Row
