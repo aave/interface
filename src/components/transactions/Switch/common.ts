@@ -15,15 +15,8 @@ export const supportedNetworksConfig: SupportedNetworkWithChainId[] = getSupport
     chainId,
   })
 );
-export const supportedNetworksWithEnabledMarket = supportedNetworksConfig.filter((elem) => {
-  console.debug(
-    elem.chainId,
-    Object.values(marketsData).find(
-      (market) => market.chainId === elem.chainId && market.enabledFeatures?.switch
-    )
-  );
-
-  return Object.values(marketsData).find(
+export const supportedNetworksWithEnabledMarket = supportedNetworksConfig.filter((elem) =>
+  Object.values(marketsData).find(
     (market) => market.chainId === elem.chainId && market.enabledFeatures?.switch
-  );
-});
+  )
+);
