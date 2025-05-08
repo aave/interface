@@ -42,7 +42,7 @@ export const SwitchTxSuccessView = ({
         }}
       >
         <Typography>
-          <Trans>You&apos;ve successfully switched tokens.</Trans>
+          <Trans>You&apos;ve successfully swapped tokens.</Trans>
         </Typography>
         <Box
           sx={{
