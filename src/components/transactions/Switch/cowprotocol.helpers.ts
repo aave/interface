@@ -1,3 +1,4 @@
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import {
   BuyTokenDestination,
   CompetitionOrderStatus,
@@ -98,7 +99,7 @@ export const sendOrder = async ({
 };
 
 export const getOrderStatus = async (orderId: string, chainId: number) => {
-  const orderBookApi = new OrderBookApi({ chainId: 1 });
+  const orderBookApi = new OrderBookApi({ chainId: chainId });
   const status = await orderBookApi.getOrderCompetitionStatus(orderId, {
     chainId,
   });
@@ -134,7 +135,7 @@ export const isOrderCancelled = (status: CompetitionOrderStatus.type) => {
 };
 
 export const isNativeToken = (token: string) => {
-  return token.toLowerCase() === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase();
+  return token.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 };
 
 export const getUnsignerOrder = (

@@ -211,12 +211,6 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         );
 
         if (!srcToken || !destToken) {
-          console.error(
-            'Token not found',
-            order.sellToken,
-            order.buyToken,
-            'This should not happen'
-          );
           return null;
         }
 
