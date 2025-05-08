@@ -115,14 +115,14 @@ export const SwapActions = ({
         })
       }
       requiresApproval={requiresApproval}
-      actionText={<Trans>Switch</Trans>}
+      actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Switching</Trans>}
       sx={sx}
       fetchingData={loading}
       errorParams={{
         loading: false,
         disabled: blocked,
-        content: <Trans>Switch</Trans>,
+        content: <Trans>Swap</Trans>,
         handleClick: action,
       }}
       tryPermit

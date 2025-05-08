@@ -312,7 +312,7 @@ export function AppHeader() {
             >
               {!smd && (
                 <Typography component="span" typography="subheader1">
-                  Switch tokens
+                  Swap tokens
                 </Typography>
               )}
               <SvgIcon fontSize="small">

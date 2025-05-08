@@ -215,7 +215,7 @@ export const SwitchModalContent = ({
 
   return (
     <>
-      <TxModalTitle title="Switch tokens" />
+      <TxModalTitle title="Swap tokens" />
       {isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={selectedNetworkConfig.name}
@@ -375,7 +375,7 @@ export const SwitchModalContent = ({
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
               <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
-                <Trans>Please connect your wallet to be able to switch your tokens.</Trans>
+                <Trans>Please connect your wallet to be able to swap your tokens.</Trans>
               </Typography>
               <ConnectWalletButton />
             </Box>

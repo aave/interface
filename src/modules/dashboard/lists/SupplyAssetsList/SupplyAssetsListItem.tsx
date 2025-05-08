@@ -289,7 +289,7 @@ export const SupplyAssetsListItemDesktop = ({
             <SvgIcon fontSize="small">
               <SwitchHorizontalIcon />
             </SvgIcon>
-            <ListItemText>Switch</ListItemText>
+            <ListItemText>Swap</ListItemText>
           </MenuItem>
           <MenuItem
             sx={{ gap: 2 }}
