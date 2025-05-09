@@ -253,7 +253,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
           pool: selectedPool,
         });
         const cowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, pageParam * PAGE_SIZE);
-        return [...response, ...cowSwapOrders];
+        return [...response, ...cowSwapOrders].sort((a, b) => b.timestamp - a.timestamp);
       },
       enabled: !!account && !!currentMarketData.subgraphUrl,
       getNextPageParam: (
