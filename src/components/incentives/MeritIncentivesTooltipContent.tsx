@@ -53,12 +53,12 @@ export const MeritIncentivesTooltipContent = ({
       </Typography>
 
       {meritIncentives.customMessage ? (
-        <Typography variant="caption" color="text.primary">
+        <Typography variant="caption" color="text.secondary">
           <Trans>{meritIncentives.customMessage}</Trans>
         </Typography>
       ) : null}
 
-      <Typography variant="caption" color="text.strong" fontSize={13} fontWeight={'600'}>
+      <Typography variant="caption" color="text.primary" fontSize={13} fontWeight={'600'}>
         <Trans>Merit Program rewards are claimed through the</Trans>
         <Link
           href={`https://apps.aavechan.com/merit/${meritIncentives.action}`}
