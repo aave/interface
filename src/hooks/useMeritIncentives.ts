@@ -408,7 +408,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
   },
   [CustomMarket.proto_sonic_v3]: {
-    ['USDC.e']: [
+    ['USDC']: [
       {
         action: MeritAction.SONIC_SUPPLY_USDCE,
         rewardTokenAddress: AaveV3Sonic.ASSETS.USDCe.A_TOKEN,
