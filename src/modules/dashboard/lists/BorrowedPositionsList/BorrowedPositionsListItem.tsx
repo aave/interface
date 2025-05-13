@@ -147,7 +147,7 @@ const BorrowedPositionsListItemDesktop = ({
             onClick={onDetbSwitchClick}
             data-cy={`swapButton`}
           >
-            <Trans>Switch</Trans>
+            <Trans>Swap</Trans>
           </Button>
         ) : (
           <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow}>
@@ -225,7 +225,7 @@ const BorrowedPositionsListItemMobile = ({
             onClick={onDetbSwitchClick}
             data-cy={`swapButton`}
           >
-            <Trans>Switch</Trans>
+            <Trans>Swap</Trans>
           </Button>
         ) : (
           <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow} fullWidth>

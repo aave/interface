@@ -246,10 +246,6 @@ msgstr "Borrow {symbol}"
 msgid "Total supplied"
 msgstr "Total supplied"
 
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Switched"
-msgstr "Switched"
-
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Remaining supply"
@@ -311,6 +307,11 @@ msgstr "View Transactions"
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
 msgstr "MAX"
+
+#: src/components/transactions/Switch/SwitchModal.tsx
+#: src/components/transactions/Switch/SwitchModalContent.tsx
+msgid "Please connect your wallet to be able to swap your tokens."
+msgstr "Please connect your wallet to be able to swap your tokens."
 
 #: src/layouts/AppFooter.tsx
 msgid "Terms"
@@ -761,7 +762,6 @@ msgstr "Greek"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
-#: src/components/transactions/Switch/SwitchActions.tsx
 msgid "Switching"
 msgstr "Switching"
 
@@ -1072,6 +1072,10 @@ msgstr "Estimated compounding interest, including discount for Staking {0}AAVE i
 msgid "Unstaking {symbol}"
 msgstr "Unstaking {symbol}"
 
+#: src/components/transactions/Switch/SwitchActions.tsx
+msgid "Swapping"
+msgstr "Swapping"
+
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not use this currency as collateral"
 msgstr "You can not use this currency as collateral"
@@ -1233,19 +1237,7 @@ msgstr "Emode"
 msgid "Tip: Try increasing slippage or reduce input amount"
 msgstr "Tip: Try increasing slippage or reduce input amount"
 
-#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
-#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
-#: src/components/transactions/Swap/SwapActions.tsx
-#: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
-#: src/components/transactions/Switch/SwitchActions.tsx
-#: src/components/transactions/Switch/SwitchActions.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
-#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Switch"
 msgstr "Switch"
 
@@ -1304,6 +1296,10 @@ msgstr "Asset can be only used as collateral in isolation mode with limited borr
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "View all"
 msgstr "View all"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Swap to"
+msgstr "Swap to"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1431,6 +1427,10 @@ msgstr "Fee"
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "You've successfully swapped your borrow position."
+msgstr "You've successfully swapped your borrow position."
+
 #: src/components/infoTooltips/SpkAirdropTooltip.tsx
 msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
@@ -1458,6 +1458,10 @@ msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can r
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 msgid "Withdrawing"
 msgstr "Withdrawing"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Swapped"
+msgstr "Swapped"
 
 #: pages/staking.staking.tsx
 msgid "Stake GHO"
@@ -1783,10 +1787,6 @@ msgstr "No results found. You can import a custom token with a contract address"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
-
-#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
-msgid "You've successfully switched tokens."
-msgstr "You've successfully switched tokens."
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
@@ -2207,10 +2207,6 @@ msgstr "Get ABP Token"
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
-
-#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
-msgid "You've successfully switched borrow position."
-msgstr "You've successfully switched borrow position."
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
@@ -2747,11 +2743,6 @@ msgstr "Cooldown to unstake"
 msgid "User does not have outstanding variable rate debt on this reserve"
 msgstr "User does not have outstanding variable rate debt on this reserve"
 
-#: src/components/transactions/Switch/SwitchModal.tsx
-#: src/components/transactions/Switch/SwitchModalContent.tsx
-msgid "Please connect your wallet to be able to switch your tokens."
-msgstr "Please connect your wallet to be able to switch your tokens."
-
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
 msgstr "Test Assets"
@@ -2898,6 +2889,10 @@ msgstr "Collateral balance after repay"
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copy the error"
+
+#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
+msgid "You've successfully swapped tokens."
+msgstr "You've successfully swapped tokens."
 
 #: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
@@ -3109,7 +3104,6 @@ msgid "Your supplies"
 msgstr "Your supplies"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Switch to"
 msgstr "Switch to"
 
@@ -3178,6 +3172,21 @@ msgstr "Insufficient collateral to cover new borrow position. Wallet must have b
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "Restaked"
 msgstr "Restaked"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
+#: src/components/transactions/Swap/SwapActions.tsx
+#: src/components/transactions/Swap/SwapActions.tsx
+#: src/components/transactions/Switch/SwitchActions.tsx
+#: src/components/transactions/Switch/SwitchActions.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+msgid "Swap"
+msgstr "Swap"
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Hide"
