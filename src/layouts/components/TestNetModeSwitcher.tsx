@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, ListItem, ListItemText, MenuItem, Switch } from '@mui/material';
 import React, { useState } from 'react';
 import { useRootStore } from 'src/store/root';
-import { SETTINGS } from 'src/utils/mixPanelEvents';
+import { SETTINGS } from 'src/utils/events';
 
 interface TestNetModeSwitcherProps {
   component?: typeof MenuItem | typeof ListItem;

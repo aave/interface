@@ -8,8 +8,8 @@ import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataPro
 import { useModalContext } from 'src/hooks/useModal';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/events';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 import { useShallow } from 'zustand/shallow';
 
 import { AssetInput } from '../AssetInput';

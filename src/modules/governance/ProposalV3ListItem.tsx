@@ -4,7 +4,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Proposal } from 'src/hooks/governance/useProposals';
 import { useRootStore } from 'src/store/root';
-import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
+import { GOVERNANCE_PAGE } from 'src/utils/events';
 
 import { StateBadge } from './StateBadge';
 import { VoteBar } from './VoteBar';

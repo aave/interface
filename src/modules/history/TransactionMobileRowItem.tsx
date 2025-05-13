@@ -4,7 +4,7 @@ import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ListItem } from 'src/components/lists/ListItem';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';

@@ -12,7 +12,7 @@ import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
-import { GENERAL, RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { GENERAL, RESERVE_DETAILS } from 'src/utils/events';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 

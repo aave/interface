@@ -5,7 +5,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ProposalVote } from 'src/hooks/governance/useProposalVotes';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { textCenterEllipsis } from '../../../helpers/text-center-ellipsis';
 // import type { GovernanceVoter } from './VotersListContainer';

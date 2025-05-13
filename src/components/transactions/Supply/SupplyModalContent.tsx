@@ -21,13 +21,13 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWrappedTokens, WrappedTokenConfig } from 'src/hooks/useWrappedTokens';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/events';
 import {
   getMaxAmountAvailableToSupply,
   remainingCap,
 } from 'src/utils/getMaxAmountAvailableToSupply';
 import { calculateHFAfterSupply } from 'src/utils/hfUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 

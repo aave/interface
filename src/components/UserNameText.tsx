@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Box, Link, SvgIcon, TypographyProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { CompactableTypography, CompactMode } from './CompactableTypography';
 import { DarkTooltip } from './infoTooltips/DarkTooltip';

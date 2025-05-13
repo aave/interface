@@ -16,7 +16,7 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { BorrowInfo } from './BorrowInfo';

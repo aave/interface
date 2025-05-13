@@ -27,8 +27,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { DASHBOARD } from 'src/utils/events';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';

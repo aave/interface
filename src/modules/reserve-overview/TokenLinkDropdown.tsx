@@ -9,7 +9,7 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
-import { RESERVE_DETAILS } from '../../utils/mixPanelEvents';
+import { RESERVE_DETAILS } from '../../utils/events';
 
 interface TokenLinkDropdownProps {
   poolReserve: ComputedReserveData;
