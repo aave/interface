@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { ExtendedReserveIncentiveResponse } from 'src/hooks/useMeritIncentives';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
@@ -13,6 +13,8 @@ export const MeritIncentivesTooltipContent = ({
 }: {
   meritIncentives: ExtendedReserveIncentiveResponse;
 }) => {
+  const theme = useTheme();
+
   const typographyVariant = 'secondary12';
 
   const meritIncentivesFormatted = getSymbolMap(meritIncentives);
@@ -27,7 +29,16 @@ export const MeritIncentivesTooltipContent = ({
         gap: '10px',
       }}
     >
-      <img src={`/icons/other/aci.svg`} width="100px" height="40px" alt="" />
+      <img
+        src={
+          theme.palette.mode === 'dark'
+            ? `/icons/other/aci-white.svg`
+            : `/icons/other/aci-black.svg`
+        }
+        width="100px"
+        height="40px"
+        alt=""
+      />
 
       <Typography variant="caption" color="text.primary" fontSize={13}>
         <Trans>Eligible for the Merit program.</Trans>
