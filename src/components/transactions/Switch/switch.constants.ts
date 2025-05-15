@@ -47,6 +47,14 @@ export const WrappedNativeTokens: Record<SupportedChainId, string> = {
     TOKEN_LIST.tokens.find(
       (token) => token.chainId === SupportedChainId.SEPOLIA && token.symbol === 'WETH'
     )?.address ?? '',
+  [SupportedChainId.POLYGON]:
+    TOKEN_LIST.tokens.find(
+      (token) => token.chainId === SupportedChainId.POLYGON && token.symbol === 'WMATIC'
+    )?.address ?? '',
+  [SupportedChainId.AVALANCHE]:
+    TOKEN_LIST.tokens.find(
+      (token) => token.chainId === SupportedChainId.AVALANCHE && token.symbol === 'WAVAX'
+    )?.address ?? '',
 };
 
 export const isChainIdSupportedByCoWProtocol = (chainId: number): chainId is SupportedChainId => {

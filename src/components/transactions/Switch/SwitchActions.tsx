@@ -269,6 +269,10 @@ export const SwitchActions = ({
           }
         } else {
           const orderId = await sendOrder({
+            tokenSrc: inputToken,
+            tokenSrcDecimals: switchRates.srcDecimals,
+            tokenDest: outputToken,
+            tokenDestDecimals: switchRates.destDecimals,
             quote: switchRates.order,
             amount: switchRates.srcAmount,
             destAmount: destAmountWithSlippage.toString(),
@@ -276,13 +280,12 @@ export const SwitchActions = ({
             user,
             provider,
             setError: setTxError,
-            tokenDest: outputToken,
           });
 
           setMainTxState({
             loading: false,
             success: true,
-            txHash: orderId,
+            txHash: orderId ?? undefined,
           });
         }
       } catch (error) {

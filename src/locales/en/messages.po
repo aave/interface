@@ -112,10 +112,6 @@ msgstr "Sorry, we couldn't find the page you were looking for."
 msgid "Recent Transactions"
 msgstr "Recent Transactions"
 
-#: src/components/transactions/Switch/SwitchModal.tsx
-msgid "Fee percentage"
-msgstr "Fee percentage"
-
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Liquidation risk"
 msgstr "Liquidation risk"
