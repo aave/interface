@@ -1,13 +1,15 @@
-import { OrderBookApi, OrderQuoteResponse, OrderQuoteSideKindSell } from '@cowprotocol/cow-sdk';
+import { OrderKind, QuoteAndPost, TradingSdk } from '@cowprotocol/cow-sdk';
 import { BigNumber } from 'bignumber.js';
-import { isNativeToken } from 'src/components/transactions/Switch/cowprotocol.helpers';
+import { APP_CODE, isNativeToken } from 'src/components/transactions/Switch/cowprotocol.helpers';
 import {
   isChainIdSupportedByCoWProtocol,
   WrappedNativeTokens,
 } from 'src/components/transactions/Switch/switch.constants';
 import { SwitchParams, SwitchRatesType } from 'src/components/transactions/Switch/switch.types';
+import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
 import { TxAction } from 'src/ui-config/errorMapping';
+import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 
 export async function getCowProtocolSellRates({
   chainId,
@@ -20,9 +22,9 @@ export async function getCowProtocolSellRates({
   setError,
 }: SwitchParams): Promise<SwitchRatesType> {
   const cowProtocolPricesService = new CoWProtocolPricesService();
-  const orderBookApi = new OrderBookApi({ chainId });
+  const tradingSdk = new TradingSdk({ chainId });
 
-  let orderBookQuote: OrderQuoteResponse | undefined;
+  let orderBookQuote: QuoteAndPost | undefined;
   let srcTokenPriceUsd: string | undefined;
   let destTokenPriceUsd: string | undefined;
   try {
@@ -41,21 +43,22 @@ export async function getCowProtocolSellRates({
       destTokenWrapped = WrappedNativeTokens[chainId];
     }
 
+    const provider = await getEthersProvider(wagmiConfig, { chainId });
+    const signer = provider?.getSigner();
+
     [orderBookQuote, srcTokenPriceUsd, destTokenPriceUsd] = await Promise.all([
-      orderBookApi
-        .getQuote(
-          {
-            sellToken: srcTokenWrapped,
-            buyToken: destTokenWrapped,
-            from: user,
-            receiver: user,
-            sellAmountBeforeFee: amount, // decimals?
-            kind: OrderQuoteSideKindSell.SELL,
-          },
-          {
-            chainId: chainId,
-          }
-        )
+      tradingSdk
+        .getQuote({
+          owner: user as `0x${string}`,
+          kind: OrderKind.SELL,
+          amount,
+          sellToken: srcTokenWrapped,
+          sellTokenDecimals: srcDecimals,
+          buyToken: destTokenWrapped,
+          buyTokenDecimals: destDecimals,
+          signer,
+          appCode: APP_CODE,
+        })
         .catch((cowError) => {
           throw new Error(cowError.body.errorType);
         }),
@@ -87,7 +90,9 @@ export async function getCowProtocolSellRates({
     BigNumber(amount).dividedBy(10 ** srcDecimals)
   );
   const destAmountInUsd = BigNumber(destTokenPriceUsd).multipliedBy(
-    BigNumber(orderBookQuote.quote.buyAmount).dividedBy(10 ** destDecimals)
+    BigNumber(
+      orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString()
+    ).dividedBy(10 ** destDecimals)
   );
 
   return {
@@ -97,10 +102,11 @@ export async function getCowProtocolSellRates({
     srcDecimals,
     destToken,
     destUSD: destAmountInUsd.toString(),
-    destAmount: orderBookQuote.quote.buyAmount,
+    destAmount: orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString(),
     destDecimals,
     provider: 'cowprotocol',
-    order: orderBookQuote.quote,
-    quoteId: orderBookQuote.id,
+    order: orderBookQuote.quoteResults.orderToSign,
+    quoteId: orderBookQuote.quoteResults.quoteResponse.id,
+    suggestedSlippage: orderBookQuote.quoteResults.suggestedSlippageBps / 1000, // E.g. 100 -> 100 / 1000 = 0.1
   };
 }

@@ -25,7 +25,6 @@ export const SwitchModal = () => {
 
     const usdValue = Number(switchRates.destUSD) * (1 - safeSlippage);
     const maxFee = Number(switchRates.srcUSD) - usdValue;
-    const percentFee = (maxFee / Number(switchRates.srcUSD)) * 100;
 
     return switchRates && user ? (
       <TxModalDetails gasLimit={requiresGas ? gasLimit : undefined} chainId={selectedChainId}>
@@ -65,17 +64,6 @@ export const SwitchModal = () => {
             value={maxFee}
           />
         </Row>
-        {percentFee > 5 && (
-          <Row sx={{ mt: 1 }} caption={<Trans>Fee percentage</Trans>} captionVariant="caption">
-            <FormattedNumber
-              color={percentFee > 20 ? 'error' : 'inherit'}
-              symbol="%"
-              symbolsVariant="caption"
-              variant="caption"
-              value={percentFee}
-            />
-          </Row>
-        )}
       </TxModalDetails>
     ) : null;
   };

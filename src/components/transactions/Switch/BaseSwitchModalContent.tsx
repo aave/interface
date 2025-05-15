@@ -25,9 +25,9 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { supportedNetworksWithEnabledMarket, SupportedNetworkWithChainId } from './common';
-import { getOrders, getRecommendedSlippage } from './cowprotocol.helpers';
+import { getOrders } from './cowprotocol.helpers';
 import { NetworkSelector } from './NetworkSelector';
-import { SwitchProvider, SwitchRatesType } from './switch.types';
+import { isCowProtocolRates, SwitchProvider, SwitchRatesType } from './switch.types';
 import { SwitchActions } from './SwitchActions';
 import { SwitchAssetInput } from './SwitchAssetInput';
 import { SwitchErrors } from './SwitchErrors';
@@ -269,10 +269,10 @@ export const BaseSwitchModalContent = ({
 
   // Define default slippage for CoW
   useEffect(() => {
-    if (switchProvider == 'cowprotocol') {
-      setSlippage(getRecommendedSlippage(switchRates?.srcUSD || '0').toString());
+    if (switchProvider == 'cowprotocol' && isCowProtocolRates(switchRates)) {
+      setSlippage(switchRates.suggestedSlippage.toString());
     }
-  }, [switchRates?.srcUSD, switchProvider]);
+  }, [switchRates, switchProvider]);
 
   // Success View
   if (switchRates && switchTxState.success) {
@@ -288,6 +288,7 @@ export const BaseSwitchModalContent = ({
         outIconUri={selectedOutputToken.logoURI}
         provider={switchProvider ?? 'paraswap'}
         chainId={selectedChainId}
+        destDecimals={selectedOutputToken.decimals}
         outAmount={(
           Number(normalize(switchRates.destAmount, switchRates.destDecimals)) *
           (1 - safeSlippage)
@@ -446,22 +447,22 @@ export const BaseSwitchModalContent = ({
                   </Typography>
                 </Warning>
               )}
+
+              {swapDetailsComponent}
+              {isCowProtocolRates(switchRates) &&
+                Number(slippage) < switchRates?.suggestedSlippage && (
+                  <Warning severity="warning" icon={false} sx={{ mt: 5 }}>
+                    <Typography variant="caption">
+                      The slippage is below suggested. It may take longer or fail.
+                    </Typography>
+                  </Warning>
+                )}
+
               <SwitchErrors
                 ratesError={ratesError}
                 balance={selectedInputToken.balance}
                 inputAmount={debounceInputAmount}
               />
-
-              {swapDetailsComponent}
-              {switchProvider === 'cowprotocol' &&
-                Number(slippage) < getRecommendedSlippage(switchRates?.srcUSD || '0') && (
-                  <Warning severity="info" icon={false} sx={{ mt: 5 }}>
-                    <Typography variant="caption">
-                      The slippage is below the recommended. The switch may take longer or fail.
-                    </Typography>
-                  </Warning>
-                )}
-
               {txError && <ParaswapErrorDisplay txError={txError} />}
 
               <SwitchActions
