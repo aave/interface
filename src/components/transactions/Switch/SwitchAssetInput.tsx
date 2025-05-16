@@ -72,6 +72,7 @@ export interface AssetInputProps {
   isMaxSelected?: boolean;
   loading?: boolean;
   selectedAsset: TokenInfoWithBalance;
+  balanceTitle?: string;
 }
 
 export const SwitchAssetInput = ({
@@ -87,6 +88,7 @@ export const SwitchAssetInput = ({
   loading = false,
   chainId,
   selectedAsset,
+  balanceTitle,
 }: AssetInputProps) => {
   const theme = useTheme();
   const handleSelect = (asset: TokenInfoWithBalance) => {
@@ -278,46 +280,48 @@ export const SwitchAssetInput = ({
               placeholder="Search name or paste address"
               disableFocus={true}
             />
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                overfloyY: 'auto',
-                alignItems: 'flex-start',
-                flexWrap: 'wrap',
-                mt: 2,
-                gap: 2,
-              }}
-            >
-              {popularAssets.map((asset) => (
-                <Box
-                  key={asset.symbol}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    p: 1,
-                    borderRadius: '16px',
-                    border: '1px solid',
-                    borderColor: theme.palette.divider,
-                    cursor: 'pointer',
-                    '&:hover': {
-                      backgroundColor: theme.palette.divider,
-                    },
-                  }}
-                  onClick={() => handleSelect(asset)}
-                >
-                  <ExternalTokenIcon
-                    logoURI={asset.logoURI}
-                    symbol={asset.symbol}
-                    sx={{ width: 24, height: 24, mr: 1 }}
-                  />
-                  <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
-                    {asset.symbol}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
+            {assets.length > 3 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  overfloyY: 'auto',
+                  alignItems: 'flex-start',
+                  flexWrap: 'wrap',
+                  mt: 2,
+                  gap: 2,
+                }}
+              >
+                {popularAssets.map((asset) => (
+                  <Box
+                    key={asset.symbol}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      p: 1,
+                      borderRadius: '16px',
+                      border: '1px solid',
+                      borderColor: theme.palette.divider,
+                      cursor: 'pointer',
+                      '&:hover': {
+                        backgroundColor: theme.palette.divider,
+                      },
+                    }}
+                    onClick={() => handleSelect(asset)}
+                  >
+                    <ExternalTokenIcon
+                      logoURI={asset.logoURI}
+                      symbol={asset.symbol}
+                      sx={{ width: 24, height: 24, mr: 1 }}
+                    />
+                    <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
+                      {asset.symbol}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            )}
           </Box>
           <Box sx={{ overflow: 'auto', maxHeight: '200px' }}>
             {loadingNewAsset ? (
@@ -385,10 +389,10 @@ export const SwitchAssetInput = ({
           />
         )}
 
-        {selectedAsset.balance && onChange && (
+        {selectedAsset.balance && (
           <>
             <Typography component="div" variant="secondary12" color="text.secondary">
-              <Trans>Balance</Trans>
+              <Trans>{balanceTitle || 'Balance'}</Trans>
               <FormattedNumber
                 value={selectedAsset.balance}
                 compact
@@ -403,7 +407,7 @@ export const SwitchAssetInput = ({
                 size="small"
                 sx={{ minWidth: 0, ml: '7px', p: 0 }}
                 onClick={() => {
-                  onChange('-1');
+                  onChange && onChange('-1');
                 }}
                 disabled={disabled || isMaxSelected}
               >
