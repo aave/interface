@@ -54,6 +54,7 @@ export interface SwitchModalCustomizableProps {
     switchProvider,
     ratesLoading,
     ratesError,
+    showGasStation,
   }: {
     user: string;
     switchRates: SwitchRatesType;
@@ -66,6 +67,7 @@ export interface SwitchModalCustomizableProps {
     switchProvider?: SwitchProvider;
     ratesLoading: boolean;
     ratesError: Error | null;
+    showGasStation?: boolean;
   }) => React.ReactNode;
   inputBalanceTitle?: string;
   outputBalanceTitle?: string;
@@ -115,6 +117,8 @@ export const BaseSwitchModalContent = ({
     return defaultNetwork.chainId;
   });
   const switchProvider = useSwitchProvider({ chainId: selectedChainId });
+
+  const [showGasStation, setShowGasStation] = useState(switchProvider == 'paraswap');
 
   const [cowOpenOrdersTotalAmountFormatted, setCowOpenOrdersTotalAmountFormatted] = useState<
     string | undefined
@@ -274,6 +278,17 @@ export const BaseSwitchModalContent = ({
     }
   }, [switchRates, switchProvider]);
 
+  const [showSlippageWarning, setShowSlippageWarning] = useState(false);
+  useEffect(() => {
+    // Debounce to avoid race condition
+    const timeout = setTimeout(() => {
+      setShowSlippageWarning(
+        isCowProtocolRates(switchRates) && Number(slippage) < switchRates?.suggestedSlippage
+      );
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [slippage, switchRates]);
+
   // Success View
   if (switchRates && switchTxState.success) {
     return (
@@ -311,6 +326,7 @@ export const BaseSwitchModalContent = ({
           maxSlippage: Number(slippage),
           ratesLoading,
           ratesError,
+          showGasStation,
         })
       : null;
 
@@ -449,14 +465,14 @@ export const BaseSwitchModalContent = ({
               )}
 
               {swapDetailsComponent}
-              {isCowProtocolRates(switchRates) &&
-                Number(slippage) < switchRates?.suggestedSlippage && (
-                  <Warning severity="warning" icon={false} sx={{ mt: 5 }}>
-                    <Typography variant="caption">
-                      The slippage is below suggested. It may take longer or fail.
-                    </Typography>
-                  </Warning>
-                )}
+
+              {showSlippageWarning && (
+                <Warning severity="warning" icon={false} sx={{ mt: 5 }}>
+                  <Typography variant="caption">
+                    The slippage is below suggested. It may take longer or fail.
+                  </Typography>
+                </Warning>
+              )}
 
               <SwitchErrors
                 ratesError={ratesError}
@@ -473,6 +489,7 @@ export const BaseSwitchModalContent = ({
                 inputName={selectedInputToken.name}
                 outputName={selectedOutputToken.name}
                 slippage={safeSlippage.toString()}
+                setShowGasStation={setShowGasStation}
                 blocked={
                   !switchRates ||
                   Number(debounceInputAmount) > Number(selectedInputToken.balance) ||

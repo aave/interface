@@ -45,6 +45,7 @@ interface SwitchProps {
   switchRates?: SwitchRatesType;
   inputName: string;
   outputName: string;
+  setShowGasStation: (showGasStation: boolean) => void;
 }
 
 interface SignedParams {
@@ -66,6 +67,7 @@ export const SwitchActions = ({
   isWrongNetwork,
   chainId,
   switchRates,
+  setShowGasStation,
 }: SwitchProps) => {
   const [
     user,
@@ -121,6 +123,10 @@ export const SwitchActions = ({
       return false;
     else return approvedAmount < Number(inputAmount);
   }, [approvedAmount, inputAmount, isWrongNetwork]);
+
+  useEffect(() => {
+    setShowGasStation(requiresApproval);
+  }, [requiresApproval, setShowGasStation]);
 
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
