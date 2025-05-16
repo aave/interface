@@ -3060,6 +3060,10 @@ msgstr "for"
 msgid "Confirm transaction"
 msgstr "Confirm transaction"
 
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
+msgid "Switch tokens"
+msgstr "Switch tokens"
+
 #: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
 msgid "Exchange rate"
 msgstr "Exchange rate"
