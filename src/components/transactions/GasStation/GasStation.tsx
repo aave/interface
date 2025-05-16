@@ -1,8 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
-import { Trans } from '@lingui/macro';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
-import { Box, CircularProgress, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress, Stack } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
@@ -103,9 +102,7 @@ export const GasStation: React.FC<GasStationProps> = ({
               <GasTooltip />
             </>
           ) : (
-            <Typography variant="caption" color="text.secondary">
-              <Trans>This action does not require gas.</Trans>
-            </Typography>
+            '-'
           )}
         </Box>
         {rightComponent}
