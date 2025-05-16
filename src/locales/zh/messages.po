@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-04-21 18:07\n"
+"PO-Revision-Date: 2025-05-14 18:07\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -977,10 +977,6 @@ msgstr ""
 
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
-msgstr ""
-
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
 #: pages/500.page.tsx
@@ -1990,6 +1986,10 @@ msgstr "地址"
 #: src/ui-config/errorMapping.tsx
 msgid "The requested amount is greater than the max loan size in stable rate mode"
 msgstr "请求的金额大于稳定利率模式下的最大贷款规模"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx

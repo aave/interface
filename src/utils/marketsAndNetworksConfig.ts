@@ -42,10 +42,6 @@ export const FORK_RPC_URL =
   process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   global?.window?.localStorage.getItem('forkRPCUrl') ||
   'http://127.0.0.1:8545';
-const FORK_WS_RPC_URL =
-  process.env.NEXT_PUBLIC_FORK_URL_WS_RPC ||
-  global?.window?.localStorage.getItem('forkWsRPCUrl') ||
-  'ws://127.0.0.1:8545';
 
 /**
  * Generates network configs based on networkConfigs & fork settings.
@@ -58,10 +54,7 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
       ..._networkConfigs[value],
       name: `${_networkConfigs[value].name} Fork`,
       isFork: true,
-      privateJsonRPCUrl: FORK_RPC_URL,
-      privateJsonRPCWSUrl: FORK_WS_RPC_URL,
-      publicJsonRPCUrl: [],
-      publicJsonRPCWSUrl: '',
+      publicJsonRPCUrl: [FORK_RPC_URL],
       underlyingChainId: FORK_BASE_CHAIN_ID,
     };
   }
@@ -170,10 +163,11 @@ const providers: { [network: string]: ProviderWithSend } = {};
 export const getProvider = (chainId: ChainId): ProviderWithSend => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    if (process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED === 'true') {
-      providers[chainId] = new ServerJsonRpcProvider(chainId);
-    } else {
-      // No private RPC, use public ones directly
+    if (
+      (FORK_ENABLED && FORK_BASE_CHAIN_ID === chainId) ||
+      process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED !== 'true'
+    ) {
+      // No private RPC or there is a fork configured, use public ones directly
       const chainProviders: string[] = [];
       if (config.publicJsonRPCUrl.length) {
         config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
@@ -186,6 +180,8 @@ export const getProvider = (chainId: ChainId): ProviderWithSend => {
       } else {
         providers[chainId] = new RotationProvider(chainProviders, chainId);
       }
+    } else {
+      providers[chainId] = new ServerJsonRpcProvider(chainId);
     }
   }
   return providers[chainId];

@@ -34,6 +34,7 @@ export enum MeritAction {
   BASE_BORROW_EURC = 'base-borrow-eurc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   BASE_BORROW_WSTETH = 'base-borrow-wsteth',
+  BASE_BORROW_GHO = 'base-borrow-gho',
   AVALANCHE_SUPPLY_BTCB = 'avalanche-supply-btcb',
   AVALANCHE_SUPPLY_USDC = 'avalanche-supply-usdc',
   AVALANCHE_SUPPLY_USDT = 'avalanche-supply-usdt',
@@ -51,6 +52,7 @@ type MeritIncentives = {
 };
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
+  action: MeritAction;
   customMessage: string;
   customForumLink: string;
 };
@@ -59,9 +61,9 @@ const url = 'https://apps.aavechan.com/api/merit/aprs';
 
 export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
   action: MeritAction;
-  protocolAction?: ProtocolAction;
   customMessage?: string;
   customForumLink?: string;
+  protocolAction?: ProtocolAction;
 };
 
 const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData[] | undefined =>
@@ -342,6 +344,17 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customForumLink: lbtcCbbtcForumLink,
       },
     ],
+    GHO: [
+      {
+        action: MeritAction.BASE_BORROW_GHO,
+        rewardTokenAddress: AaveV3Base.ASSETS.GHO.A_TOKEN,
+        rewardTokenSymbol: 'aBasGHO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
+        customForumLink:
+          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/94',
+      },
+    ],
   },
   [CustomMarket.proto_avalanche_v3]: {
     ['BTC.b']: [
@@ -396,7 +409,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
   },
   [CustomMarket.proto_sonic_v3]: {
-    ['USDC.e']: [
+    ['USDC']: [
       {
         action: MeritAction.SONIC_SUPPLY_USDCE,
         rewardTokenAddress: AaveV3Sonic.ASSETS.USDCe.A_TOKEN,
@@ -465,6 +478,7 @@ export const useMeritIncentives = ({
         incentiveAPR: (APR / 100).toString(),
         rewardTokenAddress: incentive.rewardTokenAddress,
         rewardTokenSymbol: incentive.rewardTokenSymbol,
+        action: incentive.action,
         customMessage: incentive.customMessage,
         customForumLink: incentive.customForumLink,
       } as ExtendedReserveIncentiveResponse;

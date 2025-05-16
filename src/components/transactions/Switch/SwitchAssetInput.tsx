@@ -303,21 +303,14 @@ export const SwitchAssetInput = ({
                       display: 'flex',
                       flexDirection: 'row',
                       alignItems: 'center',
-                      p: '6px 12px',
-                      borderRadius: '18px',
+                      p: 1,
+                      borderRadius: '16px',
                       border: '1px solid',
                       borderColor: theme.palette.divider,
                       cursor: 'pointer',
                       transition: 'all 0.2s ease',
                       '&:hover': {
-                        backgroundColor:
-                          theme.palette.mode === 'dark'
-                            ? 'rgba(255, 255, 255, 0.05)'
-                            : 'rgba(0, 0, 0, 0.03)',
-                        borderColor:
-                          theme.palette.mode === 'dark'
-                            ? 'rgba(255, 255, 255, 0.2)'
-                            : 'rgba(0, 0, 0, 0.2)',
+                        backgroundColor: theme.palette.divider,
                       },
                     }}
                     onClick={() => handleSelect(asset)}
