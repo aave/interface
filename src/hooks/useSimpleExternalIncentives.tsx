@@ -1,4 +1,9 @@
-import { AaveV3Base, AaveV3Ethereum, AaveV3EthereumLido } from '@bgd-labs/aave-address-book';
+import {
+  AaveV3Arbitrum,
+  AaveV3Base,
+  AaveV3Ethereum,
+  AaveV3EthereumLido,
+} from '@bgd-labs/aave-address-book';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 const SUPERFEST_ADDRESSES_SET: Set<string> = new Set([
@@ -13,6 +18,8 @@ const SPARK_ADDRESSES_SET: Set<string> = new Set([
 const KERNEL_ADDRESSES_SET: Set<string> = new Set([
   `${CustomMarket.proto_mainnet_v3}-${AaveV3Ethereum.ASSETS.rsETH.A_TOKEN}`,
   `${CustomMarket.proto_lido_v3}-${AaveV3EthereumLido.ASSETS.rsETH.A_TOKEN}`,
+  `${CustomMarket.proto_arbitrum_v3}-${AaveV3Arbitrum.ASSETS.rsETH.A_TOKEN}`,
+  `${CustomMarket.proto_base_v3}-${AaveV3Base.ASSETS.wrsETH.A_TOKEN}`,
 ]);
 
 export type ExternalIncentivesTooltipsConfig = {

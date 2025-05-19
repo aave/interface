@@ -12,9 +12,10 @@ import {
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 const SONIC_DATA_MAP: Map<string, number> = new Map([
-  [`${CustomMarket.proto_sonic_v3}-${AaveV3Sonic.ASSETS.WETH}`, 4],
-  [`${CustomMarket.proto_sonic_v3}-${AaveV3Sonic.ASSETS.USDCe}`, 10],
-  [`${CustomMarket.proto_sonic_v3}-${AaveV3Sonic.ASSETS.wS}`, 8],
+  [`${CustomMarket.proto_sonic_v3}-${AaveV3Sonic.ASSETS.WETH.A_TOKEN}`, 4],
+  [`${CustomMarket.proto_sonic_v3}-${AaveV3Sonic.ASSETS.USDCe.A_TOKEN}`, 12],
+  [`${CustomMarket.proto_sonic_v3}-${AaveV3Sonic.ASSETS.wS.A_TOKEN}`, 8],
+  [`${CustomMarket.proto_sonic_v3}-${AaveV3Sonic.ASSETS.stS.A_TOKEN}`, 8],
 ]);
 
 const ETHENA_DATA_MAP: Map<string, number> = new Map([
@@ -23,10 +24,13 @@ const ETHENA_DATA_MAP: Map<string, number> = new Map([
   [`${CustomMarket.proto_lido_v3}-${AaveV3EthereumLido.ASSETS.sUSDe.A_TOKEN}`, 5],
   [`${CustomMarket.proto_mainnet_v3}-${AaveV3Ethereum.ASSETS.GHO.V_TOKEN}`, 5],
   [`${CustomMarket.proto_lido_v3}-${AaveV3EthereumLido.ASSETS.GHO.V_TOKEN}`, 5],
+  [`${CustomMarket.proto_mainnet_v3}-${AaveV3Ethereum.ASSETS.PT_eUSDE_29MAY2025.A_TOKEN}`, 2],
+  [`${CustomMarket.proto_mainnet_v3}-${AaveV3Ethereum.ASSETS.PT_sUSDE_31JUL2025.A_TOKEN}`, 1],
 ]);
 
 const ETHERFI_DATA_MAP: Map<string, number> = new Map([
   [`${CustomMarket.proto_mainnet_v3}-${AaveV3Ethereum.ASSETS.weETH.A_TOKEN}`, 3],
+  [`${CustomMarket.proto_mainnet_v3}-${AaveV3Ethereum.ASSETS.eBTC.A_TOKEN}`, 3],
   [`${CustomMarket.proto_etherfi_v3}-${AaveV3EthereumEtherFi.ASSETS.weETH.A_TOKEN}`, 3],
   // [`${CustomMarket.proto_lido_v3}-${AaveV3EthereumLido.ASSETS.weETH.A_TOKEN}`, 3],
   [`${CustomMarket.proto_arbitrum_v3}-${AaveV3Arbitrum.ASSETS.weETH.A_TOKEN}`, 3],
