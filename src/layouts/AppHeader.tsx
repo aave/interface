@@ -323,8 +323,7 @@ export function AppHeader() {
                   <CircularProgress
                     size={20}
                     sx={{
-                      color: (theme) =>
-                        theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+                      color: (theme) => theme.palette.grey[200],
                     }}
                   />
                 ) : (
