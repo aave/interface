@@ -1,4 +1,5 @@
 import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import {
   calculateUniqueOrderId,
   COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
@@ -202,9 +203,9 @@ export const SwitchActions = ({
     } else if (isCowProtocolRates(switchRates)) {
       try {
         const provider = await getEthersProvider(wagmiConfig, { chainId });
-        const destAmountWithSlippage = Math.floor(
-          Number(switchRates.destAmount) * (1 - Number(slippage))
-        );
+        const destAmountWithSlippage = valueToBigNumber(switchRates.destAmount)
+          .multipliedBy(valueToBigNumber(1).minus(valueToBigNumber(slippage)))
+          .toFixed(0);
 
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(inputToken)) {
