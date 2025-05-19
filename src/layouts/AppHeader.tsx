@@ -7,6 +7,7 @@ import { Trans } from '@lingui/macro';
 import {
   Badge,
   Button,
+  CircularProgress,
   NoSsr,
   Slide,
   styled,
@@ -23,6 +24,7 @@ import { AvatarSize } from 'src/components/Avatar';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -109,6 +111,7 @@ export function AppHeader() {
   const { readOnlyMode } = useWeb3Context();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { hasActiveOrders } = useCowOrderToast();
 
   useEffect(() => {
     if (mobileDrawerOpen && !md) {
@@ -315,9 +318,15 @@ export function AppHeader() {
                   Switch tokens
                 </Typography>
               )}
-              <SvgIcon fontSize="small">
-                <SwitchHorizontalIcon />
-              </SvgIcon>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {hasActiveOrders ? (
+                  <CircularProgress size={20} sx={{ color: 'text.primary' }} />
+                ) : (
+                  <SvgIcon fontSize="small">
+                    <SwitchHorizontalIcon />
+                  </SvgIcon>
+                )}
+              </Box>
             </Button>
           </StyledBadge>
         </NoSsr>

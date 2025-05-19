@@ -17,7 +17,6 @@ export const useMultiProviderSwitchRates = ({
   isTxSuccess,
 }: SwitchParams & { isTxSuccess?: boolean }) => {
   const provider = useSwitchProvider({ chainId });
-
   return useQuery<SwitchRatesType>({
     queryFn: async () => {
       if (!provider) {

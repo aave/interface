@@ -60,21 +60,26 @@ export async function getCowProtocolSellRates({
           appCode: APP_CODE,
         })
         .catch((cowError) => {
+          console.error(cowError);
           throw new Error(cowError.body.errorType);
         }),
       // CoW Quote doesn't return values in USD, so we need to fetch the price from the API separately
       cowProtocolPricesService.getTokenUsdPrice(chainId, srcTokenWrapped).catch((cowError) => {
+        console.error(cowError);
         throw new Error(cowError.body.errorType);
       }),
       cowProtocolPricesService.getTokenUsdPrice(chainId, destTokenWrapped).catch((cowError) => {
+        console.error(cowError);
         throw new Error(cowError.body.errorType);
       }),
     ]);
 
     if (!srcTokenPriceUsd || !destTokenPriceUsd) {
+      console.error('No price found for token');
       throw new Error('No price found for token');
     }
   } catch (error) {
+    console.error(error);
     setError?.({
       error: error,
       blocking: true,
@@ -95,6 +100,30 @@ export async function getCowProtocolSellRates({
     ).dividedBy(10 ** destDecimals)
   );
 
+  if (!orderBookQuote.quoteResults.suggestedSlippageBps) {
+    console.error('No suggested slippage found');
+    setError?.({
+      blocking: true,
+      actionBlocked: true,
+      rawError: new Error('No suggested slippage found'),
+      txAction: TxAction.MAIN_ACTION,
+      error: undefined,
+    });
+    throw new Error('No suggested slippage found');
+  }
+
+  if (!orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount) {
+    console.error('No buy amount found');
+    setError?.({
+      blocking: true,
+      actionBlocked: true,
+      rawError: new Error('No buy amount found'),
+      txAction: TxAction.MAIN_ACTION,
+      error: undefined,
+    });
+    throw new Error('No buy amount found');
+  }
+
   return {
     srcToken,
     srcUSD: srcAmountInUsd.toString(),
@@ -107,6 +136,6 @@ export async function getCowProtocolSellRates({
     provider: 'cowprotocol',
     order: orderBookQuote.quoteResults.orderToSign,
     quoteId: orderBookQuote.quoteResults.quoteResponse.id,
-    suggestedSlippage: orderBookQuote.quoteResults.suggestedSlippageBps / 1000, // E.g. 100 -> 100 / 1000 = 0.1
+    suggestedSlippage: (orderBookQuote.quoteResults.suggestedSlippageBps ?? 100) / 1000, // E.g. 100 -> 100 / 1000 = 0.1
   };
 }
