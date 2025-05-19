@@ -233,6 +233,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
           srcAmount: order.sellAmount,
           destAmount: order.buyAmount,
           status: order.status,
+          orderId: order.uid,
+          chainId: chainId,
         };
       })
       .filter((txn) => txn !== null);

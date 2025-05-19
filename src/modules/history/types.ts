@@ -83,6 +83,8 @@ export type ActionFields = {
     destAmount: string;
     status: OrderStatus;
     timestamp: number;
+    orderId: string;
+    chainId: number;
   };
 };
 
