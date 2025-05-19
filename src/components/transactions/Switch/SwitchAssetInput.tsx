@@ -3,7 +3,7 @@ import { formatUnits } from '@ethersproject/units';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { ExpandMore } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -11,7 +11,6 @@ import {
   IconButton,
   InputBase,
   ListItemText,
-  Menu,
   MenuItem,
   SvgIcon,
   Typography,
@@ -24,6 +23,7 @@ import { useRootStore } from 'src/store/root';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { COMMON_SWAPS } from '../../../ui-config/TokenList';
+import { BasicModal } from '../../primitives/BasicModal';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { ExternalTokenIcon } from '../../primitives/TokenIcon';
 import { SearchInput } from '../../SearchInput';
@@ -99,15 +99,15 @@ export const SwitchAssetInput = ({
 
   const { erc20Service } = useSharedDependencies();
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [openModal, setOpenModal] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
-  const open = Boolean(anchorEl);
 
   const handleClick = () => {
-    setAnchorEl(inputRef.current);
+    setOpenModal(true);
   };
+
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpenModal(false);
     handleCleanSearch();
   };
 
@@ -157,17 +157,17 @@ export const SwitchAssetInput = ({
     <Box
       ref={inputRef}
       sx={(theme) => ({
-        p: '8px 12px',
+        p: '12px 16px',
         border: `1px solid ${theme.palette.divider}`,
-        borderRadius: '6px',
+        borderRadius: '8px',
         width: '100%',
-        mb: 1,
+        mb: 1.5,
       })}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         {loading ? (
           <Box sx={{ flex: 1 }}>
-            <CircularProgress color="inherit" size="16px" />
+            <CircularProgress color="inherit" size="20px" />
           </Box>
         ) : (
           <InputBase
@@ -187,10 +187,10 @@ export const SwitchAssetInput = ({
             inputProps={{
               'aria-label': 'amount input',
               style: {
-                fontSize: '21px',
-                lineHeight: '28,01px',
+                fontSize: '24px',
+                lineHeight: '32px',
                 padding: 0,
-                height: '28px',
+                height: '32px',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
@@ -217,164 +217,201 @@ export const SwitchAssetInput = ({
             }}
             disabled={disabled}
           >
-            <XCircleIcon height={16} />
+            <XCircleIcon height={18} />
           </IconButton>
         )}
         <Button
           disableRipple
           onClick={handleClick}
           data-cy={`assetSelect`}
-          sx={{ p: 0, '&:hover': { backgroundColor: 'transparent' } }}
-          endIcon={open ? <ExpandLess /> : <ExpandMore />}
+          sx={{
+            p: '4px 8px',
+            borderRadius: '6px',
+            transition: 'background-color 0.2s',
+            '&:hover': {
+              backgroundColor:
+                theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+            },
+          }}
+          endIcon={<ExpandMore />}
         >
           <ExternalTokenIcon
             symbol={selectedAsset.symbol}
             logoURI={selectedAsset.logoURI}
-            sx={{ mr: 2, ml: 3 }}
+            sx={{ mr: 2, ml: 1, width: 28, height: 28 }}
           />
           <Typography
             data-cy={`assetsSelectedOption_${selectedAsset.symbol.toUpperCase()}`}
             variant="main16"
             color="text.primary"
+            sx={{ fontWeight: 500 }}
           >
             {selectedAsset.symbol}
           </Typography>
           {selectedAsset.extensions?.isUserCustom && (
-            <SvgIcon sx={{ fontSize: 14, ml: 1 }} color="warning">
+            <SvgIcon sx={{ fontSize: 16, ml: 1 }} color="warning">
               <ExclamationIcon />
             </SvgIcon>
           )}
         </Button>
-        <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            sx: {
-              width: inputRef.current?.offsetWidth,
-              border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
-              boxShadow: '0px 2px 10px 0px #0000001A',
-              overflow: 'hidden',
-            },
+
+        <BasicModal
+          BackdropProps={{
+            style: { backgroundColor: 'transparent' },
           }}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
+          open={openModal}
+          setOpen={setOpenModal}
+          contentMaxWidth={420}
+          contentHeight={485}
         >
-          <Box
-            sx={{
-              p: 2,
-              px: 3,
-              borderBottom: `1px solid ${theme.palette.divider}`,
-              top: 0,
-              zIndex: 2,
-            }}
-          >
-            <SearchInput
-              onSearchTermChange={handleSearchAssetChange}
-              placeholder="Search name or paste address"
-              disableFocus={true}
-            />
-            {assets.length > 3 && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  overfloyY: 'auto',
-                  alignItems: 'flex-start',
-                  flexWrap: 'wrap',
-                  mt: 2,
-                  gap: 2,
-                }}
-              >
-                {popularAssets.map((asset) => (
-                  <Box
+          <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
+              <Trans>Switch tokens</Trans>
+            </Typography>
+
+            <Box
+              sx={{
+                borderBottom: `1px solid ${theme.palette.divider}`,
+                position: 'sticky',
+                top: 0,
+                zIndex: 2,
+                mb: 3,
+                pb: 3,
+                backgroundColor: theme.palette.background.paper,
+                boxShadow: '0px 4px 6px -6px rgba(0, 0, 0, 0.1)',
+                marginTop: -3,
+                paddingTop: 3,
+              }}
+            >
+              <SearchInput
+                onSearchTermChange={handleSearchAssetChange}
+                placeholder="Search name or paste address"
+                disableFocus={true}
+              />
+              {assets.length > 3 && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
+                    flexWrap: 'wrap',
+                    mt: 2.5,
+                    gap: 1.5,
+                  }}
+                >
+                  {popularAssets.map((asset) => (
+                    <Box
+                      key={asset.symbol}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        p: 1,
+                        borderRadius: '16px',
+                        border: '1px solid',
+                        borderColor: theme.palette.divider,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          backgroundColor: theme.palette.divider,
+                        },
+                      }}
+                      onClick={() => handleSelect(asset)}
+                    >
+                      <ExternalTokenIcon
+                        logoURI={asset.logoURI}
+                        symbol={asset.symbol}
+                        sx={{ width: 24, height: 24, mr: 1 }}
+                      />
+                      <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
+                        {asset.symbol}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              )}
+            </Box>
+            <Box
+              sx={{
+                flexGrow: 1,
+                overflowY: 'auto',
+                maxHeight: 'calc(485px - 180px)',
+                backgroundColor: theme.palette.background.paper,
+              }}
+            >
+              {loadingNewAsset ? (
+                <Box
+                  sx={{
+                    maxHeight: '220px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minHeight: '80px',
+                    backgroundColor: theme.palette.background.paper,
+                  }}
+                >
+                  <CircularProgress sx={{ mx: 'auto', my: 'auto' }} />
+                </Box>
+              ) : filteredAssets.length > 0 ? (
+                filteredAssets.map((asset) => (
+                  <MenuItem
                     key={asset.symbol}
+                    value={asset.symbol}
+                    data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
                     sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      p: 1,
-                      borderRadius: '16px',
-                      border: '1px solid',
-                      borderColor: theme.palette.divider,
-                      cursor: 'pointer',
+                      backgroundColor: theme.palette.background.paper,
+                      py: 1.5,
+                      px: 3,
+                      borderRadius: '8px',
+                      my: 0.5,
                       '&:hover': {
-                        backgroundColor: theme.palette.divider,
+                        backgroundColor:
+                          theme.palette.mode === 'dark'
+                            ? 'rgba(255, 255, 255, 0.05)'
+                            : 'rgba(0, 0, 0, 0.03)',
                       },
                     }}
                     onClick={() => handleSelect(asset)}
                   >
                     <ExternalTokenIcon
-                      logoURI={asset.logoURI}
                       symbol={asset.symbol}
-                      sx={{ width: 24, height: 24, mr: 1 }}
+                      logoURI={asset.logoURI}
+                      sx={{ mr: 2, width: 28, height: 28 }}
                     />
-                    <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
-                      {asset.symbol}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            )}
-          </Box>
-          <Box sx={{ overflow: 'auto', maxHeight: '200px' }}>
-            {loadingNewAsset ? (
-              <Box
-                sx={{
-                  maxHeight: '178px',
-                  overflowY: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  minHeight: '60px',
-                }}
-              >
-                <CircularProgress sx={{ mx: 'auto', my: 'auto' }} />
-              </Box>
-            ) : filteredAssets.length > 0 ? (
-              filteredAssets.map((asset) => (
-                <MenuItem
-                  key={asset.symbol}
-                  value={asset.symbol}
-                  data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
-                  sx={{
-                    backgroundColor: theme.palette.background.paper,
-                  }}
-                  onClick={() => handleSelect(asset)}
+                    <ListItemText
+                      sx={{ flexGrow: 0 }}
+                      primary={
+                        <Typography variant="main16" fontWeight={500}>
+                          {asset.symbol}
+                        </Typography>
+                      }
+                    />
+                    {asset.extensions?.isUserCustom && (
+                      <SvgIcon sx={{ fontSize: 16, ml: 1 }} color="warning">
+                        <ExclamationIcon />
+                      </SvgIcon>
+                    )}
+                    {asset.balance && (
+                      <FormattedNumber sx={{ ml: 'auto' }} value={asset.balance} compact />
+                    )}
+                  </MenuItem>
+                ))
+              ) : (
+                <Typography
+                  variant="main14"
+                  color="text.primary"
+                  sx={{ width: 'auto', textAlign: 'center', m: 4 }}
                 >
-                  <ExternalTokenIcon symbol={asset.symbol} logoURI={asset.logoURI} sx={{ mr: 2 }} />
-                  <ListItemText sx={{ flexGrow: 0 }}>{asset.symbol}</ListItemText>
-                  {asset.extensions?.isUserCustom && (
-                    <SvgIcon sx={{ fontSize: 14, ml: 1 }} color="warning">
-                      <ExclamationIcon />
-                    </SvgIcon>
-                  )}
-                  {asset.balance && (
-                    <FormattedNumber sx={{ ml: 'auto' }} value={asset.balance} compact />
-                  )}
-                </MenuItem>
-              ))
-            ) : (
-              <Typography
-                variant="main14"
-                color="text.primary"
-                sx={{ width: 'auto', textAlign: 'center', m: 4 }}
-              >
-                <Trans>
-                  No results found. You can import a custom token with a contract address
-                </Trans>
-              </Typography>
-            )}
+                  <Trans>
+                    No results found. You can import a custom token with a contract address
+                  </Trans>
+                </Typography>
+              )}
+            </Box>
           </Box>
-        </Menu>
+        </BasicModal>
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', height: '16px' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', height: '20px', mt: 0.5 }}>
         {loading ? (
           <Box sx={{ flex: 1 }} />
         ) : (
@@ -405,7 +442,24 @@ export const SwitchAssetInput = ({
             {!disableInput && (
               <Button
                 size="small"
-                sx={{ minWidth: 0, ml: '7px', p: 0 }}
+                sx={{
+                  minWidth: 0,
+                  ml: '10px',
+                  p: '2px 8px',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  backgroundColor:
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.08)'
+                      : 'rgba(0, 0, 0, 0.04)',
+                  '&:hover': {
+                    backgroundColor:
+                      theme.palette.mode === 'dark'
+                        ? 'rgba(255, 255, 255, 0.12)'
+                        : 'rgba(0, 0, 0, 0.08)',
+                  },
+                }}
                 onClick={() => {
                   onChange && onChange('-1');
                 }}
