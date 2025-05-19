@@ -12,7 +12,11 @@ import {
   getOrder,
   isOrderCancelled,
   isOrderFilled,
+  isOrderLoading,
 } from 'src/components/transactions/Switch/cowprotocol.helpers';
+import { ActionFields, TransactionHistoryItemUnion } from 'src/modules/history/types';
+
+import { useTransactionHistory } from './useTransactionHistory';
 
 interface OrderDetails {
   orderId: string;
@@ -34,7 +38,20 @@ const CowOrderToastContext = createContext<CowOrderToastContextType>(
 export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [activeOrders, setActiveOrders] = useState<Map<string, OrderDetails>>(new Map());
 
-  // Cleanup all intervals on unmount
+  const { data: transactions } = useTransactionHistory({ isFilterActive: false });
+
+  useEffect(() => {
+    if (transactions && activeOrders.size === 0) {
+      const cowOrders = transactions.pages[0]
+        .filter((tx: TransactionHistoryItemUnion) => tx.action === 'CowSwap')
+        .filter((tx: ActionFields['CowSwap']) => isOrderLoading(tx.status))
+        .map((tx: TransactionHistoryItemUnion) => tx as ActionFields['CowSwap']);
+      cowOrders.forEach((tx) => {
+        trackOrder(tx.orderId, tx.chainId);
+      });
+    }
+  }, [transactions, activeOrders]);
+
   useEffect(() => {
     return () => {
       activeOrders.forEach((order) => clearInterval(order.interval));
@@ -97,7 +114,7 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
         } catch (error) {
           console.error('Error checking order status:', error);
         }
-      }, 10000); // Poll every 10 seconds
+      }, 30000); // Poll every 30 seconds
 
       // Add to active orders
       setActiveOrders((prev) => {
