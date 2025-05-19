@@ -63,6 +63,10 @@ msgstr "Amount to migrate"
 msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Borrowing this amount will reduce your health factor and increase risk of liquidation."
 
+#: src/components/transactions/FlowCommons/BaseWaiting.tsx
+msgid "In progress"
+msgstr "In progress"
+
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
 msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictionn, see the <1>help guide</1> or the <2>Aave V3 Technical Paper</2>."
 msgstr "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictionn, see the <1>help guide</1> or the <2>Aave V3 Technical Paper</2>."
@@ -119,10 +123,6 @@ msgstr "Liquidation risk"
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Current v2 Balance"
 msgstr "Current v2 Balance"
-
-#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
-msgid "You've successfully submitted an order.<0/> Please wait for it to be filled."
-msgstr "You've successfully submitted an order.<0/> Please wait for it to be filled."
 
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/migration/MigrationList.tsx
@@ -753,6 +753,10 @@ msgstr "of"
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
 msgstr "Techpaper"
+
+#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
+msgid "You've successfully submitted an order."
+msgstr "You've successfully submitted an order."
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
@@ -1436,10 +1440,6 @@ msgstr "Fee"
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
 
-#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
-msgid "The order has been filled."
-msgstr "The order has been filled."
-
 #: src/components/infoTooltips/SpkAirdropTooltip.tsx
 msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
@@ -1800,6 +1800,7 @@ msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
 
 #: src/components/transactions/Switch/SwitchTxSuccessView.tsx
+#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
 msgid "You've successfully switched tokens."
 msgstr "You've successfully switched tokens."
 
@@ -1830,6 +1831,10 @@ msgstr "Amount to Bridge"
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
+
+#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
+msgid "The order could't be filled."
+msgstr "The order could't be filled."
 
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
@@ -3207,10 +3212,6 @@ msgstr "COPY IMAGE"
 msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
 
-#: src/components/transactions/FlowCommons/BaseWaiting.tsx
-msgid "Waiting for confirmation"
-msgstr "Waiting for confirmation"
-
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
@@ -3368,10 +3369,6 @@ msgstr "Collateral usage is limited because of isolation mode."
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
 msgstr "Flashloan is disabled for this asset, hence this position cannot be migrated."
-
-#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
-msgid "The order has been cancelled."
-msgstr "The order has been cancelled."
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx

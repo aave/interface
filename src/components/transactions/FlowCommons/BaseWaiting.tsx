@@ -1,23 +1,31 @@
 import { ClockIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
 export type BaseWaitingTxViewProps = {
   txHash?: string;
+  customExplorerLink?: string;
+  customExplorerLinkText?: string;
   children: ReactNode;
   hideTx?: boolean;
 };
 
 const ExtLinkIcon = () => (
-  <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
+  <SvgIcon sx={{ ml: 2, fontWeight: 800, fontSize: '20px', color: 'text.primary' }}>
     <ExternalLinkIcon />
   </SvgIcon>
 );
 
-export const BaseWaitingView = ({ txHash, children, hideTx }: BaseWaitingTxViewProps) => {
+export const BaseWaitingView = ({
+  txHash,
+  children,
+  hideTx,
+  customExplorerLink,
+  customExplorerLinkText,
+}: BaseWaitingTxViewProps) => {
   const { close, mainTxState } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
@@ -50,7 +58,7 @@ export const BaseWaitingView = ({ txHash, children, hideTx }: BaseWaitingTxViewP
         </Box>
 
         <Typography sx={{ mt: 4 }} variant="h2">
-          <Trans>Waiting for confirmation</Trans>
+          <Trans>In progress</Trans>
         </Typography>
 
         {children}
@@ -60,32 +68,30 @@ export const BaseWaitingView = ({ txHash, children, hideTx }: BaseWaitingTxViewP
         {hideTx ? (
           <br />
         ) : (
-          <Link
-            variant="helperText"
-            href={currentNetworkConfig.explorerLinkBuilder({
-              tx: txHash ? txHash : mainTxState.txHash,
-            })}
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'right',
-              mt: 6,
-              mb: 3,
-            }}
-            underline="hover"
+          <Button
+            variant="outlined"
+            size="large"
+            sx={{ borderRadius: 1, borderColor: 'divider', borderWidth: 1, mt: 6, mb: 2 }}
+            href={
+              customExplorerLink
+                ? customExplorerLink
+                : currentNetworkConfig.explorerLinkBuilder({
+                    tx: txHash ? txHash : mainTxState.txHash,
+                  })
+            }
             target="_blank"
             rel="noreferrer noopener"
           >
-            <Trans>Review tx details</Trans>
+            {customExplorerLinkText ? customExplorerLinkText : <Trans>Review tx details</Trans>}
             <ExtLinkIcon />
-          </Link>
+          </Button>
         )}
 
         <Button
           onClick={close}
           variant="contained"
           size="large"
-          sx={{ minHeight: '44px' }}
+          sx={{ minHeight: '50px' }}
           data-cy="closeButton"
         >
           <Trans>Ok, Close</Trans>

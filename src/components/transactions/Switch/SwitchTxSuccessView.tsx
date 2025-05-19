@@ -1,13 +1,10 @@
 import { ChainIdToNetwork } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
-import { Order } from '@cowprotocol/cow-sdk';
-import { ArrowRightIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { useEffect, useMemo, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link } from 'src/components/primitives/Link';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
 import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
@@ -82,15 +79,12 @@ export const SwitchTxSuccessView = ({
   const { trackOrder } = useCowOrderToast();
 
   // Do polling each 10 seconds until the order get's filled
-  const [order, setOrder] = useState<Order | undefined>(undefined);
   const [orderStatus, setOrderStatus] = useState<'succeed' | 'failed' | 'open'>('open');
   const [surplus, setSurplus] = useState<bigint | undefined>(undefined);
-  const [surplusPercent, setSurplusPercent] = useState<number | undefined>(undefined);
 
   // Start tracking the order when the component mounts
   useEffect(() => {
     if (switchProvider === 'cowprotocol' && txHashOrOrderId) {
-      console.log('Tracking order', txHashOrOrderId, chainId);
       trackOrder(txHashOrOrderId, chainId);
     }
   }, [txHashOrOrderId, chainId, switchProvider, trackOrder]);
@@ -101,20 +95,12 @@ export const SwitchTxSuccessView = ({
       if (switchProvider === 'cowprotocol' && txHashOrOrderId) {
         getOrder(txHashOrOrderId, chainId)
           .then((order) => {
-            setOrder(order);
             if (isOrderFilled(order.status)) {
               setOrderStatus('succeed');
               setSurplus(
                 BigNumber.from(order.executedBuyAmount)
                   .sub(BigNumber.from(parseUnits(outAmount, destDecimals)))
                   .toBigInt()
-              );
-              setSurplusPercent(
-                BigNumber.from(order?.executedBuyAmount ?? 0)
-                  .sub(BigNumber.from(parseUnits(outAmount, destDecimals)))
-                  .mul(BigNumber.from(10000)) // For precision
-                  .div(BigNumber.from(parseUnits(outAmount, destDecimals)))
-                  .toNumber() / 10000
               );
             } else if (isOrderCancelled(order.status)) {
               setOrderStatus('failed');
@@ -138,123 +124,99 @@ export const SwitchTxSuccessView = ({
     return BaseSuccessView; // Default case
   }, [orderStatus, provider]);
 
+  const surplusDisplay =
+    surplus && surplus > 0
+      ? `Includes +${Number(normalize(surplus.toString(), destDecimals)).toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })} ${outSymbol} Surplus`
+      : undefined;
+
+  const customExplorerLink = useMemo(() => {
+    return provider === 'cowprotocol'
+      ? `https://explorer.cow.fi/${
+          chainId == 1 ? '' : ChainIdToNetwork[chainId] + '/'
+        }orders/${txHashOrOrderId}`
+      : undefined;
+  }, [provider, chainId, txHashOrOrderId]);
+
+  const customExplorerLinkText = useMemo(() => {
+    return provider === 'cowprotocol' ? 'View details' : undefined;
+  }, [provider]);
+
   return (
-    <View txHash={txHashOrOrderId} hideTx={provider === 'cowprotocol'}>
-      <Box
-        sx={{
-          mt: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-        }}
-      >
-        <Typography mb={2}>
+    <View
+      txHash={txHashOrOrderId}
+      customExplorerLink={customExplorerLink}
+      customExplorerLinkText={customExplorerLinkText}
+      hideTx={provider == 'cowprotocol' && !txHashOrOrderId}
+    >
+      <Box display="flex" flexDirection="column" alignItems="center" mt={2} mb={3}>
+        <Typography color="text.secondary">
           {provider === 'cowprotocol' ? (
             <>
               {orderStatus === 'open' ? (
-                <Trans>
-                  You&apos;ve successfully submitted an order.
-                  <br /> Please wait for it to be filled.
-                </Trans>
+                <Trans>You&apos;ve successfully submitted an order.</Trans>
               ) : orderStatus === 'failed' ? (
-                <Trans>The order has been cancelled.</Trans>
+                <Trans>The order could&apos;t be filled.</Trans>
               ) : (
-                <Trans>The order has been filled.</Trans>
+                <Trans>You&apos;ve successfully switched tokens.</Trans>
               )}
-              <br />
-              {txHashOrOrderId && (
-                <>
-                  You can see the details{' '}
-                  <Link
-                    underline="always"
-                    href={`https://explorer.cow.fi/${
-                      chainId == 1 ? '' : ChainIdToNetwork[chainId] + '/'
-                    }orders/${txHashOrOrderId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    here
-                    <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
-                      <ExternalLinkIcon />
-                    </SvgIcon>
-                  </Link>
-                  <br />
-                </>
-              )}
-              {!txHashOrOrderId && <Trans>Details will be available soon.</Trans>}
             </>
           ) : (
             <Trans>You&apos;ve successfully switched tokens.</Trans>
           )}
         </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-            mt: 3,
-          }}
-        >
-          <ExternalTokenIcon sx={{ fontSize: '20px' }} logoURI={iconUri} symbol={iconSymbol} />
-          <FormattedNumber value={Number(amount)} compact variant="main14" />
-          <Typography variant="secondary14">{symbol}</Typography>
-          <SvgIcon sx={{ fontSize: '14px' }}>
-            <ArrowRightIcon fontSize="14px" />
-          </SvgIcon>
-          <ExternalTokenIcon
-            sx={{ fontSize: '20px' }}
-            logoURI={outIconUri}
-            symbol={outIconSymbol}
-          />
-          {orderStatus === 'open' && (
-            <>
-              <FormattedNumber value={Number(outAmount)} variant="main14" />
-              <Typography variant="secondary14">{outSymbol}</Typography>
-            </>
-          )}
-          {orderStatus === 'succeed' && order && (
-            // <FormattedNumber value={Number(normalize(order.executedBuyAmount, destDecimals))} color={
-            //   surplusPercent && surplusPercent > 0 ? "green" : 'inherit'
-            //   }  variant="main14" />
-            <SwitchWithSurplusTooltip
-              text={
-                <Box display="flex" alignItems="center" gap={1}>
-                  <FormattedNumber
-                    value={Number(normalize(order?.executedBuyAmount ?? 0, destDecimals))}
-                    color={surplusPercent && surplusPercent > 0 ? 'green' : 'inherit'}
-                    variant="main14"
-                  />
-                  <Typography variant="secondary14">{outSymbol}</Typography>
-                </Box>
-              }
-              surplus={Number(normalize(surplus?.toString() ?? 0, destDecimals))}
-              surplusPercent={surplusPercent ?? 0}
-              baseAmount={Number(outAmount)}
-            />
-          )}
-        </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          {orderStatus === 'succeed' && order && !!surplusPercent && !!surplus && (
-            <>
-              <Typography variant="secondary14">+</Typography>
-              <FormattedNumber
-                value={normalize(surplus.toString(), destDecimals)}
-                visibleDecimals={2}
-                variant="main14"
-              />
-              <FormattedNumber
-                value={surplusPercent}
-                percent={true}
-                visibleDecimals={2}
-                variant="main14"
-              />
-              <Typography variant="secondary14">{outSymbol}</Typography>
-            </>
-          )}
-        </Box>
       </Box>
+
+      <Box
+        sx={{
+          background: 'background.default',
+          borderRadius: 2,
+          border: '1px solid',
+          borderColor: 'divider',
+          p: 3,
+          mb: 4,
+          width: '80%',
+        }}
+      >
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+          <Typography color="text.secondary">Sent</Typography>
+          <Box display="flex" alignItems="center" gap={1}>
+            <ExternalTokenIcon symbol={iconSymbol} logoURI={iconUri} sx={{ fontSize: 20 }} />
+            <Typography fontWeight={600}>
+              {Number(amount).toLocaleString(undefined, { maximumFractionDigits: 2 })}{' '}
+            </Typography>
+            <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
+              {symbol}
+            </Typography>
+          </Box>
+        </Box>
+        <Divider sx={{ my: 1 }} />
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+          <Typography color="text.secondary">Received</Typography>
+          <Box display="flex" alignItems="center" gap={1}>
+            <ExternalTokenIcon symbol={outIconSymbol} logoURI={outIconUri} sx={{ fontSize: 20 }} />
+            <Typography fontWeight={600}>
+              {Number(outAmount).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+            </Typography>
+            <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
+              {outSymbol}
+            </Typography>
+          </Box>
+        </Box>
+        {surplusDisplay && (
+          <Typography
+            variant="helperText"
+            fontWeight={500}
+            sx={{ float: 'right', color: 'text.secondary' }}
+            mt={0.5}
+          >
+            {surplusDisplay}
+          </Typography>
+        )}
+      </Box>
+      {!txHashOrOrderId && <Trans>Details will be available soon.</Trans>}
+
     </View>
   );
 };
