@@ -124,10 +124,6 @@ export const SwitchActions = ({
     else return approvedAmount < Number(inputAmount);
   }, [approvedAmount, inputAmount, isWrongNetwork]);
 
-  useEffect(() => {
-    setShowGasStation(requiresApproval);
-  }, [requiresApproval, setShowGasStation]);
-
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
     if (isParaswapRates(switchRates)) {
@@ -454,12 +450,17 @@ export const SwitchActions = ({
 
   useEffect(() => {
     let switchGasLimit = 0;
-    switchGasLimit = Number(gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended);
+    if (isParaswapRates(switchRates)) {
+      switchGasLimit += Number(
+        gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended
+      );
+    }
     if (requiresApproval && !approvalTxState.success) {
       switchGasLimit += Number(APPROVAL_GAS_LIMIT);
     }
     setGasLimit(switchGasLimit.toString());
-  }, [requiresApproval, approvalTxState, setGasLimit]);
+    setShowGasStation(requiresApproval);
+  }, [requiresApproval, approvalTxState, setGasLimit, setShowGasStation]);
 
   return (
     <TxActionsWrapper

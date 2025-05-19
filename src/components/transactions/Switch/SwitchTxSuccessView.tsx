@@ -216,7 +216,6 @@ export const SwitchTxSuccessView = ({
         )}
       </Box>
       {!txHashOrOrderId && <Trans>Details will be available soon.</Trans>}
-
     </View>
   );
 };

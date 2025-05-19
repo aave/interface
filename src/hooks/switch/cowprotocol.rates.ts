@@ -8,7 +8,7 @@ import {
 import { SwitchParams, SwitchRatesType } from 'src/components/transactions/Switch/switch.types';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
-import { TxAction } from 'src/ui-config/errorMapping';
+import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 
 export async function getCowProtocolSellRates({
@@ -76,6 +76,13 @@ export async function getCowProtocolSellRates({
 
     if (!srcTokenPriceUsd || !destTokenPriceUsd) {
       console.error('No price found for token');
+      const error = getErrorTextFromError(
+        new Error('No price found for token'),
+        TxAction.MAIN_ACTION,
+        true
+      );
+      setError?.(error);
+      console.error(error);
       throw new Error('No price found for token');
     }
   } catch (error) {
@@ -102,25 +109,25 @@ export async function getCowProtocolSellRates({
 
   if (!orderBookQuote.quoteResults.suggestedSlippageBps) {
     console.error('No suggested slippage found');
-    setError?.({
-      blocking: true,
-      actionBlocked: true,
-      rawError: new Error('No suggested slippage found'),
-      txAction: TxAction.MAIN_ACTION,
-      error: undefined,
-    });
+    const error = getErrorTextFromError(
+      new Error('No suggested slippage found'),
+      TxAction.MAIN_ACTION,
+      true
+    );
+    setError?.(error);
+    console.error(error);
     throw new Error('No suggested slippage found');
   }
 
   if (!orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount) {
     console.error('No buy amount found');
-    setError?.({
-      blocking: true,
-      actionBlocked: true,
-      rawError: new Error('No buy amount found'),
-      txAction: TxAction.MAIN_ACTION,
-      error: undefined,
-    });
+    const error = getErrorTextFromError(
+      new Error('No buy amount found'),
+      TxAction.MAIN_ACTION,
+      true
+    );
+    setError?.(error);
+    console.error(error);
     throw new Error('No buy amount found');
   }
 
