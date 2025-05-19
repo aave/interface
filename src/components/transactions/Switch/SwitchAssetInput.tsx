@@ -264,138 +264,149 @@ export const SwitchAssetInput = ({
           contentMaxWidth={420}
           contentHeight={485}
         >
-          <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
-            <Trans>Switch tokens</Trans>
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
+              <Trans>Switch tokens</Trans>
+            </Typography>
 
-          <Box
-            sx={{
-              borderBottom: `1px solid ${theme.palette.divider}`,
-              position: 'sticky',
-              top: 0,
-              zIndex: 2,
-              mb: 3,
-              pb: 3,
-              backgroundColor: theme.palette.background.paper,
-            }}
-          >
-            <SearchInput
-              onSearchTermChange={handleSearchAssetChange}
-              placeholder="Search name or paste address"
-              disableFocus={true}
-            />
-            {assets.length > 3 && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  overflowY: 'auto',
-                  alignItems: 'flex-start',
-                  flexWrap: 'wrap',
-                  mt: 2.5,
-                  gap: 1.5,
-                }}
-              >
-                {popularAssets.map((asset) => (
-                  <Box
+            <Box
+              sx={{
+                borderBottom: `1px solid ${theme.palette.divider}`,
+                position: 'sticky',
+                top: 0,
+                zIndex: 2,
+                mb: 3,
+                pb: 3,
+                backgroundColor: theme.palette.background.paper,
+                boxShadow: '0px 4px 6px -6px rgba(0, 0, 0, 0.1)',
+                marginTop: -3,
+                paddingTop: 3,
+              }}
+            >
+              <SearchInput
+                onSearchTermChange={handleSearchAssetChange}
+                placeholder="Search name or paste address"
+                disableFocus={true}
+              />
+              {assets.length > 3 && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
+                    flexWrap: 'wrap',
+                    mt: 2.5,
+                    gap: 1.5,
+                  }}
+                >
+                  {popularAssets.map((asset) => (
+                    <Box
+                      key={asset.symbol}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        p: 1,
+                        borderRadius: '16px',
+                        border: '1px solid',
+                        borderColor: theme.palette.divider,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          backgroundColor: theme.palette.divider,
+                        },
+                      }}
+                      onClick={() => handleSelect(asset)}
+                    >
+                      <ExternalTokenIcon
+                        logoURI={asset.logoURI}
+                        symbol={asset.symbol}
+                        sx={{ width: 24, height: 24, mr: 1 }}
+                      />
+                      <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
+                        {asset.symbol}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              )}
+            </Box>
+            <Box
+              sx={{
+                flexGrow: 1,
+                overflowY: 'auto',
+                maxHeight: 'calc(485px - 180px)',
+                backgroundColor: theme.palette.background.paper,
+              }}
+            >
+              {loadingNewAsset ? (
+                <Box
+                  sx={{
+                    maxHeight: '220px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minHeight: '80px',
+                    backgroundColor: theme.palette.background.paper,
+                  }}
+                >
+                  <CircularProgress sx={{ mx: 'auto', my: 'auto' }} />
+                </Box>
+              ) : filteredAssets.length > 0 ? (
+                filteredAssets.map((asset) => (
+                  <MenuItem
                     key={asset.symbol}
+                    value={asset.symbol}
+                    data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
                     sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      p: 1,
-                      borderRadius: '16px',
-                      border: '1px solid',
-                      borderColor: theme.palette.divider,
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
+                      backgroundColor: theme.palette.background.paper,
+                      py: 1.5,
+                      px: 3,
+                      borderRadius: '8px',
+                      my: 0.5,
                       '&:hover': {
-                        backgroundColor: theme.palette.divider,
+                        backgroundColor:
+                          theme.palette.mode === 'dark'
+                            ? 'rgba(255, 255, 255, 0.05)'
+                            : 'rgba(0, 0, 0, 0.03)',
                       },
                     }}
                     onClick={() => handleSelect(asset)}
                   >
                     <ExternalTokenIcon
-                      logoURI={asset.logoURI}
                       symbol={asset.symbol}
-                      sx={{ width: 24, height: 24, mr: 1 }}
+                      logoURI={asset.logoURI}
+                      sx={{ mr: 2, width: 28, height: 28 }}
                     />
-                    <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
-                      {asset.symbol}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            )}
-          </Box>
-          <Box sx={{ overflow: 'auto', maxHeight: '355px' }}>
-            {loadingNewAsset ? (
-              <Box
-                sx={{
-                  maxHeight: '220px',
-                  overflowY: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  minHeight: '80px',
-                }}
-              >
-                <CircularProgress sx={{ mx: 'auto', my: 'auto' }} />
-              </Box>
-            ) : filteredAssets.length > 0 ? (
-              filteredAssets.map((asset) => (
-                <MenuItem
-                  key={asset.symbol}
-                  value={asset.symbol}
-                  data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
-                  sx={{
-                    backgroundColor: theme.palette.background.paper,
-                    py: 1.5,
-                    px: 3,
-                    borderRadius: '8px',
-                    my: 0.5,
-                    '&:hover': {
-                      backgroundColor:
-                        theme.palette.mode === 'dark'
-                          ? 'rgba(255, 255, 255, 0.05)'
-                          : 'rgba(0, 0, 0, 0.03)',
-                    },
-                  }}
-                  onClick={() => handleSelect(asset)}
+                    <ListItemText
+                      sx={{ flexGrow: 0 }}
+                      primary={
+                        <Typography variant="main16" fontWeight={500}>
+                          {asset.symbol}
+                        </Typography>
+                      }
+                    />
+                    {asset.extensions?.isUserCustom && (
+                      <SvgIcon sx={{ fontSize: 16, ml: 1 }} color="warning">
+                        <ExclamationIcon />
+                      </SvgIcon>
+                    )}
+                    {asset.balance && (
+                      <FormattedNumber sx={{ ml: 'auto' }} value={asset.balance} compact />
+                    )}
+                  </MenuItem>
+                ))
+              ) : (
+                <Typography
+                  variant="main14"
+                  color="text.primary"
+                  sx={{ width: 'auto', textAlign: 'center', m: 4 }}
                 >
-                  <ExternalTokenIcon
-                    symbol={asset.symbol}
-                    logoURI={asset.logoURI}
-                    sx={{ mr: 2, width: 28, height: 28 }}
-                  />
-                  <ListItemText
-                    sx={{ flexGrow: 0 }}
-                    primary={
-                      <Typography variant="main16" fontWeight={500}>
-                        {asset.symbol}
-                      </Typography>
-                    }
-                  />
-                  {asset.extensions?.isUserCustom && (
-                    <SvgIcon sx={{ fontSize: 16, ml: 1 }} color="warning">
-                      <ExclamationIcon />
-                    </SvgIcon>
-                  )}
-                  {asset.balance && (
-                    <FormattedNumber sx={{ ml: 'auto' }} value={asset.balance} compact />
-                  )}
-                </MenuItem>
-              ))
-            ) : (
-              <Typography
-                variant="main14"
-                color="text.primary"
-                sx={{ width: 'auto', textAlign: 'center', m: 4 }}
-              >
-                <Trans>
-                  No results found. You can import a custom token with a contract address
-                </Trans>
-              </Typography>
-            )}
+                  <Trans>
+                    No results found. You can import a custom token with a contract address
+                  </Trans>
+                </Typography>
+              )}
+            </Box>
           </Box>
         </BasicModal>
       </Box>
