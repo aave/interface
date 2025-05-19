@@ -11,6 +11,7 @@ import { Link } from 'src/components/primitives/Link';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
 import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
+import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
 import { parseUnits } from 'viem';
 
 import { BaseCancelledView } from '../FlowCommons/BaseCancelled';
@@ -78,6 +79,7 @@ export const SwitchTxSuccessView = ({
   destDecimals,
 }: SwitchTxSuccessViewProps) => {
   const switchProvider = useSwitchProvider({ chainId: chainId });
+  const { trackOrder } = useCowOrderToast();
 
   // Do polling each 10 seconds until the order get's filled
   const [order, setOrder] = useState<Order | undefined>(undefined);
@@ -85,7 +87,15 @@ export const SwitchTxSuccessView = ({
   const [surplus, setSurplus] = useState<bigint | undefined>(undefined);
   const [surplusPercent, setSurplusPercent] = useState<number | undefined>(undefined);
 
-  // Poll the order status
+  // Start tracking the order when the component mounts
+  useEffect(() => {
+    if (switchProvider === 'cowprotocol' && txHashOrOrderId) {
+      console.log('Tracking order', txHashOrOrderId, chainId);
+      trackOrder(txHashOrOrderId, chainId);
+    }
+  }, [txHashOrOrderId, chainId, switchProvider, trackOrder]);
+
+  // Poll the order status for UI updates
   useEffect(() => {
     const interval = setInterval(() => {
       if (switchProvider === 'cowprotocol' && txHashOrOrderId) {
@@ -117,7 +127,7 @@ export const SwitchTxSuccessView = ({
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [txHashOrOrderId]);
+  }, [txHashOrOrderId, chainId, switchProvider, outAmount, destDecimals]);
 
   const View = useMemo(() => {
     if (provider === 'cowprotocol' && orderStatus === 'open') {
