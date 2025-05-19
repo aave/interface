@@ -428,7 +428,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     },
     wagmiChain: celo,
   },
-  [1868]: {
+  [ChainId.soneium]: {
     name: 'Soneium',
     publicJsonRPCUrl: ['https://soneium.drpc.org', 'https://rpc.soneium.org'],
     baseAssetSymbol: 'ETH',
