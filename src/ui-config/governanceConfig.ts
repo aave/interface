@@ -6,6 +6,7 @@ import {
   GovernanceV3Avalanche,
   GovernanceV3Base,
   GovernanceV3BNB,
+  GovernanceV3Celo,
   GovernanceV3Ethereum,
   GovernanceV3Gnosis,
   GovernanceV3Linea,
@@ -115,7 +116,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Polygon.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Polygon.VOTING_MACHINE,
-        subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/32WLrLTQctAgfoshbkteHfxLu3DpAeZwh2vUPWXV6Qxu`,
+        subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/72ysXwyqW9CvfqD8keWo2fEfdKZQRWGYdgC6cnvTSFKy`,
       },
       [ChainId.avalanche]: {
         portalToMachineMap: {
@@ -140,6 +141,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.zksync]: GovernanceV3ZkSync.PC_DATA_HELPER,
       [ChainId.linea]: GovernanceV3Linea.PC_DATA_HELPER,
       [ChainId.sonic]: GovernanceV3Sonic.PC_DATA_HELPER,
+      [ChainId.celo]: GovernanceV3Celo.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,

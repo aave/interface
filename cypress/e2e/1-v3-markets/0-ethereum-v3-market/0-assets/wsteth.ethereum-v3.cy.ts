@@ -7,13 +7,13 @@ import { dashboardAssetValuesVerification } from '../../../../support/steps/veri
 import { RequestedTokens, tokenSet } from '../../../4-gho-ethereum/helpers/token.helper';
 
 const tokensToRequest: RequestedTokens = {
-  aETHEthereumV3: 900,
+  aETHEthereumV3: 10,
 };
 
 const testData = {
   depositBaseAmount: {
     asset: assets.ethereumV3Market.ETH,
-    amount: 9000,
+    amount: 1,
     hasApproval: true,
   },
   testCases: {

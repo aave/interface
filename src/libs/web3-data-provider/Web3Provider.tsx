@@ -3,11 +3,13 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
 import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
+import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useRootStore } from 'src/store/root';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { hexToAscii } from 'src/utils/utils';
 import { UserRejectedRequestError } from 'viem';
 import { useAccount, useConnect, useSwitchChain, useWatchAsset } from 'wagmi';
+import { useShallow } from 'zustand/shallow';
 
 import { Web3Context } from '../hooks/useWeb3Context';
 import { getEthersProvider } from './adapters/EthersAdapter';
@@ -47,7 +49,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-  const setAccount = useRootStore((store) => store.setAccount);
+  const [setAccount, setConnectedAccountIsContract] = useRootStore(
+    useShallow((store) => [store.setAccount, store.setConnectedAccountIsContract])
+  );
 
   const account = address;
   const readOnlyMode = utils.isAddress(readOnlyModeAddress || '');
@@ -55,6 +59,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   if (readOnlyMode && readOnlyModeAddress) {
     currentAccount = readOnlyModeAddress;
   }
+
+  const { data: isContractAddress } = useIsContractAddress(account || '', chainId);
 
   useEffect(() => {
     if (didInit) {
@@ -178,6 +184,17 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       setAccount(readOnlyModeAddress.toLowerCase());
     }
   }, [readOnlyModeAddress, setAccount]);
+
+  useEffect(() => {
+    if (!account) {
+      setConnectedAccountIsContract(false);
+      return;
+    }
+
+    if (isContractAddress) {
+      setConnectedAccountIsContract(true);
+    }
+  }, [isContractAddress, setConnectedAccountIsContract, account]);
 
   return (
     <Web3Context.Provider

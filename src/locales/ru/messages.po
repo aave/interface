@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-04 00:22\n"
+"PO-Revision-Date: 2025-05-14 18:07\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -27,6 +27,7 @@ msgid "Receive (est.)"
 msgstr "Получить (приблизительно)"
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 #: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
@@ -200,6 +201,10 @@ msgstr "Ресурс не может быть перенесен из-за ог�
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
 msgstr "Заблокированный адрес"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
+msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -669,10 +674,6 @@ msgstr "Возможности заимствования и активы огр
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr "Протокол заимствует лимит на 100% для этого актива. Дальнейшее заимствование недоступно."
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Thank you for voting!!"
-msgstr "Спасибо за голосование!!"
-
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Конюшня"
@@ -978,10 +979,6 @@ msgstr ""
 msgid "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
-msgstr ""
-
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 msgstr "Извините, произошла непредвиденная ошибка. Тем временем вы можете попробовать перезагрузить страницу или вернуться позже."
@@ -1022,6 +1019,11 @@ msgstr "Востребование {symbol}"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Заимствование этого актива ограничено определенной суммой, чтобы свести к минимуму неплатежеспособность пула ликвидности."
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
+msgid "All done"
+msgstr ""
 
 #: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
@@ -1985,6 +1987,10 @@ msgstr "Адреса"
 msgid "The requested amount is greater than the max loan size in stable rate mode"
 msgstr "Запрашиваемая сумма превышает максимальный размер кредита в режиме стабильной ставки"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
+msgstr ""
+
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -2278,11 +2284,6 @@ msgstr "Проголосовали ПРОТИВ"
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "about SuperFest."
 msgstr ""
-
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-#: src/components/transactions/FlowCommons/BaseSuccess.tsx
-msgid "All done!"
-msgstr "Все готово!"
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
@@ -2663,10 +2664,6 @@ msgstr "С правом голоса <0/>"
 msgid "French"
 msgstr "Французский"
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
-msgstr ""
-
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
 msgstr "Одновременная миграция нескольких залоговых и заемных активов может быть дорогостоящей операцией и в определенных ситуациях может привести к сбою. <0>Поэтому не рекомендуется переносить позиции с более чем 5 активами (депонированными + заемными) одновременно.</0>"
@@ -2742,6 +2739,10 @@ msgstr "Долг"
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "Фильтр"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "Learn more about the Ether.fi program"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown to unstake"
@@ -2915,6 +2916,10 @@ msgstr "Недействительный срок действия"
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Interest accrued"
 msgstr "Начисленные проценты"
+
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting"
+msgstr ""
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."
