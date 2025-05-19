@@ -1,7 +1,7 @@
 import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, SvgIcon, Typography, useTheme } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
@@ -46,6 +46,8 @@ export const ActionDetails = <K extends keyof ActionFields>({
   transaction: TransactionHistoryItem<ActionFields[K]>;
   iconSize: string;
 }) => {
+  const theme = useTheme();
+
   switch (transaction.action) {
     case 'Supply':
     case 'Deposit':
@@ -631,14 +633,38 @@ export const ActionDetails = <K extends keyof ActionFields>({
           {/* Status */}
           {cowSwapTx.status == OrderStatus.OPEN && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-              <Warning severity="info" sx={{ my: 0 }}>
+              <Warning
+                severity="info"
+                sx={{
+                  my: 0,
+                  pt: 0.6,
+                  pb: 0.6,
+                  pr: 1.5,
+                  pl: 1.5,
+                  background: 'none',
+                  border: `1px solid ${theme.palette.divider}`,
+                  color: theme.palette.text.primary,
+                }}
+              >
                 <Trans>In Progress</Trans>
               </Warning>
             </Box>
           )}
           {cowSwapTx.status == OrderStatus.FULFILLED && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-              <Warning severity="success" sx={{ my: 0 }}>
+              <Warning
+                severity="success"
+                sx={{
+                  my: 0,
+                  pt: 0.6,
+                  pb: 0.6,
+                  pr: 1.5,
+                  pl: 1.5,
+                  background: 'none',
+                  border: `1px solid ${theme.palette.divider}`,
+                  color: theme.palette.text.primary,
+                }}
+              >
                 <Trans>Filled</Trans>
               </Warning>
             </Box>
@@ -647,7 +673,19 @@ export const ActionDetails = <K extends keyof ActionFields>({
           {(cowSwapTx.status == OrderStatus.CANCELLED ||
             cowSwapTx.status == OrderStatus.EXPIRED) && (
             <Box sx={{ display: 'inline-flex', alignItems: 'center', ml: 4.5 }}>
-              <Warning severity="error" sx={{ my: 0 }}>
+              <Warning
+                severity="error"
+                sx={{
+                  my: 0,
+                  pt: 0.6,
+                  pb: 0.6,
+                  pr: 1.5,
+                  pl: 1.5,
+                  background: 'none',
+                  border: `1px solid ${theme.palette.divider}`,
+                  color: theme.palette.text.primary,
+                }}
+              >
                 <Trans>Cancelled</Trans>
               </Warning>
             </Box>
