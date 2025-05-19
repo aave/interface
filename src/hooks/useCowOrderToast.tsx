@@ -40,7 +40,7 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
         const order = await getOrder(orderId, chainId);
 
         if (isOrderFilled(order.status)) {
-          toast.success('Your order has been filled successfully!', {
+          toast.success('You have successfully swapped your assets.', {
             action: {
               label: 'View',
               onClick: () =>
@@ -54,7 +54,7 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
           });
           stopTracking(orderId);
         } else if (isOrderCancelled(order.status)) {
-          toast.error('Your order has been cancelled.', {
+          toast.error('Your swap could not be completed.', {
             action: {
               label: 'View',
               onClick: () =>
