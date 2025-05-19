@@ -94,7 +94,7 @@ Cypress.Commands.add(
         }
       })
       .click({ force: true });
-    cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
+    cy.get("[data-cy=Modal] h2:contains('All done')").should('be.visible');
   }
 );
 

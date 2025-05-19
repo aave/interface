@@ -31,9 +31,9 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.33.2-5d41c2b71aef3dc0142968e2c61bb997a1daef78.0+bbfe1c8",
-    "@aave/math-utils": "1.33.2-5d41c2b71aef3dc0142968e2c61bb997a1daef78.0+bbfe1c8",
-    "@bgd-labs/aave-address-book": "^4.17.1",
+    "@aave/contract-helpers": "1.33.1",
+    "@aave/math-utils": "1.33.1",
+    "@bgd-labs/aave-address-book": "^4.20.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
@@ -151,5 +151,6 @@
     "budget": null,
     "budgetPercentIncreaseRed": 20,
     "showDetails": true
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
