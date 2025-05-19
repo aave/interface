@@ -320,9 +320,13 @@ export function AppHeader() {
               )}
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {hasActiveOrders ? (
-                  <CircularProgress size={20} sx={{
-                    color: (theme) => theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-                  }}  />
+                  <CircularProgress
+                    size={20}
+                    sx={{
+                      color: (theme) =>
+                        theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+                    }}
+                  />
                 ) : (
                   <SvgIcon fontSize="small">
                     <SwitchHorizontalIcon />
