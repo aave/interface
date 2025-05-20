@@ -217,7 +217,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         return {
           action: 'CowSwap',
           id: order.uid,
-          timestamp: new Date(order.creationDate).getTime(),
+          timestamp: Math.floor(new Date(order.creationDate).getTime() / 1000),
           srcToken: {
             underlyingAsset: srcToken.address,
             name: srcToken.name,
