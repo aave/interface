@@ -1,17 +1,16 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
-import { CheckIcon } from '@heroicons/react/solid';
+import { ExternalLinkIcon, XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
-export type BaseSuccessTxViewProps = {
+export type BaseWaitingTxViewProps = {
   txHash?: string;
-  children: ReactNode;
-  hideTx?: boolean;
   customExplorerLink?: string;
   customExplorerLinkText?: string;
+  children: ReactNode;
+  hideTx?: boolean;
 };
 
 const ExtLinkIcon = () => (
@@ -20,13 +19,13 @@ const ExtLinkIcon = () => (
   </SvgIcon>
 );
 
-export const BaseSuccessView = ({
+export const BaseCancelledView = ({
   txHash,
   children,
   hideTx,
   customExplorerLink,
   customExplorerLinkText,
-}: BaseSuccessTxViewProps) => {
+}: BaseWaitingTxViewProps) => {
   const { close, mainTxState } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
@@ -53,13 +52,13 @@ export const BaseSuccessView = ({
             justifyContent: 'center',
           }}
         >
-          <SvgIcon sx={{ color: 'success.main', fontSize: '32px' }}>
-            <CheckIcon />
+          <SvgIcon sx={{ fontSize: '32px', color: 'error.main' }}>
+            <XIcon />
           </SvgIcon>
         </Box>
 
         <Typography sx={{ mt: 4 }} variant="h2">
-          <Trans>All done</Trans>
+          <Trans>Transaction cancelled</Trans>
         </Typography>
 
         {children}

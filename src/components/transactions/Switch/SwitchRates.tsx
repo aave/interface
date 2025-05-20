@@ -2,13 +2,14 @@ import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, ButtonBase, SvgIcon, Typography } from '@mui/material';
-import { OptimalRate } from '@paraswap/sdk';
 import { useMemo, useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
+import { SwitchRatesType } from './switch.types';
+
 type SwitchRatesProps = {
-  rates: OptimalRate;
+  rates: SwitchRatesType;
   srcSymbol: string;
   destSymbol: string;
 };

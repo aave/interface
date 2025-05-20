@@ -1,10 +1,8 @@
+import { OrderStatus } from '@cowprotocol/cow-sdk';
+
 export type TransactionHistoryItem<T = unknown> = {
   id: string;
-  txHash: string;
   action: string;
-  pool: {
-    id: string;
-  };
   timestamp: number;
 } & T;
 
@@ -15,32 +13,39 @@ export type ReserveSubset = {
   name: string;
 };
 
+export type PoolActionSubset = {
+  txHash: string;
+  pool: {
+    id: string;
+  };
+};
+
 export type ActionFields = {
   Supply: {
     reserve: ReserveSubset;
     amount: string;
     assetPriceUSD: string;
-  };
+  } & PoolActionSubset;
   Deposit: {
     reserve: ReserveSubset;
     amount: string;
     assetPriceUSD: string;
-  };
+  } & PoolActionSubset;
   Borrow: {
     reserve: ReserveSubset;
     amount: string;
     assetPriceUSD: string;
-  };
+  } & PoolActionSubset;
   Repay: {
     reserve: ReserveSubset;
     amount: string;
     assetPriceUSD: string;
-  };
+  } & PoolActionSubset;
   RedeemUnderlying: {
     reserve: ReserveSubset;
     amount: string;
     assetPriceUSD: string;
-  };
+  } & PoolActionSubset;
   LiquidationCall: {
     collateralReserve: ReserveSubset;
     collateralAmount: string;
@@ -48,7 +53,7 @@ export type ActionFields = {
     principalAmount: string;
     borrowAssetPriceUSD: string;
     collateralAssetPriceUSD: string;
-  };
+  } & PoolActionSubset;
   SwapBorrowRate: {
     reserve: ReserveSubset;
     borrowRateModeFrom: string;
@@ -56,7 +61,7 @@ export type ActionFields = {
     stableBorrowRate: string;
     variableBorrowRate: string;
     assetPriceUSD: string;
-  };
+  } & PoolActionSubset;
   Swap: {
     reserve: ReserveSubset;
     borrowRateModeFrom: number;
@@ -64,12 +69,22 @@ export type ActionFields = {
     stableBorrowRate: string;
     variableBorrowRate: string;
     assetPriceUSD: string;
-  };
+  } & PoolActionSubset;
   UsageAsCollateral: {
     reserve: ReserveSubset;
     fromState: boolean;
     toState: boolean;
     assetPriceUSD: string;
+  } & PoolActionSubset;
+  CowSwap: {
+    srcToken: ReserveSubset;
+    destToken: ReserveSubset;
+    srcAmount: string;
+    destAmount: string;
+    status: OrderStatus;
+    timestamp: number;
+    orderId: string;
+    chainId: number;
   };
 };
 
@@ -82,7 +97,8 @@ export type TransactionHistoryItemUnion =
   | TransactionHistoryItem<ActionFields['LiquidationCall']>
   | TransactionHistoryItem<ActionFields['SwapBorrowRate']>
   | TransactionHistoryItem<ActionFields['Swap']>
-  | TransactionHistoryItem<ActionFields['UsageAsCollateral']>;
+  | TransactionHistoryItem<ActionFields['UsageAsCollateral']>
+  | TransactionHistoryItem<ActionFields['CowSwap']>;
 
 // Type guards
 export const hasCollateralReserve = (
@@ -113,6 +129,15 @@ export const hasReserve = (
   | TransactionHistoryItem<ActionFields['Swap']>
   | TransactionHistoryItem<ActionFields['UsageAsCollateral']> => {
   return (txn as TransactionHistoryItem<ActionFields['Supply']>).reserve !== undefined;
+};
+
+export const hasSrcOrDestToken = (
+  txn: TransactionHistoryItemUnion
+): txn is TransactionHistoryItem<ActionFields['CowSwap']> => {
+  return (
+    (txn as TransactionHistoryItem<ActionFields['CowSwap']>).srcToken !== undefined ||
+    (txn as TransactionHistoryItem<ActionFields['CowSwap']>).destToken !== undefined
+  );
 };
 
 export const hasAmountAndReserve = (
@@ -149,6 +174,7 @@ export enum FilterOptions {
   RATECHANGE,
   COLLATERALCHANGE,
   LIQUIDATION,
+  COWSWAP,
 }
 
 export interface HistoryFilters {
@@ -174,7 +200,9 @@ export const actionFilterMap = (action: string): number => {
       return 5;
     case 'LiquidationCall':
       return 6;
-    default:
+    case 'CowSwap':
       return 7;
+    default:
+      return 8;
   }
 };
