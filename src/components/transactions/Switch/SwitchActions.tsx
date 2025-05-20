@@ -1,4 +1,5 @@
 import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import {
   calculateUniqueOrderId,
   COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
@@ -124,10 +125,6 @@ export const SwitchActions = ({
     else return approvedAmount < Number(inputAmount);
   }, [approvedAmount, inputAmount, isWrongNetwork]);
 
-  useEffect(() => {
-    setShowGasStation(requiresApproval);
-  }, [requiresApproval, setShowGasStation]);
-
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
     if (isParaswapRates(switchRates)) {
@@ -206,9 +203,9 @@ export const SwitchActions = ({
     } else if (isCowProtocolRates(switchRates)) {
       try {
         const provider = await getEthersProvider(wagmiConfig, { chainId });
-        const destAmountWithSlippage = Math.floor(
-          Number(switchRates.destAmount) * (1 - Number(slippage))
-        );
+        const destAmountWithSlippage = valueToBigNumber(switchRates.destAmount)
+          .multipliedBy(valueToBigNumber(1).minus(valueToBigNumber(slippage)))
+          .toFixed(0);
 
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(inputToken)) {
@@ -454,12 +451,17 @@ export const SwitchActions = ({
 
   useEffect(() => {
     let switchGasLimit = 0;
-    switchGasLimit = Number(gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended);
+    if (isParaswapRates(switchRates)) {
+      switchGasLimit += Number(
+        gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended
+      );
+    }
     if (requiresApproval && !approvalTxState.success) {
       switchGasLimit += Number(APPROVAL_GAS_LIMIT);
     }
     setGasLimit(switchGasLimit.toString());
-  }, [requiresApproval, approvalTxState, setGasLimit]);
+    setShowGasStation(requiresApproval);
+  }, [requiresApproval, approvalTxState, setGasLimit, setShowGasStation]);
 
   return (
     <TxActionsWrapper
