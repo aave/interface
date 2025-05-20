@@ -1,6 +1,7 @@
 import { OrderBookApi } from '@cowprotocol/cow-sdk';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { APP_CODE } from 'src/components/transactions/Switch/cowprotocol.helpers';
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
 import {
   actionFilterMap,
@@ -200,6 +201,19 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     });
 
     return orders
+      .filter((order) => {
+        try {
+          const appData = JSON.parse(order.fullAppData ?? '{}');
+          const appCode = appData.appCode;
+          if (appCode == APP_CODE) {
+            return true;
+          }
+        } catch (error) {
+          console.error('Error parsing app data:', error);
+        }
+
+        return false;
+      })
       .map<TransactionHistoryItemUnion | null>((order) => {
         const srcToken = TOKEN_LIST.tokens.find(
           (token) =>
