@@ -159,11 +159,11 @@ export const SwitchTxSuccessView = ({
               ) : orderStatus === 'failed' ? (
                 <Trans>The order could&apos;t be filled.</Trans>
               ) : (
-                <Trans>You&apos;ve successfully switched tokens.</Trans>
+                <Trans>You&apos;ve successfully swapped tokens.</Trans>
               )}
             </>
           ) : (
-            <Trans>You&apos;ve successfully switched tokens.</Trans>
+            <Trans>You&apos;ve successfully swapped tokens.</Trans>
           )}
         </Typography>
       </Box>

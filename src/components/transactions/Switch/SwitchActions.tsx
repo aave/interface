@@ -482,12 +482,12 @@ export const SwitchActions = ({
       amount={inputAmount}
       handleApproval={() => approval()}
       requiresApproval={!blocked && requiresApproval}
-      actionText={<Trans>Switch</Trans>}
-      actionInProgressText={<Trans>Switching</Trans>}
+      actionText={<Trans>Swap</Trans>}
+      actionInProgressText={<Trans>Swaping</Trans>}
       errorParams={{
         loading: false,
         disabled: blocked || (!approvalTxState.success && requiresApproval),
-        content: <Trans>Switch</Trans>,
+        content: <Trans>Swap</Trans>,
         handleClick: action,
       }}
       fetchingData={loading}

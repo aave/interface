@@ -205,7 +205,7 @@ export const DebtSwitchModalContent = ({
         customAction={
           <Stack gap={3}>
             <Typography variant="description" color="text.primary">
-              <Trans>You&apos;ve successfully switched borrow position.</Trans>
+              <Trans>You&apos;ve successfully swapped borrow position.</Trans>
             </Typography>
             <Stack direction="row" alignItems="center" justifyContent="center" gap={1}>
               <TokenIcon symbol={poolReserve.iconSymbol} sx={{ mx: 1 }} />
@@ -308,7 +308,7 @@ export const DebtSwitchModalContent = ({
         usdValue={targetReserveAmountUSD.toString()}
         symbol={targetReserve.symbol}
         assets={switchTargets}
-        inputTitle={<Trans>Switch to</Trans>}
+        inputTitle={<Trans>Swap to</Trans>}
         balanceText={<Trans>Supply balance</Trans>}
         disableInput
         loading={loadingSkeleton}
