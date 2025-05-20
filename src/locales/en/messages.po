@@ -112,6 +112,10 @@ msgstr "Rate change"
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
+msgid "Select token"
+msgstr "Select token"
+
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "Recent Transactions"
 msgstr "Recent Transactions"
@@ -3064,10 +3068,6 @@ msgstr "for"
 #: src/components/transactions/GovRepresentatives/GovRepresentativesActions.tsx
 msgid "Confirm transaction"
 msgstr "Confirm transaction"
-
-#: src/components/transactions/Switch/SwitchAssetInput.tsx
-msgid "Switch tokens"
-msgstr "Switch tokens"
 
 #: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
 msgid "Exchange rate"

@@ -262,11 +262,11 @@ export const SwitchAssetInput = ({
           open={openModal}
           setOpen={setOpenModal}
           contentMaxWidth={420}
-          // contentHeight={600}
+          contentHeight={680}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
-              <Trans>Switch tokens</Trans>
+              <Trans>Select token</Trans>
             </Typography>
 
             <Box
