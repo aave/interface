@@ -19,6 +19,7 @@ import {
   scroll,
   scrollSepolia,
   sepolia,
+  soneium,
   sonic,
   zksync,
 } from 'wagmi/chains';
@@ -426,6 +427,21 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       url: 'https://docs.celo.org/protocol/bridge',
     },
     wagmiChain: celo,
+  },
+  [ChainId.soneium]: {
+    name: 'Soneium',
+    publicJsonRPCUrl: ['https://soneium.drpc.org', 'https://rpc.soneium.org'],
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://soneium.blockscout.com',
+    networkLogoPath: '/icons/networks/soneium.svg', // TODO: add logo
+    bridge: {
+      icon: '/icons/networks/soneium.svg',
+      name: 'Soneium Bridge',
+      url: 'https://soneium.org/en/bridges/',
+    },
+    wagmiChain: soneium,
   },
 };
 
