@@ -468,7 +468,9 @@ export const SwitchActions = ({
       switchGasLimit += Number(APPROVAL_GAS_LIMIT);
     }
     if (isNativeToken(inputToken)) {
-      switchGasLimit += Number(gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended);
+      switchGasLimit += Number(
+        gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended
+      );
     }
     setGasLimit(switchGasLimit.toString());
     setShowGasStation(requiresApproval || isNativeToken(inputToken));
