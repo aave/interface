@@ -16,7 +16,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { useRootStore } from 'src/store/root';
@@ -114,6 +114,10 @@ export const SwitchAssetInput = ({
   const [filteredAssets, setFilteredAssets] = useState(assets);
   const [loadingNewAsset, setLoadingNewAsset] = useState(false);
   const user = useRootStore((store) => store.account);
+
+  useEffect(() => {
+    setFilteredAssets(assets);
+  }, [assets]);
 
   const popularAssets = assets.filter((asset) => COMMON_SWAPS.includes(asset.symbol));
   const handleSearchAssetChange = (value: string) => {

@@ -1,4 +1,5 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -9,7 +10,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
+import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useMultiProviderSwitchRates } from 'src/hooks/switch/useMultiProviderSwitchRates';
 import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
@@ -18,8 +19,9 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { TokenInfo } from 'src/ui-config/TokenList';
+import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import invariant from 'tiny-invariant';
 
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
@@ -40,6 +42,19 @@ export type SwitchDetailsParams = Parameters<
   NonNullable<SwitchModalCustomizableProps['switchDetails']>
 >[0];
 
+export const getFilteredTokensForSwitch = (chainId: number): TokenInfoWithBalance[] => {
+  let customTokenList = TOKEN_LIST.tokens;
+  const savedCustomTokens = localStorage.getItem('customTokens');
+  if (savedCustomTokens) {
+    customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
+  }
+
+  const transformedTokens = customTokenList.map((token) => {
+    return { ...token, balance: '0' };
+  });
+  const realChainId = getNetworkConfig(chainId).underlyingChainId ?? chainId;
+  return transformedTokens.filter((token) => token.chainId === realChainId);
+};
 export interface SwitchModalCustomizableProps {
   modalType: ModalType;
   switchDetails?: ({
@@ -80,24 +95,25 @@ export interface SwitchModalCustomizableProps {
 export const BaseSwitchModalContent = ({
   showSwitchInputAndOutputAssetsButton = true,
   showTitle = true,
-  tokensFrom,
-  tokensTo,
-  defaultInputToken,
-  defaultOutputToken,
+  forcedDefaultInputToken,
+  forcedChainId,
+  forcedDefaultOutputToken,
   supportedNetworks,
   switchDetails,
   inputBalanceTitle,
   outputBalanceTitle,
+  initialFromTokens,
+  initialToTokens,
   showChangeNetworkWarning = true,
 }: {
   showTitle?: boolean;
+  forcedChainId: number;
   showSwitchInputAndOutputAssetsButton?: boolean;
-  tokensFrom: TokenInfoWithBalance[];
-  tokensTo: TokenInfoWithBalance[];
-  defaultInputToken: TokenInfoWithBalance;
-  defaultOutputToken: TokenInfoWithBalance;
+  forcedDefaultInputToken?: TokenInfoWithBalance;
+  initialFromTokens: TokenInfoWithBalance[];
+  initialToTokens: TokenInfoWithBalance[];
+  forcedDefaultOutputToken?: TokenInfoWithBalance;
   supportedNetworks: SupportedNetworkWithChainId[];
-  selectedChainId: number;
   showChangeNetworkWarning?: boolean;
 } & SwitchModalCustomizableProps) => {
   // State
@@ -106,52 +122,15 @@ export const BaseSwitchModalContent = ({
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const { mainTxState: switchTxState, gasLimit, txError, setTxError } = useModalContext();
   const user = useRootStore((store) => store.account);
-  const [selectedInputToken, setSelectedInputToken] = useState(defaultInputToken);
-  const [selectedOutputToken, setSelectedOutputToken] = useState(defaultOutputToken);
   const { readOnlyModeAddress } = useWeb3Context();
-  const currentChainId = useRootStore((store) => store.currentChainId);
   const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
   const [selectedChainId, setSelectedChainId] = useState(() => {
-    if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === currentChainId))
-      return currentChainId;
+    if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === forcedChainId))
+      return forcedChainId;
     return defaultNetwork.chainId;
   });
   const switchProvider = useSwitchProvider({ chainId: selectedChainId });
-
   const [showGasStation, setShowGasStation] = useState(switchProvider == 'paraswap');
-
-  const [cowOpenOrdersTotalAmountFormatted, setCowOpenOrdersTotalAmountFormatted] = useState<
-    string | undefined
-  >(undefined);
-  useEffect(() => {
-    if (
-      switchProvider == 'cowprotocol' &&
-      user &&
-      selectedChainId &&
-      selectedInputToken &&
-      selectedOutputToken
-    ) {
-      getOrders(selectedChainId, user).then((orders) => {
-        const cowOpenOrdersTotalAmount = orders
-          .filter(
-            (order) =>
-              order.sellToken.toLowerCase() == selectedInputToken.address.toLowerCase() &&
-              order.status == OrderStatus.OPEN
-          )
-          .map((order) => order.sellAmount)
-          .reduce((acc, curr) => acc + Number(curr), 0);
-        if (cowOpenOrdersTotalAmount > 0) {
-          setCowOpenOrdersTotalAmountFormatted(
-            normalize(cowOpenOrdersTotalAmount, selectedInputToken.decimals).toString()
-          );
-        } else {
-          setCowOpenOrdersTotalAmountFormatted(undefined);
-        }
-      });
-    }
-  }, [selectedInputToken, selectedOutputToken, switchProvider, selectedChainId, user]);
-
-  // Ux Helpers
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
   const slippageValidation = validateSlippage(slippage);
@@ -159,6 +138,13 @@ export const BaseSwitchModalContent = ({
     slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
       ? 0
       : Number(slippage) / 100;
+
+  const [filteredTokens, setFilteredTokens] = useState<TokenInfoWithBalance[]>(initialFromTokens);
+  const { data: baseTokenList, refetch: refetchBaseTokenList } = useTokensBalance(
+    filteredTokens,
+    selectedChainId,
+    user
+  );
 
   const debouncedInputChange = useMemo(() => {
     return debounce((value: string) => {
@@ -178,7 +164,7 @@ export const BaseSwitchModalContent = ({
   };
 
   const handleSelectedInputToken = (token: TokenInfoWithBalance) => {
-    if (!tokensFrom.find((t) => t.address === token.address)) {
+    if (!baseTokenList?.find((t) => t.address === token.address)) {
       addNewToken(token).then(() => {
         setSelectedInputToken(token);
         setTxError(undefined);
@@ -190,7 +176,7 @@ export const BaseSwitchModalContent = ({
   };
 
   const handleSelectedOutputToken = (token: TokenInfoWithBalance) => {
-    if (!tokensTo.find((t) => t.address === token.address)) {
+    if (!baseTokenList?.find((t) => t.address === token.address)) {
       addNewToken(token).then(() => {
         setSelectedOutputToken(token);
         setTxError(undefined);
@@ -213,15 +199,24 @@ export const BaseSwitchModalContent = ({
     setDebounceInputAmount(toInput);
     setTxError(undefined);
   };
+
   const handleSelectedNetworkChange = (value: number) => {
     setTxError(undefined);
     setSelectedChainId(value);
+    const newFilteredTokens = getFilteredTokensForSwitch(value);
+    setFilteredTokens(newFilteredTokens);
+    refetchBaseTokenList();
   };
+
+  useEffect(() => {
+    setSelectedInputToken(baseTokenList?.[0] ?? initialFromTokens[0]);
+    setSelectedOutputToken(baseTokenList?.[1] ?? initialToTokens[1]);
+  }, [baseTokenList]);
 
   const queryClient = useQueryClient();
   const addNewToken = async (token: TokenInfoWithBalance) => {
     queryClient.setQueryData<TokenInfoWithBalance[]>(
-      queryKeysFactory.tokensBalance(tokensFrom, selectedChainId, user),
+      queryKeysFactory.tokensBalance(baseTokenList ?? [], selectedChainId, user),
       (oldData) => {
         if (oldData)
           return [...oldData, token].sort((a, b) => Number(b.balance) - Number(a.balance));
@@ -249,6 +244,43 @@ export const BaseSwitchModalContent = ({
     }
   };
 
+  const { defaultInputToken, defaultOutputToken } = useMemo(() => {
+    let auxInputToken = forcedDefaultInputToken;
+    let auxOutputToken = forcedDefaultOutputToken;
+
+    const fromList = baseTokenList || filteredTokens;
+    const toList = baseTokenList || filteredTokens;
+
+    if (!auxInputToken) {
+      auxInputToken =
+        fromList.find((token) => token.extensions?.isNative) || fromList.length > 0
+          ? fromList[0]
+          : undefined;
+    }
+
+    if (!auxOutputToken) {
+      auxOutputToken =
+        toList.find(
+          (token) =>
+            (token.address === AaveV3Ethereum.ASSETS.GHO.UNDERLYING || token.symbol == 'AAVE') &&
+            token.address !== auxInputToken?.address
+        ) || toList.find((token) => token.address !== auxInputToken?.address);
+    }
+
+    invariant(auxInputToken && auxOutputToken, 'token list should have at least 2 assets');
+
+    return {
+      defaultInputToken: auxInputToken ?? fromList[0],
+      defaultOutputToken: auxOutputToken ?? toList[1],
+    };
+  }, [baseTokenList, filteredTokens]);
+
+  const [selectedInputToken, setSelectedInputToken] = useState<TokenInfoWithBalance>(
+    forcedDefaultInputToken ?? defaultInputToken
+  );
+  const [selectedOutputToken, setSelectedOutputToken] = useState<TokenInfoWithBalance>(
+    forcedDefaultOutputToken ?? defaultOutputToken
+  );
   // Data
   const {
     data: switchRates,
@@ -288,6 +320,46 @@ export const BaseSwitchModalContent = ({
     }, 500);
     return () => clearTimeout(timeout);
   }, [slippage, switchRates]);
+
+  const [cowOpenOrdersTotalAmountFormatted, setCowOpenOrdersTotalAmountFormatted] = useState<
+    string | undefined
+  >(undefined);
+  useEffect(() => {
+    if (
+      switchProvider == 'cowprotocol' &&
+      user &&
+      selectedChainId &&
+      selectedInputToken &&
+      selectedOutputToken
+    ) {
+      getOrders(selectedChainId, user).then((orders) => {
+        const cowOpenOrdersTotalAmount = orders
+          .filter(
+            (order) =>
+              order.sellToken.toLowerCase() == selectedInputToken.address.toLowerCase() &&
+              order.status == OrderStatus.OPEN
+          )
+          .map((order) => order.sellAmount)
+          .reduce((acc, curr) => acc + Number(curr), 0);
+        if (cowOpenOrdersTotalAmount > 0) {
+          setCowOpenOrdersTotalAmountFormatted(
+            normalize(cowOpenOrdersTotalAmount, selectedInputToken.decimals).toString()
+          );
+        } else {
+          setCowOpenOrdersTotalAmountFormatted(undefined);
+        }
+      });
+    }
+  }, [selectedInputToken, selectedOutputToken, switchProvider, selectedChainId, user]);
+
+  // Views
+  if (!baseTokenList) {
+    return (
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   // Success View
   if (switchRates && switchTxState.success) {
@@ -391,7 +463,7 @@ export const BaseSwitchModalContent = ({
             <SwitchAssetInput
               chainId={selectedChainId}
               balanceTitle={inputBalanceTitle}
-              assets={tokensFrom.filter(
+              assets={baseTokenList.filter(
                 (token) =>
                   token.address !== selectedOutputToken.address && Number(token.balance) !== 0
               )}
@@ -425,7 +497,7 @@ export const BaseSwitchModalContent = ({
             <SwitchAssetInput
               chainId={selectedChainId}
               balanceTitle={outputBalanceTitle}
-              assets={tokensTo.filter((token) => token.address !== selectedInputToken.address)}
+              assets={baseTokenList.filter((token) => token.address !== selectedInputToken.address)}
               value={
                 switchRates
                   ? normalizeBN(switchRates.destAmount, switchRates.destDecimals).toString()

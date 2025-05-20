@@ -1,115 +1,26 @@
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { supportedNetworksWithEnabledMarket } from 'src/components/transactions/Switch/common';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { TOKEN_LIST } from 'src/ui-config/TokenList';
-import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
-import invariant from 'tiny-invariant';
+import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
-import { BaseSwitchModalContent, SwitchModalCustomizableProps } from './BaseSwitchModalContent';
+import {
+  BaseSwitchModalContent,
+  getFilteredTokensForSwitch,
+  SwitchModalCustomizableProps,
+} from './BaseSwitchModalContent';
 
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
-
-export const getFilteredTokensForSwitch = (chainId: number): TokenInfoWithBalance[] => {
-  let customTokenList = TOKEN_LIST.tokens;
-  const savedCustomTokens = localStorage.getItem('customTokens');
-  if (savedCustomTokens) {
-    customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
-  }
-
-  const transformedTokens = customTokenList.map((token) => {
-    return { ...token, balance: '0' };
-  });
-  const realChainId = getNetworkConfig(chainId).underlyingChainId ?? chainId;
-  return transformedTokens.filter((token) => token.chainId === realChainId);
-};
-
-const BaseSwitchModalContentWrapper = ({
-  user,
-  chainId,
-  modalType,
-  switchDetails: swapDetails,
-  inputBalanceTitle: balanceTitle,
-  tokensFrom,
-  tokensTo,
-  forcedDefaultInputToken,
-  forcedDefaultOutputToken,
-}: {
-  user: string;
-  chainId: number;
-  setSelectedChainId: (chainId: number) => void;
-} & SwitchModalCustomizableProps) => {
-  const filteredTokens = useMemo(() => getFilteredTokensForSwitch(chainId), [chainId]);
-
-  const { data: baseTokenList } = useTokensBalance(filteredTokens, chainId, user);
-
-  const { defaultInputToken, defaultOutputToken } = useMemo(() => {
-    let auxInputToken = forcedDefaultInputToken;
-    let auxOutputToken = forcedDefaultOutputToken;
-
-    const fromList = tokensFrom || baseTokenList || filteredTokens;
-    const toList = tokensTo || baseTokenList || filteredTokens;
-
-    if (!auxInputToken) {
-      auxInputToken =
-        fromList.find((token) => token.extensions?.isNative) || fromList.length > 0
-          ? fromList[0]
-          : undefined;
-    }
-
-    if (!auxOutputToken) {
-      auxOutputToken =
-        toList.find(
-          (token) =>
-            (token.address === AaveV3Ethereum.ASSETS.GHO.UNDERLYING || token.symbol == 'AAVE') &&
-            token.address !== auxInputToken?.address
-        ) || toList.find((token) => token.address !== auxInputToken?.address);
-    }
-
-    invariant(auxInputToken && auxOutputToken, 'token list should have at least 2 assets');
-
-    return {
-      defaultInputToken: auxInputToken ?? fromList[0],
-      defaultOutputToken: auxOutputToken ?? toList[1],
-    };
-  }, [baseTokenList, filteredTokens, tokensFrom, tokensTo]);
-
-  if (!baseTokenList) {
-    return (
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  return (
-    <BaseSwitchModalContent
-      tokensFrom={tokensFrom?.length ? tokensFrom : baseTokenList}
-      tokensTo={tokensTo?.length ? tokensTo : baseTokenList}
-      supportedNetworks={supportedNetworksWithEnabledMarket}
-      defaultInputToken={defaultInputToken}
-      defaultOutputToken={defaultOutputToken}
-      selectedChainId={chainId}
-      modalType={modalType}
-      switchDetails={swapDetails}
-      inputBalanceTitle={balanceTitle}
-    />
-  );
-};
 
 export const BaseSwitchModal = ({
   modalType,
   switchDetails: swapDetails,
   inputBalanceTitle: balanceTitle,
-  tokensFrom,
-  tokensTo,
   forcedDefaultInputToken,
   forcedDefaultOutputToken,
 }: SwitchModalCustomizableProps) => {
@@ -148,6 +59,15 @@ export const BaseSwitchModal = ({
     }
   }, [currentChainId, chainId, connectedChainId]);
 
+  const initialFromTokens = useMemo(
+    () => getFilteredTokensForSwitch(selectedChainId),
+    [selectedChainId]
+  );
+  const initialToTokens = useMemo(
+    () => getFilteredTokensForSwitch(selectedChainId),
+    [selectedChainId]
+  );
+
   return (
     <BasicModal open={type === modalType} setOpen={close}>
       {!user ? (
@@ -158,15 +78,14 @@ export const BaseSwitchModal = ({
           <ConnectWalletButton />
         </Box>
       ) : (
-        <BaseSwitchModalContentWrapper
-          user={user}
-          chainId={selectedChainId}
-          setSelectedChainId={setSelectedChainId}
+        <BaseSwitchModalContent
+          forcedChainId={selectedChainId}
+          supportedNetworks={supportedNetworksWithEnabledMarket}
+          initialFromTokens={initialFromTokens}
+          initialToTokens={initialToTokens}
           modalType={modalType}
           switchDetails={swapDetails}
           inputBalanceTitle={balanceTitle}
-          tokensFrom={tokensFrom}
-          tokensTo={tokensTo}
           forcedDefaultInputToken={forcedDefaultInputToken}
           forcedDefaultOutputToken={forcedDefaultOutputToken}
         />
