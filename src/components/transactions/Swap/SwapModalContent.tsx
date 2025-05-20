@@ -170,7 +170,7 @@ export const SwapModalContent = ({
   if (supplyTxState.success)
     return (
       <TxSuccessView
-        action={<Trans>Switched</Trans>}
+        action={<Trans>Swapped</Trans>}
         amount={amountRef.current}
         symbol={poolReserve.symbol}
       />
@@ -279,7 +279,7 @@ export const SwapModalContent = ({
         usdValue={outputAmountUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
-        inputTitle={<Trans>Switch to</Trans>}
+        inputTitle={<Trans>Swap to</Trans>}
         balanceText={<Trans>Supply balance</Trans>}
         disableInput
         loading={loadingSkeleton}
