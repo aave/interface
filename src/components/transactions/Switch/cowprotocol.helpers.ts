@@ -13,7 +13,6 @@ import {
 } from '@cowprotocol/cow-sdk';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
-import { getErrorTextFromError, TxAction, TxErrorType } from 'src/ui-config/errorMapping';
 
 import { isChainIdSupportedByCoWProtocol, WrappedNativeTokens } from './switch.constants';
 
@@ -31,7 +30,6 @@ export type CowProtocolActionParams = {
   provider: JsonRpcProvider;
   chainId: number;
   user: string;
-  setError: (error: TxErrorType) => void;
   amount: string;
   destAmount: string;
   tokenDest: string;
@@ -45,7 +43,6 @@ export const sendOrder = async ({
   tokenDest,
   chainId,
   user,
-  setError,
   amount,
   tokenSrc,
   tokenSrcDecimals,
@@ -56,44 +53,26 @@ export const sendOrder = async ({
   const tradingSdk = new TradingSdk({ chainId, signer, appCode: APP_CODE });
 
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
-    setError(
-      getErrorTextFromError(
-        new Error('Chain not supported by CowProtocol'),
-        TxAction.MAIN_ACTION,
-        true
-      )
-    );
+    throw new Error('Chain not supported.');
     return;
   }
 
   if (!signer) {
-    setError(
-      getErrorTextFromError(new Error('No signer found in provider'), TxAction.MAIN_ACTION, true)
-    );
-    return;
+    throw new Error('No signer found in provider');
   }
 
-  try {
-    return tradingSdk
-      .postLimitOrder({
-        owner: user as `0x${string}`,
-        sellAmount: amount,
-        buyAmount: destAmount,
-        kind: OrderKind.SELL,
-        sellToken: tokenSrc,
-        buyToken: tokenDest,
-        sellTokenDecimals: tokenSrcDecimals,
-        buyTokenDecimals: tokenDestDecimals,
-      })
-      .then((orderResult) => orderResult.orderId)
-      .catch((e) => {
-        console.error(e);
-        setError(getErrorTextFromError(e, TxAction.MAIN_ACTION, true));
-      });
-  } catch (e) {
-    console.error(e);
-    setError(getErrorTextFromError(e, TxAction.MAIN_ACTION, true));
-  }
+  return tradingSdk
+    .postLimitOrder({
+      owner: user as `0x${string}`,
+      sellAmount: amount,
+      buyAmount: destAmount,
+      kind: OrderKind.SELL,
+      sellToken: tokenSrc,
+      buyToken: tokenDest,
+      sellTokenDecimals: tokenSrcDecimals,
+      buyTokenDecimals: tokenDestDecimals,
+    })
+    .then((orderResult) => orderResult.orderId);
 };
 
 export const getOrderStatus = async (orderId: string, chainId: number) => {

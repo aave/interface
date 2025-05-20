@@ -150,7 +150,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       }
 
       const data = await response.json();
-      return data.data.userTransactions || [];
+      return data.data?.userTransactions || [];
     } catch (error) {
       console.error('Error fetching transaction history:', error);
       return [];
