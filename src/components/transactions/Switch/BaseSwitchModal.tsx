@@ -73,9 +73,9 @@ export const BaseSwitchModal = ({
       {!user ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
           <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
-            <Trans>Please connect your wallet to be able to swap your tokens.</Trans>
+            <Trans>Please connect your wallet to swap tokens.</Trans>
           </Typography>
-          <ConnectWalletButton />
+          <ConnectWalletButton onClick={() => close()} />
         </Box>
       ) : (
         <BaseSwitchModalContent
