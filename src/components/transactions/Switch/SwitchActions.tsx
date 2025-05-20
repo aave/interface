@@ -467,8 +467,11 @@ export const SwitchActions = ({
     if (requiresApproval && !approvalTxState.success) {
       switchGasLimit += Number(APPROVAL_GAS_LIMIT);
     }
+    if (isNativeToken(inputToken)) {
+      switchGasLimit += Number(gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended);
+    }
     setGasLimit(switchGasLimit.toString());
-    setShowGasStation(requiresApproval);
+    setShowGasStation(requiresApproval || isNativeToken(inputToken));
   }, [requiresApproval, approvalTxState, setGasLimit, setShowGasStation]);
 
   return (
