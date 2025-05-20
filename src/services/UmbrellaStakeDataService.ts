@@ -1,4 +1,5 @@
 import { ChainId, StakeDataProviderService } from '@aave/contract-helpers';
+import { UmbrellaEthereum } from '@bgd-labs/aave-address-book';
 import { Provider } from '@ethersproject/providers';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
@@ -10,11 +11,10 @@ interface StakeUmbrellaConfig {
   };
 }
 export const stakeUmbrellaConfig: StakeUmbrellaConfig = {
-  // [ChainId.mainnet]: {}, // TODO: Mainnet addresses
-  [ChainId.base_sepolia]: {
-    stakeDataProvider: '0x3cb7b00b6c09b71998124196691e8bf2694de863',
-    batchHelper: '0xcDfb3f2d924b02A78a51F43BC34610dC62ADCEC3',
-    stakeRewardsController: '0x412f8957f9A42FFe47B634AB73f89Ff4E0a29026',
+  [ChainId.mainnet]: {
+    stakeDataProvider: '0xf42dc62bccf3b10cf3bcc86232d31675c7045f90',
+    batchHelper: UmbrellaEthereum.UMBRELLA_BATCH_HELPER,
+    stakeRewardsController: UmbrellaEthereum.UMBRELLA_REWARDS_CONTROLLER,
   },
 };
 
