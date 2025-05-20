@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.33.1":
-  version "1.33.1"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.33.1.tgz#2156c179e802c40c137381d337c5f93ebee1abeb"
-  integrity sha512-Zu/zwJiX3k2xBRAlNfmIJMIo19YWVJAL2uRPHbvCVxOUgzlhVyglIF98FgcZ+4aLwcjvSAw10wnIzGgJcPTNVw==
+"@aave/contract-helpers@1.33.4-3c360ac623873135c41be094f310a70f0471f905.0+df09724":
+  version "1.33.4-3c360ac623873135c41be094f310a70f0471f905.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.33.4-3c360ac623873135c41be094f310a70f0471f905.0.tgz#377b0732b561758db9134aaa27d668dd1cc22c1c"
+  integrity sha512-PaFhcUnjDTK+fEazV96iF5FP3zpfEPStCLFf6xlTp4pDrz5AYBbWZavYq67QVRk0v6VOm7Mq8ykhxPyxD7BO+Q==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.33.1":
-  version "1.33.1"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.33.1.tgz#1dddf06e48cca13251db94e2f24afb0aa1b270ed"
-  integrity sha512-+e7ThIRLxyrcLB507T3khdE6DqKn2vTR5hfnQd1rHetEzLObA6bKDElX7YEtGmuSzBwDTP4inpK2VtgiQAqIWQ==
+"@aave/math-utils@1.33.4-3c360ac623873135c41be094f310a70f0471f905.0+df09724":
+  version "1.33.4-3c360ac623873135c41be094f310a70f0471f905.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.33.4-3c360ac623873135c41be094f310a70f0471f905.0.tgz#fe0d210b12421fc629c3a72b69525c4c2209e43f"
+  integrity sha512-axDwT3MRjSYPnLLpxFXz0eTHCatMjB4DfTD1LVnnHbA7BZQLgo+4Cra/BXDCBGd1e+gx5fhYnXKzsBJLEgXrDA==
 
 "@adobe/css-tools@^4.0.1":
   version "4.4.1"
@@ -1066,10 +1066,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@^4.20.0":
-  version "4.20.0"
-  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.20.0.tgz#b38ff7604bc059e7b816928dcca3cac16bcfaa16"
-  integrity sha512-29YguCzS7nsuoHWmzNqzHIZI9mPNunTW+PFK6M1ZXiUXZx/QIrl7ALYHRzIq3TF9inwQSMqCFrkWc1ED9MAMPQ==
+"@bgd-labs/aave-address-book@^4.20.1":
+  version "4.20.1"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.20.1.tgz#fc077ddba6be4968ea24813737afb6c60f79e4b9"
+  integrity sha512-C1XLEJKe9yPgWOuX1vCDrrGZ4YMgI2KnejBb4OQISrrGZiAO4/n2tadL+V7IjkB8gc4pstuWLAkNYOj2TF9sCw==
 
 "@coinbase/wallet-sdk@4.2.3":
   version "4.2.3"

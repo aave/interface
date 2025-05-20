@@ -1,38 +1,29 @@
-import { ChainId, Stake } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon, CalendarIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { formatEther, parseUnits } from 'ethers/lib/utils';
+import { parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
-import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
-import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
+import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
+import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
+import { TxSuccessView } from 'src/components/transactions/FlowCommons/Success';
+import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
+import { GasStation } from 'src/components/transactions/GasStation/GasStation';
+import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
+import { timeMessage } from 'src/helpers/timeHelper';
+import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
-import { timeMessage } from '../../../helpers/timeHelper';
-import { Link } from '../../primitives/Link';
-import { TxErrorView } from '../FlowCommons/Error';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
-import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { GasStation } from '../GasStation/GasStation';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeCooldownActions } from './StakeCooldownActions';
-
-export type StakeCooldownProps = {
-  stakeAssetName: Stake;
-  icon: string;
-};
 
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
@@ -46,26 +37,17 @@ type CalendarEvent = {
   description: string;
 };
 
-export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldownProps) => {
+export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
-
-  // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
 
-  const stakeData = stakeGeneralResult?.[0];
-  const stakeUserData = stakeUserResult?.[0];
-
-  // Cooldown logic
-  const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
-  const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
+  const stakeCooldownSeconds = stakeData?.cooldownSeconds || 0;
+  const stakeUnstakeWindow = stakeData?.unstakeWindowSeconds || 0;
 
   const cooldownPercent = valueToBigNumber(stakeCooldownSeconds)
     .dividedBy(stakeCooldownSeconds + stakeUnstakeWindow)
@@ -80,7 +62,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
   const unstakeWindowLineWidth =
     unstakeWindowPercent < 15 ? 15 : unstakeWindowPercent > 85 ? 85 : unstakeWindowPercent;
 
-  const stakedAmount = stakeUserData?.stakeTokenRedeemableAmount;
+  const stakedAmount = stakeData?.formattedBalances.stakeTokenRedeemableAmount;
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
@@ -97,28 +79,19 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
     }
   };
 
-  // is Network mismatched
-  const stakingChain =
-    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
-      ? currentChainId
-      : stakeConfig.chainId;
-  const isWrongNetwork = connectedChainId !== stakingChain;
-
-  const networkConfig = getNetworkConfig(stakingChain);
-
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
   if (txState.success) return <TxSuccessView action={<Trans>Stake cooldown activated</Trans>} />;
 
   const handleOnCoolDownCheckBox = () => {
-    trackEvent(GENERAL.ACCEPT_RISK, {
-      asset: stakeAssetName,
-      modal: 'Cooldown',
-    });
+    // trackEvent(GENERAL.ACCEPT_RISK, {
+    //   asset: stakeAssetName,
+    //   modal: 'Cooldown',
+    // });
     setCooldownCheck(!cooldownCheck);
   };
-  const amountToCooldown = formatEther(stakeUserData?.stakeTokenRedeemableAmount || 0);
+  const amountToCooldown = stakeData?.formattedBalances.stakeTokenRedeemableAmount || '0';
 
   const dateMessage = (time: number) => {
     const now = dayjs();
@@ -151,11 +124,14 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
 
   const googleCalendarUrl = createGoogleCalendarUrl(event);
 
+  // is Network mismatched
+  const isWrongNetwork = currentChainId !== connectedChainId;
+
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
+        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
       )}
       <Typography variant="description" sx={{ mb: 6 }}>
         <Trans>
@@ -191,10 +167,10 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         }}
       >
         <Typography variant="description" color="text.primary">
-          <Trans>Amount to unstake</Trans>
+          <Trans>Amount available to unstake</Trans>
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
+          <TokenIcon symbol={stakeData.iconSymbol} sx={{ mr: 1, width: 14, height: 14 }} />
           <FormattedNumber value={amountToCooldown} variant="secondary14" color="text.primary" />
         </Box>
       </Box>
@@ -338,7 +314,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         </Typography>
       </Warning>
 
-      <GasStation chainId={ChainId.mainnet} gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      <GasStation chainId={currentChainId} gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 
       <FormControlLabel
         sx={{ mt: 12 }}
@@ -364,7 +340,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         sx={{ mt: '48px' }}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !cooldownCheck}
-        selectedToken={stakeAssetName}
+        selectedToken={stakeData.tokenAddress}
         amountToCooldown={amountToCooldown}
       />
     </>
