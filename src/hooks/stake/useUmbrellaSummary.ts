@@ -43,6 +43,7 @@ interface FormattedReward {
   rewardTokenName: string;
   rewardTokenSymbol: string;
   apy: string;
+  aToken: boolean;
 }
 
 interface FormattedStakeTokenData {
@@ -226,9 +227,6 @@ const formatUmbrellaSummary = (
       totalAvailableToStake +=
         Number(stataTokenAssetBalance) + Number(aTokenBalanceAvailableToStake);
     }
-    if (isUnderlyingWrappedBaseToken) {
-      totalAvailableToStake += Number(nativeTokenBalance);
-    }
 
     acc.push({
       ...stakeItem,
@@ -265,13 +263,20 @@ const formatUmbrellaSummary = (
         const priceNormalized = normalize(rewardData.price, USD_DECIMALS);
         const accruedUsd = BigNumber(accruedNormalized).multipliedBy(priceNormalized).toString();
 
+        const reserve = reserves.find(
+          (r) => r.aTokenAddress.toLowerCase() === reward.rewardAddress.toLowerCase()
+        );
+
+        const aToken = reserve !== undefined;
+
         return {
           accruedUsd,
           accrued: accruedNormalized,
           rewardToken: reward.rewardAddress,
-          rewardTokenSymbol: rewardData.rewardSymbol,
-          rewardTokenName: rewardData.rewardName,
+          rewardTokenSymbol: aToken ? reserve.symbol : rewardData.rewardSymbol,
+          rewardTokenName: aToken ? `a${reserve.symbol}` : rewardData.rewardName,
           apy: normalize(rewardData.apy, 18),
+          aToken,
         };
       }),
       formattedStakeTokenData: {

@@ -12,7 +12,7 @@ interface StakeUmbrellaConfig {
 }
 export const stakeUmbrellaConfig: StakeUmbrellaConfig = {
   [ChainId.mainnet]: {
-    stakeDataProvider: '0xf42dc62bccf3b10cf3bcc86232d31675c7045f90',
+    stakeDataProvider: '0x437f428930669cd06adab2df4a8d4b203ac729c6',
     batchHelper: UmbrellaEthereum.UMBRELLA_BATCH_HELPER,
     stakeRewardsController: UmbrellaEthereum.UMBRELLA_REWARDS_CONTROLLER,
   },
