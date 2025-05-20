@@ -271,25 +271,32 @@ export const SwitchActions = ({
             }
           }
         } else {
-          const orderId = await sendOrder({
-            tokenSrc: inputToken,
-            tokenSrcDecimals: switchRates.srcDecimals,
-            tokenDest: outputToken,
-            tokenDestDecimals: switchRates.destDecimals,
-            quote: switchRates.order,
-            amount: switchRates.srcAmount,
-            destAmount: destAmountWithSlippage.toString(),
-            chainId,
-            user,
-            provider,
-            setError: setTxError,
-          });
-
-          setMainTxState({
-            loading: false,
-            success: true,
-            txHash: orderId ?? undefined,
-          });
+          let orderId;
+          try {
+            orderId = await sendOrder({
+              tokenSrc: inputToken,
+              tokenSrcDecimals: switchRates.srcDecimals,
+              tokenDest: outputToken,
+              tokenDestDecimals: switchRates.destDecimals,
+              quote: switchRates.order,
+              amount: switchRates.srcAmount,
+              destAmount: destAmountWithSlippage.toString(),
+              chainId,
+              user,
+              provider,
+            });
+            setMainTxState({
+              loading: false,
+              success: true,
+              txHash: orderId ?? undefined,
+            });
+          } catch (error) {
+            // setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
+            setMainTxState({
+              success: false,
+              loading: false,
+            });
+          }
         }
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -297,6 +304,7 @@ export const SwitchActions = ({
         setMainTxState({
           txHash: undefined,
           loading: false,
+          success: false,
         });
       }
     } else {
