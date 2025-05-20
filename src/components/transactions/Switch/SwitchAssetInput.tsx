@@ -262,7 +262,7 @@ export const SwitchAssetInput = ({
           open={openModal}
           setOpen={setOpenModal}
           contentMaxWidth={420}
-          contentHeight={485}
+          // contentHeight={600}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
@@ -335,8 +335,20 @@ export const SwitchAssetInput = ({
               sx={{
                 flexGrow: 1,
                 overflowY: 'auto',
-                maxHeight: 'calc(485px - 180px)',
-                backgroundColor: theme.palette.background.paper,
+                maxHeight: 'calc(600px - 180px)',
+                '&::-webkit-scrollbar': {
+                  width: '8px',
+                },
+                '&::-webkit-scrollbar-track': {
+                  background: 'transparent',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  background: theme.palette.divider,
+                  borderRadius: '4px',
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                  background: theme.palette.action.hover,
+                },
               }}
             >
               {loadingNewAsset ? (
@@ -346,7 +358,6 @@ export const SwitchAssetInput = ({
                     display: 'flex',
                     flexDirection: 'column',
                     minHeight: '80px',
-                    backgroundColor: theme.palette.background.paper,
                   }}
                 >
                   <CircularProgress sx={{ mx: 'auto', my: 'auto' }} />
@@ -358,7 +369,6 @@ export const SwitchAssetInput = ({
                     value={asset.symbol}
                     data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
                     sx={{
-                      backgroundColor: theme.palette.background.paper,
                       py: 1.5,
                       px: 3,
                       borderRadius: '8px',
