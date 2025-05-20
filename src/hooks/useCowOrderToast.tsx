@@ -121,8 +121,6 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
     [stopTracking]
   );
 
-  console.log('activeOrders', activeOrders);
-
   return (
     <CowOrderToastContext.Provider
       value={{
