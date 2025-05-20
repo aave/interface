@@ -112,7 +112,7 @@ const UmbrellaHeaderUserDetails = ({
 
   const userRewardsUsd = stakedDataWithTokenBalances?.stakeData.reduce((acc, stake) => {
     const totalAvailableToClaim = stake.formattedRewards.reduce(
-      (sum, reward) => sum + Number(reward.accrued || '0'),
+      (sum, reward) => sum + Number(reward.accruedUsd || '0'),
       0
     );
     return acc + totalAvailableToClaim;

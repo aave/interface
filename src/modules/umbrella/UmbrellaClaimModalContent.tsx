@@ -145,6 +145,7 @@ export const UmbrellaClaimAllModalContent = ({ stakeData }: UmbrellaClaimAllModa
         <DetailsNumberLine
           description={<Trans>Total</Trans>}
           value={totalClaimableAmount.toString()}
+          symbol="USD"
         />
       </TxModalDetails>
 
