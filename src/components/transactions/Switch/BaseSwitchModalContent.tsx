@@ -407,7 +407,7 @@ export const BaseSwitchModalContent = ({
     <>
       {showTitle && (
         <TxModalTitle
-          title={`Switch ${
+          title={`Swap ${
             debounceInputAmount.length && selectedInputToken ? selectedInputToken.symbol : 'tokens'
           }`}
         />
