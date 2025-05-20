@@ -150,7 +150,7 @@ export const StakingApyTooltipcontent = ({
               <Stack direction="row">
                 <FormattedNumber value={+reward.apy} percent variant="secondary12" />
                 <Typography variant="secondary12" sx={{ ml: 1 }}>
-                  <Trans>APR</Trans>
+                  <Trans>APY</Trans>
                 </Typography>
               </Stack>
             </Row>
