@@ -40,24 +40,19 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
 
   const { data: transactions } = useTransactionHistory({ isFilterActive: false });
 
+  // Load orders from transaction history (e.g. on page load)
   useEffect(() => {
-    if (transactions && activeOrders.size === 0) {
-      const cowOrders = transactions.pages[0]
+    if (transactions?.pages[0] && activeOrders.size === 0) {
+      transactions.pages[0]
         .filter((tx: TransactionHistoryItemUnion) => tx.action === 'CowSwap')
         .filter((tx: ActionFields['CowSwap']) => isOrderLoading(tx.status))
-        .map((tx: TransactionHistoryItemUnion) => tx as ActionFields['CowSwap']);
-      cowOrders.forEach((tx) => {
-        trackOrder(tx.orderId, tx.chainId);
-      });
+        .map((tx: TransactionHistoryItemUnion) => tx as ActionFields['CowSwap'])
+        .filter((tx: ActionFields['CowSwap']) => !activeOrders.has(tx.orderId))
+        .forEach((tx: ActionFields['CowSwap']) => {
+          trackOrder(tx.orderId, tx.chainId);
+        });
     }
-  }, [transactions, activeOrders]);
-
-  useEffect(() => {
-    return () => {
-      activeOrders.forEach((order) => clearInterval(order.interval));
-      activeOrders.clear();
-    };
-  }, [activeOrders]);
+  }, [transactions?.pages[0]]);
 
   const stopTracking = useCallback((orderId: string) => {
     setActiveOrders((prev) => {
@@ -114,7 +109,7 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
         } catch (error) {
           console.error('Error checking order status:', error);
         }
-      }, 30000); // Poll every 30 seconds
+      }, 10000); // Poll every 10 seconds
 
       // Add to active orders
       setActiveOrders((prev) => {
@@ -125,6 +120,8 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
     },
     [stopTracking]
   );
+
+  console.log('activeOrders', activeOrders);
 
   return (
     <CowOrderToastContext.Provider
