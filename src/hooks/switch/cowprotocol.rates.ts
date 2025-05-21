@@ -1,6 +1,10 @@
 import { OrderKind, QuoteAndPost, TradingSdk } from '@cowprotocol/cow-sdk';
 import { BigNumber } from 'bignumber.js';
-import { APP_CODE, isNativeToken } from 'src/components/transactions/Switch/cowprotocol.helpers';
+import {
+  APP_CODE,
+  COW_APP_DATA,
+  isNativeToken,
+} from 'src/components/transactions/Switch/cowprotocol.helpers';
 import {
   isChainIdSupportedByCoWProtocol,
   WrappedNativeTokens,
@@ -19,6 +23,8 @@ export async function getCowProtocolSellRates({
   destToken,
   destDecimals,
   user,
+  inputSymbol,
+  outputSymbol,
   setError,
 }: SwitchParams): Promise<SwitchRatesType> {
   const cowProtocolPricesService = new CoWProtocolPricesService();
@@ -46,19 +52,28 @@ export async function getCowProtocolSellRates({
     const provider = await getEthersProvider(wagmiConfig, { chainId });
     const signer = provider?.getSigner();
 
+    if (!inputSymbol || !outputSymbol) {
+      throw new Error('No input or output symbol provided');
+    }
+
     [orderBookQuote, srcTokenPriceUsd, destTokenPriceUsd] = await Promise.all([
       tradingSdk
-        .getQuote({
-          owner: user as `0x${string}`,
-          kind: OrderKind.SELL,
-          amount,
-          sellToken: srcTokenWrapped,
-          sellTokenDecimals: srcDecimals,
-          buyToken: destTokenWrapped,
-          buyTokenDecimals: destDecimals,
-          signer,
-          appCode: APP_CODE,
-        })
+        .getQuote(
+          {
+            owner: user as `0x${string}`,
+            kind: OrderKind.SELL,
+            amount,
+            sellToken: srcTokenWrapped,
+            sellTokenDecimals: srcDecimals,
+            buyToken: destTokenWrapped,
+            buyTokenDecimals: destDecimals,
+            signer,
+            appCode: APP_CODE,
+          },
+          {
+            appData: COW_APP_DATA(inputSymbol, outputSymbol),
+          }
+        )
         .catch((cowError) => {
           console.error(cowError);
           throw new Error(cowError.body.errorType);

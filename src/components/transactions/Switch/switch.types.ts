@@ -16,6 +16,9 @@ export type SwitchParams = {
   user: string;
   options?: Record<string, unknown>;
 
+  inputSymbol?: string;
+  outputSymbol?: string;
+
   setError?: (error: TxErrorType) => void;
 };
 

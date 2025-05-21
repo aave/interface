@@ -296,6 +296,8 @@ export const BaseSwitchModalContent = ({
     srcDecimals: selectedInputToken.decimals,
     destToken: selectedOutputToken.address,
     destDecimals: selectedOutputToken.decimals,
+    inputSymbol: selectedInputToken.symbol,
+    outputSymbol: selectedOutputToken.symbol,
     user,
     options: {
       partner: 'aave-widget',
@@ -560,6 +562,8 @@ export const BaseSwitchModalContent = ({
                 outputToken={selectedOutputToken.address}
                 inputName={selectedInputToken.name}
                 outputName={selectedOutputToken.name}
+                inputSymbol={selectedInputToken.symbol}
+                outputSymbol={selectedOutputToken.symbol}
                 slippage={safeSlippage.toString()}
                 setShowGasStation={setShowGasStation}
                 blocked={

@@ -46,6 +46,8 @@ interface SwitchProps {
   switchRates?: SwitchRatesType;
   inputName: string;
   outputName: string;
+  inputSymbol: string;
+  outputSymbol: string;
   setShowGasStation: (showGasStation: boolean) => void;
 }
 
@@ -62,6 +64,8 @@ export const SwitchActions = ({
   inputName,
   outputName,
   outputToken,
+  inputSymbol,
+  outputSymbol,
   slippage,
   blocked,
   loading,
@@ -210,12 +214,14 @@ export const SwitchActions = ({
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(inputToken)) {
           const validTo = Math.floor(Date.now() / 1000) + 3600;
-          const ethFlowTx = populateEthFlowTx(
+          const ethFlowTx = await populateEthFlowTx(
             switchRates.srcAmount,
             destAmountWithSlippage.toString(),
             outputToken,
             user,
             validTo,
+            inputSymbol,
+            outputSymbol,
             switchRates.quoteId
           );
           const txWithGasEstimation = await estimateGasLimit(ethFlowTx, chainId);
@@ -237,12 +243,14 @@ export const SwitchActions = ({
               success: true,
             });
 
-            const unsignerOrder = getUnsignerOrder(
+            const unsignerOrder = await getUnsignerOrder(
               switchRates.srcAmount,
               destAmountWithSlippage.toString(),
               outputToken,
               user,
-              chainId
+              chainId,
+              inputSymbol,
+              outputSymbol
             );
             const calculatedOrderId = await calculateUniqueOrderId(chainId, unsignerOrder);
 
@@ -284,6 +292,8 @@ export const SwitchActions = ({
               chainId,
               user,
               provider,
+              inputSymbol,
+              outputSymbol,
             });
             setMainTxState({
               loading: false,
