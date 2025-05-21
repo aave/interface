@@ -228,6 +228,11 @@ const formatUmbrellaSummary = (
         Number(stataTokenAssetBalance) + Number(aTokenBalanceAvailableToStake);
     }
 
+    // TODO: add back in when native asset staking is available
+    // if (isUnderlyingWrappedBaseToken) {
+    //   totalAvailableToStake += Number(nativeTokenBalance);
+    // }
+
     acc.push({
       ...stakeItem,
       stataTokenData: {
