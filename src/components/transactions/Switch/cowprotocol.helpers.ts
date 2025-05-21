@@ -9,15 +9,19 @@ import {
   OrderParameters,
   OrderStatus,
   SellTokenSource,
+  SigningScheme,
   SupportedChainId,
   TradingSdk,
   UnsignedOrder,
 } from '@cowprotocol/cow-sdk';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
+import { isSmartContractWallet } from 'src/helpers/provider';
 
 import { isChainIdSupportedByCoWProtocol, WrappedNativeTokens } from './switch.constants';
 
+export const COW_EVM_RECIPIENT = '0xC542C2F197c4939154017c802B0583C596438380';
+// export const COW_LENS_RECIPIENT = '0xce4eB8a1f6Bd0e0B9282102DC056B11E9D83b7CA';
 export const COW_PROTOCOL_ETH_FLOW_ADDRESS = '0xbA3cB449bD2B4ADddBc894D8697F5170800EAdeC';
 const COW_CREATE_ORDER_ABI =
   'function createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)) returns (bytes32)';
@@ -49,7 +53,7 @@ export const COW_APP_DATA: (tokenFromSymbol: string, tokenToSymbol: string) => A
     metadata: {
       partnerFee: {
         bps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
-        recipient: API_ETH_MOCK_ADDRESS,
+        recipient: COW_EVM_RECIPIENT, // TODO: use COW_LENS_RECIPIENT for LENS when supported
       },
     },
   };
@@ -70,6 +74,69 @@ export type CowProtocolActionParams = {
   outputSymbol: string;
 };
 
+export const getPreSignTransaction = async ({
+  provider,
+  tokenDest,
+  chainId,
+  user,
+  amount,
+  tokenSrc,
+  tokenSrcDecimals,
+  tokenDestDecimals,
+  destAmount,
+  inputSymbol,
+  outputSymbol,
+}: CowProtocolActionParams) => {
+  if (!isChainIdSupportedByCoWProtocol(chainId)) {
+    throw new Error('Chain not supported.');
+  }
+
+  const signer = provider?.getSigner();
+  if (!signer) {
+    throw new Error('No signer found in provider');
+  }
+
+  const tradingSdk = new TradingSdk({ chainId, signer, appCode: APP_CODE });
+
+  const isSmartContract = await isSmartContractWallet(user, provider);
+  if (!isSmartContract) {
+    throw new Error('Only smart contract wallets should use presign.');
+  }
+
+  console.log('isSmartContract', isSmartContract);
+
+  const orderResult = await tradingSdk.postLimitOrder(
+    {
+      owner: user as `0x${string}`,
+      sellAmount: amount,
+      buyAmount: destAmount,
+      kind: OrderKind.SELL,
+      sellToken: tokenSrc,
+      buyToken: tokenDest,
+      sellTokenDecimals: tokenSrcDecimals,
+      buyTokenDecimals: tokenDestDecimals,
+    },
+    {
+      appData: COW_APP_DATA(inputSymbol, outputSymbol),
+      additionalParams: {
+        signingScheme: SigningScheme.PRESIGN,
+      },
+    }
+  );
+
+  console.log('orderResult', orderResult);
+
+  const preSignTransaction = await tradingSdk.getPreSignTransaction({
+    orderId: orderResult.orderId,
+    account: user as `0x${string}`,
+  });
+
+  console.log('preSignTransaction', preSignTransaction);
+
+  return preSignTransaction;
+};
+
+// Only for EOA wallets
 export const sendOrder = async ({
   provider,
   tokenDest,
@@ -88,11 +155,15 @@ export const sendOrder = async ({
 
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
-    return;
   }
 
   if (!signer) {
     throw new Error('No signer found in provider');
+  }
+
+  const isSmartContract = await isSmartContractWallet(user, provider);
+  if (isSmartContract) {
+    throw new Error('Smart contract wallets should use presign.');
   }
 
   return tradingSdk
