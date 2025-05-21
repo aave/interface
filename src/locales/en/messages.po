@@ -316,11 +316,6 @@ msgstr "View Transactions"
 msgid "MAX"
 msgstr "MAX"
 
-#: src/components/transactions/Switch/BaseSwitchModal.tsx
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
-msgid "Please connect your wallet to be able to swap your tokens."
-msgstr "Please connect your wallet to be able to swap your tokens."
-
 #: src/layouts/AppFooter.tsx
 msgid "Terms"
 msgstr "Terms"
@@ -1005,6 +1000,11 @@ msgstr "Reload"
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "Save and share"
 msgstr "Save and share"
+
+#: src/components/transactions/Switch/BaseSwitchModal.tsx
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "Please connect your wallet to swap tokens."
+msgstr "Please connect your wallet to swap tokens."
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated to {marketName} v3 Market since collateral asset will enable isolation mode."
