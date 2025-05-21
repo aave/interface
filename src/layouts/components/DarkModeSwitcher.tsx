@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useRootStore } from 'src/store/root';
-import { SETTINGS } from 'src/utils/mixPanelEvents';
+import { SETTINGS } from 'src/utils/events';
 
 import { ColorModeContext } from '../AppGlobalStyles';
 

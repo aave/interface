@@ -97,8 +97,8 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
-  const [initializeMixpanel, setWalletType] = useRootStore(
-    useShallow((store) => [store.initializeMixpanel, store.setWalletType])
+  const [initializeEventsTracking, setWalletType] = useRootStore(
+    useShallow((store) => [store.initializeEventsTracking, store.setWalletType])
   );
   const [queryClient] = useState(
     () =>
@@ -111,12 +111,11 @@ export default function MyApp(props: MyAppProps) {
       })
   );
 
-  const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
   useEffect(() => {
-    if (MIXPANEL_TOKEN) {
-      initializeMixpanel();
+    if (process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY) {
+      initializeEventsTracking();
     } else {
-      console.log('no analytics tracking');
+      console.debug('no analytics tracking');
     }
   }, []);
 

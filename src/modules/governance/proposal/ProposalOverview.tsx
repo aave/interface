@@ -29,7 +29,7 @@ import { StateBadge } from 'src/modules/governance/StateBadge';
 // import { CustomProposalType } from 'src/static-build/proposal';
 import { useRootStore } from 'src/store/root';
 import { ipfsGateway } from 'src/ui-config/governanceConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 const CenterAlignedImage = styled('img')({
   display: 'block',
