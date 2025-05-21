@@ -140,15 +140,18 @@ export const SwitchTxSuccessView = ({
   }, [provider, chainId, txHashOrOrderId]);
 
   const customExplorerLinkText = useMemo(() => {
-    return provider === 'cowprotocol' ? 'View details' : undefined;
-  }, [provider]);
+    return provider === 'cowprotocol'
+      ? txHashOrOrderId
+        ? 'View details'
+        : 'Details will be available soon'
+      : undefined;
+  }, [provider, txHashOrOrderId]);
 
   return (
     <View
       txHash={txHashOrOrderId}
       customExplorerLink={customExplorerLink}
       customExplorerLinkText={customExplorerLinkText}
-      hideTx={provider == 'cowprotocol' && !txHashOrOrderId}
     >
       <Box display="flex" flexDirection="column" alignItems="center" mt={2} mb={3}>
         <Typography color="text.secondary">
@@ -184,7 +187,10 @@ export const SwitchTxSuccessView = ({
           <Box display="flex" alignItems="center" gap={1}>
             <ExternalTokenIcon symbol={iconSymbol} logoURI={iconUri} sx={{ fontSize: 20 }} />
             <Typography fontWeight={600}>
-              {Number(amount).toLocaleString(undefined, { maximumFractionDigits: 2 })}{' '}
+              {Number(amount).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 4,
+              })}{' '}
             </Typography>
             <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
               {symbol}
@@ -197,7 +203,10 @@ export const SwitchTxSuccessView = ({
           <Box display="flex" alignItems="center" gap={1}>
             <ExternalTokenIcon symbol={outIconSymbol} logoURI={outIconUri} sx={{ fontSize: 20 }} />
             <Typography fontWeight={600}>
-              {Number(outAmount).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+              {Number(outAmount).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 4,
+              })}
             </Typography>
             <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
               {outSymbol}
@@ -215,7 +224,6 @@ export const SwitchTxSuccessView = ({
           </Typography>
         )}
       </Box>
-      {!txHashOrOrderId && <Trans>Details will be available soon.</Trans>}
     </View>
   );
 };

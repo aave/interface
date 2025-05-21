@@ -69,6 +69,7 @@ export const BaseWaitingView = ({
           <br />
         ) : (
           <Button
+            disabled={!txHash}
             variant="outlined"
             size="large"
             sx={{ borderRadius: 1, borderColor: 'divider', borderWidth: 1, mt: 6, mb: 2 }}
@@ -83,7 +84,7 @@ export const BaseWaitingView = ({
             rel="noreferrer noopener"
           >
             {customExplorerLinkText ? customExplorerLinkText : <Trans>Review tx details</Trans>}
-            <ExtLinkIcon />
+            {txHash && <ExtLinkIcon />}
           </Button>
         )}
 
