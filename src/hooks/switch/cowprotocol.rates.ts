@@ -159,5 +159,8 @@ export async function getCowProtocolSellRates({
     order: orderBookQuote.quoteResults.orderToSign,
     quoteId: orderBookQuote.quoteResults.quoteResponse.id,
     suggestedSlippage: (orderBookQuote.quoteResults.suggestedSlippageBps ?? 100) / 1000, // E.g. 100 -> 100 / 1000 = 0.1
+    amountAndCosts: orderBookQuote.quoteResults.amountsAndCosts,
+    srcTokenPriceUsd: Number(srcTokenPriceUsd),
+    destTokenPriceUsd: Number(destTokenPriceUsd),
   };
 }

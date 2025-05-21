@@ -7,8 +7,10 @@ import {
 } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
+import { BigNumber } from 'ethers';
 import { defaultAbiCoder, formatUnits, splitSignature } from 'ethers/lib/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { isSmartContractWallet } from 'src/helpers/provider';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { calculateSignedAmount } from 'src/hooks/paraswap/common';
 import { useParaswapSellTxParams } from 'src/hooks/paraswap/useParaswapRates';
@@ -27,6 +29,7 @@ import { useShallow } from 'zustand/shallow';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
 import {
+  getPreSignTransaction,
   getUnsignerOrder,
   isNativeToken,
   populateEthFlowTx,
@@ -213,7 +216,7 @@ export const SwitchActions = ({
 
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(inputToken)) {
-          const validTo = Math.floor(Date.now() / 1000) + 3600;
+          const validTo = Math.floor(Date.now() / 1000) + 60 * 30; // 30 minutes
           const ethFlowTx = await populateEthFlowTx(
             switchRates.srcAmount,
             destAmountWithSlippage.toString(),
@@ -281,26 +284,91 @@ export const SwitchActions = ({
         } else {
           let orderId;
           try {
-            orderId = await sendOrder({
-              tokenSrc: inputToken,
-              tokenSrcDecimals: switchRates.srcDecimals,
-              tokenDest: outputToken,
-              tokenDestDecimals: switchRates.destDecimals,
-              quote: switchRates.order,
-              amount: switchRates.srcAmount,
-              destAmount: destAmountWithSlippage.toString(),
-              chainId,
-              user,
-              provider,
-              inputSymbol,
-              outputSymbol,
-            });
-            setMainTxState({
-              loading: false,
-              success: true,
-              txHash: orderId ?? undefined,
-            });
+            if (await isSmartContractWallet(user, provider)) {
+              const preSignTransaction = await getPreSignTransaction({
+                provider,
+                tokenDest: outputToken,
+                chainId,
+                user,
+                amount: switchRates.srcAmount,
+                tokenSrc: inputToken,
+                tokenSrcDecimals: switchRates.srcDecimals,
+                tokenDestDecimals: switchRates.destDecimals,
+                destAmount: destAmountWithSlippage.toString(),
+                inputSymbol,
+                outputSymbol,
+                quote: switchRates.order,
+              });
+
+              const txWithGasEstimation = await estimateGasLimit(
+                {
+                  data: preSignTransaction.data,
+                  to: preSignTransaction.to,
+                  value: BigNumber.from(preSignTransaction.value),
+                  gasLimit: BigNumber.from(preSignTransaction.gasLimit),
+                },
+                chainId
+              );
+              const response = await sendTx(txWithGasEstimation);
+
+              addTransaction(
+                response.hash,
+                {
+                  txState: 'success',
+                },
+                {
+                  chainId,
+                }
+              );
+
+              setMainTxState({
+                loading: false,
+                success: true,
+              });
+
+              const unsignerOrder = await getUnsignerOrder(
+                switchRates.srcAmount,
+                destAmountWithSlippage.toString(),
+                outputToken,
+                user,
+                chainId,
+                inputSymbol,
+                outputSymbol
+              );
+
+              const calculatedOrderId = await calculateUniqueOrderId(chainId, unsignerOrder);
+
+              // CoW takes some time to index the order for 'eth-flow' orders
+              setTimeout(() => {
+                setMainTxState({
+                  loading: false,
+                  success: true,
+                  txHash: calculatedOrderId,
+                });
+              }, 1000 * 30); // 30 seconds - if we set less than 30 seconds, the order is not indexed yet and CoW explorer will not find the order
+            } else {
+              orderId = await sendOrder({
+                tokenSrc: inputToken,
+                tokenSrcDecimals: switchRates.srcDecimals,
+                tokenDest: outputToken,
+                tokenDestDecimals: switchRates.destDecimals,
+                quote: switchRates.order,
+                amount: switchRates.srcAmount,
+                destAmount: destAmountWithSlippage.toString(),
+                chainId,
+                user,
+                provider,
+                inputSymbol,
+                outputSymbol,
+              });
+              setMainTxState({
+                loading: false,
+                success: true,
+                txHash: orderId ?? undefined,
+              });
+            }
           } catch (error) {
+            console.error(error);
             // setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
             setMainTxState({
               success: false,
