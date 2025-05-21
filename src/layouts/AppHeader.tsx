@@ -315,7 +315,7 @@ export function AppHeader() {
             >
               {!smd && (
                 <Typography component="span" typography="subheader1">
-                  Swap tokens
+                  Swap
                 </Typography>
               )}
               <Box sx={{ display: 'flex', alignItems: 'center' }}>

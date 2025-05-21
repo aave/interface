@@ -408,7 +408,7 @@ export const BaseSwitchModalContent = ({
       {showTitle && (
         <TxModalTitle
           title={`Swap ${
-            debounceInputAmount.length && selectedInputToken ? selectedInputToken.symbol : 'tokens'
+            debounceInputAmount.length && selectedInputToken ? selectedInputToken.symbol : 'Assets'
           }`}
         />
       )}
@@ -426,7 +426,7 @@ export const BaseSwitchModalContent = ({
         <Warning severity="info" icon={false} sx={{ mt: 2, mb: 2 }}>
           <Typography variant="caption">
             You have open orders for {cowOpenOrdersTotalAmountFormatted} {selectedInputToken.symbol}
-            . <br /> You can track them in your{' '}
+            . <br /> Track them in your{' '}
             <Link target="_blank" href="/history">
               transaction history
             </Link>
@@ -541,7 +541,7 @@ export const BaseSwitchModalContent = ({
               {showSlippageWarning && (
                 <Warning severity="warning" icon={false} sx={{ mt: 5 }}>
                   <Typography variant="caption">
-                    The slippage is below suggested. It may take longer or fail.
+                    Slippage is lower than recommended. The switch may be delayed or fail.
                   </Typography>
                 </Warning>
               )}
