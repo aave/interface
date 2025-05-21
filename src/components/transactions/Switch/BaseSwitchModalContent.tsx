@@ -120,7 +120,7 @@ export const BaseSwitchModalContent = ({
   const [slippage, setSlippage] = useState('0.10');
   const [inputAmount, setInputAmount] = useState('');
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
-  const { mainTxState: switchTxState, gasLimit, txError, setTxError } = useModalContext();
+  const { mainTxState: switchTxState, gasLimit, txError, setTxError, close } = useModalContext();
   const user = useRootStore((store) => store.account);
   const { readOnlyModeAddress } = useWeb3Context();
   const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
@@ -575,9 +575,13 @@ export const BaseSwitchModalContent = ({
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
               <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
-                <Trans>Please connect your wallet to be able to swap your tokens.</Trans>
+                <Trans>Please connect your wallet to swap tokens.</Trans>
               </Typography>
-              <ConnectWalletButton />
+              <ConnectWalletButton
+                onClick={() => {
+                  close();
+                }}
+              />
             </Box>
           )}
         </>
