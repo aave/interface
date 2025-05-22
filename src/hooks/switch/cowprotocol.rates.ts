@@ -92,16 +92,16 @@ export async function getCowProtocolSellRates({
     if (!srcTokenPriceUsd || !destTokenPriceUsd) {
       console.error('No price found for token');
       const error = getErrorTextFromError(
-        new Error('No price found for token'),
+        new Error('No price found for token, please try another token'),
         TxAction.MAIN_ACTION,
         true
       );
       setError?.(error);
       console.error(error);
-      throw new Error('No price found for token');
+      throw new Error('No price found for token, please try another token');
     }
   } catch (error) {
-    console.error(error);
+    console.error('generate error', error);
     setError?.({
       error: error,
       blocking: true,
