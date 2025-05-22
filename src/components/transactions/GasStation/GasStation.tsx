@@ -103,9 +103,7 @@ export const GasStation: React.FC<GasStationProps> = ({
               <GasTooltip />
             </>
           ) : (
-            <Typography variant="caption" color="text.secondary">
-              <Trans>This action does not require gas.</Trans>
-            </Typography>
+            '-'
           )}
         </Box>
         {rightComponent}
