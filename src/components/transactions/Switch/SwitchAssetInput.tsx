@@ -407,7 +407,7 @@ export const SwitchAssetInput = ({
                         <ExclamationIcon />
                       </SvgIcon>
                     )}
-                    {showBalance && asset.balance && (
+                    {asset.balance && (
                       <FormattedNumber sx={{ ml: 'auto' }} value={asset.balance} compact />
                     )}
                   </MenuItem>
