@@ -524,6 +524,7 @@ export const BaseSwitchModalContent = ({
                 rates={switchRates}
                 srcSymbol={selectedInputToken.symbol}
                 destSymbol={selectedOutputToken.symbol}
+                showPriceImpact={!isCowProtocolRates(switchRates)}
               />
             </>
           )}
