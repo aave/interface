@@ -88,10 +88,6 @@ msgstr "To"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: src/components/transactions/Switch/SwitchModal.tsx
-msgid "Fees"
-msgstr "Fees"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Stable borrowing is not enabled"
 msgstr "Stable borrowing is not enabled"
@@ -1042,6 +1038,10 @@ msgstr "Cooldown period"
 msgid "Liquidation at"
 msgstr "Liquidation at"
 
+#: src/components/transactions/Switch/SwitchModal.tsx
+msgid "Costs & Fees"
+msgstr "Costs & Fees"
+
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
@@ -1415,6 +1415,7 @@ msgid "Borrow apy"
 msgstr "Borrow apy"
 
 #: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
+#: src/components/transactions/Switch/SwitchModal.tsx
 msgid "Fee"
 msgstr "Fee"
 

@@ -1,5 +1,7 @@
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { ModalType } from 'src/hooks/useModal';
@@ -26,11 +28,13 @@ export const SwitchModal = () => {
       networkFeesInUsd: number;
       partnerFeesInUsd: number;
       slippageInUsd: number;
+      totalCostsInUsd: number;
     } = {
       beforeNetworkCostsInUsd: 0,
       networkFeesInUsd: 0,
       partnerFeesInUsd: 0,
       slippageInUsd: 0,
+      totalCostsInUsd: 0,
     };
 
     if (isCowProtocolRates(switchRates)) {
@@ -58,6 +62,7 @@ export const SwitchModal = () => {
       const amountInUsd = Number(switchRates.srcUSD);
       const slippageInUsd = safeSlippage * amountInUsd;
       costs.slippageInUsd = slippageInUsd;
+      costs.totalCostsInUsd = costs.networkFeesInUsd + costs.partnerFeesInUsd + costs.slippageInUsd;
     }
 
     return switchRates && user ? (
@@ -74,48 +79,73 @@ export const SwitchModal = () => {
           />
         </Row>
 
-        <Row mb={4} caption={<Trans>{`Network costs`}</Trans>} captionVariant="description">
-          <FormattedNumber
-            compact={false}
-            symbol="usd"
-            symbolsVariant="caption"
-            roundDown={false}
-            variant="caption"
-            visibleDecimals={2}
-            value={costs.networkFeesInUsd}
-          />
-        </Row>
-        <Row mb={4} sx={{ mt: 1 }} caption={<Trans>{`Fees`}</Trans>} captionVariant="description">
-          <FormattedNumber
-            compact={false}
-            symbol="usd"
-            symbolsVariant="caption"
-            roundDown={false}
-            variant="caption"
-            visibleDecimals={2}
-            value={costs.partnerFeesInUsd}
-          />
-        </Row>
-        <Row
-          mb={4}
-          sx={{ mt: 1 }}
-          caption={<Trans>{`Slippage`}</Trans>}
-          captionVariant="description"
+        <Accordion
+          sx={{
+            mb: 4,
+            boxShadow: 'none',
+            '&:before': { display: 'none' },
+            backgroundColor: 'transparent',
+          }}
         >
-          <FormattedNumber
-            compact={false}
-            symbol="usd"
-            symbolsVariant="caption"
-            roundDown={false}
-            variant="caption"
-            visibleDecimals={2}
-            value={costs.slippageInUsd}
-          />
-        </Row>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            sx={{
+              padding: 0,
+              minHeight: 'unset',
+              '.MuiAccordionSummary-content': { margin: 0 },
+            }}
+          >
+            <Row caption={<Trans>{`Costs & Fees`}</Trans>} captionVariant="description">
+              <FormattedNumber
+                compact={false}
+                symbol="usd"
+                symbolsVariant="caption"
+                roundDown={false}
+                variant="caption"
+                visibleDecimals={2}
+                value={costs.totalCostsInUsd}
+              />
+            </Row>
+          </AccordionSummary>
+          <AccordionDetails sx={{ padding: 0 }}>
+            <Row mb={2} caption={<Trans>{`Network costs`}</Trans>} captionVariant="description">
+              <FormattedNumber
+                compact={false}
+                symbol="usd"
+                symbolsVariant="caption"
+                roundDown={false}
+                variant="caption"
+                visibleDecimals={2}
+                value={costs.networkFeesInUsd}
+              />
+            </Row>
+            <Row mb={2} caption={<Trans>{`Fee`}</Trans>} captionVariant="description">
+              <FormattedNumber
+                compact={false}
+                symbol="usd"
+                symbolsVariant="caption"
+                roundDown={false}
+                variant="caption"
+                visibleDecimals={2}
+                value={costs.partnerFeesInUsd}
+              />
+            </Row>
+            <Row caption={<Trans>{`Slippage`}</Trans>} captionVariant="description">
+              <FormattedNumber
+                compact={false}
+                symbol="usd"
+                symbolsVariant="caption"
+                roundDown={false}
+                variant="caption"
+                visibleDecimals={2}
+                value={costs.slippageInUsd}
+              />
+            </Row>
+          </AccordionDetails>
+        </Accordion>
 
         <Row
           mb={4}
-          sx={{ mt: 1 }}
           caption={<Trans>{`Minimum ${selectedOutputToken.symbol} received after slippage`}</Trans>}
           captionVariant="description"
         >
@@ -132,7 +162,6 @@ export const SwitchModal = () => {
         </Row>
         <Row
           mb={4}
-          sx={{ mt: 1 }}
           caption={<Trans>Minimum USD value received after slippage</Trans>}
           captionVariant="description"
         >
