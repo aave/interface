@@ -1,4 +1,4 @@
-import { OrderParameters } from '@cowprotocol/cow-sdk';
+import { OrderParameters, QuoteAmountsAndCosts } from '@cowprotocol/cow-sdk';
 import { OptimalRate } from '@paraswap/core';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
@@ -15,6 +15,9 @@ export type SwitchParams = {
   chainId: number;
   user: string;
   options?: Record<string, unknown>;
+
+  inputSymbol?: string;
+  outputSymbol?: string;
 
   setError?: (error: TxErrorType) => void;
 };
@@ -45,6 +48,9 @@ export type CowProtocolRatesType = BaseSwitchRates & {
   order: OrderParameters;
   quoteId?: number;
   suggestedSlippage: number;
+  amountAndCosts: QuoteAmountsAndCosts;
+  srcTokenPriceUsd: number;
+  destTokenPriceUsd: number;
 };
 
 export const isParaswapRates = (rates?: SwitchRatesType): rates is ParaswapRatesType => {
