@@ -12,9 +12,15 @@ type SwitchRatesProps = {
   rates: SwitchRatesType;
   srcSymbol: string;
   destSymbol: string;
+  showPriceImpact?: boolean;
 };
 
-export const SwitchRates = ({ rates, srcSymbol, destSymbol }: SwitchRatesProps) => {
+export const SwitchRates = ({
+  rates,
+  srcSymbol,
+  destSymbol,
+  showPriceImpact = true,
+}: SwitchRatesProps) => {
   const [isSwitched, setIsSwitched] = useState(false);
 
   const rate = useMemo(() => {
@@ -56,19 +62,21 @@ export const SwitchRates = ({ rates, srcSymbol, destSymbol }: SwitchRatesProps) 
         value={rate.toString()}
         visibleDecimals={3}
       />
-      <DarkTooltip
-        title={
-          <Typography variant="caption">
-            <Trans>Price impact</Trans>
-          </Typography>
-        }
-      >
-        <Box sx={{ display: 'flex', cursor: 'pointer' }}>
-          <Typography variant="caption">{'('}</Typography>
-          <FormattedNumber variant="caption" value={priceImpact.toString()} percent />
-          <Typography variant="caption">{')'}</Typography>
-        </Box>
-      </DarkTooltip>
+      {showPriceImpact && (
+        <DarkTooltip
+          title={
+            <Typography variant="caption">
+              <Trans>Price impact</Trans>
+            </Typography>
+          }
+        >
+          <Box sx={{ display: 'flex', cursor: 'pointer' }}>
+            <Typography variant="caption">{'('}</Typography>
+            <FormattedNumber variant="caption" value={priceImpact.toString()} percent />
+            <Typography variant="caption">{')'}</Typography>
+          </Box>
+        </DarkTooltip>
+      )}
     </Box>
   );
 };
