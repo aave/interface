@@ -515,6 +515,7 @@ export const BaseSwitchModalContent = ({
               onSelect={handleSelectedOutputToken}
               disableInput={true}
               selectedAsset={selectedOutputToken}
+              showBalance={false}
             />
           </Box>
           {switchRates && (

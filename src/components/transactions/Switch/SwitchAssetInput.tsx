@@ -73,6 +73,7 @@ export interface AssetInputProps {
   loading?: boolean;
   selectedAsset: TokenInfoWithBalance;
   balanceTitle?: string;
+  showBalance?: boolean;
 }
 
 export const SwitchAssetInput = ({
@@ -89,6 +90,7 @@ export const SwitchAssetInput = ({
   chainId,
   selectedAsset,
   balanceTitle,
+  showBalance = true,
 }: AssetInputProps) => {
   const theme = useTheme();
   const handleSelect = (asset: TokenInfoWithBalance) => {
@@ -161,17 +163,18 @@ export const SwitchAssetInput = ({
     <Box
       ref={inputRef}
       sx={(theme) => ({
-        p: '12px 16px',
         border: `1px solid ${theme.palette.divider}`,
-        borderRadius: '8px',
+        borderRadius: '6px',
+        overflow: 'hidden',
+        px: 3,
+        py: 2,
         width: '100%',
-        mb: 1.5,
       })}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {loading ? (
           <Box sx={{ flex: 1 }}>
-            <CircularProgress color="inherit" size="20px" />
+            <CircularProgress color="inherit" size="16px" />
           </Box>
         ) : (
           <InputBase
@@ -191,10 +194,11 @@ export const SwitchAssetInput = ({
             inputProps={{
               'aria-label': 'amount input',
               style: {
-                fontSize: '24px',
-                lineHeight: '32px',
+                width: '100%',
+                fontSize: '21px',
+                lineHeight: '28,01px',
                 padding: 0,
-                height: '32px',
+                height: '28px',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
@@ -221,7 +225,7 @@ export const SwitchAssetInput = ({
             }}
             disabled={disabled}
           >
-            <XCircleIcon height={18} />
+            <XCircleIcon height={16} />
           </IconButton>
         )}
         <Button
@@ -229,12 +233,11 @@ export const SwitchAssetInput = ({
           onClick={handleClick}
           data-cy={`assetSelect`}
           sx={{
-            p: '4px 8px',
+            p: 0,
             borderRadius: '6px',
             transition: 'background-color 0.2s',
             '&:hover': {
-              backgroundColor:
-                theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+              backgroundColor: 'transparent',
             },
           }}
           endIcon={<ExpandMore />}
@@ -242,7 +245,7 @@ export const SwitchAssetInput = ({
           <ExternalTokenIcon
             symbol={selectedAsset.symbol}
             logoURI={selectedAsset.logoURI}
-            sx={{ mr: 2, ml: 1, width: 28, height: 28 }}
+            sx={{ mr: 2, ml: 3, width: 28, height: 24 }}
           />
           <Typography
             data-cy={`assetsSelectedOption_${selectedAsset.symbol.toUpperCase()}`}
@@ -404,7 +407,7 @@ export const SwitchAssetInput = ({
                         <ExclamationIcon />
                       </SvgIcon>
                     )}
-                    {asset.balance && (
+                    {showBalance && asset.balance && (
                       <FormattedNumber sx={{ ml: 'auto' }} value={asset.balance} compact />
                     )}
                   </MenuItem>
@@ -440,7 +443,7 @@ export const SwitchAssetInput = ({
           />
         )}
 
-        {selectedAsset.balance && (
+        {showBalance && selectedAsset.balance && (
           <>
             <Typography component="div" variant="secondary12" color="text.secondary">
               <Trans>{balanceTitle || 'Balance'}</Trans>
@@ -456,24 +459,7 @@ export const SwitchAssetInput = ({
             {!disableInput && (
               <Button
                 size="small"
-                sx={{
-                  minWidth: 0,
-                  ml: '10px',
-                  p: '2px 8px',
-                  borderRadius: '4px',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  backgroundColor:
-                    theme.palette.mode === 'dark'
-                      ? 'rgba(255, 255, 255, 0.08)'
-                      : 'rgba(0, 0, 0, 0.04)',
-                  '&:hover': {
-                    backgroundColor:
-                      theme.palette.mode === 'dark'
-                        ? 'rgba(255, 255, 255, 0.12)'
-                        : 'rgba(0, 0, 0, 0.08)',
-                  },
-                }}
+                sx={{ minWidth: 0, ml: '7px', p: 0 }}
                 onClick={() => {
                   onChange && onChange('-1');
                 }}
