@@ -245,7 +245,7 @@ export const SwitchAssetInput = ({
           <ExternalTokenIcon
             symbol={selectedAsset.symbol}
             logoURI={selectedAsset.logoURI}
-            sx={{ mr: 2, ml: 3, width: 28, height: 24 }}
+            sx={{ mr: 2, ml: 3, width: 24, height: 24 }}
           />
           <Typography
             data-cy={`assetsSelectedOption_${selectedAsset.symbol.toUpperCase()}`}
