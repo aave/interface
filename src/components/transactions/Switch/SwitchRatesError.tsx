@@ -9,9 +9,20 @@ interface SwitchRatesErrorProps {
 }
 
 export const SwitchRatesError = ({ error }: SwitchRatesErrorProps) => {
+  let paraswapMessage;
+  let cowProtocolMessage;
+
+  if (error instanceof Error) {
+    paraswapMessage = convertParaswapErrorMessage(error.message);
+
+    if (!paraswapMessage) {
+      cowProtocolMessage = convertCowProtocolErrorMessage(error.message);
+    }
+  }
+
   const customErrorMessage =
     error instanceof Error
-      ? convertParaswapErrorMessage(error.message) ?? convertCowProtocolErrorMessage(error.message)
+      ? paraswapMessage ?? cowProtocolMessage ?? error.message
       : 'There was an issue fetching rates.';
 
   return (

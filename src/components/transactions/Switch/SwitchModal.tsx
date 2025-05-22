@@ -62,7 +62,7 @@ export const SwitchModal = () => {
 
     return switchRates && user ? (
       <TxModalDetails gasLimit={gasLimit} chainId={selectedChainId} showGasStation={showGasStation}>
-        <Row caption={<Trans>{`Amount`}</Trans>} captionVariant="caption">
+        <Row mb={4} caption={<Trans>{`Amount`}</Trans>} captionVariant="description">
           <FormattedNumber
             compact={false}
             symbol="usd"
@@ -74,7 +74,7 @@ export const SwitchModal = () => {
           />
         </Row>
 
-        <Row caption={<Trans>{`Network costs`}</Trans>} captionVariant="caption">
+        <Row mb={4} caption={<Trans>{`Network costs`}</Trans>} captionVariant="description">
           <FormattedNumber
             compact={false}
             symbol="usd"
@@ -85,7 +85,7 @@ export const SwitchModal = () => {
             value={costs.networkFeesInUsd}
           />
         </Row>
-        <Row sx={{ mt: 1 }} caption={<Trans>{`Fees`}</Trans>} captionVariant="caption">
+        <Row mb={4} sx={{ mt: 1 }} caption={<Trans>{`Fees`}</Trans>} captionVariant="description">
           <FormattedNumber
             compact={false}
             symbol="usd"
@@ -96,7 +96,12 @@ export const SwitchModal = () => {
             value={costs.partnerFeesInUsd}
           />
         </Row>
-        <Row sx={{ mt: 1 }} caption={<Trans>{`Slippage`}</Trans>} captionVariant="caption">
+        <Row
+          mb={4}
+          sx={{ mt: 1 }}
+          caption={<Trans>{`Slippage`}</Trans>}
+          captionVariant="description"
+        >
           <FormattedNumber
             compact={false}
             symbol="usd"
@@ -109,9 +114,10 @@ export const SwitchModal = () => {
         </Row>
 
         <Row
+          mb={4}
           sx={{ mt: 1 }}
           caption={<Trans>{`Minimum ${selectedOutputToken.symbol} received after slippage`}</Trans>}
-          captionVariant="caption"
+          captionVariant="description"
         >
           <FormattedNumber
             compact={false}
@@ -125,9 +131,10 @@ export const SwitchModal = () => {
           />
         </Row>
         <Row
+          mb={4}
           sx={{ mt: 1 }}
           caption={<Trans>Minimum USD value received after slippage</Trans>}
-          captionVariant="caption"
+          captionVariant="description"
         >
           <FormattedNumber
             symbol="usd"

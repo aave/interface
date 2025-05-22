@@ -53,7 +53,7 @@ export const COW_APP_DATA: (tokenFromSymbol: string, tokenToSymbol: string) => A
     metadata: {
       partnerFee: {
         bps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
-        recipient: COW_EVM_RECIPIENT, // TODO: use COW_LENS_RECIPIENT for LENS when supported
+        recipient: COW_EVM_RECIPIENT,
       },
     },
   };
@@ -102,8 +102,6 @@ export const getPreSignTransaction = async ({
   if (!isSmartContract) {
     throw new Error('Only smart contract wallets should use presign.');
   }
-
-  console.log('isSmartContract', isSmartContract);
 
   const orderResult = await tradingSdk.postLimitOrder(
     {
