@@ -28,9 +28,39 @@ const COW_CREATE_ORDER_ABI =
 
 // Until CoW shares a more sophisticated way to recognize token groups, we'll maintain a lists with popular tokens
 const TOKEN_GROUPS: Record<'stable' | 'correlatedEth' | 'correlatedBtc', string[]> = {
-  stable: ['USDC', 'USDT', 'DAI', 'USDC.e', 'USDT.e', 'DAI.e'] as const,
-  correlatedEth: ['WETH', 'LINK', 'AAVE'] as const,
-  correlatedBtc: ['WBTC'] as const,
+  stable: [
+    'USDC',
+    'USDT',
+    'DAI',
+    'GHO',
+    'EURC',
+    'USDbC',
+    'USDe',
+    'USDS',
+    'sUSDe',
+    'RLUSD',
+    'PYUSD',
+    'LUSD',
+    'sDAI',
+    'crvUSD',
+    'USD₮0',
+    'USDC.e',
+    'EURe',
+    'XDAI',
+  ],
+  correlatedEth: [
+    'weETH',
+    'ETH',
+    'WETH',
+    'wstETH',
+    'cbETH',
+    'ezETH',
+    'wrsETH',
+    'osETH',
+    'rETH',
+    'ETHx',
+  ],
+  correlatedBtc: ['cbBTC', 'WBTC', 'LBTC', 'tBTC', 'eBTC'],
 } as const;
 
 const cowSymbolGroup = (symbol: string): keyof typeof TOKEN_GROUPS | 'unknown' => {
