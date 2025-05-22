@@ -1,5 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { MetadataApi } from '@cowprotocol/app-data';
+import { PartnerFee } from '@cowprotocol/app-data/dist/generatedTypes/v1.3.0';
 import {
   AppDataRootSchema,
   BuyTokenDestination,
@@ -73,6 +74,13 @@ const cowSymbolGroup = (symbol: string): keyof typeof TOKEN_GROUPS | 'unknown' =
 };
 
 export const APP_CODE = 'AaveV3';
+export const COW_PARTNER_FEE: (tokenFromSymbol: string, tokenToSymbol: string) => PartnerFee = (
+  tokenFromSymbol: string,
+  tokenToSymbol: string
+) => ({
+  bps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
+  recipient: COW_EVM_RECIPIENT,
+});
 export const COW_APP_DATA: (tokenFromSymbol: string, tokenToSymbol: string) => AppDataRootSchema = (
   tokenFromSymbol: string,
   tokenToSymbol: string
@@ -81,10 +89,7 @@ export const COW_APP_DATA: (tokenFromSymbol: string, tokenToSymbol: string) => A
     appCode: APP_CODE,
     version: '1.3.0',
     metadata: {
-      partnerFee: {
-        bps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
-        recipient: COW_EVM_RECIPIENT,
-      },
+      partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol),
     },
   };
 };
@@ -152,16 +157,15 @@ export const getPreSignTransaction = async ({
     }
   );
 
-  console.log('orderResult', orderResult);
-
   const preSignTransaction = await tradingSdk.getPreSignTransaction({
     orderId: orderResult.orderId,
     account: user as `0x${string}`,
   });
 
-  console.log('preSignTransaction', preSignTransaction);
-
-  return preSignTransaction;
+  return {
+    ...preSignTransaction,
+    orderId: orderResult.orderId,
+  };
 };
 
 // Only for EOA wallets

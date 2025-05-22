@@ -3,6 +3,7 @@ import { BigNumber } from 'bignumber.js';
 import {
   APP_CODE,
   COW_APP_DATA,
+  COW_PARTNER_FEE,
   isNativeToken,
 } from 'src/components/transactions/Switch/cowprotocol.helpers';
 import {
@@ -69,6 +70,7 @@ export async function getCowProtocolSellRates({
             buyTokenDecimals: destDecimals,
             signer,
             appCode: APP_CODE,
+            partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
           },
           {
             appData: COW_APP_DATA(inputSymbol, outputSymbol),

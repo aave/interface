@@ -300,16 +300,12 @@ export const SwitchActions = ({
                 quote: switchRates.order,
               });
 
-              const txWithGasEstimation = await estimateGasLimit(
-                {
-                  data: preSignTransaction.data,
-                  to: preSignTransaction.to,
-                  value: BigNumber.from(preSignTransaction.value),
-                  gasLimit: BigNumber.from(preSignTransaction.gasLimit),
-                },
-                chainId
-              );
-              const response = await sendTx(txWithGasEstimation);
+              const response = await sendTx({
+                data: preSignTransaction.data,
+                to: preSignTransaction.to,
+                value: BigNumber.from(preSignTransaction.value),
+                gasLimit: BigNumber.from(preSignTransaction.gasLimit),
+              });
 
               addTransaction(
                 response.hash,
@@ -324,28 +320,8 @@ export const SwitchActions = ({
               setMainTxState({
                 loading: false,
                 success: true,
+                txHash: preSignTransaction.orderId,
               });
-
-              const unsignerOrder = await getUnsignerOrder(
-                switchRates.srcAmount,
-                destAmountWithSlippage.toString(),
-                outputToken,
-                user,
-                chainId,
-                inputSymbol,
-                outputSymbol
-              );
-
-              const calculatedOrderId = await calculateUniqueOrderId(chainId, unsignerOrder);
-
-              // CoW takes some time to index the order for 'eth-flow' orders
-              setTimeout(() => {
-                setMainTxState({
-                  loading: false,
-                  success: true,
-                  txHash: calculatedOrderId,
-                });
-              }, 1000 * 30); // 30 seconds - if we set less than 30 seconds, the order is not indexed yet and CoW explorer will not find the order
             } else {
               orderId = await sendOrder({
                 tokenSrc: inputToken,
