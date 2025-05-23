@@ -362,6 +362,11 @@ msgstr "Variable debt supply is not zero"
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+msgid "Minimum {0} received"
+msgstr "Minimum {0} received"
+
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Allowance required action"
 msgstr "Allowance required action"
@@ -759,7 +764,6 @@ msgstr "You've successfully submitted an order."
 msgid "Max"
 msgstr "Max"
 
-#: src/components/transactions/Switch/SwitchModal.tsx
 #: src/components/transactions/Switch/SwitchSlippageSelector.tsx
 msgid "Slippage"
 msgstr "Slippage"
@@ -1038,7 +1042,7 @@ msgstr "Cooldown period"
 msgid "Liquidation at"
 msgstr "Liquidation at"
 
-#: src/components/transactions/Switch/SwitchModal.tsx
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Costs & Fees"
 msgstr "Costs & Fees"
 
@@ -1415,7 +1419,7 @@ msgid "Borrow apy"
 msgstr "Borrow apy"
 
 #: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
-#: src/components/transactions/Switch/SwitchModal.tsx
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Fee"
 msgstr "Fee"
 
@@ -1888,10 +1892,6 @@ msgstr "Max slashing"
 msgid "Before supplying"
 msgstr "Before supplying"
 
-#: src/components/transactions/Switch/SwitchModal.tsx
-msgid "Minimum {0} received after slippage"
-msgstr "Minimum {0} received after slippage"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
 msgstr "Liquidation value"
@@ -1997,7 +1997,7 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 msgid "Addresses"
 msgstr "Addresses"
 
-#: src/components/transactions/Switch/SwitchModal.tsx
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Network costs"
 msgstr "Network costs"
 
@@ -2330,10 +2330,6 @@ msgstr "Zero address not valid"
 msgid "Version 3"
 msgstr "Version 3"
 
-#: src/components/transactions/Switch/SwitchModal.tsx
-msgid "Minimum USD value received after slippage"
-msgstr "Minimum USD value received after slippage"
-
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "You may borrow up to <0/> GHO at <1/> (max discount)"
 msgstr "You may borrow up to <0/> GHO at <1/> (max discount)"
@@ -2354,6 +2350,10 @@ msgstr "Representing smart contract wallet (ie. Safe) addresses on other chains.
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid ".CSV"
 msgstr ".CSV"
+
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+msgid "This is the cost of settling your order on-chain, including gas and any LP fees."
+msgstr "This is the cost of settling your order on-chain, including gas and any LP fees."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -2377,7 +2377,6 @@ msgstr "The % of your total borrowing power used. This is based on the amount of
 #: src/components/transactions/Bridge/BridgeAmount.tsx
 #: src/components/transactions/Bridge/BridgeAmount.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
-#: src/components/transactions/Switch/SwitchModal.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Amount"
@@ -2606,10 +2605,6 @@ msgstr "We couldn't find any transactions related to your search. Try again with
 msgid "English"
 msgstr "English"
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "This action does not require gas."
-msgstr "This action does not require gas."
-
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
@@ -2818,6 +2813,10 @@ msgstr "Nothing found"
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Signatures ready"
 msgstr "Signatures ready"
+
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+msgid "Fees are applied to ensure the best experience with Aave."
+msgstr "Fees are applied to ensure the best experience with Aave."
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Go to Balancer Pool"
