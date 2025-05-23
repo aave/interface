@@ -203,20 +203,25 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       offset: skip,
     });
 
-    return orders
-      .filter((order) => {
-        try {
-          const appData = JSON.parse(order.fullAppData ?? '{}');
-          const appCode = appData.appCode;
-          if (appCode == HEADER_WIDGET_APP_CODE || appCode == ADAPTER_APP_CODE) {
-            return true;
-          }
-        } catch (error) {
-          console.error('Error parsing app data:', error);
-        }
+    const filteredCowAaveOrders = (
+      await Promise.all(
+        orders.map(async (order) => {
+          try {
+            const appData = JSON.parse(order.fullAppData ?? '{}');
+            const appCode = appData.appCode;
 
-        return false;
-      })
+            if (appCode == HEADER_WIDGET_APP_CODE || appCode == ADAPTER_APP_CODE) {
+              return order;
+            }
+          } catch (error) {
+            console.error('Error parsing app data:', error);
+          }
+          return null;
+        })
+      )
+    ).filter((order) => order !== null);
+
+    return filteredCowAaveOrders
       .map<TransactionHistoryItemUnion | null>((order) => {
         const srcToken = TOKEN_LIST.tokens.find(
           (token) =>

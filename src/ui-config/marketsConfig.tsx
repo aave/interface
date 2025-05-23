@@ -738,3 +738,7 @@ export const marketsData: {
     },
   },
 } as const;
+
+export const findByChainId = (chainId: ChainId) => {
+  return Object.values(marketsData).find((market) => market.chainId === chainId);
+};

@@ -9,12 +9,19 @@ import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
 import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
 import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
+import { networkConfigs } from 'src/ui-config/networksConfig';
 import { parseUnits } from 'viem';
 
 import { BaseCancelledView } from '../FlowCommons/BaseCancelled';
 import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 import { BaseWaitingView } from '../FlowCommons/BaseWaiting';
-import { getOrder, isOrderCancelled, isOrderFilled, isOrderLoading } from './cowprotocol.helpers';
+import {
+  getOrder,
+  isNativeToken,
+  isOrderCancelled,
+  isOrderFilled,
+  isOrderLoading,
+} from './cowprotocol.helpers';
 import { SwitchProvider } from './switch.types';
 
 export type SwitchTxSuccessViewProps = {
@@ -76,18 +83,24 @@ export const SwitchTxSuccessView = ({
   destDecimals,
 }: SwitchTxSuccessViewProps) => {
   const switchProvider = useSwitchProvider({ chainId: chainId });
-  const { trackOrder } = useCowOrderToast();
+  const { trackOrder, setHasActiveOrders } = useCowOrderToast();
 
   // Do polling each 10 seconds until the order get's filled
   const [orderStatus, setOrderStatus] = useState<'succeed' | 'failed' | 'open'>('open');
   const [surplus, setSurplus] = useState<bigint | undefined>(undefined);
 
+  // Market for chain id
+  const networkConfig = networkConfigs[chainId].explorerLink;
+
   // Start tracking the order when the component mounts
   useEffect(() => {
     if (switchProvider === 'cowprotocol' && txHashOrOrderId) {
       trackOrder(txHashOrOrderId, chainId);
+    } else if (orderStatus === 'open') {
+      // If the order is open, force the spinner to show, waiting for order details e.g. eth flow
+      setHasActiveOrders(true);
     }
-  }, [txHashOrOrderId, chainId, switchProvider, trackOrder]);
+  }, [txHashOrOrderId, chainId, switchProvider, trackOrder, setHasActiveOrders]);
 
   // Poll the order status for UI updates
   useEffect(() => {
@@ -136,7 +149,7 @@ export const SwitchTxSuccessView = ({
       ? `https://explorer.cow.fi/${
           chainId == 1 ? '' : ChainIdToNetwork[chainId] + '/'
         }orders/${txHashOrOrderId}`
-      : undefined;
+      : `${networkConfig}/tx/${txHashOrOrderId}`;
   }, [provider, chainId, txHashOrOrderId]);
 
   const customExplorerLinkText = useMemo(() => {
@@ -183,7 +196,12 @@ export const SwitchTxSuccessView = ({
         }}
       >
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <Typography color="text.secondary">Sent</Typography>
+          <Typography color="text.secondary">
+            {provider == 'cowprotocol' &&
+            ((orderStatus == 'open' && !isNativeToken(symbol)) || orderStatus == 'failed')
+              ? 'Send'
+              : 'Sent'}
+          </Typography>
           <Box display="flex" alignItems="center" gap={1}>
             <ExternalTokenIcon symbol={iconSymbol} logoURI={iconUri} sx={{ fontSize: 20 }} />
             <Typography fontWeight={600}>
@@ -199,7 +217,11 @@ export const SwitchTxSuccessView = ({
         </Box>
         <Divider sx={{ my: 1 }} />
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
-          <Typography color="text.secondary">Received</Typography>
+          <Typography color="text.secondary">
+            {provider == 'cowprotocol' && (orderStatus == 'open' || orderStatus == 'failed')
+              ? 'Receive'
+              : 'Received'}
+          </Typography>
           <Box display="flex" alignItems="center" gap={1}>
             <ExternalTokenIcon symbol={outIconSymbol} logoURI={outIconUri} sx={{ fontSize: 20 }} />
             <Typography fontWeight={600}>

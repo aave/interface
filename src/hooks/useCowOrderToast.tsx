@@ -1,4 +1,5 @@
 import { ChainIdToNetwork } from '@aave/contract-helpers';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   createContext,
   PropsWithChildren,
@@ -15,6 +16,7 @@ import {
   isOrderLoading,
 } from 'src/components/transactions/Switch/cowprotocol.helpers';
 import { ActionFields, TransactionHistoryItemUnion } from 'src/modules/history/types';
+import { queryKeysFactory } from 'src/ui-config/queries';
 
 import { useTransactionHistory } from './useTransactionHistory';
 
@@ -28,6 +30,7 @@ interface CowOrderToastContextType {
   trackOrder: (orderId: string, chainId: number) => void;
   stopTracking: (orderId: string) => void;
   hasActiveOrders: boolean;
+  setHasActiveOrders: (hasActiveOrders: boolean) => void;
   activeOrdersCount: number;
 }
 
@@ -37,8 +40,13 @@ const CowOrderToastContext = createContext<CowOrderToastContextType>(
 
 export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [activeOrders, setActiveOrders] = useState<Map<string, OrderDetails>>(new Map());
-
   const { data: transactions } = useTransactionHistory({ isFilterActive: false });
+  const [hasActiveOrders, setHasActiveOrders] = useState(false);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setHasActiveOrders(activeOrders.size > 0);
+  }, [activeOrders]);
 
   // Load orders from transaction history (e.g. on page load)
   useEffect(() => {
@@ -65,6 +73,8 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
       }
       return prev;
     });
+
+    queryClient.invalidateQueries({ queryKey: queryKeysFactory.transactionHistory });
   }, []);
 
   const trackOrder = useCallback(
@@ -126,7 +136,8 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
       value={{
         trackOrder,
         stopTracking,
-        hasActiveOrders: activeOrders.size > 0,
+        hasActiveOrders,
+        setHasActiveOrders,
         activeOrdersCount: activeOrders.size,
       }}
     >
