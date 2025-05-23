@@ -18,6 +18,7 @@ import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
+import { findByChainId } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
@@ -429,7 +430,10 @@ export const BaseSwitchModalContent = ({
           <Typography variant="caption">
             You have open orders for {cowOpenOrdersTotalAmountFormatted} {selectedInputToken.symbol}
             . <br /> Track them in your{' '}
-            <Link target="_blank" href="/history">
+            <Link
+              target="_blank"
+              href={`/history?marketName=${findByChainId(selectedChainId)?.market}`}
+            >
               transaction history
             </Link>
           </Typography>

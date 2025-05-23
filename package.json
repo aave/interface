@@ -73,6 +73,7 @@
     "graphql-request": "^6.1.0",
     "gray-matter": "^4.0.3",
     "immer": "^9.0.15",
+    "json-stringify-deterministic": "^1.0.12",
     "micro-memoize": "^4.1.2",
     "next": "12.3.4",
     "react": "^18.0.0",

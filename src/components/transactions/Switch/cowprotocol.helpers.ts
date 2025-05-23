@@ -362,3 +362,9 @@ export const getRecommendedSlippage = (srcUSD: string) => {
     return Number(0.5);
   }
 };
+
+export const uploadAppData = async (orderId: string, appDataHex: string, chainId: number) => {
+  const orderBookApi = new OrderBookApi({ chainId });
+
+  return orderBookApi.uploadAppData(orderId, appDataHex);
+};
