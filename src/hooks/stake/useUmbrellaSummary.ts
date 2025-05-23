@@ -92,6 +92,8 @@ export interface FormattedStakeData {
   symbol: string;
 }
 
+const APY_PRECISION = 4;
+
 const formatStakeData = (
   stakeData: StakeData[],
   reserves: FormattedReservesAndIncentives[]
@@ -280,7 +282,7 @@ const formatUmbrellaSummary = (
           rewardToken: reward.rewardAddress,
           rewardTokenSymbol: aToken ? reserve.symbol : rewardData.rewardSymbol,
           rewardTokenName: aToken ? `a${reserve.symbol}` : rewardData.rewardName,
-          apy: normalize(rewardData.apy, 18),
+          apy: normalize(rewardData.apy, APY_PRECISION),
           aToken,
         };
       }),
@@ -322,7 +324,7 @@ const getTotalStakeRewardApy = (
 ): string => {
   const totalRewardApy = normalizeBN(
     stakeData.rewards.reduce((acc, reward) => acc.plus(reward.apy), valueToBigNumber('0')),
-    18
+    APY_PRECISION
   );
   if (stakeData.underlyingIsStataToken) {
     if (!reserve) {
