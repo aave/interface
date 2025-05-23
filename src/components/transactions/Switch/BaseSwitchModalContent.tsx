@@ -515,6 +515,7 @@ export const BaseSwitchModalContent = ({
               onSelect={handleSelectedOutputToken}
               disableInput={true}
               selectedAsset={selectedOutputToken}
+              showBalance={false}
             />
           </Box>
           {switchRates && (
@@ -523,6 +524,7 @@ export const BaseSwitchModalContent = ({
                 rates={switchRates}
                 srcSymbol={selectedInputToken.symbol}
                 destSymbol={selectedOutputToken.symbol}
+                showPriceImpact={!isCowProtocolRates(switchRates)}
               />
             </>
           )}

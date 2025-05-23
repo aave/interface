@@ -1,8 +1,9 @@
 import { OrderKind, QuoteAndPost, TradingSdk } from '@cowprotocol/cow-sdk';
 import { BigNumber } from 'bignumber.js';
 import {
-  APP_CODE,
   COW_APP_DATA,
+  COW_PARTNER_FEE,
+  HEADER_WIDGET_APP_CODE,
   isNativeToken,
 } from 'src/components/transactions/Switch/cowprotocol.helpers';
 import {
@@ -68,7 +69,8 @@ export async function getCowProtocolSellRates({
             buyToken: destTokenWrapped,
             buyTokenDecimals: destDecimals,
             signer,
-            appCode: APP_CODE,
+            appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
+            partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
           },
           {
             appData: COW_APP_DATA(inputSymbol, outputSymbol),

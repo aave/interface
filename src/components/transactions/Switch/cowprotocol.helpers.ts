@@ -1,5 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { MetadataApi } from '@cowprotocol/app-data';
+import { PartnerFee } from '@cowprotocol/app-data/dist/generatedTypes/v1.3.0';
 import {
   AppDataRootSchema,
   BuyTokenDestination,
@@ -72,19 +73,24 @@ const cowSymbolGroup = (symbol: string): keyof typeof TOKEN_GROUPS | 'unknown' =
   return 'unknown';
 };
 
-export const APP_CODE = 'AaveV3';
+export const HEADER_WIDGET_APP_CODE = 'aave-v3-interface-widget';
+export const ADAPTER_APP_CODE = 'aave-v3-interface-aps'; // Use this one for contract adapters so we have different dashboards
+export const COW_PARTNER_FEE: (tokenFromSymbol: string, tokenToSymbol: string) => PartnerFee = (
+  tokenFromSymbol: string,
+  tokenToSymbol: string
+) => ({
+  bps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
+  recipient: COW_EVM_RECIPIENT,
+});
 export const COW_APP_DATA: (tokenFromSymbol: string, tokenToSymbol: string) => AppDataRootSchema = (
   tokenFromSymbol: string,
   tokenToSymbol: string
 ) => {
   return {
-    appCode: APP_CODE,
+    appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
     version: '1.3.0',
     metadata: {
-      partnerFee: {
-        bps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
-        recipient: COW_EVM_RECIPIENT,
-      },
+      partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol),
     },
   };
 };
@@ -126,7 +132,7 @@ export const getPreSignTransaction = async ({
     throw new Error('No signer found in provider');
   }
 
-  const tradingSdk = new TradingSdk({ chainId, signer, appCode: APP_CODE });
+  const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
 
   const isSmartContract = await isSmartContractWallet(user, provider);
   if (!isSmartContract) {
@@ -152,16 +158,15 @@ export const getPreSignTransaction = async ({
     }
   );
 
-  console.log('orderResult', orderResult);
-
   const preSignTransaction = await tradingSdk.getPreSignTransaction({
     orderId: orderResult.orderId,
     account: user as `0x${string}`,
   });
 
-  console.log('preSignTransaction', preSignTransaction);
-
-  return preSignTransaction;
+  return {
+    ...preSignTransaction,
+    orderId: orderResult.orderId,
+  };
 };
 
 // Only for EOA wallets
@@ -179,7 +184,7 @@ export const sendOrder = async ({
   outputSymbol,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
-  const tradingSdk = new TradingSdk({ chainId, signer, appCode: APP_CODE });
+  const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
 
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
