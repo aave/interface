@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { DASHBOARD } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';

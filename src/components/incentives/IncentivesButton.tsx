@@ -9,7 +9,7 @@ import { usePointsIncentives } from 'src/hooks/usePointsIncentives';
 import { useSimpleExternalIncentives } from 'src/hooks/useSimpleExternalIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { DASHBOARD } from 'src/utils/events';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
