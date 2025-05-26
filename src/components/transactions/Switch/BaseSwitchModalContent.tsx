@@ -335,6 +335,8 @@ export const BaseSwitchModalContent = ({
       selectedInputToken &&
       selectedOutputToken
     ) {
+      setCowOpenOrdersTotalAmountFormatted(undefined);
+
       getOrders(selectedChainId, user).then((orders) => {
         const cowOpenOrdersTotalAmount = orders
           .filter(
@@ -352,6 +354,8 @@ export const BaseSwitchModalContent = ({
           setCowOpenOrdersTotalAmountFormatted(undefined);
         }
       });
+    } else {
+      setCowOpenOrdersTotalAmountFormatted(undefined);
     }
   }, [selectedInputToken, selectedOutputToken, switchProvider, selectedChainId, user]);
 
