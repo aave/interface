@@ -16,7 +16,10 @@ import {
   isOrderLoading,
 } from 'src/components/transactions/Switch/cowprotocol.helpers';
 import { ActionFields, TransactionHistoryItemUnion } from 'src/modules/history/types';
+import { useRootStore } from 'src/store/root';
+import { findByChainId } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
 import { useTransactionHistory } from './useTransactionHistory';
 
@@ -43,6 +46,12 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
   const { data: transactions } = useTransactionHistory({ isFilterActive: false });
   const [hasActiveOrders, setHasActiveOrders] = useState(false);
   const queryClient = useQueryClient();
+  const { account, currentMarketData } = useRootStore(
+    useShallow((store) => ({
+      account: store.account,
+      currentMarketData: store.currentMarketData,
+    }))
+  );
 
   useEffect(() => {
     setHasActiveOrders(activeOrders.size > 0);
@@ -62,20 +71,29 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
     }
   }, [transactions?.pages[0]]);
 
-  const stopTracking = useCallback((orderId: string) => {
-    setActiveOrders((prev) => {
-      const order = prev.get(orderId);
-      if (order) {
-        clearInterval(order.interval);
-        const newMap = new Map(prev);
-        newMap.delete(orderId);
-        return newMap;
-      }
-      return prev;
-    });
+  const stopTracking = useCallback(
+    (orderId: string) => {
+      setActiveOrders((prev) => {
+        const order = prev.get(orderId);
+        if (order) {
+          clearInterval(order.interval);
+          const newMap = new Map(prev);
+          newMap.delete(orderId);
 
-    queryClient.invalidateQueries({ queryKey: queryKeysFactory.transactionHistory });
-  }, [queryClient]);
+          queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.transactionHistory(
+              account,
+              findByChainId(order.chainId) ?? currentMarketData
+            ),
+          });
+          return newMap;
+        }
+
+        return prev;
+      });
+    },
+    [queryClient, account, currentMarketData]
+  );
 
   const trackOrder = useCallback(
     (orderId: string, chainId: number) => {
