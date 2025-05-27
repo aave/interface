@@ -6,8 +6,8 @@ import React, { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/events';
 import { NetworkConfig } from 'src/ui-config/networksConfig';
+import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
