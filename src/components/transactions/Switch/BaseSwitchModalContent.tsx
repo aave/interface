@@ -131,7 +131,7 @@ export const BaseSwitchModalContent = ({
   const [showGasStation, setShowGasStation] = useState(switchProvider == 'paraswap');
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
-  const slippageValidation = validateSlippage(slippage);
+  const slippageValidation = validateSlippage(slippage, switchProvider);
   const safeSlippage =
     slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
       ? 0
@@ -376,6 +376,7 @@ export const BaseSwitchModalContent = ({
         provider={switchProvider ?? 'paraswap'}
         chainId={selectedChainId}
         destDecimals={selectedOutputToken.decimals}
+        srcDecimals={selectedInputToken.decimals}
         outAmount={(
           Number(normalize(switchRates.destAmount, switchRates.destDecimals)) *
           (1 - safeSlippage)

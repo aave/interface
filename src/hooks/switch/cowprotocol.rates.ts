@@ -1,15 +1,16 @@
-import { OrderKind, QuoteAndPost, TradingSdk } from '@cowprotocol/cow-sdk';
+import {
+  OrderKind,
+  QuoteAndPost,
+  TradingSdk,
+  WRAPPED_NATIVE_CURRENCIES,
+} from '@cowprotocol/cow-sdk';
 import { BigNumber } from 'bignumber.js';
 import {
-  COW_APP_DATA,
   COW_PARTNER_FEE,
   HEADER_WIDGET_APP_CODE,
   isNativeToken,
 } from 'src/components/transactions/Switch/cowprotocol.helpers';
-import {
-  isChainIdSupportedByCoWProtocol,
-  WrappedNativeTokens,
-} from 'src/components/transactions/Switch/switch.constants';
+import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
 import { SwitchParams, SwitchRatesType } from 'src/components/transactions/Switch/switch.types';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
@@ -42,12 +43,12 @@ export async function getCowProtocolSellRates({
     // If srcToken is native, we need to use the wrapped token for the quote
     let srcTokenWrapped = srcToken;
     if (isNativeToken(srcToken)) {
-      srcTokenWrapped = WrappedNativeTokens[chainId];
+      srcTokenWrapped = WRAPPED_NATIVE_CURRENCIES[chainId].address;
     }
 
     let destTokenWrapped = destToken;
     if (isNativeToken(destToken)) {
-      destTokenWrapped = WrappedNativeTokens[chainId];
+      destTokenWrapped = WRAPPED_NATIVE_CURRENCIES[chainId].address;
     }
 
     const provider = await getEthersProvider(wagmiConfig, { chainId });
@@ -59,35 +60,30 @@ export async function getCowProtocolSellRates({
 
     [orderBookQuote, srcTokenPriceUsd, destTokenPriceUsd] = await Promise.all([
       tradingSdk
-        .getQuote(
-          {
-            owner: user as `0x${string}`,
-            kind: OrderKind.SELL,
-            amount,
-            sellToken: srcTokenWrapped,
-            sellTokenDecimals: srcDecimals,
-            buyToken: destTokenWrapped,
-            buyTokenDecimals: destDecimals,
-            signer,
-            appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
-            partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
-          },
-          {
-            appData: COW_APP_DATA(inputSymbol, outputSymbol),
-          }
-        )
+        .getQuote({
+          owner: user as `0x${string}`,
+          kind: OrderKind.SELL,
+          amount,
+          sellToken: srcTokenWrapped,
+          sellTokenDecimals: srcDecimals,
+          buyToken: destTokenWrapped,
+          buyTokenDecimals: destDecimals,
+          signer,
+          appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
+          partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
+        })
         .catch((cowError) => {
           console.error(cowError);
-          throw new Error(cowError.body.errorType);
+          throw new Error(cowError?.body?.errorType);
         }),
       // CoW Quote doesn't return values in USD, so we need to fetch the price from the API separately
       cowProtocolPricesService.getTokenUsdPrice(chainId, srcTokenWrapped).catch((cowError) => {
         console.error(cowError);
-        throw new Error(cowError.body.errorType);
+        throw new Error(cowError?.body?.errorType);
       }),
       cowProtocolPricesService.getTokenUsdPrice(chainId, destTokenWrapped).catch((cowError) => {
         console.error(cowError);
-        throw new Error(cowError.body.errorType);
+        throw new Error(cowError?.body?.errorType);
       }),
     ]);
 
@@ -120,7 +116,7 @@ export async function getCowProtocolSellRates({
   );
   const destAmountInUsd = BigNumber(destTokenPriceUsd).multipliedBy(
     BigNumber(
-      orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString()
+      orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString()
     ).dividedBy(10 ** destDecimals)
   );
 
@@ -136,7 +132,7 @@ export async function getCowProtocolSellRates({
     throw new Error('No suggested slippage found');
   }
 
-  if (!orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount) {
+  if (!orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount) {
     console.error('No buy amount found');
     const error = getErrorTextFromError(
       new Error('No buy amount found'),
@@ -155,7 +151,7 @@ export async function getCowProtocolSellRates({
     srcDecimals,
     destToken,
     destUSD: destAmountInUsd.toString(),
-    destAmount: orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString(),
+    destAmount: orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString(),
     destDecimals,
     provider: 'cowprotocol',
     order: orderBookQuote.quoteResults.orderToSign,

@@ -14,12 +14,13 @@ import {
   SupportedChainId,
   TradingSdk,
   UnsignedOrder,
+  WRAPPED_NATIVE_CURRENCIES,
 } from '@cowprotocol/cow-sdk';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
 import { isSmartContractWallet } from 'src/helpers/provider';
 
-import { isChainIdSupportedByCoWProtocol, WrappedNativeTokens } from './switch.constants';
+import { isChainIdSupportedByCoWProtocol } from './switch.constants';
 
 export const COW_EVM_RECIPIENT = '0xC542C2F197c4939154017c802B0583C596438380';
 // export const COW_LENS_RECIPIENT = '0xce4eB8a1f6Bd0e0B9282102DC056B11E9D83b7CA';
@@ -283,7 +284,7 @@ export const getUnsignerOrder = async (
     validTo: MAX_VALID_TO_EPOCH,
     partiallyFillable: false,
     kind: OrderKind.SELL,
-    sellToken: WrappedNativeTokens[chainId as SupportedChainId].toLowerCase(),
+    sellToken: WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId].address.toLowerCase(),
     buyTokenBalance: BuyTokenDestination.ERC20,
     sellTokenBalance: SellTokenSource.ERC20,
   };

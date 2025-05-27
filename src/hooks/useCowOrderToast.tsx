@@ -6,6 +6,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { toast } from 'sonner';
@@ -43,6 +44,7 @@ const CowOrderToastContext = createContext<CowOrderToastContextType>(
 
 export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [activeOrders, setActiveOrders] = useState<Map<string, OrderDetails>>(new Map());
+  const processedOrdersRef = useRef<Set<string>>(new Set());
   const { data: transactions } = useTransactionHistory({ isFilterActive: false });
   const [hasActiveOrders, setHasActiveOrders] = useState(false);
   const queryClient = useQueryClient();
@@ -86,6 +88,11 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
               findByChainId(order.chainId) ?? currentMarketData
             ),
           });
+
+          if (newMap.size === 0) {
+            setHasActiveOrders(false);
+          }
+
           return newMap;
         }
 
@@ -105,7 +112,8 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
         try {
           const order = await getOrder(orderId, chainId);
 
-          if (isOrderFilled(order.status)) {
+          if (isOrderFilled(order.status) && !processedOrdersRef.current.has(orderId)) {
+            processedOrdersRef.current.add(orderId);
             toast.success('Swap completed successfully.', {
               action: {
                 label: 'View',
@@ -119,7 +127,8 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
               },
             });
             stopTracking(orderId);
-          } else if (isOrderCancelled(order.status)) {
+          } else if (isOrderCancelled(order.status) && !processedOrdersRef.current.has(orderId)) {
+            processedOrdersRef.current.add(orderId);
             toast.error('Swap could not be completed.', {
               action: {
                 label: 'View',
@@ -145,6 +154,8 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
         newMap.set(orderId, { orderId, chainId, interval });
         return newMap;
       });
+
+      setHasActiveOrders(true);
     },
     [stopTracking]
   );

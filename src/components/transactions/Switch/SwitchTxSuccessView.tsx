@@ -37,6 +37,7 @@ export type SwitchTxSuccessViewProps = {
   provider: SwitchProvider;
   chainId: number;
   destDecimals: number;
+  srcDecimals: number;
 };
 
 export const SwitchWithSurplusTooltip = ({
@@ -81,6 +82,7 @@ export const SwitchTxSuccessView = ({
   provider,
   chainId,
   destDecimals,
+  srcDecimals,
 }: SwitchTxSuccessViewProps) => {
   const switchProvider = useSwitchProvider({ chainId: chainId });
   const { trackOrder, setHasActiveOrders } = useCowOrderToast();
@@ -88,6 +90,8 @@ export const SwitchTxSuccessView = ({
   // Do polling each 10 seconds until the order get's filled
   const [orderStatus, setOrderStatus] = useState<'succeed' | 'failed' | 'open'>('open');
   const [surplus, setSurplus] = useState<bigint | undefined>(undefined);
+  const [inAmount, setInAmount] = useState<string>(amount);
+  const [outFinalAmount, setOutFinalAmount] = useState<string>(outAmount);
 
   // Market for chain id
   const networkConfig = networkConfigs[chainId].explorerLink;
@@ -96,7 +100,7 @@ export const SwitchTxSuccessView = ({
   useEffect(() => {
     if (switchProvider === 'cowprotocol' && txHashOrOrderId) {
       trackOrder(txHashOrOrderId, chainId);
-    } else if (orderStatus === 'open') {
+    } else if (switchProvider === 'cowprotocol' && orderStatus === 'open') {
       // If the order is open, force the spinner to show, waiting for order details e.g. eth flow
       setHasActiveOrders(true);
     }
@@ -112,9 +116,11 @@ export const SwitchTxSuccessView = ({
               setOrderStatus('succeed');
               setSurplus(
                 BigNumber.from(order.executedBuyAmount)
-                  .sub(BigNumber.from(parseUnits(outAmount, destDecimals)))
+                  .sub(BigNumber.from(parseUnits(outFinalAmount, destDecimals)))
                   .toBigInt()
               );
+              setOutFinalAmount(normalize(order.executedBuyAmount, destDecimals));
+              setInAmount(normalize(order.executedSellAmount, srcDecimals));
             } else if (isOrderCancelled(order.status)) {
               setOrderStatus('failed');
             } else if (isOrderLoading(order.status)) {
@@ -126,7 +132,7 @@ export const SwitchTxSuccessView = ({
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [txHashOrOrderId, chainId, switchProvider, outAmount, destDecimals]);
+  }, [txHashOrOrderId, chainId, switchProvider, outFinalAmount, destDecimals]);
 
   const View = useMemo(() => {
     if (provider === 'cowprotocol' && orderStatus === 'open') {
@@ -216,9 +222,9 @@ export const SwitchTxSuccessView = ({
           <Box display="flex" alignItems="center" gap={1}>
             <ExternalTokenIcon symbol={iconSymbol} logoURI={iconUri} sx={{ fontSize: 20 }} />
             <Typography fontWeight={600}>
-              {Number(amount).toLocaleString(undefined, {
+              {Number(inAmount).toLocaleString(undefined, {
                 minimumFractionDigits: 2,
-                maximumFractionDigits: 4,
+                maximumFractionDigits: Number(inAmount) < 0.01 ? 4 : 2,
               })}{' '}
             </Typography>
             <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
@@ -236,9 +242,9 @@ export const SwitchTxSuccessView = ({
           <Box display="flex" alignItems="center" gap={1}>
             <ExternalTokenIcon symbol={outIconSymbol} logoURI={outIconUri} sx={{ fontSize: 20 }} />
             <Typography fontWeight={600}>
-              {Number(outAmount).toLocaleString(undefined, {
+              {Number(outFinalAmount).toLocaleString(undefined, {
                 minimumFractionDigits: 2,
-                maximumFractionDigits: 4,
+                maximumFractionDigits: Number(outFinalAmount) < 0.01 ? 4 : 2,
               })}
             </Typography>
             <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>

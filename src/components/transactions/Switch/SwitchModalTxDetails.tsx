@@ -266,10 +266,12 @@ const MarketOrderTxDetails = ({
               sx={{ mr: 2, ml: 4, fontSize: '16px' }}
             />
             <FormattedNumber
-              value={
-                Number(normalize(switchRates.destAmount, switchRates.destDecimals)) *
-                (1 - safeSlippage)
-              }
+              value={Number(
+                normalize(
+                  Number(switchRates.destAmount) * (1 - safeSlippage),
+                  switchRates.destDecimals
+                )
+              )}
               variant="secondary14"
               compact
             />

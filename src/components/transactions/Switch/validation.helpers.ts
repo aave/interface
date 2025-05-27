@@ -1,3 +1,5 @@
+import { SwitchProvider } from './switch.types';
+
 export enum ValidationSeverity {
   ERROR = 'error',
   WARNING = 'warning',
@@ -8,8 +10,15 @@ export interface ValidationData {
   severity: ValidationSeverity;
 }
 
-export const validateSlippage = (slippage: string): ValidationData | undefined => {
+export const validateSlippage = (
+  slippage: string,
+  provider?: SwitchProvider
+): ValidationData | undefined => {
   try {
+    if (provider === 'cowprotocol') {
+      return undefined;
+    }
+
     const numberSlippage = Number(slippage);
     if (Number.isNaN(numberSlippage))
       return {
