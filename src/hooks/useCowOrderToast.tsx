@@ -75,7 +75,7 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
     });
 
     queryClient.invalidateQueries({ queryKey: queryKeysFactory.transactionHistory });
-  }, []);
+  }, [queryClient]);
 
   const trackOrder = useCallback(
     (orderId: string, chainId: number) => {

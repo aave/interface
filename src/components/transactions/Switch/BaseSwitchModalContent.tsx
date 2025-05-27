@@ -241,12 +241,8 @@ export const BaseSwitchModalContent = ({
     let auxInputToken = forcedDefaultInputToken;
     let auxOutputToken = forcedDefaultOutputToken;
 
-    console.log('baseTokenList', baseTokenList);
-
     const fromList = baseTokenList || filteredTokens;
     const toList = baseTokenList || filteredTokens;
-
-    console.log('aux', auxInputToken, auxOutputToken);
 
     if (!auxInputToken) {
       auxInputToken = fromList.find(
@@ -257,8 +253,6 @@ export const BaseSwitchModalContent = ({
     if (!auxOutputToken) {
       auxOutputToken = toList.find((token) => token.symbol == 'GHO');
     }
-
-    console.log('default', auxInputToken, auxOutputToken);
 
     return {
       defaultInputToken: auxInputToken ?? fromList[0],

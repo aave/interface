@@ -18,7 +18,6 @@ export const SwitchModalTxDetails = ({
   safeSlippage,
   gasLimit,
   selectedChainId,
-  showGasStation,
 }: {
   switchRates: SwitchRatesType;
   selectedOutputToken: TokenInfoWithBalance;
@@ -28,7 +27,11 @@ export const SwitchModalTxDetails = ({
   showGasStation: boolean | undefined;
 }) => {
   return (
-    <TxModalDetails gasLimit={gasLimit} chainId={selectedChainId} showGasStation={showGasStation}>
+    <TxModalDetails
+      gasLimit={gasLimit}
+      chainId={selectedChainId}
+      showGasStation={switchRates.provider !== 'cowprotocol'}
+    >
       {switchRates.provider === 'cowprotocol' ? (
         <IntentTxDetails
           switchRates={switchRates}
