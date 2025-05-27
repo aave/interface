@@ -16,8 +16,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { timeMessage } from '../../../helpers/timeHelper';
 import { Link } from '../../primitives/Link';

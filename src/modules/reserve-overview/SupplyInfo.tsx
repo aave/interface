@@ -16,8 +16,8 @@ import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
+import { GENERAL } from 'src/utils/events';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { PanelItem } from './ReservePanels';

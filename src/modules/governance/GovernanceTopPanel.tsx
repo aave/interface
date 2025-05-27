@@ -6,7 +6,7 @@ import * as React from 'react';
 import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 

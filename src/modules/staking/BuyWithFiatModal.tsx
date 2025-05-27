@@ -5,7 +5,7 @@ import { BasicModal } from 'src/components/primitives/BasicModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { onRampServices } from 'src/ui-config/onRampServicesConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 type BuyWithFiatModalProps = {

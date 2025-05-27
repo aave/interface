@@ -12,8 +12,8 @@ import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';

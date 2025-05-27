@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { SecondsToString } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { Link } from '../primitives/Link';
 import { Warning } from '../primitives/Warning';

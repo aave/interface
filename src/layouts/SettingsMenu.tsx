@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { DEFAULT_LOCALE } from 'src/libs/LanguageProvider';
 import { useRootStore } from 'src/store/root';
+import { SETTINGS } from 'src/utils/events';
 import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
-import { SETTINGS } from 'src/utils/mixPanelEvents';
 
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';

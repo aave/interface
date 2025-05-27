@@ -4,7 +4,7 @@ import { Button, SvgIcon } from '@mui/material';
 import { useState } from 'react';
 import { useCryptoBuyAvailable } from 'src/hooks/useCryptoBuyAvailable';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { BuyWithFiatModal } from './BuyWithFiatModal';
 

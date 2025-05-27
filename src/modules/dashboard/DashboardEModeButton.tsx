@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { DASHBOARD, GENERAL } from 'src/utils/mixPanelEvents';
+import { DASHBOARD, GENERAL } from 'src/utils/events';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 

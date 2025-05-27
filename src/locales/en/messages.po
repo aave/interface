@@ -473,7 +473,6 @@ msgstr "APY, borrow rate"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-#: src/modules/umbrella/StakingApyItem.tsx
 msgid "APR"
 msgstr "APR"
 
@@ -872,6 +871,10 @@ msgstr "Aave per month"
 msgid "Collateralization"
 msgstr "Collateralization"
 
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Umbrella is the upgraded version of the Safety Module. You can still manage your existing staked assets"
+msgstr "Umbrella is the upgraded version of the Safety Module. You can still manage your existing staked assets"
+
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
 msgstr "You can report incident to our <0>Discord</0> or<1>Github</1>."
@@ -938,10 +941,6 @@ msgstr "Legacy Markets"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Learn more."
 msgstr "Learn more."
-
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "Users can stake their assets in the protocol and earn incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "Users can stake their assets in the protocol and earn incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationList.tsx
@@ -1225,7 +1224,6 @@ msgstr "Wrong Network"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
-#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Staking"
 msgstr "Staking"
 
@@ -1893,6 +1891,7 @@ msgstr "Amount to Bridge"
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
+#: src/modules/umbrella/UmbrellaHeader.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Umbrella"
 msgstr "Umbrella"
@@ -2188,6 +2187,10 @@ msgstr "Available"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "You did not participate in this proposal"
+
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Umbrella lets you earn rewards by staking your Aave aTokens or underlying assets. If a deficit occurs, the staked assets will be used to cover it."
+msgstr "Umbrella lets you earn rewards by staking your Aave aTokens or underlying assets. If a deficit occurs, the staked assets will be used to cover it."
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -2549,7 +2552,6 @@ msgid "Borrowable"
 msgstr "Borrowable"
 
 #: src/modules/staking/StakingHeader.tsx
-#: src/ui-config/menu-items/index.tsx
 msgid "Safety Module"
 msgstr "Safety Module"
 
@@ -2651,6 +2653,10 @@ msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to a
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
 msgstr "View"
+
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "here."
+msgstr "here."
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
@@ -3118,6 +3124,7 @@ msgstr "Selected supply assets"
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+#: src/modules/umbrella/StakingApyItem.tsx
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "APY"
 msgstr "APY"
