@@ -25,6 +25,7 @@ import { findByChainId } from 'src/ui-config/marketsConfig';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
@@ -89,6 +90,7 @@ export const SwitchActions = ({
     generateSignatureRequest,
     addTransaction,
     currentMarketData,
+    trackEvent,
   ] = useRootStore(
     useShallow((state) => [
       state.account,
@@ -98,6 +100,7 @@ export const SwitchActions = ({
       state.generateSignatureRequest,
       state.addTransaction,
       state.currentMarketData,
+      state.trackEvent,
     ])
   );
 
@@ -375,6 +378,17 @@ export const SwitchActions = ({
       setTxError(
         getErrorTextFromError(new Error('No sell rates found'), TxAction.MAIN_ACTION, true)
       );
+    }
+
+    try {
+      trackEvent(GENERAL.SWAP, {
+        chainId,
+        inputSymbol,
+        outputSymbol,
+        pair: `${inputSymbol}-${outputSymbol}`,
+      });
+    } catch (error) {
+      console.error(error);
     }
 
     // Invalidate the pool tokens query to refresh the data
