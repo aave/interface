@@ -29,7 +29,7 @@ jobs:
 
       - name: Upload to Infura IPFS
         id: infura-upload
-        uses: aquiladev/ipfs-action@c5b4a22751adea08b2f035fd6a94d2d66c163e2a
+        uses: aquiladev/ipfs-action@master
         with:
           path: ${{ matrix.environment.build_path }}
           service: infura
