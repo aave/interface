@@ -27,16 +27,14 @@ jobs:
           name: ${{ matrix.environment.artifact }}
           path: ${{ matrix.environment.build_path }}
 
-      - name: Pin to primary IPFS server
-        id: ipfs-primary
-        uses: ./.github/actions/ipfs-pin
+      - name: Upload to Infura IPFS
+        id: infura-upload
+        uses: aquiladev/ipfs-action@c5b4a22751adea08b2f035fd6a94d2d66c163e2a
         with:
-          DOMAIN: ${{ matrix.environment.domain }}
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
-          BUILD_PATH: ${{ matrix.environment.build_path }}
-          PINATA_HASH: ${{ inputs.PINATA_HASH }}
+          path: ${{ matrix.environment.build_path }}
+          service: infura
+          infuraProjectId: ${{ secrets.INFURA_PROJECT_ID }}
+          infuraProjectSecret: ${{ secrets.INFURA_PROJECT_SECRET }}
 
       - name: prepare release
         run: |

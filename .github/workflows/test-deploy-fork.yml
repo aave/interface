@@ -136,14 +136,14 @@ jobs:
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
-      - name: Pin to primary IPFS server
-        id: ipfs-primary
-        uses: ./.github/actions/ipfs-pin
+      - name: Upload to Infura IPFS
+        id: infura-upload
+        uses: aquiladev/ipfs-action@c5b4a22751adea08b2f035fd6a94d2d66c163e2a
         with:
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
-          BUILD_PATH: 'out'
+          path: './out'
+          service: infura
+          infuraProjectId: ${{ secrets.INFURA_PROJECT_ID }}
+          infuraProjectSecret: ${{ secrets.INFURA_PROJECT_SECRET }}
 
       - name: 'Comment on PR'
         uses: actions/github-script@100527700e8b29ca817ac0e0dfbfc5e8ff38edda # v6.1.1
