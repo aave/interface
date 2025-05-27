@@ -1,7 +1,7 @@
 import { ChainIdToNetwork } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, CircularProgress, Divider, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { useEffect, useMemo, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -153,11 +153,22 @@ export const SwitchTxSuccessView = ({
   }, [provider, chainId, txHashOrOrderId]);
 
   const customExplorerLinkText = useMemo(() => {
-    return provider === 'cowprotocol'
-      ? txHashOrOrderId
-        ? 'View details'
-        : 'Details will be available soon'
-      : undefined;
+    return provider === 'cowprotocol' ? (
+      txHashOrOrderId ? (
+        <>View details</>
+      ) : (
+        <>
+          <CircularProgress
+            size={20}
+            sx={{
+              mr: 1,
+              color: (theme) => theme.palette.grey[400],
+            }}
+          />
+          Details will be available soon
+        </>
+      )
+    ) : undefined;
   }, [provider, txHashOrOrderId]);
 
   return (

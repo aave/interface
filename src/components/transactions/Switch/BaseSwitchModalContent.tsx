@@ -1,5 +1,4 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -22,7 +21,6 @@ import { findByChainId } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
-import invariant from 'tiny-invariant';
 
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
@@ -104,7 +102,6 @@ export const BaseSwitchModalContent = ({
   inputBalanceTitle,
   outputBalanceTitle,
   initialFromTokens,
-  initialToTokens,
   showChangeNetworkWarning = true,
 }: {
   showTitle?: boolean;
@@ -209,11 +206,6 @@ export const BaseSwitchModalContent = ({
     refetchBaseTokenList();
   };
 
-  useEffect(() => {
-    setSelectedInputToken(baseTokenList?.[0] ?? initialFromTokens[0]);
-    setSelectedOutputToken(baseTokenList?.[1] ?? initialToTokens[1]);
-  }, [baseTokenList]);
-
   const queryClient = useQueryClient();
   const addNewToken = async (token: TokenInfoWithBalance) => {
     queryClient.setQueryData<TokenInfoWithBalance[]>(
@@ -249,26 +241,24 @@ export const BaseSwitchModalContent = ({
     let auxInputToken = forcedDefaultInputToken;
     let auxOutputToken = forcedDefaultOutputToken;
 
+    console.log('baseTokenList', baseTokenList);
+
     const fromList = baseTokenList || filteredTokens;
     const toList = baseTokenList || filteredTokens;
 
+    console.log('aux', auxInputToken, auxOutputToken);
+
     if (!auxInputToken) {
-      auxInputToken =
-        fromList.find((token) => token.extensions?.isNative) || fromList.length > 0
-          ? fromList[0]
-          : undefined;
+      auxInputToken = fromList.find(
+        (token) => token.extensions?.isNative && token.symbol !== 'GHO'
+      );
     }
 
     if (!auxOutputToken) {
-      auxOutputToken =
-        toList.find(
-          (token) =>
-            (token.address === AaveV3Ethereum.ASSETS.GHO.UNDERLYING || token.symbol == 'AAVE') &&
-            token.address !== auxInputToken?.address
-        ) || toList.find((token) => token.address !== auxInputToken?.address);
+      auxOutputToken = toList.find((token) => token.symbol == 'GHO');
     }
 
-    invariant(auxInputToken && auxOutputToken, 'token list should have at least 2 assets');
+    console.log('default', auxInputToken, auxOutputToken);
 
     return {
       defaultInputToken: auxInputToken ?? fromList[0],
@@ -282,6 +272,15 @@ export const BaseSwitchModalContent = ({
   const [selectedOutputToken, setSelectedOutputToken] = useState<TokenInfoWithBalance>(
     forcedDefaultOutputToken ?? defaultOutputToken
   );
+
+  useEffect(() => {
+    setSelectedInputToken(defaultInputToken);
+  }, [defaultInputToken]);
+
+  useEffect(() => {
+    setSelectedOutputToken(defaultOutputToken);
+  }, [defaultOutputToken]);
+
   // Data
   const {
     data: switchRates,

@@ -8,7 +8,7 @@ import { useRootStore } from 'src/store/root';
 export type BaseWaitingTxViewProps = {
   txHash?: string;
   customExplorerLink?: string;
-  customExplorerLinkText?: string;
+  customExplorerLinkText?: ReactNode;
   children: ReactNode;
   hideTx?: boolean;
 };

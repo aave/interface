@@ -11,7 +11,7 @@ export type BaseSuccessTxViewProps = {
   children: ReactNode;
   hideTx?: boolean;
   customExplorerLink?: string;
-  customExplorerLinkText?: string;
+  customExplorerLinkText?: ReactNode;
 };
 
 const ExtLinkIcon = () => (

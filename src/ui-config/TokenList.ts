@@ -12814,6 +12814,15 @@ export const TOKEN_LIST: TokenList = {
         'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
     },
     {
+      name: 'Aave',
+      address: '0x63706e401c06ac8513145b7687A14804d17f814b',
+      symbol: 'AAVE',
+      decimals: 18,
+      chainId: 8453,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
+    },
+    {
       name: 'stk GHO',
       address: '0x1a88Df1cFe15Af22B3c4c783D4e6F7F9e0C1885d',
       symbol: 'stkGHO',
@@ -12843,12 +12852,13 @@ export const TOKEN_LIST: TokenList = {
 export const COMMON_SWAPS = [
   'ETH',
   'DAI',
+  'GHO',
   'USDC',
   'USDT',
   'WBTC',
   'WETH',
+  'AAVE',
   'DAI.e',
   'USDC.e',
   'USDT.e',
-  'GHO',
 ];
