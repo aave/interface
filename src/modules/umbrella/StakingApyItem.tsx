@@ -63,6 +63,7 @@ export const StakingApyItem = ({
       name: `a${underlyingReserve.symbol}`,
       aToken: true,
       apy: underlyingReserve.supplyAPY,
+      fromSupply: true,
     });
   }
 
@@ -109,6 +110,7 @@ interface StakingReward {
   address: string;
   aToken: boolean;
   apy: string;
+  fromSupply?: boolean;
 }
 
 export const StakingApyTooltipcontent = ({
@@ -142,6 +144,11 @@ export const StakingApyTooltipcontent = ({
                     sx={{ fontSize: '20px', mr: 1 }}
                   />
                   <Typography variant="secondary12">{reward.name}</Typography>
+                  {reward.fromSupply && (
+                    <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                      (<Trans>supply</Trans>)
+                    </Typography>
+                  )}
                 </Stack>
               }
               key={index}
