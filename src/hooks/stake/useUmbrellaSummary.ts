@@ -200,8 +200,7 @@ const formatUmbrellaSummary = (
     );
 
     const totalRewardApy = getTotalStakeRewardApy(reserve, stakeItem);
-
-    weightedApySum = stakeTokenBalance.multipliedBy(totalRewardApy).plus(weightedApySum);
+    weightedApySum = stakeTokenBalanceUSD.multipliedBy(totalRewardApy).plus(weightedApySum);
     aggregatedTotalStakedUSD = aggregatedTotalStakedUSD.plus(stakeTokenBalanceUSD);
 
     let aTokenBalanceAvailableToStake = '0';
