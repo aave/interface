@@ -68,6 +68,11 @@ const IncentivesSymbolMap: {
     symbol: 'aEURC',
     aToken: true,
   },
+  aBasGHO: {
+    tokenIconSymbol: 'GHO',
+    symbol: 'aGHO',
+    aToken: true,
+  },
   aAvaSAVAX: {
     tokenIconSymbol: 'sAVAX',
     symbol: 'asAVAX',

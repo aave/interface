@@ -17,7 +17,7 @@ import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
+import { TRANSACTION_HISTORY } from 'src/utils/events';
 
 import LandingGhost from '/public/resting-gho-hat-purple.svg';
 

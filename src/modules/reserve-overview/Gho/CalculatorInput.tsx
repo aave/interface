@@ -5,7 +5,7 @@ import { NumberFormatValues } from 'react-number-format';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { NumberFormatCustom } from 'src/components/transactions/AssetInput';
 import { useRootStore } from 'src/store/root';
-import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { RESERVE_DETAILS } from 'src/utils/events';
 
 const sliderStyles = {
   color: '#669AFF',

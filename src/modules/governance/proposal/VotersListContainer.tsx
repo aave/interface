@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
 import { useRootStore } from 'src/store/root';
-import { AIP } from 'src/utils/mixPanelEvents';
+import { AIP } from 'src/utils/events';
 
 import { ProposalVoteInfo } from '../utils/formatProposal';
 import { VotersList } from './VotersList';

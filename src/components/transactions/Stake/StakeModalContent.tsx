@@ -9,8 +9,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig';
+import { STAKE } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { STAKE } from 'src/utils/mixPanelEvents';
 
 import { CooldownWarning } from '../../Warnings/CooldownWarning';
 import { AssetInput } from '../AssetInput';

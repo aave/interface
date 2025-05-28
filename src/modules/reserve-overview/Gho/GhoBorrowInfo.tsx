@@ -12,7 +12,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { getBorrowCapData } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { PanelItem } from '../ReservePanels';
 

@@ -21,8 +21,8 @@ import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/events';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
