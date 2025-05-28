@@ -375,6 +375,10 @@ msgstr "Allowance required action"
 msgid "Available rewards"
 msgstr "Available rewards"
 
+#: src/components/infoTooltips/ApprovalTooltip.tsx
+msgid "To continue, you need to grant smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
+msgstr "To continue, you need to grant smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
 msgstr "View all votes"
@@ -3161,10 +3165,6 @@ msgstr "No assets selected to migrate."
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrating"
 msgstr "Migrating"
-
-#: src/components/infoTooltips/ApprovalTooltip.tsx
-msgid "To continue, you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
-msgstr "To continue, you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
