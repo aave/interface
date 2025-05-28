@@ -82,6 +82,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
           onClick={() =>
             openUmbrella(
               stakeData.tokenAddress,
+              stakeData.underlyingTokenAddress,
               stakeData.symbol,
               stakeData.stataTokenData.aToken,
               stakeData.stataTokenData.asset
@@ -177,8 +178,8 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                 handleClose();
                 openUmbrella(
                   stakeData.tokenAddress,
+                  stakeData.underlyingTokenAddress,
                   stakeData.symbol,
-
                   stakeData.stataTokenData.aToken,
                   stakeData.stataTokenData.asset
                 );

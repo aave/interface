@@ -28,6 +28,7 @@ import { useRootStore } from 'src/store/root';
 import { STAKE } from 'src/utils/events';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { roundToTokenDecimals } from 'src/utils/utils';
+import { zeroAddress } from 'viem';
 import { useShallow } from 'zustand/shallow';
 
 import { usePreviewStake } from './hooks/usePreviewStake';
@@ -102,7 +103,8 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
     _amount,
     stakeData.decimals,
     currentChainId,
-    stakeData.tokenAddress
+    stakeData.underlyingTokenAddress,
+    stakeData.stataTokenData.asset === zeroAddress
   );
 
   const underlyingBalance = valueToBigNumber(inputToken.balance || '0');
@@ -153,8 +155,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
   }
 
   const amountInUsd = valueToBigNumber(amount || '0')
-    .multipliedBy(stakeData.price)
-    .shiftedBy(-USD_DECIMALS)
+    .multipliedBy(poolReserve.priceInUSD)
     .toString();
 
   const stakeSharesUsd = valueToBigNumber(stakeShares || '0')
@@ -198,24 +199,31 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
             />
           </>
         )}
-        <Row caption={<Trans>Stake token shares</Trans>} captionVariant="description" mb={4}>
-          <Stack direction="column" alignItems="flex-end" justifyContent="center">
-            {loadingPreviewStake ? (
-              <Skeleton variant="rectangular" height={20} width={50} sx={{ borderRadius: '4px' }} />
-            ) : (
-              <>
-                <FormattedNumber value={stakeShares || '0'} variant="secondary14" compact />
-                <FormattedNumber
-                  value={stakeSharesUsd}
-                  color="text.secondary"
-                  variant="helperText"
-                  compact
-                  symbol="USD"
+        {stakeData.stataTokenData.asset !== zeroAddress && (
+          <Row caption={<Trans>Stake token shares</Trans>} captionVariant="description" mb={4}>
+            <Stack direction="column" alignItems="flex-end" justifyContent="center">
+              {loadingPreviewStake ? (
+                <Skeleton
+                  variant="rectangular"
+                  height={20}
+                  width={50}
+                  sx={{ borderRadius: '4px' }}
                 />
-              </>
-            )}
-          </Stack>
-        </Row>
+              ) : (
+                <>
+                  <FormattedNumber value={stakeShares || '0'} variant="secondary14" compact />
+                  <FormattedNumber
+                    value={stakeSharesUsd}
+                    color="text.secondary"
+                    variant="helperText"
+                    compact
+                    symbol="USD"
+                  />
+                </>
+              )}
+            </Stack>
+          </Row>
+        )}
         <DetailsCooldownLine cooldownSeconds={stakeData.cooldownSeconds} />
       </TxModalDetails>
 

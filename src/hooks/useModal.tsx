@@ -47,6 +47,7 @@ export interface ModalArgsType {
   icon?: string;
   stakeAssetName?: Stake;
   uStakeToken?: string;
+  underlyingTokenAddress?: string;
   isFrozen?: boolean;
   representatives?: Array<{ chainId: ChainId; representative: string }>;
   chainId?: number;
@@ -106,6 +107,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
   openUmbrella: (
     uStakeToken: string,
+    underlyingTokenAddress: string,
     icon: string,
     stataTokenAToken: string,
     stataTokenAsset: string
@@ -282,7 +284,13 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           setType(ModalType.StakeRewardsClaimRestake);
           setArgs({ stakeAssetName, icon });
         },
-        openUmbrella: (uStakeToken, icon, stataTokenAToken, stataTokenAsset) => {
+        openUmbrella: (
+          uStakeToken,
+          underlyingTokenAddress,
+          icon,
+          stataTokenAToken,
+          stataTokenAsset
+        ) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Umbrella',
             uStakeToken: uStakeToken,
@@ -293,6 +301,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           setType(ModalType.Umbrella);
           setArgs({
             uStakeToken,
+            underlyingTokenAddress,
             icon,
             stataTokenAToken: stataTokenAToken,
             stataTokenAsset: stataTokenAsset,
