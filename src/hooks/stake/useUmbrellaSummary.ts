@@ -114,10 +114,19 @@ const formatStakeData = (
     runningTotal = runningTotal.plus(stakeTokenTotalSupply);
     runningTotalUsd = runningTotalUsd.plus(totalSupplyUsd);
 
-    const matchingReserve = reserves.find(
-      (reserve) =>
-        reserve.aTokenAddress.toLowerCase() === stakeItem.stataTokenData.aToken.toLowerCase()
-    );
+    console.log('stakeItem', stakeItem);
+    let matchingReserve: FormattedReservesAndIncentives | undefined;
+    if (stakeItem.underlyingIsStataToken) {
+      matchingReserve = reserves.find(
+        (reserve) =>
+          reserve.aTokenAddress.toLowerCase() === stakeItem.stataTokenData.aToken.toLowerCase()
+      );
+    } else {
+      matchingReserve = reserves.find(
+        (reserve) =>
+          reserve.underlyingAsset.toLowerCase() === stakeItem.underlyingTokenAddress.toLowerCase()
+      );
+    }
 
     const totalRewardApy = getTotalStakeRewardApy(matchingReserve, stakeItem);
 
@@ -125,14 +134,14 @@ const formatStakeData = (
       tokenAddress: stakeItem.tokenAddress,
       symbol: stakeItem.underlyingIsStataToken
         ? stakeItem.stataTokenData.assetSymbol
-        : stakeItem.symbol,
+        : stakeItem.underlyingTokenSymbol,
       iconSymbol: stakeItem.underlyingIsStataToken
         ? stakeItem.stataTokenData.assetSymbol
-        : stakeItem.symbol,
+        : stakeItem.underlyingTokenSymbol,
       stakeTokenPrice,
       stakeTokenTotalSupply,
       totalSupplyUsd,
-      totalRewardApy: normalize(totalRewardApy.toString(), 18),
+      totalRewardApy,
     };
   });
 
