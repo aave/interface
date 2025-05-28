@@ -152,7 +152,12 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               <StyledMenuItem
                 onClick={() => {
                   handleClose();
-                  openUmbrellaUnstake(stakeData.tokenAddress, stakeData.symbol);
+                  openUmbrellaUnstake(
+                    stakeData.tokenAddress,
+                    stakeData.underlyingTokenAddress,
+                    stakeData.stataTokenData.asset,
+                    stakeData.symbol
+                  );
                 }}
                 disabled={!isUnstakeWindowActive}
               >

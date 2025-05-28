@@ -1,6 +1,7 @@
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Skeleton, Stack, Typography } from '@mui/material';
+import { parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -16,11 +17,9 @@ import {
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
-import {
-  ComputedReserveData,
-  ComputedUserReserveData,
-  ExtendedFormattedUser,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
@@ -28,7 +27,6 @@ import { useRootStore } from 'src/store/root';
 import { STAKE } from 'src/utils/events';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { roundToTokenDecimals } from 'src/utils/utils';
-import { zeroAddress } from 'viem';
 import { useShallow } from 'zustand/shallow';
 
 import { usePreviewStake } from './hooks/usePreviewStake';
@@ -38,8 +36,8 @@ export type StakeProps = {
   stakeData: MergedStakeData;
   icon: string;
   user: ExtendedFormattedUser;
-  userReserve: ComputedUserReserveData;
-  poolReserve: ComputedReserveData;
+  userReserve: FormattedUserReserves;
+  poolReserve: FormattedReservesAndIncentives;
 };
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
@@ -86,9 +84,8 @@ const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
 
 export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve }: StakeProps) => {
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
 
-  // states
+  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const [_amount, setAmount] = useState('');
 
   const [currentChainId] = useRootStore(
@@ -96,15 +93,13 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
   );
 
   const assets = getInputTokens(stakeData);
-
   const [inputToken, setInputToken] = useState<StakeInputAsset>(assets[0]);
 
   const { data: stakeShares, isLoading: loadingPreviewStake } = usePreviewStake(
-    _amount,
+    parseUnits(_amount || '0', stakeData.decimals).toString(),
     stakeData.decimals,
-    currentChainId,
-    stakeData.underlyingTokenAddress,
-    stakeData.stataTokenData.asset === zeroAddress
+    stakeData.underlyingIsStataToken ? stakeData.underlyingTokenAddress : '',
+    currentChainId
   );
 
   const underlyingBalance = valueToBigNumber(inputToken.balance || '0');
@@ -199,7 +194,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
             />
           </>
         )}
-        {stakeData.stataTokenData.asset !== zeroAddress && (
+        {stakeData.underlyingIsStataToken && (
           <Row caption={<Trans>Stake token shares</Trans>} captionVariant="description" mb={4}>
             <Stack direction="column" alignItems="flex-end" justifyContent="center">
               {loadingPreviewStake ? (
