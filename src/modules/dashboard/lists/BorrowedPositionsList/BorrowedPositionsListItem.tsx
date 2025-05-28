@@ -2,14 +2,13 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
-import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import { Row } from 'src/components/primitives/Row';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -108,7 +107,6 @@ const BorrowedPositionsListItemDesktop = ({
   totalBorrows,
   totalBorrowsUSD,
   borrowAPY,
-  variableDebtTokenAddress,
   incentives,
   onDetbSwitchClick,
   onOpenBorrow,
@@ -128,11 +126,6 @@ const BorrowedPositionsListItemDesktop = ({
       borrowEnabled={reserve.borrowingEnabled}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}`}
       showBorrowCapTooltips
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        reserve.symbol,
-        currentMarket,
-        ProtocolAction.borrow
-      )}
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
@@ -140,7 +133,7 @@ const BorrowedPositionsListItemDesktop = ({
         value={borrowAPY}
         market={currentMarket}
         protocolAction={ProtocolAction.borrow}
-        address={variableDebtTokenAddress}
+        address={reserve.variableDebtTokenAddress}
         incentives={incentives}
         symbol={reserve.symbol}
       />
@@ -177,7 +170,6 @@ const BorrowedPositionsListItemMobile = ({
   disableSwitch,
   borrowAPY,
   incentives,
-  variableDebtTokenAddress,
   disableRepay,
   onDetbSwitchClick,
   onOpenBorrow,
@@ -197,11 +189,6 @@ const BorrowedPositionsListItemMobile = ({
       frozen={reserve.isFrozen}
       borrowEnabled={reserve.borrowingEnabled}
       showBorrowCapTooltips
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        symbol,
-        currentMarket,
-        ProtocolAction.borrow
-      )}
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}
@@ -211,10 +198,10 @@ const BorrowedPositionsListItemMobile = ({
       />
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={borrowAPY}
           incentives={incentives}
-          address={variableDebtTokenAddress}
+          address={reserve.variableDebtTokenAddress}
           symbol={symbol}
           variant="secondary14"
           market={currentMarket}

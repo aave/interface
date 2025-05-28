@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ProtocolAction } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Skeleton, Stack, Typography } from '@mui/material';
@@ -261,6 +261,9 @@ export const SupplyModalContent = React.memo(
           <DetailsIncentivesLine
             incentives={poolReserve.aIncentivesData}
             symbol={poolReserve.symbol}
+            market={currentMarketData.market}
+            address={poolReserve.aTokenAddress}
+            protocolAction={ProtocolAction.supply}
           />
           <DetailsCollateralLine collateralType={collateralType} />
           <DetailsHFLine
@@ -456,6 +459,9 @@ export const SupplyWrappedTokenModalContent = ({
         <DetailsIncentivesLine
           incentives={poolReserve.aIncentivesData}
           symbol={poolReserve.symbol}
+          market={currentMarketData.market}
+          address={poolReserve.aTokenAddress}
+          protocolAction={ProtocolAction.supply}
         />
         <DetailsCollateralLine collateralType={collateralType} />
         <DetailsHFLine

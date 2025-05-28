@@ -2,21 +2,17 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
-import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
-import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/events';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
-import { IncentivesCard } from '../../components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from '../../components/incentives/RateAndIncentivesBox';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListItem } from '../../components/lists/ListItem';
@@ -32,16 +28,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   );
 
   const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
-  const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
-    reserve.symbol,
-    currentMarket,
-    ProtocolAction.supply
-  );
-  const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
-    reserve.symbol,
-    currentMarket,
-    ProtocolAction.borrow
-  );
 
   return (
     <ListItem
@@ -93,20 +79,13 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={reserve.supplyAPY}
           incentives={reserve.aIncentivesData || []}
           address={reserve.aTokenAddress}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
-          tooltip={
-            <>
-              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
-              {externalIncentivesTooltipsSupplySide.kernelPoints && <KernelAirdropTooltip />}
-            </>
-          }
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
@@ -124,19 +103,13 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
           incentives={reserve.vIncentivesData || []}
           address={reserve.variableDebtTokenAddress}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
-          tooltip={
-            <>
-              {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
-            </>
-          }
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />

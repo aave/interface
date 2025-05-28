@@ -1,7 +1,9 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Tooltip, Typography, TypographyProps } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { PopperComponent } from '../ContentWithTooltip';
 import GhoBorrowApyRange from '../GhoBorrowApyRange';
@@ -9,7 +11,7 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
 import { NoData } from '../primitives/NoData';
 import { TokenIcon } from '../primitives/TokenIcon';
-import { EthenaIncentivesButton } from './IncentivesButton';
+import { IncentivesCard } from './RateAndIncentivesBox';
 
 export interface GhoIncentivesCardProps {
   value: string | number;
@@ -107,6 +109,7 @@ export const GhoIncentivesCard = ({
           <Box
             sx={() => ({
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
             })}
           >
@@ -128,12 +131,19 @@ export const GhoIncentivesCard = ({
                 data-cy={'apy'}
               />
             )}
+            <IncentivesCard
+              symbol={'GHO'}
+              incentives={[]}
+              address={AaveV3Ethereum.ASSETS.GHO.V_TOKEN}
+              market={CustomMarket.proto_mainnet_v3}
+              protocolAction={ProtocolAction.borrow}
+              displayBlank={false}
+            />
           </Box>
         </Tooltip>
       ) : (
         <NoData variant="secondary14" color="text.secondary" />
       )}
-      <EthenaIncentivesButton rewardedAsset={AaveV3Ethereum.ASSETS.GHO.V_TOKEN} />
     </Box>
   );
 };

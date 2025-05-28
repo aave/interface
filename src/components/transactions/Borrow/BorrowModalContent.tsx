@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ProtocolAction } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   USD_DECIMALS,
@@ -18,6 +18,7 @@ import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { roundToTokenDecimals } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
@@ -56,11 +57,18 @@ export const BorrowModalContent = ({
 }) => {
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { marketReferencePriceInUsd } = useAppDataContext();
-  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { borrowCap } = useAssetCaps();
 
   const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
+
+  const [, currentMarketData, currentNetworkConfig] = useRootStore(
+    useShallow((state) => [
+      state.poolComputed.minRemainingBaseTokenBalance,
+      state.currentMarketData,
+      state.currentNetworkConfig,
+    ])
+  );
 
   // amount calculations
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user);
@@ -196,6 +204,9 @@ export const BorrowModalContent = ({
         <DetailsIncentivesLine
           incentives={poolReserve.vIncentivesData}
           symbol={poolReserve.symbol}
+          market={currentMarketData.market}
+          address={poolReserve.variableDebtTokenAddress}
+          protocolAction={ProtocolAction.borrow}
         />
         <DetailsHFLine
           visibleHfChange={!!amount}

@@ -1,10 +1,11 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { AlertTitle, Box, Typography } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
-import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { RateAndIncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
 import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
@@ -148,11 +149,16 @@ export const SupplyInfo = ({
           </PanelItem>
         )}
         <PanelItem title={<Trans>APY</Trans>}>
-          <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
-          <IncentivesButton
+          <RateAndIncentivesBox
             symbol={reserve.symbol}
-            incentives={reserve.aIncentivesData}
-            displayBlank={true}
+            value={reserve.supplyAPY}
+            incentives={reserve.aIncentivesData || []}
+            market={currentMarketData.market}
+            address={reserve.aTokenAddress}
+            protocolAction={ProtocolAction.supply}
+            displayBlank={false}
+            variant="main16"
+            align="start"
           />
         </PanelItem>
         {reserve.unbacked && reserve.unbacked !== '0' && (

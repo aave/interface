@@ -5,10 +5,9 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
-import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from '../../../../components/incentives/RateAndIncentivesBox';
 import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
@@ -65,11 +64,6 @@ export const SuppliedPositionsListMobileItem = ({
       frozen={reserve.isFrozen}
       showSupplyCapTooltips
       showDebtCeilingTooltips
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        reserve.symbol,
-        currentMarket,
-        ProtocolAction.supply
-      )}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
@@ -84,7 +78,7 @@ export const SuppliedPositionsListMobileItem = ({
         captionVariant="description"
         mb={2}
       >
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
           address={aTokenAddress}
