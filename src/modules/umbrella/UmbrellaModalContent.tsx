@@ -195,7 +195,12 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
           </>
         )}
         {stakeData.underlyingIsStataToken && (
-          <Row caption={<Trans>Stake token shares</Trans>} captionVariant="description" mb={4}>
+          <Row
+            caption={<Trans>Stake token shares</Trans>}
+            captionVariant="description"
+            mb={4}
+            align="flex-start"
+          >
             <Stack direction="column" alignItems="flex-end" justifyContent="center">
               {loadingPreviewStake ? (
                 <Skeleton

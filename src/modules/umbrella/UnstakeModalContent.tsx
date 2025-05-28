@@ -162,7 +162,12 @@ export const UnStakeModalContent = ({
 
       {stakeData.underlyingIsStataToken ? (
         <TxModalDetails gasLimit={gasLimit} chainId={currentChainId}>
-          <Row caption={<Trans>Amount received</Trans>} captionVariant="description" mb={2}>
+          <Row
+            caption={<Trans>Amount received</Trans>}
+            captionVariant="description"
+            mb={2}
+            align="flex-start"
+          >
             <Stack direction="column" alignItems="flex-end" justifyContent="center">
               {isLoading ? (
                 <Skeleton
