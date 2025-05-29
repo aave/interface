@@ -120,9 +120,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const userCooldown = stakeUserData?.userCooldownTimestamp || 0;
   const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
 
-  const immediateUnstakeEnabled =
-    stakeCooldownSeconds === 0 && stakeUserData.stakeTokenUserBalance !== '0';
-
   const userCooldownDelta = now - userCooldown;
   const isCooldownActive = userCooldownDelta < stakeCooldownSeconds + stakeUnstakeWindow;
   const isUnstakeWindowActive =
@@ -441,43 +438,39 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             valueUSD={stakedUSD}
             dataCy={`stakedBox_${stakedToken}`}
             bottomLineTitle={
-              immediateUnstakeEnabled ? (
-                <Box sx={{ my: 4 }} />
-              ) : (
-                <TextWithTooltip
-                  variant="caption"
-                  text={
-                    isCooldownActive && !isUnstakeWindowActive ? (
-                      <Trans>Cooldown time left</Trans>
-                    ) : isUnstakeWindowActive ? (
-                      <Trans>Time left to unstake</Trans>
-                    ) : (
-                      <Trans>Cooldown period</Trans>
-                    )
-                  }
-                  event={{
-                    eventName: GENERAL.TOOL_TIP,
-                    eventParams: {
-                      tooltip: 'Staking cooldown',
-                      funnel: 'Staking Page',
-                      assetName: stakedToken,
-                    },
-                  }}
-                >
-                  <>
-                    {isCooldownActive && !isUnstakeWindowActive ? (
-                      <Trans>Time remaining until the 48 hour withdraw period starts.</Trans>
-                    ) : isUnstakeWindowActive ? (
-                      <Trans>Time remaining until the withdraw period ends.</Trans>
-                    ) : (
-                      <Trans>
-                        You can only withdraw your assets from the Security Module after the
-                        cooldown period ends and the unstake window is active.
-                      </Trans>
-                    )}
-                  </>
-                </TextWithTooltip>
-              )
+              <TextWithTooltip
+                variant="caption"
+                text={
+                  isCooldownActive && !isUnstakeWindowActive ? (
+                    <Trans>Cooldown time left</Trans>
+                  ) : isUnstakeWindowActive ? (
+                    <Trans>Time left to unstake</Trans>
+                  ) : (
+                    <Trans>Cooldown period</Trans>
+                  )
+                }
+                event={{
+                  eventName: GENERAL.TOOL_TIP,
+                  eventParams: {
+                    tooltip: 'Staking cooldown',
+                    funnel: 'Staking Page',
+                    assetName: stakedToken,
+                  },
+                }}
+              >
+                <>
+                  {isCooldownActive && !isUnstakeWindowActive ? (
+                    <Trans>Time remaining until the 48 hour withdraw period starts.</Trans>
+                  ) : isUnstakeWindowActive ? (
+                    <Trans>Time remaining until the withdraw period ends.</Trans>
+                  ) : (
+                    <Trans>
+                      You can only withdraw your assets from the Security Module after the cooldown
+                      period ends and the unstake window is active.
+                    </Trans>
+                  )}
+                </>
+              </TextWithTooltip>
             }
             bottomLineComponent={
               <>
@@ -527,7 +520,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             }
             gradientBorder={isUnstakeWindowActive}
           >
-            {(isUnstakeWindowActive || immediateUnstakeEnabled) && (
+            {isUnstakeWindowActive && (
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Button
                   variant="gradient"
@@ -614,7 +607,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               </Box>
             )}
 
-            {!isCooldownActive && !immediateUnstakeEnabled && (
+            {!isCooldownActive && (
               <Button
                 variant="outlined"
                 fullWidth
