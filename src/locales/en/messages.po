@@ -1404,6 +1404,7 @@ msgid "Email"
 msgstr "Email"
 
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/umbrella/UnstakeModal.tsx
 msgid "Unstake"
 msgstr "Unstake"
 
@@ -2090,6 +2091,10 @@ msgstr "The requested amount is greater than the max loan size in stable rate mo
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
+
+#: src/modules/umbrella/StakingApyItem.tsx
+msgid "supply"
+msgstr "supply"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
