@@ -11,6 +11,7 @@ import {
 } from 'src/components/isolationMode/IsolatedBadge';
 import { Row } from 'src/components/primitives/Row';
 import { CollateralType } from 'src/helpers/types';
+import { SecondsToString } from 'src/modules/staking/StakingPanel';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
@@ -359,6 +360,32 @@ export const DetailsUnwrapSwitch = ({
         labelPlacement="end"
         label={label}
       />
+    </Row>
+  );
+};
+
+interface DetailsCooldownLineProps {
+  cooldownSeconds: number;
+  loading?: boolean;
+}
+
+export const DetailsCooldownLine = ({
+  cooldownSeconds,
+  loading = false,
+}: DetailsCooldownLineProps) => {
+  return (
+    <Row caption={<Trans>Cooldown</Trans>} captionVariant="description" mb={4}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="secondary14">
+              <SecondsToString seconds={cooldownSeconds} />
+            </Typography>
+          </Box>
+        )}
+      </Box>
     </Row>
   );
 };

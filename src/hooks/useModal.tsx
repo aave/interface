@@ -32,6 +32,11 @@ export enum ModalType {
   GovRepresentatives,
   Bridge,
   ReadMode,
+  Umbrella,
+  UmbrellaStakeCooldown,
+  UmbrellaClaim,
+  UmbrellaClaimAll,
+  UmbrellaUnstake,
 }
 
 export interface ModalArgsType {
@@ -41,9 +46,14 @@ export interface ModalArgsType {
   power?: string;
   icon?: string;
   stakeAssetName?: Stake;
+  uStakeToken?: string;
+  underlyingTokenAddress?: string;
   isFrozen?: boolean;
   representatives?: Array<{ chainId: ChainId; representative: string }>;
   chainId?: number;
+  umbrellaAssetName?: string;
+  stataTokenAToken?: string;
+  stataTokenAsset?: string;
 }
 
 export type TxStateType = {
@@ -95,6 +105,22 @@ export interface ModalContextType<T extends ModalArgsType> {
   openStakeCooldown: (stakeAssetName: Stake, icon: string) => void;
   openStakeRewardsClaim: (stakeAssetName: Stake, icon: string) => void;
   openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
+  openUmbrella: (
+    uStakeToken: string,
+    underlyingTokenAddress: string,
+    icon: string,
+    stataTokenAToken: string,
+    stataTokenAsset: string
+  ) => void;
+  openUmbrellaStakeCooldown: (uStakeToken: string, icon: string) => void;
+  openUmbrellaClaim: (uStakeToken: string) => void;
+  openUmbrellaClaimAll: () => void;
+  openUmbrellaUnstake: (
+    uStakeToken: string,
+    underlyingTokenAddress: string,
+    stataTokenAsset: string,
+    icon: string
+  ) => void;
   openClaimRewards: () => void;
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
@@ -262,6 +288,53 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           });
           setType(ModalType.StakeRewardsClaimRestake);
           setArgs({ stakeAssetName, icon });
+        },
+        openUmbrella: (
+          uStakeToken,
+          underlyingTokenAddress,
+          icon,
+          stataTokenAToken,
+          stataTokenAsset
+        ) => {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Umbrella',
+            uStakeToken: uStakeToken,
+            stataTokenAToken: stataTokenAToken,
+            stataTokenAsset: stataTokenAsset,
+          });
+
+          setType(ModalType.Umbrella);
+          setArgs({
+            uStakeToken,
+            underlyingTokenAddress,
+            icon,
+            stataTokenAToken: stataTokenAToken,
+            stataTokenAsset: stataTokenAsset,
+          });
+        },
+        openUmbrellaStakeCooldown: (uStakeToken, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Umbrella Stake Cooldown',
+            uStakeToken: uStakeToken,
+          });
+
+          setType(ModalType.UmbrellaStakeCooldown);
+          setArgs({ uStakeToken, icon });
+        },
+        openUmbrellaClaim: (uStakeToken) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella Claim', uStakeToken: uStakeToken });
+          setType(ModalType.UmbrellaClaim);
+          setArgs({ uStakeToken });
+        },
+        openUmbrellaClaimAll: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella Claim All' });
+          setType(ModalType.UmbrellaClaimAll);
+        },
+        openUmbrellaUnstake: (uStakeToken, underlyingTokenAddress, stataTokenAsset, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella Redeem', uStakeToken: uStakeToken });
+
+          setType(ModalType.UmbrellaUnstake);
+          setArgs({ uStakeToken, underlyingTokenAddress, stataTokenAsset, icon });
         },
         openClaimRewards: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim' });
