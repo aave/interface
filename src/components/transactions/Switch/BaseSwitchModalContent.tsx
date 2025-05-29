@@ -589,7 +589,7 @@ export const BaseSwitchModalContent = ({
               {showSlippageWarning && (
                 <Warning severity="warning" icon={false} sx={{ mt: 5 }}>
                   <Typography variant="caption">
-                    Slippage is lower than recommended. The switch may be delayed or fail.
+                    Slippage is lower than recommended. The swap may be delayed or fail.
                   </Typography>
                 </Warning>
               )}
