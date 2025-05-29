@@ -81,7 +81,7 @@ export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) 
 });
 export const COW_APP_DATA = (tokenFromSymbol: string, tokenToSymbol: string) => ({
   appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
-  version: '1.3.0',
+  version: '1.4.0',
   metadata: {
     partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol),
   },
