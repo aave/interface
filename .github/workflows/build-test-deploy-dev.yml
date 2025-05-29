@@ -135,7 +135,7 @@ jobs:
 
       - name: Upload to Infura IPFS
         id: infura-upload
-        uses: aquiladev/ipfs-action@master
+        uses: aave/ipfs-action@master
         with:
           path: './out'
           service: infura
