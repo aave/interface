@@ -9,16 +9,19 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { isSmartContractWallet } from 'src/helpers/provider';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useMultiProviderSwitchRates } from 'src/hooks/switch/useMultiProviderSwitchRates';
 import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { useRootStore } from 'src/store/root';
 import { findByChainId } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
+import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { GENERAL } from 'src/utils/events';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { parseUnits } from 'viem';
@@ -121,7 +124,7 @@ export const BaseSwitchModalContent = ({
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const { mainTxState: switchTxState, gasLimit, txError, setTxError, close } = useModalContext();
   const user = useRootStore((store) => store.account);
-  const { readOnlyModeAddress } = useWeb3Context();
+  const { readOnlyModeAddress, chainId: connectedChainId } = useWeb3Context();
   const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
   const [selectedChainId, setSelectedChainId] = useState(() => {
     if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === forcedChainId))
@@ -144,6 +147,21 @@ export const BaseSwitchModalContent = ({
     selectedChainId,
     user
   );
+
+  const [userIsSmartContractWallet, setUserIsSmartContractWallet] = useState(false);
+  useEffect(() => {
+    try {
+      if (user && connectedChainId) {
+        getEthersProvider(wagmiConfig, { chainId: connectedChainId }).then((provider) => {
+          isSmartContractWallet(user, provider).then((isSmartContractWallet) => {
+            setUserIsSmartContractWallet(isSmartContractWallet);
+          });
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [user, connectedChainId]);
 
   const debouncedInputChange = useMemo(() => {
     return debounce((value: string) => {
@@ -435,6 +453,7 @@ export const BaseSwitchModalContent = ({
           event={{
             eventName: GENERAL.SWITCH_NETWORK,
           }}
+          askManualSwitch={userIsSmartContractWallet}
         />
       )}
 
