@@ -1,10 +1,10 @@
-import { ChainIdToNetwork } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import ArrowOutward from '@mui/icons-material/ArrowOutward';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
+import { generateCoWExplorerLink } from 'src/components/transactions/Switch/cowprotocol.helpers';
 import { useRootStore } from 'src/store/root';
 import { NetworkConfig } from 'src/ui-config/networksConfig';
 import { GENERAL } from 'src/utils/events';
@@ -31,11 +31,7 @@ export const getExplorerLink = (
   currentNetworkConfig: NetworkConfig
 ) => {
   if (transaction.action === 'CowSwap' && currentNetworkConfig.wagmiChain.id) {
-    return `https://explorer.cow.fi/${
-      currentNetworkConfig.wagmiChain.id == 1
-        ? ''
-        : ChainIdToNetwork[currentNetworkConfig.wagmiChain.id] + '/'
-    }orders/${transaction.id}`;
+    return generateCoWExplorerLink(currentNetworkConfig.wagmiChain.id, transaction.id);
   }
 
   if (!('txHash' in transaction)) {

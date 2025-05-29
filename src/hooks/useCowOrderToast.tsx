@@ -1,4 +1,3 @@
-import { ChainIdToNetwork } from '@aave/contract-helpers';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   createContext,
@@ -11,6 +10,7 @@ import {
 } from 'react';
 import { toast } from 'sonner';
 import {
+  generateCoWExplorerLink,
   getOrder,
   isOrderCancelled,
   isOrderFilled,
@@ -117,13 +117,7 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
             toast.success('Swap completed successfully.', {
               action: {
                 label: 'View',
-                onClick: () =>
-                  window.open(
-                    `https://explorer.cow.fi/${
-                      chainId === 1 ? '' : ChainIdToNetwork[chainId] + '/'
-                    }orders/${orderId}`,
-                    '_blank'
-                  ),
+                onClick: () => window.open(generateCoWExplorerLink(chainId, orderId), '_blank'),
               },
             });
             stopTracking(orderId);
@@ -132,13 +126,7 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
             toast.error('Swap could not be completed.', {
               action: {
                 label: 'View',
-                onClick: () =>
-                  window.open(
-                    `https://explorer.cow.fi/${
-                      chainId === 1 ? '' : ChainIdToNetwork[chainId] + '/'
-                    }orders/${orderId}`,
-                    '_blank'
-                  ),
+                onClick: () => window.open(generateCoWExplorerLink(chainId, orderId), '_blank'),
               },
             });
             stopTracking(orderId);

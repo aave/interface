@@ -74,7 +74,7 @@ export const SwitchActions = ({
   outputToken,
   inputSymbol,
   outputSymbol,
-  slippage,
+  slippage: slippageInPercent,
   blocked,
   loading,
   isWrongNetwork,
@@ -124,7 +124,8 @@ export const SwitchActions = ({
   const { mutateAsync: fetchParaswapTxParams } = useParaswapSellTxParams(
     networkConfig.underlyingChainId ?? chainId
   );
-  const tryPermit = permitByChainAndToken[chainId]?.[inputToken];
+  const tryPermit =
+    permitByChainAndToken[chainId]?.[inputToken] && switchRates?.provider !== 'cowprotocol';
 
   const useSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT && tryPermit;
 
@@ -150,7 +151,7 @@ export const SwitchActions = ({
           destToken: outputToken,
           route: switchRates.optimalRateData,
           user,
-          maxSlippage: Number(slippage) * 10000,
+          maxSlippage: Number(slippageInPercent) * 10000,
           permit: signatureParams && signatureParams.signature,
           deadline: signatureParams && signatureParams.deadline,
           partner: 'aave-widget',
@@ -218,8 +219,9 @@ export const SwitchActions = ({
       try {
         const provider = await getEthersProvider(wagmiConfig, { chainId });
         const destAmountWithSlippage = valueToBigNumber(switchRates.destAmount)
-          .multipliedBy(valueToBigNumber(1).minus(valueToBigNumber(slippage)))
+          .multipliedBy(valueToBigNumber(1).minus(valueToBigNumber(slippageInPercent)))
           .toFixed(0);
+        const slippageBps = Math.round(Number(slippageInPercent) * 100 * 100); // percent to bps
 
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(inputToken)) {
@@ -280,11 +282,11 @@ export const SwitchActions = ({
             }, 1000 * 30); // 30 seconds - if we set less than 30 seconds, the order is not indexed yet and CoW explorer will not find the order
           } catch (error) {
             setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
+            setMainTxState({
+              txHash: response?.hash,
+              loading: false,
+            });
             if (response?.hash) {
-              setMainTxState({
-                txHash: response?.hash,
-                loading: false,
-              });
               addTransaction(
                 response?.hash,
                 {
@@ -307,7 +309,9 @@ export const SwitchActions = ({
                 tokenSrc: inputToken,
                 tokenSrcDecimals: switchRates.srcDecimals,
                 tokenDestDecimals: switchRates.destDecimals,
-                destAmount: destAmountWithSlippage.toString(),
+                afterNetworkCostsBuyAmount:
+                  switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
+                slippageBps,
                 inputSymbol,
                 outputSymbol,
                 quote: switchRates.order,
@@ -343,7 +347,9 @@ export const SwitchActions = ({
                 tokenDestDecimals: switchRates.destDecimals,
                 quote: switchRates.order,
                 amount: switchRates.srcAmount,
-                destAmount: destAmountWithSlippage.toString(),
+                afterNetworkCostsBuyAmount:
+                  switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
+                slippageBps,
                 chainId,
                 user,
                 provider,
@@ -569,7 +575,7 @@ export const SwitchActions = ({
       handleApproval={() => approval()}
       requiresApproval={!blocked && requiresApproval}
       actionText={<Trans>Swap</Trans>}
-      actionInProgressText={<Trans>Swaping</Trans>}
+      actionInProgressText={<Trans>Swapping</Trans>}
       errorParams={{
         loading: false,
         disabled: blocked || (!approvalTxState.success && requiresApproval),

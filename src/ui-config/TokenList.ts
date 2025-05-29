@@ -98,7 +98,18 @@ const NETWORK_ASSETS: TokenInfo[] = [
       isNative: true,
     },
   },
-
+  {
+    name: 'Gnosis',
+    symbol: 'xDAI',
+    decimals: 18,
+    address: API_ETH_MOCK_ADDRESS,
+    chainId: 100,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/11062/standard/Identity-Primary-DarkBG.png?1696511004',
+    extensions: {
+      isNative: true,
+    },
+  },
   // NOTE L2 ETH
   {
     name: 'Ethereum',
@@ -12725,6 +12736,72 @@ export const TOKEN_LIST: TokenList = {
       decimals: 18,
       chainId: 100,
       logoURI: 'https://assets.coingecko.com/coins/images/2518/standard/weth.png?1696503332',
+    },
+    {
+      name: 'Wrapped liquid staked Ether 2.0',
+      address: '0x6C76971f98945AE98dD7d4DFcA8711ebea946eA6',
+      symbol: 'wstETH',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/18834/standard/wstETH.png?1696518295',
+    },
+    {
+      name: 'Savings xDAI',
+      address: '0xaf204776c7245bf4147c2612bf6e5972ee483701',
+      symbol: 'sDAI',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/32254/standard/sdai.png?1697015278',
+    },
+    {
+      name: 'Gnosis Token on XDai',
+      address: '0x9c58bacc331c9aa871afd802db6379a98e80cedb',
+      symbol: 'GNO',
+      decimals: 18,
+      chainId: 100,
+      logoURI:
+        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6810e776880C02933D47DB1b9fc05908e5386b96/logo.png',
+    },
+    {
+      name: 'Monerium EUR emoney',
+      address: '0xcB444e90D8198415266c6a2724b7900fb12FC56E',
+      symbol: 'EURe',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/54303/standard/eure.jpg?1739167959',
+    },
+
+    {
+      name: 'Monerium EUR emoney',
+      address: '0xcB444e90D8198415266c6a2724b7900fb12FC56E',
+      symbol: 'EURe',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/54303/standard/eure.jpg?1739167959',
+    },
+    {
+      name: 'Bridged USDC',
+      address: '0x2a22f9c3b484c3629090FeED35F17Ff8F88f76F0',
+      symbol: 'USDC.e',
+      decimals: 6,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389',
+    },
+    {
+      name: 'Wrapped xDAI',
+      address: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
+      symbol: 'WXDAI',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://gnosisscan.io/token/images/wrappedxdai_32.png', // not in coingecko
+    },
+    {
+      name: 'USDT',
+      address: '0x4ECaBa5870353805a9F068101A40E0f32ed605C6',
+      symbol: 'USDT',
+      decimals: 6,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/325/thumb/Tether-logo.png?1598003707',
     },
     {
       name: 'Ethereum',

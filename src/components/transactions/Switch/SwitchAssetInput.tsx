@@ -69,6 +69,7 @@ export interface AssetInputProps {
   onSelect?: (asset: TokenInfoWithBalance) => void;
   assets: TokenInfoWithBalance[];
   maxValue?: string;
+  forcedMaxValue?: string;
   isMaxSelected?: boolean;
   loading?: boolean;
   selectedAsset: TokenInfoWithBalance;
@@ -85,6 +86,7 @@ export const SwitchAssetInput = ({
   onSelect,
   assets,
   maxValue,
+  forcedMaxValue,
   isMaxSelected,
   loading = false,
   chainId,
@@ -461,9 +463,13 @@ export const SwitchAssetInput = ({
                 size="small"
                 sx={{ minWidth: 0, ml: '7px', p: 0 }}
                 onClick={() => {
-                  onChange && onChange('-1');
+                  onChange && onChange(forcedMaxValue || '-1');
                 }}
-                disabled={disabled || isMaxSelected}
+                disabled={
+                  disabled ||
+                  isMaxSelected ||
+                  (!!forcedMaxValue && Number(selectedAsset.balance) < Number(forcedMaxValue))
+                }
               >
                 <Trans>Max</Trans>
               </Button>

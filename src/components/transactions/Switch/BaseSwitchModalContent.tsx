@@ -1,5 +1,5 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
-import { OrderStatus } from '@cowprotocol/cow-sdk';
+import { OrderStatus, SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
@@ -21,12 +21,13 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { GENERAL } from 'src/utils/events';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { parseUnits } from 'viem';
 
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { supportedNetworksWithEnabledMarket, SupportedNetworkWithChainId } from './common';
-import { getOrders } from './cowprotocol.helpers';
+import { getOrders, isNativeToken } from './cowprotocol.helpers';
 import { NetworkSelector } from './NetworkSelector';
 import { isCowProtocolRates, SwitchProvider, SwitchRatesType } from './switch.types';
 import { SwitchActions } from './SwitchActions';
@@ -153,6 +154,7 @@ export const BaseSwitchModalContent = ({
   const handleInputChange = (value: string) => {
     setTxError(undefined);
     if (value === '-1') {
+      // Max Selected
       setInputAmount(selectedInputToken.balance);
       debouncedInputChange(selectedInputToken.balance);
     } else {
@@ -246,7 +248,7 @@ export const BaseSwitchModalContent = ({
 
     if (!auxInputToken) {
       auxInputToken = fromList.find(
-        (token) => token.extensions?.isNative && token.symbol !== 'GHO'
+        (token) => (token.balance !== '0' || token.extensions?.isNative) && token.symbol !== 'GHO'
       );
     }
 
@@ -385,6 +387,19 @@ export const BaseSwitchModalContent = ({
     );
   }
 
+  // Eth-Flow requires to leave some assets for gas
+  const nativeDecimals = 18;
+  const gasRequiredForEthFlow = parseUnits('0.0005', nativeDecimals); // TODO: How we can optimize this value?
+  const requiredAssetsLeftForGas = isNativeToken(selectedInputToken.address)
+    ? gasRequiredForEthFlow
+    : undefined;
+  const maxAmount = requiredAssetsLeftForGas
+    ? parseUnits(selectedInputToken.balance, nativeDecimals) - requiredAssetsLeftForGas
+    : undefined;
+  const maxAmountFormatted = maxAmount
+    ? normalize(maxAmount.toString(), nativeDecimals).toString()
+    : undefined;
+
   const swapDetailsComponent =
     switchDetails && switchRates
       ? switchDetails({
@@ -469,13 +484,26 @@ export const BaseSwitchModalContent = ({
               balanceTitle={inputBalanceTitle}
               assets={baseTokenList.filter(
                 (token) =>
-                  token.address !== selectedOutputToken.address && Number(token.balance) !== 0
+                  token.address !== selectedOutputToken.address &&
+                  Number(token.balance) !== 0 &&
+                  // Avoid wrapping
+                  !(
+                    isNativeToken(selectedOutputToken.address) &&
+                    token.address ===
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address
+                  ) &&
+                  !(
+                    selectedOutputToken.address ===
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address &&
+                    isNativeToken(token.address)
+                  )
               )}
               value={inputAmount}
               onChange={handleInputChange}
               usdValue={switchRates?.srcUSD || '0'}
               onSelect={handleSelectedInputToken}
               selectedAsset={selectedInputToken}
+              forcedMaxValue={maxAmountFormatted}
             />
             {showSwitchInputAndOutputAssetsButton && (
               <IconButton
@@ -501,7 +529,21 @@ export const BaseSwitchModalContent = ({
             <SwitchAssetInput
               chainId={selectedChainId}
               balanceTitle={outputBalanceTitle}
-              assets={baseTokenList.filter((token) => token.address !== selectedInputToken.address)}
+              assets={baseTokenList.filter(
+                (token) =>
+                  token.address !== selectedInputToken.address &&
+                  // Avoid wrapping
+                  !(
+                    isNativeToken(selectedInputToken.address) &&
+                    token.address ===
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address
+                  ) &&
+                  !(
+                    selectedInputToken.address ===
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address &&
+                    isNativeToken(token.address)
+                  )
+              )}
               value={
                 switchRates
                   ? normalizeBN(switchRates.destAmount, switchRates.destDecimals).toString()

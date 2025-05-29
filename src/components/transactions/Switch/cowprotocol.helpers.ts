@@ -1,8 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { MetadataApi } from '@cowprotocol/app-data';
-import { PartnerFee } from '@cowprotocol/app-data/dist/generatedTypes/v1.3.0';
 import {
-  AppDataRootSchema,
   BuyTokenDestination,
   MAX_VALID_TO_EPOCH,
   OrderBookApi,
@@ -29,6 +27,7 @@ const COW_CREATE_ORDER_ABI =
   'function createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)) returns (bytes32)';
 
 // Until CoW shares a more sophisticated way to recognize token groups, we'll maintain a lists with popular tokens
+// Set all tokens to uppercase to avoid case sensitivity issues
 const TOKEN_GROUPS: Record<'stable' | 'correlatedEth' | 'correlatedBtc', string[]> = {
   stable: [
     'USDC',
@@ -36,38 +35,38 @@ const TOKEN_GROUPS: Record<'stable' | 'correlatedEth' | 'correlatedBtc', string[
     'DAI',
     'GHO',
     'EURC',
-    'USDbC',
-    'USDe',
+    'USDBC',
+    'USDE',
     'USDS',
-    'sUSDe',
+    'SUSDE',
     'RLUSD',
     'PYUSD',
     'LUSD',
-    'sDAI',
-    'crvUSD',
+    'SDAI',
+    'CRVUSD',
     'USD₮0',
-    'USDC.e',
-    'EURe',
+    'USDC.E',
+    'EURE',
     'XDAI',
   ],
   correlatedEth: [
-    'weETH',
+    'WEETH',
     'ETH',
     'WETH',
-    'wstETH',
-    'cbETH',
-    'ezETH',
-    'wrsETH',
-    'osETH',
-    'rETH',
-    'ETHx',
+    'WSTETH',
+    'CBETH',
+    'EZETH',
+    'WRSETH',
+    'OSETH',
+    'RETH',
+    'ETHX',
   ],
-  correlatedBtc: ['cbBTC', 'WBTC', 'LBTC', 'tBTC', 'eBTC'],
+  correlatedBtc: ['CBBTC', 'WBTC', 'LBTC', 'TBTC', 'EBTC'],
 } as const;
 
 const cowSymbolGroup = (symbol: string): keyof typeof TOKEN_GROUPS | 'unknown' => {
   for (const [groupName, tokens] of Object.entries(TOKEN_GROUPS)) {
-    if (tokens.includes(symbol)) {
+    if (tokens.includes(symbol.toUpperCase())) {
       return groupName as keyof typeof TOKEN_GROUPS;
     }
   }
@@ -76,25 +75,17 @@ const cowSymbolGroup = (symbol: string): keyof typeof TOKEN_GROUPS | 'unknown' =
 
 export const HEADER_WIDGET_APP_CODE = 'aave-v3-interface-widget';
 export const ADAPTER_APP_CODE = 'aave-v3-interface-aps'; // Use this one for contract adapters so we have different dashboards
-export const COW_PARTNER_FEE: (tokenFromSymbol: string, tokenToSymbol: string) => PartnerFee = (
-  tokenFromSymbol: string,
-  tokenToSymbol: string
-) => ({
-  bps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
+export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) => ({
+  volumeBps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
   recipient: COW_EVM_RECIPIENT,
 });
-export const COW_APP_DATA: (tokenFromSymbol: string, tokenToSymbol: string) => AppDataRootSchema = (
-  tokenFromSymbol: string,
-  tokenToSymbol: string
-) => {
-  return {
-    appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
-    version: '1.3.0',
-    metadata: {
-      partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol),
-    },
-  };
-};
+export const COW_APP_DATA = (tokenFromSymbol: string, tokenToSymbol: string) => ({
+  appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
+  version: '1.3.0',
+  metadata: {
+    partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol),
+  },
+});
 
 export type CowProtocolActionParams = {
   quote: OrderParameters;
@@ -102,13 +93,14 @@ export type CowProtocolActionParams = {
   chainId: number;
   user: string;
   amount: string;
-  destAmount: string;
   tokenDest: string;
   tokenSrc: string;
   tokenSrcDecimals: number;
   tokenDestDecimals: number;
   inputSymbol: string;
   outputSymbol: string;
+  afterNetworkCostsBuyAmount: string;
+  slippageBps: number;
 };
 
 export const getPreSignTransaction = async ({
@@ -120,7 +112,8 @@ export const getPreSignTransaction = async ({
   tokenSrc,
   tokenSrcDecimals,
   tokenDestDecimals,
-  destAmount,
+  afterNetworkCostsBuyAmount,
+  slippageBps,
   inputSymbol,
   outputSymbol,
 }: CowProtocolActionParams) => {
@@ -144,10 +137,11 @@ export const getPreSignTransaction = async ({
     {
       owner: user as `0x${string}`,
       sellAmount: amount,
-      buyAmount: destAmount,
+      buyAmount: afterNetworkCostsBuyAmount,
       kind: OrderKind.SELL,
       sellToken: tokenSrc,
       buyToken: tokenDest,
+      slippageBps,
       sellTokenDecimals: tokenSrcDecimals,
       buyTokenDecimals: tokenDestDecimals,
     },
@@ -180,7 +174,8 @@ export const sendOrder = async ({
   tokenSrc,
   tokenSrcDecimals,
   tokenDestDecimals,
-  destAmount,
+  afterNetworkCostsBuyAmount,
+  slippageBps,
   inputSymbol,
   outputSymbol,
 }: CowProtocolActionParams) => {
@@ -205,9 +200,10 @@ export const sendOrder = async ({
       {
         owner: user as `0x${string}`,
         sellAmount: amount,
-        buyAmount: destAmount,
+        buyAmount: afterNetworkCostsBuyAmount,
         kind: OrderKind.SELL,
         sellToken: tokenSrc,
+        slippageBps,
         buyToken: tokenDest,
         sellTokenDecimals: tokenSrcDecimals,
         buyTokenDecimals: tokenDestDecimals,
@@ -368,4 +364,26 @@ export const uploadAppData = async (orderId: string, appDataHex: string, chainId
   const orderBookApi = new OrderBookApi({ chainId });
 
   return orderBookApi.uploadAppData(orderId, appDataHex);
+};
+
+export const generateCoWExplorerLink = (chainId: SupportedChainId, orderId?: string) => {
+  if (!orderId) {
+    return undefined;
+  }
+
+  const base = 'https://explorer.cow.fi';
+  switch (chainId) {
+    case SupportedChainId.MAINNET:
+      return `${base}/orders/${orderId}`;
+    case SupportedChainId.GNOSIS_CHAIN:
+      return `${base}/gc/orders/${orderId}`;
+    case SupportedChainId.BASE:
+      return `${base}/base/orders/${orderId}`;
+    case SupportedChainId.ARBITRUM_ONE:
+      return `${base}/arb1/orders/${orderId}`;
+    case SupportedChainId.SEPOLIA:
+      return `${base}/sepolia/orders/${orderId}`;
+    default:
+      throw new Error('Define explorer link for chainId: ' + chainId);
+  }
 };

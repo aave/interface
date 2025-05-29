@@ -1015,6 +1015,10 @@ msgstr "Asset cannot be migrated to {marketName} v3 Market since collateral asse
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+msgid "Fees help support the user experience and security of the Aave application. Learn more."
+msgstr "Fees help support the user experience and security of the Aave application. Learn more."
+
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
@@ -1084,6 +1088,10 @@ msgstr "Estimated compounding interest, including discount for Staking {0}AAVE i
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "Unstaking {symbol}"
 msgstr "Unstaking {symbol}"
+
+#: src/components/transactions/Switch/SwitchActions.tsx
+msgid "Swapping"
+msgstr "Swapping"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not use this currency as collateral"
@@ -1971,7 +1979,6 @@ msgstr "Cooldown period warning"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
-#: src/components/transactions/Switch/SwitchActions.tsx
 msgid "Swaping"
 msgstr "Swaping"
 
@@ -2817,10 +2824,6 @@ msgstr "Nothing found"
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Signatures ready"
 msgstr "Signatures ready"
-
-#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
-msgid "Fees are applied to ensure the best experience with Aave."
-msgstr "Fees are applied to ensure the best experience with Aave."
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Go to Balancer Pool"

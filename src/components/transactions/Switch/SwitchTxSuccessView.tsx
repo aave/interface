@@ -1,9 +1,8 @@
-import { ChainIdToNetwork } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, Divider, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
@@ -16,6 +15,7 @@ import { BaseCancelledView } from '../FlowCommons/BaseCancelled';
 import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 import { BaseWaitingView } from '../FlowCommons/BaseWaiting';
 import {
+  generateCoWExplorerLink,
   getOrder,
   isNativeToken,
   isOrderCancelled,
@@ -107,32 +107,46 @@ export const SwitchTxSuccessView = ({
   }, [txHashOrOrderId, chainId, switchProvider, trackOrder, setHasActiveOrders]);
 
   // Poll the order status for UI updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (switchProvider === 'cowprotocol' && txHashOrOrderId) {
-        getOrder(txHashOrOrderId, chainId)
-          .then((order) => {
-            if (isOrderFilled(order.status)) {
-              setOrderStatus('succeed');
-              setSurplus(
-                BigNumber.from(order.executedBuyAmount)
-                  .sub(BigNumber.from(parseUnits(outFinalAmount, destDecimals)))
-                  .toBigInt()
-              );
-              setOutFinalAmount(normalize(order.executedBuyAmount, destDecimals));
-              setInAmount(normalize(order.executedSellAmount, srcDecimals));
-            } else if (isOrderCancelled(order.status)) {
-              setOrderStatus('failed');
-            } else if (isOrderLoading(order.status)) {
-              setOrderStatus('open');
+  const interval = useRef<NodeJS.Timeout | null>(null);
+  const pollOrder = async () => {
+    if (switchProvider === 'cowprotocol' && txHashOrOrderId) {
+      getOrder(txHashOrOrderId, chainId)
+        .then((order) => {
+          if (isOrderFilled(order.status)) {
+            setOrderStatus('succeed');
+            setSurplus(
+              BigNumber.from(order.executedBuyAmount)
+                .sub(BigNumber.from(parseUnits(outAmount, destDecimals)))
+                .toBigInt()
+            );
+            setOutFinalAmount(normalize(order.executedBuyAmount, destDecimals));
+            setInAmount(normalize(order.executedSellAmount, srcDecimals));
+            if (interval.current) {
+              clearInterval(interval.current);
             }
-          })
-          .catch(console.error);
-      }
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [txHashOrOrderId, chainId, switchProvider, outFinalAmount, destDecimals]);
+          } else if (isOrderCancelled(order.status)) {
+            setOrderStatus('failed');
+            if (interval.current) {
+              clearInterval(interval.current);
+            }
+          } else if (isOrderLoading(order.status)) {
+            setOrderStatus('open');
+          }
+        })
+        .catch(console.error);
+    }
+  };
+  useEffect(() => {
+    if (
+      txHashOrOrderId &&
+      switchProvider === 'cowprotocol' &&
+      chainId &&
+      destDecimals &&
+      interval.current === null
+    ) {
+      interval.current = setInterval(pollOrder, 10000);
+    }
+  }, [txHashOrOrderId, chainId, switchProvider, destDecimals]);
 
   const View = useMemo(() => {
     if (provider === 'cowprotocol' && orderStatus === 'open') {
@@ -143,18 +157,19 @@ export const SwitchTxSuccessView = ({
     return BaseSuccessView; // Default case
   }, [orderStatus, provider]);
 
+  const surplusFormatted = surplus
+    ? Number(normalize(surplus.toString(), destDecimals))
+    : undefined;
   const surplusDisplay =
-    surplus && surplus > 0
-      ? `Includes +${Number(normalize(surplus.toString(), destDecimals)).toLocaleString(undefined, {
+    surplusFormatted && surplusFormatted > 0.01
+      ? `Includes +${surplusFormatted.toLocaleString(undefined, {
           maximumFractionDigits: 2,
         })} ${outSymbol} Surplus`
       : undefined;
 
   const customExplorerLink = useMemo(() => {
     return provider === 'cowprotocol'
-      ? `https://explorer.cow.fi/${
-          chainId == 1 ? '' : ChainIdToNetwork[chainId] + '/'
-        }orders/${txHashOrOrderId}`
+      ? generateCoWExplorerLink(chainId, txHashOrOrderId)
       : `${networkConfig}/tx/${txHashOrOrderId}`;
   }, [provider, chainId, txHashOrOrderId]);
 

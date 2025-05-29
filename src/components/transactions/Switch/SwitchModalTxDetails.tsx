@@ -4,6 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Box } from '@mui/material';
 import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
@@ -83,7 +84,16 @@ const IntentTxDetails = ({
 
   const feeTooltip = (
     <TextWithTooltip variant="caption" text={<Trans>Fee</Trans>}>
-      <Trans>Fees are applied to ensure the best experience with Aave.</Trans>
+      <Trans>
+        Fees help support the user experience and security of the Aave application.{' '}
+        <Link
+          href="https://docs.aave.com/docs/developers/smart-contracts/swap-features"
+          target="_blank"
+          rel="noopener"
+        >
+          Learn more.
+        </Link>
+      </Trans>
     </TextWithTooltip>
   );
 
@@ -94,6 +104,7 @@ const IntentTxDetails = ({
           mb: 4,
           boxShadow: 'none',
           '&:before': { display: 'none' },
+          '.MuiAccordionSummary-root': { minHeight: '24px', maxHeight: '24px' },
           backgroundColor: 'transparent',
         }}
         onChange={(_, expanded) => {
@@ -104,7 +115,7 @@ const IntentTxDetails = ({
           expandIcon={<ExpandMoreIcon />}
           sx={{
             padding: 0,
-            minHeight: 'unset',
+            minHeight: '24px',
             height: '24px',
             '.MuiAccordionSummary-content': { margin: 0 },
           }}
@@ -133,6 +144,7 @@ const IntentTxDetails = ({
           <Row
             mx={2}
             mb={2}
+            mt={2}
             caption={networkCostsTooltip}
             captionVariant="caption"
             align="flex-start"
