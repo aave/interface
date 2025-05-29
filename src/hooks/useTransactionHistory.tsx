@@ -252,8 +252,14 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
             symbol: destToken.symbol,
             decimals: destToken.decimals,
           },
-          srcAmount: order.executedSellAmount ?? order.sellAmount,
-          destAmount: order.executedBuyAmount ?? order.buyAmount,
+          srcAmount:
+            order.executedSellAmount && order.executedBuyAmount != '0'
+              ? order.executedSellAmount
+              : order.sellAmount,
+          destAmount:
+            order.executedBuyAmount && order.executedSellAmount != '0'
+              ? order.executedBuyAmount
+              : order.buyAmount,
           status: order.status,
           orderId: order.uid,
           chainId: chainId,

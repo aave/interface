@@ -241,7 +241,7 @@ export const getOrders = async (chainId: number, account: string) => {
 };
 
 export const isOrderLoading = (status: OrderStatus) => {
-  return status === OrderStatus.OPEN;
+  return status === OrderStatus.OPEN || status === OrderStatus.PRESIGNATURE_PENDING;
 };
 
 export const isOrderFilled = (status: OrderStatus) => {

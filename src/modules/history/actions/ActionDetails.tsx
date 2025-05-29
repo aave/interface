@@ -1,4 +1,3 @@
-import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, SvgIcon, Typography, useTheme } from '@mui/material';
@@ -8,6 +7,11 @@ import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
+import {
+  isOrderCancelled,
+  isOrderFilled,
+  isOrderLoading,
+} from 'src/components/transactions/Switch/cowprotocol.helpers';
 
 import { BorrowRateModeBlock } from '../actions/BorrowRateModeBlock';
 import { fetchIconSymbolAndNameHistorical } from '../helpers';
@@ -631,7 +635,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
           </Box>
 
           {/* Status */}
-          {cowSwapTx.status == OrderStatus.OPEN && (
+          {isOrderLoading(cowSwapTx.status) && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
               <Warning
                 severity="info"
@@ -650,7 +654,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
               </Warning>
             </Box>
           )}
-          {cowSwapTx.status == OrderStatus.FULFILLED && (
+          {isOrderFilled(cowSwapTx.status) && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
               <Warning
                 severity="success"
@@ -670,8 +674,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             </Box>
           )}
 
-          {(cowSwapTx.status == OrderStatus.CANCELLED ||
-            cowSwapTx.status == OrderStatus.EXPIRED) && (
+          {isOrderCancelled(cowSwapTx.status) && (
             <Box sx={{ display: 'inline-flex', alignItems: 'center', ml: 4.5 }}>
               <Warning
                 severity="error"
