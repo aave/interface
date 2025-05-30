@@ -87,7 +87,7 @@ const IntentTxDetails = ({
       <Trans>
         Fees help support the user experience and security of the Aave application.{' '}
         <Link
-          href="https://docs.aave.com/docs/developers/smart-contracts/swap-features"
+          href="https://aave.com/docs/developers/smart-contracts/swap-features"
           target="_blank"
           rel="noopener"
         >
