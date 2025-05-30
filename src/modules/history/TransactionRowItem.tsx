@@ -4,9 +4,7 @@ import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/
 import React, { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
-import { generateCoWExplorerLink } from 'src/components/transactions/Switch/cowprotocol.helpers';
 import { useRootStore } from 'src/store/root';
-import { NetworkConfig } from 'src/ui-config/networksConfig';
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
@@ -26,29 +24,11 @@ interface TransactionHistoryItemProps {
   transaction: TransactionHistoryItem & ActionFields[keyof ActionFields];
 }
 
-export const getExplorerLink = (
-  transaction: TransactionHistoryItem & ActionFields[keyof ActionFields],
-  currentNetworkConfig: NetworkConfig
-) => {
-  if (transaction.action === 'CowSwap' && currentNetworkConfig.wagmiChain.id) {
-    return generateCoWExplorerLink(currentNetworkConfig.wagmiChain.id, transaction.id);
-  }
-
-  if (!('txHash' in transaction)) {
-    return undefined;
-  }
-
-  return currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
-};
-
 function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
   const [copyStatus, setCopyStatus] = useState(false);
   const [currentNetworkConfig, trackEvent] = useRootStore(
     useShallow((state) => [state.currentNetworkConfig, state.trackEvent])
   );
-
-  const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
-
   const theme = useTheme();
 
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
@@ -64,6 +44,8 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
       };
     }
   }, [copyStatus]);
+
+  const explorerLink = currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
   return (
     <Box px={6}>
@@ -97,7 +79,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
         </Box>
         <ListColumn align="right">
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-            {!downToMD && explorerLink && (
+            {!downToMD && (
               <Button
                 variant="outlined"
                 href={explorerLink}

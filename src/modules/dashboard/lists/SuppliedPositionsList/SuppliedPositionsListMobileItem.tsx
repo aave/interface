@@ -126,7 +126,7 @@ export const SuppliedPositionsListMobileItem = ({
             onClick={() => openSwap(underlyingAsset)}
             fullWidth
           >
-            <Trans>Swap</Trans>
+            <Trans>Switch</Trans>
           </Button>
         ) : (
           <Button

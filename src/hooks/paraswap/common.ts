@@ -127,13 +127,13 @@ const MESSAGE_REGEX_MAP: Array<{ regex: RegExp; message: string }> = [
  * @param message Paraswap error message
  * @returns Message for displaying in interface
  */
-export function convertParaswapErrorMessage(message: string): string | undefined {
+export function convertParaswapErrorMessage(message: string): string {
   if (message in MESSAGE_MAP) {
     return MESSAGE_MAP[message];
   }
 
   const newMessage = MESSAGE_REGEX_MAP.find((mapping) => mapping.regex.test(message))?.message;
-  return newMessage;
+  return newMessage || 'There was an issue fetching data from Paraswap';
 }
 
 /**

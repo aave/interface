@@ -43,16 +43,7 @@ export const groupByDate = (
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-    }).format(
-      new Date(
-        // Check if timestamp is in seconds (Unix timestamp) or milliseconds
-        // Unix timestamps are typically 10 digits (seconds since 1970)
-        // While JavaScript timestamps are 13 digits (milliseconds since 1970)
-        transaction.timestamp < 10000000000
-          ? transaction.timestamp * 1000 // Convert seconds to milliseconds
-          : transaction.timestamp // Already in milliseconds
-      )
-    );
+    }).format(new Date(transaction.timestamp * 1000));
     if (!grouped[date]) {
       grouped[date] = [];
     }

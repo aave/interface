@@ -34,7 +34,7 @@ export const WithdrawAndSwitchTxSuccessView = ({
         }}
       >
         <Typography>
-          <Trans>You&apos;ve successfully withdrew & swapped tokens.</Trans>
+          <Trans>You&apos;ve successfully withdrew & switched tokens.</Trans>
         </Typography>
         <Box
           sx={{

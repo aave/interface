@@ -8,10 +8,8 @@ export interface BasicModalProps {
   setOpen: (value: boolean) => void;
   withCloseButton?: boolean;
   contentMaxWidth?: number;
-  contentHeight?: number;
   closeCallback?: () => void;
   disableEnforceFocus?: boolean;
-  BackdropProps?: object;
 }
 
 export const BasicModal = ({
@@ -19,11 +17,9 @@ export const BasicModal = ({
   setOpen,
   withCloseButton = true,
   contentMaxWidth = 420,
-  contentHeight,
   children,
   closeCallback,
   disableEnforceFocus,
-  BackdropProps,
   ...props
 }: BasicModalProps) => {
   const handleClose = () => {
@@ -36,7 +32,6 @@ export const BasicModal = ({
       open={open}
       onClose={handleClose}
       disableEnforceFocus={disableEnforceFocus} // Used for wallet modal connection
-      BackdropProps={BackdropProps}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -59,8 +54,7 @@ export const BasicModal = ({
           overflowY: 'auto',
           width: '100%',
           maxWidth: { xs: '359px', xsm: `${contentMaxWidth}px` },
-          height: contentHeight ? `${contentHeight}px` : 'auto',
-          maxHeight: contentHeight ? `${contentHeight}px` : 'calc(100vh - 20px)',
+          maxHeight: 'calc(100vh - 20px)',
           p: 6,
         }}
       >

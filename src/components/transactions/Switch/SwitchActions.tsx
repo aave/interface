@@ -1,48 +1,26 @@
 import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
-import { valueToBigNumber } from '@aave/math-utils';
-import {
-  calculateUniqueOrderId,
-  COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
-  SupportedChainId,
-} from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
+import { OptimalRate } from '@paraswap/sdk';
 import { useQueryClient } from '@tanstack/react-query';
-import { BigNumber } from 'ethers';
 import { defaultAbiCoder, formatUnits, splitSignature } from 'ethers/lib/utils';
-import stringify from 'json-stringify-deterministic';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { isSmartContractWallet } from 'src/helpers/provider';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { calculateSignedAmount } from 'src/hooks/paraswap/common';
 import { useParaswapSellTxParams } from 'src/hooks/paraswap/useParaswapRates';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { findByChainId } from 'src/ui-config/marketsConfig';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { wagmiConfig } from 'src/ui-config/wagmiConfig';
-import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
-import {
-  COW_APP_DATA,
-  getPreSignTransaction,
-  getUnsignerOrder,
-  isNativeToken,
-  populateEthFlowTx,
-  sendOrder,
-  uploadAppData,
-} from './cowprotocol.helpers';
-import { isCowProtocolRates, isParaswapRates, SwitchRatesType } from './switch.types';
 
-interface SwitchProps {
+interface SwithProps {
   inputAmount: string;
   inputToken: string;
   outputToken: string;
@@ -51,12 +29,9 @@ interface SwitchProps {
   loading?: boolean;
   isWrongNetwork: boolean;
   chainId: number;
-  switchRates?: SwitchRatesType;
+  route?: OptimalRate;
   inputName: string;
   outputName: string;
-  inputSymbol: string;
-  outputSymbol: string;
-  setShowGasStation: (showGasStation: boolean) => void;
 }
 
 interface SignedParams {
@@ -72,16 +47,13 @@ export const SwitchActions = ({
   inputName,
   outputName,
   outputToken,
-  inputSymbol,
-  outputSymbol,
-  slippage: slippageInPercent,
+  slippage,
   blocked,
   loading,
   isWrongNetwork,
   chainId,
-  switchRates,
-  setShowGasStation,
-}: SwitchProps) => {
+  route,
+}: SwithProps) => {
   const [
     user,
     generateApproval,
@@ -90,7 +62,6 @@ export const SwitchActions = ({
     generateSignatureRequest,
     addTransaction,
     currentMarketData,
-    trackEvent,
   ] = useRootStore(
     useShallow((state) => [
       state.account,
@@ -100,7 +71,6 @@ export const SwitchActions = ({
       state.generateSignatureRequest,
       state.addTransaction,
       state.currentMarketData,
-      state.trackEvent,
     ])
   );
 
@@ -124,8 +94,7 @@ export const SwitchActions = ({
   const { mutateAsync: fetchParaswapTxParams } = useParaswapSellTxParams(
     networkConfig.underlyingChainId ?? chainId
   );
-  const tryPermit =
-    permitByChainAndToken[chainId]?.[inputToken] && switchRates?.provider !== 'cowprotocol';
+  const tryPermit = permitByChainAndToken[chainId]?.[inputToken];
 
   const useSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT && tryPermit;
 
@@ -141,17 +110,17 @@ export const SwitchActions = ({
   }, [approvedAmount, inputAmount, isWrongNetwork]);
 
   const action = async () => {
-    setMainTxState({ ...mainTxState, loading: true });
-    if (isParaswapRates(switchRates)) {
+    if (route) {
       try {
+        setMainTxState({ ...mainTxState, loading: true });
         const tx = await fetchParaswapTxParams({
           srcToken: inputToken,
-          srcDecimals: switchRates.srcDecimals,
-          destDecimals: switchRates.destDecimals,
+          srcDecimals: route.srcDecimals,
+          destDecimals: route.destDecimals,
           destToken: outputToken,
-          route: switchRates.optimalRateData,
+          route,
           user,
-          maxSlippage: Number(slippageInPercent) * 10000,
+          maxSlippage: Number(slippage) * 10000,
           permit: signatureParams && signatureParams.signature,
           deadline: signatureParams && signatureParams.deadline,
           partner: 'aave-widget',
@@ -161,13 +130,13 @@ export const SwitchActions = ({
         const response = await sendTx(txWithGasEstimation);
         const txData = {
           action: 'switch',
-          asset: switchRates.srcToken,
+          asset: route.srcToken,
           assetName: inputName,
-          amount: formatUnits(switchRates.srcAmount, switchRates.srcDecimals),
-          amountUsd: switchRates.srcUSD,
-          outAsset: switchRates.destToken,
-          outAmount: formatUnits(switchRates.destAmount, switchRates.destDecimals),
-          outAmountUsd: switchRates.destUSD,
+          amount: formatUnits(route.srcAmount, route.srcDecimals),
+          amountUsd: route.srcUSD,
+          outAsset: route.destToken,
+          outAmount: formatUnits(route.destAmount, route.destDecimals),
+          outAmountUsd: route.destUSD,
           outAssetName: outputName,
         };
         try {
@@ -176,6 +145,7 @@ export const SwitchActions = ({
             response.hash,
             {
               txState: 'success',
+              ...txData,
             },
             {
               chainId,
@@ -215,292 +185,81 @@ export const SwitchActions = ({
           loading: false,
         });
       }
-    } else if (isCowProtocolRates(switchRates)) {
+    }
+  };
+
+  const approval = async () => {
+    if (route) {
+      const amountToApprove = calculateSignedAmount(inputAmount, route.srcDecimals, 0);
+      const approvalData = {
+        spender: route.tokenTransferProxy,
+        user,
+        token: inputToken,
+        amount: amountToApprove,
+      };
       try {
-        const provider = await getEthersProvider(wagmiConfig, { chainId });
-        const destAmountWithSlippage = valueToBigNumber(switchRates.destAmount)
-          .multipliedBy(valueToBigNumber(1).minus(valueToBigNumber(slippageInPercent)))
-          .toFixed(0);
-        const slippageBps = Math.round(Number(slippageInPercent) * 100 * 100); // percent to bps
-
-        // If srcToken is native, we need to use the eth-flow instead of the orderbook
-        if (isNativeToken(inputToken)) {
-          const validTo = Math.floor(Date.now() / 1000) + 60 * 30; // 30 minutes
-          const ethFlowTx = await populateEthFlowTx(
-            switchRates.srcAmount,
-            destAmountWithSlippage.toString(),
-            outputToken,
-            user,
-            validTo,
-            inputSymbol,
-            outputSymbol,
-            switchRates.quoteId
+        if (useSignature) {
+          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+          const signatureRequest = await generateSignatureRequest(
+            {
+              ...approvalData,
+              deadline,
+            },
+            { chainId }
           );
-          const txWithGasEstimation = await estimateGasLimit(ethFlowTx, chainId);
-          let response;
-          try {
-            response = await sendTx(txWithGasEstimation);
-            addTransaction(
-              response.hash,
-              {
-                txState: 'success',
-              },
-              {
-                chainId,
-              }
-            );
-
-            setMainTxState({
-              loading: false,
-              success: true,
-            });
-
-            const unsignerOrder = await getUnsignerOrder(
-              switchRates.srcAmount,
-              destAmountWithSlippage.toString(),
-              outputToken,
-              user,
-              chainId,
-              inputSymbol,
-              outputSymbol
-            );
-            const calculatedOrderId = await calculateUniqueOrderId(chainId, unsignerOrder);
-
-            await uploadAppData(
-              calculatedOrderId,
-              stringify(COW_APP_DATA(inputSymbol, outputSymbol)),
-              chainId
-            );
-
-            // CoW takes some time to index the order for 'eth-flow' orders
-            setTimeout(() => {
-              setMainTxState({
-                loading: false,
-                success: true,
-                txHash: calculatedOrderId,
-              });
-            }, 1000 * 30); // 30 seconds - if we set less than 30 seconds, the order is not indexed yet and CoW explorer will not find the order
-          } catch (error) {
-            setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
-            setMainTxState({
-              txHash: response?.hash,
-              loading: false,
-            });
-            if (response?.hash) {
-              addTransaction(
-                response?.hash,
-                {
-                  txState: 'failed',
-                },
-                { chainId }
-              );
-            }
-          }
+          setApprovalTxState({ ...approvalTxState, loading: true });
+          const response = await signTxData(signatureRequest);
+          const splitedSignature = splitSignature(response);
+          const encodedSignature = defaultAbiCoder.encode(
+            ['address', 'address', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+            [
+              approvalData.user,
+              approvalData.spender,
+              approvalData.amount,
+              deadline,
+              splitedSignature.v,
+              splitedSignature.r,
+              splitedSignature.s,
+            ]
+          );
+          setSignatureParams({
+            signature: encodedSignature,
+            deadline,
+            amount: approvalData.amount,
+            approvedToken: approvalData.spender,
+          });
+          setApprovalTxState({
+            txHash: MOCK_SIGNED_HASH,
+            loading: false,
+            success: true,
+          });
         } else {
-          let orderId;
-          try {
-            if (await isSmartContractWallet(user, provider)) {
-              const preSignTransaction = await getPreSignTransaction({
-                provider,
-                tokenDest: outputToken,
-                chainId,
-                user,
-                amount: switchRates.srcAmount,
-                tokenSrc: inputToken,
-                tokenSrcDecimals: switchRates.srcDecimals,
-                tokenDestDecimals: switchRates.destDecimals,
-                afterNetworkCostsBuyAmount:
-                  switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
-                slippageBps,
-                inputSymbol,
-                outputSymbol,
-                quote: switchRates.order,
-              });
-
-              const response = await sendTx({
-                data: preSignTransaction.data,
-                to: preSignTransaction.to,
-                value: BigNumber.from(preSignTransaction.value),
-                gasLimit: BigNumber.from(preSignTransaction.gasLimit),
-              });
-
-              addTransaction(
-                response.hash,
-                {
-                  txState: 'success',
-                },
-                {
-                  chainId,
-                }
-              );
-
-              setMainTxState({
-                loading: false,
-                success: true,
-                txHash: preSignTransaction.orderId,
-              });
-            } else {
-              orderId = await sendOrder({
-                tokenSrc: inputToken,
-                tokenSrcDecimals: switchRates.srcDecimals,
-                tokenDest: outputToken,
-                tokenDestDecimals: switchRates.destDecimals,
-                quote: switchRates.order,
-                amount: switchRates.srcAmount,
-                afterNetworkCostsBuyAmount:
-                  switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
-                slippageBps,
-                chainId,
-                user,
-                provider,
-                inputSymbol,
-                outputSymbol,
-              });
-              setMainTxState({
-                loading: false,
-                success: true,
-                txHash: orderId ?? undefined,
-              });
-            }
-          } catch (error) {
-            console.error(error);
-            // setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
-            setMainTxState({
-              success: false,
-              loading: false,
-            });
-          }
+          const tx = generateApproval(approvalData, { chainId, amount: amountToApprove });
+          const txWithGasEstimation = await estimateGasLimit(tx, chainId);
+          setApprovalTxState({ ...approvalTxState, loading: true });
+          const response = await sendTx(txWithGasEstimation);
+          await response.wait(1);
+          setApprovalTxState({
+            txHash: response.hash,
+            loading: false,
+            success: true,
+          });
+          setTxError(undefined);
+          fetchApprovedAmount();
         }
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
-        setMainTxState({
+        setApprovalTxState({
           txHash: undefined,
           loading: false,
-          success: false,
         });
       }
-    } else {
-      setTxError(
-        getErrorTextFromError(new Error('No sell rates found'), TxAction.MAIN_ACTION, true)
-      );
-    }
-
-    try {
-      trackEvent(GENERAL.SWAP, {
-        chainId,
-        inputSymbol,
-        outputSymbol,
-        pair: `${inputSymbol}-${outputSymbol}`,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-
-    // Invalidate the pool tokens query to refresh the data
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolTokens(user, findByChainId(chainId) ?? currentMarketData),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.transactionHistory(
-        user,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-  };
-
-  const approval = async () => {
-    let spender;
-    if (isParaswapRates(switchRates)) {
-      spender = switchRates.optimalRateData.tokenTransferProxy;
-    } else if (isCowProtocolRates(switchRates)) {
-      spender = COW_PROTOCOL_VAULT_RELAYER_ADDRESS[chainId as SupportedChainId];
-    } else {
-      // Error
-      const parsedError = getErrorTextFromError(
-        new Error('Invalid swap provider rates.'),
-        TxAction.APPROVAL,
-        false
-      );
-
-      setTxError(parsedError);
-      setApprovalTxState({
-        txHash: undefined,
-        loading: false,
-      });
-      return;
-    }
-
-    const amountToApprove = calculateSignedAmount(inputAmount, switchRates.srcDecimals, 0);
-    const approvalData = {
-      spender,
-      user,
-      token: inputToken,
-      amount: amountToApprove,
-    };
-    try {
-      if (useSignature) {
-        const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-        const signatureRequest = await generateSignatureRequest(
-          {
-            ...approvalData,
-            deadline,
-          },
-          { chainId }
-        );
-        setApprovalTxState({ ...approvalTxState, loading: true });
-        const response = await signTxData(signatureRequest);
-        const splitedSignature = splitSignature(response);
-        const encodedSignature = defaultAbiCoder.encode(
-          ['address', 'address', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
-          [
-            approvalData.user,
-            approvalData.spender,
-            approvalData.amount,
-            deadline,
-            splitedSignature.v,
-            splitedSignature.r,
-            splitedSignature.s,
-          ]
-        );
-        setSignatureParams({
-          signature: encodedSignature,
-          deadline,
-          amount: approvalData.amount,
-          approvedToken: approvalData.spender,
-        });
-        setApprovalTxState({
-          txHash: MOCK_SIGNED_HASH,
-          loading: false,
-          success: true,
-        });
-      } else {
-        const tx = generateApproval(approvalData, { chainId, amount: amountToApprove });
-        const txWithGasEstimation = await estimateGasLimit(tx, chainId);
-        setApprovalTxState({ ...approvalTxState, loading: true });
-        const response = await sendTx(txWithGasEstimation);
-        await response.wait(1);
-        setApprovalTxState({
-          txHash: response.hash,
-          loading: false,
-          success: true,
-        });
-        setTxError(undefined);
-        fetchApprovedAmount();
-      }
-    } catch (error) {
-      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
-      setApprovalTxState({
-        txHash: undefined,
-        loading: false,
-      });
     }
   };
 
   const fetchApprovedAmount = useCallback(async () => {
-    if (isParaswapRates(switchRates) && switchRates.optimalRateData.tokenTransferProxy) {
+    if (route?.tokenTransferProxy) {
       setSignatureParams(undefined);
       setApprovalTxState({
         txHash: undefined,
@@ -513,30 +272,12 @@ export const SwitchActions = ({
       const approvedTargetAmount = await erc20Service.approvedAmount({
         user,
         token: inputToken,
-        spender: switchRates.optimalRateData.tokenTransferProxy,
-      });
-      setApprovedAmount(approvedTargetAmount);
-      setLoadingTxns(false);
-    } else if (isCowProtocolRates(switchRates)) {
-      // Check approval to VaultRelayer
-      setSignatureParams(undefined);
-      setApprovalTxState({
-        txHash: undefined,
-        loading: false,
-        success: false,
-      });
-      setLoadingTxns(true);
-      const rpc = getProvider(chainId);
-      const erc20Service = new ERC20Service(rpc);
-      const approvedTargetAmount = await erc20Service.approvedAmount({
-        user,
-        token: inputToken,
-        spender: COW_PROTOCOL_VAULT_RELAYER_ADDRESS[chainId as SupportedChainId],
+        spender: route.tokenTransferProxy,
       });
       setApprovedAmount(approvedTargetAmount);
       setLoadingTxns(false);
     }
-  }, [chainId, setLoadingTxns, user, inputToken, switchRates, setApprovalTxState]);
+  }, [chainId, setLoadingTxns, user, inputToken, route?.tokenTransferProxy, setApprovalTxState]);
 
   useEffect(() => {
     if (user) {
@@ -546,22 +287,12 @@ export const SwitchActions = ({
 
   useEffect(() => {
     let switchGasLimit = 0;
-    if (isParaswapRates(switchRates)) {
-      switchGasLimit += Number(
-        gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended
-      );
-    }
+    switchGasLimit = Number(gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended);
     if (requiresApproval && !approvalTxState.success) {
       switchGasLimit += Number(APPROVAL_GAS_LIMIT);
     }
-    if (isNativeToken(inputToken)) {
-      switchGasLimit += Number(
-        gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended
-      );
-    }
     setGasLimit(switchGasLimit.toString());
-    setShowGasStation(requiresApproval || isNativeToken(inputToken));
-  }, [requiresApproval, approvalTxState, setGasLimit, setShowGasStation]);
+  }, [requiresApproval, approvalTxState, setGasLimit]);
 
   return (
     <TxActionsWrapper
@@ -574,12 +305,12 @@ export const SwitchActions = ({
       amount={inputAmount}
       handleApproval={() => approval()}
       requiresApproval={!blocked && requiresApproval}
-      actionText={<Trans>Swap</Trans>}
-      actionInProgressText={<Trans>Swapping</Trans>}
+      actionText={<Trans>Switch</Trans>}
+      actionInProgressText={<Trans>Switching</Trans>}
       errorParams={{
         loading: false,
         disabled: blocked || (!approvalTxState.success && requiresApproval),
-        content: <Trans>Swap</Trans>,
+        content: <Trans>Switch</Trans>,
         handleClick: action,
       }}
       fetchingData={loading}

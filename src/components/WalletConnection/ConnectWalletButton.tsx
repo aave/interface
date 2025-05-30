@@ -10,10 +10,9 @@ import { UserDisplay } from '../UserDisplay';
 export interface ConnectWalletProps {
   funnel?: string;
   onIsConnecting?: (isConnecting: boolean) => void;
-  onClick?: () => void;
 }
 
-export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onClick }) => {
+export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
@@ -24,7 +23,6 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onCl
             <Button
               variant={isConnected ? 'surface' : 'gradient'}
               onClick={() => {
-                onClick && onClick();
                 show && show();
                 trackEvent(AUTH.CONNECT_WALLET, { funnel: funnel });
               }}

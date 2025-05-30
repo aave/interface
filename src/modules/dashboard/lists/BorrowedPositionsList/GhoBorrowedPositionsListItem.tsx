@@ -182,7 +182,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
             onClick={onSwitchClick}
             data-cy={`swapButton`}
           >
-            <Trans>Swap</Trans>
+            <Trans>Switch</Trans>
           </Button>
         ) : (
           <Button disabled={borrowDisabled} variant="outlined" onClick={onBorrowClick}>
@@ -254,7 +254,7 @@ const GhoBorrowedPositionsListItemMobile = ({
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         {showSwitchButton ? (
           <Button disabled={disableSwitch} variant="contained" fullWidth onClick={onSwitchClick}>
-            <Trans>Swap</Trans>
+            <Trans>Switch</Trans>
           </Button>
         ) : (
           <Button disabled={borrowDisabled} variant="outlined" onClick={onBorrowClick} fullWidth>

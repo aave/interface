@@ -284,7 +284,6 @@ export const marketsData: {
     v3: true,
     chainId: ChainId.sepolia,
     enabledFeatures: {
-      switch: true,
       faucet: true,
     },
     addresses: {
@@ -598,7 +597,7 @@ export const marketsData: {
       collateralRepay: true,
       debtSwitch: true,
       withdrawAndSwitch: true,
-      switch: true,
+      switch: false,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/HtcDaL8L8iZ2KQNNS44EBVmLruzxuNAz1RkBYdui1QUT`,
     addresses: {
@@ -738,7 +737,3 @@ export const marketsData: {
     },
   },
 } as const;
-
-export const findByChainId = (chainId: ChainId) => {
-  return Object.values(marketsData).find((market) => market.chainId === chainId);
-};

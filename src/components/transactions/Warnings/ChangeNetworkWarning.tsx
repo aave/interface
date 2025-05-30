@@ -13,7 +13,6 @@ export type ChangeNetworkWarningProps = AlertProps & {
   networkName: string;
   chainId: ChainId;
   event?: TrackEventProps;
-  askManualSwitch?: boolean;
 };
 
 export const ChangeNetworkWarning = ({
@@ -21,7 +20,6 @@ export const ChangeNetworkWarning = ({
   chainId,
   event,
   funnel,
-  askManualSwitch = false,
   ...rest
 }: ChangeNetworkWarningProps) => {
   const { switchNetwork, switchNetworkError } = useWeb3Context();
@@ -29,7 +27,6 @@ export const ChangeNetworkWarning = ({
 
   const handleSwitchNetwork = () => {
     trackEvent(GENERAL.SWITCH_NETWORK, { funnel, ...event?.eventParams, network: networkName });
-    console.log('switchNetwork', chainId);
     switchNetwork(chainId);
   };
   return (
@@ -44,18 +41,16 @@ export const ChangeNetworkWarning = ({
       ) : (
         <Typography variant="description">
           <Trans>Please switch to {networkName}.</Trans>{' '}
-          {!askManualSwitch && (
-            <Button
-              variant="text"
-              sx={{ ml: '2px', verticalAlign: 'top' }}
-              onClick={handleSwitchNetwork}
-              disableRipple
-            >
-              <Typography variant="description">
-                <Trans>Switch Network</Trans>
-              </Typography>
-            </Button>
-          )}
+          <Button
+            variant="text"
+            sx={{ ml: '2px', verticalAlign: 'top' }}
+            onClick={handleSwitchNetwork}
+            disableRipple
+          >
+            <Typography variant="description">
+              <Trans>Switch Network</Trans>
+            </Typography>
+          </Button>
         </Typography>
       )}
     </Warning>
