@@ -133,14 +133,14 @@ jobs:
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
-      - name: Pin to primary IPFS server
-        id: ipfs-primary
-        uses: ./.github/actions/ipfs-pin
+      - name: Upload to Infura IPFS
+        id: infura-upload
+        uses: aave/ipfs-action@master
         with:
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
-          BUILD_PATH: 'out'
+          path: './out'
+          service: infura
+          infuraProjectId: ${{ secrets.INFURA_PROJECT_ID }}
+          infuraProjectSecret: ${{ secrets.INFURA_PROJECT_SECRET }}
 
   cypress_full_v2:
     runs-on: ubuntu-latest
