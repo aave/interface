@@ -13,6 +13,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { Web3Context } from '../hooks/useWeb3Context';
 import { getEthersProvider } from './adapters/EthersAdapter';
+import { useGetWalletCapabilities } from 'src/hooks/useGetWalletCapabilities';
 
 export type ERC20TokenType = {
   address: string;
@@ -49,8 +50,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-  const [setAccount, setConnectedAccountIsContract] = useRootStore(
-    useShallow((store) => [store.setAccount, store.setConnectedAccountIsContract])
+  const [setAccount, setConnectedAccountIsContract, setWalletCapabilities] = useRootStore(
+    useShallow((store) => [
+      store.setAccount,
+      store.setConnectedAccountIsContract,
+      store.setWalletCapabilities,
+    ])
   );
 
   const account = address;
@@ -61,6 +66,23 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }
 
   const { data: isContractAddress } = useIsContractAddress(account || '', chainId);
+  const { data: walletCapabilities } = useGetWalletCapabilities();
+
+  useEffect(() => {
+    if (!account) {
+      setConnectedAccountIsContract(false);
+      setWalletCapabilities(null);
+      return;
+    }
+
+    if (isContractAddress) {
+      setConnectedAccountIsContract(true);
+    }
+
+    if (walletCapabilities) {
+      setWalletCapabilities(walletCapabilities);
+    }
+  }, [isContractAddress, setConnectedAccountIsContract, account, walletCapabilities, setWalletCapabilities]);
 
   useEffect(() => {
     if (didInit) {
@@ -184,17 +206,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       setAccount(readOnlyModeAddress.toLowerCase());
     }
   }, [readOnlyModeAddress, setAccount]);
-
-  useEffect(() => {
-    if (!account) {
-      setConnectedAccountIsContract(false);
-      return;
-    }
-
-    if (isContractAddress) {
-      setConnectedAccountIsContract(true);
-    }
-  }, [isContractAddress, setConnectedAccountIsContract, account]);
 
   return (
     <Web3Context.Provider
