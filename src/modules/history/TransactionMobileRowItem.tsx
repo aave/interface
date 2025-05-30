@@ -9,6 +9,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { unixTimestampToFormattedTime } from './helpers';
+import { getExplorerLink } from './TransactionRowItem';
 import { ActionFields, TransactionHistoryItem } from './types';
 
 function ActionTitle({ action }: { action: string }) {
@@ -42,7 +43,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
     }
   }, [copyStatus]);
 
-  const explorerLink = currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
+  const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
 
   return (
     <Box>
@@ -82,37 +83,39 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
               <Typography variant="caption" color="text.muted">
                 {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
               </Typography>
-              <Button
-                sx={{
-                  display: 'flex',
-                  ml: 3,
-                  mr: 1,
-                  width: '69px',
-                  height: '20px',
-                  fontSize: '0.6rem',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  pl: 1,
-                  pr: 1,
-                }}
-                variant="outlined"
-                href={explorerLink}
-                target="_blank"
-                onClick={() =>
-                  trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
-                }
-              >
-                <Trans>VIEW TX</Trans>{' '}
-                <SvgIcon
+              {explorerLink && (
+                <Button
                   sx={{
-                    fontSize: '15px',
+                    display: 'flex',
+                    ml: 3,
+                    mr: 1,
+                    width: '69px',
+                    height: '20px',
+                    fontSize: '0.6rem',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     pl: 1,
-                    pb: 0.5,
+                    pr: 1,
                   }}
+                  variant="outlined"
+                  href={explorerLink}
+                  target="_blank"
+                  onClick={() =>
+                    trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
+                  }
                 >
-                  <ArrowOutward />
-                </SvgIcon>
-              </Button>
+                  <Trans>VIEW TX</Trans>{' '}
+                  <SvgIcon
+                    sx={{
+                      fontSize: '15px',
+                      pl: 1,
+                      pb: 0.5,
+                    }}
+                  >
+                    <ArrowOutward />
+                  </SvgIcon>
+                </Button>
+              )}
             </Box>
           </Box>
           <Box sx={{ py: '28px' }}>
