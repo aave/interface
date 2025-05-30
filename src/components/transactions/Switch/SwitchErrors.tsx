@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
 
-import { SwitchRatesError } from './SwitchRatesError';
+import { ParaswapRatesError } from './ParaswapRatesError';
 
 interface SwitchErrorsProps {
   ratesError: unknown;
@@ -12,7 +12,7 @@ interface SwitchErrorsProps {
 
 export const SwitchErrors = ({ ratesError, balance, inputAmount }: SwitchErrorsProps) => {
   if (ratesError) {
-    return <SwitchRatesError error={ratesError} />;
+    return <ParaswapRatesError error={ratesError} />;
   } else if (Number(inputAmount) > Number(balance)) {
     return (
       <Warning severity="error" sx={{ mt: 4 }} icon={false}>

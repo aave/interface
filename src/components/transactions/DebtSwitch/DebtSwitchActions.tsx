@@ -280,14 +280,14 @@ export const DebtSwitchActions = ({
       amount={amountToSwap}
       handleApproval={() => approval()}
       requiresApproval={requiresApproval}
-      actionText={<Trans>Swap</Trans>}
-      actionInProgressText={<Trans>Swaping</Trans>}
+      actionText={<Trans>Switch</Trans>}
+      actionInProgressText={<Trans>Switching</Trans>}
       sx={sx}
       fetchingData={loading}
       errorParams={{
         loading: false,
         disabled: blocked || !approvalTxState?.success,
-        content: <Trans>Swap</Trans>,
+        content: <Trans>Switch</Trans>,
         handleClick: action,
       }}
       blocked={blocked}

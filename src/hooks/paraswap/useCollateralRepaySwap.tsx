@@ -126,9 +126,7 @@ export const useCollateralRepaySwap = ({
         setOutputAmountUSD(route.destUSD);
       } catch (e) {
         console.error(e);
-        const message =
-          convertParaswapErrorMessage(e.message) ||
-          'There was an issue fetching data from Paraswap';
+        const message = convertParaswapErrorMessage(e.message);
         setError(message);
       } finally {
         setLoading(false);

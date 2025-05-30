@@ -17,7 +17,6 @@ export const GENERAL = {
   TOKEN_APPROVAL: 'Token Approval',
   ACCEPT_RISK: 'Accept Risk',
   TRANSACTION: 'Transaction',
-  SWAP: 'Swap',
   TRANSACTION_ERROR: 'Transaction Error',
   OPEN_MODAL: 'Open Modal',
   MAX_INPUT_SELECTION: 'Select Max input',

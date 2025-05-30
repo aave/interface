@@ -120,7 +120,7 @@ export const SuppliedPositionsListItem = ({
             }}
             data-cy={`swapButton`}
           >
-            <Trans>Swap</Trans>
+            <Trans>Switch</Trans>
           </Button>
         ) : (
           <Button

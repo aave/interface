@@ -1,17 +1,10 @@
-import { OrderBookApi } from '@cowprotocol/cow-sdk';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import {
-  ADAPTER_APP_CODE,
-  HEADER_WIDGET_APP_CODE,
-} from 'src/components/transactions/Switch/cowprotocol.helpers';
-import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
 import {
   actionFilterMap,
   hasCollateralReserve,
   hasPrincipalReserve,
   hasReserve,
-  hasSrcOrDestToken,
   HistoryFilters,
   TransactionHistoryItemUnion,
 } from 'src/modules/history/types';
@@ -22,7 +15,6 @@ import {
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { TOKEN_LIST } from 'src/ui-config/TokenList';
 import { useShallow } from 'zustand/shallow';
 
 export const applyTxHistoryFilters = ({
@@ -43,8 +35,6 @@ export const applyTxHistoryFilters = ({
       let principalName = '';
       let symbol = '';
       let name = '';
-      let srcToken = '';
-      let destToken = '';
 
       if (hasCollateralReserve(txn)) {
         collateralSymbol = txn.collateralReserve.symbol.toLowerCase();
@@ -61,11 +51,6 @@ export const applyTxHistoryFilters = ({
         name = txn.reserve.name.toLowerCase();
       }
 
-      if (hasSrcOrDestToken(txn)) {
-        srcToken = txn.srcToken.symbol.toLowerCase();
-        destToken = txn.destToken.symbol.toLowerCase();
-      }
-
       // handle special case where user searches for ethereum but asset names are abbreviated as ether
       const altName = name.includes('ether') && !name.includes('tether') ? 'ethereum' : '';
 
@@ -76,9 +61,7 @@ export const applyTxHistoryFilters = ({
         name.includes(lowerSearchQuery) ||
         altName.includes(lowerSearchQuery) ||
         collateralName.includes(lowerSearchQuery) ||
-        principalName.includes(lowerSearchQuery) ||
-        srcToken.includes(lowerSearchQuery) ||
-        destToken.includes(lowerSearchQuery)
+        principalName.includes(lowerSearchQuery)
       );
     });
   } else {
@@ -154,7 +137,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       }
 
       const data = await response.json();
-      return data.data?.userTransactions || [];
+      return data.data.userTransactions || [];
     } catch (error) {
       console.error('Error fetching transaction history:', error);
       return [];
@@ -170,7 +153,6 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     let skip = 0;
     let currentBatchSize = batchSize;
 
-    // Pagination over multiple sources is not perfect but since this is not a user facing feature, it's not noticeable
     while (currentBatchSize === batchSize) {
       const currentBatch = await fetchTransactionHistory({
         first: batchSize,
@@ -180,9 +162,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         v3: !!currentMarketData.v3,
         pool: selectedPool,
       });
-      const cowSwapOrders = await fetchCowSwapsHistory(batchSize, skip * batchSize);
-      allTransactions.push(...currentBatch, ...cowSwapOrders);
       currentBatchSize = currentBatch.length;
+      allTransactions.push(...currentBatch);
       skip += batchSize;
     }
 
@@ -190,86 +171,6 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     return filteredTxns;
   };
 
-  const fetchCowSwapsHistory = async (first: number, skip: number) => {
-    const chainId = currentMarketData.chainId;
-    if (!isChainIdSupportedByCoWProtocol(chainId)) {
-      return [];
-    }
-
-    const orderBookApi = new OrderBookApi({ chainId: chainId });
-    const orders = await orderBookApi.getOrders({
-      owner: account,
-      limit: first,
-      offset: skip,
-    });
-
-    const filteredCowAaveOrders = (
-      await Promise.all(
-        orders.map(async (order) => {
-          try {
-            const appData = JSON.parse(order.fullAppData ?? '{}');
-            const appCode = appData.appCode;
-
-            if (appCode == HEADER_WIDGET_APP_CODE || appCode == ADAPTER_APP_CODE) {
-              return order;
-            }
-          } catch (error) {
-            console.error('Error parsing app data:', error);
-          }
-          return null;
-        })
-      )
-    ).filter((order) => order !== null);
-
-    return filteredCowAaveOrders
-      .map<TransactionHistoryItemUnion | null>((order) => {
-        const srcToken = TOKEN_LIST.tokens.find(
-          (token) =>
-            token.chainId == chainId && token.address.toLowerCase() == order.sellToken.toLowerCase()
-        );
-        const destToken = TOKEN_LIST.tokens.find(
-          (token) =>
-            token.chainId == chainId && token.address.toLowerCase() == order.buyToken.toLowerCase()
-        );
-
-        if (!srcToken || !destToken) {
-          return null;
-        }
-
-        return {
-          action: 'CowSwap',
-          id: order.uid,
-          timestamp: Math.floor(new Date(order.creationDate).getTime() / 1000),
-          srcToken: {
-            underlyingAsset: srcToken.address,
-            name: srcToken.name,
-            symbol: srcToken.symbol,
-            decimals: srcToken.decimals,
-          },
-          destToken: {
-            underlyingAsset: destToken.address,
-            name: destToken.name,
-            symbol: destToken.symbol,
-            decimals: destToken.decimals,
-          },
-          srcAmount:
-            order.executedSellAmount && order.executedBuyAmount != '0'
-              ? order.executedSellAmount
-              : order.sellAmount,
-          destAmount:
-            order.executedBuyAmount && order.executedSellAmount != '0'
-              ? order.executedBuyAmount
-              : order.buyAmount,
-          status: order.status,
-          orderId: order.uid,
-          chainId: chainId,
-        };
-      })
-      .filter((txn) => txn !== null);
-  };
-
-  const PAGE_SIZE = 100;
-  // Pagination over multiple sources is not perfect but since we are using an infinite query, won't be noticeable
   const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage, isError, error } =
     useInfiniteQuery({
       queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
@@ -277,24 +178,23 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         const response = await fetchTransactionHistory({
           account,
           subgraphUrl: currentMarketData.subgraphUrl ?? '',
-          first: PAGE_SIZE,
+          first: 100,
           skip: pageParam,
           v3: !!currentMarketData.v3,
           pool: selectedPool,
         });
-        const cowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, pageParam * PAGE_SIZE);
-        return [...response, ...cowSwapOrders].sort((a, b) => b.timestamp - a.timestamp);
+        return response;
       },
       enabled: !!account && !!currentMarketData.subgraphUrl,
       getNextPageParam: (
         lastPage: TransactionHistoryItemUnion[],
         allPages: TransactionHistoryItemUnion[][]
       ) => {
-        const moreDataAvailable = lastPage.length === PAGE_SIZE;
+        const moreDataAvailable = lastPage.length === 100;
         if (!moreDataAvailable) {
           return undefined;
         }
-        return allPages.length * PAGE_SIZE;
+        return allPages.length * 100;
       },
       initialPageParam: 0,
     });

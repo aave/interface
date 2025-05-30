@@ -2,25 +2,18 @@ import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, ButtonBase, SvgIcon, Typography } from '@mui/material';
+import { OptimalRate } from '@paraswap/sdk';
 import { useMemo, useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
-import { SwitchRatesType } from './switch.types';
-
 type SwitchRatesProps = {
-  rates: SwitchRatesType;
+  rates: OptimalRate;
   srcSymbol: string;
   destSymbol: string;
-  showPriceImpact?: boolean;
 };
 
-export const SwitchRates = ({
-  rates,
-  srcSymbol,
-  destSymbol,
-  showPriceImpact = true,
-}: SwitchRatesProps) => {
+export const SwitchRates = ({ rates, srcSymbol, destSymbol }: SwitchRatesProps) => {
   const [isSwitched, setIsSwitched] = useState(false);
 
   const rate = useMemo(() => {
@@ -62,21 +55,19 @@ export const SwitchRates = ({
         value={rate.toString()}
         visibleDecimals={3}
       />
-      {showPriceImpact && (
-        <DarkTooltip
-          title={
-            <Typography variant="caption">
-              <Trans>Price impact</Trans>
-            </Typography>
-          }
-        >
-          <Box sx={{ display: 'flex', cursor: 'pointer' }}>
-            <Typography variant="caption">{'('}</Typography>
-            <FormattedNumber variant="caption" value={priceImpact.toString()} percent />
-            <Typography variant="caption">{')'}</Typography>
-          </Box>
-        </DarkTooltip>
-      )}
+      <DarkTooltip
+        title={
+          <Typography variant="caption">
+            <Trans>Price impact</Trans>
+          </Typography>
+        }
+      >
+        <Box sx={{ display: 'flex', cursor: 'pointer' }}>
+          <Typography variant="caption">{'('}</Typography>
+          <FormattedNumber variant="caption" value={priceImpact.toString()} percent />
+          <Typography variant="caption">{')'}</Typography>
+        </Box>
+      </DarkTooltip>
     </Box>
   );
 };

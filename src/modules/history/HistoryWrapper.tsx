@@ -219,23 +219,21 @@ export const HistoryWrapper = () => {
           <HistoryItemLoader />
         </>
       ) : !isEmpty ? (
-        Object.entries(groupByDate(filteredTxns))
-          .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
-          .map(([date, txns], groupIndex) => (
-            <React.Fragment key={groupIndex}>
-              <Typography variant="h4" color="text.primary" sx={{ ml: 9, mt: 6, mb: 2 }}>
-                {date}
-              </Typography>
-              {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
-                const isLastItem = index === txns.length - 1;
-                return (
-                  <div ref={isLastItem ? lastElementRef : null} key={index}>
-                    <TransactionRowItem transaction={transaction as TransactionHistoryItemUnion} />
-                  </div>
-                );
-              })}
-            </React.Fragment>
-          ))
+        Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
+          <React.Fragment key={groupIndex}>
+            <Typography variant="h4" color="text.primary" sx={{ ml: 9, mt: 6, mb: 2 }}>
+              {date}
+            </Typography>
+            {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
+              const isLastItem = index === txns.length - 1;
+              return (
+                <div ref={isLastItem ? lastElementRef : null} key={index}>
+                  <TransactionRowItem transaction={transaction as TransactionHistoryItemUnion} />
+                </div>
+              );
+            })}
+          </React.Fragment>
+        ))
       ) : filterActive ? (
         <Box
           sx={{
