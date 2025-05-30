@@ -61,7 +61,7 @@ const cypressConfig = createConfig(
 );
 
 const getTransport = (chainId: number) => {
-  return networkConfigs[chainId].publicJsonRPCUrl[0];
+  return networkConfigs[chainId]?.publicJsonRPCUrl[0];
 };
 
 const buildTransports = (chains: CreateConfigParameters['chains']) =>
