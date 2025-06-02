@@ -23,6 +23,8 @@ msgid "Receive (est.)"
 msgstr "Receive (est.)"
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr "Aave Labs does not guarantee the program and accepts no liability."
 
@@ -89,7 +91,6 @@ msgid "Stable borrowing is not enabled"
 msgstr "Stable borrowing is not enabled"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
-#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Total worth"
 msgstr "Total worth"
 
@@ -201,6 +202,10 @@ msgstr "Asset cannot be migrated due to supply cap restriction in {marketName} v
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
 msgstr "Blocked Address"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
+msgstr "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -374,6 +379,7 @@ msgid "Allowance required action"
 msgstr "Allowance required action"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Available rewards"
 msgstr "Available rewards"
 
@@ -467,11 +473,12 @@ msgstr "APY, borrow rate"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-#: src/modules/umbrella/StakingApyItem.tsx
 msgid "APR"
 msgstr "APR"
 
 #: src/modules/umbrella/helpers/Helpers.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Total"
 msgstr "Total"
 
@@ -514,6 +521,10 @@ msgstr "Share on Lens"
 #: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Redeem as aToken"
 msgstr "Redeem as aToken"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "Learn more about Sonic Rewards program"
+msgstr "Learn more about Sonic Rewards program"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -694,10 +705,6 @@ msgstr "Borrowing power and assets are limited due to Isolation mode."
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Thank you for voting!!"
-msgstr "Thank you for voting!!"
-
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Stable"
@@ -864,6 +871,10 @@ msgstr "Aave per month"
 msgid "Collateralization"
 msgstr "Collateralization"
 
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Umbrella is the upgraded version of the Safety Module. You can still manage your existing staked assets"
+msgstr "Umbrella is the upgraded version of the Safety Module. You can still manage your existing staked assets"
+
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
 msgstr "You can report incident to our <0>Discord</0> or<1>Github</1>."
@@ -930,10 +941,6 @@ msgstr "Legacy Markets"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Learn more."
 msgstr "Learn more."
-
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "Users can stake their assets in the protocol and earn incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "Users can stake their assets in the protocol and earn incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationList.tsx
@@ -1019,10 +1026,6 @@ msgstr "Rewards can be claimed through"
 msgid "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
-
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 msgstr "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
@@ -1065,6 +1068,11 @@ msgstr "Claiming {symbol}"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
+msgid "All done"
+msgstr "All done"
 
 #: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
@@ -1216,7 +1224,6 @@ msgstr "Wrong Network"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
-#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Staking"
 msgstr "Staking"
 
@@ -1345,6 +1352,10 @@ msgstr "View Bridge Transactions"
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Invalid return value of the flashloan executor function"
 
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "Learn more about the Kernel points distribution"
+msgstr "Learn more about the Kernel points distribution"
+
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
 msgstr "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
@@ -1393,6 +1404,7 @@ msgid "Email"
 msgstr "Email"
 
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/umbrella/UnstakeModal.tsx
 msgid "Unstake"
 msgstr "Unstake"
 
@@ -1880,6 +1892,7 @@ msgstr "Amount to Bridge"
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
+#: src/modules/umbrella/UmbrellaHeader.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Umbrella"
 msgstr "Umbrella"
@@ -2075,9 +2088,13 @@ msgstr "Addresses"
 msgid "The requested amount is greater than the max loan size in stable rate mode"
 msgstr "The requested amount is greater than the max loan size in stable rate mode"
 
-#: src/modules/umbrella/UnstakeModalContent.tsx
-msgid "Redeem as {0}"
-msgstr "Redeem as {0}"
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
+
+#: src/modules/umbrella/StakingApyItem.tsx
+msgid "supply"
+msgstr "supply"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
@@ -2175,6 +2192,10 @@ msgstr "Available"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "You did not participate in this proposal"
+
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Umbrella lets you earn rewards by staking your Aave aTokens or underlying assets. If a deficit occurs, the staked assets will be used to cover it."
+msgstr "Umbrella lets you earn rewards by staking your Aave aTokens or underlying assets. If a deficit occurs, the staked assets will be used to cover it."
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -2347,7 +2368,6 @@ msgstr "Preview tx and migrate"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
-#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Balance"
 msgstr "Balance"
 
@@ -2383,11 +2403,6 @@ msgstr "Voted NAY"
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "about SuperFest."
 msgstr "about SuperFest."
-
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-#: src/components/transactions/FlowCommons/BaseSuccess.tsx
-msgid "All done!"
-msgstr "All done!"
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
@@ -2461,6 +2476,7 @@ msgstr "Net APY"
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Claimed"
 msgstr "Claimed"
 
@@ -2473,6 +2489,8 @@ msgstr "The % of your total borrowing power used. This is based on the amount of
 #: src/components/transactions/Bridge/BridgeAmount.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Amount"
 msgstr "Amount"
 
@@ -2483,6 +2501,7 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/UmbrellaClaimActions.tsx
+#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Claim"
 msgstr "Claim"
 
@@ -2538,7 +2557,6 @@ msgid "Borrowable"
 msgstr "Borrowable"
 
 #: src/modules/staking/StakingHeader.tsx
-#: src/ui-config/menu-items/index.tsx
 msgid "Safety Module"
 msgstr "Safety Module"
 
@@ -2640,6 +2658,10 @@ msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to a
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
 msgstr "View"
+
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "here."
+msgstr "here."
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
@@ -2806,10 +2828,6 @@ msgstr "With a voting power of <0/>"
 msgid "French"
 msgstr "French"
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
-msgstr "During the cooldown period, you will not earn any merit rewards. However, rewards earned up to this point will remain unaffected."
-
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
 msgstr "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
@@ -2885,6 +2903,10 @@ msgstr "Debt"
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "Filter"
+
+#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+msgid "Learn more about the Ether.fi program"
+msgstr "Learn more about the Ether.fi program"
 
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
@@ -3067,6 +3089,10 @@ msgstr "Interest accrued"
 msgid "Rewards available to claim"
 msgstr "Rewards available to claim"
 
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting"
+msgstr "Thank you for voting"
+
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions."
 msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditions."
@@ -3103,6 +3129,7 @@ msgstr "Selected supply assets"
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+#: src/modules/umbrella/StakingApyItem.tsx
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "APY"
 msgstr "APY"
@@ -3322,6 +3349,10 @@ msgstr "Maximum amount available to borrow is limited because protocol borrow ca
 msgid "COPY IMAGE"
 msgstr "COPY IMAGE"
 
+#: src/components/infoTooltips/KernelAirdropTooltip.tsx
+msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
@@ -3411,6 +3442,10 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
 msgstr "Get ABP v2 Token"
+
+#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Sonic Rewards."
+msgstr "This asset is eligible for {0} Sonic Rewards."
 
 #: pages/staking.staking.tsx
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."

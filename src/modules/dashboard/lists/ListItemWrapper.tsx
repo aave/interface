@@ -1,6 +1,7 @@
 import { Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
+import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { PausedTooltip } from 'src/components/infoTooltips/PausedTooltip';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
@@ -11,7 +12,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { DASHBOARD } from 'src/utils/events';
 import { ExternalIncentivesTooltipsConfig } from 'src/utils/utils';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
@@ -54,6 +55,7 @@ export const ListItemWrapper = ({
   showExternalIncentivesTooltips = {
     superFestRewards: false,
     spkAirdrop: false,
+    kernelPoints: false,
   },
   ...rest
 }: ListItemWrapperProps) => {
@@ -93,6 +95,7 @@ export const ListItemWrapper = ({
         {paused && <PausedTooltip />}
         {showExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
         {showExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
+        {showExternalIncentivesTooltips.kernelPoints && <KernelAirdropTooltip />}
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}

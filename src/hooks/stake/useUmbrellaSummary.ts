@@ -43,6 +43,7 @@ interface FormattedReward {
   rewardTokenName: string;
   rewardTokenSymbol: string;
   apy: string;
+  aToken: boolean;
 }
 
 interface FormattedStakeTokenData {
@@ -91,6 +92,8 @@ export interface FormattedStakeData {
   symbol: string;
 }
 
+const APY_PRECISION = 4;
+
 const formatStakeData = (
   stakeData: StakeData[],
   reserves: FormattedReservesAndIncentives[]
@@ -111,10 +114,19 @@ const formatStakeData = (
     runningTotal = runningTotal.plus(stakeTokenTotalSupply);
     runningTotalUsd = runningTotalUsd.plus(totalSupplyUsd);
 
-    const matchingReserve = reserves.find(
-      (reserve) =>
-        reserve.aTokenAddress.toLowerCase() === stakeItem.stataTokenData.aToken.toLowerCase()
-    );
+    console.log('stakeItem', stakeItem);
+    let matchingReserve: FormattedReservesAndIncentives | undefined;
+    if (stakeItem.underlyingIsStataToken) {
+      matchingReserve = reserves.find(
+        (reserve) =>
+          reserve.aTokenAddress.toLowerCase() === stakeItem.stataTokenData.aToken.toLowerCase()
+      );
+    } else {
+      matchingReserve = reserves.find(
+        (reserve) =>
+          reserve.underlyingAsset.toLowerCase() === stakeItem.underlyingTokenAddress.toLowerCase()
+      );
+    }
 
     const totalRewardApy = getTotalStakeRewardApy(matchingReserve, stakeItem);
 
@@ -122,14 +134,14 @@ const formatStakeData = (
       tokenAddress: stakeItem.tokenAddress,
       symbol: stakeItem.underlyingIsStataToken
         ? stakeItem.stataTokenData.assetSymbol
-        : stakeItem.symbol,
+        : stakeItem.underlyingTokenSymbol,
       iconSymbol: stakeItem.underlyingIsStataToken
         ? stakeItem.stataTokenData.assetSymbol
-        : stakeItem.symbol,
+        : stakeItem.underlyingTokenSymbol,
       stakeTokenPrice,
       stakeTokenTotalSupply,
       totalSupplyUsd,
-      totalRewardApy: normalize(totalRewardApy.toString(), 18),
+      totalRewardApy,
     };
   });
 
@@ -197,8 +209,7 @@ const formatUmbrellaSummary = (
     );
 
     const totalRewardApy = getTotalStakeRewardApy(reserve, stakeItem);
-
-    weightedApySum = stakeTokenBalance.multipliedBy(totalRewardApy).plus(weightedApySum);
+    weightedApySum = stakeTokenBalanceUSD.multipliedBy(totalRewardApy).plus(weightedApySum);
     aggregatedTotalStakedUSD = aggregatedTotalStakedUSD.plus(stakeTokenBalanceUSD);
 
     let aTokenBalanceAvailableToStake = '0';
@@ -226,9 +237,11 @@ const formatUmbrellaSummary = (
       totalAvailableToStake +=
         Number(stataTokenAssetBalance) + Number(aTokenBalanceAvailableToStake);
     }
-    if (isUnderlyingWrappedBaseToken) {
-      totalAvailableToStake += Number(nativeTokenBalance);
-    }
+
+    // TODO: add back in when native asset staking is available
+    // if (isUnderlyingWrappedBaseToken) {
+    //   totalAvailableToStake += Number(nativeTokenBalance);
+    // }
 
     acc.push({
       ...stakeItem,
@@ -265,13 +278,20 @@ const formatUmbrellaSummary = (
         const priceNormalized = normalize(rewardData.price, USD_DECIMALS);
         const accruedUsd = BigNumber(accruedNormalized).multipliedBy(priceNormalized).toString();
 
+        const reserve = reserves.find(
+          (r) => r.aTokenAddress.toLowerCase() === reward.rewardAddress.toLowerCase()
+        );
+
+        const aToken = reserve !== undefined;
+
         return {
           accruedUsd,
           accrued: accruedNormalized,
           rewardToken: reward.rewardAddress,
-          rewardTokenSymbol: rewardData.rewardSymbol,
-          rewardTokenName: rewardData.rewardName,
-          apy: normalize(rewardData.apy, 18),
+          rewardTokenSymbol: aToken ? reserve.symbol : rewardData.rewardSymbol,
+          rewardTokenName: aToken ? `a${reserve.symbol}` : rewardData.rewardName,
+          apy: normalize(rewardData.apy, APY_PRECISION),
+          aToken,
         };
       }),
       formattedStakeTokenData: {
@@ -312,7 +332,7 @@ const getTotalStakeRewardApy = (
 ): string => {
   const totalRewardApy = normalizeBN(
     stakeData.rewards.reduce((acc, reward) => acc.plus(reward.apy), valueToBigNumber('0')),
-    18
+    APY_PRECISION
   );
   if (stakeData.underlyingIsStataToken) {
     if (!reserve) {

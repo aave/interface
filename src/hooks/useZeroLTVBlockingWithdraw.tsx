@@ -10,6 +10,10 @@ export const useZeroLTVBlockingWithdraw = () => {
     return [];
   }
 
+  if (userSummary.totalBorrowsUSD === '0') {
+    return [];
+  }
+
   const zeroLTVBlockingWithdraw: string[] = [];
   userSummary.userReservesData.forEach((userReserve) => {
     if (

@@ -3,7 +3,6 @@ import { Box, Stack, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
-import { useRootStore } from 'src/store/root';
 
 import { AmountAvailableItem } from './helpers/AmountAvailableItem';
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
@@ -21,15 +20,7 @@ export const AvailableToStakeItem = ({
     underlyingTokenBalance,
   } = stakeData.formattedBalances;
 
-  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
-
   const icons = [];
-  if (stakeData.stataTokenData.isUnderlyingWrappedBaseToken) {
-    icons.push({
-      src: currentNetworkConfig.baseAssetSymbol,
-      aToken: false,
-    });
-  }
   if (underlyingTokenBalance) {
     icons.push({
       src: stakeData.stataTokenData.assetSymbol,
@@ -50,14 +41,10 @@ export const AvailableToStakeItem = ({
     });
   }
 
-  let totalAvailableToStake =
+  const totalAvailableToStake =
     Number(underlyingTokenBalance) +
     Number(underlyingWaTokenBalance) +
     Number(aTokenBalanceAvailableToStake);
-
-  if (stakeData.stataTokenData.isUnderlyingWrappedBaseToken) {
-    totalAvailableToStake += Number(stakeData.formattedBalances.nativeTokenBalance);
-  }
 
   return (
     <Stack
@@ -92,7 +79,6 @@ export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: Merge
   } = stakeData.formattedBalances;
 
   const { assetSymbol } = stakeData.stataTokenData;
-  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
   return (
     <Stack direction="column" alignItems="center" justifyContent="center" minWidth={160}>
@@ -100,13 +86,6 @@ export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: Merge
         <Trans>Your balance of assets that are available to stake</Trans>
       </Typography>
       <Box sx={{ width: '100%' }}>
-        {stakeData.stataTokenData.isUnderlyingWrappedBaseToken && (
-          <AmountAvailableItem
-            symbol={currentNetworkConfig.baseAssetSymbol}
-            name={currentNetworkConfig.baseAssetSymbol}
-            value={stakeData.formattedBalances.nativeTokenBalance}
-          />
-        )}
         {underlyingWaTokenBalance && (
           <AmountAvailableItem
             symbol={assetSymbol}

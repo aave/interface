@@ -1,12 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useStakeDataSummary, useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../../components/primitives/Link';
@@ -41,16 +42,24 @@ export const UmbrellaHeader: React.FC = () => {
               variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
             >
-              <Trans>Staking</Trans>
+              <Trans>Umbrella</Trans>
             </Typography>
             <MarketSwitcher />
           </Box>
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
-              Users can stake their assets in the protocol and earn incentives. In the case of a
-              shortfall event, your stake can be slashed to cover the deficit, providing an
-              additional layer of protection for the protocol.
+              Umbrella is the upgraded version of the Safety Module. You can still manage your
+              existing staked assets
+            </Trans>{' '}
+            <Link href="/staking" sx={{ textDecoration: 'underline', color: '#8E92A3' }}>
+              <Trans>here.</Trans>
+            </Link>
+            <br />
+            <br />
+            <Trans>
+              Umbrella lets you earn rewards by staking your Aave aTokens or underlying assets. If a
+              deficit occurs, the staked assets will be used to cover it.
             </Trans>{' '}
             <Link
               href="https://docs.aave.com/faq/migration-and-staking"
@@ -96,8 +105,21 @@ const UmbrellaHeaderUserDetails = ({
   const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
     useUmbrellaSummary(currentMarketData);
 
+  const { openUmbrellaClaimAll } = useModalContext();
+
   const totalUSDAggregateStaked = stakedDataWithTokenBalances?.aggregatedTotalStakedUSD;
   const weightedAverageApy = stakedDataWithTokenBalances?.weightedAverageApy;
+
+  const userRewardsUsd = stakedDataWithTokenBalances?.stakeData.reduce((acc, stake) => {
+    const totalAvailableToClaim = stake.formattedRewards.reduce(
+      (sum, reward) => sum + Number(reward.accruedUsd || '0'),
+      0
+    );
+    return acc + totalAvailableToClaim;
+  }, 0);
+
+  const userHasRewards =
+    userRewardsUsd !== undefined && userRewardsUsd > 0 && !isLoadingStakedDataWithTokenBalances;
 
   return (
     <>
@@ -134,6 +156,42 @@ const UmbrellaHeaderUserDetails = ({
           symbolsVariant={symbolsTypographyVariant}
         />
       </TopInfoPanelItem>
+      {userHasRewards && (
+        <TopInfoPanelItem
+          title={<Trans>Available rewards</Trans>}
+          loading={isLoadingStakedDataWithTokenBalances}
+          hideIcon
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: { xs: 'flex-start', xsm: 'center' },
+              flexDirection: { xs: 'column', xsm: 'row' },
+            }}
+          >
+            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              <FormattedNumber
+                value={userRewardsUsd}
+                variant={valueTypographyVariant}
+                visibleDecimals={2}
+                compact
+                symbol="USD"
+                symbolsColor="#A5A8B6"
+                symbolsVariant={symbolsTypographyVariant}
+              />
+            </Box>
+
+            <Button
+              variant="gradient"
+              size="small"
+              onClick={() => openUmbrellaClaimAll()}
+              sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
+            >
+              <Trans>Claim</Trans>
+            </Button>
+          </Box>
+        </TopInfoPanelItem>
+      )}
     </>
   );
 };

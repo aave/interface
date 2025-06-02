@@ -3,7 +3,7 @@ import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { Proposal } from './governance/useProposals';
 
@@ -35,6 +35,7 @@ export enum ModalType {
   Umbrella,
   UmbrellaStakeCooldown,
   UmbrellaClaim,
+  UmbrellaClaimAll,
   UmbrellaUnstake,
 }
 
@@ -46,6 +47,7 @@ export interface ModalArgsType {
   icon?: string;
   stakeAssetName?: Stake;
   uStakeToken?: string;
+  underlyingTokenAddress?: string;
   isFrozen?: boolean;
   representatives?: Array<{ chainId: ChainId; representative: string }>;
   chainId?: number;
@@ -105,13 +107,20 @@ export interface ModalContextType<T extends ModalArgsType> {
   openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
   openUmbrella: (
     uStakeToken: string,
+    underlyingTokenAddress: string,
     icon: string,
     stataTokenAToken: string,
     stataTokenAsset: string
   ) => void;
   openUmbrellaStakeCooldown: (uStakeToken: string, icon: string) => void;
   openUmbrellaClaim: (uStakeToken: string) => void;
-  openUmbrellaUnstake: (uStakeToken: string, icon: string) => void;
+  openUmbrellaClaimAll: () => void;
+  openUmbrellaUnstake: (
+    uStakeToken: string,
+    underlyingTokenAddress: string,
+    stataTokenAsset: string,
+    icon: string
+  ) => void;
   openClaimRewards: () => void;
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
@@ -280,7 +289,13 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           setType(ModalType.StakeRewardsClaimRestake);
           setArgs({ stakeAssetName, icon });
         },
-        openUmbrella: (uStakeToken, icon, stataTokenAToken, stataTokenAsset) => {
+        openUmbrella: (
+          uStakeToken,
+          underlyingTokenAddress,
+          icon,
+          stataTokenAToken,
+          stataTokenAsset
+        ) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Umbrella',
             uStakeToken: uStakeToken,
@@ -291,6 +306,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           setType(ModalType.Umbrella);
           setArgs({
             uStakeToken,
+            underlyingTokenAddress,
             icon,
             stataTokenAToken: stataTokenAToken,
             stataTokenAsset: stataTokenAsset,
@@ -310,11 +326,15 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           setType(ModalType.UmbrellaClaim);
           setArgs({ uStakeToken });
         },
-        openUmbrellaUnstake: (uStakeToken, icon) => {
+        openUmbrellaClaimAll: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella Claim All' });
+          setType(ModalType.UmbrellaClaimAll);
+        },
+        openUmbrellaUnstake: (uStakeToken, underlyingTokenAddress, stataTokenAsset, icon) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella Redeem', uStakeToken: uStakeToken });
 
           setType(ModalType.UmbrellaUnstake);
-          setArgs({ uStakeToken, icon });
+          setArgs({ uStakeToken, underlyingTokenAddress, stataTokenAsset, icon });
         },
         openClaimRewards: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim' });

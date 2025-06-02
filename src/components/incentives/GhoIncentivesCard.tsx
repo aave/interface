@@ -1,3 +1,4 @@
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Tooltip, Typography, TypographyProps } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -8,6 +9,7 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
 import { NoData } from '../primitives/NoData';
 import { TokenIcon } from '../primitives/TokenIcon';
+import { EthenaIncentivesButton } from './IncentivesButton';
 
 export interface GhoIncentivesCardProps {
   value: string | number;
@@ -131,6 +133,7 @@ export const GhoIncentivesCard = ({
       ) : (
         <NoData variant="secondary14" color="text.secondary" />
       )}
+      <EthenaIncentivesButton rewardedAsset={AaveV3Ethereum.ASSETS.GHO.V_TOKEN} />
     </Box>
   );
 };

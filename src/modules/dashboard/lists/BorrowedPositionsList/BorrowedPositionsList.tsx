@@ -8,8 +8,8 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { GENERAL } from 'src/utils/events';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 import { useShallow } from 'zustand/shallow';
 
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';

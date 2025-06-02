@@ -5,7 +5,7 @@ import { SxProps } from '@mui/system';
 import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
 import { NetworkConfig } from 'src/ui-config/networksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { Link } from '../../../../components/primitives/Link';
 

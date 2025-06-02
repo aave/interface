@@ -15,6 +15,7 @@ import {
 import React, { useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
+import { DASHBOARD } from 'src/utils/events';
 import {
   availableMarkets,
   CustomMarket,
@@ -24,7 +25,6 @@ import {
   networkConfigs,
   STAGING_ENV,
 } from 'src/utils/marketsAndNetworksConfig';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
 import { useShallow } from 'zustand/shallow';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {

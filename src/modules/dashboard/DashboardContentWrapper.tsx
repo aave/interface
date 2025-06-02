@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { ROUTES } from 'src/components/primitives/Link';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { AUTH } from 'src/utils/mixPanelEvents';
+import { AUTH } from 'src/utils/events';
 
 import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
 import { BorrowedPositionsList } from './lists/BorrowedPositionsList/BorrowedPositionsList';
@@ -47,12 +47,19 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           }}
         >
           {currentAccount && !isBorrow && downToLg && (
-            <Box>
+            <Box
+              sx={{
+                position: { xs: 'static', md: 'relative' },
+                display: 'flex',
+                justifyContent: 'flex-end',
+                mb: { xs: 2, md: 0 },
+              }}
+            >
               <Button
                 sx={{
-                  position: 'absolute',
-                  top: '-130px',
-                  right: '0px',
+                  position: { xs: 'static', md: 'absolute' },
+                  top: { xs: 'auto', md: '-130px' },
+                  right: { xs: 'auto', md: '0px' },
                 }}
                 onClick={() => {
                   router.push(ROUTES.history);
@@ -82,11 +89,10 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           {currentAccount && (
             <Box
               sx={{
-                position: 'absolute',
-
-                top: downToLg ? '-130px' : '-90px',
-
-                right: '0px',
+                position: { xs: 'static', md: 'absolute' },
+                top: { xs: 'auto', md: downToLg ? '-130px' : '-90px' },
+                right: { xs: 'auto', md: '0px' },
+                mb: { xs: 2, md: 0 },
               }}
             >
               <Button

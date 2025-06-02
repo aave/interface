@@ -14,8 +14,8 @@ import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeToo
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { AUTH } from 'src/utils/events';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
-import { AUTH } from 'src/utils/mixPanelEvents';
 import { normalize } from 'viem/ens';
 import { useAccount, useDisconnect } from 'wagmi';
 

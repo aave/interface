@@ -17,6 +17,8 @@ export interface WalletSlice {
   walletApprovalMethodPreference: ApprovalMethod;
   setWalletApprovalMethodPreference: (method: ApprovalMethod) => void;
   refreshWalletApprovalMethod: () => void;
+  connectedAccountIsContract: boolean;
+  setConnectedAccountIsContract: (isContract: boolean) => void;
 }
 
 const getWalletPreferences = () => {
@@ -72,5 +74,9 @@ export const createWalletSlice: StateCreator<
           : ApprovalMethod.PERMIT,
       }));
     }
+  },
+  connectedAccountIsContract: false,
+  setConnectedAccountIsContract(isContract) {
+    set({ connectedAccountIsContract: isContract });
   },
 });

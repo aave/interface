@@ -1,7 +1,7 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Skeleton, Stack, Typography } from '@mui/material';
+import { parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -17,19 +17,15 @@ import {
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
-import {
-  ComputedReserveData,
-  ComputedUserReserveData,
-  ExtendedFormattedUser,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
-import { stakeUmbrellaConfig } from 'src/services/UmbrellaStakeDataService';
 import { useRootStore } from 'src/store/root';
-import { NetworkConfig } from 'src/ui-config/networksConfig';
+import { STAKE } from 'src/utils/events';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
-import { STAKE } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
@@ -40,8 +36,8 @@ export type StakeProps = {
   stakeData: MergedStakeData;
   icon: string;
   user: ExtendedFormattedUser;
-  userReserve: ComputedUserReserveData;
-  poolReserve: ComputedReserveData;
+  userReserve: FormattedUserReserves;
+  poolReserve: FormattedReservesAndIncentives;
 };
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
@@ -55,10 +51,7 @@ export interface StakeInputAsset {
   balance: string;
 }
 
-const getInputTokens = (
-  stakeData: MergedStakeData,
-  networkConfig: NetworkConfig
-): StakeInputAsset[] => {
+const getInputTokens = (stakeData: MergedStakeData): StakeInputAsset[] => {
   const assets = stakeData.underlyingIsStataToken
     ? [
         // stata token
@@ -85,39 +78,28 @@ const getInputTokens = (
           balance: stakeData.formattedBalances.underlyingTokenBalance,
         },
       ];
-  if (stakeData.stataTokenData.isUnderlyingWrappedBaseToken) {
-    assets.push({
-      address: API_ETH_MOCK_ADDRESS,
-      symbol: networkConfig.baseAssetSymbol,
-      iconSymbol: networkConfig.baseAssetSymbol,
-      balance: stakeData.formattedBalances.nativeTokenBalance,
-    });
-  }
   assets.sort((a, b) => +b.balance - +a.balance);
   return assets;
 };
 
 export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve }: StakeProps) => {
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
 
-  // states
+  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const [_amount, setAmount] = useState('');
 
-  const [currentChainId, currentNetworkConfig] = useRootStore(
+  const [currentChainId] = useRootStore(
     useShallow((store) => [store.currentChainId, store.currentNetworkConfig])
   );
 
-  const assets = getInputTokens(stakeData, currentNetworkConfig);
-
+  const assets = getInputTokens(stakeData);
   const [inputToken, setInputToken] = useState<StakeInputAsset>(assets[0]);
 
   const { data: stakeShares, isLoading: loadingPreviewStake } = usePreviewStake(
-    _amount,
+    parseUnits(_amount || '0', stakeData.decimals).toString(),
     stakeData.decimals,
-    currentChainId,
-    stakeData.tokenAddress,
-    stakeData.underlyingIsStataToken ? stakeUmbrellaConfig[currentChainId].batchHelper : ''
+    stakeData.underlyingIsStataToken ? stakeData.underlyingTokenAddress : '',
+    currentChainId
   );
 
   const underlyingBalance = valueToBigNumber(inputToken.balance || '0');
@@ -168,8 +150,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
   }
 
   const amountInUsd = valueToBigNumber(amount || '0')
-    .multipliedBy(stakeData.price)
-    .shiftedBy(-USD_DECIMALS)
+    .multipliedBy(poolReserve.priceInUSD)
     .toString();
 
   const stakeSharesUsd = valueToBigNumber(stakeShares || '0')
@@ -213,24 +194,36 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
             />
           </>
         )}
-        <Row caption={<Trans>Stake token shares</Trans>} captionVariant="description" mb={4}>
-          <Stack direction="column" alignItems="flex-end" justifyContent="center">
-            {loadingPreviewStake ? (
-              <Skeleton variant="rectangular" height={20} width={50} sx={{ borderRadius: '4px' }} />
-            ) : (
-              <>
-                <FormattedNumber value={stakeShares || '0'} variant="secondary14" compact />
-                <FormattedNumber
-                  value={stakeSharesUsd}
-                  color="text.secondary"
-                  variant="helperText"
-                  compact
-                  symbol="USD"
+        {stakeData.underlyingIsStataToken && (
+          <Row
+            caption={<Trans>Stake token shares</Trans>}
+            captionVariant="description"
+            mb={4}
+            align="flex-start"
+          >
+            <Stack direction="column" alignItems="flex-end" justifyContent="center">
+              {loadingPreviewStake ? (
+                <Skeleton
+                  variant="rectangular"
+                  height={20}
+                  width={50}
+                  sx={{ borderRadius: '4px' }}
                 />
-              </>
-            )}
-          </Stack>
-        </Row>
+              ) : (
+                <>
+                  <FormattedNumber value={stakeShares || '0'} variant="secondary14" compact />
+                  <FormattedNumber
+                    value={stakeSharesUsd}
+                    color="text.secondary"
+                    variant="helperText"
+                    compact
+                    symbol="USD"
+                  />
+                </>
+              )}
+            </Stack>
+          </Row>
+        )}
         <DetailsCooldownLine cooldownSeconds={stakeData.cooldownSeconds} />
       </TxModalDetails>
 

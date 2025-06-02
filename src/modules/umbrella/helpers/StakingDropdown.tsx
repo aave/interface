@@ -11,11 +11,9 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { BigNumber } from 'ethers';
 import { useState } from 'react';
-import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { SecondsToString } from 'src/modules/staking/StakingPanel';
 
 // Styled component for the menu items to add gap between icon and text
@@ -37,8 +35,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
   const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaUnstake, openUmbrellaClaim } =
     useModalContext();
   const now = useCurrentTimestamp(1);
-  const { breakpoints, palette } = useTheme();
-  const { addERC20Token } = useWeb3Context();
+  const { breakpoints } = useTheme();
 
   const isMobile = useMediaQuery(breakpoints.down('lg'));
 
@@ -85,6 +82,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
           onClick={() =>
             openUmbrella(
               stakeData.tokenAddress,
+              stakeData.underlyingTokenAddress,
               stakeData.symbol,
               stakeData.stataTokenData.aToken,
               stakeData.stataTokenData.asset
@@ -154,7 +152,12 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               <StyledMenuItem
                 onClick={() => {
                   handleClose();
-                  openUmbrellaUnstake(stakeData.tokenAddress, stakeData.symbol);
+                  openUmbrellaUnstake(
+                    stakeData.tokenAddress,
+                    stakeData.underlyingTokenAddress,
+                    stakeData.stataTokenData.asset,
+                    stakeData.symbol
+                  );
                 }}
                 disabled={!isUnstakeWindowActive}
               >
@@ -180,8 +183,8 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                 handleClose();
                 openUmbrella(
                   stakeData.tokenAddress,
+                  stakeData.underlyingTokenAddress,
                   stakeData.symbol,
-
                   stakeData.stataTokenData.aToken,
                   stakeData.stataTokenData.asset
                 );
@@ -201,6 +204,9 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               <Typography>Claim</Typography>
             </StyledMenuItem>
 
+            {/* The RPC method for adding tokens requires the symbol to be less than 11 characters.
+                The umbrella stake tokens have symbols such as stkwaBasSepUSDT.V1, so removing this
+                option for now.
             <StyledMenuItem
               onClick={() => {
                 addERC20Token({
@@ -212,7 +218,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
             >
               <WalletIcon sx={{ width: '14px', height: '14px', stroke: palette.text.primary }} />
               <Typography>Add token to wallet</Typography>
-            </StyledMenuItem>
+            </StyledMenuItem> */}
           </Menu>
         </>
       )}

@@ -16,7 +16,7 @@ export const AvailableToClaimItem = ({
 }) => {
   const icons = stakeData.formattedRewards.map((reward) => ({
     src: reward.rewardTokenSymbol,
-    aToken: false,
+    aToken: reward.aToken,
   }));
 
   const totalAvailableToClaim = stakeData.formattedRewards.reduce(
@@ -56,7 +56,10 @@ export const AvailableToClaimItem = ({
         />
       )}
       {stakeData.formattedRewards.length === 1 && (
-        <TokenIcon symbol={stakeData.formattedRewards[0].rewardTokenSymbol} />
+        <TokenIcon
+          aToken={stakeData.formattedRewards[0].aToken}
+          symbol={stakeData.formattedRewards[0].rewardTokenSymbol}
+        />
       )}
     </Stack>
   );

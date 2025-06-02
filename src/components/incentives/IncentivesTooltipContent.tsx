@@ -48,9 +48,54 @@ const IncentivesSymbolMap: {
     symbol: 'aPYUSD',
     aToken: true,
   },
+  aArbWETH: {
+    tokenIconSymbol: 'WETH',
+    symbol: 'aWETH',
+    aToken: true,
+  },
+  aArbwstETH: {
+    tokenIconSymbol: 'wstETH',
+    symbol: 'awstETH',
+    aToken: true,
+  },
+  aBaswstETH: {
+    tokenIconSymbol: 'wstETH',
+    symbol: 'awstETH',
+    aToken: true,
+  },
+  aBasEURC: {
+    tokenIconSymbol: 'EURC',
+    symbol: 'aEURC',
+    aToken: true,
+  },
+  aBasGHO: {
+    tokenIconSymbol: 'GHO',
+    symbol: 'aGHO',
+    aToken: true,
+  },
   aAvaSAVAX: {
     tokenIconSymbol: 'sAVAX',
     symbol: 'asAVAX',
+    aToken: true,
+  },
+  aEthRLUSD: {
+    tokenIconSymbol: 'RLUSD',
+    symbol: 'aRLUSD',
+    aToken: true,
+  },
+  aSonwS: {
+    tokenIconSymbol: 'wS',
+    symbol: 'awS',
+    aToken: true,
+  },
+  aBasweETH: {
+    tokenIconSymbol: 'weETH',
+    symbol: 'aweETH',
+    aToken: true,
+  },
+  aGnoEURe: {
+    tokenIconSymbol: 'EURe',
+    symbol: 'aEURe',
     aToken: true,
   },
 };

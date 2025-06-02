@@ -1,4 +1,3 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
@@ -14,6 +13,7 @@ import { UmbrellaModalContent } from './UmbrellaModalContent';
 export const UmbrellaModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
     stataTokenAsset: string;
+    underlyingTokenAddress: string;
     uStakeToken: string;
     icon: string;
   }>;
@@ -26,12 +26,9 @@ export const UmbrellaModal = () => {
     (item) => item.tokenAddress.toLowerCase() === args?.uStakeToken?.toLowerCase()
   );
 
-  // If there is no stataTokenAsset, then just use the mock address so there's no errors thrown.
-  // The underlying asset is only needed in the case when dealing with stataTokens anyway, in which
-  // case we need to fetch the user reserves so we can calculate health factor changes on stake.
   const underlyingAsset =
     args.stataTokenAsset === zeroAddress
-      ? API_ETH_MOCK_ADDRESS
+      ? args.underlyingTokenAddress.toLowerCase()
       : args.stataTokenAsset?.toLowerCase();
 
   return (

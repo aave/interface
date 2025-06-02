@@ -200,6 +200,7 @@ export const GovVoteActions = ({
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx, signTxData } = useWeb3Context();
   const queryClient = useQueryClient();
+
   const tokenPowers = useGovernanceTokensAndPowers(proposal.subgraphProposal.snapshotBlockHash);
   const [signature, setSignature] = useState<string | undefined>(undefined);
   const proposalId = +proposal.subgraphProposal.id;
@@ -212,22 +213,24 @@ export const GovVoteActions = ({
 
   const assets: Array<{ underlyingAsset: string; isWithDelegatedPower: boolean }> = [];
 
-  if (tokenPowers?.aAave !== '0') {
+  if (tokenPowers && tokenPowers.aAaveTokenPower.votingPower.toString() !== '0') {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aAaveTokenAddress,
-      isWithDelegatedPower: tokenPowers?.isAAaveTokenWithDelegatedPower || false,
+      isWithDelegatedPower: tokenPowers.isAAaveTokenWithDelegatedPower || false,
     });
   }
-  if (tokenPowers?.stkAave !== '0') {
+
+  if (tokenPowers && tokenPowers.stkAaveTokenPower.votingPower.toString() !== '0') {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.stkAaveTokenAddress,
-      isWithDelegatedPower: tokenPowers?.isStkAaveTokenWithDelegatedPower || false,
+      isWithDelegatedPower: tokenPowers.isStkAaveTokenWithDelegatedPower || false,
     });
   }
-  if (tokenPowers?.aave !== '0') {
+
+  if (tokenPowers && tokenPowers.aaveTokenPower.votingPower.toString() !== '0') {
     assets.push({
       underlyingAsset: governanceV3Config.votingAssets.aaveTokenAddress,
-      isWithDelegatedPower: tokenPowers?.isAaveTokenWithDelegatedPower || false,
+      isWithDelegatedPower: tokenPowers.isAaveTokenWithDelegatedPower || false,
     });
   }
 
@@ -264,6 +267,7 @@ export const GovVoteActions = ({
               success: true,
             });
             queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
+            queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
             return;
           } else {
             setTimeout(checkForStatus, 5000);
@@ -289,6 +293,7 @@ export const GovVoteActions = ({
         });
 
         queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
+        queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
       }
     } catch (err) {
       setMainTxState({

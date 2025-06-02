@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
@@ -11,7 +12,7 @@ import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { useRootStore } from 'src/store/root';
-import { MARKETS } from 'src/utils/mixPanelEvents';
+import { MARKETS } from 'src/utils/events';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
@@ -103,6 +104,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             <>
               {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
               {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
+              {externalIncentivesTooltipsSupplySide.kernelPoints && <KernelAirdropTooltip />}
             </>
           }
           market={currentMarket}

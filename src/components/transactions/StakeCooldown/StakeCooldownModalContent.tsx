@@ -12,13 +12,12 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
-import { CustomMarket, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { timeMessage } from '../../../helpers/timeHelper';
 import { Link } from '../../primitives/Link';
@@ -57,12 +56,6 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
 
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
-
-  const { data: meritIncentives } = useMeritIncentives({
-    symbol: 'GHO',
-    market: CustomMarket.proto_mainnet_v3,
-  });
-  const usersStkGhoIncentives = meritIncentives?.incentiveAPR || 0;
 
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
@@ -337,17 +330,6 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
       )}
 
       <Warning severity="error">
-        {stakeAssetName === 'gho' && usersStkGhoIncentives !== 0 && (
-          <>
-            <Typography variant="caption">
-              <Trans>
-                During the cooldown period, you will not earn any merit rewards. However, rewards
-                earned up to this point will remain unaffected.
-              </Trans>
-            </Typography>
-            <br />
-          </>
-        )}
         <Typography variant="caption">
           <Trans>
             If you DO NOT unstake within {timeMessage(stakeUnstakeWindow)} of unstake window, you
