@@ -509,11 +509,11 @@ export const BaseSwitchModalContent = ({
                   !(
                     isNativeToken(selectedOutputToken.address) &&
                     token.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address
                   ) &&
                   !(
                     selectedOutputToken.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address &&
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address &&
                     isNativeToken(token.address)
                   )
               )}
@@ -555,11 +555,11 @@ export const BaseSwitchModalContent = ({
                   !(
                     isNativeToken(selectedInputToken.address) &&
                     token.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address
                   ) &&
                   !(
                     selectedInputToken.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address &&
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address &&
                     isNativeToken(token.address)
                   )
               )}
