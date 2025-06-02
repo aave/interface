@@ -18,6 +18,8 @@ export const GENERAL = {
   ACCEPT_RISK: 'Accept Risk',
   TRANSACTION: 'Transaction',
   SWAP: 'Swap',
+  SWAP_FAILED: 'Swap Failed',
+  SWAP_COMPLETED: 'Swap Completed',
   TRANSACTION_ERROR: 'Transaction Error',
   OPEN_MODAL: 'Open Modal',
   MAX_INPUT_SELECTION: 'Select Max input',
