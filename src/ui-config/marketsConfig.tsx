@@ -712,7 +712,7 @@ export const marketsData: {
     market: CustomMarket.proto_soneium_v3,
     chainId: ChainId.soneium,
     v3: true,
-    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/TODO`,
+    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/5waxmqS3rkRtZPoV2mL5RCToupVxVbTd7hjicxMGebYm`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Soneium.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Soneium.POOL,
