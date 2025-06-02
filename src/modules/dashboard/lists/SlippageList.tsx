@@ -14,7 +14,7 @@ import {
 import * as React from 'react';
 import { SlippageTooltip } from 'src/components/infoTooltips/SlippageTooltip';
 import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import Paraswap from '/public/icons/other/paraswap.svg';
 

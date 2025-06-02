@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useRootStore } from 'src/store/root';
 
-import { MARKETS } from '../../utils/mixPanelEvents';
+import { MARKETS } from '../../utils/events';
 
 interface ListHeaderTitleProps {
   sortName?: string;

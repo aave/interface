@@ -21,7 +21,7 @@ import { HeyIcon } from 'src/components/icons/HeyIcon';
 import { compactNumber, FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { GHO_SUCCESS_MODAL } from 'src/utils/mixPanelEvents';
+import { GHO_SUCCESS_MODAL } from 'src/utils/events';
 
 const GhoSuccessImage = dynamic(() => import('./GhoSuccessImage'));
 
@@ -183,7 +183,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
         </Box>
 
         <Typography sx={{ mt: 4 }} variant="h2">
-          <Trans>All done!</Trans>
+          <Trans>All done</Trans>
         </Typography>
 
         <Box

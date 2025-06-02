@@ -10,7 +10,7 @@ import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { DASHBOARD } from 'src/utils/events';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';

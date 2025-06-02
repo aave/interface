@@ -15,7 +15,9 @@ import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
+import { CowOrderToast } from 'src/components/transactions/Switch/CowOrderToast';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { CowOrderToastProvider } from 'src/hooks/useCowOrderToast';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
@@ -97,8 +99,8 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
-  const [initializeMixpanel, setWalletType] = useRootStore(
-    useShallow((store) => [store.initializeMixpanel, store.setWalletType])
+  const [initializeEventsTracking, setWalletType] = useRootStore(
+    useShallow((store) => [store.initializeEventsTracking, store.setWalletType])
   );
   const [queryClient] = useState(
     () =>
@@ -111,12 +113,11 @@ export default function MyApp(props: MyAppProps) {
       })
   );
 
-  const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
   useEffect(() => {
-    if (MIXPANEL_TOKEN) {
-      initializeMixpanel();
+    if (process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY) {
+      initializeEventsTracking();
     } else {
-      console.log('no analytics tracking');
+      console.debug('no analytics tracking');
     }
   }, []);
 
@@ -147,30 +148,33 @@ export default function MyApp(props: MyAppProps) {
                 <Web3ContextProvider>
                   <AppGlobalStyles>
                     <AddressBlocked>
-                      <ModalContextProvider>
-                        <SharedDependenciesProvider>
-                          <AppDataProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <TransactionEventHandler />
-                              <SwitchModal />
-                              <StakingMigrateModal />
-                              <BridgeModal />
-                              <ReadOnlyModal />
-                            </GasStationProvider>
-                          </AppDataProvider>
-                        </SharedDependenciesProvider>
-                      </ModalContextProvider>
+                      <CowOrderToastProvider>
+                        <ModalContextProvider>
+                          <SharedDependenciesProvider>
+                            <AppDataProvider>
+                              <GasStationProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                                <SupplyModal />
+                                <WithdrawModal />
+                                <BorrowModal />
+                                <RepayModal />
+                                <CollateralChangeModal />
+                                <DebtSwitchModal />
+                                <ClaimRewardsModal />
+                                <EmodeModal />
+                                <SwapModal />
+                                <FaucetModal />
+                                <TransactionEventHandler />
+                                <SwitchModal />
+                                <StakingMigrateModal />
+                                <BridgeModal />
+                                <ReadOnlyModal />
+                                <CowOrderToast />
+                              </GasStationProvider>
+                            </AppDataProvider>
+                          </SharedDependenciesProvider>
+                        </ModalContextProvider>
+                      </CowOrderToastProvider>
                     </AddressBlocked>
                   </AppGlobalStyles>
                 </Web3ContextProvider>

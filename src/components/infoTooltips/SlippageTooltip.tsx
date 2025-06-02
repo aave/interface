@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Divider } from '@mui/material';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 
 import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
 

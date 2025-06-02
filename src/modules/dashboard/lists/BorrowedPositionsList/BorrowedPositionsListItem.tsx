@@ -45,7 +45,13 @@ export const BorrowedPositionsListItem = ({
 
   const showSwitchButton = !!isFeatureEnabled.debtSwitch(currentMarketData);
   const disableSwitch =
-    reserve.isPaused || !reserve.isActive || reserve.symbol == 'stETH' || disableEModeSwitch;
+    // NOTE: Disabled on v2 because borrowing is not possible
+    currentMarket === 'proto_mainnet' ||
+    currentMarket === 'proto_polygon' ||
+    reserve.isPaused ||
+    !reserve.isActive ||
+    reserve.symbol == 'stETH' ||
+    disableEModeSwitch;
 
   const props: BorrowedPositionsListItemProps = {
     ...item,
@@ -147,7 +153,7 @@ const BorrowedPositionsListItemDesktop = ({
             onClick={onDetbSwitchClick}
             data-cy={`swapButton`}
           >
-            <Trans>Switch</Trans>
+            <Trans>Swap</Trans>
           </Button>
         ) : (
           <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow}>
@@ -225,7 +231,7 @@ const BorrowedPositionsListItemMobile = ({
             onClick={onDetbSwitchClick}
             data-cy={`swapButton`}
           >
-            <Trans>Switch</Trans>
+            <Trans>Swap</Trans>
           </Button>
         ) : (
           <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow} fullWidth>

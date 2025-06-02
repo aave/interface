@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
@@ -10,15 +10,23 @@ export type BaseSuccessTxViewProps = {
   txHash?: string;
   children: ReactNode;
   hideTx?: boolean;
+  customExplorerLink?: string;
+  customExplorerLinkText?: ReactNode;
 };
 
 const ExtLinkIcon = () => (
-  <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
+  <SvgIcon sx={{ ml: 2, fontWeight: 800, fontSize: '20px', color: 'text.primary' }}>
     <ExternalLinkIcon />
   </SvgIcon>
 );
 
-export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewProps) => {
+export const BaseSuccessView = ({
+  txHash,
+  children,
+  hideTx,
+  customExplorerLink,
+  customExplorerLinkText,
+}: BaseSuccessTxViewProps) => {
   const { close, mainTxState } = useModalContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
@@ -51,44 +59,45 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
         </Box>
 
         <Typography sx={{ mt: 4 }} variant="h2">
-          <Trans>All done!</Trans>
+          <Trans>All done</Trans>
         </Typography>
 
         {children}
       </Box>
 
-      {!hideTx && (
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Link
-            variant="helperText"
-            href={currentNetworkConfig.explorerLinkBuilder({
-              tx: txHash ? txHash : mainTxState.txHash,
-            })}
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'right',
-              mt: 6,
-              mb: 3,
-            }}
-            underline="hover"
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        {hideTx ? (
+          <br />
+        ) : (
+          <Button
+            variant="outlined"
+            size="large"
+            sx={{ borderRadius: 1, borderColor: 'divider', borderWidth: 1, mt: 6, mb: 2 }}
+            href={
+              customExplorerLink
+                ? customExplorerLink
+                : currentNetworkConfig.explorerLinkBuilder({
+                    tx: txHash ? txHash : mainTxState.txHash,
+                  })
+            }
             target="_blank"
             rel="noreferrer noopener"
           >
-            <Trans>Review tx details</Trans>
+            {customExplorerLinkText ? customExplorerLinkText : <Trans>Review tx details</Trans>}
             <ExtLinkIcon />
-          </Link>
-          <Button
-            onClick={close}
-            variant="contained"
-            size="large"
-            sx={{ minHeight: '44px' }}
-            data-cy="closeButton"
-          >
-            <Trans>Ok, Close</Trans>
           </Button>
-        </Box>
-      )}
+        )}
+
+        <Button
+          onClick={close}
+          variant="contained"
+          size="large"
+          sx={{ minHeight: '50px' }}
+          data-cy="closeButton"
+        >
+          <Trans>Ok, Close</Trans>
+        </Button>
+      </Box>
     </>
   );
 };

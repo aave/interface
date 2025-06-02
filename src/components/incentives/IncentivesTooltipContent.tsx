@@ -63,9 +63,24 @@ const IncentivesSymbolMap: {
     symbol: 'awstETH',
     aToken: true,
   },
+  aBasEURC: {
+    tokenIconSymbol: 'EURC',
+    symbol: 'aEURC',
+    aToken: true,
+  },
+  aBasGHO: {
+    tokenIconSymbol: 'GHO',
+    symbol: 'aGHO',
+    aToken: true,
+  },
   aAvaSAVAX: {
     tokenIconSymbol: 'sAVAX',
     symbol: 'asAVAX',
+    aToken: true,
+  },
+  aEthRLUSD: {
+    tokenIconSymbol: 'RLUSD',
+    symbol: 'aRLUSD',
     aToken: true,
   },
   aSonwS: {
@@ -81,6 +96,11 @@ const IncentivesSymbolMap: {
   aCelCELO: {
     tokenIconSymbol: 'CELO',
     symbol: 'aCELO',
+    aToken: true,
+  },
+  aGnoEURe: {
+    tokenIconSymbol: 'EURe',
+    symbol: 'aEURe',
     aToken: true,
   },
 };

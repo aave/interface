@@ -127,13 +127,13 @@ const MESSAGE_REGEX_MAP: Array<{ regex: RegExp; message: string }> = [
  * @param message Paraswap error message
  * @returns Message for displaying in interface
  */
-export function convertParaswapErrorMessage(message: string): string {
+export function convertParaswapErrorMessage(message: string): string | undefined {
   if (message in MESSAGE_MAP) {
     return MESSAGE_MAP[message];
   }
 
   const newMessage = MESSAGE_REGEX_MAP.find((mapping) => mapping.regex.test(message))?.message;
-  return newMessage || 'There was an issue fetching data from Paraswap';
+  return newMessage;
 }
 
 /**
@@ -448,7 +448,9 @@ export const SIGNATURE_AMOUNT_MARGIN = 0.1;
 
 // Calculate aToken amount to request for signature, adding small margin to account for accruing interest
 export const calculateSignedAmount = (amount: string, decimals: number, margin?: number) => {
-  const amountWithMargin = Number(amount) + Number(amount) * (margin ?? SIGNATURE_AMOUNT_MARGIN); // 10% margin for aToken interest accrual, custom amount for actions where output amount is variable
+  const amountBN = valueToBigNumber(amount);
+  const marginBN = valueToBigNumber(margin ?? SIGNATURE_AMOUNT_MARGIN);
+  const amountWithMargin = amountBN.plus(amountBN.multipliedBy(marginBN));
   const formattedAmountWithMargin = valueToWei(amountWithMargin.toString(), decimals);
   return formattedAmountWithMargin;
 };
