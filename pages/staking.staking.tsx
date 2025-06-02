@@ -19,6 +19,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
+import { GhoStakingPanel } from 'src/modules/staking/GhoStakingPanel';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
@@ -115,6 +116,9 @@ export default function Staking() {
   const isStkGho = mode === 'gho';
   const isStkBpt = mode === 'bpt';
 
+  if (stkBpt) {
+    console.log(stkBpt);
+  }
   const showAbptPanel =
     !stkBpt?.inPostSlashingPeriod ||
     stkBptUserData?.stakeTokenUserBalance !== '0' ||
@@ -213,10 +217,9 @@ export default function Staking() {
                 lg={6}
                 sx={{ display: { xs: !isStkGho ? 'none' : 'block', lg: 'block' } }}
               >
-                <StakingPanel
+                <GhoStakingPanel
                   stakeTitle="GHO"
                   stakedToken="GHO"
-                  maxSlash={stkGho?.maxSlashablePercentageFormatted || '0'}
                   icon="gho"
                   stakeData={stkGho}
                   stakeUserData={stkGhoUserData}

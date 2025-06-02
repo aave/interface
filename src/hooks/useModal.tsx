@@ -1,4 +1,5 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -37,6 +38,8 @@ export enum ModalType {
   UmbrellaClaim,
   UmbrellaClaimAll,
   UmbrellaUnstake,
+  SavingsGhoDeposit,
+  SavingsGhoWithdraw,
 }
 
 export interface ModalArgsType {
@@ -136,6 +139,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   openGovRepresentatives: (
     representatives: Array<{ chainId: ChainId; representative: string }>
   ) => void;
+  openSavingsGhoDeposit: () => void;
+  openSavingsGhoWithdraw: () => void;
   close: () => void;
   closeWithCb: (callback: CallbackFn) => void;
   type?: ModalType;
@@ -400,6 +405,16 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
         openStakingMigrate: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Staking V1->V2 Migration' });
           setType(ModalType.StakingMigrate);
+        },
+        openSavingsGhoDeposit: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Savings GHO Deposit' });
+          setType(ModalType.SavingsGhoDeposit);
+          setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
+        },
+        openSavingsGhoWithdraw: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Savings GHO Withdraw' });
+          setType(ModalType.SavingsGhoWithdraw);
+          setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
         },
         close: () => {
           setType(undefined);

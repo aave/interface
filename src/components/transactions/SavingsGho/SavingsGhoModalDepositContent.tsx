@@ -18,12 +18,9 @@ import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { StakeActions } from './StakeActions';
+import { SavingsGhoDepositActions } from './SavingsGhoDepositActions';
 
 export type StakeProps = {
-  stakeAssetName: Stake;
   icon: string;
 };
 
@@ -31,15 +28,15 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+export const SavingsGhoModalDepositContent = ({ icon }: StakeProps) => {
+  const { chainId: connectedChainId } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.gho);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, Stake.gho);
 
   const stakeData = stakeGeneralResult?.[0];
   const stakeUserData = stakeUserResult?.[0];
@@ -77,7 +74,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
     }
   };
 
-  const nameFormatted = stakeAssetNameFormatted(stakeAssetName);
+  const nameFormatted = stakeAssetNameFormatted(Stake.gho);
 
   // is Network mismatched
   const stakingChain =
@@ -102,14 +99,14 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
 
   return (
     <>
-      <TxModalTitle title="Stake" symbol={nameFormatted} />
+      {/* <TxModalTitle title="Deposit" symbol={nameFormatted} />
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={networkConfig.name}
           chainId={stakingChain}
           funnel={'Stake Modal'}
         />
-      )}
+      )} */}
 
       {nameFormatted !== 'GHO' && <CooldownWarning />}
 
@@ -135,7 +132,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
       )}
       <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
         <DetailsNumberLine
-          description={<Trans>Staking APR</Trans>}
+          description={<Trans>APR</Trans>}
           value={Number(stakeData?.stakeApy || '0') / 10000}
           percent
         />
@@ -143,13 +140,13 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
 
       {txError && <GasEstimationError txError={txError} />}
 
-      <StakeActions
+      <SavingsGhoDepositActions
         sx={{ mt: '48px' }}
         amountToStake={amount}
         isWrongNetwork={isWrongNetwork}
         symbol={nameFormatted}
         blocked={blockingError !== undefined}
-        selectedToken={stakeAssetName}
+        selectedToken={Stake.gho}
         event={STAKE.STAKE_TOKEN}
       />
     </>

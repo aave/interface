@@ -60,6 +60,8 @@ export const ModalWrapper: React.FC<{
     return <TxErrorView txError={txError} />;
   }
 
+  console.log('underlyingAsset', underlyingAsset);
+  console.log('reserves', reserves);
   const poolReserve = reserves.find((reserve) => {
     if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
       return reserve.isWrappedBaseAsset;
