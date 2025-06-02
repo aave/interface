@@ -12939,3 +12939,10 @@ export const COMMON_SWAPS = [
   'USDC.e',
   'USDT.e',
 ];
+
+export const findTokenSymbol = (address: string, chainId: number) => {
+  const token = TOKEN_LIST.tokens.find(
+    (token) => token.address.toLowerCase() === address.toLowerCase() && token.chainId === chainId
+  );
+  return token?.symbol;
+};

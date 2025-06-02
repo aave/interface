@@ -20,6 +20,8 @@ import { ActionFields, TransactionHistoryItemUnion } from 'src/modules/history/t
 import { useRootStore } from 'src/store/root';
 import { findByChainId } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { findTokenSymbol } from 'src/ui-config/TokenList';
+import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { useTransactionHistory } from './useTransactionHistory';
@@ -48,10 +50,11 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
   const { data: transactions } = useTransactionHistory({ isFilterActive: false });
   const [hasActiveOrders, setHasActiveOrders] = useState(false);
   const queryClient = useQueryClient();
-  const { account, currentMarketData } = useRootStore(
+  const { account, currentMarketData, trackEvent } = useRootStore(
     useShallow((store) => ({
       account: store.account,
       currentMarketData: store.currentMarketData,
+      trackEvent: store.trackEvent,
     }))
   );
 
@@ -111,6 +114,14 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
       const interval = setInterval(async () => {
         try {
           const order = await getOrder(orderId, chainId);
+          const baseTrackingData = {
+            chainId,
+            inputSymbol: order.sellToken,
+            outputSymbol: order.buyToken,
+            pair: `${findTokenSymbol(order.sellToken, chainId) ?? 'custom'}-${
+              findTokenSymbol(order.buyToken, chainId) ?? 'custom'
+            }`,
+          };
 
           if (isOrderFilled(order.status) && !processedOrdersRef.current.has(orderId)) {
             processedOrdersRef.current.add(orderId);
@@ -121,6 +132,12 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
               },
             });
             stopTracking(orderId);
+
+            trackEvent(GENERAL.SWAP_COMPLETED, {
+              ...baseTrackingData,
+              executedAmount: order.executedBuyAmount,
+              executedFee: order.executedFee,
+            });
           } else if (isOrderCancelled(order.status) && !processedOrdersRef.current.has(orderId)) {
             processedOrdersRef.current.add(orderId);
             toast.error('Swap could not be completed.', {
@@ -130,6 +147,12 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
               },
             });
             stopTracking(orderId);
+
+            trackEvent(GENERAL.SWAP_FAILED, {
+              ...baseTrackingData,
+              quoteId: order.quoteId ?? undefined,
+              buyAmout: order.buyAmount,
+            });
           }
         } catch (error) {
           console.error('Error checking order status:', error);
