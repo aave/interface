@@ -22,6 +22,7 @@ import {
   AaveV3Scroll,
   AaveV3ScrollSepolia,
   AaveV3Sepolia,
+  AaveV3Soneium,
   AaveV3Sonic,
   AaveV3ZkSync,
 } from '@bgd-labs/aave-address-book';
@@ -98,6 +99,7 @@ export enum CustomMarket {
   proto_linea_v3 = 'proto_linea_v3',
   proto_sonic_v3 = 'proto_sonic_v3',
   proto_celo_v3 = 'proto_celo_v3',
+  proto_soneium_v3 = 'proto_soneium_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -690,7 +692,6 @@ export const marketsData: {
       COLLECTOR: AaveV3Linea.COLLECTOR,
     },
   },
-
   [CustomMarket.proto_celo_v3]: {
     marketTitle: 'Celo',
     market: CustomMarket.proto_celo_v3,
@@ -704,6 +705,22 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Celo.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Celo.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Celo.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_soneium_v3]: {
+    marketTitle: 'Soneium',
+    market: CustomMarket.proto_soneium_v3,
+    chainId: ChainId.soneium,
+    v3: true,
+    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/5waxmqS3rkRtZPoV2mL5RCToupVxVbTd7hjicxMGebYm`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Soneium.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Soneium.POOL,
+      WETH_GATEWAY: AaveV3Soneium.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Soneium.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Soneium.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Soneium.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Soneium.COLLECTOR,
     },
   },
   [CustomMarket.proto_etherfi_v3]: {
