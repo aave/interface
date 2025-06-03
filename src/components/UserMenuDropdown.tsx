@@ -1,9 +1,10 @@
-import React, { MouseEvent, useState } from 'react';
-import { Box, Button, Divider, Menu, MenuItem, Typography, Stack, useTheme } from '@mui/material';
+import { useInfinexUser } from '@infinex/connect-sdk';
+import { Box, Button, Divider, Menu, MenuItem, Stack, Typography, useTheme } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
+import React, { MouseEvent, useState } from 'react';
+
 import { AvatarSize } from './Avatar';
 import { UserDisplay } from './UserDisplay';
-import { useInfinexUser } from '@connect-poc/sdk';
 
 const UserMenuDropdown: React.FC = () => {
   const theme = useTheme();

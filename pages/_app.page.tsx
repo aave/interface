@@ -27,7 +27,7 @@ import { useShallow } from 'zustand/shallow';
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { InfinexConnectConfig, InfinexProvider, initInfinex } from '@connect-poc/sdk';
+import { InfinexConnectConfig, InfinexProvider, initInfinex } from '@infinex/connect-sdk';
 
 const SwitchModal = dynamic(() =>
   import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
@@ -118,8 +118,8 @@ export default function MyApp(props: MyAppProps) {
       showLogs: true,
       iframeOptions: {
         shown: true,
-        width: '250px',
-        height: '135px',
+        width: '750',
+        height: '405',
       },
     },
   };

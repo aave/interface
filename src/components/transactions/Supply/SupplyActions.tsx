@@ -93,6 +93,14 @@ export const SupplyActions = React.memo(
         signedAmount: signatureParams ? signatureParams.amount : '0',
       });
 
+    console.log('requiresApproval args: ', {
+      approvedAmount: approvedAmount?.amount,
+      amount: amountToSupply,
+      signedAmount: signatureParams ? signatureParams.amount : '0',
+    });
+
+    console.log('approvedAmount: ', approvedAmount);
+
     if (requiresApproval && approvalTxState?.success) {
       // There was a successful approval tx, but the approval amount is not enough.
       // Clear the state to prompt for another approval.

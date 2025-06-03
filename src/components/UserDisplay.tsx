@@ -1,3 +1,4 @@
+import { useInfinexUser } from '@infinex/connect-sdk';
 import { Box } from '@mui/material';
 import { blo } from 'blo';
 import { useMemo } from 'react';
@@ -9,7 +10,6 @@ import { useShallow } from 'zustand/shallow';
 import { Avatar, AvatarProps } from './Avatar';
 import { BadgeSize, ExclamationBadge } from './badges/ExclamationBadge';
 import { UserNameText, UserNameTextProps } from './UserNameText';
-import { useInfinexUser } from '@connect-poc/sdk';
 
 type UserDisplayProps = {
   oneLiner?: boolean;

@@ -35,6 +35,14 @@ export const checkRequiresApproval = ({
     (approvedAmount !== '0' && Number(approvedAmount) >= Number(amount)) ||
     Number(signedAmount) >= Number(amount)
   ) {
+    console.log('CHECKING REQUIRES APPROVAL: ', {
+      one: approvedAmount === '-1',
+      two: signedAmount === '-1',
+      three: approvedAmount !== '0' && Number(approvedAmount) >= Number(amount),
+      four: Number(signedAmount) >= Number(amount),
+      approvedAmount,
+      amount,
+    });
     return false;
   } else {
     return true;

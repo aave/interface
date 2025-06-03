@@ -93,7 +93,7 @@ export const RepayActions = ({
     reserveAddress: poolAddress,
     isWrappedBaseAsset: poolReserve.isWrappedBaseAsset,
   });
-  const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+  const usePermit = permitAvailable && true;
 
   setLoadingTxns(fetchingApprovedAmount);
 
