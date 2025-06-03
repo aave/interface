@@ -75,11 +75,7 @@ export const GhoDiscountProgram = () => {
             width={['221px', '400px']}
             textAlign={['left']}
           >
-            {downToXsm ? (
-              <Trans>stkAAVE holders get a discount on GHO borrow rate</Trans>
-            ) : (
-              <Trans>Holders of stkAAVE receive a discount on the GHO borrowing rate</Trans>
-            )}
+            <Trans>Get a discount on GHO borrowing by holding stkAAVE</Trans>
           </Typography>
           <Button
             variant="contained"

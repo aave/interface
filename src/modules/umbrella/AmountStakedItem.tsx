@@ -6,12 +6,12 @@ import { ReactElement } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { SecondsToString } from 'src/components/SecondsToString';
 import { timeMessage } from 'src/helpers/timeHelper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 
 import { ListValueColumn } from '../dashboard/lists/ListValueColumn';
-import { SecondsToString } from '../staking/StakingPanel';
 
 export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const now = useCurrentTimestamp(1);

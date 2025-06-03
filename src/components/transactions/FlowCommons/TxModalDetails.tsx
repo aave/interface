@@ -10,8 +10,8 @@ import {
   UnavailableDueToIsolationBadge,
 } from 'src/components/isolationMode/IsolatedBadge';
 import { Row } from 'src/components/primitives/Row';
+import { SecondsToString } from 'src/components/SecondsToString';
 import { CollateralType } from 'src/helpers/types';
-import { SecondsToString } from 'src/modules/staking/StakingPanel';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
@@ -26,6 +26,7 @@ export interface TxModalDetailsProps {
   disabled?: boolean;
   chainId?: number;
   children?: ReactNode;
+  showGasStation?: boolean;
 }
 
 const ArrowRightIcon = (
@@ -41,6 +42,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   disabled,
   children,
   chainId,
+  showGasStation = true,
 }) => {
   return (
     <Box sx={{ pt: 5 }}>
@@ -60,15 +62,17 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
       >
         {children}
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <GasStation
-          chainId={chainId}
-          gasLimit={parseUnits(gasLimit || '0', 'wei')}
-          skipLoad={skipLoad}
-          disabled={disabled}
-          rightComponent={slippageSelector}
-        />
-      </Box>
+      {showGasStation && (
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <GasStation
+            chainId={chainId}
+            gasLimit={parseUnits(gasLimit || '0', 'wei')}
+            skipLoad={skipLoad}
+            disabled={disabled}
+            rightComponent={slippageSelector}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

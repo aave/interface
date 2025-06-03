@@ -11,10 +11,10 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { BigNumber } from 'ethers';
 import { useState } from 'react';
+import { SecondsToString } from 'src/components/SecondsToString';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
-import { SecondsToString } from 'src/modules/staking/StakingPanel';
 
 // Styled component for the menu items to add gap between icon and text
 const StyledMenuItem = styled(MenuItem)({

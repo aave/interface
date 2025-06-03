@@ -15,7 +15,9 @@ import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
+import { CowOrderToast } from 'src/components/transactions/Switch/CowOrderToast';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { CowOrderToastProvider } from 'src/hooks/useCowOrderToast';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
@@ -146,30 +148,33 @@ export default function MyApp(props: MyAppProps) {
                 <Web3ContextProvider>
                   <AppGlobalStyles>
                     <AddressBlocked>
-                      <ModalContextProvider>
-                        <SharedDependenciesProvider>
-                          <AppDataProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <TransactionEventHandler />
-                              <SwitchModal />
-                              <StakingMigrateModal />
-                              <BridgeModal />
-                              <ReadOnlyModal />
-                            </GasStationProvider>
-                          </AppDataProvider>
-                        </SharedDependenciesProvider>
-                      </ModalContextProvider>
+                      <CowOrderToastProvider>
+                        <ModalContextProvider>
+                          <SharedDependenciesProvider>
+                            <AppDataProvider>
+                              <GasStationProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                                <SupplyModal />
+                                <WithdrawModal />
+                                <BorrowModal />
+                                <RepayModal />
+                                <CollateralChangeModal />
+                                <DebtSwitchModal />
+                                <ClaimRewardsModal />
+                                <EmodeModal />
+                                <SwapModal />
+                                <FaucetModal />
+                                <TransactionEventHandler />
+                                <SwitchModal />
+                                <StakingMigrateModal />
+                                <BridgeModal />
+                                <ReadOnlyModal />
+                                <CowOrderToast />
+                              </GasStationProvider>
+                            </AppDataProvider>
+                          </SharedDependenciesProvider>
+                        </ModalContextProvider>
+                      </CowOrderToastProvider>
                     </AddressBlocked>
                   </AppGlobalStyles>
                 </Web3ContextProvider>

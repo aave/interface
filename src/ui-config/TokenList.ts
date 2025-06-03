@@ -62,6 +62,19 @@ const NETWORK_ASSETS: TokenInfo[] = [
       isNative: true,
     },
   },
+  // Sepolia
+  {
+    name: 'Ethereum',
+    symbol: 'ETH',
+    decimals: 18,
+    address: API_ETH_MOCK_ADDRESS,
+    chainId: 11155111,
+    logoURI:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    extensions: {
+      isNative: true,
+    },
+  },
   {
     name: 'Avalanche',
     symbol: 'AVAX',
@@ -85,7 +98,18 @@ const NETWORK_ASSETS: TokenInfo[] = [
       isNative: true,
     },
   },
-
+  {
+    name: 'Gnosis',
+    symbol: 'xDAI',
+    decimals: 18,
+    address: API_ETH_MOCK_ADDRESS,
+    chainId: 100,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/11062/standard/Identity-Primary-DarkBG.png?1696511004',
+    extensions: {
+      isNative: true,
+    },
+  },
   // NOTE L2 ETH
   {
     name: 'Ethereum',
@@ -12706,6 +12730,140 @@ export const TOKEN_LIST: TokenList = {
       logoURI: 'https://assets.coingecko.com/coins/images/2518/standard/weth.png?1696503332',
     },
     {
+      name: 'Wrapped Ether',
+      address: '0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1',
+      symbol: 'WETH',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/2518/standard/weth.png?1696503332',
+    },
+    {
+      name: 'Wrapped liquid staked Ether 2.0',
+      address: '0x6C76971f98945AE98dD7d4DFcA8711ebea946eA6',
+      symbol: 'wstETH',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/18834/standard/wstETH.png?1696518295',
+    },
+    {
+      name: 'Savings xDAI',
+      address: '0xaf204776c7245bf4147c2612bf6e5972ee483701',
+      symbol: 'sDAI',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/32254/standard/sdai.png?1697015278',
+    },
+    {
+      name: 'Gnosis Token on XDai',
+      address: '0x9c58bacc331c9aa871afd802db6379a98e80cedb',
+      symbol: 'GNO',
+      decimals: 18,
+      chainId: 100,
+      logoURI:
+        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6810e776880C02933D47DB1b9fc05908e5386b96/logo.png',
+    },
+    {
+      name: 'Monerium EUR emoney',
+      address: '0xcB444e90D8198415266c6a2724b7900fb12FC56E',
+      symbol: 'EURe',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/54303/standard/eure.jpg?1739167959',
+    },
+
+    {
+      name: 'Monerium EUR emoney',
+      address: '0xcB444e90D8198415266c6a2724b7900fb12FC56E',
+      symbol: 'EURe',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/54303/standard/eure.jpg?1739167959',
+    },
+    {
+      name: 'Bridged USDC',
+      address: '0x2a22f9c3b484c3629090FeED35F17Ff8F88f76F0',
+      symbol: 'USDC.e',
+      decimals: 6,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389',
+    },
+    {
+      name: 'Wrapped xDAI',
+      address: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
+      symbol: 'WXDAI',
+      decimals: 18,
+      chainId: 100,
+      logoURI: 'https://gnosisscan.io/token/images/wrappedxdai_32.png', // not in coingecko
+    },
+    {
+      name: 'USDT',
+      address: '0x4ECaBa5870353805a9F068101A40E0f32ed605C6',
+      symbol: 'USDT',
+      decimals: 6,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/325/thumb/Tether-logo.png?1598003707',
+    },
+    {
+      name: 'Ethereum',
+      address: '0xc558dbdd856501fcd9aaf1e62eae57a9f0629a3c',
+      symbol: 'ETH',
+      decimals: 18,
+      chainId: 11155111,
+      logoURI:
+        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    },
+    {
+      name: 'USD Coin',
+      symbol: 'USDC',
+      decimals: 6,
+      address: '0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8',
+      chainId: 11155111,
+      logoURI: 'https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389',
+    },
+    {
+      name: 'Dai Stablecoin',
+      symbol: 'DAI',
+      decimals: 18,
+      address: '0xFF34B3d4Aee8ddCd6F9AFFFB6Fe49bD371b8a357',
+      chainId: 11155111,
+      logoURI: 'https://assets.coingecko.com/coins/images/9956/thumb/4943.png?1636636734',
+    },
+    {
+      name: 'Tether USD',
+      symbol: 'USDT',
+      decimals: 6,
+      address: '0xaA8E23Fb1079EA71e0a56F48a2aA51851D8433D0',
+      chainId: 11155111,
+      logoURI: 'https://assets.coingecko.com/coins/images/325/thumb/Tether-logo.png?1598003707',
+    },
+    {
+      name: 'Wrapped BTC',
+      symbol: 'WBTC',
+      decimals: 8,
+      address: '0x29f2D40B0605204364af54EC677bD022dA425d03',
+      chainId: 11155111,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/7598/thumb/wrapped_bitcoin_wbtc.png?1548822744',
+    },
+    {
+      name: 'Aave',
+      symbol: 'AAVE',
+      decimals: 18,
+      address: '0x88541670E55cC00bEEFD87eB59EDd1b7C511AC9a',
+      chainId: 11155111,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
+    },
+    {
+      name: 'Chainlink',
+      symbol: 'LINK',
+      decimals: 18,
+      address: '0xf8Fb3713D459D7C1018BD0A49D19b4C44290EBE5',
+      chainId: 11155111,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/877/thumb/chainlink-new-logo.png?1547034700',
+    },
+    {
       name: 'Gho Token',
       address: '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f',
       symbol: 'GHO',
@@ -12731,6 +12889,15 @@ export const TOKEN_LIST: TokenList = {
       chainId: 8453,
       logoURI:
         'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+    },
+    {
+      name: 'Aave',
+      address: '0x63706e401c06ac8513145b7687A14804d17f814b',
+      symbol: 'AAVE',
+      decimals: 18,
+      chainId: 8453,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
     },
     {
       name: 'stk GHO',
@@ -12762,12 +12929,20 @@ export const TOKEN_LIST: TokenList = {
 export const COMMON_SWAPS = [
   'ETH',
   'DAI',
+  'GHO',
   'USDC',
   'USDT',
   'WBTC',
   'WETH',
+  'AAVE',
   'DAI.e',
   'USDC.e',
   'USDT.e',
-  'GHO',
 ];
+
+export const findTokenSymbol = (address: string, chainId: number) => {
+  const token = TOKEN_LIST.tokens.find(
+    (token) => token.address.toLowerCase() === address.toLowerCase() && token.chainId === chainId
+  );
+  return token?.symbol;
+};

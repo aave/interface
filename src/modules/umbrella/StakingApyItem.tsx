@@ -88,7 +88,7 @@ export const StakingApyItem = ({
               <Typography variant="caption" color="text.secondary" mb={3}>
                 {stakeData.underlyingIsStataToken ? (
                   <Trans>
-                    Staking this asset will earn the underlying asset supply yield in additon to
+                    Staking this asset will earn the underlying asset supply yield in addition to
                     other configured rewards.
                   </Trans>
                 ) : (

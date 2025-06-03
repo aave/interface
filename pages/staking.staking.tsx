@@ -19,6 +19,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
+import { SavingsGhoProgram } from 'src/modules/staking/SavingsGhoProgram';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
@@ -224,7 +225,29 @@ export default function Staking() {
                   onCooldownAction={() => openStakeCooldown(Stake.gho, 'GHO')}
                   onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.gho, 'AAVE')}
-                />
+                >
+                  <Box
+                    sx={{
+                      mt: {
+                        xs: '20px',
+                        xsm: '36px',
+                      },
+                      px: {
+                        xsm: 6,
+                      },
+                      width:
+                        STAGING_ENV || ENABLE_TESTNET
+                          ? {
+                              xs: '100%',
+                              lg: '50%',
+                            }
+                          : '100%',
+                      marginX: 'auto',
+                    }}
+                  >
+                    <SavingsGhoProgram />
+                  </Box>
+                </StakingPanel>
               </Grid>
 
               <Grid
