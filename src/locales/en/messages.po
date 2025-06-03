@@ -1298,6 +1298,7 @@ msgstr "Wrong Network"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
+#: src/modules/umbrella/UmbrellaHeader.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Staking"
 msgstr "Staking"
@@ -1978,10 +1979,6 @@ msgstr "Amount to Bridge"
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
-
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "Umbrella"
-msgstr "Umbrella"
 
 #: src/components/transactions/Switch/SwitchTxSuccessView.tsx
 msgid "The order could't be filled."
