@@ -148,6 +148,10 @@ msgstr "Transaction history"
 msgid "Approving {symbol}..."
 msgstr "Approving {symbol}..."
 
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Learn more about the risks."
+msgstr "Learn more about the risks."
+
 #: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
@@ -299,7 +303,6 @@ msgstr "Repay"
 msgid "The weighted average of APY for all supplied assets, including incentives."
 msgstr "The weighted average of APY for all supplied assets, including incentives."
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "You can only withdraw your assets from the Security Module after the cooldown period ends and the unstake window is active."
@@ -539,7 +542,6 @@ msgstr "Learn more about Sonic Rewards program"
 msgid "Claim all"
 msgstr "Claim all"
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/AmountStakedItem.tsx
@@ -751,6 +753,10 @@ msgstr "Collateral usage is limited because of isolation mode. <0>Learn More</0>
 msgid "Migrate your assets"
 msgstr "Migrate your assets"
 
+#: src/modules/staking/StakingHeader.tsx
+msgid "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "At a discount"
 msgstr "At a discount"
@@ -850,6 +856,10 @@ msgstr "Watch wallet"
 msgid "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
 msgstr "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
 
+#: src/modules/reserve-overview/Gho/SavingsGho.tsx
+msgid "Instant"
+msgstr "Instant"
+
 #: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Stake balance"
 msgstr "Stake balance"
@@ -883,6 +893,10 @@ msgstr "Supply balance after switch"
 msgid "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
 msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
 
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Stake your Aave aTokens or underlying assets to earn rewards. In case of a shortfall event, your stake may be slashed to cover the deficit."
+msgstr "Stake your Aave aTokens or underlying assets to earn rewards. In case of a shortfall event, your stake may be slashed to cover the deficit."
+
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -893,10 +907,6 @@ msgstr "Aave per month"
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Collateralization"
 msgstr "Collateralization"
-
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "Umbrella is the upgraded version of the Safety Module. You can still manage your existing staked assets"
-msgstr "Umbrella is the upgraded version of the Safety Module. You can still manage your existing staked assets"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
@@ -1052,9 +1062,7 @@ msgstr "This is a program initiated and implemented by the decentralised ZKSync 
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 msgstr "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
-#: src/modules/staking/GhoStakingPanel.tsx
-#: src/modules/staking/StakingPanel.tsx
+#: src/components/SecondsToString.tsx
 msgid "{d}d"
 msgstr "{d}d"
 
@@ -1139,6 +1147,7 @@ msgstr "Liquidation at"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
+#: src/modules/staking/SavingsGhoProgram.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/UmbrellaMarketSwitcher.tsx
@@ -1166,7 +1175,6 @@ msgstr "You can not use this currency as collateral"
 msgid "Reward(s) to claim"
 msgstr "Reward(s) to claim"
 
-#: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -1259,7 +1267,6 @@ msgstr "Due to internal stETH mechanics required for rebasing support, it is not
 msgid "Wrong Network"
 msgstr "Wrong Network"
 
-#: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
 msgid "Staking"
@@ -1431,9 +1438,7 @@ msgstr "Collector Contract"
 msgid "Nothing staked"
 msgstr "Nothing staked"
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
-#: src/modules/staking/GhoStakingPanel.tsx
-#: src/modules/staking/StakingPanel.tsx
+#: src/components/SecondsToString.tsx
 msgid "{m}m"
 msgstr "{m}m"
 
@@ -1614,10 +1619,6 @@ msgstr "There are no stake assets configured for this market"
 msgid "Proposal details"
 msgstr "Proposal details"
 
-#: src/modules/staking/StakingHeader.tsx
-msgid "AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
@@ -1641,6 +1642,10 @@ msgstr "Send feedback"
 #: src/ui-config/errorMapping.tsx
 msgid "Health factor is lesser than the liquidation threshold"
 msgstr "Health factor is lesser than the liquidation threshold"
+
+#: src/modules/staking/SavingsGhoProgram.tsx
+msgid "stkGHO is now Savings GHO"
+msgstr "stkGHO is now Savings GHO"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
@@ -1760,10 +1765,6 @@ msgstr "Borrow rate change"
 msgid "Bridge history"
 msgstr "Bridge history"
 
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "Holders of stkAAVE receive a discount on the GHO borrowing rate"
-msgstr "Holders of stkAAVE receive a discount on the GHO borrowing rate"
-
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 msgid "Borrow balance after switch"
 msgstr "Borrow balance after switch"
@@ -1830,6 +1831,11 @@ msgstr "Learn more about the SPK rewards"
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
 msgstr "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/modules/umbrella/StakeCooldownModalContent.tsx
+msgid "You'll need to wait {0} before you can unstake your tokens. This cooldown starts when you request to unstake. Once it ends, you can withdraw during the unstake window."
+msgstr "You'll need to wait {0} before you can unstake your tokens. This cooldown starts when you request to unstake. Once it ends, you can withdraw during the unstake window."
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
@@ -2045,7 +2051,6 @@ msgstr "enabled"
 msgid "Enter a valid address"
 msgstr "Enter a valid address"
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to unstake"
@@ -2250,10 +2255,6 @@ msgstr "Available"
 msgid "You did not participate in this proposal"
 msgstr "You did not participate in this proposal"
 
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "Umbrella lets you earn rewards by staking your Aave aTokens or underlying assets. If a deficit occurs, the staked assets will be used to cover it."
-msgstr "Umbrella lets you earn rewards by staking your Aave aTokens or underlying assets. If a deficit occurs, the staked assets will be used to cover it."
-
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
@@ -2283,6 +2284,10 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Assets to borrow"
 msgstr "Assets to borrow"
+
+#: src/modules/staking/GhoDiscountProgram.tsx
+msgid "Get a discount on GHO borrowing by holding stkAAVE"
+msgstr "Get a discount on GHO borrowing by holding stkAAVE"
 
 #: src/components/Warnings/BorrowDisabledWarning.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
@@ -2694,13 +2699,10 @@ msgstr "{0} Balance"
 msgid "Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is restricted to assets within the selected category. <0>Learn more</0> about how it works and the applied restrictions."
 msgstr "Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is restricted to assets within the selected category. <0>Learn more</0> about how it works and the applied restrictions."
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
-#: src/modules/staking/GhoStakingPanel.tsx
-#: src/modules/staking/StakingPanel.tsx
+#: src/components/SecondsToString.tsx
 msgid "{s}s"
 msgstr "{s}s"
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown time left"
@@ -2770,6 +2772,7 @@ msgstr "Repayment amount to reach {0}% utilization"
 msgid "You can not stake this amount because it will cause collateral call"
 msgstr "You can not stake this amount because it will cause collateral call"
 
+#: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 msgid "Deposit"
 msgstr "Deposit"
@@ -2880,6 +2883,10 @@ msgstr "Asset cannot be used as collateral."
 msgid "Developers"
 msgstr "Developers"
 
+#: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
+msgid "Depositing"
+msgstr "Depositing"
+
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
@@ -2919,10 +2926,6 @@ msgstr "Can be executed"
 msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "stkAAVE holders get a discount on GHO borrow rate"
-msgstr "stkAAVE holders get a discount on GHO borrow rate"
-
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
 msgstr "Please switch to {networkName}."
@@ -2935,11 +2938,13 @@ msgstr "Both"
 msgid "Discount applied for <0/> staking AAVE"
 msgstr "Discount applied for <0/> staking AAVE"
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
-#: src/modules/staking/GhoStakingPanel.tsx
-#: src/modules/staking/StakingPanel.tsx
+#: src/components/SecondsToString.tsx
 msgid "{h}h"
 msgstr "{h}h"
+
+#: src/modules/reserve-overview/Gho/SavingsGho.tsx
+msgid "After the cooldown is initiated, you will be able to withdraw your assets immediatley."
+msgstr "After the cooldown is initiated, you will be able to withdraw your assets immediatley."
 
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
@@ -3005,7 +3010,6 @@ msgstr "Staking this asset will earn the underlying asset supply yield in additi
 msgid "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
 msgstr "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time remaining until the 48 hour withdraw period starts."
@@ -3045,11 +3049,6 @@ msgstr "Signatures ready"
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Go to Balancer Pool"
 msgstr "Go to Balancer Pool"
-
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-#: src/modules/umbrella/StakeCooldownModalContent.tsx
-msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
-msgstr "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
@@ -3557,7 +3556,6 @@ msgid "Repay with"
 msgstr "Repay with"
 
 #: src/modules/staking/StakingHeader.tsx
-#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Learn more about risks involved"
 msgstr "Learn more about risks involved"
 
@@ -3700,6 +3698,10 @@ msgstr "Supply balance"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
+
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Umbrella is the upgraded version of the Safety Module. Manage your previously staked assets"
+msgstr "Umbrella is the upgraded version of the Safety Module. Manage your previously staked assets"
 
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
