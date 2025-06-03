@@ -1122,6 +1122,10 @@ msgstr "Claiming {symbol}"
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
+#: src/modules/staking/StakingHeader.tsx
+msgid "The Safety Module has been upgraded to <0>Umbrella</0>, a new system that introduces automated slashing, aToken staking, and improved incentives design."
+msgstr "The Safety Module has been upgraded to <0>Umbrella</0>, a new system that introduces automated slashing, aToken staking, and improved incentives design."
+
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "All done"
@@ -1294,6 +1298,7 @@ msgstr "Wrong Network"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
+#: src/ui-config/menu-items/index.tsx
 msgid "Staking"
 msgstr "Staking"
 
@@ -1523,7 +1528,7 @@ msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this po
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
 msgstr "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
 
-#: pages/staking.staking.tsx
+#: pages/safety-module.page.tsx
 msgid "Stake ABPT"
 msgstr "Stake ABPT"
 
@@ -1601,7 +1606,7 @@ msgstr "Withdrawing"
 msgid "Swapped"
 msgstr "Swapped"
 
-#: pages/staking.staking.tsx
+#: pages/safety-module.page.tsx
 msgid "Stake GHO"
 msgstr "Stake GHO"
 
@@ -1975,7 +1980,6 @@ msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially m
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
 #: src/modules/umbrella/UmbrellaHeader.tsx
-#: src/ui-config/menu-items/index.tsx
 msgid "Umbrella"
 msgstr "Umbrella"
 
@@ -2654,6 +2658,8 @@ msgstr "You voted {0}"
 msgid "Borrowable"
 msgstr "Borrowable"
 
+#: src/layouts/MobileMenu.tsx
+#: src/layouts/MoreMenu.tsx
 #: src/modules/staking/StakingHeader.tsx
 msgid "Safety Module"
 msgstr "Safety Module"
@@ -2872,7 +2878,7 @@ msgstr "Total emission per day"
 msgid "Selected borrow assets"
 msgstr "Selected borrow assets"
 
-#: pages/staking.staking.tsx
+#: pages/safety-module.page.tsx
 msgid "Balancer Pool"
 msgstr "Balancer Pool"
 
@@ -2896,7 +2902,7 @@ msgstr "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</
 msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Buy {cryptoSymbol} with Fiat"
 
-#: pages/staking.staking.tsx
+#: pages/safety-module.page.tsx
 msgid "Stake AAVE"
 msgstr "Stake AAVE"
 
@@ -2922,7 +2928,7 @@ msgstr "Developers"
 msgid "Depositing"
 msgstr "Depositing"
 
-#: pages/staking.staking.tsx
+#: pages/safety-module.page.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 
@@ -3579,7 +3585,7 @@ msgstr "Get ABP v2 Token"
 msgid "This asset is eligible for {0} Sonic Rewards."
 msgstr "This asset is eligible for {0} Sonic Rewards."
 
-#: pages/staking.staking.tsx
+#: pages/safety-module.page.tsx
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
 msgstr "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
 

@@ -66,7 +66,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
               The Safety Module has been upgraded to{' '}
-              <Link href="/umbrella" sx={{ textDecoration: 'underline', color: '#8E92A3' }}>
+              <Link href="/staking" sx={{ textDecoration: 'underline', color: '#8E92A3' }}>
                 Umbrella
               </Link>
               , a new system that introduces automated slashing, aToken staking, and improved

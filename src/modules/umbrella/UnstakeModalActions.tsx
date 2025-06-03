@@ -44,8 +44,13 @@ export const UnStakeActions = ({
   redeemType,
 }: UnStakeActionProps) => {
   const queryClient = useQueryClient();
-  const [currentChainId, user, estimateGasLimit] = useRootStore(
-    useShallow((store) => [store.currentChainId, store.account, store.estimateGasLimit])
+  const [currentChainId, user, currentMarket, estimateGasLimit] = useRootStore(
+    useShallow((store) => [
+      store.currentChainId,
+      store.account,
+      store.currentMarket,
+      store.estimateGasLimit,
+    ])
   );
   const { sendTx } = useWeb3Context();
   const {
@@ -68,7 +73,7 @@ export const UnStakeActions = ({
   } = useApprovedAmount({
     chainId: currentChainId,
     token: selectedToken,
-    spender: stakeUmbrellaConfig[currentChainId].batchHelper,
+    spender: stakeUmbrellaConfig[currentMarket]?.batchHelper || '',
   });
 
   setLoadingTxns(fetchingApprovedAmount);
@@ -90,7 +95,7 @@ export const UnStakeActions = ({
   const tokenApproval = {
     user,
     token: selectedToken,
-    spender: stakeUmbrellaConfig[currentChainId].batchHelper,
+    spender: stakeUmbrellaConfig[currentMarket]?.batchHelper || '',
     amount: amountToUnStake,
   };
 
@@ -134,7 +139,7 @@ export const UnStakeActions = ({
       setMainTxState({ ...mainTxState, loading: true });
       let unstakeTxData: PopulatedTransaction;
       const batchHelperService = new UmbrellaBatchHelperService(
-        stakeUmbrellaConfig[currentChainId].batchHelper
+        stakeUmbrellaConfig[currentMarket]?.batchHelper || ''
       );
       unstakeTxData = batchHelperService.redeem({
         sender: user,

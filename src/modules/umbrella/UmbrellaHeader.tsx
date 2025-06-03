@@ -52,7 +52,7 @@ export const UmbrellaHeader: React.FC = () => {
               Umbrella is the upgraded version of the Safety Module. Manage your previously staked
               assets
             </Trans>{' '}
-            <Link href="/staking" sx={{ textDecoration: 'underline', color: '#8E92A3' }}>
+            <Link href="/safety-module" sx={{ textDecoration: 'underline', color: '#8E92A3' }}>
               <Trans>here.</Trans>
             </Link>
             <br />
