@@ -2,7 +2,8 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon, CalendarIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, Stack, SvgIcon, Typography } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
 import dayjs from 'dayjs';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
@@ -92,6 +93,9 @@ export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStak
     setCooldownCheck(!cooldownCheck);
   };
   const amountToCooldown = stakeData?.formattedBalances.stakeTokenRedeemableAmount || '0';
+  const amountToCooldownUsd = new BigNumber(amountToCooldown)
+    .multipliedBy(stakeData.price)
+    .shiftedBy(-8);
 
   const dateMessage = (time: number) => {
     const now = dayjs();
@@ -169,8 +173,24 @@ export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStak
           <Trans>Amount available to unstake</Trans>
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <TokenIcon symbol={stakeData.iconSymbol} sx={{ mr: 1, width: 14, height: 14 }} />
-          <FormattedNumber value={amountToCooldown} variant="secondary14" color="text.primary" />
+          <Stack direction="column" alignItems="flex-end">
+            <Stack direction="row" alignItems="center">
+              <TokenIcon symbol={stakeData.iconSymbol} sx={{ mr: 1, width: 14, height: 14 }} />
+              <FormattedNumber
+                value={amountToCooldown}
+                variant="secondary14"
+                color="text.primary"
+              />
+            </Stack>
+            <FormattedNumber
+              value={amountToCooldownUsd.toString()}
+              compact
+              symbol="USD"
+              variant="secondary12"
+              color="text.muted"
+              symbolsColor="text.muted"
+            />
+          </Stack>
         </Box>
       </Box>
 

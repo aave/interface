@@ -65,6 +65,16 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
+              The Safety Module has been upgraded to{' '}
+              <Link href="/umbrella" sx={{ textDecoration: 'underline', color: '#8E92A3' }}>
+                Umbrella
+              </Link>
+              , a new system that introduces automated slashing, aToken staking, and improved
+              incentives design.
+            </Trans>
+            <br />
+            <br />
+            <Trans>
               AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety
               Module to add more security to the protocol and earn Safety Incentives. In the case of
               a shortfall event, your stake can be slashed to cover the deficit, providing an
