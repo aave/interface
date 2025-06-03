@@ -52,11 +52,12 @@ export const UmbrellaActions = ({
   ...props
 }: StakeActionProps) => {
   const queryClient = useQueryClient();
-  const [estimateGasLimit, tryPermit, walletApprovalMethodPreference] = useRootStore(
+  const [estimateGasLimit, tryPermit, walletApprovalMethodPreference, currentMarket] = useRootStore(
     useShallow((state) => [
       state.estimateGasLimit,
       state.tryPermit,
       state.walletApprovalMethodPreference,
+      state.currentMarket,
     ])
   );
 
@@ -94,7 +95,7 @@ export const UmbrellaActions = ({
     chainId: currentChainId,
     token: selectedToken.address,
     spender: useStakeGateway
-      ? stakeUmbrellaConfig[currentChainId].batchHelper
+      ? stakeUmbrellaConfig[currentMarket]?.batchHelper || ''
       : stakeData.tokenAddress,
   });
 
@@ -122,7 +123,7 @@ export const UmbrellaActions = ({
     user,
     token: selectedToken.address,
     spender: useStakeGateway
-      ? stakeUmbrellaConfig[currentChainId].batchHelper
+      ? stakeUmbrellaConfig[currentMarket]?.batchHelper || ''
       : stakeData.tokenAddress,
     amount: approvedAmount?.toString() || '0',
   };
@@ -194,7 +195,7 @@ export const UmbrellaActions = ({
   const getStakeGatewayTxData = (amountToStake: string) => {
     setMainTxState({ ...mainTxState, loading: true });
     const batchHelperService = new UmbrellaBatchHelperService(
-      stakeUmbrellaConfig[currentChainId].batchHelper
+      stakeUmbrellaConfig[currentMarket]?.batchHelper || ''
     );
     let stakeTxData: PopulatedTransaction;
 
