@@ -30,8 +30,8 @@ export const navigation: Navigation[] = [
     dataCy: 'menuMarkets',
   },
   {
-    link: ROUTES.umbrella,
-    title: t`Umbrella`,
+    link: ROUTES.staking,
+    title: t`Staking`,
   },
   {
     link: ROUTES.governance,

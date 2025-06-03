@@ -61,7 +61,7 @@ export function MoreMenu() {
         onClose={handleClose}
         keepMounted={true}
       >
-        <MenuItem divider={true} component={Link} onClick={handleClose} href="/staking">
+        <MenuItem divider={true} component={Link} onClick={handleClose} href="/safety-module">
           <Typography variant="subheader1">
             <Trans>Safety Module</Trans>
           </Typography>
