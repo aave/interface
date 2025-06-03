@@ -49,8 +49,8 @@ export const UmbrellaHeader: React.FC = () => {
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
-              Umbrella is the upgraded version of the Safety Module. You can still manage your
-              existing staked assets
+              Umbrella is the upgraded version of the Safety Module. Manage your previously staked
+              assets
             </Trans>{' '}
             <Link href="/staking" sx={{ textDecoration: 'underline', color: '#8E92A3' }}>
               <Trans>here.</Trans>
@@ -58,8 +58,8 @@ export const UmbrellaHeader: React.FC = () => {
             <br />
             <br />
             <Trans>
-              Umbrella lets you earn rewards by staking your Aave aTokens or underlying assets. If a
-              deficit occurs, the staked assets will be used to cover it.
+              Stake your Aave aTokens or underlying assets to earn rewards. In case of a shortfall
+              event, your stake may be slashed to cover the deficit.
             </Trans>{' '}
             <Link
               href="https://docs.aave.com/faq/migration-and-staking"
@@ -70,7 +70,7 @@ export const UmbrellaHeader: React.FC = () => {
                 })
               }
             >
-              <Trans>Learn more about risks involved</Trans>
+              <Trans>Learn more about the risks.</Trans>
             </Link>
           </Typography>
         </Box>
