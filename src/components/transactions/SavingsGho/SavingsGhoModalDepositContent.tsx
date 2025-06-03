@@ -5,14 +5,15 @@ import { Typography } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
+import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig';
 import { STAKE } from 'src/utils/events';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { useShallow } from 'zustand/shallow';
 
-import { CooldownWarning } from '../../Warnings/CooldownWarning';
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -20,30 +21,31 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { SavingsGhoDepositActions } from './SavingsGhoDepositActions';
 
-export type StakeProps = {
-  icon: string;
-};
-
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-export const SavingsGhoModalDepositContent = ({ icon }: StakeProps) => {
+export const SavingsGhoModalDepositContent = () => {
   const { chainId: connectedChainId } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
-  const currentChainId = useRootStore((store) => store.currentChainId);
+  const [currentMarketData, currentNetworkConfig, currentChainId] = useRootStore(
+    useShallow((store) => [
+      store.currentMarketData,
+      store.currentNetworkConfig,
+      store.currentChainId,
+    ])
+  );
+  const { data: meritIncentives } = useMeritIncentives({
+    symbol: 'GHO',
+    market: currentMarketData.market,
+  });
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
 
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.gho);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, Stake.gho);
-
   const stakeData = stakeGeneralResult?.[0];
   const stakeUserData = stakeUserResult?.[0];
-
-  // states
-  const [_amount, setAmount] = useState('');
-  const amountRef = useRef<string>();
 
   const walletBalance = normalize(stakeUserData?.underlyingTokenUserBalance || '0', 18);
 
@@ -56,10 +58,8 @@ export const SavingsGhoModalDepositContent = ({ icon }: StakeProps) => {
     setAmount(value);
   };
 
-  // staking token usd value
   const amountInUsd = Number(amount) * Number(stakeData?.stakeTokenPriceUSDFormatted);
 
-  // error handler
   let blockingError: ErrorType | undefined = undefined;
   if (valueToBigNumber(amount).gt(walletBalance)) {
     blockingError = ErrorType.NOT_ENOUGH_BALANCE;
@@ -83,8 +83,6 @@ export const SavingsGhoModalDepositContent = ({ icon }: StakeProps) => {
       : stakeConfig.chainId;
   const isWrongNetwork = connectedChainId !== stakingChain;
 
-  const networkConfig = getNetworkConfig(stakingChain);
-
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
@@ -99,17 +97,6 @@ export const SavingsGhoModalDepositContent = ({ icon }: StakeProps) => {
 
   return (
     <>
-      {/* <TxModalTitle title="Deposit" symbol={nameFormatted} />
-      {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning
-          networkName={networkConfig.name}
-          chainId={stakingChain}
-          funnel={'Stake Modal'}
-        />
-      )} */}
-
-      {nameFormatted !== 'GHO' && <CooldownWarning />}
-
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -118,7 +105,7 @@ export const SavingsGhoModalDepositContent = ({ icon }: StakeProps) => {
         assets={[
           {
             balance: walletBalance.toString(),
-            symbol: icon,
+            symbol: GHO_SYMBOL,
           },
         ]}
         isMaxSelected={isMaxSelected}
@@ -133,7 +120,7 @@ export const SavingsGhoModalDepositContent = ({ icon }: StakeProps) => {
       <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
         <DetailsNumberLine
           description={<Trans>APR</Trans>}
-          value={Number(stakeData?.stakeApy || '0') / 10000}
+          value={meritIncentives?.incentiveAPR || '0'}
           percent
         />
       </TxModalDetails>

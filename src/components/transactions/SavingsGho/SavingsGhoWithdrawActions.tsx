@@ -1,9 +1,11 @@
-import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+// import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
+import { BigNumber } from 'ethers';
+import { parseEther } from 'ethers/lib/utils';
 import React, { useEffect } from 'react';
 import { oracles, stakedTokens } from 'src/hooks/stake/common';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
@@ -59,6 +61,10 @@ export const SavingsGhoWithdrawActions = ({
     userCooldownDelta > stakeCooldownSeconds &&
     userCooldownDelta < stakeUnstakeWindow + stakeCooldownSeconds;
 
+  const cooldownRequired = BigNumber.from(parseEther(amountToUnStake || '0')).gt(
+    stakeUserData.userCooldownAmount
+  );
+
   // Update gas estimation
   useEffect(() => {
     let gasLimit = 0;
@@ -75,20 +81,14 @@ export const SavingsGhoWithdrawActions = ({
       setMainTxState({ ...mainTxState, loading: true });
       let response: TransactionResponse;
 
-      if (isUnstakeWindowActive) {
-        const redeemTxData = await redeem(selectedToken)(amountToUnStake.toString());
-        const tx = await redeemTxData[0].tx();
-        response = await sendTx(tx);
-      } else {
+      if (!isUnstakeWindowActive || cooldownRequired) {
         // First activate cooldown
         const cooldownTxData = await cooldown(selectedToken);
         const tx = await cooldownTxData[0].tx();
         response = await sendTx(tx);
 
-        // Wait for cooldown transaction to be mined
         await response.wait(1);
 
-        // Invalidate stake data to update cooldown state
         await queryClient.invalidateQueries({
           queryKey: queryKeysFactory.userStakeUiData(user, marketData, stakedTokens, oracles),
         });
@@ -99,9 +99,12 @@ export const SavingsGhoWithdrawActions = ({
           loading: false,
         });
 
-        // Return early to prevent setting success state
         return;
       }
+
+      const redeemTxData = await redeem(selectedToken)(amountToUnStake.toString());
+      const tx = await redeemTxData[0].tx();
+      response = await sendTx(tx);
 
       await response.wait(1);
 
@@ -125,17 +128,19 @@ export const SavingsGhoWithdrawActions = ({
     }
   };
 
-  const actionText = isUnstakeWindowActive ? (
-    <Trans>Withdraw GHO</Trans>
-  ) : (
-    <Trans>Activate Cooldown</Trans>
-  );
+  const actionText =
+    isUnstakeWindowActive && !cooldownRequired ? (
+      <Trans>Withdraw GHO</Trans>
+    ) : (
+      <Trans>Activate Cooldown</Trans>
+    );
 
-  const actionInProgressText = isUnstakeWindowActive ? (
-    <Trans>Withdrawing GHO</Trans>
-  ) : (
-    <Trans>Activating Cooldown</Trans>
-  );
+  const actionInProgressText =
+    isUnstakeWindowActive && !cooldownRequired ? (
+      <Trans>Withdrawing GHO</Trans>
+    ) : (
+      <Trans>Activating Cooldown</Trans>
+    );
 
   return (
     <TxActionsWrapper

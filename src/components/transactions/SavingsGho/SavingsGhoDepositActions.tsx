@@ -75,11 +75,10 @@ export const SavingsGhoDepositActions = ({
       }
       symbol={symbol}
       requiresAmount
-      actionText={<Trans>Stake</Trans>}
+      actionText={<Trans>Deposit</Trans>}
       tryPermit={tryPermit}
-      actionInProgressText={<Trans>Staking</Trans>}
+      actionInProgressText={<Trans>Depositing</Trans>}
       sx={sx}
-      // event={STAKE.STAKE_BUTTON_MODAL}
       {...props}
     />
   );

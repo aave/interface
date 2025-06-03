@@ -10,8 +10,6 @@ export const SavingsGhoDepositModal = () => {
     underlyingAsset: string;
   }>;
 
-  console.log('args', args);
-
   return (
     <BasicModal open={type === ModalType.SavingsGhoDeposit} setOpen={close}>
       <ModalWrapper
@@ -19,7 +17,7 @@ export const SavingsGhoDepositModal = () => {
         underlyingAsset={args.underlyingAsset}
         hideTitleSymbol
       >
-        {(params) => <SavingsGhoModalDepositContent {...params} icon="GHO" />}
+        {() => <SavingsGhoModalDepositContent />}
       </ModalWrapper>
     </BasicModal>
   );
