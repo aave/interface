@@ -19,7 +19,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
-import { SavingsGhoProgram } from 'src/modules/staking/SavingsGhoProgram';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
@@ -245,7 +244,7 @@ export default function Staking() {
                       marginX: 'auto',
                     }}
                   >
-                    <SavingsGhoProgram />
+                    {/* <SavingsGhoProgram /> */}
                   </Box>
                 </StakingPanel>
               </Grid>
