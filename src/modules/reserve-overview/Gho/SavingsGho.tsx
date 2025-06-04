@@ -65,7 +65,7 @@ export const SavingsGho = () => {
       </Typography>
       <Stack direction="row">
         <Stack direction="row" alignItems="center" gap={1}>
-          <TokenIcon symbol="stkgho" sx={{ width: 24, height: 24 }} />
+          <TokenIcon symbol="sgho" sx={{ width: 24, height: 24 }} />
           <Typography variant="h3">
             <Trans>sGHO</Trans>
           </Typography>
