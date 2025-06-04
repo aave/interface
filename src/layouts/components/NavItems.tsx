@@ -112,7 +112,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
               sx={{ width: '100%', p: 4 }}
               onClick={() => handleClick('Staking', true)}
             >
-              <Trans>Staking</Trans>
+              <Trans>Umbrella</Trans>
             </Typography>
           </>
         ) : (

@@ -46,7 +46,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           sx={{ width: '100%', p: 4 }}
           onClick={() => handleMenuItemClick('Staking')}
         >
-          <Trans>Staking</Trans>
+          <Trans>Umbrella</Trans>
         </Typography>
         <Typography
           component={Link}
@@ -130,7 +130,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           sx={{ minWidth: '140px' }}
         >
           <Typography variant="subheader1">
-            <Trans>Staking</Trans>
+            <Trans>Umbrella</Trans>
           </Typography>
         </MenuItem>
         <MenuItem

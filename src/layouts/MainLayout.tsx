@@ -33,7 +33,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
     <>
       <TopBarNotify
         learnMoreLink={ROUTES.staking}
-        notifyText="Aave Safety Module staking has been upgraded to the latest Umbrella version"
+        notifyText="Aave Safety Module has been upgraded to Umbrella"
         bannerVersion={APP_BANNER_VERSION}
       />
 
