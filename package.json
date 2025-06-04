@@ -31,8 +31,8 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.33.4-3c360ac623873135c41be094f310a70f0471f905.0+df09724",
-    "@aave/math-utils": "1.33.4-3c360ac623873135c41be094f310a70f0471f905.0+df09724",
+    "@aave/contract-helpers": "1.34.0",
+    "@aave/math-utils": "1.34.0",
     "@amplitude/analytics-browser": "^2.13.0",
     "@bgd-labs/aave-address-book": "^4.22.1",
     "@cowprotocol/app-data": "^3.1.0",
