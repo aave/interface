@@ -555,7 +555,7 @@ export const marketsData: {
   },
 
   [CustomMarket.proto_horizon_v3]: {
-    marketTitle: 'Horizon',
+    marketTitle: 'Horizon RWA',
     market: CustomMarket.proto_horizon_v3,
     chainId: ChainId.mainnet,
     v3: true,
