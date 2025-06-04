@@ -19,6 +19,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
+import { GhoStakingPanel } from 'src/modules/staking/GhoStakingPanel';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
@@ -47,6 +48,16 @@ const StakeRewardClaimRestakeModal = dynamic(() =>
 const UnStakeModal = dynamic(() =>
   import('../src/components/transactions/UnStake/UnStakeModal').then(
     (module) => module.UnStakeModal
+  )
+);
+const SavingsGhoDepositModal = dynamic(() =>
+  import('../src/components/transactions/SavingsGho/SavingsGhoDepositModal').then(
+    (module) => module.SavingsGhoDepositModal
+  )
+);
+const SavingsGhoWithdrawModal = dynamic(() =>
+  import('../src/components/transactions/SavingsGho/SavingsGhoWithdrawModal').then(
+    (module) => module.SavingsGhoWithdrawModal
   )
 );
 
@@ -83,6 +94,8 @@ export default function Staking() {
     openStakeRewardsClaim,
     openStakeRewardsRestakeClaim,
     openStakingMigrate,
+    openSavingsGhoDeposit,
+    openSavingsGhoWithdraw,
   } = useModalContext();
 
   const [mode, setMode] = useState<Stake>(Stake.aave);
@@ -97,7 +110,7 @@ export default function Staking() {
 
   const tvl = {
     'Staked Aave': Number(stkAave?.totalSupplyUSDFormatted || '0'),
-    'Staked GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
+    // 'Staked GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
     'Staked ABPT': Number(stkBpt?.totalSupplyUSDFormatted || '0'),
     'Staked ABPT V2': Number(stkBptV2?.totalSupplyUSDFormatted || '0'),
   };
@@ -149,7 +162,7 @@ export default function Staking() {
                 </StyledToggleButton>
                 <StyledToggleButton value="gho" disabled={mode === 'gho'}>
                   <Typography variant="subheader1">
-                    <Trans>Stake sGHO(formerly stkGHO)</Trans>
+                    <Trans>sGHO</Trans>
                   </Typography>
                 </StyledToggleButton>
                 <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
@@ -213,40 +226,18 @@ export default function Staking() {
                 lg={6}
                 sx={{ display: { xs: !isStkGho ? 'none' : 'block', lg: 'block' } }}
               >
-                <StakingPanel
-                  stakeTitle="sGHO(formerly stkGHO)"
+                <GhoStakingPanel
+                  stakeTitle="sGHO (formerly stkGHO)"
                   stakedToken="GHO"
+                  icon="sgho"
                   maxSlash={stkGho?.maxSlashablePercentageFormatted || '0'}
-                  icon="gho"
                   stakeData={stkGho}
                   stakeUserData={stkGhoUserData}
-                  onStakeAction={() => openStake(Stake.gho, 'GHO')}
-                  onCooldownAction={() => openStakeCooldown(Stake.gho, 'GHO')}
-                  onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
+                  onStakeAction={() => openSavingsGhoDeposit()}
+                  onCooldownAction={() => openSavingsGhoWithdraw()}
+                  onUnstakeAction={() => openSavingsGhoWithdraw()}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.gho, 'AAVE')}
-                >
-                  <Box
-                    sx={{
-                      mt: {
-                        xs: '20px',
-                        xsm: '36px',
-                      },
-                      px: {
-                        xsm: 6,
-                      },
-                      width:
-                        STAGING_ENV || ENABLE_TESTNET
-                          ? {
-                              xs: '100%',
-                              lg: '50%',
-                            }
-                          : '100%',
-                      marginX: 'auto',
-                    }}
-                  >
-                    {/* <SavingsGhoProgram /> */}
-                  </Box>
-                </StakingPanel>
+                />
               </Grid>
 
               <Grid
@@ -366,6 +357,8 @@ Staking.getLayout = function getLayout(page: React.ReactElement) {
       <UnStakeModal />
       <StakeRewardClaimModal />
       <StakeRewardClaimRestakeModal />
+      <SavingsGhoDepositModal />
+      <SavingsGhoWithdrawModal />
       {/** End of modals */}
     </MainLayout>
   );

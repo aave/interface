@@ -1,4 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
 import { RefreshIcon } from '@heroicons/react/outline';
@@ -16,7 +15,6 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { TokenContractTooltip } from 'src/components/infoTooltips/TokenContractTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -26,8 +24,6 @@ import { SecondsToString } from 'src/components/SecondsToString';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
-import { useModalContext } from 'src/hooks/useModal';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/events';
 
 import { StakeActionBox } from './StakeActionBox';
@@ -70,15 +66,10 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
-  const { openSwitch } = useModalContext();
 
   if (!stakeData || !stakeUserData) {
     return <StakingPanelSkeleton />;
   }
-
-  const handleSwitchClick = () => {
-    openSwitch('', ChainId.mainnet);
-  };
 
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
@@ -287,9 +278,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               percent
               variant="secondary14"
             />
-            {stakedToken === 'GHO' ? (
-              <MeritIncentivesButton symbol={stakedToken} market={CustomMarket.proto_mainnet_v3} />
-            ) : null}
           </Stack>
         </Box>
         <Box
@@ -329,28 +317,16 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
 
         {/**Stake action */}
 
-        {stakedToken === 'GHO' && +availableToStake === 0 ? (
-          <Button
-            variant="contained"
-            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
-            onClick={handleSwitchClick}
-            fullWidth={!xsm}
-            data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
-          >
-            <Trans>Get GHO</Trans>
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
-            onClick={onStakeAction}
-            disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
-            fullWidth={!xsm}
-            data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
-          >
-            <Trans>Stake</Trans>
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+          onClick={onStakeAction}
+          disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
+          fullWidth={!xsm}
+          data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
+        >
+          <Trans>Stake</Trans>
+        </Button>
       </Box>
 
       <Stack

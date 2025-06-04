@@ -89,7 +89,7 @@ export const SavingsGhoModalDepositContent = () => {
   if (txState.success)
     return (
       <TxSuccessView
-        action={<Trans>Staked</Trans>}
+        action={<Trans>deposited</Trans>}
         amount={amountRef.current}
         symbol={nameFormatted}
       />
