@@ -85,17 +85,19 @@ export const SavingsGho = () => {
         >
           {stakeDataLoading && <Skeleton variant="text" width={145} height={24} />}
           {!stakeDataLoading && stakeData && (
-            <Box>
+            <Stack direction="row" alignItems="center" gap={1}>
               <FormattedNumber value={stakeData.totalSupplyFormatted} variant="main16" compact />
-              {' ('}
-              <FormattedNumber
-                variant="caption"
-                value={stakeData.totalSupplyUSDFormatted}
-                visibleDecimals={2}
-                symbol="usd"
-              />
-              {')'}
-            </Box>
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                {' ('}
+                <FormattedNumber
+                  variant="caption"
+                  value={stakeData.totalSupplyUSDFormatted}
+                  visibleDecimals={2}
+                  symbol="usd"
+                />
+                {')'}
+              </Box>
+            </Stack>
           )}
         </PanelItem>
         <PanelItem
