@@ -15,7 +15,7 @@ import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUti
 import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/events';
-import { GhoBanner } from './Gho/GhoBanner';
+import { SavingsGhoBanner } from './Gho/GhoBanner';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -104,7 +104,7 @@ export const MarketAssetsListContainer = () => {
     >
       {displayGhoBanner && (
         <Box mb={4}>
-          <GhoBanner reserve={ghoReserve} />
+          <SavingsGhoBanner reserve={ghoReserve} />
         </Box>
       )}
 
