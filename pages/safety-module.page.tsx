@@ -149,7 +149,7 @@ export default function Staking() {
                 </StyledToggleButton>
                 <StyledToggleButton value="gho" disabled={mode === 'gho'}>
                   <Typography variant="subheader1">
-                    <Trans>Stake GHO</Trans>
+                    <Trans>Stake sGHO(formerly stkGHO)</Trans>
                   </Typography>
                 </StyledToggleButton>
                 <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
@@ -214,7 +214,7 @@ export default function Staking() {
                 sx={{ display: { xs: !isStkGho ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
-                  stakeTitle="GHO"
+                  stakeTitle="sGHO(formerly stkGHO)"
                   stakedToken="GHO"
                   maxSlash={stkGho?.maxSlashablePercentageFormatted || '0'}
                   icon="gho"

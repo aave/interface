@@ -1375,9 +1375,12 @@ msgid "Wrong Network"
 msgstr "Wrong Network"
 
 #: src/components/transactions/Stake/StakeActions.tsx
+#: src/layouts/components/NavItems.tsx
+#: src/layouts/components/StakingMenu.tsx
+#: src/layouts/components/StakingMenu.tsx
+#: src/layouts/components/StakingMenu.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
 #: src/modules/umbrella/UmbrellaHeader.tsx
-#: src/ui-config/menu-items/index.tsx
 msgid "Staking"
 msgstr "Staking"
 
@@ -2763,8 +2766,10 @@ msgstr "You voted {0}"
 msgid "Borrowable"
 msgstr "Borrowable"
 
+#: src/layouts/components/NavItems.tsx
+#: src/layouts/components/StakingMenu.tsx
+#: src/layouts/components/StakingMenu.tsx
 #: src/layouts/MobileMenu.tsx
-#: src/layouts/MoreMenu.tsx
 #: src/modules/staking/StakingHeader.tsx
 msgid "Safety Module"
 msgstr "Safety Module"

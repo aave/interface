@@ -30,10 +30,6 @@ export const navigation: Navigation[] = [
     dataCy: 'menuMarkets',
   },
   {
-    link: ROUTES.staking,
-    title: t`Staking`,
-  },
-  {
     link: ROUTES.governance,
     title: t`Governance`,
     dataCy: 'menuGovernance',
