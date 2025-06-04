@@ -36,8 +36,8 @@ export const UmbrellaClaimActions = ({
 
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
   const { sendTx } = useWeb3Context();
-  const [currentChainId, user] = useRootStore(
-    useShallow((store) => [store.currentChainId, store.account])
+  const [user, currentMarket] = useRootStore(
+    useShallow((store) => [store.account, store.currentMarket])
   );
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export const UmbrellaClaimActions = ({
     try {
       setMainTxState({ ...mainTxState, loading: true });
       const rewardsDistributorService = new RewardsDistributorService(
-        stakeUmbrellaConfig[currentChainId].stakeRewardsController
+        stakeUmbrellaConfig[currentMarket]?.stakeRewardsController || ''
       );
       let claimTx: PopulatedTransaction = {};
       if (stakeTokens.length > 1) {
