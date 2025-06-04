@@ -87,6 +87,19 @@ export const UmbrellaActions = ({
 
   const useStakeGateway = stakeData.underlyingIsStataToken;
 
+  // Validate that we have the required configuration for the current market
+  const batchHelperAddress = stakeUmbrellaConfig[currentMarket]?.batchHelper;
+  const hasValidBatchHelper = batchHelperAddress && batchHelperAddress !== '';
+
+  // If using stake gateway but no valid batch helper, this market is not supported
+  if (useStakeGateway && !hasValidBatchHelper) {
+    console.error(`Umbrella staking not supported for market: ${currentMarket}`);
+    // You might want to show an error message to the user here
+  }
+
+  const spenderAddress =
+    useStakeGateway && hasValidBatchHelper ? batchHelperAddress : stakeData.tokenAddress;
+
   const {
     data: approvedAmount,
     isFetching: fetchingApprovedAmount,
@@ -94,9 +107,7 @@ export const UmbrellaActions = ({
   } = useApprovedAmount({
     chainId: currentChainId,
     token: selectedToken.address,
-    spender: useStakeGateway
-      ? stakeUmbrellaConfig[currentMarket]?.batchHelper || ''
-      : stakeData.tokenAddress,
+    spender: spenderAddress,
   });
 
   setLoadingTxns(fetchingApprovedAmount);
@@ -122,9 +133,7 @@ export const UmbrellaActions = ({
   const tokenApproval = {
     user,
     token: selectedToken.address,
-    spender: useStakeGateway
-      ? stakeUmbrellaConfig[currentMarket]?.batchHelper || ''
-      : stakeData.tokenAddress,
+    spender: spenderAddress,
     amount: approvedAmount?.toString() || '0',
   };
 
@@ -194,9 +203,12 @@ export const UmbrellaActions = ({
 
   const getStakeGatewayTxData = (amountToStake: string) => {
     setMainTxState({ ...mainTxState, loading: true });
-    const batchHelperService = new UmbrellaBatchHelperService(
-      stakeUmbrellaConfig[currentMarket]?.batchHelper || ''
-    );
+
+    if (!hasValidBatchHelper) {
+      throw new Error(`Umbrella staking not supported for market: ${currentMarket}`);
+    }
+
+    const batchHelperService = new UmbrellaBatchHelperService(batchHelperAddress);
     let stakeTxData: PopulatedTransaction;
 
     if (usePermit && signatureParams) {

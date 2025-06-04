@@ -40,6 +40,17 @@ export const UmbrellaClaimActions = ({
     useShallow((store) => [store.account, store.currentMarket])
   );
 
+  // Validate that we have the required configuration for the current market
+  const stakeRewardsControllerAddress = stakeUmbrellaConfig[currentMarket]?.stakeRewardsController;
+  const hasValidRewardsController =
+    stakeRewardsControllerAddress && stakeRewardsControllerAddress !== '';
+
+  // If no valid rewards controller, this market is not supported for umbrella claiming
+  if (!hasValidRewardsController) {
+    console.error(`Umbrella reward claiming not supported for market: ${currentMarket}`);
+    // You might want to show an error message to the user here
+  }
+
   useEffect(() => {
     let claimGasLimit = Number(
       gasLimitRecommendations[ProtocolAction.umbrellaClaimSelectedRewards].recommended
@@ -55,8 +66,13 @@ export const UmbrellaClaimActions = ({
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
+
+      if (!hasValidRewardsController) {
+        throw new Error(`Umbrella reward claiming not supported for market: ${currentMarket}`);
+      }
+
       const rewardsDistributorService = new RewardsDistributorService(
-        stakeUmbrellaConfig[currentMarket]?.stakeRewardsController || ''
+        stakeRewardsControllerAddress
       );
       let claimTx: PopulatedTransaction = {};
       if (stakeTokens.length > 1) {

@@ -66,6 +66,16 @@ export const UnStakeActions = ({
 
   const selectedToken = stakeData.tokenAddress;
 
+  // Validate that we have the required configuration for the current market
+  const batchHelperAddress = stakeUmbrellaConfig[currentMarket]?.batchHelper;
+  const hasValidBatchHelper = batchHelperAddress && batchHelperAddress !== '';
+
+  // If no valid batch helper, this market is not supported for umbrella unstaking
+  if (!hasValidBatchHelper) {
+    console.error(`Umbrella unstaking not supported for market: ${currentMarket}`);
+    // You might want to show an error message to the user here
+  }
+
   const {
     data: approvedAmount,
     isFetching: fetchingApprovedAmount,
@@ -73,7 +83,7 @@ export const UnStakeActions = ({
   } = useApprovedAmount({
     chainId: currentChainId,
     token: selectedToken,
-    spender: stakeUmbrellaConfig[currentMarket]?.batchHelper || '',
+    spender: hasValidBatchHelper ? batchHelperAddress : '',
   });
 
   setLoadingTxns(fetchingApprovedAmount);
@@ -95,7 +105,7 @@ export const UnStakeActions = ({
   const tokenApproval = {
     user,
     token: selectedToken,
-    spender: stakeUmbrellaConfig[currentMarket]?.batchHelper || '',
+    spender: hasValidBatchHelper ? batchHelperAddress : '',
     amount: amountToUnStake,
   };
 
@@ -137,10 +147,13 @@ export const UnStakeActions = ({
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
+
+      if (!hasValidBatchHelper) {
+        throw new Error(`Umbrella unstaking not supported for market: ${currentMarket}`);
+      }
+
       let unstakeTxData: PopulatedTransaction;
-      const batchHelperService = new UmbrellaBatchHelperService(
-        stakeUmbrellaConfig[currentMarket]?.batchHelper || ''
-      );
+      const batchHelperService = new UmbrellaBatchHelperService(batchHelperAddress);
       unstakeTxData = batchHelperService.redeem({
         sender: user,
         stakeToken: stakeData.tokenAddress,
