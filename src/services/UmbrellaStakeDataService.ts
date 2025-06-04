@@ -12,7 +12,7 @@ type StakeUmbrellaConfig = Partial<{
 }>;
 
 export const stakeUmbrellaConfig: StakeUmbrellaConfig = {
-  [CustomMarket.proto_mainnet_v3]: {
+  [CustomMarket.proto_mainnet_v3 || 'fork_proto_mainnet_v3']: {
     stakeDataProvider: '0x437f428930669cd06adab2df4a8d4b203ac729c6',
     batchHelper: UmbrellaEthereum.UMBRELLA_BATCH_HELPER,
     stakeRewardsController: UmbrellaEthereum.UMBRELLA_REWARDS_CONTROLLER,
@@ -24,10 +24,15 @@ export class UmbrellaStakeDataService {
 
   private getStakeDataProvider(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
-    return new StakeDataProviderService(
-      stakeUmbrellaConfig[marketData.market]?.stakeDataProvider || '',
-      provider
-    );
+    const stakeDataProviderAddress = stakeUmbrellaConfig[marketData.market]?.stakeDataProvider;
+
+    if (!stakeDataProviderAddress || stakeDataProviderAddress === '') {
+      throw new Error(
+        `Umbrella stake data provider not configured for market: ${marketData.market}`
+      );
+    }
+
+    return new StakeDataProviderService(stakeDataProviderAddress, provider);
   }
 
   async getStakeData(marketData: MarketDataType) {
