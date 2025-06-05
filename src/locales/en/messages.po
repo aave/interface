@@ -966,6 +966,10 @@ msgstr "Withdrawing {symbol}"
 msgid "None"
 msgstr "None"
 
+#: pages/safety-module.page.tsx
+msgid "We couldn't detect a wallet. Connect a wallet to stake and view your balance."
+msgstr "We couldn't detect a wallet. Connect a wallet to stake and view your balance."
+
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "Destination"
 msgstr "Destination"
@@ -2944,10 +2948,6 @@ msgstr "Developers"
 #: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
 msgid "Depositing"
 msgstr "Depositing"
-
-#: pages/safety-module.page.tsx
-msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
-msgstr "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Supply apy"

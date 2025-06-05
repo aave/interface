@@ -79,14 +79,18 @@ export const WITHDRAW_MODAL = {
 
 export const SAFETY_MODULE = {
   STAKE_SAFETY_MODULE: 'Stake Safety Module',
+  OPEN_STAKE_MODAL: 'Open Safety Module Stake Modal',
+  OPEN_COOLDOWN_MODAL: 'Open Safety Module Cooldown Modal',
+  OPEN_WITHDRAW_MODAL: 'Open Safety Module Withdraw Modal',
+  OPEN_CLAIM_MODAL: 'Open Safety Module Claim Modal',
 };
 
 export const STAKE = {
   STAKE_TOKEN: 'Stake Umbrella Action',
   OPEN_STAKE_MODAL: 'Open Stake Modal',
-  OPEN_COOLDOWN_MODAL: 'Open Cooldown Modal',
-  OPEN_WITHDRAW_MODAL: 'Open Withdraw Modal',
-  OPEN_CLAIM_MODAL: 'Open Claim Modal',
+  OPEN_COOLDOWN_MODAL: 'Open Stake Cooldown Modal',
+  OPEN_WITHDRAW_MODAL: 'Open Stake Withdraw Modal',
+  OPEN_CLAIM_MODAL: 'Open Stake Claim Modal',
 };
 
 export const GOVERNANCE_PAGE = {
