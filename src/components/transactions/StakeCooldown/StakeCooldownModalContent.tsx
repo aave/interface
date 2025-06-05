@@ -19,7 +19,7 @@ import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { formattedTime, timeText } from '../../../helpers/timeHelper';
+import { timeMessage } from '../../../helpers/timeHelper';
 import { Link } from '../../primitives/Link';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -111,10 +111,6 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
   }
   if (txState.success) return <TxSuccessView action={<Trans>Stake cooldown activated</Trans>} />;
 
-  const timeMessage = (time: number) => {
-    return `${formattedTime(time)} ${timeText(time)}`;
-  };
-
   const handleOnCoolDownCheckBox = () => {
     trackEvent(GENERAL.ACCEPT_RISK, {
       asset: stakeAssetName,
@@ -163,10 +159,9 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
       )}
       <Typography variant="description" sx={{ mb: 6 }}>
         <Trans>
-          The cooldown period is {timeMessage(stakeCooldownSeconds)}. After{' '}
-          {timeMessage(stakeCooldownSeconds)} of cooldown, you will enter unstake window of{' '}
-          {timeMessage(stakeUnstakeWindow)}. You will continue receiving rewards during cooldown and
-          unstake window.
+          You&apos;ll need to wait {timeMessage(stakeCooldownSeconds)} before you can unstake your
+          tokens. This cooldown starts when you request to unstake. Once it ends, you can withdraw
+          during the unstake window.
         </Trans>{' '}
         <Link
           onClick={() =>

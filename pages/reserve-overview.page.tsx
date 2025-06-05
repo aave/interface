@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
@@ -16,6 +17,30 @@ import { ReserveTopDetailsWrapper } from 'src/modules/reserve-overview/ReserveTo
 import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../src/components/ContentContainer';
+
+const SavingsGhoDepositModal = dynamic(() =>
+  import('../src/components/transactions/SavingsGho/SavingsGhoDepositModal').then(
+    (module) => module.SavingsGhoDepositModal
+  )
+);
+const SavingsGhoWithdrawModal = dynamic(() =>
+  import('../src/components/transactions/SavingsGho/SavingsGhoWithdrawModal').then(
+    (module) => module.SavingsGhoWithdrawModal
+  )
+);
+const StakeModal = dynamic(() =>
+  import('../src/components/transactions/Stake/StakeModal').then((module) => module.StakeModal)
+);
+const StakeCooldownModal = dynamic(() =>
+  import('../src/components/transactions/StakeCooldown/StakeCooldownModal').then(
+    (module) => module.StakeCooldownModal
+  )
+);
+const UnStakeModal = dynamic(() =>
+  import('../src/components/transactions/UnStake/UnStakeModal').then(
+    (module) => module.UnStakeModal
+  )
+);
 
 export default function ReserveOverview() {
   const router = useRouter();
@@ -104,5 +129,14 @@ export default function ReserveOverview() {
 }
 
 ReserveOverview.getLayout = function getLayout(page: React.ReactElement) {
-  return <MainLayout>{page}</MainLayout>;
+  return (
+    <MainLayout>
+      {page}
+      <StakeModal />
+      <StakeCooldownModal />
+      <UnStakeModal />
+      <SavingsGhoDepositModal />
+      <SavingsGhoWithdrawModal />
+    </MainLayout>
+  );
 };

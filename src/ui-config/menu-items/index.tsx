@@ -30,15 +30,6 @@ export const navigation: Navigation[] = [
     dataCy: 'menuMarkets',
   },
   {
-    link: ROUTES.staking,
-    title: t`Stake`,
-    dataCy: 'menuStake',
-    isVisible: () =>
-      process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
-      process.env.NEXT_PUBLIC_ENV === 'prod' &&
-      !ENABLE_TESTNET,
-  },
-  {
     link: ROUTES.governance,
     title: t`Governance`,
     dataCy: 'menuGovernance',
@@ -47,6 +38,7 @@ export const navigation: Navigation[] = [
     //   process.env.NEXT_PUBLIC_ENV === 'prod' &&
     //   !ENABLE_TESTNET,
   },
+
   {
     link: ROUTES.faucet,
     title: t`Faucet`,
@@ -61,12 +53,12 @@ interface MoreMenuItem extends Navigation {
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.aave.com/faq/',
+    link: 'https://aave.com/faq/',
     title: t`FAQ`,
     icon: <QuestionMarkCircleIcon />,
   },
   {
-    link: 'https://docs.aave.com/portal/',
+    link: 'https://aave.com/docs/',
     title: t`Developers`,
     icon: <BookOpenIcon />,
   },
