@@ -81,7 +81,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
               additional layer of protection for the protocol.
             </Trans>{' '}
             <Link
-              href="https://docs.aave.com/faq/migration-and-staking"
+              href="https://aave.com/docs/primitives/umbrella#transition-from-the-legacy-safety-module"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
               onClick={() =>
                 trackEvent(GENERAL.EXTERNAL_LINK, {
