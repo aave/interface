@@ -165,11 +165,14 @@ export const SavingsGho = () => {
             gradientBorder={isUnstakeWindowActive}
           >
             <Stack direction="row" gap={1} sx={{ width: '100%' }}>
-              {stakeUserData.underlyingTokenUserBalance !== '0' && (
-                <Button fullWidth variant="contained" onClick={() => openSavingsGhoDeposit()}>
-                  <Trans>Deposit</Trans>
-                </Button>
-              )}
+              <Button
+                fullWidth
+                variant="contained"
+                disabled={stakeUserData.underlyingTokenUserBalance === '0'}
+                onClick={() => openSavingsGhoDeposit()}
+              >
+                <Trans>Deposit</Trans>
+              </Button>
               {stakeUserData.stakeTokenUserBalance !== '0' && (
                 <Button fullWidth variant="outlined" onClick={() => openSavingsGhoWithdraw()}>
                   <Trans>Withdraw</Trans>
