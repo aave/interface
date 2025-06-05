@@ -394,7 +394,6 @@ export const useTransactionHandler = ({
                     'FAUCET_V2_MINT',
                     'FAUCET_MINT',
                     'STAKE_ACTION',
-                    'STAKE_SAFETY_MODULE',
                     'GOV_DELEGATION_ACTION',
                     'GOVERNANCE_ACTION',
                     'V3_MIGRATION_ACTION',
