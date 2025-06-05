@@ -114,7 +114,6 @@ const formatStakeData = (
     runningTotal = runningTotal.plus(stakeTokenTotalSupply);
     runningTotalUsd = runningTotalUsd.plus(totalSupplyUsd);
 
-    console.log('stakeItem', stakeItem);
     let matchingReserve: FormattedReservesAndIncentives | undefined;
     if (stakeItem.underlyingIsStataToken) {
       matchingReserve = reserves.find(
