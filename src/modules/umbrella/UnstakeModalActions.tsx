@@ -44,12 +44,13 @@ export const UnStakeActions = ({
   redeemType,
 }: UnStakeActionProps) => {
   const queryClient = useQueryClient();
-  const [currentChainId, user, currentMarket, estimateGasLimit] = useRootStore(
+  const [currentChainId, user, currentMarket, estimateGasLimit, addTransaction] = useRootStore(
     useShallow((store) => [
       store.currentChainId,
       store.account,
       store.currentMarket,
       store.estimateGasLimit,
+      store.addTransaction,
     ])
   );
   const { sendTx } = useWeb3Context();
@@ -157,6 +158,18 @@ export const UnStakeActions = ({
         loading: false,
         success: true,
       });
+
+      // tracking for umbrella unstaking
+      addTransaction(tx.hash, {
+        txState: 'success',
+        action:
+          redeemType === RedeemType.ATOKEN
+            ? ProtocolAction.umbrellaStakeGatewayRedeemATokens
+            : ProtocolAction.umbrellaStakeGatewayRedeem,
+        amount: amountToUnStake,
+        assetName: stakeData.symbol,
+      });
+
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.umbrella });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
     } catch (error) {
@@ -166,6 +179,19 @@ export const UnStakeActions = ({
         txHash: undefined,
         loading: false,
       });
+
+      // tracking for failed umbrella unstaking
+      if (error && error.hash) {
+        addTransaction(error.hash, {
+          txState: 'failed',
+          action:
+            redeemType === RedeemType.ATOKEN
+              ? ProtocolAction.umbrellaStakeGatewayRedeemATokens
+              : ProtocolAction.umbrellaStakeGatewayRedeem,
+          amount: amountToUnStake,
+          assetName: stakeData.symbol,
+        });
+      }
     }
   };
 

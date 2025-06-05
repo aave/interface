@@ -52,12 +52,19 @@ export const UmbrellaActions = ({
   ...props
 }: StakeActionProps) => {
   const queryClient = useQueryClient();
-  const [estimateGasLimit, tryPermit, walletApprovalMethodPreference, currentMarket] = useRootStore(
+  const [
+    estimateGasLimit,
+    tryPermit,
+    walletApprovalMethodPreference,
+    currentMarket,
+    addTransaction,
+  ] = useRootStore(
     useShallow((state) => [
       state.estimateGasLimit,
       state.tryPermit,
       state.walletApprovalMethodPreference,
       state.currentMarket,
+      state.addTransaction,
     ])
   );
 
@@ -180,6 +187,14 @@ export const UmbrellaActions = ({
         success: true,
       });
 
+      // transaction tracking for umbrella staking
+      addTransaction(tx.hash, {
+        txState: 'success',
+        action: ProtocolAction.umbrellaStake,
+        amount: amountToStake,
+        assetName: selectedToken.symbol,
+      });
+
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.umbrella });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
     } catch (error) {
@@ -189,6 +204,16 @@ export const UmbrellaActions = ({
         txHash: undefined,
         loading: false,
       });
+
+      // Add transaction tracking for failed umbrella staking
+      if (error && error.hash) {
+        addTransaction(error.hash, {
+          txState: 'failed',
+          action: ProtocolAction.umbrellaStake,
+          amount: amountToStake,
+          assetName: selectedToken.symbol,
+        });
+      }
     }
   };
 

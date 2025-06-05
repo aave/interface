@@ -34,7 +34,9 @@ export const UmbrellaClaimActions = ({
   const queryClient = useQueryClient();
   const { loadingTxns, mainTxState, setMainTxState, setTxError, setGasLimit } = useModalContext();
 
-  const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
+  const [estimateGasLimit, addTransaction] = useRootStore(
+    useShallow((store) => [store.estimateGasLimit, store.addTransaction])
+  );
   const { sendTx } = useWeb3Context();
   const [user, currentMarket] = useRootStore(
     useShallow((store) => [store.account, store.currentMarket])
@@ -87,6 +89,21 @@ export const UmbrellaClaimActions = ({
         success: true,
       });
 
+      // tracking for umbrella claim
+      const totalClaimAmount = rewardsToClaim.reduce(
+        (acc, reward) => acc + Number(reward.balance),
+        0
+      );
+      addTransaction(claimTxReceipt.hash, {
+        txState: 'success',
+        action:
+          rewardsToClaim.length > 1
+            ? ProtocolAction.umbrellaClaimAllRewards
+            : ProtocolAction.umbrellaClaimSelectedRewards,
+        amount: totalClaimAmount.toString(),
+        assetName: rewardsToClaim.map((r) => r.symbol).join(', '),
+      });
+
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.umbrella });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -95,6 +112,23 @@ export const UmbrellaClaimActions = ({
         txHash: undefined,
         loading: false,
       });
+
+      // tracking for failed umbrella claim
+      if (error && error.hash) {
+        const totalClaimAmount = rewardsToClaim.reduce(
+          (acc, reward) => acc + Number(reward.balance),
+          0
+        );
+        addTransaction(error.hash, {
+          txState: 'failed',
+          action:
+            rewardsToClaim.length > 1
+              ? ProtocolAction.umbrellaClaimAllRewards
+              : ProtocolAction.umbrellaClaimSelectedRewards,
+          amount: totalClaimAmount.toString(),
+          assetName: rewardsToClaim.map((r) => r.symbol).join(', '),
+        });
+      }
     }
   };
 
