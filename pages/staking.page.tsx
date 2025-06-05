@@ -1,9 +1,11 @@
 import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer';
 import { UmrellaAssetsDefaultListContainer } from 'src/modules/umbrella/UmbrellaAssetsDefault';
 import { UmbrellaHeader } from 'src/modules/umbrella/UmbrellaHeader';
+import { useRootStore } from 'src/store/root';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -32,6 +34,13 @@ const UmbrellaClaimModal = dynamic(() =>
 
 export default function UmbrellaStaking() {
   const { currentAccount } = useWeb3Context();
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  useEffect(() => {
+    trackEvent('Page Viewed', {
+      'Page Name': 'Staking',
+    });
+  }, [trackEvent]);
 
   return (
     <>

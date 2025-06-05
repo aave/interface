@@ -77,8 +77,16 @@ export const WITHDRAW_MODAL = {
   SWITCH_WITHDRAW_TYPE: 'Change withdraw type',
 };
 
+export const SAFETY_MODULE = {
+  STAKE_SAFETY_MODULE: 'Stake Safety Module',
+};
+
 export const STAKE = {
-  STAKE_TOKEN: 'Stake Action',
+  STAKE_TOKEN: 'Stake Umbrella Action',
+  OPEN_STAKE_MODAL: 'Open Stake Modal',
+  OPEN_COOLDOWN_MODAL: 'Open Cooldown Modal',
+  OPEN_WITHDRAW_MODAL: 'Open Withdraw Modal',
+  OPEN_CLAIM_MODAL: 'Open Claim Modal',
 };
 
 export const GOVERNANCE_PAGE = {

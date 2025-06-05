@@ -104,7 +104,7 @@ export default function Staking() {
 
   useEffect(() => {
     trackEvent('Page Viewed', {
-      'Page Name': 'Staking',
+      'Page Name': 'Safety Module',
     });
   }, [trackEvent]);
 

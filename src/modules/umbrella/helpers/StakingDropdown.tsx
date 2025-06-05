@@ -15,6 +15,8 @@ import { SecondsToString } from 'src/components/SecondsToString';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
+import { STAKE } from 'src/utils/events';
 
 // Styled component for the menu items to add gap between icon and text
 const StyledMenuItem = styled(MenuItem)({
@@ -34,6 +36,7 @@ const StyledMenuItem = styled(MenuItem)({
 export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaUnstake, openUmbrellaClaim } =
     useModalContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const now = useCurrentTimestamp(1);
   const { breakpoints } = useTheme();
 
@@ -79,15 +82,21 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
           disabled={totalAvailableToStake === '0'}
           fullWidth={isMobile}
           variant="contained"
-          onClick={() =>
+          onClick={() => {
+            trackEvent(STAKE.STAKE_TOKEN, {
+              action: STAKE.OPEN_STAKE_MODAL,
+              asset: stakeData.symbol,
+              tokenAddress: stakeData.tokenAddress,
+              type: 'Initial Stake',
+            });
             openUmbrella(
               stakeData.tokenAddress,
               stakeData.underlyingTokenAddress,
               stakeData.symbol,
               stakeData.stataTokenData.aToken,
               stakeData.stataTokenData.asset
-            )
-          }
+            );
+          }}
         >
           <Trans>Stake</Trans>
         </Button>
@@ -121,6 +130,13 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               <StyledMenuItem
                 onClick={() => {
                   handleClose();
+                  trackEvent(STAKE.STAKE_TOKEN, {
+                    action: STAKE.OPEN_COOLDOWN_MODAL,
+                    asset: stakeData.symbol,
+                    tokenAddress: stakeData.tokenAddress,
+                    isCooldownActive,
+                    availableToReactivateCooldown,
+                  });
                   openUmbrellaStakeCooldown(stakeData.tokenAddress, stakeData.symbol);
                 }}
                 disabled={
@@ -152,6 +168,13 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
               <StyledMenuItem
                 onClick={() => {
                   handleClose();
+                  trackEvent(STAKE.STAKE_TOKEN, {
+                    action: STAKE.OPEN_WITHDRAW_MODAL,
+                    asset: stakeData.symbol,
+                    tokenAddress: stakeData.tokenAddress,
+                    isUnstakeWindowActive,
+                    unstakeTimeRemaining,
+                  });
                   openUmbrellaUnstake(
                     stakeData.tokenAddress,
                     stakeData.underlyingTokenAddress,
@@ -181,6 +204,12 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
             <StyledMenuItem
               onClick={() => {
                 handleClose();
+                trackEvent(STAKE.STAKE_TOKEN, {
+                  action: STAKE.OPEN_STAKE_MODAL,
+                  asset: stakeData.symbol,
+                  tokenAddress: stakeData.tokenAddress,
+                  type: hasStakeTokenBalance ? 'Stake More' : 'Initial Stake',
+                });
                 openUmbrella(
                   stakeData.tokenAddress,
                   stakeData.underlyingTokenAddress,
@@ -197,6 +226,12 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
             <StyledMenuItem
               onClick={() => {
                 handleClose();
+                trackEvent(STAKE.STAKE_TOKEN, {
+                  action: STAKE.OPEN_CLAIM_MODAL,
+                  asset: stakeData.symbol,
+                  tokenAddress: stakeData.tokenAddress,
+                  hasUnclaimedRewards,
+                });
                 openUmbrellaClaim(stakeData.tokenAddress);
               }}
             >
