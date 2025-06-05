@@ -40,7 +40,6 @@ export default function TopBarNotify({
       return true;
     }
 
-    // Otherwise, show based on previous user preference (default to true if not set)
     return warningBarOpen !== 'false';
   });
 
