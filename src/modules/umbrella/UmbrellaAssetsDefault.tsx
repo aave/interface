@@ -92,7 +92,6 @@ const AssetListItem = ({ stakeData }: { stakeData: FormattedStakeData }) => {
         <StakeAssetName
           iconSymbol={stakeData.iconSymbol}
           symbol={stakeData.symbol}
-          totalAmountStaked={stakeData.stakeTokenTotalSupply}
           totalAmountStakedUSD={stakeData.totalSupplyUsd}
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${stakeData.tokenAddress}`}
         />
@@ -117,7 +116,6 @@ const AssetListItemMobile = ({ stakeData }: { stakeData: FormattedStakeData }) =
         <StakeAssetName
           iconSymbol={stakeData.iconSymbol}
           symbol={stakeData.symbol}
-          totalAmountStaked={stakeData.stakeTokenTotalSupply}
           totalAmountStakedUSD={stakeData.totalSupplyUsd}
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${stakeData.tokenAddress}`}
         />

@@ -20,7 +20,6 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
         <StakeAssetName
           iconSymbol={umbrellaStakeAsset.iconSymbol}
           symbol={umbrellaStakeAsset.symbol}
-          totalAmountStaked={umbrellaStakeAsset.formattedStakeTokenData.totalAmountStaked}
           totalAmountStakedUSD={umbrellaStakeAsset.formattedStakeTokenData.totalAmountStakedUSD}
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.tokenAddress}`}
         />

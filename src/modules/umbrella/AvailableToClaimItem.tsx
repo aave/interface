@@ -37,13 +37,10 @@ export const AvailableToClaimItem = ({
       gap={2}
       width="100%"
     >
-      {/* <FormattedNumber
-        value={totalAvailableToClaim}
-        variant="main16"
-        compact
-        color={totalAvailableToClaim === 0 ? 'text.disabled' : 'text.main'}
-      /> */}
       <ListValueColumn
+        listColumnProps={{
+          p: 0,
+        }}
         value={totalAvailableToClaim}
         subValue={totalAvailableToClaimUSD}
         withTooltip
