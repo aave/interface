@@ -509,6 +509,7 @@ msgid "APR"
 msgstr "APR"
 
 #: src/modules/umbrella/helpers/Helpers.tsx
+#: src/modules/umbrella/StakingApyItem.tsx
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Total"
@@ -3269,6 +3270,7 @@ msgstr "Selected supply assets"
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+#: src/modules/umbrella/StakingApyItem.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "APY"

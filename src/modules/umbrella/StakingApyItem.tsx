@@ -120,6 +120,8 @@ export const StakingApyTooltipcontent = ({
   description: ReactElement;
   rewards: StakingReward[];
 }) => {
+  const totalApy = rewards.reduce((sum, reward) => sum + parseFloat(reward.apy), 0);
+
   return (
     <Box
       sx={{
@@ -163,6 +165,30 @@ export const StakingApyTooltipcontent = ({
             </Row>
           );
         })}
+
+        {rewards.length > 1 && (
+          <Row
+            sx={{
+              mt: 1,
+              pt: 2,
+              borderTop: '1px solid',
+              borderColor: 'divider',
+            }}
+            caption={
+              <Typography variant="secondary12" fontWeight="medium">
+                <Trans>Total</Trans>
+              </Typography>
+            }
+            width="100%"
+          >
+            <Stack direction="row">
+              <FormattedNumber value={totalApy} percent variant="secondary12" fontWeight="medium" />
+              <Typography variant="secondary12" fontWeight="medium" sx={{ ml: 1 }}>
+                <Trans>APY</Trans>
+              </Typography>
+            </Stack>
+          </Row>
+        )}
       </Box>
     </Box>
   );

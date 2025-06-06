@@ -65,7 +65,7 @@ export const AvailableToStakeItem = ({
           tooltipContent={<AvailableToStakeTooltipContent stakeData={stakeData} />}
         />
       ) : (
-        <TokenIcon symbol={stakeData.symbol} sx={{ fontSize: '20px' }} />
+        <TokenIcon symbol={stakeData.symbol} sx={{ fontSize: '24px' }} />
       )}
     </Stack>
   );

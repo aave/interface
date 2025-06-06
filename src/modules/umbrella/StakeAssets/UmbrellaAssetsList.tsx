@@ -1,4 +1,3 @@
-import { Reward } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery } from '@mui/material';
 import { useMemo, useState } from 'react';
@@ -62,8 +61,8 @@ export default function UmbrellaAssetsList({
       }
 
       if (sortName === 'totalAPY') {
-        const apyA = Number(calculateRewardsApy(a.rewards));
-        const apyB = Number(calculateRewardsApy(b.rewards));
+        const apyA = Number(a.totalRewardApy);
+        const apyB = Number(b.totalRewardApy);
         return sortDesc ? apyB - apyA : apyA - apyB;
       }
 
@@ -145,16 +144,3 @@ export default function UmbrellaAssetsList({
     </>
   );
 }
-
-const calculateRewardsApy = (rewards: Reward[]): string => {
-  if (!rewards.length || rewards[0].currentEmissionPerSecond === '0') {
-    return '0';
-  }
-
-  const now = Math.floor(Date.now() / 1000);
-  if (Number(rewards[0].distributionEnd) < now) {
-    return '0';
-  }
-
-  return rewards[0].apy;
-};
