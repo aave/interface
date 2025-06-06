@@ -1,4 +1,5 @@
 import { StateCreator } from 'zustand';
+import { WalletCapabilities } from 'src/hooks/useGetWalletCapabilities';
 
 import { RootStore } from './root';
 
@@ -19,7 +20,9 @@ export interface WalletSlice {
   refreshWalletApprovalMethod: () => void;
   connectedAccountIsContract: boolean;
   setConnectedAccountIsContract: (isContract: boolean) => void;
-}
+  walletCapabilities: WalletCapabilities | null;
+  setWalletCapabilities: (capabilities: WalletCapabilities | null) => void;
+};
 
 const getWalletPreferences = () => {
   const walletPreference = localStorage.getItem('walletApprovalPreferences');
@@ -78,5 +81,9 @@ export const createWalletSlice: StateCreator<
   connectedAccountIsContract: false,
   setConnectedAccountIsContract(isContract) {
     set({ connectedAccountIsContract: isContract });
+  },
+  walletCapabilities: null,
+  setWalletCapabilities(capabilities) {
+    set({ walletCapabilities: capabilities });
   },
 });
