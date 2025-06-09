@@ -246,16 +246,18 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
           srcToken = await erc20Service
             .getTokenInfo(order.sellToken, chainId)
             .then((token) => ({ ...token, underlyingAsset: token.address }))
-            .catch(() => undefined);
+            .catch(() => {
+              console.error('Error fetching custom token', order.sellToken);
+              return undefined;
+            });
         }
 
         if (!destToken && erc20Service) {
-          console.log('Fetching custom token', order.buyToken);
           destToken = await erc20Service
             .getTokenInfo(order.buyToken, chainId)
             .then((token) => ({ ...token, underlyingAsset: token.address }))
             .catch(() => {
-              console.log('Error fetching custom token', order.buyToken);
+              console.error('Error fetching custom token', order.buyToken);
               return undefined;
             });
         }
