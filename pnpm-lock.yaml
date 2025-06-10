@@ -1439,7 +1439,7 @@ packages:
     deprecated: Use @eslint/object-schema instead
 
   '@infinex/connect-sdk@file:../connect/packages/sdk/infinex-connect-sdk-0.0.0.tgz':
-    resolution: {integrity: sha512-jGrn00tc2fTuKC4T1BxLxajNku/GH3KW+PzvImj4zTDGd0tPd/oRUOlPaCIzrrDBDFz7TRXOrOhs2HDbB7kIAQ==, tarball: file:../connect/packages/sdk/infinex-connect-sdk-0.0.0.tgz}
+    resolution: {integrity: sha512-Qk54J0egIcETDze8Fbl0UhWZl8DayqYEkm09ej3itlXyQTv2bwGRnoaNLyBNlz4+ehcVEweHL6On0dS+xMkuyQ==, tarball: file:../connect/packages/sdk/infinex-connect-sdk-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       react: '>=18'
