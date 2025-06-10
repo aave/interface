@@ -3,6 +3,7 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
 import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
+import { useGetWalletCapabilities } from 'src/hooks/useGetWalletCapabilities';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useRootStore } from 'src/store/root';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
@@ -13,7 +14,6 @@ import { useShallow } from 'zustand/shallow';
 
 import { Web3Context } from '../hooks/useWeb3Context';
 import { getEthersProvider } from './adapters/EthersAdapter';
-import { useGetWalletCapabilities } from 'src/hooks/useGetWalletCapabilities';
 
 export type ERC20TokenType = {
   address: string;
@@ -82,7 +82,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     if (walletCapabilities) {
       setWalletCapabilities(walletCapabilities);
     }
-  }, [isContractAddress, setConnectedAccountIsContract, account, walletCapabilities, setWalletCapabilities]);
+  }, [
+    isContractAddress,
+    setConnectedAccountIsContract,
+    account,
+    walletCapabilities,
+    setWalletCapabilities,
+  ]);
 
   useEffect(() => {
     if (didInit) {

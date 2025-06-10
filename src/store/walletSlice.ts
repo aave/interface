@@ -1,11 +1,12 @@
-import { StateCreator } from 'zustand';
 import { WalletCapabilities } from 'src/hooks/useGetWalletCapabilities';
+import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
 
 export enum ApprovalMethod {
   APPROVE = 'Transaction',
   PERMIT = 'Signed message',
+  BATCH = 'Batch transaction',
 }
 
 export interface WalletSlice {
@@ -22,7 +23,7 @@ export interface WalletSlice {
   setConnectedAccountIsContract: (isContract: boolean) => void;
   walletCapabilities: WalletCapabilities | null;
   setWalletCapabilities: (capabilities: WalletCapabilities | null) => void;
-};
+}
 
 const getWalletPreferences = () => {
   const walletPreference = localStorage.getItem('walletApprovalPreferences');
