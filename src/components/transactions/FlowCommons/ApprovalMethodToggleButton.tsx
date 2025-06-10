@@ -1,4 +1,5 @@
-import { SwitchHorizontalIcon } from '@heroicons/react/outline';
+import { CheckIcon } from '@heroicons/react/outline';
+import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -45,13 +46,13 @@ export const ApprovalMethodToggleButton = ({
         }}
         onClick={handleClick}
       >
-        <Typography variant="subheader2" color="text.secondary">
+        <Typography variant="subheader2" color="info.main">
           {currentMethod === ApprovalMethod.BATCH && <Trans>Batch Transaction</Trans>}
           {currentMethod === ApprovalMethod.PERMIT && <Trans>Signature</Trans>}
           {currentMethod === ApprovalMethod.APPROVE && <Trans>Transaction</Trans>}
         </Typography>
-        <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
-          <SwitchHorizontalIcon />
+        <SvgIcon sx={{ fontSize: 16, ml: 1, color: 'info.main' }}>
+          <CogIcon />
         </SvgIcon>
       </Box>
       <Menu
@@ -94,9 +95,7 @@ export const ApprovalMethodToggleButton = ({
             selected={currentMethod === ApprovalMethod.BATCH}
           >
             <ListItemIcon>
-              <SvgIcon sx={{ fontSize: 20 }}>
-                <SwitchHorizontalIcon />
-              </SvgIcon>
+              <SvgIcon>{currentMethod === ApprovalMethod.BATCH && <CheckIcon />}</SvgIcon>
             </ListItemIcon>
             <ListItemText>
               <Trans>Batch Transaction</Trans>
@@ -108,9 +107,7 @@ export const ApprovalMethodToggleButton = ({
           selected={currentMethod === ApprovalMethod.PERMIT}
         >
           <ListItemIcon>
-            <SvgIcon sx={{ fontSize: 20 }}>
-              <SwitchHorizontalIcon />
-            </SvgIcon>
+          <SvgIcon>{currentMethod === ApprovalMethod.PERMIT && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
           <ListItemText>
             <Trans>Signature</Trans>
@@ -121,9 +118,7 @@ export const ApprovalMethodToggleButton = ({
           selected={currentMethod === ApprovalMethod.APPROVE}
         >
           <ListItemIcon>
-            <SvgIcon sx={{ fontSize: 20 }}>
-              <SwitchHorizontalIcon />
-            </SvgIcon>
+          <SvgIcon>{currentMethod === ApprovalMethod.APPROVE && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
           <ListItemText>
             <Trans>Transaction</Trans>
