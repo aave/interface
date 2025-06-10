@@ -12,6 +12,7 @@ import { useShallow } from 'zustand/shallow';
 export type RightHelperTextProps = {
   approvalHash?: string;
   tryPermit?: boolean;
+  showBatchOption?: boolean;
 };
 
 const ExtLinkIcon = () => (
@@ -20,7 +21,11 @@ const ExtLinkIcon = () => (
   </SvgIcon>
 );
 
-export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProps) => {
+export const RightHelperText = ({
+  approvalHash,
+  tryPermit,
+  showBatchOption = false,
+}: RightHelperTextProps) => {
   const [
     account,
     walletApprovalMethodPreference,
@@ -46,7 +51,7 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
     if (isContractAddress && walletApprovalMethodPreference === ApprovalMethod.PERMIT) {
       setWalletApprovalMethodPreference(ApprovalMethod.APPROVE);
     }
-  }, [isContractAddress]);
+  }, [isContractAddress, walletApprovalMethodPreference, setWalletApprovalMethodPreference]);
 
   // a signature is not submitted on-chain so there is no link to review
   if (!approvalHash && !isSigned && tryPermit)
@@ -58,6 +63,7 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
         <ApprovalMethodToggleButton
           currentMethod={walletApprovalMethodPreference}
           setMethod={(method: ApprovalMethod) => setWalletApprovalMethodPreference(method)}
+          showBatchOption={showBatchOption}
         />
       </Box>
     );
