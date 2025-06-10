@@ -11,8 +11,6 @@ import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
 import { BorrowedPositionsList } from './lists/BorrowedPositionsList/BorrowedPositionsList';
 import { SuppliedPositionsList } from './lists/SuppliedPositionsList/SuppliedPositionsList';
 import { SupplyAssetsList } from './lists/SupplyAssetsList/SupplyAssetsList';
-import { UsdcYeet } from './usdcTransfer';
-import { UsdtYeet } from './usdtTransfer';
 
 interface DashboardContentWrapperProps {
   isBorrow: boolean;
@@ -29,11 +27,6 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   const downToLg = useMediaQuery(breakpoints.down('lg'));
-
-  console.log('currentMarketData: ', {
-    md: currentMarketData.chainId,
-    arb: ChainId.arbitrum_one,
-  });
 
   return (
     <Box>
@@ -83,14 +76,6 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
           <SuppliedPositionsList />
           <SupplyAssetsList />
-          {currentMarketData.chainId !== ChainId.arbitrum_one ? (
-            <UsdcYeet />
-          ) : (
-            <>
-              <UsdtYeet />
-              <UsdcYeet />
-            </>
-          )}
         </Box>
 
         <Box
