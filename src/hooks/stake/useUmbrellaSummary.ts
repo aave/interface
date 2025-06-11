@@ -23,6 +23,7 @@ import {
   usePoolFormattedReserves,
 } from '../pool/usePoolFormattedReserves';
 import { combineQueries } from '../pool/utils';
+import { calculateApy } from './apyCalculator';
 
 interface FormattedBalance {
   stakeTokenBalance: string;
@@ -43,12 +44,14 @@ interface FormattedReward {
   rewardTokenName: string;
   rewardTokenSymbol: string;
   apy: string;
+  apyAtTargetLiquidity: string;
   aToken: boolean;
 }
 
 interface FormattedStakeTokenData {
   totalAmountStaked: string;
   totalAmountStakedUSD: string;
+  targetLiquidityUSD: string;
 }
 
 interface FormattedUserStakeData {
@@ -73,6 +76,7 @@ export interface MergedStakeData extends StakeData {
   iconSymbol: string;
   totalStakedUSD: string;
   totalRewardApy: string;
+  totalRewardApyAtTargetLiquidity: string;
   stataTokenData: StataTokenDataExtended;
 }
 
@@ -86,8 +90,11 @@ export interface FormattedStakeData {
   tokenAddress: string;
   stakeTokenPrice: string;
   stakeTokenTotalSupply: string;
+  targetLiquidity: string;
   totalSupplyUsd: string;
+  targetLiquidityUSD: string;
   totalRewardApy: string;
+  totalRewardApyAtTargetLiquidity: string;
   iconSymbol: string;
   symbol: string;
 }
@@ -110,6 +117,13 @@ const formatStakeData = (
     const totalSupplyUsd = valueToBigNumber(stakeTokenTotalSupply)
       .multipliedBy(stakeTokenPrice)
       .toString();
+    const targetLiquidity = normalizeBN(
+      stakeItem.targetLiquidity,
+      stakeItem.underlyingTokenDecimals
+    ).toString();
+    const targetLiquidityUsd = valueToBigNumber(targetLiquidity)
+      .multipliedBy(stakeTokenPrice)
+      .toString();
 
     runningTotal = runningTotal.plus(stakeTokenTotalSupply);
     runningTotalUsd = runningTotalUsd.plus(totalSupplyUsd);
@@ -128,6 +142,18 @@ const formatStakeData = (
     }
 
     const totalRewardApy = getTotalStakeRewardApy(matchingReserve, stakeItem);
+    const totalRewardApyAtTargetLiquidity = stakeItem.rewards.reduce((acc, reward) => {
+      const { maxEmissionPerSecond, price, decimals } = reward;
+      const apyAtTargetLiquidity = calculateApy(
+        maxEmissionPerSecond,
+        stakeItem.targetLiquidity,
+        stakeItem.price,
+        stakeItem.underlyingTokenDecimals,
+        price,
+        decimals
+      );
+      return acc.plus(apyAtTargetLiquidity);
+    }, valueToBigNumber('0'));
 
     return {
       tokenAddress: stakeItem.tokenAddress,
@@ -139,8 +165,11 @@ const formatStakeData = (
         : stakeItem.underlyingTokenSymbol,
       stakeTokenPrice,
       stakeTokenTotalSupply,
+      targetLiquidity,
       totalSupplyUsd,
       totalRewardApy,
+      totalRewardApyAtTargetLiquidity: totalRewardApyAtTargetLiquidity.toString(),
+      targetLiquidityUSD: targetLiquidityUsd.toString(),
     };
   });
 
@@ -197,6 +226,15 @@ const formatUmbrellaSummary = (
       stakeItem.underlyingTokenDecimals
     ).toString();
 
+    const targetLiquidity = normalizeBN(
+      stakeItem.targetLiquidity,
+      stakeItem.underlyingTokenDecimals
+    ).toString();
+
+    // const targetLiquidityUSD = valueToBigNumber(stakeItem.targetLiquidity)
+    //   .multipliedBy(stakeItem.price)
+    //   .toString();
+
     // we use the userReserve to get the aToken balance which takes into account accrued interest
     const userReserve = userReservesData?.find(
       (r) => r.reserve.aTokenAddress.toLowerCase() === stakeItem.stataTokenData.aToken.toLowerCase()
@@ -210,6 +248,19 @@ const formatUmbrellaSummary = (
     const totalRewardApy = getTotalStakeRewardApy(reserve, stakeItem);
     weightedApySum = stakeTokenBalanceUSD.multipliedBy(totalRewardApy).plus(weightedApySum);
     aggregatedTotalStakedUSD = aggregatedTotalStakedUSD.plus(stakeTokenBalanceUSD);
+
+    const totalRewardApyAtTargetLiquidity = stakeItem.rewards.reduce((acc, reward) => {
+      const { maxEmissionPerSecond, price, decimals } = reward;
+      const apyAtTargetLiquidity = calculateApy(
+        maxEmissionPerSecond,
+        stakeItem.targetLiquidity,
+        stakeItem.price,
+        stakeItem.underlyingTokenDecimals,
+        price,
+        decimals
+      );
+      return acc.plus(apyAtTargetLiquidity);
+    }, valueToBigNumber('0'));
 
     let aTokenBalanceAvailableToStake = '0';
     const nativeTokenBalance = walletBalances.walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]
@@ -250,6 +301,7 @@ const formatUmbrellaSummary = (
       },
       balances: matchingBalance.balances,
       totalRewardApy,
+      totalRewardApyAtTargetLiquidity: totalRewardApyAtTargetLiquidity.toString(),
       formattedBalances: {
         stakeTokenBalance: stakeTokenBalance.toString(),
         stakeTokenBalanceUSD: stakeTokenBalanceUSD.toString(),
@@ -283,6 +335,16 @@ const formatUmbrellaSummary = (
 
         const aToken = reserve !== undefined;
 
+        const { maxEmissionPerSecond, price, decimals } = rewardData;
+        const apyAtTargetLiquidity = calculateApy(
+          maxEmissionPerSecond,
+          stakeItem.targetLiquidity,
+          stakeItem.price,
+          stakeItem.underlyingTokenDecimals,
+          price,
+          decimals
+        );
+
         return {
           accruedUsd,
           accrued: accruedNormalized,
@@ -290,12 +352,16 @@ const formatUmbrellaSummary = (
           rewardTokenSymbol: aToken ? reserve.symbol : rewardData.rewardSymbol,
           rewardTokenName: aToken ? `a${reserve.symbol}` : rewardData.rewardName,
           apy: normalize(rewardData.apy, APY_PRECISION),
+          apyAtTargetLiquidity: apyAtTargetLiquidity.toString(),
           aToken,
         };
       }),
       formattedStakeTokenData: {
         totalAmountStaked: stakeTokenTotalSupply,
         totalAmountStakedUSD: BigNumber(stakeTokenTotalSupply)
+          .multipliedBy(normalize(stakeItem.price, 8))
+          .toString(),
+        targetLiquidityUSD: BigNumber(targetLiquidity)
           .multipliedBy(normalize(stakeItem.price, 8))
           .toString(),
       },

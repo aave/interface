@@ -1,17 +1,24 @@
+import { Trans } from '@lingui/macro';
 import { Stack, Typography } from '@mui/material';
 import { TokenContractTooltip } from 'src/components/infoTooltips/TokenContractTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 
 export const StakeAssetName = ({
   iconSymbol,
   symbol,
   totalAmountStakedUSD,
+  targetLiquidityUSD,
+  apyAtTargetLiquidity,
   explorerUrl,
 }: {
   iconSymbol: string;
   symbol: string;
   totalAmountStakedUSD: string;
+  targetLiquidityUSD: string;
+  apyAtTargetLiquidity: string;
   explorerUrl: string;
 }) => {
   return (
@@ -35,6 +42,33 @@ export const StakeAssetName = ({
               symbol="usd"
             />
           </Typography>
+          <TextWithTooltip>
+            <Stack direction="column" gap={2} sx={{ width: '100%', minWidth: '160px' }}>
+              <Row
+                caption={
+                  <Typography variant="secondary12" sx={{ ml: 1 }}>
+                    <Trans>Target liquidity</Trans>
+                  </Typography>
+                }
+              >
+                <FormattedNumber
+                  variant="caption"
+                  value={targetLiquidityUSD}
+                  visibleDecimals={2}
+                  symbol="usd"
+                />
+              </Row>
+              <Row
+                caption={
+                  <Typography variant="secondary12" sx={{ ml: 1 }}>
+                    <Trans>Reward APY at target liquidity</Trans>
+                  </Typography>
+                }
+              >
+                <FormattedNumber variant="caption" value={apyAtTargetLiquidity} percent />
+              </Row>
+            </Stack>
+          </TextWithTooltip>
         </Stack>
       </Stack>
     </>
