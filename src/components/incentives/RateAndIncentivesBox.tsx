@@ -59,7 +59,7 @@ export const IncentivesCard = ({
       lmIncentives: incentives,
     });
 
-  const Incentives = ({ hasMultipleIncentives }: { hasMultipleIncentives: boolean }) => (
+  const Incentives = ({ hasMultipleAprsIncentives }: { hasMultipleAprsIncentives: boolean }) => (
     <Box
       sx={{
         display: 'flex',
@@ -79,7 +79,7 @@ export const IncentivesCard = ({
           protocolAction={protocolAction}
         />
       </>
-      {!hasMultipleIncentives ? (
+      {!hasMultipleAprsIncentives ? (
         <>
           <PointsIncentiveButton market={market} rewardedAsset={address} />
           <SimpleExternalIncentiveTooltip market={market} rewardedAsset={address} />
@@ -88,7 +88,7 @@ export const IncentivesCard = ({
     </Box>
   );
 
-  const MultipleIncentives = () => {
+  const MultipleAprsIncentives = () => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -104,7 +104,7 @@ export const IncentivesCard = ({
                 </Typography>
               </Box>
               <Box>
-                <Incentives hasMultipleIncentives={true} />
+                <Incentives hasMultipleAprsIncentives={true} />
               </Box>
             </Box>
           }
@@ -124,13 +124,13 @@ export const IncentivesCard = ({
     );
   };
 
-  const multipleIncentives = allAprsIncentivesCount >= 2;
-  const singleIncentives = allIncentivesCount >= 1;
+  const hasMultipleAprsIncentives = allAprsIncentivesCount >= 2;
+  const hasAtLeastOneIncentive = allIncentivesCount >= 1;
 
-  return multipleIncentives ? (
-    <MultipleIncentives />
-  ) : singleIncentives ? (
-    <Incentives hasMultipleIncentives={false} />
+  return hasMultipleAprsIncentives ? (
+    <MultipleAprsIncentives />
+  ) : hasAtLeastOneIncentive ? (
+    <Incentives hasMultipleAprsIncentives={false} />
   ) : null;
 };
 
