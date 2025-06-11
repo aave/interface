@@ -1267,10 +1267,6 @@ msgstr "View Bridge Transactions"
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Invalid return value of the flashloan executor function"
 
-#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
-msgid "Learn more about the Kernel points distribution"
-msgstr "Learn more about the Kernel points distribution"
-
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
 msgstr "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
@@ -1404,10 +1400,6 @@ msgstr "Fee"
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
-
-#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
-msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
@@ -1665,10 +1657,6 @@ msgstr "Stake cooldown activated"
 #: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
-
-#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
-msgid "Learn more about the SPK rewards"
-msgstr "Learn more about the SPK rewards"
 
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
@@ -2536,10 +2524,6 @@ msgstr "Debt ceiling is not zero"
 msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 
-#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
-msgid "and about SPK program"
-msgstr "and about SPK program"
-
 #: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
@@ -3148,10 +3132,6 @@ msgstr "Maximum amount available to borrow is limited because protocol borrow ca
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "COPY IMAGE"
 msgstr "COPY IMAGE"
-
-#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
-msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
