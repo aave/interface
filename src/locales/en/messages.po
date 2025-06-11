@@ -1061,10 +1061,6 @@ msgstr "Manage analytics"
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 msgstr "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 
-#: src/components/incentives/IncentivesTooltipContent.tsx
-msgid "Participating in this {symbol} reserve gives additional annualized rewards through Aave Liquidity Mining"
-msgstr "Participating in this {symbol} reserve gives additional annualized rewards through Aave Liquidity Mining"
-
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "Unstaking {symbol}"
 msgstr "Unstaking {symbol}"
@@ -2024,6 +2020,10 @@ msgstr "You can not withdraw this amount because it will cause collateral call"
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
 msgstr "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
+
+#: src/components/incentives/IncentivesTooltipContent.tsx
+msgid "Participating in this {symbol} reserve gives additional annualized rewards through Aave"
+msgstr "Participating in this {symbol} reserve gives additional annualized rewards through Aave"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Your voting power is based on your AAVE/stkAAVE balance and received delegations."

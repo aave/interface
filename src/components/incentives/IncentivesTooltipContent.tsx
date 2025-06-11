@@ -164,7 +164,6 @@ export const IncentivesTooltipContent = ({
       <Typography variant="caption" color="text.secondary" mb={3}>
         <Trans>
           Participating in this {symbol} reserve gives additional annualized rewards through Aave
-          Liquidity Mining
         </Trans>
       </Typography>
 
