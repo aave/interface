@@ -17,8 +17,9 @@ import { TokenIcon } from '../primitives/TokenIcon';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import {
-  POINTS_INCENTIVES_TYPES,
-  PointsIncentivesTooltipContent,
+  EthenaPointsTooltip,
+  EtherFiAirdropTooltipContent,
+  SonicAirdropTooltipContent,
 } from './PointsIncentivesTooltipContent';
 import {
   KernelAirdropTooltip,
@@ -126,12 +127,7 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
     <>
       {pointsIncentivesTooltips.ethenaPoints && (
         <ContentWithTooltip
-          tooltipContent={
-            <PointsIncentivesTooltipContent
-              type={POINTS_INCENTIVES_TYPES.ETHENA}
-              points={pointsIncentivesTooltips.ethenaPoints}
-            />
-          }
+          tooltipContent={<EthenaPointsTooltip points={pointsIncentivesTooltips.ethenaPoints} />}
           withoutHover
           setOpen={setOpen}
           open={open}
@@ -145,10 +141,7 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
       {pointsIncentivesTooltips.sonicPoints && (
         <ContentWithTooltip
           tooltipContent={
-            <PointsIncentivesTooltipContent
-              type={POINTS_INCENTIVES_TYPES.SONIC}
-              points={pointsIncentivesTooltips.sonicPoints}
-            />
+            <SonicAirdropTooltipContent points={pointsIncentivesTooltips.sonicPoints} />
           }
           withoutHover
           setOpen={setOpen}
@@ -163,10 +156,7 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
       {pointsIncentivesTooltips.etherfiPoints && (
         <ContentWithTooltip
           tooltipContent={
-            <PointsIncentivesTooltipContent
-              type={POINTS_INCENTIVES_TYPES.ETHERFI}
-              points={pointsIncentivesTooltips.etherfiPoints}
-            />
+            <EtherFiAirdropTooltipContent points={pointsIncentivesTooltips.etherfiPoints} />
           }
           withoutHover
           setOpen={setOpen}

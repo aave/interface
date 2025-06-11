@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 
 import { Link } from '../primitives/Link';
 
-export enum POINTS_INCENTIVES_TYPES {
+enum POINTS_INCENTIVES_TYPES {
   ETHENA = 'Ethena',
   SONIC = 'Sonic',
   ETHERFI = 'EtherFi',
@@ -37,6 +37,18 @@ const getPointsIncentivesDescription = ({
       return '';
   }
 };
+
+export const EthenaPointsTooltip = ({ points }: { points: number }) => (
+  <PointsIncentivesTooltipContent type={POINTS_INCENTIVES_TYPES.ETHENA} points={points} />
+);
+
+export const SonicAirdropTooltipContent = ({ points }: { points: number }) => (
+  <PointsIncentivesTooltipContent type={POINTS_INCENTIVES_TYPES.SONIC} points={points} />
+);
+
+export const EtherFiAirdropTooltipContent = ({ points }: { points: number }) => (
+  <PointsIncentivesTooltipContent type={POINTS_INCENTIVES_TYPES.ETHERFI} points={points} />
+);
 
 export const PointsIncentivesTooltipContent = ({
   type,
