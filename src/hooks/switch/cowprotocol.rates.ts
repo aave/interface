@@ -13,7 +13,7 @@ import {
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
 import { SwitchParams, SwitchRatesType } from 'src/components/transactions/Switch/switch.types';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
-import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
+import { FamilyPricesService } from 'src/services/FamilyPricesService';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 
@@ -29,7 +29,7 @@ export async function getCowProtocolSellRates({
   outputSymbol,
   setError,
 }: SwitchParams): Promise<SwitchRatesType> {
-  const cowProtocolPricesService = new CoWProtocolPricesService();
+  const familyPricesService = new FamilyPricesService();
   const tradingSdk = new TradingSdk({ chainId });
 
   let orderBookQuote: QuoteAndPost | undefined;
@@ -77,13 +77,13 @@ export async function getCowProtocolSellRates({
           throw new Error(cowError?.body?.errorType);
         }),
       // CoW Quote doesn't return values in USD, so we need to fetch the price from the API separately
-      cowProtocolPricesService.getTokenUsdPrice(chainId, srcTokenWrapped).catch((cowError) => {
-        console.error(cowError);
-        throw new Error(cowError?.body?.errorType);
+      familyPricesService.getTokenUsdPrice(chainId, srcTokenWrapped).catch((pricesError) => {
+        console.error(pricesError);
+        throw new Error(pricesError?.body?.errorType);
       }),
-      cowProtocolPricesService.getTokenUsdPrice(chainId, destTokenWrapped).catch((cowError) => {
-        console.error(cowError);
-        throw new Error(cowError?.body?.errorType);
+      familyPricesService.getTokenUsdPrice(chainId, destTokenWrapped).catch((pricesError) => {
+        console.error(pricesError);
+        throw new Error(pricesError?.body?.errorType);
       }),
     ]);
 
