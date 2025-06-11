@@ -26,6 +26,8 @@ const ETHENA_DATA_MAP: Map<string, number> = new Map([
   [`${CustomMarket.proto_lido_v3}-${AaveV3EthereumLido.ASSETS.GHO.V_TOKEN}`, 5],
   [`${CustomMarket.proto_mainnet_v3}-${AaveV3Ethereum.ASSETS.PT_eUSDE_29MAY2025.A_TOKEN}`, 2],
   [`${CustomMarket.proto_mainnet_v3}-${AaveV3Ethereum.ASSETS.PT_sUSDE_31JUL2025.A_TOKEN}`, 1],
+  [`${CustomMarket.proto_mainnet_v3}-${AaveV3Ethereum.ASSETS.PT_eUSDE_14AUG2025.A_TOKEN}`, 2],
+  [`${CustomMarket.proto_mainnet_v3}-${AaveV3Ethereum.ASSETS.PT_USDe_31JUL2025.A_TOKEN}`, 2],
 ]);
 
 const ETHERFI_DATA_MAP: Map<string, number> = new Map([

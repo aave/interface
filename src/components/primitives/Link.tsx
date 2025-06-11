@@ -134,4 +134,5 @@ export const ROUTES = {
     `/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${marketName}`,
   history: '/history',
   bridge: '/bridge',
+  safetyModule: '/safety-module',
 };

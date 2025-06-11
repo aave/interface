@@ -15,9 +15,9 @@ import { MouseEvent, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
 
-import { ValidationData } from './SwitchModalContent';
+import { ValidationData } from './validation.helpers';
 
-const DEFAULT_SLIPPAGE_OPTIONS = ['0.10', '0.50', '1.00'];
+const DEFAULT_SLIPPAGE_OPTIONS = ['0.10', '0.50', '2.0'];
 
 type SwitchSlippageSelectorProps = {
   slippage: string;

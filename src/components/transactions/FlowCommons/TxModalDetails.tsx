@@ -12,6 +12,7 @@ import {
   UnavailableDueToIsolationBadge,
 } from 'src/components/isolationMode/IsolatedBadge';
 import { Row } from 'src/components/primitives/Row';
+import { SecondsToString } from 'src/components/SecondsToString';
 import { CollateralType } from 'src/helpers/types';
 import { useAllIncentives } from 'src/hooks/useAllIncentives';
 
@@ -27,6 +28,7 @@ export interface TxModalDetailsProps {
   disabled?: boolean;
   chainId?: number;
   children?: ReactNode;
+  showGasStation?: boolean;
 }
 
 const ArrowRightIcon = (
@@ -42,6 +44,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   disabled,
   children,
   chainId,
+  showGasStation = true,
 }) => {
   return (
     <Box sx={{ pt: 5 }}>
@@ -61,15 +64,17 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
       >
         {children}
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <GasStation
-          chainId={chainId}
-          gasLimit={parseUnits(gasLimit || '0', 'wei')}
-          skipLoad={skipLoad}
-          disabled={disabled}
-          rightComponent={slippageSelector}
-        />
-      </Box>
+      {showGasStation && (
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <GasStation
+            chainId={chainId}
+            gasLimit={parseUnits(gasLimit || '0', 'wei')}
+            skipLoad={skipLoad}
+            disabled={disabled}
+            rightComponent={slippageSelector}
+          />
+        </Box>
+      )}
     </Box>
   );
 };
@@ -415,6 +420,32 @@ export const DetailsUnwrapSwitch = ({
         labelPlacement="end"
         label={label}
       />
+    </Row>
+  );
+};
+
+interface DetailsCooldownLineProps {
+  cooldownSeconds: number;
+  loading?: boolean;
+}
+
+export const DetailsCooldownLine = ({
+  cooldownSeconds,
+  loading = false,
+}: DetailsCooldownLineProps) => {
+  return (
+    <Row caption={<Trans>Cooldown</Trans>} captionVariant="description" mb={4}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="secondary14">
+              <SecondsToString seconds={cooldownSeconds} />
+            </Typography>
+          </Box>
+        )}
+      </Box>
     </Row>
   );
 };
