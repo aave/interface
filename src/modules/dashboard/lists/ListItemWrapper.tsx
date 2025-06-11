@@ -1,19 +1,15 @@
 import { Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
-import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { PausedTooltip } from 'src/components/infoTooltips/PausedTooltip';
-import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
-import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/events';
-import { ExternalIncentivesTooltipsConfig } from 'src/utils/utils';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
@@ -36,7 +32,6 @@ interface ListItemWrapperProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
-  showExternalIncentivesTooltips?: ExternalIncentivesTooltipsConfig;
 }
 
 export const ListItemWrapper = ({
@@ -52,11 +47,6 @@ export const ListItemWrapper = ({
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
-  showExternalIncentivesTooltips = {
-    superFestRewards: false,
-    spkAirdrop: false,
-    kernelPoints: false,
-  },
   ...rest
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
@@ -93,9 +83,6 @@ export const ListItemWrapper = ({
           </Tooltip>
         </Link>
         {paused && <PausedTooltip />}
-        {showExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
-        {showExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
-        {showExternalIncentivesTooltips.kernelPoints && <KernelAirdropTooltip />}
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}

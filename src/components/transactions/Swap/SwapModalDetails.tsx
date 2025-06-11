@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -13,6 +14,8 @@ import {
   DetailsNumberLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CollateralType } from 'src/helpers/types';
+import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 
@@ -37,6 +40,14 @@ export const SwapModalDetails = ({
   fromAmount,
   loading,
 }: SupplyModalDetailsProps) => {
+  const [, currentMarketData] = useRootStore(
+    useShallow((state) => [
+      state.poolComputed.minRemainingBaseTokenBalance,
+      state.currentMarketData,
+      state.currentNetworkConfig,
+    ])
+  );
+
   const sourceAmountAfterSwap = valueToBigNumber(swapSource.underlyingBalance).minus(
     valueToBigNumber(fromAmount)
   );
@@ -103,6 +114,10 @@ export const SwapModalDetails = ({
       <DetailsIncentivesLine
         incentives={swapSource.reserve.aIncentivesData}
         symbol={swapSource.reserve.symbol}
+        market={currentMarketData.market}
+        address={swapSource.reserve.aTokenAddress}
+        protocolAction={ProtocolAction.supply}
+        futureAddress={swapTarget.reserve.aTokenAddress}
         futureIncentives={swapTarget.reserve.aIncentivesData}
         futureSymbol={swapTarget.reserve.symbol}
         loading={loading}

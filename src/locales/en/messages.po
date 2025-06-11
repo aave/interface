@@ -27,19 +27,13 @@ msgstr "Receive (est.)"
 msgid "Save with sGHO"
 msgstr "Save with sGHO"
 
-#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
-#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
-#: src/components/incentives/SonicIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr "Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "You've successfully swapped borrow position."
 msgstr "You've successfully swapped borrow position."
-
-#: src/components/incentives/IncentivesTooltipContent.tsx
-msgid "Participating in this {symbol} reserve gives annualized rewards."
-msgstr "Participating in this {symbol} reserve gives annualized rewards."
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
@@ -149,10 +143,6 @@ msgstr "Collateral change"
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 
-#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
-msgid "This asset is eligible for {0} Ethena Rewards."
-msgstr "This asset is eligible for {0} Ethena Rewards."
-
 #: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
 msgstr "Price data is not currently available for this reserve on the protocol subgraph"
@@ -221,10 +211,6 @@ msgstr "Asset cannot be migrated due to supply cap restriction in {marketName} v
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
 msgstr "Blocked Address"
-
-#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
-msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
-msgstr "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -554,10 +540,6 @@ msgstr "Share on Lens"
 #: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Redeem as aToken"
 msgstr "Redeem as aToken"
-
-#: src/components/incentives/SonicIncentivesTooltipContent.tsx
-msgid "Learn more about Sonic Rewards program"
-msgstr "Learn more about Sonic Rewards program"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -963,6 +945,7 @@ msgid "Withdrawing {symbol}"
 msgstr "Withdrawing {symbol}"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "None"
 msgstr "None"
@@ -1074,10 +1057,6 @@ msgstr "Discount"
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
 
-#: src/components/infoTooltips/SuperFestTooltip.tsx
-msgid "Rewards can be claimed through"
-msgstr "Rewards can be claimed through"
-
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
@@ -1172,6 +1151,9 @@ msgid "deposited"
 msgstr "deposited"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
@@ -1337,10 +1319,6 @@ msgstr "Current LTV"
 msgid "Market"
 msgstr "Market"
 
-#: src/components/incentives/EthenaIncentivesTooltipContent.tsx
-msgid "Learn more about Ethena Rewards program"
-msgstr "Learn more about Ethena Rewards program"
-
 #: src/layouts/FeedbackDialog.tsx
 msgid "Send Feedback"
 msgstr "Send Feedback"
@@ -1432,10 +1410,6 @@ msgstr "View Bridge Transactions"
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Invalid return value of the flashloan executor function"
-
-#: src/components/infoTooltips/KernelAirdropTooltip.tsx
-msgid "Learn more about the Kernel points distribution"
-msgstr "Learn more about the Kernel points distribution"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
@@ -1591,10 +1565,6 @@ msgstr "Participating in staking {symbol} gives annualized rewards. Your wallet 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
-
-#: src/components/infoTooltips/SpkAirdropTooltip.tsx
-msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
@@ -1861,10 +1831,6 @@ msgstr "Stake cooldown activated"
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
 
-#: src/components/infoTooltips/SpkAirdropTooltip.tsx
-msgid "Learn more about the SPK rewards"
-msgstr "Learn more about the SPK rewards"
-
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
 msgstr "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
@@ -1902,6 +1868,10 @@ msgstr "Safety of your deposited collateral against the borrowed assets and its 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total borrows"
 msgstr "Total borrows"
+
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
+msgid "This asset is eligible for rewards through {type}. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This asset is eligible for rewards through {type}. Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
@@ -2147,10 +2117,6 @@ msgstr "Exceeds the discount"
 msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
 
-#: src/components/infoTooltips/SuperFestTooltip.tsx
-msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
-
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "Eligible for the Merit program."
 msgstr "Eligible for the Merit program."
@@ -2253,6 +2219,10 @@ msgstr "You can not withdraw this amount because it will cause collateral call"
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
 msgstr "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
+
+#: src/components/incentives/IncentivesTooltipContent.tsx
+msgid "Participating in this {symbol} reserve gives additional annualized rewards through Aave"
+msgstr "Participating in this {symbol} reserve gives additional annualized rewards through Aave"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Your voting power is based on your AAVE/stkAAVE balance and received delegations."
@@ -2515,10 +2485,6 @@ msgstr "FAQS"
 msgid "Voted NAY"
 msgstr "Voted NAY"
 
-#: src/components/infoTooltips/SuperFestTooltip.tsx
-msgid "about SuperFest."
-msgstr "about SuperFest."
-
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
 msgstr "Testnet mode"
@@ -2583,6 +2549,10 @@ msgstr "This is the cost of settling your order on-chain, including gas and any 
 #: src/modules/umbrella/StakeCooldownActions.tsx
 msgid "Activate Cooldown"
 msgstr "Activate Cooldown"
+
+#: src/components/incentives/RateAndIncentivesBox.tsx
+msgid "Participating in this {symbol} reserve gives additional annualized rewards."
+msgstr "Participating in this {symbol} reserve gives additional annualized rewards."
 
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
 msgid "Available to Claim"
@@ -2855,10 +2825,6 @@ msgstr "Debt ceiling is not zero"
 msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 
-#: src/components/infoTooltips/SpkAirdropTooltip.tsx
-msgid "and about SPK program"
-msgstr "and about SPK program"
-
 #: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
@@ -3038,9 +3004,9 @@ msgstr "Debt"
 msgid "Filter"
 msgstr "Filter"
 
-#: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
-msgid "Learn more about the Ether.fi program"
-msgstr "Learn more about the Ether.fi program"
+#: src/components/incentives/PointsIncentivesTooltipContent.tsx
+msgid "Learn more about {type} Rewards program"
+msgstr "Learn more about {type} Rewards program"
 
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
@@ -3478,10 +3444,6 @@ msgstr "Maximum amount available to borrow is limited because protocol borrow ca
 msgid "COPY IMAGE"
 msgstr "COPY IMAGE"
 
-#: src/components/infoTooltips/KernelAirdropTooltip.tsx
-msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
-
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
@@ -3597,10 +3559,6 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP v2 Token"
 msgstr "Get ABP v2 Token"
-
-#: src/components/incentives/SonicIncentivesTooltipContent.tsx
-msgid "This asset is eligible for {0} Sonic Rewards."
-msgstr "This asset is eligible for {0} Sonic Rewards."
 
 #: pages/safety-module.page.tsx
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."

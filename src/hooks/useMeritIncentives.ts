@@ -426,7 +426,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
         customForumLink:
-          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/61',
+          'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/62',
       },
     ],
   },
@@ -532,6 +532,7 @@ export const useMeritIncentives = ({
     staleTime: 1000 * 60 * 5,
     select: (data) => {
       const meritReserveIncentiveData = getMeritData(market, symbol);
+
       if (!meritReserveIncentiveData) {
         return null;
       }

@@ -7,7 +7,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { GENERAL } from 'src/utils/events';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -61,11 +60,6 @@ export const SuppliedPositionsListItem = ({
       }`}
       showSupplyCapTooltips
       showDebtCeilingTooltips
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        reserve.symbol,
-        currentMarket,
-        ProtocolAction.supply
-      )}
     >
       <ListValueColumn
         symbol={reserve.iconSymbol}

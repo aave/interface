@@ -4,10 +4,9 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
-import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
-import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
+import { usePointsIncentives } from 'src/hooks/usePointsIncentives';
+import { useSimpleExternalIncentives } from 'src/hooks/useSimpleExternalIncentives';
 import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
@@ -15,11 +14,18 @@ import { DASHBOARD } from 'src/utils/events';
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
-import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
-import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
-import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
+import {
+  EthenaPointsTooltip,
+  EtherFiAirdropTooltipContent,
+  SonicAirdropTooltipContent,
+} from './PointsIncentivesTooltipContent';
+import {
+  KernelAirdropTooltip,
+  SpkAirdropTooltip,
+  SuperFestTooltip,
+} from './SimpleExternalIncentivesTooltip';
 import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
 
 interface IncentivesButtonProps {
@@ -28,7 +34,7 @@ interface IncentivesButtonProps {
   displayBlank?: boolean;
 }
 
-const BlankIncentives = () => {
+export const BlankIncentives = () => {
   return (
     <Box
       sx={{
@@ -98,75 +104,78 @@ export const ZkIgniteIncentivesButton = (params: {
   );
 };
 
-export const EthenaIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
-  const [open, setOpen] = useState(false);
-  const points = useEthenaIncentives(rewardedAsset);
-
-  if (!points) {
-    return null;
-  }
-
-  return (
-    <ContentWithTooltip
-      tooltipContent={<EthenaAirdropTooltipContent points={points} />}
-      withoutHover
-      setOpen={setOpen}
-      open={open}
-    >
-      <ContentEthenaButton points={points} />
-    </ContentWithTooltip>
-  );
-};
-
-export const EtherfiIncentivesButton = (params: {
-  symbol: string;
+export const SimpleExternalIncentiveTooltip = (params: {
   market: string;
-  protocolAction?: ProtocolAction;
+  rewardedAsset?: string;
 }) => {
-  const [open, setOpen] = useState(false);
-  const { market, protocolAction, symbol } = params;
-  const multiplier = useEtherfiIncentives(market, symbol, protocolAction);
-
-  if (!multiplier) {
-    return null;
-  }
+  const simpleExternalIncentivesTooltips = useSimpleExternalIncentives(params);
 
   return (
-    <ContentWithTooltip
-      tooltipContent={<EtherFiAirdropTooltipContent multiplier={multiplier} />}
-      withoutHover
-      setOpen={setOpen}
-      open={open}
-    >
-      <ContentEtherfiButton multiplier={multiplier} />
-    </ContentWithTooltip>
+    <>
+      {simpleExternalIncentivesTooltips.superFestRewards && <SuperFestTooltip />}
+      {simpleExternalIncentivesTooltips.spkAirdrop && <SpkAirdropTooltip />}
+      {simpleExternalIncentivesTooltips.kernelPoints && <KernelAirdropTooltip />}
+    </>
   );
 };
 
-export const SonicIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: string }) => {
+export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: string }) => {
   const [open, setOpen] = useState(false);
-  const points = useSonicIncentives(rewardedAsset);
-
-  if (!points) {
-    return null;
-  }
+  const pointsIncentivesTooltips = usePointsIncentives(params);
 
   return (
-    <ContentWithTooltip
-      tooltipContent={<SonicAirdropTooltipContent points={points} />}
-      withoutHover
-      setOpen={setOpen}
-      open={open}
-    >
-      <ContentSonicButton points={points} />
-    </ContentWithTooltip>
+    <>
+      {pointsIncentivesTooltips.ethenaPoints && (
+        <ContentWithTooltip
+          tooltipContent={<EthenaPointsTooltip points={pointsIncentivesTooltips.ethenaPoints} />}
+          withoutHover
+          setOpen={setOpen}
+          open={open}
+        >
+          <ContentPoints
+            value={pointsIncentivesTooltips.ethenaPoints}
+            iconSrc={'/icons/other/ethena.svg'}
+          />
+        </ContentWithTooltip>
+      )}
+      {pointsIncentivesTooltips.sonicPoints && (
+        <ContentWithTooltip
+          tooltipContent={
+            <SonicAirdropTooltipContent points={pointsIncentivesTooltips.sonicPoints} />
+          }
+          withoutHover
+          setOpen={setOpen}
+          open={open}
+        >
+          <ContentPoints
+            value={pointsIncentivesTooltips.sonicPoints}
+            iconSrc={'/icons/networks/sonic.svg'}
+          />
+        </ContentWithTooltip>
+      )}
+      {pointsIncentivesTooltips.etherfiPoints && (
+        <ContentWithTooltip
+          tooltipContent={
+            <EtherFiAirdropTooltipContent points={pointsIncentivesTooltips.etherfiPoints} />
+          }
+          withoutHover
+          setOpen={setOpen}
+          open={open}
+        >
+          <ContentPoints
+            value={pointsIncentivesTooltips.etherfiPoints}
+            iconSrc={'/icons/other/etherfi.svg'}
+          />
+        </ContentWithTooltip>
+      )}
+    </>
   );
 };
 
-export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
+export const LmIncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
   const [open, setOpen] = useState(false);
 
-  if (!(incentives && incentives.length > 0)) {
+  if (!(incentives && incentives.filter((i) => i.incentiveAPR !== '0').length > 0)) {
     if (displayBlank) {
       return <BlankIncentives />;
     } else {
@@ -209,7 +218,7 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
   );
 };
 
-const Content = ({
+export const Content = ({
   incentives,
   incentivesNetAPR,
   displayBlank,
@@ -343,7 +352,7 @@ const Content = ({
   );
 };
 
-const ContentButton = ({ value, iconSrc }: { value: number; iconSrc: string }) => {
+const ContentPoints = ({ value, iconSrc }: { value: number; iconSrc: string }) => {
   const [open, setOpen] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -380,15 +389,3 @@ const ContentButton = ({ value, iconSrc }: { value: number; iconSrc: string }) =
     </Box>
   );
 };
-
-const ContentEthenaButton = ({ points }: { points: number }) => (
-  <ContentButton value={points} iconSrc="/icons/other/ethena.svg" />
-);
-
-const ContentEtherfiButton = ({ multiplier }: { multiplier: number }) => (
-  <ContentButton value={multiplier} iconSrc="/icons/other/ether.fi.svg" />
-);
-
-const ContentSonicButton = ({ points }: { points: number }) => (
-  <ContentButton value={points} iconSrc="/icons/networks/sonic.svg" />
-);

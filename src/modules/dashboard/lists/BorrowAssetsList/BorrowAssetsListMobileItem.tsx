@@ -4,11 +4,10 @@ import { Box, Button } from '@mui/material';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
-import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from '../../../../components/incentives/RateAndIncentivesBox';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
@@ -41,11 +40,6 @@ export const BorrowAssetsListMobileItem = ({
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
-      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        symbol,
-        currentMarket,
-        ProtocolAction.borrow
-      )}
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
@@ -73,7 +67,7 @@ export const BorrowAssetsListMobileItem = ({
         captionVariant="description"
         mb={2}
       >
-        <IncentivesCard
+        <RateAndIncentivesBox
           value={Number(variableBorrowRate)}
           incentives={vIncentivesData}
           address={variableDebtTokenAddress}

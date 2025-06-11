@@ -1,9 +1,11 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
+import { IncentivesCard } from 'src/components/incentives/RateAndIncentivesBox';
 import {
   IsolatedDisabledBadge,
   IsolatedEnabledBadge,
@@ -12,9 +14,9 @@ import {
 import { Row } from 'src/components/primitives/Row';
 import { SecondsToString } from 'src/components/SecondsToString';
 import { CollateralType } from 'src/helpers/types';
+import { useAllIncentives } from 'src/hooks/useAllIncentives';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
-import { IncentivesButton } from '../../incentives/IncentivesButton';
 import { FormattedNumber, FormattedNumberProps } from '../../primitives/FormattedNumber';
 import { TokenIcon } from '../../primitives/TokenIcon';
 import { GasStation } from '../GasStation/GasStation';
@@ -244,35 +246,89 @@ export const CollateralState = ({ collateralType }: CollateralStateProps) => {
 };
 
 interface DetailsIncentivesLineProps {
-  futureIncentives?: ReserveIncentiveResponse[];
-  futureSymbol?: string;
   incentives?: ReserveIncentiveResponse[];
   // the token yielding the incentive, not the incentive itself
   symbol: string;
+  market: string;
+  address: string;
+  protocolAction: ProtocolAction;
   loading?: boolean;
+  futureAddress?: string;
+  futureIncentives?: ReserveIncentiveResponse[];
+  futureSymbol?: string;
 }
 
 export const DetailsIncentivesLine = ({
   incentives,
   symbol,
+  market,
+  address,
+  protocolAction,
+  futureAddress,
   futureIncentives,
   futureSymbol,
   loading = false,
 }: DetailsIncentivesLineProps) => {
-  if (!incentives || incentives.filter((i) => i.incentiveAPR !== '0').length === 0) return null;
+  const { allAprsIncentives } = useAllIncentives({
+    symbol,
+    market,
+    protocolAction,
+    rewardedAsset: address,
+    lmIncentives: incentives,
+  });
+
+  const { allAprsIncentives: futureAllAprsIncentives } = useAllIncentives({
+    symbol: futureSymbol || '',
+    market,
+    protocolAction,
+    rewardedAsset: futureAddress,
+    lmIncentives: futureIncentives,
+  });
+
+  const hasIncentives = allAprsIncentives.length > 0;
+  const hasFutureIncentives = futureAllAprsIncentives.length > 0;
+
+  if (!hasIncentives && !hasFutureIncentives) return null;
+
   return (
     <Row caption={<Trans>Rewards APR</Trans>} captionVariant="description" mb={4} minHeight={24}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          width: 'min-content',
+        }}
+      >
         {loading ? (
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
         ) : (
           <>
-            <IncentivesButton incentives={incentives} symbol={symbol} />
+            {hasIncentives ? (
+              <IncentivesCard
+                symbol={symbol}
+                incentives={incentives || []}
+                market={market}
+                address={address}
+                protocolAction={protocolAction}
+              />
+            ) : (
+              <Typography variant="secondary14">
+                <Trans>None</Trans>
+              </Typography>
+            )}
             {futureSymbol && (
               <>
                 {ArrowRightIcon}
-                <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
-                {futureIncentives && futureIncentives.length === 0 && (
+                {hasFutureIncentives ? (
+                  <IncentivesCard
+                    symbol={futureSymbol || ''}
+                    incentives={futureIncentives || []}
+                    market={market}
+                    address={futureAddress}
+                    protocolAction={protocolAction}
+                  />
+                ) : (
                   <Typography variant="secondary14">
                     <Trans>None</Trans>
                   </Typography>

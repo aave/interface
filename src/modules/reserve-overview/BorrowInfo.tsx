@@ -1,9 +1,10 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
-import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { RateAndIncentivesBox } from 'src/components/incentives/RateAndIncentivesBox';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -161,11 +162,16 @@ export const BorrowInfo = ({
             />
           }
         >
-          <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
-          <IncentivesButton
+          <RateAndIncentivesBox
             symbol={reserve.symbol}
-            incentives={reserve.vIncentivesData}
-            displayBlank={true}
+            value={reserve.variableBorrowAPY}
+            incentives={reserve.vIncentivesData || []}
+            market={currentMarketData.market}
+            address={reserve.variableDebtTokenAddress}
+            protocolAction={ProtocolAction.borrow}
+            displayBlank={false}
+            variant="main16"
+            align="start"
           />
         </PanelItem>
         {reserve.borrowCapUSD && reserve.borrowCapUSD !== '0' && (

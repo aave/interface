@@ -28,20 +28,18 @@ type MerklOpportunity = {
   dailyRewards: number;
   tags: [];
   id: string;
-  tokens: [
-    {
-      id: string;
-      name: string;
-      chainId: number;
-      address: Address;
-      decimals: number;
-      icon: string;
-      verified: boolean;
-      isTest: boolean;
-      price: number;
-      symbol: string;
-    }
-  ];
+  tokens: {
+    id: string;
+    name: string;
+    chainId: number;
+    address: Address;
+    decimals: number;
+    icon: string;
+    verified: boolean;
+    isTest: boolean;
+    price: number;
+    symbol: string;
+  }[];
 };
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {

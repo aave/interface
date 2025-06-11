@@ -1,18 +1,14 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
-import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
-import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
-import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useRootStore } from 'src/store/root';
 import { MARKETS } from 'src/utils/events';
-import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
-import { IncentivesCard } from '../../components/incentives/IncentivesCard';
+import { RateAndIncentivesBox } from '../../components/incentives/RateAndIncentivesBox';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
@@ -22,17 +18,6 @@ import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper'
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
-  );
-
-  const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
-    reserve.symbol,
-    currentMarket,
-    ProtocolAction.supply
-  );
-  const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
-    reserve.symbol,
-    currentMarket,
-    ProtocolAction.borrow
   );
 
   return (
@@ -64,20 +49,13 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         mb={3}
         align="flex-start"
       >
-        <IncentivesCard
+        <RateAndIncentivesBox
           align="flex-end"
           value={reserve.supplyAPY}
           incentives={reserve.aIncentivesData || []}
           address={reserve.aTokenAddress}
           symbol={reserve.symbol}
           variant="secondary14"
-          tooltip={
-            <>
-              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
-              {externalIncentivesTooltipsSupplySide.kernelPoints && <KernelAirdropTooltip />}
-            </>
-          }
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
@@ -117,19 +95,13 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         mb={3}
         align="flex-start"
       >
-        <IncentivesCard
+        <RateAndIncentivesBox
           align="flex-end"
           value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
           incentives={reserve.vIncentivesData || []}
           address={reserve.variableDebtTokenAddress}
           symbol={reserve.symbol}
           variant="secondary14"
-          tooltip={
-            <>
-              {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
-            </>
-          }
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />

@@ -1,7 +1,5 @@
-import { ChainId, ProtocolAction } from '@aave/contract-helpers';
+import { ChainId } from '@aave/contract-helpers';
 import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
-
-import { CustomMarket } from './marketsAndNetworksConfig';
 
 export function hexToAscii(_hex: string): string {
   const hex = _hex.toString();
@@ -73,58 +71,4 @@ export const roundToTokenDecimals = (inputValue: string, tokenDecimals: number) 
 
   // Combine the whole and adjusted decimal parts
   return whole + '.' + adjustedDecimals;
-};
-
-export type ExternalIncentivesTooltipsConfig = {
-  superFestRewards: boolean;
-  spkAirdrop: boolean;
-  kernelPoints: boolean;
-};
-
-export const showExternalIncentivesTooltip = (
-  symbol: string,
-  currentMarket: string,
-  protocolAction?: ProtocolAction
-) => {
-  const superFestRewardsEnabled = false;
-  const spkRewardsEnabled = true;
-  const kernelPointsEnabled = true;
-
-  const tooltipsConfig: ExternalIncentivesTooltipsConfig = {
-    superFestRewards: false,
-    spkAirdrop: false,
-    kernelPoints: false,
-  };
-
-  if (
-    superFestRewardsEnabled &&
-    currentMarket === CustomMarket.proto_base_v3 &&
-    protocolAction === ProtocolAction.supply &&
-    (symbol == 'ETH' || symbol == 'WETH' || symbol == 'wstETH')
-  ) {
-    tooltipsConfig.superFestRewards = true;
-  }
-
-  if (
-    spkRewardsEnabled &&
-    currentMarket === CustomMarket.proto_mainnet_v3 &&
-    protocolAction === ProtocolAction.supply &&
-    symbol == 'USDS'
-  ) {
-    tooltipsConfig.spkAirdrop = true;
-  }
-
-  if (
-    kernelPointsEnabled &&
-    (currentMarket === CustomMarket.proto_mainnet_v3 ||
-      currentMarket === CustomMarket.proto_lido_v3 ||
-      currentMarket === CustomMarket.proto_base_v3 ||
-      currentMarket === CustomMarket.proto_arbitrum_v3) &&
-    protocolAction === ProtocolAction.supply &&
-    (symbol == 'rsETH' || symbol == 'wrsETH')
-  ) {
-    tooltipsConfig.kernelPoints = true;
-  }
-
-  return tooltipsConfig;
 };
