@@ -63,7 +63,7 @@ export const IncentivesCard = ({
     <Box
       sx={{
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'left',
         rowGap: '4px',
         flexWrap: 'wrap',
         width: 'min-content',
@@ -128,7 +128,7 @@ export const IncentivesCard = ({
   };
 
   const multipleIncentives = allAprsIncentivesCount >= 2;
-  const singleIncentives = allIncentivesCount >= 1;
+  const singleIncentives = allIncentivesCount == 1;
 
   return multipleIncentives ? (
     <AllIncentivesButton />
