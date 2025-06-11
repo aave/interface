@@ -17,9 +17,8 @@ import { TokenIcon } from '../primitives/TokenIcon';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import {
-  EthenaAirdropTooltipContent,
-  EtherFiAirdropTooltipContent,
-  SonicAirdropTooltipContent,
+  POINTS_INCENTIVES_TYPES,
+  PointsIncentivesTooltipContent,
 } from './PointsIncentivesTooltipContent';
 import {
   KernelAirdropTooltip,
@@ -128,7 +127,10 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
       {pointsIncentivesTooltips.ethenaPoints && (
         <ContentWithTooltip
           tooltipContent={
-            <EthenaAirdropTooltipContent points={pointsIncentivesTooltips.ethenaPoints} />
+            <PointsIncentivesTooltipContent
+              type={POINTS_INCENTIVES_TYPES.ETHENA}
+              points={pointsIncentivesTooltips.ethenaPoints}
+            />
           }
           withoutHover
           setOpen={setOpen}
@@ -143,7 +145,10 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
       {pointsIncentivesTooltips.sonicPoints && (
         <ContentWithTooltip
           tooltipContent={
-            <SonicAirdropTooltipContent points={pointsIncentivesTooltips.sonicPoints} />
+            <PointsIncentivesTooltipContent
+              type={POINTS_INCENTIVES_TYPES.SONIC}
+              points={pointsIncentivesTooltips.sonicPoints}
+            />
           }
           withoutHover
           setOpen={setOpen}
@@ -158,7 +163,10 @@ export const PointsIncentiveButton = (params: { market: string; rewardedAsset?: 
       {pointsIncentivesTooltips.etherfiPoints && (
         <ContentWithTooltip
           tooltipContent={
-            <EtherFiAirdropTooltipContent multiplier={pointsIncentivesTooltips.etherfiPoints} />
+            <PointsIncentivesTooltipContent
+              type={POINTS_INCENTIVES_TYPES.ETHERFI}
+              points={pointsIncentivesTooltips.etherfiPoints}
+            />
           }
           withoutHover
           setOpen={setOpen}
