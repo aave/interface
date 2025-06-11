@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const FAMILY_API_URL = 'https://experimental.staging.family.co/v3/latest-prices';
+const FAMILY_API_URL = process.env.FAMILY_API_URL;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowedOrigins = ['https://app.aave.com', 'https://aave.com'];
@@ -42,8 +42,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const familyApiKey = process.env.FAMILY_API_KEY;
-    if (!familyApiKey) {
-      console.error('FAMILY_API_KEY environment variable is not set');
+    if (!familyApiKey || !FAMILY_API_URL) {
+      console.error('FAMILY_API_KEY or FAMILY_API_URL environment variable is not set');
       return res.status(500).json({ error: 'Internal server error' });
     }
 

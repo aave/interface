@@ -9,7 +9,7 @@ type FamilyPricesResponse = {
   };
 };
 export class FamilyPricesService {
-  private proxyUrl = '/api/family-prices-proxy';
+  private proxyUrl = '/api/prices-proxy';
 
   /**
    * Fetches the USD price of a token from the Family API via proxy.
