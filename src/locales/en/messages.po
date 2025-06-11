@@ -949,10 +949,6 @@ msgstr "Discount"
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
 
-#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
-msgid "Rewards can be claimed through"
-msgstr "Rewards can be claimed through"
-
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
@@ -1019,6 +1015,8 @@ msgstr "Liquidation at"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/PointsIncentivesTooltipContent.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
@@ -1705,6 +1703,10 @@ msgstr "Safety of your deposited collateral against the borrowed assets and its 
 msgid "Total borrows"
 msgstr "Total borrows"
 
+#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
+msgid "This asset is eligible for rewards through {type}. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This asset is eligible for rewards through {type}. Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
 msgstr "YAE"
@@ -1919,10 +1921,6 @@ msgstr "Exceeds the discount"
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
-
-#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
-msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "Eligible for the Merit program."
@@ -2259,10 +2257,6 @@ msgstr "FAQS"
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Voted NAY"
 msgstr "Voted NAY"
-
-#: src/components/incentives/SimpleExternalIncentivesTooltip.tsx
-msgid "about SuperFest."
-msgstr "about SuperFest."
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
