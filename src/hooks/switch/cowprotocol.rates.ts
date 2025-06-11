@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import {
   OrderKind,
   QuoteAndPost,
@@ -16,6 +17,7 @@ import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAd
 import { FamilyPricesService } from 'src/services/FamilyPricesService';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 export async function getCowProtocolSellRates({
   chainId,
@@ -53,6 +55,9 @@ export async function getCowProtocolSellRates({
 
     const provider = await getEthersProvider(wagmiConfig, { chainId });
     const signer = provider?.getSigner();
+    const isMainnet =
+      !getNetworkConfig(chainId as unknown as ChainId).isTestnet &&
+      !getNetworkConfig(chainId as unknown as ChainId).isFork;
 
     if (!inputSymbol || !outputSymbol) {
       throw new Error('No input or output symbol provided');
@@ -76,15 +81,18 @@ export async function getCowProtocolSellRates({
           console.error(cowError);
           throw new Error(cowError?.body?.errorType);
         }),
-      // CoW Quote doesn't return values in USD, so we need to fetch the price from the API separately
-      familyPricesService.getTokenUsdPrice(chainId, srcTokenWrapped).catch((pricesError) => {
-        console.error(pricesError);
-        throw new Error(pricesError?.body?.errorType);
-      }),
-      familyPricesService.getTokenUsdPrice(chainId, destTokenWrapped).catch((pricesError) => {
-        console.error(pricesError);
-        throw new Error(pricesError?.body?.errorType);
-      }),
+      isMainnet
+        ? familyPricesService.getTokenUsdPrice(chainId, srcTokenWrapped).catch((pricesError) => {
+            console.error(pricesError);
+            throw new Error(pricesError?.body?.errorType);
+          })
+        : Promise.resolve('0'), // Prices set to 0 on testnets and forks
+      isMainnet
+        ? familyPricesService.getTokenUsdPrice(chainId, destTokenWrapped).catch((pricesError) => {
+            console.error(pricesError);
+            throw new Error(pricesError?.body?.errorType);
+          })
+        : Promise.resolve('0'), // Prices set to 0 on testnets and forks
     ]);
 
     if (!srcTokenPriceUsd || !destTokenPriceUsd) {
