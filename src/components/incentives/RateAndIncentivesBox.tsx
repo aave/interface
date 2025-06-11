@@ -63,10 +63,7 @@ export const IncentivesCard = ({
     <Box
       sx={{
         display: 'flex',
-        justifyContent: 'center',
-        rowGap: '4px',
-        flexWrap: 'wrap',
-        width: 'min-content',
+        gap: '4px',
       }}
     >
       <>
