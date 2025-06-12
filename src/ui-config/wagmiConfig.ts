@@ -1,4 +1,3 @@
-import { InfinexConnectConfig, initInfinex } from '@infinex/connect-sdk';
 import { Emitter } from '@wagmi/core/internal';
 import { getDefaultConfig } from 'connectkit';
 import {
@@ -14,19 +13,6 @@ import { createConfig, CreateConfigParameters, http } from 'wagmi';
 import { injected, safe } from 'wagmi/connectors';
 
 import { prodNetworkConfig, testnetConfig } from './networksConfig';
-
-const infinexConfig: InfinexConnectConfig = {
-  appKey: 'aave',
-  debug: {
-    showLogs: true,
-    iframeOptions: {
-      shown: true,
-      width: '750',
-      height: '405',
-    },
-  },
-};
-export const infinexCore = initInfinex(infinexConfig);
 
 const testnetChains = Object.values(testnetConfig).map((config) => config.wagmiChain) as [
   Chain,
