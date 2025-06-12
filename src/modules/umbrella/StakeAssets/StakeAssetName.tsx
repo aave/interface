@@ -60,12 +60,22 @@ export const StakeAssetName = ({
               </Row>
               <Row
                 caption={
-                  <Typography variant="secondary12" sx={{ ml: 1 }}>
-                    <Trans>Reward APY at target liquidity</Trans>
-                  </Typography>
+                  <Stack direction="column">
+                    <Typography variant="secondary12" sx={{ ml: 1 }}>
+                      <Trans>Reward APY at target liquidity</Trans>
+                    </Typography>
+                    <Typography variant="helperText" sx={{ ml: 1, fontStyle: 'italic' }}>
+                      (<Trans>Excludes variable supply APY</Trans>)
+                    </Typography>
+                  </Stack>
                 }
               >
-                <FormattedNumber variant="caption" value={apyAtTargetLiquidity} percent />
+                <FormattedNumber
+                  sx={{ alignSelf: 'start' }}
+                  variant="caption"
+                  value={apyAtTargetLiquidity}
+                  percent
+                />
               </Row>
             </Stack>
           </TextWithTooltip>
