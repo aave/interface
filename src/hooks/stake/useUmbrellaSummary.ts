@@ -231,10 +231,6 @@ const formatUmbrellaSummary = (
       stakeItem.underlyingTokenDecimals
     ).toString();
 
-    // const targetLiquidityUSD = valueToBigNumber(stakeItem.targetLiquidity)
-    //   .multipliedBy(stakeItem.price)
-    //   .toString();
-
     // we use the userReserve to get the aToken balance which takes into account accrued interest
     const userReserve = userReservesData?.find(
       (r) => r.reserve.aTokenAddress.toLowerCase() === stakeItem.stataTokenData.aToken.toLowerCase()
