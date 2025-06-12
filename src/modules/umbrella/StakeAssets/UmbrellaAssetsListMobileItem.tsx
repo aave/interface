@@ -11,6 +11,7 @@ import { ListMobileItemWrapper } from '../../dashboard/lists/ListMobileItemWrapp
 import { AmountStakedItem } from '../AmountStakedItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
 import { AvailableToStakeItem } from '../AvailableToStakeItem';
+import { ApyTooltip } from '../helpers/ApyTooltip';
 import { StakingApyItem } from '../StakingApyItem';
 import { StakeAssetName } from './StakeAssetName';
 
@@ -29,7 +30,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.tokenAddress}`}
         />
       </ListColumn>
-      <Row mt={2} caption={<Trans>Staking APY</Trans>} captionVariant="description" mb={3}>
+      <Row mt={2} caption={<ApyTooltip />} captionVariant="description" mb={3}>
         <Box
           sx={{
             display: 'flex',
