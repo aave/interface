@@ -7,6 +7,7 @@ import { Trans } from '@lingui/macro';
 import {
   Badge,
   Button,
+  CircularProgress,
   NoSsr,
   Slide,
   styled,
@@ -21,6 +22,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import UserMenuDropdown from 'src/components/UserMenuDropdown';
@@ -104,10 +106,10 @@ export function AppHeader() {
   );
 
   const { openSwitch, openBridge } = useModalContext();
-  const { readOnlyMode } = useWeb3Context();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [account] = useRootStore(useShallow((state) => [state.account]));
+  const { hasActiveOrders } = useCowOrderToast();
 
   useEffect(() => {
     if (mobileDrawerOpen && !md) {
@@ -311,12 +313,23 @@ export function AppHeader() {
             >
               {!smd && (
                 <Typography component="span" typography="subheader1">
-                  Switch tokens
+                  Swap
                 </Typography>
               )}
-              <SvgIcon fontSize="small">
-                <SwitchHorizontalIcon />
-              </SvgIcon>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {hasActiveOrders ? (
+                  <CircularProgress
+                    size={20}
+                    sx={{
+                      color: (theme) => theme.palette.grey[200],
+                    }}
+                  />
+                ) : (
+                  <SvgIcon fontSize="small">
+                    <SwitchHorizontalIcon />
+                  </SvgIcon>
+                )}
+              </Box>
             </Button>
           </StyledBadge>
         </NoSsr>

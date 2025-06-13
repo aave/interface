@@ -14,6 +14,7 @@ import {
   GovernanceV3Optimism,
   GovernanceV3Polygon,
   GovernanceV3Scroll,
+  GovernanceV3Soneium,
   GovernanceV3Sonic,
   GovernanceV3ZkSync,
 } from '@bgd-labs/aave-address-book';
@@ -142,6 +143,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.linea]: GovernanceV3Linea.PC_DATA_HELPER,
       [ChainId.sonic]: GovernanceV3Sonic.PC_DATA_HELPER,
       [ChainId.celo]: GovernanceV3Celo.PC_DATA_HELPER,
+      [ChainId.soneium]: GovernanceV3Soneium.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,

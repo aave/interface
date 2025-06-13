@@ -68,6 +68,11 @@ const IncentivesSymbolMap: {
     symbol: 'aEURC',
     aToken: true,
   },
+  aBasGHO: {
+    tokenIconSymbol: 'GHO',
+    symbol: 'aGHO',
+    aToken: true,
+  },
   aAvaSAVAX: {
     tokenIconSymbol: 'sAVAX',
     symbol: 'asAVAX',
@@ -86,6 +91,11 @@ const IncentivesSymbolMap: {
   aBasweETH: {
     tokenIconSymbol: 'weETH',
     symbol: 'aweETH',
+    aToken: true,
+  },
+  aCelCELO: {
+    tokenIconSymbol: 'CELO',
+    symbol: 'aCELO',
     aToken: true,
   },
   aGnoEURe: {

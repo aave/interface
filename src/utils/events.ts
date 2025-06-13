@@ -17,6 +17,9 @@ export const GENERAL = {
   TOKEN_APPROVAL: 'Token Approval',
   ACCEPT_RISK: 'Accept Risk',
   TRANSACTION: 'Transaction',
+  SWAP: 'Swap',
+  SWAP_FAILED: 'Swap Failed',
+  SWAP_COMPLETED: 'Swap Completed',
   TRANSACTION_ERROR: 'Transaction Error',
   OPEN_MODAL: 'Open Modal',
   MAX_INPUT_SELECTION: 'Select Max input',
@@ -74,8 +77,20 @@ export const WITHDRAW_MODAL = {
   SWITCH_WITHDRAW_TYPE: 'Change withdraw type',
 };
 
+export const SAFETY_MODULE = {
+  STAKE_SAFETY_MODULE: 'Stake Safety Module',
+  OPEN_STAKE_MODAL: 'Open Safety Module Stake Modal',
+  OPEN_COOLDOWN_MODAL: 'Open Safety Module Cooldown Modal',
+  OPEN_WITHDRAW_MODAL: 'Open Safety Module Withdraw Modal',
+  OPEN_CLAIM_MODAL: 'Open Safety Module Claim Modal',
+};
+
 export const STAKE = {
-  STAKE_TOKEN: 'Stake Action',
+  STAKE_TOKEN: 'Stake Umbrella Action',
+  OPEN_STAKE_MODAL: 'Open Stake Modal',
+  OPEN_COOLDOWN_MODAL: 'Open Stake Cooldown Modal',
+  OPEN_WITHDRAW_MODAL: 'Open Stake Withdraw Modal',
+  OPEN_CLAIM_MODAL: 'Open Stake Claim Modal',
 };
 
 export const GOVERNANCE_PAGE = {

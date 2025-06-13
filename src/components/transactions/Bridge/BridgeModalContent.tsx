@@ -29,9 +29,9 @@ import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTok
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/events';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';

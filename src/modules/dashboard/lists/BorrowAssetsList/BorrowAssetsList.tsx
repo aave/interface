@@ -11,11 +11,11 @@ import { Warning } from 'src/components/primitives/Warning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { GENERAL } from 'src/utils/events';
 import {
   displayGhoForMintableMarket,
   findAndFilterMintableGhoReserve,
 } from 'src/utils/ghoUtilities';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 import { useShallow } from 'zustand/shallow';
 
 import { CapType } from '../../../../components/caps/helper';

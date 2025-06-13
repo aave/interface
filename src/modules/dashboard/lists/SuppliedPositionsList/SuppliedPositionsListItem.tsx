@@ -6,7 +6,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/events';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
@@ -120,7 +120,7 @@ export const SuppliedPositionsListItem = ({
             }}
             data-cy={`swapButton`}
           >
-            <Trans>Switch</Trans>
+            <Trans>Swap</Trans>
           </Button>
         ) : (
           <Button
