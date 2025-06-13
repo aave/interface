@@ -116,8 +116,15 @@ export function BatchSupplyActions({
     mutation: {
       onSuccess: (hash) => {
         console.log('BATCH HASH', hash);
+        addTransaction('batch', {
+          action: ProtocolAction.supply,
+          txState: 'success',
+          asset: poolAddress,
+          amount: amountToSupply,
+          assetName: symbol,
+        });
         queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-        setMainTxState({ success: true, txHash: hash.id });
+        setMainTxState({ success: true, loading: false,txHash: hash.id });
       },
       onError: (error) => {
         console.log('ERROR', error);
@@ -157,7 +164,7 @@ export function BatchSupplyActions({
           const approveData = encodeFunctionData({
             abi: erc20Abi,
             functionName: 'approve',
-            args: [poolAddress as `0x${string}`, parseUnits(amountToSupply, decimals)],
+            args: [currentMarketData.addresses.LENDING_POOL as `0x${string}`, parseUnits(amountToSupply, decimals)],
           });
           calls.push({
             to: poolAddress,
@@ -176,7 +183,7 @@ export function BatchSupplyActions({
           ],
         });
         calls.push({
-          to: poolAddress,
+          to: currentMarketData.addresses.LENDING_POOL,
           data: supplyData,
         });
 
@@ -200,6 +207,16 @@ export function BatchSupplyActions({
           response = await sendTx(signedSupplyWithPermitTxData);
 
           await response.wait(1);
+
+          addTransaction(response.hash, {
+            action: ProtocolAction.supplyWithPermit,
+            txState: 'success',
+            asset: poolAddress,
+            amount: amountToSupply,
+            assetName: symbol,
+          });
+
+          queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
         } else {
           action = ProtocolAction.supply;
           let supplyTxData = supply({
@@ -210,6 +227,16 @@ export function BatchSupplyActions({
           response = await sendTx(supplyTxData);
 
           await response.wait(1);
+
+          addTransaction(response.hash, {
+            action,
+            txState: 'success',
+            asset: poolAddress,
+            amount: amountToSupply,
+            assetName: symbol,
+          });
+
+          queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
         }
 
         setMainTxState({
@@ -217,16 +244,6 @@ export function BatchSupplyActions({
           loading: false,
           success: true,
         });
-
-        addTransaction(response.hash, {
-          action,
-          txState: 'success',
-          asset: poolAddress,
-          amount: amountToSupply,
-          assetName: symbol,
-        });
-
-        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       }
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);

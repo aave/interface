@@ -36,15 +36,8 @@ export const ApprovalMethodToggleButton = ({
   return (
     <>
       <Box
-        sx={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          cursor: 'pointer',
-          '&:hover': {
-            opacity: 0.7,
-          },
-        }}
         onClick={handleClick}
+        sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
       >
         <Typography variant="subheader2" color="info.main">
           {currentMethod === ApprovalMethod.BATCH && <Trans>Batch Transaction</Trans>}
@@ -59,39 +52,18 @@ export const ApprovalMethodToggleButton = ({
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            '&:before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
-            },
-          },
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        keepMounted={true}
+        data-cy={`approveMenu_${currentMethod}`}
       >
         {showBatchOption && (
           <MenuItem
-            onClick={() => setMethod(ApprovalMethod.BATCH)}
+            onClick={() => {
+              setMethod(ApprovalMethod.BATCH); 
+              handleClose();
+            }}
             selected={currentMethod === ApprovalMethod.BATCH}
           >
             <ListItemIcon>
@@ -103,18 +75,24 @@ export const ApprovalMethodToggleButton = ({
           </MenuItem>
         )}
         <MenuItem
-          onClick={() => setMethod(ApprovalMethod.PERMIT)}
+          onClick={() => {
+            setMethod(ApprovalMethod.PERMIT); 
+            handleClose();
+          }}
           selected={currentMethod === ApprovalMethod.PERMIT}
         >
           <ListItemIcon>
           <SvgIcon>{currentMethod === ApprovalMethod.PERMIT && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
           <ListItemText>
-            <Trans>Signature</Trans>
+            <Trans>Signed Message</Trans>
           </ListItemText>
         </MenuItem>
         <MenuItem
-          onClick={() => setMethod(ApprovalMethod.APPROVE)}
+          onClick={() => {
+            setMethod(ApprovalMethod.APPROVE); 
+            handleClose();
+          }}
           selected={currentMethod === ApprovalMethod.APPROVE}
         >
           <ListItemIcon>
