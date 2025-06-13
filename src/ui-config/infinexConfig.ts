@@ -2,6 +2,7 @@ import { InfinexConnectConfig, initInfinex } from '@infinex/connect-sdk';
 
 const infinexConfig: InfinexConnectConfig = {
   appKey: 'aave',
+  environment: 'dev',
   debug: {
     showLogs: true,
     iframeOptions: {

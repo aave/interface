@@ -11,8 +11,9 @@ import {
 import { type Chain } from 'viem';
 import { createConfig, CreateConfigParameters, http } from 'wagmi';
 import { injected, safe } from 'wagmi/connectors';
-
 import { prodNetworkConfig, testnetConfig } from './networksConfig';
+import { infinexCore } from './infinexConfig';
+console.log('infinexCore', infinexCore);
 
 const testnetChains = Object.values(testnetConfig).map((config) => config.wagmiChain) as [
   Chain,
