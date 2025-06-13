@@ -2,6 +2,7 @@ import '/public/fonts/inter/inter.css';
 import '/src/styles/variables.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import { InfinexProvider } from '@infinex/connect-sdk';
 import { NoSsr } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -27,7 +28,7 @@ import { useShallow } from 'zustand/shallow';
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { InfinexConnectConfig, InfinexProvider, initInfinex } from '@connect-poc/sdk';
+import { infinexCore } from 'src/ui-config/infinexConfig';
 
 const SwitchModal = dynamic(() =>
   import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
@@ -111,19 +112,6 @@ export default function MyApp(props: MyAppProps) {
         },
       })
   );
-
-  const infinexConfig: InfinexConnectConfig = {
-    appKey: 'example',
-    debug: {
-      showLogs: true,
-      iframeOptions: {
-        shown: true,
-        width: '250px',
-        height: '135px',
-      },
-    },
-  };
-  const infinexCore = initInfinex(infinexConfig);
 
   const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
   useEffect(() => {
