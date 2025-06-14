@@ -40,6 +40,7 @@ export const AvailableToClaimItem = ({
       <ListValueColumn
         listColumnProps={{
           p: 0,
+          minWidth: 0,
         }}
         value={totalAvailableToClaim}
         subValue={totalAvailableToClaimUSD}

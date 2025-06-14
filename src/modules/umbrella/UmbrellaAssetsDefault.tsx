@@ -93,6 +93,8 @@ const AssetListItem = ({ stakeData }: { stakeData: FormattedStakeData }) => {
           iconSymbol={stakeData.iconSymbol}
           symbol={stakeData.symbol}
           totalAmountStakedUSD={stakeData.totalSupplyUsd}
+          targetLiquidityUSD={stakeData.targetLiquidityUSD}
+          apyAtTargetLiquidity={stakeData.totalRewardApyAtTargetLiquidity}
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${stakeData.tokenAddress}`}
         />
       </ListColumn>
@@ -117,6 +119,8 @@ const AssetListItemMobile = ({ stakeData }: { stakeData: FormattedStakeData }) =
           iconSymbol={stakeData.iconSymbol}
           symbol={stakeData.symbol}
           totalAmountStakedUSD={stakeData.totalSupplyUsd}
+          targetLiquidityUSD={stakeData.targetLiquidityUSD}
+          apyAtTargetLiquidity={stakeData.totalRewardApyAtTargetLiquidity}
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${stakeData.tokenAddress}`}
         />
       </ListColumn>

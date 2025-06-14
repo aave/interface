@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { AssetInput } from 'src/components/transactions/AssetInput';
 import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
@@ -196,7 +197,17 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
         )}
         {stakeData.underlyingIsStataToken && (
           <Row
-            caption={<Trans>Stake token shares</Trans>}
+            caption={
+              <Stack direction="row" alignItems="center" gap={1}>
+                <Trans>Stake token shares</Trans>
+                <TextWithTooltip>
+                  <Trans>
+                    Staked tokens are wrapped and use an exchange rate. You may see fewer token
+                    shares, but the value matches your deposit and will grow as yield accrues.
+                  </Trans>
+                </TextWithTooltip>
+              </Stack>
+            }
             captionVariant="description"
             mb={4}
             align="flex-start"
