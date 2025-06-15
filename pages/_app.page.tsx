@@ -22,6 +22,7 @@ import { CowOrderToastProvider } from 'src/hooks/useCowOrderToast';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
+import { infinexCore } from 'src/ui-config/infinexConfig';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { WagmiProvider } from 'wagmi';
@@ -30,7 +31,6 @@ import { useShallow } from 'zustand/shallow';
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { infinexCore } from 'src/ui-config/infinexConfig';
 
 const SwitchModal = dynamic(() =>
   import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
@@ -142,7 +142,7 @@ export default function MyApp(props: MyAppProps) {
       <NoSsr>
         <LanguageProvider>
           <WagmiProvider config={wagmiConfig}>
-            <InfinexProvider core={infinexCore}>
+            <InfinexProvider core={infinexCore.core}>
               <QueryClientProvider client={queryClient}>
                 <ConnectKitProvider
                   onDisconnect={cleanLocalStorage}

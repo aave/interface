@@ -1,4 +1,4 @@
-import { useInfinexUser } from '@infinex/connect-sdk';
+import { useInfinexSwidge, useInfinexUser } from '@infinex/connect-sdk';
 import { Box, Button, Divider, Menu, MenuItem, Stack, Typography, useTheme } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
 import React, { MouseEvent, useState } from 'react';
@@ -8,8 +8,8 @@ import { UserDisplay } from './UserDisplay';
 
 const UserMenuDropdown: React.FC = () => {
   const theme = useTheme();
-  const { user } = useInfinexUser();
-  console.log('user', user);
+  const { data: user } = useInfinexUser();
+  const { performSwidge } = useInfinexSwidge();
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
   const open = Boolean(anchor);
 
@@ -99,7 +99,11 @@ const UserMenuDropdown: React.FC = () => {
                       fullWidth
                       sx={{ textTransform: 'none', p: 0 }}
                       onClick={() => {
-                        /* … */
+                        performSwidge({
+                          chain: 'ethereum',
+                          address: '0xd0A882a9d2e870238fDf188764E3996DebF5A5E4',
+                          assetAddress: 'native',
+                        });
                       }}
                     >
                       Swidge into Base
