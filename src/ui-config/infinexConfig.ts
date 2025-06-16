@@ -12,4 +12,4 @@ const infinexConfig: InfinexConnectConfig = {
     },
   },
 };
-export const infinexCore = initInfinex(infinexConfig);
+export const infinexConnect = initInfinex(infinexConfig);

@@ -349,6 +349,7 @@ export const useUmbrellaSummary = (marketData: MarketDataType) => {
   const userReservesQuery = useExtendedUserSummaryAndIncentives(marketData);
   const reservesQuery = usePoolFormattedReserves(marketData);
   const walletBalances = useWalletBalances(marketData);
+  console.log('walletBalances', walletBalances);
 
   const selector = (
     stakeData: StakeData[],
