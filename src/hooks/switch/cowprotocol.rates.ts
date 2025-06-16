@@ -27,6 +27,7 @@ export async function getCowProtocolSellRates({
   user,
   inputSymbol,
   outputSymbol,
+  orderKind,
   setError,
 }: SwitchParams): Promise<SwitchRatesType> {
   const cowProtocolPricesService = new CoWProtocolPricesService();
@@ -62,7 +63,7 @@ export async function getCowProtocolSellRates({
       tradingSdk
         .getQuote({
           owner: user as `0x${string}`,
-          kind: OrderKind.SELL,
+          kind: orderKind ?? OrderKind.SELL,
           amount,
           sellToken: srcTokenWrapped,
           sellTokenDecimals: srcDecimals,

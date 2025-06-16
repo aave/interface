@@ -16,6 +16,7 @@ export const useMultiProviderSwitchRates = ({
   outputSymbol,
   srcDecimals,
   destDecimals,
+  orderKind,
   isTxSuccess,
 }: SwitchParams & { isTxSuccess?: boolean }) => {
   const provider = useSwitchProvider({ chainId });
@@ -41,6 +42,7 @@ export const useMultiProviderSwitchRates = ({
             destDecimals,
             inputSymbol,
             outputSymbol,
+            orderKind,
           });
         case 'paraswap':
           return await getParaswapSellRates({
