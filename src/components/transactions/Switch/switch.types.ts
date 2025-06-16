@@ -1,4 +1,4 @@
-import { OrderParameters, QuoteAmountsAndCosts } from '@cowprotocol/cow-sdk';
+import { OrderKind, OrderParameters, QuoteAmountsAndCosts } from '@cowprotocol/cow-sdk';
 import { OptimalRate } from '@paraswap/core';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
@@ -18,6 +18,8 @@ export type SwitchParams = {
 
   inputSymbol?: string;
   outputSymbol?: string;
+
+  orderKind?: OrderKind;
 
   setError?: (error: TxErrorType) => void;
 };

@@ -1,3 +1,4 @@
+import { OrderKind } from '@cowprotocol/cow-sdk';
 import { isAddress } from '@ethersproject/address';
 import { formatUnits } from '@ethersproject/units';
 import { ExclamationIcon } from '@heroicons/react/outline';
@@ -33,6 +34,22 @@ interface CustomProps {
   name: string;
   value: string;
 }
+
+export enum InputRole {
+  INPUT,
+  OUTPUT,
+}
+
+const InputTypeStringByRole: Record<InputRole, Record<OrderKind, string>> = {
+  [InputRole.INPUT]: {
+    [OrderKind.SELL]: 'Sell exactly',
+    [OrderKind.BUY]: 'Sell at most',
+  },
+  [InputRole.OUTPUT]: {
+    [OrderKind.SELL]: 'Receive at least',
+    [OrderKind.BUY]: 'Receive exactly',
+  },
+};
 
 export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
   function NumberFormatCustom(props, ref) {
@@ -75,6 +92,9 @@ export interface AssetInputProps {
   selectedAsset: TokenInfoWithBalance;
   balanceTitle?: string;
   showBalance?: boolean;
+  showMaxButton?: boolean;
+  role: InputRole;
+  orderKind?: OrderKind;
 }
 
 export const SwitchAssetInput = ({
@@ -93,6 +113,9 @@ export const SwitchAssetInput = ({
   selectedAsset,
   balanceTitle,
   showBalance = true,
+  showMaxButton = true,
+  orderKind,
+  role,
 }: AssetInputProps) => {
   const theme = useTheme();
   const handleSelect = (asset: TokenInfoWithBalance) => {
@@ -173,6 +196,11 @@ export const SwitchAssetInput = ({
         width: '100%',
       })}
     >
+      {orderKind && (
+        <Typography variant="secondary12" color="text.muted">
+          <Trans>{InputTypeStringByRole[role][orderKind]}</Trans>
+        </Typography>
+      )}
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {loading ? (
           <Box sx={{ flex: 1 }}>
@@ -458,7 +486,7 @@ export const SwitchAssetInput = ({
                 sx={{ ml: 1 }}
               />
             </Typography>
-            {!disableInput && (
+            {showMaxButton && !disableInput && (
               <Button
                 size="small"
                 sx={{ minWidth: 0, ml: '7px', p: 0 }}

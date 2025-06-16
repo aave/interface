@@ -2,7 +2,6 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { MetadataApi } from '@cowprotocol/app-data';
 import {
   BuyTokenDestination,
-  MAX_VALID_TO_EPOCH,
   OrderBookApi,
   OrderKind,
   OrderParameters,
@@ -101,6 +100,7 @@ export type CowProtocolActionParams = {
   outputSymbol: string;
   afterNetworkCostsBuyAmount: string;
   slippageBps: number;
+  validTo: number;
 };
 
 export const getPreSignTransaction = async ({
@@ -116,6 +116,7 @@ export const getPreSignTransaction = async ({
   slippageBps,
   inputSymbol,
   outputSymbol,
+  validTo,
 }: CowProtocolActionParams) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -137,11 +138,12 @@ export const getPreSignTransaction = async ({
     {
       owner: user as `0x${string}`,
       sellAmount: amount,
-      buyAmount: afterNetworkCostsBuyAmount,
+      buyAmount: afterNetworkCostsBuyAmount, // TODO: check partner fees on limit orders
       kind: OrderKind.SELL,
       sellToken: tokenSrc,
       buyToken: tokenDest,
       slippageBps,
+      validTo,
       sellTokenDecimals: tokenSrcDecimals,
       buyTokenDecimals: tokenDestDecimals,
     },
@@ -178,6 +180,7 @@ export const sendOrder = async ({
   slippageBps,
   inputSymbol,
   outputSymbol,
+  validTo,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
   const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
@@ -200,13 +203,14 @@ export const sendOrder = async ({
       {
         owner: user as `0x${string}`,
         sellAmount: amount,
-        buyAmount: afterNetworkCostsBuyAmount,
+        buyAmount: afterNetworkCostsBuyAmount, // TODO: check with cow team, this is being modified adding partner fees
         kind: OrderKind.SELL,
         sellToken: tokenSrc,
         slippageBps,
         buyToken: tokenDest,
         sellTokenDecimals: tokenSrcDecimals,
         buyTokenDecimals: tokenDestDecimals,
+        validTo,
       },
       {
         appData: COW_APP_DATA(inputSymbol, outputSymbol),
@@ -263,7 +267,8 @@ export const getUnsignerOrder = async (
   user: string,
   chainId: number,
   tokenFromSymbol: string,
-  tokenToSymbol: string
+  tokenToSymbol: string,
+  validTo: number
 ): Promise<UnsignedOrder> => {
   const metadataApi = new MetadataApi();
   const { appDataHex } = await metadataApi.getAppDataInfo(
@@ -277,7 +282,7 @@ export const getUnsignerOrder = async (
     buyAmount,
     appData: appDataHex,
     feeAmount: '0',
-    validTo: MAX_VALID_TO_EPOCH,
+    validTo,
     partiallyFillable: false,
     kind: OrderKind.SELL,
     sellToken: WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId].address.toLowerCase(),

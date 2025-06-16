@@ -68,6 +68,10 @@ export const TRANSACTION_HISTORY = {
   FILTER: 'Tx History Filter Selected',
 };
 
+export const SWITCH_MODAL = {
+  SWITCH_TYPE: 'Change switch type',
+};
+
 // TODO proper events here
 export const REPAY_MODAL = {
   SWITCH_REPAY_TYPE: 'Change repay type',

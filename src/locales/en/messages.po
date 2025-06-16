@@ -218,6 +218,12 @@ msgstr "Available liquidity"
 msgid "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
 msgstr "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
 
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+msgid "Free"
+msgstr "Free"
+
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
 msgstr "Blocked Address"
@@ -362,6 +368,7 @@ msgstr "Total amount staked"
 msgid "Transactions"
 msgstr "Transactions"
 
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 msgstr "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
@@ -1112,8 +1119,9 @@ msgstr "Save and share"
 msgid "sGHO"
 msgstr "sGHO"
 
-#: src/components/transactions/Switch/BaseSwitchModal.tsx
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+#: src/components/transactions/Switch/LimitSwitch.tsx
+#: src/components/transactions/Switch/MarketSwitch.tsx
+#: src/components/transactions/Switch/SwitchModal.tsx
 msgid "Please connect your wallet to swap tokens."
 msgstr "Please connect your wallet to swap tokens."
 
@@ -1164,6 +1172,7 @@ msgid "Liquidation at"
 msgstr "Liquidation at"
 
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Costs & Fees"
 msgstr "Costs & Fees"
 
@@ -1185,6 +1194,7 @@ msgstr "deposited"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
@@ -1333,6 +1343,7 @@ msgstr "Claiming"
 msgid "Current LTV"
 msgstr "Current LTV"
 
+#: src/components/transactions/Switch/SwitchTypeSelector.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Market"
@@ -1577,6 +1588,7 @@ msgid "Borrow apy"
 msgstr "Borrow apy"
 
 #: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Fee"
 msgstr "Fee"
@@ -2201,6 +2213,7 @@ msgid "Addresses"
 msgstr "Addresses"
 
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Network costs"
 msgstr "Network costs"
 
@@ -2572,6 +2585,7 @@ msgstr "Representing smart contract wallet (ie. Safe) addresses on other chains.
 msgid ".CSV"
 msgstr ".CSV"
 
+#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "This is the cost of settling your order on-chain, including gas and any LP fees."
 msgstr "This is the cost of settling your order on-chain, including gas and any LP fees."
@@ -3228,6 +3242,10 @@ msgstr "Interest accrued"
 msgid "Rewards available to claim"
 msgstr "Rewards available to claim"
 
+#: src/components/transactions/Switch/ExpirySelector.tsx
+msgid "{key}"
+msgstr "{key}"
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting"
 msgstr "Thank you for voting"
@@ -3685,6 +3703,10 @@ msgstr "Transaction overview"
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restake {symbol}"
 msgstr "Restake {symbol}"
+
+#: src/components/transactions/Switch/SwitchTypeSelector.tsx
+msgid "Limit"
+msgstr "Limit"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 msgid "APY type"
