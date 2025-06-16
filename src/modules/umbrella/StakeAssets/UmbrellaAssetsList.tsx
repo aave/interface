@@ -6,6 +6,7 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
+import { ApyTooltip } from '../helpers/ApyTooltip';
 import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
 import { UmbrellaAssetsListMobileItemLoader } from './UmbrellaAssetsListMobileItemLoader';
@@ -17,7 +18,7 @@ const listHeaders = [
     sortKey: 'symbol',
   },
   {
-    title: <Trans>APY</Trans>,
+    title: <ApyTooltip />,
     sortKey: 'totalAPY',
   },
   {

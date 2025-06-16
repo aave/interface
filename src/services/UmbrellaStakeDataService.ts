@@ -13,7 +13,7 @@ type StakeUmbrellaConfig = Partial<{
 
 export const stakeUmbrellaConfig: StakeUmbrellaConfig = {
   [CustomMarket.proto_mainnet_v3 || 'fork_proto_mainnet_v3']: {
-    stakeDataProvider: '0x7A6cc39383aFd2b62b2CfB5259bB279946278970',
+    stakeDataProvider: '0x6321ba6b41fbddb6b678cd80db067f20a8770879',
     batchHelper: UmbrellaEthereum.UMBRELLA_BATCH_HELPER,
     stakeRewardsController: UmbrellaEthereum.UMBRELLA_REWARDS_CONTROLLER,
   },

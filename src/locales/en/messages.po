@@ -18,6 +18,10 @@ msgstr ""
 msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
 msgstr "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
 
+#: src/modules/umbrella/StakeAssets/StakeAssetName.tsx
+msgid "Reward APY at target liquidity"
+msgstr "Reward APY at target liquidity"
+
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Receive (est.)"
 msgstr "Receive (est.)"
@@ -65,6 +69,10 @@ msgstr "Estimated time"
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Remind me"
 msgstr "Remind me"
+
+#: src/modules/umbrella/helpers/ApyTooltip.tsx
+msgid "Reward APY adjusts with total staked amount, following a curve that targets optimal staking levels."
+msgstr "Reward APY adjusts with total staked amount, following a curve that targets optimal staking levels."
 
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Amount to migrate"
@@ -2274,7 +2282,6 @@ msgstr "Something went wrong fetching bridge message, please try again later."
 msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 msgstr "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "Staking APY"
 msgstr "Staking APY"
@@ -3068,6 +3075,10 @@ msgstr "Stable interest rate will <0>stay the same</0> for the duration of your 
 msgid "Time remaining until the 48 hour withdraw period starts."
 msgstr "Time remaining until the 48 hour withdraw period starts."
 
+#: src/modules/umbrella/StakeAssets/StakeAssetName.tsx
+msgid "Target liquidity"
+msgstr "Target liquidity"
+
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
@@ -3202,6 +3213,10 @@ msgstr "You've successfully withdrew & swapped tokens."
 msgid "Collateral balance after repay"
 msgstr "Collateral balance after repay"
 
+#: src/modules/umbrella/UmbrellaModalContent.tsx
+msgid "Staked tokens are wrapped and use an exchange rate. You may see fewer token shares, but the value matches your deposit and will grow as yield accrues."
+msgstr "Staked tokens are wrapped and use an exchange rate. You may see fewer token shares, but the value matches your deposit and will grow as yield accrues."
+
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copy the error"
@@ -3269,7 +3284,7 @@ msgstr "Selected supply assets"
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+#: src/modules/umbrella/helpers/ApyTooltip.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
@@ -3736,6 +3751,10 @@ msgstr "Supplying {symbol}"
 msgid "Action cannot be performed because the reserve is frozen"
 msgstr "Action cannot be performed because the reserve is frozen"
 
+#: src/modules/umbrella/StakeAssets/StakeAssetName.tsx
+msgid "Excludes variable supply APY"
+msgstr "Excludes variable supply APY"
+
 #: src/components/caps/DebtCeilingStatus.tsx
 msgid "Isolated Debt Ceiling"
 msgstr "Isolated Debt Ceiling"
@@ -3800,6 +3819,7 @@ msgstr "Menu"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/umbrella/helpers/ApyTooltip.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Learn more"
 msgstr "Learn more"
