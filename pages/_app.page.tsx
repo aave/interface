@@ -22,7 +22,7 @@ import { CowOrderToastProvider } from 'src/hooks/useCowOrderToast';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
-import { infinexCore } from 'src/ui-config/infinexConfig';
+import { infinexConnect } from 'src/ui-config/infinexConfig';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { WagmiProvider } from 'wagmi';
@@ -142,8 +142,8 @@ export default function MyApp(props: MyAppProps) {
       <NoSsr>
         <LanguageProvider>
           <WagmiProvider config={wagmiConfig}>
-            <InfinexProvider core={infinexCore.core}>
-              <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={queryClient}>
+              <InfinexProvider infinexConnect={infinexConnect}>
                 <ConnectKitProvider
                   onDisconnect={cleanLocalStorage}
                   onConnect={({ connectorId }) => setWalletType(connectorId)}
@@ -183,8 +183,8 @@ export default function MyApp(props: MyAppProps) {
                   </Web3ContextProvider>
                 </ConnectKitProvider>
                 <ReactQueryDevtools initialIsOpen={false} />
-              </QueryClientProvider>
-            </InfinexProvider>
+              </InfinexProvider>
+            </QueryClientProvider>
           </WagmiProvider>
         </LanguageProvider>
       </NoSsr>
