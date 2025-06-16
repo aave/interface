@@ -40,17 +40,20 @@ import {
   sendOrder,
   uploadAppData,
 } from './cowprotocol.helpers';
+import { Expiry } from './ExpirySelector';
 import { isCowProtocolRates, isParaswapRates, SwitchRatesType } from './switch.types';
 
 interface SwitchProps {
   inputAmount: string;
   inputToken: string;
   outputToken: string;
-  slippage: string;
+  slippage?: string;
+  expiry: number;
   blocked: boolean;
   loading?: boolean;
   isWrongNetwork: boolean;
   chainId: number;
+  orderKind: 'market' | 'limit';
   switchRates?: SwitchRatesType;
   inputName: string;
   outputName: string;
@@ -74,7 +77,9 @@ export const SwitchActions = ({
   outputToken,
   inputSymbol,
   outputSymbol,
-  slippage: slippageInPercent,
+  slippage: slippageInPercent = '0',
+  orderKind,
+  expiry,
   blocked,
   loading,
   isWrongNetwork,
@@ -216,6 +221,7 @@ export const SwitchActions = ({
         });
       }
     } else if (isCowProtocolRates(switchRates)) {
+      const validTo = Math.floor(Date.now() / 1000) + (expiry ?? Expiry['Half hour']);
       try {
         const provider = await getEthersProvider(wagmiConfig, { chainId });
         const destAmountWithSlippage = valueToBigNumber(switchRates.destAmount)
@@ -225,7 +231,6 @@ export const SwitchActions = ({
 
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(inputToken)) {
-          const validTo = Math.floor(Date.now() / 1000) + 60 * 30; // 30 minutes
           const ethFlowTx = await populateEthFlowTx(
             switchRates.srcAmount,
             destAmountWithSlippage.toString(),
@@ -262,7 +267,8 @@ export const SwitchActions = ({
               user,
               chainId,
               inputSymbol,
-              outputSymbol
+              outputSymbol,
+              validTo
             );
             const calculatedOrderId = await calculateUniqueOrderId(chainId, unsignerOrder);
 
@@ -310,10 +316,13 @@ export const SwitchActions = ({
                 tokenSrcDecimals: switchRates.srcDecimals,
                 tokenDestDecimals: switchRates.destDecimals,
                 afterNetworkCostsBuyAmount:
-                  switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
+                  orderKind === 'market'
+                    ? switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString()
+                    : switchRates.destAmount, // TODO: check with cow team
                 slippageBps,
                 inputSymbol,
                 outputSymbol,
+                validTo,
                 quote: switchRates.order,
               });
 
@@ -348,12 +357,15 @@ export const SwitchActions = ({
                 quote: switchRates.order,
                 amount: switchRates.srcAmount,
                 afterNetworkCostsBuyAmount:
-                  switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
+                  orderKind === 'market'
+                    ? switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString()
+                    : switchRates.destAmount, // TODO: check with cow team
                 slippageBps,
                 chainId,
                 user,
                 provider,
                 inputSymbol,
+                validTo,
                 outputSymbol,
               });
               setMainTxState({

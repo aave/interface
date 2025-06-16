@@ -11,16 +11,28 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { isCowProtocolRates, SwitchRatesType } from './switch.types';
+import { isCowProtocolRates, SwitchProvider, SwitchRatesType } from './switch.types';
+
+export type TxDetailsRates =
+  | {
+      type: 'market';
+      providerRates: SwitchRatesType;
+    }
+  | {
+      type: 'limit';
+      // TBD
+    };
 
 export const SwitchModalTxDetails = ({
-  switchRates,
+  rates,
   selectedOutputToken,
+  provider,
   safeSlippage,
   gasLimit,
   selectedChainId,
 }: {
-  switchRates: SwitchRatesType;
+  rates: TxDetailsRates;
+  provider?: SwitchProvider;
   selectedOutputToken: TokenInfoWithBalance;
   safeSlippage: number;
   gasLimit: string;
@@ -31,25 +43,129 @@ export const SwitchModalTxDetails = ({
     <TxModalDetails
       gasLimit={gasLimit}
       chainId={selectedChainId}
-      showGasStation={switchRates.provider !== 'cowprotocol'}
+      showGasStation={provider !== 'cowprotocol'}
     >
-      {switchRates.provider === 'cowprotocol' ? (
-        <IntentTxDetails
-          switchRates={switchRates}
-          selectedOutputToken={selectedOutputToken}
-          safeSlippage={safeSlippage}
-        />
+      {rates.type === 'market' ? (
+        rates.providerRates.provider === 'cowprotocol' ? (
+          <IntentMarketSwitchTxDetails
+            switchRates={rates.providerRates}
+            selectedOutputToken={selectedOutputToken}
+            safeSlippage={safeSlippage}
+          />
+        ) : (
+          <OnChainSwitchTxDetails
+            switchRates={rates.providerRates}
+            selectedOutputToken={selectedOutputToken}
+            safeSlippage={safeSlippage}
+          />
+        )
       ) : (
-        <MarketOrderTxDetails
-          switchRates={switchRates}
-          selectedOutputToken={selectedOutputToken}
-          safeSlippage={safeSlippage}
-        />
+        <IntentLimitSwitchTxDetails />
       )}
     </TxModalDetails>
   );
 };
-const IntentTxDetails = ({
+
+const IntentLimitSwitchTxDetails = () => {
+  const [costBreakdownExpanded, setCostBreakdownExpanded] = useState(false);
+
+  const networkCostsTooltip = (
+    <TextWithTooltip variant="caption" text={<Trans>Network costs</Trans>}>
+      <Trans>
+        This is the cost of settling your order on-chain, including gas and any LP fees.
+      </Trans>
+    </TextWithTooltip>
+  );
+
+  const feeTooltip = (
+    <TextWithTooltip variant="caption" text={<Trans>Fee</Trans>}>
+      <Trans>
+        Fees help support the user experience and security of the Aave application.{' '}
+        <Link
+          href="https://aave.com/docs/developers/smart-contracts/swap-features"
+          target="_blank"
+          rel="noopener"
+        >
+          Learn more.
+        </Link>
+      </Trans>
+    </TextWithTooltip>
+  );
+
+  return (
+    <>
+      <Accordion
+        sx={{
+          mb: 4,
+          boxShadow: 'none',
+          '&:before': { display: 'none' },
+          '.MuiAccordionSummary-root': { minHeight: '24px', maxHeight: '24px' },
+          backgroundColor: 'transparent',
+        }}
+        onChange={(_, expanded) => {
+          setCostBreakdownExpanded(expanded);
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          sx={{
+            padding: 0,
+            minHeight: '24px',
+            height: '24px',
+            '.MuiAccordionSummary-content': { margin: 0 },
+          }}
+        >
+          <Row
+            caption={<Trans>{`Costs & Fees`}</Trans>}
+            captionVariant="description"
+            align="flex-start"
+            width="100%"
+          >
+            {!costBreakdownExpanded && (
+              // Free
+              <Trans>Free</Trans>
+            )}
+          </Row>
+        </AccordionSummary>
+        <AccordionDetails sx={{ padding: 0 }}>
+          <Row
+            mx={2}
+            mb={2}
+            mt={2}
+            caption={networkCostsTooltip}
+            captionVariant="caption"
+            align="flex-start"
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+              }}
+            >
+              <Trans>Free</Trans>
+            </Box>
+          </Row>
+          <Row mx={2} mb={2} caption={feeTooltip} captionVariant="caption" align="flex-start">
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+              }}
+            >
+              <Trans>Free</Trans>
+            </Box>
+          </Row>
+        </AccordionDetails>
+      </Accordion>
+    </>
+  );
+};
+
+const IntentMarketSwitchTxDetails = ({
   switchRates,
   selectedOutputToken,
   safeSlippage,
@@ -247,7 +363,7 @@ const IntentTxDetails = ({
     </>
   );
 };
-const MarketOrderTxDetails = ({
+const OnChainSwitchTxDetails = ({
   switchRates,
   selectedOutputToken,
   safeSlippage,
