@@ -59,7 +59,6 @@ export const useTokensBalance = (tokenList: TokenInfo[], chainId: number, user: 
         provider.getBalance(user),
         multicall.call(contractCallContext),
       ]);
-      console.log('BALANCE OF!!!!!!!!!!!!!!!: ', balanceResult, multicallResult);
       return tokenList
         .map((elem) => {
           return {

@@ -35,7 +35,6 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
   const { data: user } = useInfinexUser();
   const isInfinexConnected = useInfinexConnected();
   const infinexAvatar = isInfinexConnected ? INFINEX_ICON_BASE64 : undefined;
-  console.log('infinex user data: ', user, ' is infinex connected: ', isInfinexConnected);
 
   const fallbackImage = useMemo(
     () => (account ? blo(account as `0x${string}`) : undefined),
