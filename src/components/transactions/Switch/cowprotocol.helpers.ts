@@ -78,6 +78,10 @@ export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) 
   volumeBps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
   recipient: COW_EVM_RECIPIENT,
 });
+export const COW_PARTNER_FEE_IN_DECIMAL = (tokenFromSymbol: string, tokenToSymbol: string) => {
+  const volumeBps = COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol).volumeBps;
+  return volumeBps / 10000;
+};
 export const COW_APP_DATA = (tokenFromSymbol: string, tokenToSymbol: string) => ({
   appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
   version: '1.4.0',
@@ -91,14 +95,15 @@ export type CowProtocolActionParams = {
   provider: JsonRpcProvider;
   chainId: number;
   user: string;
-  amount: string;
+  sellAmount: string;
   tokenDest: string;
   tokenSrc: string;
   tokenSrcDecimals: number;
   tokenDestDecimals: number;
   inputSymbol: string;
   outputSymbol: string;
-  afterNetworkCostsBuyAmount: string;
+  beforePartnerFeesBuyAmount: string;
+  kind: OrderKind;
   slippageBps: number;
   validTo: number;
 };
@@ -108,12 +113,13 @@ export const getPreSignTransaction = async ({
   tokenDest,
   chainId,
   user,
-  amount,
+  sellAmount,
   tokenSrc,
   tokenSrcDecimals,
   tokenDestDecimals,
-  afterNetworkCostsBuyAmount,
+  beforePartnerFeesBuyAmount,
   slippageBps,
+  kind,
   inputSymbol,
   outputSymbol,
   validTo,
@@ -137,9 +143,9 @@ export const getPreSignTransaction = async ({
   const orderResult = await tradingSdk.postLimitOrder(
     {
       owner: user as `0x${string}`,
-      sellAmount: amount,
-      buyAmount: afterNetworkCostsBuyAmount, // TODO: check partner fees on limit orders
-      kind: OrderKind.SELL,
+      sellAmount,
+      buyAmount: beforePartnerFeesBuyAmount,
+      kind,
       sellToken: tokenSrc,
       buyToken: tokenDest,
       slippageBps,
@@ -172,11 +178,12 @@ export const sendOrder = async ({
   tokenDest,
   chainId,
   user,
-  amount,
+  sellAmount,
   tokenSrc,
   tokenSrcDecimals,
   tokenDestDecimals,
-  afterNetworkCostsBuyAmount,
+  beforePartnerFeesBuyAmount,
+  kind,
   slippageBps,
   inputSymbol,
   outputSymbol,
@@ -198,13 +205,16 @@ export const sendOrder = async ({
     throw new Error('Smart contract wallets should use presign.');
   }
 
+  console.log('kind', kind);
+  console.log('sell amount sending to cow', sellAmount);
+  console.log('before partner fees buy amount', beforePartnerFeesBuyAmount);
   return tradingSdk
     .postLimitOrder(
       {
         owner: user as `0x${string}`,
-        sellAmount: amount,
-        buyAmount: afterNetworkCostsBuyAmount, // TODO: check with cow team, this is being modified adding partner fees
-        kind: OrderKind.SELL,
+        sellAmount,
+        buyAmount: beforePartnerFeesBuyAmount,
+        kind,
         sellToken: tokenSrc,
         slippageBps,
         buyToken: tokenDest,
@@ -268,7 +278,8 @@ export const getUnsignerOrder = async (
   chainId: number,
   tokenFromSymbol: string,
   tokenToSymbol: string,
-  validTo: number
+  validTo: number,
+  kind: OrderKind
 ): Promise<UnsignedOrder> => {
   const metadataApi = new MetadataApi();
   const { appDataHex } = await metadataApi.getAppDataInfo(
@@ -284,7 +295,7 @@ export const getUnsignerOrder = async (
     feeAmount: '0',
     validTo,
     partiallyFillable: false,
-    kind: OrderKind.SELL,
+    kind,
     sellToken: WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId].address.toLowerCase(),
     buyTokenBalance: BuyTokenDestination.ERC20,
     sellTokenBalance: SellTokenSource.ERC20,

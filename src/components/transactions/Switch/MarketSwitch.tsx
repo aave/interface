@@ -1,5 +1,10 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
-import { OrderStatus, SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
+import {
+  OrderKind,
+  OrderStatus,
+  SupportedChainId,
+  WRAPPED_NATIVE_CURRENCIES,
+} from '@cowprotocol/cow-sdk';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
@@ -621,6 +626,7 @@ export const MarketSwitch = ({
                 outputName={selectedOutputToken.name}
                 inputSymbol={selectedInputToken.symbol}
                 outputSymbol={selectedOutputToken.symbol}
+                limitOrderKind={OrderKind.SELL}
                 orderKind="market"
                 slippage={safeSlippage.toString()}
                 setShowGasStation={setShowGasStation}

@@ -208,7 +208,10 @@ export const LimitSwitch = ({
         rateToUse = 1 / rate.rate;
       }
 
-      const newOutputAmount = valueToBigNumber(amountToSet).multipliedBy(rateToUse).toString();
+      const newOutputAmount = valueToBigNumber(amountToSet)
+        .multipliedBy(rateToUse)
+        .decimalPlaces(selectedOutputToken.decimals)
+        .toString();
       setOutputAmount(newOutputAmount);
       debouncedOutputChange(newOutputAmount);
     }
@@ -241,7 +244,10 @@ export const LimitSwitch = ({
         rateToUse = 1 / rate.rate;
       }
 
-      const newInputAmount = valueToBigNumber(amountToSet).multipliedBy(rateToUse).toString();
+      const newInputAmount = valueToBigNumber(amountToSet)
+        .multipliedBy(rateToUse)
+        .decimalPlaces(selectedInputToken.decimals)
+        .toString();
       setInputAmount(newInputAmount);
       debouncedInputChange(newInputAmount);
     }
@@ -402,16 +408,18 @@ export const LimitSwitch = ({
 
         if (rateFrom == selectedOutputToken) {
           rateAmount = Number(
-            normalizeBN(switchRates.srcAmount, switchRates.srcDecimals).div(
-              normalizeBN(switchRates.destAmount, switchRates.destDecimals)
-            )
+            normalizeBN(switchRates.srcAmount, switchRates.srcDecimals)
+              .div(normalizeBN(switchRates.destAmount, switchRates.destDecimals))
+              .decimalPlaces(selectedInputToken.decimals)
+              .toString()
           );
           rateUsd = rateAmount * Number(switchRates.srcTokenPriceUsd);
         } else if (rateFrom == selectedInputToken) {
           rateAmount = Number(
-            normalizeBN(switchRates.destAmount, switchRates.destDecimals).div(
-              normalizeBN(switchRates.srcAmount, switchRates.srcDecimals)
-            )
+            normalizeBN(switchRates.destAmount, switchRates.destDecimals)
+              .div(normalizeBN(switchRates.srcAmount, switchRates.srcDecimals))
+              .decimalPlaces(selectedOutputToken.decimals)
+              .toString()
           );
           rateUsd = rateAmount * Number(switchRates.destTokenPriceUsd);
         }
@@ -504,6 +512,7 @@ export const LimitSwitch = ({
   const [cowOpenOrdersTotalAmountFormatted, setCowOpenOrdersTotalAmountFormatted] = useState<
     string | undefined
   >(undefined);
+
   useEffect(() => {
     if (
       switchProvider == 'cowprotocol' &&
@@ -790,6 +799,7 @@ export const LimitSwitch = ({
                 outputToken={selectedOutputToken.address}
                 inputName={selectedInputToken.name}
                 orderKind="limit"
+                limitOrderKind={limitOrderKind}
                 outputName={selectedOutputToken.name}
                 inputSymbol={selectedInputToken.symbol}
                 outputSymbol={selectedOutputToken.symbol}
@@ -806,7 +816,7 @@ export const LimitSwitch = ({
                     ? {
                         ...switchRates,
                         srcAmount: normalizeBN(
-                          debounceInputAmount || '0',
+                          debounceInputAmount ?? '0',
                           -1 * selectedInputToken.decimals
                         ).toFixed(0),
                         destAmount: normalizeBN(
