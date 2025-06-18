@@ -14,6 +14,7 @@ import { injected, safe } from 'wagmi/connectors';
 
 import { infinexConnect } from './infinexConfig';
 import { prodNetworkConfig, testnetConfig } from './networksConfig';
+
 console.log('infinexCore', infinexConnect);
 
 const testnetChains = Object.values(testnetConfig).map((config) => config.wagmiChain) as [
