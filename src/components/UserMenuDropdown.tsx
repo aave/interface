@@ -1,4 +1,4 @@
-import { useInfinexSwidge, useInfinexUser } from '@infinex/connect-sdk';
+import { useInfinexUser } from '@infinex/connect-sdk';
 import { Box, Button, Divider, Menu, MenuItem, Stack, Typography, useTheme } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
 import React, { MouseEvent, useState } from 'react';
@@ -9,7 +9,6 @@ import { UserDisplay } from './UserDisplay';
 const UserMenuDropdown: React.FC = () => {
   const theme = useTheme();
   const { data: user } = useInfinexUser();
-  const { performSwidge } = useInfinexSwidge();
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
   const open = Boolean(anchor);
 
@@ -69,48 +68,12 @@ const UserMenuDropdown: React.FC = () => {
                   gutterBottom
                   fontSize="small"
                 >
-                  Available balance
+                  Portfolio Balances
                 </Typography>
                 <Typography variant="subheader1" fontSize="medium" color="lightgreen">
-                  {user?.availableBalance?.formatted || '1'} ETH
+                  {user?.totalBalance?.formatted || '0'} USD
                 </Typography>
               </Box>
-
-              {user?.username && (
-                <>
-                  <Divider sx={{ pt: 2 }} />
-                  <Stack spacing={4}>
-                    <Box>
-                      <Typography
-                        variant="description"
-                        color="textSecondary"
-                        gutterBottom
-                        fontSize="small"
-                      >
-                        Other balances
-                      </Typography>
-                      <Typography variant="subheader1" fontSize="medium">
-                        {user?.totalBalance?.formatted || '0'} USD
-                      </Typography>
-                    </Box>
-                    <Button
-                      size="medium"
-                      variant="outlined"
-                      fullWidth
-                      sx={{ textTransform: 'none', p: 0 }}
-                      onClick={() => {
-                        performSwidge({
-                          chain: 'ethereum',
-                          address: '0xd0A882a9d2e870238fDf188764E3996DebF5A5E4',
-                          assetAddress: 'native',
-                        });
-                      }}
-                    >
-                      Swidge into Base
-                    </Button>
-                  </Stack>
-                </>
-              )}
             </Stack>
           </Menu>
         </>

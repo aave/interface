@@ -4,7 +4,6 @@
   "private": true,
   "license": "BSD-3-Clause",
   "scripts": {
-    "local-infinex": "pnpm install ../connect/packages/sdk/infinex-connect-sdk-0.0.6.tgz",
     "dev": "next dev",
     "auth:npm": "npx google-artifactregistry-auth --credential-config \"$HOME/.npmrc\"",
     "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8000' next dev",
@@ -45,7 +44,7 @@
     "@emotion/styled": "11.10.4",
     "@gelatonetwork/relay-sdk": "^5.5.5",
     "@heroicons/react": "^1.0.6",
-    "@infinex/connect-sdk": "file:../connect/packages/sdk/infinex-connect-sdk-0.0.6.tgz",
+    "@infinex/connect-sdk": "0.0.7",
     "@lingui/core": "^4.14.0",
     "@lingui/react": "^4.14.1",
     "@mui/icons-material": "^5.10.14",
