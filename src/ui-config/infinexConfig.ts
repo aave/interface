@@ -1,12 +1,14 @@
 import { InfinexConnectConfig, initInfinex } from '@infinex/connect-sdk';
 
+const infinexEnv = process.env.NEXT_PUBLIC_INFINEX_ENVIRONMENT;
+const isDebug = infinexEnv !== 'prod';
 const infinexConfig: InfinexConnectConfig = {
   appKey: 'aave',
-  environment: 'dev',
+  environment: infinexEnv,
   debug: {
-    showLogs: true,
+    showLogs: isDebug,
     iframeOptions: {
-      shown: true,
+      shown: isDebug,
       width: '750',
       height: '405',
     },
