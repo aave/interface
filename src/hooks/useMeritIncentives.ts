@@ -89,7 +89,7 @@ const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
 const StSLoopIncentiveProgramMessage =
-  'You must supply stS and borrow S in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
+  'You must supply stS and borrow S in order to receive merit rewards. stS/wS e-mode can be used to maximize stS/S loop. Please check the forum post for the full eligibility criteria.';
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
