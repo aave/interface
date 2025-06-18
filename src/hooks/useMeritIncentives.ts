@@ -42,7 +42,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
-  SONIC_SUPPLY_STS_BORROW_S = 'sonic-supply-sts-borrow-s',
+  SONIC_SUPPLY_STS_BORROW_WS = 'sonic-supply-sts-borrow-ws',
   GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
   CELO_SUPPLY_CELO = 'celo-supply-celo',
   CELO_SUPPLY_USDT = 'celo-supply-usdt',
@@ -89,7 +89,7 @@ const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
 const StSLoopIncentiveProgramMessage =
-  'You must supply stS and borrow S in order to receive merit rewards. stS/wS e-mode can be used to maximize stS/S loop. Please check the forum post for the full eligibility criteria.';
+  'You must supply stS and borrow wS in order to receive merit rewards. stS/wS e-mode can be used to maximize stS/wS loop. Please check the forum post for the full eligibility criteria.';
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
@@ -438,7 +438,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
     ['stS']: [
       {
-        action: MeritAction.SONIC_SUPPLY_STS_BORROW_S,
+        action: MeritAction.SONIC_SUPPLY_STS_BORROW_WS,
         rewardTokenAddress: AaveV3Sonic.ASSETS.stS.A_TOKEN,
         rewardTokenSymbol: 'aSonstS',
         protocolAction: ProtocolAction.supply,
@@ -448,7 +448,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
     ['S']: [
       {
-        action: MeritAction.SONIC_SUPPLY_STS_BORROW_S,
+        action: MeritAction.SONIC_SUPPLY_STS_BORROW_WS,
         rewardTokenAddress: AaveV3Sonic.ASSETS.stS.A_TOKEN,
         rewardTokenSymbol: 'aSonstS',
         protocolAction: ProtocolAction.borrow,
