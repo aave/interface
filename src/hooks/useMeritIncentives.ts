@@ -42,6 +42,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
+  SONIC_SUPPLY_STS_BORROW_S = 'sonic-supply-sts-borrow-s',
   GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
   CELO_SUPPLY_CELO = 'celo-supply-celo',
   CELO_SUPPLY_USDT = 'celo-supply-usdt',
@@ -87,6 +88,9 @@ const antiLoopBorrowMessage =
 const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
+const StSLoopIncentiveProgramMessage =
+  'You must supply stS and borrow S in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
+
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
 
@@ -103,6 +107,9 @@ const AvalancheRenewalForumLink =
 
 const lbtcCbbtcForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/91';
+
+const StSLoopIncentiveProgramForumLink =
+  'https://governance.aave.com/t/arfc-sts-loop-incentive-program/22368';
 
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
@@ -427,6 +434,26 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
         customForumLink:
           'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/61',
+      },
+    ],
+    ['stS']: [
+      {
+        action: MeritAction.SONIC_SUPPLY_STS_BORROW_S,
+        rewardTokenAddress: AaveV3Sonic.ASSETS.stS.A_TOKEN,
+        rewardTokenSymbol: 'aSonstS',
+        protocolAction: ProtocolAction.supply,
+        customMessage: StSLoopIncentiveProgramMessage,
+        customForumLink: StSLoopIncentiveProgramForumLink,
+      },
+    ],
+    ['S']: [
+      {
+        action: MeritAction.SONIC_SUPPLY_STS_BORROW_S,
+        rewardTokenAddress: AaveV3Sonic.ASSETS.stS.A_TOKEN,
+        rewardTokenSymbol: 'aSonstS',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: StSLoopIncentiveProgramMessage,
+        customForumLink: StSLoopIncentiveProgramForumLink,
       },
     ],
   },
