@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
+  Chip,
   ListItemText,
   MenuItem,
   SvgIcon,
@@ -12,11 +13,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
+import { useInfinexConnected, useInfinexSupportedEvmNetworks } from '@infinex/connect-sdk';
 
 import {
   availableMarkets,
@@ -29,6 +31,7 @@ import {
 } from '../utils/marketsAndNetworksConfig';
 import StyledToggleButton from './StyledToggleButton';
 import StyledToggleButtonGroup from './StyledToggleButtonGroup';
+import { toHex } from 'viem';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
@@ -117,6 +120,8 @@ export const MarketSwitcher = () => {
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const isInfinexConnected = useInfinexConnected();
+  const { data: infinexSupportedEvmNetworks } = useInfinexSupportedEvmNetworks();
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   );
@@ -142,6 +147,29 @@ export const MarketSwitcher = () => {
       <Trans>Optimized for efficiency and risk by supporting blue-chip collateral assets</Trans>
     ),
   };
+
+  const filteredMarkets = useMemo(() => {
+    return availableMarkets.filter((marketId) => {
+      const { market } = getMarketInfoById(marketId);
+      const wrongVersion =
+        (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
+        (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3);
+      return !wrongVersion;
+    });
+  }, [selectedMarketVersion]);
+
+  const sortedMarkets = useMemo(() => {
+    return [...filteredMarkets].sort((a, b) => {
+      const { market: MA } = getMarketInfoById(a);
+      const { market: MB } = getMarketInfoById(b);
+      const chainA = toHex(MA.chainId);
+      const chainB = toHex(MB.chainId);
+      const ena = !isInfinexConnected || infinexSupportedEvmNetworks?.includes(chainA);
+      const enb = !isInfinexConnected || infinexSupportedEvmNetworks?.includes(chainB);
+      if (ena === enb) return 0;
+      return ena ? -1 : 1;
+    });
+  }, [filteredMarkets, infinexSupportedEvmNetworks, isInfinexConnected]);
 
   return (
     <TextField
@@ -376,30 +404,46 @@ export const MarketSwitcher = () => {
           </StyledToggleButtonGroup>
         </Box>
       )}
-      {availableMarkets.map((marketId: CustomMarket) => {
+
+      {sortedMarkets.map((marketId) => {
         const { market, logo } = getMarketInfoById(marketId);
-        const marketNaming = getMarketHelpData(market.marketTitle);
+        const naming = getMarketHelpData(market.marketTitle);
+        const chainId = toHex(market.chainId);
+        const isEnabled = !isInfinexConnected || infinexSupportedEvmNetworks?.includes(chainId);
+
         return (
           <MenuItem
             key={marketId}
             data-cy={`marketSelector_${marketId}`}
             value={marketId}
+            disabled={!isEnabled}
             sx={{
               '.MuiListItemIcon-root': { minWidth: 'unset' },
-              display:
-                (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
-                (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
-                  ? 'none'
-                  : 'flex',
+              opacity: isEnabled ? 1 : 0.5,
             }}
           >
-            <MarketLogo size={32} logo={logo} testChainName={marketNaming.testChainName} />
+            <MarketLogo size={32} logo={logo} testChainName={naming.testChainName} />
             <ListItemText sx={{ mr: 0 }}>
-              {marketNaming.name} {market.isFork ? 'Fork' : ''}
+              {naming.name} {market.isFork ? 'Fork' : ''}{' '}
+              {!isEnabled && (
+                <Chip
+                  label={<Trans>Coming soon</Trans>}
+                  size="small"
+                  variant="outlined"
+                  sx={{
+                    ml: 1,
+                    borderColor: 'rgba(255,255,255,0.8)',
+                    color: 'rgba(255,255,255,0.8)',
+                    backgroundColor: 'transparent',
+                    fontSize: '0.75rem',
+                    height: '24px',
+                  }}
+                />
+              )}
             </ListItemText>
             <ListItemText sx={{ textAlign: 'right' }}>
               <Typography color="text.muted" variant="description">
-                {marketNaming.testChainName}
+                {naming.testChainName}
               </Typography>
             </ListItemText>
           </MenuItem>
