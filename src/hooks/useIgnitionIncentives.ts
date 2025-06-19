@@ -9,7 +9,7 @@ const getIgnitionData = (
 ): number | undefined => IGNITION_DATA_MAP.get(`${market}-${protocolAction}-${symbol}`);
 
 const IGNITION_DATA_MAP: Map<string, number> = new Map([
-  [`${CustomMarket.proto_mainnet_v3}-${ProtocolAction.supply}-fBTC`, 4],
+  [`${CustomMarket.proto_mainnet_v3}-${ProtocolAction.supply}-FBTC`, 4],
 ]);
 
 export const useIgnitionIncentives = (
