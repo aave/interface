@@ -210,10 +210,7 @@ export const MarketSwitcher = () => {
                     }}
                   >
                     {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
-                    {upToLG &&
-                    (currentMarket === 'proto_mainnet_v3' || currentMarket === 'proto_lido_v3')
-                      ? 'Instance'
-                      : ' Market'}
+                    {upToLG && currentMarket === 'proto_mainnet_v3' ? 'Instance' : ' Market'}
                   </Typography>
                   {market.v3 ? (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
