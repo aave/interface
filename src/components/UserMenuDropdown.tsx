@@ -1,4 +1,4 @@
-import { useInfinexUser } from '@infinex/connect-sdk';
+import { useInfinexUser, useInfinexUserBalances } from '@infinex/connect-sdk';
 import { Box, Button, Divider, Menu, MenuItem, Stack, Typography, useTheme } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
 import React, { MouseEvent, useState } from 'react';
@@ -9,6 +9,7 @@ import { UserDisplay } from './UserDisplay';
 const UserMenuDropdown: React.FC = () => {
   const theme = useTheme();
   const { data: user } = useInfinexUser();
+  const { data: balances } = useInfinexUserBalances();
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
   const open = Boolean(anchor);
 
@@ -68,12 +69,33 @@ const UserMenuDropdown: React.FC = () => {
                   gutterBottom
                   fontSize="small"
                 >
-                  Portfolio Balances
+                  Available balance
                 </Typography>
                 <Typography variant="subheader1" fontSize="medium" color="lightgreen">
-                  {user?.totalBalance?.formatted || '0'} USD
+                  {balances?.chainBalanceNative.formatted ?? '0'} ETH
                 </Typography>
               </Box>
+
+              {user?.username && (
+                <>
+                  <Divider sx={{ pt: 2 }} />
+                  <Stack spacing={4}>
+                    <Box>
+                      <Typography
+                        variant="description"
+                        color="textSecondary"
+                        gutterBottom
+                        fontSize="small"
+                      >
+                        Other balances
+                      </Typography>
+                      <Typography variant="subheader1" fontSize="medium">
+                        {balances?.totalBalanceUsd.formatted ?? '0'} USD
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </>
+              )}
             </Stack>
           </Menu>
         </>
