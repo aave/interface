@@ -2,7 +2,7 @@ import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contr
 import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
 import { BigNumber, PopulatedTransaction, utils } from 'ethers';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useRootStore } from 'src/store/root';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
@@ -13,6 +13,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { Web3Context } from '../hooks/useWeb3Context';
 import { getEthersProvider } from './adapters/EthersAdapter';
+import { infinexConnect } from 'src/ui-config/infinexConfig';
 
 export type ERC20TokenType = {
   address: string;
@@ -88,6 +89,19 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     connect({ connector: injected });
     didAutoConnectForCypress = true;
   }, [connect, connectors]);
+
+  /** make sure we only call connect() once */
+  const hasAttempted = useRef(false);
+  useEffect(() => {
+    if (hasAttempted.current || !infinexConnect.shouldAutoConnect) return;
+
+    const infinexConnector = connectors.find((c) => c.id === 'xyz.infinex');
+
+    if (!infinexConnector) return; // Wagmi hasn't populated it yet
+
+    hasAttempted.current = true;
+    connect({ connector: infinexConnector });
+  }, [connectors, connect]);
 
   const sendTx = async (
     txData: transactionType | PopulatedTransaction
