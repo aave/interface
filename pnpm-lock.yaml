@@ -15,10 +15,10 @@ importers:
         specifier: 1.34.0
         version: 1.34.0(bignumber.js@9.3.0)(tslib@2.8.1)
       '@amplitude/analytics-browser':
-        specifier: ^2.13.0
+        specifier: ^2.17.10
         version: 2.17.10
       '@bgd-labs/aave-address-book':
-        specifier: ^4.22.1
+        specifier: ^4.22.3
         version: 4.22.3
       '@cowprotocol/app-data':
         specifier: ^3.1.0
@@ -39,97 +39,97 @@ importers:
         specifier: 11.10.4
         version: 11.10.4(@babel/core@7.27.4)(@emotion/react@11.10.4(@babel/core@7.27.4)(@types/react@19.1.8)(react@18.3.1))(@types/react@19.1.8)(react@18.3.1)
       '@gelatonetwork/relay-sdk':
-        specifier: ^5.5.5
+        specifier: ^5.6.0
         version: 5.6.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@heroicons/react':
         specifier: ^1.0.6
         version: 1.0.6(react@18.3.1)
       '@infinex/connect-sdk':
-        specifier: file:./vendor/infinex-connect-sdk.tgz
+        specifier: file:vendor/infinex-connect-sdk.tgz
         version: file:vendor/infinex-connect-sdk.tgz(@tanstack/query-core@5.80.7)(@tanstack/react-query@5.80.7(react@18.3.1))(@types/react@19.1.8)(bufferutil@4.0.9)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@lingui/core':
-        specifier: ^4.14.0
+        specifier: ^4.14.1
         version: 4.14.1
       '@lingui/react':
         specifier: ^4.14.1
         version: 4.14.1(react@18.3.1)
       '@mui/icons-material':
-        specifier: ^5.10.14
+        specifier: ^5.17.1
         version: 5.17.1(@mui/material@5.17.1(@emotion/react@11.10.4(@babel/core@7.27.4)(@types/react@19.1.8)(react@18.3.1))(@emotion/styled@11.10.4(@babel/core@7.27.4)(@emotion/react@11.10.4(@babel/core@7.27.4)(@types/react@19.1.8)(react@18.3.1))(@types/react@19.1.8)(react@18.3.1))(@types/react@19.1.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@19.1.8)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.103
         version: 5.0.0-alpha.103(@emotion/react@11.10.4(@babel/core@7.27.4)(@types/react@19.1.8)(react@18.3.1))(@emotion/styled@11.10.4(@babel/core@7.27.4)(@emotion/react@11.10.4(@babel/core@7.27.4)(@types/react@19.1.8)(react@18.3.1))(@types/react@19.1.8)(react@18.3.1))(@mui/material@5.17.1(@emotion/react@11.10.4(@babel/core@7.27.4)(@types/react@19.1.8)(react@18.3.1))(@emotion/styled@11.10.4(@babel/core@7.27.4)(@emotion/react@11.10.4(@babel/core@7.27.4)(@types/react@19.1.8)(react@18.3.1))(@types/react@19.1.8)(react@18.3.1))(@types/react@19.1.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@19.1.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material':
-        specifier: ^5.10.9
+        specifier: ^5.17.1
         version: 5.17.1(@emotion/react@11.10.4(@babel/core@7.27.4)(@types/react@19.1.8)(react@18.3.1))(@emotion/styled@11.10.4(@babel/core@7.27.4)(@emotion/react@11.10.4(@babel/core@7.27.4)(@types/react@19.1.8)(react@18.3.1))(@types/react@19.1.8)(react@18.3.1))(@types/react@19.1.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@paraswap/sdk':
         specifier: 6.10.0
         version: 6.10.0(axios@1.10.0)(ethers@5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.8.3)
       '@safe-global/safe-apps-provider':
-        specifier: ^0.18.4
+        specifier: ^0.18.6
         version: 0.18.6(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@safe-global/safe-apps-sdk':
         specifier: ^9.1.0
         version: 9.1.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@tanstack/react-query':
-        specifier: ^5.62.8
+        specifier: ^5.80.7
         version: 5.80.7(react@18.3.1)
       '@visx/annotation':
-        specifier: ^3.3.0
+        specifier: ^3.12.0
         version: 3.12.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@visx/axis':
-        specifier: ^2.14.0
+        specifier: ^2.18.0
         version: 2.18.0(react@18.3.1)
       '@visx/curve':
-        specifier: ^2.1.0
+        specifier: ^2.17.0
         version: 2.17.0
       '@visx/event':
-        specifier: ^2.6.0
+        specifier: ^2.17.0
         version: 2.17.0
       '@visx/gradient':
-        specifier: ^2.10.0
+        specifier: ^2.17.0
         version: 2.17.0(react@18.3.1)
       '@visx/grid':
-        specifier: ^2.12.2
+        specifier: ^2.18.0
         version: 2.18.0(react@18.3.1)
       '@visx/responsive':
-        specifier: ^2.10.0
+        specifier: ^2.17.0
         version: 2.17.0(react@18.3.1)
       '@visx/scale':
-        specifier: ^2.2.2
+        specifier: ^2.18.0
         version: 2.18.0
       '@visx/shape':
-        specifier: ^2.12.2
+        specifier: ^2.18.0
         version: 2.18.0(react@18.3.1)
       '@visx/tooltip':
-        specifier: ^2.16.0
+        specifier: ^2.17.0
         version: 2.17.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wagmi/core':
-        specifier: ^2.17.1
+        specifier: ^2.17.3
         version: 2.17.3(@tanstack/query-core@5.80.7)(@types/react@19.1.8)(immer@9.0.21)(react@18.3.1)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@18.3.1))(viem@2.31.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))
       blo:
-        specifier: ^1.1.1
+        specifier: ^1.2.0
         version: 1.2.0
       connectkit:
         specifier: 1.9.0
         version: 1.9.0(@babel/core@7.27.4)(@tanstack/react-query@5.80.7(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-is@19.1.0)(react@18.3.1)(viem@2.31.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))(wagmi@2.15.6(@tanstack/query-core@5.80.7)(@tanstack/react-query@5.80.7(react@18.3.1))(@types/react@19.1.8)(bufferutil@4.0.9)(immer@9.0.21)(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.31.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4))
       d3-array:
-        specifier: ^3.2.0
+        specifier: ^3.2.4
         version: 3.2.4
       d3-time-format:
         specifier: ^4.1.0
         version: 4.1.0
       dayjs:
-        specifier: ^1.11.5
+        specifier: ^1.11.13
         version: 1.11.13
       ethereum-multicall:
-        specifier: ^2.21.0
+        specifier: ^2.26.0
         version: 2.26.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       ethers:
-        specifier: ^5.5.4
+        specifier: ^5.8.0
         version: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       graphql:
-        specifier: ^16.8.1
+        specifier: ^16.11.0
         version: 16.11.0
       graphql-request:
         specifier: ^6.1.0
@@ -138,25 +138,25 @@ importers:
         specifier: ^4.0.3
         version: 4.0.3
       immer:
-        specifier: ^9.0.15
+        specifier: ^9.0.21
         version: 9.0.21
       json-stringify-deterministic:
         specifier: ^1.0.12
         version: 1.0.12
       micro-memoize:
-        specifier: ^4.1.2
+        specifier: ^4.1.3
         version: 4.1.3
       next:
         specifier: 12.3.4
         version: 12.3.4(@babel/core@7.27.4)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
-        specifier: ^18.0.0
+        specifier: ^18.3.1
         version: 18.3.1
       react-cookie-consent:
         specifier: ^8.0.1
         version: 8.0.1(react@18.3.1)
       react-dom:
-        specifier: ^18.0.0
+        specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-infinite-scroller:
         specifier: ^1.2.6
@@ -168,95 +168,95 @@ importers:
         specifier: ^8.0.7
         version: 8.0.7(@types/react@19.1.8)(react@18.3.1)
       react-number-format:
-        specifier: ^4.9.1
+        specifier: ^4.9.4
         version: 4.9.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       reflect-metadata:
-        specifier: ^0.1.13
+        specifier: ^0.1.14
         version: 0.1.14
       remark-gfm:
         specifier: ^3.0.1
         version: 3.0.1
       sonner:
-        specifier: ^2.0.3
+        specifier: ^2.0.5
         version: 2.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tiny-invariant:
-        specifier: ^1.3.1
+        specifier: ^1.3.3
         version: 1.3.3
       viem:
-        specifier: ^2.29.2
+        specifier: ^2.31.3
         version: 2.31.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       wagmi:
-        specifier: ^2.15.2
+        specifier: ^2.15.6
         version: 2.15.6(@tanstack/query-core@5.80.7)(@tanstack/react-query@5.80.7(react@18.3.1))(@types/react@19.1.8)(bufferutil@4.0.9)(immer@9.0.21)(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.31.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
       zustand:
-        specifier: ^5.0.2
+        specifier: ^5.0.5
         version: 5.0.5(@types/react@19.1.8)(immer@9.0.21)(react@18.3.1)(use-sync-external-store@1.4.0(react@18.3.1))
     devDependencies:
       '@babel/core':
-        specifier: ^7.19.3
+        specifier: ^7.27.4
         version: 7.27.4
       '@babel/plugin-proposal-class-properties':
         specifier: ^7.18.6
         version: 7.18.6(@babel/core@7.27.4)
       '@commitlint/cli':
-        specifier: ^17.3.0
+        specifier: ^17.8.1
         version: 17.8.1
       '@commitlint/config-conventional':
-        specifier: ^17.1.0
+        specifier: ^17.8.1
         version: 17.8.1
       '@ethersproject/experimental':
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@ethersproject/providers':
-        specifier: ^5.5.3
+        specifier: ^5.8.0
         version: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@ethersproject/wallet':
         specifier: ^5.8.0
         version: 5.8.0
       '@lingui/cli':
-        specifier: ^4.13.0
+        specifier: ^4.14.1
         version: 4.14.1(typescript@5.8.3)
       '@lingui/macro':
-        specifier: ^4.14.0
+        specifier: ^4.14.1
         version: 4.14.1(@lingui/react@4.14.1(react@18.3.1))(babel-plugin-macros@3.1.0)(typescript@5.8.3)
       '@next/bundle-analyzer':
-        specifier: ^12.1.0
+        specifier: ^12.3.7
         version: 12.3.7(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@svgr/webpack':
         specifier: ^6.5.1
         version: 6.5.1
       '@tanstack/react-query-devtools':
-        specifier: ^5.62.8
+        specifier: ^5.80.7
         version: 5.80.7(@tanstack/react-query@5.80.7(react@18.3.1))(react@18.3.1)
       '@testing-library/jest-dom':
-        specifier: ^5.16.5
+        specifier: ^5.17.0
         version: 5.17.0
       '@testing-library/react':
         specifier: ^13.4.0
         version: 13.4.0(@types/react@19.1.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
-        specifier: ^14.4.3
+        specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@8.20.1)
       '@types/d3-array':
-        specifier: ^3.0.3
+        specifier: ^3.2.1
         version: 3.2.1
       '@types/d3-time-format':
-        specifier: ^4.0.0
+        specifier: ^4.0.3
         version: 4.0.3
       '@types/lodash':
-        specifier: ^4.14.189
-        version: 4.17.17
+        specifier: ^4.17.18
+        version: 4.17.18
       '@types/react':
         specifier: latest
         version: 19.1.8
       '@types/react-infinite-scroller':
-        specifier: ^1.2.3
+        specifier: ^1.2.5
         version: 1.2.5
       '@typescript-eslint/eslint-plugin':
-        specifier: ^5.38.1
+        specifier: ^5.62.0
         version: 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1)(typescript@5.8.3)
       axios:
-        specifier: ^1.6.2
+        specifier: ^1.10.0
         version: 1.10.0
       babel-plugin-macros:
         specifier: ^3.1.0
@@ -265,25 +265,25 @@ importers:
         specifier: 10.9.0
         version: 10.9.0
       cypress-repeat:
-        specifier: ^2.3.3
+        specifier: ^2.3.9
         version: 2.3.9(cypress@10.9.0)
       cypress-wait-until:
         specifier: ^1.7.2
         version: 1.7.2
       dotenv:
-        specifier: ^16.0.3
+        specifier: ^16.5.0
         version: 16.5.0
       eslint:
-        specifier: ^8.29.0
+        specifier: ^8.57.1
         version: 8.57.1
       eslint-config-next:
         specifier: 13.0.6
         version: 13.0.6(eslint@8.57.1)(typescript@5.8.3)
       eslint-config-prettier:
-        specifier: ^8.5.0
+        specifier: ^8.10.0
         version: 8.10.0(eslint@8.57.1)
       eslint-plugin-import:
-        specifier: ^2.26.0
+        specifier: ^2.31.0
         version: 2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
       eslint-plugin-prettier:
         specifier: ^4.2.1
@@ -301,13 +301,13 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       lint-staged:
-        specifier: ^13.0.3
+        specifier: ^13.3.0
         version: 13.3.0(enquirer@2.4.1)
       prettier:
-        specifier: ^2.8.1
+        specifier: ^2.8.8
         version: 2.8.8
       typescript:
-        specifier: ^5.0.4
+        specifier: ^5.8.3
         version: 5.8.3
 
 packages:
@@ -1499,8 +1499,8 @@ packages:
     deprecated: Use @eslint/object-schema instead
 
   '@infinex/connect-sdk@file:vendor/infinex-connect-sdk.tgz':
-    resolution: {integrity: sha512-k5PIvGhQVWer9m/vhHqua43b5rn4Z5osjPIfxchwG5Vb/tJmmC3Dg4GLnQbbEcvEGxNcVISWAPuRVJZFDLPX0w==, tarball: file:vendor/infinex-connect-sdk.tgz}
-    version: 0.0.6
+    resolution: {integrity: sha512-RIrJm3OHyoKkJOPs0DCwfzoC4jh0XbgfRbph7oR/P7EqWF8PfFsYCYHwu692A5rvLghlfoFa7qTv+ouAHZOSzw==, tarball: file:vendor/infinex-connect-sdk.tgz}
+    version: 0.0.11
     peerDependencies:
       '@tanstack/query-core': '>=5.0.0'
       '@tanstack/react-query': '>=5.0.0'
@@ -1528,8 +1528,8 @@ packages:
       node-notifier:
         optional: true
 
-  '@jest/diff-sequences@30.0.0':
-    resolution: {integrity: sha512-xMbtoCeKJDto86GW6AiwVv7M4QAuI56R7dVBr1RNGYbOT44M2TIzOiske2RxopBqkumDY+A1H55pGvuribRY9A==}
+  '@jest/diff-sequences@30.0.1':
+    resolution: {integrity: sha512-n5H8QLDJ47QqbCNn5SuFjCRDrOLEZ0h8vAHCK5RL9Ls7Xa8AQLa/YxAc9UjFqoEDM48muwtBGjtMY5cr0PLDCw==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jest/environment@29.7.0':
@@ -1540,8 +1540,8 @@ packages:
     resolution: {integrity: sha512-GlsNBWiFQFCVi9QVSx7f5AgMeLxe9YCCs5PuP2O2LdjDAA8Jh9eX7lA1Jq/xdXw3Wb3hyvlFNfZIfcRetSzYcA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  '@jest/expect-utils@30.0.0':
-    resolution: {integrity: sha512-UiWfsqNi/+d7xepfOv8KDcbbzcYtkWBe3a3kVDtg6M1kuN6CJ7b4HzIp5e1YHrSaQaVS8sdCoyCMCZClTLNKFQ==}
+  '@jest/expect-utils@30.0.1':
+    resolution: {integrity: sha512-txHSNST7ud1V7JVFS5N1qqU+Wf6tiFPxDbjQpklTnckeVecFF8O+LD6efgF5z1dBigp4nMmDIYYxslQJHaS7QA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jest/expect@29.7.0':
@@ -1552,16 +1552,16 @@ packages:
     resolution: {integrity: sha512-q4DH1Ha4TTFPdxLsqDXK1d3+ioSL7yL5oCMJZgDYm6i+6CygW5E5xVr/D1HdsGxjt1ZWSfUAs9OxSB/BNelWrQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  '@jest/get-type@30.0.0':
-    resolution: {integrity: sha512-VZWMjrBzqfDKngQ7sUctKeLxanAbsBFoZnPxNIG6CmxK7Gv6K44yqd0nzveNIBfuhGZMmk1n5PGbvdSTOu0yTg==}
+  '@jest/get-type@30.0.1':
+    resolution: {integrity: sha512-AyYdemXCptSRFirI5EPazNxyPwAL0jXt3zceFjaj8NFiKP9pOi0bfXonf6qkf82z2t3QWPeLCWWw4stPBzctLw==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jest/globals@29.7.0':
     resolution: {integrity: sha512-mpiz3dutLbkW2MNFubUGUEVLkTGiqW6yLVTA+JbP6fI6J5iL9Y0Nlg8k95pcF8ctKwCS7WVxteBs29hhfAotzQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  '@jest/pattern@30.0.0':
-    resolution: {integrity: sha512-k+TpEThzLVXMkbdxf8KHjZ83Wl+G54ytVJoDIGWwS96Ql4xyASRjc6SU1hs5jHVql+hpyK9G8N7WuFhLpGHRpQ==}
+  '@jest/pattern@30.0.1':
+    resolution: {integrity: sha512-gWp7NfQW27LaBQz3TITS8L7ZCQ0TLvtmI//4OwlQRx4rnWxcPNIYjxZpDcN4+UlGxgm3jS5QPz8IPTCkb59wZA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jest/reporters@29.7.0':
@@ -1577,8 +1577,8 @@ packages:
     resolution: {integrity: sha512-mo5j5X+jIZmJQveBKeS/clAueipV7KgiX1vMgCxam1RNYiqE1w62n0/tJJnHtjW8ZHcQco5gY85jA3mi0L+nSA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  '@jest/schemas@30.0.0':
-    resolution: {integrity: sha512-NID2VRyaEkevCRz6badhfqYwri/RvMbiHY81rk3AkK/LaiB0LSxi1RdVZ7MpZdTjNugtZeGfpL0mLs9Kp3MrQw==}
+  '@jest/schemas@30.0.1':
+    resolution: {integrity: sha512-+g/1TKjFuGrf1Hh0QPCv0gISwBxJ+MQSNXmG9zjHy7BmFhtoJ9fdNhWJp3qUKRi93AOZHXtdxZgJ1vAtz6z65w==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jest/source-map@29.6.3':
@@ -1601,8 +1601,8 @@ packages:
     resolution: {integrity: sha512-u3UPsIilWKOM3F9CXtrG8LEJmNxwoCQC/XVj4IKYXvvpx7QIi/Kg1LI5uDmDpKlac62NUtX7eLjRh+jVZcLOzw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  '@jest/types@30.0.0':
-    resolution: {integrity: sha512-1Nox8mAL52PKPfEnUQWBvKU/bp8FTT6AiDu76bFDEJj/qsRFSAVSldfCH3XYMqialti2zHXKvD5gN0AaHc0yKA==}
+  '@jest/types@30.0.1':
+    resolution: {integrity: sha512-HGwoYRVF0QSKJu1ZQX0o5ZrUrrhj0aOOFA8hXrumD7SIzjouevhawbTjmXdwOmURdGluU9DM/XvGm3NyFoiQjw==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jridgewell/gen-mapping@0.3.8':
@@ -2446,8 +2446,8 @@ packages:
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
-  '@types/lodash@4.17.17':
-    resolution: {integrity: sha512-RRVJ+J3J+WmyOTqnz3PiBLA501eKwXl2noseKOrNo/6+XEHjTAxO4xHvxQB6QuNm+s4WRbn6rSiap8+EA+ykFQ==}
+  '@types/lodash@4.17.18':
+    resolution: {integrity: sha512-KJ65INaxqxmU6EoCiJmRPZC9H9RVWCRd349tXM2M3O5NA7cY6YL7c0bHAHQ93NOfTObEQ004kd2QVHs/r0+m4g==}
 
   '@types/long@4.0.2':
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
@@ -3935,8 +3935,8 @@ packages:
     resolution: {integrity: sha512-r6kEJXDKecVOCj2nLMuXK/FCPeurW33+3JRpfXVbjLja3XUYFfD9I/JBreH6sUyzcm3G/YQboBjMla6poKeSdA==}
     engines: {bun: '>=1', deno: '>=2', node: '>=16'}
 
-  electron-to-chromium@1.5.168:
-    resolution: {integrity: sha512-RUNQmFLNIWVW6+z32EJQ5+qx8ci6RGvdtDC0Ls+F89wz6I2AthpXF0w0DIrn2jpLX0/PU9ZCo+Qp7bg/EckJmA==}
+  electron-to-chromium@1.5.170:
+    resolution: {integrity: sha512-GP+M7aeluQo9uAyiTCxgIj/j+PrWhMlY7LFVj8prlsPljd0Fdg9AprlfUi+OCSFWy9Y5/2D/Jrj9HS8Z4rpKWA==}
 
   elliptic@6.6.1:
     resolution: {integrity: sha512-RaddvvMatK2LJHqFJ+YA4WysVN5Ita9E35botqIYspQ4TkRAlCicdzKOjlyv/1Za5RyTNn7di//eEV0uTAfe3g==}
@@ -4274,8 +4274,8 @@ packages:
     resolution: {integrity: sha512-2Zks0hf1VLFYI1kbh0I5jP3KHHyCHpkfyHBzsSXRFgl/Bg9mWYfMW8oD+PdMPlEwy5HNsR9JutYy6pMeOh61nw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  expect@30.0.0:
-    resolution: {integrity: sha512-xCdPp6gwiR9q9lsPCHANarIkFTN/IMZso6Kkq03sOm9IIGtzK/UJqml0dkhHibGh8HKOj8BIDIpZ0BZuU7QK6w==}
+  expect@30.0.1:
+    resolution: {integrity: sha512-FLzSqyMY397aV5awKVGWOKrfrzQRxoGAofdTt9ucJ6dSVY+1c6yEfcw/JZ1oqfLnL78FONo9GfVaEb8VJ5irGw==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   exponential-backoff@3.1.2:
@@ -5105,8 +5105,8 @@ packages:
     resolution: {integrity: sha512-LMIgiIrhigmPrs03JHpxUh2yISK3vLFPkAodPeo0+BuF7wA2FoQbkEg1u8gBYBThncu7e1oEDUfIXVuTqLRUjw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  jest-diff@30.0.0:
-    resolution: {integrity: sha512-TgT1+KipV8JTLXXeFX0qSvIJR/UXiNNojjxb/awh3vYlBZyChU/NEmyKmq+wijKjWEztyrGJFL790nqMqNjTHA==}
+  jest-diff@30.0.1:
+    resolution: {integrity: sha512-9uJGfS2tBBFTvn3ZjfPjrw0r7KtAcutTMs3k39+ur2xD0/MTdmz8SrTzuy1dMlGxmbSet1k79UFSJ2+U7dNEvQ==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   jest-docblock@29.7.0:
@@ -5146,24 +5146,24 @@ packages:
     resolution: {integrity: sha512-sBkD+Xi9DtcChsI3L3u0+N0opgPYnCRPtGcQYrgXmR+hmt/fYfWAL0xRXYU8eWOdfuLgBe0YCW3AFtnRLagq/g==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  jest-matcher-utils@30.0.0:
-    resolution: {integrity: sha512-m5mrunqopkrqwG1mMdJxe1J4uGmS9AHHKYUmoxeQOxBcLjEvirIrIDwuKmUYrecPHVB/PUBpXs2gPoeA2FSSLQ==}
+  jest-matcher-utils@30.0.1:
+    resolution: {integrity: sha512-4R9ct2D3kZTtRTjPVqWbuQpRgG4lVQ5ifI+Ni52OhEeT4XWnNaPe0AtixpkueMKUJDdh96r6xE7V1+imN2hhHQ==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   jest-message-util@29.7.0:
     resolution: {integrity: sha512-GBEV4GRADeP+qtB2+6u61stea8mGcOT4mCtrYISZwfu9/ISHFJ/5zOMXYbpBE9RsS5+Gb63DW4FgmnKJ79Kf6w==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  jest-message-util@30.0.0:
-    resolution: {integrity: sha512-pV3qcrb4utEsa/U7UI2VayNzSDQcmCllBZLSoIucrESRu0geKThFZOjjh0kACDJFJRAQwsK7GVsmS6SpEceD8w==}
+  jest-message-util@30.0.1:
+    resolution: {integrity: sha512-/TZhT/tMqBVHhOOYY/VdCBoFN66f7rTAQ0TTh4igilDDd6y0SRP8OW7Fm+IV5bYW8MmdEstDQMZkBivmzDPy8A==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   jest-mock@29.7.0:
     resolution: {integrity: sha512-ITOMZn+UkYS4ZFh83xYAOzWStloNzJFO2s8DWrE4lhtGD+AorgnbkiKERe4wQVBydIGPx059g6riW5Btp6Llnw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  jest-mock@30.0.0:
-    resolution: {integrity: sha512-W2sRA4ALXILrEetEOh2ooZG6fZ01iwVs0OWMKSSWRcUlaLr4ESHuiKXDNTg+ZVgOq8Ei5445i/Yxrv59VT+XkA==}
+  jest-mock@30.0.1:
+    resolution: {integrity: sha512-t57+MErWxWWCrhy4JyQHkgELFHv83u9MqO4XVNP9qAsrknDeX031hG1dEPPwDx77obsciQjXptN2nq1Y83T3CQ==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   jest-pnp-resolver@1.2.3:
@@ -5179,8 +5179,8 @@ packages:
     resolution: {integrity: sha512-KJJBsRCyyLNWCNBOvZyRDnAIfUiRJ8v+hOBQYGn8gDyF3UegwiP4gwRR3/SDa42g1YbVycTidUF3rKjyLFDWbg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  jest-regex-util@30.0.0:
-    resolution: {integrity: sha512-rT84010qRu/5OOU7a9TeidC2Tp3Qgt9Sty4pOZ/VSDuEmRupIjKZAb53gU3jr4ooMlhwScrgC9UixJxWzVu9oQ==}
+  jest-regex-util@30.0.1:
+    resolution: {integrity: sha512-jHEQgBXAgc+Gh4g0p3bCevgRCVRkB4VB70zhoAE48gxeSr1hfUOsM/C2WoJgVL7Eyg//hudYENbm3Ne+/dRVVA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   jest-resolve-dependencies@29.7.0:
@@ -5207,8 +5207,8 @@ packages:
     resolution: {integrity: sha512-z6EbKajIpqGKU56y5KBUgy1dt1ihhQJgWzUlZHArA/+X2ad7Cb5iF+AK1EWVL/Bo7Rz9uurpqw6SiBCefUbCGA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  jest-util@30.0.0:
-    resolution: {integrity: sha512-fhNBBM9uSUbd4Lzsf8l/kcAdaHD/4SgoI48en3HXcBEMwKwoleKFMZ6cYEYs21SB779PRuRCyNLmymApAm8tZw==}
+  jest-util@30.0.1:
+    resolution: {integrity: sha512-yKUK3Pq+9NtL2XbGhMW0O5PnHYPjvu3kpplm3j08fyqH6lsa/wLg1SCcNJAI4p8LTtfUMj71MnF3L4PKrlIcJg==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   jest-validate@29.7.0:
@@ -6153,8 +6153,8 @@ packages:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  pretty-format@30.0.0:
-    resolution: {integrity: sha512-18NAOUr4ZOQiIR+BgI5NhQE7uREdx4ZyV0dyay5izh4yfQ+1T7BSvggxvRGoXocrRyevqW5OhScUjbi9GB8R8Q==}
+  pretty-format@30.0.1:
+    resolution: {integrity: sha512-2pkYD4WKYrAVyx/Jo7DmV+XAVJ9PuC0gVi9/gCPOxd+dN6WD+Pa7+ScUdh3f9m2klEPEZmfu8HoyYnuaGXzGAA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   process-nextick-args@2.0.1:
@@ -8530,7 +8530,7 @@ snapshots:
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
       resolve-from: 5.0.0
-      ts-node: 10.9.2(@types/node@20.5.1)(typescript@5.8.3)
+      ts-node: 10.9.2(@types/node@24.0.3)(typescript@5.8.3)
       typescript: 5.8.3
     transitivePeerDependencies:
       - '@swc/core'
@@ -9296,7 +9296,7 @@ snapshots:
       - supports-color
       - ts-node
 
-  '@jest/diff-sequences@30.0.0': {}
+  '@jest/diff-sequences@30.0.1': {}
 
   '@jest/environment@29.7.0':
     dependencies:
@@ -9309,9 +9309,9 @@ snapshots:
     dependencies:
       jest-get-type: 29.6.3
 
-  '@jest/expect-utils@30.0.0':
+  '@jest/expect-utils@30.0.1':
     dependencies:
-      '@jest/get-type': 30.0.0
+      '@jest/get-type': 30.0.1
 
   '@jest/expect@29.7.0':
     dependencies:
@@ -9329,7 +9329,7 @@ snapshots:
       jest-mock: 29.7.0
       jest-util: 29.7.0
 
-  '@jest/get-type@30.0.0': {}
+  '@jest/get-type@30.0.1': {}
 
   '@jest/globals@29.7.0':
     dependencies:
@@ -9340,10 +9340,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@jest/pattern@30.0.0':
+  '@jest/pattern@30.0.1':
     dependencies:
       '@types/node': 24.0.3
-      jest-regex-util: 30.0.0
+      jest-regex-util: 30.0.1
 
   '@jest/reporters@29.7.0':
     dependencies:
@@ -9378,7 +9378,7 @@ snapshots:
     dependencies:
       '@sinclair/typebox': 0.27.8
 
-  '@jest/schemas@30.0.0':
+  '@jest/schemas@30.0.1':
     dependencies:
       '@sinclair/typebox': 0.34.35
 
@@ -9431,10 +9431,10 @@ snapshots:
       '@types/yargs': 17.0.33
       chalk: 4.1.2
 
-  '@jest/types@30.0.0':
+  '@jest/types@30.0.1':
     dependencies:
-      '@jest/pattern': 30.0.0
-      '@jest/schemas': 30.0.0
+      '@jest/pattern': 30.0.1
+      '@jest/schemas': 30.0.1
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
       '@types/node': 24.0.3
@@ -10615,7 +10615,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 24.0.3
+      '@types/node': 12.20.55
 
   '@types/d3-array@3.2.1': {}
 
@@ -10663,8 +10663,8 @@ snapshots:
 
   '@types/jest@30.0.0':
     dependencies:
-      expect: 30.0.0
-      pretty-format: 30.0.0
+      expect: 30.0.1
+      pretty-format: 30.0.1
 
   '@types/jsdom@20.0.1':
     dependencies:
@@ -10676,7 +10676,7 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
-  '@types/lodash@4.17.17': {}
+  '@types/lodash@4.17.18': {}
 
   '@types/long@4.0.2': {}
 
@@ -10748,7 +10748,7 @@ snapshots:
 
   '@types/ws@7.4.7':
     dependencies:
-      '@types/node': 24.0.3
+      '@types/node': 12.20.55
 
   '@types/ws@8.18.1':
     dependencies:
@@ -11005,7 +11005,7 @@ snapshots:
   '@visx/responsive@2.17.0(react@18.3.1)':
     dependencies:
       '@juggle/resize-observer': 3.4.0
-      '@types/lodash': 4.17.17
+      '@types/lodash': 4.17.18
       '@types/react': 19.1.8
       lodash: 4.17.21
       prop-types: 15.8.1
@@ -11024,7 +11024,7 @@ snapshots:
     dependencies:
       '@types/d3-path': 1.0.11
       '@types/d3-shape': 1.3.12
-      '@types/lodash': 4.17.17
+      '@types/lodash': 4.17.18
       '@types/react': 19.1.8
       '@visx/curve': 2.17.0
       '@visx/group': 2.17.0(react@18.3.1)
@@ -11038,7 +11038,7 @@ snapshots:
 
   '@visx/text@2.17.0(react@18.3.1)':
     dependencies:
-      '@types/lodash': 4.17.17
+      '@types/lodash': 4.17.18
       '@types/react': 19.1.8
       classnames: 2.5.1
       lodash: 4.17.21
@@ -11048,7 +11048,7 @@ snapshots:
 
   '@visx/text@3.12.0(react@18.3.1)':
     dependencies:
-      '@types/lodash': 4.17.17
+      '@types/lodash': 4.17.18
       '@types/react': 19.1.8
       classnames: 2.5.1
       lodash: 4.17.21
@@ -11350,7 +11350,7 @@ snapshots:
       '@noble/hashes': 1.7.0
       '@walletconnect/safe-json': 1.0.2
       '@walletconnect/time': 1.0.2
-      uint8arrays: 3.1.1
+      uint8arrays: 3.1.0
 
   '@walletconnect/safe-json@1.0.2':
     dependencies:
@@ -12075,7 +12075,7 @@ snapshots:
   browserslist@4.25.0:
     dependencies:
       caniuse-lite: 1.0.30001723
-      electron-to-chromium: 1.5.168
+      electron-to-chromium: 1.5.170
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.25.0)
 
@@ -12347,7 +12347,7 @@ snapshots:
     dependencies:
       '@types/node': 20.5.1
       cosmiconfig: 8.3.6(typescript@5.8.3)
-      ts-node: 10.9.2(@types/node@20.5.1)(typescript@5.8.3)
+      ts-node: 10.9.2(@types/node@24.0.3)(typescript@5.8.3)
       typescript: 5.8.3
 
   cosmiconfig@7.1.0:
@@ -12784,7 +12784,7 @@ snapshots:
       '@noble/curves': 1.9.2
       '@noble/hashes': 1.8.0
 
-  electron-to-chromium@1.5.168: {}
+  electron-to-chromium@1.5.170: {}
 
   elliptic@6.6.1:
     dependencies:
@@ -13382,14 +13382,14 @@ snapshots:
       jest-message-util: 29.7.0
       jest-util: 29.7.0
 
-  expect@30.0.0:
+  expect@30.0.1:
     dependencies:
-      '@jest/expect-utils': 30.0.0
-      '@jest/get-type': 30.0.0
-      jest-matcher-utils: 30.0.0
-      jest-message-util: 30.0.0
-      jest-mock: 30.0.0
-      jest-util: 30.0.0
+      '@jest/expect-utils': 30.0.1
+      '@jest/get-type': 30.0.1
+      jest-matcher-utils: 30.0.1
+      jest-message-util: 30.0.1
+      jest-mock: 30.0.1
+      jest-util: 30.0.1
 
   exponential-backoff@3.1.2: {}
 
@@ -14326,7 +14326,7 @@ snapshots:
       strip-json-comments: 3.1.1
     optionalDependencies:
       '@types/node': 24.0.3
-      ts-node: 10.9.2(@types/node@20.5.1)(typescript@5.8.3)
+      ts-node: 10.9.2(@types/node@24.0.3)(typescript@5.8.3)
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -14338,12 +14338,12 @@ snapshots:
       jest-get-type: 29.6.3
       pretty-format: 29.7.0
 
-  jest-diff@30.0.0:
+  jest-diff@30.0.1:
     dependencies:
-      '@jest/diff-sequences': 30.0.0
-      '@jest/get-type': 30.0.0
+      '@jest/diff-sequences': 30.0.1
+      '@jest/get-type': 30.0.1
       chalk: 4.1.2
-      pretty-format: 30.0.0
+      pretty-format: 30.0.1
 
   jest-docblock@29.7.0:
     dependencies:
@@ -14411,12 +14411,12 @@ snapshots:
       jest-get-type: 29.6.3
       pretty-format: 29.7.0
 
-  jest-matcher-utils@30.0.0:
+  jest-matcher-utils@30.0.1:
     dependencies:
-      '@jest/get-type': 30.0.0
+      '@jest/get-type': 30.0.1
       chalk: 4.1.2
-      jest-diff: 30.0.0
-      pretty-format: 30.0.0
+      jest-diff: 30.0.1
+      pretty-format: 30.0.1
 
   jest-message-util@29.7.0:
     dependencies:
@@ -14430,15 +14430,15 @@ snapshots:
       slash: 3.0.0
       stack-utils: 2.0.6
 
-  jest-message-util@30.0.0:
+  jest-message-util@30.0.1:
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@jest/types': 30.0.0
+      '@jest/types': 30.0.1
       '@types/stack-utils': 2.0.3
       chalk: 4.1.2
       graceful-fs: 4.2.11
       micromatch: 4.0.8
-      pretty-format: 30.0.0
+      pretty-format: 30.0.1
       slash: 3.0.0
       stack-utils: 2.0.6
 
@@ -14448,11 +14448,11 @@ snapshots:
       '@types/node': 24.0.3
       jest-util: 29.7.0
 
-  jest-mock@30.0.0:
+  jest-mock@30.0.1:
     dependencies:
-      '@jest/types': 30.0.0
+      '@jest/types': 30.0.1
       '@types/node': 24.0.3
-      jest-util: 30.0.0
+      jest-util: 30.0.1
 
   jest-pnp-resolver@1.2.3(jest-resolve@29.7.0):
     optionalDependencies:
@@ -14460,7 +14460,7 @@ snapshots:
 
   jest-regex-util@29.6.3: {}
 
-  jest-regex-util@30.0.0: {}
+  jest-regex-util@30.0.1: {}
 
   jest-resolve-dependencies@29.7.0:
     dependencies:
@@ -14568,9 +14568,9 @@ snapshots:
       graceful-fs: 4.2.11
       picomatch: 2.3.1
 
-  jest-util@30.0.0:
+  jest-util@30.0.1:
     dependencies:
-      '@jest/types': 30.0.0
+      '@jest/types': 30.0.1
       '@types/node': 24.0.3
       chalk: 4.1.2
       ci-info: 4.2.0
@@ -15542,10 +15542,10 @@ snapshots:
   ox@0.6.7(typescript@5.8.3)(zod@3.22.4):
     dependencies:
       '@adraffy/ens-normalize': 1.11.0
-      '@noble/curves': 1.9.2
-      '@noble/hashes': 1.8.0
-      '@scure/bip32': 1.7.0
-      '@scure/bip39': 1.6.0
+      '@noble/curves': 1.8.1
+      '@noble/hashes': 1.7.1
+      '@scure/bip32': 1.6.2
+      '@scure/bip39': 1.5.4
       abitype: 1.0.8(typescript@5.8.3)(zod@3.22.4)
       eventemitter3: 5.0.1
     optionalDependencies:
@@ -15721,9 +15721,9 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
-  pretty-format@30.0.0:
+  pretty-format@30.0.1:
     dependencies:
-      '@jest/schemas': 30.0.0
+      '@jest/schemas': 30.0.1
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
@@ -16630,14 +16630,14 @@ snapshots:
     optionalDependencies:
       typescript: 5.8.3
 
-  ts-node@10.9.2(@types/node@20.5.1)(typescript@5.8.3):
+  ts-node@10.9.2(@types/node@24.0.3)(typescript@5.8.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.5.1
+      '@types/node': 24.0.3
       acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3

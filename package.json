@@ -4,7 +4,7 @@
   "private": true,
   "license": "BSD-3-Clause",
   "scripts": {
-    "local-infinex": "mkdir -p vendor && cp ../connect/packages/sdk/infinex-connect-sdk-0.0.10.tgz ./vendor/infinex-connect-sdk.tgz",
+    "local-infinex": "mkdir -p vendor && cp ../connect/packages/sdk/infinex-connect-sdk-0.0.11.tgz ./vendor/infinex-connect-sdk.tgz",
     "dev": "next dev",
     "auth:npm": "npx google-artifactregistry-auth --credential-config \"$HOME/.npmrc\"",
     "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8000' next dev",
