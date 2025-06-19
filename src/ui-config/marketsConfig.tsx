@@ -12,8 +12,6 @@ import {
   AaveV3BNB,
   AaveV3Celo,
   AaveV3Ethereum,
-  AaveV3EthereumEtherFi,
-  AaveV3EthereumLido,
   AaveV3Gnosis,
   AaveV3Linea,
   AaveV3Metis,

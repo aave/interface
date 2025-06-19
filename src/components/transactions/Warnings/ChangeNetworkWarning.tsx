@@ -1,14 +1,14 @@
 import { ChainId } from '@aave/contract-helpers';
+import { useInfinexConnected, useInfinexSupportedEvmNetworks } from '@infinex/connect-sdk';
 import { Trans } from '@lingui/macro';
 import { AlertProps, Button, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
-import { useInfinexConnected, useInfinexSupportedEvmNetworks } from '@infinex/connect-sdk';
+import { toHex } from 'viem';
 
 import { Warning } from '../../primitives/Warning';
-import { toHex } from 'viem';
 
 export type ChangeNetworkWarningProps = AlertProps & {
   funnel?: string;
