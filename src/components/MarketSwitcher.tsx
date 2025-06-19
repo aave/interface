@@ -1,4 +1,5 @@
 import { ChevronDownIcon } from '@heroicons/react/outline';
+import { useInfinexConnected, useInfinexSupportedEvmNetworks } from '@infinex/connect-sdk';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -17,8 +18,8 @@ import React, { useMemo, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
+import { toHex } from 'viem';
 import { useShallow } from 'zustand/shallow';
-import { useInfinexConnected, useInfinexSupportedEvmNetworks } from '@infinex/connect-sdk';
 
 import {
   availableMarkets,
@@ -31,7 +32,6 @@ import {
 } from '../utils/marketsAndNetworksConfig';
 import StyledToggleButton from './StyledToggleButton';
 import StyledToggleButtonGroup from './StyledToggleButtonGroup';
-import { toHex } from 'viem';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
