@@ -6,7 +6,6 @@ import {
   AaveV3Base,
   AaveV3Celo,
   AaveV3Ethereum,
-  AaveV3EthereumLido,
   AaveV3Gnosis,
 } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
