@@ -154,11 +154,6 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://cchain.explorer.avax-test.network',
     isTestnet: true,
     networkLogoPath: '/icons/networks/avalanche.svg',
-    bridge: {
-      icon: '/icons/bridge/avalanche.svg',
-      name: 'Avalanche Bridge',
-      url: 'https://bridge.avax.network/',
-    },
     wagmiChain: avalancheFuji,
   },
   [ChainId.arbitrum_sepolia]: {
@@ -255,11 +250,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://arbiscan.io',
     networkLogoPath: '/icons/networks/arbitrum.svg',
-    bridge: {
-      icon: '/icons/bridge/arbitrum.svg',
-      name: 'Arbitrum Bridge',
-      url: 'https://bridge.arbitrum.io',
-    },
     ratesHistoryApiUrl,
     wagmiChain: arbitrum,
   },
@@ -280,11 +270,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://polygonscan.com',
     networkLogoPath: '/icons/networks/polygon.svg',
-    bridge: {
-      icon: '/icons/bridge/polygon.svg',
-      name: 'Polygon PoS Bridge',
-      url: 'https://wallet.polygon.technology/polygon/bridge',
-    },
     ratesHistoryApiUrl,
     wagmiChain: polygon,
   },
@@ -301,11 +286,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://cchain.explorer.avax.network',
     networkLogoPath: '/icons/networks/avalanche.svg',
-    bridge: {
-      icon: '/icons/bridge/avalanche.svg',
-      name: 'Avalanche Bridge',
-      url: 'https://bridge.avax.network/',
-    },
     ratesHistoryApiUrl,
     wagmiChain: avalanche,
   },
@@ -324,11 +304,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://basescan.org',
     networkLogoPath: '/icons/networks/base.svg',
-    bridge: {
-      icon: '/icons/networks/base.svg',
-      name: 'Base Bridge',
-      url: 'https://bridge.base.org/',
-    },
     ratesHistoryApiUrl,
     wagmiChain: base,
   },
@@ -345,11 +320,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://optimistic.etherscan.io',
     networkLogoPath: '/icons/networks/optimism.svg',
-    bridge: {
-      icon: '/icons/bridge/optimism.svg',
-      name: 'OP Bridge',
-      url: 'https://app.optimism.io/bridge',
-    },
     ratesHistoryApiUrl,
     wagmiChain: optimism,
   },
@@ -374,11 +344,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://gnosisscan.io',
     isTestnet: false,
     networkLogoPath: '/icons/networks/gnosis.svg',
-    bridge: {
-      icon: '/icons/networks/gnosis.svg',
-      name: 'xDai Bridge',
-      url: 'https://bridge.gnosischain.com/',
-    },
     ratesHistoryApiUrl,
     wagmiChain: gnosis,
   },
@@ -390,11 +355,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://bscscan.com',
     networkLogoPath: '/icons/networks/binance.svg',
-    bridge: {
-      icon: '/icons/networks/binance.svg',
-      name: 'BNB Bridge',
-      url: 'https://www.bnbchain.org/en/bnb-chain-bridges',
-    },
     ratesHistoryApiUrl,
     wagmiChain: bsc,
   },
@@ -406,11 +366,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://scrollscan.com',
     networkLogoPath: '/icons/networks/scroll.svg',
-    bridge: {
-      icon: '/icons/networks/scroll.svg',
-      name: 'Scroll Bridge',
-      url: 'https://scroll.io/bridge',
-    },
     ratesHistoryApiUrl,
     wagmiChain: scroll,
   },
@@ -422,11 +377,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://era.zksync.network',
     networkLogoPath: '/icons/networks/zksync.svg',
-    bridge: {
-      icon: '/icons/networks/zksync.svg',
-      name: 'ZKsync Bridge',
-      url: 'https://portal.zksync.io/bridge/',
-    },
     ratesHistoryApiUrl,
     wagmiChain: zksync,
   },
@@ -442,11 +392,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://lineascan.build',
     networkLogoPath: '/icons/networks/linea.svg',
-    bridge: {
-      icon: '/icons/networks/linea.svg',
-      name: 'Linea Bridge',
-      url: 'https://bridge.linea.build/',
-    },
     ratesHistoryApiUrl,
     wagmiChain: linea,
   },
@@ -462,11 +407,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://sonicscan.org',
     networkLogoPath: '/icons/networks/sonic.svg',
-    bridge: {
-      icon: '/icons/networks/sonic.svg',
-      name: 'Sonic Bridge',
-      url: 'https://gateway.soniclabs.com',
-    },
     ratesHistoryApiUrl,
     wagmiChain: sonic,
   },
@@ -478,11 +418,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 0, // N/A
     explorerLink: 'https://celoscan.io/',
     networkLogoPath: '/icons/networks/celo.svg',
-    bridge: {
-      icon: '/icons/networks/celo.svg',
-      name: 'Celo Bridge',
-      url: 'https://docs.celo.org/protocol/bridge',
-    },
     wagmiChain: celo,
   },
   [ChainId.soneium]: {
@@ -493,11 +428,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://soneium.blockscout.com',
     networkLogoPath: '/icons/networks/soneium.svg', // TODO: add logo
-    bridge: {
-      icon: '/icons/networks/soneium.svg',
-      name: 'Soneium Bridge',
-      url: 'https://soneium.org/en/bridges/',
-    },
     wagmiChain: soneium,
   },
 };
