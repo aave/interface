@@ -119,7 +119,6 @@ export const BaseSwitchModalContent = ({
   showChangeNetworkWarning?: boolean;
 } & SwitchModalCustomizableProps) => {
   // State
-  const [slippage, setSlippage] = useState('0.10');
   const [inputAmount, setInputAmount] = useState('');
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const { mainTxState: switchTxState, gasLimit, txError, setTxError, close } = useModalContext();
@@ -132,14 +131,10 @@ export const BaseSwitchModalContent = ({
     return defaultNetwork.chainId;
   });
   const switchProvider = useSwitchProvider({ chainId: selectedChainId });
+  const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '2' : '0.10');
   const [showGasStation, setShowGasStation] = useState(switchProvider == 'paraswap');
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
-  const slippageValidation = validateSlippage(slippage, switchProvider);
-  const safeSlippage =
-    slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
-      ? 0
-      : Number(slippage) / 100;
 
   const [filteredTokens, setFilteredTokens] = useState<TokenInfoWithBalance[]>(initialFromTokens);
   const { data: baseTokenList, refetch: refetchBaseTokenList } = useTokensBalance(
@@ -294,6 +289,17 @@ export const BaseSwitchModalContent = ({
   useEffect(() => {
     setSelectedOutputToken(defaultOutputToken);
   }, [defaultOutputToken]);
+
+  const slippageValidation = validateSlippage(
+    slippage,
+    selectedChainId,
+    isNativeToken(selectedInputToken?.address),
+    switchProvider
+  );
+  const safeSlippage =
+    slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
+      ? 0
+      : Number(slippage) / 100;
 
   // Data
   const {
@@ -509,11 +515,11 @@ export const BaseSwitchModalContent = ({
                   !(
                     isNativeToken(selectedOutputToken.address) &&
                     token.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address
                   ) &&
                   !(
                     selectedOutputToken.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address &&
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address &&
                     isNativeToken(token.address)
                   )
               )}
@@ -555,11 +561,11 @@ export const BaseSwitchModalContent = ({
                   !(
                     isNativeToken(selectedInputToken.address) &&
                     token.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address
                   ) &&
                   !(
                     selectedInputToken.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId].address &&
+                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address &&
                     isNativeToken(token.address)
                   )
               )}

@@ -9,6 +9,7 @@ export const queryKeysFactory = {
   pool: ['pool'] as const,
   incentives: ['incentives'] as const,
   gho: ['gho'] as const,
+  umbrella: ['umbrella'] as const,
   market: (marketData: MarketDataType) => [
     marketData.chainId,
     !!marketData.isFork,
@@ -178,6 +179,17 @@ export const queryKeysFactory = {
     ...queryKeysFactory.pool,
     ...queryKeysFactory.market(marketData),
     'poolEModes',
+  ],
+  umbrellaStakeData: (marketData: MarketDataType) => [
+    ...queryKeysFactory.umbrella,
+    ...queryKeysFactory.market(marketData),
+    'stakeData',
+  ],
+  umbrellaStakeUserData: (user: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.umbrella,
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    'userStakeData',
   ],
 };
 

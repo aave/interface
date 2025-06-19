@@ -19,9 +19,11 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
+import { GhoStakingPanel } from 'src/modules/staking/GhoStakingPanel';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
+import { SAFETY_MODULE } from 'src/utils/events';
 import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
@@ -47,6 +49,16 @@ const StakeRewardClaimRestakeModal = dynamic(() =>
 const UnStakeModal = dynamic(() =>
   import('../src/components/transactions/UnStake/UnStakeModal').then(
     (module) => module.UnStakeModal
+  )
+);
+const SavingsGhoDepositModal = dynamic(() =>
+  import('../src/components/transactions/SavingsGho/SavingsGhoDepositModal').then(
+    (module) => module.SavingsGhoDepositModal
+  )
+);
+const SavingsGhoWithdrawModal = dynamic(() =>
+  import('../src/components/transactions/SavingsGho/SavingsGhoWithdrawModal').then(
+    (module) => module.SavingsGhoWithdrawModal
   )
 );
 
@@ -83,6 +95,8 @@ export default function Staking() {
     openStakeRewardsClaim,
     openStakeRewardsRestakeClaim,
     openStakingMigrate,
+    openSavingsGhoDeposit,
+    openSavingsGhoWithdraw,
   } = useModalContext();
 
   const [mode, setMode] = useState<Stake>(Stake.aave);
@@ -91,13 +105,13 @@ export default function Staking() {
 
   useEffect(() => {
     trackEvent('Page Viewed', {
-      'Page Name': 'Staking',
+      'Page Name': 'Safety Module',
     });
   }, [trackEvent]);
 
   const tvl = {
     'Staked Aave': Number(stkAave?.totalSupplyUSDFormatted || '0'),
-    'Staked GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
+    // 'Staked GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
     'Staked ABPT': Number(stkBpt?.totalSupplyUSDFormatted || '0'),
     'Staked ABPT V2': Number(stkBptV2?.totalSupplyUSDFormatted || '0'),
   };
@@ -149,7 +163,7 @@ export default function Staking() {
                 </StyledToggleButton>
                 <StyledToggleButton value="gho" disabled={mode === 'gho'}>
                   <Typography variant="subheader1">
-                    <Trans>Stake GHO</Trans>
+                    <Trans>sGHO</Trans>
                   </Typography>
                 </StyledToggleButton>
                 <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
@@ -176,13 +190,48 @@ export default function Staking() {
                   icon="aave"
                   stakeData={stkAave}
                   stakeUserData={stkAaveUserData}
-                  onStakeAction={() => openStake(Stake.aave, 'AAVE')}
-                  onCooldownAction={() => openStakeCooldown(Stake.aave, 'AAVE')}
-                  onUnstakeAction={() => openUnstake(Stake.aave, 'AAVE')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.aave, 'AAVE')}
-                  onStakeRewardClaimRestakeAction={() =>
-                    openStakeRewardsRestakeClaim(Stake.aave, 'AAVE')
-                  }
+                  onStakeAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_STAKE_MODAL,
+                      asset: 'AAVE',
+                      stakeType: 'Safety Module',
+                    });
+                    openStake(Stake.aave, 'AAVE');
+                  }}
+                  onCooldownAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_COOLDOWN_MODAL,
+                      asset: 'AAVE',
+                      stakeType: 'Safety Module',
+                    });
+                    openStakeCooldown(Stake.aave, 'AAVE');
+                  }}
+                  onUnstakeAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_WITHDRAW_MODAL,
+                      asset: 'AAVE',
+                      stakeType: 'Safety Module',
+                    });
+                    openUnstake(Stake.aave, 'AAVE');
+                  }}
+                  onStakeRewardClaimAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_CLAIM_MODAL,
+                      asset: 'AAVE',
+                      stakeType: 'Safety Module',
+                      rewardType: 'Claim',
+                    });
+                    openStakeRewardsClaim(Stake.aave, 'AAVE');
+                  }}
+                  onStakeRewardClaimRestakeAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_CLAIM_MODAL,
+                      asset: 'AAVE',
+                      stakeType: 'Safety Module',
+                      rewardType: 'Restake',
+                    });
+                    openStakeRewardsRestakeClaim(Stake.aave, 'AAVE');
+                  }}
                 >
                   <Box
                     sx={{
@@ -213,17 +262,46 @@ export default function Staking() {
                 lg={6}
                 sx={{ display: { xs: !isStkGho ? 'none' : 'block', lg: 'block' } }}
               >
-                <StakingPanel
-                  stakeTitle="GHO"
+                <GhoStakingPanel
+                  stakeTitle="sGHO (formerly stkGHO)"
                   stakedToken="GHO"
+                  icon="sgho"
                   maxSlash={stkGho?.maxSlashablePercentageFormatted || '0'}
-                  icon="gho"
                   stakeData={stkGho}
                   stakeUserData={stkGhoUserData}
-                  onStakeAction={() => openStake(Stake.gho, 'GHO')}
-                  onCooldownAction={() => openStakeCooldown(Stake.gho, 'GHO')}
-                  onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.gho, 'AAVE')}
+                  onStakeAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_STAKE_MODAL,
+                      asset: 'GHO',
+                      stakeType: 'Safety Module',
+                    });
+                    openSavingsGhoDeposit();
+                  }}
+                  onCooldownAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_WITHDRAW_MODAL,
+                      asset: 'GHO',
+                      stakeType: 'Safety Module',
+                    });
+                    openSavingsGhoWithdraw();
+                  }}
+                  onUnstakeAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_WITHDRAW_MODAL,
+                      asset: 'GHO',
+                      stakeType: 'Safety Module',
+                    });
+                    openSavingsGhoWithdraw();
+                  }}
+                  onStakeRewardClaimAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_CLAIM_MODAL,
+                      asset: 'GHO',
+                      stakeType: 'Safety Module',
+                      rewardType: 'Claim',
+                    });
+                    openStakeRewardsClaim(Stake.gho, 'AAVE');
+                  }}
                 />
               </Grid>
 
@@ -240,10 +318,39 @@ export default function Staking() {
                   icon="stkbptv2"
                   stakeData={stkBptV2}
                   stakeUserData={stkBptV2UserData}
-                  onStakeAction={() => openStake(Stake.bptv2, 'stkbptv2')}
-                  onCooldownAction={() => openStakeCooldown(Stake.bptv2, 'stkbptv2')}
-                  onUnstakeAction={() => openUnstake(Stake.bptv2, 'stkbptv2')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bptv2, 'AAVE')}
+                  onStakeAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_STAKE_MODAL,
+                      asset: 'ABPTV2',
+                      stakeType: 'Safety Module',
+                    });
+                    openStake(Stake.bptv2, 'stkbptv2');
+                  }}
+                  onCooldownAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_COOLDOWN_MODAL,
+                      asset: 'ABPTV2',
+                      stakeType: 'Safety Module',
+                    });
+                    openStakeCooldown(Stake.bptv2, 'stkbptv2');
+                  }}
+                  onUnstakeAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_WITHDRAW_MODAL,
+                      asset: 'ABPTV2',
+                      stakeType: 'Safety Module',
+                    });
+                    openUnstake(Stake.bptv2, 'stkbptv2');
+                  }}
+                  onStakeRewardClaimAction={() => {
+                    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                      action: SAFETY_MODULE.OPEN_CLAIM_MODAL,
+                      asset: 'ABPTV2',
+                      stakeType: 'Safety Module',
+                      rewardType: 'Claim',
+                    });
+                    openStakeRewardsClaim(Stake.bptv2, 'AAVE');
+                  }}
                   headerAction={<GetABPToken />}
                 />
               </Grid>
@@ -262,11 +369,47 @@ export default function Staking() {
                     icon="stkbpt"
                     stakeData={stkBpt}
                     stakeUserData={stkBptUserData}
-                    onStakeAction={() => openStake(Stake.bpt, 'stkBPT')}
-                    onCooldownAction={() => openStakeCooldown(Stake.bpt, 'stkbpt')}
-                    onUnstakeAction={() => openUnstake(Stake.bpt, 'stkBPT')}
-                    onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bpt, 'AAVE')}
-                    onMigrateAction={() => openStakingMigrate()}
+                    onStakeAction={() => {
+                      trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                        action: SAFETY_MODULE.OPEN_STAKE_MODAL,
+                        asset: 'ABPT',
+                        stakeType: 'Safety Module',
+                      });
+                      openStake(Stake.bpt, 'stkBPT');
+                    }}
+                    onCooldownAction={() => {
+                      trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                        action: SAFETY_MODULE.OPEN_COOLDOWN_MODAL,
+                        asset: 'ABPT',
+                        stakeType: 'Safety Module',
+                      });
+                      openStakeCooldown(Stake.bpt, 'stkbpt');
+                    }}
+                    onUnstakeAction={() => {
+                      trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                        action: SAFETY_MODULE.OPEN_WITHDRAW_MODAL,
+                        asset: 'ABPT',
+                        stakeType: 'Safety Module',
+                      });
+                      openUnstake(Stake.bpt, 'stkBPT');
+                    }}
+                    onStakeRewardClaimAction={() => {
+                      trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                        action: SAFETY_MODULE.OPEN_CLAIM_MODAL,
+                        asset: 'ABPT',
+                        stakeType: 'Safety Module',
+                        rewardType: 'Claim',
+                      });
+                      openStakeRewardsClaim(Stake.bpt, 'AAVE');
+                    }}
+                    onMigrateAction={() => {
+                      trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+                        action: 'Open Migration Modal',
+                        asset: 'ABPT',
+                        stakeType: 'Safety Module',
+                      });
+                      openStakingMigrate();
+                    }}
                     headerAction={
                       stkBpt?.inPostSlashingPeriod ? (
                         <Stack direction="row" alignItems="center" gap={3}>
@@ -324,7 +467,7 @@ export default function Staking() {
           <ConnectWalletPaperStaking
             description={
               <Trans>
-                We couldn’t detect a wallet. Connect a wallet to stake and view your balance.
+                We couldn&apos;t detect a wallet. Connect a wallet to stake and view your balance.
               </Trans>
             }
           />
@@ -344,6 +487,8 @@ Staking.getLayout = function getLayout(page: React.ReactElement) {
       <UnStakeModal />
       <StakeRewardClaimModal />
       <StakeRewardClaimRestakeModal />
+      <SavingsGhoDepositModal />
+      <SavingsGhoWithdrawModal />
       {/** End of modals */}
     </MainLayout>
   );
