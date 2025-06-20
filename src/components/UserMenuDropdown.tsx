@@ -1,15 +1,17 @@
 import { useInfinexUser, useInfinexUserBalances } from '@infinex/connect-sdk';
 import { Box, Button, Divider, Menu, MenuItem, Stack, Typography, useTheme } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
+import { useChainId } from 'wagmi';
 
 import { AvatarSize } from './Avatar';
 import { UserDisplay } from './UserDisplay';
 
 const UserMenuDropdown: React.FC = () => {
   const theme = useTheme();
-  const { data: user } = useInfinexUser();
-  const { data: balances } = useInfinexUserBalances();
+  const { data: user, refresh: refreshUser } = useInfinexUser();
+  const chainId = useChainId();
+  const { data: balances, refresh: refreshBalances } = useInfinexUserBalances();
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
   const open = Boolean(anchor);
 
@@ -19,6 +21,13 @@ const UserMenuDropdown: React.FC = () => {
   const handleClose = () => {
     setAnchor(null);
   };
+
+  useEffect(() => {
+    refreshUser();
+    refreshBalances();
+    // infinite loop with `refreshBalances` / `refreshUser`
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId]);
 
   return (
     <ConnectKitButton.Custom>
