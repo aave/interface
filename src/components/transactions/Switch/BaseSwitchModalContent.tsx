@@ -442,6 +442,10 @@ export const BaseSwitchModalContent = ({
         })
       : null;
 
+  const receivingPercentage = !switchRates
+    ? undefined
+    : (Number(switchRates?.destUSD) * (1 - safeSlippage)) / Number(switchRates?.srcUSD);
+
   // Component
   return (
     <>
@@ -625,6 +629,17 @@ export const BaseSwitchModalContent = ({
                 inputAmount={debounceInputAmount}
               />
               {txError && <ParaswapErrorDisplay txError={txError} />}
+
+              {receivingPercentage && receivingPercentage < 0.7 && (
+                <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
+                  <Typography variant="caption">
+                    <Trans>
+                      Costs may be up to {100 - Math.round(receivingPercentage * 100)}% of the value
+                      sent
+                    </Trans>
+                  </Typography>
+                </Warning>
+              )}
 
               <SwitchActions
                 isWrongNetwork={isWrongNetwork.isWrongNetwork}
