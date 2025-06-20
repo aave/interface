@@ -954,6 +954,10 @@ msgstr "Main Ethereum market with the largest selection of assets and yield opti
 msgid "Disabled"
 msgstr "Disabled"
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "Costs may be up to {0}% of the value sent"
+msgstr "Costs may be up to {0}% of the value sent"
+
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "COPIED!"
 msgstr "COPIED!"
