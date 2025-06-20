@@ -32,7 +32,6 @@ import {
 } from '../utils/marketsAndNetworksConfig';
 import StyledToggleButton from './StyledToggleButton';
 import StyledToggleButtonGroup from './StyledToggleButtonGroup';
-import { useSwitchChain } from 'wagmi';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
