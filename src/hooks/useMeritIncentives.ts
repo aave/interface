@@ -139,7 +139,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'ETHFI',
         protocolAction: ProtocolAction.borrow,
         customMessage:
-          'You must supply weETH and borrow USDC in order to receive merit rewards. Only the new USDC debt holders are eligible for the rewards.',
+          'You must supply weETH and borrow USDC in order to receive merit rewards. Only new USDC debt holders are eligible for rewards.',
       },
     ],
     WBTC: [
@@ -197,7 +197,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'ETHFI',
         protocolAction: ProtocolAction.supply,
         customMessage:
-          'You must supply weETH and borrow USDC in order to receive merit rewards. Only the new USDC debt holders are eligible for the rewards.',
+          'You must supply weETH and borrow USDC in order to receive merit rewards. Only new USDC debt holders are eligible for rewards.',
       },
     ],
   },
@@ -545,7 +545,18 @@ export const useMeritIncentives = ({
       const data = await response.json();
       const meritIncentives = data.currentAPR as MeritIncentives;
 
-      return meritIncentives;
+      const meritIncentivesUpdated = {
+        ...meritIncentives,
+        actionsAPR: {
+          ...meritIncentives.actionsAPR,
+          [MeritAction.SUPPLY_WEETH_BORROW_USDC]: 2,
+        },
+      };
+
+      console.log('meritIncentivesUpdated');
+      console.log(meritIncentivesUpdated);
+
+      return meritIncentivesUpdated;
     },
     queryKey: ['meritIncentives'],
     staleTime: 1000 * 60 * 5,
