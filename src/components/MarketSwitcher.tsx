@@ -15,6 +15,7 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useMemo, useState } from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
@@ -32,7 +33,6 @@ import {
 } from '../utils/marketsAndNetworksConfig';
 import StyledToggleButton from './StyledToggleButton';
 import StyledToggleButtonGroup from './StyledToggleButtonGroup';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
