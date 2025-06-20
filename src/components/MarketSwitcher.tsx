@@ -15,6 +15,7 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useMemo, useState } from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
@@ -125,6 +126,7 @@ export const MarketSwitcher = () => {
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   );
+  const { switchNetwork } = useWeb3Context();
 
   const isV3MarketsAvailable = availableMarkets
     .map((marketId: CustomMarket) => {
@@ -134,9 +136,14 @@ export const MarketSwitcher = () => {
     })
     .some((item) => !!item);
 
-  const handleMarketSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMarketSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.value as unknown as CustomMarket;
+
     trackEvent(DASHBOARD.CHANGE_MARKET, { market: e.target.value });
-    setCurrentMarket(e.target.value as unknown as CustomMarket);
+    setCurrentMarket(selected);
+
+    const { market } = getMarketInfoById(selected);
+    await switchNetwork(market.chainId);
   };
 
   const marketBlurbs: { [key: string]: JSX.Element } = {
