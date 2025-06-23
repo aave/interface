@@ -425,7 +425,8 @@ export const MarketSwitcher = () => {
         const { market, logo } = getMarketInfoById(marketId);
         const naming = getMarketHelpData(market.marketTitle);
         const chainId = toHex(market.chainId);
-        const isEnabled = !isInfinexConnected || infinexSupportedEvmNetworks?.includes(chainId);
+        const isEnabled =
+          (!isInfinexConnected || infinexSupportedEvmNetworks?.includes(chainId)) && market.v3;
 
         return (
           <MenuItem
