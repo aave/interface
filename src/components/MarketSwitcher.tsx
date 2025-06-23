@@ -14,7 +14,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
@@ -126,7 +126,7 @@ export const MarketSwitcher = () => {
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   );
-  const { switchNetwork } = useWeb3Context();
+  const { switchNetwork, chainId: activeChain } = useWeb3Context();
 
   const isV3MarketsAvailable = availableMarkets
     .map((marketId: CustomMarket) => {
@@ -177,6 +177,18 @@ export const MarketSwitcher = () => {
       return ena ? -1 : 1;
     });
   }, [filteredMarkets, infinexSupportedEvmNetworks, isInfinexConnected]);
+
+  useEffect(() => {
+    if (!currentMarket) return;
+
+    const { market } = getMarketInfoById(currentMarket);
+    // only switch if we’re not already on the right chain
+    if (activeChain !== market.chainId) {
+      switchNetwork(market.chainId);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeChain]);
 
   return (
     <TextField
