@@ -41,6 +41,15 @@ import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import { SwitchTxSuccessView } from './SwitchTxSuccessView';
 import { validateSlippage, ValidationSeverity } from './validation.helpers';
 
+const SAFETY_MODULE_TOKENS = [
+  'stkgho',
+  'stkaave',
+  'stkaavewstethbptv2',
+  'stkbptv2',
+  'stkbpt',
+  'stkabpt',
+];
+
 export type SwitchDetailsParams = Parameters<
   NonNullable<SwitchModalCustomizableProps['switchDetails']>
 >[0];
@@ -446,6 +455,10 @@ export const BaseSwitchModalContent = ({
     ? undefined
     : (Number(switchRates?.destUSD) * (1 - safeSlippage)) / Number(switchRates?.srcUSD);
 
+  const isSwappingSafetyModuleToken = SAFETY_MODULE_TOKENS.includes(
+    selectedInputToken.symbol.toLowerCase()
+  );
+
   // Component
   return (
     <>
@@ -608,7 +621,7 @@ export const BaseSwitchModalContent = ({
                 selectedOutputToken.extensions?.isUserCustom) && (
                 <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
                   <Typography variant="caption">
-                    You have selected a custom imported token.
+                    You selected a custom imported token. Make sure it&apos;s the right token.
                   </Typography>
                 </Warning>
               )}
@@ -630,12 +643,25 @@ export const BaseSwitchModalContent = ({
               />
               {txError && <ParaswapErrorDisplay txError={txError} />}
 
-              {receivingPercentage && receivingPercentage < 0.7 && (
+              {receivingPercentage && receivingPercentage < 0.9 && (
                 <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
                   <Typography variant="caption">
                     <Trans>
-                      Costs may be up to {100 - Math.round(receivingPercentage * 100)}% of the value
-                      sent
+                      High price impact. This route may return less due to low liquidity.
+                    </Trans>
+                  </Typography>
+                </Warning>
+              )}
+
+              {isSwappingSafetyModuleToken && (
+                <Warning severity="error" icon={false} sx={{ mt: 2, mb: 2 }}>
+                  <Typography variant="caption">
+                    <Trans>
+                      Please use Safety Module{' '}
+                      <Link href="/safety-module" onClick={() => close()}>
+                        page
+                      </Link>
+                      .
                     </Trans>
                   </Typography>
                 </Warning>
@@ -656,7 +682,8 @@ export const BaseSwitchModalContent = ({
                   !switchRates ||
                   Number(debounceInputAmount) > Number(selectedInputToken.balance) ||
                   !user ||
-                  slippageValidation?.severity === ValidationSeverity.ERROR
+                  slippageValidation?.severity === ValidationSeverity.ERROR ||
+                  isSwappingSafetyModuleToken
                 }
                 chainId={selectedChainId}
                 switchRates={switchRates}
