@@ -657,9 +657,9 @@ export const BaseSwitchModalContent = ({
                 <Warning severity="error" icon={false} sx={{ mt: 2, mb: 2 }}>
                   <Typography variant="caption">
                     <Trans>
-                      Please use Safety Module{' '}
+                      For swapping safety module assets please unstake your position{' '}
                       <Link href="/safety-module" onClick={() => close()}>
-                        page
+                        here
                       </Link>
                       .
                     </Trans>
