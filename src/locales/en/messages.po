@@ -906,10 +906,6 @@ msgstr "Disabled"
 msgid "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
 msgstr "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
 
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
-msgid "Costs may be up to {0}% of the value sent"
-msgstr "Costs may be up to {0}% of the value sent"
-
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restaking {symbol}"
 msgstr "Restaking {symbol}"
@@ -2603,6 +2599,10 @@ msgstr "In Isolation mode, you cannot supply other assets as collateral. A globa
 msgid "Staking this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Staking this amount will reduce your health factor and increase risk of liquidation."
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "High price impact. This route may return less due to low liquidity."
+msgstr "High price impact. This route may return less due to low liquidity."
+
 #: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "Collateral usage is limited because of Isolation mode."
@@ -3115,6 +3115,10 @@ msgstr "User is in isolation mode or LTV is zero"
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "Invalid amount to burn"
+
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "Please use Safety Module <0>page</0>."
+msgstr "Please use Safety Module <0>page</0>."
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/MoreMenu.tsx
