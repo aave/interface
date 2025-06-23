@@ -346,6 +346,10 @@ msgstr "Total amount staked"
 msgid "Transactions"
 msgstr "Transactions"
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "For swapping safety module assets please unstake your position <0>here</0>."
+msgstr "For swapping safety module assets please unstake your position <0>here</0>."
+
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 msgstr "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
@@ -3115,10 +3119,6 @@ msgstr "User is in isolation mode or LTV is zero"
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "Invalid amount to burn"
-
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
-msgid "Please use Safety Module <0>page</0>."
-msgstr "Please use Safety Module <0>page</0>."
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/MoreMenu.tsx
