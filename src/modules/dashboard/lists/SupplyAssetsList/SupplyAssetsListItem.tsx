@@ -281,7 +281,7 @@ export const SupplyAssetsListItemDesktop = ({
             },
           }}
         >
-          <MenuItem
+          {/* <MenuItem
             sx={{ gap: 2 }}
             onClick={handleSwitchClick}
             disabled={!isFeatureEnabled.switch(currentMarketData)}
@@ -290,7 +290,7 @@ export const SupplyAssetsListItemDesktop = ({
               <SwitchHorizontalIcon />
             </SvgIcon>
             <ListItemText>Switch</ListItemText>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             sx={{ gap: 2 }}
             component={Link}

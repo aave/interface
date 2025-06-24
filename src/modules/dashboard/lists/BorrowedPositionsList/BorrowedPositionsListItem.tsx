@@ -8,7 +8,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+// import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
@@ -43,7 +43,8 @@ export const BorrowedPositionsListItem = ({
 
   const disableRepay = !reserve.isActive || reserve.isPaused;
 
-  const showSwitchButton = !!isFeatureEnabled.debtSwitch(currentMarketData);
+  // const showSwitchButton = !!isFeatureEnabled.debtSwitch(currentMarketData);
+  const showSwitchButton = false;
   const disableSwitch =
     // NOTE: Disabled on v2 because borrowing is not possible
     currentMarket === 'proto_mainnet' ||
@@ -146,7 +147,7 @@ const BorrowedPositionsListItemDesktop = ({
       />
 
       <ListButtonsColumn>
-        {showSwitchButton ? (
+        {showSwitchButton && (
           <Button
             disabled={disableSwitch}
             variant="contained"
@@ -154,10 +155,6 @@ const BorrowedPositionsListItemDesktop = ({
             data-cy={`swapButton`}
           >
             <Trans>Swap</Trans>
-          </Button>
-        ) : (
-          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow}>
-            <Trans>Borrow</Trans>
           </Button>
         )}
         <Button disabled={disableRepay} variant="outlined" onClick={onOpenRepay}>

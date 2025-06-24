@@ -33,7 +33,8 @@ export const SuppliedPositionsListItem = ({
     useShallow((store) => [store.trackEvent, store.currentMarketData, store.currentMarket])
   );
 
-  const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  // const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  const showSwitchButton = false;
 
   const canBeEnabledAsCollateral = user
     ? !debtCeiling.isMaxed &&
@@ -103,7 +104,7 @@ export const SuppliedPositionsListItem = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        {showSwitchButton ? (
+        {showSwitchButton && (
           <Button
             disabled={disableSwap}
             variant="contained"
@@ -121,14 +122,6 @@ export const SuppliedPositionsListItem = ({
             data-cy={`swapButton`}
           >
             <Trans>Swap</Trans>
-          </Button>
-        ) : (
-          <Button
-            disabled={disableSupply}
-            variant="contained"
-            onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
-          >
-            <Trans>Supply</Trans>
           </Button>
         )}
         <Button
