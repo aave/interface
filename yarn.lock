@@ -2488,9 +2488,9 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.3.tgz#4a2868d75d6d6963e423bcf90b7fd1be343409d3"
   integrity sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==
 
-"@infinex/connect-sdk@file:./vendor/infinex-connect-sdk.tgz":
-  version "0.0.13"
-  resolved "file:./vendor/infinex-connect-sdk.tgz#a82fe61424720cd2bbe7567e4e910dfbf1002653"
+"@infinex/connect-sdk@file:./vendor/infinex-connect-sdk-0.0.14.tgz":
+  version "0.0.14"
+  resolved "file:./vendor/infinex-connect-sdk-0.0.14.tgz#3cd44c2a77924344299308cd9360e581eaaeb153"
   dependencies:
     "@solana/wallet-adapter-base" "^0.9.24"
     "@solana/wallet-standard-features" "^1.3.0"

@@ -160,7 +160,8 @@ export const createPoolSlice: StateCreator<
         REPAY_WITH_COLLATERAL_ADAPTER: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
         SWAP_COLLATERAL_ADAPTER: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
         WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
-        L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
+        L2_ENCODER: undefined, // WE DON'T WANT TO USE COMPRESSED ARGS FOR NOW
+        // L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
       });
     } else {
       return new LendingPool(provider, {
@@ -179,7 +180,8 @@ export const createPoolSlice: StateCreator<
         return new PoolBundle(provider, {
           POOL: currentMarketData.addresses.LENDING_POOL,
           WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
-          L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
+          L2_ENCODER: undefined, // WE DON'T WANT TO USE COMPRESSED ARGS FOR NOW
+          // L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
         });
       } else {
         return new LendingPoolBundle(provider, {
