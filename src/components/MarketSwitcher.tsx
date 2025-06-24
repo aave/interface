@@ -444,7 +444,7 @@ export const MarketSwitcher = () => {
               {naming.name} {market.isFork ? 'Fork' : ''}{' '}
               {!isEnabled && (
                 <Chip
-                  label={<Trans>Coming soon</Trans>}
+                  label={'Soon'}
                   size="small"
                   variant="outlined"
                   sx={{
