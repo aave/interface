@@ -68,6 +68,7 @@ export const GasStation: React.FC<GasStationProps> = ({
   const { name, baseAssetSymbol } = getNetworkConfig(selectedChainId);
 
   const { loadingTxns } = useModalContext();
+  const isGasStationEnabled = false;
 
   const totalGasCostsUsd =
     gasPrice && poolReserves?.baseCurrencyData
@@ -107,14 +108,18 @@ export const GasStation: React.FC<GasStationProps> = ({
         </Box>
         {rightComponent}
       </Box>
-      {!disabled && !isContractAddress && Number(nativeBalanceUSD) < Number(totalGasCostsUsd) && (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Warning severity="warning" sx={{ mb: 0, mx: 'auto' }}>
-            You do not have enough {baseAssetSymbol} in your account to pay for transaction fees on{' '}
-            {name} network. Please deposit {baseAssetSymbol} from another account.
-          </Warning>
-        </Box>
-      )}
+      {/* TODO: Make this configurable some how */}
+      {isGasStationEnabled &&
+        !disabled &&
+        !isContractAddress &&
+        Number(nativeBalanceUSD) < Number(totalGasCostsUsd) && (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Warning severity="warning" sx={{ mb: 0, mx: 'auto' }}>
+              You do not have enough {baseAssetSymbol} in your account to pay for transaction fees
+              on {name} network. Please deposit {baseAssetSymbol} from another account.
+            </Warning>
+          </Box>
+        )}
     </Stack>
   );
 };
