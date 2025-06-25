@@ -2,6 +2,7 @@ import { ChainId } from '@aave/contract-helpers';
 import {
   AaveV3Arbitrum,
   AaveV3ArbitrumSepolia,
+  AaveV3Avalanche,
   AaveV3Base,
   AaveV3BaseSepolia,
   AaveV3Ethereum,
@@ -132,6 +133,30 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.base,
+        logoURI:
+          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
+      },
+    ],
+  },
+  {
+    sourceChainId: ChainId.avalanche,
+    chainSelector: '6433500567565415381',
+    burnMintTokenPool: '0xDe6539018B095353A40753Dc54C91C68c9487D4E',
+    router: '0xF4c7E640EdA248ef95972845a62bdC74237805dB',
+    tokenOracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12',
+    wrappedNativeOracle: AaveV3Avalanche.ASSETS.WAVAX.ORACLE,
+    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7WRSEgg43s2CqpymK2wkHrhQjn4v5fEnufonwRkkokbM`,
+    feeTokens: [
+      {
+        name: 'AVAX',
+        symbol: 'AVAX',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: ChainId.avalanche,
         logoURI:
           'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
