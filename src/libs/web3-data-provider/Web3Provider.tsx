@@ -134,13 +134,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const switchNetwork = async (newChainId: number) => {
     try {
-      console.log('DEBUG: switch network', newChainId, ' with connector', connector);
-      const chainSwitchRes = await switchChainAsync({ chainId: newChainId, connector });
-      console.log('DEBUG: switch network success: ', chainSwitchRes);
+      await switchChainAsync({ chainId: newChainId, connector });
       setSwitchNetworkError(undefined);
-      console.log('NEW CHAIN: ', chainId);
     } catch (switchError) {
-      console.log('DEBUG: switch network error', switchError);
       if (switchError.code === UserRejectedRequestError.code) {
         setSwitchNetworkError(switchError);
       } else {
