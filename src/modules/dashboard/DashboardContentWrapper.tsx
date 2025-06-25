@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ROUTES } from 'src/components/primitives/Link';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+// import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { AUTH } from 'src/utils/events';
 
@@ -18,7 +18,7 @@ interface DashboardContentWrapperProps {
 
 export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperProps) => {
   const { breakpoints } = useTheme();
-  const { currentAccount } = useWeb3Context();
+  // const { currentAccount } = useWeb3Context();
   const router = useRouter();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -46,7 +46,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             width: paperWidth,
           }}
         >
-          {currentAccount && !isBorrow && downToLg && (
+          {false && !isBorrow && downToLg && (
             <Box
               sx={{
                 position: { xs: 'static', md: 'relative' },
@@ -86,7 +86,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             width: paperWidth,
           }}
         >
-          {currentAccount && (
+          {false && (
             <Box
               sx={{
                 position: { xs: 'static', md: 'absolute' },

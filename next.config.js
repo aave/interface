@@ -28,6 +28,80 @@ module.exports = withBundleAnalyzer({
     config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: '/staking',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/staking/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/governance',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/governance/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/faucet',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/faucet/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/v3-migration',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/v3-migration/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/history',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/history/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/bridge',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/bridge/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/safety-module',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/safety-module/:path*',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
   reactStrictMode: true,
   // assetPrefix: "./",
   trailingSlash: true,

@@ -1,5 +1,5 @@
 import { ProtocolAction } from '@aave/contract-helpers';
-import { SwitchHorizontalIcon } from '@heroicons/react/outline';
+// import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { EyeIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
@@ -28,7 +28,7 @@ import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/events';
-import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+// import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
@@ -106,11 +106,14 @@ export const SupplyAssetsListItemDesktop = ({
   canSupplyAsWrappedToken,
   walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  // const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentMarket = useRootStore((store) => store.currentMarket);
   const wrappedTokenReserves = useWrappedTokens();
 
-  const { openSupply, openSwitch } = useModalContext();
+  const {
+    openSupply,
+    // openSwitch
+  } = useModalContext();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
@@ -140,10 +143,10 @@ export const SupplyAssetsListItemDesktop = ({
     setAnchorEl(null);
   };
 
-  const handleSwitchClick = () => {
-    openSwitch(underlyingAsset);
-    setAnchorEl(null);
-  };
+  // const handleSwitchClick = () => {
+  //   openSwitch(underlyingAsset);
+  //   setAnchorEl(null);
+  // };
 
   return (
     <ListItemWrapper
@@ -281,7 +284,7 @@ export const SupplyAssetsListItemDesktop = ({
             },
           }}
         >
-          <MenuItem
+          {/* <MenuItem
             sx={{ gap: 2 }}
             onClick={handleSwitchClick}
             disabled={!isFeatureEnabled.switch(currentMarketData)}
@@ -290,7 +293,7 @@ export const SupplyAssetsListItemDesktop = ({
               <SwitchHorizontalIcon />
             </SvgIcon>
             <ListItemText>Switch</ListItemText>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             sx={{ gap: 2 }}
             component={Link}
