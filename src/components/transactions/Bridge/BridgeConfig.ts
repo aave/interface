@@ -149,7 +149,7 @@ const prodConfig: Config[] = [
     router: '0xF4c7E640EdA248ef95972845a62bdC74237805dB',
     tokenOracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12',
     wrappedNativeOracle: AaveV3Avalanche.ASSETS.WAVAX.ORACLE,
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7RqaLvSMWBv4Z3xmv4kb6Jq3t59ikYG3wpcsTnLgBWzt`,
+    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7WRSEgg43s2CqpymK2wkHrhQjn4v5fEnufonwRkkokbM`,
     feeTokens: [
       {
         name: 'AVAX',
