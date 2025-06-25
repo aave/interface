@@ -1,5 +1,23 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
+import {
+  AaveV3Arbitrum,
+  AaveV3Avalanche,
+  AaveV3Base,
+  AaveV3BNB,
+  AaveV3Celo,
+  AaveV3Ethereum,
+  AaveV3EthereumEtherFi,
+  AaveV3EthereumLido,
+  AaveV3Gnosis,
+  AaveV3Linea,
+  AaveV3Metis,
+  AaveV3Optimism,
+  AaveV3Polygon,
+  AaveV3Scroll,
+  AaveV3Soneium,
+  AaveV3Sonic,
+} from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { Address } from 'viem';
 
@@ -45,6 +63,39 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customForumLink: string;
 };
 
+const allAaveAssets = [
+  AaveV3Ethereum.ASSETS,
+  AaveV3EthereumLido.ASSETS,
+  AaveV3EthereumEtherFi.ASSETS,
+  AaveV3Base.ASSETS,
+  AaveV3Arbitrum.ASSETS,
+  AaveV3Avalanche.ASSETS,
+  AaveV3Sonic.ASSETS,
+  AaveV3Optimism.ASSETS,
+  AaveV3Polygon.ASSETS,
+  AaveV3Metis.ASSETS,
+  AaveV3Gnosis.ASSETS,
+  AaveV3BNB.ASSETS,
+  AaveV3Scroll.ASSETS,
+  AaveV3Linea.ASSETS,
+  AaveV3Celo.ASSETS,
+  AaveV3Soneium.ASSETS,
+];
+
+const getUnderlyingAndAToken = (assets: {
+  [key: string]: {
+    UNDERLYING: Address;
+    A_TOKEN: Address;
+  };
+}) => {
+  return Object.entries(assets).flatMap(([, asset]) => [
+    asset.UNDERLYING.toLowerCase(),
+    asset.A_TOKEN.toLowerCase(),
+  ]);
+};
+
+const wihtelistedRewardTokens = allAaveAssets.flatMap((assets) => getUnderlyingAndAToken(assets));
+
 const url = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 
 const checkOpportunityAction = (
@@ -65,16 +116,14 @@ export const useMerklIgniteIncentives = ({
   market,
   rewardedAsset,
   protocolAction,
-  urlParams = '',
 }: {
   market: string;
   rewardedAsset?: string;
   protocolAction?: ProtocolAction;
-  urlParams?: string;
 }) => {
   return useQuery({
     queryFn: async () => {
-      const response = await fetch(`${url}${urlParams}`);
+      const response = await fetch(`${url}`);
       const merklOpportunities: MerklOpportunity[] = await response.json();
       return merklOpportunities;
     },
@@ -106,6 +155,10 @@ export const useMerklIgniteIncentives = ({
       const apr = opportunity.apr / 100;
 
       const rewardToken = opportunity.tokens[opportunity.tokens.length - 1];
+
+      if (!wihtelistedRewardTokens.includes(rewardToken.address.toLowerCase())) {
+        return null;
+      }
 
       return {
         incentiveAPR: apr.toString(),
