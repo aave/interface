@@ -45,7 +45,7 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customForumLink: string;
 };
 
-const url = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API for ZK Ignite opportunities
+const url = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
@@ -59,22 +59,6 @@ const checkOpportunityAction = (
     default:
       return false;
   }
-};
-export const useZkSyncIgniteIncentives = ({
-  market,
-  rewardedAsset,
-  protocolAction,
-}: {
-  market: string;
-  rewardedAsset?: string;
-  protocolAction?: ProtocolAction;
-}) => {
-  return useMerklIgniteIncentives({
-    market,
-    rewardedAsset,
-    protocolAction,
-    urlParams: `&tags=zksync`,
-  });
 };
 
 export const useMerklIgniteIncentives = ({

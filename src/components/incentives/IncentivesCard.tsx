@@ -12,7 +12,6 @@ import {
   MeritIncentivesButton,
   MerklIncentivesButton,
   SonicIncentivesButton,
-  ZkIgniteIncentivesButton,
 } from './IncentivesButton';
 
 interface IncentivesCardProps {
@@ -91,11 +90,6 @@ export const IncentivesCard = ({
         <IncentivesButton incentives={incentives} symbol={symbol} />
         <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
         <MerklIncentivesButton
-          market={market}
-          rewardedAsset={address}
-          protocolAction={protocolAction}
-        />
-        <ZkIgniteIncentivesButton
           market={market}
           rewardedAsset={address}
           protocolAction={protocolAction}

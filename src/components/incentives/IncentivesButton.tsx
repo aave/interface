@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
-import { useMerklIgniteIncentives, useZkSyncIgniteIncentives } from 'src/hooks/useMerklIncentives';
+import { useMerklIgniteIncentives } from 'src/hooks/useMerklIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
@@ -21,7 +21,6 @@ import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipConte
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
-import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
 
 interface IncentivesButtonProps {
   symbol: string;
@@ -66,35 +65,6 @@ export const MeritIncentivesButton = (params: {
       open={open}
     >
       <Content incentives={[meritIncentives]} incentivesNetAPR={+meritIncentives.incentiveAPR} />
-    </ContentWithTooltip>
-  );
-};
-
-export const ZkIgniteIncentivesButton = (params: {
-  market: string;
-  rewardedAsset?: string;
-  protocolAction?: ProtocolAction;
-}) => {
-  const [open, setOpen] = useState(false);
-  const { data: zkSyncIgniteIncentives } = useZkSyncIgniteIncentives(params);
-
-  if (!zkSyncIgniteIncentives) {
-    return null;
-  }
-
-  return (
-    <ContentWithTooltip
-      tooltipContent={
-        <ZkSyncIgniteIncentivesTooltipContent zkSyncIgniteIncentives={zkSyncIgniteIncentives} />
-      }
-      withoutHover
-      setOpen={setOpen}
-      open={open}
-    >
-      <Content
-        incentives={[zkSyncIgniteIncentives]}
-        incentivesNetAPR={+zkSyncIgniteIncentives.incentiveAPR}
-      />
     </ContentWithTooltip>
   );
 };
