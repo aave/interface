@@ -54,6 +54,17 @@ export type SwitchDetailsParams = Parameters<
   NonNullable<SwitchModalCustomizableProps['switchDetails']>
 >[0];
 
+const shouldShowWarning = (destValueInUsd: number, srcValueInUsd: number) => {
+  const receivingPercentage = destValueInUsd / srcValueInUsd;
+  const valueLostPercentage = receivingPercentage ? 1 - receivingPercentage : 0;
+
+  if (destValueInUsd > 500000) return valueLostPercentage > 0.03;
+  if (destValueInUsd > 100000) return valueLostPercentage > 0.04;
+  if (destValueInUsd > 10000) return valueLostPercentage > 0.05;
+  if (destValueInUsd > 1000) return valueLostPercentage > 0.07;
+  return valueLostPercentage > 0.1;
+};
+
 export const getFilteredTokensForSwitch = (chainId: number): TokenInfoWithBalance[] => {
   let customTokenList = TOKEN_LIST.tokens;
   const savedCustomTokens = localStorage.getItem('customTokens');
@@ -451,9 +462,12 @@ export const BaseSwitchModalContent = ({
         })
       : null;
 
-  const receivingPercentage = !switchRates
-    ? undefined
-    : (Number(switchRates?.destUSD) * (1 - safeSlippage)) / Number(switchRates?.srcUSD);
+  const showWarning = switchRates
+    ? shouldShowWarning(
+        Number(switchRates.destUSD) * (1 - safeSlippage),
+        Number(switchRates.srcUSD)
+      )
+    : undefined;
 
   const isSwappingSafetyModuleToken = SAFETY_MODULE_TOKENS.includes(
     selectedInputToken.symbol.toLowerCase()
@@ -643,7 +657,7 @@ export const BaseSwitchModalContent = ({
               />
               {txError && <ParaswapErrorDisplay txError={txError} />}
 
-              {receivingPercentage && receivingPercentage < 0.9 && (
+              {!!showWarning && (
                 <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
                   <Typography variant="caption">
                     <Trans>
