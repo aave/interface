@@ -48,6 +48,7 @@ const TOKEN_GROUPS: Record<'stable' | 'correlatedEth' | 'correlatedBtc', string[
     'USDC.E',
     'EURE',
     'XDAI',
+    'WXDAI',
   ],
   correlatedEth: [
     'WEETH',
