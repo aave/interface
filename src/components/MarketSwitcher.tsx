@@ -20,6 +20,7 @@ import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
 import { toHex } from 'viem';
+import { useAccount } from 'wagmi';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -122,6 +123,7 @@ export const MarketSwitcher = () => {
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const isInfinexConnected = useInfinexConnected();
+  const { connector } = useAccount();
   const { data: infinexSupportedEvmNetworks } = useInfinexSupportedEvmNetworks();
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
@@ -179,7 +181,7 @@ export const MarketSwitcher = () => {
   }, [filteredMarkets, infinexSupportedEvmNetworks, isInfinexConnected]);
 
   useEffect(() => {
-    if (!currentMarket) return;
+    if (!currentMarket || !isInfinexConnected || !connector) return;
 
     const { market } = getMarketInfoById(currentMarket);
     // only switch if we’re not already on the right chain
@@ -188,7 +190,7 @@ export const MarketSwitcher = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeChain]);
+  }, [currentMarket, isInfinexConnected, connector]);
 
   return (
     <TextField
