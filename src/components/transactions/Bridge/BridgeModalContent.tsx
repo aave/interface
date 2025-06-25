@@ -121,9 +121,17 @@ export const BridgeModalContent = () => {
     setMaxSelected(false);
   }, [sourceNetworkObj]);
 
+  // Find v3 market for briding as all markets are on v3
+  const findMarketData = (chainId: number) => {
+    const allMarkets = Object.values(marketsData).filter((elem) => elem.chainId === chainId);
+    const v3Market = allMarkets.find((market) => market.v3 === true);
+    return v3Market || allMarkets[0] || defaultNetworkMarket;
+  };
+
+  const selectedMarketData = findMarketData(sourceNetworkObj.chainId);
+
   const { data: sourceTokenInfo, isFetching: fetchingBridgeTokenBalance } = useBridgeTokens(
-    Object.values(marketsData).find((elem) => elem.chainId === sourceNetworkObj.chainId) ||
-      defaultNetworkMarket,
+    selectedMarketData,
     getConfigFor(sourceNetworkObj.chainId).tokenOracle
   );
 
