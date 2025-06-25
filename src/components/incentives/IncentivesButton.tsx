@@ -7,11 +7,8 @@ import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useMerklIgniteIncentives, useZkSyncIgniteIncentives } from 'src/hooks/useMerklIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
-import {
-  useMerklIgniteIncentives,
-  useZkSyncIgniteIncentives,
-} from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
 

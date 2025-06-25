@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
-import { ExtendedReserveIncentiveResponse } from 'src/hooks/useZkSyncIgniteIncentives';
+import { ExtendedReserveIncentiveResponse } from 'src/hooks/useMerklIncentives';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
