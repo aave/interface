@@ -146,9 +146,12 @@ export const UnStakeActions = ({
         sender: user,
         stakeToken: stakeData.tokenAddress,
         amount: parsedAmountToStake.toString(),
-        edgeToken: RedeemType.ATOKEN
-          ? stakeData.stataTokenData.aToken
-          : stakeData.stataTokenData.asset,
+        edgeToken:
+          redeemType === RedeemType.ATOKEN
+            ? stakeData.stataTokenData.aToken
+            : stakeData.underlyingIsStataToken
+            ? stakeData.stataTokenData.asset
+            : stakeData.underlyingTokenAddress,
       });
       unstakeTxData = await estimateGasLimit(unstakeTxData);
       const tx = await sendTx(unstakeTxData);
