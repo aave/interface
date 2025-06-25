@@ -409,7 +409,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       switch: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/2h9woxy8RTjHu1HJsCEnmzpPHFArU33avmUh4f71JpVn`,
+    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/2h9woxy8RTjHu1HJsCEnmzpPHFArU33avmUh4f71JpVn`,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Avalanche.POOL,
@@ -422,6 +422,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Avalanche.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Avalanche.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Avalanche.WITHDRAW_SWAP_ADAPTER,
+      GHO_TOKEN_ADDRESS: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73',
     },
   },
   [CustomMarket.proto_fuji_v3]: {
