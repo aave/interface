@@ -1,8 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { AaveV3ZkSync } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { Address } from 'viem';
 
 enum OpportunityAction {
@@ -28,20 +26,18 @@ type MerklOpportunity = {
   dailyRewards: number;
   tags: [];
   id: string;
-  tokens: [
-    {
-      id: string;
-      name: string;
-      chainId: number;
-      address: Address;
-      decimals: number;
-      icon: string;
-      verified: boolean;
-      isTest: boolean;
-      price: number;
-      symbol: string;
-    }
-  ];
+  tokens: {
+    id: string;
+    name: string;
+    chainId: number;
+    address: Address;
+    decimals: number;
+    icon: string;
+    verified: boolean;
+    isTest: boolean;
+    price: number;
+    symbol: string;
+  }[];
 };
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
@@ -49,10 +45,7 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customForumLink: string;
 };
 
-const url = 'https://api.merkl.xyz/v4/opportunities?tags=zksync&mainProtocolId=aave'; // Merkl API for ZK Ignite opportunities
-
-const rewardToken = AaveV3ZkSync.ASSETS.ZK.UNDERLYING;
-const rewardTokenSymbol = 'ZK';
+const url = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API for ZK Ignite opportunities
 
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
@@ -67,7 +60,6 @@ const checkOpportunityAction = (
       return false;
   }
 };
-
 export const useZkSyncIgniteIncentives = ({
   market,
   rewardedAsset,
@@ -77,17 +69,32 @@ export const useZkSyncIgniteIncentives = ({
   rewardedAsset?: string;
   protocolAction?: ProtocolAction;
 }) => {
+  return useMerklIgniteIncentives({
+    market,
+    rewardedAsset,
+    protocolAction,
+    urlParams: `&tags=zksync`,
+  });
+};
+
+export const useMerklIgniteIncentives = ({
+  market,
+  rewardedAsset,
+  protocolAction,
+  urlParams = '',
+}: {
+  market: string;
+  rewardedAsset?: string;
+  protocolAction?: ProtocolAction;
+  urlParams?: string;
+}) => {
   return useQuery({
     queryFn: async () => {
-      if (market === CustomMarket.proto_zksync_v3) {
-        const response = await fetch(url);
-        const merklOpportunities: MerklOpportunity[] = await response.json();
-        return merklOpportunities;
-      } else {
-        return [];
-      }
+      const response = await fetch(`${url}${urlParams}`);
+      const merklOpportunities: MerklOpportunity[] = await response.json();
+      return merklOpportunities;
     },
-    queryKey: ['zkIgniteIncentives', market],
+    queryKey: ['merklIncentives', market],
     staleTime: 1000 * 60 * 5,
     select: (merklOpportunities) => {
       const opportunities = merklOpportunities.filter(
@@ -108,12 +115,18 @@ export const useZkSyncIgniteIncentives = ({
         return null;
       }
 
+      if (opportunity.apr <= 0) {
+        return null;
+      }
+
       const apr = opportunity.apr / 100;
+
+      const rewardToken = opportunity.tokens[opportunity.tokens.length - 1];
 
       return {
         incentiveAPR: apr.toString(),
-        rewardTokenAddress: rewardToken,
-        rewardTokenSymbol: rewardTokenSymbol,
+        rewardTokenAddress: rewardToken.address,
+        rewardTokenSymbol: rewardToken.symbol,
       } as ExtendedReserveIncentiveResponse;
     },
   });

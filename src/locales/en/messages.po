@@ -510,6 +510,7 @@ msgstr "APY, borrow rate"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
@@ -719,6 +720,10 @@ msgstr "Bridged Via CCIP"
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
@@ -1180,6 +1185,7 @@ msgid "deposited"
 msgstr "deposited"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
@@ -1319,6 +1325,10 @@ msgstr "Due to internal stETH mechanics required for rebasing support, it is not
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Wrong Network"
 msgstr "Wrong Network"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Merkl rewards are claimed through the"
+msgstr "Merkl rewards are claimed through the"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/layouts/components/StakingMenu.tsx
@@ -3093,6 +3103,7 @@ msgstr "All borrow positions outside of this category must be closed to enable t
 msgid "Available to supply"
 msgstr "Available to supply"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 msgid "Eligible for the ZKSync Ignite program."
 msgstr "Eligible for the ZKSync Ignite program."

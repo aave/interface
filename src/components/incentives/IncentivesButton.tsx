@@ -8,7 +8,10 @@ import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
-import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
+import {
+  useMerklIgniteIncentives,
+  useZkSyncIgniteIncentives,
+} from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
 
@@ -19,6 +22,7 @@ import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
+import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
 import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
 
@@ -94,6 +98,30 @@ export const ZkIgniteIncentivesButton = (params: {
         incentives={[zkSyncIgniteIncentives]}
         incentivesNetAPR={+zkSyncIgniteIncentives.incentiveAPR}
       />
+    </ContentWithTooltip>
+  );
+};
+
+export const MerklIncentivesButton = (params: {
+  market: string;
+  rewardedAsset?: string;
+  protocolAction?: ProtocolAction;
+}) => {
+  const [open, setOpen] = useState(false);
+  const { data: merklIncentives } = useMerklIgniteIncentives(params);
+
+  if (!merklIncentives) {
+    return null;
+  }
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={<MerklIncentivesTooltipContent merklIncentives={merklIncentives} />}
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <Content incentives={[merklIncentives]} incentivesNetAPR={+merklIncentives.incentiveAPR} />
     </ContentWithTooltip>
   );
 };
