@@ -94,7 +94,7 @@ const getUnderlyingAndAToken = (assets: {
   ]);
 };
 
-const wihtelistedRewardTokens = allAaveAssets.flatMap((assets) => getUnderlyingAndAToken(assets));
+const whitelistedRewardTokens = allAaveAssets.flatMap((assets) => getUnderlyingAndAToken(assets));
 
 const url = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 
@@ -156,7 +156,7 @@ export const useMerklIgniteIncentives = ({
 
       const rewardToken = opportunity.tokens[opportunity.tokens.length - 1];
 
-      if (!wihtelistedRewardTokens.includes(rewardToken.address.toLowerCase())) {
+      if (!whitelistedRewardTokens.includes(rewardToken.address.toLowerCase())) {
         return null;
       }
 
