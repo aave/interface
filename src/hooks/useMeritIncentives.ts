@@ -88,6 +88,9 @@ const antiLoopBorrowMessage =
 const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
+const weethUsdcCampaignMessage =
+  'You must supply weETH and borrow USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Only the new debt is eligible for rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
+
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
 
@@ -138,8 +141,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'ETHFI',
         protocolAction: ProtocolAction.borrow,
-        customMessage:
-          'You must supply weETH and borrow USDC in order to receive merit rewards. Only new USDC debt holders are eligible for rewards.',
+        customMessage: weethUsdcCampaignMessage,
       },
     ],
     WBTC: [
@@ -196,8 +198,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Ethereum.ASSETS.weETH.A_TOKEN,
         rewardTokenSymbol: 'ETHFI',
         protocolAction: ProtocolAction.supply,
-        customMessage:
-          'You must supply weETH and borrow USDC in order to receive merit rewards. Only new USDC debt holders are eligible for rewards.',
+        customMessage: weethUsdcCampaignMessage,
       },
     ],
   },
