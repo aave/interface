@@ -551,18 +551,7 @@ export const useMeritIncentives = ({
       const data = await response.json();
       const meritIncentives = data.currentAPR as MeritIncentives;
 
-      const meritIncentivesUpdated = {
-        ...meritIncentives,
-        actionsAPR: {
-          ...meritIncentives.actionsAPR,
-          [MeritAction.SUPPLY_WEETH_BORROW_USDC]: 2,
-        },
-      };
-
-      console.log('meritIncentivesUpdated');
-      console.log(meritIncentivesUpdated);
-
-      return meritIncentivesUpdated;
+      return meritIncentives;
     },
     queryKey: ['meritIncentives'],
     staleTime: 1000 * 60 * 5,
