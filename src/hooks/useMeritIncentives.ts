@@ -108,6 +108,9 @@ const AvalancheRenewalForumLink =
 const lbtcCbbtcForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/91';
 
+const weethUsdcForumLink =
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/120';
+
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
@@ -142,6 +145,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'ETHFI',
         protocolAction: ProtocolAction.borrow,
         customMessage: weethUsdcCampaignMessage,
+        customForumLink: weethUsdcForumLink,
       },
     ],
     WBTC: [
@@ -199,6 +203,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'ETHFI',
         protocolAction: ProtocolAction.supply,
         customMessage: weethUsdcCampaignMessage,
+        customForumLink: weethUsdcForumLink,
       },
     ],
   },
