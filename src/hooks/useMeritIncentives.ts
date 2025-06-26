@@ -89,7 +89,7 @@ const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
 const weethUsdcCampaignMessage =
-  'You must supply weETH and borrow USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Only the new debt is eligible for rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
+  'You must supply weETH and borrow new USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
@@ -546,7 +546,18 @@ export const useMeritIncentives = ({
       const data = await response.json();
       const meritIncentives = data.currentAPR as MeritIncentives;
 
-      return meritIncentives;
+      const meritIncentivesUpdated = {
+        ...meritIncentives,
+        actionsAPR: {
+          ...meritIncentives.actionsAPR,
+          [MeritAction.SUPPLY_WEETH_BORROW_USDC]: 2,
+        },
+      };
+
+      console.log('meritIncentivesUpdated');
+      console.log(meritIncentivesUpdated);
+
+      return meritIncentivesUpdated;
     },
     queryKey: ['meritIncentives'],
     staleTime: 1000 * 60 * 5,
