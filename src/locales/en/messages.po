@@ -1385,6 +1385,10 @@ msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgid "Maximum collateral amount to use"
 msgstr "Maximum collateral amount to use"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Eligible for incentives through Merkl."
+msgstr "Eligible for incentives through Merkl."
+
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
@@ -3092,10 +3096,6 @@ msgstr "All borrow positions outside of this category must be closed to enable t
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
 msgstr "Available to supply"
-
-#: src/components/incentives/MerklIncentivesTooltipContent.tsx
-msgid "Eligible for the ZKSync Ignite program."
-msgstr "Eligible for the ZKSync Ignite program."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the {market} has been frozen."

@@ -40,7 +40,7 @@ export const MerklIncentivesTooltipContent = ({
       />
 
       <Typography variant="caption" color="text.primary" mb={3}>
-        <Trans>Eligible for the ZKSync Ignite program.</Trans>
+        <Trans>Eligible for incentives through Merkl.</Trans>
       </Typography>
 
       <Typography variant="caption" color="text.secondary" mb={3}>
