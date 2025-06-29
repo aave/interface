@@ -87,7 +87,7 @@ export const showExternalIncentivesTooltip = (
   protocolAction?: ProtocolAction
 ) => {
   const superFestRewardsEnabled = false;
-  const spkRewardsEnabled = true;
+  const spkRewardsEnabled = false;
   const kernelPointsEnabled = true;
 
   const tooltipsConfig: ExternalIncentivesTooltipsConfig = {
