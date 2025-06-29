@@ -281,7 +281,7 @@ export const DebtSwitchActions = ({
       handleApproval={() => approval()}
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
-      actionInProgressText={<Trans>Swaping</Trans>}
+      actionInProgressText={<Trans>Swapping</Trans>}
       sx={sx}
       fetchingData={loading}
       errorParams={{
