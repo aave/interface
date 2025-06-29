@@ -51,6 +51,9 @@ export const useMultiProviderSwitchRates = ({
             user,
             srcDecimals,
             destDecimals,
+            options: {
+              partner: 'aave-widget',
+            },
           });
       }
     },
