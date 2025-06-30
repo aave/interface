@@ -76,33 +76,6 @@ export const displayNonDiscountableAmount = (
     : amountGhoBeingBorrowed - discountableGhoAmount;
 };
 
-interface ReserveWithSymbol {
-  symbol: string;
-}
-
-type FindAndFilterReturn<T> = {
-  value: T | undefined;
-  filtered: Array<T>;
-};
-
-export const findAndFilterMintableGhoReserve = <T extends ReserveWithSymbol>(
-  reserves: Array<T>,
-  currentMarket: string
-) => {
-  if (!GHO_MINTING_MARKETS.includes(currentMarket)) return { value: undefined, filtered: reserves };
-
-  return reserves.reduce<FindAndFilterReturn<T>>(
-    (acum, reserve) => {
-      if (reserve.symbol === GHO_SYMBOL) return { value: reserve, filtered: acum.filtered };
-      else return { ...acum, filtered: acum.filtered.concat(reserve) };
-    },
-    {
-      value: undefined,
-      filtered: [],
-    }
-  );
-};
-
 /**
  * Determines if the given symbol is GHO and the market supports minting new GHO
  */

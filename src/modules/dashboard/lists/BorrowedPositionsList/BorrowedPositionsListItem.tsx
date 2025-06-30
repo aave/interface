@@ -18,12 +18,16 @@ import { ListItemWrapper } from '../ListItemWrapper';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { ListValueRow } from '../ListValueRow';
-import { BorrowedPositionsListItemWrapperProps } from './BorrowedPositionsListItemWrapper';
+
+export interface BorrowedPositionsListItem {
+  item: DashboardReserve;
+  disableEModeSwitch: boolean;
+}
 
 export const BorrowedPositionsListItem = ({
   item,
   disableEModeSwitch,
-}: BorrowedPositionsListItemWrapperProps) => {
+}: BorrowedPositionsListItem) => {
   const { borrowCap } = useAssetCaps();
   const [currentMarket, currentMarketData] = useRootStore(
     useShallow((state) => [state.currentMarket, state.currentMarketData])
@@ -63,6 +67,7 @@ export const BorrowedPositionsListItem = ({
     totalBorrowsUSD: item.variableBorrowsUSD,
     borrowAPY: Number(reserve.variableBorrowAPY),
     incentives: reserve.vIncentivesData,
+    variableDebtTokenAddress: reserve.variableDebtTokenAddress,
     onDetbSwitchClick: () => {
       openDebtSwitch(reserve.underlyingAsset);
     },
@@ -143,6 +148,7 @@ const BorrowedPositionsListItemDesktop = ({
         address={variableDebtTokenAddress}
         incentives={incentives}
         symbol={reserve.symbol}
+        log
       />
 
       <ListButtonsColumn>
