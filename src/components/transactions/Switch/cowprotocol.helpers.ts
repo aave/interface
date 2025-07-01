@@ -386,6 +386,8 @@ export const generateCoWExplorerLink = (chainId: SupportedChainId, orderId?: str
       return `${base}/sepolia/orders/${orderId}`;
     case SupportedChainId.AVALANCHE:
       return `${base}/avax/orders/${orderId}`;
+    case SupportedChainId.POLYGON:
+      return `${base}/pol/orders/${orderId}`;
     default:
       throw new Error('Define explorer link for chainId: ' + chainId);
   }
