@@ -296,6 +296,7 @@ export const BaseSwitchModalContent = ({
     isNativeToken(selectedInputToken?.address),
     switchProvider
   );
+
   const safeSlippage =
     slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
       ? 0
@@ -488,6 +489,11 @@ export const BaseSwitchModalContent = ({
           slippageValidation={slippageValidation}
           slippage={slippage}
           setSlippage={setSlippage}
+          suggestedSlippage={
+            switchRates?.provider === 'cowprotocol'
+              ? switchRates?.suggestedSlippage.toString()
+              : undefined
+          }
         />
       </Box>
       {!selectedInputToken || !selectedOutputToken ? (

@@ -11,29 +11,74 @@ import {
   ToggleButtonGroup,
   Typography,
 } from '@mui/material';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
 
 import { ValidationData } from './validation.helpers';
 
-const DEFAULT_SLIPPAGE_OPTIONS = ['0.10', '0.50', '2.0'];
-
 type SwitchSlippageSelectorProps = {
+  suggestedSlippage?: string;
   slippage: string;
   setSlippage: (value: string) => void;
   slippageValidation?: ValidationData;
 };
 
+const defaultSlippageOptions = (suggested?: string) => {
+  if (!suggested) {
+    return ['0.10', '0.50', '2.0'];
+  }
+
+  const suggestedNumber = Number(suggested);
+
+  if (suggestedNumber < 1) {
+    return ['0.10', '0.50', 'Auto'];
+  }
+
+  if (suggestedNumber < 3) {
+    return ['1.00', '2.00', 'Auto'];
+  }
+
+  if (suggestedNumber < 5) {
+    return ['2.00', '3.00', 'Auto'];
+  }
+
+  if (suggestedNumber < 10) {
+    return ['3.00', '5.00', 'Auto'];
+  }
+
+  return ['5.00', '10.00', 'Auto'];
+};
+
 export const SwitchSlippageSelector = ({
+  suggestedSlippage,
   slippage,
   setSlippage,
   slippageValidation,
 }: SwitchSlippageSelectorProps) => {
+  const slippageOptions = defaultSlippageOptions(suggestedSlippage).map((option) => {
+    if (Number(option) === Number(suggestedSlippage)) {
+      return (Number(option) - 0.25).toString();
+    }
+    return option;
+  });
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
   const [isCustomSlippage, setIsCustomSlippage] = useState(false);
+  const [previousSlippage, setPreviousSlippage] = useState(slippage);
+
+  console.log(slippageValidation);
 
   const open = Boolean(anchorEl);
+
+  // Watch for slippage changes from outside the component
+  useEffect(() => {
+    if (previousSlippage !== slippage) {
+      // If slippage change comes from outside, past wont be equal.
+      setIsCustomSlippage(false);
+      setPreviousSlippage(slippage);
+    }
+  }, [slippage]);
 
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -44,19 +89,28 @@ export const SwitchSlippageSelector = ({
   };
 
   const handleCustomSlippageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPreviousSlippage(event.target.value);
     setSlippage(event.target.value);
     setIsCustomSlippage(true);
   };
 
   const handlePresetSlippageChange = (value: string) => {
-    setSlippage(value);
-    setIsCustomSlippage(false);
+    if (value === 'Auto' && suggestedSlippage) {
+      setPreviousSlippage(suggestedSlippage);
+      setSlippage(suggestedSlippage);
+      setIsCustomSlippage(false);
+    } else {
+      setPreviousSlippage(value);
+      setSlippage(value);
+      setIsCustomSlippage(true);
+    }
   };
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <Typography variant="caption" color="text.secondary">
-        <Trans>Slippage</Trans>
+        {isCustomSlippage ? <Trans>Custom slippage</Trans> : <Trans>Auto Slippage</Trans>}
+        {':'}
         <Menu
           sx={{
             maxWidth: '330px',
@@ -91,7 +145,7 @@ export const SwitchSlippageSelector = ({
               exclusive
               onChange={(_, value) => handlePresetSlippageChange(value)}
             >
-              {DEFAULT_SLIPPAGE_OPTIONS.map((option) => (
+              {slippageOptions.map((option) => (
                 <ToggleButton
                   sx={{
                     borderRadius: 1,
@@ -99,19 +153,27 @@ export const SwitchSlippageSelector = ({
                     px: 2,
                     borderWidth: 2,
                     backgroundColor:
-                      option === slippage && !isCustomSlippage ? 'background.paper' : 'transparent',
+                      (suggestedSlippage === slippage && option == 'Auto') || option === slippage
+                        ? 'background.paper'
+                        : 'transparent',
                   }}
                   value={option}
                   key={option}
                 >
-                  <FormattedNumber
-                    value={option}
-                    visibleDecimals={2}
-                    symbol="%"
-                    variant="subheader2"
-                    color="primary.main"
-                    symbolsColor="primary.main"
-                  />
+                  {isNaN(Number(option)) ? (
+                    <Typography variant="subheader2" color="primary.main">
+                      <Trans>Auto</Trans>
+                    </Typography>
+                  ) : (
+                    <FormattedNumber
+                      value={option}
+                      visibleDecimals={2}
+                      symbol="%"
+                      variant="subheader2"
+                      color="primary.main"
+                      symbolsColor="primary.main"
+                    />
+                  )}
                 </ToggleButton>
               ))}
             </ToggleButtonGroup>
