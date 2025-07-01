@@ -1140,7 +1140,6 @@ msgstr "deposited"
 #: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/SavingsGhoProgram.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
@@ -2262,10 +2261,6 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Assets to borrow"
 msgstr "Assets to borrow"
-
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "Get a discount on GHO borrowing by holding stkAAVE"
-msgstr "Get a discount on GHO borrowing by holding stkAAVE"
 
 #: src/components/Warnings/BorrowDisabledWarning.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"

@@ -18,7 +18,6 @@ import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
-import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
 import { GhoStakingPanel } from 'src/modules/staking/GhoStakingPanel';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
@@ -232,29 +231,7 @@ export default function Staking() {
                     });
                     openStakeRewardsRestakeClaim(Stake.aave, 'AAVE');
                   }}
-                >
-                  <Box
-                    sx={{
-                      mt: {
-                        xs: '20px',
-                        xsm: '36px',
-                      },
-                      px: {
-                        xsm: 6,
-                      },
-                      width:
-                        STAGING_ENV || ENABLE_TESTNET
-                          ? {
-                              xs: '100%',
-                              lg: '50%',
-                            }
-                          : '100%',
-                      marginX: 'auto',
-                    }}
-                  >
-                    <GhoDiscountProgram />
-                  </Box>
-                </StakingPanel>
+                />
               </Grid>
               <Grid
                 item
