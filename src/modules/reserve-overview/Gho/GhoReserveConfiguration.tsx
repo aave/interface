@@ -3,11 +3,13 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
+import { BorrowInfo } from '../BorrowInfo';
 import { ReserveEModePanel } from '../ReserveEModePanel';
 import { PanelRow, PanelTitle } from '../ReservePanels';
-import { GhoBorrowInfo } from './GhoBorrowInfo';
-import { GhoDiscountCalculator } from './GhoDiscountCalculator';
 import { SavingsGho } from './SavingsGho';
 
 type GhoReserveConfigurationProps = {
@@ -15,6 +17,12 @@ type GhoReserveConfigurationProps = {
 };
 
 export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = ({ reserve }) => {
+  const [currentNetworkConfig, currentMarketData] = useRootStore(
+    useShallow((store) => [store.currentNetworkConfig, store.currentMarketData])
+  );
+  const { borrowCap } = useAssetCaps();
+  const showBorrowCapStatus = reserve.borrowCap !== '0';
+
   return (
     <>
       <PanelRow>
@@ -97,10 +105,14 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           <Trans>Borrow info</Trans>
         </PanelTitle>
         <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-          <GhoBorrowInfo reserve={reserve} />
-          <Box sx={{ mt: 8 }}>
-            <GhoDiscountCalculator />
-          </Box>
+          <BorrowInfo
+            showBorrowCapStatus={showBorrowCapStatus}
+            renderCharts={false}
+            currentMarketData={currentMarketData}
+            currentNetworkConfig={currentNetworkConfig}
+            reserve={reserve}
+            borrowCap={borrowCap}
+          />
         </Box>
       </PanelRow>
       {reserve.eModes.length > 0 && (
