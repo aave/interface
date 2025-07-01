@@ -148,7 +148,6 @@ const BorrowedPositionsListItemDesktop = ({
         address={variableDebtTokenAddress}
         incentives={incentives}
         symbol={reserve.symbol}
-        log
       />
 
       <ListButtonsColumn>

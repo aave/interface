@@ -3,12 +3,10 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
-import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
@@ -304,7 +302,9 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isCustomBreakpoint = useMediaQuery('(min-width:1125px)');
   const isMd = useMediaQuery(theme.breakpoints.up('xs'));
   const currentMarket = useRootStore((store) => store.currentMarket);
-  const { ghoReserveData, ghoLoadingData } = useAppDataContext();
+
+  // TODO
+  const ghoLoadingData = false;
 
   const totalBorrowed = BigNumber.min(
     valueToBigNumber(reserve?.totalDebt || 0),
@@ -548,13 +548,13 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 alignItems: 'flex-start',
               }}
             >
-              <GhoBorrowApyRange
+              {/* <GhoBorrowApyRange
                 minVal={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
                 maxVal={ghoReserveData.ghoVariableBorrowAPY}
                 variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 percentVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 hyphenVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-              />
+              /> */}
               <Typography
                 sx={{
                   ['@media screen and (min-width: 1125px)']: {

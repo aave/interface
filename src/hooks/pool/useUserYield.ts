@@ -1,23 +1,12 @@
-import {
-  FormattedGhoReserveData,
-  FormattedGhoUserData,
-  FormatUserSummaryAndIncentivesResponse,
-} from '@aave/math-utils';
+import { FormatUserSummaryAndIncentivesResponse } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import memoize from 'micro-memoize';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
-import {
-  displayGhoForMintableMarket,
-  GHO_MINTING_MARKETS,
-  weightedAverageAPY,
-} from 'src/utils/ghoUtilities';
 
-import { useGhoPoolsFormattedReserve } from './useGhoPoolFormattedReserve';
 import {
   FormattedReservesAndIncentives,
   usePoolsFormattedReserves,
 } from './usePoolFormattedReserves';
-import { useUserGhoPoolsFormattedReserve } from './useUserGhoPoolFormattedReserve';
 import { useUserSummariesAndIncentives } from './useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
 
@@ -30,10 +19,7 @@ export interface UserYield {
 const formatUserYield = memoize(
   (
     formattedPoolReserves: FormattedReservesAndIncentives[],
-    formattedGhoReserveData: FormattedGhoReserveData | undefined,
-    formattedGhoUserData: FormattedGhoUserData | undefined,
-    user: FormatUserSummaryAndIncentivesResponse,
-    currentMarket: string
+    user: FormatUserSummaryAndIncentivesResponse
   ) => {
     const proportions = user.userReservesData.reduce(
       (acc, value) => {
@@ -55,46 +41,15 @@ const formatUserYield = memoize(
             }
           }
           if (value.variableBorrowsUSD !== '0') {
-            // TODO: Export to unified helper function
-            if (
-              displayGhoForMintableMarket({
-                symbol: reserve.symbol,
-                currentMarket: currentMarket,
-              }) &&
-              formattedGhoUserData &&
-              formattedGhoReserveData
-            ) {
-              const borrowRateAfterDiscount = weightedAverageAPY(
-                formattedGhoReserveData.ghoVariableBorrowAPY,
-                formattedGhoUserData.userGhoBorrowBalance,
-                formattedGhoUserData.userGhoAvailableToBorrowAtDiscount,
-                formattedGhoReserveData.ghoBorrowAPYWithMaxDiscount
-              );
-              acc.negativeProportion = acc.negativeProportion.plus(
-                new BigNumber(borrowRateAfterDiscount).multipliedBy(
-                  formattedGhoUserData.userGhoBorrowBalance
-                )
-              );
-              if (reserve.vIncentivesData) {
-                reserve.vIncentivesData.forEach((incentive) => {
-                  acc.positiveProportion = acc.positiveProportion.plus(
-                    new BigNumber(incentive.incentiveAPR).multipliedBy(
-                      formattedGhoUserData.userGhoBorrowBalance
-                    )
-                  );
-                });
-              }
-            } else {
-              acc.negativeProportion = acc.negativeProportion.plus(
-                new BigNumber(reserve.variableBorrowAPY).multipliedBy(value.variableBorrowsUSD)
-              );
-              if (reserve.vIncentivesData) {
-                reserve.vIncentivesData.forEach((incentive) => {
-                  acc.positiveProportion = acc.positiveProportion.plus(
-                    new BigNumber(incentive.incentiveAPR).multipliedBy(value.variableBorrowsUSD)
-                  );
-                });
-              }
+            acc.negativeProportion = acc.negativeProportion.plus(
+              new BigNumber(reserve.variableBorrowAPY).multipliedBy(value.variableBorrowsUSD)
+            );
+            if (reserve.vIncentivesData) {
+              reserve.vIncentivesData.forEach((incentive) => {
+                acc.positiveProportion = acc.positiveProportion.plus(
+                  new BigNumber(incentive.incentiveAPR).multipliedBy(value.variableBorrowsUSD)
+                );
+              });
             }
           }
         } else {
@@ -129,43 +84,17 @@ export const useUserYields = (
   marketsData: MarketDataType[]
 ): SimplifiedUseQueryResult<UserYield>[] => {
   const poolsFormattedReservesQuery = usePoolsFormattedReserves(marketsData);
-  const ghoPoolsFormattedReserveQuery = useGhoPoolsFormattedReserve(marketsData);
-  const userGhoPoolsFormattedReserveQuery = useUserGhoPoolsFormattedReserve(marketsData);
   const userSummaryQuery = useUserSummariesAndIncentives(marketsData);
 
   return poolsFormattedReservesQuery.map((elem, index) => {
-    const marketData = marketsData[index];
     const selector = (
       formattedPoolReserves: FormattedReservesAndIncentives[],
-      formattedGhoReserveData: FormattedGhoReserveData,
-      formattedGhoUserData: FormattedGhoUserData,
       user: FormatUserSummaryAndIncentivesResponse
     ) => {
-      return formatUserYield(
-        formattedPoolReserves,
-        formattedGhoReserveData,
-        formattedGhoUserData,
-        user,
-        marketData.market
-      );
+      return formatUserYield(formattedPoolReserves, user);
     };
-    const ghoSelector = (
-      formattedPoolReserves: FormattedReservesAndIncentives[],
-      user: FormatUserSummaryAndIncentivesResponse
-    ) => {
-      return formatUserYield(formattedPoolReserves, undefined, undefined, user, marketData.market);
-    };
-    if (GHO_MINTING_MARKETS.includes(marketData.market))
-      return combineQueries(
-        [
-          elem,
-          ghoPoolsFormattedReserveQuery[index],
-          userGhoPoolsFormattedReserveQuery[index],
-          userSummaryQuery[index],
-        ] as const,
-        selector
-      );
-    return combineQueries([elem, userSummaryQuery[index]] as const, ghoSelector);
+
+    return combineQueries([elem, userSummaryQuery[index]] as const, selector);
   });
 };
 
