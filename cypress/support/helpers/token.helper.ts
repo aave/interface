@@ -1,4 +1,4 @@
-import { TokenRequest } from '../../../support/actions/tenderly.actions';
+import { TokenRequest } from '../actions/tenderly.actions';
 
 export interface DonorInfo {
   name: string;
