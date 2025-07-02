@@ -364,7 +364,8 @@ export const SwitchActions = ({
             }
           } catch (error) {
             console.error(error);
-            // setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
+            const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
+            setTxError(parsedError);
             setMainTxState({
               success: false,
               loading: false,
@@ -490,7 +491,8 @@ export const SwitchActions = ({
         fetchApprovedAmount();
       }
     } catch (error) {
-      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+      const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+      console.error(parsedError);
       setTxError(parsedError);
       setApprovalTxState({
         txHash: undefined,

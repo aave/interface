@@ -22,7 +22,7 @@ export const getErrorTextFromError = (
 ): TxErrorType => {
   let errorNumber = 1;
 
-  if (error.message.startsWith('user rejected transaction')) {
+  if (error.message.toLowerCase().startsWith('user rejected')) {
     return {
       error: errorMapping[4001],
       blocking: false,
