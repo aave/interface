@@ -1,10 +1,8 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { InformationCircleIcon } from '@heroicons/react/outline';
-import { Trans } from '@lingui/macro';
-import { Box, Stack, SvgIcon } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { ReactNode } from 'react';
-import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { GhoRateTooltip } from 'src/components/infoTooltips/GhoRateTooltip';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { IncentivesCard } from '../../../components/incentives/IncentivesCard';
@@ -69,26 +67,9 @@ export const ListGhoAPRColumn = ({
           market={market}
           protocolAction={protocolAction}
         />
-        <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
-          <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
-            <InformationCircleIcon />
-          </SvgIcon>
-        </ContentWithTooltip>
+        <GhoRateTooltip />
       </Stack>
       {children}
     </ListColumn>
   );
 };
-
-const FixedAPYTooltipText = (
-  <Trans>
-    Estimated compounding interest rate, that is determined by Aave Governance. This rate may be
-    changed over time depending on the need for the GHO supply to contract/expand.{' '}
-    {/* <Link
-      href="https://docs.gho.xyz/concepts/how-gho-works/interest-rate-discount-model#interest-rate-model"
-      underline="always"
-    >
-      <Trans>Learn more</Trans>
-    </Link> */}
-  </Trans>
-);

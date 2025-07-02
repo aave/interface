@@ -4,6 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { GhoRateTooltip } from 'src/components/infoTooltips/GhoRateTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -12,6 +13,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
 import { GENERAL } from 'src/utils/events';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
@@ -44,6 +46,11 @@ export const BorrowInfo = ({
     valueToBigNumber(reserve.borrowCapUSD).minus(valueToBigNumber(reserve.totalDebtUSD)),
     0
   ).toNumber();
+
+  const isGho = displayGhoForMintableMarket({
+    symbol: reserve.symbol,
+    currentMarket: currentMarketData.market,
+  });
 
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
@@ -146,19 +153,23 @@ export const BorrowInfo = ({
         )}
         <PanelItem
           title={
-            <VariableAPYTooltip
-              event={{
-                eventName: GENERAL.TOOL_TIP,
-                eventParams: {
-                  tooltip: 'APY, variable',
-                  asset: reserve.underlyingAsset,
-                  assetName: reserve.name,
-                },
-              }}
-              text={<Trans>APY, variable</Trans>}
-              key="APY_res_variable_type"
-              variant="description"
-            />
+            isGho ? (
+              <GhoRateTooltip text={<Trans>APY</Trans>} />
+            ) : (
+              <VariableAPYTooltip
+                event={{
+                  eventName: GENERAL.TOOL_TIP,
+                  eventParams: {
+                    tooltip: 'APY, variable',
+                    asset: reserve.underlyingAsset,
+                    assetName: reserve.name,
+                  },
+                }}
+                text={<Trans>APY, variable</Trans>}
+                key="APY_res_variable_type"
+                variant="description"
+              />
+            )
           }
         >
           <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
