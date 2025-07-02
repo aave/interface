@@ -1149,6 +1149,8 @@ msgstr "Manage analytics"
 msgid "Unstaking {symbol}"
 msgstr "Unstaking {symbol}"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
+#: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 msgid "Swapping"
 msgstr "Swapping"
@@ -2089,11 +2091,6 @@ msgstr "Available to withdraw"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Cooldown"
 msgstr "Cooldown"
-
-#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
-#: src/components/transactions/Swap/SwapActions.tsx
-msgid "Swaping"
-msgstr "Swaping"
 
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
 msgid "ZKSync Ignite Program rewards are claimed through the"
