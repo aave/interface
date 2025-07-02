@@ -1329,6 +1329,10 @@ msgstr "Let us know how we can make the app better for you. For user support rel
 msgid "Emode"
 msgstr "Emode"
 
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Expired"
+msgstr "Expired"
+
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"
 msgstr "Tip: Try increasing slippage or reduce input amount"

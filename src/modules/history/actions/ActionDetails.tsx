@@ -9,6 +9,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import {
   isOrderCancelled,
+  isOrderExpired,
   isOrderFilled,
   isOrderLoading,
 } from 'src/components/transactions/Switch/cowprotocol.helpers';
@@ -674,7 +675,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             </Box>
           )}
 
-          {isOrderCancelled(cowSwapTx.status) && (
+          {(isOrderCancelled(cowSwapTx.status) || isOrderExpired(cowSwapTx.status)) && (
             <Box sx={{ display: 'inline-flex', alignItems: 'center', ml: 4.5 }}>
               <Warning
                 severity="error"
@@ -689,7 +690,11 @@ export const ActionDetails = <K extends keyof ActionFields>({
                   color: theme.palette.text.primary,
                 }}
               >
-                <Trans>Cancelled</Trans>
+                {isOrderCancelled(cowSwapTx.status) ? (
+                  <Trans>Cancelled</Trans>
+                ) : (
+                  <Trans>Expired</Trans>
+                )}
               </Warning>
             </Box>
           )}

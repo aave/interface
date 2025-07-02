@@ -249,8 +249,12 @@ export const isOrderFilled = (status: OrderStatus) => {
   return status === OrderStatus.FULFILLED;
 };
 
+export const isOrderExpired = (status: OrderStatus) => {
+  return status === OrderStatus.EXPIRED;
+};
+
 export const isOrderCancelled = (status: OrderStatus) => {
-  return status === OrderStatus.CANCELLED || status === OrderStatus.EXPIRED;
+  return status === OrderStatus.CANCELLED;
 };
 
 export const isNativeToken = (token: string) => {
