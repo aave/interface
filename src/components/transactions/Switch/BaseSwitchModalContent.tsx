@@ -131,7 +131,7 @@ export const BaseSwitchModalContent = ({
     return defaultNetwork.chainId;
   });
   const switchProvider = useSwitchProvider({ chainId: selectedChainId });
-  const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '2' : '0.10');
+  const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '0.5' : '0.10');
   const [showGasStation, setShowGasStation] = useState(switchProvider == 'paraswap');
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
