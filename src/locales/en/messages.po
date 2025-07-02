@@ -902,6 +902,10 @@ msgstr "Main Ethereum market with the largest selection of assets and yield opti
 msgid "Disabled"
 msgstr "Disabled"
 
+#: src/components/infoTooltips/GhoRateTooltip.tsx
+msgid "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
+msgstr "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
+
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restaking {symbol}"
 msgstr "Restaking {symbol}"
@@ -3134,6 +3138,7 @@ msgstr "Selected supply assets"
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/umbrella/helpers/ApyTooltip.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
