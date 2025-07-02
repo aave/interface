@@ -138,7 +138,11 @@ export const BorrowAssetsList = () => {
     sortDesc,
     sortName,
     'asset',
-    borrowReserves as unknown as DashboardReserve[]
+    borrowReserves.sort((a, b) => {
+      if (displayGhoForMintableMarket({ symbol: a.symbol, currentMarket })) return -1;
+      if (displayGhoForMintableMarket({ symbol: b.symbol, currentMarket })) return 1;
+      return 0;
+    }) as unknown as DashboardReserve[]
   );
   const borrowDisabled = !sortedReserves.length;
 

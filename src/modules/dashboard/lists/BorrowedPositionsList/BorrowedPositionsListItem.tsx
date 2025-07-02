@@ -8,11 +8,12 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
-import { ListAPRColumn } from '../ListAPRColumn';
+import { ListAPRColumn, ListGhoAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
@@ -121,6 +122,11 @@ const BorrowedPositionsListItemDesktop = ({
 }: BorrowedPositionsListItemProps) => {
   const currentMarket = useRootStore((state) => state.currentMarket);
 
+  const isGho = displayGhoForMintableMarket({
+    symbol: reserve.symbol,
+    currentMarket,
+  });
+
   return (
     <ListItemWrapper
       symbol={reserve.symbol}
@@ -141,14 +147,25 @@ const BorrowedPositionsListItemDesktop = ({
     >
       <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
 
-      <ListAPRColumn
-        value={borrowAPY}
-        market={currentMarket}
-        protocolAction={ProtocolAction.borrow}
-        address={variableDebtTokenAddress}
-        incentives={incentives}
-        symbol={reserve.symbol}
-      />
+      {isGho ? (
+        <ListGhoAPRColumn
+          value={borrowAPY}
+          market={currentMarket}
+          protocolAction={ProtocolAction.borrow}
+          address={variableDebtTokenAddress}
+          incentives={incentives}
+          symbol={reserve.symbol}
+        />
+      ) : (
+        <ListAPRColumn
+          value={borrowAPY}
+          market={currentMarket}
+          protocolAction={ProtocolAction.borrow}
+          address={variableDebtTokenAddress}
+          incentives={incentives}
+          symbol={reserve.symbol}
+        />
+      )}
 
       <ListButtonsColumn>
         {showSwitchButton ? (
