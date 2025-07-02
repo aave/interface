@@ -70,7 +70,6 @@ export interface AssetInputProps {
   assets: TokenInfoWithBalance[];
   maxValue?: string;
   forcedMaxValue?: string;
-  isMaxSelected?: boolean;
   loading?: boolean;
   selectedAsset: TokenInfoWithBalance;
   balanceTitle?: string;
@@ -87,7 +86,6 @@ export const SwitchAssetInput = ({
   assets,
   maxValue,
   forcedMaxValue,
-  isMaxSelected,
   loading = false,
   chainId,
   selectedAsset,
@@ -467,7 +465,9 @@ export const SwitchAssetInput = ({
                 }}
                 disabled={
                   disabled ||
-                  isMaxSelected ||
+                  Number(selectedAsset.balance) === 0 ||
+                  Number(value) === Number(forcedMaxValue) ||
+                  Number(value) === Number(selectedAsset.balance) ||
                   (!!forcedMaxValue && Number(selectedAsset.balance) < Number(forcedMaxValue))
                 }
               >
