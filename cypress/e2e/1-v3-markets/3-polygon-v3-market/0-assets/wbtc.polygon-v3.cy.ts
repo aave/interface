@@ -8,7 +8,7 @@ import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
 
 const tokensToRequest: RequestedTokens = {
-  aMATICPolygonV3: 20000,
+  aMATICPolygonV3: 2000000,
 };
 
 const testData = {

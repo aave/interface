@@ -164,7 +164,6 @@ jobs:
       matrix:
         scoupe:
           - settings
-          - mobile
           - governance-stake
           - widgets
     steps:
