@@ -1114,6 +1114,10 @@ msgstr "Liquidation at"
 msgid "Costs & Fees"
 msgstr "Costs & Fees"
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "I confirm the swap with a potential {0}% value loss"
+msgstr "I confirm the swap with a potential {0}% value loss"
+
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 msgid "deposited"
 msgstr "deposited"
