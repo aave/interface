@@ -35,6 +35,8 @@ export type BaseSwitchRates = {
   // Destination token
   destToken: string;
   destUSD: string;
+  destSpot: string;
+  destSpotInUsd: string;
   destAmount: string;
   destDecimals: number;
 
