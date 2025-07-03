@@ -162,10 +162,13 @@ export const SwitchTxSuccessView = ({
     ? Number(normalize(surplus.toString(), destDecimals))
     : undefined;
   const surplusDisplay =
-    surplusFormatted && surplusFormatted > 0.01
-      ? `Includes +${surplusFormatted.toLocaleString(undefined, {
-          maximumFractionDigits: 2,
-        })} ${outSymbol} Surplus`
+    surplusFormatted && surplusFormatted > 0
+      ? surplusFormatted <= 0.0001
+        ? `Includes small ${outSymbol} Surplus`
+        : `Includes +${surplusFormatted.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: surplusFormatted < 0.01 ? 4 : 2,
+          })} ${outSymbol} Surplus`
       : undefined;
 
   const customExplorerLink = useMemo(() => {
