@@ -4,7 +4,6 @@ import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
-import { useShallow } from 'zustand/shallow';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
@@ -16,7 +15,7 @@ export const BorrowModal = () => {
   }>;
 
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
-  const [trackEvent] = useRootStore(useShallow((store) => [store.trackEvent, store.currentMarket]));
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleBorrowUnwrapped = (borrowUnWrapped: boolean) => {
     trackEvent(GENERAL.OPEN_MODAL, {
