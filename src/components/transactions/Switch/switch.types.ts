@@ -35,8 +35,6 @@ export type BaseSwitchRates = {
   // Destination token
   destToken: string;
   destUSD: string;
-  destSpot: string;
-  destSpotInUsd: string;
   destAmount: string;
   destDecimals: number;
 
@@ -56,6 +54,8 @@ export type CowProtocolRatesType = BaseSwitchRates & {
   amountAndCosts: QuoteAmountsAndCosts;
   srcTokenPriceUsd: number;
   destTokenPriceUsd: number;
+  destSpot: string;
+  destSpotInUsd: string;
 };
 
 export const isParaswapRates = (rates?: SwitchRatesType): rates is ParaswapRatesType => {

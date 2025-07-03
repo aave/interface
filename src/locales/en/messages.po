@@ -178,6 +178,10 @@ msgstr "Learn more about the risks."
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
+msgstr "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
+
 #: src/modules/umbrella/AmountStakedItem.tsx
 msgid "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 msgstr "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
@@ -810,10 +814,6 @@ msgstr "You've successfully submitted an order."
 msgid "Max"
 msgstr "Max"
 
-#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
-msgid "Slippage"
-msgstr "Slippage"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "Greek"
@@ -1330,6 +1330,7 @@ msgid "Emode"
 msgstr "Emode"
 
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Expired"
 msgstr "Expired"
 
@@ -1580,6 +1581,10 @@ msgstr "Swapped"
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Not reached"
 msgstr "Not reached"
+
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Auto"
+msgstr "Auto"
 
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "Age"
@@ -1888,6 +1893,7 @@ msgstr "User cannot withdraw more than the available balance"
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "In Progress"
 msgstr "In Progress"
@@ -3273,6 +3279,10 @@ msgstr "Nothing borrowed yet"
 msgid "Remove"
 msgstr "Remove"
 
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Auto Slippage"
+msgstr "Auto Slippage"
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve {symbol} to continue"
 msgstr "Approve {symbol} to continue"
@@ -3349,6 +3359,10 @@ msgstr "Buy Crypto with Fiat"
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Custom slippage"
+msgstr "Custom slippage"
+
 #: src/components/infoTooltips/KernelAirdropTooltip.tsx
 msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
@@ -3397,6 +3411,7 @@ msgstr "Language"
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Cancelled"
 msgstr "Cancelled"
@@ -3616,6 +3631,7 @@ msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailabl
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
 msgstr "Submission did not work, please try again later or contact wecare@avara.xyz"
 
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Filled"
 msgstr "Filled"
