@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, Divider, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
@@ -236,12 +237,26 @@ export const SwitchTxSuccessView = ({
           </Typography>
           <Box display="flex" alignItems="center" gap={1}>
             <ExternalTokenIcon symbol={iconSymbol} logoURI={iconUri} sx={{ fontSize: 20 }} />
-            <Typography fontWeight={600}>
-              {Number(inAmount).toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: Number(inAmount) < 0.01 ? 4 : 2,
-              })}{' '}
-            </Typography>
+            <DarkTooltip
+              title={
+                <Typography variant="secondary14" color="common.white">
+                  {inAmount} {symbol}
+                </Typography>
+              }
+              arrow
+              placement="top"
+              enterTouchDelay={100}
+              leaveTouchDelay={500}
+            >
+              <Box>
+                <Typography fontWeight={600}>
+                  {Number(inAmount).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: Number(inAmount) < 0.01 ? 4 : 2,
+                  })}{' '}
+                </Typography>
+              </Box>
+            </DarkTooltip>
             <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
               {symbol}
             </Typography>
@@ -256,12 +271,26 @@ export const SwitchTxSuccessView = ({
           </Typography>
           <Box display="flex" alignItems="center" gap={1}>
             <ExternalTokenIcon symbol={outIconSymbol} logoURI={outIconUri} sx={{ fontSize: 20 }} />
-            <Typography fontWeight={600}>
-              {Number(outFinalAmount).toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: Number(outFinalAmount) < 0.01 ? 4 : 2,
-              })}
-            </Typography>
+            <DarkTooltip
+              title={
+                <Typography variant="secondary14" color="common.white">
+                  {outFinalAmount} {outSymbol}
+                </Typography>
+              }
+              arrow
+              placement="top"
+              enterTouchDelay={100}
+              leaveTouchDelay={500}
+            >
+              <Box>
+                <Typography fontWeight={600}>
+                  {Number(outFinalAmount).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: Number(outFinalAmount) < 0.01 ? 4 : 2,
+                  })}
+                </Typography>
+              </Box>
+            </DarkTooltip>
             <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
               {outSymbol}
             </Typography>
