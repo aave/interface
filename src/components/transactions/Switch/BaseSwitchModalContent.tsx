@@ -9,7 +9,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { isSmartContractWallet } from 'src/helpers/provider';
+import { isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useMultiProviderSwitchRates } from 'src/hooks/switch/useMultiProviderSwitchRates';
 import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
@@ -173,13 +173,17 @@ export const BaseSwitchModalContent = ({
   );
 
   const [userIsSmartContractWallet, setUserIsSmartContractWallet] = useState(false);
+  const [userIsSafeWallet, setUserIsSafeWallet] = useState(false);
   useEffect(() => {
     try {
       if (user && connectedChainId) {
         getEthersProvider(wagmiConfig, { chainId: connectedChainId }).then((provider) => {
-          isSmartContractWallet(user, provider).then((isSmartContractWallet) => {
-            setUserIsSmartContractWallet(isSmartContractWallet);
-          });
+          Promise.all([isSmartContractWallet(user, provider), isSafeWallet(user, provider)]).then(
+            ([isSmartContract, isSafe]) => {
+              setUserIsSmartContractWallet(isSmartContract);
+              setUserIsSafeWallet(isSafe);
+            }
+          );
         });
       }
     } catch (error) {
@@ -568,6 +572,8 @@ export const BaseSwitchModalContent = ({
                 (token) =>
                   token.address !== selectedOutputToken.address &&
                   Number(token.balance) !== 0 &&
+                  // Remove native tokens for non-Safe smart contract wallets
+                  !(userIsSmartContractWallet && !userIsSafeWallet && token.extensions?.isNative) &&
                   // Avoid wrapping
                   !(
                     isNativeToken(selectedOutputToken.address) &&
