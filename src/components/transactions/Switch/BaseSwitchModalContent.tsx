@@ -348,6 +348,8 @@ export const BaseSwitchModalContent = ({
     destDecimals: selectedOutputToken.decimals,
     inputSymbol: selectedInputToken.symbol,
     outputSymbol: selectedOutputToken.symbol,
+    isInputTokenCustom: !!selectedInputToken.extensions?.isUserCustom,
+    isOutputTokenCustom: !!selectedOutputToken.extensions?.isUserCustom,
     user,
     options: {
       partner: 'aave-widget',

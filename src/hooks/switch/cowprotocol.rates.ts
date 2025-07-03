@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import {
   OrderKind,
   QuoteAndPost,
@@ -14,8 +15,10 @@ import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Swi
 import { SwitchParams, SwitchRatesType } from 'src/components/transactions/Switch/switch.types';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
+import { FamilyPricesService } from 'src/services/FamilyPricesService';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 export async function getCowProtocolSellRates({
   chainId,
@@ -28,8 +31,11 @@ export async function getCowProtocolSellRates({
   inputSymbol,
   outputSymbol,
   setError,
+  isInputTokenCustom,
+  isOutputTokenCustom,
 }: SwitchParams): Promise<SwitchRatesType> {
   const cowProtocolPricesService = new CoWProtocolPricesService();
+  const familyPricesService = new FamilyPricesService();
   const tradingSdk = new TradingSdk({ chainId });
 
   let orderBookQuote: QuoteAndPost | undefined;
@@ -53,6 +59,9 @@ export async function getCowProtocolSellRates({
 
     const provider = await getEthersProvider(wagmiConfig, { chainId });
     const signer = provider?.getSigner();
+    const isMainnet =
+      !getNetworkConfig(chainId as unknown as ChainId).isTestnet &&
+      !getNetworkConfig(chainId as unknown as ChainId).isFork;
 
     if (!inputSymbol || !outputSymbol) {
       throw new Error('No input or output symbol provided');
@@ -76,14 +85,19 @@ export async function getCowProtocolSellRates({
           console.error(cowError);
           throw new Error(cowError?.body?.errorType);
         }),
-      // CoW Quote doesn't return values in USD, so we need to fetch the price from the API separately
-      cowProtocolPricesService.getTokenUsdPrice(chainId, srcTokenWrapped).catch((cowError) => {
+      (isInputTokenCustom || !isMainnet
+        ? cowProtocolPricesService.getTokenUsdPrice(chainId, srcTokenWrapped)
+        : familyPricesService.getTokenUsdPrice(chainId, srcTokenWrapped)
+      ).catch((cowError) => {
         console.error(cowError);
-        throw new Error(cowError?.body?.errorType);
+        throw new Error('No price found for token, please try another token');
       }),
-      cowProtocolPricesService.getTokenUsdPrice(chainId, destTokenWrapped).catch((cowError) => {
+      (isOutputTokenCustom || !isMainnet
+        ? cowProtocolPricesService.getTokenUsdPrice(chainId, destTokenWrapped)
+        : familyPricesService.getTokenUsdPrice(chainId, destTokenWrapped)
+      ).catch((cowError) => {
         console.error(cowError);
-        throw new Error(cowError?.body?.errorType);
+        throw new Error('No price found for token, please try another token');
       }),
     ]);
 
