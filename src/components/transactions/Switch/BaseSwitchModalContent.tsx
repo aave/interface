@@ -445,7 +445,10 @@ export const BaseSwitchModalContent = ({
 
   // Eth-Flow requires to leave some assets for gas
   const nativeDecimals = 18;
-  const gasRequiredForEthFlow = parseUnits('0.01', nativeDecimals); // TODO: Ask for better value coming from the SDK
+  const gasRequiredForEthFlow =
+    selectedChainId === 1
+      ? parseUnits('0.01', nativeDecimals)
+      : parseUnits('0.0001', nativeDecimals); // TODO: Ask for better value coming from the SDK
   const requiredAssetsLeftForGas = isNativeToken(selectedInputToken.address)
     ? gasRequiredForEthFlow
     : undefined;
