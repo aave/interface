@@ -633,12 +633,17 @@ export const BaseSwitchModalContent = ({
                     isNativeToken(token.address)
                   )
               )}
-              value={
-                switchRates
-                  ? normalizeBN(switchRates.destSpot, switchRates.destDecimals).toString()
-                  : '0'
+              value={normalizeBN(
+                switchRates?.provider === 'cowprotocol'
+                  ? switchRates?.destSpot
+                  : switchRates?.destAmount || 0,
+                switchRates?.destDecimals || 18
+              ).toString()}
+              usdValue={
+                switchRates?.provider === 'cowprotocol'
+                  ? switchRates?.destSpotInUsd
+                  : switchRates?.destUSD || '0'
               }
-              usdValue={switchRates?.destSpotInUsd || '0'}
               loading={
                 debounceInputAmount !== '0' &&
                 debounceInputAmount !== '' &&
