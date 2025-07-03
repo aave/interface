@@ -589,13 +589,28 @@ export const ActionDetails = <K extends keyof ActionFields>({
         <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }} pr={4.5}>
             <TokenIcon symbol={formattedCowSwapSrcToken.iconSymbol} sx={{ fontSize: iconSize }} />
-            <FormattedNumber
-              value={formatUnits(cowSwapTx.srcAmount, cowSwapTx.srcToken.decimals)}
-              variant="secondary14"
-              color="text.primary"
-              sx={{ mr: 1, ml: 1 }}
-              visibleDecimals={2}
-            />
+            <DarkTooltip
+              title={
+                <Typography variant="secondary14" color="common.white">
+                  {formatUnits(cowSwapTx.srcAmount, cowSwapTx.srcToken.decimals)}{' '}
+                  {formattedCowSwapSrcToken.symbol}
+                </Typography>
+              }
+              arrow
+              placement="top"
+              enterTouchDelay={100}
+              leaveTouchDelay={500}
+            >
+              <Box>
+                <FormattedNumber
+                  value={formatUnits(cowSwapTx.srcAmount, cowSwapTx.srcToken.decimals)}
+                  variant="secondary14"
+                  color="text.primary"
+                  sx={{ mr: 1, ml: 1 }}
+                  visibleDecimals={2}
+                />
+              </Box>
+            </DarkTooltip>
             <DarkTooltip
               title={
                 <Typography variant="secondary14" color="common.white">
@@ -615,13 +630,28 @@ export const ActionDetails = <K extends keyof ActionFields>({
           </SvgIcon>
           <Box sx={{ display: 'flex', alignItems: 'center' }} pl={4.5}>
             <TokenIcon symbol={formattedCowSwapDestToken.iconSymbol} sx={{ fontSize: iconSize }} />
-            <FormattedNumber
-              value={formatUnits(cowSwapTx.destAmount, cowSwapTx.destToken.decimals)}
-              variant="secondary14"
-              color="text.primary"
-              visibleDecimals={2}
-              sx={{ mr: 1, ml: 1 }}
-            />
+            <DarkTooltip
+              title={
+                <Typography variant="secondary14" color="common.white">
+                  {formatUnits(cowSwapTx.destAmount, cowSwapTx.destToken.decimals)}{' '}
+                  {formattedCowSwapDestToken.symbol}
+                </Typography>
+              }
+              arrow
+              placement="top"
+              enterTouchDelay={100}
+              leaveTouchDelay={500}
+            >
+              <Box>
+                <FormattedNumber
+                  value={formatUnits(cowSwapTx.destAmount, cowSwapTx.destToken.decimals)}
+                  variant="secondary14"
+                  color="text.primary"
+                  visibleDecimals={2}
+                  sx={{ mr: 1, ml: 1 }}
+                />
+              </Box>
+            </DarkTooltip>
             <DarkTooltip
               title={
                 <Typography variant="secondary14" color="common.white">
@@ -640,106 +670,151 @@ export const ActionDetails = <K extends keyof ActionFields>({
           {/* Status */}
           {isOrderLoading(cowSwapTx.status) && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-              <DarkTooltip
-                title={<Trans>In Progress</Trans>}
-                arrow
-                enterTouchDelay={100}
-                leaveTouchDelay={500}
-                placement="top"
-              >
-                <Box>
-                  <Warning
-                    severity="info"
-                    sx={{
-                      my: 0,
-                      pt: 0.6,
-                      pb: 0.6,
-                      pr: 1.5,
-                      pl: 1.5,
-                      background: 'none',
-                      border: { xs: 'none', sm: `1px solid ${theme.palette.divider}` },
-                      color: theme.palette.text.primary,
-                    }}
-                  >
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                      <Trans>In Progress</Trans>
-                    </Box>
-                  </Warning>
-                </Box>
-              </DarkTooltip>
+              <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                <DarkTooltip
+                  title={<Trans>In Progress</Trans>}
+                  arrow
+                  enterTouchDelay={100}
+                  leaveTouchDelay={500}
+                  placement="top"
+                >
+                  <Box>
+                    <Warning
+                      severity="info"
+                      sx={{
+                        my: 0,
+                        pt: 0.6,
+                        pb: 0.6,
+                        pr: 1.5,
+                        pl: 1.5,
+                        background: 'none',
+                        border: 'none',
+                        color: theme.palette.text.primary,
+                      }}
+                    />
+                  </Box>
+                </DarkTooltip>
+              </Box>
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <Warning
+                  severity="info"
+                  sx={{
+                    my: 0,
+                    pt: 0.6,
+                    pb: 0.6,
+                    pr: 1.5,
+                    pl: 1.5,
+                    background: 'none',
+                    border: `1px solid ${theme.palette.divider}`,
+                    color: theme.palette.text.primary,
+                  }}
+                >
+                  <Trans>In Progress</Trans>
+                </Warning>
+              </Box>
             </Box>
           )}
           {isOrderFilled(cowSwapTx.status) && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-              <DarkTooltip
-                title={<Trans>Filled</Trans>}
-                arrow
-                enterTouchDelay={100}
-                leaveTouchDelay={500}
-                placement="top"
-              >
-                <Box>
-                  <Warning
-                    severity="success"
-                    sx={{
-                      my: 0,
-                      pt: 0.6,
-                      pb: 0.6,
-                      pr: 1.5,
-                      pl: 1.5,
-                      background: 'none',
-                      border: { xs: 'none', sm: `1px solid ${theme.palette.divider}` },
-                      color: theme.palette.text.primary,
-                    }}
-                  >
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                      <Trans>Filled</Trans>
-                    </Box>
-                  </Warning>
-                </Box>
-              </DarkTooltip>
+              <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                <DarkTooltip
+                  title={<Trans>Filled</Trans>}
+                  arrow
+                  enterTouchDelay={100}
+                  leaveTouchDelay={500}
+                  placement="top"
+                >
+                  <Box>
+                    <Warning
+                      severity="success"
+                      sx={{
+                        my: 0,
+                        pt: 0.6,
+                        pb: 0.6,
+                        pr: 1.5,
+                        pl: 1.5,
+                        background: 'none',
+                        border: 'none',
+                        color: theme.palette.text.primary,
+                      }}
+                    />
+                  </Box>
+                </DarkTooltip>
+              </Box>
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <Warning
+                  severity="success"
+                  sx={{
+                    my: 0,
+                    pt: 0.6,
+                    pb: 0.6,
+                    pr: 1.5,
+                    pl: 1.5,
+                    background: 'none',
+                    border: `1px solid ${theme.palette.divider}`,
+                    color: theme.palette.text.primary,
+                  }}
+                >
+                  <Trans>Filled</Trans>
+                </Warning>
+              </Box>
             </Box>
           )}
 
           {(isOrderCancelled(cowSwapTx.status) || isOrderExpired(cowSwapTx.status)) && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-              <DarkTooltip
-                title={
-                  isOrderCancelled(cowSwapTx.status) ? (
+              <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                <DarkTooltip
+                  title={
+                    isOrderCancelled(cowSwapTx.status) ? (
+                      <Trans>Cancelled</Trans>
+                    ) : (
+                      <Trans>Expired</Trans>
+                    )
+                  }
+                  arrow
+                  placement="top"
+                  enterTouchDelay={100}
+                  leaveTouchDelay={500}
+                >
+                  <Box>
+                    <Warning
+                      severity="error"
+                      sx={{
+                        my: 0,
+                        pt: 0.6,
+                        pb: 0.6,
+                        pr: 1.5,
+                        pl: 1.5,
+                        background: 'none',
+                        border: 'none',
+                        color: theme.palette.text.primary,
+                      }}
+                    />
+                  </Box>
+                </DarkTooltip>
+              </Box>
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <Warning
+                  severity="error"
+                  sx={{
+                    my: 0,
+                    pt: 0.6,
+                    pb: 0.6,
+                    pr: 1.5,
+                    pl: 1.5,
+                    background: 'none',
+                    border: `1px solid ${theme.palette.divider}`,
+                    color: theme.palette.text.primary,
+                  }}
+                >
+                  {isOrderCancelled(cowSwapTx.status) ? (
                     <Trans>Cancelled</Trans>
                   ) : (
                     <Trans>Expired</Trans>
-                  )
-                }
-                arrow
-                placement="top"
-                enterTouchDelay={100}
-                leaveTouchDelay={500}
-              >
-                <Box>
-                  <Warning
-                    severity="error"
-                    sx={{
-                      my: 0,
-                      pt: 0.6,
-                      pb: 0.6,
-                      pr: 1.5,
-                      pl: 1.5,
-                      background: 'none',
-                      border: { xs: 'none', sm: `1px solid ${theme.palette.divider}` },
-                      color: theme.palette.text.primary,
-                    }}
-                  >
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                      {isOrderCancelled(cowSwapTx.status) ? (
-                        <Trans>Cancelled</Trans>
-                      ) : (
-                        <Trans>Expired</Trans>
-                      )}
-                    </Box>
-                  </Warning>
-                </Box>
-              </DarkTooltip>
+                  )}
+                </Warning>
+              </Box>
             </Box>
           )}
         </Box>
