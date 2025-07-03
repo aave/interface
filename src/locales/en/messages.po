@@ -346,6 +346,10 @@ msgstr "Total amount staked"
 msgid "Transactions"
 msgstr "Transactions"
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "For swapping safety module assets please unstake your position <0>here</0>."
+msgstr "For swapping safety module assets please unstake your position <0>here</0>."
+
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 msgstr "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
@@ -1109,6 +1113,10 @@ msgstr "Liquidation at"
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Costs & Fees"
 msgstr "Costs & Fees"
+
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "I confirm the swap with a potential {0}% value loss"
+msgstr "I confirm the swap with a potential {0}% value loss"
 
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 msgid "deposited"
@@ -2598,6 +2606,10 @@ msgstr "In Isolation mode, you cannot supply other assets as collateral. A globa
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Staking this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Staking this amount will reduce your health factor and increase risk of liquidation."
+
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "High price impact. This route may return less due to low liquidity."
+msgstr "High price impact. This route may return less due to low liquidity."
 
 #: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."

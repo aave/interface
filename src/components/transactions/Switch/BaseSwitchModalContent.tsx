@@ -2,7 +2,7 @@ import { normalize, normalizeBN } from '@aave/math-utils';
 import { OrderStatus, SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
+import { Box, Checkbox, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { debounce } from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -41,9 +41,37 @@ import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import { SwitchTxSuccessView } from './SwitchTxSuccessView';
 import { validateSlippage, ValidationSeverity } from './validation.helpers';
 
+const SAFETY_MODULE_TOKENS = [
+  'stkgho',
+  'stkaave',
+  'stkaavewstethbptv2',
+  'stkbptv2',
+  'stkbpt',
+  'stkabpt',
+];
+
 export type SwitchDetailsParams = Parameters<
   NonNullable<SwitchModalCustomizableProps['switchDetails']>
 >[0];
+
+const valueLostPercentage = (destValueInUsd: number, srcValueInUsd: number) => {
+  const receivingPercentage = destValueInUsd / srcValueInUsd;
+  const valueLostPercentage = receivingPercentage ? 1 - receivingPercentage : 0;
+  return valueLostPercentage;
+};
+
+const shouldShowWarning = (lostValue: number, srcValueInUsd: number) => {
+  if (srcValueInUsd > 500000) return lostValue > 0.03;
+  if (srcValueInUsd > 100000) return lostValue > 0.04;
+  if (srcValueInUsd > 10000) return lostValue > 0.05;
+  if (srcValueInUsd > 1000) return lostValue > 0.07;
+
+  return lostValue > 0.05;
+};
+
+const shouldRequireConfirmation = (lostValue: number) => {
+  return lostValue > 0.2;
+};
 
 export const getFilteredTokensForSwitch = (chainId: number): TokenInfoWithBalance[] => {
   let customTokenList = TOKEN_LIST.tokens;
@@ -133,6 +161,7 @@ export const BaseSwitchModalContent = ({
   const switchProvider = useSwitchProvider({ chainId: selectedChainId });
   const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '2' : '0.10');
   const [showGasStation, setShowGasStation] = useState(switchProvider == 'paraswap');
+  const [highPriceImpactConfirmed, setHighPriceImpactConfirmed] = useState(false);
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
@@ -166,6 +195,7 @@ export const BaseSwitchModalContent = ({
 
   const handleInputChange = (value: string) => {
     setTxError(undefined);
+    setHighPriceImpactConfirmed(false);
     if (value === '-1') {
       // Max Selected
       setInputAmount(selectedInputToken.balance);
@@ -442,6 +472,22 @@ export const BaseSwitchModalContent = ({
         })
       : null;
 
+  const lostValue = switchRates
+    ? valueLostPercentage(
+        Number(switchRates?.destUSD) * (1 - safeSlippage),
+        Number(switchRates?.srcUSD)
+      )
+    : 0;
+
+  const showWarning = switchRates
+    ? shouldShowWarning(lostValue, Number(switchRates?.srcUSD))
+    : false;
+  const requireConfirmation = switchRates ? shouldRequireConfirmation(lostValue) : false;
+
+  const isSwappingSafetyModuleToken = SAFETY_MODULE_TOKENS.includes(
+    selectedInputToken.symbol.toLowerCase()
+  );
+
   // Component
   return (
     <>
@@ -604,7 +650,7 @@ export const BaseSwitchModalContent = ({
                 selectedOutputToken.extensions?.isUserCustom) && (
                 <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
                   <Typography variant="caption">
-                    You have selected a custom imported token.
+                    You selected a custom imported token. Make sure it&apos;s the right token.
                   </Typography>
                 </Warning>
               )}
@@ -626,6 +672,60 @@ export const BaseSwitchModalContent = ({
               />
               {txError && <ParaswapErrorDisplay txError={txError} />}
 
+              {showWarning && (
+                <Warning
+                  severity="warning"
+                  icon={false}
+                  sx={{
+                    mt: 2,
+                    mb: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography variant="caption">
+                    <Trans>
+                      High price impact. This route may return less due to low liquidity.
+                    </Trans>
+                  </Typography>
+                  {requireConfirmation && (
+                    <Box
+                      sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }}
+                    >
+                      <Typography variant="caption">
+                        <Trans>
+                          I confirm the swap with a potential {(lostValue * 100).toFixed(0)}% value
+                          loss
+                        </Trans>
+                      </Typography>
+                      <Checkbox
+                        checked={highPriceImpactConfirmed}
+                        onChange={() => {
+                          setHighPriceImpactConfirmed(!highPriceImpactConfirmed);
+                        }}
+                        size="small"
+                        data-cy={'high-price-impact-checkbox'}
+                      />
+                    </Box>
+                  )}
+                </Warning>
+              )}
+
+              {isSwappingSafetyModuleToken && (
+                <Warning severity="error" icon={false} sx={{ mt: 2, mb: 2 }}>
+                  <Typography variant="caption">
+                    <Trans>
+                      For swapping safety module assets please unstake your position{' '}
+                      <Link href="/safety-module" onClick={() => close()}>
+                        here
+                      </Link>
+                      .
+                    </Trans>
+                  </Typography>
+                </Warning>
+              )}
+
               <SwitchActions
                 isWrongNetwork={isWrongNetwork.isWrongNetwork}
                 inputAmount={debounceInputAmount}
@@ -641,7 +741,9 @@ export const BaseSwitchModalContent = ({
                   !switchRates ||
                   Number(debounceInputAmount) > Number(selectedInputToken.balance) ||
                   !user ||
-                  slippageValidation?.severity === ValidationSeverity.ERROR
+                  slippageValidation?.severity === ValidationSeverity.ERROR ||
+                  isSwappingSafetyModuleToken ||
+                  (requireConfirmation && !highPriceImpactConfirmed)
                 }
                 chainId={selectedChainId}
                 switchRates={switchRates}
