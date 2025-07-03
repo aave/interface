@@ -67,8 +67,6 @@ export const SwitchSlippageSelector = ({
   const [isCustomSlippage, setIsCustomSlippage] = useState(false);
   const [previousSlippage, setPreviousSlippage] = useState(slippage);
 
-  console.log(slippageValidation);
-
   const open = Boolean(anchorEl);
 
   // Watch for slippage changes from outside the component
