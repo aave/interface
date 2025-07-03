@@ -159,7 +159,7 @@ export const BaseSwitchModalContent = ({
     return defaultNetwork.chainId;
   });
   const switchProvider = useSwitchProvider({ chainId: selectedChainId });
-  const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '2' : '0.10');
+  const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '0.5' : '0.10');
   const [showGasStation, setShowGasStation] = useState(switchProvider == 'paraswap');
   const [highPriceImpactConfirmed, setHighPriceImpactConfirmed] = useState(false);
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
@@ -326,6 +326,7 @@ export const BaseSwitchModalContent = ({
     isNativeToken(selectedInputToken?.address),
     switchProvider
   );
+
   const safeSlippage =
     slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
       ? 0
@@ -539,6 +540,11 @@ export const BaseSwitchModalContent = ({
           slippageValidation={slippageValidation}
           slippage={slippage}
           setSlippage={setSlippage}
+          suggestedSlippage={
+            switchRates?.provider === 'cowprotocol'
+              ? switchRates?.suggestedSlippage.toString()
+              : undefined
+          }
         />
       </Box>
       {!selectedInputToken || !selectedOutputToken ? (

@@ -158,6 +158,17 @@ export async function getCowProtocolSellRates({
     throw new Error('No buy amount found');
   }
 
+  let suggestedSlippage = (orderBookQuote.quoteResults.suggestedSlippageBps ?? 100) / 100; // E.g. 100 bps -> 1% 100 / 100 = 1
+
+  if (isNativeToken(srcToken)) {
+    // Recommended by CoW for potential reimbursments
+    if (chainId == 1 && suggestedSlippage < 2) {
+      suggestedSlippage = 2;
+    } else if (chainId != 1 && suggestedSlippage < 0.5) {
+      suggestedSlippage = 0.5;
+    }
+  }
+
   return {
     srcToken,
     srcUSD: srcAmountInUsd.toString(),
@@ -170,7 +181,7 @@ export async function getCowProtocolSellRates({
     provider: 'cowprotocol',
     order: orderBookQuote.quoteResults.orderToSign,
     quoteId: orderBookQuote.quoteResults.quoteResponse.id,
-    suggestedSlippage: (orderBookQuote.quoteResults.suggestedSlippageBps ?? 100) / 100, // E.g. 100 bps -> 1% 100 / 100 = 1
+    suggestedSlippage,
     amountAndCosts: orderBookQuote.quoteResults.amountsAndCosts,
     srcTokenPriceUsd: Number(srcTokenPriceUsd),
     destTokenPriceUsd: Number(destTokenPriceUsd),
