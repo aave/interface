@@ -6,29 +6,19 @@ import { Trans } from '@lingui/macro';
 import { Box, ListItemText, ListSubheader, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import React, { useRef, useState } from 'react';
-import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { maxInputAmountWithSlippage } from 'src/hooks/paraswap/common';
 import { useDebtSwitch } from 'src/hooks/paraswap/useDebtSwitch';
-import { useGhoPoolReserve } from 'src/hooks/pool/useGhoPoolReserve';
-import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
-import {
-  displayGhoForMintableMarket,
-  ghoUserQualifiesForDiscount,
-  weightedAverageAPY,
-} from 'src/utils/ghoUtilities';
 
 import {
   ComputedUserReserveData,
@@ -73,16 +63,11 @@ export const DebtSwitchModalContent = ({
   isWrongNetwork,
   user,
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
-  const { reserves, ghoReserveData, ghoUserData, ghoUserLoadingData } = useAppDataContext();
+  const { reserves } = useAppDataContext();
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
-
-  const currentMarket = useRootStore((store) => store.currentMarket);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
-  const { data: _ghoReserveData } = useGhoPoolReserve(currentMarketData);
 
   let switchTargets = reserves
     .filter(
@@ -146,20 +131,15 @@ export const DebtSwitchModalContent = ({
     setTxError(undefined);
   };
 
-  // TODO consider pulling out a util helper here or maybe moving this logic into the store
   let availableBorrowCap = valueToBigNumber(MaxUint256.toString());
   let availableLiquidity: string | number = '0';
-  if (displayGhoForMintableMarket({ symbol: switchTarget.reserve.symbol, currentMarket })) {
-    availableLiquidity = ghoReserveData.aaveFacilitatorRemainingCapacity.toString();
-  } else {
-    availableBorrowCap =
-      switchTarget.reserve.borrowCap === '0'
-        ? valueToBigNumber(MaxUint256.toString())
-        : valueToBigNumber(Number(switchTarget.reserve.borrowCap)).minus(
-            valueToBigNumber(switchTarget.reserve.totalDebt)
-          );
-    availableLiquidity = switchTarget.reserve.formattedAvailableLiquidity;
-  }
+  availableBorrowCap =
+    switchTarget.reserve.borrowCap === '0'
+      ? valueToBigNumber(MaxUint256.toString())
+      : valueToBigNumber(Number(switchTarget.reserve.borrowCap)).minus(
+          valueToBigNumber(switchTarget.reserve.totalDebt)
+        );
+  availableLiquidity = switchTarget.reserve.formattedAvailableLiquidity;
 
   const availableLiquidityOfTargetReserve = BigNumber.max(
     BigNumber.min(availableLiquidity, availableBorrowCap),
@@ -227,45 +207,6 @@ export const DebtSwitchModalContent = ({
       />
     );
 
-  let qualifiesForDiscount = false;
-  let ghoTargetData: GhoRange | undefined;
-  if (reserves.some((reserve) => reserve.symbol === 'GHO')) {
-    const ghoBalanceAfterMaxSwitchTo =
-      Number(maxAmountToSwitch) * Number(poolReserve.priceInUSD) + ghoUserData.userGhoBorrowBalance;
-    const userCurrentBorrowApy = weightedAverageAPY(
-      ghoReserveData.ghoVariableBorrowAPY,
-      ghoUserData.userGhoBorrowBalance,
-      ghoUserData.userGhoAvailableToBorrowAtDiscount,
-      ghoReserveData.ghoBorrowAPYWithMaxDiscount
-    );
-    const userBorrowApyAfterMaxSwitchTo = weightedAverageAPY(
-      ghoReserveData.ghoVariableBorrowAPY,
-      ghoBalanceAfterMaxSwitchTo,
-      ghoUserData.userGhoAvailableToBorrowAtDiscount,
-      ghoReserveData.ghoBorrowAPYWithMaxDiscount
-    );
-    const ghoApyRange: [number, number] | undefined = !ghoUserLoadingData
-      ? [userCurrentBorrowApy, userBorrowApyAfterMaxSwitchTo]
-      : undefined;
-    qualifiesForDiscount =
-      _ghoUserData && _ghoReserveData
-        ? ghoUserQualifiesForDiscount(_ghoReserveData, _ghoUserData, maxAmountToSwitch)
-        : false;
-    ghoTargetData = {
-      qualifiesForDiscount,
-      ghoApyRange,
-      userBorrowApyAfterMaxSwitch: userBorrowApyAfterMaxSwitchTo,
-      userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
-      inputAmount: Number(amount),
-      targetAmount: Number(inputAmount),
-      userCurrentBorrowApy,
-      ghoVariableBorrowApy: ghoReserveData.ghoVariableBorrowAPY,
-      userGhoAvailableToBorrowAtDiscount: ghoUserData.userGhoAvailableToBorrowAtDiscount,
-      ghoBorrowAPYWithMaxDiscount: ghoReserveData.ghoBorrowAPYWithMaxDiscount,
-      userCurrentBorrowBalance: ghoUserData.userGhoBorrowBalance,
-    };
-  }
-
   return (
     <>
       <AssetInput
@@ -313,20 +254,7 @@ export const DebtSwitchModalContent = ({
         disableInput
         loading={loadingSkeleton}
         selectOptionHeader={<SelectOptionListHeader />}
-        selectOption={(asset) =>
-          displayGhoForMintableMarket({ symbol: asset.symbol, currentMarket }) ? (
-            <GhoSwitchTargetSelectOption
-              asset={asset}
-              ghoApyRange={ghoTargetData?.ghoApyRange}
-              userBorrowApyAfterMaxSwitch={ghoTargetData?.userBorrowApyAfterMaxSwitch}
-              userDiscountTokenBalance={ghoUserData.userDiscountTokenBalance}
-              currentMarket={currentMarket}
-              qualifiesForDiscount={qualifiesForDiscount}
-            />
-          ) : (
-            <SwitchTargetSelectOption asset={asset} />
-          )
-        }
+        selectOption={(asset) => <SwitchTargetSelectOption asset={asset} />}
       />
       {error && !loadingSkeleton && (
         <Typography variant="helperText" color="error.main">
@@ -374,8 +302,6 @@ export const DebtSwitchModalContent = ({
           sourceBalance={maxAmountToSwitch}
           sourceBorrowAPY={poolReserve.variableBorrowAPY}
           targetBorrowAPY={switchTarget.reserve.variableBorrowAPY}
-          ghoData={ghoTargetData}
-          currentMarket={currentMarket}
         />
       </TxModalDetails>
 
@@ -441,53 +367,6 @@ const SwitchTargetSelectOption = ({ asset }: { asset: SwitchTargetAsset }) => {
         />
         <Typography variant="helperText" color="text.secondary">
           <Trans>Variable rate</Trans>
-        </Typography>
-      </Box>
-    </>
-  );
-};
-
-interface GhoSwitchTargetAsset {
-  ghoApyRange?: [number, number];
-  asset: SwitchTargetAsset;
-  userBorrowApyAfterMaxSwitch?: number;
-  userDiscountTokenBalance: number;
-  currentMarket: CustomMarket;
-  qualifiesForDiscount: boolean;
-}
-
-const GhoSwitchTargetSelectOption = ({
-  ghoApyRange,
-  asset,
-  userBorrowApyAfterMaxSwitch,
-  userDiscountTokenBalance,
-  currentMarket,
-  qualifiesForDiscount,
-}: GhoSwitchTargetAsset) => {
-  return (
-    <>
-      <TokenIcon
-        aToken={asset.aToken}
-        symbol={asset.iconSymbol || asset.symbol}
-        sx={{ fontSize: '22px', mr: 1 }}
-      />
-      <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
-        <GhoIncentivesCard
-          useApyRange={qualifiesForDiscount}
-          rangeValues={ghoApyRange}
-          variant="main14"
-          color="text.secondary"
-          value={userBorrowApyAfterMaxSwitch ?? -1}
-          data-cy={`apyType`}
-          stkAaveBalance={userDiscountTokenBalance}
-          ghoRoute={ROUTES.reserveOverview(asset?.address ?? '', currentMarket) + '/#discount'}
-          forceShowTooltip
-          withTokenIcon={qualifiesForDiscount}
-          userQualifiesForDiscount={qualifiesForDiscount}
-        />
-        <Typography variant="helperText" color="text.secondary">
-          <Trans>Fixed rate</Trans>
         </Typography>
       </Box>
     </>

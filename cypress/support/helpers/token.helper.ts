@@ -1,4 +1,4 @@
-import { TokenRequest } from '../../../support/actions/tenderly.actions';
+import { TokenRequest } from '../actions/tenderly.actions';
 
 export interface DonorInfo {
   name: string;
@@ -43,7 +43,7 @@ const donors: Donors = {
   },
   aMATICPolygonV3: {
     name: 'aMATIC',
-    donorWalletAddress: '0x11b6715Dc95a589f7D52a7b4f3d922f20Dcfe3B6',
+    donorWalletAddress: '0x07F294e84a9574f657A473f94A242F1FdFAFB823',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
   },
   aETHOptimismV3: {

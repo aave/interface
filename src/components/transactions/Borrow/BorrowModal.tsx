@@ -4,13 +4,10 @@ import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
-import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
-import { useShallow } from 'zustand/shallow';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
 import { BorrowModalContent } from './BorrowModalContent';
-import { GhoBorrowModalContent } from './GhoBorrowModalContent';
 
 export const BorrowModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
@@ -18,9 +15,7 @@ export const BorrowModal = () => {
   }>;
 
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
-  const [trackEvent, currentMarket] = useRootStore(
-    useShallow((store) => [store.trackEvent, store.currentMarket])
-  );
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleBorrowUnwrapped = (borrowUnWrapped: boolean) => {
     trackEvent(GENERAL.OPEN_MODAL, {
@@ -41,18 +36,14 @@ export const BorrowModal = () => {
       >
         {(params) => (
           <UserAuthenticated>
-            {(user) =>
-              displayGhoForMintableMarket({ symbol: params.symbol, currentMarket }) ? (
-                <GhoBorrowModalContent {...params} user={user} />
-              ) : (
-                <BorrowModalContent
-                  {...params}
-                  user={user}
-                  unwrap={borrowUnWrapped}
-                  setUnwrap={handleBorrowUnwrapped}
-                />
-              )
-            }
+            {(user) => (
+              <BorrowModalContent
+                {...params}
+                user={user}
+                unwrap={borrowUnWrapped}
+                setUnwrap={handleBorrowUnwrapped}
+              />
+            )}
           </UserAuthenticated>
         )}
       </ModalWrapper>

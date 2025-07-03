@@ -2,7 +2,6 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Paper, Skeleton, Stack, Typography, useTheme } from '@mui/material';
-import { BigNumber } from 'bignumber.js';
 import React, { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
@@ -21,12 +20,8 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
-import {
-  getMaxAmountAvailableToBorrow,
-  getMaxGhoMintAmount,
-} from 'src/utils/getMaxAmountAvailableToBorrow';
+import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { amountToUsd } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
@@ -65,12 +60,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
         store.poolComputed.minRemainingBaseTokenBalance,
       ])
     );
-  const {
-    ghoReserveData,
-    user,
-    loading: loadingReserves,
-    marketReferencePriceInUsd,
-  } = useAppDataContext();
+  const { user, loading: loadingReserves, marketReferencePriceInUsd } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances(currentMarketData);
   const { baseAssetSymbol } = currentNetworkConfig;
   let balance = walletBalances[reserve.underlyingAsset];
@@ -80,16 +70,8 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
   let maxAmountToBorrow = '0';
   let maxAmountToSupply = '0';
-  const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 
-  if (isGho && user) {
-    const maxMintAmount = getMaxGhoMintAmount(user, reserve);
-    maxAmountToBorrow = BigNumber.min(
-      maxMintAmount,
-      valueToBigNumber(ghoReserveData.aaveFacilitatorRemainingCapacity)
-    ).toString();
-    maxAmountToSupply = '0';
-  } else if (user) {
+  if (user) {
     maxAmountToBorrow = getMaxAmountAvailableToBorrow(reserve, user).toString();
 
     maxAmountToSupply = getMaxAmountAvailableToSupply(
@@ -160,16 +142,14 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
         <>
           <Divider sx={{ my: 6 }} />
           <Stack gap={3}>
-            {!isGho && (
-              <SupplyAction
-                reserve={reserve}
-                value={maxAmountToSupply.toString()}
-                usdValue={maxAmountToSupplyUsd}
-                symbol={selectedAsset}
-                disable={disableSupplyButton}
-                onActionClicked={onSupplyClicked}
-              />
-            )}
+            <SupplyAction
+              reserve={reserve}
+              value={maxAmountToSupply.toString()}
+              usdValue={maxAmountToSupplyUsd}
+              symbol={selectedAsset}
+              disable={disableSupplyButton}
+              onActionClicked={onSupplyClicked}
+            />
             {reserve.borrowingEnabled && (
               <BorrowAction
                 reserve={reserve}
