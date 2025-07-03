@@ -594,6 +594,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
               variant="secondary14"
               color="text.primary"
               sx={{ mr: 1, ml: 1 }}
+              visibleDecimals={2}
             />
             <DarkTooltip
               title={
@@ -618,6 +619,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
               value={formatUnits(cowSwapTx.destAmount, cowSwapTx.destToken.decimals)}
               variant="secondary14"
               color="text.primary"
+              visibleDecimals={2}
               sx={{ mr: 1, ml: 1 }}
             />
             <DarkTooltip
@@ -638,64 +640,106 @@ export const ActionDetails = <K extends keyof ActionFields>({
           {/* Status */}
           {isOrderLoading(cowSwapTx.status) && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-              <Warning
-                severity="info"
-                sx={{
-                  my: 0,
-                  pt: 0.6,
-                  pb: 0.6,
-                  pr: 1.5,
-                  pl: 1.5,
-                  background: 'none',
-                  border: `1px solid ${theme.palette.divider}`,
-                  color: theme.palette.text.primary,
-                }}
+              <DarkTooltip
+                title={<Trans>In Progress</Trans>}
+                arrow
+                enterTouchDelay={100}
+                leaveTouchDelay={500}
+                placement="top"
               >
-                <Trans>In Progress</Trans>
-              </Warning>
+                <Box>
+                  <Warning
+                    severity="info"
+                    sx={{
+                      my: 0,
+                      pt: 0.6,
+                      pb: 0.6,
+                      pr: 1.5,
+                      pl: 1.5,
+                      background: 'none',
+                      border: { xs: 'none', sm: `1px solid ${theme.palette.divider}` },
+                      color: theme.palette.text.primary,
+                    }}
+                  >
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                      <Trans>In Progress</Trans>
+                    </Box>
+                  </Warning>
+                </Box>
+              </DarkTooltip>
             </Box>
           )}
           {isOrderFilled(cowSwapTx.status) && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-              <Warning
-                severity="success"
-                sx={{
-                  my: 0,
-                  pt: 0.6,
-                  pb: 0.6,
-                  pr: 1.5,
-                  pl: 1.5,
-                  background: 'none',
-                  border: `1px solid ${theme.palette.divider}`,
-                  color: theme.palette.text.primary,
-                }}
+              <DarkTooltip
+                title={<Trans>Filled</Trans>}
+                arrow
+                enterTouchDelay={100}
+                leaveTouchDelay={500}
+                placement="top"
               >
-                <Trans>Filled</Trans>
-              </Warning>
+                <Box>
+                  <Warning
+                    severity="success"
+                    sx={{
+                      my: 0,
+                      pt: 0.6,
+                      pb: 0.6,
+                      pr: 1.5,
+                      pl: 1.5,
+                      background: 'none',
+                      border: { xs: 'none', sm: `1px solid ${theme.palette.divider}` },
+                      color: theme.palette.text.primary,
+                    }}
+                  >
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                      <Trans>Filled</Trans>
+                    </Box>
+                  </Warning>
+                </Box>
+              </DarkTooltip>
             </Box>
           )}
 
           {(isOrderCancelled(cowSwapTx.status) || isOrderExpired(cowSwapTx.status)) && (
-            <Box sx={{ display: 'inline-flex', alignItems: 'center', ml: 4.5 }}>
-              <Warning
-                severity="error"
-                sx={{
-                  my: 0,
-                  pt: 0.6,
-                  pb: 0.6,
-                  pr: 1.5,
-                  pl: 1.5,
-                  background: 'none',
-                  border: `1px solid ${theme.palette.divider}`,
-                  color: theme.palette.text.primary,
-                }}
+            <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
+              <DarkTooltip
+                title={
+                  isOrderCancelled(cowSwapTx.status) ? (
+                    <Trans>Cancelled</Trans>
+                  ) : (
+                    <Trans>Expired</Trans>
+                  )
+                }
+                arrow
+                placement="top"
+                enterTouchDelay={100}
+                leaveTouchDelay={500}
               >
-                {isOrderCancelled(cowSwapTx.status) ? (
-                  <Trans>Cancelled</Trans>
-                ) : (
-                  <Trans>Expired</Trans>
-                )}
-              </Warning>
+                <Box>
+                  <Warning
+                    severity="error"
+                    sx={{
+                      my: 0,
+                      pt: 0.6,
+                      pb: 0.6,
+                      pr: 1.5,
+                      pl: 1.5,
+                      background: 'none',
+                      border: { xs: 'none', sm: `1px solid ${theme.palette.divider}` },
+                      color: theme.palette.text.primary,
+                    }}
+                  >
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                      {isOrderCancelled(cowSwapTx.status) ? (
+                        <Trans>Cancelled</Trans>
+                      ) : (
+                        <Trans>Expired</Trans>
+                      )}
+                    </Box>
+                  </Warning>
+                </Box>
+              </DarkTooltip>
             </Box>
           )}
         </Box>
