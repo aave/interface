@@ -628,10 +628,10 @@ export const BaseSwitchModalContent = ({
               )}
               value={
                 switchRates
-                  ? normalizeBN(switchRates.destAmount, switchRates.destDecimals).toString()
+                  ? normalizeBN(switchRates.destSpot, switchRates.destDecimals).toString()
                   : '0'
               }
-              usdValue={switchRates?.destUSD || '0'}
+              usdValue={switchRates?.destSpotInUsd || '0'}
               loading={
                 debounceInputAmount !== '0' &&
                 debounceInputAmount !== '' &&

@@ -134,6 +134,12 @@ export async function getCowProtocolSellRates({
     ).dividedBy(10 ** destDecimals)
   );
 
+  const destSpotInUsd = BigNumber(destTokenPriceUsd)
+    .multipliedBy(
+      BigNumber(orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString())
+    )
+    .dividedBy(10 ** destDecimals);
+
   if (!orderBookQuote.quoteResults.suggestedSlippageBps) {
     console.error('No suggested slippage found');
     const error = getErrorTextFromError(
@@ -175,6 +181,8 @@ export async function getCowProtocolSellRates({
     srcAmount: amount,
     srcDecimals,
     destToken,
+    destSpot: orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString(),
+    destSpotInUsd: destSpotInUsd.toString(),
     destUSD: destAmountInUsd.toString(),
     destAmount: orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString(),
     destDecimals,
