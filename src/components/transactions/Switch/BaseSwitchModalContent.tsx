@@ -158,6 +158,7 @@ export const BaseSwitchModalContent = ({
       return forcedChainId;
     return defaultNetwork.chainId;
   });
+  const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
   const switchProvider = useSwitchProvider({ chainId: selectedChainId });
   const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '0.5' : '0.10');
   const [showGasStation, setShowGasStation] = useState(switchProvider == 'paraswap');
@@ -682,6 +683,17 @@ export const BaseSwitchModalContent = ({
                 </Warning>
               )}
 
+              {showUSDTResetWarning && (
+                <Warning severity="info" sx={{ mt: 5 }}>
+                  <Typography variant="caption">
+                    <Trans>
+                      USDT on Ethereum requires approval reset before a new approval. This will
+                      require an additional transaction.
+                    </Trans>
+                  </Typography>
+                </Warning>
+              )}
+
               <SwitchErrors
                 ratesError={ratesError}
                 balance={selectedInputToken.balance}
@@ -748,8 +760,7 @@ export const BaseSwitchModalContent = ({
                 inputAmount={debounceInputAmount}
                 inputToken={selectedInputToken.address}
                 outputToken={selectedOutputToken.address}
-                inputName={selectedInputToken.name}
-                outputName={selectedOutputToken.name}
+                setShowUSDTResetWarning={setShowUSDTResetWarning}
                 inputSymbol={selectedInputToken.symbol}
                 outputSymbol={selectedOutputToken.symbol}
                 slippage={safeSlippage.toString()}
