@@ -14,7 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export enum MeritAction {
-  ETHEREUM_STKGHO = 'ethereum-stkgho',
+  ETHEREUM_SGHO = 'ethereum-sgho',
   ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
   ETHEREUM_SUPPLY_ETHX = 'ethereum-supply-ethx',
   ETHEREUM_SUPPLY_RLUSD = 'ethereum-supply-rlusd',
@@ -115,7 +115,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
       {
-        action: MeritAction.ETHEREUM_STKGHO,
+        action: MeritAction.ETHEREUM_SGHO,
         rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
         rewardTokenSymbol: 'GHO',
         customForumLink:
