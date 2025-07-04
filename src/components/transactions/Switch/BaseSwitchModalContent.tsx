@@ -503,11 +503,7 @@ export const BaseSwitchModalContent = ({
   return (
     <>
       {showTitle && (
-        <TxModalTitle
-          title={`Swap ${
-            debounceInputAmount.length && selectedInputToken ? selectedInputToken.symbol : 'Assets'
-          }`}
-        />
+        <TxModalTitle title={`Swap ${selectedInputToken ? selectedInputToken.symbol : 'Assets'}`} />
       )}
       {showChangeNetworkWarning && isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
