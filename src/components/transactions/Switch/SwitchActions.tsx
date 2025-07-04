@@ -234,6 +234,7 @@ export const SwitchActions = ({
           .multipliedBy(valueToBigNumber(1).minus(valueToBigNumber(slippageInPercent)))
           .toFixed(0);
         const slippageBps = Math.round(Number(slippageInPercent) * 100 * 100); // percent to bps
+        const smartSlippage = switchRates.suggestedSlippage == Number(slippageInPercent) * 100;
 
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(inputToken)) {
@@ -246,6 +247,8 @@ export const SwitchActions = ({
             validTo,
             inputSymbol,
             outputSymbol,
+            slippageBps,
+            smartSlippage,
             switchRates.quoteId
           );
           const txWithGasEstimation = await estimateGasLimit(ethFlowTx, chainId);
@@ -274,13 +277,15 @@ export const SwitchActions = ({
               user,
               chainId,
               inputSymbol,
-              outputSymbol
+              outputSymbol,
+              slippageBps,
+              smartSlippage
             );
             const calculatedOrderId = await calculateUniqueOrderId(chainId, unsignerOrder);
 
             await uploadAppData(
               calculatedOrderId,
-              stringify(COW_APP_DATA(inputSymbol, outputSymbol)),
+              stringify(COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage)),
               chainId
             );
 
@@ -324,6 +329,7 @@ export const SwitchActions = ({
                 afterNetworkCostsBuyAmount:
                   switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
                 slippageBps,
+                smartSlippage,
                 inputSymbol,
                 outputSymbol,
                 quote: switchRates.order,
@@ -362,6 +368,7 @@ export const SwitchActions = ({
                 afterNetworkCostsBuyAmount:
                   switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
                 slippageBps,
+                smartSlippage,
                 chainId,
                 user,
                 provider,
