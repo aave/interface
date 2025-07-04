@@ -51,6 +51,7 @@ import { getAssetCollateralType } from '../utils';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
+import { BatchSupplyActions } from './BatchSupplyActions';
 import { SupplyActions } from './SupplyActions';
 import { SupplyWrappedTokenActions } from './SupplyWrappedTokenActions';
 
@@ -146,11 +147,17 @@ export const SupplyModalContent = React.memo(
   }: SupplyModalContentProps) => {
     const { marketReferencePriceInUsd } = useAppDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
-    const [minRemainingBaseTokenBalance, currentMarketData, currentNetworkConfig] = useRootStore(
+    const [
+      minRemainingBaseTokenBalance,
+      currentMarketData,
+      currentNetworkConfig,
+      walletCapabilities,
+    ] = useRootStore(
       useShallow((state) => [
         state.poolComputed.minRemainingBaseTokenBalance,
         state.currentMarketData,
         state.currentNetworkConfig,
+        state.walletCapabilities,
       ])
     );
 
@@ -272,7 +279,11 @@ export const SupplyModalContent = React.memo(
 
         {txError && <GasEstimationError txError={txError} />}
 
-        <SupplyActions {...supplyActionsProps} />
+        {walletCapabilities?.[currentMarketData.chainId] ? (
+          <BatchSupplyActions {...supplyActionsProps} />
+        ) : (
+          <SupplyActions {...supplyActionsProps} />
+        )}
       </>
     );
   }
