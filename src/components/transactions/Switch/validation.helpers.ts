@@ -18,6 +18,13 @@ export const validateSlippage = (
 ): ValidationData | undefined => {
   try {
     const numberSlippage = Number(slippage);
+    if (numberSlippage > 100) {
+      return {
+        message: 'Slippage must be lower than 100%',
+        severity: ValidationSeverity.ERROR,
+      };
+    }
+
     if (provider === 'cowprotocol') {
       if (isNativeToken) {
         if (chainId === 1) {
