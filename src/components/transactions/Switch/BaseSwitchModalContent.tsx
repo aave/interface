@@ -55,6 +55,9 @@ export type SwitchDetailsParams = Parameters<
 >[0];
 
 const valueLostPercentage = (destValueInUsd: number, srcValueInUsd: number) => {
+  if (destValueInUsd === 0) return 1;
+  if (srcValueInUsd === 0) return 0;
+
   const receivingPercentage = destValueInUsd / srcValueInUsd;
   const valueLostPercentage = receivingPercentage ? 1 - receivingPercentage : 0;
   return valueLostPercentage;
@@ -455,12 +458,15 @@ export const BaseSwitchModalContent = ({
     selectedChainId === 1
       ? parseUnits('0.01', nativeDecimals)
       : parseUnits('0.0001', nativeDecimals); // TODO: Ask for better value coming from the SDK
-  const requiredAssetsLeftForGas = isNativeToken(selectedInputToken.address)
-    ? gasRequiredForEthFlow
-    : undefined;
-  const maxAmount = requiredAssetsLeftForGas
-    ? parseUnits(selectedInputToken.balance, nativeDecimals) - requiredAssetsLeftForGas
-    : undefined;
+  const requiredAssetsLeftForGas =
+    isNativeToken(selectedInputToken.address) && !userIsSmartContractWallet
+      ? gasRequiredForEthFlow
+      : undefined;
+  const maxAmount = (() => {
+    const balance = parseUnits(selectedInputToken.balance, nativeDecimals);
+    if (!requiredAssetsLeftForGas) return balance;
+    return balance > requiredAssetsLeftForGas ? balance - requiredAssetsLeftForGas : balance;
+  })();
   const maxAmountFormatted = maxAmount
     ? normalize(maxAmount.toString(), nativeDecimals).toString()
     : undefined;
