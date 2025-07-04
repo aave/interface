@@ -134,6 +134,12 @@ export async function getCowProtocolSellRates({
     ).dividedBy(10 ** destDecimals)
   );
 
+  const destSpotInUsd = BigNumber(destTokenPriceUsd)
+    .multipliedBy(
+      BigNumber(orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString())
+    )
+    .dividedBy(10 ** destDecimals);
+
   if (!orderBookQuote.quoteResults.suggestedSlippageBps) {
     console.error('No suggested slippage found');
     const error = getErrorTextFromError(
@@ -158,19 +164,32 @@ export async function getCowProtocolSellRates({
     throw new Error('No buy amount found');
   }
 
+  let suggestedSlippage = (orderBookQuote.quoteResults.suggestedSlippageBps ?? 100) / 100; // E.g. 100 bps -> 1% 100 / 100 = 1
+
+  if (isNativeToken(srcToken)) {
+    // Recommended by CoW for potential reimbursments
+    if (chainId == 1 && suggestedSlippage < 2) {
+      suggestedSlippage = 2;
+    } else if (chainId != 1 && suggestedSlippage < 0.5) {
+      suggestedSlippage = 0.5;
+    }
+  }
+
   return {
     srcToken,
     srcUSD: srcAmountInUsd.toString(),
     srcAmount: amount,
     srcDecimals,
     destToken,
+    destSpot: orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString(),
+    destSpotInUsd: destSpotInUsd.toString(),
     destUSD: destAmountInUsd.toString(),
     destAmount: orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString(),
     destDecimals,
     provider: 'cowprotocol',
     order: orderBookQuote.quoteResults.orderToSign,
     quoteId: orderBookQuote.quoteResults.quoteResponse.id,
-    suggestedSlippage: (orderBookQuote.quoteResults.suggestedSlippageBps ?? 100) / 100, // E.g. 100 bps -> 1% 100 / 100 = 1
+    suggestedSlippage,
     amountAndCosts: orderBookQuote.quoteResults.amountsAndCosts,
     srcTokenPriceUsd: Number(srcTokenPriceUsd),
     destTokenPriceUsd: Number(destTokenPriceUsd),
