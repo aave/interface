@@ -573,7 +573,7 @@ export const SwitchActions = ({
       } else {
         const tx = generateApproval(approvalData, { chainId, amount: amountToApprove });
         const txWithGasEstimation = await estimateGasLimit(tx, chainId);
-        setApprovalTxState({ ...approvalTxState, loading: true });
+        setApprovalTxState({ loading: true });
         const response = await sendTx(txWithGasEstimation);
         await response.wait(1);
         fetchApprovedAmount().then(() => {
