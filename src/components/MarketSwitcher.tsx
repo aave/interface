@@ -1,4 +1,5 @@
 import { ChevronDownIcon } from '@heroicons/react/outline';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -130,8 +131,16 @@ export const MarketSwitcher = () => {
     .some((item) => !!item);
 
   const handleMarketSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    trackEvent(DASHBOARD.CHANGE_MARKET, { market: e.target.value });
-    setCurrentMarket(e.target.value as unknown as CustomMarket);
+    const selectedMarket = e.target.value as CustomMarket;
+    const market = marketsData[selectedMarket];
+
+    if (market.externalUrl) {
+      window.open(market.externalUrl, '_blank');
+      return;
+    }
+
+    trackEvent(DASHBOARD.CHANGE_MARKET, { market: selectedMarket });
+    setCurrentMarket(selectedMarket);
   };
 
   const marketBlurbs: { [key: string]: JSX.Element } = {
@@ -397,10 +406,28 @@ export const MarketSwitcher = () => {
             <ListItemText sx={{ mr: 0 }}>
               {marketNaming.name} {market.isFork ? 'Fork' : ''}
             </ListItemText>
-            <ListItemText sx={{ textAlign: 'right' }}>
+            <ListItemText
+              sx={{
+                textAlign: 'right',
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'row-reverse',
+                gap: 1,
+              }}
+            >
               <Typography color="text.muted" variant="description">
                 {marketNaming.testChainName}
               </Typography>
+              {market.externalUrl && (
+                <SvgIcon
+                  sx={{
+                    fontSize: '16px',
+                    color: 'text.muted',
+                  }}
+                >
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              )}
             </ListItemText>
           </MenuItem>
         );
