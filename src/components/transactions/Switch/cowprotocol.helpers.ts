@@ -48,6 +48,7 @@ const TOKEN_GROUPS: Record<'stable' | 'correlatedEth' | 'correlatedBtc', string[
     'USDC.E',
     'EURE',
     'XDAI',
+    'WXDAI',
   ],
   correlatedEth: [
     'WEETH',
@@ -383,6 +384,10 @@ export const generateCoWExplorerLink = (chainId: SupportedChainId, orderId?: str
       return `${base}/arb1/orders/${orderId}`;
     case SupportedChainId.SEPOLIA:
       return `${base}/sepolia/orders/${orderId}`;
+    case SupportedChainId.AVALANCHE:
+      return `${base}/avax/orders/${orderId}`;
+    case SupportedChainId.POLYGON:
+      return `${base}/pol/orders/${orderId}`;
     default:
       throw new Error('Define explorer link for chainId: ' + chainId);
   }

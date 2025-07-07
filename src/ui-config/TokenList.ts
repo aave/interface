@@ -1867,9 +1867,9 @@ export const TOKEN_LIST: TokenList = {
       chainId: 1,
       address: '0x1aBaEA1f7C830bD89Acc67eC4af516284b1bC33c',
       name: 'Euro Coin',
-      symbol: 'EUROC',
+      symbol: 'EURC',
       decimals: 6,
-      logoURI: 'https://assets.coingecko.com/coins/images/26045/thumb/euro-coin.png?1655394420',
+      logoURI: 'https://assets.coingecko.com/coins/images/26045/standard/euro.png?1696525125',
       extensions: {
         bridgeInfo: {
           '137': {
@@ -7640,9 +7640,9 @@ export const TOKEN_LIST: TokenList = {
       chainId: 137,
       address: '0x8a037dbcA8134FFc72C362e394e35E0Cad618F85',
       name: 'Euro Coin',
-      symbol: 'EUROC',
+      symbol: 'EURC',
       decimals: 6,
-      logoURI: 'https://assets.coingecko.com/coins/images/26045/thumb/euro-coin.png?1655394420',
+      logoURI: 'https://assets.coingecko.com/coins/images/26045/standard/euro.png?1696525125',
       extensions: {
         bridgeInfo: {
           '1': {
@@ -10480,9 +10480,9 @@ export const TOKEN_LIST: TokenList = {
       chainId: 42161,
       address: '0x863708032B5c328e11aBcbC0DF9D79C71Fc52a48',
       name: 'Euro Coin',
-      symbol: 'EUROC',
+      symbol: 'EURC',
       decimals: 6,
-      logoURI: 'https://assets.coingecko.com/coins/images/26045/thumb/euro-coin.png?1655394420',
+      logoURI: 'https://assets.coingecko.com/coins/images/26045/standard/euro.png?1696525125',
       extensions: {
         bridgeInfo: {
           '1': {
@@ -12883,6 +12883,15 @@ export const TOKEN_LIST: TokenList = {
     },
     {
       name: 'Gho Token',
+      address: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73',
+      symbol: 'GHO',
+      decimals: 18,
+      chainId: 43114,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+    },
+    {
+      name: 'Gho Token',
       address: '0x6bb7a212910682dcfdbd5bcbb3e28fb4e8da10ee',
       symbol: 'GHO',
       decimals: 18,
@@ -12938,6 +12947,7 @@ export const COMMON_SWAPS = [
   'DAI.e',
   'USDC.e',
   'USDT.e',
+  'EURC',
 ];
 
 export const findTokenSymbol = (address: string, chainId: number) => {

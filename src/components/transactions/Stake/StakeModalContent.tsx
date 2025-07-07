@@ -9,7 +9,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig';
-import { STAKE } from 'src/utils/events';
+import { SAFETY_MODULE } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { CooldownWarning } from '../../Warnings/CooldownWarning';
@@ -111,7 +111,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         />
       )}
 
-      <CooldownWarning />
+      {nameFormatted !== 'GHO' && <CooldownWarning />}
 
       <AssetInput
         value={amount}
@@ -150,7 +150,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         symbol={nameFormatted}
         blocked={blockingError !== undefined}
         selectedToken={stakeAssetName}
-        event={STAKE.STAKE_TOKEN}
+        event={SAFETY_MODULE.STAKE_SAFETY_MODULE}
       />
     </>
   );

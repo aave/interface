@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GENERAL } from 'src/utils/events';
@@ -29,7 +30,7 @@ import { DashboardEModeButton } from '../../DashboardEModeButton';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
-import { BorrowedPositionsListItemWrapper } from './BorrowedPositionsListItemWrapper';
+import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 
 const head = [
   {
@@ -196,11 +197,12 @@ export const BorrowedPositionsList = () => {
         <>
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
-            <BorrowedPositionsListItemWrapper
-              item={item}
+            <AssetCapsProvider
+              asset={item.reserve}
               key={item.underlyingAsset + item.borrowRateMode}
-              disableEModeSwitch={disableEModeSwitch}
-            />
+            >
+              <BorrowedPositionsListItem item={item} disableEModeSwitch={disableEModeSwitch} />
+            </AssetCapsProvider>
           ))}
         </>
       ) : (

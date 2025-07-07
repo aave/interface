@@ -7,10 +7,10 @@ import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { MigrationService } from 'src/services/MigrationService';
 import { StkAbptMigrationService } from 'src/services/StkAbptMigrationService';
 import { TokenWrapperService } from 'src/services/TokenWrapperService';
-import { UiGhoService } from 'src/services/UiGhoService';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
+import { UmbrellaStakeDataService } from 'src/services/UmbrellaStakeDataService';
 import { VotingMachineService } from 'src/services/VotingMachineService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
@@ -31,11 +31,11 @@ interface SharedDependenciesContext {
   uiIncentivesService: UiIncentivesService;
   uiPoolService: UiPoolService;
   tokenWrapperService: TokenWrapperService;
-  uiGhoService: UiGhoService;
   delegationTokenService: DelegationTokenService;
   stkAbptMigrationService: StkAbptMigrationService;
   migrationService: MigrationService;
   erc20Service: ERC20Service;
+  stakeDataService: UmbrellaStakeDataService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -67,6 +67,7 @@ export const SharedDependenciesProvider: React.FC<PropsWithChildren> = ({ childr
   const delegationTokenService = new DelegationTokenService(getGovernanceProvider);
   const stkAbptMigrationService = new StkAbptMigrationService();
   const migrationService = new MigrationService(getProvider);
+  const stakeDataService = new UmbrellaStakeDataService(getProvider);
 
   const uiPoolService = new UiPoolService(getProvider);
   const uiIncentivesService = new UiIncentivesService(getProvider);
@@ -75,8 +76,6 @@ export const SharedDependenciesProvider: React.FC<PropsWithChildren> = ({ childr
     getProvider(currentMarketData.chainId)
   );
   const erc20Service = new ERC20Service(getProvider);
-
-  const uiGhoService = new UiGhoService(getProvider);
 
   return (
     <SharedDependenciesContext.Provider
@@ -91,11 +90,11 @@ export const SharedDependenciesProvider: React.FC<PropsWithChildren> = ({ childr
         uiPoolService,
         uiIncentivesService,
         tokenWrapperService,
-        uiGhoService,
         delegationTokenService,
         stkAbptMigrationService,
         migrationService,
         erc20Service,
+        stakeDataService,
       }}
     >
       {children}

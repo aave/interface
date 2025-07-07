@@ -1,12 +1,10 @@
-import { ChainId } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
-import { ExternalLinkIcon, RefreshIcon } from '@heroicons/react/outline';
+import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
-  IconButton,
   Paper,
   Stack,
   SvgIcon,
@@ -17,56 +15,19 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
+import { TokenContractTooltip } from 'src/components/infoTooltips/TokenContractTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { SecondsToString } from 'src/components/SecondsToString';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
-import { useModalContext } from 'src/hooks/useModal';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/events';
 
 import { StakeActionBox } from './StakeActionBox';
 import { StakingPanelSkeleton } from './StakingPanelSkeleton';
-
-function secondsToDHMS(seconds: number) {
-  const d = Math.floor(seconds / (3600 * 24));
-  const h = Math.floor((seconds % (3600 * 24)) / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = Math.floor(seconds % 60);
-  return { d, h, m, s };
-}
-
-function SecondsToString({ seconds }: { seconds: number }) {
-  const { d, h, m, s } = secondsToDHMS(seconds);
-  return (
-    <>
-      {d !== 0 && (
-        <span>
-          <Trans>{d}d</Trans>
-        </span>
-      )}
-      {h !== 0 && (
-        <span>
-          <Trans>{h}h</Trans>
-        </span>
-      )}
-      {m !== 0 && (
-        <span>
-          <Trans>{m}m</Trans>
-        </span>
-      )}
-      {s !== 0 && (
-        <span>
-          <Trans>{s}s</Trans>
-        </span>
-      )}
-    </>
-  );
-}
 
 export interface StakingPanelProps {
   onStakeAction?: () => void;
@@ -105,15 +66,10 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
-  const { openSwitch } = useModalContext();
 
   if (!stakeData || !stakeUserData) {
     return <StakingPanelSkeleton />;
   }
-
-  const handleSwitchClick = () => {
-    openSwitch('', ChainId.mainnet);
-  };
 
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
@@ -165,19 +121,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
 
   const distributionEnded = Date.now() / 1000 > Number(stakeData.distributionEnd);
 
-  const TokenContractTooltip = (
-    <DarkTooltip title="View token contract" sx={{ display: { xsm: 'none' } }}>
-      <IconButton
-        LinkComponent={Link}
-        href={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
-      >
-        <SvgIcon sx={{ fontSize: '14px' }}>
-          <ExternalLinkIcon />
-        </SvgIcon>
-      </IconButton>
-    </DarkTooltip>
-  );
-
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
       <Box
@@ -192,7 +135,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           <Typography variant="h3">
             <Stack direction="row" alignItems="center" gap={1}>
               <Trans>Stake</Trans> {stakeTitle}
-              {TokenContractTooltip}
+              <TokenContractTooltip
+                explorerUrl={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
+              />
             </Stack>
           </Typography>
           <Typography variant="caption" color="text.secondary">
@@ -255,7 +200,11 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <Stack direction="column" ml={2} alignItems="start" justifyContent="center">
               <Stack direction="row">
                 <Typography variant={xsm ? 'subheader1' : 'h4'}>{stakedToken}</Typography>
-                <Box sx={{ display: { xsm: 'none' } }}>{TokenContractTooltip}</Box>
+                <Box sx={{ display: { xsm: 'none' } }}>
+                  <TokenContractTooltip
+                    explorerUrl={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
+                  />
+                </Box>
               </Stack>
               <Typography
                 sx={{ display: { xsm: 'none' } }}
@@ -329,9 +278,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               percent
               variant="secondary14"
             />
-            {stakedToken === 'GHO' ? (
-              <MeritIncentivesButton symbol={stakedToken} market={CustomMarket.proto_mainnet_v3} />
-            ) : null}
           </Stack>
         </Box>
         <Box
@@ -371,28 +317,16 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
 
         {/**Stake action */}
 
-        {stakedToken === 'GHO' && +availableToStake === 0 ? (
-          <Button
-            variant="contained"
-            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
-            onClick={handleSwitchClick}
-            fullWidth={!xsm}
-            data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
-          >
-            <Trans>Get GHO</Trans>
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
-            onClick={onStakeAction}
-            disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
-            fullWidth={!xsm}
-            data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
-          >
-            <Trans>Stake</Trans>
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+          onClick={onStakeAction}
+          disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
+          fullWidth={!xsm}
+          data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
+        >
+          <Trans>Stake</Trans>
+        </Button>
       </Box>
 
       <Stack

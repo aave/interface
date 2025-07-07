@@ -48,7 +48,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const amountRef = useRef<string>();
 
   let amountToUnstake = stakeUserData?.userCooldownAmount;
-  if (stakeData?.inPostSlashingPeriod) {
+  if (stakeData?.inPostSlashingPeriod || stakeData?.stakeCooldownSeconds === 0) {
     amountToUnstake = stakeUserData?.stakeTokenUserBalance;
   }
 
@@ -104,7 +104,6 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
       />
     );
 
-  console.log(icon);
   return (
     <>
       <TxModalTitle title="Unstake" symbol={nameFormatted} />

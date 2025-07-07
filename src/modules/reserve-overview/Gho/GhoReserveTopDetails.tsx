@@ -11,9 +11,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export const GhoReserveTopDetails = ({ reserve }: { reserve: ComputedReserveData }) => {
-  const { ghoLoadingData } = useAppDataContext();
-
-  const loading = ghoLoadingData;
+  const { loading } = useAppDataContext();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 

@@ -14,7 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export enum MeritAction {
-  ETHEREUM_STKGHO = 'ethereum-stkgho',
+  ETHEREUM_SGHO = 'ethereum-sgho',
   ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
   ETHEREUM_SUPPLY_ETHX = 'ethereum-supply-ethx',
   ETHEREUM_SUPPLY_RLUSD = 'ethereum-supply-rlusd',
@@ -22,6 +22,7 @@ export enum MeritAction {
   ETHEREUM_PRIME_SUPPLY_EZETH = 'ethereum-prime-supply-ezeth',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
+  SUPPLY_WEETH_BORROW_USDC = 'ethereum-supply-weeth-borrow-usdc',
   ARBITRUM_SUPPLY_ETH = 'arbitrum-supply-weth',
   ARBITRUM_SUPPLY_WSTETH = 'arbitrum-supply-wsteth',
   ARBITRUM_SUPPLY_EZETH = 'arbitrum-supply-ezeth',
@@ -42,6 +43,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
+  SONIC_SUPPLY_STS_BORROW_WS = 'sonic-supply-sts-borrow-ws',
   GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
   CELO_SUPPLY_CELO = 'celo-supply-celo',
   CELO_SUPPLY_USDT = 'celo-supply-usdt',
@@ -87,6 +89,12 @@ const antiLoopBorrowMessage =
 const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
+const StSLoopIncentiveProgramMessage =
+  'You must supply stS and borrow wS in order to receive merit rewards. stS/wS e-mode can be used to maximize stS/wS loop. Please check the forum post for the full eligibility criteria.';
+
+const weethUsdcCampaignMessage =
+  'You must supply weETH and borrow new USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
+
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
 
@@ -104,33 +112,47 @@ const AvalancheRenewalForumLink =
 const lbtcCbbtcForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/91';
 
+const weethUsdcForumLink =
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/120';
+
+const StSLoopIncentiveProgramForumLink =
+  'https://governance.aave.com/t/arfc-sts-loop-incentive-program/22368';
+
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
       {
-        action: MeritAction.ETHEREUM_STKGHO,
+        action: MeritAction.ETHEREUM_SGHO,
         rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
         rewardTokenSymbol: 'GHO',
         customForumLink:
           'https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646',
       },
     ],
-    cbBTC: [
-      {
-        action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
-        rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
-        rewardTokenSymbol: 'aEthUSDC',
-        protocolAction: ProtocolAction.supply,
-        customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
-      },
-    ],
+    // cbBTC: [
+    //   {
+    //     action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+    //     rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
+    //     rewardTokenSymbol: 'aEthUSDC',
+    //     protocolAction: ProtocolAction.supply,
+    //     customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+    //   },
+    // ],
     USDC: [
+      // {
+      //   action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+      //   rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
+      //   rewardTokenSymbol: 'aEthUSDC',
+      //   protocolAction: ProtocolAction.borrow,
+      //   customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+      // },
       {
-        action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+        action: MeritAction.SUPPLY_WEETH_BORROW_USDC,
         rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
-        rewardTokenSymbol: 'aEthUSDC',
+        rewardTokenSymbol: 'ETHFI',
         protocolAction: ProtocolAction.borrow,
-        customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+        customMessage: weethUsdcCampaignMessage,
+        customForumLink: weethUsdcForumLink,
       },
     ],
     WBTC: [
@@ -179,6 +201,16 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
         customForumLink:
           'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/85',
+      },
+    ],
+    weETH: [
+      {
+        action: MeritAction.SUPPLY_WEETH_BORROW_USDC,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.weETH.A_TOKEN,
+        rewardTokenSymbol: 'ETHFI',
+        protocolAction: ProtocolAction.supply,
+        customMessage: weethUsdcCampaignMessage,
+        customForumLink: weethUsdcForumLink,
       },
     ],
   },
@@ -427,6 +459,26 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
         customForumLink:
           'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/61',
+      },
+    ],
+    ['stS']: [
+      {
+        action: MeritAction.SONIC_SUPPLY_STS_BORROW_WS,
+        rewardTokenAddress: AaveV3Sonic.ASSETS.stS.A_TOKEN,
+        rewardTokenSymbol: 'aSonstS',
+        protocolAction: ProtocolAction.supply,
+        customMessage: StSLoopIncentiveProgramMessage,
+        customForumLink: StSLoopIncentiveProgramForumLink,
+      },
+    ],
+    ['S']: [
+      {
+        action: MeritAction.SONIC_SUPPLY_STS_BORROW_WS,
+        rewardTokenAddress: AaveV3Sonic.ASSETS.stS.A_TOKEN,
+        rewardTokenSymbol: 'aSonstS',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: StSLoopIncentiveProgramMessage,
+        customForumLink: StSLoopIncentiveProgramForumLink,
       },
     ],
   },

@@ -20,9 +20,11 @@ import {
   USER_TRANSACTIONS_V2_WITH_POOL,
 } from 'src/modules/history/v2-user-history-query';
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
+import { ERC20Service } from 'src/services/Erc20Service';
 import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST } from 'src/ui-config/TokenList';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
 export const applyTxHistoryFilters = ({
@@ -221,17 +223,46 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       )
     ).filter((order) => order !== null);
 
-    return filteredCowAaveOrders
-      .map<TransactionHistoryItemUnion | null>((order) => {
-        const srcToken = TOKEN_LIST.tokens.find(
+    return Promise.all(
+      filteredCowAaveOrders.map<Promise<TransactionHistoryItemUnion | null>>(async (order) => {
+        const erc20Service = new ERC20Service(getProvider);
+
+        let srcToken:
+          | { address: string; name: string; symbol: string; decimals: number }
+          | undefined = TOKEN_LIST.tokens.find(
           (token) =>
             token.chainId == chainId && token.address.toLowerCase() == order.sellToken.toLowerCase()
         );
-        const destToken = TOKEN_LIST.tokens.find(
+
+        let destToken:
+          | { address: string; name: string; symbol: string; decimals: number }
+          | undefined = TOKEN_LIST.tokens.find(
           (token) =>
             token.chainId == chainId && token.address.toLowerCase() == order.buyToken.toLowerCase()
         );
 
+        // Custom tokens - only if erc20Service is available
+        if (!srcToken && erc20Service) {
+          srcToken = await erc20Service
+            .getTokenInfo(order.sellToken, chainId)
+            .then((token) => ({ ...token, underlyingAsset: token.address }))
+            .catch(() => {
+              console.error('Error fetching custom token', order.sellToken);
+              return undefined;
+            });
+        }
+
+        if (!destToken && erc20Service) {
+          destToken = await erc20Service
+            .getTokenInfo(order.buyToken, chainId)
+            .then((token) => ({ ...token, underlyingAsset: token.address }))
+            .catch(() => {
+              console.error('Error fetching custom token', order.buyToken);
+              return undefined;
+            });
+        }
+
+        // Otherwise, we can not display it
         if (!srcToken || !destToken) {
           return null;
         }
@@ -265,7 +296,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
           chainId: chainId,
         };
       })
-      .filter((txn) => txn !== null);
+    ).then((txns) => txns.filter((txn) => txn !== null));
   };
 
   const PAGE_SIZE = 100;

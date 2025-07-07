@@ -32,20 +32,26 @@ export default function TopBarNotify({
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
 
-  const [showWarning, setShowWarning] = useState(true);
+  const [showWarning, setShowWarning] = useState(() => {
+    const storedBannerVersion = localStorage.getItem('bannerVersion');
+    const warningBarOpen = localStorage.getItem('warningBarOpen');
+
+    if (storedBannerVersion !== bannerVersion) {
+      return true;
+    }
+
+    return warningBarOpen !== 'false';
+  });
 
   const mobileDrawerOpen = useRootStore((state) => state.mobileDrawerOpen);
 
   useEffect(() => {
     const storedBannerVersion = localStorage.getItem('bannerVersion');
-    const warningBarOpen = localStorage.getItem('warningBarOpen');
 
     if (storedBannerVersion !== bannerVersion) {
       localStorage.setItem('bannerVersion', bannerVersion);
-      setShowWarning(true);
       localStorage.setItem('warningBarOpen', 'true');
-    } else if (warningBarOpen === 'false') {
-      setShowWarning(false);
+      setShowWarning(true);
     }
   }, [bannerVersion]);
 

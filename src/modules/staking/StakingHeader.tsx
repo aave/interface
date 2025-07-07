@@ -59,19 +59,29 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
               variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
             >
-              <Trans>Staking</Trans>
+              <Trans>Safety Module</Trans>
             </Typography>
           </Box>
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
-              AAVE, GHO, and ABPT holders (Ethereum network only) can stake their assets in the
-              Safety Module to add more security to the protocol and earn Safety Incentives. In the
-              case of a shortfall event, your stake can be slashed to cover the deficit, providing
-              an additional layer of protection for the protocol.
+              The Safety Module has been upgraded to{' '}
+              <Link href="/staking" sx={{ textDecoration: 'underline', color: '#8E92A3' }}>
+                Umbrella
+              </Link>
+              , a new system that introduces automated slashing, aToken staking, and improved
+              incentives design.
+            </Trans>
+            <br />
+            <br />
+            <Trans>
+              AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety
+              Module to add more security to the protocol and earn Safety Incentives. In the case of
+              a shortfall event, your stake can be slashed to cover the deficit, providing an
+              additional layer of protection for the protocol.
             </Trans>{' '}
             <Link
-              href="https://docs.aave.com/faq/migration-and-staking"
+              href="https://aave.com/docs/primitives/umbrella#transition-from-the-legacy-safety-module"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
               onClick={() =>
                 trackEvent(GENERAL.EXTERNAL_LINK, {

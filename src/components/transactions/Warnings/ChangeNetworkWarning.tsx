@@ -29,7 +29,6 @@ export const ChangeNetworkWarning = ({
 
   const handleSwitchNetwork = () => {
     trackEvent(GENERAL.SWITCH_NETWORK, { funnel, ...event?.eventParams, network: networkName });
-    console.log('switchNetwork', chainId);
     switchNetwork(chainId);
   };
   return (
