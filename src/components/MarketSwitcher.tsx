@@ -133,13 +133,13 @@ export const MarketSwitcher = () => {
   const handleMarketSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedMarket = e.target.value as CustomMarket;
     const market = marketsData[selectedMarket];
+    trackEvent(DASHBOARD.CHANGE_MARKET, { market: selectedMarket });
 
     if (market.externalUrl) {
       window.open(market.externalUrl, '_blank');
       return;
     }
 
-    trackEvent(DASHBOARD.CHANGE_MARKET, { market: selectedMarket });
     setCurrentMarket(selectedMarket);
   };
 
