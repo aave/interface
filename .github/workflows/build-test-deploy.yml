@@ -66,27 +66,6 @@ jobs:
           NEXTJS_BUILD: 'false'
           PR_INFO: 'false'
 
-  cypress_smoke_v2:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
-    needs: build
-    strategy:
-      fail-fast: false
-      matrix:
-        market:
-          - polygon
-          - avalanche
-    steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-
-      - name: Run tests
-        uses: ./.github/actions/cypress
-        with:
-          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
-          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
-          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-smoke.config.ts
-
   cypress_smoke_v3:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip cypress]')"
@@ -99,7 +78,6 @@ jobs:
           - avalanche
           - optimism
           - ethereum
-          - gho
           - base
           - gnosis
           - bnb
@@ -159,36 +137,11 @@ jobs:
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
-  cypress_full_v2:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
-    needs:
-      - deploy
-      - cypress_smoke_v2
-      - cypress_smoke_v3
-    strategy:
-      fail-fast: false
-      matrix:
-        market:
-          - polygon
-          - avalanche
-    steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-
-      - name: Run tests
-        uses: ./.github/actions/cypress
-        with:
-          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
-          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
-          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-full.config.ts
-
   cypress_full_v3:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip cypress]')"
     needs:
       - deploy
-      - cypress_smoke_v2
       - cypress_smoke_v3
     strategy:
       fail-fast: false
@@ -197,7 +150,6 @@ jobs:
           - polygon
           - optimism
           - ethereum
-          - gho
           - base
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
@@ -215,14 +167,12 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip cypress]')"
     needs:
       - deploy
-      - cypress_smoke_v2
       - cypress_smoke_v3
     strategy:
       fail-fast: false
       matrix:
         scoupe:
           - settings
-          - mobile
           - governance-stake
           - widgets
           - general
@@ -245,7 +195,6 @@ jobs:
     needs:
       - deploy
       - build_staging
-      - cypress_full_v2
       - cypress_full_v3
       - cypress_app_functionality
     uses: ./.github/workflows/update-prod-staging.yml

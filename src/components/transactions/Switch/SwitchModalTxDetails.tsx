@@ -1,7 +1,7 @@
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Box } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -73,6 +73,11 @@ const IntentTxDetails = ({
   const partnerFeeUsd = Number(partnerFeeFormatted) * switchRates.destTokenPriceUsd;
 
   const totalCostsInUsd = networkFeeUsd + partnerFeeUsd; // + costs.slippageInUsd;
+
+  const receivingInUsd = Number(switchRates?.destUSD) * (1 - safeSlippage);
+  const sendingInUsd = Number(switchRates?.srcUSD);
+
+  const priceImpact = !switchRates ? undefined : (1 - receivingInUsd / sendingInUsd) * 100;
 
   const networkCostsTooltip = (
     <TextWithTooltip variant="caption" text={<Trans>Network costs</Trans>}>
@@ -234,14 +239,26 @@ const IntentTxDetails = ({
               compact
             />
           </Box>
-          <FormattedNumber
-            value={Number(switchRates.destUSD) * (1 - safeSlippage)}
-            variant="helperText"
-            compact
-            symbol="USD"
-            symbolsColor="text.secondary"
-            color="text.secondary"
-          />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <FormattedNumber
+              value={Number(switchRates.destUSD) * (1 - safeSlippage)}
+              variant="helperText"
+              compact
+              symbol="USD"
+              symbolsColor="text.secondary"
+              color="text.secondary"
+            />
+            {/* Price impact */}
+            {priceImpact && priceImpact > 0 && priceImpact < 100 && (
+              <Typography
+                variant="helperText"
+                style={{ marginLeft: 4 }}
+                color={priceImpact > 10 ? 'error' : priceImpact > 5 ? 'warning' : 'text.secondary'}
+              >
+                (-{priceImpact.toFixed(priceImpact > 3 ? 0 : priceImpact > 1 ? 1 : 2)}%)
+              </Typography>
+            )}
+          </Box>
         </Box>
       </Row>
     </>

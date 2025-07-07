@@ -108,6 +108,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDtb',
     aToken: true,
   },
+  aSonstS: {
+    tokenIconSymbol: 'stS',
+    symbol: 'astS',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {

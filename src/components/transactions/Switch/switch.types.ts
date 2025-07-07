@@ -19,6 +19,9 @@ export type SwitchParams = {
   inputSymbol?: string;
   outputSymbol?: string;
 
+  isInputTokenCustom?: boolean;
+  isOutputTokenCustom?: boolean;
+
   setError?: (error: TxErrorType) => void;
 };
 

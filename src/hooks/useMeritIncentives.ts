@@ -14,7 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export enum MeritAction {
-  ETHEREUM_STKGHO = 'ethereum-stkgho',
+  ETHEREUM_SGHO = 'ethereum-sgho',
   ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
   ETHEREUM_SUPPLY_ETHX = 'ethereum-supply-ethx',
   ETHEREUM_SUPPLY_RLUSD = 'ethereum-supply-rlusd',
@@ -43,6 +43,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
+  SONIC_SUPPLY_STS_BORROW_WS = 'sonic-supply-sts-borrow-ws',
   GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
   CELO_SUPPLY_CELO = 'celo-supply-celo',
   CELO_SUPPLY_USDT = 'celo-supply-usdt',
@@ -88,6 +89,9 @@ const antiLoopBorrowMessage =
 const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
+const StSLoopIncentiveProgramMessage =
+  'You must supply stS and borrow wS in order to receive merit rewards. stS/wS e-mode can be used to maximize stS/wS loop. Please check the forum post for the full eligibility criteria.';
+
 const weethUsdcCampaignMessage =
   'You must supply weETH and borrow new USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
 
@@ -111,11 +115,14 @@ const lbtcCbbtcForumLink =
 const weethUsdcForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/120';
 
+const StSLoopIncentiveProgramForumLink =
+  'https://governance.aave.com/t/arfc-sts-loop-incentive-program/22368';
+
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
       {
-        action: MeritAction.ETHEREUM_STKGHO,
+        action: MeritAction.ETHEREUM_SGHO,
         rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
         rewardTokenSymbol: 'GHO',
         customForumLink:
@@ -452,6 +459,26 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
         customForumLink:
           'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/61',
+      },
+    ],
+    ['stS']: [
+      {
+        action: MeritAction.SONIC_SUPPLY_STS_BORROW_WS,
+        rewardTokenAddress: AaveV3Sonic.ASSETS.stS.A_TOKEN,
+        rewardTokenSymbol: 'aSonstS',
+        protocolAction: ProtocolAction.supply,
+        customMessage: StSLoopIncentiveProgramMessage,
+        customForumLink: StSLoopIncentiveProgramForumLink,
+      },
+    ],
+    ['S']: [
+      {
+        action: MeritAction.SONIC_SUPPLY_STS_BORROW_WS,
+        rewardTokenAddress: AaveV3Sonic.ASSETS.stS.A_TOKEN,
+        rewardTokenSymbol: 'aSonstS',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: StSLoopIncentiveProgramMessage,
+        customForumLink: StSLoopIncentiveProgramForumLink,
       },
     ],
   },

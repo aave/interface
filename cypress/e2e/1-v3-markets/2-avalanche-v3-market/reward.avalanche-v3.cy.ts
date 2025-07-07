@@ -1,9 +1,10 @@
+import { RequestedTokens, tokenSet } from 'cypress/support/helpers/token.helper';
+
 import assets from '../../../fixtures/assets.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../support/steps/configuration.steps';
 import { claimReward, withdraw } from '../../../support/steps/main.steps';
 import { rewardIsNotAvailable } from '../../../support/steps/verification.steps';
-import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
 
 const tokensToRequest: RequestedTokens = {
   aAVAXAvalancheV3: 1000,
