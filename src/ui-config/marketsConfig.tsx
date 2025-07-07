@@ -102,6 +102,7 @@ export enum CustomMarket {
   proto_celo_v3 = 'proto_celo_v3',
   proto_soneium_v3 = 'proto_soneium_v3',
   proto_horizon_v3 = 'proto_horizon_v3',
+  proto_sepolia_horizon_v3 = 'proto_sepolia_horizon_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -301,6 +302,29 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
       GHO_TOKEN_ADDRESS: '0xc4bF5CbDaBE595361438F8c6a187bDc330539c60',
       GHO_UI_DATA_PROVIDER: '0x69B9843A16a6E9933125EBD97659BA3CCbE2Ef8A',
+    },
+  },
+
+  [CustomMarket.proto_sepolia_horizon_v3]: {
+    marketTitle: 'Ethereum Sepolia Horizon',
+    market: CustomMarket.proto_sepolia_horizon_v3,
+    v3: true,
+    chainId: ChainId.sepolia,
+    enabledFeatures: {
+      switch: true,
+      faucet: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x8b1421Ca909B1b9d073ff321b5116b45f8BF4767',
+      LENDING_POOL: '0x553aA902Df9C6770c43Ef047cDD13431Ecdf09fF',
+      WETH_GATEWAY: '0xf43dfB8d231C404F60Bb6B35dfb1cdC321355A88',
+      FAUCET: AaveV3Sepolia.FAUCET,
+      WALLET_BALANCE_PROVIDER: '0x74218334de704596330a5Ab966FA1f3714f19da2',
+      UI_POOL_DATA_PROVIDER: '0x731129013c8aaFc18581D1Cf4f5378D9dEFc478E',
+      UI_INCENTIVE_DATA_PROVIDER: '0x70a20423393414B63968413B6b2d74d409E0CD50',
+
+      GHO_TOKEN_ADDRESS: '0xc4bF5CbDaBE595361438F8c6a187bDc330539c60',
+      // GHO_UI_DATA_PROVIDER: '0x69B9843A16a6E9933125EBD97659BA3CCbE2Ef8A', // TODO: Do we need?
     },
   },
   [CustomMarket.proto_base_v3]: {
