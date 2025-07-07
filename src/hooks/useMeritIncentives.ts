@@ -22,6 +22,7 @@ export enum MeritAction {
   ETHEREUM_PRIME_SUPPLY_EZETH = 'ethereum-prime-supply-ezeth',
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
+  SUPPLY_WEETH_BORROW_USDC = 'ethereum-supply-weeth-borrow-usdc',
   ARBITRUM_SUPPLY_ETH = 'arbitrum-supply-weth',
   ARBITRUM_SUPPLY_WSTETH = 'arbitrum-supply-wsteth',
   ARBITRUM_SUPPLY_EZETH = 'arbitrum-supply-ezeth',
@@ -87,6 +88,9 @@ const antiLoopBorrowMessage =
 const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
+const weethUsdcCampaignMessage =
+  'You must supply weETH and borrow new USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
+
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
 
@@ -104,6 +108,9 @@ const AvalancheRenewalForumLink =
 const lbtcCbbtcForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/91';
 
+const weethUsdcForumLink =
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/120';
+
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
@@ -115,22 +122,30 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
           'https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646',
       },
     ],
-    cbBTC: [
-      {
-        action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
-        rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
-        rewardTokenSymbol: 'aEthUSDC',
-        protocolAction: ProtocolAction.supply,
-        customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
-      },
-    ],
+    // cbBTC: [
+    //   {
+    //     action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+    //     rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
+    //     rewardTokenSymbol: 'aEthUSDC',
+    //     protocolAction: ProtocolAction.supply,
+    //     customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+    //   },
+    // ],
     USDC: [
+      // {
+      //   action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+      //   rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
+      //   rewardTokenSymbol: 'aEthUSDC',
+      //   protocolAction: ProtocolAction.borrow,
+      //   customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+      // },
       {
-        action: MeritAction.SUPPLY_CBBTC_BORROW_USDC,
+        action: MeritAction.SUPPLY_WEETH_BORROW_USDC,
         rewardTokenAddress: AaveV3Ethereum.ASSETS.USDC.A_TOKEN,
-        rewardTokenSymbol: 'aEthUSDC',
+        rewardTokenSymbol: 'ETHFI',
         protocolAction: ProtocolAction.borrow,
-        customMessage: 'You must supply cbBTC and borrow USDC in order to receive merit rewards.',
+        customMessage: weethUsdcCampaignMessage,
+        customForumLink: weethUsdcForumLink,
       },
     ],
     WBTC: [
@@ -179,6 +194,16 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
         customForumLink:
           'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/85',
+      },
+    ],
+    weETH: [
+      {
+        action: MeritAction.SUPPLY_WEETH_BORROW_USDC,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.weETH.A_TOKEN,
+        rewardTokenSymbol: 'ETHFI',
+        protocolAction: ProtocolAction.supply,
+        customMessage: weethUsdcCampaignMessage,
+        customForumLink: weethUsdcForumLink,
       },
     ],
   },
