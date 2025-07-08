@@ -13,8 +13,6 @@ export const useMultiProviderSwitchRates = ({
   destToken,
   user,
   inputSymbol,
-  isInputTokenCustom,
-  isOutputTokenCustom,
   outputSymbol,
   srcDecimals,
   destDecimals,
@@ -43,8 +41,6 @@ export const useMultiProviderSwitchRates = ({
             destDecimals,
             inputSymbol,
             outputSymbol,
-            isInputTokenCustom,
-            isOutputTokenCustom,
           });
         case 'paraswap':
           return await getParaswapSellRates({
