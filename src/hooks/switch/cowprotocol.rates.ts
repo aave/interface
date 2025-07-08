@@ -20,6 +20,33 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+const getTokenUsdPrice = async (
+  chainId: number,
+  tokenAddress: string,
+  isTokenCustom: boolean,
+  isMainnet: boolean
+) => {
+  const cowProtocolPricesService = new CoWProtocolPricesService();
+  const familyPricesService = new FamilyPricesService();
+
+  try {
+    let price;
+
+    if (!isTokenCustom && isMainnet) {
+      price = await familyPricesService.getTokenUsdPrice(chainId, tokenAddress);
+    }
+
+    if (price) {
+      return price;
+    }
+
+    return await cowProtocolPricesService.getTokenUsdPrice(chainId, tokenAddress);
+  } catch (familyError) {
+    console.error(familyError);
+    return undefined;
+  }
+};
+
 export async function getCowProtocolSellRates({
   chainId,
   amount,
@@ -34,8 +61,6 @@ export async function getCowProtocolSellRates({
   isInputTokenCustom,
   isOutputTokenCustom,
 }: SwitchParams): Promise<SwitchRatesType> {
-  const cowProtocolPricesService = new CoWProtocolPricesService();
-  const familyPricesService = new FamilyPricesService();
   const tradingSdk = new TradingSdk({ chainId });
 
   let orderBookQuote: QuoteAndPost | undefined;
@@ -85,20 +110,8 @@ export async function getCowProtocolSellRates({
           console.error(cowError);
           throw new Error(cowError?.body?.errorType);
         }),
-      (isInputTokenCustom || !isMainnet
-        ? cowProtocolPricesService.getTokenUsdPrice(chainId, srcTokenWrapped)
-        : familyPricesService.getTokenUsdPrice(chainId, srcTokenWrapped)
-      ).catch((cowError) => {
-        console.error(cowError);
-        throw new Error('No price found for token, please try another token');
-      }),
-      (isOutputTokenCustom || !isMainnet
-        ? cowProtocolPricesService.getTokenUsdPrice(chainId, destTokenWrapped)
-        : familyPricesService.getTokenUsdPrice(chainId, destTokenWrapped)
-      ).catch((cowError) => {
-        console.error(cowError);
-        throw new Error('No price found for token, please try another token');
-      }),
+      getTokenUsdPrice(chainId, srcTokenWrapped, isInputTokenCustom ?? false, isMainnet),
+      getTokenUsdPrice(chainId, destTokenWrapped, isOutputTokenCustom ?? false, isMainnet),
     ]);
 
     if (!srcTokenPriceUsd || !destTokenPriceUsd) {
