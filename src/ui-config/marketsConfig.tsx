@@ -55,6 +55,7 @@ export type MarketDataType = {
   disableCharts?: boolean;
   subgraphUrl?: string;
   logo?: string;
+  externalUrl?: string; // URL for external markets like Aptos
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
@@ -101,6 +102,7 @@ export enum CustomMarket {
   proto_sonic_v3 = 'proto_sonic_v3',
   proto_celo_v3 = 'proto_celo_v3',
   proto_soneium_v3 = 'proto_soneium_v3',
+  proto_aptos_v3 = 'proto_aptos_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -676,6 +678,21 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3ZkSync.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3ZkSync.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3ZkSync.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_aptos_v3]: {
+    marketTitle: 'Aptos',
+    market: CustomMarket.proto_aptos_v3,
+    v3: true,
+    chainId: ChainId.mainnet, // Using mainnet since Aptos is external
+    logo: '/icons/markets/aptos.svg',
+    externalUrl: 'https://aptos.aave.com',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '',
+      LENDING_POOL: '',
+      WALLET_BALANCE_PROVIDER: '',
+      UI_POOL_DATA_PROVIDER: '',
+      UI_INCENTIVE_DATA_PROVIDER: '',
     },
   },
   [CustomMarket.proto_linea_v3]: {
