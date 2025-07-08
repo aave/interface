@@ -580,13 +580,16 @@ export const BaseSwitchModalContent = ({
                   // Avoid wrapping
                   !(
                     isNativeToken(selectedOutputToken.address) &&
-                    token.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address
+                    token.address.toLowerCase() ===
+                      WRAPPED_NATIVE_CURRENCIES[
+                        selectedChainId as SupportedChainId
+                      ]?.address.toLowerCase()
                   ) &&
                   !(
-                    selectedOutputToken.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address &&
-                    isNativeToken(token.address)
+                    selectedOutputToken.address.toLowerCase() ===
+                      WRAPPED_NATIVE_CURRENCIES[
+                        selectedChainId as SupportedChainId
+                      ]?.address.toLowerCase() && isNativeToken(token.address)
                   )
               )}
               value={inputAmount}
@@ -626,13 +629,16 @@ export const BaseSwitchModalContent = ({
                   // Avoid wrapping
                   !(
                     isNativeToken(selectedInputToken.address) &&
-                    token.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address
+                    token.address.toLowerCase() ===
+                      WRAPPED_NATIVE_CURRENCIES[
+                        selectedChainId as SupportedChainId
+                      ]?.address.toLowerCase()
                   ) &&
                   !(
-                    selectedInputToken.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address &&
-                    isNativeToken(token.address)
+                    selectedInputToken.address.toLowerCase() ===
+                      WRAPPED_NATIVE_CURRENCIES[
+                        selectedChainId as SupportedChainId
+                      ]?.address.toLowerCase() && isNativeToken(token.address)
                   )
               )}
               value={normalizeBN(
