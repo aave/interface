@@ -66,5 +66,6 @@ export const useMultiProviderSwitchRates = ({
     retry: 0,
     throwOnError: false,
     refetchOnWindowFocus: (query) => (query.state.error ? false : true),
+    refetchInterval: provider === 'cowprotocol' ? 30000 : false, // 30 seconds
   });
 };

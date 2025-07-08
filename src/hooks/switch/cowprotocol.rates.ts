@@ -20,6 +20,33 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+const getTokenUsdPrice = async (
+  chainId: number,
+  tokenAddress: string,
+  isTokenCustom: boolean,
+  isMainnet: boolean
+) => {
+  const cowProtocolPricesService = new CoWProtocolPricesService();
+  const familyPricesService = new FamilyPricesService();
+
+  try {
+    let price;
+
+    if (!isTokenCustom && isMainnet) {
+      price = await familyPricesService.getTokenUsdPrice(chainId, tokenAddress);
+    }
+
+    if (price) {
+      return price;
+    }
+
+    return await cowProtocolPricesService.getTokenUsdPrice(chainId, tokenAddress);
+  } catch (familyError) {
+    console.error(familyError);
+    return undefined;
+  }
+};
+
 export async function getCowProtocolSellRates({
   chainId,
   amount,
@@ -34,8 +61,6 @@ export async function getCowProtocolSellRates({
   isInputTokenCustom,
   isOutputTokenCustom,
 }: SwitchParams): Promise<SwitchRatesType> {
-  const cowProtocolPricesService = new CoWProtocolPricesService();
-  const familyPricesService = new FamilyPricesService();
   const tradingSdk = new TradingSdk({ chainId });
 
   let orderBookQuote: QuoteAndPost | undefined;
@@ -85,20 +110,8 @@ export async function getCowProtocolSellRates({
           console.error(cowError);
           throw new Error(cowError?.body?.errorType);
         }),
-      (isInputTokenCustom || !isMainnet
-        ? cowProtocolPricesService.getTokenUsdPrice(chainId, srcTokenWrapped)
-        : familyPricesService.getTokenUsdPrice(chainId, srcTokenWrapped)
-      ).catch((cowError) => {
-        console.error(cowError);
-        throw new Error('No price found for token, please try another token');
-      }),
-      (isOutputTokenCustom || !isMainnet
-        ? cowProtocolPricesService.getTokenUsdPrice(chainId, destTokenWrapped)
-        : familyPricesService.getTokenUsdPrice(chainId, destTokenWrapped)
-      ).catch((cowError) => {
-        console.error(cowError);
-        throw new Error('No price found for token, please try another token');
-      }),
+      getTokenUsdPrice(chainId, srcTokenWrapped, isInputTokenCustom ?? false, isMainnet),
+      getTokenUsdPrice(chainId, destTokenWrapped, isOutputTokenCustom ?? false, isMainnet),
     ]);
 
     if (!srcTokenPriceUsd || !destTokenPriceUsd) {
@@ -134,6 +147,12 @@ export async function getCowProtocolSellRates({
     ).dividedBy(10 ** destDecimals)
   );
 
+  const destSpotInUsd = BigNumber(destTokenPriceUsd)
+    .multipliedBy(
+      BigNumber(orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString())
+    )
+    .dividedBy(10 ** destDecimals);
+
   if (!orderBookQuote.quoteResults.suggestedSlippageBps) {
     console.error('No suggested slippage found');
     const error = getErrorTextFromError(
@@ -158,19 +177,32 @@ export async function getCowProtocolSellRates({
     throw new Error('No buy amount found');
   }
 
+  let suggestedSlippage = (orderBookQuote.quoteResults.suggestedSlippageBps ?? 100) / 100; // E.g. 100 bps -> 1% 100 / 100 = 1
+
+  if (isNativeToken(srcToken)) {
+    // Recommended by CoW for potential reimbursments
+    if (chainId == 1 && suggestedSlippage < 2) {
+      suggestedSlippage = 2;
+    } else if (chainId != 1 && suggestedSlippage < 0.5) {
+      suggestedSlippage = 0.5;
+    }
+  }
+
   return {
     srcToken,
     srcUSD: srcAmountInUsd.toString(),
     srcAmount: amount,
     srcDecimals,
     destToken,
+    destSpot: orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString(),
+    destSpotInUsd: destSpotInUsd.toString(),
     destUSD: destAmountInUsd.toString(),
     destAmount: orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString(),
     destDecimals,
     provider: 'cowprotocol',
     order: orderBookQuote.quoteResults.orderToSign,
     quoteId: orderBookQuote.quoteResults.quoteResponse.id,
-    suggestedSlippage: (orderBookQuote.quoteResults.suggestedSlippageBps ?? 100) / 100, // E.g. 100 bps -> 1% 100 / 100 = 1
+    suggestedSlippage,
     amountAndCosts: orderBookQuote.quoteResults.amountsAndCosts,
     srcTokenPriceUsd: Number(srcTokenPriceUsd),
     destTokenPriceUsd: Number(destTokenPriceUsd),
