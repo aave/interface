@@ -161,6 +161,7 @@ export const BaseSwitchModalContent = ({
       return forcedChainId;
     return defaultNetwork.chainId;
   });
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
   const switchProvider = useSwitchProvider({ chainId: selectedChainId });
   const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '0.5' : '0.10');
@@ -365,6 +366,52 @@ export const BaseSwitchModalContent = ({
     },
     isTxSuccess: switchTxState.success,
   });
+
+  useEffect(() => {
+    if (ratesError) {
+      console.error('tracking error', ratesError);
+      trackEvent('Swap Error', {
+        'Error Message': ratesError.message,
+        'Error Name': ratesError.name,
+        'Error Stack': ratesError.stack,
+        'Input Token': selectedInputToken.symbol,
+        'Output Token': selectedOutputToken.symbol,
+        'Input Amount': debounceInputAmount,
+        'Output Amount': normalizeBN(
+          switchRates?.provider === 'cowprotocol'
+            ? switchRates?.destSpot
+            : switchRates?.destAmount || 0,
+          switchRates?.destDecimals || 18
+        ).toString(),
+        'Input Amount USD': switchRates?.srcUSD,
+        'Output Amount USD': switchRates?.destUSD,
+        Slippage: safeSlippage,
+      });
+    }
+  }, [ratesError]);
+
+  useEffect(() => {
+    if (txError && txError.actionBlocked) {
+      console.error('tracking error', txError);
+      trackEvent('Swap Tx Error', {
+        'Error Message': txError.error?.toString(),
+        'Error Raw': txError.rawError?.toString(),
+        'Error Action': txError.txAction,
+        'Input Token': selectedInputToken.symbol,
+        'Output Token': selectedOutputToken.symbol,
+        'Input Amount': debounceInputAmount,
+        'Output Amount': normalizeBN(
+          switchRates?.provider === 'cowprotocol'
+            ? switchRates?.destSpot
+            : switchRates?.destAmount || 0,
+          switchRates?.destDecimals || 18
+        ).toString(),
+        'Input Amount USD': switchRates?.srcUSD,
+        'Output Amount USD': switchRates?.destUSD,
+        Slippage: safeSlippage,
+      });
+    }
+  }, [txError]);
 
   // Define default slippage for CoW
   useEffect(() => {
