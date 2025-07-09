@@ -489,6 +489,12 @@ export const marketsData: {
     chainId: ChainId.sonic,
     v3: true,
     subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/FQcacc4ZJaQVS9euWb76nvpSq2GxavBnUM6DU6tmspbi`,
+    enabledFeatures: {
+      collateralRepay: true,
+      liquiditySwap: true,
+      debtSwitch: true,
+      withdrawAndSwitch: true,
+    },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sonic.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Sonic.POOL,
@@ -497,6 +503,10 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Sonic.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Sonic.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Sonic.COLLECTOR,
+      SWAP_COLLATERAL_ADAPTER: '0x78F8Bd884C3D738B74B420540659c82f392820e0',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x5598BbFA2f4fE8151f45bBA0a3edE1b54B51a0a9',
+      DEBT_SWITCH_ADAPTER: '0x2E549104c516b8657A7D888494DfbAbD7C70b464',
+      WITHDRAW_SWITCH_ADAPTER: '0x5d4D4007A4c6336550DdAa2a7c0d5e7972eebd16',
     },
   },
   [CustomMarket.proto_optimism_v3]: {
