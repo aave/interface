@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js';
 import { ChainId, valueToWei } from '@aave/contract-helpers';
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import {
@@ -23,6 +22,7 @@ import {
   TransactionParams,
 } from '@paraswap/sdk';
 import { GetRateFunctions, RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
+import { BigNumber } from 'bignumber.js';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
