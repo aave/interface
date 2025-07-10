@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { ChainId, valueToWei } from '@aave/contract-helpers';
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import {
@@ -463,7 +464,7 @@ export const maxInputAmountWithSlippage = (
   if (inputAmount === '0') return '0';
   return valueToBigNumber(inputAmount)
     .multipliedBy(1 + Number(slippage) / 100)
-    .toFixed(decimals);
+    .toFixed(decimals, BigNumber.ROUND_UP);
 };
 
 export const minimumReceivedAfterSlippage = (
