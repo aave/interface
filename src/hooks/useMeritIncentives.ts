@@ -453,7 +453,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ['USDC']: [
       {
         action: MeritAction.SONIC_SUPPLY_USDCE,
-        rewardTokenAddress: AaveV3Sonic.ASSETS.USDCe.A_TOKEN,
+        rewardTokenAddress: AaveV3Sonic.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'aSonwS',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
