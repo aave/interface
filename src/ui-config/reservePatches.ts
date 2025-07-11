@@ -4,7 +4,6 @@ import {
   AaveV3Gnosis,
   AaveV3Optimism,
   AaveV3Polygon,
-  AaveV3Sonic,
 } from '@bgd-labs/aave-address-book';
 import { unPrefixSymbol } from 'src/hooks/app-data-provider/useAppDataProvider';
 
@@ -135,11 +134,6 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'Savings xDAI',
       symbol: 'sDAI',
       iconSymbol: 'gnosissdai',
-    },
-    [AaveV3Sonic.ASSETS.USDCe.UNDERLYING.toLowerCase()]: {
-      name: 'USDC',
-      symbol: 'USDC',
-      iconSymbol: 'USDC',
     },
     '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c': {
       name: 'BTCB Token',

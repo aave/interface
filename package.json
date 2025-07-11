@@ -34,7 +34,7 @@
     "@aave/contract-helpers": "1.36.0",
     "@aave/math-utils": "1.36.0",
     "@amplitude/analytics-browser": "^2.13.0",
-    "@bgd-labs/aave-address-book": "^4.22.1",
+    "@bgd-labs/aave-address-book": "^4.25.0",
     "@cowprotocol/app-data": "^3.1.0",
     "@cowprotocol/cow-sdk": "6.0.0-RC.47",
     "@emotion/cache": "11.10.3",
