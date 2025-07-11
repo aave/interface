@@ -96,7 +96,7 @@ const getUnderlyingAndAToken = (assets: {
 
 const whitelistedRewardTokens = allAaveAssets.flatMap((assets) => getUnderlyingAndAToken(assets));
 
-const url = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
+const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
@@ -123,7 +123,7 @@ export const useMerklIgniteIncentives = ({
 }) => {
   return useQuery({
     queryFn: async () => {
-      const response = await fetch(`${url}`);
+      const response = await fetch(`${MERKL_ENDPOINT}`);
       const merklOpportunities: MerklOpportunity[] = await response.json();
       return merklOpportunities;
     },
