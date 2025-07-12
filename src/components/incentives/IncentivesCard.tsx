@@ -8,6 +8,7 @@ import { NoData } from '../primitives/NoData';
 import {
   EthenaIncentivesButton,
   EtherfiIncentivesButton,
+  IgnitionIncentivesButton,
   IncentivesButton,
   MeritIncentivesButton,
   MerklIncentivesButton,
@@ -97,6 +98,7 @@ export const IncentivesCard = ({
         <EthenaIncentivesButton rewardedAsset={address} />
         <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
         <SonicIncentivesButton rewardedAsset={address} />
+        <IgnitionIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
       </Box>
     </Box>
   );
