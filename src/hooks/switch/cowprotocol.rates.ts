@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import {
   OrderKind,
   QuoteAndPost,
@@ -14,8 +15,37 @@ import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Swi
 import { SwitchParams, SwitchRatesType } from 'src/components/transactions/Switch/switch.types';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
+import { FamilyPricesService } from 'src/services/FamilyPricesService';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
+const getTokenUsdPrice = async (
+  chainId: number,
+  tokenAddress: string,
+  isTokenCustom: boolean,
+  isMainnet: boolean
+) => {
+  const cowProtocolPricesService = new CoWProtocolPricesService();
+  const familyPricesService = new FamilyPricesService();
+
+  try {
+    let price;
+
+    if (!isTokenCustom && isMainnet) {
+      price = await familyPricesService.getTokenUsdPrice(chainId, tokenAddress);
+    }
+
+    if (price) {
+      return price;
+    }
+
+    return await cowProtocolPricesService.getTokenUsdPrice(chainId, tokenAddress);
+  } catch (familyError) {
+    console.error(familyError);
+    return undefined;
+  }
+};
 
 export async function getCowProtocolSellRates({
   chainId,
@@ -28,8 +58,9 @@ export async function getCowProtocolSellRates({
   inputSymbol,
   outputSymbol,
   setError,
+  isInputTokenCustom,
+  isOutputTokenCustom,
 }: SwitchParams): Promise<SwitchRatesType> {
-  const cowProtocolPricesService = new CoWProtocolPricesService();
   const tradingSdk = new TradingSdk({ chainId });
 
   let orderBookQuote: QuoteAndPost | undefined;
@@ -53,6 +84,9 @@ export async function getCowProtocolSellRates({
 
     const provider = await getEthersProvider(wagmiConfig, { chainId });
     const signer = provider?.getSigner();
+    const isMainnet =
+      !getNetworkConfig(chainId as unknown as ChainId).isTestnet &&
+      !getNetworkConfig(chainId as unknown as ChainId).isFork;
 
     if (!inputSymbol || !outputSymbol) {
       throw new Error('No input or output symbol provided');
@@ -76,15 +110,8 @@ export async function getCowProtocolSellRates({
           console.error(cowError);
           throw new Error(cowError?.body?.errorType);
         }),
-      // CoW Quote doesn't return values in USD, so we need to fetch the price from the API separately
-      cowProtocolPricesService.getTokenUsdPrice(chainId, srcTokenWrapped).catch((cowError) => {
-        console.error(cowError);
-        throw new Error(cowError?.body?.errorType);
-      }),
-      cowProtocolPricesService.getTokenUsdPrice(chainId, destTokenWrapped).catch((cowError) => {
-        console.error(cowError);
-        throw new Error(cowError?.body?.errorType);
-      }),
+      getTokenUsdPrice(chainId, srcTokenWrapped, isInputTokenCustom ?? false, isMainnet),
+      getTokenUsdPrice(chainId, destTokenWrapped, isOutputTokenCustom ?? false, isMainnet),
     ]);
 
     if (!srcTokenPriceUsd || !destTokenPriceUsd) {
@@ -120,6 +147,12 @@ export async function getCowProtocolSellRates({
     ).dividedBy(10 ** destDecimals)
   );
 
+  const destSpotInUsd = BigNumber(destTokenPriceUsd)
+    .multipliedBy(
+      BigNumber(orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString())
+    )
+    .dividedBy(10 ** destDecimals);
+
   if (!orderBookQuote.quoteResults.suggestedSlippageBps) {
     console.error('No suggested slippage found');
     const error = getErrorTextFromError(
@@ -144,19 +177,32 @@ export async function getCowProtocolSellRates({
     throw new Error('No buy amount found');
   }
 
+  let suggestedSlippage = (orderBookQuote.quoteResults.suggestedSlippageBps ?? 100) / 100; // E.g. 100 bps -> 1% 100 / 100 = 1
+
+  if (isNativeToken(srcToken)) {
+    // Recommended by CoW for potential reimbursments
+    if (chainId == 1 && suggestedSlippage < 2) {
+      suggestedSlippage = 2;
+    } else if (chainId != 1 && suggestedSlippage < 0.5) {
+      suggestedSlippage = 0.5;
+    }
+  }
+
   return {
     srcToken,
     srcUSD: srcAmountInUsd.toString(),
     srcAmount: amount,
     srcDecimals,
     destToken,
+    destSpot: orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString(),
+    destSpotInUsd: destSpotInUsd.toString(),
     destUSD: destAmountInUsd.toString(),
     destAmount: orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString(),
     destDecimals,
     provider: 'cowprotocol',
     order: orderBookQuote.quoteResults.orderToSign,
     quoteId: orderBookQuote.quoteResults.quoteResponse.id,
-    suggestedSlippage: (orderBookQuote.quoteResults.suggestedSlippageBps ?? 100) / 100, // E.g. 100 bps -> 1% 100 / 100 = 1
+    suggestedSlippage,
     amountAndCosts: orderBookQuote.quoteResults.amountsAndCosts,
     srcTokenPriceUsd: Number(srcTokenPriceUsd),
     destTokenPriceUsd: Number(destTokenPriceUsd),

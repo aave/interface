@@ -22,6 +22,7 @@ import {
   TransactionParams,
 } from '@paraswap/sdk';
 import { GetRateFunctions, RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
+import { BigNumber } from 'bignumber.js';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
@@ -463,7 +464,7 @@ export const maxInputAmountWithSlippage = (
   if (inputAmount === '0') return '0';
   return valueToBigNumber(inputAmount)
     .multipliedBy(1 + Number(slippage) / 100)
-    .toFixed(decimals);
+    .toFixed(decimals, BigNumber.ROUND_UP);
 };
 
 export const minimumReceivedAfterSlippage = (

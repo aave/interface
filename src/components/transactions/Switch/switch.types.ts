@@ -19,6 +19,9 @@ export type SwitchParams = {
   inputSymbol?: string;
   outputSymbol?: string;
 
+  isInputTokenCustom?: boolean;
+  isOutputTokenCustom?: boolean;
+
   setError?: (error: TxErrorType) => void;
 };
 
@@ -51,6 +54,8 @@ export type CowProtocolRatesType = BaseSwitchRates & {
   amountAndCosts: QuoteAmountsAndCosts;
   srcTokenPriceUsd: number;
   destTokenPriceUsd: number;
+  destSpot: string;
+  destSpotInUsd: string;
 };
 
 export const isParaswapRates = (rates?: SwitchRatesType): rates is ParaswapRatesType => {

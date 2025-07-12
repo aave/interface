@@ -2,14 +2,14 @@ import { normalize, normalizeBN } from '@aave/math-utils';
 import { OrderStatus, SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
+import { Box, Checkbox, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { debounce } from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { isSmartContractWallet } from 'src/helpers/provider';
+import { isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useMultiProviderSwitchRates } from 'src/hooks/switch/useMultiProviderSwitchRates';
 import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
@@ -41,9 +41,40 @@ import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import { SwitchTxSuccessView } from './SwitchTxSuccessView';
 import { validateSlippage, ValidationSeverity } from './validation.helpers';
 
+const SAFETY_MODULE_TOKENS = [
+  'stkgho',
+  'stkaave',
+  'stkaavewstethbptv2',
+  'stkbptv2',
+  'stkbpt',
+  'stkabpt',
+];
+
 export type SwitchDetailsParams = Parameters<
   NonNullable<SwitchModalCustomizableProps['switchDetails']>
 >[0];
+
+const valueLostPercentage = (destValueInUsd: number, srcValueInUsd: number) => {
+  if (destValueInUsd === 0) return 1;
+  if (srcValueInUsd === 0) return 0;
+
+  const receivingPercentage = destValueInUsd / srcValueInUsd;
+  const valueLostPercentage = receivingPercentage ? 1 - receivingPercentage : 0;
+  return valueLostPercentage;
+};
+
+const shouldShowWarning = (lostValue: number, srcValueInUsd: number) => {
+  if (srcValueInUsd > 500000) return lostValue > 0.03;
+  if (srcValueInUsd > 100000) return lostValue > 0.04;
+  if (srcValueInUsd > 10000) return lostValue > 0.05;
+  if (srcValueInUsd > 1000) return lostValue > 0.07;
+
+  return lostValue > 0.05;
+};
+
+const shouldRequireConfirmation = (lostValue: number) => {
+  return lostValue > 0.2;
+};
 
 export const getFilteredTokensForSwitch = (chainId: number): TokenInfoWithBalance[] => {
   let customTokenList = TOKEN_LIST.tokens;
@@ -130,9 +161,12 @@ export const BaseSwitchModalContent = ({
       return forcedChainId;
     return defaultNetwork.chainId;
   });
+  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
   const switchProvider = useSwitchProvider({ chainId: selectedChainId });
-  const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '2' : '0.10');
+  const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '0.5' : '0.10');
   const [showGasStation, setShowGasStation] = useState(switchProvider == 'paraswap');
+  const [highPriceImpactConfirmed, setHighPriceImpactConfirmed] = useState(false);
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
@@ -144,13 +178,17 @@ export const BaseSwitchModalContent = ({
   );
 
   const [userIsSmartContractWallet, setUserIsSmartContractWallet] = useState(false);
+  const [userIsSafeWallet, setUserIsSafeWallet] = useState(false);
   useEffect(() => {
     try {
       if (user && connectedChainId) {
         getEthersProvider(wagmiConfig, { chainId: connectedChainId }).then((provider) => {
-          isSmartContractWallet(user, provider).then((isSmartContractWallet) => {
-            setUserIsSmartContractWallet(isSmartContractWallet);
-          });
+          Promise.all([isSmartContractWallet(user, provider), isSafeWallet(user, provider)]).then(
+            ([isSmartContract, isSafe]) => {
+              setUserIsSmartContractWallet(isSmartContract);
+              setUserIsSafeWallet(isSafe);
+            }
+          );
         });
       }
     } catch (error) {
@@ -166,6 +204,7 @@ export const BaseSwitchModalContent = ({
 
   const handleInputChange = (value: string) => {
     setTxError(undefined);
+    setHighPriceImpactConfirmed(false);
     if (value === '-1') {
       // Max Selected
       setInputAmount(selectedInputToken.balance);
@@ -296,6 +335,7 @@ export const BaseSwitchModalContent = ({
     isNativeToken(selectedInputToken?.address),
     switchProvider
   );
+
   const safeSlippage =
     slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
       ? 0
@@ -318,12 +358,60 @@ export const BaseSwitchModalContent = ({
     destDecimals: selectedOutputToken.decimals,
     inputSymbol: selectedInputToken.symbol,
     outputSymbol: selectedOutputToken.symbol,
+    isInputTokenCustom: !!selectedInputToken.extensions?.isUserCustom,
+    isOutputTokenCustom: !!selectedOutputToken.extensions?.isUserCustom,
     user,
     options: {
       partner: 'aave-widget',
     },
     isTxSuccess: switchTxState.success,
   });
+
+  useEffect(() => {
+    if (ratesError) {
+      console.error('tracking error', ratesError);
+      trackEvent('Swap Error', {
+        'Error Message': ratesError.message,
+        'Error Name': ratesError.name,
+        'Error Stack': ratesError.stack,
+        'Input Token': selectedInputToken.symbol,
+        'Output Token': selectedOutputToken.symbol,
+        'Input Amount': debounceInputAmount,
+        'Output Amount': normalizeBN(
+          switchRates?.provider === 'cowprotocol'
+            ? switchRates?.destSpot
+            : switchRates?.destAmount || 0,
+          switchRates?.destDecimals || 18
+        ).toString(),
+        'Input Amount USD': switchRates?.srcUSD,
+        'Output Amount USD': switchRates?.destUSD,
+        Slippage: safeSlippage,
+      });
+    }
+  }, [ratesError]);
+
+  useEffect(() => {
+    if (txError && txError.actionBlocked) {
+      console.error('tracking error', txError);
+      trackEvent('Swap Tx Error', {
+        'Error Message': txError.error?.toString(),
+        'Error Raw': txError.rawError?.toString(),
+        'Error Action': txError.txAction,
+        'Input Token': selectedInputToken.symbol,
+        'Output Token': selectedOutputToken.symbol,
+        'Input Amount': debounceInputAmount,
+        'Output Amount': normalizeBN(
+          switchRates?.provider === 'cowprotocol'
+            ? switchRates?.destSpot
+            : switchRates?.destAmount || 0,
+          switchRates?.destDecimals || 18
+        ).toString(),
+        'Input Amount USD': switchRates?.srcUSD,
+        'Output Amount USD': switchRates?.destUSD,
+        Slippage: safeSlippage,
+      });
+    }
+  }, [txError]);
 
   // Define default slippage for CoW
   useEffect(() => {
@@ -413,13 +501,19 @@ export const BaseSwitchModalContent = ({
 
   // Eth-Flow requires to leave some assets for gas
   const nativeDecimals = 18;
-  const gasRequiredForEthFlow = parseUnits('0.01', nativeDecimals); // TODO: Ask for better value coming from the SDK
-  const requiredAssetsLeftForGas = isNativeToken(selectedInputToken.address)
-    ? gasRequiredForEthFlow
-    : undefined;
-  const maxAmount = requiredAssetsLeftForGas
-    ? parseUnits(selectedInputToken.balance, nativeDecimals) - requiredAssetsLeftForGas
-    : undefined;
+  const gasRequiredForEthFlow =
+    selectedChainId === 1
+      ? parseUnits('0.01', nativeDecimals)
+      : parseUnits('0.0001', nativeDecimals); // TODO: Ask for better value coming from the SDK
+  const requiredAssetsLeftForGas =
+    isNativeToken(selectedInputToken.address) && !userIsSmartContractWallet
+      ? gasRequiredForEthFlow
+      : undefined;
+  const maxAmount = (() => {
+    const balance = parseUnits(selectedInputToken.balance, nativeDecimals);
+    if (!requiredAssetsLeftForGas) return balance;
+    return balance > requiredAssetsLeftForGas ? balance - requiredAssetsLeftForGas : balance;
+  })();
   const maxAmountFormatted = maxAmount
     ? normalize(maxAmount.toString(), nativeDecimals).toString()
     : undefined;
@@ -442,15 +536,27 @@ export const BaseSwitchModalContent = ({
         })
       : null;
 
+  const lostValue = switchRates
+    ? valueLostPercentage(
+        Number(switchRates?.destUSD) * (1 - safeSlippage),
+        Number(switchRates?.srcUSD)
+      )
+    : 0;
+
+  const showWarning = switchRates
+    ? shouldShowWarning(lostValue, Number(switchRates?.srcUSD))
+    : false;
+  const requireConfirmation = switchRates ? shouldRequireConfirmation(lostValue) : false;
+
+  const isSwappingSafetyModuleToken = SAFETY_MODULE_TOKENS.includes(
+    selectedInputToken.symbol.toLowerCase()
+  );
+
   // Component
   return (
     <>
       {showTitle && (
-        <TxModalTitle
-          title={`Swap ${
-            debounceInputAmount.length && selectedInputToken ? selectedInputToken.symbol : 'Assets'
-          }`}
-        />
+        <TxModalTitle title={`Swap ${selectedInputToken ? selectedInputToken.symbol : 'Assets'}`} />
       )}
       {showChangeNetworkWarning && isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
@@ -488,6 +594,11 @@ export const BaseSwitchModalContent = ({
           slippageValidation={slippageValidation}
           slippage={slippage}
           setSlippage={setSlippage}
+          suggestedSlippage={
+            switchRates?.provider === 'cowprotocol'
+              ? switchRates?.suggestedSlippage.toString()
+              : undefined
+          }
         />
       </Box>
       {!selectedInputToken || !selectedOutputToken ? (
@@ -511,16 +622,21 @@ export const BaseSwitchModalContent = ({
                 (token) =>
                   token.address !== selectedOutputToken.address &&
                   Number(token.balance) !== 0 &&
+                  // Remove native tokens for non-Safe smart contract wallets
+                  !(userIsSmartContractWallet && !userIsSafeWallet && token.extensions?.isNative) &&
                   // Avoid wrapping
                   !(
                     isNativeToken(selectedOutputToken.address) &&
-                    token.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address
+                    token.address.toLowerCase() ===
+                      WRAPPED_NATIVE_CURRENCIES[
+                        selectedChainId as SupportedChainId
+                      ]?.address.toLowerCase()
                   ) &&
                   !(
-                    selectedOutputToken.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address &&
-                    isNativeToken(token.address)
+                    selectedOutputToken.address.toLowerCase() ===
+                      WRAPPED_NATIVE_CURRENCIES[
+                        selectedChainId as SupportedChainId
+                      ]?.address.toLowerCase() && isNativeToken(token.address)
                   )
               )}
               value={inputAmount}
@@ -560,21 +676,29 @@ export const BaseSwitchModalContent = ({
                   // Avoid wrapping
                   !(
                     isNativeToken(selectedInputToken.address) &&
-                    token.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address
+                    token.address.toLowerCase() ===
+                      WRAPPED_NATIVE_CURRENCIES[
+                        selectedChainId as SupportedChainId
+                      ]?.address.toLowerCase()
                   ) &&
                   !(
-                    selectedInputToken.address ===
-                      WRAPPED_NATIVE_CURRENCIES[selectedChainId as SupportedChainId]?.address &&
-                    isNativeToken(token.address)
+                    selectedInputToken.address.toLowerCase() ===
+                      WRAPPED_NATIVE_CURRENCIES[
+                        selectedChainId as SupportedChainId
+                      ]?.address.toLowerCase() && isNativeToken(token.address)
                   )
               )}
-              value={
-                switchRates
-                  ? normalizeBN(switchRates.destAmount, switchRates.destDecimals).toString()
-                  : '0'
+              value={normalizeBN(
+                switchRates?.provider === 'cowprotocol'
+                  ? switchRates?.destSpot
+                  : switchRates?.destAmount || 0,
+                switchRates?.destDecimals || 18
+              ).toString()}
+              usdValue={
+                switchRates?.provider === 'cowprotocol'
+                  ? switchRates?.destSpotInUsd
+                  : switchRates?.destUSD || '0'
               }
-              usdValue={switchRates?.destUSD || '0'}
               loading={
                 debounceInputAmount !== '0' &&
                 debounceInputAmount !== '' &&
@@ -604,7 +728,7 @@ export const BaseSwitchModalContent = ({
                 selectedOutputToken.extensions?.isUserCustom) && (
                 <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
                   <Typography variant="caption">
-                    You have selected a custom imported token.
+                    You selected a custom imported token. Make sure it&apos;s the right token.
                   </Typography>
                 </Warning>
               )}
@@ -619,6 +743,17 @@ export const BaseSwitchModalContent = ({
                 </Warning>
               )}
 
+              {showUSDTResetWarning && (
+                <Warning severity="info" sx={{ mt: 5 }}>
+                  <Typography variant="caption">
+                    <Trans>
+                      USDT on Ethereum requires approval reset before a new approval. This will
+                      require an additional transaction.
+                    </Trans>
+                  </Typography>
+                </Warning>
+              )}
+
               <SwitchErrors
                 ratesError={ratesError}
                 balance={selectedInputToken.balance}
@@ -626,13 +761,66 @@ export const BaseSwitchModalContent = ({
               />
               {txError && <ParaswapErrorDisplay txError={txError} />}
 
+              {showWarning && (
+                <Warning
+                  severity="warning"
+                  icon={false}
+                  sx={{
+                    mt: 2,
+                    mb: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography variant="caption">
+                    <Trans>
+                      High price impact. This route may return less due to low liquidity.
+                    </Trans>
+                  </Typography>
+                  {requireConfirmation && (
+                    <Box
+                      sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }}
+                    >
+                      <Typography variant="caption">
+                        <Trans>
+                          I confirm the swap with a potential {(lostValue * 100).toFixed(0)}% value
+                          loss
+                        </Trans>
+                      </Typography>
+                      <Checkbox
+                        checked={highPriceImpactConfirmed}
+                        onChange={() => {
+                          setHighPriceImpactConfirmed(!highPriceImpactConfirmed);
+                        }}
+                        size="small"
+                        data-cy={'high-price-impact-checkbox'}
+                      />
+                    </Box>
+                  )}
+                </Warning>
+              )}
+
+              {isSwappingSafetyModuleToken && (
+                <Warning severity="error" icon={false} sx={{ mt: 2, mb: 2 }}>
+                  <Typography variant="caption">
+                    <Trans>
+                      For swapping safety module assets please unstake your position{' '}
+                      <Link href="/safety-module" onClick={() => close()}>
+                        here
+                      </Link>
+                      .
+                    </Trans>
+                  </Typography>
+                </Warning>
+              )}
+
               <SwitchActions
                 isWrongNetwork={isWrongNetwork.isWrongNetwork}
                 inputAmount={debounceInputAmount}
                 inputToken={selectedInputToken.address}
                 outputToken={selectedOutputToken.address}
-                inputName={selectedInputToken.name}
-                outputName={selectedOutputToken.name}
+                setShowUSDTResetWarning={setShowUSDTResetWarning}
                 inputSymbol={selectedInputToken.symbol}
                 outputSymbol={selectedOutputToken.symbol}
                 slippage={safeSlippage.toString()}
@@ -641,7 +829,9 @@ export const BaseSwitchModalContent = ({
                   !switchRates ||
                   Number(debounceInputAmount) > Number(selectedInputToken.balance) ||
                   !user ||
-                  slippageValidation?.severity === ValidationSeverity.ERROR
+                  slippageValidation?.severity === ValidationSeverity.ERROR ||
+                  isSwappingSafetyModuleToken ||
+                  (requireConfirmation && !highPriceImpactConfirmed)
                 }
                 chainId={selectedChainId}
                 switchRates={switchRates}

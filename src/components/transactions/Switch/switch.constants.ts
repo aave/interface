@@ -23,6 +23,8 @@ export const CoWProtocolSupportedNetworks = [
   SupportedChainId.ARBITRUM_ONE,
   SupportedChainId.BASE,
   SupportedChainId.SEPOLIA,
+  SupportedChainId.AVALANCHE,
+  SupportedChainId.POLYGON,
 ] as const;
 
 export const isChainIdSupportedByCoWProtocol = (chainId: number): chainId is SupportedChainId => {

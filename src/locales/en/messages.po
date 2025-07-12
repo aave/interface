@@ -95,10 +95,6 @@ msgstr "E-Mode increases your LTV for a selected category of assets, meaning tha
 msgid "Amount available to unstake"
 msgstr "Amount available to unstake"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Minimum staked Aave amount"
-msgstr "Minimum staked Aave amount"
-
 #: src/components/transactions/Bridge/BridgeDestinationInput.tsx
 msgid "To"
 msgstr "To"
@@ -183,6 +179,10 @@ msgstr "Learn more about the risks."
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
+msgstr "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
+
 #: src/modules/umbrella/AmountStakedItem.tsx
 msgid "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 msgstr "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
@@ -199,16 +199,10 @@ msgstr "Liquidation <0/> threshold"
 msgid "Withdrawing and Switching"
 msgstr "Withdrawing and Switching"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow rate"
-msgstr "Borrow rate"
-
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -242,10 +236,6 @@ msgstr "Aave is a fully decentralized, community governed protocol by the AAVE t
 #: src/components/WalletConnection/ReadOnlyModal.tsx
 msgid "Please enter a valid wallet address."
 msgstr "Please enter a valid wallet address."
-
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Meet GHO"
-msgstr "Meet GHO"
 
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
@@ -296,10 +286,6 @@ msgstr "There is not enough collateral to cover a new borrow"
 msgid "Supply {symbol}"
 msgstr "Supply {symbol}"
 
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
-msgid "Total interest accrued"
-msgstr "Total interest accrued"
-
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/migration/MigrationList.tsx
@@ -312,8 +298,6 @@ msgstr "Max LTV"
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Repay"
@@ -353,10 +337,6 @@ msgstr "Terms"
 msgid "Maximum available to borrow"
 msgstr "Maximum available to borrow"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Minimum GHO borrow amount"
-msgstr "Minimum GHO borrow amount"
-
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Sign to continue"
 msgstr "Sign to continue"
@@ -370,6 +350,10 @@ msgstr "Total amount staked"
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Transactions"
 msgstr "Transactions"
+
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "For swapping safety module assets please unstake your position <0>here</0>."
+msgstr "For swapping safety module assets please unstake your position <0>here</0>."
 
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
@@ -455,10 +439,6 @@ msgstr "Signing"
 msgid "Repay {symbol}"
 msgstr "Repay {symbol}"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Discountable amount"
-msgstr "Discountable amount"
-
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 msgid "Your staked amount"
 msgstr "Your staked amount"
@@ -500,18 +480,10 @@ msgstr "Available to Stake"
 msgid "Switch Network"
 msgstr "Switch Network"
 
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-msgid "APY, borrow rate"
-msgstr "APY, borrow rate"
-
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 msgid "APR"
@@ -523,10 +495,6 @@ msgstr "APR"
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Total"
 msgstr "Total"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
-msgstr "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "{stepName}"
@@ -671,7 +639,6 @@ msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
@@ -721,13 +688,15 @@ msgstr "Bridged Via CCIP"
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to borrow is <0/> {0} (<1/>)."
 
@@ -793,10 +762,6 @@ msgstr "Migrate your assets"
 msgid "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 
-#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
-msgid "At a discount"
-msgstr "At a discount"
-
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
@@ -830,13 +795,8 @@ msgid "The fee includes the gas cost to complete the transaction on the destinat
 msgstr "The fee includes the gas cost to complete the transaction on the destination chain and the fee paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
 
 #: src/components/caps/DebtCeilingStatus.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "of"
@@ -858,10 +818,6 @@ msgstr "You've successfully submitted an order."
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "Max"
 msgstr "Max"
-
-#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
-msgid "Slippage"
-msgstr "Slippage"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -955,13 +911,9 @@ msgstr "Main Ethereum market with the largest selection of assets and yield opti
 msgid "Disabled"
 msgstr "Disabled"
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "COPIED!"
-msgstr "COPIED!"
-
-#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
-msgid "Fixed rate"
-msgstr "Fixed rate"
+#: src/components/infoTooltips/GhoRateTooltip.tsx
+msgid "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
+msgstr "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restaking {symbol}"
@@ -1079,10 +1031,6 @@ msgstr "Thank you for submitting feedback!"
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Discount"
-msgstr "Discount"
-
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
@@ -1090,10 +1038,6 @@ msgstr "{tooltipText}"
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "Rewards can be claimed through"
 msgstr "Rewards can be claimed through"
-
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-msgid "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
 
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
@@ -1113,10 +1057,6 @@ msgstr "Unstake window"
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Reload"
 msgstr "Reload"
-
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "Save and share"
-msgstr "Save and share"
 
 #: pages/safety-module.page.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
@@ -1154,7 +1094,6 @@ msgstr "Borrowing of this asset is limited to a certain amount to minimize liqui
 msgid "The Safety Module has been upgraded to <0>Umbrella</0>, a new system that introduces automated slashing, aToken staking, and improved incentives design."
 msgstr "The Safety Module has been upgraded to <0>Umbrella</0>, a new system that introduces automated slashing, aToken staking, and improved incentives design."
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "All done"
 msgstr "All done"
@@ -1180,12 +1119,16 @@ msgstr "Liquidation at"
 msgid "Costs & Fees"
 msgstr "Costs & Fees"
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "I confirm the swap with a potential {0}% value loss"
+msgstr "I confirm the swap with a potential {0}% value loss"
+
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 msgid "deposited"
 msgstr "deposited"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
@@ -1203,7 +1146,6 @@ msgstr "deposited"
 #: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/SavingsGhoProgram.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
@@ -1215,15 +1157,13 @@ msgstr "{0}"
 msgid "Manage analytics"
 msgstr "Manage analytics"
 
-#: src/components/incentives/GhoIncentivesCard.tsx
-msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
-msgstr "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
-
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 #: src/modules/umbrella/UnstakeModalActions.tsx
 msgid "Unstaking {symbol}"
 msgstr "Unstaking {symbol}"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
+#: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 msgid "Swapping"
 msgstr "Swapping"
@@ -1325,6 +1265,10 @@ msgstr "Due to internal stETH mechanics required for rebasing support, it is not
 msgid "Wrong Network"
 msgstr "Wrong Network"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Merkl rewards are claimed through the"
+msgstr "Merkl rewards are claimed through the"
+
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
@@ -1386,6 +1330,10 @@ msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgid "Maximum collateral amount to use"
 msgstr "Maximum collateral amount to use"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Eligible for incentives through Merkl."
+msgstr "Eligible for incentives through Merkl."
+
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
@@ -1393,6 +1341,11 @@ msgstr "Let us know how we can make the app better for you. For user support rel
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr "Emode"
+
+#: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Expired"
+msgstr "Expired"
 
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"
@@ -1642,6 +1595,10 @@ msgstr "Swapped"
 msgid "Not reached"
 msgstr "Not reached"
 
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Auto"
+msgstr "Auto"
+
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "Age"
 msgstr "Age"
@@ -1774,12 +1731,8 @@ msgstr "GHO balance"
 #: src/components/transactions/Borrow/BorrowModal.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -1819,10 +1772,6 @@ msgstr "Bridge history"
 msgid "Borrow balance after switch"
 msgstr "Borrow balance after switch"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Discount model parameters"
-msgstr "Discount model parameters"
-
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
 msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
@@ -1857,8 +1806,6 @@ msgstr "Transaction history is not currently available for this market"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/MarketAssetsListItem.tsx
@@ -1920,7 +1867,6 @@ msgstr "Total borrows"
 msgid "YAE"
 msgstr "YAE"
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 #: src/components/transactions/FlowCommons/BaseCancelled.tsx
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 #: src/components/transactions/FlowCommons/BaseWaiting.tsx
@@ -1960,6 +1906,7 @@ msgstr "User cannot withdraw more than the available balance"
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "In Progress"
 msgstr "In Progress"
@@ -2151,10 +2098,6 @@ msgstr "Your balance is lower than the selected amount."
 msgid "An error has occurred fetching the proposal."
 msgstr "An error has occurred fetching the proposal."
 
-#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
-msgid "Exceeds the discount"
-msgstr "Exceeds the discount"
-
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
@@ -2179,15 +2122,6 @@ msgstr "Available to withdraw"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Cooldown"
 msgstr "Cooldown"
-
-#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
-#: src/components/transactions/Swap/SwapActions.tsx
-msgid "Swaping"
-msgstr "Swaping"
-
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-msgid "ZKSync Ignite Program rewards are claimed through the"
-msgstr "ZKSync Ignite Program rewards are claimed through the"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/bridge/BridgeWrapper.tsx
@@ -2304,20 +2238,14 @@ msgstr "Repaying {symbol}"
 msgid "Bridge {symbol}"
 msgstr "Bridge {symbol}"
 
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
-msgid "Effective interest rate"
-msgstr "Effective interest rate"
-
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 msgid "Available"
 msgstr "Available"
 
@@ -2338,10 +2266,6 @@ msgstr "Cancel"
 msgid "Ltv validation failed"
 msgstr "Ltv validation failed"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "to"
-msgstr "to"
-
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
@@ -2354,10 +2278,6 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Assets to borrow"
 msgstr "Assets to borrow"
-
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "Get a discount on GHO borrowing by holding stkAAVE"
-msgstr "Get a discount on GHO borrowing by holding stkAAVE"
 
 #: src/components/Warnings/BorrowDisabledWarning.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
@@ -2417,13 +2337,10 @@ msgstr "Bridge GHO"
 msgid "No transactions yet."
 msgstr "No transactions yet."
 
-#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Total borrowed"
 msgstr "Total borrowed"
@@ -2444,10 +2361,6 @@ msgstr "starts"
 msgid "Unstake now"
 msgstr "Unstake now"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "APY with discount applied"
-msgstr "APY with discount applied"
-
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net worth"
 msgstr "Net worth"
@@ -2465,7 +2378,6 @@ msgid "Net APR"
 msgstr "Net APR"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrowed"
 msgstr "Borrowed"
 
@@ -2480,11 +2392,6 @@ msgstr "Your Staked Amount"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your current loan to value based on your collateral supplied."
 msgstr "Your current loan to value based on your collateral supplied."
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
-msgid "Staking discount"
-msgstr "Staking discount"
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Preview tx and migrate"
@@ -2563,10 +2470,6 @@ msgstr "Zero address not valid"
 msgid "Version 3"
 msgstr "Version 3"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "You may borrow up to <0/> GHO at <1/> (max discount)"
-msgstr "You may borrow up to <0/> GHO at <1/> (max discount)"
-
 #: src/components/infoTooltips/NetAPYTooltip.tsx
 msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
 msgstr "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
@@ -2624,7 +2527,6 @@ msgstr "The % of your total borrowing power used. This is based on the amount of
 #: src/components/transactions/Bridge/BridgeAmount.tsx
 #: src/components/transactions/Bridge/BridgeAmount.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
-#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Amount"
@@ -2646,10 +2548,6 @@ msgstr "Claim"
 msgid "Liquidated collateral"
 msgstr "Liquidated collateral"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate."
-msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate."
-
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
@@ -2657,17 +2555,12 @@ msgstr "Borrowing {symbol}"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Borrow balance"
 msgstr "Borrow balance"
 
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Staked Balance"
 msgstr "Staked Balance"
-
-#: src/modules/reserve-overview/Gho/CalculatorInput.tsx
-msgid "You may enter a custom amount in the field."
-msgstr "You may enter a custom amount in the field."
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "About GHO"
@@ -2736,6 +2629,10 @@ msgstr "In Isolation mode, you cannot supply other assets as collateral. A globa
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Staking this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Staking this amount will reduce your health factor and increase risk of liquidation."
+
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "High price impact. This route may return less due to low liquidity."
+msgstr "High price impact. This route may return less due to low liquidity."
 
 #: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."
@@ -2867,10 +2764,6 @@ msgstr ".JSON"
 msgid "Debt ceiling is not zero"
 msgstr "Debt ceiling is not zero"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
-msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
-
 #: src/components/infoTooltips/SpkAirdropTooltip.tsx
 msgid "and about SPK program"
 msgstr "and about SPK program"
@@ -2950,10 +2843,6 @@ msgstr "Stake AAVE"
 msgid "Ok, Close"
 msgstr "Ok, Close"
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "Download"
-msgstr "Download"
-
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset cannot be used as collateral."
 msgstr "Asset cannot be used as collateral."
@@ -3009,10 +2898,6 @@ msgstr "Please switch to {networkName}."
 msgid "Both"
 msgstr "Both"
 
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Discount applied for <0/> staking AAVE"
-msgstr "Discount applied for <0/> staking AAVE"
-
 #: src/components/SecondsToString.tsx
 msgid "{h}h"
 msgstr "{h}h"
@@ -3045,7 +2930,6 @@ msgstr "Borrow APY"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 msgid "Debt"
 msgstr "Debt"
 
@@ -3102,10 +2986,6 @@ msgstr "All borrow positions outside of this category must be closed to enable t
 msgid "Available to supply"
 msgstr "Available to supply"
 
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-msgid "Eligible for the ZKSync Ignite program."
-msgstr "Eligible for the ZKSync Ignite program."
-
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the {market} has been frozen."
 msgstr "Per the community, the {market} has been frozen."
@@ -3144,7 +3024,6 @@ msgid "Minimum amount of debt to be repaid"
 msgstr "Minimum amount of debt to be repaid"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
-#: src/modules/reserve-overview/Gho/CalculatorInput.tsx
 msgid "{title}"
 msgstr "{title}"
 
@@ -3244,10 +3123,6 @@ msgstr "Please connect your wallet to see your supplies, borrowings, and open po
 msgid "Invalid expiration"
 msgstr "Invalid expiration"
 
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
-msgid "Interest accrued"
-msgstr "Interest accrued"
-
 #: src/modules/umbrella/AvailableToClaimItem.tsx
 msgid "Rewards available to claim"
 msgstr "Rewards available to claim"
@@ -3284,7 +3159,6 @@ msgstr "Selected supply assets"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
@@ -3292,6 +3166,7 @@ msgstr "Selected supply assets"
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/umbrella/helpers/ApyTooltip.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
@@ -3323,10 +3198,6 @@ msgstr "Privacy"
 #: src/components/WalletConnection/ReadOnlyModal.tsx
 msgid "Watch a wallet balance in read-only mode"
 msgstr "Watch a wallet balance in read-only mode"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Add stkAAVE to see borrow APY with the discount"
-msgstr "Add stkAAVE to see borrow APY with the discount"
 
 #: src/components/transactions/Bridge/BridgeActions.tsx
 msgid "Bridging {symbol}"
@@ -3386,7 +3257,6 @@ msgstr "You unstake here"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
 msgstr "Available to borrow"
@@ -3417,6 +3287,10 @@ msgstr "Nothing borrowed yet"
 #: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Remove"
 msgstr "Remove"
+
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Auto Slippage"
+msgstr "Auto Slippage"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve {symbol} to continue"
@@ -3490,17 +3364,13 @@ msgstr "Export data to"
 msgid "Buy Crypto with Fiat"
 msgstr "Buy Crypto with Fiat"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "<0><1><2/></1>Add stkAAVE</0> to see borrow rate with discount"
-msgstr "<0><1><2/></1>Add stkAAVE</0> to see borrow rate with discount"
-
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "COPY IMAGE"
-msgstr "COPY IMAGE"
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Custom slippage"
+msgstr "Custom slippage"
 
 #: src/components/infoTooltips/KernelAirdropTooltip.tsx
 msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
@@ -3523,8 +3393,6 @@ msgstr "Restaked"
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -3553,6 +3421,7 @@ msgid "Allows you to decide whether to use a supplied asset as collateral. An as
 msgstr "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Cancelled"
 msgstr "Cancelled"
 
@@ -3576,7 +3445,6 @@ msgstr "Rewards APR"
 msgid "{label}"
 msgstr "{label}"
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You {action} <0/> {symbol}"
 msgstr "You {action} <0/> {symbol}"
@@ -3710,10 +3578,6 @@ msgstr "Transaction overview"
 msgid "Restake {symbol}"
 msgstr "Restake {symbol}"
 
-#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
-msgid "APY type"
-msgstr "APY type"
-
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"
 msgstr "Not a valid address"
@@ -3777,12 +3641,9 @@ msgid "Submission did not work, please try again later or contact wecare@avara.x
 msgstr "Submission did not work, please try again later or contact wecare@avara.xyz"
 
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Filled"
 msgstr "Filled"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
-msgstr "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "Remaining debt"
@@ -3815,7 +3676,6 @@ msgid "Menu"
 msgstr "Menu"
 
 #: src/components/caps/DebtCeilingStatus.tsx
-#: src/components/incentives/GhoIncentivesCard.tsx
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
 #: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx

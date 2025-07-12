@@ -1867,9 +1867,9 @@ export const TOKEN_LIST: TokenList = {
       chainId: 1,
       address: '0x1aBaEA1f7C830bD89Acc67eC4af516284b1bC33c',
       name: 'Euro Coin',
-      symbol: 'EUROC',
+      symbol: 'EURC',
       decimals: 6,
-      logoURI: 'https://assets.coingecko.com/coins/images/26045/thumb/euro-coin.png?1655394420',
+      logoURI: 'https://assets.coingecko.com/coins/images/26045/standard/euro.png?1696525125',
       extensions: {
         bridgeInfo: {
           '137': {
@@ -5282,6 +5282,51 @@ export const TOKEN_LIST: TokenList = {
       },
     },
     {
+      chainId: 1,
+      address: '0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB',
+      name: 'CoW Protocol',
+      symbol: 'COW',
+      decimals: 18,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/24384/standard/CoW-token_logo.png?1719524382',
+    },
+    {
+      chainId: 100,
+      address: '0x177127622c4a00f3d409b75571e12cb3c8973d3c',
+      name: 'CoW Protocol',
+      symbol: 'COW',
+      decimals: 18,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/24384/standard/CoW-token_logo.png?1719524382',
+    },
+    {
+      chainId: 42161,
+      address: '0xcb8b5cd20bdcaea9a010ac1f8d835824f5c87a04',
+      name: 'CoW Protocol',
+      symbol: 'COW',
+      decimals: 18,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/24384/standard/CoW-token_logo.png?1719524382',
+    },
+    {
+      chainId: 8453,
+      address: '0xc694a91e6b071bf030a18bd3053a7fe09b6dae69',
+      name: 'CoW Protocol',
+      symbol: 'COW',
+      decimals: 18,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/24384/standard/CoW-token_logo.png?1719524382',
+    },
+    {
+      chainId: 137,
+      address: '0x2f4efd3aa42e15a1ec6114547151b63ee5d39958',
+      name: 'CoW Protocol',
+      symbol: 'COW',
+      decimals: 18,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/24384/standard/CoW-token_logo.png?1719524382',
+    },
+    {
       chainId: 10,
       address: '0x3390108E913824B8eaD638444cc52B9aBdF63798',
       name: 'Mask Network',
@@ -7640,9 +7685,9 @@ export const TOKEN_LIST: TokenList = {
       chainId: 137,
       address: '0x8a037dbcA8134FFc72C362e394e35E0Cad618F85',
       name: 'Euro Coin',
-      symbol: 'EUROC',
+      symbol: 'EURC',
       decimals: 6,
-      logoURI: 'https://assets.coingecko.com/coins/images/26045/thumb/euro-coin.png?1655394420',
+      logoURI: 'https://assets.coingecko.com/coins/images/26045/standard/euro.png?1696525125',
       extensions: {
         bridgeInfo: {
           '1': {
@@ -10480,9 +10525,9 @@ export const TOKEN_LIST: TokenList = {
       chainId: 42161,
       address: '0x863708032B5c328e11aBcbC0DF9D79C71Fc52a48',
       name: 'Euro Coin',
-      symbol: 'EUROC',
+      symbol: 'EURC',
       decimals: 6,
-      logoURI: 'https://assets.coingecko.com/coins/images/26045/thumb/euro-coin.png?1655394420',
+      logoURI: 'https://assets.coingecko.com/coins/images/26045/standard/euro.png?1696525125',
       extensions: {
         bridgeInfo: {
           '1': {
@@ -12883,6 +12928,15 @@ export const TOKEN_LIST: TokenList = {
     },
     {
       name: 'Gho Token',
+      address: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73',
+      symbol: 'GHO',
+      decimals: 18,
+      chainId: 43114,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+    },
+    {
+      name: 'Gho Token',
       address: '0x6bb7a212910682dcfdbd5bcbb3e28fb4e8da10ee',
       symbol: 'GHO',
       decimals: 18,
@@ -12938,6 +12992,7 @@ export const COMMON_SWAPS = [
   'DAI.e',
   'USDC.e',
   'USDT.e',
+  'EURC',
 ];
 
 export const findTokenSymbol = (address: string, chainId: number) => {

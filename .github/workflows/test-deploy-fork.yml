@@ -58,26 +58,6 @@ jobs:
         with:
           PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
 
-  cypress_smoke_v2:
-    runs-on: ubuntu-latest
-    needs: ['prepare_jobs']
-    strategy:
-      fail-fast: false
-      matrix:
-        market:
-          - polygon
-          - avalanche
-    steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-
-      - name: Run tests
-        uses: ./.github/actions/cypress
-        with:
-          CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
-          CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
-          CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-smoke.config.ts
-
   cypress_smoke_v3:
     runs-on: ubuntu-latest
     needs: ['prepare_jobs']
@@ -90,7 +70,6 @@ jobs:
           - optimism
           - ethereum
           - base
-          - gho
           - gnosis
           - bnb
     steps:
@@ -108,7 +87,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - prepare_jobs
-      - cypress_smoke_v2
       - cypress_smoke_v3
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
@@ -156,26 +134,6 @@ jobs:
               body: `- Ipfs hash: ${{ steps.pinata.outputs.hash }}\n- Ipfs preview link: ${{ steps.pinata.outputs.uri }}`
             });
 
-  cypress_full_v2:
-    runs-on: ubuntu-latest
-    needs: ['deploy_fork']
-    strategy:
-      fail-fast: false
-      matrix:
-        market:
-          - polygon
-          - avalanche
-    steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-
-      - name: Run tests
-        uses: ./.github/actions/cypress
-        with:
-          CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
-          CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
-          CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-full.config.ts
-
   cypress_full_v3:
     runs-on: ubuntu-latest
     needs: ['deploy_fork']
@@ -186,7 +144,6 @@ jobs:
           - polygon
           - optimism
           - ethereum
-          - gho
           - base
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
@@ -207,7 +164,6 @@ jobs:
       matrix:
         scoupe:
           - settings
-          - mobile
           - governance-stake
           - widgets
     steps:
@@ -227,7 +183,6 @@ jobs:
     needs:
       - prepare_jobs
       - next_js_analyze
-      - cypress_full_v2
       - cypress_full_v3
       - cypress_app_functionality
     env:
@@ -257,7 +212,6 @@ jobs:
     needs:
       - prepare_jobs
       - next_js_analyze
-      - cypress_full_v2
       - cypress_full_v3
       - cypress_app_functionality
     env:

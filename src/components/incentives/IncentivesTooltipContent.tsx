@@ -103,6 +103,16 @@ const IncentivesSymbolMap: {
     symbol: 'aEURe',
     aToken: true,
   },
+  aEthUSDtb: {
+    tokenIconSymbol: 'USDtb',
+    symbol: 'aUSDtb',
+    aToken: true,
+  },
+  aSonstS: {
+    tokenIconSymbol: 'stS',
+    symbol: 'astS',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {

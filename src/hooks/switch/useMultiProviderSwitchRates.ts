@@ -13,6 +13,8 @@ export const useMultiProviderSwitchRates = ({
   destToken,
   user,
   inputSymbol,
+  isInputTokenCustom,
+  isOutputTokenCustom,
   outputSymbol,
   srcDecimals,
   destDecimals,
@@ -41,6 +43,8 @@ export const useMultiProviderSwitchRates = ({
             destDecimals,
             inputSymbol,
             outputSymbol,
+            isInputTokenCustom,
+            isOutputTokenCustom,
           });
         case 'paraswap':
           return await getParaswapSellRates({
@@ -51,6 +55,9 @@ export const useMultiProviderSwitchRates = ({
             user,
             srcDecimals,
             destDecimals,
+            options: {
+              partner: 'aave-widget',
+            },
           });
       }
     },
@@ -59,5 +66,6 @@ export const useMultiProviderSwitchRates = ({
     retry: 0,
     throwOnError: false,
     refetchOnWindowFocus: (query) => (query.state.error ? false : true),
+    refetchInterval: provider === 'cowprotocol' ? 30000 : false, // 30 seconds
   });
 };

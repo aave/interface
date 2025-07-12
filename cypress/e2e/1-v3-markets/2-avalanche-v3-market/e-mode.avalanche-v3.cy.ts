@@ -1,3 +1,5 @@
+import { RequestedTokens, tokenSet } from 'cypress/support/helpers/token.helper';
+
 import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { skipState } from '../../../support/steps/common';
@@ -8,7 +10,6 @@ import {
   checkDashboardHealthFactor,
   checkEmodeActivatingDisabled,
 } from '../../../support/steps/verification.steps';
-import { RequestedTokens, tokenSet } from '../../4-gho-ethereum/helpers/token.helper';
 
 const tokensToRequest: RequestedTokens = {
   aAVAXAvalancheV3: 10,
