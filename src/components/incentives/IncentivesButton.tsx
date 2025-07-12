@@ -7,8 +7,8 @@ import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useMerklIgniteIncentives } from 'src/hooks/useMerklIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
-import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
 
@@ -19,8 +19,8 @@ import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
+import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
-import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
 
 interface IncentivesButtonProps {
   symbol: string;
@@ -69,31 +69,26 @@ export const MeritIncentivesButton = (params: {
   );
 };
 
-export const ZkIgniteIncentivesButton = (params: {
+export const MerklIncentivesButton = (params: {
   market: string;
   rewardedAsset?: string;
   protocolAction?: ProtocolAction;
 }) => {
   const [open, setOpen] = useState(false);
-  const { data: zkSyncIgniteIncentives } = useZkSyncIgniteIncentives(params);
+  const { data: merklIncentives } = useMerklIgniteIncentives(params);
 
-  if (!zkSyncIgniteIncentives) {
+  if (!merklIncentives) {
     return null;
   }
 
   return (
     <ContentWithTooltip
-      tooltipContent={
-        <ZkSyncIgniteIncentivesTooltipContent zkSyncIgniteIncentives={zkSyncIgniteIncentives} />
-      }
+      tooltipContent={<MerklIncentivesTooltipContent merklIncentives={merklIncentives} />}
       withoutHover
       setOpen={setOpen}
       open={open}
     >
-      <Content
-        incentives={[zkSyncIgniteIncentives]}
-        incentivesNetAPR={+zkSyncIgniteIncentives.incentiveAPR}
-      />
+      <Content incentives={[merklIncentives]} incentivesNetAPR={+merklIncentives.incentiveAPR} />
     </ContentWithTooltip>
   );
 };

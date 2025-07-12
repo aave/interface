@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
-import { ExtendedReserveIncentiveResponse } from 'src/hooks/useZkSyncIgniteIncentives';
+import { Box, Typography, useTheme } from '@mui/material';
+import { ExtendedReserveIncentiveResponse } from 'src/hooks/useMerklIncentives';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
@@ -8,14 +8,16 @@ import { Row } from '../primitives/Row';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { getSymbolMap } from './IncentivesTooltipContent';
 
-export const ZkSyncIgniteIncentivesTooltipContent = ({
-  zkSyncIgniteIncentives,
+export const MerklIncentivesTooltipContent = ({
+  merklIncentives,
 }: {
-  zkSyncIgniteIncentives: ExtendedReserveIncentiveResponse;
+  merklIncentives: ExtendedReserveIncentiveResponse;
 }) => {
+  const theme = useTheme();
+
   const typographyVariant = 'secondary12';
 
-  const zkSyncIgniteIncentivesFormatted = getSymbolMap(zkSyncIgniteIncentives);
+  const merklIncentivesFormatted = getSymbolMap(merklIncentives);
 
   return (
     <Box
@@ -26,31 +28,32 @@ export const ZkSyncIgniteIncentivesTooltipContent = ({
         flexDirection: 'column',
       }}
     >
-      <img src={`/icons/other/zksync-ignite.svg`} width="100px" height="40px" alt="" />
+      <img
+        src={
+          theme.palette.mode === 'dark'
+            ? `/icons/other/merkl-white.svg`
+            : `/icons/other/merkl-black.svg`
+        }
+        width="100px"
+        height="40px"
+        alt=""
+      />
 
       <Typography variant="caption" color="text.primary" mb={3}>
-        <Trans>Eligible for the ZKSync Ignite program.</Trans>
+        <Trans>Eligible for incentives through Merkl.</Trans>
       </Typography>
 
       <Typography variant="caption" color="text.secondary" mb={3}>
         <Trans>
-          This is a program initiated and implemented by the decentralised ZKSync community. Aave
-          Labs does not guarantee the program and accepts no liability.
-        </Trans>{' '}
-        <Link
-          href={'https://zksyncignite.xyz/'}
-          sx={{ textDecoration: 'underline' }}
-          variant="caption"
-          color="text.secondary"
-        >
-          Learn more
-        </Link>
+          This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not
+          guarantee the program and accepts no liability.
+        </Trans>
       </Typography>
 
       <Typography variant="caption" color="text.secondary" mb={3}>
-        <Trans>ZKSync Ignite Program rewards are claimed through the</Trans>{' '}
+        <Trans>Merkl rewards are claimed through the</Trans>{' '}
         <Link
-          href="https://app.zksyncignite.xyz/users/"
+          href="https://app.merkl.xyz/"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"
@@ -59,9 +62,9 @@ export const ZkSyncIgniteIncentivesTooltipContent = ({
         </Link>
         {'.'}
       </Typography>
-      {zkSyncIgniteIncentives.customMessage ? (
+      {merklIncentives.customMessage ? (
         <Typography variant="caption" color="text.strong" mb={3}>
-          <Trans>{zkSyncIgniteIncentives.customMessage}</Trans>
+          <Trans>{merklIncentives.customMessage}</Trans>
         </Typography>
       ) : null}
 
@@ -77,20 +80,18 @@ export const ZkSyncIgniteIncentivesTooltipContent = ({
               }}
             >
               <TokenIcon
-                aToken={zkSyncIgniteIncentivesFormatted.aToken}
-                symbol={zkSyncIgniteIncentivesFormatted.tokenIconSymbol}
+                aToken={merklIncentivesFormatted.aToken}
+                symbol={merklIncentivesFormatted.tokenIconSymbol}
                 sx={{ fontSize: '20px', mr: 1 }}
               />
-              <Typography variant={typographyVariant}>
-                {zkSyncIgniteIncentivesFormatted.symbol}
-              </Typography>
+              <Typography variant={typographyVariant}>{merklIncentivesFormatted.symbol}</Typography>
             </Box>
           }
           width="100%"
         >
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
             <FormattedNumber
-              value={+zkSyncIgniteIncentivesFormatted.incentiveAPR}
+              value={+merklIncentivesFormatted.incentiveAPR}
               percent
               variant={typographyVariant}
             />

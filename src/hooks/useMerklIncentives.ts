@@ -1,8 +1,24 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { AaveV3ZkSync } from '@bgd-labs/aave-address-book';
+import {
+  AaveV3Arbitrum,
+  AaveV3Avalanche,
+  AaveV3Base,
+  AaveV3BNB,
+  AaveV3Celo,
+  AaveV3Ethereum,
+  AaveV3EthereumEtherFi,
+  AaveV3EthereumLido,
+  AaveV3Gnosis,
+  AaveV3Linea,
+  AaveV3Metis,
+  AaveV3Optimism,
+  AaveV3Polygon,
+  AaveV3Scroll,
+  AaveV3Soneium,
+  AaveV3Sonic,
+} from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { Address } from 'viem';
 
 enum OpportunityAction {
@@ -28,20 +44,18 @@ type MerklOpportunity = {
   dailyRewards: number;
   tags: [];
   id: string;
-  tokens: [
-    {
-      id: string;
-      name: string;
-      chainId: number;
-      address: Address;
-      decimals: number;
-      icon: string;
-      verified: boolean;
-      isTest: boolean;
-      price: number;
-      symbol: string;
-    }
-  ];
+  tokens: {
+    id: string;
+    name: string;
+    chainId: number;
+    address: Address;
+    decimals: number;
+    icon: string;
+    verified: boolean;
+    isTest: boolean;
+    price: number;
+    symbol: string;
+  }[];
 };
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
@@ -49,10 +63,40 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customForumLink: string;
 };
 
-const url = 'https://api.merkl.xyz/v4/opportunities?tags=zksync&mainProtocolId=aave'; // Merkl API for ZK Ignite opportunities
+const allAaveAssets = [
+  AaveV3Ethereum.ASSETS,
+  AaveV3EthereumLido.ASSETS,
+  AaveV3EthereumEtherFi.ASSETS,
+  AaveV3Base.ASSETS,
+  AaveV3Arbitrum.ASSETS,
+  AaveV3Avalanche.ASSETS,
+  AaveV3Sonic.ASSETS,
+  AaveV3Optimism.ASSETS,
+  AaveV3Polygon.ASSETS,
+  AaveV3Metis.ASSETS,
+  AaveV3Gnosis.ASSETS,
+  AaveV3BNB.ASSETS,
+  AaveV3Scroll.ASSETS,
+  AaveV3Linea.ASSETS,
+  AaveV3Celo.ASSETS,
+  AaveV3Soneium.ASSETS,
+];
 
-const rewardToken = AaveV3ZkSync.ASSETS.ZK.UNDERLYING;
-const rewardTokenSymbol = 'ZK';
+const getUnderlyingAndAToken = (assets: {
+  [key: string]: {
+    UNDERLYING: Address;
+    A_TOKEN: Address;
+  };
+}) => {
+  return Object.entries(assets).flatMap(([, asset]) => [
+    asset.UNDERLYING.toLowerCase(),
+    asset.A_TOKEN.toLowerCase(),
+  ]);
+};
+
+const whitelistedRewardTokens = allAaveAssets.flatMap((assets) => getUnderlyingAndAToken(assets));
+
+const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
@@ -68,7 +112,7 @@ const checkOpportunityAction = (
   }
 };
 
-export const useZkSyncIgniteIncentives = ({
+export const useMerklIgniteIncentives = ({
   market,
   rewardedAsset,
   protocolAction,
@@ -79,15 +123,11 @@ export const useZkSyncIgniteIncentives = ({
 }) => {
   return useQuery({
     queryFn: async () => {
-      if (market === CustomMarket.proto_zksync_v3) {
-        const response = await fetch(url);
-        const merklOpportunities: MerklOpportunity[] = await response.json();
-        return merklOpportunities;
-      } else {
-        return [];
-      }
+      const response = await fetch(`${MERKL_ENDPOINT}`);
+      const merklOpportunities: MerklOpportunity[] = await response.json();
+      return merklOpportunities;
     },
-    queryKey: ['zkIgniteIncentives', market],
+    queryKey: ['merklIncentives', market],
     staleTime: 1000 * 60 * 5,
     select: (merklOpportunities) => {
       const opportunities = merklOpportunities.filter(
@@ -108,12 +148,22 @@ export const useZkSyncIgniteIncentives = ({
         return null;
       }
 
+      if (opportunity.apr <= 0) {
+        return null;
+      }
+
       const apr = opportunity.apr / 100;
+
+      const rewardToken = opportunity.tokens[opportunity.tokens.length - 1];
+
+      if (!whitelistedRewardTokens.includes(rewardToken.address.toLowerCase())) {
+        return null;
+      }
 
       return {
         incentiveAPR: apr.toString(),
-        rewardTokenAddress: rewardToken,
-        rewardTokenSymbol: rewardTokenSymbol,
+        rewardTokenAddress: rewardToken.address,
+        rewardTokenSymbol: rewardToken.symbol,
       } as ExtendedReserveIncentiveResponse;
     },
   });

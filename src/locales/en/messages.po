@@ -482,7 +482,7 @@ msgstr "Switch Network"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 msgid "APR"
@@ -686,6 +686,10 @@ msgstr "Bridged Via CCIP"
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
@@ -1030,10 +1034,6 @@ msgstr "{tooltipText}"
 msgid "Rewards can be claimed through"
 msgstr "Rewards can be claimed through"
 
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-msgid "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
-
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 msgstr "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
@@ -1123,7 +1123,7 @@ msgid "deposited"
 msgstr "deposited"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
@@ -1260,6 +1260,10 @@ msgstr "Due to internal stETH mechanics required for rebasing support, it is not
 msgid "Wrong Network"
 msgstr "Wrong Network"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Merkl rewards are claimed through the"
+msgstr "Merkl rewards are claimed through the"
+
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
@@ -1320,6 +1324,10 @@ msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Maximum collateral amount to use"
 msgstr "Maximum collateral amount to use"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Eligible for incentives through Merkl."
+msgstr "Eligible for incentives through Merkl."
 
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
@@ -2109,10 +2117,6 @@ msgstr "Available to withdraw"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Cooldown"
 msgstr "Cooldown"
-
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-msgid "ZKSync Ignite Program rewards are claimed through the"
-msgstr "ZKSync Ignite Program rewards are claimed through the"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/bridge/BridgeWrapper.tsx
@@ -2972,10 +2976,6 @@ msgstr "All borrow positions outside of this category must be closed to enable t
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
 msgstr "Available to supply"
-
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-msgid "Eligible for the ZKSync Ignite program."
-msgstr "Eligible for the ZKSync Ignite program."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the {market} has been frozen."
