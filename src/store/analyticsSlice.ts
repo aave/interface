@@ -23,6 +23,9 @@ export type AnalyticsSlice = {
   analyticsConfigOpen: boolean;
   setAnalyticsConfigOpen: (eventName: boolean) => void;
   eventsTrackingInitialized: boolean;
+  // Simple referral tracking from aave.com
+  checkForWebsiteReferral: () => void;
+  cameFromWebsite: boolean;
 };
 
 export const createAnalyticsSlice: StateCreator<
@@ -45,6 +48,7 @@ export const createAnalyticsSlice: StateCreator<
         walletAddress: get().account,
         market: properties.market ?? get().currentMarket,
         walletType: get().walletType,
+        cameFromWebsite: get().cameFromWebsite,
       };
 
       try {
@@ -59,6 +63,29 @@ export const createAnalyticsSlice: StateCreator<
     isTrackingEnabled: false,
     analyticsConfigOpen: true,
     eventsTrackingInitialized: false,
+    cameFromWebsite: false,
+
+    checkForWebsiteReferral: () => {
+      if (typeof window === 'undefined') return;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const ampDeviceId = urlParams.get('ampDeviceId');
+
+      if (ampDeviceId) {
+        set({ cameFromWebsite: true });
+
+        get().trackEvent('App Entered From Website', {
+          ampDeviceId,
+          landingPage: window.location.pathname,
+        });
+
+        // Clean the URL
+        urlParams.delete('ampDeviceId');
+        const newUrl =
+          window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+        window.history.replaceState({}, '', newUrl);
+      }
+    },
 
     initializeEventsTracking: () => {
       const userAcceptedAnalytics = localStorage.getItem('userAcceptedAnalytics') === 'true';
@@ -82,6 +109,9 @@ export const createAnalyticsSlice: StateCreator<
 
         setOptOut(false);
         set({ isTrackingEnabled: true });
+
+        // Check for website referral aave.com
+        get().checkForWebsiteReferral();
       } else {
         if (!isInitialized) {
           init(AMPLITUDE_API_KEY, {
