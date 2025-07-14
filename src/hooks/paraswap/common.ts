@@ -9,6 +9,7 @@ import {
   AaveV3Gnosis,
   AaveV3Optimism,
   AaveV3Polygon,
+  AaveV3Sonic,
 } from '@bgd-labs/aave-address-book';
 import {
   BuildTxFunctions,
@@ -98,6 +99,7 @@ const paraswapNetworks: ParaswapChainMap = {
   [ChainId.base]: { paraswap: ParaSwap(ChainId.base), feeTarget: AaveV3Base.COLLECTOR },
   [ChainId.bnb]: { paraswap: ParaSwap(ChainId.bnb), feeTarget: AaveV3BNB.COLLECTOR },
   [ChainId.xdai]: { paraswap: ParaSwap(ChainId.xdai), feeTarget: AaveV3Gnosis.COLLECTOR },
+  [ChainId.sonic]: { paraswap: ParaSwap(ChainId.sonic), feeTarget: AaveV3Sonic.COLLECTOR },
 };
 
 export const getParaswap = (chainId: ChainId) => {
