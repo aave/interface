@@ -160,6 +160,18 @@ const NETWORK_ASSETS: TokenInfo[] = [
       isNative: true,
     },
   },
+  {
+    name: 'Sonic',
+    symbol: 'S',
+    decimals: 18,
+    address: API_ETH_MOCK_ADDRESS,
+    chainId: 146,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/38108/standard/200x200_Sonic_Logo.png?1734679256',
+    extensions: {
+      isNative: true,
+    },
+  },
 ];
 
 export const TOKEN_LIST: TokenList = {
@@ -12976,6 +12988,41 @@ export const TOKEN_LIST: TokenList = {
       decimals: 18,
       chainId: 1,
       logoURI: 'https://assets.coingecko.com/coins/images/32254/standard/sdai.png?1697015278',
+    },
+    // Sonic
+    {
+      name: 'USDC',
+      address: '0x29219dd400f2Bf60E5a23d13Be72B486D4038894',
+      symbol: 'USDC',
+      decimals: 6,
+      chainId: 146,
+      logoURI: 'https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389',
+    },
+    {
+      name: 'Wrapped Sonic',
+      address: '0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38',
+      symbol: 'wS',
+      decimals: 18,
+      chainId: 146,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/52857/standard/wrapped_sonic.png?1734536585',
+    },
+    {
+      name: 'Wrapped ETH',
+      address: '0x50c42dEAcD8Fc9773493ED674b675bE577f2634b',
+      symbol: 'WETH',
+      decimals: 18,
+      chainId: 146,
+      logoURI: 'https://assets.coingecko.com/coins/images/2518/standard/weth.png?1696503332',
+    },
+    {
+      name: 'Beets Staked Sonic',
+      address: '0xE5DA20F15420aD15DE0fa650600aFc998bbE3955',
+      symbol: 'stS',
+      decimals: 18,
+      chainId: 146,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/52937/standard/token-beets-staked-sonic.png?1734712659',
     },
   ],
 };

@@ -13,7 +13,7 @@ import { useRootStore } from 'src/store/root';
 
 interface TopBarNotifyProps {
   notifyText: ReactNode;
-  learnMoreLink?: string;
+  learnMoreLink?: string | (() => void);
   buttonText?: string;
   bannerVersion: string;
   icon?: string;
@@ -99,34 +99,68 @@ export default function TopBarNotify({
               {icon && !sm ? <MarketLogo sx={{ ml: 2 }} size={32} logo={icon} /> : ''}
 
               {learnMoreLink && md ? (
-                <Link
-                  sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
-                  // target={'_blank'} Todo option to pass as prop
-                  href={learnMoreLink}
-                >
-                  <Trans>{buttonText ? buttonText : `Learn more`}</Trans>
-                </Link>
+                typeof learnMoreLink === 'string' ? (
+                  <Link
+                    sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
+                    // target={'_blank'} Todo option to pass as prop
+                    href={learnMoreLink}
+                  >
+                    <Trans>{buttonText ? buttonText : `Learn more`}</Trans>
+                  </Link>
+                ) : (
+                  <Button
+                    sx={{
+                      color: 'white',
+                      textDecoration: 'underline',
+                      paddingLeft: 2,
+                      background: 'none',
+                      textTransform: 'none',
+                      minWidth: 'auto',
+                      padding: 0,
+                      marginLeft: 2,
+                    }}
+                    onClick={learnMoreLink}
+                  >
+                    <Trans>{buttonText ? buttonText : `Swap Now`}</Trans>
+                  </Button>
+                )
               ) : null}
             </Typography>
           </Box>
 
           <Box>
             {!md && learnMoreLink ? (
-              <Button
-                component="a"
-                // target={'_blank'} Todo option to pass as prop
-                size="small"
-                href={learnMoreLink}
-                sx={{
-                  minWidth: '90px',
-                  marginLeft: 5,
-                  height: '24px',
-                  background: '#383D51',
-                  color: '#EAEBEF',
-                }}
-              >
-                <Trans> {buttonText ? buttonText.toUpperCase() : `LEARN MORE`}</Trans>
-              </Button>
+              typeof learnMoreLink === 'string' ? (
+                <Button
+                  component="a"
+                  // target={'_blank'} Todo option to pass as prop
+                  size="small"
+                  href={learnMoreLink}
+                  sx={{
+                    minWidth: '90px',
+                    marginLeft: 5,
+                    height: '24px',
+                    background: '#383D51',
+                    color: '#EAEBEF',
+                  }}
+                >
+                  <Trans> {buttonText ? buttonText.toUpperCase() : `LEARN MORE`}</Trans>
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  onClick={learnMoreLink}
+                  sx={{
+                    minWidth: '90px',
+                    marginLeft: 5,
+                    height: '24px',
+                    background: '#383D51',
+                    color: '#EAEBEF',
+                  }}
+                >
+                  <Trans> {buttonText ? buttonText.toUpperCase() : `Swap Now`}</Trans>
+                </Button>
+              )
             ) : null}
           </Box>
           <Button
