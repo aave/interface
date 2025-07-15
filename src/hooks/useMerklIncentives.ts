@@ -119,7 +119,7 @@ const checkOpportunityAction = (
   }
 };
 
-export const useMerklIgniteIncentives = ({
+export const useMerklIncentives = ({
   market,
   rewardedAsset,
   protocolAction,

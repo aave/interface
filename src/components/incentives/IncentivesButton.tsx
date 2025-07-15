@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
-import { useMerklIgniteIncentives } from 'src/hooks/useMerklIncentives';
+import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
@@ -75,7 +75,7 @@ export const MerklIncentivesButton = (params: {
   protocolAction?: ProtocolAction;
 }) => {
   const [open, setOpen] = useState(false);
-  const { data: merklIncentives } = useMerklIgniteIncentives(params);
+  const { data: merklIncentives } = useMerklIncentives(params);
 
   if (!merklIncentives) {
     return null;
