@@ -491,6 +491,7 @@ export const marketsData: {
       liquiditySwap: true,
       debtSwitch: true,
       withdrawAndSwitch: true,
+      switch: true,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sonic.POOL_ADDRESSES_PROVIDER,
