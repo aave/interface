@@ -95,7 +95,7 @@ const getUnderlyingAndAToken = (assets: {
 };
 
 const otherTokensWhitelisted = [
-  '0x04EADd7B10ea9a484c60860aea7A7C0AEc09B9F0', // aUSDtb wrapper contract
+  '0x04eadd7b10ea9a484c60860aea7a7c0aec09b9f0', // aUSDtb wrapper contract
 ];
 
 const whitelistedRewardTokens = [
