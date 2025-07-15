@@ -94,7 +94,14 @@ const getUnderlyingAndAToken = (assets: {
   ]);
 };
 
-const whitelistedRewardTokens = allAaveAssets.flatMap((assets) => getUnderlyingAndAToken(assets));
+const otherTokensWhitelisted = [
+  '0x04EADd7B10ea9a484c60860aea7A7C0AEc09B9F0', // aUSDtb wrapper contract
+];
+
+const whitelistedRewardTokens = [
+  ...allAaveAssets.flatMap((assets) => getUnderlyingAndAToken(assets)),
+  ...otherTokensWhitelisted,
+];
 
 const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 
