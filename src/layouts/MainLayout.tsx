@@ -1,7 +1,8 @@
+import { ChainId } from '@aave/contract-helpers';
 import { Box } from '@mui/material';
 import React, { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
-import { ROUTES } from 'src/components/primitives/Link';
+import { useModalContext } from 'src/hooks/useModal';
 import { FeedbackModal } from 'src/layouts/FeedbackDialog';
 import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
@@ -27,13 +28,18 @@ import TopBarNotify from './TopBarNotify';
 // );
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  const APP_BANNER_VERSION = '7.0.0';
-  // const currentMarket = useRootStore((state) => state.currentMarket);
+  const APP_BANNER_VERSION = '8.0.0';
+  const { openSwitch } = useModalContext();
+
+  const handleLearnMore = () => {
+    openSwitch('', ChainId.sonic);
+  };
+
   return (
     <>
       <TopBarNotify
-        learnMoreLink={ROUTES.staking}
-        notifyText="Aave Safety Module has been upgraded to Umbrella"
+        learnMoreLink={handleLearnMore}
+        notifyText="Swaps are now live on Sonic"
         bannerVersion={APP_BANNER_VERSION}
       />
 
