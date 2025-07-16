@@ -44,6 +44,7 @@ type MerklOpportunity = {
   dailyRewards: number;
   tags: [];
   id: string;
+  explorerAddress?: Address;
   tokens: {
     id: string;
     name: string;
@@ -56,6 +57,34 @@ type MerklOpportunity = {
     price: number;
     symbol: string;
   }[];
+  rewardsRecord: {
+    id: string;
+    total: number;
+    timestamp: string;
+    breakdowns: {
+      token: {
+        id: string;
+        name: string;
+        chainId: number;
+        address: string;
+        decimals: number;
+        symbol: string;
+        displaySymbol: string;
+        icon: string;
+        verified: boolean;
+        isTest: boolean;
+        type: string;
+        isNative: boolean;
+        price: number;
+      };
+      amount: string;
+      value: number;
+      distributionType: string;
+      id: string;
+      campaignId: string;
+      dailyRewardsRecordId: string;
+    }[];
+  };
 };
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
@@ -140,7 +169,8 @@ export const useMerklIncentives = ({
       const opportunities = merklOpportunities.filter(
         (opportunitiy) =>
           rewardedAsset &&
-          opportunitiy.identifier.toLowerCase() === rewardedAsset.toLowerCase() &&
+          opportunitiy.explorerAddress &&
+          opportunitiy.explorerAddress.toLowerCase() === rewardedAsset.toLowerCase() &&
           protocolAction &&
           checkOpportunityAction(opportunitiy.action, protocolAction)
       );
@@ -161,7 +191,7 @@ export const useMerklIncentives = ({
 
       const apr = opportunity.apr / 100;
 
-      const rewardToken = opportunity.tokens[opportunity.tokens.length - 1];
+      const rewardToken = opportunity.rewardsRecord.breakdowns[0].token;
 
       if (!whitelistedRewardTokens.includes(rewardToken.address.toLowerCase())) {
         return null;
