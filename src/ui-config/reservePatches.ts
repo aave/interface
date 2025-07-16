@@ -150,6 +150,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT sUSDe July',
       iconSymbol: 'ptsusde',
     },
+    ['0x9f56094c450763769ba0ea9fe2876070c0fd5f77'.toLowerCase()]: {
+      symbol: 'PT sUSDe September',
+      name: 'PT sUSDe September',
+      iconSymbol: 'ptsusde',
+    },
     '0x917459337caac939d41d7493b3999f571d20d667': {
       symbol: 'PT USDe July',
       name: 'PT USDe July',
