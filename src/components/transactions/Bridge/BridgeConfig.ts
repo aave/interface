@@ -128,6 +128,20 @@ const prodConfig: Config[] = [
     subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7RqaLvSMWBv4Z3xmv4kb6Jq3t59ikYG3wpcsTnLgBWzt`,
     feeTokens: [
       {
+        name: 'Gho Token',
+        address: AaveV3Base.ASSETS.GHO.UNDERLYING,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: ChainId.base,
+        logoURI:
+          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+        oracle: AaveV3Base.ASSETS.GHO.ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
+      {
         name: 'Ethereum',
         symbol: 'ETH',
         decimals: 18,
