@@ -4,7 +4,7 @@ const getSonicData = (assetAddress: string): number | undefined => SONIC_DATA_MA
 
 const SONIC_DATA_MAP: Map<string, number> = new Map([
   [AaveV3Sonic.ASSETS.WETH.A_TOKEN, 4],
-  [AaveV3Sonic.ASSETS.USDCe.A_TOKEN, 8],
+  [AaveV3Sonic.ASSETS.USDC.A_TOKEN, 8],
   [AaveV3Sonic.ASSETS.wS.A_TOKEN, 12],
   [AaveV3Sonic.ASSETS.stS.A_TOKEN, 12],
 ]);
