@@ -13,6 +13,7 @@ export const ParaswapSupportedNetworks = [
   ChainId.optimism,
   ChainId.xdai,
   ChainId.bnb,
+  ChainId.sonic,
 ];
 
 SupportedChainId;

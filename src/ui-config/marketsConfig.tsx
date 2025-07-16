@@ -73,7 +73,6 @@ export type MarketDataType = {
     COLLECTOR?: string;
     V3_MIGRATOR?: string;
     GHO_TOKEN_ADDRESS?: string;
-    GHO_UI_DATA_PROVIDER?: string;
   };
 };
 export enum CustomMarket {
@@ -144,7 +143,6 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       GHO_TOKEN_ADDRESS: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-      GHO_UI_DATA_PROVIDER: AaveV3Ethereum.UI_GHO_DATA_PROVIDER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Ethereum.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Ethereum.DEBT_SWAP_ADAPTER,
     },
@@ -301,7 +299,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
       GHO_TOKEN_ADDRESS: '0xc4bF5CbDaBE595361438F8c6a187bDc330539c60',
-      GHO_UI_DATA_PROVIDER: '0x69B9843A16a6E9933125EBD97659BA3CCbE2Ef8A',
     },
   },
   [CustomMarket.proto_base_v3]: {
@@ -489,6 +486,13 @@ export const marketsData: {
     chainId: ChainId.sonic,
     v3: true,
     subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/FQcacc4ZJaQVS9euWb76nvpSq2GxavBnUM6DU6tmspbi`,
+    enabledFeatures: {
+      collateralRepay: true,
+      liquiditySwap: true,
+      debtSwitch: true,
+      withdrawAndSwitch: true,
+      switch: true,
+    },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sonic.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Sonic.POOL,
@@ -497,6 +501,10 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Sonic.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Sonic.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Sonic.COLLECTOR,
+      SWAP_COLLATERAL_ADAPTER: AaveV3Sonic.SWAP_COLLATERAL_ADAPTER,
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Sonic.REPAY_WITH_COLLATERAL_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3Sonic.DEBT_SWAP_ADAPTER,
+      WITHDRAW_SWITCH_ADAPTER: AaveV3Sonic.WITHDRAW_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_optimism_v3]: {
