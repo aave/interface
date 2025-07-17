@@ -150,7 +150,7 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT sUSDe July',
       iconSymbol: 'ptsusde',
     },
-    ['0x9f56094c450763769ba0ea9fe2876070c0fd5f77'.toLowerCase()]: {
+    [AaveV3Ethereum.ASSETS.PT_sUSDE_25SEP2025.UNDERLYING.toLowerCase()]: {
       symbol: 'PT sUSDe September',
       name: 'PT sUSDe September',
       iconSymbol: 'ptsusde',
