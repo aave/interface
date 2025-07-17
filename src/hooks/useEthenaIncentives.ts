@@ -14,6 +14,7 @@ const ETHENA_DATA_MAP: Map<string, number> = new Map([
   [AaveV3Ethereum.ASSETS.PT_USDe_31JUL2025.A_TOKEN, 2],
   [AaveV3Ethereum.ASSETS.PT_sUSDE_31JUL2025.A_TOKEN, 1],
   [AaveV3Ethereum.ASSETS.PT_sUSDE_31JUL2025.A_TOKEN, 1],
+  [AaveV3Ethereum.ASSETS.PT_sUSDE_25SEP2025.A_TOKEN, 1],
 ]);
 
 export const useEthenaIncentives = (rewardedAsset?: string) => {
