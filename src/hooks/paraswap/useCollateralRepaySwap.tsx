@@ -128,7 +128,7 @@ export const useCollateralRepaySwap = ({
         console.error(e);
         const message =
           convertParaswapErrorMessage(e.message) ||
-          'There was an issue fetching data from Paraswap';
+          'There was an issue fetching data from Velora';
         setError(message);
       } finally {
         setLoading(false);
