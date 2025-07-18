@@ -992,10 +992,6 @@ msgstr "Assets to supply"
 msgid "Restake"
 msgstr "Restake"
 
-#: src/modules/staking/GhoStakingPanel.tsx
-msgid "Deposit APR (Weekly)"
-msgstr "Deposit APR (Weekly)"
-
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -1944,6 +1940,10 @@ msgstr "Representative smart contract wallet (ie. Safe) addresses on other chain
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You will exit isolation mode and other tokens can now be used as collateral"
 msgstr "You will exit isolation mode and other tokens can now be used as collateral"
+
+#: src/modules/staking/GhoStakingPanel.tsx
+msgid "Deposit APR"
+msgstr "Deposit APR"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Amount to Bridge"
