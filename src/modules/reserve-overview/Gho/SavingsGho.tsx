@@ -61,7 +61,7 @@ export const SavingsGho = () => {
     <Stack direction="column" gap={4}>
       <Typography gutterBottom>
         Stake GHO is now Savings GHO. With no risk of slashing and immediate withdraws available,
-        earn up to {aprFormatted}%.
+        earn up to {aprFormatted}% APY and claim rewards weekly.
       </Typography>
       <Stack direction="row">
         <Stack direction="row" alignItems="center" gap={1}>
