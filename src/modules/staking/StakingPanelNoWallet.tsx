@@ -75,11 +75,6 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           <Typography variant="subheader1" color="text.primary" ml={2}>
             {stakedToken}
           </Typography>
-          {stakedToken === 'GHO' && (
-            <Box sx={{ mx: 2 }}>
-              <MeritIncentivesButton symbol={stakedToken} market={CustomMarket.proto_mainnet_v3} />
-            </Box>
-          )}
         </Stack>
       </Box>
       <Box
@@ -97,13 +92,23 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
             </Typography>
           </Box>
         )}
+        {stakedToken !== 'GHO' && (
+          <FormattedNumber
+            value={parseFloat(stakingAPY || '0') / 10000}
+            percent
+            variant="secondary14"
+            color="text.primary"
+          />
+        )}
 
-        <FormattedNumber
-          value={parseFloat(stakingAPY || '0') / 10000}
-          percent
-          variant="secondary14"
-          color="text.primary"
-        />
+        {stakedToken === 'GHO' && (
+          <Box mt={1} display={'flex'} alignItems={'center'} flexDirection={'column'}>
+            <Typography variant="subheader2" color="text.secondary">
+              <Trans>Incentives APR</Trans>
+            </Typography>
+            <MeritIncentivesButton symbol={stakedToken} market={CustomMarket.proto_mainnet_v3} />
+          </Box>
+        )}
       </Box>
     </Box>
   );
