@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import {
+  AaveSafetyModule,
   AaveV3Arbitrum,
   AaveV3Avalanche,
   AaveV3Base,
@@ -123,7 +124,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     GHO: [
       {
         action: MeritAction.ETHEREUM_SGHO,
-        rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
+        rewardTokenAddress: AaveSafetyModule.STK_GHO,
         rewardTokenSymbol: 'sGHO',
         customForumLink:
           'https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646',
