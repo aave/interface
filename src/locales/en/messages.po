@@ -33,6 +33,7 @@ msgstr "Save with sGHO"
 
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
 #: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+#: src/components/incentives/IgnitionIncentivesTooltipContent.tsx
 #: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr "Aave Labs does not guarantee the program and accepts no liability."
@@ -1013,6 +1014,10 @@ msgstr "Assets"
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr "Read-only mode. Connect to a wallet to perform transactions."
+
+#: src/components/incentives/IgnitionIncentivesTooltipContent.tsx
+msgid "This asset is eligible for {0} Ignition Sparkle campaign."
+msgstr "This asset is eligible for {0} Ignition Sparkle campaign."
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
@@ -2511,6 +2516,10 @@ msgstr "Net APY"
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Claimed"
 msgstr "Claimed"
+
+#: src/components/incentives/IgnitionIncentivesTooltipContent.tsx
+msgid "Learn more about Ignition Sparkle campaign"
+msgstr "Learn more about Ignition Sparkle campaign"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."

@@ -6,6 +6,7 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
+import { useIgnitionIncentives } from 'src/hooks/useIgnitionIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
@@ -17,6 +18,7 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
+import { IgnitionAirdropTooltipContent } from './IgnitionIncentivesTooltipContent';
 import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
@@ -154,6 +156,31 @@ export const SonicIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: strin
       open={open}
     >
       <ContentSonicButton points={points} />
+    </ContentWithTooltip>
+  );
+};
+
+export const IgnitionIncentivesButton = (params: {
+  symbol: string;
+  market: string;
+  protocolAction?: ProtocolAction;
+}) => {
+  const [open, setOpen] = useState(false);
+  const { market, protocolAction, symbol } = params;
+  const points = useIgnitionIncentives(market, symbol, protocolAction);
+
+  if (!points) {
+    return null;
+  }
+
+  return (
+    <ContentWithTooltip
+      tooltipContent={<IgnitionAirdropTooltipContent points={points} />}
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
+      <ContentIgnitionButton points={points} />
     </ContentWithTooltip>
   );
 };
@@ -382,6 +409,10 @@ const ContentEthenaButton = ({ points }: { points: number }) => (
 
 const ContentEtherfiButton = ({ multiplier }: { multiplier: number }) => (
   <ContentButton value={multiplier} iconSrc="/icons/other/ether.fi.svg" />
+);
+
+const ContentIgnitionButton = ({ points }: { points: number }) => (
+  <ContentButton value={points} iconSrc="/icons/other/ignition.svg" />
 );
 
 const ContentSonicButton = ({ points }: { points: number }) => (
