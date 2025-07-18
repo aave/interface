@@ -2966,7 +2966,6 @@ msgid "Target liquidity"
 msgstr "Target liquidity"
 
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 msgstr "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 
