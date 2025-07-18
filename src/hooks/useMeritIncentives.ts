@@ -124,7 +124,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       {
         action: MeritAction.ETHEREUM_SGHO,
         rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-        rewardTokenSymbol: 'GHO',
+        rewardTokenSymbol: 'sGHO',
         customForumLink:
           'https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646',
       },
