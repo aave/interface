@@ -2214,6 +2214,10 @@ msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mod
 msgid "Something went wrong fetching bridge message, please try again later."
 msgstr "Something went wrong fetching bridge message, please try again later."
 
+#: src/modules/staking/StakingPanelNoWallet.tsx
+msgid "Incentives APR"
+msgstr "Incentives APR"
+
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 msgstr "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
@@ -2966,7 +2970,6 @@ msgid "Target liquidity"
 msgstr "Target liquidity"
 
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 msgstr "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 

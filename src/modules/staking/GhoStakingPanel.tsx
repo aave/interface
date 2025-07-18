@@ -254,7 +254,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
               variant={xsm ? 'subheader2' : 'description'}
               color={xsm ? 'text.secondary' : 'text.primary'}
             >
-              <Trans>Deposit APR</Trans>
+              <Trans>Deposit APR </Trans>
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center">
