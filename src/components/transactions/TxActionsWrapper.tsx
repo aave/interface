@@ -33,6 +33,7 @@ interface TxActionsWrapperProps extends BoxProps {
   };
   tryPermit?: boolean;
   event?: TrackEventProps;
+  showBatchOption?: boolean;
 }
 
 export const TxActionsWrapper = ({
@@ -54,6 +55,7 @@ export const TxActionsWrapper = ({
   errorParams,
   tryPermit,
   event,
+  showBatchOption = false,
   ...rest
 }: TxActionsWrapperProps) => {
   const { txError } = useModalContext();
@@ -127,9 +129,13 @@ export const TxActionsWrapper = ({
   const approvalParams = getApprovalParams();
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
-      {approvalParams && !readOnlyModeAddress && (
+      {(approvalParams || showBatchOption) && !readOnlyModeAddress && (
         <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
-          <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
+          <RightHelperText
+            approvalHash={approvalTxState?.txHash}
+            tryPermit={tryPermit}
+            showBatchOption={showBatchOption}
+          />
         </Box>
       )}
 
