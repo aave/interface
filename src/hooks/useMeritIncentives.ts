@@ -33,6 +33,7 @@ export enum MeritAction {
   BASE_SUPPLY_WEETH = 'base-supply-weeth',
   BASE_SUPPLY_EZETH = 'base-supply-ezeth',
   BASE_SUPPLY_EURC = 'base-supply-eurc',
+  BASE_SUPPLY_GHO = 'base-supply-gho',
   BASE_SUPPLY_LBTC_BORROW_CBBTC = 'base-supply-lbtc-borrow-cbbtc',
   BASE_BORROW_EURC = 'base-borrow-eurc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
@@ -387,6 +388,13 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       },
     ],
     GHO: [
+      {
+        action: MeritAction.BASE_SUPPLY_GHO,
+        rewardTokenAddress: AaveV3Base.ASSETS.GHO.A_TOKEN,
+        rewardTokenSymbol: 'aBasGHO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
       {
         action: MeritAction.BASE_BORROW_GHO,
         rewardTokenAddress: AaveV3Base.ASSETS.GHO.A_TOKEN,
