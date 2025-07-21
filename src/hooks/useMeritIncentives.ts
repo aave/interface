@@ -106,6 +106,8 @@ const baseIncentivesCbbtcCampaignsMessage =
 const baseIncentivesWstETHCampaignsMessage =
   'You must supply wstETH and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Some assets holding or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
+const baseIncentivesETHCampaignsMessage =
+  'Simple ETH supply is rewarded (1.25%), supply of ETH and USDC, EURC to receive Merit rewards (1.50%), supply ETH and borrow GHO for biggest rewards (1.75%). Some assets holding or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
 
@@ -439,7 +441,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Base.ASSETS.WETH.A_TOKEN,
         rewardTokenSymbol: 'aBasWETH',
         protocolAction: ProtocolAction.supply,
-        customMessage: antiLoopMessage,
+        customMessage: baseIncentivesETHCampaignsMessage,
       },
     ],
   },
