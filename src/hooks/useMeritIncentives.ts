@@ -36,6 +36,7 @@ export enum MeritAction {
   BASE_SUPPLY_GHO = 'base-supply-gho',
   BASE_SUPPLY_LBTC_BORROW_CBBTC = 'base-supply-lbtc-borrow-cbbtc',
   BASE_SUPPLY_CBBTC_BORROW_MULTIPLE = 'base-supply-cbbtc-borrow-multiple',
+  BASE_SUPPLY_WSTETH_BORROW_MULTIPLE = 'base-supply-wsteth-borrow-multiple',
   BASE_BORROW_EURC = 'base-borrow-eurc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   BASE_BORROW_WSTETH = 'base-borrow-wsteth',
@@ -101,6 +102,9 @@ const weethUsdcCampaignMessage =
 
 const baseIncentivesCbbtcCampaignsMessage =
   'You must supply cbBTC and borrow USDC, GHO, EURC or wETH to to receive Merit rewards. Some assets or possition on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+
+const baseIncentivesWstETHCampaignsMessage =
+  'You must supply wstETH and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
@@ -345,6 +349,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
         customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      },
+      {
+        action: MeritAction.BASE_SUPPLY_WSTETH_BORROW_MULTIPLE,
+        rewardTokenAddress: AaveV3Base.ASSETS.wstETH.A_TOKEN,
+        rewardTokenSymbol: 'aBaswstETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: baseIncentivesWstETHCampaignsMessage,
+        customForumLink: baseIncentivesForumLink,
       },
       {
         action: MeritAction.BASE_BORROW_WSTETH,
