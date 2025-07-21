@@ -35,6 +35,7 @@ export enum MeritAction {
   BASE_SUPPLY_EURC = 'base-supply-eurc',
   BASE_SUPPLY_GHO = 'base-supply-gho',
   BASE_SUPPLY_LBTC_BORROW_CBBTC = 'base-supply-lbtc-borrow-cbbtc',
+  BASE_SUPPLY_CBBTC_BORROW_MULTIPLE = 'base-supply-cbbtc-borrow-multiple',
   BASE_BORROW_EURC = 'base-borrow-eurc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   BASE_BORROW_WSTETH = 'base-borrow-wsteth',
@@ -98,6 +99,9 @@ const StSLoopIncentiveProgramMessage =
 const weethUsdcCampaignMessage =
   'You must supply weETH and borrow new USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
 
+const baseIncentivesCbbtcCampaignsMessage =
+  'You must supply cbBTC and borrow USDC, GHO, EURC or wETH to to receive Merit rewards. Some assets or possition on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
 
@@ -120,6 +124,9 @@ const weethUsdcForumLink =
 
 const StSLoopIncentiveProgramForumLink =
   'https://governance.aave.com/t/arfc-sts-loop-incentive-program/22368';
+
+const baseIncentivesForumLink =
+  'https://governance.aave.com/t/arfc-base-incentive-campaign-funding/21983?u=nandy.eth';
 
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
@@ -298,6 +305,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'aBasUSDC',
         protocolAction: ProtocolAction.supply,
+      },
+      {
+        action: MeritAction.BASE_SUPPLY_CBBTC,
+        rewardTokenAddress: AaveV3Base.ASSETS.cbBTC.A_TOKEN,
+        rewardTokenSymbol: 'aBasCBBTC',
+        protocolAction: ProtocolAction.supply,
+        customMessage: baseIncentivesCbbtcCampaignsMessage,
+        customForumLink: baseIncentivesForumLink,
       },
       {
         action: MeritAction.BASE_SUPPLY_LBTC_BORROW_CBBTC,
