@@ -86,10 +86,10 @@ const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData
   MERIT_DATA_MAP[market]?.[symbol];
 
 const antiLoopMessage =
-  'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'Borrowing of some assets or holding of some token may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const antiLoopBorrowMessage =
-  'Supplying of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'Supplying of some assets or holding of some token may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
@@ -101,10 +101,10 @@ const weethUsdcCampaignMessage =
   'You must supply weETH and borrow new USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
 
 const baseIncentivesCbbtcCampaignsMessage =
-  'You must supply cbBTC and borrow USDC, GHO, EURC or wETH to to receive Merit rewards. Some assets or possition on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'You must supply cbBTC and borrow USDC, GHO, EURC or wETH to to receive Merit rewards. Some assets holding or possition on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const baseIncentivesWstETHCampaignsMessage =
-  'You must supply wstETH and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'You must supply wstETH and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Some assets holding or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
@@ -304,12 +304,12 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
   },
   [CustomMarket.proto_base_v3]: {
     cbBTC: [
-      {
-        action: MeritAction.BASE_SUPPLY_CBBTC,
-        rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
-        rewardTokenSymbol: 'aBasUSDC',
-        protocolAction: ProtocolAction.supply,
-      },
+      // {
+      //   action: MeritAction.BASE_SUPPLY_CBBTC,
+      //   rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
+      //   rewardTokenSymbol: 'aBasUSDC',
+      //   protocolAction: ProtocolAction.supply,
+      // },
       {
         action: MeritAction.BASE_SUPPLY_CBBTC,
         rewardTokenAddress: AaveV3Base.ASSETS.cbBTC.A_TOKEN,
