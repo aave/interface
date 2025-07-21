@@ -132,7 +132,7 @@ const StSLoopIncentiveProgramForumLink =
   'https://governance.aave.com/t/arfc-sts-loop-incentive-program/22368';
 
 const baseIncentivesForumLink =
-  'https://governance.aave.com/t/arfc-base-incentive-campaign-funding/21983?u=nandy.eth';
+  'https://governance.aave.com/t/arfc-base-incentive-campaign-funding/21983';
 
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
@@ -306,14 +306,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
   },
   [CustomMarket.proto_base_v3]: {
     cbBTC: [
-      // {
-      //   action: MeritAction.BASE_SUPPLY_CBBTC,
-      //   rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
-      //   rewardTokenSymbol: 'aBasUSDC',
-      //   protocolAction: ProtocolAction.supply,
-      // },
       {
         action: MeritAction.BASE_SUPPLY_CBBTC,
+        rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
+        rewardTokenSymbol: 'aBasUSDC',
+        protocolAction: ProtocolAction.supply,
+      },
+      {
+        action: MeritAction.BASE_SUPPLY_CBBTC_BORROW_MULTIPLE,
         rewardTokenAddress: AaveV3Base.ASSETS.cbBTC.A_TOKEN,
         rewardTokenSymbol: 'aBasCBBTC',
         protocolAction: ProtocolAction.supply,
