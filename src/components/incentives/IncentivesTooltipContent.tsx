@@ -23,6 +23,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDC',
     aToken: true,
   },
+  aBasCBBTC: {
+    tokenIconSymbol: 'CBBTC',
+    symbol: 'aCBBTC',
+    aToken: true,
+  },
   aEthUSDS: {
     tokenIconSymbol: 'usds',
     symbol: 'aUSDS',
