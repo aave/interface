@@ -28,6 +28,11 @@ const IncentivesSymbolMap: {
     symbol: 'aCBBTC',
     aToken: true,
   },
+  aBasWETH: {
+    tokenIconSymbol: 'WETH',
+    symbol: 'aWETH',
+    aToken: true,
+  },
   aEthUSDS: {
     tokenIconSymbol: 'usds',
     symbol: 'aUSDS',
