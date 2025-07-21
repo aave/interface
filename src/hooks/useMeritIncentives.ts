@@ -101,10 +101,10 @@ const weethUsdcCampaignMessage =
   'You must supply weETH and borrow new USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
 
 const baseIncentivesCbbtcCampaignsMessage =
-  'You must supply cbBTC and borrow USDC, GHO, EURC or wETH to to receive Merit rewards. Some assets holding or possition on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'You must supply cbBTC and borrow USDC, GHO, EURC or wETH to to receive Merit rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const baseIncentivesWstETHCampaignsMessage =
-  'You must supply wstETH and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Some assets holding or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'You must supply wstETH and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
