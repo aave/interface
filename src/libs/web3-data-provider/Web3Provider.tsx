@@ -5,6 +5,7 @@ import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useRootStore } from 'src/store/root';
+import { WalletType } from 'src/store/walletSlice';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { hexToAscii } from 'src/utils/utils';
 import { UserRejectedRequestError } from 'viem';
@@ -49,8 +50,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-  const [setAccount, setConnectedAccountIsContract] = useRootStore(
-    useShallow((store) => [store.setAccount, store.setConnectedAccountIsContract])
+  const [setAccount, setConnectedAccountType] = useRootStore(
+    useShallow((store) => [store.setAccount, store.setConnectedAccountType])
   );
 
   const account = address;
@@ -60,7 +61,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     currentAccount = readOnlyModeAddress;
   }
 
-  const { data: isContractAddress } = useIsContractAddress(account || '', chainId);
+  const { data } = useIsContractAddress(account || '', chainId);
+  const isContractAddress = data?.isContract;
+  const isSafeWallet = data?.isSafeWallet;
 
   useEffect(() => {
     if (didInit) {
@@ -187,14 +190,16 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   useEffect(() => {
     if (!account) {
-      setConnectedAccountIsContract(false);
+      setConnectedAccountType(WalletType.EOA);
       return;
     }
 
     if (isContractAddress) {
-      setConnectedAccountIsContract(true);
+      setConnectedAccountType(WalletType.CONTRACT);
+    } else if (isSafeWallet) {
+      setConnectedAccountType(WalletType.SAFE);
     }
-  }, [isContractAddress, setConnectedAccountIsContract, account]);
+  }, [isContractAddress, setConnectedAccountType, account]);
 
   return (
     <Web3Context.Provider

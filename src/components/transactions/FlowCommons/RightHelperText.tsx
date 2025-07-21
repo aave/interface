@@ -34,7 +34,8 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
       store.currentNetworkConfig,
     ])
   );
-  const { data: isContractAddress } = useIsContractAddress(account);
+  const { data } = useIsContractAddress(account);
+  const isContractAddress = data?.isContract;
   const usingPermit = tryPermit && walletApprovalMethodPreference;
   const isSigned = approvalHash === MOCK_SIGNED_HASH;
 

@@ -7,6 +7,12 @@ export enum ApprovalMethod {
   PERMIT = 'Signed message',
 }
 
+export enum WalletType {
+  EOA = 'EOA',
+  CONTRACT = 'Contract',
+  SAFE = 'Safe',
+}
+
 export interface WalletSlice {
   account: string;
   walletType: string | undefined;
@@ -17,8 +23,8 @@ export interface WalletSlice {
   walletApprovalMethodPreference: ApprovalMethod;
   setWalletApprovalMethodPreference: (method: ApprovalMethod) => void;
   refreshWalletApprovalMethod: () => void;
-  connectedAccountIsContract: boolean;
-  setConnectedAccountIsContract: (isContract: boolean) => void;
+  connectedAccountType: WalletType;
+  setConnectedAccountType: (type: WalletType) => void;
 }
 
 const getWalletPreferences = () => {
@@ -75,8 +81,8 @@ export const createWalletSlice: StateCreator<
       }));
     }
   },
-  connectedAccountIsContract: false,
-  setConnectedAccountIsContract(isContract) {
-    set({ connectedAccountIsContract: isContract });
+  connectedAccountType: WalletType.EOA,
+  setConnectedAccountType(type) {
+    set({ connectedAccountType: type });
   },
 });

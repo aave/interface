@@ -55,6 +55,7 @@ import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
+import { WalletType } from './walletSlice';
 
 // TODO: what is the better name for this type?
 export type PoolReserve = {
@@ -703,9 +704,9 @@ export const createPoolSlice: StateCreator<
       get minRemainingBaseTokenBalance() {
         if (!get()) return '0.001';
 
-        const { currentNetworkConfig, currentChainId, connectedAccountIsContract } = { ...get() };
+        const { currentNetworkConfig, currentChainId, connectedAccountType } = { ...get() };
 
-        if (connectedAccountIsContract) return '0';
+        if (connectedAccountType !== WalletType.EOA) return '0';
 
         const chainId = currentNetworkConfig.underlyingChainId || currentChainId;
         const min = minBaseTokenRemainingByNetwork[chainId];
@@ -771,7 +772,7 @@ export const createPoolSlice: StateCreator<
       return JSON.stringify(typeData);
     },
     estimateGasLimit: async (tx: PopulatedTransaction, chainId?: number) => {
-      const { currentChainId, connectedAccountIsContract, jsonRpcProvider } = get();
+      const { currentChainId, connectedAccountType, jsonRpcProvider } = get();
 
       const effectiveChainId = chainId ?? currentChainId;
 
@@ -781,7 +782,7 @@ export const createPoolSlice: StateCreator<
        *
        *  See here for more details: https://github.com/zkSync-Community-Hub/zksync-developers/discussions/144
        */
-      if (effectiveChainId === ChainId.zksync && connectedAccountIsContract) {
+      if (effectiveChainId === ChainId.zksync && connectedAccountType !== WalletType.EOA) {
         return tx;
       }
 

@@ -63,7 +63,8 @@ export const GasStation: React.FC<GasStationProps> = ({
   const { data: poolReserves } = usePoolReservesHumanized(marketOnNetwork);
   const { data: gasPrice } = useGasPrice(selectedChainId);
   const { walletBalances } = useWalletBalances(marketOnNetwork);
-  const { data: isContractAddress } = useIsContractAddress(account);
+  const { data } = useIsContractAddress(account);
+  const isContractAddress = data?.isContract;
   const nativeBalanceUSD = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amountUSD;
   const { name, baseAssetSymbol } = getNetworkConfig(selectedChainId);
 
