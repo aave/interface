@@ -37,11 +37,11 @@ export enum MeritAction {
   BASE_SUPPLY_LBTC_BORROW_CBBTC = 'base-supply-lbtc-borrow-cbbtc',
   BASE_SUPPLY_CBBTC_BORROW_MULTIPLE = 'base-supply-cbbtc-borrow-multiple',
   BASE_SUPPLY_WSTETH_BORROW_MULTIPLE = 'base-supply-wsteth-borrow-multiple',
+  BASE_SUPPLY_WETH_BORROW_MULTIPLE = 'base-supply-weth-borrow-multiple',
   BASE_BORROW_EURC = 'base-borrow-eurc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   BASE_BORROW_WSTETH = 'base-borrow-wsteth',
   BASE_BORROW_GHO = 'base-borrow-gho',
-  BASE_SUPPLY_WETH = 'base-supply-weth',
   AVALANCHE_SUPPLY_BTCB = 'avalanche-supply-btcb',
   AVALANCHE_SUPPLY_USDC = 'avalanche-supply-usdc',
   AVALANCHE_SUPPLY_USDT = 'avalanche-supply-usdt',
@@ -437,7 +437,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
     WETH: [
       {
-        action: MeritAction.BASE_SUPPLY_WETH,
+        action: MeritAction.BASE_SUPPLY_WETH_BORROW_MULTIPLE,
         rewardTokenAddress: AaveV3Base.ASSETS.WETH.A_TOKEN,
         rewardTokenSymbol: 'aBasWETH',
         protocolAction: ProtocolAction.supply,
