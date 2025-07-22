@@ -228,6 +228,10 @@ msgstr "Blocked Address"
 msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
 msgstr "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
 
+#: pages/cross-check.page.tsx
+msgid "Only in App"
+msgstr "Only in App"
+
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
 msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -757,6 +761,10 @@ msgstr "Collateral usage is limited because of isolation mode. <0>Learn More</0>
 msgid "Migrate your assets"
 msgstr "Migrate your assets"
 
+#: pages/cross-check.page.tsx
+msgid "Matched Fields"
+msgstr "Matched Fields"
+
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
@@ -1034,6 +1042,10 @@ msgstr "{tooltipText}"
 msgid "Rewards can be claimed through"
 msgstr "Rewards can be claimed through"
 
+#: pages/cross-check.page.tsx
+msgid "Comparison Results"
+msgstr "Comparison Results"
+
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 msgstr "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
@@ -1153,6 +1165,10 @@ msgstr "{0}"
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
 msgstr "Manage analytics"
+
+#: pages/cross-check.page.tsx
+msgid "Compare Assets"
+msgstr "Compare Assets"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 #: src/modules/umbrella/UnstakeModalActions.tsx
@@ -1587,6 +1603,10 @@ msgstr "Withdrawing"
 msgid "Swapped"
 msgstr "Swapped"
 
+#: pages/cross-check.page.tsx
+msgid "Mismatched Fields"
+msgstr "Mismatched Fields"
+
 #: src/modules/governance/proposal/VotingResults.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Not reached"
@@ -1719,6 +1739,10 @@ msgstr "Protocol supply cap at 100% for this asset. Further supply unavailable."
 #: src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
 msgid "Can't validate the wallet address. Try again."
 msgstr "Can't validate the wallet address. Try again."
+
+#: pages/cross-check.page.tsx
+msgid "Asset Comparison Tool"
+msgstr "Asset Comparison Tool"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "GHO balance"
@@ -2279,6 +2303,10 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Assets to borrow"
 msgstr "Assets to borrow"
+
+#: pages/cross-check.page.tsx
+msgid "Summary"
+msgstr "Summary"
 
 #: src/components/Warnings/BorrowDisabledWarning.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
@@ -2852,6 +2880,10 @@ msgstr "Developers"
 msgid "Depositing"
 msgstr "Depositing"
 
+#: pages/cross-check.page.tsx
+msgid "View Detailed Report in Console"
+msgstr "View Detailed Report in Console"
+
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Supply apy"
 msgstr "Supply apy"
@@ -3073,6 +3105,10 @@ msgstr "Interest rate strategy"
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Staked"
 msgstr "Staked"
+
+#: pages/cross-check.page.tsx
+msgid "Cross-Check Analysis"
+msgstr "Cross-Check Analysis"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
@@ -3348,6 +3384,10 @@ msgstr "No assets selected to migrate."
 msgid "Migrating"
 msgstr "Migrating"
 
+#: pages/cross-check.page.tsx
+msgid "Only in SDK"
+msgstr "Only in SDK"
+
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
@@ -3456,6 +3496,10 @@ msgstr "The caller of the function is not an AToken"
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
 msgstr "You do not have supplies in this currency"
+
+#: pages/cross-check.page.tsx
+msgid "Clear Selection"
+msgstr "Clear Selection"
 
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
