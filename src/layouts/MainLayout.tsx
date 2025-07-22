@@ -28,18 +28,18 @@ import TopBarNotify from './TopBarNotify';
 // );
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  const APP_BANNER_VERSION = '8.0.0';
+  const APP_BANNER_VERSION = '9.0.0';
   const { openSwitch } = useModalContext();
 
   const handleLearnMore = () => {
-    openSwitch('', ChainId.sonic);
+    openSwitch('', ChainId.mainnet);
   };
 
   return (
     <>
       <TopBarNotify
         learnMoreLink={handleLearnMore}
-        notifyText="Swaps are now live on Sonic"
+        notifyText="Swap tokens directly in the Aave App"
         bannerVersion={APP_BANNER_VERSION}
       />
 
