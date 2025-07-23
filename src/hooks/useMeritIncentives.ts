@@ -107,7 +107,8 @@ const baseIncentivesWstETHCampaignsMessage =
   'You must supply wstETH and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const baseIncentivesETHCampaignsMessage =
-  'Simple ETH supply is rewarded (1.25%), supply of ETH and USDC, EURC to receive Merit rewards (1.50%), supply ETH and borrow GHO for biggest rewards (1.75%). Some assets holding or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'Supplying ETH alone earns 1.25%, supplying ETH and borrowing USDC or EURC earns 1.50%, supplying ETH and borrowing GHO earns 1.75%. Some assets holding or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
 
