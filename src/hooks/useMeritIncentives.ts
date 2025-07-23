@@ -38,7 +38,7 @@ export enum MeritAction {
   BASE_SUPPLY_LBTC_BORROW_CBBTC = 'base-supply-lbtc-borrow-cbbtc',
   BASE_SUPPLY_CBBTC_BORROW_MULTIPLE = 'base-supply-cbbtc-borrow-multiple',
   BASE_SUPPLY_WSTETH_BORROW_MULTIPLE = 'base-supply-wsteth-borrow-multiple',
-  BASE_SUPPLY_WETH_BORROW_MULTIPLE = 'base-supply-weth-borrow-multiple',
+  BASE_SUPPLY_WETH_BORROW_MULTIPLE = 'base-supply-eth-borrow-multiple',
   BASE_BORROW_EURC = 'base-borrow-eurc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   BASE_BORROW_WSTETH = 'base-borrow-wsteth',
@@ -317,12 +317,12 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
   },
   [CustomMarket.proto_base_v3]: {
     cbBTC: [
-      {
-        action: MeritAction.BASE_SUPPLY_CBBTC,
-        rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
-        rewardTokenSymbol: 'aBasUSDC',
-        protocolAction: ProtocolAction.supply,
-      },
+      // {
+      //   action: MeritAction.BASE_SUPPLY_CBBTC,
+      //   rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
+      //   rewardTokenSymbol: 'aBasUSDC',
+      //   protocolAction: ProtocolAction.supply,
+      // },
       {
         action: MeritAction.BASE_SUPPLY_CBBTC_BORROW_MULTIPLE,
         rewardTokenAddress: AaveV3Base.ASSETS.cbBTC.A_TOKEN,
@@ -355,14 +355,14 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       },
     ],
     wstETH: [
-      {
-        action: MeritAction.BASE_SUPPLY_WSTETH,
-        rewardTokenAddress: AaveV3Base.ASSETS.wstETH.A_TOKEN,
-        rewardTokenSymbol: 'aBaswstETH',
-        protocolAction: ProtocolAction.supply,
-        customMessage: antiLoopMessage,
-        customForumLink: joinedEthCorrelatedIncentiveForumLink,
-      },
+      // {
+      //   action: MeritAction.BASE_SUPPLY_WSTETH,
+      //   rewardTokenAddress: AaveV3Base.ASSETS.wstETH.A_TOKEN,
+      //   rewardTokenSymbol: 'aBaswstETH',
+      //   protocolAction: ProtocolAction.supply,
+      //   customMessage: antiLoopMessage,
+      //   customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      // },
       {
         action: MeritAction.BASE_SUPPLY_WSTETH_BORROW_MULTIPLE,
         rewardTokenAddress: AaveV3Base.ASSETS.wstETH.A_TOKEN,
