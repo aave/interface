@@ -455,6 +455,15 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: baseIncentivesETHCampaignsMessage,
       },
     ],
+    ETH: [
+      {
+        action: MeritAction.BASE_SUPPLY_WETH_BORROW_MULTIPLE,
+        rewardTokenAddress: AaveV3Base.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aBasWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: baseIncentivesETHCampaignsMessage,
+      },
+    ],
   },
   [CustomMarket.proto_avalanche_v3]: {
     ['BTC.b']: [
