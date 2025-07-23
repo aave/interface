@@ -24,6 +24,7 @@ export enum MeritAction {
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
   SUPPLY_WEETH_BORROW_USDC = 'ethereum-supply-weeth-borrow-usdc',
+  ETHEREUM_BORROW_EURC = 'ethereum-borrow-eurc',
   ARBITRUM_SUPPLY_ETH = 'arbitrum-supply-weth',
   ARBITRUM_SUPPLY_WSTETH = 'arbitrum-supply-wsteth',
   ARBITRUM_SUPPLY_EZETH = 'arbitrum-supply-ezeth',
@@ -228,6 +229,15 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         protocolAction: ProtocolAction.supply,
         customMessage: weethUsdcCampaignMessage,
         customForumLink: weethUsdcForumLink,
+      },
+    ],
+    EURC: [
+      {
+        action: MeritAction.ETHEREUM_BORROW_EURC,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.EURC.A_TOKEN,
+        rewardTokenSymbol: 'aEthEURC',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
       },
     ],
   },

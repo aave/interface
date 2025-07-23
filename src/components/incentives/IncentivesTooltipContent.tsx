@@ -128,6 +128,11 @@ const IncentivesSymbolMap: {
     symbol: 'astS',
     aToken: true,
   },
+  aEthEURC: {
+    tokenIconSymbol: 'EURC',
+    symbol: 'aEURC',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
