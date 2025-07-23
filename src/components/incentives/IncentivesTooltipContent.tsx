@@ -23,6 +23,16 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDC',
     aToken: true,
   },
+  aBasCBBTC: {
+    tokenIconSymbol: 'CBBTC',
+    symbol: 'aCBBTC',
+    aToken: true,
+  },
+  aBasWETH: {
+    tokenIconSymbol: 'WETH',
+    symbol: 'aWETH',
+    aToken: true,
+  },
   aEthUSDS: {
     tokenIconSymbol: 'usds',
     symbol: 'aUSDS',
@@ -116,6 +126,11 @@ const IncentivesSymbolMap: {
   aSonstS: {
     tokenIconSymbol: 'stS',
     symbol: 'astS',
+    aToken: true,
+  },
+  aEthEURC: {
+    tokenIconSymbol: 'EURC',
+    symbol: 'aEURC',
     aToken: true,
   },
 };
