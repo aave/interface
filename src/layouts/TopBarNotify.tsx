@@ -6,58 +6,111 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { useRouter } from 'next/router';
 import { ReactNode, useEffect, useState } from 'react';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 
-interface TopBarNotifyProps {
+export type ButtonAction =
+  | { type: 'url'; value: string; target?: '_blank' | '_self' }
+  | { type: 'function'; value: () => void }
+  | { type: 'route'; value: string }
+  | { type: 'modal'; value: string; params?: Record<string, unknown> };
+
+interface CampaignConfig {
   notifyText: ReactNode;
   learnMoreLink?: string | (() => void);
   buttonText?: string;
+  buttonAction?: ButtonAction;
   bannerVersion: string;
   icon?: string;
   customIcon?: ReactNode;
 }
 
-export default function TopBarNotify({
-  notifyText,
-  learnMoreLink,
-  buttonText,
-  bannerVersion,
-  icon,
-  customIcon,
-}: TopBarNotifyProps) {
+interface NetworkCampaigns {
+  [chainId: number]: CampaignConfig;
+}
+
+interface TopBarNotifyProps {
+  campaigns: NetworkCampaigns;
+}
+
+export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
+  const router = useRouter();
+
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const mobileDrawerOpen = useRootStore((state) => state.mobileDrawerOpen);
+
+  const getCurrentCampaign = (): CampaignConfig | null => {
+    return campaigns[currentChainId] || null;
+  };
+
+  const currentCampaign = getCurrentCampaign();
 
   const [showWarning, setShowWarning] = useState(() => {
-    const storedBannerVersion = localStorage.getItem('bannerVersion');
-    const warningBarOpen = localStorage.getItem('warningBarOpen');
+    if (!currentCampaign) return false;
 
-    if (storedBannerVersion !== bannerVersion) {
+    const storedBannerVersion = localStorage.getItem(`bannerVersion_${currentChainId}`);
+    const warningBarOpen = localStorage.getItem(`warningBarOpen_${currentChainId}`);
+
+    if (storedBannerVersion !== currentCampaign.bannerVersion) {
       return true;
     }
 
     return warningBarOpen !== 'false';
   });
 
-  const mobileDrawerOpen = useRootStore((state) => state.mobileDrawerOpen);
-
   useEffect(() => {
-    const storedBannerVersion = localStorage.getItem('bannerVersion');
+    if (!currentCampaign) return;
 
-    if (storedBannerVersion !== bannerVersion) {
-      localStorage.setItem('bannerVersion', bannerVersion);
-      localStorage.setItem('warningBarOpen', 'true');
+    const storedBannerVersion = localStorage.getItem(`bannerVersion_${currentChainId}`);
+
+    if (storedBannerVersion !== currentCampaign.bannerVersion) {
+      localStorage.setItem(`bannerVersion_${currentChainId}`, currentCampaign.bannerVersion);
+      localStorage.setItem(`warningBarOpen_${currentChainId}`, 'true');
       setShowWarning(true);
     }
-  }, [bannerVersion]);
+  }, [currentCampaign, currentChainId]);
+
+  // If no campaign is configured for the current network, don't show anything
+  if (!currentCampaign) {
+    return null;
+  }
 
   const handleClose = () => {
-    localStorage.setItem('warningBarOpen', 'false');
+    localStorage.setItem(`warningBarOpen_${currentChainId}`, 'false');
     setShowWarning(false);
+  };
+
+  const handleButtonAction = () => {
+    if (!currentCampaign.buttonAction) return;
+
+    switch (currentCampaign.buttonAction.type) {
+      case 'url':
+        if (currentCampaign.buttonAction.target === '_blank') {
+          window.open(currentCampaign.buttonAction.value, '_blank');
+        } else {
+          window.location.href = currentCampaign.buttonAction.value;
+        }
+        break;
+      case 'function':
+        currentCampaign.buttonAction.value();
+        break;
+      case 'route':
+        router.push(currentCampaign.buttonAction.value);
+        break;
+        // case 'modal':
+        //   console.log(
+        //     'Modal action:',
+        //     currentCampaign.buttonAction.value,
+        //     currentCampaign.buttonAction.params
+        //   );
+        break;
+    }
   };
 
   // Note: hide warnings when mobile menu is open
@@ -92,20 +145,25 @@ export default function TopBarNotify({
               sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}
               component="div"
             >
-              <Trans>{notifyText}</Trans>
+              <Trans>{currentCampaign.notifyText}</Trans>
 
-              {customIcon ? customIcon : null}
+              {currentCampaign.customIcon ? currentCampaign.customIcon : null}
 
-              {icon && !sm ? <MarketLogo sx={{ ml: 2 }} size={32} logo={icon} /> : ''}
+              {currentCampaign.icon && !sm ? (
+                <MarketLogo sx={{ ml: 2 }} size={32} logo={currentCampaign.icon} />
+              ) : (
+                ''
+              )}
 
-              {learnMoreLink && md ? (
-                typeof learnMoreLink === 'string' ? (
+              {currentCampaign.learnMoreLink && md ? (
+                typeof currentCampaign.learnMoreLink === 'string' ? (
                   <Link
                     sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
-                    // target={'_blank'} Todo option to pass as prop
-                    href={learnMoreLink}
+                    href={currentCampaign.learnMoreLink}
                   >
-                    <Trans>{buttonText ? buttonText : `Learn more`}</Trans>
+                    <Trans>
+                      {currentCampaign.buttonText ? currentCampaign.buttonText : `Learn more`}
+                    </Trans>
                   </Link>
                 ) : (
                   <Button
@@ -119,9 +177,11 @@ export default function TopBarNotify({
                       padding: 0,
                       marginLeft: 2,
                     }}
-                    onClick={learnMoreLink}
+                    onClick={currentCampaign.learnMoreLink}
                   >
-                    <Trans>{buttonText ? buttonText : `Swap Now`}</Trans>
+                    <Trans>
+                      {currentCampaign.buttonText ? currentCampaign.buttonText : `Learn more`}
+                    </Trans>
                   </Button>
                 )
               ) : null}
@@ -129,38 +189,20 @@ export default function TopBarNotify({
           </Box>
 
           <Box>
-            {!md && learnMoreLink ? (
-              typeof learnMoreLink === 'string' ? (
-                <Button
-                  component="a"
-                  // target={'_blank'} Todo option to pass as prop
-                  size="small"
-                  href={learnMoreLink}
-                  sx={{
-                    minWidth: '90px',
-                    marginLeft: 5,
-                    height: '24px',
-                    background: '#383D51',
-                    color: '#EAEBEF',
-                  }}
-                >
-                  <Trans> {buttonText ? buttonText.toUpperCase() : `LEARN MORE`}</Trans>
-                </Button>
-              ) : (
-                <Button
-                  size="small"
-                  onClick={learnMoreLink}
-                  sx={{
-                    minWidth: '90px',
-                    marginLeft: 5,
-                    height: '24px',
-                    background: '#383D51',
-                    color: '#EAEBEF',
-                  }}
-                >
-                  <Trans> {buttonText ? buttonText.toUpperCase() : `Swap Now`}</Trans>
-                </Button>
-              )
+            {!md && currentCampaign.buttonText && currentCampaign.buttonAction ? (
+              <Button
+                size="small"
+                onClick={handleButtonAction}
+                sx={{
+                  minWidth: '90px',
+                  marginLeft: 5,
+                  height: '24px',
+                  background: '#383D51',
+                  color: '#EAEBEF',
+                }}
+              >
+                <Trans>{currentCampaign.buttonText.toUpperCase()}</Trans>
+              </Button>
             ) : null}
           </Box>
           <Button
