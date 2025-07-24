@@ -1,27 +1,25 @@
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { ROUTES } from 'src/components/primitives/Link';
 
 import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
+import { useRootStore } from '../src/store/root';
+import Dashboard from './dashboard.page';
+import Markets from './markets.page';
 
 export default function Home() {
-  const router = useRouter();
   const { currentAccount } = useWeb3Context();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
-  // Redirect based on wallet connection status
   useEffect(() => {
-    if (currentAccount) {
-      // If wallet is connected, go to dashboard
-      router.replace(ROUTES.dashboard);
-    } else {
-      // If no wallet connected, go to markets
-      router.replace(ROUTES.markets);
-    }
-  }, [currentAccount, router]);
+    trackEvent('Page Viewed', {
+      'Page Name': 'Home',
+      'Wallet Connected': !!currentAccount,
+      'Connection Status': currentAccount ? 'Connected' : 'Unconnected',
+    });
+  }, [trackEvent, currentAccount]);
 
-  // Don't render anything since we're redirecting
-  return null;
+  // Show dashboard if wallet is connected, otherwise show markets
+  return currentAccount ? <Dashboard /> : <Markets />;
 }
 
 Home.getLayout = function getLayout(page: React.ReactElement) {

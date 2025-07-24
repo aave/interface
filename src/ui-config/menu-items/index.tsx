@@ -20,14 +20,14 @@ interface Navigation {
 
 export const navigation: Navigation[] = [
   {
-    link: ROUTES.markets,
-    title: t`Markets`,
-    dataCy: 'menuMarkets',
-  },
-  {
     link: ROUTES.dashboard,
     title: t`Dashboard`,
     dataCy: 'menuDashboard',
+  },
+  {
+    link: ROUTES.markets,
+    title: t`Markets`,
+    dataCy: 'menuMarkets',
   },
   {
     link: ROUTES.governance,
