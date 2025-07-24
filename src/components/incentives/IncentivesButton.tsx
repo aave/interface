@@ -26,6 +26,10 @@ interface IncentivesButtonProps {
   symbol: string;
   incentives?: ReserveIncentiveResponse[];
   displayBlank?: boolean;
+  market?: string;
+  protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  address?: string;
 }
 
 const BlankIncentives = () => {
@@ -49,6 +53,8 @@ export const MeritIncentivesButton = (params: {
   symbol: string;
   market: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   const [open, setOpen] = useState(false);
   const { data: meritIncentives } = useMeritIncentives(params);
@@ -57,6 +63,9 @@ export const MeritIncentivesButton = (params: {
     return null;
   }
 
+  // Show only merit incentives APR
+  const displayValue = +meritIncentives.incentiveAPR;
+
   return (
     <ContentWithTooltip
       tooltipContent={<MeritIncentivesTooltipContent meritIncentives={meritIncentives} />}
@@ -64,7 +73,7 @@ export const MeritIncentivesButton = (params: {
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[meritIncentives]} incentivesNetAPR={+meritIncentives.incentiveAPR} />
+      <Content incentives={[meritIncentives]} incentivesNetAPR={displayValue} />
     </ContentWithTooltip>
   );
 };
@@ -73,6 +82,8 @@ export const MerklIncentivesButton = (params: {
   market: string;
   rewardedAsset?: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   const [open, setOpen] = useState(false);
   const { data: merklIncentives } = useMerklIncentives(params);
@@ -158,7 +169,15 @@ export const SonicIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: strin
   );
 };
 
-export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
+export const IncentivesButton = ({
+  incentives,
+  symbol,
+  displayBlank,
+  market,
+  protocolAction,
+  protocolAPY,
+  address,
+}: IncentivesButtonProps) => {
   const [open, setOpen] = useState(false);
 
   if (!(incentives && incentives.length > 0)) {
@@ -189,6 +208,10 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
           incentives={incentives}
           incentivesNetAPR={incentivesNetAPR}
           symbol={symbol}
+          market={market}
+          protocolAction={protocolAction}
+          protocolAPY={protocolAPY}
+          address={address}
         />
       }
       withoutHover

@@ -143,6 +143,10 @@ msgstr "Liquidation risk"
 msgid "Current v2 Balance"
 msgstr "Current v2 Balance"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Reward Token"
+msgstr "Reward Token"
+
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
@@ -2374,10 +2378,6 @@ msgstr "Get ABP Token"
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
 
-#: src/components/incentives/IncentivesTooltipContent.tsx
-msgid "Net APR"
-msgstr "Net APR"
-
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowed"
 msgstr "Borrowed"
@@ -2638,6 +2638,10 @@ msgstr "Collateral usage is limited because of Isolation mode."
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Amount After Fee"
 msgstr "Amount After Fee"
+
+#: src/components/incentives/IncentivesTooltipContent.tsx
+msgid "Total APY"
+msgstr "Total APY"
 
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Cooling down"
@@ -3054,6 +3058,10 @@ msgstr "Confirming transaction"
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
+
+#: src/components/incentives/IncentivesTooltipContent.tsx
+msgid "Net Protocol Incentives"
+msgstr "Net Protocol Incentives"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of this function must be a pool"
