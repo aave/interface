@@ -119,6 +119,10 @@ msgstr "User did not borrow the specified currency"
 msgid "There is not enough liquidity for the target asset to perform the switch. Try lowering the amount."
 msgstr "There is not enough liquidity for the target asset to perform the switch. Try lowering the amount."
 
+#: pages/404.page.tsx
+msgid "We suggest you go back to the home page."
+msgstr "We suggest you go back to the home page."
+
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Rate change"
 msgstr "Rate change"
@@ -1599,10 +1603,6 @@ msgstr "Age"
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
 msgstr "Disable {symbol} as collateral"
-
-#: pages/404.page.tsx
-msgid "We suggest you go back to the Markets."
-msgstr "We suggest you go back to the Markets."
 
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
@@ -3267,10 +3267,6 @@ msgstr "The address of the pool addresses provider is invalid"
 msgid "Your voting info"
 msgstr "Your voting info"
 
-#: pages/404.page.tsx
-msgid "Back to Markets"
-msgstr "Back to Markets"
-
 #: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
@@ -3593,6 +3589,10 @@ msgstr "The app is running in fork mode."
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
+
+#: pages/404.page.tsx
+msgid "Back home"
+msgstr "Back home"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
