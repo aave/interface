@@ -713,9 +713,8 @@ export const createPoolSlice: StateCreator<
       },
     },
     generateSignatureRequest: async ({ token, amount, deadline, spender }, opts = {}) => {
-      const v3Tokens = [
+      const v3TokensWithEip712DomainSupport = [
         AaveV3Ethereum.ASSETS.AAVE.UNDERLYING.toLowerCase(),
-        AaveV3Ethereum.ASSETS.AAVE.A_TOKEN.toLowerCase(),
         AaveSafetyModule.STK_AAVE.toLowerCase(),
       ];
 
@@ -723,7 +722,7 @@ export const createPoolSlice: StateCreator<
 
       let name = '';
       let version = '1';
-      if (v3Tokens.includes(token.toLowerCase())) {
+      if (v3TokensWithEip712DomainSupport.includes(token.toLowerCase())) {
         const aaveV3TokenService = new AaveTokenV3Service(token, provider);
         const domain = await aaveV3TokenService.getEip712Domain();
         name = domain.name;
