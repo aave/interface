@@ -41,11 +41,11 @@ export default function Aave404Page() {
           <Typography sx={{ mt: 3, mb: 5, maxWidth: 480 }}>
             <Trans>Sorry, we couldn&apos;t find the page you were looking for.</Trans>
             <br />
-            <Trans>We suggest you go back to the Dashboard.</Trans>
+            <Trans>We suggest you go back to the Markets.</Trans>
           </Typography>
-          <Link href="/" passHref>
+          <Link href="/markets" passHref>
             <Button variant="outlined" color="primary">
-              <Trans>Back to Dashboard</Trans>
+              <Trans>Back to Markets</Trans>
             </Button>
           </Link>
         </Paper>

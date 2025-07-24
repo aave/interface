@@ -1604,6 +1604,10 @@ msgstr "Age"
 msgid "Disable {symbol} as collateral"
 msgstr "Disable {symbol} as collateral"
 
+#: pages/404.page.tsx
+msgid "We suggest you go back to the Markets."
+msgstr "We suggest you go back to the Markets."
+
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
 msgstr "Differential"
@@ -1724,7 +1728,7 @@ msgstr "Can't validate the wallet address. Try again."
 msgid "GHO balance"
 msgstr "GHO balance"
 
-#: pages/index.page.tsx
+#: pages/dashboard.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -1878,10 +1882,6 @@ msgstr "Nothing supplied yet"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Voting"
 msgstr "Voting"
-
-#: pages/404.page.tsx
-msgid "Back to Dashboard"
-msgstr "Back to Dashboard"
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Unbacked"
@@ -2160,7 +2160,7 @@ msgstr "This is a program initiated and implemented by the Aave Chan Initiative 
 msgid "supply"
 msgstr "supply"
 
-#: pages/index.page.tsx
+#: pages/dashboard.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -2872,10 +2872,6 @@ msgstr "Migrating multiple collaterals and borrowed assets at the same time can 
 msgid "Proposition"
 msgstr "Proposition"
 
-#: pages/404.page.tsx
-msgid "We suggest you go back to the Dashboard."
-msgstr "We suggest you go back to the Dashboard."
-
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Can be executed"
 msgstr "Can be executed"
@@ -3274,6 +3270,10 @@ msgstr "The address of the pool addresses provider is invalid"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Your voting info"
 msgstr "Your voting info"
+
+#: pages/404.page.tsx
+msgid "Back to Markets"
+msgstr "Back to Markets"
 
 #: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx

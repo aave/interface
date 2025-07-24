@@ -215,7 +215,7 @@ export function AppHeader() {
       >
         <Box
           component={Link}
-          href="/"
+          href="/markets"
           aria-label="Go to homepage"
           sx={{
             lineHeight: 0,
