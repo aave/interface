@@ -10,38 +10,38 @@ import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
-// const SwitchIcon = () => (
-//   <svg
-//     xmlns="http://www.w3.org/2000/svg"
-//     fill="none"
-//     viewBox="0 0 24 24"
-//     strokeWidth="1.5"
-//     stroke="currentColor"
-//     style={{ marginLeft: '8px', width: '24px', height: '24px' }}
-//   >
-//     <path
-//       strokeLinecap="round"
-//       strokeLinejoin="round"
-//       d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
-//     />
-//   </svg>
-// );
+const getCampaignConfigs = (openSwitch: (token?: string, chainId?: number) => void) => ({
+  [ChainId.base]: {
+    notifyText: 'A new incentives campaign is live on the Base market',
+    buttonText: 'Explore Base',
+    buttonAction: {
+      type: 'route' as const,
+      value: '/markets/?marketName=proto_base_v3',
+    },
+    bannerVersion: 'base-incentives-v1',
+    icon: '/icons/networks/base.svg',
+  },
+
+  [ChainId.sonic]: {
+    notifyText: 'Swaps are now live on Sonic',
+    buttonText: 'Swap Now',
+    buttonAction: {
+      type: 'function' as const,
+      value: () => openSwitch('', ChainId.sonic),
+    },
+    bannerVersion: 'sonic-incentives-v1',
+    icon: '/icons/networks/sonic.svg',
+  },
+});
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  const APP_BANNER_VERSION = '8.0.0';
   const { openSwitch } = useModalContext();
 
-  const handleLearnMore = () => {
-    openSwitch('', ChainId.sonic);
-  };
+  const campaignConfigs = getCampaignConfigs(openSwitch);
 
   return (
     <>
-      <TopBarNotify
-        learnMoreLink={handleLearnMore}
-        notifyText="Swaps are now live on Sonic"
-        bannerVersion={APP_BANNER_VERSION}
-      />
+      <TopBarNotify campaigns={campaignConfigs} />
 
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>

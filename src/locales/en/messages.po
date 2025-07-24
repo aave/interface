@@ -1241,10 +1241,6 @@ msgstr "This represents the threshold at which a borrow position will be conside
 msgid "Isolated"
 msgstr "Isolated"
 
-#: src/layouts/TopBarNotify.tsx
-msgid "{notifyText}"
-msgstr "{notifyText}"
-
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
 msgstr "Switching E-Mode"
