@@ -119,6 +119,10 @@ msgstr "User did not borrow the specified currency"
 msgid "There is not enough liquidity for the target asset to perform the switch. Try lowering the amount."
 msgstr "There is not enough liquidity for the target asset to perform the switch. Try lowering the amount."
 
+#: pages/404.page.tsx
+msgid "We suggest you go back to the home page."
+msgstr "We suggest you go back to the home page."
+
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Rate change"
 msgstr "Rate change"
@@ -1720,7 +1724,7 @@ msgstr "Can't validate the wallet address. Try again."
 msgid "GHO balance"
 msgstr "GHO balance"
 
-#: pages/index.page.tsx
+#: pages/dashboard.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -1874,10 +1878,6 @@ msgstr "Nothing supplied yet"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Voting"
 msgstr "Voting"
-
-#: pages/404.page.tsx
-msgid "Back to Dashboard"
-msgstr "Back to Dashboard"
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Unbacked"
@@ -2156,7 +2156,7 @@ msgstr "This is a program initiated and implemented by the Aave Chan Initiative 
 msgid "supply"
 msgstr "supply"
 
-#: pages/index.page.tsx
+#: pages/dashboard.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -2867,10 +2867,6 @@ msgstr "Migrating multiple collaterals and borrowed assets at the same time can 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Proposition"
 msgstr "Proposition"
-
-#: pages/404.page.tsx
-msgid "We suggest you go back to the Dashboard."
-msgstr "We suggest you go back to the Dashboard."
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Can be executed"
@@ -3593,6 +3589,10 @@ msgstr "The app is running in fork mode."
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
+
+#: pages/404.page.tsx
+msgid "Back home"
+msgstr "Back home"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
