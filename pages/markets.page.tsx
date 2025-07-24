@@ -1,6 +1,9 @@
 import { Box, Container } from '@mui/material';
-import { ReactNode, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { ReactNode, useEffect, useRef } from 'react';
+import { ROUTES } from 'src/components/primitives/Link';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { MarketAssetsListContainer } from 'src/modules/markets/MarketAssetsListContainer';
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 import { useRootStore } from 'src/store/root';
@@ -38,13 +41,39 @@ export const MarketContainer = ({ children }: MarketContainerProps) => {
 };
 
 export default function Markets() {
+  const router = useRouter();
+  const { currentAccount } = useWeb3Context();
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const prevAccountRef = useRef<string | undefined>();
+  const isInitialMount = useRef(true);
+
+  // Redirect to dashboard only when wallet gets connected (not when already connected)
+  useEffect(() => {
+    // Skip the initial mount to avoid redirecting when already connected
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      prevAccountRef.current = currentAccount;
+      return;
+    }
+
+    const wasConnected = !!prevAccountRef.current;
+    const isConnected = !!currentAccount;
+
+    // Only redirect if wallet was not connected before but is now connected
+    if (!wasConnected && isConnected) {
+      router.replace(ROUTES.dashboard);
+    }
+
+    // Update the ref for next comparison
+    prevAccountRef.current = currentAccount;
+  }, [currentAccount, router]);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
       'Page Name': 'Markets',
     });
   }, [trackEvent]);
+
   return (
     <>
       <MarketsTopPanel />
