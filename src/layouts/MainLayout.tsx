@@ -32,6 +32,83 @@ const getCampaignConfigs = (openSwitch: (token?: string, chainId?: number) => vo
     bannerVersion: 'sonic-incentives-v1',
     icon: '/icons/networks/sonic.svg',
   },
+
+  [ChainId.mainnet]: {
+    notifyText: 'Swap tokens directly in the Aave App',
+    buttonText: 'Swap Now',
+    buttonAction: {
+      type: 'function' as const,
+      value: () => openSwitch('', ChainId.mainnet),
+    },
+    bannerVersion: 'ethereum-swap-v1',
+    icon: '/icons/networks/ethereum.svg',
+  },
+
+  [ChainId.polygon]: {
+    notifyText: 'Swap tokens directly in the Aave App',
+    buttonText: 'Swap Now',
+    buttonAction: {
+      type: 'function' as const,
+      value: () => openSwitch('', ChainId.polygon),
+    },
+    bannerVersion: 'polygon-swap-v1',
+    icon: '/icons/networks/polygon.svg',
+  },
+
+  [ChainId.avalanche]: {
+    notifyText: 'Swap tokens directly in the Aave App',
+    buttonText: 'Swap Now',
+    buttonAction: {
+      type: 'function' as const,
+      value: () => openSwitch('', ChainId.avalanche),
+    },
+    bannerVersion: 'avalanche-swap-v1',
+    icon: '/icons/networks/avalanche.svg',
+  },
+
+  [ChainId.arbitrum_one]: {
+    notifyText: 'Swap tokens directly in the Aave App',
+    buttonText: 'Swap Now',
+    buttonAction: {
+      type: 'function' as const,
+      value: () => openSwitch('', ChainId.arbitrum_one),
+    },
+    bannerVersion: 'arbitrum-swap-v1',
+    icon: '/icons/networks/arbitrum.svg',
+  },
+
+  [ChainId.optimism]: {
+    notifyText: 'Swap tokens directly in the Aave App',
+    buttonText: 'Swap Now',
+    buttonAction: {
+      type: 'function' as const,
+      value: () => openSwitch('', ChainId.optimism),
+    },
+    bannerVersion: 'optimism-swap-v1',
+    icon: '/icons/networks/optimism.svg',
+  },
+
+  [ChainId.xdai]: {
+    notifyText: 'Swap tokens directly in the Aave App',
+    buttonText: 'Swap Now',
+    buttonAction: {
+      type: 'function' as const,
+      value: () => openSwitch('', ChainId.xdai),
+    },
+    bannerVersion: 'gnosis-swap-v1',
+    icon: '/icons/networks/gnosis.svg',
+  },
+
+  [ChainId.bnb]: {
+    notifyText: 'Swap tokens directly in the Aave App',
+    buttonText: 'Swap Now',
+    buttonAction: {
+      type: 'function' as const,
+      value: () => openSwitch('', ChainId.bnb),
+    },
+    bannerVersion: 'binance-swap-v1',
+    icon: '/icons/networks/binance.svg',
+  },
 });
 
 export function MainLayout({ children }: { children: ReactNode }) {
