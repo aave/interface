@@ -252,13 +252,8 @@ export const useGovernanceDelegate = (
 
       const unsignedPayloads: string[] = [];
       for (const tx of delegationParameters) {
-        if (delegationType !== DelegationType.ALL) {
-          const payload = await delegationTokenService.prepareV3DelegateByTypeSignature(tx);
-          unsignedPayloads.push(payload);
-        } else {
-          const payload = await delegationTokenService.prepareV3DelegateByTypeSignature(tx);
-          unsignedPayloads.push(payload);
-        }
+        const payload = await delegationTokenService.prepareV3DelegateByTypeSignature(tx);
+        unsignedPayloads.push(payload);
       }
       try {
         const signedPayload: SignatureLike[] = [];
@@ -303,7 +298,6 @@ export const useGovernanceDelegate = (
       } else {
         let txs: EthereumTransactionTypeExtended[] = [];
         if (delegationType === DelegationType.ALL) {
-          // TODO check if this is working as normal
           txs = await delegate({
             delegatee,
             governanceToken:
@@ -312,13 +306,8 @@ export const useGovernanceDelegate = (
                 : delegationTokenType === DelegationTokenType.STKAAVE
                 ? governanceV3Config.votingAssets.stkAaveTokenAddress
                 : governanceV3Config.votingAssets.aAaveTokenAddress,
-            // delegationTokenType === DelegationTokenType.AAVE
-            //   ? governanceConfig.aaveTokenAddress
-            //   : governanceConfig.stkAaveTokenAddress,
           });
         } else {
-          // TODO check if this is working as normal
-
           txs = await delegateByType({
             delegatee,
             delegationType: delegationType.toString(),
@@ -328,9 +317,6 @@ export const useGovernanceDelegate = (
                 : delegationTokenType === DelegationTokenType.STKAAVE
                 ? governanceV3Config.votingAssets.stkAaveTokenAddress
                 : governanceV3Config.votingAssets.aAaveTokenAddress,
-            // delegationTokenType === DelegationTokenType.AAVE
-            //   ? governanceConfig.aaveTokenAddress
-            //   : governanceConfig.stkAaveTokenAddress,
           });
         }
         setActionTx(txs[0]);
