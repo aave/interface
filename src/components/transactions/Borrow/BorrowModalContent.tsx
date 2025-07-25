@@ -62,8 +62,11 @@ export const BorrowModalContent = ({
   const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
 
+  console.log('WHAT IS THE USER', user);
   // amount calculations
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user);
+
+  console.log('maxAmountToBorrow', maxAmountToBorrow);
 
   // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected
