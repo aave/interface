@@ -48,6 +48,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_USDT = 'avalanche-supply-usdt',
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
+  AVALANCHE_SUPPLY_GHO = 'avalanche-supply-gho',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
   SONIC_SUPPLY_STS_BORROW_WS = 'sonic-supply-sts-borrow-ws',
   GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
@@ -514,6 +515,15 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
         customForumLink: AusdRenewalForumLink,
+      },
+    ],
+    GHO: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_GHO,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.GHO.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
       },
     ],
   },
