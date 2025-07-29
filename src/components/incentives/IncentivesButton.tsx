@@ -1,8 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
@@ -13,10 +12,9 @@ import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
-import { TokenIcon } from '../primitives/TokenIcon';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
-import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
+import { IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
@@ -339,13 +337,13 @@ const Content = ({
     );
   };
 
-  const iconSize = 12;
+  // const iconSize = 12;
 
   return (
     <Box
-      sx={(theme) => ({
+      sx={() => ({
         p: { xs: '0 4px', xsm: '2px 4px' },
-        border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
+        // border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
         borderRadius: '4px',
         cursor: 'pointer',
         display: 'flex',
@@ -364,7 +362,7 @@ const Content = ({
         setOpen(!open);
       }}
     >
-      <Box sx={{ mr: 2 }}>
+      <Box sx={{ mr: 0.5, ml: 0.5, pt: '5px' }}>
         {plus ? '+' : ''} {incentivesButtonValue()}
       </Box>
       {/* <Box sx={{ display: 'inline-flex' }}>

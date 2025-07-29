@@ -80,10 +80,13 @@ export const IncentivesCard = ({
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: align || { xs: 'flex-end', xsm: 'center' },
-        justifyContent: 'center',
+        flexDirection: isTableChangedToCards ? 'column' : 'row',
+        alignItems: isTableChangedToCards ? align || { xs: 'flex-end', xsm: 'center' } : 'center',
+        justifyContent: isTableChangedToCards
+          ? 'center'
+          : align || { xs: 'flex-end', xsm: 'center' },
         textAlign: 'center',
+        gap: isTableChangedToCards ? 0 : 1,
       }}
     >
       {value.toString() !== '-1' ? (
@@ -114,10 +117,9 @@ export const IncentivesCard = ({
               }
             : {
                 display: 'flex',
-                justifyContent: 'center',
                 gap: '4px',
                 flexWrap: 'wrap',
-                flex: '0 0 50%', // 2 items per row
+                alignItems: 'center',
               }
         }
       >
