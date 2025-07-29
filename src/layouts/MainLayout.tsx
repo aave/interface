@@ -11,6 +11,16 @@ import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
 const getCampaignConfigs = (openSwitch: (token?: string, chainId?: number) => void) => ({
+  [ChainId.mainnet]: {
+    notifyText: 'The new Ethena Liquid Leverage program is live',
+    buttonText: 'Learn More',
+    buttonAction: {
+      type: 'url' as const,
+      value: 'https://x.com/ethena_labs/status/1950194502192550149',
+    },
+    bannerVersion: 'mainnet-usde-liquid-leverage-incentive',
+    icon: '/icons/tokens/usde.svg',
+  },
   [ChainId.base]: {
     notifyText: 'A new incentives campaign is live on the Base market',
     buttonText: 'Explore Base',
