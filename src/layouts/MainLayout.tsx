@@ -1,16 +1,23 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Box } from '@mui/material';
+import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
 import { useModalContext } from 'src/hooks/useModal';
 import { FeedbackModal } from 'src/layouts/FeedbackDialog';
+import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
-const getCampaignConfigs = (openSwitch: (token?: string, chainId?: number) => void) => ({
+const getCampaignConfigs = (
+  openSwitch: (token?: string, chainId?: number) => void,
+  openMarket: (market: CustomMarket) => void
+) => ({
   [ChainId.base]: {
     notifyText: 'A new incentives campaign is live on the Base market',
     buttonText: 'Explore Base',
@@ -34,14 +41,15 @@ const getCampaignConfigs = (openSwitch: (token?: string, chainId?: number) => vo
   },
 
   [ChainId.mainnet]: {
-    notifyText: 'Swap tokens directly in the Aave App',
-    buttonText: 'Swap Now',
+    notifyText:
+      'Users can now deposit 50% sUSDe & 50% USDe into Aave and earn promotional rewards for USDe (currently ~12% APY)',
+    buttonText: 'Deposit Now',
     buttonAction: {
       type: 'function' as const,
-      value: () => openSwitch('', ChainId.mainnet),
+      value: () => openMarket(CustomMarket.proto_mainnet_v3),
     },
     bannerVersion: 'ethereum-swap-v1',
-    icon: '/icons/networks/ethereum.svg',
+    // icon: '/icons/networks/ethereum.svg',
   },
 
   [ChainId.polygon]: {
@@ -113,8 +121,15 @@ const getCampaignConfigs = (openSwitch: (token?: string, chainId?: number) => vo
 
 export function MainLayout({ children }: { children: ReactNode }) {
   const { openSwitch } = useModalContext();
+  const router = useRouter();
+  const setCurrentMarket = useRootStore(useShallow((store) => store.setCurrentMarket));
 
-  const campaignConfigs = getCampaignConfigs(openSwitch);
+  const openMarket = (market: CustomMarket) => {
+    setCurrentMarket(market);
+    router.push(`/markets/?marketName=${market}`);
+  };
+
+  const campaignConfigs = getCampaignConfigs(openSwitch, openMarket);
 
   return (
     <>
