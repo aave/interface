@@ -56,6 +56,12 @@ export const MerklIncentivesTooltipContent = ({
           official app
         </Link>
         {'.'}
+        {merklIncentives.customClaimMessage ? (
+          <>
+            {' '}
+            <Trans> {merklIncentives.customClaimMessage}</Trans>
+          </>
+        ) : null}
       </Typography>
 
       {merklIncentives.customMessage ? (

@@ -88,6 +88,7 @@ type MerklOpportunity = {
 };
 
 type ReserveIncentiveAdditionalData = {
+  customClaimMessage?: string;
   customMessage?: string;
   customForumLink?: string;
 };
@@ -103,6 +104,7 @@ const additionalIncentiveData: Record<string, ReserveIncentiveAdditionalData> = 
   [AaveV3Ethereum.ASSETS.USDtb.A_TOKEN]: {
     customMessage:
       'You must supply USDtb to receive incentives. To be eligible, you must not be borrowing any USDtb.',
+    customClaimMessage: 'Rewards will be claimable starting in early August.',
   },
 };
 
