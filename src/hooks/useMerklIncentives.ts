@@ -96,19 +96,6 @@ type ReserveIncentiveAdditionalData = {
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
   ReserveIncentiveAdditionalData;
 
-const additionalIncentiveData: Record<string, ReserveIncentiveAdditionalData> = {
-  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN]: {
-    customMessage:
-      'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe.',
-  },
-  [AaveV3Ethereum.ASSETS.USDtb.A_TOKEN]: {
-    customMessage:
-      'You must supply USDtb to receive incentives. To be eligible, you must not be borrowing any USDtb.',
-    customClaimMessage: 'Rewards will be claimable starting in early August.',
-    customForumLink: 'https://x.com/ethena_labs/status/1950194502192550149',
-  },
-};
-
 const allAaveAssets = [
   AaveV3Ethereum.ASSETS,
   AaveV3EthereumLido.ASSETS,
@@ -127,6 +114,28 @@ const allAaveAssets = [
   AaveV3Celo.ASSETS,
   AaveV3Soneium.ASSETS,
 ];
+
+const additionalIncentiveData: Record<string, ReserveIncentiveAdditionalData> = {
+  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN]: {
+    customMessage:
+      'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe.',
+  },
+  [AaveV3Ethereum.ASSETS.USDtb.A_TOKEN]: {
+    customMessage:
+      'You must supply USDtb to receive incentives. To be eligible, you must not be borrowing any USDtb.',
+    customClaimMessage: 'Rewards will be claimable starting in early August.',
+    customForumLink: 'https://x.com/ethena_labs/status/1950194502192550149',
+  },
+};
+
+const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {
+  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN]: {
+    incentiveAPR: '0.12',
+    rewardTokenAddress: AaveV3Ethereum.ASSETS.USDe.A_TOKEN,
+    rewardTokenSymbol: 'aEthUSDe',
+    ...additionalIncentiveData[AaveV3Ethereum.ASSETS.USDe.A_TOKEN],
+  },
+};
 
 const getUnderlyingAndAToken = (assets: {
   [key: string]: {
@@ -184,6 +193,12 @@ export const useMerklIncentives = ({
     queryKey: ['merklIncentives', market],
     staleTime: 1000 * 60 * 5,
     select: (merklOpportunities) => {
+      const hardcodedIncentive = rewardedAsset ? hardcodedIncentives[rewardedAsset] : undefined;
+
+      if (hardcodedIncentive) {
+        return hardcodedIncentive;
+      }
+
       const opportunities = merklOpportunities.filter(
         (opportunitiy) =>
           rewardedAsset &&
