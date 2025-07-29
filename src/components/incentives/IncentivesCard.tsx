@@ -2,6 +2,8 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Box, useMediaQuery } from '@mui/material';
 import { ReactNode } from 'react';
+import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
@@ -42,21 +44,56 @@ export const IncentivesCard = ({
   protocolAction,
 }: IncentivesCardProps) => {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+
+  const protocolAPY = typeof value === 'string' ? parseFloat(value) : value;
+
+  const protocolIncentivesAPR =
+    incentives?.reduce((sum, inc) => {
+      return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
+    }, 0) || 0;
+
+  const { data: meritIncentives } = useMeritIncentives({
+    symbol,
+    market,
+    protocolAction,
+    protocolAPY,
+    protocolIncentives: incentives || [],
+  });
+
+  const { data: merklIncentives } = useMerklIncentives({
+    market,
+    rewardedAsset: address,
+    protocolAction,
+    protocolAPY,
+    protocolIncentives: incentives || [],
+  });
+
+  const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
+  const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
+
+  const isBorrow = protocolAction === ProtocolAction.borrow;
+  const displayAPY = isBorrow
+    ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPR - merklIncentivesAPR
+    : protocolAPY + protocolIncentivesAPR + meritIncentivesAPR + merklIncentivesAPR;
+
   return (
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: align || { xs: 'flex-end', xsm: 'center' },
-        justifyContent: 'center',
+        flexDirection: isTableChangedToCards ? 'column' : 'row',
+        alignItems: isTableChangedToCards ? align || { xs: 'flex-end', xsm: 'center' } : 'center',
+        justifyContent: isTableChangedToCards
+          ? 'center'
+          : align || { xs: 'flex-end', xsm: 'center' },
         textAlign: 'center',
+        gap: isTableChangedToCards ? 0 : 1,
       }}
     >
       {value.toString() !== '-1' ? (
         <Box sx={{ display: 'flex' }}>
           <FormattedNumber
             data-cy={`apy`}
-            value={value}
+            value={displayAPY}
             percent
             variant={variant}
             symbolsVariant={symbolsVariant}
@@ -80,19 +117,33 @@ export const IncentivesCard = ({
               }
             : {
                 display: 'flex',
-                justifyContent: 'center',
                 gap: '4px',
                 flexWrap: 'wrap',
-                flex: '0 0 50%', // 2 items per row
+                alignItems: 'center',
               }
         }
       >
-        <IncentivesButton incentives={incentives} symbol={symbol} />
-        <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+        <IncentivesButton
+          incentives={incentives}
+          symbol={symbol}
+          market={market}
+          protocolAction={protocolAction}
+          protocolAPY={protocolAPY}
+          address={address}
+        />
+        <MeritIncentivesButton
+          symbol={symbol}
+          market={market}
+          protocolAction={protocolAction}
+          protocolAPY={protocolAPY}
+          protocolIncentives={incentives || []}
+        />
         <MerklIncentivesButton
           market={market}
           rewardedAsset={address}
           protocolAction={protocolAction}
+          protocolAPY={protocolAPY}
+          protocolIncentives={incentives || []}
         />
         <EthenaIncentivesButton rewardedAsset={address} />
         <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />

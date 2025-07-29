@@ -1,6 +1,9 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
+import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Row } from '../primitives/Row';
@@ -139,6 +142,10 @@ interface IncentivesTooltipContentProps {
   incentives: ReserveIncentiveResponse[];
   incentivesNetAPR: 'Infinity' | number;
   symbol: string;
+  market?: string;
+  protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  address?: string;
 }
 
 export const getSymbolMap = (incentive: ReserveIncentiveResponse) => {
@@ -162,8 +169,28 @@ export const IncentivesTooltipContent = ({
   incentives,
   incentivesNetAPR,
   symbol,
+  market,
+  protocolAction,
+  protocolAPY = 0,
+  address,
 }: IncentivesTooltipContentProps) => {
   const typographyVariant = 'secondary12';
+
+  const { data: meritIncentives } = useMeritIncentives({
+    symbol,
+    market: market || '',
+    protocolAction,
+    protocolAPY,
+    protocolIncentives: incentives,
+  });
+
+  const { data: merklIncentives } = useMerklIncentives({
+    market: market || '',
+    rewardedAsset: address,
+    protocolAction,
+    protocolAPY,
+    protocolIncentives: incentives,
+  });
 
   const Number = ({ incentiveAPR }: { incentiveAPR: 'Infinity' | number | string }) => {
     return (
@@ -187,6 +214,21 @@ export const IncentivesTooltipContent = ({
     );
   };
 
+  const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
+  const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
+
+  // For borrow, incentives are subtracted; for supply, they're added
+  const isBorrow = protocolAction === ProtocolAction.borrow;
+  const totalAPY = isBorrow
+    ? protocolAPY -
+      (incentivesNetAPR === 'Infinity' ? 0 : incentivesNetAPR) -
+      meritIncentivesAPR -
+      merklIncentivesAPR
+    : protocolAPY +
+      (incentivesNetAPR === 'Infinity' ? 0 : incentivesNetAPR) +
+      meritIncentivesAPR +
+      merklIncentivesAPR;
+
   return (
     <Box
       sx={{
@@ -201,7 +243,27 @@ export const IncentivesTooltipContent = ({
       </Typography>
 
       <Box sx={{ width: '100%' }}>
+        {protocolAPY > 0 && (
+          <Row
+            height={32}
+            caption={
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Typography variant={typographyVariant}>Protocol APY</Typography>
+              </Box>
+            }
+            width="100%"
+          >
+            <FormattedNumber value={protocolAPY} percent variant={typographyVariant} />
+          </Row>
+        )}
+
+        {/* Show Protocol Incentives */}
         {incentives.map(getSymbolMap).map((incentive) => {
+          const displayAPR =
+            isBorrow && incentive.incentiveAPR !== 'Infinity'
+              ? -+incentive.incentiveAPR
+              : incentive.incentiveAPR;
+
           return (
             <Row
               height={32}
@@ -218,21 +280,132 @@ export const IncentivesTooltipContent = ({
                     symbol={incentive.tokenIconSymbol}
                     sx={{ fontSize: '20px', mr: 1 }}
                   />
-                  <Typography variant={typographyVariant}>{incentive.symbol}</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography variant={typographyVariant}>{incentive.symbol}</Typography>
+                    <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                      {isBorrow ? '(-)' : '(+)'}
+                    </Typography>
+                  </Box>
                 </Box>
               }
               key={incentive.rewardTokenAddress}
               width="100%"
             >
-              <Number incentiveAPR={incentive.incentiveAPR} />
+              <Number incentiveAPR={displayAPR} />
             </Row>
           );
         })}
 
+        {/* Show Merit Incentives if available */}
+        {meritIncentives && meritIncentives.breakdown && (
+          <Row
+            height={32}
+            caption={
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <img
+                  src={'/icons/other/aci-black.svg'}
+                  width="20px"
+                  height="20px"
+                  alt="Merit"
+                  style={{ marginRight: '8px' }}
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant={typographyVariant}>Merit Incentives</Typography>
+                  <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                    {isBorrow ? '(-)' : '(+)'}
+                  </Typography>
+                </Box>
+              </Box>
+            }
+            width="100%"
+          >
+            <FormattedNumber
+              value={
+                isBorrow
+                  ? -meritIncentives.breakdown.meritIncentivesAPR
+                  : meritIncentives.breakdown.meritIncentivesAPR
+              }
+              percent
+              variant={typographyVariant}
+            />
+          </Row>
+        )}
+
+        {/* Show Merkl Incentives if available */}
+        {merklIncentives && merklIncentives.breakdown && (
+          <Row
+            height={32}
+            caption={
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant={typographyVariant}>Merkl Incentives</Typography>
+                  <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                    {isBorrow ? '(-)' : '(+)'}
+                  </Typography>
+                </Box>
+              </Box>
+            }
+            width="100%"
+          >
+            <FormattedNumber
+              value={
+                isBorrow
+                  ? -merklIncentives.breakdown.merklIncentivesAPR
+                  : merklIncentives.breakdown.merklIncentivesAPR
+              }
+              percent
+              variant={typographyVariant}
+            />
+          </Row>
+        )}
+
+        {/* Show Net APR (protocol incentives only) if multiple incentives */}
         {incentives.length > 1 && (
           <Box sx={() => ({ pt: 1, mt: 1 })}>
-            <Row caption={<Trans>Net APR</Trans>} height={32}>
-              <Number incentiveAPR={incentivesNetAPR} />
+            <Row
+              caption={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant={typographyVariant}>
+                    <Trans>Net Protocol Incentives</Trans>
+                  </Typography>
+                  <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                    {isBorrow ? '(-)' : '(+)'}
+                  </Typography>
+                </Box>
+              }
+              height={32}
+            >
+              <Number
+                incentiveAPR={
+                  isBorrow && incentivesNetAPR !== 'Infinity' ? -incentivesNetAPR : incentivesNetAPR
+                }
+              />
+            </Row>
+          </Box>
+        )}
+
+        {/* Show Total APY if we have Merit incentives or protocol APY */}
+        {(meritIncentives?.breakdown || protocolAPY > 0) && (
+          <Box sx={() => ({ pt: 1, mt: 1, borderTop: '1px solid rgba(255, 255, 255, 0.1)' })}>
+            <Row
+              caption={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant={typographyVariant} fontWeight="600">
+                    <Trans>Total APY</Trans>
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                    ({isBorrow ? 'Borrow Rate' : 'Supply Rate'})
+                  </Typography>
+                </Box>
+              }
+              height={32}
+            >
+              <FormattedNumber
+                value={totalAPY}
+                percent
+                variant={typographyVariant}
+                fontWeight="600"
+              />
             </Row>
           </Box>
         )}

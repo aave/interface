@@ -1,8 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
@@ -13,11 +12,9 @@ import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
-import { FormattedNumber } from '../primitives/FormattedNumber';
-import { TokenIcon } from '../primitives/TokenIcon';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
-import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
+import { IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
@@ -26,6 +23,10 @@ interface IncentivesButtonProps {
   symbol: string;
   incentives?: ReserveIncentiveResponse[];
   displayBlank?: boolean;
+  market?: string;
+  protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  address?: string;
 }
 
 const BlankIncentives = () => {
@@ -49,6 +50,8 @@ export const MeritIncentivesButton = (params: {
   symbol: string;
   market: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   const [open, setOpen] = useState(false);
   const { data: meritIncentives } = useMeritIncentives(params);
@@ -57,6 +60,9 @@ export const MeritIncentivesButton = (params: {
     return null;
   }
 
+  // Show only merit incentives APR
+  const displayValue = +meritIncentives.incentiveAPR;
+
   return (
     <ContentWithTooltip
       tooltipContent={<MeritIncentivesTooltipContent meritIncentives={meritIncentives} />}
@@ -64,7 +70,7 @@ export const MeritIncentivesButton = (params: {
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[meritIncentives]} incentivesNetAPR={+meritIncentives.incentiveAPR} />
+      <Content incentives={[meritIncentives]} incentivesNetAPR={displayValue} />
     </ContentWithTooltip>
   );
 };
@@ -73,6 +79,8 @@ export const MerklIncentivesButton = (params: {
   market: string;
   rewardedAsset?: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   const [open, setOpen] = useState(false);
   const { data: merklIncentives } = useMerklIncentives(params);
@@ -158,7 +166,15 @@ export const SonicIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: strin
   );
 };
 
-export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
+export const IncentivesButton = ({
+  incentives,
+  symbol,
+  displayBlank,
+  market,
+  protocolAction,
+  protocolAPY,
+  address,
+}: IncentivesButtonProps) => {
   const [open, setOpen] = useState(false);
 
   if (!(incentives && incentives.length > 0)) {
@@ -189,6 +205,10 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
           incentives={incentives}
           incentivesNetAPR={incentivesNetAPR}
           symbol={symbol}
+          market={market}
+          protocolAction={protocolAction}
+          protocolAPY={protocolAPY}
+          address={address}
         />
       }
       withoutHover
@@ -234,42 +254,96 @@ const Content = ({
     }
   }
 
+  // const incentivesButtonValue = () => {
+  //   if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR < 10000) {
+  //     return (
+  //       <FormattedNumber
+  //         value={incentivesNetAPR}
+  //         percent
+  //         variant="secondary12"
+  //         color="text.secondary"
+  //       />
+  //     );
+  //   } else if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR > 9999) {
+  //     return (
+  //       <FormattedNumber
+  //         value={incentivesNetAPR}
+  //         percent
+  //         compact
+  //         variant="secondary12"
+  //         color="text.secondary"
+  //       />
+  //     );
+  //   } else if (incentivesNetAPR === 'Infinity') {
+  //     return (
+  //       <Typography variant="main12" color="text.secondary">
+  //         ∞
+  //       </Typography>
+  //     );
+  //   }
+  // };
+
   const incentivesButtonValue = () => {
-    if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR < 10000) {
-      return (
-        <FormattedNumber
-          value={incentivesNetAPR}
-          percent
-          variant="secondary12"
-          color="text.secondary"
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        style={{ overflow: 'visible' }}
+      >
+        <defs>
+          <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#B6509E" />
+            <stop offset="100%" stopColor="#2EBAC6" />
+          </linearGradient>
+          <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#2EBAC6" />
+            <stop offset="100%" stopColor="#B6509E" />
+          </linearGradient>
+        </defs>
+        <ellipse
+          className="web3-ellipse-1"
+          cx="3.5"
+          cy="8"
+          rx="2.625"
+          ry="3.875"
+          fill="url(#gradient1)"
+          stroke="white"
+          strokeWidth="1.25"
         />
-      );
-    } else if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR > 9999) {
-      return (
-        <FormattedNumber
-          value={incentivesNetAPR}
-          percent
-          compact
-          variant="secondary12"
-          color="text.secondary"
+        <ellipse
+          className="web3-ellipse-2"
+          cx="7.5"
+          cy="8"
+          rx="3.125"
+          ry="5.125"
+          fill="url(#gradient1)"
+          stroke="white"
+          strokeWidth="1.25"
         />
-      );
-    } else if (incentivesNetAPR === 'Infinity') {
-      return (
-        <Typography variant="main12" color="text.secondary">
-          ∞
-        </Typography>
-      );
-    }
+        <ellipse
+          className="web3-ellipse-3"
+          cx="12"
+          cy="8"
+          rx="3.875"
+          ry="6.125"
+          fill="url(#gradient2)"
+          stroke="white"
+          strokeWidth="1.25"
+        />
+      </svg>
+    );
   };
 
-  const iconSize = 12;
+  // const iconSize = 12;
 
   return (
     <Box
-      sx={(theme) => ({
+      sx={() => ({
         p: { xs: '0 4px', xsm: '2px 4px' },
-        border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
+        // border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
         borderRadius: '4px',
         cursor: 'pointer',
         display: 'flex',
@@ -288,10 +362,10 @@ const Content = ({
         setOpen(!open);
       }}
     >
-      <Box sx={{ mr: 2 }}>
+      <Box sx={{ mr: 0.5, ml: 0.5, pt: '5px' }}>
         {plus ? '+' : ''} {incentivesButtonValue()}
       </Box>
-      <Box sx={{ display: 'inline-flex' }}>
+      {/* <Box sx={{ display: 'inline-flex' }}>
         <>
           {incentives.length < 5 ? (
             <>
@@ -333,7 +407,7 @@ const Content = ({
             </>
           )}
         </>
-      </Box>
+      </Box> */}
     </Box>
   );
 };
