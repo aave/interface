@@ -50,21 +50,28 @@ export const MerklIncentivesTooltipContent = ({
         </Trans>
       </Typography>
 
-      <Typography variant="caption" color="text.secondary" mb={3}>
+      <Typography variant="caption" color="text.strong" mb={3}>
         <Trans>Merkl rewards are claimed through the</Trans>{' '}
-        <Link
-          href="https://app.merkl.xyz/"
-          sx={{ textDecoration: 'underline' }}
-          variant="caption"
-          color="text.secondary"
-        >
+        <Link href="https://app.merkl.xyz/" sx={{ textDecoration: 'underline' }} variant="caption">
           official app
         </Link>
         {'.'}
       </Typography>
+
       {merklIncentives.customMessage ? (
         <Typography variant="caption" color="text.strong" mb={3}>
-          <Trans>{merklIncentives.customMessage}</Trans>
+          <Trans>{merklIncentives.customMessage}</Trans>{' '}
+          <Link
+            href={
+              merklIncentives.customForumLink
+                ? merklIncentives.customForumLink
+                : 'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898'
+            }
+            sx={{ textDecoration: 'underline' }}
+            variant="caption"
+          >
+            Learn more
+          </Link>
         </Typography>
       ) : null}
 
