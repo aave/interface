@@ -105,6 +105,7 @@ const additionalIncentiveData: Record<string, ReserveIncentiveAdditionalData> = 
     customMessage:
       'You must supply USDtb to receive incentives. To be eligible, you must not be borrowing any USDtb.',
     customClaimMessage: 'Rewards will be claimable starting in early August.',
+    customForumLink: 'https://x.com/ethena_labs/status/1950194502192550149',
   },
 };
 
