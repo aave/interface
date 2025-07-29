@@ -133,6 +133,11 @@ const IncentivesSymbolMap: {
     symbol: 'aEURC',
     aToken: true,
   },
+  aEthUSDe: {
+    tokenIconSymbol: 'USDe',
+    symbol: 'aUSDe',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {

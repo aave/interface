@@ -87,10 +87,14 @@ type MerklOpportunity = {
   };
 };
 
-export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
-  customMessage: string;
-  customForumLink: string;
+type ReserveIncentiveAdditionalData = {
+  customClaimMessage?: string;
+  customMessage?: string;
+  customForumLink?: string;
 };
+
+export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
+  ReserveIncentiveAdditionalData;
 
 const allAaveAssets = [
   AaveV3Ethereum.ASSETS,
@@ -111,6 +115,28 @@ const allAaveAssets = [
   AaveV3Soneium.ASSETS,
 ];
 
+const additionalIncentiveData: Record<string, ReserveIncentiveAdditionalData> = {
+  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN]: {
+    customMessage:
+      'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe.',
+  },
+  [AaveV3Ethereum.ASSETS.USDtb.A_TOKEN]: {
+    customMessage:
+      'You must supply USDtb to receive incentives. To be eligible, you must not be borrowing any USDtb.',
+    customClaimMessage: 'Rewards will be claimable starting in early August.',
+    customForumLink: 'https://x.com/ethena_labs/status/1950194502192550149',
+  },
+};
+
+const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {
+  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN]: {
+    incentiveAPR: '0.12',
+    rewardTokenAddress: AaveV3Ethereum.ASSETS.USDe.A_TOKEN,
+    rewardTokenSymbol: 'aEthUSDe',
+    ...additionalIncentiveData[AaveV3Ethereum.ASSETS.USDe.A_TOKEN],
+  },
+};
+
 const getUnderlyingAndAToken = (assets: {
   [key: string]: {
     UNDERLYING: Address;
@@ -125,6 +151,7 @@ const getUnderlyingAndAToken = (assets: {
 
 const otherTokensWhitelisted = [
   '0x04eadd7b10ea9a484c60860aea7a7c0aec09b9f0', // aUSDtb wrapper contract
+  '0x3a4de44B29995a3D8Cd02d46243E1563E55bCc8b', // Aave Ethereum USDe (wrapped)
 ];
 
 const whitelistedRewardTokens = [
@@ -166,6 +193,12 @@ export const useMerklIncentives = ({
     queryKey: ['merklIncentives', market],
     staleTime: 1000 * 60 * 5,
     select: (merklOpportunities) => {
+      const hardcodedIncentive = rewardedAsset ? hardcodedIncentives[rewardedAsset] : undefined;
+
+      if (hardcodedIncentive) {
+        return hardcodedIncentive;
+      }
+
       const opportunities = merklOpportunities.filter(
         (opportunitiy) =>
           rewardedAsset &&
@@ -197,10 +230,15 @@ export const useMerklIncentives = ({
         return null;
       }
 
+      const incentiveAdditionalData = rewardedAsset
+        ? additionalIncentiveData[rewardedAsset]
+        : undefined;
+
       return {
         incentiveAPR: apr.toString(),
         rewardTokenAddress: rewardToken.address,
         rewardTokenSymbol: rewardToken.symbol,
+        ...incentiveAdditionalData,
       } as ExtendedReserveIncentiveResponse;
     },
   });
