@@ -45,6 +45,7 @@ export default function Markets() {
       'Page Name': 'Markets',
     });
   }, [trackEvent]);
+
   return (
     <>
       <MarketsTopPanel />
