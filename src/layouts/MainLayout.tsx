@@ -15,8 +15,8 @@ import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
 const getCampaignConfigs = (
-  openSwitch: (token?: string, chainId?: number) => void,
-  openMarket: (market: CustomMarket) => void
+  openSwitch: (token?: string, chainId?: number) => void
+  // openMarket: (market: CustomMarket) => void
 ) => ({
   [ChainId.base]: {
     notifyText: 'A new incentives campaign is live on the Base market',
@@ -42,11 +42,11 @@ const getCampaignConfigs = (
 
   [ChainId.mainnet]: {
     notifyText:
-      'Users can now deposit 50% sUSDe & 50% USDe into Aave and earn promotional rewards for USDe (currently ~12% APY)',
-    buttonText: 'Deposit Now',
+      'If you hold Pendle PT tokens at maturity, you can now swap your collateral to a new maturity',
+    buttonText: 'Get Started',
     buttonAction: {
       type: 'function' as const,
-      value: () => openMarket(CustomMarket.proto_mainnet_v3),
+      value: () => openSwitch(CustomMarket.proto_mainnet_v3),
     },
     bannerVersion: 'ethereum-swap-v1',
     // icon: '/icons/networks/ethereum.svg',
