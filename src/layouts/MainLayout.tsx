@@ -1,15 +1,15 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Box } from '@mui/material';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
 import { useModalContext } from 'src/hooks/useModal';
 import { FeedbackModal } from 'src/layouts/FeedbackDialog';
-import { useRootStore } from 'src/store/root';
+// import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
-import { useShallow } from 'zustand/shallow';
 
+// import { useShallow } from 'zustand/shallow';
 import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
@@ -121,15 +121,15 @@ const getCampaignConfigs = (
 
 export function MainLayout({ children }: { children: ReactNode }) {
   const { openSwitch } = useModalContext();
-  const router = useRouter();
-  const setCurrentMarket = useRootStore(useShallow((store) => store.setCurrentMarket));
+  // const router = useRouter();
+  // const setCurrentMarket = useRootStore(useShallow((store) => store.setCurrentMarket));
 
-  const openMarket = (market: CustomMarket) => {
-    setCurrentMarket(market);
-    router.push(`/markets/?marketName=${market}`);
-  };
+  // const openMarket = (market: CustomMarket) => {
+  //   setCurrentMarket(market);
+  //   router.push(`/markets/?marketName=${market}`);
+  // };
 
-  const campaignConfigs = getCampaignConfigs(openSwitch, openMarket);
+  const campaignConfigs = getCampaignConfigs(openSwitch);
 
   return (
     <>
