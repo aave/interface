@@ -6,7 +6,7 @@ import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
 import { useModalContext } from 'src/hooks/useModal';
 import { FeedbackModal } from 'src/layouts/FeedbackDialog';
 // import { useRootStore } from 'src/store/root';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
+// import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
 // import { useShallow } from 'zustand/shallow';
@@ -15,7 +15,8 @@ import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
 const getCampaignConfigs = (
-  openSwitch: (token?: string, chainId?: number) => void
+  // openSwitch: (token?: string, chainId?: number) => void,
+  openSwap: (underlyingAsset: string) => void
   // openMarket: (market: CustomMarket) => void
 ) => ({
   [ChainId.base]: {
@@ -46,7 +47,7 @@ const getCampaignConfigs = (
     buttonText: 'Get Started',
     buttonAction: {
       type: 'function' as const,
-      value: () => openSwitch(CustomMarket.proto_mainnet_v3),
+      value: () => openSwap('0x3b3fb9c57858ef816833dc91565efcd85d96f634'),
     },
     bannerVersion: 'ethereum-swap-v1',
     // icon: '/icons/networks/ethereum.svg',
@@ -120,7 +121,7 @@ const getCampaignConfigs = (
 });
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  const { openSwitch } = useModalContext();
+  const { openSwap } = useModalContext();
   // const router = useRouter();
   // const setCurrentMarket = useRootStore(useShallow((store) => store.setCurrentMarket));
 
@@ -129,7 +130,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
   //   router.push(`/markets/?marketName=${market}`);
   // };
 
-  const campaignConfigs = getCampaignConfigs(openSwitch);
+  const campaignConfigs = getCampaignConfigs(openSwap);
 
   return (
     <>

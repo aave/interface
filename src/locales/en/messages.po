@@ -1064,6 +1064,7 @@ msgstr "Reload"
 msgid "sGHO"
 msgstr "sGHO"
 
+#: src/components/transactions/Swap/SwapModal.tsx
 #: src/components/transactions/Switch/BaseSwitchModal.tsx
 #: src/components/transactions/Switch/BaseSwitchModalContent.tsx
 msgid "Please connect your wallet to swap tokens."
