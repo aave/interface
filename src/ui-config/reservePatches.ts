@@ -166,8 +166,8 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       iconSymbol: 'pteusde',
     },
     '0xbc6736d346a5ebc0debc997397912cd9b8fae10a': {
-      symbol: 'PT USDe September',
-      name: 'PT USDe September',
+      symbol: 'PT USDe September 25th 2025',
+      name: 'PT USDe September 2025',
       iconSymbol: 'ptusde',
     },
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
