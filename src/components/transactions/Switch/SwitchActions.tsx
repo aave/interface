@@ -153,9 +153,7 @@ export const SwitchActions = ({
       0
     );
 
-    if (
-      needsUSDTApprovalReset(inputSymbol, chainId, BigInt(currentApproved), BigInt(amountToApprove))
-    ) {
+    if (needsUSDTApprovalReset(inputSymbol, chainId, currentApproved, amountToApprove)) {
       setShowUSDTResetWarning(true);
       setRequiresApprovalReset(true);
     } else {
