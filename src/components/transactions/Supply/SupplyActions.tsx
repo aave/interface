@@ -27,6 +27,8 @@ export interface SupplyActionProps extends BoxProps {
   blocked: boolean;
   decimals: number;
   isWrappedBaseAsset: boolean;
+  setShowUSDTResetWarning?: (showUSDTResetWarning: boolean) => void;
+  chainId?: number;
 }
 
 export const SupplyActions = React.memo(
@@ -39,6 +41,8 @@ export const SupplyActions = React.memo(
     blocked,
     decimals,
     isWrappedBaseAsset,
+    setShowUSDTResetWarning,
+    chainId,
     ...props
   }: SupplyActionProps) => {
     const [
@@ -101,7 +105,7 @@ export const SupplyActions = React.memo(
 
     const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
-    const { approval } = useApprovalTx({
+    const { approval, requiresApprovalReset } = useApprovalTx({
       usePermit,
       approvedAmount,
       requiresApproval,
@@ -111,6 +115,8 @@ export const SupplyActions = React.memo(
       signatureAmount: amountToSupply,
       onApprovalTxConfirmed: fetchApprovedAmount,
       onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
+      chainId,
+      setShowUSDTResetWarning,
     });
 
     useEffect(() => {
@@ -212,6 +218,7 @@ export const SupplyActions = React.memo(
         tryPermit={permitAvailable}
         sx={sx}
         {...props}
+        requiresApprovalReset={requiresApprovalReset}
       />
     );
   }

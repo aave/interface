@@ -18,14 +18,16 @@ export const isUSDTOnEthereum = (tokenSymbol: string, chainId: number): boolean 
 export const needsUSDTApprovalReset = (
   tokenSymbol: string,
   chainId: number,
-  currentApproval: bigint,
-  newApproval: bigint
+  currentApproval: string,
+  newApproval: string
 ): boolean => {
   return (
     isUSDTOnEthereum(tokenSymbol, chainId) &&
     Boolean(currentApproval) &&
     Boolean(newApproval) &&
-    currentApproval < newApproval
+    currentApproval !== '-1' &&
+    currentApproval !== '0' &&
+    BigInt(currentApproval) < BigInt(newApproval)
   );
 };
 
