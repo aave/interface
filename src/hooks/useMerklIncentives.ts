@@ -128,14 +128,7 @@ const additionalIncentiveData: Record<string, ReserveIncentiveAdditionalData> = 
   },
 };
 
-const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {
-  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN]: {
-    incentiveAPR: '0.12',
-    rewardTokenAddress: AaveV3Ethereum.ASSETS.USDe.A_TOKEN,
-    rewardTokenSymbol: 'aEthUSDe',
-    ...additionalIncentiveData[AaveV3Ethereum.ASSETS.USDe.A_TOKEN],
-  },
-};
+const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {};
 
 const getUnderlyingAndAToken = (assets: {
   [key: string]: {
