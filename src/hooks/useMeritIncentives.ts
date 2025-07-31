@@ -654,6 +654,7 @@ export const useMeritIncentives = ({
     queryFn: async () => {
       const response = await fetch(url);
       const data = await response.json();
+
       const meritIncentives = data.currentAPR as MeritIncentives;
 
       return meritIncentives;
@@ -665,27 +666,37 @@ export const useMeritIncentives = ({
       if (!meritReserveIncentiveData) {
         return null;
       }
-      const incentive = meritReserveIncentiveData.find(
+
+      const incentives = meritReserveIncentiveData.filter(
         (item) => item.protocolAction === protocolAction
       );
 
-      if (!incentive) {
+      if (incentives.length === 0) {
         return null;
       }
 
-      const APR = data.actionsAPR[incentive.action];
+      let maxAPR = null;
+      let selectedIncentive = null;
 
-      if (!APR) {
+      for (const incentive of incentives) {
+        const APR = data.actionsAPR[incentive.action];
+        if (APR && (maxAPR === null || APR > maxAPR)) {
+          maxAPR = APR;
+          selectedIncentive = incentive;
+        }
+      }
+
+      if (!selectedIncentive || maxAPR === null) {
         return null;
       }
 
       return {
-        incentiveAPR: (APR / 100).toString(),
-        rewardTokenAddress: incentive.rewardTokenAddress,
-        rewardTokenSymbol: incentive.rewardTokenSymbol,
-        action: incentive.action,
-        customMessage: incentive.customMessage,
-        customForumLink: incentive.customForumLink,
+        incentiveAPR: (maxAPR / 100).toString(),
+        rewardTokenAddress: selectedIncentive.rewardTokenAddress,
+        rewardTokenSymbol: selectedIncentive.rewardTokenSymbol,
+        action: selectedIncentive.action,
+        customMessage: selectedIncentive.customMessage,
+        customForumLink: selectedIncentive.customForumLink,
       } as ExtendedReserveIncentiveResponse;
     },
   });
