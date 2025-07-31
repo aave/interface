@@ -56,6 +56,7 @@ export enum MeritAction {
   CELO_SUPPLY_USDT = 'celo-supply-usdt',
   CELO_SUPPLY_USDC = 'celo-supply-usdc',
   CELO_SUPPLY_WETH = 'celo-supply-weth',
+  CELO_SUPPLY_MULTIPLE_BORROW_USDT = 'celo-supply-multiple-borrow-usdt',
   CELO_BORROW_CELO = 'celo-borrow-celo',
   CELO_BORROW_USDT = 'celo-borrow-usdt',
   CELO_BORROW_USDC = 'celo-borrow-usdc',
@@ -110,6 +111,9 @@ const baseIncentivesWstETHCampaignsMessage =
 
 const baseIncentivesETHCampaignsMessage =
   'Supplying ETH alone earns 1.25%, supplying ETH and borrowing USDC or EURC earns 1.50%, supplying ETH and borrowing GHO earns 1.75%. Some assets holding or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+
+const celoSupplyMultipleBorrowUsdtMessage =
+  'You must supply (CELO or ETH) and borrow USDT, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
@@ -583,6 +587,13 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
       },
       {
+        action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: celoSupplyMultipleBorrowUsdtMessage,
+      },
+      {
         action: MeritAction.CELO_BORROW_CELO,
         rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
         rewardTokenSymbol: 'aCelCELO',
@@ -604,6 +615,13 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aCelCELO',
         protocolAction: ProtocolAction.borrow,
         customMessage: antiLoopBorrowMessage,
+      },
+      {
+        action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: celoSupplyMultipleBorrowUsdtMessage,
       },
     ],
     USDC: [
@@ -629,6 +647,13 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aCelCELO',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
+      },
+      {
+        action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: celoSupplyMultipleBorrowUsdtMessage,
       },
       {
         action: MeritAction.CELO_BORROW_WETH,
