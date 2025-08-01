@@ -90,7 +90,11 @@ export default function SavingsGho() {
                 mb: { xs: 4, md: 6 },
               }}
             >
-              <Box mb={{ xs: 4, md: 8 }}>
+              <Box
+                sx={{
+                  mb: { xs: 4, md: 8 },
+                }}
+              >
                 <Typography variant="h3">
                   <Trans>Savings GHO (sGHO)</Trans>
                 </Typography>

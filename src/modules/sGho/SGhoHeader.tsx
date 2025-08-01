@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
@@ -49,6 +50,8 @@ export const SGHOHeader: React.FC = () => {
       titleComponent={
         <Box mb={4}>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+            <TokenIcon symbol="sgho" sx={{ width: 32, height: 32 }} />
+
             <Typography
               variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
