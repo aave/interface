@@ -12,7 +12,6 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
@@ -67,11 +66,8 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
   const now = useCurrentTimestamp(1);
   const { openSwitch } = useModalContext();
 
-
-
   if (!stakeData || !stakeUserData) {
     return <StakingPanelSkeleton />;
-
   }
 
   const handleSwitchClick = () => {
