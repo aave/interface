@@ -261,7 +261,6 @@ msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Supply cap on target reserve reached. Try lowering the amount."
 
 #: src/modules/sGho/SGhoDepositPanel.tsx
-#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Total Deposited"
 msgstr "Total Deposited"
@@ -507,6 +506,7 @@ msgstr "Switch Network"
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "APR"
 msgstr "APR"
@@ -830,6 +830,10 @@ msgstr "of"
 #: src/modules/umbrella/AvailableToStakeItem.tsx
 msgid "Your balance of assets that are available to stake"
 msgstr "Your balance of assets that are available to stake"
+
+#: src/modules/sGho/SGhoDepositPanel.tsx
+msgid "GHO Balance"
+msgstr "GHO Balance"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
@@ -2563,10 +2567,6 @@ msgstr "Net APY"
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Claimed"
 msgstr "Claimed"
-
-#: src/modules/sGho/SGhoDepositPanel.tsx
-msgid "Your GHO Balance"
-msgstr "Your GHO Balance"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
