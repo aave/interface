@@ -57,6 +57,7 @@ UmbrellaStaking.getLayout = function getLayout(page: React.ReactElement) {
     <MainLayout>
       {page}
       {/** Modals */}
+
       <UmbrellaStakeModal />
       <StakeCooldownModal />
       <UnStakeModal />

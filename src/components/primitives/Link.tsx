@@ -12,10 +12,10 @@ const Anchor = styled('a')({});
 
 interface NextLinkComposedProps
   extends Omit<
-      AnchorHTMLAttributes<HTMLAnchorElement>,
-      'href' | 'onClick' | 'onMouseEnter' | 'onTouchStart'
-    >,
-    Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter' | 'onTouchStart'> {
+    AnchorHTMLAttributes<HTMLAnchorElement>,
+    'href' | 'onClick' | 'onMouseEnter' | 'onTouchStart'
+  >,
+  Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter' | 'onTouchStart'> {
   to: NextLinkProps['href'];
   linkAs?: NextLinkProps['as'];
   href?: NextLinkProps['href'];
@@ -135,4 +135,5 @@ export const ROUTES = {
   history: '/history',
   bridge: '/bridge',
   safetyModule: '/safety-module',
+  sGHO: '/sgho',
 };
