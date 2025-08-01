@@ -76,7 +76,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     // Build GraphQL query based on parameters
     let graphqlQuery: string;
-    let variables: Record<string, string>;
+    let variables: Record<string, string | number>;
 
     if (startDate && endDate) {
       // Query with date range
