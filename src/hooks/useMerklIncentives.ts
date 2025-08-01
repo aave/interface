@@ -128,14 +128,7 @@ const additionalIncentiveData: Record<string, ReserveIncentiveAdditionalData> = 
   },
 };
 
-const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {
-  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN]: {
-    incentiveAPR: '0.12',
-    rewardTokenAddress: AaveV3Ethereum.ASSETS.USDe.A_TOKEN,
-    rewardTokenSymbol: 'aEthUSDe',
-    ...additionalIncentiveData[AaveV3Ethereum.ASSETS.USDe.A_TOKEN],
-  },
-};
+const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {};
 
 const getUnderlyingAndAToken = (assets: {
   [key: string]: {
@@ -151,7 +144,7 @@ const getUnderlyingAndAToken = (assets: {
 
 const otherTokensWhitelisted = [
   '0x04eadd7b10ea9a484c60860aea7a7c0aec09b9f0', // aUSDtb wrapper contract
-  '0x3a4de44B29995a3D8Cd02d46243E1563E55bCc8b', // Aave Ethereum USDe (wrapped)
+  '0x3a4de44b29995a3d8cd02d46243e1563e55bcc8b', // Aave Ethereum USDe (wrapped)
 ];
 
 const whitelistedRewardTokens = [
