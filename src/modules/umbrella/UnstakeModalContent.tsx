@@ -28,6 +28,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { usePreviewRedeem } from './hooks/usePreviewRedeem';
 import { UnStakeActions } from './UnstakeModalActions';
+import { normalizeBN } from '@aave/math-utils';
 
 export enum RedeemType {
   NORMAL,
@@ -61,7 +62,12 @@ export const UnStakeModalContent = ({
     currentChainId
   );
 
-  const redeemableAmount = stakeData?.formattedBalances.stakeTokenRedeemableAmount || '0';
+  const redeemableAmountBN = BigNumber.min(
+    stakeData?.balances.stakeTokenRedeemableAmount || '0',
+    stakeData?.cooldownData.cooldownAmount || '0'
+  );
+
+  const redeemableAmount = normalizeBN(redeemableAmountBN.toString(), stakeData.decimals).toString();
 
   const isMaxSelected = amount === '-1';
   const amountToRedeem = isMaxSelected ? redeemableAmount : amount;
