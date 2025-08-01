@@ -7,6 +7,7 @@ import {
   Button,
   Divider,
   Grid,
+  Skeleton,
   Stack,
   SvgIcon,
   Typography,
@@ -32,7 +33,6 @@ import { GENERAL } from 'src/utils/events';
 import { MeritApyDataItem } from '../reserve-overview/graphs/MeritApyGraph';
 import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
 import { StakeActionBox } from '../staking/StakeActionBox';
-import { StakingPanelSkeleton } from '../staking/StakingPanelSkeleton';
 
 // Memoized chart component to prevent unnecessary re-renders
 const MemoizedMeritApyChart = memo(
@@ -112,8 +112,10 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
 
   // Handle different states properly
   if (!stakeData) {
-    // Data still loading
-    return <StakingPanelSkeleton />;
+    // TODO: Do we want to use a skeleton here?
+    return <Skeleton variant="rectangular" width={'100%'} height={600} />;
+
+    return null;
   }
 
   const handleSwitchClick = () => {
@@ -152,7 +154,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
 
   return (
     <>
-      {currentAccount && stakeUserData && (
+      {currentAccount && (
         <>
           <Grid container spacing={{ xs: 1, md: 2 }} sx={{ mb: 4 }}>
             <Grid item xs={12} md={2}>
