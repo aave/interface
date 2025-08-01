@@ -508,8 +508,10 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
               </Typography>
               <FormattedNumber
                 sx={{ mr: 2 }}
-                value={stakeData.stakeTokenTotalSupply}
+                value={stakeData.totalSupplyUSDFormatted}
                 variant="secondary14"
+                symbol="USD"
+                visibleDecimals={2}
               />
             </Box>
 

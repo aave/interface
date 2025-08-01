@@ -29,20 +29,31 @@ type ApiResponse = {
 
 /**
  * Transform GraphQL data to the format expected by the frontend
+ * Aggregates multiple hourly entries per day to a single daily entry
  */
 const transformGraphQLData = (graphqlData: SGhoRatesData[]) => {
-  return graphqlData.map((item) => {
-    // Convert blockHour (ISO datetime) to date string (YYYY-MM-DD)
-    const date = new Date(item.blockHour);
-    const dateString = date.toISOString().split('T')[0];
+  const dailyData = new Map<string, { timestamp: Date; merit_apy: number }>();
 
-    return {
-      day: {
-        value: dateString,
-      },
-      merit_apy: item.apr,
-    };
+  graphqlData.forEach((item) => {
+    const timestamp = new Date(item.blockHour);
+    const dateString = timestamp.toISOString().split('T')[0];
+
+    // Keep the latest entry for each day (or first if no existing entry)
+    const existing = dailyData.get(dateString);
+    if (!existing || timestamp > existing.timestamp) {
+      dailyData.set(dateString, {
+        timestamp,
+        merit_apy: item.apr,
+      });
+    }
   });
+
+  return Array.from(dailyData.entries()).map(([dateString, { merit_apy }]) => ({
+    day: {
+      value: dateString,
+    },
+    merit_apy,
+  }));
 };
 
 /**
@@ -148,10 +159,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       });
     }
 
-    // Transform and sort data
     const transformedData = transformGraphQLData(result.data.aaveV3RatesSgho);
 
-    // Sort by date (oldest first) since we removed ordering from GraphQL query
     const sortedData = transformedData.sort((a, b) => {
       const dateA = new Date(a.day.value);
       const dateB = new Date(b.day.value);
