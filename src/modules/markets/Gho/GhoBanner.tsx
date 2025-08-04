@@ -33,7 +33,7 @@ export const SavingsGhoBanner = ({ reserve }: GhoBannerProps) => {
     Stake.gho
   );
 
-  const totalStakedUsd = stakeGeneralResult?.[0]?.totalSupplyUSDFormatted;
+  const stakeData = stakeGeneralResult?.[0];
 
   if (downToSm) {
     return <GhoSavingsBannerMobile reserve={reserve} />;
@@ -113,7 +113,7 @@ export const SavingsGhoBanner = ({ reserve }: GhoBannerProps) => {
             }}
           />
           <Stack direction="column" alignItems="flex-start">
-            {stakeDataLoading ? (
+            {stakeDataLoading || !stakeData ? (
               <Skeleton width={70} height={25} />
             ) : (
               <Stack direction="row" gap={1} alignItems="center">
@@ -121,7 +121,7 @@ export const SavingsGhoBanner = ({ reserve }: GhoBannerProps) => {
                   symbol="USD"
                   compact
                   variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                  value={totalStakedUsd || 0}
+                  value={stakeData.totalSupplyFormatted || 0}
                 />
               </Stack>
             )}

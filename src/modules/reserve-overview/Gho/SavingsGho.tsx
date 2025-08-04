@@ -86,7 +86,11 @@ export const SavingsGho = () => {
           {stakeDataLoading && <Skeleton variant="text" width={145} height={24} />}
           {!stakeDataLoading && stakeData && (
             <Stack direction="row" alignItems="center" gap={1}>
-              <FormattedNumber value={stakeData.totalSupplyFormatted} variant="main16" compact />
+              <FormattedNumber
+                value={stakeData.totalSupplyFormatted || 0}
+                variant="main16"
+                compact
+              />
               <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {' ('}
                 <FormattedNumber
