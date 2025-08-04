@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
-import React, { memo } from 'react';
+import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -30,45 +30,8 @@ import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { GENERAL } from 'src/utils/events';
 
-import { MeritApyDataItem } from '../reserve-overview/graphs/MeritApyGraph';
 import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
 import { StakeActionBox } from '../staking/StakeActionBox';
-
-// Memoized chart component to prevent unnecessary re-renders
-const MemoizedMeritApyChart = memo(
-  ({
-    data,
-    loading,
-    error,
-    onRetry,
-  }: {
-    data: MeritApyDataItem[];
-    loading: boolean;
-    error: boolean;
-    onRetry: () => void;
-  }) => (
-    <MeritApyGraphContainer
-      data={data}
-      loading={loading}
-      error={error}
-      title="GHO APR"
-      lineColor="#2EBAC6"
-      showAverage={true}
-      onRetry={onRetry}
-    />
-  ),
-  (prevProps, nextProps) => {
-    // Custom comparison function to prevent unnecessary re-renders
-    return (
-      prevProps.loading === nextProps.loading &&
-      prevProps.error === nextProps.error &&
-      prevProps.data === nextProps.data && // Reference equality check
-      prevProps.onRetry === nextProps.onRetry
-    );
-  }
-);
-
-MemoizedMeritApyChart.displayName = 'MemoizedMeritApyChart';
 
 export interface SGHODepositPanelProps {
   onStakeAction?: () => void;
@@ -531,14 +494,16 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
             </Box>
           </Stack>
 
-          <Box>
-            <MemoizedMeritApyChart
-              data={meritApyHistory}
-              loading={loadingMeritApy}
-              error={errorMeritApyHistory}
-              onRetry={refetchMeritApyHistory}
-            />
-          </Box>
+          <MeritApyGraphContainer
+            data={meritApyHistory}
+            loading={loadingMeritApy}
+            error={errorMeritApyHistory}
+            onRetry={refetchMeritApyHistory}
+            title="GHO APR"
+            lineColor="#2EBAC6"
+            showAverage={true}
+            height={155}
+          />
         </Grid>
       </Grid>
     </>

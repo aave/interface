@@ -1,56 +1,46 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import { ParentSize } from '@visx/responsive';
+import React from 'react';
 
 import { GraphLegend } from './GraphLegend';
-import { MeritApyDataItem, MeritApyGraph, MeritApyPlaceholderChart } from './MeritApyGraph';
+import { MeritApyDataItem, MeritApyGraph } from './MeritApyGraph';
 
-// Stable chart component that avoids ParentSize recalculations
-const StableChart = React.memo(
+const ResponsiveChart = React.memo(
   ({
     data,
     lineColor,
     showAverage,
+    width,
+    height,
   }: {
     data: MeritApyDataItem[];
     lineColor: string;
     showAverage: boolean;
+    width: number;
+    height: number;
   }) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [chartWidth, setChartWidth] = useState(600); // Default width
-    const CHART_HEIGHT = 155;
-
-    useEffect(() => {
-      // Calculate width once when component mounts
-      if (containerRef.current) {
-        const width = containerRef.current.offsetWidth;
-        if (width > 0 && width !== chartWidth) {
-          setChartWidth(width);
-        }
-      }
-    }, []); // Only run once on mount
-
-    // Memoize the chart to prevent re-renders when data hasn't actually changed
+    // Memoize the chart to prevent unnecessary re-renders
     const chartContent = React.useMemo(() => {
-      return data.length > 0 ? (
+      // Early return if dimensions are too small
+      if (width < 10) return null;
+
+      return (
         <MeritApyGraph
-          width={chartWidth}
-          height={CHART_HEIGHT}
+          width={width}
+          height={height}
           data={data}
           lineColor={lineColor}
           showAverage={showAverage}
         />
-      ) : (
-        <MeritApyPlaceholderChart height={CHART_HEIGHT} width={chartWidth} />
       );
-    }, [data, chartWidth, lineColor, showAverage]);
+    }, [data, width, height, lineColor, showAverage]);
 
     return (
       <Box
-        ref={containerRef}
         sx={{
           width: '100%',
-          height: CHART_HEIGHT,
+          height: height,
           position: 'relative',
         }}
       >
@@ -60,7 +50,7 @@ const StableChart = React.memo(
   }
 );
 
-StableChart.displayName = 'StableChart';
+ResponsiveChart.displayName = 'ResponsiveChart';
 
 export type MeritApyGraphContainerProps = {
   data?: MeritApyDataItem[];
@@ -70,6 +60,7 @@ export type MeritApyGraphContainerProps = {
   lineColor?: string;
   showAverage?: boolean;
   title?: string;
+  height?: number;
 };
 
 /**
@@ -84,8 +75,8 @@ export const MeritApyGraphContainer = ({
   lineColor = '#2EBAC6',
   showAverage = true,
   title = 'Merit APY',
+  height = 155,
 }: MeritApyGraphContainerProps): JSX.Element => {
-  const CHART_HEIGHT = 155;
   const CHART_HEIGHT_LOADING_FIX = 3;
 
   // Legend data
@@ -94,7 +85,7 @@ export const MeritApyGraphContainer = ({
   const graphLoading = (
     <Box
       sx={{
-        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
+        height: height + CHART_HEIGHT_LOADING_FIX,
         width: 'auto',
         display: 'flex',
         flexDirection: 'column',
@@ -112,7 +103,7 @@ export const MeritApyGraphContainer = ({
   const graphError = (
     <Box
       sx={{
-        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
+        height: height + CHART_HEIGHT_LOADING_FIX,
         width: 'auto',
         display: 'flex',
         flexDirection: 'column',
@@ -148,11 +139,21 @@ export const MeritApyGraphContainer = ({
         <GraphLegend labels={legendFields} />
       </Box>
 
-      <Box sx={{ flex: 1, minHeight: CHART_HEIGHT, width: '100%' }}>
+      <Box sx={{ flex: 1, minHeight: height, width: '100%' }}>
         {loading && graphLoading}
         {error && graphError}
         {!loading && !error && (
-          <StableChart data={data} lineColor={lineColor} showAverage={showAverage} />
+          <ParentSize>
+            {({ width }) => (
+              <ResponsiveChart
+                data={data}
+                lineColor={lineColor}
+                showAverage={showAverage}
+                width={width}
+                height={height}
+              />
+            )}
+          </ParentSize>
         )}
       </Box>
     </Box>
