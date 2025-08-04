@@ -73,20 +73,11 @@ export const useApprovalTx = ({
       return;
     }
 
-    console.log('signatureAmount', signatureAmount);
-    console.log('decimals', decimals);
     const amountToApprove = parseUnits(signatureAmount, decimals).toString();
     const currentApproved = parseUnits(
       approvedAmount?.amount?.toString() || '0',
       decimals
     ).toString();
-
-    console.log('amountToApprove', amountToApprove);
-    console.log('currentApproved', currentApproved);
-    console.log(
-      'needsUSDTApprovalReset',
-      needsUSDTApprovalReset(symbol, chainId, currentApproved, amountToApprove)
-    );
 
     if (needsUSDTApprovalReset(symbol, chainId, currentApproved, amountToApprove)) {
       setShowUSDTResetWarning(true);
