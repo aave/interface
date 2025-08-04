@@ -1,60 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-const GRAPHQL_ENDPOINT = 'https://tokenlogic-data.ddn.hasura.app/graphql';
-const API_KEY = process.env.TOKENLOGIC_API_KEY;
-
-type SGhoRatesData = {
-  blockHour: string;
-  apr: number;
-};
-
-type GraphQLResponse = {
-  data?: {
-    aaveV3RatesSgho: SGhoRatesData[];
-  };
-  errors?: Array<{
-    message: string;
-    locations?: Array<{ line: number; column: number }>;
-    path?: string[];
-  }>;
-};
-
-type ApiResponse = {
-  data?: Array<{
-    day: { value: string };
-    merit_apy: number;
-  }>;
-  error?: string;
-};
-
-/**
- * Transform GraphQL data to the format expected by the frontend
- * Aggregates multiple hourly entries per day to a single daily entry
- */
-const transformGraphQLData = (graphqlData: SGhoRatesData[]) => {
-  const dailyData = new Map<string, { timestamp: Date; merit_apy: number }>();
-
-  graphqlData.forEach((item) => {
-    const timestamp = new Date(item.blockHour);
-    const dateString = timestamp.toISOString().split('T')[0];
-
-    // Keep the latest entry for each day (or first if no existing entry)
-    const existing = dailyData.get(dateString);
-    if (!existing || timestamp > existing.timestamp) {
-      dailyData.set(dateString, {
-        timestamp,
-        merit_apy: item.apr,
-      });
-    }
-  });
-
-  return Array.from(dailyData.entries()).map(([dateString, { merit_apy }]) => ({
-    day: {
-      value: dateString,
-    },
-    merit_apy,
-  }));
-};
+import { fetchSGhoApyData } from 'pages/api/SGhoService';
+import { ApiResponse } from 'pages/api/SGhoService.types';
 
 /**
  * Next.js API route to fetch sGHO APY data from TokenLogic GraphQL API
@@ -72,107 +18,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   try {
-    // Check if API key is configured
-    if (!API_KEY) {
-      console.error('TOKENLOGIC_API_KEY environment variable not set');
-      return res.status(500).json({
-        error: 'Server configuration error',
-      });
-    }
-
-    // Parse query parameters
     const limit = parseInt(req.query.limit as string) || 100;
     const startDate = req.query.startDate as string;
     const endDate = req.query.endDate as string;
 
-    // Build GraphQL query based on parameters
-    let graphqlQuery: string;
-    let variables: Record<string, string | number>;
-
-    if (startDate && endDate) {
-      // Query with date range
-      graphqlQuery = `
-        query GetSGhoApyHistoryDateRange($startDate: timestamptz!, $endDate: timestamptz!, $limit: Int!) {
-          aaveV3RatesSgho(
-            limit: $limit,
-            where: {
-              blockHour: {
-                _gte: $startDate,
-                _lte: $endDate
-              }
-            }
-          ) {
-            blockHour
-            apr
-          }
-        }
-      `;
-      variables = { startDate, endDate, limit };
-    } else {
-      // Query for recent data
-      graphqlQuery = `
-        query GetSGhoApyHistory($limit: Int!) {
-          aaveV3RatesSgho(limit: $limit) {
-            blockHour
-            apr
-          }
-        }
-      `;
-      variables = { limit };
-    }
-
-    // Make GraphQL request
-    const response = await fetch(GRAPHQL_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY,
-      },
-      body: JSON.stringify({
-        query: graphqlQuery,
-        variables,
-      }),
+    const result = await fetchSGhoApyData({
+      limit,
+      startDate,
+      endDate,
     });
 
-    if (!response.ok) {
-      console.error(`GraphQL HTTP error: ${response.status}`);
-      return res.status(response.status).json({
-        error: `Failed to fetch data: ${response.statusText}`,
-      });
-    }
-
-    const result: GraphQLResponse = await response.json();
-
-    // Check for GraphQL errors
-    if (result.errors && result.errors.length > 0) {
-      console.error('GraphQL errors:', result.errors);
-      return res.status(400).json({
-        error: `GraphQL error: ${result.errors.map((e) => e.message).join(', ')}`,
-      });
-    }
-
-    // Validate response structure
-    if (!result.data?.aaveV3RatesSgho || !Array.isArray(result.data.aaveV3RatesSgho)) {
-      console.error('Invalid GraphQL response format:', result);
-      return res.status(500).json({
-        error: 'Invalid response format from data source',
-      });
-    }
-
-    const transformedData = transformGraphQLData(result.data.aaveV3RatesSgho);
-
-    const sortedData = transformedData.sort((a, b) => {
-      const dateA = new Date(a.day.value);
-      const dateB = new Date(b.day.value);
-      return dateA.getTime() - dateB.getTime();
-    });
-
-    // Return successful response
-    res.status(200).json({ data: sortedData });
+    res.status(200).json(result);
   } catch (error) {
     console.error('API route error:', error);
-    res.status(500).json({
-      error: 'Internal server error',
-    });
+
+    if (error.message.includes('GraphQL error')) {
+      return res.status(400).json({
+        error: error.message,
+      });
+    }
+
+    if (error.message.includes('HTTP error')) {
+      return res.status(502).json({
+        error: 'Failed to fetch data from external service',
+      });
+    }
   }
+
+  res.status(500).json({
+    error: 'Internal server error',
+  });
 }
