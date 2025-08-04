@@ -1,4 +1,5 @@
 import { gasLimitRecommendations, InterestRate, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -199,6 +200,7 @@ export const RepayActions = ({
         asset: poolAddress,
         amount: amountToRepay,
         assetName: symbol,
+        amountUsd: valueToBigNumber(amountToRepay).multipliedBy(poolReserve.priceInUSD).toString(),
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
