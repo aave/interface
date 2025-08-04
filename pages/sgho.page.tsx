@@ -58,8 +58,6 @@ export default function SavingsGho() {
     [, , stkGhoUserData] = stakeUserResult;
   }
 
-  // TODO: Handle non connected wallet state
-
   return (
     <>
       <SGHOHeader />
