@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
-import React from 'react';
+import React, { useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -25,12 +25,17 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
-import { useSGhoApyHistory } from 'src/hooks/useSGhoApyHistory';
+import {
+  SGhoTimeRange,
+  sghoTimeRangeOptions,
+  useSGhoApyHistory,
+} from 'src/hooks/useSGhoApyHistory';
 import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { GENERAL } from 'src/utils/events';
 
 import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
+import { ESupportedTimeRanges, TimeRangeSelector } from '../reserve-overview/TimeRangeSelector';
 import { StakeActionBox } from '../staking/StakeActionBox';
 
 export interface SGHODepositPanelProps {
@@ -63,14 +68,16 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
   const { openSwitch } = useModalContext();
   const { currentAccount } = useWeb3Context();
 
-  // const { data: stakeAPR, isLoading: isLoadingStakeAPR, error: errorStakeAPR } = useStakeTokenAPR();
-  // Stable options object to prevent unnecessary re-fetches
+  const [selectedTimeRange, setSelectedTimeRange] = useState<SGhoTimeRange>(
+    ESupportedTimeRanges.OneWeek
+  );
+
   const {
     data: meritApyHistory,
     loading: loadingMeritApy,
     error: errorMeritApyHistory,
     refetch: refetchMeritApyHistory,
-  } = useSGhoApyHistory();
+  } = useSGhoApyHistory({ timeRange: selectedTimeRange });
   const { data: stakeAPR } = useStakeTokenAPR();
 
   // Handle different states properly
@@ -503,6 +510,14 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
             lineColor="#2EBAC6"
             showAverage={true}
             height={155}
+            timeRangeSelector={
+              <TimeRangeSelector
+                disabled={loadingMeritApy || errorMeritApyHistory}
+                timeRanges={sghoTimeRangeOptions}
+                selectedTimeRange={selectedTimeRange}
+                onTimeRangeChanged={setSelectedTimeRange}
+              />
+            }
           />
         </Grid>
       </Grid>

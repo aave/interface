@@ -61,6 +61,7 @@ export type MeritApyGraphContainerProps = {
   showAverage?: boolean;
   title?: string;
   height?: number;
+  timeRangeSelector?: React.ReactNode;
 };
 
 /**
@@ -76,6 +77,7 @@ export const MeritApyGraphContainer = ({
   showAverage = true,
   title = 'Merit APY',
   height = 155,
+  timeRangeSelector,
 }: MeritApyGraphContainerProps): JSX.Element => {
   const CHART_HEIGHT_LOADING_FIX = 3;
 
@@ -137,6 +139,7 @@ export const MeritApyGraphContainer = ({
         }}
       >
         <GraphLegend labels={legendFields} />
+        {timeRangeSelector}
       </Box>
 
       <Box sx={{ flex: 1, minHeight: height, width: '100%' }}>

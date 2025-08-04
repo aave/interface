@@ -1,6 +1,16 @@
+import dayjs from 'dayjs';
 import { sghoConfig } from 'pages/api/SGhoService';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MeritApyDataItem } from 'src/modules/reserve-overview/graphs/MeritApyGraph';
+import { ESupportedTimeRanges } from 'src/modules/reserve-overview/TimeRangeSelector';
+
+export const sghoTimeRangeOptions = [
+  ESupportedTimeRanges.OneWeek,
+  ESupportedTimeRanges.OneMonth,
+  ESupportedTimeRanges.SixMonths,
+];
+
+export type SGhoTimeRange = (typeof sghoTimeRangeOptions)[number];
 
 type SGhoApyApiResponse = {
   data?: MeritApyDataItem[];
@@ -18,6 +28,31 @@ type UseSGhoApyHistoryOptions = {
   limit?: number;
   startDate?: string;
   endDate?: string;
+  timeRange?: SGhoTimeRange;
+};
+
+/**
+ * Convert time range to start/end dates
+ */
+const timeRangeToDateRange = (timeRange: SGhoTimeRange): { startDate: string; endDate: string } => {
+  const endDate = dayjs().format('YYYY-MM-DD');
+  let startDate: string;
+
+  switch (timeRange) {
+    case ESupportedTimeRanges.OneWeek:
+      startDate = dayjs().subtract(7, 'day').format('YYYY-MM-DD');
+      break;
+    case ESupportedTimeRanges.OneMonth:
+      startDate = dayjs().subtract(1, 'month').format('YYYY-MM-DD');
+      break;
+    case ESupportedTimeRanges.SixMonths:
+      startDate = dayjs().subtract(6, 'month').format('YYYY-MM-DD');
+      break;
+    default:
+      startDate = dayjs().subtract(7, 'day').format('YYYY-MM-DD');
+  }
+
+  return { startDate, endDate };
 };
 
 /**
@@ -37,9 +72,23 @@ export const useSGhoApyHistory = (
   const [error, setError] = useState<boolean>(false);
 
   // Stabilize the options to prevent unnecessary re-fetches
-  const stableOptions = useMemo(() => options, [options.limit, options.startDate, options.endDate]);
+  const stableOptions = useMemo(
+    () => options,
+    [options.limit, options.startDate, options.endDate, options.timeRange]
+  );
 
-  const { limit = sghoConfig.defaultLimit, startDate, endDate } = stableOptions;
+  const { limit = sghoConfig.defaultLimit, timeRange } = stableOptions;
+
+  // Determine dates: use timeRange if provided, otherwise use explicit startDate/endDate
+  const { startDate, endDate } = useMemo(() => {
+    if (timeRange) {
+      return timeRangeToDateRange(timeRange);
+    }
+    return {
+      startDate: stableOptions.startDate,
+      endDate: stableOptions.endDate,
+    };
+  }, [timeRange, stableOptions.startDate, stableOptions.endDate]);
 
   const fetchData = useCallback(async () => {
     try {
