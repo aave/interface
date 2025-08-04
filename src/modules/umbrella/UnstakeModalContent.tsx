@@ -236,6 +236,7 @@ export const UnStakeModalContent = ({
         symbol={symbolFormatted}
         blocked={false}
         stakeData={stakeData}
+        reserve={poolReserve}
         redeemType={redeemType}
       />
     </>
