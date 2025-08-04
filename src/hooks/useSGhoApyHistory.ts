@@ -1,3 +1,4 @@
+import { sghoConfig } from 'pages/api/SGhoService';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MeritApyDataItem } from 'src/modules/reserve-overview/graphs/MeritApyGraph';
 
@@ -38,7 +39,7 @@ export const useSGhoApyHistory = (
   // Stabilize the options to prevent unnecessary re-fetches
   const stableOptions = useMemo(() => options, [options.limit, options.startDate, options.endDate]);
 
-  const { limit = 100, startDate, endDate } = stableOptions;
+  const { limit = sghoConfig.defaultLimit, startDate, endDate } = stableOptions;
 
   const fetchData = useCallback(async () => {
     try {

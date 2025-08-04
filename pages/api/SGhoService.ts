@@ -8,10 +8,10 @@ import {
   TransformedDailyData,
 } from './SGhoService.types';
 
-const sghoConfig = {
+export const sghoConfig = {
   graphqlEndpoint: 'https://tokenlogic-data.ddn.hasura.app/graphql',
   apiKey: process.env.TOKENLOGIC_API_KEY,
-  defaultLimit: 100,
+  defaultLimit: 1000,
 } as const;
 
 /**
