@@ -8,8 +8,10 @@ import { ApiResponse } from 'pages/api/SGhoService.types';
  * GET /api/sgho-apy
  * Query parameters:
  * - limit: number (optional, default: 100) - Number of records to fetch
- * - startDate: string (optional) - Start date for filtering (ISO format)
- * - endDate: string (optional) - End date for filtering (ISO format)
+ * - startDate: string (optional) - Start date for filtering (ISO format or YYYY-MM-DD)
+ * - endDate: string (optional) - End date for filtering (ISO format or YYYY-MM-DD)
+ *
+ * Note: Both startDate and endDate must be provided together for date filtering to work.
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
   // Only allow GET requests
@@ -18,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   try {
-    const limit = parseInt(req.query.limit as string) || 100;
+    const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
     const startDate = req.query.startDate as string;
     const endDate = req.query.endDate as string;
 

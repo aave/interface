@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import {
   ApiResponse,
   GraphQLResponse,
@@ -19,38 +21,13 @@ export const sghoQueries = {
   /**
    * Query for sGHO APY data with date range filtering
    */
-  getApyHistoryDateRange: `
-    query GetSGhoApyHistoryDateRange($startDate: timestamptz!, $endDate: timestamptz!, $limit: Int!) {
-      aaveV3RatesSgho(
-        limit: $limit,
-        where: {
-          blockHour: {
-            _gte: $startDate,
-            _lte: $endDate
-          }
-        },
-        order_by: { blockHour: asc }
-      ) {
-        blockHour
-        apr
-      }
-    }
-  `,
+  getApyHistoryDateRange: (startDate: string, endDate: string, limit: number) =>
+    `{ aaveV3RatesSgho(limit: ${limit}, where: {blockHour: {_gte: "${startDate}", _lte: "${endDate}"}}) { blockHour apr } }`,
 
   /**
    * Query for recent sGHO APY data
    */
-  getApyHistory: `
-    query GetSGhoApyHistory($limit: Int!) {
-      aaveV3RatesSgho(
-        limit: $limit,
-        order_by: { blockHour: asc }
-      ) {
-        blockHour
-        apr
-      }
-    }
-  `,
+  getApyHistory: (limit: number) => `{ aaveV3RatesSgho(limit: ${limit}) { blockHour apr } }`,
 } as const;
 
 /**
@@ -58,15 +35,15 @@ export const sghoQueries = {
  * Aggregates multiple hourly entries per day to a single daily entry
  */
 export const transformGraphQLData = (graphqlData: SGhoRatesData[]): TransformedDailyData[] => {
-  const dailyData = new Map<string, { timestamp: Date; merit_apy: number }>();
+  const dailyData = new Map<string, { timestamp: dayjs.Dayjs; merit_apy: number }>();
 
   graphqlData.forEach((item) => {
-    const timestamp = new Date(item.blockHour);
-    const dateString = timestamp.toISOString().split('T')[0];
+    const timestamp = dayjs(item.blockHour);
+    const dateString = timestamp.format('YYYY-MM-DD');
 
     // Keep the latest entry for each day (or first if no existing entry)
     const existing = dailyData.get(dateString);
-    if (!existing || timestamp > existing.timestamp) {
+    if (!existing || timestamp.isAfter(existing.timestamp)) {
       dailyData.set(dateString, {
         timestamp,
         merit_apy: item.apr,
@@ -85,10 +62,7 @@ export const transformGraphQLData = (graphqlData: SGhoRatesData[]): TransformedD
 /**
  * Execute GraphQL query against the TokenLogic API
  */
-export const executeGraphQLQuery = async (
-  query: string,
-  variables: Record<string, string | number>
-): Promise<GraphQLResponse> => {
+export const executeGraphQLQuery = async (query: string): Promise<GraphQLResponse> => {
   if (!sghoConfig.apiKey) {
     throw new Error('TOKENLOGIC_API_KEY environment variable not set');
   }
@@ -101,7 +75,6 @@ export const executeGraphQLQuery = async (
     },
     body: JSON.stringify({
       query,
-      variables,
     }),
   });
 
@@ -125,25 +98,51 @@ export const executeGraphQLQuery = async (
 /**
  * Fetch and transform sGHO APY data
  */
+/**
+ * Normalize date string to ISO format without milliseconds (to match API expectation)
+ */
+const normalizeDate = (dateInput: string, isEndDate = false): string => {
+  let date: dayjs.Dayjs;
+
+  // Parse the input date
+  date = dayjs(dateInput);
+
+  // If it's just a date (YYYY-MM-DD), convert to proper start/end of day
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
+    if (isEndDate) {
+      // End of day: 23:59:59
+      date = date.endOf('day');
+    } else {
+      // Start of day: 00:00:00
+      date = date.startOf('day');
+    }
+  }
+
+  return date.toISOString().replace(/\.\d{3}Z$/, 'Z');
+};
+
 export const fetchSGhoApyData = async (options: SGhoApyQueryOptions): Promise<ApiResponse> => {
   const { limit = sghoConfig.defaultLimit, startDate, endDate } = options;
 
-  // Determine which query to use and prepare variables
+  // Determine which query to use based on whether date filtering is requested
   let query: string;
-  let variables: Record<string, string | number>;
 
   if (startDate && endDate) {
-    query = sghoQueries.getApyHistoryDateRange;
-    variables = { startDate, endDate, limit };
+    const normalizedStartDate = normalizeDate(startDate, false);
+    const normalizedEndDate = normalizeDate(endDate, true);
+    query = sghoQueries.getApyHistoryDateRange(normalizedStartDate, normalizedEndDate, limit);
   } else {
-    query = sghoQueries.getApyHistory;
-    variables = { limit };
+    query = sghoQueries.getApyHistory(limit);
   }
 
-  const result = await executeGraphQLQuery(query, variables);
+  const result = await executeGraphQLQuery(query);
 
-  // Transform the data (data is already sorted by blockHour from the GraphQL query)
   const transformedData = transformGraphQLData(result.data!.aaveV3RatesSgho);
+  const sortedData = transformedData.sort((a, b) => {
+    const dateA = dayjs(a.day.value);
+    const dateB = dayjs(b.day.value);
+    return dateA.isBefore(dateB) ? -1 : dateA.isAfter(dateB) ? 1 : 0;
+  });
 
-  return { data: transformedData };
+  return { data: sortedData };
 };
