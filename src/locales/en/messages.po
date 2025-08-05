@@ -3500,7 +3500,6 @@ msgid "Stable debt supply is not zero"
 msgstr "Stable debt supply is not zero"
 
 #: src/layouts/components/StakingMenu.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Savings GHO"
 msgstr "Savings GHO"
