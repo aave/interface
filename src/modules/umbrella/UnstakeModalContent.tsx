@@ -1,4 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
+import { normalizeBN } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
@@ -28,7 +29,6 @@ import { useShallow } from 'zustand/shallow';
 
 import { usePreviewRedeem } from './hooks/usePreviewRedeem';
 import { UnStakeActions } from './UnstakeModalActions';
-import { normalizeBN } from '@aave/math-utils';
 
 export enum RedeemType {
   NORMAL,
@@ -67,7 +67,10 @@ export const UnStakeModalContent = ({
     stakeData?.cooldownData.cooldownAmount || '0'
   );
 
-  const redeemableAmount = normalizeBN(redeemableAmountBN.toString(), stakeData.decimals).toString();
+  const redeemableAmount = normalizeBN(
+    redeemableAmountBN.toString(),
+    stakeData.decimals
+  ).toString();
 
   const isMaxSelected = amount === '-1';
   const amountToRedeem = isMaxSelected ? redeemableAmount : amount;
