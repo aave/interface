@@ -427,7 +427,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <Button
                         variant="gradient"
-                        // fullWidth
+                        fullWidth
                         onClick={onUnstakeAction}
                         data-cy={`unstakeBtn_${stakedToken}`}
                       >
