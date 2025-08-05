@@ -65,7 +65,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
 }) => {
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
-  const now = useCurrentTimestamp(1);
+  const now = useCurrentTimestamp(30);
   const { openSwitch, openStakeRewardsClaim } = useModalContext();
   const { currentAccount } = useWeb3Context();
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -180,8 +180,6 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
     });
     openStakeRewardsClaim(Stake.gho, 'AAVE');
   };
-
-  console.log('stakeUserData?.userIncentivesToClaim', stakeUserData?.userIncentivesToClaim);
 
   return (
     <>
