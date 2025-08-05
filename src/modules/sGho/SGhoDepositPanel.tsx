@@ -1,4 +1,4 @@
-import { ChainId } from '@aave/contract-helpers';
+import { ChainId, Stake } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -32,7 +32,8 @@ import {
 } from 'src/hooks/useSGhoApyHistory';
 import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { GENERAL } from 'src/utils/events';
+import { useRootStore } from 'src/store/root';
+import { GENERAL, SAFETY_MODULE } from 'src/utils/events';
 
 import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
 import { ESupportedTimeRanges, TimeRangeSelector } from '../reserve-overview/TimeRangeSelector';
@@ -65,8 +66,9 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
-  const { openSwitch } = useModalContext();
+  const { openSwitch, openStakeRewardsClaim } = useModalContext();
   const { currentAccount } = useWeb3Context();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [selectedTimeRange, setSelectedTimeRange] = useState<SGhoTimeRange>(
     ESupportedTimeRanges.OneWeek
@@ -80,12 +82,52 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
   } = useSGhoApyHistory({ timeRange: selectedTimeRange });
   const { data: stakeAPR } = useStakeTokenAPR();
 
-  // Handle different states properly
   if (!stakeData) {
-    // TODO: Do we want to use a skeleton here?
-    return <Skeleton variant="rectangular" width={'100%'} height={600} />;
+    return (
+      <Grid container spacing={{ xs: 1, md: 2 }} sx={{ mb: 4, minHeight: '600px' }}>
+        <Grid item xs={12} md={2}>
+          <Box sx={{ mb: { xs: 2, md: 2 } }}>
+            <Skeleton variant="rectangular" width={150} height={32} />
+          </Box>
+        </Grid>
 
-    return null;
+        <Grid item xs={12} md={10}>
+          <Box sx={{ mb: { xs: 3, md: 0 } }}>
+            <Skeleton variant="rectangular" width={'100%'} height={24} sx={{ mb: 2 }} />
+          </Box>
+
+          {/* Main content box skeleton */}
+          {currentAccount && (
+            <Box
+              sx={(theme) => ({
+                borderRadius: { xs: '8px', xsm: '6px' },
+                border: `1px solid ${theme.palette.divider}`,
+                p: { xs: 3, xsm: 4 },
+                marginBottom: 4,
+                background: theme.palette.background.paper,
+                boxShadow: { xs: '0 2px 8px rgba(0,0,0,0.04)', xsm: 'none' },
+              })}
+            >
+              <Stack spacing={3}>
+                <Skeleton variant="rectangular" width={'100%'} height={60} />
+                <Skeleton variant="rectangular" width={'100%'} height={80} />
+              </Stack>
+            </Box>
+          )}
+
+          {/* Action boxes skeleton */}
+          <Stack spacing={2} direction={{ xs: 'column', md: 'row' }}>
+            <Skeleton variant="rectangular" width={'100%'} height={120} sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rectangular" width={'100%'} height={120} sx={{ borderRadius: 1 }} />
+          </Stack>
+
+          {/* Graph skeleton */}
+          <Box sx={{ mt: 4 }}>
+            <Skeleton variant="rectangular" width={'100%'} height={200} sx={{ borderRadius: 1 }} />
+          </Box>
+        </Grid>
+      </Grid>
+    );
   }
 
   const handleSwitchClick = () => {
@@ -121,6 +163,25 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
     ),
     18 + 8 // userBalance (18), stakedTokenPriceUSD (8)
   );
+
+  const claimableUSD = formatUnits(
+    BigNumber.from(stakeUserData?.userIncentivesToClaim || '0').mul(
+      stakeData?.rewardTokenPriceUSD || '0'
+    ),
+    18 + 8 // incentivesBalance (18), rewardTokenPriceUSD (8)
+  );
+
+  const onStakeRewardClaimAction = () => {
+    trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+      action: SAFETY_MODULE.OPEN_CLAIM_MODAL,
+      asset: 'GHO',
+      stakeType: 'Safety Module',
+      rewardType: 'Claim',
+    });
+    openStakeRewardsClaim(Stake.gho, 'AAVE');
+  };
+
+  console.log('stakeUserData?.userIncentivesToClaim', stakeUserData?.userIncentivesToClaim);
 
   return (
     <>
@@ -449,6 +510,42 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                     </Button>
                   )}
                 </StakeActionBox>
+
+                {stakeUserData?.userIncentivesToClaim &&
+                  parseFloat(stakeUserData?.userIncentivesToClaim) > 0 && (
+                    <Box sx={{ mt: 4 }}>
+                      <StakeActionBox
+                        title={<Trans>Claimable AAVE</Trans>}
+                        value={formatEther(stakeUserData?.userIncentivesToClaim || '0')}
+                        valueUSD={claimableUSD}
+                        bottomLineTitle={<></>}
+                        dataCy={`rewardBox_${stakedToken}`}
+                        bottomLineComponent={<Box sx={{ height: '19px' }} />}
+                      >
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: { sm: 'row', xs: 'column' },
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          <Button
+                            variant="contained"
+                            onClick={onStakeRewardClaimAction}
+                            disabled={stakeUserData?.userIncentivesToClaim === '0'}
+                            data-cy={`claimBtn_${stakedToken}`}
+                            sx={{
+                              flex: 1,
+                              mb: { xs: 2, sm: 0 },
+                              mr: { xs: 0, sm: 1 },
+                            }}
+                          >
+                            <Trans>Claim</Trans>
+                          </Button>
+                        </Box>
+                      </StakeActionBox>
+                    </Box>
+                  )}
               </Box>
             </Grid>
           </Grid>

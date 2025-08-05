@@ -1354,6 +1354,7 @@ msgstr "No voting power"
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
@@ -2586,6 +2587,7 @@ msgid "There was some error. Please try changing the parameters or <0><1>copy th
 msgstr "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/UmbrellaClaimActions.tsx
