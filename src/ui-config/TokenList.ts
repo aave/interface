@@ -12957,6 +12957,15 @@ export const TOKEN_LIST: TokenList = {
         'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
     },
     {
+      name: 'Gho Token',
+      address: '0xfc421aD3C883Bf9E7C4f42dE845C4e4405799e73',
+      symbol: 'GHO',
+      decimals: 18,
+      chainId: 100,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+    },
+    {
       name: 'Aave',
       address: '0x63706e401c06ac8513145b7687A14804d17f814b',
       symbol: 'AAVE',
