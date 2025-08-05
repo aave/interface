@@ -134,19 +134,16 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
     openSwitch('', ChainId.mainnet);
   };
 
-  // Cooldown logic
-  const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
+  // Cooldown logic - sGHO has instant withdrawal no cooldown mechanism
+  const stakeCooldownSeconds = 0;
   const userCooldown = stakeUserData?.userCooldownTimestamp || 0;
-  const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
+  const stakeUnstakeWindow = 0; // sGHO has no unstake window
 
   const userCooldownDelta = now - userCooldown;
-  const isCooldownActive = userCooldownDelta < stakeCooldownSeconds + stakeUnstakeWindow;
-  const isUnstakeWindowActive =
-    isCooldownActive &&
-    userCooldownDelta > stakeCooldownSeconds &&
-    userCooldownDelta < stakeUnstakeWindow + stakeCooldownSeconds;
+  // For sGHO, cooldown is always inactive since withdrawal is instant
+  const isCooldownActive = false;
+  const isUnstakeWindowActive = false;
 
-  // Others
   const availableToStake = formatEther(
     BigNumber.from(stakeUserData?.underlyingTokenUserBalance || '0')
   );
