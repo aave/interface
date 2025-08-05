@@ -104,7 +104,7 @@ export const TokenLinkDropdown = ({
             address: poolReserve?.underlyingAsset,
           })}
           target="_blank"
-          divider
+          divider={showVariableDebtToken}
         >
           <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} />
           <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
