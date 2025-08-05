@@ -1,11 +1,14 @@
+import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/events';
@@ -13,6 +16,8 @@ import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
+import { AddTokenDropdown } from '../reserve-overview/AddTokenDropdown';
+import { TokenLinkDropdown } from '../reserve-overview/TokenLinkDropdown';
 
 export const SGHOHeader: React.FC = () => {
   const theme = useTheme();
@@ -107,6 +112,19 @@ const SGhoHeaderUserDetails = ({
   stkGho: StakeTokenFormatted;
 }) => {
   const { data: stakeAPR, isLoading: isLoadingStakeAPR } = useStakeTokenAPR();
+  const { reserves } = useAppDataContext();
+
+  const {
+    addERC20Token,
+    switchNetwork,
+    chainId: connectedChainId,
+    currentAccount,
+  } = useWeb3Context();
+  const poolReserve = reserves.find((reserve) => reserve.symbol === 'GHO');
+  const theme = useTheme();
+  const [currentChainId] = useRootStore(useShallow((state) => [state.currentChainId]));
+
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <>
@@ -156,6 +174,32 @@ const SGhoHeaderUserDetails = ({
           visibleDecimals={2}
         />
       </TopInfoPanelItem>
+
+      <Box sx={{ display: 'inline-flex', alignItems: 'center', height: '40px' }}>
+        {poolReserve && (
+          <>
+            <TokenLinkDropdown
+              poolReserve={poolReserve}
+              downToSM={downToSM}
+              hideAToken={true}
+              hideVariableDebtToken={true}
+            />
+            {currentAccount && (
+              <AddTokenDropdown
+                poolReserve={poolReserve}
+                downToSM={downToSM}
+                switchNetwork={switchNetwork}
+                addERC20Token={addERC20Token}
+                currentChainId={currentChainId}
+                connectedChainId={connectedChainId}
+                hideAToken={true}
+                isSGHO={true}
+                sGHOTokenAddress={AaveSafetyModule.STK_GHO}
+              />
+            )}
+          </>
+        )}
+      </Box>
     </>
   );
 };

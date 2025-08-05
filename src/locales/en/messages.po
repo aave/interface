@@ -37,6 +37,10 @@ msgstr "Save with sGHO"
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr "Aave Labs does not guarantee the program and accepts no liability."
 
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+msgid "Savings GHO token"
+msgstr "Savings GHO token"
+
 #: src/modules/sGho/SavingsGhoCard.tsx
 msgid "Deposit GHO and earn up to <0>{0}%</0> APR"
 msgstr "Deposit GHO and earn up to <0>{0}%</0> APR"

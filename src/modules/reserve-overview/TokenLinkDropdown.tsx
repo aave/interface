@@ -15,12 +15,14 @@ interface TokenLinkDropdownProps {
   poolReserve: ComputedReserveData;
   downToSM: boolean;
   hideAToken?: boolean;
+  hideVariableDebtToken?: boolean;
 }
 
 export const TokenLinkDropdown = ({
   poolReserve,
   downToSM,
   hideAToken,
+  hideVariableDebtToken,
 }: TokenLinkDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -48,7 +50,8 @@ export const TokenLinkDropdown = ({
   }
 
   const showVariableDebtToken =
-    poolReserve.borrowingEnabled || Number(poolReserve.totalVariableDebt) > 0;
+    !hideVariableDebtToken &&
+    (poolReserve.borrowingEnabled || Number(poolReserve.totalVariableDebt) > 0);
 
   return (
     <>

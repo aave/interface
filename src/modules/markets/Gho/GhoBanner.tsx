@@ -165,7 +165,7 @@ export const SavingsGhoBanner = ({ reserve }: GhoBannerProps) => {
           variant="contained"
           component={Link}
           size="medium"
-          href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
+          href={ROUTES.sGHO}
           sx={{
             mr: 8,
             ml: isMd2 ? 12 : 0,
