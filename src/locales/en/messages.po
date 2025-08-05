@@ -111,6 +111,10 @@ msgstr "To"
 msgid "FAQ"
 msgstr "FAQ"
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
+msgid "GHO Deposit"
+msgstr "GHO Deposit"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Stable borrowing is not enabled"
 msgstr "Stable borrowing is not enabled"
@@ -834,10 +838,6 @@ msgstr "of"
 #: src/modules/umbrella/AvailableToStakeItem.tsx
 msgid "Your balance of assets that are available to stake"
 msgstr "Your balance of assets that are available to stake"
-
-#: src/modules/sGho/SGhoDepositPanel.tsx
-msgid "GHO Balance"
-msgstr "GHO Balance"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
