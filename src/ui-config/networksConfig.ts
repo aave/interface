@@ -309,7 +309,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.xdai]: {
     name: 'Gnosis Chain',
-    publicJsonRPCUrl: ['https://rpc.ankr.com/gnosis', 'https://rpc.gnosischain.com'],
+    publicJsonRPCUrl: ['https://gnosis-rpc.publicnode.com', 'https://rpc.gnosischain.com'],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'xDAI',
     wrappedBaseAssetSymbol: 'WXDAI',
