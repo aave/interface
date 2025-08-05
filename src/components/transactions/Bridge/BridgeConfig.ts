@@ -58,8 +58,6 @@ const prodConfig: Config[] = [
         symbol: 'GHO',
         decimals: 18,
         chainId: ChainId.mainnet,
-        logoURI:
-          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
         oracle: AaveV3Ethereum.ASSETS.GHO.ORACLE,
         extensions: {
           isNative: false,
@@ -72,8 +70,6 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.mainnet,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
           isNative: true,
         },
@@ -96,8 +92,6 @@ const prodConfig: Config[] = [
         symbol: 'GHO',
         decimals: 18,
         chainId: ChainId.arbitrum_one,
-        logoURI:
-          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
         oracle: AaveV3Arbitrum.ASSETS.GHO.ORACLE,
         extensions: {
           isNative: false,
@@ -110,8 +104,6 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.arbitrum_one,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
           isNative: true,
         },
@@ -134,8 +126,6 @@ const prodConfig: Config[] = [
         symbol: 'GHO',
         decimals: 18,
         chainId: ChainId.base,
-        logoURI:
-          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
         oracle: AaveV3Base.ASSETS.GHO.ORACLE,
         extensions: {
           isNative: false,
@@ -148,8 +138,6 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.base,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
           isNative: true,
         },
@@ -172,8 +160,6 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.avalanche,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
           isNative: true,
         },
@@ -196,8 +182,6 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.xdai,
-        logoURI:
-          '/icons/tokens/wxdai.svg',
         extensions: {
           isNative: true,
         },
