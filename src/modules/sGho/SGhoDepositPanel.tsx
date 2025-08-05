@@ -206,23 +206,46 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                   <Trans>Deposit GHO and earn {stakeAPR?.aprPercentage.toFixed(2) || 0}% APR</Trans>
                 </Typography>
               </Box>
-              <Stack spacing={2} direction={{ xs: 'column', md: 'row' }}>
-                <StakeActionBox
-                  title={<Trans>GHO Deposit</Trans>}
-                  value={availableToStake.toString()}
-                  valueUSD={formatUnits(
-                    BigNumber.from(stakeUserData?.underlyingTokenUserBalance || '0').mul(
-                      stakeData?.stakeTokenPriceUSD || '0'
-                    ),
-                    18 + 8 // userBalance (18), stakeTokenPriceUSD (8)
-                  )}
-                  dataCy={`depositBox_${stakedToken}`}
-                  bottomLineTitle={
-                    <Typography variant="caption" color="text.secondary">
+              <Box
+                sx={(theme) => ({
+                  display: 'flex',
+                  justifyContent: { xs: 'center', xsm: 'space-between' },
+                  alignItems: { xs: 'stretch', xsm: 'center' },
+                  flexDirection: { xs: 'column', xsm: 'row' },
+                  gap: { xs: 3, xsm: 2 },
+                  borderRadius: { xs: '8px', xsm: '6px' },
+                  border: {
+                    xs: `1px solid ${theme.palette.divider}`,
+                    xsm: `1px solid ${theme.palette.divider}`,
+                  },
+                  p: { xs: 3, xsm: 4 },
+                  marginBottom: 4,
+                  background: theme.palette.background.paper,
+                  boxShadow: { xs: '0 2px 8px rgba(0,0,0,0.04)', xsm: 'none' },
+                })}
+              >
+                {/* First row on xs: APR and GHO Balance side by side */}
+                <Box
+                  sx={{
+                    display: { xs: 'flex', xsm: 'block' },
+                    justifyContent: { xs: 'space-between', xsm: 'unset' },
+                    alignItems: { xs: 'flex-start', xsm: 'unset' },
+                    mb: { xs: 2, xsm: 0 },
+                    flex: { xs: 'none', xsm: 'flex' },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      textAlign: 'left',
+                    }}
+                  >
+                    <Typography
+                      variant={xsm ? 'caption' : 'description'}
+                      color="text.secondary"
+                      sx={{ mb: 0.5 }}
+                    >
                       <Trans>Current APR</Trans>
                     </Typography>
-                  }
-                  bottomLineComponent={
                     <FormattedNumber
                       sx={{
                         color: 'success.main',
@@ -231,30 +254,87 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                       percent
                       variant="secondary14"
                     />
-                  }
-                >
+                  </Box>
+
+                  {!xsm && +availableToStake > 0 && (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-end',
+                        textAlign: 'right',
+                      }}
+                    >
+                      <Typography variant="description" color="text.secondary" sx={{ mb: 0.5 }}>
+                        <Trans>GHO Balance</Trans>
+                      </Typography>
+                      <FormattedNumber value={availableToStake.toString()} />
+                    </Box>
+                  )}
+                </Box>
+
+                <Box sx={{ flex: { xs: 'none', xsm: 'none' } }}>
                   {+availableToStake === 0 ? (
                     <Button
                       variant="contained"
-                      fullWidth
+                      size={xsm ? 'medium' : 'large'}
+                      sx={{
+                        minWidth: { xs: '140px', xsm: '96px' },
+                        height: { xs: '48px', xsm: '36px' },
+                        // fontSize: { xs: '1rem', xsm: '0.875rem' },
+                      }}
                       onClick={handleSwitchClick}
+                      fullWidth={!xsm}
                       data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
                     >
                       <Trans>Get GHO</Trans>
                     </Button>
                   ) : (
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      onClick={onStakeAction}
-                      disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
-                      data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: { xs: 'center', xsm: 'center' },
+                        flexDirection: { xs: 'column', xsm: 'row' },
+                        gap: { xs: 0, xsm: 3 },
+                        width: { xs: '100%', xsm: 'auto' },
+                      }}
                     >
-                      <Trans>Deposit</Trans>
-                    </Button>
-                  )}
-                </StakeActionBox>
+                      {xsm && (
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            textAlign: 'left',
+                          }}
+                        >
+                          <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5 }}>
+                            <Trans>GHO Balance</Trans>
+                          </Typography>
+                          <FormattedNumber value={availableToStake.toString()} />
+                        </Box>
+                      )}
 
+                      <Button
+                        variant="contained"
+                        // size={xsm ? 'small' : 'large'}
+                        sx={{
+                          minWidth: { xs: '140px', xsm: '96px' },
+                          fontSize: { xs: '1rem', xsm: '0.875rem' },
+                        }}
+                        onClick={onStakeAction}
+                        disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
+                        fullWidth={!xsm}
+                        data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
+                      >
+                        <Trans>Deposit</Trans>
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+
+              <Box>
                 <StakeActionBox
                   title={<Trans>sGHO</Trans>}
                   value={formatEther(stakeUserData?.stakeTokenRedeemableAmount || '0')}
@@ -442,44 +522,44 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                     </Button>
                   )}
                 </StakeActionBox>
-              </Stack>
 
-              {stakeUserData?.userIncentivesToClaim &&
-                parseFloat(stakeUserData?.userIncentivesToClaim) > 0 && (
-                  <Box sx={{ mt: 4 }}>
-                    <StakeActionBox
-                      title={<Trans>Claimable AAVE</Trans>}
-                      value={formatEther(stakeUserData?.userIncentivesToClaim || '0')}
-                      valueUSD={claimableUSD}
-                      bottomLineTitle={<></>}
-                      dataCy={`rewardBox_${stakedToken}`}
-                      bottomLineComponent={<Box sx={{ height: '19px' }} />}
-                    >
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: { sm: 'row', xs: 'column' },
-                          justifyContent: 'space-between',
-                        }}
+                {stakeUserData?.userIncentivesToClaim &&
+                  parseFloat(stakeUserData?.userIncentivesToClaim) > 0 && (
+                    <Box sx={{ mt: 4 }}>
+                      <StakeActionBox
+                        title={<Trans>Claimable AAVE</Trans>}
+                        value={formatEther(stakeUserData?.userIncentivesToClaim || '0')}
+                        valueUSD={claimableUSD}
+                        bottomLineTitle={<></>}
+                        dataCy={`rewardBox_${stakedToken}`}
+                        bottomLineComponent={<Box sx={{ height: '19px' }} />}
                       >
-                        <Button
-                          variant="contained"
-                          onClick={onStakeRewardClaimAction}
-                          disabled={stakeUserData?.userIncentivesToClaim === '0'}
-                          data-cy={`claimBtn_${stakedToken}`}
+                        <Box
                           sx={{
-                            flex: 1,
-                            mb: { xs: 2, sm: 0 },
-                            mr: { xs: 0, sm: 1 },
-                            // maxWidth: '100px',
+                            display: 'flex',
+                            flexDirection: { sm: 'row', xs: 'column' },
+                            justifyContent: 'space-between',
                           }}
                         >
-                          <Trans>Claim</Trans>
-                        </Button>
-                      </Box>
-                    </StakeActionBox>
-                  </Box>
-                )}
+                          <Button
+                            variant="contained"
+                            onClick={onStakeRewardClaimAction}
+                            disabled={stakeUserData?.userIncentivesToClaim === '0'}
+                            data-cy={`claimBtn_${stakedToken}`}
+                            sx={{
+                              flex: 1,
+                              mb: { xs: 2, sm: 0 },
+                              mr: { xs: 0, sm: 1 },
+                              // maxWidth: '100px',
+                            }}
+                          >
+                            <Trans>Claim</Trans>
+                          </Button>
+                        </Box>
+                      </StakeActionBox>
+                    </Box>
+                  )}
+              </Box>
             </Grid>
           </Grid>
 
