@@ -11,10 +11,8 @@ import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
-import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { AddTokenDropdown } from '../reserve-overview/AddTokenDropdown';
 import { TokenLinkDropdown } from '../reserve-overview/TokenLinkDropdown';
@@ -71,22 +69,10 @@ export const SGHOHeader: React.FC = () => {
               <Box component="span" sx={{ color: '#338E3C', fontWeight: 'bold' }}>
                 {(stakeAPR?.aprPercentage || 0).toFixed(2)}%
               </Box>{' '}
-              APR on your GHO holdings. Your funds are safe with no risk of slashing, and you can
-              withdraw anytime instantly without penalties or delays. Simply deposit GHO, receive
-              sGHO tokens representing your balance, and watch your savings earning claimable
-              rewards from merit.
+              APR on your GHO holdings. There&apos;s no lockups, no rehypothecation, and you can
+              withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance,
+              and watch your savings grow earning claimable rewards from merit.
             </Trans>{' '}
-            <Link
-              href="https://aave.com/docs/primitives/umbrella"
-              sx={{ textDecoration: 'underline', color: '#8E92A3' }}
-              onClick={() =>
-                trackEvent(GENERAL.EXTERNAL_LINK, {
-                  Link: 'Staking Risks',
-                })
-              }
-            >
-              <Trans>Learn more about the risks.</Trans>
-            </Link>
           </Typography>
         </Box>
       }

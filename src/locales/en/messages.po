@@ -181,7 +181,6 @@ msgstr "Transaction history"
 msgid "Approving {symbol}..."
 msgstr "Approving {symbol}..."
 
-#: src/modules/sGho/SGhoHeader.tsx
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Learn more about the risks."
 msgstr "Learn more about the risks."
@@ -885,10 +884,6 @@ msgstr "This action will reduce health factor of V3 below liquidation threshold.
 #: src/modules/staking/GhoStakingPanel.tsx
 msgid "Instant"
 msgstr "Instant"
-
-#: src/modules/sGho/SGhoHeader.tsx
-msgid "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. Your funds are safe with no risk of slashing, and you can withdraw anytime instantly without penalties or delays. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings earning claimable rewards from merit."
-msgstr "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. Your funds are safe with no risk of slashing, and you can withdraw anytime instantly without penalties or delays. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings earning claimable rewards from merit."
 
 #: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Stake balance"
@@ -2927,6 +2922,10 @@ msgstr "Depositing"
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Supply apy"
 msgstr "Supply apy"
+
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. There's no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
+msgstr "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. There's no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
