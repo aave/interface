@@ -71,10 +71,9 @@ export const SGHOHeader: React.FC = () => {
               <Box component="span" sx={{ color: '#338E3C', fontWeight: 'bold' }}>
                 {(stakeAPR?.aprPercentage || 0).toFixed(2)}%
               </Box>{' '}
-              APR on your GHO holdings. Your funds are safe with no risk of slashing, and you can
-              withdraw anytime instantly without penalties or delays. Simply deposit GHO, receive
-              sGHO tokens representing your balance, and watch your savings earning claimable
-              rewards from merit.
+              APR on your GHO holdings. There&apos;s no lockups, no rehypothecation, and you can
+              withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance,
+              and watch your savings grow earning claimable rewards from merit.
             </Trans>{' '}
             <Link
               href="https://aave.com/docs/primitives/umbrella"
