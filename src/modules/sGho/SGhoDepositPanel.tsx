@@ -17,6 +17,7 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
+import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -33,6 +34,7 @@ import {
 import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GENERAL, SAFETY_MODULE } from 'src/utils/events';
 
 import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
@@ -243,14 +245,8 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                     >
                       <Trans>Current APR</Trans>
                     </Typography>
-                    <FormattedNumber
-                      sx={{
-                        color: 'success.main',
-                      }}
-                      value={stakeAPR?.apr || 0}
-                      percent
-                      variant="secondary14"
-                    />
+
+                    <MeritIncentivesButton symbol={'GHO'} market={CustomMarket.proto_mainnet_v3} />
                   </Box>
 
                   {!xsm && +availableToStake > 0 && (
