@@ -1,21 +1,18 @@
-import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
+import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
-import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
-import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { WalletBalance } from 'src/modules/reserve-overview/ReserveActions';
-import { SGHODepositPanel } from 'src/modules/sGho/SGhoDepositPanel';
+import { SGhoWrapper } from 'src/modules/reserve-overview/SGho/SGhoWrapper';
 import { SGHOHeader } from 'src/modules/sGho/SGhoHeader';
 import { useRootStore } from 'src/store/root';
-import { SAFETY_MODULE } from 'src/utils/events';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -31,15 +28,8 @@ const SavingsGhoWithdrawModal = dynamic(() =>
 );
 
 export default function SavingsGho() {
-  const { openSavingsGhoDeposit, openSavingsGhoWithdraw } = useModalContext();
   const { currentAccount } = useWeb3Context();
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { breakpoints } = useTheme();
-  const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
-
-  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
@@ -47,89 +37,30 @@ export default function SavingsGho() {
     });
   }, [trackEvent]);
 
-  let stkGho: StakeTokenFormatted | undefined;
-
-  if (stakeGeneralResult && Array.isArray(stakeGeneralResult)) {
-    [, , stkGho] = stakeGeneralResult;
-  }
-
-  let stkGhoUserData: StakeUIUserData | undefined;
-  if (stakeUserResult && Array.isArray(stakeUserResult)) {
-    [, , stkGhoUserData] = stakeUserResult;
-  }
-
   return (
     <>
       <SGHOHeader />
       <ContentContainer>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-            gap: { xs: 3, md: 0 },
-            alignItems: { xs: 'stretch', md: 'flex-start' },
-          }}
-        >
-          <Paper
+        <Box sx={{ display: 'flex' }}>
+          {/** Main sGHO configuration panel*/}
+          <Box
             sx={{
-              pt: 4,
-              pb: { xs: 6, md: 20 },
-              px: downToXsm ? 4 : 6,
-              flex: 1,
-              width: { xs: '100%', md: 'auto' },
+              width: { xs: '100%', lg: 'calc(100% - 432px)' },
+              mr: { xs: 0, lg: 4 },
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                flexWrap: 'wrap',
-                mb: { xs: 4, md: 6 },
-              }}
-            >
-              <Box
-                sx={{
-                  mb: { xs: 4, md: 8 },
-                }}
-              >
-                <Typography variant="h3">
-                  <Trans>Savings GHO (sGHO)</Trans>
-                </Typography>
-              </Box>
+            <SGhoWrapper />
+          </Box>
 
-              <SGHODepositPanel
-                stakedToken="GHO"
-                stakeData={stkGho}
-                stakeUserData={stkGhoUserData}
-                onStakeAction={() => {
-                  trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
-                    action: SAFETY_MODULE.OPEN_STAKE_MODAL,
-                    asset: 'GHO',
-                    stakeType: 'Safety Module',
-                  });
-                  openSavingsGhoDeposit();
-                }}
-                onCooldownAction={() => {
-                  trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
-                    action: SAFETY_MODULE.OPEN_WITHDRAW_MODAL,
-                    asset: 'GHO',
-                    stakeType: 'Safety Module',
-                  });
-                  openSavingsGhoWithdraw();
-                }}
-                onUnstakeAction={() => {
-                  trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
-                    action: SAFETY_MODULE.OPEN_WITHDRAW_MODAL,
-                    asset: 'GHO',
-                    stakeType: 'Safety Module',
-                  });
-                  openSavingsGhoWithdraw();
-                }}
-              />
-            </Box>
-          </Paper>
-          {currentAccount ? <YourInfoGhoSection /> : <ConnectWallet />}
+          {/** Right panel with user info*/}
+          <Box
+            sx={{
+              display: { xs: 'none', lg: 'block' },
+              width: { xs: '100%', lg: '416px' },
+            }}
+          >
+            {currentAccount ? <YourInfoGhoSection /> : <ConnectWallet />}
+          </Box>
         </Box>
       </ContentContainer>
     </>
@@ -139,12 +70,23 @@ export default function SavingsGho() {
 const YourInfoGhoSection = () => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { walletBalances } = useWalletBalances(currentMarketData);
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
 
   const GHO_ADDRESS = AaveV3Ethereum.ASSETS.GHO.UNDERLYING;
 
   const userGhoBalance = GHO_ADDRESS
     ? walletBalances[GHO_ADDRESS.toLowerCase()] || { amount: '0', amountUSD: '0' }
     : { amount: '0', amountUSD: '0' };
+
+  // Get sGHO balance from staking data (third element in the array)
+  let stkGhoUserData;
+  if (stakeUserResult && Array.isArray(stakeUserResult)) {
+    [, , stkGhoUserData] = stakeUserResult;
+  }
+
+  const userSGhoBalance = stkGhoUserData?.stakeTokenRedeemableAmount
+    ? formatEther(stkGhoUserData.stakeTokenRedeemableAmount)
+    : '0';
 
   return (
     <Paper
@@ -161,7 +103,30 @@ const YourInfoGhoSection = () => {
       <Typography variant="h3" sx={{ mb: 6 }}>
         Your Info
       </Typography>
-      <WalletBalance balance={userGhoBalance.amount} symbol="GHO" marketTitle="GHO" />
+
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block' }}>
+          Available to Deposit
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+          <FormattedNumber value={userGhoBalance.amount} variant="h4" visibleDecimals={2} />
+          <Typography variant="caption" color="text.secondary">
+            GHO
+          </Typography>
+        </Box>
+      </Box>
+
+      <Box>
+        <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block' }}>
+          Currently Earning
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+          <FormattedNumber value={userSGhoBalance} variant="h4" visibleDecimals={2} />
+          <Typography variant="caption" color="text.secondary">
+            sGHO
+          </Typography>
+        </Box>
+      </Box>
     </Paper>
   );
 };

@@ -104,7 +104,7 @@ export const MarketAssetsListContainer = () => {
     >
       {displayGhoBanner && (
         <Box mb={4}>
-          <SavingsGhoBanner reserve={ghoReserve} />
+          <SavingsGhoBanner />
         </Box>
       )}
 

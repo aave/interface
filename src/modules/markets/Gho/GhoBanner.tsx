@@ -4,17 +4,12 @@ import { Box, Button, Skeleton, Stack, Typography, useMediaQuery, useTheme } fro
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useRootStore } from 'src/store/root';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
-interface GhoBannerProps {
-  reserve?: FormattedReservesAndIncentives;
-}
-
-export const SavingsGhoBanner = ({ reserve }: GhoBannerProps) => {
+export const SavingsGhoBanner = () => {
   const theme = useTheme();
   const isCustomBreakpoint = useMediaQuery('(min-width:1125px)');
   const isMd = useMediaQuery(theme.breakpoints.up('xs'));
@@ -23,7 +18,6 @@ export const SavingsGhoBanner = ({ reserve }: GhoBannerProps) => {
   const downToSm = useMediaQuery('(max-width:780px)');
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const currentMarket = useRootStore((store) => store.currentMarket);
   const { data: meritIncentives, isLoading: meritIncentivesLoading } = useMeritIncentives({
     symbol: GHO_SYMBOL,
     market: currentMarketData.market,
@@ -36,7 +30,7 @@ export const SavingsGhoBanner = ({ reserve }: GhoBannerProps) => {
   const stakeData = stakeGeneralResult?.[0];
 
   if (downToSm) {
-    return <GhoSavingsBannerMobile reserve={reserve} />;
+    return <GhoSavingsBannerMobile />;
   }
 
   return (
@@ -53,7 +47,7 @@ export const SavingsGhoBanner = ({ reserve }: GhoBannerProps) => {
     >
       <Stack
         component={Link}
-        href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
+        href={ROUTES.sGHO}
         sx={(theme) => ({
           [theme.breakpoints.up(780)]: {
             height: '116px',
@@ -178,9 +172,8 @@ export const SavingsGhoBanner = ({ reserve }: GhoBannerProps) => {
   );
 };
 
-const GhoSavingsBannerMobile = ({ reserve }: GhoBannerProps) => {
+const GhoSavingsBannerMobile = () => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const currentMarket = useRootStore((store) => store.currentMarket);
   const { data: meritIncentives, isLoading: meritIncentivesLoading } = useMeritIncentives({
     symbol: GHO_SYMBOL,
     market: currentMarketData.market,
@@ -206,7 +199,7 @@ const GhoSavingsBannerMobile = ({ reserve }: GhoBannerProps) => {
     >
       <Stack
         component={Link}
-        href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
+        href={ROUTES.sGHO}
         sx={(theme) => ({
           [theme.breakpoints.up(780)]: {
             height: '116px',
@@ -279,13 +272,7 @@ const GhoSavingsBannerMobile = ({ reserve }: GhoBannerProps) => {
               </Typography>
             </Stack>
           </Stack>
-          <Button
-            variant="contained"
-            fullWidth
-            component={Link}
-            size="medium"
-            href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
-          >
+          <Button variant="contained" fullWidth component={Link} size="medium" href={ROUTES.sGHO}>
             <Trans>View details</Trans>
           </Button>
         </Stack>
