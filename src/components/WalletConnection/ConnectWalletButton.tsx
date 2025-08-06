@@ -1,3 +1,4 @@
+import { Identify, identify, setUserId } from '@amplitude/analytics-browser';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
@@ -16,8 +17,8 @@ export interface ConnectWalletProps {
 }
 
 export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onClick }) => {
-  const [trackEvent, walletType] = useRootStore(
-    useShallow((store) => [store.trackEvent, store.walletType])
+  const [trackEvent, walletType, account] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.walletType, store.account])
   );
 
   // Track connection attempt duration
@@ -44,6 +45,18 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onCl
     if (!isConnectingRef.current && previousConnectionState.current) {
       // Connection attempt ended
       const duration = connectionStartTime ? Date.now() - connectionStartTime : 0;
+
+      const walletAddress = account;
+      if (walletAddress) {
+        setUserId(walletAddress);
+
+        const identifyObj = new Identify()
+          .set('wallet_connected', true)
+          .set('wallet_type', walletType || 'unknown');
+
+        identify(identifyObj);
+      }
+
       if (isConnectedRef.current) {
         trackEvent(AUTH.WALLET_CONNECT_SUCCESS, {
           funnel,
@@ -62,7 +75,20 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onCl
     }
 
     previousConnectionState.current = isConnectingRef.current;
-  }, [connectionStartTime, funnel, trackEvent, walletType]);
+  }, [connectionStartTime, funnel, trackEvent, walletType, account]);
+
+  useEffect(() => {
+    if (!account && walletType === undefined) {
+      // Wallet disconnected - clear identity
+      const identifyObj = new Identify().set('wallet_connected', false).unset('wallet_type');
+
+      identify(identifyObj);
+
+      trackEvent(AUTH.DISCONNECT_WALLET, {
+        funnel,
+      });
+    }
+  }, [account, walletType, funnel, trackEvent]);
 
   return (
     <>
