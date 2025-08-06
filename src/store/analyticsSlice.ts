@@ -45,6 +45,7 @@ export const createAnalyticsSlice: StateCreator<
         walletAddress: get().account,
         market: properties.market ?? get().currentMarket,
         walletType: get().walletType,
+        app_context: 'app',
       };
 
       try {
@@ -70,6 +71,7 @@ export const createAnalyticsSlice: StateCreator<
         if (!isInitialized) {
           init(AMPLITUDE_API_KEY, {
             // serverZone: 'EU',
+
             autocapture: true, // disable if we don't want to capture every click and page view on the site
             trackingOptions: {
               ipAddress: false,
