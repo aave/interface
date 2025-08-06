@@ -75,7 +75,20 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onCl
     }
 
     previousConnectionState.current = isConnectingRef.current;
-  }, [connectionStartTime, funnel, trackEvent, walletType]);
+  }, [connectionStartTime, funnel, trackEvent, walletType, account]);
+
+  useEffect(() => {
+    if (!account && walletType === undefined) {
+      // Wallet disconnected - clear identity
+      const identifyObj = new Identify().set('wallet_connected', false).unset('wallet_type');
+
+      identify(identifyObj);
+
+      trackEvent(AUTH.DISCONNECT_WALLET, {
+        funnel,
+      });
+    }
+  }, [account, walletType, funnel, trackEvent]);
 
   return (
     <>
