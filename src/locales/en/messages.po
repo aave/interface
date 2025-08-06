@@ -181,7 +181,6 @@ msgstr "Transaction history"
 msgid "Approving {symbol}..."
 msgstr "Approving {symbol}..."
 
-#: src/modules/sGho/SGhoHeader.tsx
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Learn more about the risks."
 msgstr "Learn more about the risks."
