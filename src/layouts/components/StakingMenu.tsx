@@ -143,6 +143,16 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
             <Trans>Safety Module</Trans>
           </Typography>
         </MenuItem>
+        <MenuItem
+          component={Link}
+          href={ROUTES.sGHO}
+          onClick={() => handleMenuItemClick('sGHO')}
+          sx={{ minWidth: '140px' }}
+        >
+          <Typography variant="subheader1">
+            <Trans>Savings GHO</Trans>
+          </Typography>
+        </MenuItem>
       </Menu>
     </>
   );

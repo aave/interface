@@ -3,6 +3,7 @@ import { SxProps, Theme, ToggleButton, ToggleButtonGroup, Typography } from '@mu
 export const supportedTimeRangeOptions = ['1m', '3m', '6m', '1y'] as const;
 
 export enum ESupportedTimeRanges {
+  OneWeek = '1w',
   OneMonth = '1m',
   ThreeMonths = '3m',
   SixMonths = '6m',

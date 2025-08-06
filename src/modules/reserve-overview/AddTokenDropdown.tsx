@@ -18,6 +18,8 @@ interface AddTokenDropdownProps {
   currentChainId: number;
   connectedChainId: number;
   hideAToken?: boolean;
+  isSGHO?: boolean;
+  sGHOTokenAddress?: string;
 }
 
 export const AddTokenDropdown = ({
@@ -28,11 +30,14 @@ export const AddTokenDropdown = ({
   currentChainId,
   connectedChainId,
   hideAToken,
+  isSGHO,
+  sGHOTokenAddress,
 }: AddTokenDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [changingNetwork, setChangingNetwork] = useState(false);
   const [underlyingBase64, setUnderlyingBase64] = useState('');
   const [aTokenBase64, setATokenBase64] = useState('');
+  const [sGHOBase64, setSGHOBase64] = useState('');
   const open = Boolean(anchorEl);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -87,6 +92,7 @@ export const AddTokenDropdown = ({
               aToken={true}
             />
           )}
+          {isSGHO && <Base64Token symbol="sgho" onImageGenerated={setSGHOBase64} aToken={false} />}
         </>
       )}
       <Box onClick={handleClick}>
@@ -193,6 +199,45 @@ export const AddTokenDropdown = ({
               <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} aToken={true} />
               <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
                 {`a${poolReserve.symbol}`}
+              </Typography>
+            </MenuItem>
+          </Box>
+        )}
+        {isSGHO && sGHOTokenAddress && (
+          <Box>
+            <Box sx={{ px: 4, pt: 3, pb: 2 }}>
+              <Typography variant="secondary12" color="text.secondary">
+                <Trans>Savings GHO token</Trans>
+              </Typography>
+            </Box>
+            <MenuItem
+              key="sgho"
+              value="sgho"
+              onClick={() => {
+                if (currentChainId !== connectedChainId) {
+                  switchNetwork(currentChainId).then(() => {
+                    setChangingNetwork(true);
+                  });
+                } else {
+                  trackEvent(RESERVE_DETAILS.ADD_TO_WALLET, {
+                    type: 'Savings GHO token',
+                    asset: sGHOTokenAddress,
+                    assetName: 'sGHO',
+                  });
+
+                  addERC20Token({
+                    address: sGHOTokenAddress,
+                    decimals: poolReserve.decimals,
+                    symbol: `stkGHO`, // TODO: change to sGHO when upgraded contract is deployed
+                    image: sGHOBase64,
+                  });
+                }
+                handleClose();
+              }}
+            >
+              <TokenIcon symbol="sgho" sx={{ fontSize: '20px' }} />
+              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+                sGHO
               </Typography>
             </MenuItem>
           </Box>

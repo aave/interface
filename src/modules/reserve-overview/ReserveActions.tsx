@@ -426,7 +426,7 @@ interface WalletBalanceProps {
   symbol: string;
   marketTitle: string;
 }
-const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => {
+export const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => {
   const theme = useTheme();
 
   return (
