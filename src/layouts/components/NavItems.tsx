@@ -140,7 +140,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
               },
             })}
           >
-            <Trans>sGHO</Trans>
+            <Trans>Savings</Trans>
           </Button>
         )}
       </ListItem>
