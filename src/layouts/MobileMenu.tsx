@@ -94,16 +94,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
                     <Trans>Watch wallet</Trans>
                   </ListItemText>
                 </ListItem>
-                <ListItem
-                  sx={{ color: '#F1F1F3' }}
-                  component={Link}
-                  href={'/staking'}
-                  onClick={() => setOpen(false)}
-                >
-                  <ListItemText>
-                    <Trans>Safety Module</Trans>
-                  </ListItemText>
-                </ListItem>
+
                 <ListItem
                   sx={{ color: '#F1F1F3' }}
                   component={Link}

@@ -1095,7 +1095,7 @@ msgstr "Unstake window"
 msgid "Reload"
 msgstr "Reload"
 
-#: pages/safety-module.page.tsx
+#: src/layouts/components/NavItems.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoDepositPanel.tsx
@@ -1312,6 +1312,7 @@ msgid "Merkl rewards are claimed through the"
 msgstr "Merkl rewards are claimed through the"
 
 #: src/components/transactions/Stake/StakeActions.tsx
+#: src/layouts/components/NavItems.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
 #: src/modules/umbrella/UmbrellaHeader.tsx
@@ -2001,7 +2002,6 @@ msgstr "Amount to Bridge"
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
-#: src/layouts/components/NavItems.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/layouts/components/StakingMenu.tsx
 msgid "Umbrella"
@@ -2641,7 +2641,6 @@ msgstr "Borrowable"
 #: src/layouts/components/NavItems.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/layouts/components/StakingMenu.tsx
-#: src/layouts/MobileMenu.tsx
 #: src/modules/staking/StakingHeader.tsx
 msgid "Safety Module"
 msgstr "Safety Module"

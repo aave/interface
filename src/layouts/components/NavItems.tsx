@@ -112,13 +112,34 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
               sx={{ width: '100%', p: 4 }}
               onClick={() => handleClick('Staking', true)}
             >
-              <Trans>Umbrella</Trans>
+              <Trans>Staking</Trans>
             </Typography>
           </>
         ) : (
           <StakingMenu />
         )}
       </ListItem>
+
+      {md && (
+        <ListItem
+          sx={{
+            width: { xs: '100%', md: 'unset' },
+            mr: { xs: 0, md: 2 },
+          }}
+          disablePadding
+        >
+          <Typography
+            component={Link}
+            href={ROUTES.sGHO}
+            variant="h2"
+            color="#F1F1F3"
+            sx={{ width: '100%', p: 4 }}
+            onClick={() => handleClick('sGHO', true)}
+          >
+            <Trans>sGHO</Trans>
+          </Typography>
+        </ListItem>
+      )}
 
       {md && (
         <ListItem
