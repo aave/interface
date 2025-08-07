@@ -159,11 +159,6 @@ export default function Staking() {
                     <Trans>Stake AAVE</Trans>
                   </Typography>
                 </StyledToggleButton>
-                <StyledToggleButton value="gho" disabled={mode === 'gho'}>
-                  <Typography variant="subheader1">
-                    <Trans>sGHO</Trans>
-                  </Typography>
-                </StyledToggleButton>
                 <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
                     <Trans>Stake ABPT</Trans>
