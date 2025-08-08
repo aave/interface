@@ -12,6 +12,7 @@ import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
+import { FormattedNumber } from '../primitives/FormattedNumber';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
 import { IncentivesTooltipContent } from './IncentivesTooltipContent';
@@ -331,36 +332,46 @@ const Content = ({
     }
   }
 
-  // const incentivesButtonValue = () => {
-  //   if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR < 10000) {
-  //     return (
-  //       <FormattedNumber
-  //         value={incentivesNetAPR}
-  //         percent
-  //         variant="secondary12"
-  //         color="text.secondary"
-  //       />
-  //     );
-  //   } else if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR > 9999) {
-  //     return (
-  //       <FormattedNumber
-  //         value={incentivesNetAPR}
-  //         percent
-  //         compact
-  //         variant="secondary12"
-  //         color="text.secondary"
-  //       />
-  //     );
-  //   } else if (incentivesNetAPR === 'Infinity') {
-  //     return (
-  //       <Typography variant="main12" color="text.secondary">
-  //         ∞
-  //       </Typography>
-  //     );
-  //   }
-  // };
-
   const incentivesButtonValue = () => {
+    // NOTE: For GHO incentives, we want to show the formatted number given its on sGHO page only
+
+    const hasGhoIncentives = incentives.some(
+      (incentive) =>
+        incentive.rewardTokenSymbol?.toLowerCase().includes('gho') ||
+        incentive.rewardTokenSymbol?.toLowerCase().includes('agho') ||
+        incentive.rewardTokenSymbol?.toLowerCase().includes('abasgho')
+    );
+
+    if (hasGhoIncentives) {
+      if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR < 10000) {
+        return (
+          <FormattedNumber
+            value={incentivesNetAPR}
+            percent
+            variant="secondary12"
+            color="text.secondary"
+          />
+        );
+      } else if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR > 9999) {
+        return (
+          <FormattedNumber
+            value={incentivesNetAPR}
+            percent
+            compact
+            variant="secondary12"
+            color="text.secondary"
+          />
+        );
+      } else if (incentivesNetAPR === 'Infinity') {
+        return (
+          <Typography variant="main12" color="text.secondary">
+            ∞
+          </Typography>
+        );
+      }
+    }
+
+    // Default behavior: show icon for non-GHO incentives
     return (
       <>
         <IncentivesIcon width="16" height="16" />
