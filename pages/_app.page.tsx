@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { ReactNode, useEffect, useState } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
+import { TransactionErrorBoundary } from 'src/components/ErrorBoundary/TransactionErrorBoundary';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
@@ -20,6 +21,7 @@ import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider'
 import { CowOrderToastProvider } from 'src/hooks/useCowOrderToast';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
+import { WalletGuard } from 'src/providers/WalletGuard';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
@@ -150,29 +152,33 @@ export default function MyApp(props: MyAppProps) {
                     <AddressBlocked>
                       <CowOrderToastProvider>
                         <ModalContextProvider>
-                          <SharedDependenciesProvider>
-                            <AppDataProvider>
-                              <GasStationProvider>
-                                {getLayout(<Component {...pageProps} />)}
-                                <SupplyModal />
-                                <WithdrawModal />
-                                <BorrowModal />
-                                <RepayModal />
-                                <CollateralChangeModal />
-                                <DebtSwitchModal />
-                                <ClaimRewardsModal />
-                                <EmodeModal />
-                                <SwapModal />
-                                <FaucetModal />
-                                <TransactionEventHandler />
-                                <SwitchModal />
-                                <StakingMigrateModal />
-                                <BridgeModal />
-                                <ReadOnlyModal />
-                                <CowOrderToast />
-                              </GasStationProvider>
-                            </AppDataProvider>
-                          </SharedDependenciesProvider>
+                          <WalletGuard>
+                            <SharedDependenciesProvider>
+                              <AppDataProvider>
+                                <GasStationProvider>
+                                  {getLayout(<Component {...pageProps} />)}
+                                  <TransactionErrorBoundary>
+                                    <SupplyModal />
+                                    <WithdrawModal />
+                                    <BorrowModal />
+                                    <RepayModal />
+                                    <CollateralChangeModal />
+                                    <DebtSwitchModal />
+                                    <ClaimRewardsModal />
+                                    <EmodeModal />
+                                    <SwapModal />
+                                    <FaucetModal />
+                                    <SwitchModal />
+                                    <StakingMigrateModal />
+                                    <BridgeModal />
+                                  </TransactionErrorBoundary>
+                                  <TransactionEventHandler />
+                                  <ReadOnlyModal />
+                                  <CowOrderToast />
+                                </GasStationProvider>
+                              </AppDataProvider>
+                            </SharedDependenciesProvider>
+                          </WalletGuard>
                         </ModalContextProvider>
                       </CowOrderToastProvider>
                     </AddressBlocked>
