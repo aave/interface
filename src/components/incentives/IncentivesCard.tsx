@@ -27,6 +27,7 @@ interface IncentivesCardProps {
   tooltip?: ReactNode;
   market: string;
   protocolAction?: ProtocolAction;
+  align?: 'center' | 'flex-end';
 }
 
 export const IncentivesCard = ({
