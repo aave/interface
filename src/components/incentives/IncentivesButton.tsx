@@ -345,28 +345,37 @@ const Content = ({
     if (hasGhoIncentives) {
       if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR < 10000) {
         return (
-          <FormattedNumber
-            value={incentivesNetAPR}
-            percent
-            variant="secondary12"
-            color="text.secondary"
-          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <FormattedNumber
+              value={incentivesNetAPR}
+              percent
+              variant="secondary12"
+              color="text.secondary"
+            />
+            <IncentivesIcon width="16" height="16" />
+          </Box>
         );
       } else if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR > 9999) {
         return (
-          <FormattedNumber
-            value={incentivesNetAPR}
-            percent
-            compact
-            variant="secondary12"
-            color="text.secondary"
-          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <FormattedNumber
+              value={incentivesNetAPR}
+              percent
+              compact
+              variant="secondary12"
+              color="text.secondary"
+            />
+            <IncentivesIcon width="16" height="16" />
+          </Box>
         );
       } else if (incentivesNetAPR === 'Infinity') {
         return (
-          <Typography variant="main12" color="text.secondary">
-            ∞
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Typography variant="main12" color="text.secondary">
+              ∞
+            </Typography>
+            <IncentivesIcon width="16" height="16" />
+          </Box>
         );
       }
     }
