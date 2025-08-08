@@ -1,4 +1,5 @@
 import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
@@ -6,6 +7,7 @@ import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -32,6 +34,7 @@ interface SupplyWrappedTokenActionProps extends BoxProps {
   symbol: string;
   tokenWrapperAddress: string;
   isWrongNetwork: boolean;
+  reserve: ComputedReserveData;
 }
 export const SupplyWrappedTokenActions = ({
   tokenIn,
@@ -41,7 +44,8 @@ export const SupplyWrappedTokenActions = ({
   tokenWrapperAddress,
   isWrongNetwork,
   sx,
-  ...props
+  reserve,
+  ...propsx
 }: SupplyWrappedTokenActionProps) => {
   const [user, estimateGasLimit, addTransaction, marketData] = useRootStore(
     useShallow((state) => [
@@ -174,6 +178,7 @@ export const SupplyWrappedTokenActions = ({
         asset: tokenIn,
         amount: amountToSupply,
         assetName: symbol,
+        amountUsd: valueToBigNumber(amountToSupply).multipliedBy(reserve.priceInUSD).toString(),
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
@@ -212,7 +217,7 @@ export const SupplyWrappedTokenActions = ({
       requiresApproval={requiresApproval}
       tryPermit={usePermit}
       sx={sx}
-      {...props}
+      {...propsx}
     />
   );
 };

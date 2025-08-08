@@ -1,4 +1,5 @@
 import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -148,6 +149,14 @@ export const WithdrawAndSwitchActions = ({
         outAsset: targetReserve.underlyingAsset,
         outAssetName: targetReserve.name,
         outAmount: parseUnits(route.outputAmount, targetReserve.decimals).toString(),
+        amountUsd: valueToBigNumber(parseUnits(route.inputAmount, poolReserve.decimals).toString())
+          .multipliedBy(poolReserve.priceInUSD)
+          .toString(),
+        outAmountUsd: valueToBigNumber(
+          parseUnits(route.outputAmount, targetReserve.decimals).toString()
+        )
+          .multipliedBy(targetReserve.priceInUSD)
+          .toString(),
       });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);

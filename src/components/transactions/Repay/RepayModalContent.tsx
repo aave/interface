@@ -289,6 +289,7 @@ export const RepayModalContent = ({
         isWrongNetwork={isWrongNetwork}
         symbol={modalSymbol}
         repayWithATokens={repayWithATokens}
+        maxAmountToRepay={maxAmountToRepay.toString(10)}
       />
     </>
   );

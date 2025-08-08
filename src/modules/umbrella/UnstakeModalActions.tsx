@@ -3,6 +3,7 @@ import {
   ProtocolAction,
   UmbrellaBatchHelperService,
 } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -11,6 +12,7 @@ import { parseUnits } from 'ethers/lib/utils';
 import { useEffect } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from 'src/components/transactions/utils';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -32,6 +34,7 @@ export interface UnStakeActionProps extends BoxProps {
   blocked: boolean;
   stakeData: MergedStakeData;
   redeemType: RedeemType;
+  reserve: ComputedReserveData;
 }
 
 export const UnStakeActions = ({
@@ -42,6 +45,7 @@ export const UnStakeActions = ({
   blocked,
   stakeData,
   redeemType,
+  reserve,
 }: UnStakeActionProps) => {
   const queryClient = useQueryClient();
   const [currentChainId, user, currentMarket, estimateGasLimit, addTransaction] = useRootStore(
@@ -171,6 +175,7 @@ export const UnStakeActions = ({
             : ProtocolAction.umbrellaStakeGatewayRedeem,
         amount: amountToUnStake,
         assetName: stakeData.symbol,
+        amountUsd: valueToBigNumber(amountToUnStake).multipliedBy(reserve.priceInUSD).toString(),
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.umbrella });

@@ -3,6 +3,7 @@ import {
   gasLimitRecommendations,
   ProtocolAction,
 } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -194,6 +195,14 @@ export const DebtSwitchActions = ({
         txState: 'success',
         previousState: `${route.outputAmount} variable ${poolReserve.symbol}`,
         newState: `${route.inputAmount} variable ${targetReserve.symbol}`,
+        amountUsd: valueToBigNumber(parseUnits(amountToSwap, poolReserve.decimals).toString())
+          .multipliedBy(poolReserve.priceInUSD)
+          .toString(),
+        outAmountUsd: valueToBigNumber(
+          parseUnits(amountToReceive, targetReserve.decimals).toString()
+        )
+          .multipliedBy(targetReserve.priceInUSD)
+          .toString(),
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });

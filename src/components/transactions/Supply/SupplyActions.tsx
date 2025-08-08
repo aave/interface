@@ -1,10 +1,12 @@
 import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -60,6 +62,7 @@ export const SupplyActions = React.memo(
         state.currentMarketData,
       ])
     );
+    const { reserves } = useAppDataContext();
     const {
       approvalTxState,
       mainTxState,
@@ -181,6 +184,12 @@ export const SupplyActions = React.memo(
           asset: poolAddress,
           amount: amountToSupply,
           assetName: symbol,
+          amountUsd: (() => {
+            const reserve = reserves.find((r) => r.underlyingAsset === poolAddress);
+            return reserve
+              ? valueToBigNumber(amountToSupply).multipliedBy(reserve.priceInUSD).toString()
+              : undefined;
+          })(),
         });
 
         queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });

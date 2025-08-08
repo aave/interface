@@ -5,6 +5,7 @@ import {
   StakeTokenService,
   UmbrellaBatchHelperService,
 } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -13,6 +14,7 @@ import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from 'src/components/transactions/utils';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -37,6 +39,7 @@ export interface StakeActionProps extends BoxProps {
   selectedToken: StakeInputAsset;
   event: string;
   isMaxSelected: boolean;
+  reserve: ComputedReserveData;
 }
 
 export const UmbrellaActions = ({
@@ -49,6 +52,7 @@ export const UmbrellaActions = ({
   event,
   stakeData,
   isMaxSelected,
+  reserve,
   ...props
 }: StakeActionProps) => {
   const queryClient = useQueryClient();
@@ -193,6 +197,7 @@ export const UmbrellaActions = ({
         action: ProtocolAction.umbrellaStake,
         amount: amountToStake,
         assetName: selectedToken.symbol,
+        amountUsd: valueToBigNumber(amountToStake).multipliedBy(reserve.priceInUSD).toString(),
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.umbrella });

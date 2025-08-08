@@ -276,6 +276,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
         amountToStake={amount || '0'}
         isWrongNetwork={isWrongNetwork}
         symbol={''}
+        reserve={poolReserve}
         blocked={
           displayBlockingStake !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)
         }

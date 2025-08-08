@@ -475,6 +475,7 @@ export const SupplyWrappedTokenModalContent = ({
           decimals={18}
           symbol={wrappedTokenConfig.tokenIn.symbol}
           isWrongNetwork={isWrongNetwork}
+          reserve={poolReserve}
         />
       ) : (
         <SupplyActions
