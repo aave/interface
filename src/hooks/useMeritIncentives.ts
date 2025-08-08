@@ -732,7 +732,7 @@ export const useMeritIncentives = ({
         return null;
       }
 
-      const meritIncentivesAPR = APR / 100;
+      const meritIncentivesAPR = maxAPR / 100;
 
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
         return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
