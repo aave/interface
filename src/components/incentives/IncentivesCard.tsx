@@ -1,6 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
@@ -23,7 +23,6 @@ interface IncentivesCardProps {
   address?: string;
   variant?: 'main14' | 'main16' | 'secondary14';
   symbolsVariant?: 'secondary14' | 'secondary16';
-  align?: 'center' | 'flex-end';
   color?: string;
   tooltip?: ReactNode;
   market: string;
@@ -43,8 +42,6 @@ export const IncentivesCard = ({
   market,
   protocolAction,
 }: IncentivesCardProps) => {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
-
   const protocolAPY = typeof value === 'string' ? parseFloat(value) : value;
 
   const protocolIncentivesAPR =
@@ -80,13 +77,11 @@ export const IncentivesCard = ({
     <Box
       sx={{
         display: 'flex',
-        flexDirection: isTableChangedToCards ? 'column' : 'row',
-        alignItems: isTableChangedToCards ? align || { xs: 'flex-end', xsm: 'center' } : 'center',
-        justifyContent: isTableChangedToCards
-          ? 'center'
-          : align || { xs: 'flex-end', xsm: 'center' },
+        flexDirection: 'column',
+        alignItems: align || { xs: 'flex-end', xsm: 'center' },
+        justifyContent: 'center',
         textAlign: 'center',
-        gap: isTableChangedToCards ? 0 : 1,
+        gap: 1,
       }}
     >
       {value.toString() !== '-1' ? (
@@ -106,22 +101,13 @@ export const IncentivesCard = ({
         <NoData variant={variant} color={color || 'text.secondary'} />
       )}
       <Box
-        sx={
-          isTableChangedToCards
-            ? {
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '4px',
-              }
-            : {
-                display: 'flex',
-                gap: '4px',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-              }
-        }
+        sx={{
+          display: 'flex',
+          gap: '4px',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
         <IncentivesButton
           incentives={incentives}

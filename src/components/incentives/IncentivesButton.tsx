@@ -19,6 +19,50 @@ import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
 
+export type IconProps = {
+  className?: string;
+  width?: string | number;
+  height?: string | number;
+  viewBox?: string;
+  style?: React.CSSProperties;
+  color?: string;
+};
+
+export type IconWrapperProps = {
+  children?: React.ReactNode;
+} & IconProps;
+
+export const Icon = ({
+  className = '',
+  width = '24px',
+  height = '24px',
+  viewBox = '0 0 20 20',
+  children,
+  color,
+  ...props
+}: IconWrapperProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox={viewBox}
+      data-color={color}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      className={className}
+      style={{
+        display: 'flex',
+        flexShrink: 0,
+        ...props.style,
+      }}
+      {...props}
+    >
+      {children}
+    </svg>
+  );
+};
+
 interface IncentivesButtonProps {
   symbol: string;
   incentives?: ReserveIncentiveResponse[];
@@ -27,6 +71,39 @@ interface IncentivesButtonProps {
   protocolAction?: ProtocolAction;
   protocolAPY?: number;
   address?: string;
+}
+
+export function IncentivesIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      {...props}
+      viewBox="0 0 16 16"
+      className={props.className}
+      style={{
+        display: 'flex',
+        flexShrink: 0,
+        ...props.style,
+      }}
+    >
+      <circle
+        cx="7.2"
+        cy="7.2"
+        r="7.2"
+        stroke="#9391F7"
+        strokeWidth="1.5"
+        transform="matrix(1 0 0 -1 .8 15.2)"
+      />
+      <path
+        stroke="#BCBBFF"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="m4.557 8.082.891 1.132a1 1 0 0 0 1.591-.026l1.75-2.376a1 1 0 0 1 1.591-.026l1.064 1.35"
+      />
+    </svg>
+  );
 }
 
 const BlankIncentives = () => {
@@ -285,55 +362,9 @@ const Content = ({
 
   const incentivesButtonValue = () => {
     return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        fill="none"
-        style={{ overflow: 'visible' }}
-      >
-        <defs>
-          <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#B6509E" />
-            <stop offset="100%" stopColor="#2EBAC6" />
-          </linearGradient>
-          <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#2EBAC6" />
-            <stop offset="100%" stopColor="#B6509E" />
-          </linearGradient>
-        </defs>
-        <ellipse
-          className="web3-ellipse-1"
-          cx="3.5"
-          cy="8"
-          rx="2.625"
-          ry="3.875"
-          fill="url(#gradient1)"
-          stroke="white"
-          strokeWidth="1.25"
-        />
-        <ellipse
-          className="web3-ellipse-2"
-          cx="7.5"
-          cy="8"
-          rx="3.125"
-          ry="5.125"
-          fill="url(#gradient1)"
-          stroke="white"
-          strokeWidth="1.25"
-        />
-        <ellipse
-          className="web3-ellipse-3"
-          cx="12"
-          cy="8"
-          rx="3.875"
-          ry="6.125"
-          fill="url(#gradient2)"
-          stroke="white"
-          strokeWidth="1.25"
-        />
-      </svg>
+      <>
+        <IncentivesIcon width="16" height="16" />
+      </>
     );
   };
 
@@ -342,7 +373,7 @@ const Content = ({
   return (
     <Box
       sx={() => ({
-        p: { xs: '0 4px', xsm: '2px 4px' },
+        // p: { xs: '0 4px', xsm: '2px 4px' },
         // border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
         borderRadius: '4px',
         cursor: 'pointer',
@@ -350,7 +381,7 @@ const Content = ({
         alignItems: 'center',
         justifyContent: 'center',
         transition: 'opacity 0.2s ease',
-        bgcolor: open ? 'action.hover' : 'transparent',
+        // bgcolor: open ? 'action.hover' : 'transparent',
         '&:hover': {
           bgcolor: 'action.hover',
           borderColor: 'action.disabled',
@@ -362,7 +393,7 @@ const Content = ({
         setOpen(!open);
       }}
     >
-      <Box sx={{ mr: 0.5, ml: 0.5, pt: '5px' }}>
+      <Box sx={{ p: 0.5 }}>
         {plus ? '+' : ''} {incentivesButtonValue()}
       </Box>
       {/* <Box sx={{ display: 'inline-flex' }}>
