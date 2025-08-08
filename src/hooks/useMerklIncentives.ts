@@ -94,7 +94,22 @@ type ReserveIncentiveAdditionalData = {
 };
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
-  ReserveIncentiveAdditionalData;
+  ReserveIncentiveAdditionalData & {
+    breakdown: MerklIncentivesBreakdown;
+  };
+
+export type MerklIncentivesBreakdown = {
+  protocolAPY: number;
+  protocolIncentivesAPR: number;
+  merklIncentivesAPR: number;
+  totalAPY: number;
+  isBorrow: boolean;
+  breakdown: {
+    protocol: number;
+    protocolIncentives: number;
+    merklIncentives: number;
+  };
+};
 
 const allAaveAssets = [
   AaveV3Ethereum.ASSETS,
@@ -172,10 +187,14 @@ export const useMerklIncentives = ({
   market,
   rewardedAsset,
   protocolAction,
+  protocolAPY = 0,
+  protocolIncentives = [],
 }: {
   market: string;
   rewardedAsset?: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   return useQuery({
     queryFn: async () => {
@@ -215,7 +234,7 @@ export const useMerklIncentives = ({
         return null;
       }
 
-      const apr = opportunity.apr / 100;
+      const merklIncentivesAPR = opportunity.apr / 100;
 
       const rewardToken = opportunity.rewardsRecord.breakdowns[0].token;
 
@@ -223,15 +242,36 @@ export const useMerklIncentives = ({
         return null;
       }
 
+      const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
+        return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
+      }, 0);
+
+      const isBorrow = protocolAction === ProtocolAction.borrow;
+      const totalAPY = isBorrow
+        ? protocolAPY - protocolIncentivesAPR - merklIncentivesAPR
+        : protocolAPY + protocolIncentivesAPR + merklIncentivesAPR;
+
       const incentiveAdditionalData = rewardedAsset
         ? additionalIncentiveData[rewardedAsset]
         : undefined;
 
       return {
-        incentiveAPR: apr.toString(),
+        incentiveAPR: merklIncentivesAPR.toString(),
         rewardTokenAddress: rewardToken.address,
         rewardTokenSymbol: rewardToken.symbol,
         ...incentiveAdditionalData,
+        breakdown: {
+          protocolAPY,
+          protocolIncentivesAPR,
+          merklIncentivesAPR,
+          totalAPY,
+          isBorrow,
+          breakdown: {
+            protocol: protocolAPY,
+            protocolIncentives: protocolIncentivesAPR,
+            merklIncentives: merklIncentivesAPR,
+          },
+        } as MerklIncentivesBreakdown,
       } as ExtendedReserveIncentiveResponse;
     },
   });

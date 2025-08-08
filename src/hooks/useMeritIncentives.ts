@@ -76,6 +76,19 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customForumLink: string;
 };
 
+export type MeritIncentivesBreakdown = {
+  protocolAPY: number;
+  protocolIncentivesAPR: number;
+  meritIncentivesAPR: number;
+  totalAPY: number;
+  isBorrow: boolean;
+  breakdown: {
+    protocol: number;
+    protocolIncentives: number;
+    meritIncentives: number;
+  };
+};
+
 const url = 'https://apps.aavechan.com/api/merit/aprs';
 
 export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
@@ -670,10 +683,14 @@ export const useMeritIncentives = ({
   symbol,
   market,
   protocolAction,
+  protocolAPY = 0,
+  protocolIncentives = [],
 }: {
   symbol: string;
   market: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   return useQuery({
     queryFn: async () => {
@@ -715,14 +732,37 @@ export const useMeritIncentives = ({
         return null;
       }
 
+      const meritIncentivesAPR = maxAPR / 100;
+
+      const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
+        return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
+      }, 0);
+
+      const isBorrow = protocolAction === ProtocolAction.borrow;
+      const totalAPY = isBorrow
+        ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPR
+        : protocolAPY + protocolIncentivesAPR + meritIncentivesAPR;
+
       return {
-        incentiveAPR: (maxAPR / 100).toString(),
+        incentiveAPR: meritIncentivesAPR.toString(),
         rewardTokenAddress: selectedIncentive.rewardTokenAddress,
         rewardTokenSymbol: selectedIncentive.rewardTokenSymbol,
         action: selectedIncentive.action,
         customMessage: selectedIncentive.customMessage,
         customForumLink: selectedIncentive.customForumLink,
-      } as ExtendedReserveIncentiveResponse;
+        breakdown: {
+          protocolAPY,
+          protocolIncentivesAPR,
+          meritIncentivesAPR,
+          totalAPY,
+          isBorrow,
+          breakdown: {
+            protocol: protocolAPY,
+            protocolIncentives: protocolIncentivesAPR,
+            meritIncentives: meritIncentivesAPR,
+          },
+        } as MeritIncentivesBreakdown,
+      } as ExtendedReserveIncentiveResponse & { breakdown: MeritIncentivesBreakdown };
     },
   });
 };
