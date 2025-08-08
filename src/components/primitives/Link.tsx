@@ -135,4 +135,5 @@ export const ROUTES = {
   history: '/history',
   bridge: '/bridge',
   safetyModule: '/safety-module',
+  sGHO: '/sgho',
 };

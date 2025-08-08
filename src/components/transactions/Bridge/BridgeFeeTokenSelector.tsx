@@ -111,7 +111,7 @@ export const BridgeFeeTokenSelector = ({
               }}
             >
               <Box display="flex" alignItems={'center'}>
-                <TokenIcon sx={{ fontSize: '1em', paddingRight: '4px' }} symbol={token.symbol} />
+                <TokenIcon sx={{ fontSize: '1em', mr: 1 }} symbol={token.symbol} />
                 {token.symbol}
               </Box>
             </MenuItem>

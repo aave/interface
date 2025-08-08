@@ -1,7 +1,23 @@
-import { init, setOptOut, track } from '@amplitude/analytics-browser';
+import { add, init, setOptOut, track } from '@amplitude/analytics-browser';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
+
+// Plugin to ensure all events have app_context
+const createAppContextPlugin = (context: string) => ({
+  name: 'app-context-plugin',
+  type: 'enrichment' as const,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  execute: async (event: any) => {
+    return {
+      ...event,
+      event_properties: {
+        ...event.event_properties,
+        app_context: context,
+      },
+    };
+  },
+});
 
 const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || '';
 
@@ -45,6 +61,7 @@ export const createAnalyticsSlice: StateCreator<
         walletAddress: get().account,
         market: properties.market ?? get().currentMarket,
         walletType: get().walletType,
+        app_context: 'app', // Fallback in case plugin doesn't apply
       };
 
       try {
@@ -77,6 +94,7 @@ export const createAnalyticsSlice: StateCreator<
               platform: true,
             },
           });
+          add(createAppContextPlugin('app'));
           set({ eventsTrackingInitialized: true });
         }
 
@@ -93,6 +111,7 @@ export const createAnalyticsSlice: StateCreator<
               platform: false,
             },
           });
+          add(createAppContextPlugin('app'));
           set({ eventsTrackingInitialized: true });
         }
 

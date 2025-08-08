@@ -10,7 +10,7 @@ import { useShallow } from 'zustand/shallow';
 import { BorrowInfo } from '../BorrowInfo';
 import { ReserveEModePanel } from '../ReserveEModePanel';
 import { PanelRow, PanelTitle } from '../ReservePanels';
-import { SavingsGho } from './SavingsGho';
+// import { SavingsGho } from './SavingsGho';
 
 type GhoReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -90,15 +90,15 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           </Box>
         </Box>
       </PanelRow>
-      <Divider sx={{ my: { xs: 6, sm: 10 } }} />
-      <PanelRow>
+      {/* <Divider sx={{ my: { xs: 6, sm: 10 } }} /> */}
+      {/* <PanelRow>
         <PanelTitle>
           <Trans>Savings GHO</Trans>
         </PanelTitle>
         <Box>
           <SavingsGho />
         </Box>
-      </PanelRow>
+      </PanelRow> */}
       <Divider sx={{ my: { xs: 6, sm: 10 } }} />
       <PanelRow>
         <PanelTitle>
