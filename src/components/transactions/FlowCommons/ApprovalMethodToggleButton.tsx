@@ -10,19 +10,21 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import * as React from 'react';
+import { useState } from 'react';
 import { ApprovalMethod } from 'src/store/walletSlice';
 
 interface ApprovalMethodToggleButtonProps {
   currentMethod: ApprovalMethod;
-  setMethod: (newMethod: ApprovalMethod) => void;
+  setMethod: (method: ApprovalMethod) => void;
+  showBatchOption?: boolean;
 }
 
 export const ApprovalMethodToggleButton = ({
   currentMethod,
   setMethod,
+  showBatchOption = false,
 }: ApprovalMethodToggleButtonProps) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
@@ -36,16 +38,16 @@ export const ApprovalMethodToggleButton = ({
       <Box
         onClick={handleClick}
         sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-        data-cy={`approveButtonChange`}
       >
         <Typography variant="subheader2" color="info.main">
-          <Trans>{currentMethod}</Trans>
+          {currentMethod === ApprovalMethod.BATCH && <Trans>Batch Transaction</Trans>}
+          {currentMethod === ApprovalMethod.PERMIT && <Trans>Signature</Trans>}
+          {currentMethod === ApprovalMethod.APPROVE && <Trans>Transaction</Trans>}
         </Typography>
         <SvgIcon sx={{ fontSize: 16, ml: 1, color: 'info.main' }}>
           <CogIcon />
         </SvgIcon>
       </Box>
-
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -56,42 +58,49 @@ export const ApprovalMethodToggleButton = ({
         keepMounted={true}
         data-cy={`approveMenu_${currentMethod}`}
       >
+        {showBatchOption && (
+          <MenuItem
+            onClick={() => {
+              setMethod(ApprovalMethod.BATCH); 
+              handleClose();
+            }}
+            selected={currentMethod === ApprovalMethod.BATCH}
+          >
+            <ListItemIcon>
+              <SvgIcon>{currentMethod === ApprovalMethod.BATCH && <CheckIcon />}</SvgIcon>
+            </ListItemIcon>
+            <ListItemText>
+              <Trans>Batch Transaction</Trans>
+            </ListItemText>
+          </MenuItem>
+        )}
         <MenuItem
-          data-cy={`approveOption_${ApprovalMethod.PERMIT}`}
+          onClick={() => {
+            setMethod(ApprovalMethod.PERMIT); 
+            handleClose();
+          }}
           selected={currentMethod === ApprovalMethod.PERMIT}
-          value={ApprovalMethod.PERMIT}
-          onClick={() => {
-            if (currentMethod === ApprovalMethod.APPROVE) {
-              setMethod(ApprovalMethod.PERMIT);
-            }
-            handleClose();
-          }}
         >
-          <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
-            <Trans>{ApprovalMethod.PERMIT}</Trans>
-          </ListItemText>
           <ListItemIcon>
-            <SvgIcon>{currentMethod === ApprovalMethod.PERMIT && <CheckIcon />}</SvgIcon>
+          <SvgIcon>{currentMethod === ApprovalMethod.PERMIT && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
+          <ListItemText>
+            <Trans>Signed Message</Trans>
+          </ListItemText>
         </MenuItem>
-
         <MenuItem
-          data-cy={`approveOption_${ApprovalMethod.APPROVE}`}
-          selected={currentMethod === ApprovalMethod.APPROVE}
-          value={ApprovalMethod.APPROVE}
           onClick={() => {
-            if (currentMethod === ApprovalMethod.PERMIT) {
-              setMethod(ApprovalMethod.APPROVE);
-            }
+            setMethod(ApprovalMethod.APPROVE); 
             handleClose();
           }}
+          selected={currentMethod === ApprovalMethod.APPROVE}
         >
-          <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
-            <Trans>{ApprovalMethod.APPROVE}</Trans>
-          </ListItemText>
           <ListItemIcon>
-            <SvgIcon>{currentMethod === ApprovalMethod.APPROVE && <CheckIcon />}</SvgIcon>
+          <SvgIcon>{currentMethod === ApprovalMethod.APPROVE && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
+          <ListItemText>
+            <Trans>Transaction</Trans>
+          </ListItemText>
         </MenuItem>
       </Menu>
     </>

@@ -1,3 +1,4 @@
+import { WalletCapabilities } from 'src/hooks/useGetWalletCapabilities';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
@@ -5,6 +6,7 @@ import { RootStore } from './root';
 export enum ApprovalMethod {
   APPROVE = 'Transaction',
   PERMIT = 'Signed message',
+  BATCH = 'Batch transaction',
 }
 
 export interface WalletSlice {
@@ -19,6 +21,8 @@ export interface WalletSlice {
   refreshWalletApprovalMethod: () => void;
   connectedAccountIsContract: boolean;
   setConnectedAccountIsContract: (isContract: boolean) => void;
+  walletCapabilities: WalletCapabilities | null;
+  setWalletCapabilities: (capabilities: WalletCapabilities | null) => void;
 }
 
 const getWalletPreferences = () => {
@@ -78,5 +82,9 @@ export const createWalletSlice: StateCreator<
   connectedAccountIsContract: false,
   setConnectedAccountIsContract(isContract) {
     set({ connectedAccountIsContract: isContract });
+  },
+  walletCapabilities: null,
+  setWalletCapabilities(capabilities) {
+    set({ walletCapabilities: capabilities });
   },
 });
