@@ -1,11 +1,13 @@
 import { ApproveType, MAX_UINT_AMOUNT, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
-import { constants } from 'ethers';
+import { constants, ethers } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
+import { useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { isUSDTOnEthereum, needsUSDTApprovalReset } from 'src/utils/usdtHelpers';
 import { useShallow } from 'zustand/shallow';
 
 import { useModalContext } from './useModal';
@@ -28,6 +30,7 @@ export const useApprovalTx = ({
   onSignTxCompleted,
   chainId,
   amountToApprove,
+  setShowUSDTResetWarning,
 }: {
   usePermit: boolean;
   approvedAmount: ApproveType | undefined;
@@ -40,6 +43,7 @@ export const useApprovalTx = ({
   onSignTxCompleted?: (signedParams: SignedParams) => void;
   chainId?: number;
   amountToApprove?: string;
+  setShowUSDTResetWarning?: (showUSDTResetWarning: boolean) => void;
 }) => {
   const [generateApproval, generateSignatureRequest, estimateGasLimit, addTransaction] =
     useRootStore(
@@ -55,9 +59,100 @@ export const useApprovalTx = ({
 
   const { approvalTxState, setApprovalTxState, setTxError } = useModalContext();
 
+  const [requiresApprovalReset, setRequiresApprovalReset] = useState(false);
+
+  // Warning for USDT on Ethereum approval reset
+  useEffect(() => {
+    if (
+      !chainId ||
+      !isUSDTOnEthereum(symbol, chainId) ||
+      !setShowUSDTResetWarning ||
+      !signatureAmount ||
+      signatureAmount === '0'
+    ) {
+      return;
+    }
+
+    const amountToApprove = parseUnits(signatureAmount, decimals).toString();
+    const currentApproved = parseUnits(
+      approvedAmount?.amount?.toString() || '0',
+      decimals
+    ).toString();
+
+    if (needsUSDTApprovalReset(symbol, chainId, currentApproved, amountToApprove)) {
+      setShowUSDTResetWarning(true);
+      setRequiresApprovalReset(true);
+    } else {
+      setShowUSDTResetWarning(false);
+      setRequiresApprovalReset(false);
+    }
+  }, [symbol, chainId, approvedAmount?.amount, signatureAmount, setShowUSDTResetWarning, decimals]);
+
   const approval = async () => {
     try {
       if (requiresApproval && approvedAmount) {
+        // Handle USDT approval reset first
+        if (requiresApprovalReset) {
+          const resetData = {
+            spender: approvedAmount.spender,
+            user: approvedAmount.user,
+            token: approvedAmount.token,
+            amount: '0',
+          };
+
+          try {
+            if (usePermit) {
+              const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+              const signatureRequest = await generateSignatureRequest(
+                {
+                  ...resetData,
+                  deadline,
+                },
+                { chainId }
+              );
+              setApprovalTxState({ ...approvalTxState, loading: true });
+              await signTxData(signatureRequest);
+              setApprovalTxState({
+                loading: false,
+                success: false,
+              });
+            } else {
+              // Create direct ERC20 approval transaction for reset to 0
+              const abi = new ethers.utils.Interface([
+                'function approve(address spender, uint256 amount)',
+              ]);
+              const encodedData = abi.encodeFunctionData('approve', [approvedAmount.spender, '0']);
+              const resetTx = {
+                data: encodedData,
+                to: approvedAmount.token,
+                from: approvedAmount.user,
+              };
+              const resetTxWithGasEstimation = await estimateGasLimit(resetTx, chainId);
+              setApprovalTxState({ ...approvalTxState, loading: true });
+              const resetResponse = await sendTx(resetTxWithGasEstimation);
+              await resetResponse.wait(1);
+              setApprovalTxState({
+                loading: false,
+                success: false,
+              });
+            }
+          } catch (error) {
+            const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+            console.error(parsedError);
+            setTxError(parsedError);
+            setApprovalTxState({
+              txHash: undefined,
+              loading: false,
+            });
+          }
+          if (onApprovalTxConfirmed) {
+            onApprovalTxConfirmed();
+          }
+
+          return;
+        }
+
+        // Normal approval logic
         if (usePermit) {
           setApprovalTxState({ ...approvalTxState, loading: true });
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
@@ -119,5 +214,6 @@ export const useApprovalTx = ({
 
   return {
     approval,
+    requiresApprovalReset,
   };
 };
