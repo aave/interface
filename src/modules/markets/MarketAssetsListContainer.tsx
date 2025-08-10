@@ -11,7 +11,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { getGhoReserve, GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/events';
@@ -48,14 +48,14 @@ export const MarketAssetsListContainer = () => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
 
-  const ghoReserve = getGhoReserve(reserves);
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
 
   const filteredData = reserves
     // Filter out any non-active reserves
     .filter((res) => res.isActive)
     // Filter out GHO if the banner is being displayed
-    .filter((res) => (displayGhoBanner ? res !== ghoReserve : true))
+    //* Disabled to always show GHO in the core markets list as per issue #2573
+    //.filter((res) => (displayGhoBanner ? res !== ghoReserve : true))
     // filter out any that don't meet search term criteria
     .filter((res) => {
       if (!searchTerm) return true;
@@ -104,7 +104,7 @@ export const MarketAssetsListContainer = () => {
     >
       {displayGhoBanner && (
         <Box mb={4}>
-          <SavingsGhoBanner reserve={ghoReserve} />
+          <SavingsGhoBanner />
         </Box>
       )}
 
