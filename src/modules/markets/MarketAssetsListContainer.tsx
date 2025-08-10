@@ -53,9 +53,6 @@ export const MarketAssetsListContainer = () => {
   const filteredData = reserves
     // Filter out any non-active reserves
     .filter((res) => res.isActive)
-    // Filter out GHO if the banner is being displayed
-    //* Disabled to always show GHO in the core markets list as per issue #2573
-    //.filter((res) => (displayGhoBanner ? res !== ghoReserve : true))
     // filter out any that don't meet search term criteria
     .filter((res) => {
       if (!searchTerm) return true;
