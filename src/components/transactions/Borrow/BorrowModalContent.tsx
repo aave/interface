@@ -64,8 +64,6 @@ export const BorrowModalContent = ({
   // amount calculations
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user);
 
-  console.log('maxAmountToBorrow', maxAmountToBorrow);
-
   // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected
   const handleChange = (_value: string) => {

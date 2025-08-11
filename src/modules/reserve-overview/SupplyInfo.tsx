@@ -157,6 +157,7 @@ export const SupplyInfo = ({
             variant="main16"
             market={currentMarketData.market}
             protocolAction={ProtocolAction.supply}
+            inlineIncentives={true}
           />
         </PanelItem>
         {reserve.unbacked && reserve.unbacked !== '0' && (

@@ -28,6 +28,7 @@ interface IncentivesCardProps {
   market: string;
   protocolAction?: ProtocolAction;
   align?: 'center' | 'flex-end';
+  inlineIncentives?: boolean;
 }
 
 export const IncentivesCard = ({
@@ -42,6 +43,7 @@ export const IncentivesCard = ({
   tooltip,
   market,
   protocolAction,
+  inlineIncentives = false,
 }: IncentivesCardProps) => {
   const protocolAPY = typeof value === 'string' ? parseFloat(value) : value;
 
@@ -83,22 +85,52 @@ export const IncentivesCard = ({
     ? protocolAPY - (protocolIncentivesAPR as number) - meritIncentivesAPR - merklIncentivesAPR
     : protocolAPY + (protocolIncentivesAPR as number) + meritIncentivesAPR + merklIncentivesAPR;
 
+  const incentivesContent = (
+    <>
+      <IncentivesButton
+        incentives={incentives}
+        symbol={symbol}
+        market={market}
+        protocolAction={protocolAction}
+        protocolAPY={protocolAPY}
+        address={address}
+      />
+      <MeritIncentivesButton
+        symbol={symbol}
+        market={market}
+        protocolAction={protocolAction}
+        protocolAPY={protocolAPY}
+        protocolIncentives={incentives || []}
+      />
+      <MerklIncentivesButton
+        market={market}
+        rewardedAsset={address}
+        protocolAction={protocolAction}
+        protocolAPY={protocolAPY}
+        protocolIncentives={incentives || []}
+      />
+      <EthenaIncentivesButton rewardedAsset={address} />
+      <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+      <SonicIncentivesButton rewardedAsset={address} />
+    </>
+  );
+
   return (
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: align || { xs: 'flex-end', xsm: 'center' },
-        justifyContent: 'center',
-        textAlign: 'center',
-        gap: 1,
+        flexDirection: inlineIncentives ? 'row' : 'column',
+        alignItems: inlineIncentives ? 'center' : align || { xs: 'flex-end', xsm: 'center' },
+        justifyContent: inlineIncentives ? 'flex-start' : 'center',
+        textAlign: inlineIncentives ? 'left' : 'center',
+        gap: inlineIncentives ? 1 : 1,
       }}
     >
       {value.toString() !== '-1' ? (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {displayAPY === 'Infinity' ? (
             <Typography variant={variant} color={color || 'text.secondary'}>
-              ∞%
+              ∞ %
             </Typography>
           ) : (
             <FormattedNumber
@@ -112,45 +144,35 @@ export const IncentivesCard = ({
             />
           )}
           {tooltip}
+          {inlineIncentives && (
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '4px',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+              }}
+            >
+              {incentivesContent}
+            </Box>
+          )}
         </Box>
       ) : (
         <NoData variant={variant} color={color || 'text.secondary'} />
       )}
-      <Box
-        sx={{
-          display: 'flex',
-          gap: '4px',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <IncentivesButton
-          incentives={incentives}
-          symbol={symbol}
-          market={market}
-          protocolAction={protocolAction}
-          protocolAPY={protocolAPY}
-          address={address}
-        />
-        <MeritIncentivesButton
-          symbol={symbol}
-          market={market}
-          protocolAction={protocolAction}
-          protocolAPY={protocolAPY}
-          protocolIncentives={incentives || []}
-        />
-        <MerklIncentivesButton
-          market={market}
-          rewardedAsset={address}
-          protocolAction={protocolAction}
-          protocolAPY={protocolAPY}
-          protocolIncentives={incentives || []}
-        />
-        <EthenaIncentivesButton rewardedAsset={address} />
-        <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-        <SonicIncentivesButton rewardedAsset={address} />
-      </Box>
+      {!inlineIncentives && (
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '4px',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {incentivesContent}
+        </Box>
+      )}
     </Box>
   );
 };

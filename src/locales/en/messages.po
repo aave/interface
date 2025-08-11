@@ -511,6 +511,8 @@ msgstr "Switch Network"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoDepositPanel.tsx
@@ -877,6 +879,10 @@ msgstr "Please connect your wallet to see migration tool."
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Protocol Incentives"
+msgstr "Protocol Incentives"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
@@ -1537,6 +1543,10 @@ msgstr "Deposit GHO"
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Website"
 msgstr "Website"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Protocol APY"
+msgstr "Protocol APY"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
@@ -2698,6 +2708,7 @@ msgid "Amount After Fee"
 msgstr "Amount After Fee"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Total APY"
 msgstr "Total APY"
 
@@ -3233,6 +3244,8 @@ msgstr "Amount must be greater than 0"
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
