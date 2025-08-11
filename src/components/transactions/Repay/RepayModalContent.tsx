@@ -304,6 +304,7 @@ export const RepayModalContent = ({
         repayWithATokens={repayWithATokens}
         setShowUSDTResetWarning={setShowUSDTResetWarning}
         chainId={currentChainId}
+        maxAmountToRepay={maxAmountToRepay.toString(10)}
       />
     </>
   );

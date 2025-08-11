@@ -118,7 +118,7 @@ const allAaveAssets = [
 const additionalIncentiveData: Record<string, ReserveIncentiveAdditionalData> = {
   [AaveV3Ethereum.ASSETS.USDe.A_TOKEN]: {
     customMessage:
-      'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe.',
+      'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate for the forseeable future.',
   },
   [AaveV3Ethereum.ASSETS.USDtb.A_TOKEN]: {
     customMessage:

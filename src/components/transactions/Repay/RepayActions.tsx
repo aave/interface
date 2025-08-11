@@ -1,4 +1,5 @@
 import { gasLimitRecommendations, InterestRate, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -31,6 +32,7 @@ export interface RepayActionProps extends BoxProps {
   maxApproveNeeded: string;
   setShowUSDTResetWarning?: (showUSDTResetWarning: boolean) => void;
   chainId?: number;
+  maxAmountToRepay: string;
 }
 
 export const RepayActions = ({
@@ -45,6 +47,7 @@ export const RepayActions = ({
   maxApproveNeeded,
   setShowUSDTResetWarning,
   chainId,
+  maxAmountToRepay,
   ...props
 }: RepayActionProps) => {
   const [
@@ -203,8 +206,11 @@ export const RepayActions = ({
         action,
         txState: 'success',
         asset: poolAddress,
-        amount: amountToRepay,
+        amount: amountToRepay === '-1' ? maxAmountToRepay : amountToRepay,
         assetName: symbol,
+        amountUsd: valueToBigNumber(amountToRepay === '-1' ? maxAmountToRepay : amountToRepay)
+          .multipliedBy(poolReserve.priceInUSD)
+          .toString(),
       });
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
