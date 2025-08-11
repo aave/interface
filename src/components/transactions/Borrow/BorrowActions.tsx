@@ -6,6 +6,7 @@ import {
   MAX_UINT_AMOUNT,
   ProtocolAction,
 } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -126,6 +127,9 @@ export const BorrowActions = React.memo(
           asset: poolAddress,
           amount: amountToBorrow,
           assetName: poolReserve.name,
+          amountUsd: valueToBigNumber(amountToBorrow)
+            .multipliedBy(poolReserve.priceInUSD)
+            .toString(),
         });
 
         queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
