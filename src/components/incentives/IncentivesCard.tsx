@@ -1,6 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
@@ -47,8 +47,11 @@ export const IncentivesCard = ({
 
   const protocolIncentivesAPR =
     incentives?.reduce((sum, inc) => {
-      return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
-    }, 0) || 0;
+      if (inc.incentiveAPR === 'Infinity' || sum === 'Infinity') {
+        return 'Infinity';
+      }
+      return sum + +inc.incentiveAPR;
+    }, 0 as number | 'Infinity') || 0;
 
   const { data: meritIncentives } = useMeritIncentives({
     symbol,
@@ -70,9 +73,15 @@ export const IncentivesCard = ({
   const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
 
   const isBorrow = protocolAction === ProtocolAction.borrow;
-  const displayAPY = isBorrow
-    ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPR - merklIncentivesAPR
-    : protocolAPY + protocolIncentivesAPR + meritIncentivesAPR + merklIncentivesAPR;
+
+  // If any incentive is infinite, the total should be infinite
+  const hasInfiniteIncentives = protocolIncentivesAPR === 'Infinity';
+
+  const displayAPY = hasInfiniteIncentives
+    ? 'Infinity'
+    : isBorrow
+    ? protocolAPY - (protocolIncentivesAPR as number) - meritIncentivesAPR - merklIncentivesAPR
+    : protocolAPY + (protocolIncentivesAPR as number) + meritIncentivesAPR + merklIncentivesAPR;
 
   return (
     <Box
@@ -87,15 +96,21 @@ export const IncentivesCard = ({
     >
       {value.toString() !== '-1' ? (
         <Box sx={{ display: 'flex' }}>
-          <FormattedNumber
-            data-cy={`apy`}
-            value={displayAPY}
-            percent
-            variant={variant}
-            symbolsVariant={symbolsVariant}
-            color={color}
-            symbolsColor={color}
-          />
+          {displayAPY === 'Infinity' ? (
+            <Typography variant={variant} color={color || 'text.secondary'}>
+              ∞%
+            </Typography>
+          ) : (
+            <FormattedNumber
+              data-cy={`apy`}
+              value={displayAPY}
+              percent
+              variant={variant}
+              symbolsVariant={symbolsVariant}
+              color={color}
+              symbolsColor={color}
+            />
+          )}
           {tooltip}
         </Box>
       ) : (

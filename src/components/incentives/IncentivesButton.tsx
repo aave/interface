@@ -20,6 +20,8 @@ import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
 
+const INFINITY = 'Infinity';
+
 export type IconProps = {
   className?: string;
   width?: string | number;
@@ -263,18 +265,16 @@ export const IncentivesButton = ({
     }
   }
 
-  const isIncentivesInfinity = incentives.some(
-    (incentive) => incentive.incentiveAPR === 'Infinity'
-  );
+  const isIncentivesInfinity = incentives.some((incentive) => incentive.incentiveAPR === INFINITY);
   const incentivesAPRSum = isIncentivesInfinity
-    ? 'Infinity'
+    ? INFINITY
     : incentives.reduce((aIncentive, bIncentive) => aIncentive + +bIncentive.incentiveAPR, 0);
 
   const incentivesNetAPR = isIncentivesInfinity
-    ? 'Infinity'
-    : incentivesAPRSum !== 'Infinity'
+    ? INFINITY
+    : incentivesAPRSum !== INFINITY
     ? valueToBigNumber(incentivesAPRSum || 0).toNumber()
-    : 'Infinity';
+    : INFINITY;
 
   return (
     <ContentWithTooltip
@@ -309,7 +309,7 @@ const Content = ({
   plus,
 }: {
   incentives: ReserveIncentiveResponse[];
-  incentivesNetAPR: number | 'Infinity';
+  incentivesNetAPR: number | typeof INFINITY;
   displayBlank?: boolean;
   plus?: boolean;
 }) => {
@@ -343,7 +343,7 @@ const Content = ({
     );
 
     if (hasGhoIncentives) {
-      if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR < 10000) {
+      if (incentivesNetAPR !== INFINITY && incentivesNetAPR < 10000) {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <FormattedNumber
@@ -355,7 +355,7 @@ const Content = ({
             <IncentivesIcon width="16" height="16" />
           </Box>
         );
-      } else if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR > 9999) {
+      } else if (incentivesNetAPR !== INFINITY && incentivesNetAPR > 9999) {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <FormattedNumber
@@ -368,7 +368,7 @@ const Content = ({
             <IncentivesIcon width="16" height="16" />
           </Box>
         );
-      } else if (incentivesNetAPR === 'Infinity') {
+      } else if (incentivesNetAPR === INFINITY) {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <Typography variant="main12" color="text.secondary">
@@ -393,15 +393,12 @@ const Content = ({
   return (
     <Box
       sx={() => ({
-        // p: { xs: '0 4px', xsm: '2px 4px' },
-        // border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
         borderRadius: '4px',
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         transition: 'opacity 0.2s ease',
-        // bgcolor: open ? 'action.hover' : 'transparent',
         '&:hover': {
           bgcolor: 'action.hover',
           borderColor: 'action.disabled',
