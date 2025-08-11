@@ -46,12 +46,7 @@ export function getMaxAmountAvailableToBorrow(
   const availableForUserMarketReferenceCurrency = valueToBigNumber(
     user?.availableBorrowsMarketReferenceCurrency || 0
   ).div(poolReserve.formattedPriceInMarketReferenceCurrency);
-  console.log('USER BORROWS', user.availableBorrowsUSD);
-  console.log(
-    'availableForUserMarketReferenceCurrency',
-    availableForUserMarketReferenceCurrency.toString()
-  );
-  console.log('availableLiquidity', availableLiquidity.toString());
+
   const maxUserAmountToBorrow = BigNumber.min(
     availableForUserMarketReferenceCurrency,
     availableLiquidity
