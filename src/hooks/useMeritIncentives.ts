@@ -13,6 +13,7 @@ import {
 } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { convertAprToApy } from 'src/utils/utils';
 
 export enum MeritAction {
   ETHEREUM_SGHO = 'ethereum-sgho',
@@ -79,13 +80,13 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
 export type MeritIncentivesBreakdown = {
   protocolAPY: number;
   protocolIncentivesAPR: number;
-  meritIncentivesAPR: number;
+  meritIncentivesAPR: number; // Now represents APY (converted from APR)
   totalAPY: number;
   isBorrow: boolean;
   breakdown: {
     protocol: number;
     protocolIncentives: number;
-    meritIncentives: number;
+    meritIncentives: number; // Now represents APY (converted from APR)
   };
 };
 
@@ -733,6 +734,7 @@ export const useMeritIncentives = ({
       }
 
       const meritIncentivesAPR = maxAPR / 100;
+      const meritIncentivesAPY = convertAprToApy(meritIncentivesAPR);
 
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
         return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
@@ -740,11 +742,11 @@ export const useMeritIncentives = ({
 
       const isBorrow = protocolAction === ProtocolAction.borrow;
       const totalAPY = isBorrow
-        ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPR
-        : protocolAPY + protocolIncentivesAPR + meritIncentivesAPR;
+        ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY
+        : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY;
 
       return {
-        incentiveAPR: meritIncentivesAPR.toString(),
+        incentiveAPR: meritIncentivesAPY.toString(),
         rewardTokenAddress: selectedIncentive.rewardTokenAddress,
         rewardTokenSymbol: selectedIncentive.rewardTokenSymbol,
         action: selectedIncentive.action,
@@ -753,13 +755,13 @@ export const useMeritIncentives = ({
         breakdown: {
           protocolAPY,
           protocolIncentivesAPR,
-          meritIncentivesAPR,
+          meritIncentivesAPR: meritIncentivesAPY,
           totalAPY,
           isBorrow,
           breakdown: {
             protocol: protocolAPY,
             protocolIncentives: protocolIncentivesAPR,
-            meritIncentives: meritIncentivesAPR,
+            meritIncentives: meritIncentivesAPY,
           },
         } as MeritIncentivesBreakdown,
       } as ExtendedReserveIncentiveResponse & { breakdown: MeritIncentivesBreakdown };

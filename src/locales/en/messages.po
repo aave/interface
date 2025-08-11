@@ -509,7 +509,6 @@ msgstr "Switch Network"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx

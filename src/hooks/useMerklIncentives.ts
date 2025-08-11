@@ -19,6 +19,7 @@ import {
   AaveV3Sonic,
 } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
+import { convertAprToApy } from 'src/utils/utils';
 import { Address } from 'viem';
 
 enum OpportunityAction {
@@ -101,13 +102,13 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
 export type MerklIncentivesBreakdown = {
   protocolAPY: number;
   protocolIncentivesAPR: number;
-  merklIncentivesAPR: number;
+  merklIncentivesAPR: number; // Now represents APY (converted from APR)
   totalAPY: number;
   isBorrow: boolean;
   breakdown: {
     protocol: number;
     protocolIncentives: number;
-    merklIncentives: number;
+    merklIncentives: number; // Now represents APY (converted from APR)
   };
 };
 
@@ -235,6 +236,7 @@ export const useMerklIncentives = ({
       }
 
       const merklIncentivesAPR = opportunity.apr / 100;
+      const merklIncentivesAPY = convertAprToApy(merklIncentivesAPR);
 
       const rewardToken = opportunity.rewardsRecord.breakdowns[0].token;
 
@@ -248,28 +250,28 @@ export const useMerklIncentives = ({
 
       const isBorrow = protocolAction === ProtocolAction.borrow;
       const totalAPY = isBorrow
-        ? protocolAPY - protocolIncentivesAPR - merklIncentivesAPR
-        : protocolAPY + protocolIncentivesAPR + merklIncentivesAPR;
+        ? protocolAPY - protocolIncentivesAPR - merklIncentivesAPY
+        : protocolAPY + protocolIncentivesAPR + merklIncentivesAPY;
 
       const incentiveAdditionalData = rewardedAsset
         ? additionalIncentiveData[rewardedAsset]
         : undefined;
 
       return {
-        incentiveAPR: merklIncentivesAPR.toString(),
+        incentiveAPR: merklIncentivesAPY.toString(),
         rewardTokenAddress: rewardToken.address,
         rewardTokenSymbol: rewardToken.symbol,
         ...incentiveAdditionalData,
         breakdown: {
           protocolAPY,
           protocolIncentivesAPR,
-          merklIncentivesAPR,
+          merklIncentivesAPR: merklIncentivesAPY,
           totalAPY,
           isBorrow,
           breakdown: {
             protocol: protocolAPY,
             protocolIncentives: protocolIncentivesAPR,
-            merklIncentives: merklIncentivesAPR,
+            merklIncentives: merklIncentivesAPY,
           },
         } as MerklIncentivesBreakdown,
       } as ExtendedReserveIncentiveResponse;

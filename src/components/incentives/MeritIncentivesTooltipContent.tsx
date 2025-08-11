@@ -135,9 +135,9 @@ export const MeritIncentivesTooltipContent = ({
               percent
               variant={typographyVariant}
             />
-            <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-              <Trans>APR</Trans>
-            </Typography>
+            {/* <Typography variant={typographyVariant} sx={{ ml: 1 }}>
+              <Trans>APY</Trans>
+            </Typography> */}
           </Box>
         </Row>
       </Box>
