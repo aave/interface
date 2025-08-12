@@ -135,6 +135,8 @@ export const SwitchTxSuccessView = ({
           }
         })
         .catch(console.error);
+    } else if (switchProvider === 'paraswap' && txHashOrOrderId) {
+      console.error('Paraswap! Implement tracking of hash.');
     }
   };
   useEffect(() => {

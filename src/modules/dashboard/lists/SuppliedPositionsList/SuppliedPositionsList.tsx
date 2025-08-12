@@ -79,20 +79,6 @@ export const SuppliedPositionsList = () => {
           marketReferencePriceInUsd
         );
 
-        // TODO: Remove this after testing
-        if (Number(balanceUSD) < 0.01 && Number(balanceUSD) > 0) {
-          console.log('--------------------------------');
-          console.log('Filtering out dust amount for', userReserve.reserve.symbol);
-          console.log('balanceUSD', balanceUSD);
-          console.log(
-            'userReserve.reserve.formattedPriceInMarketReferenceCurrency',
-            userReserve.reserve.formattedPriceInMarketReferenceCurrency
-          );
-          console.log('marketReferencePriceInUsd', marketReferencePriceInUsd);
-          console.log('userReserve.underlyingBalance', userReserve.underlyingBalance);
-          console.log('--------------------------------');
-        }
-
         return Number(balanceUSD) >= 0.01;
       })
       .map((userReserve) => ({

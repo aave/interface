@@ -67,7 +67,8 @@ const TOKEN_GROUPS: Record<'stable' | 'correlatedEth' | 'correlatedBtc', string[
 
 const cowSymbolGroup = (symbol: string): keyof typeof TOKEN_GROUPS | 'unknown' => {
   for (const [groupName, tokens] of Object.entries(TOKEN_GROUPS)) {
-    if (tokens.includes(symbol.toUpperCase())) {
+    // Allow for prefix matching e.g. aTokens
+    if (tokens.some((token) => symbol.toUpperCase().endsWith(token))) {
       return groupName as keyof typeof TOKEN_GROUPS;
     }
   }

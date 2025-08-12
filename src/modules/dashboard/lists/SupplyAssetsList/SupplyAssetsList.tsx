@@ -174,14 +174,6 @@ export const SupplyAssetsList = () => {
       return true;
     }
 
-    // TODO: Remove this after testing
-    if (Number(reserve.availableToDepositUSD) < 0.01 && Number(reserve.availableToDepositUSD) > 0) {
-      console.log('--------------------------------');
-      console.log('Seems dust amount for', reserve.symbol);
-      console.log('availableToDepositUSD', reserve.availableToDepositUSD);
-      console.log('--------------------------------');
-    }
-
     const wrappedTokenConfig = wrappedTokenReserves.find(
       (r) => r.tokenOut.underlyingAsset === reserve.underlyingAsset
     );
@@ -193,14 +185,6 @@ export const SupplyAssetsList = () => {
     // The asset can be supplied if the user has a 'token in' balance, (DAI as sDAI for example)
     const wrappedBalance = walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset]?.amount;
     const wrappedBalanceUSD = walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset]?.amountUSD;
-
-    // TODO: Remove this after testing
-    if (Number(wrappedBalanceUSD) < 0.01 && Number(wrappedBalanceUSD) > 0) {
-      console.log('--------------------------------');
-      console.log('Seems dust amount for', reserve.symbol);
-      console.log('wrappedBalanceUSD', wrappedBalanceUSD);
-      console.log('--------------------------------');
-    }
 
     return wrappedBalance !== '0' && Number(wrappedBalanceUSD || '0') >= 0.01;
   });

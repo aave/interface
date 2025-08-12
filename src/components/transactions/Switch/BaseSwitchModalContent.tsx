@@ -359,40 +359,6 @@ export const BaseSwitchModalContent = ({
     [extendedUser, selectedInputToken]
   );
 
-  // Compute HF effect of withdrawing inputAmount
-  const { hfEffectOfFromAmount } = useMemo(() => {
-    try {
-      if (!poolReserve || !userReserve || !extendedUser || !switchRates || !targetReserve)
-        return { hfEffectOfFromAmount: '0' };
-      const toAmountRaw = normalizeBN(
-        switchRates.provider === 'cowprotocol'
-          ? switchRates.destSpot
-          : switchRates.destAmount || '0',
-        switchRates.destDecimals || 18
-      ).toString();
-      const toAmountAfterSlippage = valueToBigNumber(toAmountRaw)
-        .multipliedBy(1 - safeSlippage)
-        .toString();
-
-      const { hfEffectOfFromAmount } = calculateHFAfterSwap({
-        fromAmount: switchRates.srcAmount || '0',
-        fromAssetData: poolReserve,
-        fromAssetUserData: userReserve,
-        user: extendedUser,
-        toAmountAfterSlippage: toAmountAfterSlippage,
-        toAssetData: targetReserve,
-      });
-      return { hfEffectOfFromAmount: hfEffectOfFromAmount.toString() };
-    } catch {
-      return { hfEffectOfFromAmount: '0' };
-    }
-  }, [poolReserve, userReserve, extendedUser, inputAmount, targetReserve]);
-
-  const shouldUseFlashloan = useFlashloan(
-    poolReserve && userReserve && extendedUser ? extendedUser?.healthFactor ?? '-1' : '-1',
-    poolReserve && userReserve && extendedUser ? hfEffectOfFromAmount ?? '0' : '0'
-  );
-
   useEffect(() => {
     setSelectedInputToken(defaultInputToken);
   }, [defaultInputToken]);
@@ -413,6 +379,8 @@ export const BaseSwitchModalContent = ({
       ? 0
       : Number(slippage) / 100;
 
+  const [shouldUseFlashloan, setShouldUseFlashloan] = useState(false);
+
   // Data
   const {
     data: switchRates,
@@ -425,12 +393,16 @@ export const BaseSwitchModalContent = ({
         ? '0'
         : normalizeBN(debounceInputAmount, -1 * selectedInputToken.decimals).toFixed(0),
     srcToken:
-      modalType === ModalType.CollateralSwap
+      modalType === ModalType.CollateralSwap && shouldUseFlashloan
+        ? selectedInputToken.address // Use underlying asset for ParaSwap flashloan
+        : modalType === ModalType.CollateralSwap
         ? (selectedInputToken as TokenInfoWithBalance)?.aToken ?? selectedInputToken.address
         : selectedInputToken.address,
     srcDecimals: selectedInputToken.decimals, // TODO: Check if this is correct
     destToken:
-      modalType === ModalType.CollateralSwap
+      modalType === ModalType.CollateralSwap && shouldUseFlashloan
+        ? selectedOutputToken.address // Use underlying asset for ParaSwap flashloan
+        : modalType === ModalType.CollateralSwap
         ? (selectedOutputToken as TokenInfoWithBalance)?.aToken ?? selectedOutputToken.address
         : selectedOutputToken.address,
     destDecimals: selectedOutputToken.decimals,
@@ -491,6 +463,66 @@ export const BaseSwitchModalContent = ({
       });
     }
   }, [txError]);
+
+  // Compute HF effect of withdrawing inputAmount (copied from SwitchModalTxDetails)
+  const { hfEffectOfFromAmount } = useMemo(() => {
+    try {
+      if (!poolReserve || !userReserve || !extendedUser || !switchRates || !targetReserve)
+        return { hfEffectOfFromAmount: '0' };
+
+      // Amounts in human units (mirror SwitchModalTxDetails: intent uses destSpot, market uses destAmount)
+      const fromAmount = normalizeBN(switchRates.srcAmount, switchRates.srcDecimals).toString();
+      const toAmountRaw = normalizeBN(
+        switchRates.provider === 'cowprotocol' ? switchRates.destSpot : switchRates.destAmount,
+        switchRates.destDecimals
+      ).toString();
+      const toAmountAfterSlippage = valueToBigNumber(toAmountRaw)
+        .multipliedBy(1 - safeSlippage)
+        .toString();
+
+      const { hfEffectOfFromAmount, hfAfterSwap } = calculateHFAfterSwap({
+        fromAmount,
+        fromAssetData: poolReserve,
+        fromAssetUserData: userReserve,
+        user: extendedUser,
+        toAmountAfterSlippage: toAmountAfterSlippage,
+        toAssetData: targetReserve,
+      });
+
+      return {
+        hfEffectOfFromAmount: hfEffectOfFromAmount.toString(),
+        hfAfterSwap: hfAfterSwap.toString(),
+      };
+    } catch {
+      return { hfEffectOfFromAmount: '0' };
+    }
+  }, [
+    poolReserve,
+    userReserve,
+    extendedUser,
+    inputAmount,
+    targetReserve,
+    switchRates,
+    safeSlippage,
+  ]);
+
+  const shouldUseFlashloanValue = useFlashloan(
+    poolReserve && userReserve && extendedUser ? extendedUser?.healthFactor ?? '-1' : '-1',
+    poolReserve && userReserve && extendedUser ? hfEffectOfFromAmount ?? '0' : '0'
+  );
+
+  useEffect(() => {
+    if (!poolReserve || !userReserve || !extendedUser) return;
+
+    setShouldUseFlashloan(shouldUseFlashloanValue);
+  }, [
+    shouldUseFlashloanValue,
+    hfEffectOfFromAmount,
+    extendedUser?.healthFactor,
+    poolReserve,
+    userReserve,
+    extendedUser,
+  ]);
 
   // Define default slippage for CoW
   useEffect(() => {
@@ -566,7 +598,7 @@ export const BaseSwitchModalContent = ({
         outSymbol={selectedOutputToken.symbol}
         outIconSymbol={selectedOutputToken.symbol}
         outIconUri={selectedOutputToken.logoURI}
-        provider={switchProvider ?? 'paraswap'}
+        provider={switchRates?.provider ?? 'paraswap'}
         chainId={selectedChainId}
         destDecimals={selectedOutputToken.decimals}
         srcDecimals={selectedInputToken.decimals}
@@ -912,13 +944,17 @@ export const BaseSwitchModalContent = ({
                 isWrongNetwork={isWrongNetwork.isWrongNetwork}
                 inputAmount={debounceInputAmount}
                 inputToken={
-                  modalType === ModalType.CollateralSwap
-                    ? selectedInputToken.aToken ?? selectedInputToken.address // TODO: force?
+                  modalType === ModalType.CollateralSwap && shouldUseFlashloan
+                    ? selectedInputToken.address
+                    : modalType === ModalType.CollateralSwap
+                    ? selectedInputToken.aToken ?? selectedInputToken.address
                     : selectedInputToken.address
                 }
                 outputToken={
-                  modalType === ModalType.CollateralSwap
-                    ? selectedOutputToken.aToken ?? selectedOutputToken.address // TODO: force?
+                  modalType === ModalType.CollateralSwap && shouldUseFlashloan
+                    ? selectedOutputToken.address
+                    : modalType === ModalType.CollateralSwap
+                    ? selectedOutputToken.aToken ?? selectedOutputToken.address
                     : selectedOutputToken.address
                 }
                 setShowUSDTResetWarning={setShowUSDTResetWarning}
