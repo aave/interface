@@ -1,7 +1,15 @@
-import { getSwapProvider } from './helpers';
+import { SwitchProvider } from 'src/components/transactions/Switch/switch.types';
 
-export const useSwitchProvider = ({ chainId }: { chainId: number }) => {
-  // Here we can implement any logic to get the swap provider. e.g. Launchdarkly flags.
+import { getSwapProvider as getSwapProviderForChain } from './helpers';
 
-  return getSwapProvider(chainId);
+export const useSwitchProvider = ({
+  chainId,
+  shouldUseFlashloan,
+}: {
+  chainId: number;
+  shouldUseFlashloan?: boolean;
+}): SwitchProvider | undefined => {
+  if (shouldUseFlashloan) return 'paraswap';
+
+  return getSwapProviderForChain(chainId);
 };

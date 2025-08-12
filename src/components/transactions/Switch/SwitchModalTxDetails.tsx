@@ -1,4 +1,4 @@
-import { normalize } from '@aave/math-utils';
+import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
@@ -8,9 +8,20 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { CollateralType } from 'src/helpers/types';
+import {
+  ComputedReserveData,
+  ComputedUserReserveData,
+  ExtendedFormattedUser,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
+import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
+import { ModalType } from 'src/hooks/useModal';
+import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { SwapModalDetails } from '../Swap/SwapModalDetails';
+import { getAssetCollateralType } from '../utils';
 import { isCowProtocolRates, SwitchRatesType } from './switch.types';
 
 export const SwitchModalTxDetails = ({
@@ -19,6 +30,11 @@ export const SwitchModalTxDetails = ({
   safeSlippage,
   gasLimit,
   selectedChainId,
+  customReceivedTitle,
+  reserves,
+  user,
+  selectedInputToken,
+  modalType = ModalType.Switch,
 }: {
   switchRates: SwitchRatesType;
   selectedOutputToken: TokenInfoWithBalance;
@@ -26,6 +42,11 @@ export const SwitchModalTxDetails = ({
   gasLimit: string;
   selectedChainId: number;
   showGasStation: boolean | undefined;
+  customReceivedTitle?: React.ReactNode;
+  reserves: ComputedReserveData[];
+  user: ExtendedFormattedUser;
+  selectedInputToken: TokenInfoWithBalance;
+  modalType?: ModalType;
 }) => {
   return (
     <TxModalDetails
@@ -33,17 +54,31 @@ export const SwitchModalTxDetails = ({
       chainId={selectedChainId}
       showGasStation={switchRates.provider !== 'cowprotocol'}
     >
+      {modalType === ModalType.CollateralSwap && (
+        <CollateralSwapModalTxDetailsContent
+          switchRates={switchRates}
+          selectedOutputToken={selectedOutputToken}
+          safeSlippage={safeSlippage}
+          customReceivedTitle={customReceivedTitle}
+          reserves={reserves}
+          user={user}
+          selectedInputToken={selectedInputToken}
+        />
+      )}
+
       {switchRates.provider === 'cowprotocol' ? (
         <IntentTxDetails
           switchRates={switchRates}
           selectedOutputToken={selectedOutputToken}
           safeSlippage={safeSlippage}
+          customReceivedTitle={customReceivedTitle}
         />
       ) : (
         <MarketOrderTxDetails
           switchRates={switchRates}
           selectedOutputToken={selectedOutputToken}
           safeSlippage={safeSlippage}
+          customReceivedTitle={customReceivedTitle}
         />
       )}
     </TxModalDetails>
@@ -53,10 +88,12 @@ const IntentTxDetails = ({
   switchRates,
   selectedOutputToken,
   safeSlippage,
+  customReceivedTitle,
 }: {
   switchRates: SwitchRatesType;
   selectedOutputToken: TokenInfoWithBalance;
   safeSlippage: number;
+  customReceivedTitle?: React.ReactNode;
 }) => {
   const [costBreakdownExpanded, setCostBreakdownExpanded] = useState(false);
 
@@ -212,7 +249,9 @@ const IntentTxDetails = ({
 
       <Row
         mb={4}
-        caption={<Trans>{`Minimum ${selectedOutputToken.symbol} received`}</Trans>}
+        caption={
+          customReceivedTitle || <Trans>{`Minimum ${selectedOutputToken.symbol} received`}</Trans>
+        }
         captionVariant="description"
         align="flex-start"
       >
@@ -268,15 +307,19 @@ const MarketOrderTxDetails = ({
   switchRates,
   selectedOutputToken,
   safeSlippage,
+  customReceivedTitle,
 }: {
   switchRates: SwitchRatesType;
   selectedOutputToken: TokenInfoWithBalance;
   safeSlippage: number;
+  customReceivedTitle?: React.ReactNode;
 }) => {
   return (
     <>
       <Row
-        caption={<Trans>{`Minimum ${selectedOutputToken.symbol} received`}</Trans>}
+        caption={
+          customReceivedTitle || <Trans>{`Minimum ${selectedOutputToken.symbol} received`}</Trans>
+        }
         captionVariant="description"
         align="flex-start"
       >
@@ -316,5 +359,96 @@ const MarketOrderTxDetails = ({
         </Box>
       </Row>
     </>
+  );
+};
+
+const CollateralSwapModalTxDetailsContent = ({
+  switchRates,
+  selectedOutputToken,
+  safeSlippage,
+  reserves,
+  user,
+  selectedInputToken,
+}: {
+  switchRates: SwitchRatesType;
+  selectedOutputToken: TokenInfoWithBalance;
+  safeSlippage: number;
+  customReceivedTitle?: React.ReactNode;
+  reserves: ComputedReserveData[];
+  user: ExtendedFormattedUser;
+  selectedInputToken: TokenInfoWithBalance;
+}) => {
+  // Map selected tokens to reserves and user reserves
+  const poolReserve = reserves.find(
+    (r) => r.underlyingAsset.toLowerCase() === selectedInputToken.address.toLowerCase()
+  ) as ComputedReserveData | undefined;
+  const targetReserve = reserves.find(
+    (r) => r.underlyingAsset.toLowerCase() === selectedOutputToken.address.toLowerCase()
+  ) as ComputedReserveData | undefined;
+
+  if (!poolReserve || !targetReserve || !user) return null;
+
+  const userReserve = user.userReservesData.find(
+    (ur) => ur.underlyingAsset.toLowerCase() === poolReserve.underlyingAsset.toLowerCase()
+  ) as ComputedUserReserveData | undefined;
+  const userTargetReserve = user.userReservesData.find(
+    (ur) => ur.underlyingAsset.toLowerCase() === targetReserve.underlyingAsset.toLowerCase()
+  ) as ComputedUserReserveData | undefined;
+
+  if (!userReserve || !userTargetReserve) return null;
+
+  // Show HF only when there are borrows and source reserve is collateralizable
+  const showHealthFactor =
+    user.totalBorrowsMarketReferenceCurrency !== '0' &&
+    poolReserve.reserveLiquidationThreshold !== '0';
+
+  // Amounts in human units (mirror other components: intent uses destSpot, market uses destAmount)
+  const fromAmount = normalizeBN(switchRates.srcAmount, switchRates.srcDecimals).toString();
+  const toAmountRaw = normalizeBN(
+    switchRates.provider === 'cowprotocol' ? switchRates.destSpot : switchRates.destAmount,
+    switchRates.destDecimals
+  ).toString();
+  const toAmountAfterSlippage = valueToBigNumber(toAmountRaw)
+    .multipliedBy(1 - safeSlippage)
+    .toString();
+
+  // Compute collateral types
+  const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(targetReserve);
+  const swapSourceCollateralType: CollateralType = getAssetCollateralType(
+    userReserve,
+    user.totalCollateralUSD,
+    user.isInIsolationMode,
+    sourceDebtCeiling
+  );
+  const { debtCeilingReached: targetDebtCeiling } = getDebtCeilingData(targetReserve);
+  const swapTargetCollateralType: CollateralType = getAssetCollateralType(
+    userTargetReserve,
+    user.totalCollateralUSD,
+    user.isInIsolationMode,
+    targetDebtCeiling
+  );
+
+  // Health factor after swap using slippage-adjusted output amount
+  const { hfAfterSwap } = calculateHFAfterSwap({
+    fromAmount,
+    fromAssetData: poolReserve,
+    fromAssetUserData: userReserve,
+    user,
+    toAmountAfterSlippage: toAmountAfterSlippage,
+    toAssetData: targetReserve,
+  });
+
+  return (
+    <SwapModalDetails
+      showHealthFactor={showHealthFactor}
+      healthFactor={user.healthFactor}
+      healthFactorAfterSwap={hfAfterSwap.toString(10)}
+      swapSource={{ ...userReserve, collateralType: swapSourceCollateralType }}
+      swapTarget={{ ...userTargetReserve, collateralType: swapTargetCollateralType }}
+      toAmount={toAmountAfterSlippage}
+      fromAmount={fromAmount === '' ? '0' : fromAmount}
+      loading={false}
+      showBalance={false}
+    />
   );
 };

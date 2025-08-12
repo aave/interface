@@ -27,6 +27,8 @@ import { TOKEN_LIST } from 'src/ui-config/TokenList';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
+import { useAppDataContext } from './app-data-provider/useAppDataProvider';
+
 export const applyTxHistoryFilters = ({
   searchQuery,
   filterQuery,
@@ -64,8 +66,8 @@ export const applyTxHistoryFilters = ({
       }
 
       if (hasSrcOrDestToken(txn)) {
-        srcToken = txn.srcToken.symbol.toLowerCase();
-        destToken = txn.destToken.symbol.toLowerCase();
+        srcToken = txn.underlyingSrcToken.symbol.toLowerCase();
+        destToken = txn.underlyingDestToken.symbol.toLowerCase();
       }
 
       // handle special case where user searches for ethereum but asset names are abbreviated as ether
@@ -104,6 +106,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   const [currentMarketData, account] = useRootStore(
     useShallow((state) => [state.currentMarketData, state.account])
   );
+
+  const { reserves } = useAppDataContext();
 
   const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 
@@ -227,19 +231,53 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       filteredCowAaveOrders.map<Promise<TransactionHistoryItemUnion | null>>(async (order) => {
         const erc20Service = new ERC20Service(getProvider);
 
-        let srcToken:
-          | { address: string; name: string; symbol: string; decimals: number }
-          | undefined = TOKEN_LIST.tokens.find(
-          (token) =>
-            token.chainId == chainId && token.address.toLowerCase() == order.sellToken.toLowerCase()
-        );
+        // Helper function to find token info from pool reserves
+        const findTokenFromReserves: (tokenAddress: string) =>
+          | {
+              address: string;
+              name: string;
+              symbol: string;
+              decimals: number;
+              isAToken?: boolean;
+            }
+          | undefined = (tokenAddress: string) => {
+          const reserve = reserves?.find(
+            (reserve) =>
+              reserve.underlyingAsset.toLowerCase() === tokenAddress.toLowerCase() ||
+              reserve.aTokenAddress.toLowerCase() === tokenAddress.toLowerCase()
+          );
 
-        let destToken:
-          | { address: string; name: string; symbol: string; decimals: number }
-          | undefined = TOKEN_LIST.tokens.find(
-          (token) =>
-            token.chainId == chainId && token.address.toLowerCase() == order.buyToken.toLowerCase()
-        );
+          if (reserve) {
+            return {
+              address: tokenAddress,
+              name: reserve.name,
+              symbol: reserve.symbol,
+              decimals: reserve.decimals,
+              isAToken: reserve.aTokenAddress.toLowerCase() === tokenAddress.toLowerCase(),
+            };
+          }
+          return undefined;
+        };
+
+        let srcToken = findTokenFromReserves(order.sellToken);
+        let destToken = findTokenFromReserves(order.buyToken);
+
+        // Fallback to TOKEN_LIST if not found in pool reserves (for non-Aave tokens)
+        if (!srcToken) {
+          srcToken = TOKEN_LIST.tokens.find(
+            (token) =>
+              token.chainId == chainId &&
+              token.address.toLowerCase() == order.sellToken.toLowerCase()
+          );
+        }
+
+        if (!destToken) {
+          destToken = TOKEN_LIST.tokens.find(
+            (token) =>
+              token.chainId == chainId &&
+              token.address.toLowerCase() == order.buyToken.toLowerCase()
+          );
+        }
 
         // Custom tokens - only if erc20Service is available
         if (!srcToken && erc20Service) {
@@ -268,21 +306,23 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         }
 
         return {
-          action: 'CowSwap',
+          action: srcToken.isAToken ? 'CowCollateralSwap' : 'CowSwap',
           id: order.uid,
           timestamp: Math.floor(new Date(order.creationDate).getTime() / 1000),
-          srcToken: {
+          underlyingSrcToken: {
             underlyingAsset: srcToken.address,
             name: srcToken.name,
             symbol: srcToken.symbol,
             decimals: srcToken.decimals,
           },
-          destToken: {
+          srcAToken: srcToken.isAToken,
+          underlyingDestToken: {
             underlyingAsset: destToken.address,
             name: destToken.name,
             symbol: destToken.symbol,
             decimals: destToken.decimals,
           },
+          destAToken: destToken.isAToken,
           srcAmount:
             order.executedSellAmount && order.executedBuyAmount != '0'
               ? order.executedSellAmount
