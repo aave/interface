@@ -1,5 +1,5 @@
 import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
-import { valueToBigNumber } from '@aave/math-utils';
+import { normalize, valueToBigNumber } from '@aave/math-utils';
 import {
   calculateUniqueOrderId,
   COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
@@ -13,9 +13,14 @@ import stringify from 'json-stringify-deterministic';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { isSmartContractWallet } from 'src/helpers/provider';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
-import { calculateSignedAmount } from 'src/hooks/paraswap/common';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  calculateSignedAmount,
+  fetchExactInTxParams,
+  minimumReceivedAfterSlippage,
+} from 'src/hooks/paraswap/common';
 import { useParaswapSellTxParams } from 'src/hooks/paraswap/useParaswapRates';
-import { useModalContext } from 'src/hooks/useModal';
+import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { useRootStore } from 'src/store/root';
@@ -57,6 +62,11 @@ interface SwitchProps {
   inputSymbol: string;
   outputSymbol: string;
   setShowGasStation: (showGasStation: boolean) => void;
+  modalType: ModalType;
+  useFlashloan: boolean;
+  poolReserve?: ComputedReserveData;
+  targetReserve?: ComputedReserveData;
+  isMaxSelected: boolean;
 }
 
 interface SignedParams {
@@ -80,6 +90,11 @@ export const SwitchActions = ({
   chainId,
   switchRates,
   setShowGasStation,
+  modalType,
+  useFlashloan,
+  poolReserve,
+  targetReserve,
+  isMaxSelected,
 }: SwitchProps) => {
   const [
     user,
@@ -117,6 +132,7 @@ export const SwitchActions = ({
   const { sendTx, signTxData } = useWeb3Context();
   const queryClient = useQueryClient();
   const networkConfig = getNetworkConfig(chainId);
+  const [swapCollateral] = useRootStore(useShallow((state) => [state.swapCollateral]));
 
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
@@ -168,59 +184,154 @@ export const SwitchActions = ({
     setMainTxState({ ...mainTxState, loading: true });
     if (isParaswapRates(switchRates)) {
       try {
-        const tx = await fetchParaswapTxParams({
-          srcToken: inputToken,
-          srcDecimals: switchRates.srcDecimals,
-          destDecimals: switchRates.destDecimals,
-          destToken: outputToken,
-          route: switchRates.optimalRateData,
-          user,
-          maxSlippage: Number(slippageInPercent) * 10000,
-          permit: signatureParams && signatureParams.signature,
-          deadline: signatureParams && signatureParams.deadline,
-          partner: 'aave-widget',
-        });
-        tx.chainId = chainId;
-        const txWithGasEstimation = await estimateGasLimit(tx, chainId);
-        const response = await sendTx(txWithGasEstimation);
-        try {
-          await response.wait(1);
-          addTransaction(
-            response.hash,
+        if (
+          useFlashloan &&
+          modalType === ModalType.CollateralSwap &&
+          poolReserve &&
+          targetReserve
+        ) {
+          // Swap Collateral with flashloan
+          const route = await fetchExactInTxParams(
+            switchRates.optimalRateData,
             {
-              txState: 'success',
+              amount: inputAmount,
+              underlyingAsset: poolReserve.underlyingAsset,
+              decimals: poolReserve.decimals,
+              supplyAPY: poolReserve.supplyAPY,
+              variableBorrowAPY: poolReserve.variableBorrowAPY,
             },
             {
-              chainId,
-            }
-          );
-          setMainTxState({
-            txHash: response.hash,
-            loading: false,
-            success: true,
-          });
-          queryClient.invalidateQueries({
-            queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
-          });
-        } catch (error) {
-          const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
-          setTxError(parsedError);
-          setMainTxState({
-            txHash: response.hash,
-            loading: false,
-          });
-          addTransaction(
-            response.hash,
-            {
-              txState: 'failed',
+              amount: normalize(switchRates.destAmount, switchRates.destDecimals),
+              underlyingAsset: targetReserve.underlyingAsset,
+              decimals: targetReserve.decimals,
+              supplyAPY: targetReserve.supplyAPY,
+              variableBorrowAPY: targetReserve.variableBorrowAPY,
             },
-            {
-              chainId,
-            }
+            chainId,
+            user,
+            Number(slippageInPercent) / 100
           );
+
+          const minAmountToReceive = minimumReceivedAfterSlippage(
+            normalize(switchRates.destAmount, switchRates.destDecimals),
+            slippageInPercent,
+            targetReserve.decimals
+          );
+
+          const txs = await swapCollateral({
+            amountToSwap: inputAmount,
+            amountToReceive: minAmountToReceive,
+            poolReserve,
+            targetReserve,
+            isWrongNetwork,
+            symbol: inputSymbol,
+            blocked,
+            isMaxSelected,
+            useFlashLoan: true,
+            swapCallData: route.swapCallData,
+            augustus: route.augustus,
+            signature: signatureParams?.signature,
+            deadline: signatureParams?.deadline,
+            signedAmount: calculateSignedAmount(inputAmount, poolReserve.decimals),
+          });
+
+          const tx = txs[0];
+          const params = await tx.tx();
+          delete params.gasPrice;
+          const response = await sendTx(params);
+
+          try {
+            await response.wait(1);
+            addTransaction(
+              response.hash,
+              {
+                txState: 'success',
+              },
+              {
+                chainId,
+              }
+            );
+            setMainTxState({
+              txHash: response.hash,
+              loading: false,
+              success: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
+            });
+          } catch (error) {
+            const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
+            setTxError(parsedError);
+            setMainTxState({
+              txHash: response.hash,
+              loading: false,
+            });
+            addTransaction(
+              response.hash,
+              {
+                txState: 'failed',
+              },
+              {
+                chainId,
+              }
+            );
+          }
+        } else {
+          // Normal switch using paraswap
+          const tx = await fetchParaswapTxParams({
+            srcToken: inputToken,
+            srcDecimals: switchRates.srcDecimals,
+            destDecimals: switchRates.destDecimals,
+            destToken: outputToken,
+            route: switchRates.optimalRateData,
+            user,
+            maxSlippage: Number(slippageInPercent) * 10000,
+            permit: signatureParams && signatureParams.signature,
+            deadline: signatureParams && signatureParams.deadline,
+            partner: 'aave-widget',
+          });
+          tx.chainId = chainId;
+          const txWithGasEstimation = await estimateGasLimit(tx, chainId);
+          const response = await sendTx(txWithGasEstimation);
+          try {
+            await response.wait(1);
+            addTransaction(
+              response.hash,
+              {
+                txState: 'success',
+              },
+              {
+                chainId,
+              }
+            );
+            setMainTxState({
+              txHash: response.hash,
+              loading: false,
+              success: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
+            });
+          } catch (error) {
+            const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
+            setTxError(parsedError);
+            setMainTxState({
+              txHash: response.hash,
+              loading: false,
+            });
+            addTransaction(
+              response.hash,
+              {
+                txState: 'failed',
+              },
+              {
+                chainId,
+              }
+            );
+          }
         }
       } catch (error) {
-        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
         setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
@@ -228,6 +339,17 @@ export const SwitchActions = ({
         });
       }
     } else if (isCowProtocolRates(switchRates)) {
+      if (useFlashloan) {
+        setTxError(
+          getErrorTextFromError(new Error('Please use flashloan'), TxAction.MAIN_ACTION, true)
+        );
+        setMainTxState({
+          txHash: undefined,
+          loading: false,
+        });
+        return;
+      }
+
       try {
         const provider = await getEthersProvider(wagmiConfig, { chainId });
         const destAmountWithSlippage = valueToBigNumber(switchRates.destAmount)
@@ -424,6 +546,27 @@ export const SwitchActions = ({
 
     queryClient.invalidateQueries({
       queryKey: queryKeysFactory.transactionHistory(
+        user,
+        findByChainId(chainId) ?? currentMarketData
+      ),
+    });
+
+    // Refresh dashboard data after collateral swap
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.poolReservesDataHumanized(
+        findByChainId(chainId) ?? currentMarketData
+      ),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.userPoolReservesDataHumanized(
+        user,
+        findByChainId(chainId) ?? currentMarketData
+      ),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.userPoolReservesIncentiveDataHumanized(
         user,
         findByChainId(chainId) ?? currentMarketData
       ),

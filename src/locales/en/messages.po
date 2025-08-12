@@ -699,6 +699,10 @@ msgstr "Some migrated assets will not be used as collateral due to enabled isola
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Collateral Swap"
+msgstr "Collateral Swap"
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
 msgstr "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
@@ -1410,6 +1414,10 @@ msgstr "Activating Cooldown"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "Recipient address"
+
+#: src/components/transactions/Switch/SwitchAssetInput.tsx
+msgid "No results found."
+msgstr "No results found."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
@@ -3104,6 +3112,10 @@ msgstr "The underlying balance needs to be greater than 0"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
 msgstr "Not enough staked balance"
+
+#: src/components/transactions/Switch/CollateralSwapModal.tsx
+msgid "Minimum new collateral"
+msgstr "Minimum new collateral"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."

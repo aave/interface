@@ -66,7 +66,10 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
   useEffect(() => {
     if (transactions?.pages[0] && activeOrders.size === 0) {
       transactions.pages[0]
-        .filter((tx: TransactionHistoryItemUnion) => tx.action === 'CowSwap')
+        .filter(
+          (tx: TransactionHistoryItemUnion) =>
+            tx.action === 'CowSwap' || tx.action === 'CowCollateralSwap'
+        )
         .filter((tx: ActionFields['CowSwap']) => isOrderLoading(tx.status))
         .map((tx: TransactionHistoryItemUnion) => tx as ActionFields['CowSwap'])
         .filter((tx: ActionFields['CowSwap']) => !activeOrders.has(tx.orderId))

@@ -19,8 +19,10 @@ export const useMultiProviderSwitchRates = ({
   srcDecimals,
   destDecimals,
   isTxSuccess,
-}: SwitchParams & { isTxSuccess?: boolean }) => {
-  const provider = useSwitchProvider({ chainId });
+  shouldUseFlashloan = false,
+}: SwitchParams & { isTxSuccess?: boolean; shouldUseFlashloan?: boolean }) => {
+  const provider = useSwitchProvider({ chainId, shouldUseFlashloan });
+
   return useQuery<SwitchRatesType>({
     queryFn: async () => {
       if (!provider) {

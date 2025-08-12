@@ -1,3 +1,4 @@
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalType } from 'src/hooks/useModal';
 
 import { BaseSwitchModal } from './BaseSwitchModal';
@@ -5,16 +6,18 @@ import { SwitchDetailsParams as SwitchDetailsParams } from './BaseSwitchModalCon
 import { SwitchModalTxDetails } from './SwitchModalTxDetails';
 
 export const SwitchModal = () => {
+  const { reserves, user: userData } = useAppDataContext();
+
   const switchDetails = ({
-    user,
     switchRates,
     gasLimit,
     selectedChainId,
+    selectedInputToken,
     selectedOutputToken,
     safeSlippage,
     showGasStation,
   }: SwitchDetailsParams) => {
-    return switchRates && user ? (
+    return switchRates && userData ? (
       <SwitchModalTxDetails
         switchRates={switchRates}
         selectedOutputToken={selectedOutputToken}
@@ -22,6 +25,10 @@ export const SwitchModal = () => {
         gasLimit={gasLimit}
         selectedChainId={selectedChainId}
         showGasStation={showGasStation}
+        reserves={reserves}
+        user={userData}
+        selectedInputToken={selectedInputToken}
+        modalType={ModalType.Switch}
       />
     ) : null;
   };

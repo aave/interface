@@ -1,4 +1,4 @@
-import { normalize, normalizeBN } from '@aave/math-utils';
+import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { OrderStatus, SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -10,6 +10,7 @@ import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useMultiProviderSwitchRates } from 'src/hooks/switch/useMultiProviderSwitchRates';
 import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
@@ -23,10 +24,12 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { GENERAL } from 'src/utils/events';
+import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { parseUnits } from 'viem';
 
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { useFlashloan } from '../utils';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { supportedNetworksWithEnabledMarket, SupportedNetworkWithChainId } from './common';
@@ -76,8 +79,16 @@ const shouldRequireConfirmation = (lostValue: number) => {
   return lostValue > 0.2;
 };
 
-export const getFilteredTokensForSwitch = (chainId: number): TokenInfoWithBalance[] => {
+export const getFilteredTokensForSwitch = (
+  chainId: number,
+  includeNative = false
+): TokenInfoWithBalance[] => {
   let customTokenList = TOKEN_LIST.tokens;
+  if (includeNative) {
+    customTokenList = customTokenList.concat(
+      TOKEN_LIST.tokens.filter((token) => token.extensions?.isNative)
+    );
+  }
   const savedCustomTokens = localStorage.getItem('customTokens');
   if (savedCustomTokens) {
     customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
@@ -137,7 +148,9 @@ export const BaseSwitchModalContent = ({
   inputBalanceTitle,
   outputBalanceTitle,
   initialFromTokens,
+  initialToTokens,
   showChangeNetworkWarning = true,
+  modalType,
 }: {
   showTitle?: boolean;
   forcedChainId: number;
@@ -148,6 +161,7 @@ export const BaseSwitchModalContent = ({
   forcedDefaultOutputToken?: TokenInfoWithBalance;
   supportedNetworks: SupportedNetworkWithChainId[];
   showChangeNetworkWarning?: boolean;
+  modalType: ModalType;
 } & SwitchModalCustomizableProps) => {
   // State
   const [inputAmount, setInputAmount] = useState('');
@@ -321,6 +335,64 @@ export const BaseSwitchModalContent = ({
     forcedDefaultOutputToken ?? defaultOutputToken
   );
 
+  // User and reserves (for HF and flashloan decision)
+  const { user: extendedUser, reserves } = useAppDataContext();
+  const poolReserve = useMemo(
+    () =>
+      reserves.find(
+        (r) => r.underlyingAsset.toLowerCase() === selectedInputToken.address.toLowerCase()
+      ),
+    [reserves, selectedInputToken]
+  );
+  const targetReserve = useMemo(
+    () =>
+      reserves.find(
+        (r) => r.underlyingAsset.toLowerCase() === selectedOutputToken.address.toLowerCase()
+      ),
+    [reserves, selectedOutputToken]
+  );
+  const userReserve = useMemo(
+    () =>
+      extendedUser?.userReservesData.find(
+        (ur) => ur.underlyingAsset.toLowerCase() === selectedInputToken.address.toLowerCase()
+      ),
+    [extendedUser, selectedInputToken]
+  );
+
+  // Compute HF effect of withdrawing inputAmount
+  const { hfEffectOfFromAmount } = useMemo(() => {
+    try {
+      if (!poolReserve || !userReserve || !extendedUser || !switchRates || !targetReserve)
+        return { hfEffectOfFromAmount: '0' };
+      const toAmountRaw = normalizeBN(
+        switchRates.provider === 'cowprotocol'
+          ? switchRates.destSpot
+          : switchRates.destAmount || '0',
+        switchRates.destDecimals || 18
+      ).toString();
+      const toAmountAfterSlippage = valueToBigNumber(toAmountRaw)
+        .multipliedBy(1 - safeSlippage)
+        .toString();
+
+      const { hfEffectOfFromAmount } = calculateHFAfterSwap({
+        fromAmount: switchRates.srcAmount || '0',
+        fromAssetData: poolReserve,
+        fromAssetUserData: userReserve,
+        user: extendedUser,
+        toAmountAfterSlippage: toAmountAfterSlippage,
+        toAssetData: targetReserve,
+      });
+      return { hfEffectOfFromAmount: hfEffectOfFromAmount.toString() };
+    } catch {
+      return { hfEffectOfFromAmount: '0' };
+    }
+  }, [poolReserve, userReserve, extendedUser, inputAmount, targetReserve]);
+
+  const shouldUseFlashloan = useFlashloan(
+    poolReserve && userReserve && extendedUser ? extendedUser?.healthFactor ?? '-1' : '-1',
+    poolReserve && userReserve && extendedUser ? hfEffectOfFromAmount ?? '0' : '0'
+  );
+
   useEffect(() => {
     setSelectedInputToken(defaultInputToken);
   }, [defaultInputToken]);
@@ -352,9 +424,15 @@ export const BaseSwitchModalContent = ({
       debounceInputAmount === ''
         ? '0'
         : normalizeBN(debounceInputAmount, -1 * selectedInputToken.decimals).toFixed(0),
-    srcToken: selectedInputToken.address,
-    srcDecimals: selectedInputToken.decimals,
-    destToken: selectedOutputToken.address,
+    srcToken:
+      modalType === ModalType.CollateralSwap
+        ? (selectedInputToken as TokenInfoWithBalance)?.aToken ?? selectedInputToken.address
+        : selectedInputToken.address,
+    srcDecimals: selectedInputToken.decimals, // TODO: Check if this is correct
+    destToken:
+      modalType === ModalType.CollateralSwap
+        ? (selectedOutputToken as TokenInfoWithBalance)?.aToken ?? selectedOutputToken.address
+        : selectedOutputToken.address,
     destDecimals: selectedOutputToken.decimals,
     inputSymbol: selectedInputToken.symbol,
     outputSymbol: selectedOutputToken.symbol,
@@ -365,6 +443,7 @@ export const BaseSwitchModalContent = ({
       partner: 'aave-widget',
     },
     isTxSuccess: switchTxState.success,
+    shouldUseFlashloan,
   });
 
   useEffect(() => {
@@ -467,7 +546,7 @@ export const BaseSwitchModalContent = ({
   }, [selectedInputToken, selectedOutputToken, switchProvider, selectedChainId, user]);
 
   // Views
-  if (!baseTokenList) {
+  if (!baseTokenList && !initialFromTokens && !initialToTokens) {
     return (
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
         <CircularProgress />
@@ -556,7 +635,11 @@ export const BaseSwitchModalContent = ({
   return (
     <>
       {showTitle && (
-        <TxModalTitle title={`Swap ${selectedInputToken ? selectedInputToken.symbol : 'Assets'}`} />
+        <TxModalTitle
+          title={`Swap ${selectedInputToken ? selectedInputToken.symbol : 'Assets'} ${
+            modalType === ModalType.CollateralSwap ? 'supply' : ''
+          }`}
+        />
       )}
       {showChangeNetworkWarning && isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
@@ -584,12 +667,20 @@ export const BaseSwitchModalContent = ({
         </Warning>
       )}
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <NetworkSelector
-          networks={supportedNetworks}
-          selectedNetwork={selectedChainId}
-          setSelectedNetwork={handleSelectedNetworkChange}
-        />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: modalType === ModalType.CollateralSwap ? 'flex-end' : 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        {modalType !== ModalType.CollateralSwap && (
+          <NetworkSelector
+            networks={supportedNetworks}
+            selectedNetwork={selectedChainId}
+            setSelectedNetwork={handleSelectedNetworkChange}
+          />
+        )}
         <SwitchSlippageSelector
           slippageValidation={slippageValidation}
           slippage={slippage}
@@ -618,7 +709,7 @@ export const BaseSwitchModalContent = ({
             <SwitchAssetInput
               chainId={selectedChainId}
               balanceTitle={inputBalanceTitle}
-              assets={baseTokenList.filter(
+              assets={(initialFromTokens ?? baseTokenList).filter(
                 (token) =>
                   token.address !== selectedOutputToken.address &&
                   Number(token.balance) !== 0 &&
@@ -645,6 +736,7 @@ export const BaseSwitchModalContent = ({
               onSelect={handleSelectedInputToken}
               selectedAsset={selectedInputToken}
               forcedMaxValue={maxAmountFormatted}
+              allowCustomTokens={modalType !== ModalType.CollateralSwap}
             />
             {showSwitchInputAndOutputAssetsButton && (
               <IconButton
@@ -670,7 +762,7 @@ export const BaseSwitchModalContent = ({
             <SwitchAssetInput
               chainId={selectedChainId}
               balanceTitle={outputBalanceTitle}
-              assets={baseTokenList.filter(
+              assets={(initialToTokens ?? baseTokenList).filter(
                 (token) =>
                   token.address !== selectedInputToken.address &&
                   // Avoid wrapping
@@ -709,6 +801,7 @@ export const BaseSwitchModalContent = ({
               disableInput={true}
               selectedAsset={selectedOutputToken}
               showBalance={false}
+              allowCustomTokens={modalType !== ModalType.CollateralSwap}
             />
           </Box>
           {switchRates && (
@@ -818,23 +911,37 @@ export const BaseSwitchModalContent = ({
               <SwitchActions
                 isWrongNetwork={isWrongNetwork.isWrongNetwork}
                 inputAmount={debounceInputAmount}
-                inputToken={selectedInputToken.address}
-                outputToken={selectedOutputToken.address}
+                inputToken={
+                  modalType === ModalType.CollateralSwap
+                    ? selectedInputToken.aToken ?? selectedInputToken.address // TODO: force?
+                    : selectedInputToken.address
+                }
+                outputToken={
+                  modalType === ModalType.CollateralSwap
+                    ? selectedOutputToken.aToken ?? selectedOutputToken.address // TODO: force?
+                    : selectedOutputToken.address
+                }
                 setShowUSDTResetWarning={setShowUSDTResetWarning}
                 inputSymbol={selectedInputToken.symbol}
                 outputSymbol={selectedOutputToken.symbol}
                 slippage={safeSlippage.toString()}
                 setShowGasStation={setShowGasStation}
+                useFlashloan={shouldUseFlashloan}
+                poolReserve={poolReserve}
+                targetReserve={targetReserve}
+                isMaxSelected={inputAmount === selectedInputToken.balance}
                 blocked={
                   !switchRates ||
                   Number(debounceInputAmount) > Number(selectedInputToken.balance) ||
                   !user ||
                   slippageValidation?.severity === ValidationSeverity.ERROR ||
                   isSwappingSafetyModuleToken ||
-                  (requireConfirmation && !highPriceImpactConfirmed)
+                  (requireConfirmation && !highPriceImpactConfirmed) ||
+                  (!!shouldUseFlashloan && !!poolReserve && !poolReserve.flashLoanEnabled)
                 }
                 chainId={selectedChainId}
                 switchRates={switchRates}
+                modalType={modalType}
               />
             </>
           ) : (

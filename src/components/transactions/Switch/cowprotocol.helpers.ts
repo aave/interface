@@ -91,7 +91,7 @@ export const COW_APP_DATA = (
   metadata: {
     orderClass: { orderClass: 'market' as const }, // for CoW Swap UI & Analytics
     quote:
-      slippageBips && smartSlippage
+      slippageBips !== undefined && smartSlippage !== undefined
         ? {
             // for Analytics
             slippageBips,

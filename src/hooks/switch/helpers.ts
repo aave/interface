@@ -8,9 +8,6 @@ export function getSwapProvider(chainId: number): SwitchProvider | undefined {
   if (CoWProtocolSupportedNetworks.includes(chainId)) {
     return 'cowprotocol';
   }
-  // Always use paraswap as fallback for now
-  // else if (ParaswapSupportedNetworks.includes(chainId)) {
+
   return 'paraswap';
-  // }
-  // return undefined;
 }

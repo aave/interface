@@ -34,6 +34,12 @@ const SwitchModal = dynamic(() =>
   import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
 );
 
+const CollateralSwapModal = dynamic(() =>
+  import('src/components/transactions/Switch/CollateralSwapModal').then(
+    (module) => module.CollateralSwapModal
+  )
+);
+
 const BridgeModal = dynamic(() =>
   import('src/components/transactions/Bridge/BridgeModal').then((module) => module.BridgeModal)
 );
@@ -166,6 +172,7 @@ export default function MyApp(props: MyAppProps) {
                                 <FaucetModal />
                                 <TransactionEventHandler />
                                 <SwitchModal />
+                                <CollateralSwapModal />
                                 <StakingMigrateModal />
                                 <BridgeModal />
                                 <ReadOnlyModal />

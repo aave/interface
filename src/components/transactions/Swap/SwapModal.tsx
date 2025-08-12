@@ -17,7 +17,7 @@ export const SwapModal = () => {
   const account = useRootStore((store) => store.account);
 
   return (
-    <BasicModal open={type === ModalType.Swap} setOpen={close}>
+    <BasicModal open={type === ModalType.GovVote} setOpen={close}>
       {!account ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
           <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">

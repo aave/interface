@@ -30,7 +30,10 @@ export const getExplorerLink = (
   transaction: TransactionHistoryItem & ActionFields[keyof ActionFields],
   currentNetworkConfig: NetworkConfig
 ) => {
-  if (transaction.action === 'CowSwap' && currentNetworkConfig.wagmiChain.id) {
+  if (
+    (transaction.action === 'CowSwap' || transaction.action === 'CowCollateralSwap') &&
+    currentNetworkConfig.wagmiChain.id
+  ) {
     return generateCoWExplorerLink(currentNetworkConfig.wagmiChain.id, transaction.id);
   }
 
