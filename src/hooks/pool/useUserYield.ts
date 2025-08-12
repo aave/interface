@@ -145,7 +145,7 @@ export const useUserYields = (
         formattedPoolReserves,
         user,
         meritIncentives,
-        marketsData[index].marketTitle
+        marketsData[index].market
       );
     };
 
