@@ -20,6 +20,7 @@ import {
   DashboardReserve,
   handleSortDashboardReserves,
 } from '../../../../utils/dashboardSortUtils';
+import { amountToUsd } from '../../../../utils/utils';
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListButtonsColumn } from '../ListButtonsColumn';
@@ -58,7 +59,7 @@ const head = [
 ];
 
 export const SuppliedPositionsList = () => {
-  const { user, loading } = useAppDataContext();
+  const { user, loading, marketReferencePriceInUsd } = useAppDataContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -68,7 +69,32 @@ export const SuppliedPositionsList = () => {
 
   const suppliedPositions =
     user?.userReservesData
-      .filter((userReserve) => userReserve.underlyingBalance !== '0')
+      .filter((userReserve) => {
+        if (userReserve.underlyingBalance === '0') return false;
+
+        // Filter out dust amounts < $0.01 USD
+        const balanceUSD = amountToUsd(
+          userReserve.underlyingBalance,
+          userReserve.reserve.formattedPriceInMarketReferenceCurrency,
+          marketReferencePriceInUsd
+        );
+
+        // TODO: Remove this after testing
+        if (Number(balanceUSD) < 0.01 && Number(balanceUSD) > 0) {
+          console.log('--------------------------------');
+          console.log('Filtering out dust amount for', userReserve.reserve.symbol);
+          console.log('balanceUSD', balanceUSD);
+          console.log(
+            'userReserve.reserve.formattedPriceInMarketReferenceCurrency',
+            userReserve.reserve.formattedPriceInMarketReferenceCurrency
+          );
+          console.log('marketReferencePriceInUsd', marketReferencePriceInUsd);
+          console.log('userReserve.underlyingBalance', userReserve.underlyingBalance);
+          console.log('--------------------------------');
+        }
+
+        return Number(balanceUSD) >= 0.01;
+      })
       .map((userReserve) => ({
         ...userReserve,
         supplyAPY: userReserve.reserve.supplyAPY, // Note: added only for table sort

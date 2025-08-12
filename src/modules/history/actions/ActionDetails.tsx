@@ -39,6 +39,8 @@ export const ActionTextMap = ({ action }: { action: string }) => {
       return <Trans>Liquidation</Trans>;
     case 'CowSwap':
       return <Trans>Swap</Trans>;
+    case 'CowCollateralSwap':
+      return <Trans>Collateral Swap</Trans>;
     default:
       return <></>;
   }
@@ -582,17 +584,26 @@ export const ActionDetails = <K extends keyof ActionFields>({
         </Box>
       );
     case 'CowSwap':
+    case 'CowCollateralSwap':
       const cowSwapTx = transaction as TransactionHistoryItem<ActionFields['CowSwap']>;
-      const formattedCowSwapSrcToken = fetchIconSymbolAndNameHistorical(cowSwapTx.srcToken);
-      const formattedCowSwapDestToken = fetchIconSymbolAndNameHistorical(cowSwapTx.destToken);
+      const formattedCowSwapSrcToken = fetchIconSymbolAndNameHistorical(
+        cowSwapTx.underlyingSrcToken
+      );
+      const formattedCowSwapDestToken = fetchIconSymbolAndNameHistorical(
+        cowSwapTx.underlyingDestToken
+      );
       return (
         <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }} pr={4.5}>
-            <TokenIcon symbol={formattedCowSwapSrcToken.iconSymbol} sx={{ fontSize: iconSize }} />
+            <TokenIcon
+              symbol={formattedCowSwapSrcToken.iconSymbol}
+              sx={{ fontSize: iconSize }}
+              aToken={!!cowSwapTx.srcAToken}
+            />
             <DarkTooltip
               title={
                 <Typography variant="secondary14" color="common.white">
-                  {formatUnits(cowSwapTx.srcAmount, cowSwapTx.srcToken.decimals)}{' '}
+                  {formatUnits(cowSwapTx.srcAmount, cowSwapTx.underlyingSrcToken.decimals)}{' '}
                   {formattedCowSwapSrcToken.symbol}
                 </Typography>
               }
@@ -603,7 +614,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             >
               <Box>
                 <FormattedNumber
-                  value={formatUnits(cowSwapTx.srcAmount, cowSwapTx.srcToken.decimals)}
+                  value={formatUnits(cowSwapTx.srcAmount, cowSwapTx.underlyingSrcToken.decimals)}
                   variant="secondary14"
                   color="text.primary"
                   sx={{ mr: 1, ml: 1 }}
@@ -629,11 +640,15 @@ export const ActionDetails = <K extends keyof ActionFields>({
             <ArrowNarrowRightIcon />
           </SvgIcon>
           <Box sx={{ display: 'flex', alignItems: 'center' }} pl={4.5}>
-            <TokenIcon symbol={formattedCowSwapDestToken.iconSymbol} sx={{ fontSize: iconSize }} />
+            <TokenIcon
+              symbol={formattedCowSwapDestToken.iconSymbol}
+              sx={{ fontSize: iconSize }}
+              aToken={!!cowSwapTx.destAToken}
+            />
             <DarkTooltip
               title={
                 <Typography variant="secondary14" color="common.white">
-                  {formatUnits(cowSwapTx.destAmount, cowSwapTx.destToken.decimals)}{' '}
+                  {formatUnits(cowSwapTx.destAmount, cowSwapTx.underlyingDestToken.decimals)}{' '}
                   {formattedCowSwapDestToken.symbol}
                 </Typography>
               }
@@ -644,7 +659,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             >
               <Box>
                 <FormattedNumber
-                  value={formatUnits(cowSwapTx.destAmount, cowSwapTx.destToken.decimals)}
+                  value={formatUnits(cowSwapTx.destAmount, cowSwapTx.underlyingDestToken.decimals)}
                   variant="secondary14"
                   color="text.primary"
                   visibleDecimals={2}

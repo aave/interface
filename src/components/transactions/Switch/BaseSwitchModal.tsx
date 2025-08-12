@@ -23,6 +23,8 @@ export const BaseSwitchModal = ({
   inputBalanceTitle: balanceTitle,
   forcedDefaultInputToken,
   forcedDefaultOutputToken,
+  tokensFrom,
+  tokensTo,
 }: SwitchModalCustomizableProps) => {
   const {
     type,
@@ -81,8 +83,8 @@ export const BaseSwitchModal = ({
         <BaseSwitchModalContent
           forcedChainId={selectedChainId}
           supportedNetworks={supportedNetworksWithEnabledMarket}
-          initialFromTokens={initialFromTokens}
-          initialToTokens={initialToTokens}
+          initialFromTokens={tokensFrom ?? initialFromTokens}
+          initialToTokens={tokensTo ?? initialToTokens}
           modalType={modalType}
           switchDetails={swapDetails}
           inputBalanceTitle={balanceTitle}
