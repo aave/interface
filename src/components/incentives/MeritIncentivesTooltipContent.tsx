@@ -1,6 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
-import { ExtendedReserveIncentiveResponse } from 'src/hooks/useMeritIncentives';
+import {
+  ExtendedReserveIncentiveResponse,
+  MeritIncentivesBreakdown,
+} from 'src/hooks/useMeritIncentives';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
@@ -11,7 +14,7 @@ import { getSymbolMap } from './IncentivesTooltipContent';
 export const MeritIncentivesTooltipContent = ({
   meritIncentives,
 }: {
-  meritIncentives: ExtendedReserveIncentiveResponse;
+  meritIncentives: ExtendedReserveIncentiveResponse & { breakdown?: MeritIncentivesBreakdown };
 }) => {
   const theme = useTheme();
 
@@ -94,8 +97,18 @@ export const MeritIncentivesTooltipContent = ({
           {'.'}
         </span>
       </Typography>
-
       <Box sx={{ width: '100%' }}>
+        <Box>
+          <Typography
+            variant={typographyVariant}
+            // color="text.primary"
+            // fontSize={13}
+            fontWeight={'600'}
+            sx={{ mb: 1, mt: 1 }}
+          >
+            <Trans>Reward Token</Trans>
+          </Typography>
+        </Box>
         <Row
           height={32}
           caption={
@@ -122,12 +135,101 @@ export const MeritIncentivesTooltipContent = ({
               percent
               variant={typographyVariant}
             />
-            <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-              <Trans>APR</Trans>
-            </Typography>
+            {/* <Typography variant={typographyVariant} sx={{ ml: 1 }}>
+              <Trans>APY</Trans>
+            </Typography> */}
           </Box>
         </Row>
       </Box>
+
+      {/* Show breakdown if available */}
+      {meritIncentives.breakdown && (
+        <Box sx={{ width: '100%', mt: 2 }}>
+          {/* <Typography
+            variant="caption"
+            color="text.primary"
+            fontSize={13}
+            fontWeight={'600'}
+            sx={{ mb: 1 }}
+          >
+            <Trans>APY Breakdown</Trans>
+          </Typography> */}
+
+          <Row
+            height={24}
+            caption={<Typography variant={typographyVariant}>Protocol APY</Typography>}
+            width="100%"
+          >
+            <FormattedNumber
+              value={meritIncentives.breakdown.protocolAPY}
+              percent
+              variant={typographyVariant}
+            />
+          </Row>
+
+          {meritIncentives.breakdown.protocolIncentivesAPR > 0 && (
+            <Row
+              height={24}
+              caption={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant={typographyVariant}>Protocol Incentives</Typography>
+                  <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                    {meritIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
+                  </Typography>
+                </Box>
+              }
+              width="100%"
+            >
+              <FormattedNumber
+                value={meritIncentives.breakdown.protocolIncentivesAPR}
+                percent
+                variant={typographyVariant}
+              />
+            </Row>
+          )}
+
+          <Row
+            height={24}
+            caption={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant={typographyVariant}>Merit Incentives</Typography>
+                <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                  {meritIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
+                </Typography>
+              </Box>
+            }
+            width="100%"
+          >
+            <FormattedNumber
+              value={meritIncentives.breakdown.meritIncentivesAPR}
+              percent
+              variant={typographyVariant}
+            />
+          </Row>
+
+          <Row
+            height={24}
+            caption={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant={typographyVariant} fontWeight="600">
+                  Total APY
+                </Typography>
+                <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                  ({meritIncentives.breakdown.isBorrow ? 'Borrow Rate' : 'Supply Rate'})
+                </Typography>
+              </Box>
+            }
+            width="100%"
+          >
+            <FormattedNumber
+              value={meritIncentives.breakdown.totalAPY}
+              percent
+              variant={typographyVariant}
+              fontWeight="600"
+            />
+          </Row>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -155,6 +155,10 @@ msgstr "Liquidation risk"
 msgid "Current v2 Balance"
 msgstr "Current v2 Balance"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Reward Token"
+msgstr "Reward Token"
+
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
@@ -505,7 +509,8 @@ msgstr "Switch Network"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
@@ -873,6 +878,10 @@ msgstr "Please connect your wallet to see migration tool."
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Protocol Incentives"
+msgstr "Protocol Incentives"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
@@ -1533,6 +1542,10 @@ msgstr "Deposit GHO"
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Website"
 msgstr "Website"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Protocol APY"
+msgstr "Protocol APY"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
@@ -2432,10 +2445,6 @@ msgstr "Get ABP Token"
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
 
-#: src/components/incentives/IncentivesTooltipContent.tsx
-msgid "Net APR"
-msgstr "Net APR"
-
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowed"
 msgstr "Borrowed"
@@ -2696,6 +2705,11 @@ msgstr "Collateral usage is limited because of Isolation mode."
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Amount After Fee"
 msgstr "Amount After Fee"
+
+#: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Total APY"
+msgstr "Total APY"
 
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Cooling down"
@@ -3128,6 +3142,10 @@ msgstr "Confirming transaction"
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
 
+#: src/components/incentives/IncentivesTooltipContent.tsx
+msgid "Net Protocol Incentives"
+msgstr "Net Protocol Incentives"
+
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of this function must be a pool"
 msgstr "The caller of this function must be a pool"
@@ -3225,6 +3243,8 @@ msgstr "Amount must be greater than 0"
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx

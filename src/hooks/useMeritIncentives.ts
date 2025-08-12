@@ -13,6 +13,7 @@ import {
 } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { convertAprToApy } from 'src/utils/utils';
 
 export enum MeritAction {
   ETHEREUM_SGHO = 'ethereum-sgho',
@@ -74,6 +75,19 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   action: MeritAction;
   customMessage: string;
   customForumLink: string;
+};
+
+export type MeritIncentivesBreakdown = {
+  protocolAPY: number;
+  protocolIncentivesAPR: number;
+  meritIncentivesAPR: number; // Now represents APY (converted from APR)
+  totalAPY: number;
+  isBorrow: boolean;
+  breakdown: {
+    protocol: number;
+    protocolIncentives: number;
+    meritIncentives: number; // Now represents APY (converted from APR)
+  };
 };
 
 const url = 'https://apps.aavechan.com/api/merit/aprs';
@@ -670,10 +684,14 @@ export const useMeritIncentives = ({
   symbol,
   market,
   protocolAction,
+  protocolAPY = 0,
+  protocolIncentives = [],
 }: {
   symbol: string;
   market: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   return useQuery({
     queryFn: async () => {
@@ -715,14 +733,38 @@ export const useMeritIncentives = ({
         return null;
       }
 
+      const meritIncentivesAPR = maxAPR / 100;
+      const meritIncentivesAPY = convertAprToApy(meritIncentivesAPR);
+
+      const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
+        return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
+      }, 0);
+
+      const isBorrow = protocolAction === ProtocolAction.borrow;
+      const totalAPY = isBorrow
+        ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY
+        : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY;
+
       return {
-        incentiveAPR: (maxAPR / 100).toString(),
+        incentiveAPR: meritIncentivesAPY.toString(),
         rewardTokenAddress: selectedIncentive.rewardTokenAddress,
         rewardTokenSymbol: selectedIncentive.rewardTokenSymbol,
         action: selectedIncentive.action,
         customMessage: selectedIncentive.customMessage,
         customForumLink: selectedIncentive.customForumLink,
-      } as ExtendedReserveIncentiveResponse;
+        breakdown: {
+          protocolAPY,
+          protocolIncentivesAPR,
+          meritIncentivesAPR: meritIncentivesAPY,
+          totalAPY,
+          isBorrow,
+          breakdown: {
+            protocol: protocolAPY,
+            protocolIncentives: protocolIncentivesAPR,
+            meritIncentives: meritIncentivesAPY,
+          },
+        } as MeritIncentivesBreakdown,
+      } as ExtendedReserveIncentiveResponse & { breakdown: MeritIncentivesBreakdown };
     },
   });
 };
