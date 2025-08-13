@@ -1217,6 +1217,7 @@ msgstr "Unstaking {symbol}"
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
+#: src/components/transactions/Switch/SwitchActions.tsx
 msgid "Swapping"
 msgstr "Swapping"
 
@@ -2899,6 +2900,10 @@ msgstr "E-Mode increases your LTV for a selected category of assets. <0>Learn mo
 msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
 msgstr "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
 
+#: src/components/transactions/Switch/SwitchActions.tsx
+msgid "Checking approval"
+msgstr "Checking approval"
+
 #: src/modules/staking/BuyWithFiat.tsx
 msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Buy {cryptoSymbol} with Fiat"
@@ -2925,6 +2930,10 @@ msgstr "Asset cannot be used as collateral."
 #: src/ui-config/menu-items/index.tsx
 msgid "Developers"
 msgstr "Developers"
+
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "No eligible assets to swap."
+msgstr "No eligible assets to swap."
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
 msgid "Depositing"
@@ -3474,6 +3483,8 @@ msgstr "Restaked"
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
+#: src/components/transactions/Switch/SwitchActions.tsx
+#: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx

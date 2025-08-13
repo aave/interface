@@ -76,6 +76,7 @@ export const useParaSwapTransactionHandler = ({
   );
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
+  const [requestingApproval, setRequestingApproval] = useState(true);
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [signature, setSignature] = useState<SignatureLike | undefined>();
   const [signatureDeadline, setSignatureDeadline] = useState<string | undefined>();
@@ -311,6 +312,7 @@ export const useParaSwapTransactionHandler = ({
             setUsePermit(false);
             setApprovalTx(approval);
           }
+          setRequestingApproval(false);
         })
         .finally(() => {
           setMainTxState({
@@ -318,10 +320,12 @@ export const useParaSwapTransactionHandler = ({
           });
           setGasLimit(gasLimitRecommendation);
           setLoadingTxns(false);
+          setRequestingApproval(false);
         });
     } else {
       setApprovalTx(undefined);
       setActionTx(undefined);
+      setRequestingApproval(false);
     }
   }, [skip, ...deps, walletApprovalMethodPreference]);
 
@@ -329,6 +333,7 @@ export const useParaSwapTransactionHandler = ({
     approval,
     action,
     loadingTxns,
+    requestingApproval,
     requiresApproval: !!approvalTx || usePermit,
     approvalTxState,
     mainTxState,

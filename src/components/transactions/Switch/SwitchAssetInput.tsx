@@ -284,7 +284,7 @@ export const SwitchAssetInput = ({
           open={openModal}
           setOpen={setOpenModal}
           contentMaxWidth={420}
-          contentHeight={680}
+          contentHeight={800}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
@@ -357,7 +357,7 @@ export const SwitchAssetInput = ({
               sx={{
                 flexGrow: 1,
                 overflowY: 'auto',
-                maxHeight: 'calc(600px - 180px)',
+                maxHeight: 'calc(800px - 180px)',
                 '&::-webkit-scrollbar': {
                   width: '8px',
                 },

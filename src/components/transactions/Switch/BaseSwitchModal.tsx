@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { supportedNetworksWithEnabledMarket } from 'src/components/transactions/Switch/common';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -23,8 +24,10 @@ export const BaseSwitchModal = ({
   inputBalanceTitle: balanceTitle,
   forcedDefaultInputToken,
   forcedDefaultOutputToken,
-  tokensFrom,
-  tokensTo,
+  tokensFrom: forcedTokensFrom,
+  tokensTo: forcedTokensTo,
+  showSwitchInputAndOutputAssetsButton = true,
+  forcedChainId,
 }: SwitchModalCustomizableProps) => {
   const {
     type,
@@ -32,17 +35,25 @@ export const BaseSwitchModal = ({
     args: { chainId },
   } = useModalContext();
 
-  const currentChainId = useRootStore((store) => store.currentChainId);
+  const overallAppChainId = useRootStore((store) => store.currentChainId);
   const { chainId: connectedChainId } = useWeb3Context();
   const user = useRootStore((store) => store.account);
 
   const [selectedChainId, setSelectedChainId] = useState(() => {
-    if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === currentChainId))
-      return currentChainId;
+    if (forcedChainId) {
+      return forcedChainId;
+    }
+    if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === overallAppChainId))
+      return overallAppChainId;
     return defaultNetwork.chainId;
   });
 
   useEffect(() => {
+    if (forcedChainId) {
+      setSelectedChainId(forcedChainId);
+      return;
+    }
+
     // Passing chainId as prop will set default network for switch modal
     if (chainId && supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === chainId)) {
       setSelectedChainId(chainId);
@@ -54,20 +65,34 @@ export const BaseSwitchModal = ({
         (elem) => elem.underlyingChainId === connectedChainId
       );
       setSelectedChainId(supportedFork ? supportedFork.chainId : connectedChainId);
-    } else if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === currentChainId)) {
-      setSelectedChainId(currentChainId);
+    } else if (
+      supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === overallAppChainId)
+    ) {
+      setSelectedChainId(overallAppChainId);
     } else {
       setSelectedChainId(defaultNetwork.chainId);
     }
-  }, [currentChainId, chainId, connectedChainId]);
+  }, [overallAppChainId, chainId, connectedChainId]);
 
-  const initialFromTokens = useMemo(
+  const initialDefaultFromTokens = useMemo(
     () => getFilteredTokensForSwitch(selectedChainId),
     [selectedChainId]
   );
-  const initialToTokens = useMemo(
+  const initialDefaultToTokens = useMemo(
     () => getFilteredTokensForSwitch(selectedChainId),
     [selectedChainId]
+  );
+
+  const { data: initialFromTokens, refetch: refetchInitialFromTokens } = useTokensBalance(
+    initialDefaultFromTokens,
+    selectedChainId,
+    user
+  );
+
+  const { data: initialToTokens, refetch: refetchInitialToTokens } = useTokensBalance(
+    initialDefaultToTokens,
+    selectedChainId,
+    user
   );
 
   return (
@@ -83,13 +108,20 @@ export const BaseSwitchModal = ({
         <BaseSwitchModalContent
           forcedChainId={selectedChainId}
           supportedNetworks={supportedNetworksWithEnabledMarket}
-          initialFromTokens={tokensFrom ?? initialFromTokens}
-          initialToTokens={tokensTo ?? initialToTokens}
+          initialFromTokens={forcedTokensFrom ?? initialFromTokens ?? []}
+          initialToTokens={forcedTokensTo ?? initialToTokens ?? []}
           modalType={modalType}
           switchDetails={swapDetails}
           inputBalanceTitle={balanceTitle}
           forcedDefaultInputToken={forcedDefaultInputToken}
           forcedDefaultOutputToken={forcedDefaultOutputToken}
+          showSwitchInputAndOutputAssetsButton={showSwitchInputAndOutputAssetsButton}
+          selectedChainId={selectedChainId}
+          setSelectedChainId={setSelectedChainId}
+          refetchInitialTokens={() => {
+            refetchInitialFromTokens();
+            refetchInitialToTokens();
+          }}
         />
       )}
     </BasicModal>

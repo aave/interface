@@ -1,7 +1,14 @@
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Skeleton,
+  Typography,
+} from '@mui/material';
 import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -34,9 +41,10 @@ export const SwitchModalTxDetails = ({
   reserves,
   user,
   selectedInputToken,
-  modalType = ModalType.Switch,
+  modalType,
+  loading,
 }: {
-  switchRates: SwitchRatesType;
+  switchRates?: SwitchRatesType;
   selectedOutputToken: TokenInfoWithBalance;
   safeSlippage: number;
   gasLimit: string;
@@ -44,10 +52,41 @@ export const SwitchModalTxDetails = ({
   showGasStation: boolean | undefined;
   customReceivedTitle?: React.ReactNode;
   reserves: ComputedReserveData[];
-  user: ExtendedFormattedUser;
+  user?: ExtendedFormattedUser;
   selectedInputToken: TokenInfoWithBalance;
-  modalType?: ModalType;
+  modalType: ModalType;
+  loading?: boolean;
 }) => {
+  if (!switchRates || !user) return null;
+
+  if (loading)
+    return (
+      <TxModalDetails chainId={selectedChainId} showGasStation={false}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Skeleton variant="rounded" height={18} width="40%" />
+            <Skeleton variant="rounded" height={18} width="30%" />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Skeleton variant="rounded" height={18} width="35%" />
+            <Skeleton variant="rounded" height={18} width="25%" />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Skeleton variant="rounded" height={18} width="50%" />
+            <Skeleton variant="rounded" height={18} width="20%" />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Skeleton variant="rounded" height={18} width="40%" />
+            <Skeleton variant="rounded" height={18} width="30%" />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Skeleton variant="rounded" height={18} width="20%" />
+            <Skeleton variant="rounded" height={18} width="20%" />
+          </Box>
+        </Box>
+      </TxModalDetails>
+    );
+
   return (
     <TxModalDetails
       gasLimit={gasLimit}

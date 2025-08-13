@@ -85,9 +85,10 @@ export const COW_APP_DATA = (
   tokenFromSymbol: string,
   tokenToSymbol: string,
   slippageBips?: number,
-  smartSlippage?: boolean
+  smartSlippage?: boolean,
+  appCode?: string
 ) => ({
-  appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
+  appCode: appCode || HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
   version: '1.4.0',
   metadata: {
     orderClass: { orderClass: 'market' as const }, // for CoW Swap UI & Analytics
@@ -118,6 +119,7 @@ export type CowProtocolActionParams = {
   afterNetworkCostsBuyAmount: string;
   slippageBps: number;
   smartSlippage: boolean;
+  appCode?: string;
 };
 
 export const getPreSignTransaction = async ({
@@ -134,6 +136,7 @@ export const getPreSignTransaction = async ({
   smartSlippage,
   inputSymbol,
   outputSymbol,
+  appCode,
 }: CowProtocolActionParams) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -164,7 +167,7 @@ export const getPreSignTransaction = async ({
       buyTokenDecimals: tokenDestDecimals,
     },
     {
-      appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage),
+      appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
       additionalParams: {
         signingScheme: SigningScheme.PRESIGN,
       },
@@ -197,9 +200,14 @@ export const sendOrder = async ({
   inputSymbol,
   outputSymbol,
   smartSlippage,
+  appCode,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
-  const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
+  const tradingSdk = new TradingSdk({
+    chainId,
+    signer,
+    appCode: appCode || HEADER_WIDGET_APP_CODE,
+  });
 
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -228,7 +236,7 @@ export const sendOrder = async ({
         buyTokenDecimals: tokenDestDecimals,
       },
       {
-        appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage),
+        appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
       }
     )
     .then((orderResult) => orderResult.orderId);
@@ -275,8 +283,8 @@ export const isOrderCancelled = (status: OrderStatus) => {
   return status === OrderStatus.CANCELLED;
 };
 
-export const isNativeToken = (token: string) => {
-  return token.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
+export const isNativeToken = (token?: string) => {
+  return token?.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 };
 
 export const getUnsignerOrder = async (
@@ -288,11 +296,12 @@ export const getUnsignerOrder = async (
   tokenFromSymbol: string,
   tokenToSymbol: string,
   slippageBps: number,
-  smartSlippage: boolean
+  smartSlippage: boolean,
+  appCode?: string
 ): Promise<UnsignedOrder> => {
   const metadataApi = new MetadataApi();
   const { appDataHex } = await metadataApi.getAppDataInfo(
-    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage)
+    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage, appCode)
   );
 
   return {

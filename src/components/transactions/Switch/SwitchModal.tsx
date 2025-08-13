@@ -7,7 +7,6 @@ import { SwitchModalTxDetails } from './SwitchModalTxDetails';
 
 export const SwitchModal = () => {
   const { reserves, user: userData } = useAppDataContext();
-
   const switchDetails = ({
     switchRates,
     gasLimit,

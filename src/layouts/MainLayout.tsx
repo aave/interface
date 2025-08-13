@@ -16,7 +16,7 @@ import TopBarNotify from './TopBarNotify';
 
 const getCampaignConfigs = (
   // openSwitch: (token?: string, chainId?: number) => void,
-  openSwap: (underlyingAsset: string) => void
+  openSwitch: (underlyingAsset: string) => void
   // openMarket: (market: CustomMarket) => void
 ) => ({
   [ChainId.base]: {
@@ -47,7 +47,7 @@ const getCampaignConfigs = (
     buttonText: 'Get Started',
     buttonAction: {
       type: 'function' as const,
-      value: () => openSwap('0x3b3fb9c57858ef816833dc91565efcd85d96f634'),
+      value: () => openSwitch('0x3b3fb9c57858ef816833dc91565efcd85d96f634'),
     },
     bannerVersion: 'ethereum-swap-v1',
     // icon: '/icons/networks/ethereum.svg',
@@ -121,7 +121,7 @@ const getCampaignConfigs = (
 });
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  const { openSwap } = useModalContext();
+  const { openSwitch } = useModalContext();
   // const router = useRouter();
   // const setCurrentMarket = useRootStore(useShallow((store) => store.setCurrentMarket));
 
@@ -130,7 +130,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
   //   router.push(`/markets/?marketName=${market}`);
   // };
 
-  const campaignConfigs = getCampaignConfigs(openSwap);
+  const campaignConfigs = getCampaignConfigs(openSwitch);
 
   return (
     <>

@@ -23,6 +23,8 @@ export const GENERAL = {
   SWAP: 'Swap',
   SWAP_FAILED: 'Swap Failed',
   SWAP_COMPLETED: 'Swap Completed',
+  COLLATERAL_SWAP_WITHOUT_FLASHLOAN: 'Collateral Swap without Flashloan',
+  COLLATERAL_SWAP_WITH_FLASHLOAN: 'Collateral Swap with Flashloan',
   TRANSACTION_ERROR: 'Transaction Error',
   OPEN_MODAL: 'Open Modal',
   MAX_INPUT_SELECTION: 'Select Max input',

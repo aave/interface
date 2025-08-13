@@ -7,12 +7,10 @@ import {
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
+import { TokenInfo } from 'src/ui-config/TokenList';
 
 import { BaseSwitchModal } from './BaseSwitchModal';
-import {
-  getFilteredTokensForSwitch,
-  SwitchDetailsParams as SwitchDetailsParams,
-} from './BaseSwitchModalContent';
+import { SwitchDetailsParams as SwitchDetailsParams } from './BaseSwitchModalContent';
 import { SwitchModalTxDetails } from './SwitchModalTxDetails';
 
 export const CollateralSwapModal = () => {
@@ -22,7 +20,6 @@ export const CollateralSwapModal = () => {
   const { underlyingAsset } = args;
 
   const switchDetails = ({
-    user: _userAddress,
     switchRates,
     gasLimit,
     selectedChainId,
@@ -30,9 +27,8 @@ export const CollateralSwapModal = () => {
     selectedInputToken,
     safeSlippage,
     showGasStation,
-  }: SwitchDetailsParams & { selectedInputToken: TokenInfoWithBalance; ratesLoading: boolean }) => {
-    if (!switchRates || !_userAddress || !user) return null;
-    return switchRates ? (
+  }: SwitchDetailsParams & { selectedInputToken: TokenInfoWithBalance }) => {
+    return (
       <SwitchModalTxDetails
         switchRates={switchRates}
         selectedOutputToken={selectedOutputToken}
@@ -46,12 +42,21 @@ export const CollateralSwapModal = () => {
         selectedInputToken={selectedInputToken}
         modalType={ModalType.CollateralSwap}
       />
-    ) : null;
+    );
   };
 
   const { user, reserves } = useAppDataContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
-  const baseTokens = getFilteredTokensForSwitch(currentNetworkConfig.wagmiChain.id, true);
+  const baseTokens: TokenInfo[] = reserves.map((reserve) => {
+    return {
+      address: reserve.underlyingAsset,
+      symbol: reserve.symbol,
+      logoURI: `/icons/tokens/${reserve.iconSymbol.toLowerCase()}.svg`,
+      chainId: currentNetworkConfig.wagmiChain.id,
+      name: reserve.name,
+      decimals: reserve.decimals,
+    };
+  });
 
   // Tokens From should be the supplied tokens
   const suppliedPositions =
@@ -65,8 +70,7 @@ export const CollateralSwapModal = () => {
       );
       if (baseToken) {
         // Prefer showing native symbol (e.g., ETH) instead of WETH when applicable, but keep underlying address
-        const realChainId =
-          currentNetworkConfig.underlyingChainId || currentNetworkConfig.wagmiChain.id;
+        const realChainId = currentNetworkConfig.wagmiChain.id;
         const wrappedNative =
           WRAPPED_NATIVE_CURRENCIES[realChainId as SupportedChainId]?.address?.toLowerCase();
         const isWrappedNative =
@@ -85,7 +89,20 @@ export const CollateralSwapModal = () => {
       }
       return undefined;
     })
-    .filter((token) => token !== undefined);
+    .filter((token) => token !== undefined)
+    .sort((a, b) => {
+      const aBalance = parseFloat(a?.balance ?? '0');
+      const bBalance = parseFloat(b?.balance ?? '0');
+      if (bBalance !== aBalance) {
+        return bBalance - aBalance;
+      }
+      // If balances are equal, sort by symbol alphabetically
+      const aSymbol = a?.symbol?.toLowerCase() ?? '';
+      const bSymbol = b?.symbol?.toLowerCase() ?? '';
+      if (aSymbol < bSymbol) return -1;
+      if (aSymbol > bSymbol) return 1;
+      return 0;
+    });
 
   // Tokens To should be the potential supply tokens (so we have an aToken)
   const tokensToSupply = reserves.filter(
@@ -100,34 +117,46 @@ export const CollateralSwapModal = () => {
 
       if (!baseToken) return undefined;
 
-      // Prefer showing native symbol (e.g., ETH) instead of WETH when applicable, but keep underlying address
-      const realChainId =
-        currentNetworkConfig.underlyingChainId || currentNetworkConfig.wagmiChain.id;
-      const wrappedNative =
-        WRAPPED_NATIVE_CURRENCIES[realChainId as SupportedChainId]?.address?.toLowerCase();
-      const isWrappedNative =
-        wrappedNative && reserve.underlyingAsset.toLowerCase() === wrappedNative;
-      const nativeToken = isWrappedNative
-        ? baseTokens.find((t) => (t as TokenInfoWithBalance).extensions?.isNative)
-        : undefined;
+      const currentCollateral =
+        suppliedPositions.find(
+          (position) =>
+            position.reserve.underlyingAsset.toLowerCase() === reserve.underlyingAsset.toLowerCase()
+        )?.underlyingBalance ?? '0';
 
       return {
         ...baseToken,
-        symbol: nativeToken?.symbol ?? baseToken.symbol,
-        logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
         aToken: reserve.aTokenAddress,
+        balance: currentCollateral,
       };
     })
-    .filter((token) => token !== undefined);
+    .filter((token) => token !== undefined)
+    .sort((a, b) => {
+      const aBalance = parseFloat(a?.balance ?? '0');
+      const bBalance = parseFloat(b?.balance ?? '0');
+      if (bBalance !== aBalance) {
+        return bBalance - aBalance;
+      }
+      // If balances are equal, sort by symbol alphabetically
+      const aSymbol = a?.symbol?.toLowerCase() ?? '';
+      const bSymbol = b?.symbol?.toLowerCase() ?? '';
+      if (aSymbol < bSymbol) return -1;
+      if (aSymbol > bSymbol) return 1;
+      return 0;
+    });
 
-  // TODO: what if no tokens are found?
-
+  const userSelectedInputToken = tokensFrom.find(
+    (token) => token.address.toLowerCase() === underlyingAsset?.toLowerCase()
+  );
   const defaultInputToken =
-    tokensFrom.find((token) => token.address.toLowerCase() === underlyingAsset?.toLowerCase()) ??
-    tokensFrom[0];
-  const defaultOutputToken = tokensTo.filter(
-    (token) => token.address !== defaultInputToken?.address
-  )[0];
+    userSelectedInputToken ||
+    (tokensFrom.find((token) => token.address.toLowerCase() === underlyingAsset?.toLowerCase()) ??
+    tokensFrom.length > 0
+      ? tokensFrom[0]
+      : undefined);
+  const defaultOutputToken =
+    tokensTo.length > 0
+      ? tokensTo.filter((token) => token.address !== defaultInputToken?.address)[0]
+      : undefined;
 
   return (
     <BaseSwitchModal
@@ -137,6 +166,8 @@ export const CollateralSwapModal = () => {
       tokensTo={tokensTo}
       forcedDefaultInputToken={defaultInputToken}
       forcedDefaultOutputToken={defaultOutputToken}
+      showSwitchInputAndOutputAssetsButton={false}
+      forcedChainId={currentNetworkConfig.wagmiChain.id}
     />
   );
 };
