@@ -41,10 +41,6 @@ msgstr "Aave Labs does not guarantee the program and accepts no liability."
 msgid "Savings GHO token"
 msgstr "Savings GHO token"
 
-#: src/modules/sGho/SavingsGhoCard.tsx
-msgid "Deposit GHO and earn up to <0>{0}%</0> APR"
-msgstr "Deposit GHO and earn up to <0>{0}%</0> APR"
-
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "You've successfully swapped borrow position."
 msgstr "You've successfully swapped borrow position."
@@ -110,6 +106,10 @@ msgstr "To"
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
 msgstr "FAQ"
+
+#: src/modules/sGho/SavingsGhoCard.tsx
+msgid "Deposit GHO and earn up to <0>{0}%</0> APY"
+msgstr "Deposit GHO and earn up to <0>{0}%</0> APY"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Stable borrowing is not enabled"
@@ -514,8 +514,6 @@ msgstr "Switch Network"
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
-#: src/modules/sGho/SGhoDepositPanel.tsx
-#: src/modules/sGho/SGhoHeader.tsx
 msgid "APR"
 msgstr "APR"
 
@@ -930,10 +928,6 @@ msgstr "Supply balance after switch"
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
 msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
-
-#: src/modules/sGho/SGhoDepositPanel.tsx
-msgid "Deposit GHO and earn {0}% APR"
-msgstr "Deposit GHO and earn {0}% APR"
 
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Stake your Aave aTokens or underlying assets to earn rewards. In case of a shortfall event, your stake may be slashed to cover the deficit."
@@ -1440,6 +1434,10 @@ msgstr "APY, variable"
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
 msgstr "If the health factor goes below 1, the liquidation of your collateral might be triggered."
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
+msgid "Current APY"
+msgstr "Current APY"
+
 #: src/ui-config/errorMapping.tsx
 msgid "You cancelled the transaction."
 msgstr "You cancelled the transaction."
@@ -1702,7 +1700,6 @@ msgstr "Links"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
-#: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
@@ -2289,6 +2286,7 @@ msgstr "Incentives APR"
 msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 msgstr "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 
+#: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "Staking APY"
 msgstr "Staking APY"
@@ -2658,6 +2656,10 @@ msgstr "Borrowable"
 msgid "Safety Module"
 msgstr "Safety Module"
 
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO holdings. There's no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
+msgstr "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO holdings. There's no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
+
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
 msgstr "Select slippage tolerance"
@@ -2873,6 +2875,10 @@ msgstr "English"
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
+msgid "Deposit GHO and earn {0}% APY"
+msgstr "Deposit GHO and earn {0}% APY"
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Collateral to repay with"
 msgstr "Collateral to repay with"
@@ -2939,10 +2945,6 @@ msgstr "Depositing"
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Supply apy"
 msgstr "Supply apy"
-
-#: src/modules/sGho/SGhoHeader.tsx
-msgid "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. There's no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
-msgstr "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. There's no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
@@ -3257,6 +3259,8 @@ msgstr "Selected supply assets"
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
+#: src/modules/sGho/SGhoHeader.tsx
 #: src/modules/umbrella/helpers/ApyTooltip.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
@@ -3404,10 +3408,6 @@ msgstr "Since this asset is frozen, the only available actions are withdraw and 
 #: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Borrow amount to reach {0}% utilization"
 msgstr "Borrow amount to reach {0}% utilization"
-
-#: src/modules/sGho/SGhoDepositPanel.tsx
-msgid "Current APR"
-msgstr "Current APR"
 
 #: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
