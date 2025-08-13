@@ -1,4 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
+import { normalizeBN } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
@@ -61,7 +62,15 @@ export const UnStakeModalContent = ({
     currentChainId
   );
 
-  const redeemableAmount = stakeData?.formattedBalances.stakeTokenRedeemableAmount || '0';
+  const redeemableAmountBN = BigNumber.min(
+    stakeData?.balances.stakeTokenRedeemableAmount || '0',
+    stakeData?.cooldownData.cooldownAmount || '0'
+  );
+
+  const redeemableAmount = normalizeBN(
+    redeemableAmountBN.toString(),
+    stakeData.decimals
+  ).toString();
 
   const isMaxSelected = amount === '-1';
   const amountToRedeem = isMaxSelected ? redeemableAmount : amount;
@@ -230,6 +239,7 @@ export const UnStakeModalContent = ({
         symbol={symbolFormatted}
         blocked={false}
         stakeData={stakeData}
+        reserve={poolReserve}
         redeemType={redeemType}
       />
     </>

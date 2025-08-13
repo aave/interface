@@ -37,6 +37,14 @@ msgstr "Save with sGHO"
 msgid "Aave Labs does not guarantee the program and accepts no liability."
 msgstr "Aave Labs does not guarantee the program and accepts no liability."
 
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+msgid "Savings GHO token"
+msgstr "Savings GHO token"
+
+#: src/modules/sGho/SavingsGhoCard.tsx
+msgid "Deposit GHO and earn up to <0>{0}%</0> APR"
+msgstr "Deposit GHO and earn up to <0>{0}%</0> APR"
+
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "You've successfully swapped borrow position."
 msgstr "You've successfully swapped borrow position."
@@ -119,6 +127,10 @@ msgstr "User did not borrow the specified currency"
 msgid "There is not enough liquidity for the target asset to perform the switch. Try lowering the amount."
 msgstr "There is not enough liquidity for the target asset to perform the switch. Try lowering the amount."
 
+#: pages/404.page.tsx
+msgid "We suggest you go back to the home page."
+msgstr "We suggest you go back to the home page."
+
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Rate change"
 msgstr "Rate change"
@@ -142,6 +154,10 @@ msgstr "Liquidation risk"
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Current v2 Balance"
 msgstr "Current v2 Balance"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Reward Token"
+msgstr "Reward Token"
 
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/migration/MigrationList.tsx
@@ -177,6 +193,10 @@ msgstr "Learn more about the risks."
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
+
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
+msgstr "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
 
 #: src/modules/umbrella/AmountStakedItem.tsx
 msgid "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
@@ -220,6 +240,10 @@ msgstr "Asset cannot be migrated due to supply cap restriction in {marketName} v
 msgid "Blocked Address"
 msgstr "Blocked Address"
 
+#: src/modules/sGho/SavingsGhoCard.tsx
+msgid "Initiate Withdraw"
+msgstr "Initiate Withdraw"
+
 #: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
 msgstr "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
@@ -242,6 +266,11 @@ msgstr "I acknowledge the risks involved."
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Supply cap on target reserve reached. Try lowering the amount."
+
+#: src/modules/sGho/SGhoDepositPanel.tsx
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Total Deposited"
+msgstr "Total Deposited"
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "{0}{name}"
@@ -302,6 +331,7 @@ msgstr "Repay"
 msgid "The weighted average of APY for all supplied assets, including incentives."
 msgstr "The weighted average of APY for all supplied assets, including incentives."
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "You can only withdraw your assets from the Security Module after the cooldown period ends and the unstake window is active."
@@ -438,6 +468,8 @@ msgstr "Repay {symbol}"
 msgid "Your staked amount"
 msgstr "Your staked amount"
 
+#: src/modules/sGho/SavingsGhoCard.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooling down..."
@@ -477,10 +509,13 @@ msgstr "Switch Network"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
+#: src/modules/sGho/SGhoHeader.tsx
 msgid "APR"
 msgstr "APR"
 
@@ -535,6 +570,7 @@ msgstr "Learn more about Sonic Rewards program"
 msgid "Claim all"
 msgstr "Claim all"
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/AmountStakedItem.tsx
@@ -542,6 +578,7 @@ msgid "Time remaining until the withdraw period ends."
 msgstr "Time remaining until the withdraw period ends."
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+#: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
 msgid "Data couldn't be fetched, please reload graph."
 msgstr "Data couldn't be fetched, please reload graph."
 
@@ -568,6 +605,7 @@ msgid "Page not found"
 msgstr "Page not found"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+#: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
 msgid "Loading data..."
 msgstr "Loading data..."
 
@@ -683,6 +721,10 @@ msgstr "Bridged Via CCIP"
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
+msgstr "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
+
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
@@ -753,6 +795,10 @@ msgstr "Migrate your assets"
 msgid "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 
+#: src/layouts/components/NavItems.tsx
+msgid "Savings"
+msgstr "Savings"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
@@ -797,6 +843,11 @@ msgstr "of"
 msgid "Your balance of assets that are available to stake"
 msgstr "Your balance of assets that are available to stake"
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
+msgid "GHO Balance"
+msgstr "GHO Balance"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
 msgstr "Techpaper"
@@ -809,10 +860,6 @@ msgstr "You've successfully submitted an order."
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "Max"
 msgstr "Max"
-
-#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
-msgid "Slippage"
-msgstr "Slippage"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -832,6 +879,10 @@ msgstr "Please connect your wallet to see migration tool."
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Protocol Incentives"
+msgstr "Protocol Incentives"
+
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Watch wallet"
@@ -842,6 +893,7 @@ msgid "This action will reduce health factor of V3 below liquidation threshold. 
 msgstr "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
 
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 msgid "Instant"
 msgstr "Instant"
@@ -878,6 +930,10 @@ msgstr "Supply balance after switch"
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
 msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
+
+#: src/modules/sGho/SGhoDepositPanel.tsx
+msgid "Deposit GHO and earn {0}% APR"
+msgstr "Deposit GHO and earn {0}% APR"
 
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Stake your Aave aTokens or underlying assets to earn rewards. In case of a shortfall event, your stake may be slashed to cover the deficit."
@@ -931,6 +987,8 @@ msgstr "We couldn't detect a wallet. Connect a wallet to stake and view your bal
 msgid "Destination"
 msgstr "Destination"
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1030,10 +1088,6 @@ msgstr "{tooltipText}"
 msgid "Rewards can be claimed through"
 msgstr "Rewards can be claimed through"
 
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-msgid "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This is a program initiated and implemented by the decentralised ZKSync community. Aave Labs does not guarantee the program and accepts no liability."
-
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 msgstr "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
@@ -1050,16 +1104,19 @@ msgid "Unstake window"
 msgstr "Unstake window"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+#: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
 msgid "Reload"
 msgstr "Reload"
 
-#: pages/safety-module.page.tsx
+#: src/layouts/components/NavItems.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 msgid "sGHO"
 msgstr "sGHO"
 
+#: src/components/transactions/Swap/SwapModal.tsx
 #: src/components/transactions/Switch/BaseSwitchModal.tsx
 #: src/components/transactions/Switch/BaseSwitchModalContent.tsx
 msgid "Please connect your wallet to swap tokens."
@@ -1099,6 +1156,8 @@ msgstr "This asset is planned to be offboarded due to an Aave Protocol Governanc
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SavingsGhoCard.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
@@ -1123,7 +1182,8 @@ msgid "deposited"
 msgstr "deposited"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
@@ -1137,6 +1197,8 @@ msgstr "deposited"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
+#: src/layouts/TopBarNotify.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -1185,6 +1247,8 @@ msgstr "Stake"
 msgid "Not enough balance on your wallet"
 msgstr "Not enough balance on your wallet"
 
+#: src/modules/sGho/SavingsGhoCard.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GetGhoToken.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 msgid "Get GHO"
@@ -1239,10 +1303,6 @@ msgstr "This represents the threshold at which a borrow position will be conside
 msgid "Isolated"
 msgstr "Isolated"
 
-#: src/layouts/TopBarNotify.tsx
-msgid "{notifyText}"
-msgstr "{notifyText}"
-
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
 msgstr "Switching E-Mode"
@@ -1260,7 +1320,12 @@ msgstr "Due to internal stETH mechanics required for rebasing support, it is not
 msgid "Wrong Network"
 msgstr "Wrong Network"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Merkl rewards are claimed through the"
+msgstr "Merkl rewards are claimed through the"
+
 #: src/components/transactions/Stake/StakeActions.tsx
+#: src/layouts/components/NavItems.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
 #: src/modules/umbrella/UmbrellaHeader.tsx
@@ -1304,6 +1369,7 @@ msgstr "No voting power"
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
@@ -1321,6 +1387,10 @@ msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgid "Maximum collateral amount to use"
 msgstr "Maximum collateral amount to use"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Eligible for incentives through Merkl."
+msgstr "Eligible for incentives through Merkl."
+
 #: src/layouts/FeedbackDialog.tsx
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
@@ -1328,6 +1398,11 @@ msgstr "Let us know how we can make the app better for you. For user support rel
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
 msgstr "Emode"
+
+#: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Expired"
+msgstr "Expired"
 
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"
@@ -1460,12 +1535,17 @@ msgid "disabled"
 msgstr "disabled"
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositModal.tsx
+#: src/modules/sGho/SavingsGhoCard.tsx
 msgid "Deposit GHO"
 msgstr "Deposit GHO"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Website"
 msgstr "Website"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Protocol APY"
+msgstr "Protocol APY"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
@@ -1476,6 +1556,9 @@ msgstr "Website"
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SavingsGhoCard.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
@@ -1577,6 +1660,10 @@ msgstr "Swapped"
 msgid "Not reached"
 msgstr "Not reached"
 
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Auto"
+msgstr "Auto"
+
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "Age"
 msgstr "Age"
@@ -1615,6 +1702,7 @@ msgstr "Links"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+#: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
@@ -1651,6 +1739,7 @@ msgid "Show Frozen or paused assets"
 msgstr "Show Frozen or paused assets"
 
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/AmountStakedItem.tsx
@@ -1705,7 +1794,7 @@ msgstr "Can't validate the wallet address. Try again."
 msgid "GHO balance"
 msgstr "GHO balance"
 
-#: pages/index.page.tsx
+#: pages/dashboard.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -1860,10 +1949,6 @@ msgstr "Nothing supplied yet"
 msgid "Voting"
 msgstr "Voting"
 
-#: pages/404.page.tsx
-msgid "Back to Dashboard"
-msgstr "Back to Dashboard"
-
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Unbacked"
 msgstr "Unbacked"
@@ -1884,6 +1969,7 @@ msgstr "User cannot withdraw more than the available balance"
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "In Progress"
 msgstr "In Progress"
@@ -1933,7 +2019,6 @@ msgstr "Amount to Bridge"
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
-#: src/layouts/components/NavItems.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/layouts/components/StakingMenu.tsx
 msgid "Umbrella"
@@ -2037,6 +2122,7 @@ msgstr "enabled"
 msgid "Enter a valid address"
 msgstr "Enter a valid address"
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to unstake"
@@ -2047,6 +2133,7 @@ msgid "Disabling this asset as collateral affects your borrowing power and Healt
 msgstr "Disabling this asset as collateral affects your borrowing power and Health Factor."
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+#: src/modules/sGho/SGhoHeader.tsx
 msgid "Price"
 msgstr "Price"
 
@@ -2100,10 +2187,6 @@ msgstr "Available to withdraw"
 msgid "Cooldown"
 msgstr "Cooldown"
 
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-msgid "ZKSync Ignite Program rewards are claimed through the"
-msgstr "ZKSync Ignite Program rewards are claimed through the"
-
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
@@ -2144,7 +2227,7 @@ msgstr "This is a program initiated and implemented by the Aave Chan Initiative 
 msgid "supply"
 msgstr "supply"
 
-#: pages/index.page.tsx
+#: pages/dashboard.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -2197,6 +2280,10 @@ msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mod
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Something went wrong fetching bridge message, please try again later."
 msgstr "Something went wrong fetching bridge message, please try again later."
+
+#: src/modules/staking/StakingPanelNoWallet.tsx
+msgid "Incentives APR"
+msgstr "Incentives APR"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
@@ -2304,6 +2391,10 @@ msgstr "Slippage is the difference between the quoted and received amounts from 
 msgid "Edit"
 msgstr "Edit"
 
+#: pages/sgho.page.tsx
+msgid "Please connect a wallet to view your balance here."
+msgstr "Please connect a wallet to view your balance here."
+
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
 msgid "Staking Rewards"
@@ -2353,10 +2444,6 @@ msgstr "Get ABP Token"
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
-
-#: src/components/incentives/IncentivesTooltipContent.tsx
-msgid "Net APR"
-msgstr "Net APR"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowed"
@@ -2514,6 +2601,7 @@ msgid "There was some error. Please try changing the parameters or <0><1>copy th
 msgstr "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/UmbrellaClaimActions.tsx
@@ -2566,7 +2654,6 @@ msgstr "Borrowable"
 #: src/layouts/components/NavItems.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/layouts/components/StakingMenu.tsx
-#: src/layouts/MobileMenu.tsx
 #: src/modules/staking/StakingHeader.tsx
 msgid "Safety Module"
 msgstr "Safety Module"
@@ -2619,6 +2706,11 @@ msgstr "Collateral usage is limited because of Isolation mode."
 msgid "Amount After Fee"
 msgstr "Amount After Fee"
 
+#: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Total APY"
+msgstr "Total APY"
+
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Cooling down"
 msgstr "Cooling down"
@@ -2653,6 +2745,7 @@ msgstr "Enabling E-Mode allows you to maximize your borrowing power, however, bo
 msgid "{s}s"
 msgstr "{s}s"
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown time left"
@@ -2710,6 +2803,10 @@ msgstr "Available to claim"
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} assets selected"
 
+#: src/modules/sGho/SGhoApyChart.tsx
+msgid "sGHO Merit APY History"
+msgstr "sGHO Merit APY History"
+
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "To repay on behalf of a user an explicit amount to repay is needed"
@@ -2724,6 +2821,8 @@ msgstr "You can not stake this amount because it will cause collateral call"
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SavingsGhoCard.tsx
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 msgid "Deposit"
 msgstr "Deposit"
@@ -2820,6 +2919,11 @@ msgstr "Stake AAVE"
 msgid "Ok, Close"
 msgstr "Ok, Close"
 
+#: pages/sgho.page.tsx
+#: src/modules/sGho/SavingsGhoCard.tsx
+msgid "Savings GHO (sGHO)"
+msgstr "Savings GHO (sGHO)"
+
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset cannot be used as collateral."
 msgstr "Asset cannot be used as collateral."
@@ -2836,6 +2940,10 @@ msgstr "Depositing"
 msgid "Supply apy"
 msgstr "Supply apy"
 
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. There's no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
+msgstr "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. There's no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
+
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
 msgstr "With a voting power of <0/>"
@@ -2851,10 +2959,6 @@ msgstr "Migrating multiple collaterals and borrowed assets at the same time can 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Proposition"
 msgstr "Proposition"
-
-#: pages/404.page.tsx
-msgid "We suggest you go back to the Dashboard."
-msgstr "We suggest you go back to the Dashboard."
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Can be executed"
@@ -2885,6 +2989,7 @@ msgstr "After the cooldown is initiated, you will be able to withdraw your asset
 
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+#: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
@@ -2919,6 +3024,7 @@ msgstr "Filter"
 msgid "Learn more about the Ether.fi program"
 msgstr "Learn more about the Ether.fi program"
 
+#: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Cooldown to unstake"
@@ -2940,6 +3046,7 @@ msgstr "Staking this asset will earn the underlying asset supply yield in additi
 msgid "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
 msgstr "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
 
+#: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time remaining until the 48 hour withdraw period starts."
@@ -2950,7 +3057,6 @@ msgid "Target liquidity"
 msgstr "Target liquidity"
 
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 msgstr "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 
@@ -2962,10 +3068,6 @@ msgstr "All borrow positions outside of this category must be closed to enable t
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
 msgstr "Available to supply"
-
-#: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-msgid "Eligible for the ZKSync Ignite program."
-msgstr "Eligible for the ZKSync Ignite program."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the {market} has been frozen."
@@ -3039,6 +3141,10 @@ msgstr "Confirming transaction"
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
+
+#: src/components/incentives/IncentivesTooltipContent.tsx
+msgid "Net Protocol Incentives"
+msgstr "Net Protocol Incentives"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of this function must be a pool"
@@ -3137,6 +3243,8 @@ msgstr "Amount must be greater than 0"
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -3269,6 +3377,10 @@ msgstr "Nothing borrowed yet"
 msgid "Remove"
 msgstr "Remove"
 
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Auto Slippage"
+msgstr "Auto Slippage"
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve {symbol} to continue"
 msgstr "Approve {symbol} to continue"
@@ -3292,6 +3404,10 @@ msgstr "Since this asset is frozen, the only available actions are withdraw and 
 #: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Borrow amount to reach {0}% utilization"
 msgstr "Borrow amount to reach {0}% utilization"
+
+#: src/modules/sGho/SGhoDepositPanel.tsx
+msgid "Current APR"
+msgstr "Current APR"
 
 #: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
@@ -3345,6 +3461,10 @@ msgstr "Buy Crypto with Fiat"
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Custom slippage"
+msgstr "Custom slippage"
+
 #: src/components/infoTooltips/KernelAirdropTooltip.tsx
 msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
@@ -3394,6 +3514,7 @@ msgid "Allows you to decide whether to use a supplied asset as collateral. An as
 msgstr "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Cancelled"
 msgstr "Cancelled"
 
@@ -3405,7 +3526,7 @@ msgstr "Stablecoin"
 msgid "Stable debt supply is not zero"
 msgstr "Stable debt supply is not zero"
 
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+#: src/modules/sGho/SGhoHeader.tsx
 msgid "Savings GHO"
 msgstr "Savings GHO"
 
@@ -3505,6 +3626,7 @@ msgstr "{0} Faucet"
 
 #: pages/governance/index.governance.tsx
 #: pages/reserve-overview.page.tsx
+#: pages/sgho.page.tsx
 #: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -3574,6 +3696,10 @@ msgstr "The app is running in fork mode."
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
 
+#: pages/404.page.tsx
+msgid "Back home"
+msgstr "Back home"
+
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Close"
@@ -3612,6 +3738,7 @@ msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailabl
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
 msgstr "Submission did not work, please try again later or contact wecare@avara.xyz"
 
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Filled"
 msgstr "Filled"

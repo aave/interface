@@ -4,7 +4,6 @@ import {
   AaveV3Gnosis,
   AaveV3Optimism,
   AaveV3Polygon,
-  AaveV3Sonic,
 } from '@bgd-labs/aave-address-book';
 import { unPrefixSymbol } from 'src/hooks/app-data-provider/useAppDataProvider';
 
@@ -136,11 +135,6 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       symbol: 'sDAI',
       iconSymbol: 'gnosissdai',
     },
-    [AaveV3Sonic.ASSETS.USDCe.UNDERLYING.toLowerCase()]: {
-      name: 'USDC',
-      symbol: 'USDC',
-      iconSymbol: 'USDC',
-    },
     '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c': {
       name: 'BTCB Token',
       symbol: 'BTCB',
@@ -156,6 +150,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT sUSDe July',
       iconSymbol: 'ptsusde',
     },
+    [AaveV3Ethereum.ASSETS.PT_sUSDE_25SEP2025.UNDERLYING.toLowerCase()]: {
+      symbol: 'PT sUSDe September',
+      name: 'PT sUSDe September',
+      iconSymbol: 'ptsusde',
+    },
     '0x917459337caac939d41d7493b3999f571d20d667': {
       symbol: 'PT USDe July',
       name: 'PT USDe July',
@@ -165,6 +164,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       symbol: 'PT eUSDe August',
       name: 'PT eUSDe August',
       iconSymbol: 'pteusde',
+    },
+    '0xbc6736d346a5ebc0debc997397912cd9b8fae10a': {
+      symbol: 'PT USDe September 25th 2025',
+      name: 'PT USDe September 2025',
+      iconSymbol: 'ptusde',
     },
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },

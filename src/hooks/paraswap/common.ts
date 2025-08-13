@@ -9,6 +9,7 @@ import {
   AaveV3Gnosis,
   AaveV3Optimism,
   AaveV3Polygon,
+  AaveV3Sonic,
 } from '@bgd-labs/aave-address-book';
 import {
   BuildTxFunctions,
@@ -22,6 +23,7 @@ import {
   TransactionParams,
 } from '@paraswap/sdk';
 import { GetRateFunctions, RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
+import { BigNumber } from 'bignumber.js';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
@@ -97,6 +99,7 @@ const paraswapNetworks: ParaswapChainMap = {
   [ChainId.base]: { paraswap: ParaSwap(ChainId.base), feeTarget: AaveV3Base.COLLECTOR },
   [ChainId.bnb]: { paraswap: ParaSwap(ChainId.bnb), feeTarget: AaveV3BNB.COLLECTOR },
   [ChainId.xdai]: { paraswap: ParaSwap(ChainId.xdai), feeTarget: AaveV3Gnosis.COLLECTOR },
+  [ChainId.sonic]: { paraswap: ParaSwap(ChainId.sonic), feeTarget: AaveV3Sonic.COLLECTOR },
 };
 
 export const getParaswap = (chainId: ChainId) => {
@@ -463,7 +466,7 @@ export const maxInputAmountWithSlippage = (
   if (inputAmount === '0') return '0';
   return valueToBigNumber(inputAmount)
     .multipliedBy(1 + Number(slippage) / 100)
-    .toFixed(decimals);
+    .toFixed(decimals, BigNumber.ROUND_UP);
 };
 
 export const minimumReceivedAfterSlippage = (

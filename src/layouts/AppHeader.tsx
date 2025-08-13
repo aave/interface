@@ -94,7 +94,7 @@ export function AppHeader() {
   const sm = useMediaQuery(breakpoints.down('sm'));
   const smd = useMediaQuery('(max-width:1120px)');
 
-  const [visitedSwitch, setVisitedSwitch] = useState(() => {
+  const [, setVisitedSwitch] = useState(() => {
     if (typeof window === 'undefined') return true;
     return Boolean(localStorage.getItem(SWITCH_VISITED_KEY));
   });
@@ -276,8 +276,8 @@ export function AppHeader() {
 
         <NoSsr>
           <StyledBadge
-            invisible={visitedSwitch}
-            variant="dot"
+            invisible={true}
+            // variant="dot"
             badgeContent=""
             color="secondary"
             sx={{ mr: 2 }}

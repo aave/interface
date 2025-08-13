@@ -55,6 +55,7 @@ export type MarketDataType = {
   disableCharts?: boolean;
   subgraphUrl?: string;
   logo?: string;
+  externalUrl?: string; // URL for external markets like Aptos
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
@@ -72,7 +73,6 @@ export type MarketDataType = {
     COLLECTOR?: string;
     V3_MIGRATOR?: string;
     GHO_TOKEN_ADDRESS?: string;
-    GHO_UI_DATA_PROVIDER?: string;
   };
 };
 export enum CustomMarket {
@@ -103,6 +103,7 @@ export enum CustomMarket {
   proto_soneium_v3 = 'proto_soneium_v3',
   proto_horizon_v3 = 'proto_horizon_v3',
   proto_sepolia_horizon_v3 = 'proto_sepolia_horizon_v3',
+  proto_aptos_v3 = 'proto_aptos_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -144,7 +145,6 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       GHO_TOKEN_ADDRESS: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-      GHO_UI_DATA_PROVIDER: AaveV3Ethereum.UI_GHO_DATA_PROVIDER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Ethereum.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Ethereum.DEBT_SWAP_ADAPTER,
     },
@@ -301,7 +301,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
       GHO_TOKEN_ADDRESS: '0xc4bF5CbDaBE595361438F8c6a187bDc330539c60',
-      GHO_UI_DATA_PROVIDER: '0x69B9843A16a6E9933125EBD97659BA3CCbE2Ef8A',
     },
   },
 
@@ -512,6 +511,13 @@ export const marketsData: {
     chainId: ChainId.sonic,
     v3: true,
     subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/FQcacc4ZJaQVS9euWb76nvpSq2GxavBnUM6DU6tmspbi`,
+    enabledFeatures: {
+      collateralRepay: true,
+      liquiditySwap: true,
+      debtSwitch: true,
+      withdrawAndSwitch: true,
+      switch: true,
+    },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sonic.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Sonic.POOL,
@@ -520,6 +526,10 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Sonic.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Sonic.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Sonic.COLLECTOR,
+      SWAP_COLLATERAL_ADAPTER: AaveV3Sonic.SWAP_COLLATERAL_ADAPTER,
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Sonic.REPAY_WITH_COLLATERAL_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3Sonic.DEBT_SWAP_ADAPTER,
+      WITHDRAW_SWITCH_ADAPTER: AaveV3Sonic.WITHDRAW_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_optimism_v3]: {
@@ -688,6 +698,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Gnosis.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Gnosis.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Gnosis.WITHDRAW_SWAP_ADAPTER,
+      GHO_TOKEN_ADDRESS: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73',
     },
   },
   [CustomMarket.proto_bnb_v3]: {
@@ -747,6 +758,21 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3ZkSync.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3ZkSync.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3ZkSync.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_aptos_v3]: {
+    marketTitle: 'Aptos',
+    market: CustomMarket.proto_aptos_v3,
+    v3: true,
+    chainId: ChainId.mainnet, // Using mainnet since Aptos is external
+    logo: '/icons/markets/aptos.svg',
+    externalUrl: 'https://aptos.aave.com',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '',
+      LENDING_POOL: '',
+      WALLET_BALANCE_PROVIDER: '',
+      UI_POOL_DATA_PROVIDER: '',
+      UI_INCENTIVE_DATA_PROVIDER: '',
     },
   },
   [CustomMarket.proto_linea_v3]: {

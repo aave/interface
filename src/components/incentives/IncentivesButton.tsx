@@ -1,31 +1,112 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
-import { useZkSyncIgniteIncentives } from 'src/hooks/useZkSyncIgniteIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
-import { TokenIcon } from '../primitives/TokenIcon';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
-import { getSymbolMap, IncentivesTooltipContent } from './IncentivesTooltipContent';
+import { IncentivesTooltipContent } from './IncentivesTooltipContent';
 import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
+import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
-import { ZkSyncIgniteIncentivesTooltipContent } from './ZkSyncIgniteIncentivesTooltipContent';
+
+const INFINITY = 'Infinity';
+
+export type IconProps = {
+  className?: string;
+  width?: string | number;
+  height?: string | number;
+  viewBox?: string;
+  style?: React.CSSProperties;
+  color?: string;
+};
+
+export type IconWrapperProps = {
+  children?: React.ReactNode;
+} & IconProps;
+
+export const Icon = ({
+  className = '',
+  width = '24px',
+  height = '24px',
+  viewBox = '0 0 20 20',
+  children,
+  color,
+  ...props
+}: IconWrapperProps) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox={viewBox}
+      data-color={color}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      className={className}
+      style={{
+        display: 'flex',
+        flexShrink: 0,
+        ...props.style,
+      }}
+      {...props}
+    >
+      {children}
+    </svg>
+  );
+};
 
 interface IncentivesButtonProps {
   symbol: string;
   incentives?: ReserveIncentiveResponse[];
   displayBlank?: boolean;
+  market?: string;
+  protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  address?: string;
+}
+
+export function IncentivesIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      {...props}
+      viewBox="0 0 16 16"
+      className={props.className}
+      style={{
+        display: 'flex',
+        flexShrink: 0,
+        ...props.style,
+      }}
+    >
+      <circle
+        cx="7.2"
+        cy="7.2"
+        r="7.2"
+        stroke="#9391F7"
+        strokeWidth="1.5"
+        transform="matrix(1 0 0 -1 .8 15.2)"
+      />
+      <path
+        stroke="#BCBBFF"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="m4.557 8.082.891 1.132a1 1 0 0 0 1.591-.026l1.75-2.376a1 1 0 0 1 1.591-.026l1.064 1.35"
+      />
+    </svg>
+  );
 }
 
 const BlankIncentives = () => {
@@ -49,6 +130,8 @@ export const MeritIncentivesButton = (params: {
   symbol: string;
   market: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   const [open, setOpen] = useState(false);
   const { data: meritIncentives } = useMeritIncentives(params);
@@ -57,6 +140,9 @@ export const MeritIncentivesButton = (params: {
     return null;
   }
 
+  // Show only merit incentives APR
+  const displayValue = +meritIncentives.incentiveAPR;
+
   return (
     <ContentWithTooltip
       tooltipContent={<MeritIncentivesTooltipContent meritIncentives={meritIncentives} />}
@@ -64,36 +150,33 @@ export const MeritIncentivesButton = (params: {
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[meritIncentives]} incentivesNetAPR={+meritIncentives.incentiveAPR} />
+      <Content incentives={[meritIncentives]} incentivesNetAPR={displayValue} />
     </ContentWithTooltip>
   );
 };
 
-export const ZkIgniteIncentivesButton = (params: {
+export const MerklIncentivesButton = (params: {
   market: string;
   rewardedAsset?: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   const [open, setOpen] = useState(false);
-  const { data: zkSyncIgniteIncentives } = useZkSyncIgniteIncentives(params);
+  const { data: merklIncentives } = useMerklIncentives(params);
 
-  if (!zkSyncIgniteIncentives) {
+  if (!merklIncentives) {
     return null;
   }
 
   return (
     <ContentWithTooltip
-      tooltipContent={
-        <ZkSyncIgniteIncentivesTooltipContent zkSyncIgniteIncentives={zkSyncIgniteIncentives} />
-      }
+      tooltipContent={<MerklIncentivesTooltipContent merklIncentives={merklIncentives} />}
       withoutHover
       setOpen={setOpen}
       open={open}
     >
-      <Content
-        incentives={[zkSyncIgniteIncentives]}
-        incentivesNetAPR={+zkSyncIgniteIncentives.incentiveAPR}
-      />
+      <Content incentives={[merklIncentives]} incentivesNetAPR={+merklIncentives.incentiveAPR} />
     </ContentWithTooltip>
   );
 };
@@ -163,7 +246,15 @@ export const SonicIncentivesButton = ({ rewardedAsset }: { rewardedAsset?: strin
   );
 };
 
-export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
+export const IncentivesButton = ({
+  incentives,
+  symbol,
+  displayBlank,
+  market,
+  protocolAction,
+  protocolAPY,
+  address,
+}: IncentivesButtonProps) => {
   const [open, setOpen] = useState(false);
 
   if (!(incentives && incentives.length > 0)) {
@@ -174,18 +265,16 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
     }
   }
 
-  const isIncentivesInfinity = incentives.some(
-    (incentive) => incentive.incentiveAPR === 'Infinity'
-  );
+  const isIncentivesInfinity = incentives.some((incentive) => incentive.incentiveAPR === INFINITY);
   const incentivesAPRSum = isIncentivesInfinity
-    ? 'Infinity'
+    ? INFINITY
     : incentives.reduce((aIncentive, bIncentive) => aIncentive + +bIncentive.incentiveAPR, 0);
 
   const incentivesNetAPR = isIncentivesInfinity
-    ? 'Infinity'
-    : incentivesAPRSum !== 'Infinity'
+    ? INFINITY
+    : incentivesAPRSum !== INFINITY
     ? valueToBigNumber(incentivesAPRSum || 0).toNumber()
-    : 'Infinity';
+    : INFINITY;
 
   return (
     <ContentWithTooltip
@@ -194,6 +283,10 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
           incentives={incentives}
           incentivesNetAPR={incentivesNetAPR}
           symbol={symbol}
+          market={market}
+          protocolAction={protocolAction}
+          protocolAPY={protocolAPY}
+          address={address}
         />
       }
       withoutHover
@@ -216,7 +309,7 @@ const Content = ({
   plus,
 }: {
   incentives: ReserveIncentiveResponse[];
-  incentivesNetAPR: number | 'Infinity';
+  incentivesNetAPR: number | typeof INFINITY;
   displayBlank?: boolean;
   plus?: boolean;
 }) => {
@@ -240,48 +333,72 @@ const Content = ({
   }
 
   const incentivesButtonValue = () => {
-    if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR < 10000) {
-      return (
-        <FormattedNumber
-          value={incentivesNetAPR}
-          percent
-          variant="secondary12"
-          color="text.secondary"
-        />
-      );
-    } else if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR > 9999) {
-      return (
-        <FormattedNumber
-          value={incentivesNetAPR}
-          percent
-          compact
-          variant="secondary12"
-          color="text.secondary"
-        />
-      );
-    } else if (incentivesNetAPR === 'Infinity') {
-      return (
-        <Typography variant="main12" color="text.secondary">
-          ∞
-        </Typography>
-      );
+    // NOTE: For GHO incentives, we want to show the formatted number given its on sGHO page only
+
+    const hasGhoIncentives = incentives.some(
+      (incentive) =>
+        incentive.rewardTokenSymbol?.toLowerCase().includes('gho') ||
+        incentive.rewardTokenSymbol?.toLowerCase().includes('agho') ||
+        incentive.rewardTokenSymbol?.toLowerCase().includes('abasgho')
+    );
+
+    if (hasGhoIncentives) {
+      if (incentivesNetAPR !== INFINITY && incentivesNetAPR < 10000) {
+        return (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <FormattedNumber
+              value={incentivesNetAPR}
+              percent
+              variant="secondary12"
+              color="text.secondary"
+            />
+            <IncentivesIcon width="16" height="16" />
+          </Box>
+        );
+      } else if (incentivesNetAPR !== INFINITY && incentivesNetAPR > 9999) {
+        return (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <FormattedNumber
+              value={incentivesNetAPR}
+              percent
+              compact
+              variant="secondary12"
+              color="text.secondary"
+            />
+            <IncentivesIcon width="16" height="16" />
+          </Box>
+        );
+      } else if (incentivesNetAPR === INFINITY) {
+        return (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Typography variant="main12" color="text.secondary">
+              ∞
+            </Typography>
+            <IncentivesIcon width="16" height="16" />
+          </Box>
+        );
+      }
     }
+
+    // Default behavior: show icon for non-GHO incentives
+    return (
+      <>
+        <IncentivesIcon width="16" height="16" />
+      </>
+    );
   };
 
-  const iconSize = 12;
+  // const iconSize = 12;
 
   return (
     <Box
-      sx={(theme) => ({
-        p: { xs: '0 4px', xsm: '2px 4px' },
-        border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
+      sx={() => ({
         borderRadius: '4px',
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         transition: 'opacity 0.2s ease',
-        bgcolor: open ? 'action.hover' : 'transparent',
         '&:hover': {
           bgcolor: 'action.hover',
           borderColor: 'action.disabled',
@@ -293,10 +410,10 @@ const Content = ({
         setOpen(!open);
       }}
     >
-      <Box sx={{ mr: 2 }}>
+      <Box sx={{ p: 0.5 }}>
         {plus ? '+' : ''} {incentivesButtonValue()}
       </Box>
-      <Box sx={{ display: 'inline-flex' }}>
+      {/* <Box sx={{ display: 'inline-flex' }}>
         <>
           {incentives.length < 5 ? (
             <>
@@ -338,7 +455,7 @@ const Content = ({
             </>
           )}
         </>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

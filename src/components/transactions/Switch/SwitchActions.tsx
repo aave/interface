@@ -7,8 +7,8 @@ import {
 } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
-import { BigNumber } from 'ethers';
-import { defaultAbiCoder, formatUnits, splitSignature } from 'ethers/lib/utils';
+import { BigNumber, ethers } from 'ethers';
+import { defaultAbiCoder, splitSignature } from 'ethers/lib/utils';
 import stringify from 'json-stringify-deterministic';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { isSmartContractWallet } from 'src/helpers/provider';
@@ -27,6 +27,7 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { needsUSDTApprovalReset } from 'src/utils/usdtHelpers';
 import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -46,14 +47,13 @@ interface SwitchProps {
   inputAmount: string;
   inputToken: string;
   outputToken: string;
+  setShowUSDTResetWarning: (showUSDTResetWarning: boolean) => void;
   slippage: string;
   blocked: boolean;
   loading?: boolean;
   isWrongNetwork: boolean;
   chainId: number;
   switchRates?: SwitchRatesType;
-  inputName: string;
-  outputName: string;
   inputSymbol: string;
   outputSymbol: string;
   setShowGasStation: (showGasStation: boolean) => void;
@@ -69,11 +69,10 @@ interface SignedParams {
 export const SwitchActions = ({
   inputAmount,
   inputToken,
-  inputName,
-  outputName,
   outputToken,
   inputSymbol,
   outputSymbol,
+  setShowUSDTResetWarning,
   slippage: slippageInPercent,
   blocked,
   loading,
@@ -139,6 +138,31 @@ export const SwitchActions = ({
       return false;
     else return approvedAmount < Number(inputAmount);
   }, [approvedAmount, inputAmount, isWrongNetwork]);
+  const [requiresApprovalReset, setRequiresApprovalReset] = useState(false);
+
+  // Warning for USDT on Ethereum approval reset
+  useEffect(() => {
+    if (!switchRates) {
+      return;
+    }
+
+    const amountToApprove = calculateSignedAmount(inputAmount, switchRates.srcDecimals, 0);
+    const currentApproved = calculateSignedAmount(
+      approvedAmount?.toString() || '0',
+      switchRates.srcDecimals,
+      0
+    );
+
+    if (
+      needsUSDTApprovalReset(inputSymbol, chainId, BigInt(currentApproved), BigInt(amountToApprove))
+    ) {
+      setShowUSDTResetWarning(true);
+      setRequiresApprovalReset(true);
+    } else {
+      setShowUSDTResetWarning(false);
+      setRequiresApprovalReset(false);
+    }
+  }, [inputSymbol, chainId, approvedAmount, inputAmount, setShowUSDTResetWarning, switchRates]);
 
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
@@ -159,17 +183,6 @@ export const SwitchActions = ({
         tx.chainId = chainId;
         const txWithGasEstimation = await estimateGasLimit(tx, chainId);
         const response = await sendTx(txWithGasEstimation);
-        const txData = {
-          action: 'switch',
-          asset: switchRates.srcToken,
-          assetName: inputName,
-          amount: formatUnits(switchRates.srcAmount, switchRates.srcDecimals),
-          amountUsd: switchRates.srcUSD,
-          outAsset: switchRates.destToken,
-          outAmount: formatUnits(switchRates.destAmount, switchRates.destDecimals),
-          outAmountUsd: switchRates.destUSD,
-          outAssetName: outputName,
-        };
         try {
           await response.wait(1);
           addTransaction(
@@ -200,7 +213,6 @@ export const SwitchActions = ({
             response.hash,
             {
               txState: 'failed',
-              ...txData,
             },
             {
               chainId,
@@ -222,6 +234,7 @@ export const SwitchActions = ({
           .multipliedBy(valueToBigNumber(1).minus(valueToBigNumber(slippageInPercent)))
           .toFixed(0);
         const slippageBps = Math.round(Number(slippageInPercent) * 100 * 100); // percent to bps
+        const smartSlippage = switchRates.suggestedSlippage == Number(slippageInPercent) * 100;
 
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(inputToken)) {
@@ -234,6 +247,8 @@ export const SwitchActions = ({
             validTo,
             inputSymbol,
             outputSymbol,
+            slippageBps,
+            smartSlippage,
             switchRates.quoteId
           );
           const txWithGasEstimation = await estimateGasLimit(ethFlowTx, chainId);
@@ -262,13 +277,15 @@ export const SwitchActions = ({
               user,
               chainId,
               inputSymbol,
-              outputSymbol
+              outputSymbol,
+              slippageBps,
+              smartSlippage
             );
             const calculatedOrderId = await calculateUniqueOrderId(chainId, unsignerOrder);
 
             await uploadAppData(
               calculatedOrderId,
-              stringify(COW_APP_DATA(inputSymbol, outputSymbol)),
+              stringify(COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage)),
               chainId
             );
 
@@ -312,6 +329,7 @@ export const SwitchActions = ({
                 afterNetworkCostsBuyAmount:
                   switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
                 slippageBps,
+                smartSlippage,
                 inputSymbol,
                 outputSymbol,
                 quote: switchRates.order,
@@ -350,6 +368,7 @@ export const SwitchActions = ({
                 afterNetworkCostsBuyAmount:
                   switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
                 slippageBps,
+                smartSlippage,
                 chainId,
                 user,
                 provider,
@@ -364,7 +383,8 @@ export const SwitchActions = ({
             }
           } catch (error) {
             console.error(error);
-            // setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
+            const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
+            setTxError(parsedError);
             setMainTxState({
               success: false,
               loading: false,
@@ -433,6 +453,81 @@ export const SwitchActions = ({
     }
 
     const amountToApprove = calculateSignedAmount(inputAmount, switchRates.srcDecimals, 0);
+
+    if (requiresApprovalReset) {
+      const resetData = {
+        spender,
+        user,
+        token: inputToken,
+        amount: '0',
+      };
+
+      try {
+        if (useSignature) {
+          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+          const signatureRequest = await generateSignatureRequest(
+            {
+              ...resetData,
+              deadline,
+            },
+            { chainId }
+          );
+          setApprovalTxState({ ...approvalTxState, loading: true });
+          const response = await signTxData(signatureRequest);
+          const splitedSignature = splitSignature(response);
+          const encodedSignature = defaultAbiCoder.encode(
+            ['address', 'address', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+            [
+              resetData.user,
+              resetData.spender,
+              resetData.amount,
+              deadline,
+              splitedSignature.v,
+              splitedSignature.r,
+              splitedSignature.s,
+            ]
+          );
+          setSignatureParams({
+            signature: encodedSignature,
+            deadline,
+            amount: resetData.amount,
+            approvedToken: resetData.spender,
+          });
+        } else {
+          // Create direct ERC20 approval transaction for reset to 0 as ERC20Service requires positive amount
+          const abi = new ethers.utils.Interface([
+            'function approve(address spender, uint256 amount)',
+          ]);
+          const encodedData = abi.encodeFunctionData('approve', [spender, '0']);
+          const resetTx = {
+            data: encodedData,
+            to: inputToken,
+            from: user,
+          };
+          const resetTxWithGasEstimation = await estimateGasLimit(resetTx, chainId);
+          setApprovalTxState({ ...approvalTxState, loading: true });
+          const resetResponse = await sendTx(resetTxWithGasEstimation);
+          await resetResponse.wait(1);
+        }
+      } catch (error) {
+        const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+        console.error(parsedError);
+        setTxError(parsedError);
+        setApprovalTxState({
+          txHash: undefined,
+          loading: false,
+        });
+      }
+      fetchApprovedAmount().then(() => {
+        setApprovalTxState({
+          loading: false,
+          success: false,
+        });
+      });
+
+      return;
+    }
+
     const approvalData = {
       spender,
       user,
@@ -478,19 +573,21 @@ export const SwitchActions = ({
       } else {
         const tx = generateApproval(approvalData, { chainId, amount: amountToApprove });
         const txWithGasEstimation = await estimateGasLimit(tx, chainId);
-        setApprovalTxState({ ...approvalTxState, loading: true });
+        setApprovalTxState({ loading: true });
         const response = await sendTx(txWithGasEstimation);
         await response.wait(1);
-        setApprovalTxState({
-          txHash: response.hash,
-          loading: false,
-          success: true,
+        fetchApprovedAmount().then(() => {
+          setApprovalTxState({
+            txHash: response.hash,
+            loading: false,
+            success: true,
+          });
+          setTxError(undefined);
         });
-        setTxError(undefined);
-        fetchApprovedAmount();
       }
     } catch (error) {
-      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+      const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+      console.error(parsedError);
       setTxError(parsedError);
       setApprovalTxState({
         txHash: undefined,
@@ -553,6 +650,9 @@ export const SwitchActions = ({
     }
     if (requiresApproval && !approvalTxState.success) {
       switchGasLimit += Number(APPROVAL_GAS_LIMIT);
+      if (requiresApprovalReset) {
+        switchGasLimit += Number(APPROVAL_GAS_LIMIT); // Reset approval
+      }
     }
     if (isNativeToken(inputToken)) {
       switchGasLimit += Number(
@@ -561,7 +661,7 @@ export const SwitchActions = ({
     }
     setGasLimit(switchGasLimit.toString());
     setShowGasStation(requiresApproval || isNativeToken(inputToken));
-  }, [requiresApproval, approvalTxState, setGasLimit, setShowGasStation]);
+  }, [requiresApproval, approvalTxState, setGasLimit, setShowGasStation, requiresApprovalReset]);
 
   return (
     <TxActionsWrapper

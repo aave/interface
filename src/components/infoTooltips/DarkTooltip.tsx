@@ -1,10 +1,18 @@
 import { Box, Tooltip, TooltipProps } from '@mui/material';
 
-export const DarkTooltip = ({ title, children, wrap }: TooltipProps & { wrap?: boolean }) => {
+export const DarkTooltip = ({
+  title,
+  children,
+  wrap,
+  enterTouchDelay,
+  leaveTouchDelay,
+}: TooltipProps & { wrap?: boolean; enterTouchDelay?: number; leaveTouchDelay?: number }) => {
   return (
     <div>
       <Tooltip
         placement="top"
+        enterTouchDelay={enterTouchDelay}
+        leaveTouchDelay={leaveTouchDelay}
         componentsProps={{
           tooltip: {
             sx: {

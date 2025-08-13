@@ -18,7 +18,7 @@ import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
-import { GhoStakingPanel } from 'src/modules/staking/GhoStakingPanel';
+// import { GhoStakingPanel } from 'src/modules/staking/GhoStakingPanel';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
@@ -81,10 +81,9 @@ export default function Staking() {
 
   let stkAaveUserData: StakeUIUserData | undefined;
   let stkBptUserData: StakeUIUserData | undefined;
-  let stkGhoUserData: StakeUIUserData | undefined;
   let stkBptV2UserData: StakeUIUserData | undefined;
   if (stakeUserResult && Array.isArray(stakeUserResult)) {
-    [stkAaveUserData, stkBptUserData, stkGhoUserData, stkBptV2UserData] = stakeUserResult;
+    [stkAaveUserData, stkBptUserData, , stkBptV2UserData] = stakeUserResult;
   }
 
   const {
@@ -94,8 +93,8 @@ export default function Staking() {
     openStakeRewardsClaim,
     openStakeRewardsRestakeClaim,
     openStakingMigrate,
-    openSavingsGhoDeposit,
-    openSavingsGhoWithdraw,
+    // openSavingsGhoDeposit,
+    // openSavingsGhoWithdraw,
   } = useModalContext();
 
   const [mode, setMode] = useState<Stake>(Stake.aave);
@@ -125,7 +124,7 @@ export default function Staking() {
   );
 
   const isStakeAAVE = mode === 'aave';
-  const isStkGho = mode === 'gho';
+  // const isStkGho = mode === 'gho';
   const isStkBpt = mode === 'bpt';
 
   const showAbptPanel =
@@ -158,11 +157,6 @@ export default function Staking() {
                 <StyledToggleButton value="aave" disabled={mode === 'aave'}>
                   <Typography variant="subheader1">
                     <Trans>Stake AAVE</Trans>
-                  </Typography>
-                </StyledToggleButton>
-                <StyledToggleButton value="gho" disabled={mode === 'gho'}>
-                  <Typography variant="subheader1">
-                    <Trans>sGHO</Trans>
                   </Typography>
                 </StyledToggleButton>
                 <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
@@ -233,7 +227,7 @@ export default function Staking() {
                   }}
                 />
               </Grid>
-              <Grid
+              {/* <Grid
                 item
                 xs={12}
                 lg={6}
@@ -280,7 +274,7 @@ export default function Staking() {
                     openStakeRewardsClaim(Stake.gho, 'AAVE');
                   }}
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid
                 item

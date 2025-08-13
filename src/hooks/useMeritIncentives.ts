@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import {
+  AaveSafetyModule,
   AaveV3Arbitrum,
   AaveV3Avalanche,
   AaveV3Base,
@@ -12,6 +13,7 @@ import {
 } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { convertAprToApy } from 'src/utils/utils';
 
 export enum MeritAction {
   ETHEREUM_SGHO = 'ethereum-sgho',
@@ -23,6 +25,7 @@ export enum MeritAction {
   SUPPLY_CBBTC_BORROW_USDC = 'ethereum-supply-cbbtc-borrow-usdc',
   SUPPLY_WBTC_BORROW_USDT = 'ethereum-supply-wbtc-borrow-usdt',
   SUPPLY_WEETH_BORROW_USDC = 'ethereum-supply-weeth-borrow-usdc',
+  ETHEREUM_BORROW_EURC = 'ethereum-borrow-eurc',
   ARBITRUM_SUPPLY_ETH = 'arbitrum-supply-weth',
   ARBITRUM_SUPPLY_WSTETH = 'arbitrum-supply-wsteth',
   ARBITRUM_SUPPLY_EZETH = 'arbitrum-supply-ezeth',
@@ -32,7 +35,11 @@ export enum MeritAction {
   BASE_SUPPLY_WEETH = 'base-supply-weeth',
   BASE_SUPPLY_EZETH = 'base-supply-ezeth',
   BASE_SUPPLY_EURC = 'base-supply-eurc',
+  BASE_SUPPLY_GHO = 'base-supply-gho',
   BASE_SUPPLY_LBTC_BORROW_CBBTC = 'base-supply-lbtc-borrow-cbbtc',
+  BASE_SUPPLY_CBBTC_BORROW_MULTIPLE = 'base-supply-cbbtc-borrow-multiple',
+  BASE_SUPPLY_WSTETH_BORROW_MULTIPLE = 'base-supply-wsteth-borrow-multiple',
+  BASE_SUPPLY_WETH_BORROW_MULTIPLE = 'base-supply-eth-borrow-multiple',
   BASE_BORROW_EURC = 'base-borrow-eurc',
   BASE_BORROW_USDC = 'base-borrow-usdc',
   BASE_BORROW_WSTETH = 'base-borrow-wsteth',
@@ -42,6 +49,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_USDT = 'avalanche-supply-usdt',
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
+  AVALANCHE_SUPPLY_GHO = 'avalanche-supply-gho',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
   SONIC_SUPPLY_STS_BORROW_WS = 'sonic-supply-sts-borrow-ws',
   GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
@@ -49,6 +57,7 @@ export enum MeritAction {
   CELO_SUPPLY_USDT = 'celo-supply-usdt',
   CELO_SUPPLY_USDC = 'celo-supply-usdc',
   CELO_SUPPLY_WETH = 'celo-supply-weth',
+  CELO_SUPPLY_MULTIPLE_BORROW_USDT = 'celo-supply-multiple-borrow-usdt',
   CELO_BORROW_CELO = 'celo-borrow-celo',
   CELO_BORROW_USDT = 'celo-borrow-usdt',
   CELO_BORROW_USDC = 'celo-borrow-usdc',
@@ -68,6 +77,19 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customForumLink: string;
 };
 
+export type MeritIncentivesBreakdown = {
+  protocolAPY: number;
+  protocolIncentivesAPR: number;
+  meritIncentivesAPR: number; // Now represents APY (converted from APR)
+  totalAPY: number;
+  isBorrow: boolean;
+  breakdown: {
+    protocol: number;
+    protocolIncentives: number;
+    meritIncentives: number; // Now represents APY (converted from APR)
+  };
+};
+
 const url = 'https://apps.aavechan.com/api/merit/aprs';
 
 export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
@@ -81,10 +103,10 @@ const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData
   MERIT_DATA_MAP[market]?.[symbol];
 
 const antiLoopMessage =
-  'Borrowing of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'Borrowing of some assets or holding of some token may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const antiLoopBorrowMessage =
-  'Supplying of some assets may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'Supplying of some assets or holding of some token may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
@@ -94,6 +116,18 @@ const StSLoopIncentiveProgramMessage =
 
 const weethUsdcCampaignMessage =
   'You must supply weETH and borrow new USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
+
+const baseIncentivesCbbtcCampaignsMessage =
+  'You must supply cbBTC and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+
+const baseIncentivesWstETHCampaignsMessage =
+  'You must supply wstETH and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+
+const baseIncentivesETHCampaignsMessage =
+  'Supplying ETH alone earns 1.25%, supplying ETH and borrowing USDC or EURC earns 1.50%, supplying ETH and borrowing GHO earns 1.75%. Some assets holding or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+
+const celoSupplyMultipleBorrowUsdtMessage =
+  'You must supply (CELO or ETH) and borrow USDT, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
 const joinedEthCorrelatedIncentiveForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/56';
@@ -118,13 +152,16 @@ const weethUsdcForumLink =
 const StSLoopIncentiveProgramForumLink =
   'https://governance.aave.com/t/arfc-sts-loop-incentive-program/22368';
 
+const baseIncentivesForumLink =
+  'https://governance.aave.com/t/arfc-base-incentive-campaign-funding/21983';
+
 const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
       {
         action: MeritAction.ETHEREUM_SGHO,
-        rewardTokenAddress: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-        rewardTokenSymbol: 'GHO',
+        rewardTokenAddress: AaveSafetyModule.STK_GHO,
+        rewardTokenSymbol: 'sGHO',
         customForumLink:
           'https://governance.aave.com/t/arfc-merit-a-new-aave-alignment-user-reward-system/16646',
       },
@@ -213,6 +250,15 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customForumLink: weethUsdcForumLink,
       },
     ],
+    EURC: [
+      {
+        action: MeritAction.ETHEREUM_BORROW_EURC,
+        rewardTokenAddress: AaveV3Ethereum.ASSETS.EURC.A_TOKEN,
+        rewardTokenSymbol: 'aEthEURC',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
+      },
+    ],
   },
   [CustomMarket.proto_lido_v3]: {
     ETH: [
@@ -290,11 +336,19 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
   },
   [CustomMarket.proto_base_v3]: {
     cbBTC: [
+      // {
+      //   action: MeritAction.BASE_SUPPLY_CBBTC,
+      //   rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
+      //   rewardTokenSymbol: 'aBasUSDC',
+      //   protocolAction: ProtocolAction.supply,
+      // },
       {
-        action: MeritAction.BASE_SUPPLY_CBBTC,
-        rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
-        rewardTokenSymbol: 'aBasUSDC',
+        action: MeritAction.BASE_SUPPLY_CBBTC_BORROW_MULTIPLE,
+        rewardTokenAddress: AaveV3Base.ASSETS.cbBTC.A_TOKEN,
+        rewardTokenSymbol: 'aBasCBBTC',
         protocolAction: ProtocolAction.supply,
+        customMessage: baseIncentivesCbbtcCampaignsMessage,
+        customForumLink: baseIncentivesForumLink,
       },
       {
         action: MeritAction.BASE_SUPPLY_LBTC_BORROW_CBBTC,
@@ -320,13 +374,21 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
       },
     ],
     wstETH: [
+      // {
+      //   action: MeritAction.BASE_SUPPLY_WSTETH,
+      //   rewardTokenAddress: AaveV3Base.ASSETS.wstETH.A_TOKEN,
+      //   rewardTokenSymbol: 'aBaswstETH',
+      //   protocolAction: ProtocolAction.supply,
+      //   customMessage: antiLoopMessage,
+      //   customForumLink: joinedEthCorrelatedIncentiveForumLink,
+      // },
       {
-        action: MeritAction.BASE_SUPPLY_WSTETH,
+        action: MeritAction.BASE_SUPPLY_WSTETH_BORROW_MULTIPLE,
         rewardTokenAddress: AaveV3Base.ASSETS.wstETH.A_TOKEN,
         rewardTokenSymbol: 'aBaswstETH',
         protocolAction: ProtocolAction.supply,
-        customMessage: antiLoopMessage,
-        customForumLink: joinedEthCorrelatedIncentiveForumLink,
+        customMessage: baseIncentivesWstETHCampaignsMessage,
+        customForumLink: baseIncentivesForumLink,
       },
       {
         action: MeritAction.BASE_BORROW_WSTETH,
@@ -387,6 +449,13 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ],
     GHO: [
       {
+        action: MeritAction.BASE_SUPPLY_GHO,
+        rewardTokenAddress: AaveV3Base.ASSETS.GHO.A_TOKEN,
+        rewardTokenSymbol: 'aBasGHO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
+      {
         action: MeritAction.BASE_BORROW_GHO,
         rewardTokenAddress: AaveV3Base.ASSETS.GHO.A_TOKEN,
         rewardTokenSymbol: 'aBasGHO',
@@ -394,6 +463,24 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopBorrowMessage,
         customForumLink:
           'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/94',
+      },
+    ],
+    WETH: [
+      {
+        action: MeritAction.BASE_SUPPLY_WETH_BORROW_MULTIPLE,
+        rewardTokenAddress: AaveV3Base.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aBasWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: baseIncentivesETHCampaignsMessage,
+      },
+    ],
+    ETH: [
+      {
+        action: MeritAction.BASE_SUPPLY_WETH_BORROW_MULTIPLE,
+        rewardTokenAddress: AaveV3Base.ASSETS.WETH.A_TOKEN,
+        rewardTokenSymbol: 'aBasWETH',
+        protocolAction: ProtocolAction.supply,
+        customMessage: baseIncentivesETHCampaignsMessage,
       },
     ],
   },
@@ -448,12 +535,21 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customForumLink: AusdRenewalForumLink,
       },
     ],
+    GHO: [
+      {
+        action: MeritAction.AVALANCHE_SUPPLY_GHO,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.GHO.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.supply,
+        customMessage: antiLoopMessage,
+      },
+    ],
   },
   [CustomMarket.proto_sonic_v3]: {
     ['USDC']: [
       {
         action: MeritAction.SONIC_SUPPLY_USDCE,
-        rewardTokenAddress: AaveV3Sonic.ASSETS.USDCe.A_TOKEN,
+        rewardTokenAddress: AaveV3Sonic.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'aSonwS',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -505,6 +601,13 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
       },
       {
+        action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: celoSupplyMultipleBorrowUsdtMessage,
+      },
+      {
         action: MeritAction.CELO_BORROW_CELO,
         rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
         rewardTokenSymbol: 'aCelCELO',
@@ -526,6 +629,13 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         rewardTokenSymbol: 'aCelCELO',
         protocolAction: ProtocolAction.borrow,
         customMessage: antiLoopBorrowMessage,
+      },
+      {
+        action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: celoSupplyMultipleBorrowUsdtMessage,
       },
     ],
     USDC: [
@@ -553,6 +663,13 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
         customMessage: antiLoopMessage,
       },
       {
+        action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
+        rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
+        rewardTokenSymbol: 'aCelCELO',
+        protocolAction: ProtocolAction.supply,
+        customMessage: celoSupplyMultipleBorrowUsdtMessage,
+      },
+      {
         action: MeritAction.CELO_BORROW_WETH,
         rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
         rewardTokenSymbol: 'aCelCELO',
@@ -567,15 +684,20 @@ export const useMeritIncentives = ({
   symbol,
   market,
   protocolAction,
+  protocolAPY = 0,
+  protocolIncentives = [],
 }: {
   symbol: string;
   market: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   return useQuery({
     queryFn: async () => {
       const response = await fetch(url);
       const data = await response.json();
+
       const meritIncentives = data.currentAPR as MeritIncentives;
 
       return meritIncentives;
@@ -587,28 +709,62 @@ export const useMeritIncentives = ({
       if (!meritReserveIncentiveData) {
         return null;
       }
-      const incentive = meritReserveIncentiveData.find(
+
+      const incentives = meritReserveIncentiveData.filter(
         (item) => item.protocolAction === protocolAction
       );
 
-      if (!incentive) {
+      if (incentives.length === 0) {
         return null;
       }
 
-      const APR = data.actionsAPR[incentive.action];
+      let maxAPR = null;
+      let selectedIncentive = null;
 
-      if (!APR) {
+      for (const incentive of incentives) {
+        const APR = data.actionsAPR[incentive.action];
+        if (APR && (maxAPR === null || APR > maxAPR)) {
+          maxAPR = APR;
+          selectedIncentive = incentive;
+        }
+      }
+
+      if (!selectedIncentive || maxAPR === null) {
         return null;
       }
+
+      const meritIncentivesAPR = maxAPR / 100;
+      const meritIncentivesAPY = convertAprToApy(meritIncentivesAPR);
+
+      const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
+        return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
+      }, 0);
+
+      const isBorrow = protocolAction === ProtocolAction.borrow;
+      const totalAPY = isBorrow
+        ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY
+        : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY;
 
       return {
-        incentiveAPR: (APR / 100).toString(),
-        rewardTokenAddress: incentive.rewardTokenAddress,
-        rewardTokenSymbol: incentive.rewardTokenSymbol,
-        action: incentive.action,
-        customMessage: incentive.customMessage,
-        customForumLink: incentive.customForumLink,
-      } as ExtendedReserveIncentiveResponse;
+        incentiveAPR: meritIncentivesAPY.toString(),
+        rewardTokenAddress: selectedIncentive.rewardTokenAddress,
+        rewardTokenSymbol: selectedIncentive.rewardTokenSymbol,
+        action: selectedIncentive.action,
+        customMessage: selectedIncentive.customMessage,
+        customForumLink: selectedIncentive.customForumLink,
+        breakdown: {
+          protocolAPY,
+          protocolIncentivesAPR,
+          meritIncentivesAPR: meritIncentivesAPY,
+          totalAPY,
+          isBorrow,
+          breakdown: {
+            protocol: protocolAPY,
+            protocolIncentives: protocolIncentivesAPR,
+            meritIncentives: meritIncentivesAPY,
+          },
+        } as MeritIncentivesBreakdown,
+      } as ExtendedReserveIncentiveResponse & { breakdown: MeritIncentivesBreakdown };
     },
   });
 };

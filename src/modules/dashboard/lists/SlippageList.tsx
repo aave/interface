@@ -16,7 +16,7 @@ import { SlippageTooltip } from 'src/components/infoTooltips/SlippageTooltip';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 
-import Paraswap from '/public/icons/other/paraswap.svg';
+import VeloraIcon from '/public/icons/other/velora.svg';
 
 interface ListSlippageButtonProps {
   setSlippage: (value: string) => void;
@@ -125,17 +125,16 @@ export const ListSlippageButton = ({
               sx={{
                 fontSize: '20px',
                 width: '20px',
-                color: '#2669F5',
                 position: 'relative',
-                top: '5px',
-                left: '5px',
+                top: '2px',
+                left: '2px',
               }}
             >
-              <Paraswap />
+              <VeloraIcon />
             </SvgIcon>
           </Typography>
           <Typography variant="main12" color="text.secondary">
-            Paraswap
+            Velora
           </Typography>
         </Box>
       </Menu>

@@ -4,7 +4,7 @@ const getEthenaData = (assetAddress: string): number | undefined =>
   ETHENA_DATA_MAP.get(assetAddress);
 
 const ETHENA_DATA_MAP: Map<string, number> = new Map([
-  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN, 25],
+  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN, 5],
   [AaveV3Ethereum.ASSETS.sUSDe.A_TOKEN, 5],
   [AaveV3EthereumLido.ASSETS.sUSDe.A_TOKEN, 5],
   [AaveV3Ethereum.ASSETS.GHO.V_TOKEN, 5],
@@ -14,6 +14,7 @@ const ETHENA_DATA_MAP: Map<string, number> = new Map([
   [AaveV3Ethereum.ASSETS.PT_USDe_31JUL2025.A_TOKEN, 2],
   [AaveV3Ethereum.ASSETS.PT_sUSDE_31JUL2025.A_TOKEN, 1],
   [AaveV3Ethereum.ASSETS.PT_sUSDE_31JUL2025.A_TOKEN, 1],
+  [AaveV3Ethereum.ASSETS.PT_sUSDE_25SEP2025.A_TOKEN, 1],
 ]);
 
 export const useEthenaIncentives = (rewardedAsset?: string) => {

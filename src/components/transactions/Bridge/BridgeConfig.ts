@@ -6,6 +6,7 @@ import {
   AaveV3Base,
   AaveV3BaseSepolia,
   AaveV3Ethereum,
+  AaveV3Gnosis,
   AaveV3Sepolia,
   GhoArbitrum,
   GhoBase,
@@ -57,8 +58,6 @@ const prodConfig: Config[] = [
         symbol: 'GHO',
         decimals: 18,
         chainId: ChainId.mainnet,
-        logoURI:
-          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
         oracle: AaveV3Ethereum.ASSETS.GHO.ORACLE,
         extensions: {
           isNative: false,
@@ -71,8 +70,6 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.mainnet,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
           isNative: true,
         },
@@ -95,8 +92,6 @@ const prodConfig: Config[] = [
         symbol: 'GHO',
         decimals: 18,
         chainId: ChainId.arbitrum_one,
-        logoURI:
-          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
         oracle: AaveV3Arbitrum.ASSETS.GHO.ORACLE,
         extensions: {
           isNative: false,
@@ -109,8 +104,6 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.arbitrum_one,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
           isNative: true,
         },
@@ -128,13 +121,23 @@ const prodConfig: Config[] = [
     subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7RqaLvSMWBv4Z3xmv4kb6Jq3t59ikYG3wpcsTnLgBWzt`,
     feeTokens: [
       {
+        name: 'Gho Token',
+        address: AaveV3Base.ASSETS.GHO.UNDERLYING,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: ChainId.base,
+        oracle: AaveV3Base.ASSETS.GHO.ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
+      {
         name: 'Ethereum',
         symbol: 'ETH',
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.base,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
           isNative: true,
         },
@@ -157,8 +160,28 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.avalanche,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
+      },
+    ],
+  },
+  {
+    sourceChainId: ChainId.xdai,
+    chainSelector: '465200170687744372',
+    burnMintTokenPool: '0xDe6539018B095353A40753Dc54C91C68c9487D4E',
+    router: '0x4aAD6071085df840abD9Baf1697d5D5992bDadce',
+    tokenOracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12',
+    wrappedNativeOracle: AaveV3Gnosis.ASSETS.WXDAI.ORACLE,
+    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/CFjU1G9iUtFDqEBTzSePRiPjghjUzQeFX5C67DGSK2Ao`,
+    feeTokens: [
+      {
+        name: 'XDAI',
+        symbol: 'XDAI',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: ChainId.xdai,
         extensions: {
           isNative: true,
         },

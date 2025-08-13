@@ -1,12 +1,15 @@
 export const AUTH = {
-  CONNECT_WALLET: 'Connect wallet', //done
-  SWITCH_WALLET: 'Switch wallet', //done
-  MOCK_WALLET: 'Mock wallet', //done
-  DISCONNECT_WALLET: 'Disconnect wallet', //done
-  COPY_ADDRESS: 'Copy address', // done
-  VIEW_EXPLORER: 'View explorer', // done
-  VIEW_TX_HISTORY: 'View Tx History',
-};
+  CONNECT_WALLET: 'Connect Wallet',
+  SWITCH_WALLET: 'Switch Wallet',
+  MOCK_WALLET: 'Mock Wallet',
+  DISCONNECT_WALLET: 'Disconnect Wallet',
+  COPY_ADDRESS: 'Copy Address',
+  VIEW_EXPLORER: 'View Explorer',
+  VIEW_TX_HISTORY: 'View Transaction History',
+  WALLET_CONNECT_START: 'Wallet Connect Start',
+  WALLET_CONNECT_SUCCESS: 'Wallet Connect Success',
+  WALLET_CONNECT_ABORT: 'Wallet Connect Abort',
+} as const;
 
 export const GENERAL = {
   SWITCH_NETWORK: 'Switch network',

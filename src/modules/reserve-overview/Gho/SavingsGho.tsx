@@ -61,7 +61,7 @@ export const SavingsGho = () => {
     <Stack direction="column" gap={4}>
       <Typography gutterBottom>
         Stake GHO is now Savings GHO. With no risk of slashing and immediate withdraws available,
-        earn up to {aprFormatted}%.
+        earn up to {aprFormatted}% APR and claim rewards weekly.
       </Typography>
       <Stack direction="row">
         <Stack direction="row" alignItems="center" gap={1}>
@@ -86,7 +86,11 @@ export const SavingsGho = () => {
           {stakeDataLoading && <Skeleton variant="text" width={145} height={24} />}
           {!stakeDataLoading && stakeData && (
             <Stack direction="row" alignItems="center" gap={1}>
-              <FormattedNumber value={stakeData.totalSupplyFormatted} variant="main16" compact />
+              <FormattedNumber
+                value={stakeData.totalSupplyFormatted || 0}
+                variant="main16"
+                compact
+              />
               <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {' ('}
                 <FormattedNumber
