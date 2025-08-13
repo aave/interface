@@ -3,6 +3,7 @@ import { Box, Button, Paper, Stack, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { convertAprToApy } from 'src/utils/utils';
 
 export interface SavingsGhoCardProps {
   // APR data
@@ -35,6 +36,7 @@ export const SavingsGhoCard: React.FC<SavingsGhoCardProps> = ({
   hasGhoBalance = true,
 }) => {
   const theme = useTheme();
+  const stakingApyPct = convertAprToApy((stakingApr || 0) / 100) * 100;
 
   const getCooldownStatusText = () => {
     switch (cooldownStatus) {
@@ -85,9 +87,9 @@ export const SavingsGhoCard: React.FC<SavingsGhoCardProps> = ({
             <Trans>
               Deposit GHO and earn up to{' '}
               <Box component="span" sx={{ color: '#338E3C', fontWeight: 'bold' }}>
-                {stakingApr.toFixed(2)}%
+                {stakingApyPct.toFixed(2)}%
               </Box>{' '}
-              APR
+              APY
             </Trans>
           </Typography>
         </Box>
@@ -95,7 +97,7 @@ export const SavingsGhoCard: React.FC<SavingsGhoCardProps> = ({
         {/* Staking APR Display */}
         <Box sx={{ mb: 3 }}>
           <Typography variant="caption" color="text.secondary" sx={{ mb: 1 }}>
-            <Trans>Staking APR</Trans>
+            <Trans>Staking APY</Trans>
           </Typography>
           <Typography
             variant="main21"
@@ -105,7 +107,7 @@ export const SavingsGhoCard: React.FC<SavingsGhoCardProps> = ({
               fontSize: '28px',
             }}
           >
-            {stakingApr.toFixed(2)} %
+            {stakingApyPct.toFixed(2)} %
           </Typography>
         </Box>
 

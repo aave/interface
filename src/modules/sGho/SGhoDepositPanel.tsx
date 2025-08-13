@@ -36,6 +36,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GENERAL, SAFETY_MODULE } from 'src/utils/events';
+import { convertAprToApy } from 'src/utils/utils';
 
 import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
 import { ESupportedTimeRanges, TimeRangeSelector } from '../reserve-overview/TimeRangeSelector';
@@ -83,6 +84,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
     refetch: refetchMeritApyHistory,
   } = useSGhoApyHistory({ timeRange: selectedTimeRange });
   const { data: stakeAPR } = useStakeTokenAPR();
+  const stakeApyDecimal = stakeAPR?.apr ? convertAprToApy(parseFloat(stakeAPR.apr)) : 0;
 
   if (!stakeData) {
     return (
@@ -202,7 +204,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                     // fontSize: { xs: '1.1rem', md: '1rem' },
                   }}
                 >
-                  <Trans>Deposit GHO and earn {stakeAPR?.aprPercentage.toFixed(2) || 0}% APR</Trans>
+                  <Trans>Deposit GHO and earn {(stakeApyDecimal * 100).toFixed(2)}% APY</Trans>
                 </Typography>
               </Box>
               <Box
@@ -243,7 +245,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                       color="text.secondary"
                       sx={{ mb: 0.5 }}
                     >
-                      <Trans>Current APR</Trans>
+                      <Trans>Current APY</Trans>
                     </Typography>
 
                     <MeritIncentivesButton symbol={'GHO'} market={CustomMarket.proto_mainnet_v3} />
@@ -593,11 +595,11 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                 variant={xsm ? 'subheader2' : 'description'}
                 color={xsm ? 'text.secondary' : 'text.primary'}
               >
-                <Trans>APR</Trans>
+                <Trans>APY</Trans>
               </Typography>
               <FormattedNumber
                 sx={{ mr: 2 }}
-                value={stakeAPR?.apr || 0}
+                value={stakeApyDecimal}
                 percent
                 variant="secondary14"
               />
@@ -609,7 +611,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
             loading={loadingMeritApy}
             error={errorMeritApyHistory}
             onRetry={refetchMeritApyHistory}
-            title="GHO APR"
+            title="GHO APY"
             lineColor="#2EBAC6"
             showAverage={true}
             height={155}
