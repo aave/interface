@@ -132,6 +132,7 @@ export const MeritIncentivesButton = (params: {
   protocolAction?: ProtocolAction;
   protocolAPY?: number;
   protocolIncentives?: ReserveIncentiveResponse[];
+  hideValue?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const { data: meritIncentives } = useMeritIncentives(params);
@@ -150,7 +151,11 @@ export const MeritIncentivesButton = (params: {
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[meritIncentives]} incentivesNetAPR={displayValue} />
+      <Content
+        incentives={[meritIncentives]}
+        incentivesNetAPR={displayValue}
+        hideValue={params.hideValue}
+      />
     </ContentWithTooltip>
   );
 };
@@ -307,11 +312,13 @@ const Content = ({
   incentivesNetAPR,
   displayBlank,
   plus,
+  hideValue,
 }: {
   incentives: ReserveIncentiveResponse[];
   incentivesNetAPR: number | typeof INFINITY;
   displayBlank?: boolean;
   plus?: boolean;
+  hideValue?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -341,7 +348,13 @@ const Content = ({
         incentive.rewardTokenSymbol?.toLowerCase().includes('agho') ||
         incentive.rewardTokenSymbol?.toLowerCase().includes('abasgho')
     );
-
+    if (hideValue && hasGhoIncentives) {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <IncentivesIcon width="16" height="16" />
+        </Box>
+      );
+    }
     if (hasGhoIncentives) {
       if (incentivesNetAPR !== INFINITY && incentivesNetAPR < 10000) {
         return (
