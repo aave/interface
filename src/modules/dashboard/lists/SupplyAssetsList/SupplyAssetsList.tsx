@@ -12,7 +12,9 @@ import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { DASHBOARD } from 'src/utils/events';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -286,6 +288,10 @@ export const SupplyAssetsList = () => {
               onClick={setIsShowZeroAssets}
               localStorageName={localStorageName}
               bridge={bridge}
+              eventName={DASHBOARD.SHOW_ASSETS_0_BALANCE}
+              label={<Trans>Show assets with 0 balance</Trans>}
+              showFaucet={STAGING_ENV || ENABLE_TESTNET}
+              showBridge={!ENABLE_TESTNET}
             />
           )}
         </>

@@ -1835,6 +1835,10 @@ msgstr "Bridge history"
 msgid "Borrow balance after switch"
 msgstr "Borrow balance after switch"
 
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+msgid "Show assets with small balance"
+msgstr "Show assets with small balance"
+
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
 msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
@@ -3269,7 +3273,7 @@ msgstr "APY"
 msgid "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
 msgstr "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
 
-#: src/modules/dashboard/DashboardListTopPanel.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Show assets with 0 balance"
 msgstr "Show assets with 0 balance"
 

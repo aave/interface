@@ -1,14 +1,14 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Fragment, useState } from 'react';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Fragment, useMemo, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { GENERAL } from 'src/utils/events';
+import { DASHBOARD, GENERAL } from 'src/utils/events';
 
 import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/CollateralSwitchTooltip';
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
@@ -23,6 +23,7 @@ import {
 import { amountToUsd } from '../../../../utils/utils';
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
+import { DashboardListTopPanel } from '../../DashboardListTopPanel';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
@@ -58,6 +59,8 @@ const head = [
   },
 ];
 
+export const SMALL_BALANCE_THRESHOLD = 0.001;
+
 export const SuppliedPositionsList = () => {
   const { user, loading, marketReferencePriceInUsd } = useAppDataContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
@@ -67,33 +70,42 @@ export const SuppliedPositionsList = () => {
   const [sortDesc, setSortDesc] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
 
-  const suppliedPositions =
-    user?.userReservesData
-      .filter((userReserve) => {
-        if (userReserve.underlyingBalance === '0') return false;
+  const localStorageName = 'showSuppliedSmallBalanceAssets';
+  const [isShowSmallBalanceAssets, setIsShowSmallBalanceAssets] = useState(
+    localStorage.getItem(localStorageName) === 'true'
+  );
 
-        // Filter out dust amounts < $0.01 USD
-        const balanceUSD = amountToUsd(
-          userReserve.underlyingBalance,
-          userReserve.reserve.formattedPriceInMarketReferenceCurrency,
-          marketReferencePriceInUsd
-        );
+  const suppliedPositions = useMemo(() => {
+    return (
+      user?.userReservesData
+        .filter((userReserve) => {
+          if (userReserve.underlyingBalance === '0') return false;
 
-        return Number(balanceUSD) >= 0.01;
-      })
-      .map((userReserve) => ({
-        ...userReserve,
-        supplyAPY: userReserve.reserve.supplyAPY, // Note: added only for table sort
-        reserve: {
-          ...userReserve.reserve,
-          ...(userReserve.reserve.isWrappedBaseAsset
-            ? fetchIconSymbolAndName({
-                symbol: currentNetworkConfig.baseAssetSymbol,
-                underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-              })
-            : {}),
-        },
-      })) || [];
+          if (isShowSmallBalanceAssets) return true;
+
+          // Filter out dust amounts < $0.01 USD
+          const balanceUSD = amountToUsd(
+            userReserve.underlyingBalance,
+            userReserve.reserve.formattedPriceInMarketReferenceCurrency,
+            marketReferencePriceInUsd
+          );
+          return Number(balanceUSD) >= SMALL_BALANCE_THRESHOLD;
+        })
+        .map((userReserve) => ({
+          ...userReserve,
+          supplyAPY: userReserve.reserve.supplyAPY, // Note: added only for table sort
+          reserve: {
+            ...userReserve.reserve,
+            ...(userReserve.reserve.isWrappedBaseAsset
+              ? fetchIconSymbolAndName({
+                  symbol: currentNetworkConfig.baseAssetSymbol,
+                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+                })
+              : {}),
+          },
+        })) || []
+    );
+  }, [isShowSmallBalanceAssets]);
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
   const preSortedReserves = suppliedPositions as DashboardReserve[];
@@ -143,6 +155,20 @@ export const SuppliedPositionsList = () => {
       }
       localStorageName="suppliedAssetsDashboardTableCollapse"
       noData={!sortedReserves.length}
+      subChildrenComponent={
+        <Box>
+          <DashboardListTopPanel
+            value={isShowSmallBalanceAssets}
+            onClick={setIsShowSmallBalanceAssets}
+            localStorageName={localStorageName}
+            bridge={currentNetworkConfig.bridge}
+            eventName={DASHBOARD.SHOW_ASSETS_SMALL_BALANCE}
+            label={<Trans>Show assets with small balance</Trans>}
+            showFaucet={false}
+            showBridge={false}
+          />
+        </Box>
+      }
       topInfo={
         <>
           {!!sortedReserves.length && (
