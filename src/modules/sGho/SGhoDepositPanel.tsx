@@ -27,8 +27,6 @@ import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import {
-  SGhoTimeRange,
-  sghoTimeRangeOptions,
   useSGhoApyHistory,
 } from 'src/hooks/useSGhoApyHistory';
 import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
@@ -39,8 +37,9 @@ import { GENERAL, SAFETY_MODULE } from 'src/utils/events';
 import { convertAprToApy } from 'src/utils/utils';
 
 import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
-import { ESupportedTimeRanges, TimeRangeSelector } from '../reserve-overview/TimeRangeSelector';
+import { TimeRangeSelector } from '../reserve-overview/TimeRangeSelector';
 import { StakeActionBox } from '../staking/StakeActionBox';
+import { TimeWindow } from '@aave/react';
 
 export interface SGHODepositPanelProps {
   onStakeAction?: () => void;
@@ -73,8 +72,8 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
   const { currentAccount } = useWeb3Context();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const [selectedTimeRange, setSelectedTimeRange] = useState<SGhoTimeRange>(
-    ESupportedTimeRanges.OneWeek
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(
+    TimeWindow.LastWeek
   );
 
   const {
@@ -618,7 +617,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
             timeRangeSelector={
               <TimeRangeSelector
                 disabled={loadingMeritApy || errorMeritApyHistory}
-                timeRanges={sghoTimeRangeOptions}
+                timeRanges={[TimeWindow.LastWeek, TimeWindow.LastMonth, TimeWindow.LastSixMonths]}
                 selectedTimeRange={selectedTimeRange}
                 onTimeRangeChanged={setSelectedTimeRange}
               />
