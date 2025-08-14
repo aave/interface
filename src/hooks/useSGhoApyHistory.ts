@@ -1,16 +1,8 @@
+import { TimeWindow } from '@aave/react';
 import dayjs from 'dayjs';
 import { sghoConfig } from 'pages/api/SGhoService';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MeritApyDataItem } from 'src/modules/reserve-overview/graphs/MeritApyGraph';
-import { ESupportedTimeRanges } from 'src/modules/reserve-overview/TimeRangeSelector';
-
-export const sghoTimeRangeOptions = [
-  ESupportedTimeRanges.OneWeek,
-  ESupportedTimeRanges.OneMonth,
-  ESupportedTimeRanges.SixMonths,
-];
-
-export type SGhoTimeRange = (typeof sghoTimeRangeOptions)[number];
 
 type SGhoApyApiResponse = {
   data?: MeritApyDataItem[];
@@ -28,24 +20,24 @@ type UseSGhoApyHistoryOptions = {
   limit?: number;
   startDate?: string;
   endDate?: string;
-  timeRange?: SGhoTimeRange;
+  timeRange?: TimeWindow;
 };
 
 /**
  * Convert time range to start/end dates
  */
-const timeRangeToDateRange = (timeRange: SGhoTimeRange): { startDate: string; endDate: string } => {
+const timeRangeToDateRange = (timeRange: TimeWindow): { startDate: string; endDate: string } => {
   const endDate = dayjs().format('YYYY-MM-DD');
   let startDate: string;
 
   switch (timeRange) {
-    case ESupportedTimeRanges.OneWeek:
+    case TimeWindow.LastWeek:
       startDate = dayjs().subtract(7, 'day').format('YYYY-MM-DD');
       break;
-    case ESupportedTimeRanges.OneMonth:
+    case TimeWindow.LastMonth:
       startDate = dayjs().subtract(1, 'month').format('YYYY-MM-DD');
       break;
-    case ESupportedTimeRanges.SixMonths:
+    case TimeWindow.LastSixMonths:
       startDate = dayjs().subtract(6, 'month').format('YYYY-MM-DD');
       break;
     default:

@@ -2,6 +2,29 @@
 # yarn lockfile v1
 
 
+"@0no-co/graphql.web@^1.0.13", "@0no-co/graphql.web@^1.0.5":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@0no-co/graphql.web/-/graphql.web-1.2.0.tgz#296d00581bfaaabfda1e976849d927824aaea81b"
+  integrity sha512-/1iHy9TTr63gE1YcR5idjx8UREz1s0kFhydf3bBLCXyqjhkIc6igAzTOx3zPifCwFR87tsh/4Pa9cNts6d2otw==
+
+"@0no-co/graphqlsp@^1.12.13":
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@0no-co/graphqlsp/-/graphqlsp-1.15.0.tgz#c5d4592981e2df6b2e0cdcca33684199eed38bf7"
+  integrity sha512-SReJAGmOeXrHGod+9Odqrz4s43liK0b2DFUetb/jmYvxFpWmeNfFYo0seCh0jz8vG3p1pnYMav0+Tm7XwWtOJw==
+  dependencies:
+    "@gql.tada/internal" "^1.0.0"
+    graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
+
+"@aave/client@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.4.0.tgz#79adeaf174ba7f9a77871a08bcf6c73b26042d84"
+  integrity sha512-ltWgkg7EPcadqk9lLnjdz4VIePaCrRMApBc+MyXXsJUB3pYxBCvfoNdhZdqUXlTYfyI9twf87CNSHVJ+swc+EA==
+  dependencies:
+    "@aave/graphql" "0.4.0"
+    "@aave/types" "0.1.0"
+    "@urql/core" "^5.2.0"
+    graphql "^16.11.0"
+
 "@aave/contract-helpers@1.36.1":
   version "1.36.1"
   resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.36.1.tgz#729735e6be4f8a1872e1e3400591485fc2198b76"
@@ -9,10 +32,38 @@
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
+"@aave/graphql@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.4.0.tgz#ef7b398ea681f6211f666b0e54957038a74ec938"
+  integrity sha512-e9UD+fINg5dQyMSuHfAn3PMHNpoBnViBXrz5JR0nwfj0sosV6Z6cNSxbAhQaRO5ujhWBGKWkjyYqUh59RHVsmA==
+  dependencies:
+    "@aave/types" "0.1.0"
+    gql.tada "^1.8.11"
+    graphql "^16.11.0"
+    type-fest "^4.41.0"
+
 "@aave/math-utils@1.36.1":
   version "1.36.1"
   resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.36.1.tgz#3e501962de3700250c213c981ea47b36a8e37a54"
   integrity sha512-rR1sbDX1IFb1B1TLdi8hZANvtviPeU8hfpLuHC9cwlXluujCdHttnNVODwco1J5d2k6KxnNnc0DZJj2yV7nLTQ==
+
+"@aave/react@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.4.0.tgz#57548e71422c62ebe85b717a2e3ea02dc06cbda0"
+  integrity sha512-6g0P07DehN0KGF4hOXkEkGXHYzwZr/2G/OD1RVMv+eElrM/2hH0y4X+CWFeZ1sG7dpP0WPReKcGiIWeWp2AoHQ==
+  dependencies:
+    "@aave/client" "0.4.0"
+    "@aave/graphql" "0.4.0"
+    "@aave/types" "0.1.0"
+    urql "^4.2.2"
+
+"@aave/types@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@aave/types/-/types-0.1.0.tgz#23fad475f02521bf12a17fcbf1072080595bfdef"
+  integrity sha512-BFvS5MlauZ3ybZgcVM2lZT3eqZ0343DmSu4n3+QTq07ee1eIvv6tg0DFmtPx71lGT2bIGPnT7SjXrfrPcSpdiw==
+  dependencies:
+    neverthrow "^8.2.0"
+    type-fest "^4.41.0"
 
 "@adobe/css-tools@^4.0.1":
   version "4.4.1"
@@ -2444,6 +2495,22 @@
     isomorphic-ws "^5.0.0"
     ws "^8.5.0"
 
+"@gql.tada/cli-utils@1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@gql.tada/cli-utils/-/cli-utils-1.7.1.tgz#2e849c4c5d7e0d4914b34d167a74e3022d0a79d1"
+  integrity sha512-wg5ysZNQxtNQm67T3laVWmZzLpGb7QfyYWZdaUD2r1OjDj5Bgftq7eQlplmH+hsdffjuUyhJw/b5XAjeE2mJtg==
+  dependencies:
+    "@0no-co/graphqlsp" "^1.12.13"
+    "@gql.tada/internal" "1.0.8"
+    graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
+
+"@gql.tada/internal@1.0.8", "@gql.tada/internal@^1.0.0":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@gql.tada/internal/-/internal-1.0.8.tgz#3ba9fa6534809788bbbe103492f70b8e9d754027"
+  integrity sha512-XYdxJhtHC5WtZfdDqtKjcQ4d7R1s0d1rnlSs3OcBEUbYiPoJJfZU7tWsVXuv047Z6msvmr4ompJ7eLSK5Km57g==
+  dependencies:
+    "@0no-co/graphql.web" "^1.0.5"
+
 "@graphql-typed-document-node/core@^3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
@@ -3681,6 +3748,11 @@
     valtio "1.13.2"
     viem ">=2.23.11"
 
+"@rollup/rollup-linux-x64-gnu@^4.24.0":
+  version "4.46.2"
+  resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.46.2.tgz#1e936446f90b2574ea4a83b4842a762cc0a0aed3"
+  integrity sha512-Jj5a9RUoe5ra+MEyERkDKLwTXVu6s3aACP51nkfnK9wJTraCC8IMe3snOfALkrjTYd2G1ViE1hICj0fZ7ALBPA==
+
 "@rtsao/scc@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
@@ -4437,6 +4509,14 @@
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
+
+"@urql/core@^5.1.1", "@urql/core@^5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@urql/core/-/core-5.2.0.tgz#77ee41e192e261fea30c2ca6c2f340410b45d214"
+  integrity sha512-/n0ieD0mvvDnVAXEQgX/7qJiVcvYvNkOHeBvkwtylfjydar123caCXcl58PXFY11oU1oquJocVXHxLAbtv4x1A==
+  dependencies:
+    "@0no-co/graphql.web" "^1.0.13"
+    wonka "^6.3.2"
 
 "@visx/annotation@^3.3.0":
   version "3.12.0"
@@ -8211,6 +8291,16 @@ gopd@^1.2.0:
   resolved "https://registry.yarnpkg.com/gopd/-/gopd-1.2.0.tgz#89f56b8217bdbc8802bd299df6d7f1081d7e51a1"
   integrity sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==
 
+gql.tada@^1.8.11:
+  version "1.8.13"
+  resolved "https://registry.yarnpkg.com/gql.tada/-/gql.tada-1.8.13.tgz#a724bbdaebe1d851d80bf59c5e8614956914b883"
+  integrity sha512-fYoorairdPgxtE7Sf1X9/6bSN9Kt2+PN8KLg3hcF8972qFnawwUgs1OLVU8efZMHwL7EBHhhKBhrsGPlOs2lZQ==
+  dependencies:
+    "@0no-co/graphql.web" "^1.0.5"
+    "@0no-co/graphqlsp" "^1.12.13"
+    "@gql.tada/cli-utils" "1.7.1"
+    "@gql.tada/internal" "1.0.8"
+
 graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.4, graceful-fs@^4.2.9:
   version "4.2.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.11.tgz#4183e4e8bf08bb6e05bbb2f7d2e0c8f712ca40e3"
@@ -8238,7 +8328,7 @@ graphql-request@^6.1.0:
     "@graphql-typed-document-node/core" "^3.2.0"
     cross-fetch "^3.1.5"
 
-graphql@^16.11.0:
+"graphql@^15.5.0 || ^16.0.0 || ^17.0.0", graphql@^16.11.0:
   version "16.11.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.11.0.tgz#96d17f66370678027fdf59b2d4c20b4efaa8a633"
   integrity sha512-mS1lbMsxgQj6hge1XZ6p7GPhbrtFwUFYi3wRzXAC/FmYnyXMTvvI3td3rjmQ2u8ewXueaSvRPWaEcgVVOT9Jnw==
@@ -10728,6 +10818,13 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
+neverthrow@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/neverthrow/-/neverthrow-8.2.0.tgz#925d988295758534d01fb7468f998680b62064f2"
+  integrity sha512-kOCT/1MCPAxY5iUV3wytNFUMUolzuwd/VF/1KCx7kf6CutrOsTie+84zTGTpgQycjvfLdBBdvBvFLqFD2c0wkQ==
+  optionalDependencies:
+    "@rollup/rollup-linux-x64-gnu" "^4.24.0"
+
 next@12.3.4:
   version "12.3.4"
   resolved "https://registry.yarnpkg.com/next/-/next-12.3.4.tgz#f2780a6ebbf367e071ce67e24bd8a6e05de2fcb1"
@@ -12887,6 +12984,11 @@ type-fest@^1.0.2:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.4.0.tgz#e9fb813fe3bf1744ec359d55d1affefa76f14be1"
   integrity sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==
 
+type-fest@^4.41.0:
+  version "4.41.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.41.0.tgz#6ae1c8e5731273c2bf1f58ad39cbae2c91a46c58"
+  integrity sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==
+
 typed-array-buffer@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/typed-array-buffer/-/typed-array-buffer-1.0.2.tgz#1867c5d83b20fcb5ccf32649e5e2fc7424474ff3"
@@ -13155,6 +13257,14 @@ url-parse@^1.5.3:
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
+
+urql@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/urql/-/urql-4.2.2.tgz#e0852fe3bea377edaa616e6175dd39be2d4bf1da"
+  integrity sha512-3GgqNa6iF7bC4hY/ImJKN4REQILcSU9VKcKL8gfELZM8mM5BnLH1BsCc8kBdnVGD1LIFOs4W3O2idNHhON1r0w==
+  dependencies:
+    "@urql/core" "^5.1.1"
+    wonka "^6.3.2"
 
 use-sync-external-store@1.2.0:
   version "1.2.0"
@@ -13497,6 +13607,11 @@ which@^2.0.1:
   integrity sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==
   dependencies:
     isexe "^2.0.0"
+
+wonka@^6.3.2:
+  version "6.3.5"
+  resolved "https://registry.yarnpkg.com/wonka/-/wonka-6.3.5.tgz#33fa54ea700ff3e87b56fe32202112a9e8fea1a2"
+  integrity sha512-SSil+ecw6B4/Dm7Pf2sAshKQ5hWFvfyGlfPbEd6A14dOH6VDjrmbY86u6nZvy9omGwwIPFR8V41+of1EezgoUw==
 
 word-wrap@^1.2.5:
   version "1.2.5"

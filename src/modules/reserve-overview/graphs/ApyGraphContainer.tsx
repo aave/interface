@@ -1,72 +1,102 @@
+import {
+  APYSample,
+  chainId,
+  evmAddress,
+  TimeWindow,
+  useBorrowAPYHistory,
+  useSupplyAPYHistory,
+} from '@aave/react';
 import { Trans } from '@lingui/macro';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import { useState } from 'react';
-import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ReserveRateTimeRange, useReserveRatesHistory } from 'src/hooks/useReservesHistory';
-import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
-import { ESupportedTimeRanges } from '../TimeRangeSelector';
-import { ApyGraph, PlaceholderChart } from './ApyGraph';
+import { ApyGraph, FormattedReserveHistoryItem, PlaceholderChart } from './ApyGraph';
 import { GraphLegend } from './GraphLegend';
 import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
 
-type Field = 'liquidityRate' | 'variableBorrowRate';
-
-type Fields = { name: Field; color: string; text: string }[];
-
-type ApyGraphContainerKey = 'supply' | 'borrow';
-
 type ApyGraphContainerProps = {
-  graphKey: ApyGraphContainerKey;
-  reserve: ComputedReserveData;
-  currentMarketData: MarketDataType;
+  label: string;
+  color: string;
+  loading: boolean;
+  data: FormattedReserveHistoryItem[];
+  error: boolean;
+  selectedTimeRange: TimeWindow;
+  onSelectedTimeRangeChanged: (timeRange: TimeWindow) => void;
 };
 
-/**
- * NOTES:
- * This may not be named accurately.
- * This container uses the same graph but with different fields, so we use a 'graphKey' to determine which to show
- * This likely may need to be turned into two different container components if the graphs become wildly different.
- * This graph gets its data via an external API call, thus having loading/error states
- */
-export const ApyGraphContainer = ({
-  graphKey,
-  reserve,
-  currentMarketData,
-}: ApyGraphContainerProps): JSX.Element => {
-  const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveRateTimeRange>(
-    ESupportedTimeRanges.OneMonth
-  );
+// Transform API data to chart format
+const transformApyData = (data: APYSample[] | undefined) =>
+  data
+    ?.map((item) => ({
+      date: new Date(item.date).getTime(),
+      value: Number(item.avgRate.value),
+    }))
+    .sort((a, b) => a.date - b.date) || [];
 
+type ApyGraphProps = {
+  chain: number;
+  underlyingToken: string;
+  market: string;
+};
+
+export const SupplyApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps) => {
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastWeek);
+
+  const { data, loading, error } = useSupplyAPYHistory({
+    chainId: chainId(chain),
+    underlyingToken: evmAddress(underlyingToken),
+    market: evmAddress(market),
+    window: selectedTimeRange,
+  });
+
+  return (
+    <ApyGraphContainer
+      label="Supply APR"
+      color="#2EBAC6"
+      data={transformApyData(data)}
+      loading={loading}
+      error={error || false}
+      selectedTimeRange={selectedTimeRange}
+      onSelectedTimeRangeChanged={setSelectedTimeRange}
+    />
+  );
+};
+
+export const BorrowApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps) => {
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastWeek);
+
+  const { data, loading, error } = useBorrowAPYHistory({
+    chainId: chainId(chain),
+    underlyingToken: evmAddress(underlyingToken),
+    market: evmAddress(market),
+    window: selectedTimeRange,
+  });
+
+  return (
+    <ApyGraphContainer
+      label="Borrow APR, variable"
+      color="#B6509E"
+      data={transformApyData(data)}
+      loading={loading}
+      error={error || false}
+      selectedTimeRange={selectedTimeRange}
+      onSelectedTimeRangeChanged={setSelectedTimeRange}
+    />
+  );
+};
+
+const ApyGraphContainer = ({
+  label,
+  color,
+  data,
+  loading,
+  error,
+  selectedTimeRange,
+  onSelectedTimeRangeChanged,
+}: ApyGraphContainerProps): JSX.Element => {
   const CHART_HEIGHT = 155;
   const CHART_HEIGHT_LOADING_FIX = 3;
-  let reserveAddress = '';
-  if (reserve) {
-    if (currentMarketData.v3) {
-      reserveAddress = `${reserve.underlyingAsset}${currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}${currentMarketData.chainId}`;
-    } else {
-      reserveAddress = `${reserve.underlyingAsset}${currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}`;
-    }
-  }
-  const { data, loading, error, refetch } = useReserveRatesHistory(
-    reserveAddress,
-    selectedTimeRange
-  );
-
-  // Supply fields
-  const supplyFields: Fields = [{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }];
-
-  // Borrow fields
-  const borrowFields: Fields = [
-    {
-      name: 'variableBorrowRate',
-      color: '#B6509E',
-      text: 'Borrow APR, variable',
-    },
-  ];
-
-  const fields = graphKey === 'supply' ? supplyFields : borrowFields;
 
   const graphLoading = (
     <Box
@@ -101,11 +131,8 @@ export const ApyGraphContainer = ({
         <Trans>Something went wrong</Trans>
       </Typography>
       <Typography variant="caption" sx={{ mb: 3 }}>
-        <Trans>Data couldn&apos;t be fetched, please reload graph.</Trans>
+        <Trans>Data couldn&apos;t be loaded.</Trans>
       </Typography>
-      <Button variant="outlined" color="primary" onClick={refetch}>
-        <Trans>Reload</Trans>
-      </Button>
     </Box>
   );
 
@@ -119,11 +146,11 @@ export const ApyGraphContainer = ({
           mb: 4,
         }}
       >
-        <GraphLegend labels={fields} />
+        <GraphLegend labels={[{ text: label, color }]} />
         <GraphTimeRangeSelector
-          disabled={loading || error}
+          disabled={loading}
           timeRange={selectedTimeRange}
-          onTimeRangeChanged={setSelectedTimeRange}
+          onTimeRangeChanged={onSelectedTimeRangeChanged}
         />
       </Box>
       {loading && graphLoading}
@@ -136,9 +163,8 @@ export const ApyGraphContainer = ({
                 width={width}
                 height={CHART_HEIGHT}
                 data={data}
-                fields={fields}
+                field={{ name: 'value', color, text: label }}
                 selectedTimeRange={selectedTimeRange}
-                avgFieldName={graphKey === 'supply' ? 'liquidityRate' : 'variableBorrowRate'}
               />
             ) : (
               /* Placeholder chart in the case where there is no rate data available yet */

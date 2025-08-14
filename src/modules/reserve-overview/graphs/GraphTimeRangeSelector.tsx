@@ -1,11 +1,11 @@
-import { reserveRateTimeRangeOptions } from 'src/hooks/useReservesHistory';
+import { TimeWindow } from '@aave/react';
 
-import { ESupportedTimeRanges, TimeRangeSelector } from '../TimeRangeSelector';
+import { TimeRangeSelector } from '../TimeRangeSelector';
 
 export interface GraphTimeRangeSelectorProps {
   disabled: boolean;
-  timeRange: ESupportedTimeRanges;
-  onTimeRangeChanged: (value: ESupportedTimeRanges) => void;
+  timeRange: TimeWindow;
+  onTimeRangeChanged: (value: TimeWindow) => void;
 }
 
 export const GraphTimeRangeSelector = ({
@@ -15,7 +15,12 @@ export const GraphTimeRangeSelector = ({
 }: GraphTimeRangeSelectorProps) => (
   <TimeRangeSelector
     disabled={disabled}
-    timeRanges={reserveRateTimeRangeOptions}
+    timeRanges={[
+      TimeWindow.LastWeek,
+      TimeWindow.LastMonth,
+      TimeWindow.LastSixMonths,
+      TimeWindow.LastYear,
+    ]}
     selectedTimeRange={timeRange}
     onTimeRangeChanged={onTimeRangeChanged}
   />
