@@ -11,6 +11,7 @@ import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { convertAprToApy } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
@@ -67,9 +68,10 @@ export const SGHOHeader: React.FC = () => {
             <Trans>
               Deposit GHO into savings GHO (sGHO) and earn{' '}
               <Box component="span" sx={{ color: '#338E3C', fontWeight: 'bold' }}>
-                {(stakeAPR?.aprPercentage || 0).toFixed(2)}%
+                {((stakeAPR?.apr ? convertAprToApy(parseFloat(stakeAPR.apr)) : 0) * 100).toFixed(2)}
+                %
               </Box>{' '}
-              APR on your GHO holdings. There&apos;s no lockups, no rehypothecation, and you can
+              APY on your GHO holdings. There&apos;s no lockups, no rehypothecation, and you can
               withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance,
               and watch your savings grow earning claimable rewards from merit.
             </Trans>{' '}
@@ -114,9 +116,9 @@ const SGhoHeaderUserDetails = ({
 
   return (
     <>
-      <TopInfoPanelItem hideIcon title={<Trans>APR</Trans>} loading={isLoadingStakeAPR}>
+      <TopInfoPanelItem hideIcon title={<Trans>APY</Trans>} loading={isLoadingStakeAPR}>
         <FormattedNumber
-          value={stakeAPR?.apr || 0}
+          value={stakeAPR?.apr ? convertAprToApy(parseFloat(stakeAPR.apr)) : 0}
           variant={valueTypographyVariant}
           symbolsColor="#A5A8B6"
           visibleDecimals={2}

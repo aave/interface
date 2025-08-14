@@ -128,3 +128,20 @@ export const showExternalIncentivesTooltip = (
 
   return tooltipsConfig;
 };
+
+/**
+ * Converts APR to APY using monthly compounding
+ * Assumes users claim rewards once per month and reinvest them
+ * Formula: APY = (1 + APR/12)^12 - 1
+ *
+ * This function is used to align incentive calculations with other protocol APYs
+ * throughout the app, providing more accurate representations of compound returns.
+ *
+ * @param apr - Annual Percentage Rate as a decimal (e.g., 0.05 for 5%)
+ * @returns APY as a decimal
+ */
+export const convertAprToApy = (apr: number): number => {
+  const monthlyRate = apr / 12;
+  const apy = Math.pow(1 + monthlyRate, 12) - 1;
+  return apy;
+};

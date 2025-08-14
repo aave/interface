@@ -1,7 +1,9 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
@@ -21,11 +23,12 @@ interface IncentivesCardProps {
   address?: string;
   variant?: 'main14' | 'main16' | 'secondary14';
   symbolsVariant?: 'secondary14' | 'secondary16';
-  align?: 'center' | 'flex-end';
   color?: string;
   tooltip?: ReactNode;
   market: string;
   protocolAction?: ProtocolAction;
+  align?: 'center' | 'flex-end';
+  inlineIncentives?: boolean;
 }
 
 export const IncentivesCard = ({
@@ -40,64 +43,136 @@ export const IncentivesCard = ({
   tooltip,
   market,
   protocolAction,
+  inlineIncentives = false,
 }: IncentivesCardProps) => {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const protocolAPY = typeof value === 'string' ? parseFloat(value) : value;
+
+  const protocolIncentivesAPR =
+    incentives?.reduce((sum, inc) => {
+      if (inc.incentiveAPR === 'Infinity' || sum === 'Infinity') {
+        return 'Infinity';
+      }
+      return sum + +inc.incentiveAPR;
+    }, 0 as number | 'Infinity') || 0;
+
+  const { data: meritIncentives } = useMeritIncentives({
+    symbol,
+    market,
+    protocolAction,
+    protocolAPY,
+    protocolIncentives: incentives || [],
+  });
+
+  const { data: merklIncentives } = useMerklIncentives({
+    market,
+    rewardedAsset: address,
+    protocolAction,
+    protocolAPY,
+    protocolIncentives: incentives || [],
+  });
+
+  const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
+  const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
+
+  const isBorrow = protocolAction === ProtocolAction.borrow;
+
+  // If any incentive is infinite, the total should be infinite
+  const hasInfiniteIncentives = protocolIncentivesAPR === 'Infinity';
+
+  const displayAPY = hasInfiniteIncentives
+    ? 'Infinity'
+    : isBorrow
+    ? protocolAPY - (protocolIncentivesAPR as number) - meritIncentivesAPR - merklIncentivesAPR
+    : protocolAPY + (protocolIncentivesAPR as number) + meritIncentivesAPR + merklIncentivesAPR;
+
+  const incentivesContent = (
+    <>
+      <IncentivesButton
+        incentives={incentives}
+        symbol={symbol}
+        market={market}
+        protocolAction={protocolAction}
+        protocolAPY={protocolAPY}
+        address={address}
+      />
+      <MeritIncentivesButton
+        symbol={symbol}
+        market={market}
+        protocolAction={protocolAction}
+        protocolAPY={protocolAPY}
+        protocolIncentives={incentives || []}
+      />
+      <MerklIncentivesButton
+        market={market}
+        rewardedAsset={address}
+        protocolAction={protocolAction}
+        protocolAPY={protocolAPY}
+        protocolIncentives={incentives || []}
+      />
+      <EthenaIncentivesButton rewardedAsset={address} />
+      <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
+      <SonicIncentivesButton rewardedAsset={address} />
+    </>
+  );
+
   return (
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: align || { xs: 'flex-end', xsm: 'center' },
-        justifyContent: 'center',
-        textAlign: 'center',
+        flexDirection: inlineIncentives ? 'row' : 'column',
+        alignItems: inlineIncentives ? 'center' : align || { xs: 'flex-end', xsm: 'center' },
+        justifyContent: inlineIncentives ? 'flex-start' : 'center',
+        textAlign: inlineIncentives ? 'left' : 'center',
+        gap: inlineIncentives ? 1 : 1,
       }}
     >
       {value.toString() !== '-1' ? (
-        <Box sx={{ display: 'flex' }}>
-          <FormattedNumber
-            data-cy={`apy`}
-            value={value}
-            percent
-            variant={variant}
-            symbolsVariant={symbolsVariant}
-            color={color}
-            symbolsColor={color}
-          />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {displayAPY === 'Infinity' ? (
+            <Typography variant={variant} color={color || 'text.secondary'}>
+              ∞ %
+            </Typography>
+          ) : (
+            <FormattedNumber
+              data-cy={`apy`}
+              value={displayAPY}
+              percent
+              variant={variant}
+              symbolsVariant={symbolsVariant}
+              color={color}
+              symbolsColor={color}
+            />
+          )}
           {tooltip}
+          {inlineIncentives && (
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '4px',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+              }}
+            >
+              {incentivesContent}
+            </Box>
+          )}
         </Box>
       ) : (
         <NoData variant={variant} color={color || 'text.secondary'} />
       )}
-      <Box
-        sx={
-          isTableChangedToCards
-            ? {
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '4px',
-              }
-            : {
-                display: 'flex',
-                justifyContent: 'center',
-                gap: '4px',
-                flexWrap: 'wrap',
-                flex: '0 0 50%', // 2 items per row
-              }
-        }
-      >
-        <IncentivesButton incentives={incentives} symbol={symbol} />
-        <MeritIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-        <MerklIncentivesButton
-          market={market}
-          rewardedAsset={address}
-          protocolAction={protocolAction}
-        />
-        <EthenaIncentivesButton rewardedAsset={address} />
-        <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
-        <SonicIncentivesButton rewardedAsset={address} />
-      </Box>
+      {!inlineIncentives && (
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '4px',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {incentivesContent}
+        </Box>
+      )}
     </Box>
   );
 };
