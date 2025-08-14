@@ -5,7 +5,7 @@ interface ContentWithTooltipProps {
   children: ReactNode;
   // eslint-disable-next-line
   tooltipContent: ReactElement<any, string | JSXElementConstructor<any>>;
-  placement?: 'top' | 'bottom';
+  placement?: 'right' | 'left' | 'bottom';
   withoutHover?: boolean;
   open?: boolean;
   setOpen?: (value: boolean) => void;
@@ -34,7 +34,7 @@ export const PopperComponent = styled(Popper)(({ theme }) =>
 export const ContentWithTooltip = ({
   children,
   tooltipContent,
-  placement = 'top',
+  placement = 'right',
   withoutHover,
   open,
   setOpen,
@@ -64,6 +64,12 @@ export const ContentWithTooltip = ({
               name: 'offset',
               options: {
                 offset: offset ?? [],
+              },
+            },
+            {
+              name: 'flip',
+              options: {
+                fallbackPlacements: ['left', 'bottom'],
               },
             },
           ],
