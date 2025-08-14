@@ -1,3 +1,4 @@
+import { TimeWindow } from '@aave/react';
 import { SxProps, Theme, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 
 export const supportedTimeRangeOptions = ['1m', '3m', '6m', '1y'] as const;
@@ -14,14 +15,27 @@ export enum ESupportedTimeRanges {
 
 export interface TimeRangeSelectorProps {
   disabled?: boolean;
-  timeRanges: ESupportedTimeRanges[];
-  selectedTimeRange: ESupportedTimeRanges;
-  onTimeRangeChanged: (value: ESupportedTimeRanges) => void;
+  timeRanges: TimeWindow[];
+  selectedTimeRange: TimeWindow;
+  onTimeRangeChanged: (value: TimeWindow) => void;
   sx?: {
     buttonGroup: SxProps<Theme>;
     button: SxProps<Theme>;
   };
 }
+
+const formattedInterval = (interval: TimeWindow) => {
+  switch (interval) {
+    case TimeWindow.LastWeek:
+      return '1w';
+    case TimeWindow.LastMonth:
+      return '1m';
+    case TimeWindow.LastSixMonths:
+      return '6m';
+    case TimeWindow.LastYear:
+      return '1y';
+  }
+};
 
 export const TimeRangeSelector = ({
   disabled = false, // support default fallback
@@ -30,10 +44,7 @@ export const TimeRangeSelector = ({
   onTimeRangeChanged,
   ...props
 }: TimeRangeSelectorProps) => {
-  const handleChange = (
-    _event: React.MouseEvent<HTMLElement>,
-    newInterval: ESupportedTimeRanges
-  ) => {
+  const handleChange = (_event: React.MouseEvent<HTMLElement>, newInterval: TimeWindow) => {
     if (newInterval !== null) {
       // Invoke callback
       onTimeRangeChanged(newInterval);
@@ -78,7 +89,7 @@ export const TimeRangeSelector = ({
               ...props.sx?.button,
             })}
           >
-            <Typography variant="buttonM">{interval}</Typography>
+            <Typography variant="buttonM">{formattedInterval(interval)}</Typography>
           </ToggleButton>
         );
       })}

@@ -17,7 +17,7 @@ import { GENERAL } from 'src/utils/events';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { ApyGraphContainer } from './graphs/ApyGraphContainer';
+import { BorrowApyGraph } from './graphs/ApyGraphContainer';
 import { ReserveFactorOverview } from './ReserveFactorOverview';
 import { PanelItem } from './ReservePanels';
 
@@ -192,10 +192,10 @@ export const BorrowInfo = ({
         )}
       </Box>
       {renderCharts && (
-        <ApyGraphContainer
-          graphKey="borrow"
-          reserve={reserve}
-          currentMarketData={currentMarketData}
+        <BorrowApyGraph
+          chain={currentMarketData.chainId}
+          underlyingToken={reserve.underlyingAsset}
+          market={currentMarketData.addresses.LENDING_POOL}
         />
       )}
       <Box
