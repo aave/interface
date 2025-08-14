@@ -1,3 +1,5 @@
+import { valueToBigNumber } from '@aave/math-utils';
+
 /**
  * Check if a token is USDT on Ethereum that requires approval reset
  * @param tokenSymbol - The token symbol
@@ -18,14 +20,15 @@ export const isUSDTOnEthereum = (tokenSymbol: string, chainId: number): boolean 
 export const needsUSDTApprovalReset = (
   tokenSymbol: string,
   chainId: number,
-  currentApproval: bigint,
-  newApproval: bigint
+  currentApproval: string,
+  newApproval: string
 ): boolean => {
   return (
     isUSDTOnEthereum(tokenSymbol, chainId) &&
     Boolean(currentApproval) &&
     Boolean(newApproval) &&
-    currentApproval < newApproval
+    valueToBigNumber(currentApproval).isGreaterThan(0) &&
+    valueToBigNumber(currentApproval).isLessThan(valueToBigNumber(newApproval))
   );
 };
 

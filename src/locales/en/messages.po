@@ -86,6 +86,10 @@ msgstr "Amount to migrate"
 msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Borrowing this amount will reduce your health factor and increase risk of liquidation."
 
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "{0} {symbol}..."
+msgstr "{0} {symbol}..."
+
 #: src/components/transactions/FlowCommons/BaseWaiting.tsx
 msgid "In progress"
 msgstr "In progress"
@@ -181,10 +185,6 @@ msgstr "Price data is not currently available for this reserve on the protocol s
 msgid "Transaction history"
 msgstr "Transaction history"
 
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "Approving {symbol}..."
-msgstr "Approving {symbol}..."
-
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Learn more about the risks."
 msgstr "Learn more about the risks."
@@ -194,6 +194,8 @@ msgstr "Learn more about the risks."
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
+#: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Switch/BaseSwitchModalContent.tsx
 msgid "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
 msgstr "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
@@ -1996,6 +1998,10 @@ msgstr "Used as collateral"
 msgid "Action cannot be performed because the reserve is paused"
 msgstr "Action cannot be performed because the reserve is paused"
 
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "{0} {symbol} to continue"
+msgstr "{0} {symbol} to continue"
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Representative smart contract wallet (ie. Safe) addresses on other chains."
 msgstr "Representative smart contract wallet (ie. Safe) addresses on other chains."
@@ -3384,10 +3390,6 @@ msgstr "Remove"
 #: src/components/transactions/Switch/SwitchSlippageSelector.tsx
 msgid "Auto Slippage"
 msgstr "Auto Slippage"
-
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "Approve {symbol} to continue"
-msgstr "Approve {symbol} to continue"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
