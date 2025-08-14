@@ -198,7 +198,8 @@ msgstr "Please connect a wallet to view your personal information here."
 msgid "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
 msgstr "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
 
-#: src/modules/umbrella/AmountStakedItem.tsx
+#: src/modules/umbrella/AmountSharesItem.tsx
+#: src/modules/umbrella/AmountStakedUnderlyingItem.tsx
 msgid "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 msgstr "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 
@@ -571,7 +572,8 @@ msgstr "Claim all"
 #: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/AmountStakedItem.tsx
+#: src/modules/umbrella/AmountSharesItem.tsx
+#: src/modules/umbrella/AmountStakedUnderlyingItem.tsx
 msgid "Time remaining until the withdraw period ends."
 msgstr "Time remaining until the withdraw period ends."
 
@@ -763,6 +765,10 @@ msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailabl
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Stable"
+
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+msgid "Shares"
+msgstr "Shares"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Variable rate"
@@ -1516,6 +1522,10 @@ msgstr "Email"
 msgid "Unstake"
 msgstr "Unstake"
 
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+msgid "Your Staked Underlying Amount"
+msgstr "Your Staked Underlying Amount"
+
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Proposal overview"
 msgstr "Proposal overview"
@@ -1739,7 +1749,8 @@ msgstr "Show Frozen or paused assets"
 #: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/AmountStakedItem.tsx
+#: src/modules/umbrella/AmountSharesItem.tsx
+#: src/modules/umbrella/AmountStakedUnderlyingItem.tsx
 msgid "Amount in cooldown"
 msgstr "Amount in cooldown"
 
@@ -1808,6 +1819,7 @@ msgstr "Borrow"
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 msgid "Available to stake"
 msgstr "Available to stake"
@@ -2176,7 +2188,8 @@ msgstr "Eligible for the Merit program."
 msgid "Cooldown period warning"
 msgstr "Cooldown period warning"
 
-#: src/modules/umbrella/AmountStakedItem.tsx
+#: src/modules/umbrella/AmountSharesItem.tsx
+#: src/modules/umbrella/AmountStakedUnderlyingItem.tsx
 msgid "Available to withdraw"
 msgstr "Available to withdraw"
 
@@ -2450,10 +2463,6 @@ msgstr "Borrowed"
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Received"
-
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
-msgid "Your Staked Amount"
-msgstr "Your Staked Amount"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your current loan to value based on your collateral supplied."

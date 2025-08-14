@@ -8,7 +8,8 @@ import { useShallow } from 'zustand/shallow';
 
 import { Row } from '../../../components/primitives/Row';
 import { ListMobileItemWrapper } from '../../dashboard/lists/ListMobileItemWrapper';
-import { AmountStakedItem } from '../AmountStakedItem';
+import { AmountSharesItem } from '../AmountSharesItem';
+import { AmountStakedUnderlyingItem } from '../AmountStakedUnderlyingItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
 import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { ApyTooltip } from '../helpers/ApyTooltip';
@@ -49,7 +50,15 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
         mb={3}
         align="flex-start"
       >
-        <AmountStakedItem stakeData={umbrellaStakeAsset} />
+        <AmountStakedUnderlyingItem stakeData={umbrellaStakeAsset} />
+      </Row>
+      <Row
+        caption={<Trans>Available to stake</Trans>}
+        captionVariant="description"
+        mb={3}
+        align="flex-start"
+      >
+        <AmountSharesItem stakeData={umbrellaStakeAsset} />
       </Row>
       <Row
         caption={<Trans>Available to stake</Trans>}

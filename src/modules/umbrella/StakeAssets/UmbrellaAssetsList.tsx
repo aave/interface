@@ -22,8 +22,12 @@ const listHeaders = [
     sortKey: 'totalAPY',
   },
   {
-    title: <Trans>Your Staked Amount</Trans>,
-    sortKey: 'stakeTokenBalance',
+    title: <Trans>Your Staked Underlying Amount</Trans>,
+    sortKey: 'stakeTokenUnderlyingBalance',
+  },
+  {
+    title: <Trans>Shares</Trans>,
+    sortKey: 'stakeSharesTokens',
   },
   {
     title: <Trans>Available to Stake</Trans>,
@@ -80,8 +84,16 @@ export default function UmbrellaAssetsList({
         const balanceB = Number(b.formattedBalances.totalAvailableToStake);
         return sortDesc ? balanceB - balanceA : balanceA - balanceB;
       }
-
-      if (sortName === 'stakeTokenBalance') {
+      //! Your Staked Amount: shows the underlying of assets(ej. USDC, WETH) staked or equivalent to the
+      //! shares.
+      //! Using stakeTokenReedemableAmount should be the equivalent in Asset to the shares
+      if (sortName === 'stakeTokenUnderlyingBalance') {
+        const balanceA = Number(a.formattedBalances?.stakeTokenRedeemableAmount || '0');
+        const balanceB = Number(b.formattedBalances?.stakeTokenRedeemableAmount || '0');
+        return sortDesc ? balanceB - balanceA : balanceA - balanceB;
+      }
+      //!trial: Shares shows the staked StkToken obtained from the staked asset amount
+      if (sortName === 'stakeSharesTokens') {
         const balanceA = Number(a.formattedBalances?.stakeTokenBalance || '0');
         const balanceB = Number(b.formattedBalances?.stakeTokenBalance || '0');
         return sortDesc ? balanceB - balanceA : balanceA - balanceB;
