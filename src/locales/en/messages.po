@@ -156,6 +156,7 @@ msgid "Current v2 Balance"
 msgstr "Current v2 Balance"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "Reward Token"
 msgstr "Reward Token"
 
@@ -1176,6 +1177,7 @@ msgid "deposited"
 msgstr "deposited"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
@@ -1264,6 +1266,10 @@ msgstr "Wallet balance"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Borrow balance after repay"
 msgstr "Borrow balance after repay"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Supply USDT and double your yield by <0><1>verifying your humanity through Self</1></0> for the first $1,000 USDT supplied per user."
+msgstr "Supply USDT and double your yield by <0><1>verifying your humanity through Self</1></0> for the first $1,000 USDT supplied per user."
 
 #: src/modules/migration/MigrationLists.tsx
 msgid "Supplied assets"
@@ -1372,6 +1378,10 @@ msgstr "Claimable AAVE"
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Borrow and repay in same block is not allowed"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Eligible for Merit program and Boosted Yield via Self."
+msgstr "Eligible for Merit program and Boosted Yield via Self."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -1689,6 +1699,10 @@ msgstr "There are no stake assets configured for this market"
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
+msgstr "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
@@ -2216,6 +2230,7 @@ msgstr "Network costs"
 msgid "The requested amount is greater than the max loan size in stable rate mode"
 msgstr "The requested amount is greater than the max loan size in stable rate mode"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
@@ -3799,6 +3814,7 @@ msgstr "Asset is frozen in {marketName} v3 market, hence this position cannot be
 msgid "Be mindful of the network congestion and gas prices."
 msgstr "Be mindful of the network congestion and gas prices."
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "Merit Program rewards are claimed through the"
 msgstr "Merit Program rewards are claimed through the"
