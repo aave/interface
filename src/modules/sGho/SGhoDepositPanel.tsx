@@ -1,5 +1,6 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
+import { TimeWindow } from '@aave/react';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -26,9 +27,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
-import {
-  useSGhoApyHistory,
-} from 'src/hooks/useSGhoApyHistory';
+import { useSGhoApyHistory } from 'src/hooks/useSGhoApyHistory';
 import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -39,7 +38,6 @@ import { convertAprToApy } from 'src/utils/utils';
 import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
 import { TimeRangeSelector } from '../reserve-overview/TimeRangeSelector';
 import { StakeActionBox } from '../staking/StakeActionBox';
-import { TimeWindow } from '@aave/react';
 
 export interface SGHODepositPanelProps {
   onStakeAction?: () => void;
@@ -72,9 +70,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
   const { currentAccount } = useWeb3Context();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(
-    TimeWindow.LastWeek
-  );
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastWeek);
 
   const {
     data: meritApyHistory,
