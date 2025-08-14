@@ -465,10 +465,6 @@ msgstr "Signing"
 msgid "Repay {symbol}"
 msgstr "Repay {symbol}"
 
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
-msgid "Your staked amount"
-msgstr "Your staked amount"
-
 #: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -767,6 +763,7 @@ msgid "Stable"
 msgstr "Stable"
 
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 msgid "Shares"
 msgstr "Shares"
 
@@ -1820,7 +1817,6 @@ msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 msgid "Available to stake"
 msgstr "Available to stake"
 
@@ -2368,6 +2364,10 @@ msgstr "Borrowing is disabled due to an Aave community decision. <0>More details
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Collateral usage"
 msgstr "Collateral usage"
+
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
+msgid "Your staked underlying amount"
+msgstr "Your staked underlying amount"
 
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Variable"
