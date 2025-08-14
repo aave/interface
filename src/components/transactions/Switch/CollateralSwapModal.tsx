@@ -7,7 +7,7 @@ import {
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { TokenInfo } from 'src/ui-config/TokenList';
+import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 
 import { BaseSwitchModal } from './BaseSwitchModal';
 import { SwitchDetailsParams as SwitchDetailsParams } from './BaseSwitchModalContent';
@@ -76,7 +76,9 @@ export const CollateralSwapModal = () => {
         const isWrappedNative =
           wrappedNative && position.reserve.underlyingAsset.toLowerCase() === wrappedNative;
         const nativeToken = isWrappedNative
-          ? baseTokens.find((t) => (t as TokenInfoWithBalance).extensions?.isNative)
+          ? TOKEN_LIST.tokens.find(
+              (t) => (t as TokenInfoWithBalance).extensions?.isNative && t.chainId === realChainId
+            )
           : undefined;
 
         return {

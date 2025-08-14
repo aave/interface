@@ -75,13 +75,27 @@ export const SuppliedPositionsList = () => {
     localStorage.getItem(localStorageName) === 'true'
   );
 
+  const userHasSmallBalanceAssets = useMemo(() => {
+    return user?.userReservesData.some((userReserve) => {
+      if (userReserve.underlyingBalance === '0') return false;
+
+      const balanceUSD = amountToUsd(
+        userReserve.underlyingBalance,
+        userReserve.reserve.formattedPriceInMarketReferenceCurrency,
+        marketReferencePriceInUsd
+      );
+
+      return Number(balanceUSD) <= SMALL_BALANCE_THRESHOLD;
+    });
+  }, [user?.userReservesData, marketReferencePriceInUsd]);
+
   const suppliedPositions = useMemo(() => {
     return (
       user?.userReservesData
         .filter((userReserve) => {
           if (userReserve.underlyingBalance === '0') return false;
 
-          if (isShowSmallBalanceAssets) return true;
+          if (!!isShowSmallBalanceAssets) return true;
 
           // Filter out dust amounts < $0.01 USD
           const balanceUSD = amountToUsd(
@@ -105,7 +119,7 @@ export const SuppliedPositionsList = () => {
           },
         })) || []
     );
-  }, [isShowSmallBalanceAssets]);
+  }, [isShowSmallBalanceAssets, user?.userReservesData, marketReferencePriceInUsd]);
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
   const preSortedReserves = suppliedPositions as DashboardReserve[];
@@ -156,18 +170,20 @@ export const SuppliedPositionsList = () => {
       localStorageName="suppliedAssetsDashboardTableCollapse"
       noData={!sortedReserves.length}
       subChildrenComponent={
-        <Box>
-          <DashboardListTopPanel
-            value={isShowSmallBalanceAssets}
-            onClick={setIsShowSmallBalanceAssets}
-            localStorageName={localStorageName}
-            bridge={currentNetworkConfig.bridge}
-            eventName={DASHBOARD.SHOW_ASSETS_SMALL_BALANCE}
-            label={<Trans>Show assets with small balance</Trans>}
-            showFaucet={false}
-            showBridge={false}
-          />
-        </Box>
+        !!userHasSmallBalanceAssets && (
+          <Box>
+            <DashboardListTopPanel
+              value={isShowSmallBalanceAssets}
+              onClick={setIsShowSmallBalanceAssets}
+              localStorageName={localStorageName}
+              bridge={currentNetworkConfig.bridge}
+              eventName={DASHBOARD.SHOW_ASSETS_SMALL_BALANCE}
+              label={<Trans>Show assets with small balance</Trans>}
+              showFaucet={false}
+              showBridge={false}
+            />
+          </Box>
+        )
       }
       topInfo={
         <>

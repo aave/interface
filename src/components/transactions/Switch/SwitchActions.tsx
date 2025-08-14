@@ -104,6 +104,7 @@ export const ParaswapSwitchActionsWrapper = ({
   isMaxSelected,
   addTransaction,
   setMainTxState,
+  invalidate,
 }: {
   inputAmount: string;
   inputSymbol: string;
@@ -122,6 +123,7 @@ export const ParaswapSwitchActionsWrapper = ({
     context?: TransactionContext
   ) => void;
   setMainTxState: (txState: TxStateType) => void;
+  invalidate: () => void;
 }) => {
   const userAddress = useRootStore.getState().account;
   const [swapCollateral, currentMarketData, trackEvent] = useRootStore(
@@ -220,21 +222,7 @@ export const ParaswapSwitchActionsWrapper = ({
 
   useEffect(() => {
     if (mainTxState.success) {
-      addTransaction(
-        mainTxState.txHash || '',
-        {
-          txState: 'success',
-        },
-        {
-          chainId,
-        }
-      );
-
-      setMainTxState({
-        txHash: mainTxState.txHash || '',
-        loading: false,
-        success: true,
-      });
+      invalidate();
 
       trackEvent(GENERAL.COLLATERAL_SWAP_WITH_FLASHLOAN, {
         chainId,
@@ -252,6 +240,22 @@ export const ParaswapSwitchActionsWrapper = ({
         isMaxSelected,
         txHash: mainTxState.txHash,
         status: 'success',
+      });
+
+      addTransaction(
+        mainTxState.txHash || '',
+        {
+          txState: 'success',
+        },
+        {
+          chainId,
+        }
+      );
+
+      setMainTxState({
+        txHash: mainTxState.txHash || '',
+        loading: false,
+        success: true,
       });
     }
   }, [mainTxState.success]);
@@ -390,6 +394,40 @@ export const SwitchActions = ({
       setRequiresApprovalReset(false);
     }
   }, [inputSymbol, chainId, approvedAmount, inputAmount, setShowUSDTResetWarning, switchRates]);
+
+  const invalidate = () => {
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.poolTokens(user, findByChainId(chainId) ?? currentMarketData),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.transactionHistory(
+        user,
+        findByChainId(chainId) ?? currentMarketData
+      ),
+    });
+
+    // Refresh dashboard data after collateral swap
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.poolReservesDataHumanized(
+        findByChainId(chainId) ?? currentMarketData
+      ),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.userPoolReservesDataHumanized(
+        user,
+        findByChainId(chainId) ?? currentMarketData
+      ),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.userPoolReservesIncentiveDataHumanized(
+        user,
+        findByChainId(chainId) ?? currentMarketData
+      ),
+    });
+  };
 
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
@@ -773,38 +811,7 @@ export const SwitchActions = ({
       console.error('Error tracking swap event:', error);
     }
 
-    // Invalidate the pool tokens query to refresh the data
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolTokens(user, findByChainId(chainId) ?? currentMarketData),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.transactionHistory(
-        user,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    // Refresh dashboard data after collateral swap
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolReservesDataHumanized(
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.userPoolReservesDataHumanized(
-        user,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.userPoolReservesIncentiveDataHumanized(
-        user,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
+    invalidate();
   };
 
   const approval = async () => {
@@ -1098,6 +1105,7 @@ export const SwitchActions = ({
         isMaxSelected={isMaxSelected}
         addTransaction={addTransaction}
         setMainTxState={setMainTxState}
+        invalidate={invalidate}
       />
     );
   }
