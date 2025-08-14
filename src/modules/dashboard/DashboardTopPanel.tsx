@@ -22,11 +22,13 @@ import { NoData } from '../../components/primitives/NoData';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
+import { useEnhancedUserYield } from '../../hooks/useEnhancedUserYield';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
   const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
+  const { netAPY: enhancedNetAPY, hasEnhancedData } = useEnhancedUserYield();
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
   const [
@@ -177,7 +179,7 @@ export const DashboardTopPanel = () => {
         >
           {currentAccount && user && Number(user.netWorthUSD) > 0 ? (
             <FormattedNumber
-              value={user ? user.netAPY : 0}
+              value={hasEnhancedData ? enhancedNetAPY : user ? user.netAPY : 0}
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
