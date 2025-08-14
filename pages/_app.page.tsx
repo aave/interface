@@ -1,7 +1,7 @@
 import '/public/fonts/inter/inter.css';
 import '/src/styles/variables.css';
 
-import { AaveClient, AaveProvider, local } from '@aave/react';
+import { AaveClient, AaveProvider } from '@aave/react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { NoSsr } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
