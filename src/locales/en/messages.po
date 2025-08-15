@@ -156,7 +156,6 @@ msgid "Current v2 Balance"
 msgstr "Current v2 Balance"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "Reward Token"
 msgstr "Reward Token"
 
@@ -1379,10 +1378,6 @@ msgstr "Claimable AAVE"
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Borrow and repay in same block is not allowed"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Eligible for Merit program and Boosted Yield via Self."
-msgstr "Eligible for Merit program and Boosted Yield via Self."
-
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -2182,10 +2177,6 @@ msgstr "Borrow APY, variable"
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Eligible for the Merit program."
-msgstr "Eligible for the Merit program."
-
 #: src/components/Warnings/CooldownWarning.tsx
 msgid "Cooldown period warning"
 msgstr "Cooldown period warning"
@@ -2230,7 +2221,6 @@ msgstr "Network costs"
 msgid "The requested amount is greater than the max loan size in stable rate mode"
 msgstr "The requested amount is greater than the max loan size in stable rate mode"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
@@ -3814,7 +3804,6 @@ msgstr "Asset is frozen in {marketName} v3 market, hence this position cannot be
 msgid "Be mindful of the network congestion and gas prices."
 msgstr "Be mindful of the network congestion and gas prices."
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "Merit Program rewards are claimed through the"
 msgstr "Merit Program rewards are claimed through the"
