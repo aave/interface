@@ -13,7 +13,7 @@ import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 
 import { ListValueColumn } from '../dashboard/lists/ListValueColumn';
 
-export const AmountStakedItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
+export const AmountSharesItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const now = useCurrentTimestamp(1);
   const { stakeTokenBalance, stakeTokenBalanceUSD } = stakeData.formattedBalances;
 
