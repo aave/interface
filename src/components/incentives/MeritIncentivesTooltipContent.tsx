@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
 import {
   ExtendedReserveIncentiveResponse,
+  MeritAction,
   MeritIncentivesBreakdown,
 } from 'src/hooks/useMeritIncentives';
 
@@ -11,16 +12,42 @@ import { Row } from '../primitives/Row';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { getSymbolMap } from './IncentivesTooltipContent';
 
+const isCeloAction = (action: MeritAction): boolean => action.startsWith('celo-');
+const isSelfVerificationCampaign = (action: MeritAction): boolean =>
+  action === MeritAction.CELO_SUPPLY_USDT;
+
+const getCampaignConfig = (action: MeritAction) => {
+  if (isSelfVerificationCampaign(action)) {
+    return {
+      type: 'self_verification' as const,
+      title: 'Eligible for Merit program and Boosted Yield via Self.',
+      hasSpecialContent: true,
+    };
+  }
+  if (isCeloAction(action)) {
+    return {
+      type: 'celo_standard' as const,
+      title: 'Eligible for Merit program.',
+      hasSpecialContent: true,
+    };
+  }
+  return {
+    type: 'standard' as const,
+    title: 'Eligible for the Merit program.',
+    hasSpecialContent: false,
+  };
+};
+
 export const MeritIncentivesTooltipContent = ({
   meritIncentives,
 }: {
   meritIncentives: ExtendedReserveIncentiveResponse & { breakdown?: MeritIncentivesBreakdown };
 }) => {
   const theme = useTheme();
-
   const typographyVariant = 'secondary12';
-
   const meritIncentivesFormatted = getSymbolMap(meritIncentives);
+
+  const campaignConfig = getCampaignConfig(meritIncentives.action);
 
   return (
     <Box
@@ -44,7 +71,7 @@ export const MeritIncentivesTooltipContent = ({
       />
 
       <Typography variant="caption" color="text.primary" fontSize={13}>
-        <Trans>Eligible for the Merit program.</Trans>
+        <Trans>{campaignConfig.title}</Trans>
       </Typography>
 
       <Typography variant="caption" color="text.secondary">
@@ -65,6 +92,47 @@ export const MeritIncentivesTooltipContent = ({
           Learn more
         </Link>
       </Typography>
+
+      {campaignConfig.type === 'self_verification' && (
+        <>
+          <Typography variant="caption" color="text.secondary">
+            <Trans>
+              Supply USDT and double your yield by{' '}
+              <span>
+                <Link
+                  href="https://aave.self.xyz/"
+                  sx={{ textDecoration: 'underline' }}
+                  variant="caption"
+                  color="text.secondary"
+                >
+                  verifying your humanity through Self
+                </Link>
+              </span>{' '}
+              for the first $1,000 USDT supplied per user.
+            </Trans>{' '}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            <Trans>
+              Visit{' '}
+              <span>
+                <Link
+                  href="https://aave.self.xyz/"
+                  sx={{ textDecoration: 'underline' }}
+                  variant="caption"
+                  color="text.secondary"
+                >
+                  https://aave.self.xyz/
+                </Link>
+              </span>{' '}
+              to get started with Self’s ZK-powered proof-of-humanity authentication.
+            </Trans>{' '}
+          </Typography>
+        </>
+      )}
+      {/* Show if SpecialContent is needed */}
+      {/* {campaignConfig.type === 'self_verification' && campaignConfig.hasSpecialContent && ''} */}
+      {/* Show if SpecialContent is needed */}
+      {/* {campaignConfig.type === 'celo_standard' && campaignConfig.hasSpecialContent && ''} */}
 
       {meritIncentives.customMessage ? (
         <Typography variant="caption" color="text.secondary">
