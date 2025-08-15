@@ -45,12 +45,12 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
         </Box>
       </Row>
       <Row
-        caption={<Trans>Your staked underlying amount</Trans>}
+        caption={<Trans>Your staked underlying</Trans>}
         captionVariant="description"
         mb={3}
         align="flex-start"
       >
-        <AmountStakedUnderlyingItem stakeData={umbrellaStakeAsset} />
+        <AmountStakedUnderlyingItem stakeData={umbrellaStakeAsset} isMobile />
       </Row>
       <Row caption={<Trans>Shares</Trans>} captionVariant="description" mb={3} align="flex-start">
         <AmountSharesItem stakeData={umbrellaStakeAsset} />

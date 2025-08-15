@@ -8,7 +8,8 @@ export const usePreviewRedeem = (
   amount: string,
   decimals: number,
   stataTokenAddress: string,
-  chainId: ChainId
+  chainId: ChainId,
+  enabled = true
 ) => {
   return useQuery({
     queryFn: async () => {
@@ -26,5 +27,6 @@ export const usePreviewRedeem = (
       return formatUnits(shares, decimals);
     },
     queryKey: ['umbrella', 'previewRedeem', amount, stataTokenAddress],
+    enabled: enabled,
   });
 };

@@ -1,4 +1,4 @@
-import { normalize, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
+//yarn import { normalize, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { keyframes, Stack, Typography } from '@mui/material';
@@ -6,17 +6,68 @@ import { formatUnits } from 'ethers/lib/utils';
 import { ReactElement } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { SecondsToString } from 'src/components/SecondsToString';
 import { timeMessage } from 'src/helpers/timeHelper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { useRootStore } from 'src/store/root';
 
 import { ListValueColumn } from '../dashboard/lists/ListValueColumn';
+import { MultiIcon } from './helpers/MultiIcon';
+import { usePreviewRedeem } from './hooks/usePreviewRedeem';
 
-export const AmountStakedUnderlyingItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
+export const AmountStakedUnderlyingItem = ({
+  stakeData,
+  isMobile,
+}: {
+  stakeData: MergedStakeData;
+  isMobile: boolean;
+}) => {
   const now = useCurrentTimestamp(1);
-  const { stakeTokenRedeemableAmount } = stakeData.formattedBalances;
+  const currentMarketData = useRootStore((s) => s.currentMarketData);
+  const chainId = currentMarketData?.chainId;
+
+  const {
+    stakeTokenRedeemableAmount,
+    underlyingTokenBalance,
+    stataTokenAssetBalance: underlyingWaTokenBalance,
+  } = stakeData.balances;
+  const { underlyingTokenAddress, underlyingTokenDecimals, underlyingIsStataToken, decimals } =
+    stakeData;
+
+  const icons = [];
+  if (underlyingTokenBalance) {
+    icons.push({
+      src: stakeData.stataTokenData.assetSymbol,
+      aToken: false,
+    });
+  }
+  if (underlyingWaTokenBalance) {
+    icons.push({
+      src: stakeData.stataTokenData.assetSymbol,
+      aToken: true,
+    });
+  }
+  if (underlyingTokenBalance && Number(underlyingTokenBalance) > 0) {
+    icons.push({
+      src: stakeData.stataTokenData.assetSymbol,
+      aToken: false,
+      waToken: true,
+    });
+  }
+
+  const isGhoToken = !underlyingIsStataToken;
+
+  const { data: sharesEquivalentAssets = '0' } = usePreviewRedeem(
+    stakeTokenRedeemableAmount,
+    underlyingTokenDecimals,
+    underlyingTokenAddress,
+    chainId,
+    !isGhoToken
+  );
+  const formattedGhoAmount = formatUnits(stakeTokenRedeemableAmount, decimals);
+  const assetUnderlyingAmount = isGhoToken ? formattedGhoAmount : sharesEquivalentAssets;
 
   const endOfCooldown = stakeData?.cooldownData.endOfCooldown || 0;
   const unstakeWindow = stakeData?.cooldownData.withdrawalWindow || 0;
@@ -25,28 +76,37 @@ export const AmountStakedUnderlyingItem = ({ stakeData }: { stakeData: MergedSta
     stakeData.decimals
   );
   const cooldownTimeRemaining = endOfCooldown - now;
-
   const isCooldownActive = cooldownTimeRemaining > 0;
   const isUnstakeWindowActive = endOfCooldown < now && now < endOfCooldown + unstakeWindow;
   const unstakeTimeRemaining = endOfCooldown + unstakeWindow - now;
-  const priceUsd = normalize(stakeData.price, USD_DECIMALS);
-  const redeemableUsd = valueToBigNumber(stakeTokenRedeemableAmount)
-    .multipliedBy(priceUsd)
-    .toString();
+
+  // calculate price in USD
+  // const priceUsd = normalize(stakeData.price, USD_DECIMALS);
+  // const redeemableUsd = valueToBigNumber(assetUnderlyingAmount).multipliedBy(priceUsd).toString();
 
   return (
-    <Stack direction="column" alignItems="center" justifyContent="center">
+    <Stack
+      direction={isMobile ? 'row' : 'column'}
+      alignItems="center"
+      justifyContent="center"
+      gap={2}
+    >
       {!isCooldownActive && !isUnstakeWindowActive ? (
         <>
-          <FormattedNumber compact value={stakeTokenRedeemableAmount} variant="secondary14" />
-          <ReserveSubheader value={redeemableUsd} />
+          <FormattedNumber compact value={assetUnderlyingAmount} variant="secondary14" />
+
+          {stakeData.underlyingIsStataToken ? (
+            <MultiIcon icons={icons} />
+          ) : (
+            <TokenIcon symbol={stakeData.symbol} sx={{ fontSize: '24px' }} />
+          )}
         </>
       ) : (
         <ListValueColumn
-          value={stakeTokenRedeemableAmount}
-          subValue={redeemableUsd}
+          value={assetUnderlyingAmount}
+          // subValue={redeemableUsd}
           withTooltip
-          disabled={stakeTokenRedeemableAmount === '0'}
+          disabled={assetUnderlyingAmount === '0'}
         />
       )}
       {isCooldownActive && (

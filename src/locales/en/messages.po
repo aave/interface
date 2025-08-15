@@ -810,6 +810,10 @@ msgstr "Asset category"
 msgid "Withdraw GHO"
 msgstr "Withdraw GHO"
 
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
+msgid "Your staked underlying"
+msgstr "Your staked underlying"
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr "This asset is frozen due to an Aave community decision. <0>More details</0>"
@@ -2364,10 +2368,6 @@ msgstr "Borrowing is disabled due to an Aave community decision. <0>More details
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Collateral usage"
 msgstr "Collateral usage"
-
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
-msgid "Your staked underlying amount"
-msgstr "Your staked underlying amount"
 
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Variable"
