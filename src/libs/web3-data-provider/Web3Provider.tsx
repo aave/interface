@@ -3,6 +3,7 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
 import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
+import { useGetWalletCapabilities } from 'src/hooks/useGetWalletCapabilities';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useRootStore } from 'src/store/root';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
@@ -49,8 +50,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-  const [setAccount, setConnectedAccountIsContract] = useRootStore(
-    useShallow((store) => [store.setAccount, store.setConnectedAccountIsContract])
+  const [setAccount, setConnectedAccountIsContract, setWalletCapabilities] = useRootStore(
+    useShallow((store) => [
+      store.setAccount,
+      store.setConnectedAccountIsContract,
+      store.setWalletCapabilities,
+    ])
   );
 
   const account = address;
@@ -61,6 +66,29 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }
 
   const { data: isContractAddress } = useIsContractAddress(account || '', chainId);
+  const { data: walletCapabilities } = useGetWalletCapabilities();
+
+  useEffect(() => {
+    if (!account) {
+      setConnectedAccountIsContract(false);
+      setWalletCapabilities(null);
+      return;
+    }
+
+    if (isContractAddress) {
+      setConnectedAccountIsContract(true);
+    }
+
+    if (walletCapabilities) {
+      setWalletCapabilities(walletCapabilities);
+    }
+  }, [
+    isContractAddress,
+    setConnectedAccountIsContract,
+    account,
+    walletCapabilities,
+    setWalletCapabilities,
+  ]);
 
   useEffect(() => {
     if (didInit) {
@@ -184,17 +212,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       setAccount(readOnlyModeAddress.toLowerCase());
     }
   }, [readOnlyModeAddress, setAccount]);
-
-  useEffect(() => {
-    if (!account) {
-      setConnectedAccountIsContract(false);
-      return;
-    }
-
-    if (isContractAddress) {
-      setConnectedAccountIsContract(true);
-    }
-  }, [isContractAddress, setConnectedAccountIsContract, account]);
 
   return (
     <Web3Context.Provider
