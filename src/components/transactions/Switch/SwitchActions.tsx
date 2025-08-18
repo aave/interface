@@ -397,18 +397,6 @@ export const SwitchActions = ({
 
   const invalidate = () => {
     queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolTokens(user, findByChainId(chainId) ?? currentMarketData),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.transactionHistory(
-        user,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    // Refresh dashboard data after collateral swap
-    queryClient.invalidateQueries({
       queryKey: queryKeysFactory.poolReservesDataHumanized(
         findByChainId(chainId) ?? currentMarketData
       ),
@@ -422,10 +410,14 @@ export const SwitchActions = ({
     });
 
     queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.userPoolReservesIncentiveDataHumanized(
+      queryKey: queryKeysFactory.transactionHistory(
         user,
         findByChainId(chainId) ?? currentMarketData
       ),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
     });
   };
 
@@ -784,6 +776,8 @@ export const SwitchActions = ({
       );
     }
 
+    invalidate();
+
     try {
       const baseTrackingData: Record<string, string | number | undefined> = {
         chainId,
@@ -810,8 +804,6 @@ export const SwitchActions = ({
     } catch (error) {
       console.error('Error tracking swap event:', error);
     }
-
-    invalidate();
   };
 
   const approval = async () => {

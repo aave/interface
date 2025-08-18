@@ -89,10 +89,27 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
           newMap.delete(orderId);
 
           queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.poolReservesDataHumanized(
+              findByChainId(order.chainId) ?? currentMarketData
+            ),
+          });
+
+          queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.userPoolReservesDataHumanized(
+              account,
+              findByChainId(order.chainId) ?? currentMarketData
+            ),
+          });
+
+          queryClient.invalidateQueries({
             queryKey: queryKeysFactory.transactionHistory(
               account,
               findByChainId(order.chainId) ?? currentMarketData
             ),
+          });
+
+          queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.poolTokens(account, currentMarketData),
           });
 
           if (newMap.size === 0) {

@@ -13,6 +13,10 @@ import { BaseSwitchModal } from './BaseSwitchModal';
 import { SwitchDetailsParams as SwitchDetailsParams } from './BaseSwitchModalContent';
 import { SwitchModalTxDetails } from './SwitchModalTxDetails';
 
+export const UNSUPPORTED_A_TOKENS_PER_CHAIN: Record<number, string[]> = {
+  [SupportedChainId.GNOSIS_CHAIN]: ['0xedbc7449a9b594ca4e053d9737ec5dc4cbccbfb2'.toLowerCase()], // EURe USD Price not supported
+};
+
 export const CollateralSwapModal = () => {
   const { args } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
@@ -92,6 +96,12 @@ export const CollateralSwapModal = () => {
       return undefined;
     })
     .filter((token) => token !== undefined)
+    .filter(
+      (token) =>
+        !UNSUPPORTED_A_TOKENS_PER_CHAIN[currentNetworkConfig.wagmiChain.id]?.includes(
+          token.aToken.toLowerCase()
+        )
+    )
     .sort((a, b) => {
       const aBalance = parseFloat(a?.balance ?? '0');
       const bBalance = parseFloat(b?.balance ?? '0');
@@ -132,6 +142,12 @@ export const CollateralSwapModal = () => {
       };
     })
     .filter((token) => token !== undefined)
+    .filter(
+      (token) =>
+        !UNSUPPORTED_A_TOKENS_PER_CHAIN[currentNetworkConfig.wagmiChain.id]?.includes(
+          token.aToken.toLowerCase()
+        )
+    )
     .sort((a, b) => {
       const aBalance = parseFloat(a?.balance ?? '0');
       const bBalance = parseFloat(b?.balance ?? '0');

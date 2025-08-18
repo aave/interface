@@ -521,25 +521,15 @@ export const BaseSwitchModalContent = ({
 
     if (modalType !== ModalType.CollateralSwap) {
       setIsSwapFlowSelected(true);
-    } else if (switchRates?.provider === 'cowprotocol' && !ratesLoading) {
-      if (shouldUseFlashloanValue) {
-        setShouldUseFlashloan(true);
-      } else {
-        setShouldUseFlashloan(false);
-        setIsSwapFlowSelected(true);
+    } else if (!ratesLoading && !!switchRates?.provider) {
+      if (shouldUseFlashloanValue === shouldUseFlashloan) {
+        return;
       }
-    } else if (
-      switchRates?.provider === 'paraswap' &&
-      !ratesLoading &&
-      shouldUseFlashloan === true
-    ) {
-      setIsSwapFlowSelected(true);
-    } else if (switchRates?.provider === 'paraswap' && !ratesLoading) {
-      // Only paraswap in given chain
+
       setShouldUseFlashloan(shouldUseFlashloanValue);
       setIsSwapFlowSelected(true);
     }
-  }, [modalType, switchRates, ratesLoading]);
+  }, [modalType, switchRates, ratesLoading, shouldUseFlashloan]);
 
   // Define default slippage for CoW
   useEffect(() => {
