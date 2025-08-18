@@ -22,7 +22,7 @@ export const AmountStakedUnderlyingItem = ({
   isMobile,
 }: {
   stakeData: MergedStakeData;
-  isMobile: boolean;
+  isMobile?: boolean;
 }) => {
   const now = useCurrentTimestamp(1);
   const currentMarketData = useRootStore((s) => s.currentMarketData);
