@@ -135,7 +135,11 @@ export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStak
     <>
       <TxModalTitle title="Cooldown to unstake" />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={currentNetworkConfig.name}
+          chainId={currentChainId}
+        />
       )}
       <Typography variant="description" sx={{ mb: 6 }}>
         <Trans>

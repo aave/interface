@@ -103,7 +103,11 @@ export const StakeRewardClaimRestakeModalContent = ({
     <>
       <TxModalTitle title="Restake AAVE rewards" />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={stakingChain}
+        />
       )}
       <CooldownWarning />
       <AssetInput
