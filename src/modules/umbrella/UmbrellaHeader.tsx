@@ -104,7 +104,7 @@ const UmbrellaHeaderUserDetails = ({
 }) => {
   const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
     useUmbrellaSummary(currentMarketData);
-
+  const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
   const { openUmbrellaClaimAll } = useModalContext();
 
   const totalUSDAggregateStaked = stakedDataWithTokenBalances?.aggregatedTotalStakedUSD;
@@ -123,6 +123,25 @@ const UmbrellaHeaderUserDetails = ({
 
   return (
     <>
+      <TopInfoPanelItem
+        hideIcon
+        title={
+          <Stack direction="row" alignItems="center">
+            <Trans>Total amount staked</Trans>
+          </Stack>
+        }
+        loading={loading}
+      >
+        <FormattedNumber
+          value={stakeData?.allStakeAssetsToatlSupplyUsd || '0'}
+          symbol="USD"
+          variant={valueTypographyVariant}
+          visibleDecimals={2}
+          compact
+          symbolsColor="#A5A8B6"
+          symbolsVariant={symbolsTypographyVariant}
+        />
+      </TopInfoPanelItem>
       <TopInfoPanelItem
         hideIcon
         title={

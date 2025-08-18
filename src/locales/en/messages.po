@@ -368,6 +368,7 @@ msgid "Sign to continue"
 msgstr "Sign to continue"
 
 #: src/modules/umbrella/UmbrellaHeader.tsx
+#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Total amount staked"
 msgstr "Total amount staked"
 
