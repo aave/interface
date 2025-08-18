@@ -30,6 +30,8 @@ export interface RepayActionProps extends BoxProps {
   repayWithATokens: boolean;
   blocked?: boolean;
   maxApproveNeeded: string;
+  setShowUSDTResetWarning?: (showUSDTResetWarning: boolean) => void;
+  chainId?: number;
   maxAmountToRepay: string;
 }
 
@@ -43,6 +45,8 @@ export const RepayActions = ({
   repayWithATokens,
   blocked,
   maxApproveNeeded,
+  setShowUSDTResetWarning,
+  chainId,
   maxAmountToRepay,
   ...props
 }: RepayActionProps) => {
@@ -115,7 +119,7 @@ export const RepayActions = ({
     setApprovalTxState({});
   }
 
-  const { approval } = useApprovalTx({
+  const { approval, requiresApprovalReset } = useApprovalTx({
     usePermit,
     approvedAmount,
     requiresApproval,
@@ -125,6 +129,8 @@ export const RepayActions = ({
     signatureAmount: amountToRepay,
     onApprovalTxConfirmed: fetchApprovedAmount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
+    chainId,
+    setShowUSDTResetWarning,
   });
 
   useEffect(() => {
@@ -250,6 +256,7 @@ export const RepayActions = ({
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
       tryPermit={permitAvailable}
+      requiresApprovalReset={requiresApprovalReset}
     />
   );
 };

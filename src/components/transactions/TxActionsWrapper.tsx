@@ -22,6 +22,7 @@ interface TxActionsWrapperProps extends BoxProps {
   preparingTransactions: boolean;
   requiresAmount?: boolean;
   requiresApproval: boolean;
+  requiresApprovalReset?: boolean;
   symbol?: string;
   blocked?: boolean;
   fetchingData?: boolean;
@@ -47,6 +48,7 @@ export const TxActionsWrapper = ({
   preparingTransactions,
   requiresAmount,
   requiresApproval,
+  requiresApprovalReset,
   sx,
   symbol,
   blocked,
@@ -95,7 +97,15 @@ export const TxActionsWrapper = ({
     )
       return null;
     if (approvalTxState?.loading)
-      return { loading: true, disabled: true, content: <Trans>Approving {symbol}...</Trans> };
+      return {
+        loading: true,
+        disabled: true,
+        content: (
+          <Trans>
+            {requiresApprovalReset ? 'Resetting' : 'Approving'} {symbol}...
+          </Trans>
+        ),
+      };
     if (approvalTxState?.success)
       return {
         disabled: true,
@@ -116,7 +126,11 @@ export const TxActionsWrapper = ({
           iconSize={20}
           iconMargin={2}
           color="white"
-          text={<Trans>Approve {symbol} to continue</Trans>}
+          text={
+            <Trans>
+              {requiresApprovalReset ? 'Reset' : 'Approve'} {symbol} to continue
+            </Trans>
+          }
         />
       ),
       handleClick: handleApproval,
