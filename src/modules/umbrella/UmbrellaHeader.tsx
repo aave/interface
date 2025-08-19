@@ -102,6 +102,7 @@ const UmbrellaHeaderUserDetails = ({
   valueTypographyVariant: 'main16' | 'main21';
   symbolsTypographyVariant: 'secondary16' | 'secondary21';
 }) => {
+  const theme = useTheme();
   const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
     useUmbrellaSummary(currentMarketData);
   const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
@@ -138,7 +139,7 @@ const UmbrellaHeaderUserDetails = ({
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          symbolsColor={theme.palette.text.muted}
           symbolsVariant={symbolsTypographyVariant}
         />
       </TopInfoPanelItem>
@@ -156,7 +157,7 @@ const UmbrellaHeaderUserDetails = ({
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={theme.palette.text.muted}
           visibleDecimals={2}
         />
       </TopInfoPanelItem>
@@ -169,7 +170,7 @@ const UmbrellaHeaderUserDetails = ({
         <FormattedNumber
           value={weightedAverageApy || 0}
           variant={valueTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={theme.palette.text.muted}
           visibleDecimals={2}
           percent
           symbolsVariant={symbolsTypographyVariant}
@@ -195,7 +196,7 @@ const UmbrellaHeaderUserDetails = ({
                 visibleDecimals={2}
                 compact
                 symbol="USD"
-                symbolsColor="#A5A8B6"
+                symbolsColor={theme.palette.text.muted}
                 symbolsVariant={symbolsTypographyVariant}
               />
             </Box>
@@ -224,6 +225,7 @@ const UmbrellaHeaderDefault = ({
   valueTypographyVariant: 'main16' | 'main21';
   symbolsTypographyVariant: 'secondary16' | 'secondary21';
 }) => {
+  const theme = useTheme();
   const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
 
   return (
@@ -243,7 +245,7 @@ const UmbrellaHeaderDefault = ({
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          symbolsColor={theme.palette.text.muted}
           symbolsVariant={symbolsTypographyVariant}
         />
       </TopInfoPanelItem>

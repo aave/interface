@@ -1,4 +1,3 @@
-//import { normalize, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Stack } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -17,34 +16,9 @@ export const AmountStakedUnderlyingItem = ({
   const currentMarketData = useRootStore((s) => s.currentMarketData);
   const chainId = currentMarketData?.chainId;
 
-  const {
-    stakeTokenRedeemableAmount,
-    underlyingTokenBalance,
-    stataTokenAssetBalance: underlyingWaTokenBalance,
-  } = stakeData.balances;
+  const { stakeTokenRedeemableAmount } = stakeData.balances;
   const { underlyingTokenAddress, underlyingTokenDecimals, underlyingIsStataToken, decimals } =
     stakeData;
-
-  const icons = [];
-  if (underlyingTokenBalance) {
-    icons.push({
-      src: stakeData.stataTokenData.assetSymbol,
-      aToken: false,
-    });
-  }
-  if (underlyingWaTokenBalance) {
-    icons.push({
-      src: stakeData.stataTokenData.assetSymbol,
-      aToken: true,
-    });
-  }
-  if (underlyingTokenBalance && Number(underlyingTokenBalance) > 0) {
-    icons.push({
-      src: stakeData.stataTokenData.assetSymbol,
-      aToken: false,
-      waToken: true,
-    });
-  }
 
   const isGhoToken = !underlyingIsStataToken;
 
@@ -57,10 +31,6 @@ export const AmountStakedUnderlyingItem = ({
   );
   const formattedGhoAmount = formatUnits(stakeTokenRedeemableAmount, decimals);
   const assetUnderlyingAmount = isGhoToken ? formattedGhoAmount : sharesEquivalentAssets;
-
-  // calculate price in USD
-  // const priceUsd = normalize(stakeData.price, USD_DECIMALS);
-  // const redeemableUsd = valueToBigNumber(assetUnderlyingAmount).multipliedBy(priceUsd).toString();
 
   return (
     <Stack
