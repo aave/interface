@@ -70,6 +70,10 @@ msgstr "Estimated time"
 msgid "Remind me"
 msgstr "Remind me"
 
+#: src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
+msgid "Total amount of underlying assets staked. This number represents the combined sum of your original asset and the corresponding aTokens staked in Umbrella."
+msgstr "Total amount of underlying assets staked. This number represents the combined sum of your original asset and the corresponding aTokens staked in Umbrella."
+
 #: src/modules/umbrella/helpers/ApyTooltip.tsx
 msgid "Reward APY adjusts with total staked amount, following a curve that targets optimal staking levels."
 msgstr "Reward APY adjusts with total staked amount, following a curve that targets optimal staking levels."
@@ -196,7 +200,7 @@ msgstr "Please connect a wallet to view your personal information here."
 msgid "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
 msgstr "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
 
-#: src/modules/umbrella/AmountStakedItem.tsx
+#: src/modules/umbrella/AmountSharesItem.tsx
 msgid "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 msgstr "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 
@@ -365,6 +369,7 @@ msgid "Sign to continue"
 msgstr "Sign to continue"
 
 #: src/modules/umbrella/UmbrellaHeader.tsx
+#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Total amount staked"
 msgstr "Total amount staked"
 
@@ -461,10 +466,6 @@ msgstr "Signing"
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
 msgstr "Repay {symbol}"
-
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
-msgid "Your staked amount"
-msgstr "Your staked amount"
 
 #: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/sGho/SGhoDepositPanel.tsx
@@ -569,7 +570,7 @@ msgstr "Claim all"
 #: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/AmountStakedItem.tsx
+#: src/modules/umbrella/AmountSharesItem.tsx
 msgid "Time remaining until the withdraw period ends."
 msgstr "Time remaining until the withdraw period ends."
 
@@ -761,6 +762,10 @@ msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailabl
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Stable"
+
+#: src/modules/umbrella/helpers/SharesTooltip.tsx
+msgid "Shares"
+msgstr "Shares"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Variable rate"
@@ -1739,9 +1744,13 @@ msgstr "Show Frozen or paused assets"
 #: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/AmountStakedItem.tsx
+#: src/modules/umbrella/AmountSharesItem.tsx
 msgid "Amount in cooldown"
 msgstr "Amount in cooldown"
+
+#: src/modules/umbrella/helpers/SharesTooltip.tsx
+msgid "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool, and the amount of underlying you can redeem depends on the current exchange rate between shares and the underlying."
+msgstr "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool, and the amount of underlying you can redeem depends on the current exchange rate between shares and the underlying."
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Failed to load proposal voters. Please refresh the page."
@@ -2020,6 +2029,10 @@ msgstr "Amount to Bridge"
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
+#: src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
+msgid "Staked Underlying"
+msgstr "Staked Underlying"
+
 #: src/layouts/components/StakingMenu.tsx
 #: src/layouts/components/StakingMenu.tsx
 msgid "Umbrella"
@@ -2180,7 +2193,7 @@ msgstr "Eligible for the Merit program."
 msgid "Cooldown period warning"
 msgstr "Cooldown period warning"
 
-#: src/modules/umbrella/AmountStakedItem.tsx
+#: src/modules/umbrella/AmountSharesItem.tsx
 msgid "Available to withdraw"
 msgstr "Available to withdraw"
 
@@ -2454,10 +2467,6 @@ msgstr "Borrowed"
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Received"
-
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
-msgid "Your Staked Amount"
-msgstr "Your Staked Amount"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your current loan to value based on your collateral supplied."
