@@ -155,7 +155,11 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
     <>
       <TxModalTitle title="Cooldown to unstake" />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={stakingChain}
+        />
       )}
       <Typography variant="description" sx={{ mb: 6 }}>
         <Trans>

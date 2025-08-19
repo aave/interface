@@ -152,7 +152,11 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
     <>
       <TxModalTitle title="Claim rewards" />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={currentChainId}
+        />
       )}
 
       {blockingError !== undefined && (

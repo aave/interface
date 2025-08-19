@@ -1,6 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { AlertProps, Button, Typography } from '@mui/material';
+import { AlertProps, Button, CircularProgress, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
@@ -14,6 +15,7 @@ export type ChangeNetworkWarningProps = AlertProps & {
   chainId: ChainId;
   event?: TrackEventProps;
   askManualSwitch?: boolean;
+  autoSwitchOnMount?: boolean;
 };
 
 export const ChangeNetworkWarning = ({
@@ -22,32 +24,79 @@ export const ChangeNetworkWarning = ({
   event,
   funnel,
   askManualSwitch = false,
+  autoSwitchOnMount = true,
   ...rest
 }: ChangeNetworkWarningProps) => {
   const { switchNetwork, switchNetworkError } = useWeb3Context();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const handleSwitchNetwork = () => {
-    trackEvent(GENERAL.SWITCH_NETWORK, { funnel, ...event?.eventParams, network: networkName });
+  const [isAutoSwitching, setIsAutoSwitching] = useState(false);
+  const [hasAttemptedAutoSwitch, setHasAttemptedAutoSwitch] = useState(false);
+
+  useEffect(() => {
+    if (autoSwitchOnMount && !hasAttemptedAutoSwitch && !isAutoSwitching) {
+      setHasAttemptedAutoSwitch(true);
+      setIsAutoSwitching(true);
+
+      trackEvent(GENERAL.SWITCH_NETWORK, {
+        funnel,
+        ...event?.eventParams,
+        network: networkName,
+      });
+
+      switchNetwork(chainId).finally(() => {
+        setIsAutoSwitching(false);
+        setHasAttemptedAutoSwitch(true);
+      });
+    }
+  }, [
+    autoSwitchOnMount,
+    hasAttemptedAutoSwitch,
+    chainId,
+    switchNetwork,
+    trackEvent,
+    funnel,
+    event,
+    networkName,
+  ]);
+
+  const handleManualSwitchNetwork = () => {
+    trackEvent(GENERAL.SWITCH_NETWORK, {
+      funnel,
+      ...event?.eventParams,
+      network: networkName,
+      manual: false,
+    });
     switchNetwork(chainId);
   };
   return (
     <Warning severity="error" icon={false} {...rest}>
-      {switchNetworkError ? (
+      {isAutoSwitching ? (
+        <Typography variant="description" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <CircularProgress size={16} />
+          <Trans>Switching to {networkName}...</Trans>
+        </Typography>
+      ) : switchNetworkError ? (
         <Typography>
           <Trans>
-            Seems like we can&apos;t switch the network automatically. Please check if you can
-            change it from the wallet.
+            {hasAttemptedAutoSwitch
+              ? "We couldn't switch the network automatically. Please check if you can change it from the wallet."
+              : "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."}
           </Trans>
         </Typography>
       ) : (
+        // Show manual switch option
         <Typography variant="description">
-          <Trans>Please switch to {networkName}.</Trans>{' '}
+          <Trans>
+            {hasAttemptedAutoSwitch
+              ? `Auto-switch failed. Please manually switch to ${networkName}.`
+              : `Please switch to ${networkName}.`}
+          </Trans>{' '}
           {!askManualSwitch && (
             <Button
               variant="text"
               sx={{ ml: '2px', verticalAlign: 'top' }}
-              onClick={handleSwitchNetwork}
+              onClick={handleManualSwitchNetwork}
               disableRipple
             >
               <Typography variant="description">
