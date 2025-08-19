@@ -1,14 +1,23 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { FormatUserSummaryAndIncentivesResponse } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import memoize from 'micro-memoize';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
+import { getMeritData } from '../useMeritIncentives';
+import { useUserMeritIncentives } from '../useUserMeritIncentives';
 import {
   FormattedReservesAndIncentives,
   usePoolsFormattedReserves,
 } from './usePoolFormattedReserves';
 import { useUserSummariesAndIncentives } from './useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
+
+type UserMeritIncentivesData = {
+  currentAPR: {
+    actionsAPY: Record<string, number>;
+  };
+} | null;
 
 export interface UserYield {
   earnedAPY: number;
@@ -19,7 +28,9 @@ export interface UserYield {
 const formatUserYield = memoize(
   (
     formattedPoolReserves: FormattedReservesAndIncentives[],
-    user: FormatUserSummaryAndIncentivesResponse
+    user: FormatUserSummaryAndIncentivesResponse,
+    userMeritIncentives?: UserMeritIncentivesData,
+    marketTitle?: string
   ) => {
     const proportions = user.userReservesData.reduce(
       (acc, value) => {
@@ -39,6 +50,23 @@ const formatUserYield = memoize(
                 );
               });
             }
+
+            // Add merit incentives for supply positions
+            if (userMeritIncentives?.currentAPR?.actionsAPY) {
+              const meritData = getMeritData(marketTitle || '', reserve.symbol);
+              if (meritData) {
+                meritData.forEach((merit) => {
+                  if (merit.protocolAction === ProtocolAction.supply) {
+                    const meritAPY = userMeritIncentives.currentAPR.actionsAPY[merit.action];
+                    if (meritAPY) {
+                      acc.positiveProportion = acc.positiveProportion.plus(
+                        new BigNumber(meritAPY / 100).multipliedBy(value.underlyingBalanceUSD)
+                      );
+                    }
+                  }
+                });
+              }
+            }
           }
           if (value.variableBorrowsUSD !== '0') {
             acc.negativeProportion = acc.negativeProportion.plus(
@@ -50,6 +78,24 @@ const formatUserYield = memoize(
                   new BigNumber(incentive.incentiveAPR).multipliedBy(value.variableBorrowsUSD)
                 );
               });
+            }
+
+            // Add merit incentives for borrow positions (reduces borrowing cost)
+            if (userMeritIncentives?.currentAPR?.actionsAPY) {
+              const meritData = getMeritData(marketTitle || '', reserve.symbol);
+              if (meritData) {
+                meritData.forEach((merit) => {
+                  if (merit.protocolAction === ProtocolAction.borrow) {
+                    const meritAPY = userMeritIncentives.currentAPR.actionsAPY[merit.action];
+                    if (meritAPY) {
+                      // For borrow positions, merit incentives reduce the effective borrow cost
+                      acc.positiveProportion = acc.positiveProportion.plus(
+                        new BigNumber(meritAPY / 100).multipliedBy(value.variableBorrowsUSD)
+                      );
+                    }
+                  }
+                });
+              }
             }
           }
         } else {
@@ -81,23 +127,32 @@ const formatUserYield = memoize(
 );
 
 export const useUserYields = (
-  marketsData: MarketDataType[]
+  marketsData: MarketDataType[],
+  userAddress?: string
 ): SimplifiedUseQueryResult<UserYield>[] => {
   const poolsFormattedReservesQuery = usePoolsFormattedReserves(marketsData);
   const userSummaryQuery = useUserSummariesAndIncentives(marketsData);
+  const userMeritIncentivesQuery = useUserMeritIncentives(userAddress);
 
   return poolsFormattedReservesQuery.map((elem, index) => {
     const selector = (
       formattedPoolReserves: FormattedReservesAndIncentives[],
       user: FormatUserSummaryAndIncentivesResponse
     ) => {
-      return formatUserYield(formattedPoolReserves, user);
+      // Get merit incentives data separately
+      const meritIncentives = userMeritIncentivesQuery.data;
+      return formatUserYield(
+        formattedPoolReserves,
+        user,
+        meritIncentives,
+        marketsData[index].market
+      );
     };
 
     return combineQueries([elem, userSummaryQuery[index]] as const, selector);
   });
 };
 
-export const useUserYield = (marketData: MarketDataType) => {
-  return useUserYields([marketData])[0];
+export const useUserYield = (marketData: MarketDataType, userAddress?: string) => {
+  return useUserYields([marketData], userAddress)[0];
 };
