@@ -12,27 +12,50 @@ import { Row } from '../primitives/Row';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { getSymbolMap } from './IncentivesTooltipContent';
 
-const isCeloAction = (action: MeritAction): boolean => action.startsWith('celo-');
+export enum CampaignType {
+  SELF_VERIFICATION = 'self_verification',
+  CELO_STANDARD = 'celo_standard',
+  STANDARD = 'standard',
+}
+interface CampaignConfig {
+  type: CampaignType;
+  title: string;
+  hasSpecialContent: boolean;
+}
+
+const isCeloAction = (action: MeritAction): boolean => {
+  return [
+    MeritAction.CELO_SUPPLY_CELO,
+    MeritAction.CELO_SUPPLY_USDT,
+    MeritAction.CELO_SUPPLY_USDC,
+    MeritAction.CELO_SUPPLY_WETH,
+    MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
+    MeritAction.CELO_BORROW_CELO,
+    MeritAction.CELO_BORROW_USDT,
+    MeritAction.CELO_BORROW_USDC,
+    MeritAction.CELO_BORROW_WETH,
+  ].includes(action);
+};
 const isSelfVerificationCampaign = (action: MeritAction): boolean =>
   action === MeritAction.CELO_SUPPLY_USDT;
 
-const getCampaignConfig = (action: MeritAction) => {
+const getCampaignConfig = (action: MeritAction): CampaignConfig => {
   if (isSelfVerificationCampaign(action)) {
     return {
-      type: 'self_verification' as const,
+      type: CampaignType.SELF_VERIFICATION,
       title: 'Eligible for Merit program and Boosted Yield via Self.',
       hasSpecialContent: true,
     };
   }
   if (isCeloAction(action)) {
     return {
-      type: 'celo_standard' as const,
+      type: CampaignType.CELO_STANDARD,
       title: 'Eligible for Merit program.',
       hasSpecialContent: true,
     };
   }
   return {
-    type: 'standard' as const,
+    type: CampaignType.STANDARD,
     title: 'Eligible for the Merit program.',
     hasSpecialContent: false,
   };
@@ -93,7 +116,7 @@ export const MeritIncentivesTooltipContent = ({
         </Link>
       </Typography>
 
-      {campaignConfig.type === 'self_verification' && (
+      {campaignConfig.type === CampaignType.SELF_VERIFICATION && (
         <>
           <Typography variant="caption" color="text.secondary">
             <Trans>
@@ -130,9 +153,11 @@ export const MeritIncentivesTooltipContent = ({
         </>
       )}
       {/* Show if SpecialContent is needed */}
-      {/* {campaignConfig.type === 'self_verification' && campaignConfig.hasSpecialContent && ''} */}
+      {/* {campaignConfig.type === CampaignType.SELF_VERIFICATION &&
+        campaignConfig.hasSpecialContent &&
+        ''} */}
       {/* Show if SpecialContent is needed */}
-      {/* {campaignConfig.type === 'celo_standard' && campaignConfig.hasSpecialContent && ''} */}
+      {/* {campaignConfig.type === CampaignType.CELO_STANDARD && campaignConfig.hasSpecialContent && ''} */}
 
       {meritIncentives.customMessage ? (
         <Typography variant="caption" color="text.secondary">
