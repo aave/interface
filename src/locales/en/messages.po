@@ -53,10 +53,6 @@ msgstr "Participating in this {symbol} reserve gives annualized rewards."
 msgid "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 msgstr "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 
-#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
-msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
-msgstr "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
-
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
 msgstr "Borrow cap"
@@ -1198,6 +1194,8 @@ msgstr "deposited"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
+#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
+#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
@@ -2988,10 +2986,6 @@ msgstr "Can be executed"
 msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 
-#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
-msgid "Please switch to {networkName}."
-msgstr "Please switch to {networkName}."
-
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
 msgstr "Both"
@@ -3135,6 +3129,10 @@ msgstr "The underlying balance needs to be greater than 0"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
 msgstr "Not enough staked balance"
+
+#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
+msgid "Switching to {networkName}..."
+msgstr "Switching to {networkName}..."
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
