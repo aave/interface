@@ -74,6 +74,10 @@ msgstr "Estimated time"
 msgid "Remind me"
 msgstr "Remind me"
 
+#: src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
+msgid "Total amount of underlying assets staked. This number represents the combined sum of your original asset and the corresponding aTokens staked in Umbrella."
+msgstr "Total amount of underlying assets staked. This number represents the combined sum of your original asset and the corresponding aTokens staked in Umbrella."
+
 #: src/modules/umbrella/helpers/ApyTooltip.tsx
 msgid "Reward APY adjusts with total staked amount, following a curve that targets optimal staking levels."
 msgstr "Reward APY adjusts with total staked amount, following a curve that targets optimal staking levels."
@@ -761,10 +765,6 @@ msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailabl
 msgid "Stable"
 msgstr "Stable"
 
-#: src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
-msgid "This number represents the combined sum of your original asset and the corresponding aTokens supplied to Umbrella."
-msgstr "This number represents the combined sum of your original asset and the corresponding aTokens supplied to Umbrella."
-
 #: src/modules/umbrella/helpers/SharesTooltip.tsx
 msgid "Shares"
 msgstr "Shares"
@@ -1439,10 +1439,6 @@ msgstr "APY, variable"
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
 msgstr "If the health factor goes below 1, the liquidation of your collateral might be triggered."
 
-#: src/modules/umbrella/helpers/SharesTooltip.tsx
-msgid "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool and determine how much underlying you can redeem."
-msgstr "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool and determine how much underlying you can redeem."
-
 #: src/modules/sGho/SGhoDepositPanel.tsx
 msgid "Current APY"
 msgstr "Current APY"
@@ -1751,6 +1747,10 @@ msgstr "Show Frozen or paused assets"
 #: src/modules/umbrella/AmountSharesItem.tsx
 msgid "Amount in cooldown"
 msgstr "Amount in cooldown"
+
+#: src/modules/umbrella/helpers/SharesTooltip.tsx
+msgid "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool, and the amount of underlying you can redeem depends on the current exchange rate between shares and the underlying."
+msgstr "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool, and the amount of underlying you can redeem depends on the current exchange rate between shares and the underlying."
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Failed to load proposal voters. Please refresh the page."
@@ -3422,10 +3422,6 @@ msgstr "Borrow amount to reach {0}% utilization"
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr "Please, connect your wallet"
-
-#: src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
-msgid "Total amount of underlying assets staked."
-msgstr "Total amount of underlying assets staked."
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
