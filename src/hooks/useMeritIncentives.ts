@@ -99,8 +99,10 @@ export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiv
   protocolAction?: ProtocolAction;
 };
 
-const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData[] | undefined =>
-  MERIT_DATA_MAP[market]?.[symbol];
+export const getMeritData = (
+  market: string,
+  symbol: string
+): MeritReserveIncentiveData[] | undefined => MERIT_DATA_MAP[market]?.[symbol];
 
 const antiLoopMessage =
   'Borrowing of some assets or holding of some token may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
@@ -155,7 +157,7 @@ const StSLoopIncentiveProgramForumLink =
 const baseIncentivesForumLink =
   'https://governance.aave.com/t/arfc-base-incentive-campaign-funding/21983';
 
-const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
+export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
       {
