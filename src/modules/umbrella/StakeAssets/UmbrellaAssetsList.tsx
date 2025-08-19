@@ -7,6 +7,8 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 
 import { ApyTooltip } from '../helpers/ApyTooltip';
+import { SharesTooltip } from '../helpers/SharesTooltip';
+import { StakedUnderlyingTooltip } from '../helpers/StakedUnderlyingTooltip';
 import { UmbrellaAssetsListItemLoader } from './UmbrellaAssetsListItemLoader';
 import { UmbrellaAssetsListMobileItem } from './UmbrellaAssetsListMobileItem';
 import { UmbrellaAssetsListMobileItemLoader } from './UmbrellaAssetsListMobileItemLoader';
@@ -22,11 +24,11 @@ const listHeaders = [
     sortKey: 'totalAPY',
   },
   {
-    title: <Trans>Your Staked Underlying Amount</Trans>,
+    title: <StakedUnderlyingTooltip />,
     sortKey: 'stakeTokenUnderlyingBalance',
   },
   {
-    title: <Trans>Shares</Trans>,
+    title: <SharesTooltip />,
     sortKey: 'stakeSharesTokens',
   },
   {

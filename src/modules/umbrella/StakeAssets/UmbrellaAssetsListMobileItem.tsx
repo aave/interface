@@ -13,6 +13,8 @@ import { AmountStakedUnderlyingItem } from '../AmountStakedUnderlyingItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
 import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { ApyTooltip } from '../helpers/ApyTooltip';
+import { SharesTooltip } from '../helpers/SharesTooltip';
+import { StakedUnderlyingTooltip } from '../helpers/StakedUnderlyingTooltip';
 import { StakingApyItem } from '../StakingApyItem';
 import { StakeAssetName } from './StakeAssetName';
 
@@ -45,14 +47,14 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
         </Box>
       </Row>
       <Row
-        caption={<Trans>Your staked underlying</Trans>}
+        caption={<StakedUnderlyingTooltip />}
         captionVariant="description"
         mb={3}
         align="flex-start"
       >
         <AmountStakedUnderlyingItem stakeData={umbrellaStakeAsset} isMobile />
       </Row>
-      <Row caption={<Trans>Shares</Trans>} captionVariant="description" mb={3} align="flex-start">
+      <Row caption={<SharesTooltip />} captionVariant="description" mb={3} align="flex-start">
         <AmountSharesItem stakeData={umbrellaStakeAsset} />
       </Row>
 

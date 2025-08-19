@@ -199,7 +199,6 @@ msgid "USDT on Ethereum requires approval reset before a new approval. This will
 msgstr "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
 
 #: src/modules/umbrella/AmountSharesItem.tsx
-#: src/modules/umbrella/AmountStakedUnderlyingItem.tsx
 msgid "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 msgstr "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 
@@ -570,7 +569,6 @@ msgstr "Claim all"
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/AmountSharesItem.tsx
-#: src/modules/umbrella/AmountStakedUnderlyingItem.tsx
 msgid "Time remaining until the withdraw period ends."
 msgstr "Time remaining until the withdraw period ends."
 
@@ -763,8 +761,11 @@ msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailabl
 msgid "Stable"
 msgstr "Stable"
 
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
+#: src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
+msgid "This number represents the combined sum of your original asset and the corresponding aTokens supplied to Umbrella."
+msgstr "This number represents the combined sum of your original asset and the corresponding aTokens supplied to Umbrella."
+
+#: src/modules/umbrella/helpers/SharesTooltip.tsx
 msgid "Shares"
 msgstr "Shares"
 
@@ -810,10 +811,6 @@ msgstr "Asset category"
 #: src/components/transactions/SavingsGho/SavingsGhoWithdrawModal.tsx
 msgid "Withdraw GHO"
 msgstr "Withdraw GHO"
-
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
-msgid "Your staked underlying"
-msgstr "Your staked underlying"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
@@ -1442,6 +1439,10 @@ msgstr "APY, variable"
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
 msgstr "If the health factor goes below 1, the liquidation of your collateral might be triggered."
 
+#: src/modules/umbrella/helpers/SharesTooltip.tsx
+msgid "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool and determine how much underlying you can redeem."
+msgstr "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool and determine how much underlying you can redeem."
+
 #: src/modules/sGho/SGhoDepositPanel.tsx
 msgid "Current APY"
 msgstr "Current APY"
@@ -1523,10 +1524,6 @@ msgstr "Email"
 #: src/modules/umbrella/UnstakeModal.tsx
 msgid "Unstake"
 msgstr "Unstake"
-
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
-msgid "Your Staked Underlying Amount"
-msgstr "Your Staked Underlying Amount"
 
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Proposal overview"
@@ -1752,7 +1749,6 @@ msgstr "Show Frozen or paused assets"
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/AmountSharesItem.tsx
-#: src/modules/umbrella/AmountStakedUnderlyingItem.tsx
 msgid "Amount in cooldown"
 msgstr "Amount in cooldown"
 
@@ -2029,6 +2025,10 @@ msgstr "Amount to Bridge"
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
+#: src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
+msgid "Staked Underlying"
+msgstr "Staked Underlying"
+
 #: src/layouts/components/StakingMenu.tsx
 #: src/layouts/components/StakingMenu.tsx
 msgid "Umbrella"
@@ -2190,7 +2190,6 @@ msgid "Cooldown period warning"
 msgstr "Cooldown period warning"
 
 #: src/modules/umbrella/AmountSharesItem.tsx
-#: src/modules/umbrella/AmountStakedUnderlyingItem.tsx
 msgid "Available to withdraw"
 msgstr "Available to withdraw"
 
@@ -3423,6 +3422,10 @@ msgstr "Borrow amount to reach {0}% utilization"
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr "Please, connect your wallet"
+
+#: src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
+msgid "Total amount of underlying assets staked."
+msgstr "Total amount of underlying assets staked."
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
