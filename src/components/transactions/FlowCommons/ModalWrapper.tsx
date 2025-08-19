@@ -84,6 +84,7 @@ export const ModalWrapper: React.FC<{
       )}
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
+          autoSwitchOnMount={true}
           networkName={getNetworkConfig(requiredChainId).name}
           chainId={requiredChainId}
           event={{

@@ -108,6 +108,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
           networkName={networkConfig.name}
           chainId={stakingChain}
           funnel={'Stake Modal'}
+          autoSwitchOnMount={true}
         />
       )}
 

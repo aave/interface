@@ -104,7 +104,11 @@ export const GovVoteModalContent = ({
     <>
       <TxModalTitle title="Governance vote" />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={proposalVotingChain} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={proposalVotingChain}
+        />
       )}
       {blockingError !== undefined && (
         <Typography variant="helperText" color="red">

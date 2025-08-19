@@ -108,7 +108,11 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
     <>
       <TxModalTitle title="Unstake" symbol={nameFormatted} />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={stakingChain}
+        />
       )}
       <AssetInput
         value={amount}

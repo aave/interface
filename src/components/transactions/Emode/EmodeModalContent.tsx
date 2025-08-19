@@ -181,7 +181,11 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     <>
       <TxModalTitle title={<Trans>Manage E-Mode</Trans>} />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={currentChainId}
+        />
       )}
 
       <Typography variant="caption">
