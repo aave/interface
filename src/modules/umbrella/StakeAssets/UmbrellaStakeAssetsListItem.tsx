@@ -5,7 +5,8 @@ import { useShallow } from 'zustand/shallow';
 
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
-import { AmountStakedItem } from '../AmountStakedItem';
+import { AmountSharesItem } from '../AmountSharesItem';
+import { AmountStakedUnderlyingItem } from '../AmountStakedUnderlyingItem';
 import { AvailableToClaimItem } from '../AvailableToClaimItem';
 import { AvailableToStakeItem } from '../AvailableToStakeItem';
 import { StakingApyItem } from '../StakingApyItem';
@@ -32,7 +33,12 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
       </ListColumn>
 
       <ListColumn>
-        <AmountStakedItem stakeData={umbrellaStakeAsset} />
+        <AmountStakedUnderlyingItem stakeData={umbrellaStakeAsset} />
+      </ListColumn>
+
+      {/* Shares */}
+      <ListColumn>
+        <AmountSharesItem stakeData={umbrellaStakeAsset} />
       </ListColumn>
 
       <ListColumn>
