@@ -23,6 +23,8 @@ interface CampaignConfig {
   hasSpecialContent: boolean;
 }
 
+const ENABLE_SAFE_CAMPAIGN = false;
+
 const isCeloAction = (action: MeritAction): boolean => {
   return [
     MeritAction.CELO_SUPPLY_CELO,
@@ -37,7 +39,7 @@ const isCeloAction = (action: MeritAction): boolean => {
   ].includes(action);
 };
 const isSelfVerificationCampaign = (action: MeritAction): boolean =>
-  action === MeritAction.CELO_SUPPLY_USDT;
+  ENABLE_SAFE_CAMPAIGN && action === MeritAction.CELO_SUPPLY_USDT;
 
 const getCampaignConfig = (action: MeritAction): CampaignConfig => {
   if (isSelfVerificationCampaign(action)) {
