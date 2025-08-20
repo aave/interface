@@ -153,7 +153,11 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
     <>
       <TxModalTitle title={isRevokeModal ? 'Revoke power' : 'Set up delegation'} />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={govChain}
+        />
       )}
       {(isRevokeModal &&
         !!powers &&

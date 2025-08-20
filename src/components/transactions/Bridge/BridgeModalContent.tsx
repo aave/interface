@@ -333,6 +333,7 @@ export const BridgeModalContent = () => {
       </Box>
 
       <ChangeNetworkWarning
+        autoSwitchOnMount={true}
         networkName={getNetworkConfig(sourceNetworkObj.chainId).name}
         chainId={sourceNetworkObj.chainId}
         event={{

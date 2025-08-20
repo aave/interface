@@ -108,7 +108,11 @@ export const UmbrellaClaimAllModalContent = ({ stakeData }: UmbrellaClaimAllModa
     <>
       <TxModalTitle title="Claim rewards" />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={requiredChainId} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={requiredChainId}
+        />
       )}
 
       <TxModalDetails gasLimit={gasLimit}>
@@ -198,7 +202,11 @@ export const UmbrellaClaimModalContent = ({ stakeData }: UmbrellaClaimModalConte
     <>
       <TxModalTitle title="Claim rewards" />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={requiredChainId} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={requiredChainId}
+        />
       )}
 
       {isMultiReward && (

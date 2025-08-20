@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
@@ -45,6 +46,8 @@ export const IncentivesCard = ({
   protocolAction,
   inlineIncentives = false,
 }: IncentivesCardProps) => {
+  const router = useRouter();
+
   const protocolAPY = typeof value === 'string' ? parseFloat(value) : value;
 
   const protocolIncentivesAPR =
@@ -85,6 +88,10 @@ export const IncentivesCard = ({
     ? protocolAPY - (protocolIncentivesAPR as number) - meritIncentivesAPR - merklIncentivesAPR
     : protocolAPY + (protocolIncentivesAPR as number) + meritIncentivesAPR + merklIncentivesAPR;
 
+  const isSghoPage =
+    typeof router?.asPath === 'string' && router.asPath.toLowerCase().startsWith('/sgho');
+  const hideMeritValue = symbol === 'GHO' && !isSghoPage;
+
   const incentivesContent = (
     <>
       <IncentivesButton
@@ -95,13 +102,16 @@ export const IncentivesCard = ({
         protocolAPY={protocolAPY}
         address={address}
       />
+
       <MeritIncentivesButton
         symbol={symbol}
         market={market}
         protocolAction={protocolAction}
         protocolAPY={protocolAPY}
         protocolIncentives={incentives || []}
+        hideValue={hideMeritValue}
       />
+
       <MerklIncentivesButton
         market={market}
         rewardedAsset={address}

@@ -96,7 +96,11 @@ export const GovRepresentativesContent = ({
         <TxModalTitle title="Edit address" />
       </Box>
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={govChain}
+        />
       )}
       <Stack direction="column" gap={2}>
         {reps.map((r, i) => (
