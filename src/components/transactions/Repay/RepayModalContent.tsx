@@ -9,6 +9,7 @@ import { Trans } from '@lingui/macro';
 import Typography from '@mui/material/Typography';
 import { BigNumber } from 'bignumber.js';
 import React, { useEffect, useRef, useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import {
   ExtendedFormattedUser,
   useAppDataContext,
@@ -67,6 +68,7 @@ export const RepayModalContent = ({
   const [repayMax, setRepayMax] = useState('');
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
+  const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -279,6 +281,17 @@ export const RepayModalContent = ({
 
       {txError && <GasEstimationError txError={txError} />}
 
+      {showUSDTResetWarning && (
+        <Warning severity="info" sx={{ mt: 5 }}>
+          <Typography variant="caption">
+            <Trans>
+              USDT on Ethereum requires approval reset before a new approval. This will require an
+              additional transaction.
+            </Trans>
+          </Typography>
+        </Warning>
+      )}
+
       <RepayActions
         maxApproveNeeded={safeAmountToRepayAll.toString()}
         poolReserve={poolReserve}
@@ -289,6 +302,9 @@ export const RepayModalContent = ({
         isWrongNetwork={isWrongNetwork}
         symbol={modalSymbol}
         repayWithATokens={repayWithATokens}
+        setShowUSDTResetWarning={setShowUSDTResetWarning}
+        chainId={currentChainId}
+        maxAmountToRepay={maxAmountToRepay.toString(10)}
       />
     </>
   );

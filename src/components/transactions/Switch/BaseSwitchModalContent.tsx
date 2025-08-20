@@ -732,6 +732,7 @@ export const BaseSwitchModalContent = ({
       )}
       {showChangeNetworkWarning && isWrongNetwork.isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
+          autoSwitchOnMount={true}
           networkName={selectedNetworkConfig.name}
           chainId={selectedChainId}
           event={{

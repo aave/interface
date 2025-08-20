@@ -136,7 +136,11 @@ export const MigrateV3ModalContent = ({
     <>
       <TxModalTitle title="Migrate to V3" />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={currentChainId}
+        />
       )}
 
       <TxModalDetails gasLimit={gasLimit}>

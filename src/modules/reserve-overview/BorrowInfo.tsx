@@ -1,9 +1,10 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
-import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { GhoRateTooltip } from 'src/components/infoTooltips/GhoRateTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -16,7 +17,7 @@ import { GENERAL } from 'src/utils/events';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { ApyGraphContainer } from './graphs/ApyGraphContainer';
+import { BorrowApyGraph } from './graphs/ApyGraphContainer';
 import { ReserveFactorOverview } from './ReserveFactorOverview';
 import { PanelItem } from './ReservePanels';
 
@@ -172,11 +173,15 @@ export const BorrowInfo = ({
             )
           }
         >
-          <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
-          <IncentivesButton
+          <IncentivesCard
+            value={reserve.variableBorrowAPY}
+            incentives={reserve.vIncentivesData || []}
+            address={reserve.variableDebtTokenAddress}
             symbol={reserve.symbol}
-            incentives={reserve.vIncentivesData}
-            displayBlank={true}
+            variant="main16"
+            market={currentMarketData.market}
+            protocolAction={ProtocolAction.borrow}
+            inlineIncentives={true}
           />
         </PanelItem>
         {reserve.borrowCapUSD && reserve.borrowCapUSD !== '0' && (
@@ -187,10 +192,10 @@ export const BorrowInfo = ({
         )}
       </Box>
       {renderCharts && (
-        <ApyGraphContainer
-          graphKey="borrow"
-          reserve={reserve}
-          currentMarketData={currentMarketData}
+        <BorrowApyGraph
+          chain={currentMarketData.chainId}
+          underlyingToken={reserve.underlyingAsset}
+          market={currentMarketData.addresses.LENDING_POOL}
         />
       )}
       <Box

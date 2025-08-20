@@ -39,8 +39,6 @@ export type NetworkConfig = {
   name: string;
   displayName?: string;
   publicJsonRPCUrl: readonly string[]; // public rpc used if not private found
-  // https://github.com/aave/aave-api
-  ratesHistoryApiUrl?: string;
   baseUniswapAdapter?: string;
   /**
    * When this is set withdrawals will automatically be unwrapped
@@ -69,8 +67,6 @@ export type NetworkConfig = {
 };
 
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
-
-const ratesHistoryApiUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/rates-history`;
 
 export const testnetConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
@@ -187,7 +183,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://etherscan.io',
-    ratesHistoryApiUrl,
     networkLogoPath: '/icons/networks/ethereum.svg',
     wagmiChain: mainnet,
   },
@@ -212,7 +207,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'Polygon PoS Bridge',
       url: 'https://wallet.polygon.technology/polygon/bridge',
     },
-    ratesHistoryApiUrl,
     wagmiChain: polygon,
   },
   [ChainId.avalanche]: {
@@ -233,7 +227,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'Avalanche Bridge',
       url: 'https://bridge.avax.network/',
     },
-    ratesHistoryApiUrl,
     wagmiChain: avalanche,
   },
   [ChainId.arbitrum_one]: {
@@ -254,7 +247,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
-    ratesHistoryApiUrl,
     wagmiChain: arbitrum,
   },
   [ChainId.base]: {
@@ -276,7 +268,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'Base Bridge',
       url: 'https://bridge.base.org/',
     },
-    ratesHistoryApiUrl,
     wagmiChain: base,
   },
   [ChainId.optimism]: {
@@ -293,7 +284,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'OP Bridge',
       url: 'https://app.optimism.io/bridge',
     },
-    ratesHistoryApiUrl,
     wagmiChain: optimism,
   },
   [ChainId.metis_andromeda]: {
@@ -304,7 +294,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 0, // N/A
     explorerLink: 'https://andromeda-explorer.metis.io',
     networkLogoPath: '/icons/networks/metis.svg',
-    ratesHistoryApiUrl,
     wagmiChain: metis,
   },
   [ChainId.xdai]: {
@@ -322,7 +311,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'xDai Bridge',
       url: 'https://bridge.gnosischain.com/',
     },
-    ratesHistoryApiUrl,
     wagmiChain: gnosis,
   },
   [ChainId.bnb]: {
@@ -338,7 +326,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'BNB Bridge',
       url: 'https://www.bnbchain.org/en/bnb-chain-bridges',
     },
-    ratesHistoryApiUrl,
     wagmiChain: bsc,
   },
   [ChainId.scroll]: {
@@ -354,7 +341,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'Scroll Bridge',
       url: 'https://scroll.io/bridge',
     },
-    ratesHistoryApiUrl,
     wagmiChain: scroll,
   },
   [ChainId.zksync]: {
@@ -370,7 +356,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'ZKsync Bridge',
       url: 'https://portal.zksync.io/bridge/',
     },
-    ratesHistoryApiUrl,
     wagmiChain: zksync,
   },
   [ChainId.linea]: {
@@ -390,7 +375,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'Linea Bridge',
       url: 'https://bridge.linea.build/',
     },
-    ratesHistoryApiUrl,
     wagmiChain: linea,
   },
   [ChainId.sonic]: {
@@ -410,7 +394,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'Sonic Bridge',
       url: 'https://gateway.soniclabs.com',
     },
-    ratesHistoryApiUrl,
     wagmiChain: sonic,
   },
   [ChainId.celo]: {

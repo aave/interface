@@ -1,10 +1,12 @@
 import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -27,6 +29,8 @@ export interface SupplyActionProps extends BoxProps {
   blocked: boolean;
   decimals: number;
   isWrappedBaseAsset: boolean;
+  setShowUSDTResetWarning?: (showUSDTResetWarning: boolean) => void;
+  chainId?: number;
 }
 
 export const SupplyActions = React.memo(
@@ -39,6 +43,8 @@ export const SupplyActions = React.memo(
     blocked,
     decimals,
     isWrappedBaseAsset,
+    setShowUSDTResetWarning,
+    chainId,
     ...props
   }: SupplyActionProps) => {
     const [
@@ -60,6 +66,7 @@ export const SupplyActions = React.memo(
         state.currentMarketData,
       ])
     );
+    const { reserves } = useAppDataContext();
     const {
       approvalTxState,
       mainTxState,
@@ -101,7 +108,7 @@ export const SupplyActions = React.memo(
 
     const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
-    const { approval } = useApprovalTx({
+    const { approval, requiresApprovalReset } = useApprovalTx({
       usePermit,
       approvedAmount,
       requiresApproval,
@@ -111,6 +118,8 @@ export const SupplyActions = React.memo(
       signatureAmount: amountToSupply,
       onApprovalTxConfirmed: fetchApprovedAmount,
       onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
+      chainId,
+      setShowUSDTResetWarning,
     });
 
     useEffect(() => {
@@ -181,6 +190,12 @@ export const SupplyActions = React.memo(
           asset: poolAddress,
           amount: amountToSupply,
           assetName: symbol,
+          amountUsd: (() => {
+            const reserve = reserves.find((r) => r.underlyingAsset === poolAddress);
+            return reserve
+              ? valueToBigNumber(amountToSupply).multipliedBy(reserve.priceInUSD).toString()
+              : undefined;
+          })(),
         });
 
         queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
@@ -212,6 +227,7 @@ export const SupplyActions = React.memo(
         tryPermit={permitAvailable}
         sx={sx}
         {...props}
+        requiresApprovalReset={requiresApprovalReset}
       />
     );
   }
