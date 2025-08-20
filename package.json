@@ -39,7 +39,7 @@
     "@cowprotocol/app-data": "^3.1.0",
     "@cowprotocol/cow-sdk": "6.0.0-RC.47",
     "@emotion/cache": "11.10.3",
-    "@emotion/react": "11.10.4",
+    "@emotion/react": "11.14.0",
     "@emotion/server": "latest",
     "@emotion/styled": "11.10.4",
     "@gelatonetwork/relay-sdk": "^5.5.5",
