@@ -3,7 +3,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 
 import { BasicModal } from './primitives/BasicModal';
-import { Link } from './primitives/Link';
 
 export interface AddressBlockedProps {
   address: string;
@@ -34,13 +33,7 @@ export const AddressBlockedModal = ({ address, onDisconnectWallet }: AddressBloc
           {address}
         </Typography>
         <Typography variant="description" sx={{ textAlign: 'center', mb: 4 }}>
-          <Trans>
-            This address is blocked on app.aave.com because it is associated with one or more
-          </Trans>{' '}
-          <Link href="https://docs.aave.com/faq/#address-screening" underline="always">
-            <Trans>blocked activities</Trans>
-          </Link>
-          {'.'}
+          <Trans>This address is blocked on app.aave.com.</Trans>
         </Typography>
         <Button variant="contained" onClick={onDisconnectWallet}>
           <SvgIcon fontSize="small" sx={{ mx: 1 }}>
