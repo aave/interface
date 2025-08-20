@@ -177,7 +177,7 @@ export default function MyApp(props: MyAppProps) {
                                   <BridgeModal />
                                   <ReadOnlyModal />
                                   <CowOrderToast />
-                                  </GasStationProvider>
+                                </GasStationProvider>
                               </AppDataProvider>
                             </SharedDependenciesProvider>
                           </ModalContextProvider>

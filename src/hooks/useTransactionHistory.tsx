@@ -107,7 +107,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     useShallow((state) => [state.currentMarketData, state.account])
   );
 
-  const { reserves } = useAppDataContext();
+  const { reserves, loading: reservesLoading } = useAppDataContext();
 
   const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 
@@ -341,34 +341,41 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
 
   const PAGE_SIZE = 100;
   // Pagination over multiple sources is not perfect but since we are using an infinite query, won't be noticeable
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage, isError, error } =
-    useInfiniteQuery({
-      queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
-      queryFn: async ({ pageParam = 0 }) => {
-        const response = await fetchTransactionHistory({
-          account,
-          subgraphUrl: currentMarketData.subgraphUrl ?? '',
-          first: PAGE_SIZE,
-          skip: pageParam,
-          v3: !!currentMarketData.v3,
-          pool: selectedPool,
-        });
-        const cowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, pageParam * PAGE_SIZE);
-        return [...response, ...cowSwapOrders].sort((a, b) => b.timestamp - a.timestamp);
-      },
-      enabled: !!account && !!currentMarketData.subgraphUrl,
-      getNextPageParam: (
-        lastPage: TransactionHistoryItemUnion[],
-        allPages: TransactionHistoryItemUnion[][]
-      ) => {
-        const moreDataAvailable = lastPage.length === PAGE_SIZE;
-        if (!moreDataAvailable) {
-          return undefined;
-        }
-        return allPages.length * PAGE_SIZE;
-      },
-      initialPageParam: 0,
-    });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading: isLoadingHistory,
+    isFetchingNextPage,
+    isError,
+    error,
+  } = useInfiniteQuery({
+    queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
+    queryFn: async ({ pageParam = 0 }) => {
+      const response = await fetchTransactionHistory({
+        account,
+        subgraphUrl: currentMarketData.subgraphUrl ?? '',
+        first: PAGE_SIZE,
+        skip: pageParam,
+        v3: !!currentMarketData.v3,
+        pool: selectedPool,
+      });
+      const cowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, pageParam * PAGE_SIZE);
+      return [...response, ...cowSwapOrders].sort((a, b) => b.timestamp - a.timestamp);
+    },
+    enabled: !!account && !!currentMarketData.subgraphUrl && !reservesLoading && !!reserves,
+    getNextPageParam: (
+      lastPage: TransactionHistoryItemUnion[],
+      allPages: TransactionHistoryItemUnion[][]
+    ) => {
+      const moreDataAvailable = lastPage.length === PAGE_SIZE;
+      if (!moreDataAvailable) {
+        return undefined;
+      }
+      return allPages.length * PAGE_SIZE;
+    },
+    initialPageParam: 0,
+  });
 
   // If filter is active, keep fetching until all data is returned so that it's guaranteed all filter results will be returned
   useEffect(() => {
@@ -381,17 +388,22 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
 
   // Trigger a fetch when shouldKeepFetching is set to true
   useEffect(() => {
+    if (reservesLoading) {
+      // Wait for reserves to load
+      return;
+    }
+
     if (shouldKeepFetching) {
       fetchNextPage();
     }
-  }, [shouldKeepFetching, fetchNextPage]);
+  }, [shouldKeepFetching, fetchNextPage, reservesLoading]);
 
   return {
     data,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-    isLoading,
+    isLoading: reservesLoading || isLoadingHistory,
     isError,
     error,
     fetchForDownload,

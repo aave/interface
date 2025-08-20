@@ -590,10 +590,19 @@ export const BaseSwitchModalContent = ({
       setCowOpenOrdersTotalAmountFormatted(undefined);
 
       getOrders(selectedChainId, user).then((orders) => {
+        const token =
+          modalType === ModalType.CollateralSwap
+            ? selectedInputToken.aToken
+            : selectedOutputToken.aToken;
+
+        if (!token) {
+          return;
+        }
+
         const cowOpenOrdersTotalAmount = orders
           .filter(
             (order) =>
-              order.sellToken.toLowerCase() == selectedInputToken.address.toLowerCase() &&
+              order.sellToken.toLowerCase() == token.toLowerCase() &&
               order.status == OrderStatus.OPEN
           )
           .map((order) => order.sellAmount)
@@ -609,7 +618,14 @@ export const BaseSwitchModalContent = ({
     } else {
       setCowOpenOrdersTotalAmountFormatted(undefined);
     }
-  }, [selectedInputToken, selectedOutputToken, switchRates?.provider, selectedChainId, user]);
+  }, [
+    selectedInputToken,
+    selectedOutputToken,
+    switchRates?.provider,
+    selectedChainId,
+    user,
+    modalType,
+  ]);
 
   // Views
   if (!initialFromTokens && !initialToTokens) {
