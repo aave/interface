@@ -21,7 +21,7 @@ import {
   isOrderCancelled,
   isOrderFilled,
   isOrderLoading,
-} from './cowprotocol.helpers';
+} from './cowprotocol/cowprotocol.helpers';
 import { SwitchProvider } from './switch.types';
 
 export type SwitchTxSuccessViewProps = {

@@ -2,7 +2,7 @@ import { SxProps, Typography } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
 import { convertParaswapErrorMessage } from 'src/hooks/paraswap/common';
 
-import { convertCowProtocolErrorMessage } from './cowprotocol.errors';
+import { convertCowProtocolErrorMessage } from './cowprotocol/cowprotocol.errors';
 
 interface SwitchRatesErrorProps {
   error: unknown;

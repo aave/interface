@@ -14,7 +14,7 @@ import {
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CollateralType } from 'src/helpers/types';
 
-import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
+import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
 
 export type SupplyModalDetailsProps = {
   showHealthFactor: boolean;
@@ -28,7 +28,7 @@ export type SupplyModalDetailsProps = {
   showBalance?: boolean;
 };
 
-export const SwapModalDetails = ({
+export const CollateralSwapModalDetails = ({
   showHealthFactor,
   healthFactor,
   healthFactorAfterSwap,

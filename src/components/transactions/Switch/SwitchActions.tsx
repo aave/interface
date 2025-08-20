@@ -54,7 +54,7 @@ import {
   populateEthFlowTx,
   sendOrder,
   uploadAppData,
-} from './cowprotocol.helpers';
+} from './cowprotocol/cowprotocol.helpers';
 import {
   isCowProtocolRates,
   isParaswapRates,
@@ -81,6 +81,7 @@ interface SwitchProps {
   poolReserve?: ComputedReserveData;
   targetReserve?: ComputedReserveData;
   isMaxSelected: boolean;
+  setIsExecutingActions?: (isExecuting: boolean) => void;
 }
 
 interface SignedParams {
@@ -310,6 +311,7 @@ export const SwitchActions = ({
   poolReserve,
   targetReserve,
   isMaxSelected,
+  setIsExecutingActions,
 }: SwitchProps) => {
   const [
     user,
@@ -702,6 +704,7 @@ export const SwitchActions = ({
                 outputSymbol,
                 quote: switchRates.order,
                 appCode,
+                feeAmount: switchRates.feeAmount,
               });
 
               const response = await sendTx({
@@ -744,6 +747,7 @@ export const SwitchActions = ({
                 inputSymbol,
                 outputSymbol,
                 appCode,
+                feeAmount: switchRates.feeAmount,
               });
               setMainTxState({
                 loading: false,
@@ -1053,6 +1057,13 @@ export const SwitchActions = ({
       fetchApprovedAmount();
     }
   }, [fetchApprovedAmount, user]);
+
+  // Track execution state to pause rate updates during actions
+  useEffect(() => {
+    const isExecuting = mainTxState.loading || approvalTxState.loading || loadingTxns;
+
+    setIsExecutingActions?.(isExecuting);
+  }, [mainTxState.loading, approvalTxState.loading, loadingTxns, setIsExecutingActions]);
 
   useEffect(() => {
     let switchGasLimit = 0;

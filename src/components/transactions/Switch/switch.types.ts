@@ -4,7 +4,7 @@ import { TxErrorType } from 'src/ui-config/errorMapping';
 
 export type SwitchProvider = 'cowprotocol' | 'paraswap';
 
-export type SwitchParams = {
+export type ProviderRatesParams = {
   amount: string;
   srcToken: string;
   srcDecimals: number;
@@ -23,6 +23,13 @@ export type SwitchParams = {
   isOutputTokenCustom?: boolean;
 
   setError?: (error: TxErrorType) => void;
+};
+
+export type MultiProviderRatesParams = Omit<ProviderRatesParams, 'srcToken' | 'destToken'> & {
+  srcUnderlyingToken: string;
+  srcAToken?: string;
+  destUnderlyingToken: string;
+  destAToken?: string;
 };
 
 export type BaseSwitchRates = {
@@ -56,6 +63,7 @@ export type CowProtocolRatesType = BaseSwitchRates & {
   destTokenPriceUsd: number;
   destSpot: string;
   destSpotInUsd: string;
+  feeAmount: number;
 };
 
 export const isParaswapRates = (rates?: SwitchRatesType): rates is ParaswapRatesType => {

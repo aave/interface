@@ -27,8 +27,8 @@ import { ModalType } from 'src/hooks/useModal';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { SwapModalDetails } from '../Swap/SwapModalDetails';
 import { getAssetCollateralType } from '../utils';
+import { CollateralSwapModalDetails } from './CollateralSwap/CollateralSwapModalDetails';
 import { isCowProtocolRates, SwitchRatesType } from './switch.types';
 
 export const SwitchModalTxDetails = ({
@@ -315,6 +315,7 @@ const IntentTxDetails = ({
               }
               variant="secondary14"
               compact
+              roundDown={true}
             />
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -325,6 +326,7 @@ const IntentTxDetails = ({
               symbol="USD"
               symbolsColor="text.secondary"
               color="text.secondary"
+              roundDown={true}
             />
             {/* Price impact */}
             {priceImpact && priceImpact > 0 && priceImpact < 100 && (
@@ -385,6 +387,7 @@ const MarketOrderTxDetails = ({
               )}
               variant="secondary14"
               compact
+              roundDown={true}
             />
           </Box>
           <FormattedNumber
@@ -394,6 +397,7 @@ const MarketOrderTxDetails = ({
             symbol="USD"
             symbolsColor="text.secondary"
             color="text.secondary"
+            roundDown={true}
           />
         </Box>
       </Row>
@@ -478,7 +482,7 @@ const CollateralSwapModalTxDetailsContent = ({
   });
 
   return (
-    <SwapModalDetails
+    <CollateralSwapModalDetails
       showHealthFactor={showHealthFactor}
       healthFactor={user.healthFactor}
       healthFactorAfterSwap={hfAfterSwap.toString(10)}

@@ -15,7 +15,7 @@ import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
-import { CowOrderToast } from 'src/components/transactions/Switch/CowOrderToast';
+import { CowOrderToast } from 'src/components/transactions/Switch/cowprotocol/CowOrderToast';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { CowOrderToastProvider } from 'src/hooks/useCowOrderToast';
 import { ModalContextProvider } from 'src/hooks/useModal';
@@ -35,7 +35,7 @@ const SwitchModal = dynamic(() =>
 );
 
 const CollateralSwapModal = dynamic(() =>
-  import('src/components/transactions/Switch/CollateralSwapModal').then(
+  import('src/components/transactions/Switch/CollateralSwap/CollateralSwapModal').then(
     (module) => module.CollateralSwapModal
   )
 );
@@ -73,9 +73,6 @@ const RepayModal = dynamic(() =>
 );
 const SupplyModal = dynamic(() =>
   import('src/components/transactions/Supply/SupplyModal').then((module) => module.SupplyModal)
-);
-const SwapModal = dynamic(() =>
-  import('src/components/transactions/Swap/SwapModal').then((module) => module.SwapModal)
 );
 const WithdrawModal = dynamic(() =>
   import('src/components/transactions/Withdraw/WithdrawModal').then(
@@ -168,7 +165,6 @@ export default function MyApp(props: MyAppProps) {
                                 <DebtSwitchModal />
                                 <ClaimRewardsModal />
                                 <EmodeModal />
-                                <SwapModal />
                                 <FaucetModal />
                                 <TransactionEventHandler />
                                 <SwitchModal />

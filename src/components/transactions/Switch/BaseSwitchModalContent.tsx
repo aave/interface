@@ -15,7 +15,6 @@ import { isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { useMultiProviderSwitchRates } from 'src/hooks/switch/useMultiProviderSwitchRates';
-import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -34,7 +33,7 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SupportedNetworkWithChainId } from './common';
-import { getOrders, isNativeToken } from './cowprotocol.helpers';
+import { getOrders, isNativeToken } from './cowprotocol/cowprotocol.helpers';
 import { NetworkSelector } from './NetworkSelector';
 import { isCowProtocolRates, SwitchProvider, SwitchRatesType } from './switch.types';
 import { SwitchActions } from './SwitchActions';
@@ -161,6 +160,7 @@ export const BaseSwitchModalContent = ({
   outputBalanceTitle,
   initialFromTokens,
   initialToTokens,
+  tokensLoading = false,
   showChangeNetworkWarning = true,
   modalType,
   selectedChainId,
@@ -173,6 +173,7 @@ export const BaseSwitchModalContent = ({
   forcedDefaultInputToken?: TokenInfoWithBalance;
   initialFromTokens: TokenInfoWithBalance[];
   initialToTokens: TokenInfoWithBalance[];
+  tokensLoading?: boolean;
   forcedDefaultOutputToken?: TokenInfoWithBalance;
   supportedNetworks: SupportedNetworkWithChainId[];
   showChangeNetworkWarning?: boolean;
@@ -189,13 +190,11 @@ export const BaseSwitchModalContent = ({
   const { readOnlyModeAddress, chainId: connectedChainId } = useWeb3Context();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
-  const switchProvider = useSwitchProvider({ chainId: selectedChainId });
-  const [slippage, setSlippage] = useState(switchProvider == 'cowprotocol' ? '0.5' : '0.10');
-  const [showGasStation, setShowGasStation] = useState(switchProvider == 'paraswap');
   const [highPriceImpactConfirmed, setHighPriceImpactConfirmed] = useState(false);
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
   const [isSwapFlowSelected, setIsSwapFlowSelected] = useState(false);
+  const [isExecutingActions, setIsExecutingActions] = useState(false);
 
   const [userIsSmartContractWallet, setUserIsSmartContractWallet] = useState(false);
   const [userIsSafeWallet, setUserIsSafeWallet] = useState(false);
@@ -275,6 +274,9 @@ export const BaseSwitchModalContent = ({
   const handleSelectedNetworkChange = (value: number) => {
     setTxError(undefined);
     setSelectedChainId(value);
+    // Reset input amount when changing networks
+    setInputAmount('');
+    setDebounceInputAmount('');
     refetchInitialTokens();
   };
 
@@ -343,6 +345,32 @@ export const BaseSwitchModalContent = ({
     forcedDefaultOutputToken ?? defaultOutputToken
   );
 
+  // Update selected tokens when defaults change (e.g., after network change)
+  useEffect(() => {
+    if (
+      !forcedDefaultInputToken &&
+      defaultInputToken &&
+      selectedInputToken?.chainId !== selectedChainId
+    ) {
+      setSelectedInputToken(defaultInputToken);
+    }
+    if (
+      !forcedDefaultOutputToken &&
+      defaultOutputToken &&
+      selectedOutputToken?.chainId !== selectedChainId
+    ) {
+      setSelectedOutputToken(defaultOutputToken);
+    }
+  }, [
+    defaultInputToken,
+    defaultOutputToken,
+    selectedChainId,
+    forcedDefaultInputToken,
+    forcedDefaultOutputToken,
+    selectedInputToken?.chainId,
+    selectedOutputToken?.chainId,
+  ]);
+
   // User and reserves (for HF and flashloan decision)
   const { user: extendedUser, reserves } = useAppDataContext();
   const poolReserve = useMemo(
@@ -367,18 +395,6 @@ export const BaseSwitchModalContent = ({
     [extendedUser, selectedInputToken]
   );
 
-  const slippageValidation = validateSlippage(
-    slippage,
-    selectedChainId,
-    isNativeToken(selectedInputToken?.address),
-    switchProvider
-  );
-
-  const safeSlippage =
-    slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
-      ? 0
-      : Number(slippage) / 100;
-
   const [shouldUseFlashloan, setShouldUseFlashloan] = useState<boolean | undefined>(undefined);
 
   // Data
@@ -392,19 +408,11 @@ export const BaseSwitchModalContent = ({
       debounceInputAmount === ''
         ? '0'
         : normalizeBN(debounceInputAmount, -1 * selectedInputToken.decimals).toFixed(0),
-    srcToken:
-      modalType === ModalType.CollateralSwap && shouldUseFlashloan === true
-        ? selectedInputToken.address // Use underlying asset for ParaSwap flashloan
-        : modalType === ModalType.CollateralSwap
-        ? (selectedInputToken as TokenInfoWithBalance)?.aToken ?? selectedInputToken?.address
-        : selectedInputToken?.address,
+    srcUnderlyingToken: selectedInputToken?.address,
+    srcAToken: selectedInputToken?.aToken,
     srcDecimals: selectedInputToken?.decimals,
-    destToken:
-      modalType === ModalType.CollateralSwap && shouldUseFlashloan === true
-        ? selectedOutputToken.address // Use underlying asset for ParaSwap flashloan
-        : modalType === ModalType.CollateralSwap
-        ? (selectedOutputToken as TokenInfoWithBalance)?.aToken ?? selectedOutputToken?.address
-        : selectedOutputToken?.address,
+    destUnderlyingToken: selectedOutputToken?.address,
+    destAToken: selectedOutputToken?.aToken,
     destDecimals: selectedOutputToken?.decimals,
     inputSymbol: selectedInputToken?.symbol,
     outputSymbol: selectedOutputToken?.symbol,
@@ -414,9 +422,26 @@ export const BaseSwitchModalContent = ({
     options: {
       partner: 'aave-widget',
     },
+    modalType,
     isTxSuccess: switchTxState.success,
     shouldUseFlashloan,
+    isExecutingActions,
   });
+
+  const [slippage, setSlippage] = useState(switchRates?.provider == 'cowprotocol' ? '0.5' : '0.10');
+  const [showGasStation, setShowGasStation] = useState(switchRates?.provider == 'paraswap');
+
+  const slippageValidation = validateSlippage(
+    slippage,
+    selectedChainId,
+    isNativeToken(selectedInputToken?.address),
+    switchRates?.provider
+  );
+
+  const safeSlippage =
+    slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
+      ? 0
+      : Number(slippage) / 100;
 
   useEffect(() => {
     if (ratesError) {
@@ -556,7 +581,7 @@ export const BaseSwitchModalContent = ({
   >(undefined);
   useEffect(() => {
     if (
-      switchProvider == 'cowprotocol' &&
+      switchRates?.provider == 'cowprotocol' &&
       user &&
       selectedChainId &&
       selectedInputToken &&
@@ -584,10 +609,18 @@ export const BaseSwitchModalContent = ({
     } else {
       setCowOpenOrdersTotalAmountFormatted(undefined);
     }
-  }, [selectedInputToken, selectedOutputToken, switchProvider, selectedChainId, user]);
+  }, [selectedInputToken, selectedOutputToken, switchRates?.provider, selectedChainId, user]);
 
   // Views
   if (!initialFromTokens && !initialToTokens) {
+    return (
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (tokensLoading) {
     return (
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
         <CircularProgress />
@@ -656,7 +689,7 @@ export const BaseSwitchModalContent = ({
 
   const swapDetailsComponent = switchDetails
     ? switchDetails({
-        switchProvider,
+        switchProvider: switchRates?.provider,
         user,
         switchRates,
         gasLimit,
@@ -1012,6 +1045,7 @@ export const BaseSwitchModalContent = ({
                   chainId={selectedChainId}
                   switchRates={switchRates}
                   modalType={modalType}
+                  setIsExecutingActions={setIsExecutingActions}
                 />
               )}
             </>

@@ -83,17 +83,17 @@ export const BaseSwitchModal = ({
     [selectedChainId]
   );
 
-  const { data: initialFromTokens, refetch: refetchInitialFromTokens } = useTokensBalance(
-    initialDefaultFromTokens,
-    selectedChainId,
-    user
-  );
+  const {
+    data: initialFromTokens,
+    refetch: refetchInitialFromTokens,
+    isFetching: fromTokensLoading,
+  } = useTokensBalance(initialDefaultFromTokens, selectedChainId, user);
 
-  const { data: initialToTokens, refetch: refetchInitialToTokens } = useTokensBalance(
-    initialDefaultToTokens,
-    selectedChainId,
-    user
-  );
+  const {
+    data: initialToTokens,
+    refetch: refetchInitialToTokens,
+    isFetching: toTokensLoading,
+  } = useTokensBalance(initialDefaultToTokens, selectedChainId, user);
 
   return (
     <BasicModal open={type === modalType} setOpen={close}>
@@ -110,6 +110,7 @@ export const BaseSwitchModal = ({
           supportedNetworks={supportedNetworksWithEnabledMarket}
           initialFromTokens={forcedTokensFrom ?? initialFromTokens ?? []}
           initialToTokens={forcedTokensTo ?? initialToTokens ?? []}
+          tokensLoading={fromTokensLoading || toTokensLoading}
           modalType={modalType}
           switchDetails={swapDetails}
           inputBalanceTitle={balanceTitle}

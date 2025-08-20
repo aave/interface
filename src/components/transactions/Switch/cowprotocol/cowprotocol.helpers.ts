@@ -18,7 +18,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
 import { isSmartContractWallet } from 'src/helpers/provider';
 
-import { isChainIdSupportedByCoWProtocol } from './switch.constants';
+import { isChainIdSupportedByCoWProtocol } from '../switch.constants';
 
 export const COW_EVM_RECIPIENT = '0xC542C2F197c4939154017c802B0583C596438380';
 // export const COW_LENS_RECIPIENT = '0xce4eB8a1f6Bd0e0B9282102DC056B11E9D83b7CA';
@@ -120,6 +120,7 @@ export type CowProtocolActionParams = {
   slippageBps: number;
   smartSlippage: boolean;
   appCode?: string;
+  feeAmount?: number;
 };
 
 export const getPreSignTransaction = async ({
@@ -137,6 +138,7 @@ export const getPreSignTransaction = async ({
   inputSymbol,
   outputSymbol,
   appCode,
+  feeAmount,
 }: CowProtocolActionParams) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -170,6 +172,7 @@ export const getPreSignTransaction = async ({
       appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
       additionalParams: {
         signingScheme: SigningScheme.PRESIGN,
+        networkCostsAmount: feeAmount?.toString(),
       },
     }
   );
@@ -201,6 +204,7 @@ export const sendOrder = async ({
   outputSymbol,
   smartSlippage,
   appCode,
+  feeAmount,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
   const tradingSdk = new TradingSdk({
@@ -237,6 +241,9 @@ export const sendOrder = async ({
       },
       {
         appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
+        additionalParams: {
+          networkCostsAmount: feeAmount?.toString(),
+        },
       }
     )
     .then((orderResult) => orderResult.orderId);

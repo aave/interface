@@ -15,7 +15,7 @@ import {
   isOrderCancelled,
   isOrderFilled,
   isOrderLoading,
-} from 'src/components/transactions/Switch/cowprotocol.helpers';
+} from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { ActionFields, TransactionHistoryItemUnion } from 'src/modules/history/types';
 import { useRootStore } from 'src/store/root';
 import { findByChainId } from 'src/ui-config/marketsConfig';

@@ -9,12 +9,12 @@ import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal
 import { useRootStore } from 'src/store/root';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 
-import { BaseSwitchModal } from './BaseSwitchModal';
-import { SwitchDetailsParams as SwitchDetailsParams } from './BaseSwitchModalContent';
-import { SwitchModalTxDetails } from './SwitchModalTxDetails';
+import { BaseSwitchModal } from '../BaseSwitchModal';
+import { SwitchDetailsParams as SwitchDetailsParams } from '../BaseSwitchModalContent';
+import { SwitchModalTxDetails } from '../SwitchModalTxDetails';
 
 export const UNSUPPORTED_A_TOKENS_PER_CHAIN: Record<number, string[]> = {
-  [SupportedChainId.GNOSIS_CHAIN]: ['0xedbc7449a9b594ca4e053d9737ec5dc4cbccbfb2'.toLowerCase()], // EURe USD Price not supported
+  // [SupportedChainId.GNOSIS_CHAIN]: ['0xedbc7449a9b594ca4e053d9737ec5dc4cbccbfb2'.toLowerCase()], // EURe USD Price not supported
 };
 
 export const CollateralSwapModal = () => {

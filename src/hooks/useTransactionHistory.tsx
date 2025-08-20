@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import {
   ADAPTER_APP_CODE,
   HEADER_WIDGET_APP_CODE,
-} from 'src/components/transactions/Switch/cowprotocol.helpers';
+} from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
 import {
   actionFilterMap,
