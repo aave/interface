@@ -65,10 +65,6 @@ msgstr "Seems like we can't switch the network automatically. Please check if yo
 msgid "Borrow cap"
 msgstr "Borrow cap"
 
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Supplied asset amount"
-msgstr "Supplied asset amount"
-
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Estimated time"
 msgstr "Estimated time"
@@ -258,10 +254,6 @@ msgstr "Please enter a valid wallet address."
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Supply cap on target reserve reached. Try lowering the amount."
-msgstr "Supply cap on target reserve reached. Try lowering the amount."
 
 #: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/sGho/SGhoHeader.tsx
@@ -778,7 +770,6 @@ msgid "Borrowed assets"
 msgstr "Borrowed assets"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Due to health factor impact, a flashloan is required to perform this transaction, but Aave Governance has disabled flashloan availability for this asset. Try lowering the amount or supplying additional collateral."
 msgstr "Due to health factor impact, a flashloan is required to perform this transaction, but Aave Governance has disabled flashloan availability for this asset. Try lowering the amount or supplying additional collateral."
 
@@ -918,7 +909,7 @@ msgstr "I fully understand the risks of migrating."
 msgid "The underlying asset cannot be rescued"
 msgstr "The underlying asset cannot be rescued"
 
-#: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModalDetails.tsx
 msgid "Supply balance after switch"
 msgstr "Supply balance after switch"
 
@@ -939,7 +930,7 @@ msgid "Aave per month"
 msgstr "Aave per month"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModalDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Collateralization"
 msgstr "Collateralization"
@@ -1111,7 +1102,6 @@ msgstr "Reload"
 msgid "sGHO"
 msgstr "sGHO"
 
-#: src/components/transactions/Swap/SwapModal.tsx
 #: src/components/transactions/Switch/BaseSwitchModal.tsx
 #: src/components/transactions/Switch/BaseSwitchModalContent.tsx
 msgid "Please connect your wallet to swap tokens."
@@ -1215,7 +1205,7 @@ msgid "Unstaking {symbol}"
 msgstr "Unstaking {symbol}"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
-#: src/components/transactions/Swap/SwapActions.tsx
+#: src/components/transactions/Switch/CollateralSwap/CollateralSwapActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 msgid "Swapping"
@@ -1469,7 +1459,6 @@ msgid "View all"
 msgstr "View all"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Swap to"
 msgstr "Swap to"
 
@@ -1612,7 +1601,7 @@ msgstr "Fee"
 msgid "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
 msgstr "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
 
-#: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModalDetails.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1646,10 +1635,6 @@ msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can r
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 msgid "Withdrawing"
 msgstr "Withdrawing"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swapped"
-msgstr "Swapped"
 
 #: src/modules/governance/proposal/VotingResults.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
@@ -2943,7 +2928,7 @@ msgstr "No eligible assets to swap."
 msgid "Depositing"
 msgstr "Depositing"
 
-#: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModalDetails.tsx
 msgid "Supply apy"
 msgstr "Supply apy"
 
@@ -2973,7 +2958,6 @@ msgstr "Can be executed"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
@@ -3126,7 +3110,7 @@ msgstr "The underlying balance needs to be greater than 0"
 msgid "Not enough staked balance"
 msgstr "Not enough staked balance"
 
-#: src/components/transactions/Switch/CollateralSwapModal.tsx
+#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModal.tsx
 msgid "Minimum new collateral"
 msgstr "Minimum new collateral"
 
@@ -3135,7 +3119,6 @@ msgid "please check that the amount you want to supply is not currently being us
 msgstr "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
 
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Minimum amount received"
 msgstr "Minimum amount received"
@@ -3484,9 +3467,8 @@ msgstr "Restaked"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
-#: src/components/transactions/Swap/SwapActions.tsx
-#: src/components/transactions/Swap/SwapActions.tsx
-#: src/components/transactions/Swap/SwapModal.tsx
+#: src/components/transactions/Switch/CollateralSwap/CollateralSwapActions.tsx
+#: src/components/transactions/Switch/CollateralSwap/CollateralSwapActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
@@ -3756,8 +3738,6 @@ msgstr "Remaining debt"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
