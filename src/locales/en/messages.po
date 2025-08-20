@@ -1179,6 +1179,7 @@ msgid "deposited"
 msgstr "deposited"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
@@ -1269,6 +1270,10 @@ msgstr "Wallet balance"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Borrow balance after repay"
 msgstr "Borrow balance after repay"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Supply USDT and double your yield by <0><1>verifying your humanity through Self</1></0> for the first $1,000 USDT supplied per user."
+msgstr "Supply USDT and double your yield by <0><1>verifying your humanity through Self</1></0> for the first $1,000 USDT supplied per user."
 
 #: src/modules/migration/MigrationLists.tsx
 msgid "Supplied assets"
@@ -1694,6 +1699,10 @@ msgstr "There are no stake assets configured for this market"
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
+msgstr "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
@@ -2184,10 +2193,6 @@ msgstr "Borrow APY, variable"
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
-
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Eligible for the Merit program."
-msgstr "Eligible for the Merit program."
 
 #: src/components/Warnings/CooldownWarning.tsx
 msgid "Cooldown period warning"
