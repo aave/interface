@@ -1087,7 +1087,11 @@ export const SwitchActions = ({
 
   // For flashloan collateral swaps with ParaSwap, use the SwapActions component
   // which has the correct approval logic via useParaSwapTransactionHandler
-  if (!loading && useFlashloan && modalType === ModalType.CollateralSwap) {
+  if (
+    !loading &&
+    (useFlashloan || switchRates?.provider === 'paraswap') &&
+    modalType === ModalType.CollateralSwap
+  ) {
     if (!switchRates || !poolReserve || !targetReserve || !isParaswapRates(switchRates))
       return null;
 
