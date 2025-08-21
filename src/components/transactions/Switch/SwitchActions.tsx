@@ -703,7 +703,6 @@ export const SwitchActions = ({
                 outputSymbol,
                 quote: switchRates.order,
                 appCode,
-                feeAmount: switchRates.feeAmount,
               });
 
               const response = await sendTx({
@@ -747,7 +746,6 @@ export const SwitchActions = ({
                 inputSymbol,
                 outputSymbol,
                 appCode,
-                feeAmount: switchRates.feeAmount,
               });
               setMainTxState({
                 loading: false,

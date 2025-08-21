@@ -65,7 +65,6 @@ export type CowProtocolRatesType = BaseSwitchRates & {
   destTokenPriceUsd: number;
   destSpot: string;
   destSpotInUsd: string;
-  feeAmount: number;
 };
 
 export const isParaswapRates = (rates?: SwitchRatesType): rates is ParaswapRatesType => {

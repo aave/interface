@@ -122,7 +122,6 @@ export type CowProtocolActionParams = {
   smartSlippage: boolean;
   orderBookQuote: QuoteAndPost;
   appCode?: string;
-  feeAmount?: number;
 };
 
 export const getPreSignTransaction = async ({
