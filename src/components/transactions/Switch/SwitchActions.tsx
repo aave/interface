@@ -690,6 +690,7 @@ export const SwitchActions = ({
                 tokenDest: outputToken,
                 chainId,
                 user,
+                orderBookQuote: switchRates.orderBookQuote,
                 amount: switchRates.srcAmount,
                 tokenSrc: inputToken,
                 tokenSrcDecimals: switchRates.srcDecimals,
@@ -702,6 +703,7 @@ export const SwitchActions = ({
                 outputSymbol,
                 quote: switchRates.order,
                 appCode,
+                feeAmount: switchRates.feeAmount,
               });
 
               const response = await sendTx({
@@ -733,6 +735,7 @@ export const SwitchActions = ({
                 tokenDest: outputToken,
                 tokenDestDecimals: switchRates.destDecimals,
                 quote: switchRates.order,
+                orderBookQuote: switchRates.orderBookQuote,
                 amount: switchRates.srcAmount,
                 afterNetworkCostsBuyAmount:
                   switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
@@ -744,6 +747,7 @@ export const SwitchActions = ({
                 inputSymbol,
                 outputSymbol,
                 appCode,
+                feeAmount: switchRates.feeAmount,
               });
               setMainTxState({
                 loading: false,

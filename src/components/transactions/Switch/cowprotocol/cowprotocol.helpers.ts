@@ -7,6 +7,7 @@ import {
   OrderKind,
   OrderParameters,
   OrderStatus,
+  QuoteAndPost,
   SellTokenSource,
   SigningScheme,
   SupportedChainId,
@@ -119,24 +120,21 @@ export type CowProtocolActionParams = {
   afterNetworkCostsBuyAmount: string;
   slippageBps: number;
   smartSlippage: boolean;
+  orderBookQuote: QuoteAndPost;
   appCode?: string;
+  feeAmount?: number;
 };
 
 export const getPreSignTransaction = async ({
   provider,
-  tokenDest,
   chainId,
   user,
-  amount,
-  tokenSrc,
-  tokenSrcDecimals,
-  tokenDestDecimals,
-  afterNetworkCostsBuyAmount,
   slippageBps,
   smartSlippage,
   inputSymbol,
   outputSymbol,
   appCode,
+  orderBookQuote,
 }: CowProtocolActionParams) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -154,25 +152,21 @@ export const getPreSignTransaction = async ({
     throw new Error('Only smart contract wallets should use presign.');
   }
 
-  const orderResult = await tradingSdk.postLimitOrder(
-    {
-      owner: user as `0x${string}`,
-      sellAmount: amount,
-      buyAmount: afterNetworkCostsBuyAmount,
-      kind: OrderKind.SELL,
-      sellToken: tokenSrc,
-      buyToken: tokenDest,
-      slippageBps,
-      sellTokenDecimals: tokenSrcDecimals,
-      buyTokenDecimals: tokenDestDecimals,
+  const orderResult = await orderBookQuote.postSwapOrderFromQuote({
+    additionalParams: {
+      signingScheme: SigningScheme.PRESIGN,
     },
-    {
-      appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
-      additionalParams: {
-        signingScheme: SigningScheme.PRESIGN,
+    appData: {
+      appCode,
+      metadata: {
+        quote: {
+          slippageBips: slippageBps,
+          smartSlippage,
+        },
+        partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
       },
-    }
-  );
+    },
+  });
 
   const preSignTransaction = await tradingSdk.getPreSignTransaction({
     orderId: orderResult.orderId,
@@ -187,15 +181,10 @@ export const getPreSignTransaction = async ({
 
 // Only for EOA wallets
 export const sendOrder = async ({
+  orderBookQuote,
   provider,
-  tokenDest,
   chainId,
   user,
-  amount,
-  tokenSrc,
-  tokenSrcDecimals,
-  tokenDestDecimals,
-  afterNetworkCostsBuyAmount,
   slippageBps,
   inputSymbol,
   outputSymbol,
@@ -203,11 +192,6 @@ export const sendOrder = async ({
   appCode,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
-  const tradingSdk = new TradingSdk({
-    chainId,
-    signer,
-    appCode: appCode || HEADER_WIDGET_APP_CODE,
-  });
 
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -222,23 +206,19 @@ export const sendOrder = async ({
     throw new Error('Smart contract wallets should use presign.');
   }
 
-  return tradingSdk
-    .postLimitOrder(
-      {
-        owner: user as `0x${string}`,
-        sellAmount: amount,
-        buyAmount: afterNetworkCostsBuyAmount,
-        kind: OrderKind.SELL,
-        sellToken: tokenSrc,
-        slippageBps,
-        buyToken: tokenDest,
-        sellTokenDecimals: tokenSrcDecimals,
-        buyTokenDecimals: tokenDestDecimals,
+  return orderBookQuote
+    .postSwapOrderFromQuote({
+      appData: {
+        appCode,
+        metadata: {
+          quote: {
+            slippageBips: slippageBps,
+            smartSlippage,
+          },
+          partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
+        },
       },
-      {
-        appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
-      }
-    )
+    })
     .then((orderResult) => orderResult.orderId);
 };
 
