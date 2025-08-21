@@ -120,7 +120,6 @@ export type CowProtocolActionParams = {
   slippageBps: number;
   smartSlippage: boolean;
   appCode?: string;
-  feeAmount?: number;
 };
 
 export const getPreSignTransaction = async ({
@@ -138,7 +137,6 @@ export const getPreSignTransaction = async ({
   inputSymbol,
   outputSymbol,
   appCode,
-  feeAmount,
 }: CowProtocolActionParams) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -172,7 +170,6 @@ export const getPreSignTransaction = async ({
       appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
       additionalParams: {
         signingScheme: SigningScheme.PRESIGN,
-        networkCostsAmount: feeAmount?.toString(),
       },
     }
   );
@@ -204,7 +201,6 @@ export const sendOrder = async ({
   outputSymbol,
   smartSlippage,
   appCode,
-  feeAmount,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
   const tradingSdk = new TradingSdk({
@@ -241,9 +237,6 @@ export const sendOrder = async ({
       },
       {
         appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
-        additionalParams: {
-          networkCostsAmount: feeAmount?.toString(),
-        },
       }
     )
     .then((orderResult) => orderResult.orderId);

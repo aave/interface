@@ -201,7 +201,6 @@ export async function getCowProtocolSellRates({
     destSpotInUsd: destSpotInUsd.toString(),
     destUSD: destAmountInUsd.toString(),
     destAmount: orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString(),
-    feeAmount: Number(orderBookQuote.quoteResults.quoteResponse.quote.feeAmount),
     destDecimals,
     provider: 'cowprotocol',
     order: orderBookQuote.quoteResults.orderToSign,
