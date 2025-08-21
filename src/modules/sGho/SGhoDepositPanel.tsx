@@ -1,5 +1,6 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
+import { TimeWindow } from '@aave/react';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -26,11 +27,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
-import {
-  SGhoTimeRange,
-  sghoTimeRangeOptions,
-  useSGhoApyHistory,
-} from 'src/hooks/useSGhoApyHistory';
+import { useSGhoApyHistory } from 'src/hooks/useSGhoApyHistory';
 import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -39,7 +36,7 @@ import { GENERAL, SAFETY_MODULE } from 'src/utils/events';
 import { convertAprToApy } from 'src/utils/utils';
 
 import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
-import { ESupportedTimeRanges, TimeRangeSelector } from '../reserve-overview/TimeRangeSelector';
+import { TimeRangeSelector } from '../reserve-overview/TimeRangeSelector';
 import { StakeActionBox } from '../staking/StakeActionBox';
 
 export interface SGHODepositPanelProps {
@@ -73,9 +70,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
   const { currentAccount } = useWeb3Context();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const [selectedTimeRange, setSelectedTimeRange] = useState<SGhoTimeRange>(
-    ESupportedTimeRanges.OneWeek
-  );
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastWeek);
 
   const {
     data: meritApyHistory,
@@ -618,7 +613,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
             timeRangeSelector={
               <TimeRangeSelector
                 disabled={loadingMeritApy || errorMeritApyHistory}
-                timeRanges={sghoTimeRangeOptions}
+                timeRanges={[TimeWindow.LastWeek, TimeWindow.LastMonth, TimeWindow.LastSixMonths]}
                 selectedTimeRange={selectedTimeRange}
                 onTimeRangeChanged={setSelectedTimeRange}
               />

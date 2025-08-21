@@ -1,3 +1,4 @@
+import { AaveV2Ethereum } from '@bgd-labs/aave-address-book';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, SvgIcon } from '@mui/material';
@@ -14,7 +15,6 @@ import {
 } from 'src/components/Warnings/OffboardingWarning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
@@ -24,6 +24,18 @@ import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraph
 import { ReserveEModePanel } from './ReserveEModePanel';
 import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
 import { SupplyInfo } from './SupplyInfo';
+
+/**
+ * Broken Assets:
+ * A list of assets that currently are broken in some way, i.e. has bad data from either the subgraph or backend server
+ * Each item represents the ID of the asset, not the underlying address it's deployed to, appended with LendingPoolAddressProvider
+ * contract address it is held in. So each item in the array is essentially [underlyingAssetId + LendingPoolAddressProvider address].
+ */
+const BROKEN_ASSETS = [
+  // ampl https://governance.aave.com/t/arc-fix-ui-bugs-in-reserve-overview-for-ampl/5885/5?u=sakulstra
+  AaveV2Ethereum.ASSETS.AMPL.UNDERLYING.toLowerCase(),
+  AaveV2Ethereum.ASSETS.FEI.UNDERLYING.toLowerCase(),
+];
 
 type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -38,12 +50,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
       store.currentMarket,
     ])
   );
-  const reserveId =
-    reserve.underlyingAsset + currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
-  const renderCharts =
-    !!currentNetworkConfig.ratesHistoryApiUrl &&
-    !currentMarketData.disableCharts &&
-    !BROKEN_ASSETS.includes(reserveId);
+  const renderCharts = !BROKEN_ASSETS.includes(reserve.underlyingAsset);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus: boolean = reserve.supplyCap !== '0';
   const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';

@@ -20,7 +20,7 @@ import { AssetCapHookData } from 'src/hooks/useAssetCaps';
 import { GENERAL } from 'src/utils/events';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
-import { ApyGraphContainer } from './graphs/ApyGraphContainer';
+import { SupplyApyGraph } from './graphs/ApyGraphContainer';
 import { PanelItem } from './ReservePanels';
 
 interface SupplyInfoProps {
@@ -168,10 +168,10 @@ export const SupplyInfo = ({
         )}
       </Box>
       {renderCharts && (reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
-        <ApyGraphContainer
-          graphKey="supply"
-          reserve={reserve}
-          currentMarketData={currentMarketData}
+        <SupplyApyGraph
+          chain={currentMarketData.chainId}
+          underlyingToken={reserve.underlyingAsset}
+          market={currentMarketData.addresses.LENDING_POOL}
         />
       )}
       <div>

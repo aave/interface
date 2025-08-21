@@ -574,7 +574,6 @@ msgstr "Claim all"
 msgid "Time remaining until the withdraw period ends."
 msgstr "Time remaining until the withdraw period ends."
 
-#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
 msgid "Data couldn't be fetched, please reload graph."
 msgstr "Data couldn't be fetched, please reload graph."
@@ -1101,7 +1100,6 @@ msgstr "{d}d"
 msgid "Unstake window"
 msgstr "Unstake window"
 
-#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
 msgid "Reload"
 msgstr "Reload"
@@ -1179,6 +1177,7 @@ msgstr "I confirm the swap with a potential {0}% value loss"
 msgid "deposited"
 msgstr "deposited"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
@@ -1278,6 +1277,10 @@ msgstr "Wallet balance"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Borrow balance after repay"
 msgstr "Borrow balance after repay"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Supply USDT and double your yield by <0><1>verifying your humanity through Self</1></0> for the first $1,000 USDT supplied per user."
+msgstr "Supply USDT and double your yield by <0><1>verifying your humanity through Self</1></0> for the first $1,000 USDT supplied per user."
 
 #: src/modules/migration/MigrationLists.tsx
 msgid "Supplied assets"
@@ -1707,6 +1710,10 @@ msgstr "There are no stake assets configured for this market"
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
+msgstr "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
@@ -2198,10 +2205,6 @@ msgstr "Borrow APY, variable"
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Eligible for the Merit program."
-msgstr "Eligible for the Merit program."
-
 #: src/components/Warnings/CooldownWarning.tsx
 msgid "Cooldown period warning"
 msgstr "Cooldown period warning"
@@ -2375,6 +2378,10 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Assets to borrow"
 msgstr "Assets to borrow"
+
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Data couldn't be loaded."
+msgstr "Data couldn't be loaded."
 
 #: src/components/Warnings/BorrowDisabledWarning.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"

@@ -52,7 +52,6 @@ export type MarketDataType = {
   permitDisabled?: boolean; // intended to be used for testnets
   isFork?: boolean;
   permissionComponent?: ReactNode;
-  disableCharts?: boolean;
   subgraphUrl?: string;
   logo?: string;
   externalUrl?: string; // URL for external markets like Aptos
