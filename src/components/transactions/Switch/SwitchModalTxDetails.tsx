@@ -9,6 +9,7 @@ import {
   Skeleton,
   Typography,
 } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -178,6 +179,11 @@ const IntentTxDetails = ({
     </TextWithTooltip>
   );
 
+  const destAmountAfterSlippage = normalizeBN(switchRates.destAmount, switchRates.destDecimals)
+    .multipliedBy(1 - safeSlippage)
+    .decimalPlaces(switchRates.destDecimals, BigNumber.ROUND_UP)
+    .toString();
+
   return (
     <>
       <Accordion
@@ -309,10 +315,7 @@ const IntentTxDetails = ({
               sx={{ mr: 2, ml: 4, fontSize: '16px' }}
             />
             <FormattedNumber
-              value={
-                Number(normalize(switchRates.destAmount, switchRates.destDecimals)) *
-                (1 - safeSlippage)
-              }
+              value={destAmountAfterSlippage}
               variant="secondary14"
               compact
               roundDown={true}

@@ -674,10 +674,10 @@ export const BaseSwitchModalContent = ({
         chainId={selectedChainId}
         destDecimals={selectedOutputToken.decimals}
         srcDecimals={selectedInputToken.decimals}
-        outAmount={(
-          Number(normalize(switchRates.destAmount, switchRates.destDecimals)) *
-          (1 - safeSlippage)
-        ).toString()}
+        outAmount={normalizeBN(switchRates.destAmount, switchRates.destDecimals)
+          .multipliedBy(1 - safeSlippage)
+          .decimalPlaces(switchRates.destDecimals, BigNumber.ROUND_UP)
+          .toString()}
       />
     );
   }
