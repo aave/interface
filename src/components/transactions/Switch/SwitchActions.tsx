@@ -375,7 +375,7 @@ export const SwitchActions = ({
 
   // Warning for USDT on Ethereum approval reset
   useEffect(() => {
-    if (!switchRates) {
+    if (!switchRates || modalType !== ModalType.Switch) {
       return;
     }
 
@@ -702,6 +702,7 @@ export const SwitchActions = ({
                 outputSymbol,
                 quote: switchRates.order,
                 appCode,
+                orderBookQuote: switchRates.orderBookQuote,
               });
 
               const response = await sendTx({
@@ -744,6 +745,7 @@ export const SwitchActions = ({
                 inputSymbol,
                 outputSymbol,
                 appCode,
+                orderBookQuote: switchRates.orderBookQuote,
               });
               setMainTxState({
                 loading: false,
