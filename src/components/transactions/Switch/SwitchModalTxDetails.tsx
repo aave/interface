@@ -178,6 +178,9 @@ const IntentTxDetails = ({
     </TextWithTooltip>
   );
 
+  const destAmountAfterSlippage =
+    (BigInt(switchRates.destAmount) * BigInt((1 - safeSlippage) * 10_000)) / BigInt(10_000);
+
   return (
     <>
       <Accordion
@@ -309,10 +312,8 @@ const IntentTxDetails = ({
               sx={{ mr: 2, ml: 4, fontSize: '16px' }}
             />
             <FormattedNumber
-              value={
-                Number(normalize(switchRates.destAmount, switchRates.destDecimals)) *
-                (1 - safeSlippage)
-              }
+              title={destAmountAfterSlippage.toString()}
+              value={normalize(destAmountAfterSlippage.toString(), switchRates.destDecimals)}
               variant="secondary14"
               compact
               roundDown={true}
@@ -379,6 +380,7 @@ const MarketOrderTxDetails = ({
               sx={{ mr: 2, ml: 4, fontSize: '16px' }}
             />
             <FormattedNumber
+              // TODO: should also use destAmountAfterSlippage
               value={Number(
                 normalize(
                   Number(switchRates.destAmount) * (1 - safeSlippage),
