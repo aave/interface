@@ -1,6 +1,7 @@
 import '/public/fonts/inter/inter.css';
 import '/src/styles/variables.css';
 
+import { AaveClient, AaveProvider } from '@aave/react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { NoSsr } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -92,6 +93,8 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
+export const client = AaveClient.create();
+
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
@@ -138,51 +141,53 @@ export default function MyApp(props: MyAppProps) {
         imageUrl="https://app.aave.com/aave-com-opengraph.png"
       />
       <NoSsr>
-        <LanguageProvider>
-          <WagmiProvider config={wagmiConfig}>
-            <QueryClientProvider client={queryClient}>
-              <ConnectKitProvider
-                onDisconnect={cleanLocalStorage}
-                onConnect={({ connectorId }) => setWalletType(connectorId)}
-              >
-                <Web3ContextProvider>
-                  <AppGlobalStyles>
-                    <AddressBlocked>
-                      <CowOrderToastProvider>
-                        <ModalContextProvider>
-                          <SharedDependenciesProvider>
-                            <AppDataProvider>
-                              <GasStationProvider>
-                                {getLayout(<Component {...pageProps} />)}
-                                <SupplyModal />
-                                <WithdrawModal />
-                                <BorrowModal />
-                                <RepayModal />
-                                <CollateralChangeModal />
-                                <DebtSwitchModal />
-                                <ClaimRewardsModal />
-                                <EmodeModal />
-                                <SwapModal />
-                                <FaucetModal />
-                                <TransactionEventHandler />
-                                <SwitchModal />
-                                <StakingMigrateModal />
-                                <BridgeModal />
-                                <ReadOnlyModal />
-                                <CowOrderToast />
-                              </GasStationProvider>
-                            </AppDataProvider>
-                          </SharedDependenciesProvider>
-                        </ModalContextProvider>
-                      </CowOrderToastProvider>
-                    </AddressBlocked>
-                  </AppGlobalStyles>
-                </Web3ContextProvider>
-              </ConnectKitProvider>
-              <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
-          </WagmiProvider>
-        </LanguageProvider>
+        <AaveProvider client={client}>
+          <LanguageProvider>
+            <WagmiProvider config={wagmiConfig}>
+              <QueryClientProvider client={queryClient}>
+                <ConnectKitProvider
+                  onDisconnect={cleanLocalStorage}
+                  onConnect={({ connectorId }) => setWalletType(connectorId)}
+                >
+                  <Web3ContextProvider>
+                    <AppGlobalStyles>
+                      <AddressBlocked>
+                        <CowOrderToastProvider>
+                          <ModalContextProvider>
+                            <SharedDependenciesProvider>
+                              <AppDataProvider>
+                                <GasStationProvider>
+                                  {getLayout(<Component {...pageProps} />)}
+                                  <SupplyModal />
+                                  <WithdrawModal />
+                                  <BorrowModal />
+                                  <RepayModal />
+                                  <CollateralChangeModal />
+                                  <DebtSwitchModal />
+                                  <ClaimRewardsModal />
+                                  <EmodeModal />
+                                  <SwapModal />
+                                  <FaucetModal />
+                                  <TransactionEventHandler />
+                                  <SwitchModal />
+                                  <StakingMigrateModal />
+                                  <BridgeModal />
+                                  <ReadOnlyModal />
+                                  <CowOrderToast />
+                                </GasStationProvider>
+                              </AppDataProvider>
+                            </SharedDependenciesProvider>
+                          </ModalContextProvider>
+                        </CowOrderToastProvider>
+                      </AddressBlocked>
+                    </AppGlobalStyles>
+                  </Web3ContextProvider>
+                </ConnectKitProvider>
+                <ReactQueryDevtools initialIsOpen={false} />
+              </QueryClientProvider>
+            </WagmiProvider>
+          </LanguageProvider>
+        </AaveProvider>
       </NoSsr>
     </CacheProvider>
   );
