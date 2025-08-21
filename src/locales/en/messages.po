@@ -1856,10 +1856,6 @@ msgstr "Borrow balance after switch"
 msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
 msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
 
-#: src/components/AddressBlockedModal.tsx
-msgid "blocked activities"
-msgstr "blocked activities"
-
 #: pages/500.page.tsx
 msgid "Reload the page"
 msgstr "Reload the page"
@@ -2405,6 +2401,10 @@ msgstr "Action requires an active reserve"
 msgid "Amount to unstake"
 msgstr "Amount to unstake"
 
+#: src/components/AddressBlockedModal.tsx
+msgid "This address is blocked on app.aave.com."
+msgstr "This address is blocked on app.aave.com."
+
 #: src/components/infoTooltips/SlippageTooltip.tsx
 msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
 msgstr "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
@@ -2543,10 +2543,6 @@ msgstr "Please connect your wallet to get free testnet assets."
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
-
-#: src/components/AddressBlockedModal.tsx
-msgid "This address is blocked on app.aave.com because it is associated with one or more"
-msgstr "This address is blocked on app.aave.com because it is associated with one or more"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
