@@ -671,7 +671,7 @@ export const createPoolSlice: StateCreator<
       );
 
       if (get().currentMarketData.v3) {
-        if (selectedReward.symbol === 'all') {
+        if (selectedReward.symbol === 'all' || selectedReward.symbol === 'protocol-all') {
           return incentivesTxBuilderV2.claimAllRewards({
             user: currentAccount,
             assets: allReserves,

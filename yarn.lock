@@ -15,12 +15,12 @@
     "@gql.tada/internal" "^1.0.0"
     graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
 
-"@aave/client@0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.4.0.tgz#79adeaf174ba7f9a77871a08bcf6c73b26042d84"
-  integrity sha512-ltWgkg7EPcadqk9lLnjdz4VIePaCrRMApBc+MyXXsJUB3pYxBCvfoNdhZdqUXlTYfyI9twf87CNSHVJ+swc+EA==
+"@aave/client@0.0.0-canary-20250821094950":
+  version "0.0.0-canary-20250821094950"
+  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.0.0-canary-20250821094950.tgz#96dbbb984cc8af7a23315cf7bfa188f511e90c97"
+  integrity sha512-MRQUpAnbVrWwhAHnoP9ZQW2w5sNg7+IuSf413t8eF4LobC2TKFVMK+nN9lK3+s96X8J7L6utRnsmNx/K8xkDQw==
   dependencies:
-    "@aave/graphql" "0.4.0"
+    "@aave/graphql" "0.0.0-canary-20250821094950"
     "@aave/types" "0.1.0"
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
@@ -32,10 +32,10 @@
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/graphql@0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.4.0.tgz#ef7b398ea681f6211f666b0e54957038a74ec938"
-  integrity sha512-e9UD+fINg5dQyMSuHfAn3PMHNpoBnViBXrz5JR0nwfj0sosV6Z6cNSxbAhQaRO5ujhWBGKWkjyYqUh59RHVsmA==
+"@aave/graphql@0.0.0-canary-20250821094950":
+  version "0.0.0-canary-20250821094950"
+  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.0.0-canary-20250821094950.tgz#874a1ba98574e30cd39d12776922eff028c758c5"
+  integrity sha512-7lTxqFUyjZkfd/S5aCRCjrEghar8JkTwUmz5ie6W+IJ/WD94h4jqt/vrFIxPY3l95TDi79Vh1XW1JPtsvOmqAA==
   dependencies:
     "@aave/types" "0.1.0"
     gql.tada "^1.8.11"
@@ -47,13 +47,13 @@
   resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.36.1.tgz#3e501962de3700250c213c981ea47b36a8e37a54"
   integrity sha512-rR1sbDX1IFb1B1TLdi8hZANvtviPeU8hfpLuHC9cwlXluujCdHttnNVODwco1J5d2k6KxnNnc0DZJj2yV7nLTQ==
 
-"@aave/react@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.4.0.tgz#57548e71422c62ebe85b717a2e3ea02dc06cbda0"
-  integrity sha512-6g0P07DehN0KGF4hOXkEkGXHYzwZr/2G/OD1RVMv+eElrM/2hH0y4X+CWFeZ1sG7dpP0WPReKcGiIWeWp2AoHQ==
+"@aave/react@canary":
+  version "0.0.0-canary-20250821094950"
+  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.0.0-canary-20250821094950.tgz#63dda63310aae59056a183e88d0a2a46d4f9ac57"
+  integrity sha512-IC6bNHLlvqsjKx4aVsKZFHh7K2Rb8GCiGRlINEHyHelGGzBgG2nwX+1QSnR+QS+USbde0eJoL6xAzD2kkvqv0Q==
   dependencies:
-    "@aave/client" "0.4.0"
-    "@aave/graphql" "0.4.0"
+    "@aave/client" "0.0.0-canary-20250821094950"
+    "@aave/graphql" "0.0.0-canary-20250821094950"
     "@aave/types" "0.1.0"
     urql "^4.2.2"
 

@@ -9,23 +9,27 @@ import { Reward } from 'src/helpers/types';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { TokenIcon } from '../../primitives/TokenIcon';
 
-export type RewardSelect = Pick<Reward, 'symbol' | 'balanceUsd'>;
+export type RewardSelect = Pick<Reward, 'symbol' | 'balanceUsd'> & {
+  isMeritReward?: boolean;
+};
 
 export type RewardsSelectProps = {
   rewards: RewardSelect[];
+  meritRewards?: RewardSelect[];
   setSelectedReward: (key: string) => void;
   selectedReward: string;
 };
 
 export const RewardsSelect = ({
   rewards,
+  meritRewards = [],
   selectedReward,
   setSelectedReward,
 }: RewardsSelectProps) => {
   return (
-    <FormControl sx={{ mb: 1, width: '100%' }}>
-      <FormLabel sx={{ mb: 1, color: 'text.secondary' }}>
-        <Trans>Reward(s) to claim</Trans>
+    <FormControl sx={{ width: '100%' }}>
+      <FormLabel sx={{ mb: 1, mt: 3, color: 'text.secondary' }}>
+        <Trans>Rewards to claim</Trans>
       </FormLabel>
 
       <Select
@@ -61,11 +65,36 @@ export const RewardsSelect = ({
               </Typography>
             );
           }
-          const selected = rewards.find((r) => r.symbol === reward) as Reward;
+          if (reward === 'merit-all') {
+            return (
+              <Typography color="text.primary">
+                <Trans>Claim all merit rewards</Trans>
+              </Typography>
+            );
+          }
+          if (reward === 'protocol-all') {
+            return (
+              <Typography color="text.primary">
+                <Trans>Claim all protocol rewards</Trans>
+              </Typography>
+            );
+          }
+
+          // Check both protocol and merit rewards
+          const selected = rewards.find((r) => r.symbol === reward) ||
+            meritRewards.find((r) => r.symbol === reward);
+
+          if (!selected) return null;
+
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <TokenIcon symbol={selected.symbol} sx={{ mr: 2, fontSize: '16px' }} />
               <Typography color="text.primary">{selected.symbol}</Typography>
+              {meritRewards.some(r => r.symbol === selected.symbol) && (
+                <Typography ml={1} variant="caption" color="primary.main" sx={{ fontSize: '10px' }}>
+                  MERIT
+                </Typography>
+              )}
             </Box>
           );
         }}
@@ -75,33 +104,83 @@ export const RewardsSelect = ({
             <Trans>Claim all rewards</Trans>
           </Typography>
         </MenuItem>
-        <Divider />
-        {rewards.map((reward) => (
-          <MenuItem value={reward.symbol} key={`reward-token-${reward.symbol}`}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <TokenIcon symbol={reward.symbol} sx={{ fontSize: '24px', mr: 3 }} />
-              <Typography variant="subheader1" sx={{ mr: 1 }}>
-                {reward.symbol}
+
+        {/* Merit Rewards Section */}
+        {meritRewards.length > 0 && [
+          <Divider key="merit-divider" />,
+          <MenuItem value={'merit-all'} key="merit-all">
+            <Typography variant="subheader1" color="primary.main">
+              <Trans>Claim all merit rewards</Trans>
+            </Typography>
+          </MenuItem>,
+          ...meritRewards.map((reward) => (
+            <MenuItem value={reward.symbol} key={`merit-reward-${reward.symbol}`}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <TokenIcon symbol={reward.symbol} sx={{ fontSize: '24px', mr: 3 }} />
+                <Typography variant="subheader1" sx={{ mr: 1 }}>
+                  {reward.symbol}
+                </Typography>
+                <Typography ml={1} variant="caption" color="primary.main" sx={{ fontSize: '10px', mr: 2 }}>
+                  MERIT
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{ display: 'inline-flex', alignItems: 'center' }}
+                  variant="caption"
+                  color="text.muted"
+                >
+                  ~
+                </Typography>
+                <FormattedNumber
+                  value={Number(reward.balanceUsd)}
+                  variant="caption"
+                  compact
+                  symbol="USD"
+                  symbolsColor="text.muted"
+                  color="text.muted"
+                />
+              </Box>
+            </MenuItem>
+          ))
+        ]}
+
+        {/* Protocol Rewards Section */}
+        {rewards.length > 0 && [
+          <Divider key="protocol-divider" />,
+          ...(rewards.length > 1 ? [
+            <MenuItem value={'protocol-all'} key="protocol-all">
+              <Typography variant="subheader1" color="text.primary">
+                <Trans>Claim all protocol rewards</Trans>
               </Typography>
-              <Typography
-                component="span"
-                sx={{ display: 'inline-flex', alignItems: 'center' }}
-                variant="caption"
-                color="text.muted"
-              >
-                ~
-              </Typography>
-              <FormattedNumber
-                value={Number(reward.balanceUsd)}
-                variant="caption"
-                compact
-                symbol="USD"
-                symbolsColor="text.muted"
-                color="text.muted"
-              />
-            </Box>
-          </MenuItem>
-        ))}
+            </MenuItem>
+          ] : []),
+          ...rewards.map((reward) => (
+            <MenuItem value={reward.symbol} key={`protocol-reward-${reward.symbol}`}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <TokenIcon symbol={reward.symbol} sx={{ fontSize: '24px', mr: 3 }} />
+                <Typography variant="subheader1" sx={{ mr: 1 }}>
+                  {reward.symbol}
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{ display: 'inline-flex', alignItems: 'center' }}
+                  variant="caption"
+                  color="text.muted"
+                >
+                  ~
+                </Typography>
+                <FormattedNumber
+                  value={Number(reward.balanceUsd)}
+                  variant="caption"
+                  compact
+                  symbol="USD"
+                  symbolsColor="text.muted"
+                  color="text.muted"
+                />
+              </Box>
+            </MenuItem>
+          ))
+        ]}
       </Select>
     </FormControl>
   );
