@@ -1,5 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
+import { useMeritClaimRewards } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
@@ -24,9 +25,6 @@ import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { useEnhancedUserYield } from '../../hooks/useEnhancedUserYield';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
-
-import { useMeritClaimRewards } from '@aave/react';
-
 
 export const DashboardTopPanel = () => {
   const { user, reserves, loading } = useAppDataContext();
@@ -56,59 +54,62 @@ export const DashboardTopPanel = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-
-  const { data: meritClaimRewards } = useMeritClaimRewards({ user: currentAccount, chainId: currentMarketData.chainId });
+  const { data: meritClaimRewards } = useMeritClaimRewards({
+    user: currentAccount,
+    chainId: currentMarketData.chainId,
+  });
 
   // Calculate merit rewards USD value
-  const meritRewardsUsd = meritClaimRewards?.rewards?.reduce((total, reward) => {
-    return total + Number(reward.amount.usd || 0);
-  }, 0) || 0;
+  const meritRewardsUsd =
+    meritClaimRewards?.rewards?.reduce((total, reward) => {
+      return total + Number(reward.amount.usd || 0);
+    }, 0) || 0;
 
   const { claimableRewardsUsd: baseClaimableRewardsUsd, assets } = user
     ? Object.keys(user.calculatedUserIncentives).reduce(
-      (acc, rewardTokenAddress) => {
-        const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
-        const rewardBalance = normalize(
-          incentive.claimableRewards,
-          incentive.rewardTokenDecimals
-        );
+        (acc, rewardTokenAddress) => {
+          const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
+          const rewardBalance = normalize(
+            incentive.claimableRewards,
+            incentive.rewardTokenDecimals
+          );
 
-        let tokenPrice = 0;
-        // getting price from reserves for the native rewards for v2 markets
-        if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
-          if (currentMarketData.chainId === ChainId.mainnet) {
-            const aave = reserves.find((reserve) => reserve.symbol === 'AAVE');
-            tokenPrice = aave ? Number(aave.priceInUSD) : 0;
+          let tokenPrice = 0;
+          // getting price from reserves for the native rewards for v2 markets
+          if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
+            if (currentMarketData.chainId === ChainId.mainnet) {
+              const aave = reserves.find((reserve) => reserve.symbol === 'AAVE');
+              tokenPrice = aave ? Number(aave.priceInUSD) : 0;
+            } else {
+              reserves.forEach((reserve) => {
+                if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
+                  tokenPrice = Number(reserve.priceInUSD);
+                }
+              });
+            }
           } else {
-            reserves.forEach((reserve) => {
-              if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
-                tokenPrice = Number(reserve.priceInUSD);
-              }
-            });
-          }
-        } else {
-          tokenPrice = Number(incentive.rewardPriceFeed);
-        }
-
-        const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
-
-        if (rewardBalanceUsd > 0) {
-          if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
-            acc.assets.push(incentive.rewardTokenSymbol);
+            tokenPrice = Number(incentive.rewardPriceFeed);
           }
 
-          acc.claimableRewardsUsd += Number(rewardBalanceUsd);
-        }
+          const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
 
-        return acc;
-      },
-      { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
-    )
+          if (rewardBalanceUsd > 0) {
+            if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
+              acc.assets.push(incentive.rewardTokenSymbol);
+            }
+
+            acc.claimableRewardsUsd += Number(rewardBalanceUsd);
+          }
+
+          return acc;
+        },
+        { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
+      )
     : { claimableRewardsUsd: 0, assets: [] };
 
   // Add merit rewards to existing assets if they exist
   if (meritClaimRewards?.rewards) {
-    meritClaimRewards.rewards.forEach(reward => {
+    meritClaimRewards.rewards.forEach((reward) => {
       if (Number(reward.amount.usd) > 0 && assets.indexOf(reward.currency.symbol) === -1) {
         assets.push(reward.currency.symbol);
       }
@@ -122,8 +123,8 @@ export const DashboardTopPanel = () => {
     user?.totalCollateralMarketReferenceCurrency === '0'
       ? '0'
       : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
-        .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
-        .toFixed();
+          .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
+          .toFixed();
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
