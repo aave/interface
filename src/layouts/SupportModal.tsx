@@ -63,14 +63,20 @@ export const SupportModal = () => {
     };
 
     try {
-      await fetch(url, {
+      const response = await fetch(url, {
         body: JSON.stringify(payload),
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
+      if (!response.ok) {
+        setError(true);
+        setIsLoading(false);
+        setValue('');
+        setEmail('');
+        return;
+      }
       setSuccess(true);
     } catch (error) {
       setError(true);
@@ -82,9 +88,13 @@ export const SupportModal = () => {
   };
 
   const onClose = () => {
+    setFeedbackOpen(false);
     setEmailError('');
+    setEmail('');
     setValue('');
     setDirtyEmailField(false);
+    setSuccess(false);
+    setError(false);
   };
 
   return (
@@ -102,7 +112,7 @@ export const SupportModal = () => {
         {isLoading ? (
           <CircularProgress />
         ) : success ? (
-          <BaseSuccessView hideTx={true}>
+          <BaseSuccessView hideTx={true} onClose={onClose}>
             <Box display="flex" justifyContent={'center'} mt={3}>
               <Trans>Thank you for submitting your inquiry!</Trans>
             </Box>
@@ -144,14 +154,19 @@ export const SupportModal = () => {
           </div>
         ) : (
           <Box width={'100%'}>
-            <Typography variant="h3" display="flex" justifyContent="flex-start">
+            <Typography
+              variant="h3"
+              display="flex"
+              justifyContent="flex-start"
+              color="text.primary"
+            >
               <Trans>Support</Trans>
             </Typography>
 
             <Typography
               variant="subheader1"
-              color="text.secondary"
-              sx={{ textAlign: 'center', mb: 2, mt: 4 }}
+              color="text.primary"
+              sx={{ textAlign: 'start', mb: 4, mt: 4 }}
             >
               <Trans>
                 Let us know how we can help you. You may also consider joining our community
@@ -159,13 +174,12 @@ export const SupportModal = () => {
               <Link
                 target="_blank"
                 variant="subheader1"
-                color="text.secondary"
+                color="text.primary"
                 href="https://discord.gg/aave"
                 underline="always"
               >
                 Discord server
               </Link>
-              {'.'}
             </Typography>
             <Box width={'100%'}>
               <form style={{ width: '100%' }} onSubmit={handleSupportSubmit}>
@@ -178,13 +192,18 @@ export const SupportModal = () => {
                 <TextField
                   // label="Email"
                   onBlur={onBlur}
-                  placeholder="Please enter a valid email address here."
+                  placeholder="Please enter a valid email address here"
                   fullWidth
                   value={email}
                   onChange={handleEmailChange}
                   error={dirtyEmailField && !!emailError}
                   helperText={dirtyEmailField ? emailError : undefined}
-                  sx={{ mb: 2 }}
+                  sx={{
+                    mb: 2,
+                    '& .MuiInputBase-input': {
+                      padding: '6px 12px',
+                    },
+                  }}
                 />
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <Typography color="text.secondary">
@@ -194,7 +213,7 @@ export const SupportModal = () => {
                 <TextField
                   multiline
                   rows={4}
-                  placeholder="Please describe your issue here."
+                  placeholder="Please describe your issue here"
                   fullWidth
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
