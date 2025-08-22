@@ -1,5 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalize, UserIncentiveData } from '@aave/math-utils';
+import { useMeritClaimRewards } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -16,8 +17,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
-
-import { useMeritClaimRewards } from '@aave/react';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -53,16 +52,15 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
   const [allReward, setAllReward] = useState<Reward>();
 
   const networkConfig = getNetworkConfig(currentChainId);
-  const { data: meritClaimRewards } = useMeritClaimRewards({ user: currentAccount, chainId: currentMarketData.chainId });
+  const { data: meritClaimRewards } = useMeritClaimRewards({
+    user: currentAccount,
+    chainId: currentMarketData.chainId,
+  });
 
-  // Store merit rewards for RewardsSelect component
   const [meritRewardsForSelect, setMeritRewardsForSelect] = useState<Reward[]>([]);
-  // Store merit-all option separately
   const [meritAllReward, setMeritAllReward] = useState<Reward>();
-  // Store protocol-all option separately
   const [protocolAllReward, setProtocolAllReward] = useState<Reward>();
 
-  // get all rewards
   useEffect(() => {
     const protocolRewards: Reward[] = [];
     const meritRewards: Reward[] = [];
@@ -70,13 +68,11 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
     let totalMeritUsd = 0;
     const allAssets: string[] = [];
 
-    // Process existing user incentives (protocol rewards)
     Object.keys(user.calculatedUserIncentives).forEach((rewardTokenAddress) => {
       const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
       const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
 
       let tokenPrice = 0;
-      // getting price from reserves for the native rewards for v2 markets
       if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
         if (currentMarketData.chainId === ChainId.mainnet) {
           const aave = reserves.find((reserve) => reserve.symbol === 'AAVE');
@@ -127,7 +123,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
 
           meritRewards.push({
             assets: [], // Merit rewards don't have associated lending assets
-            incentiveControllerAddress: 'MERIT_REWARD', // Special identifier for merit rewards
+            incentiveControllerAddress: 'MERIT_REWARD', // Special identifier for merit rewards handled in actions
             symbol: meritReward.currency.symbol,
             balance: meritReward.amount.amount.value,
             balanceUsd: meritReward.amount.usd,
@@ -141,7 +137,6 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
 
     const totalClaimableUsd = totalProtocolUsd + totalMeritUsd;
 
-    // Set up selection logic
     const hasProtocolRewards = protocolRewards.length > 0;
     const hasMeritRewards = meritRewards.length > 0;
 
@@ -151,7 +146,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
     // Always create merit-all option when merit rewards exist
     if (hasMeritRewards) {
       const meritAllOption = {
-        assets: allAssets.filter(asset => meritRewards.some(mr => mr.assets.includes(asset))),
+        assets: allAssets.filter((asset) => meritRewards.some((mr) => mr.assets.includes(asset))),
         incentiveControllerAddress: 'MERIT_REWARD',
         symbol: 'merit-all',
         balance: '0',
@@ -164,8 +159,12 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
     // Always create protocol-all option when protocol rewards exist
     if (hasProtocolRewards) {
       const protocolAllOption = {
-        assets: allAssets.filter(asset => protocolRewards.some(pr => pr.assets.includes(asset))),
-        incentiveControllerAddress: hasProtocolRewards ? protocolRewards[0].incentiveControllerAddress : '',
+        assets: allAssets.filter((asset) =>
+          protocolRewards.some((pr) => pr.assets.includes(asset))
+        ),
+        incentiveControllerAddress: hasProtocolRewards
+          ? protocolRewards[0].incentiveControllerAddress
+          : '',
         symbol: 'protocol-all',
         balance: '0',
         balanceUsd: totalProtocolUsd.toString(),
@@ -224,7 +223,13 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
     // Show protocol rewards in the rewards list for individual selection
     setRewards(protocolRewards);
     setClaimableUsd(totalClaimableUsd.toString());
-  }, [meritClaimRewards, user.calculatedUserIncentives, currentMarketData.v3, currentMarketData.chainId, reserves]);
+  }, [
+    meritClaimRewards,
+    user.calculatedUserIncentives,
+    currentMarketData.v3,
+    currentMarketData.chainId,
+    reserves,
+  ]);
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
@@ -247,20 +252,18 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
   const selectedReward =
     selectedRewardSymbol === 'all'
       ? allReward
-      : selectedRewardSymbol === 'merit-all'
-        ? meritAllReward
-        : selectedRewardSymbol === 'protocol-all'
-          ? protocolAllReward
-          : rewards.find((r) => r.symbol === selectedRewardSymbol) ||
-          meritRewardsForSelect.find((r) => r.symbol === selectedRewardSymbol);
+      : selectedRewardSymbol === 'merit-all' || selectedRewardSymbol.startsWith('merit-display-')
+      ? meritAllReward
+      : selectedRewardSymbol === 'protocol-all'
+      ? protocolAllReward
+      : rewards.find((r) => r.symbol === selectedRewardSymbol) ||
+        meritRewardsForSelect.find((r) => r.symbol === selectedRewardSymbol);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
   if (claimRewardsTxState.success)
     return <TxSuccessView action={<Trans>Claimed</Trans>} amount={selectedReward?.balanceUsd} />;
-
-
 
   return (
     <>
@@ -277,14 +280,19 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
         <Typography variant="description" color="text.secondary" sx={{ mb: 2 }}>
           {selectedRewardSymbol === 'all' ? (
             <Trans>Claiming all protocol rewards and merit rewards together</Trans>
-          ) : selectedRewardSymbol === 'merit-all' ? (
+          ) : selectedRewardSymbol === 'merit-all' ||
+            selectedRewardSymbol.startsWith('merit-display-') ? (
             <Trans>Claiming all merit rewards only</Trans>
           ) : selectedRewardSymbol === 'protocol-all' ? (
-            <Trans>Claiming all protocol rewards only. Merit rewards excluded - select "claim all" to include merit rewards.</Trans>
-          ) : meritRewardsForSelect.some(r => r.symbol === selectedRewardSymbol) ? (
-            <Trans>Claiming individual merit reward only</Trans>
+            <Trans>
+              Claiming all protocol rewards only. Merit rewards excluded - select &quot;claim
+              all&quot; to include merit rewards.
+            </Trans>
           ) : (
-            <Trans>Claiming individual protocol reward only. Merit rewards excluded - select "claim all" to include merit rewards.</Trans>
+            <Trans>
+              Claiming individual protocol reward only. Merit rewards excluded - select &quot;claim
+              all&quot; to include merit rewards.
+            </Trans>
           )}
         </Typography>
       )}
@@ -295,7 +303,10 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
         </Typography>
       )}
 
-      {(rewards.length > 1 || (rewards.length >= 1 && meritClaimRewards?.rewards && meritClaimRewards.rewards.length > 0)) && (
+      {(rewards.length > 1 ||
+        (rewards.length >= 1 &&
+          meritClaimRewards?.rewards &&
+          meritClaimRewards.rewards.length > 0)) && (
         <RewardsSelect
           rewards={rewards}
           meritRewards={meritRewardsForSelect}
@@ -365,12 +376,23 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
                         }}
                       >
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                          <TokenIcon symbol={meritReward.currency.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                          <FormattedNumber value={Number(meritReward.amount.amount.value)} variant="secondary14" />
+                          <TokenIcon
+                            symbol={meritReward.currency.symbol}
+                            sx={{ mr: 1, fontSize: '16px' }}
+                          />
+                          <FormattedNumber
+                            value={Number(meritReward.amount.amount.value)}
+                            variant="secondary14"
+                          />
                           <Typography ml={1} variant="secondary14">
                             {meritReward.currency.symbol}
                           </Typography>
-                          <Typography ml={1} variant="caption" color="primary.main" sx={{ fontSize: '10px' }}>
+                          <Typography
+                            ml={1}
+                            variant="caption"
+                            color="primary.main"
+                            sx={{ fontSize: '10px' }}
+                          >
                             MERIT
                           </Typography>
                         </Box>
@@ -412,11 +434,19 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
                     >
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <TokenIcon symbol={meritReward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                        <FormattedNumber value={Number(meritReward.balance)} variant="secondary14" />
+                        <FormattedNumber
+                          value={Number(meritReward.balance)}
+                          variant="secondary14"
+                        />
                         <Typography ml={1} variant="secondary14">
                           {meritReward.symbol}
                         </Typography>
-                        <Typography ml={1} variant="caption" color="primary.main" sx={{ fontSize: '10px' }}>
+                        <Typography
+                          ml={1}
+                          variant="caption"
+                          color="primary.main"
+                          sx={{ fontSize: '10px' }}
+                        >
                           MERIT
                         </Typography>
                       </Box>
@@ -482,19 +512,23 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
             </>
           )}
 
-          {selectedRewardSymbol !== 'all' && selectedRewardSymbol !== 'merit-all' && selectedRewardSymbol !== 'protocol-all' && (
-            <DetailsNumberLineWithSub
-              symbol={<TokenIcon symbol={selectedReward.symbol} />}
-              futureValue={selectedReward.balance}
-              futureValueUSD={selectedReward.balanceUsd}
-              description={
-                <Trans>
-                  {selectedReward.symbol} Balance
-                  {meritRewardsForSelect.some(r => r.symbol === selectedReward.symbol) && ' (Merit)'}
-                </Trans>
-              }
-            />
-          )}
+          {selectedRewardSymbol !== 'all' &&
+            selectedRewardSymbol !== 'merit-all' &&
+            !selectedRewardSymbol.startsWith('merit-display-') &&
+            selectedRewardSymbol !== 'protocol-all' && (
+              <DetailsNumberLineWithSub
+                symbol={<TokenIcon symbol={selectedReward.symbol} />}
+                futureValue={selectedReward.balance}
+                futureValueUSD={selectedReward.balanceUsd}
+                description={
+                  <Trans>
+                    {selectedReward.symbol} Balance
+                    {meritRewardsForSelect.some((r) => r.symbol === selectedReward.symbol) &&
+                      ' (Merit)'}
+                  </Trans>
+                }
+              />
+            )}
         </TxModalDetails>
       )}
 

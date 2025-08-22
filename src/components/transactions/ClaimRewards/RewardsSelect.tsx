@@ -80,9 +80,13 @@ export const RewardsSelect = ({
             );
           }
 
-          // Check both protocol and merit rewards
-          const selected = rewards.find((r) => r.symbol === reward) ||
-            meritRewards.find((r) => r.symbol === reward);
+          // Don't render merit display items - these redirect to merit-all
+          if (reward.startsWith('merit-display-')) {
+            return null;
+          }
+
+          // Check protocol rewards only for individual display
+          const selected = rewards.find((r) => r.symbol === reward);
 
           if (!selected) return null;
 
@@ -90,15 +94,19 @@ export const RewardsSelect = ({
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <TokenIcon symbol={selected.symbol} sx={{ mr: 2, fontSize: '16px' }} />
               <Typography color="text.primary">{selected.symbol}</Typography>
-              {meritRewards.some(r => r.symbol === selected.symbol) && (
-                <Typography ml={1} variant="caption" color="primary.main" sx={{ fontSize: '10px' }}>
-                  MERIT
-                </Typography>
-              )}
             </Box>
           );
         }}
       >
+        <MenuItem key="all-header" disabled sx={{ opacity: 1, cursor: 'default' }}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+          >
+            <Trans>All Rewards</Trans>
+          </Typography>
+        </MenuItem>
         <MenuItem value={'all'}>
           <Typography variant="subheader1">
             <Trans>Claim all rewards</Trans>
@@ -108,19 +116,42 @@ export const RewardsSelect = ({
         {/* Merit Rewards Section */}
         {meritRewards.length > 0 && [
           <Divider key="merit-divider" />,
+          <MenuItem key="merit-header" disabled sx={{ opacity: 1, cursor: 'default' }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              <Trans>Merit Rewards</Trans>
+            </Typography>
+          </MenuItem>,
           <MenuItem value={'merit-all'} key="merit-all">
             <Typography variant="subheader1" color="primary.main">
               <Trans>Claim all merit rewards</Trans>
             </Typography>
           </MenuItem>,
           ...meritRewards.map((reward) => (
-            <MenuItem value={reward.symbol} key={`merit-reward-${reward.symbol}`}>
+            <MenuItem
+              value={`merit-display-${reward.symbol}`}
+              key={`merit-reward-${reward.symbol}`}
+              sx={{
+                pointerEvents: 'none',
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                },
+              }}
+            >
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <TokenIcon symbol={reward.symbol} sx={{ fontSize: '24px', mr: 3 }} />
                 <Typography variant="subheader1" sx={{ mr: 1 }}>
                   {reward.symbol}
                 </Typography>
-                <Typography ml={1} variant="caption" color="primary.main" sx={{ fontSize: '10px', mr: 2 }}>
+                <Typography
+                  ml={1}
+                  variant="caption"
+                  color="primary.main"
+                  sx={{ fontSize: '10px', mr: 2 }}
+                >
                   MERIT
                 </Typography>
                 <Typography
@@ -141,19 +172,30 @@ export const RewardsSelect = ({
                 />
               </Box>
             </MenuItem>
-          ))
+          )),
         ]}
 
         {/* Protocol Rewards Section */}
         {rewards.length > 0 && [
           <Divider key="protocol-divider" />,
-          ...(rewards.length > 1 ? [
-            <MenuItem value={'protocol-all'} key="protocol-all">
-              <Typography variant="subheader1" color="text.primary">
-                <Trans>Claim all protocol rewards</Trans>
-              </Typography>
-            </MenuItem>
-          ] : []),
+          <MenuItem key="protocol-header" disabled sx={{ opacity: 1, cursor: 'default' }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              <Trans>Protocol Rewards</Trans>
+            </Typography>
+          </MenuItem>,
+          ...(rewards.length > 1
+            ? [
+                <MenuItem value={'protocol-all'} key="protocol-all">
+                  <Typography variant="subheader1" color="text.primary">
+                    <Trans>Claim all protocol rewards</Trans>
+                  </Typography>
+                </MenuItem>,
+              ]
+            : []),
           ...rewards.map((reward) => (
             <MenuItem value={reward.symbol} key={`protocol-reward-${reward.symbol}`}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -179,7 +221,7 @@ export const RewardsSelect = ({
                 />
               </Box>
             </MenuItem>
-          ))
+          )),
         ]}
       </Select>
     </FormControl>

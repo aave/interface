@@ -1,15 +1,17 @@
-import { ProtocolAction, EthereumTransactionTypeExtended, eEthereumTxType } from '@aave/contract-helpers';
+import {
+  eEthereumTxType,
+  EthereumTransactionTypeExtended,
+  ProtocolAction,
+} from '@aave/contract-helpers';
+import { useMeritClaimRewards } from '@aave/react';
 import { Trans } from '@lingui/macro';
-import { utils } from 'ethers';
+import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import { Reward } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useRootStore } from 'src/store/root';
-
-import { useMeritClaimRewards } from '@aave/react';
-import { useShallow } from 'zustand/shallow';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-
+import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -29,12 +31,14 @@ export const ClaimRewardsActions = ({
 
   const { currentAccount } = useWeb3Context();
 
-
-  const [currentMarketData] = useRootStore(
-    useShallow((store) => [store.currentMarketData])
+  const [currentMarketData, estimateGasLimit] = useRootStore(
+    useShallow((store) => [store.currentMarketData, store.estimateGasLimit])
   );
 
-  const { data: meritClaimRewards } = useMeritClaimRewards({ user: currentAccount, chainId: currentMarketData.chainId });
+  const { data: meritClaimRewards } = useMeritClaimRewards({
+    user: currentAccount,
+    chainId: currentMarketData.chainId,
+  });
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     protocolAction: ProtocolAction.claimRewards,
@@ -50,11 +54,17 @@ export const ClaimRewardsActions = ({
       const isClaimingProtocolAll = selectedReward.symbol === 'protocol-all';
       const hasProtocolRewards = selectedReward.incentiveControllerAddress !== 'MERIT_REWARD';
       const hasMeritRewards = meritClaimRewards?.rewards && meritClaimRewards.rewards.length > 0;
-      const isIndividualProtocolReward = hasProtocolRewards && !isClaimingAll && !isClaimingProtocolAll && !isClaimingMeritAll;
+      const isIndividualProtocolReward =
+        hasProtocolRewards && !isClaimingAll && !isClaimingProtocolAll && !isClaimingMeritAll;
 
       // Use simple approach for individual protocol rewards (most common case)
       if (isIndividualProtocolReward) {
-        return claimRewards({ isWrongNetwork, blocked, selectedReward, formattedReserves: reserves });
+        return claimRewards({
+          isWrongNetwork,
+          blocked,
+          selectedReward,
+          formattedReserves: reserves,
+        });
       }
 
       // Use complex multicall logic only when needed
@@ -64,17 +74,20 @@ export const ClaimRewardsActions = ({
           isWrongNetwork,
           blocked,
           selectedReward,
-          formattedReserves: reserves
+          formattedReserves: reserves,
         });
 
         // Create multicall transaction that includes both protocol and merit claims
         if (!meritClaimRewards?.transaction) {
           throw new Error('Merit rewards transaction not available');
         }
-        const multicallTx = await createMulticallTransaction(protocolTxns, meritClaimRewards.transaction);
+        const multicallTx = await createMulticallTransaction(
+          protocolTxns,
+          meritClaimRewards.transaction
+        );
 
         // Check if there are any approval transactions that need to be handled separately
-        const approvalTxns = protocolTxns.filter(tx => tx.txType === 'ERC20_APPROVAL');
+        const approvalTxns = protocolTxns.filter((tx) => tx.txType === 'ERC20_APPROVAL');
 
         return approvalTxns.length > 0 ? [...approvalTxns, multicallTx] : [multicallTx];
       } else if ((isClaimingAll && !hasProtocolRewards && hasMeritRewards) || isClaimingMeritAll) {
@@ -85,7 +98,12 @@ export const ClaimRewardsActions = ({
         return [convertMeritTransactionToEthereum(meritClaimRewards.transaction)];
       } else {
         // Protocol-all or other cases - use existing protocol logic
-        return claimRewards({ isWrongNetwork, blocked, selectedReward, formattedReserves: reserves });
+        return claimRewards({
+          isWrongNetwork,
+          blocked,
+          selectedReward,
+          formattedReserves: reserves,
+        });
       }
     },
     skip: Object.keys(selectedReward).length === 0 || blocked,
@@ -95,15 +113,13 @@ export const ClaimRewardsActions = ({
   // Helper function to create multicall transaction
   const createMulticallTransaction = async (
     protocolTxns: EthereumTransactionTypeExtended[],
-    meritTransaction: any
+    meritTransaction: PopulatedTransaction
   ): Promise<EthereumTransactionTypeExtended> => {
     // Multicall3 contract address (same across chains)
     const multicallAddress = '0xcA11bde05977b3631167028862bE2a173976CA11';
 
-    // Prepare calls array for multicall
     const calls = [];
 
-    // Add protocol transaction calls
     for (const txExt of protocolTxns) {
       if (txExt.txType === 'ERC20_APPROVAL') continue; // Skip approvals for multicall
 
@@ -111,27 +127,25 @@ export const ClaimRewardsActions = ({
       calls.push({
         target: tx.to,
         callData: tx.data,
-        value: tx.value || '0'
+        value: tx.value || '0',
       });
     }
 
-    // Add merit transaction call
     calls.push({
       target: meritTransaction.to,
       callData: meritTransaction.data,
-      value: meritTransaction.value || '0'
+      value: meritTransaction.value || '0',
     });
 
-    // Encode multicall
     const multicallInterface = new utils.Interface([
-      'function aggregate3Value((address target, bool allowFailure, uint256 value, bytes callData)[] calls) payable returns ((bool success, bytes returnData)[])'
+      'function aggregate3Value((address target, bool allowFailure, uint256 value, bytes callData)[] calls) payable returns ((bool success, bytes returnData)[])',
     ]);
 
-    const callsWithFailure = calls.map(call => [
+    const callsWithFailure = calls.map((call) => [
       call.target,
       false, // allowFailure = false
       call.value,
-      call.callData
+      call.callData,
     ]);
 
     const data = multicallInterface.encodeFunctionData('aggregate3Value', [callsWithFailure]);
@@ -144,27 +158,71 @@ export const ClaimRewardsActions = ({
         data,
         value: '0',
       }),
-      gas: async () => ({
-        gasLimit: '800000', // Conservative gas limit for multicall
-        gasPrice: '0',
-      }),
+      gas: async () => {
+        try {
+          const tx = {
+            to: multicallAddress,
+            from: currentAccount,
+            data,
+            value: BigNumber.from('0'),
+          };
+
+          const estimatedTx = await estimateGasLimit(tx, currentMarketData.chainId);
+
+          return {
+            gasLimit: estimatedTx.gasLimit?.toString(),
+            gasPrice: '0',
+          };
+        } catch (error) {
+          console.warn('Gas estimation failed for multicall, using fallback:', error);
+          return {
+            gasLimit: '800000', // Conservative fallback
+            gasPrice: '0',
+          };
+        }
+      },
     };
   };
 
   // Helper function to convert merit transaction to Ethereum format
-  const convertMeritTransactionToEthereum = (meritTx: any): EthereumTransactionTypeExtended => {
+  const convertMeritTransactionToEthereum = (
+    meritTx: PopulatedTransaction
+  ): EthereumTransactionTypeExtended => {
     return {
       txType: eEthereumTxType.DLP_ACTION,
       tx: async () => ({
         to: meritTx.to,
         from: meritTx.from || currentAccount,
         data: meritTx.data,
-        value: meritTx.value || '0',
+        value: meritTx.value
+          ? BigNumber.isBigNumber(meritTx.value)
+            ? meritTx.value.toString()
+            : meritTx.value
+          : '0',
       }),
-      gas: async () => ({
-        gasLimit: '400000', // Conservative gas limit for merit only
-        gasPrice: '0',
-      }),
+      gas: async () => {
+        try {
+          const tx = {
+            to: meritTx.to,
+            from: meritTx.from || currentAccount,
+            data: meritTx.data,
+            value: meritTx.value,
+          };
+
+          const estimatedTx = await estimateGasLimit(tx, currentMarketData.chainId);
+
+          return {
+            gasLimit: estimatedTx.gasLimit?.toString(),
+            gasPrice: '0',
+          };
+        } catch (error) {
+          console.warn('Gas estimation failed for merit transaction, using fallback:', error);
+          return {
+            gasLimit: '400000',
+            gasPrice: '0',
+          };
+        }
+      },
     };
   };
 
