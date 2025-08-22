@@ -8,23 +8,56 @@ export const STABLECOINS_SYMBOLS = [
   //proto_mainnet_v3
   'USDT',
   'USDC',
-  'PT SUSDE SEPTEMBER',
-  'PT USDE SEPTEMBER 25TH 2025',
   'USDE',
   'RLUSD',
   'GHO',
   'DAI',
-  'USDtb',
-  'PT EUSDE AUGUST',
+  'USDTB',
   'USDS',
   'PYUSD',
   'LUSD',
   'EUSDE',
   'FRAX',
-  'crvUSD',
-  'PT SUSDE JULY',
-  'PT EUSDE MAY',
-  'PT USDE JULY',
+  'CRVUSD',
+  //proto_primenet_v3
+  //proto_base_v3
+  'EURC',
+  'USDBC',
+  //proto_arbitrum_v3
+  'USD₮0',
+  'USDC.E',
+  'MAI',
+  'EURS',
+  //proto_avalanche_v3
+  'AUSD',
+  'DAI.E',
+  //proto_sonic_v3
+  //proto_optimism_v3
+  'SUSD',
+  //proto_polygon_v3
+  'JEUR',
+  'MIMATIC',
+  'EURA',
+  //proto_metis_v3
+  'M.USDC',
+  'M.USDT',
+  'M.DAI',
+  //proto_gnosis_v3
+  'SDAI',
+  'EURE',
+  'WXDAI',
+  //proto_bnb_v3
+  'FDUSD',
+  //proto_scroll_v3
+  //proto_zksync_v3
+  'SUSDE',
+  //proto_linea_v3
+  //proto_celo_v3
+  'USD₮',
+  'CUSD',
+  'CEUR',
+  //proto_soneium_v3
+  //proto_etherfi_v3
 ];
 export const ETH_CORRELATED_SYMBOLS = [
   //proto_mainnet_v3
@@ -36,6 +69,29 @@ export const ETH_CORRELATED_SYMBOLS = [
   'RETH',
   'ETHX',
   'CBETH',
+  //proto_primenet_v3
+  'EZETH',
+  'WETH',
+  'TETH',
+  //proto_base_v3
+  'WRSETH',
+  //proto_arbitrum_v3
+  //proto_avalanche_v3
+  'WETH.E',
+  //proto_sonic_v3
+  //proto_optimism_v3
+  //proto_polygon_v3
+  'MATICX',
+  'STMATIC',
+  //proto_metis_v3
+  //proto_gnosis_v3
+  //proto_bnb_v3
+  //proto_scroll_v3
+  //proto_zksync_v3
+  //proto_linea_v3
+  //proto_celo_v3
+  //proto_soneium_v3
+  //proto_etherfi_v3
 ];
 export const categorizeAsset = (symbol: string): AssetCategory[] => {
   const categories: AssetCategory[] = [AssetCategory.ALL];

@@ -50,6 +50,7 @@ export const MarketAssetsListContainer = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<AssetCategory>(AssetCategory.ALL);
   const { breakpoints } = useTheme();
+
   const sm = useMediaQuery(breakpoints.down('sm'));
 
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
