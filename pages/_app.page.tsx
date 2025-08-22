@@ -1,6 +1,7 @@
 import '/public/fonts/inter/inter.css';
 import '/src/styles/variables.css';
 
+import { AaveClient, AaveProvider } from '@aave/react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { NoSsr } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -94,6 +95,8 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
+export const client = AaveClient.create();
+
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
@@ -140,7 +143,8 @@ export default function MyApp(props: MyAppProps) {
         imageUrl="https://app.aave.com/aave-com-opengraph.png"
       />
       <NoSsr>
-        <LanguageProvider>
+        <AaveProvider client={client}>
+          <LanguageProvider>
           <WagmiProvider config={wagmiConfig}>
             <QueryClientProvider client={queryClient}>
               <ConnectKitProvider
@@ -188,7 +192,8 @@ export default function MyApp(props: MyAppProps) {
               <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
           </WagmiProvider>
-        </LanguageProvider>
+          </LanguageProvider>
+        </AaveProvider>
       </NoSsr>
     </CacheProvider>
   );
