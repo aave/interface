@@ -21,6 +21,13 @@ export const MarketAssetCategoryFilter = ({
             minWidth: 'auto',
             p: 2,
             fontSize: '0.875rem',
+            '&:hover': {
+              borderColor: 'primary.main', // Color del borde en hover
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              zIndex: 1, // Asegura que el borde se vea por encima
+            },
+            // Si quieres que el outlined button mantenga bordes en hover
           },
         }}
         variant="outlined"

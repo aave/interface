@@ -96,7 +96,11 @@ export const MarketAssetsListContainer = () => {
     <ListWrapper
       titleComponent={
         sm ? (
-          <Box sx={{ width: '100%' }}>
+          <Box
+            sx={{
+              width: '100%',
+            }}
+          >
             <TitleWithSearchBar
               onSearchTermChange={setSearchTerm}
               title={
