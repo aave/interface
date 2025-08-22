@@ -13,6 +13,7 @@ import {
 } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { convertAprToApy } from 'src/utils/utils';
 
 export enum MeritAction {
   ETHEREUM_SGHO = 'ethereum-sgho',
@@ -49,6 +50,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   AVALANCHE_SUPPLY_GHO = 'avalanche-supply-gho',
+  AVALANCHE_BORROW_USDC = 'avalanche-borrow-usdc',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
   SONIC_SUPPLY_STS_BORROW_WS = 'sonic-supply-sts-borrow-ws',
   GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
@@ -76,6 +78,19 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customForumLink: string;
 };
 
+export type MeritIncentivesBreakdown = {
+  protocolAPY: number;
+  protocolIncentivesAPR: number;
+  meritIncentivesAPR: number; // Now represents APY (converted from APR)
+  totalAPY: number;
+  isBorrow: boolean;
+  breakdown: {
+    protocol: number;
+    protocolIncentives: number;
+    meritIncentives: number; // Now represents APY (converted from APR)
+  };
+};
+
 const url = 'https://apps.aavechan.com/api/merit/aprs';
 
 export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiveAPR'> & {
@@ -85,8 +100,10 @@ export type MeritReserveIncentiveData = Omit<ReserveIncentiveResponse, 'incentiv
   protocolAction?: ProtocolAction;
 };
 
-const getMeritData = (market: string, symbol: string): MeritReserveIncentiveData[] | undefined =>
-  MERIT_DATA_MAP[market]?.[symbol];
+export const getMeritData = (
+  market: string,
+  symbol: string
+): MeritReserveIncentiveData[] | undefined => MERIT_DATA_MAP[market]?.[symbol];
 
 const antiLoopMessage =
   'Borrowing of some assets or holding of some token may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
@@ -127,7 +144,7 @@ const eurcForumLink =
 const AusdRenewalForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/88';
 const AvalancheRenewalForumLink =
-  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/89';
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/146';
 
 const lbtcCbbtcForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/91';
@@ -141,7 +158,7 @@ const StSLoopIncentiveProgramForumLink =
 const baseIncentivesForumLink =
   'https://governance.aave.com/t/arfc-base-incentive-campaign-funding/21983';
 
-const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
+export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>> = {
   [CustomMarket.proto_mainnet_v3]: {
     GHO: [
       {
@@ -474,7 +491,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     ['BTC.b']: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_BTCB,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.BTCb.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -484,17 +501,25 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     USDC: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_USDC,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.USDC.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
+        customForumLink: AvalancheRenewalForumLink,
+      },
+      {
+        action: MeritAction.AVALANCHE_BORROW_USDC,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
         customForumLink: AvalancheRenewalForumLink,
       },
     ],
     USDt: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_USDT,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.USDt.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -514,7 +539,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     AUSD: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_AUSD,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.AUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -524,7 +549,7 @@ const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentiveData[]>
     GHO: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_GHO,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.GHO.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -670,10 +695,14 @@ export const useMeritIncentives = ({
   symbol,
   market,
   protocolAction,
+  protocolAPY = 0,
+  protocolIncentives = [],
 }: {
   symbol: string;
   market: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   return useQuery({
     queryFn: async () => {
@@ -715,14 +744,38 @@ export const useMeritIncentives = ({
         return null;
       }
 
+      const meritIncentivesAPR = maxAPR / 100;
+      const meritIncentivesAPY = convertAprToApy(meritIncentivesAPR);
+
+      const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
+        return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
+      }, 0);
+
+      const isBorrow = protocolAction === ProtocolAction.borrow;
+      const totalAPY = isBorrow
+        ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY
+        : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY;
+
       return {
-        incentiveAPR: (maxAPR / 100).toString(),
+        incentiveAPR: meritIncentivesAPY.toString(),
         rewardTokenAddress: selectedIncentive.rewardTokenAddress,
         rewardTokenSymbol: selectedIncentive.rewardTokenSymbol,
         action: selectedIncentive.action,
         customMessage: selectedIncentive.customMessage,
         customForumLink: selectedIncentive.customForumLink,
-      } as ExtendedReserveIncentiveResponse;
+        breakdown: {
+          protocolAPY,
+          protocolIncentivesAPR,
+          meritIncentivesAPR: meritIncentivesAPY,
+          totalAPY,
+          isBorrow,
+          breakdown: {
+            protocol: protocolAPY,
+            protocolIncentives: protocolIncentivesAPR,
+            meritIncentives: meritIncentivesAPY,
+          },
+        } as MeritIncentivesBreakdown,
+      } as ExtendedReserveIncentiveResponse & { breakdown: MeritIncentivesBreakdown };
     },
   });
 };

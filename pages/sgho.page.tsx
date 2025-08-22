@@ -15,7 +15,9 @@ import { WalletBalance } from 'src/modules/reserve-overview/ReserveActions';
 import { SGHODepositPanel } from 'src/modules/sGho/SGhoDepositPanel';
 import { SGHOHeader } from 'src/modules/sGho/SGhoHeader';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { SAFETY_MODULE } from 'src/utils/events';
+import { useShallow } from 'zustand/shallow';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -33,13 +35,23 @@ const SavingsGhoWithdrawModal = dynamic(() =>
 export default function SavingsGho() {
   const { openSavingsGhoDeposit, openSavingsGhoWithdraw } = useModalContext();
   const { currentAccount } = useWeb3Context();
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
+  );
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
 
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
+
+  // Automatically switch to mainnet if not already on mainnet
+  // since sGHO only exists on Ethereum mainnet
+  useEffect(() => {
+    if (currentMarket !== CustomMarket.proto_mainnet_v3) {
+      setCurrentMarket(CustomMarket.proto_mainnet_v3);
+    }
+  }, [currentMarket, setCurrentMarket]);
 
   useEffect(() => {
     trackEvent('Page Viewed', {

@@ -101,6 +101,7 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
 }
+
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
@@ -145,53 +146,53 @@ export default function MyApp(props: MyAppProps) {
       <NoSsr>
         <AaveProvider client={client}>
           <LanguageProvider>
-          <WagmiProvider config={wagmiConfig}>
-            <QueryClientProvider client={queryClient}>
-              <ConnectKitProvider
-                onDisconnect={cleanLocalStorage}
-                onConnect={({ connectorId }) => setWalletType(connectorId)}
-              >
-                <Web3ContextProvider>
-                  <AppGlobalStyles>
-                    <AddressBlocked>
-                      <CowOrderToastProvider>
-                        <ModalContextProvider>
-                          <WalletGuard>
-                            <SharedDependenciesProvider>
-                              <AppDataProvider>
-                                <GasStationProvider>
-                                  {getLayout(<Component {...pageProps} />)}
-                                  <TransactionErrorBoundary>
-                                    <SupplyModal />
-                                    <WithdrawModal />
-                                    <BorrowModal />
-                                    <RepayModal />
-                                    <CollateralChangeModal />
-                                    <DebtSwitchModal />
-                                    <ClaimRewardsModal />
-                                    <EmodeModal />
-                                    <SwapModal />
-                                    <FaucetModal />
-                                    <SwitchModal />
-                                    <StakingMigrateModal />
-                                    <BridgeModal />
-                                  </TransactionErrorBoundary>
-                                  <TransactionEventHandler />
-                                  <ReadOnlyModal />
-                                  <CowOrderToast />
-                                </GasStationProvider>
-                              </AppDataProvider>
-                            </SharedDependenciesProvider>
-                          </WalletGuard>
-                        </ModalContextProvider>
-                      </CowOrderToastProvider>
-                    </AddressBlocked>
-                  </AppGlobalStyles>
-                </Web3ContextProvider>
-              </ConnectKitProvider>
-              <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
-          </WagmiProvider>
+            <WagmiProvider config={wagmiConfig}>
+              <QueryClientProvider client={queryClient}>
+                <ConnectKitProvider
+                  onDisconnect={cleanLocalStorage}
+                  onConnect={({ connectorId }) => setWalletType(connectorId)}
+                >
+                  <Web3ContextProvider>
+                    <AppGlobalStyles>
+                      <AddressBlocked>
+                        <CowOrderToastProvider>
+                          <ModalContextProvider>
+                            <WalletGuard>
+                              <SharedDependenciesProvider>
+                                <AppDataProvider>
+                                  <GasStationProvider>
+                                    {getLayout(<Component {...pageProps} />)}
+                                    <TransactionErrorBoundary>
+                                      <SupplyModal />
+                                      <WithdrawModal />
+                                      <BorrowModal />
+                                      <RepayModal />
+                                      <CollateralChangeModal />
+                                      <DebtSwitchModal />
+                                      <ClaimRewardsModal />
+                                      <EmodeModal />
+                                      <SwapModal />
+                                      <FaucetModal />
+                                      <SwitchModal />
+                                      <StakingMigrateModal />
+                                      <BridgeModal />
+                                    </TransactionErrorBoundary>
+                                    <TransactionEventHandler />
+                                    <ReadOnlyModal />
+                                    <CowOrderToast />
+                                  </GasStationProvider>
+                                </AppDataProvider>
+                              </SharedDependenciesProvider>
+                            </WalletGuard>
+                          </ModalContextProvider>
+                        </CowOrderToastProvider>
+                      </AddressBlocked>
+                    </AppGlobalStyles>
+                  </Web3ContextProvider>
+                </ConnectKitProvider>
+                <ReactQueryDevtools initialIsOpen={false} />
+              </QueryClientProvider>
+            </WagmiProvider>
           </LanguageProvider>
         </AaveProvider>
       </NoSsr>

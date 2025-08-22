@@ -19,6 +19,7 @@ import {
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWrappedTokens, WrappedTokenConfig } from 'src/hooks/useWrappedTokens';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
@@ -146,6 +147,7 @@ export const SupplyModalContent = React.memo(
   }: SupplyModalContentProps) => {
     const { marketReferencePriceInUsd } = useAppDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
+    const { chainId } = useWeb3Context();
     const [minRemainingBaseTokenBalance, currentMarketData, currentNetworkConfig] = useRootStore(
       useShallow((state) => [
         state.poolComputed.minRemainingBaseTokenBalance,
@@ -156,6 +158,7 @@ export const SupplyModalContent = React.memo(
 
     // states
     const [amount, setAmount] = useState('');
+    const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
     const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
     const walletBalance = supplyUnWrapped ? nativeBalance : tokenBalance;
@@ -201,6 +204,8 @@ export const SupplyModalContent = React.memo(
       blocked: false,
       decimals: poolReserve.decimals,
       isWrappedBaseAsset: poolReserve.isWrappedBaseAsset,
+      setShowUSDTResetWarning,
+      chainId,
     };
 
     if (supplyTxState.success)
@@ -271,6 +276,17 @@ export const SupplyModalContent = React.memo(
         </TxModalDetails>
 
         {txError && <GasEstimationError txError={txError} />}
+
+        {showUSDTResetWarning && (
+          <Warning severity="info" sx={{ mt: 5 }}>
+            <Typography variant="caption">
+              <Trans>
+                USDT on Ethereum requires approval reset before a new approval. This will require an
+                additional transaction.
+              </Trans>
+            </Typography>
+          </Warning>
+        )}
 
         <SupplyActions {...supplyActionsProps} />
       </>
@@ -475,6 +491,7 @@ export const SupplyWrappedTokenModalContent = ({
           decimals={18}
           symbol={wrappedTokenConfig.tokenIn.symbol}
           isWrongNetwork={isWrongNetwork}
+          reserve={poolReserve}
         />
       ) : (
         <SupplyActions

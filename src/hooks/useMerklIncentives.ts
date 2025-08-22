@@ -19,6 +19,7 @@ import {
   AaveV3Sonic,
 } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
+import { convertAprToApy } from 'src/utils/utils';
 import { Address } from 'viem';
 
 enum OpportunityAction {
@@ -94,7 +95,22 @@ type ReserveIncentiveAdditionalData = {
 };
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
-  ReserveIncentiveAdditionalData;
+  ReserveIncentiveAdditionalData & {
+    breakdown: MerklIncentivesBreakdown;
+  };
+
+export type MerklIncentivesBreakdown = {
+  protocolAPY: number;
+  protocolIncentivesAPR: number;
+  merklIncentivesAPR: number; // Now represents APY (converted from APR)
+  totalAPY: number;
+  isBorrow: boolean;
+  breakdown: {
+    protocol: number;
+    protocolIncentives: number;
+    merklIncentives: number; // Now represents APY (converted from APR)
+  };
+};
 
 const allAaveAssets = [
   AaveV3Ethereum.ASSETS,
@@ -172,10 +188,14 @@ export const useMerklIncentives = ({
   market,
   rewardedAsset,
   protocolAction,
+  protocolAPY = 0,
+  protocolIncentives = [],
 }: {
   market: string;
   rewardedAsset?: string;
   protocolAction?: ProtocolAction;
+  protocolAPY?: number;
+  protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   return useQuery({
     queryFn: async () => {
@@ -215,7 +235,8 @@ export const useMerklIncentives = ({
         return null;
       }
 
-      const apr = opportunity.apr / 100;
+      const merklIncentivesAPR = opportunity.apr / 100;
+      const merklIncentivesAPY = convertAprToApy(merklIncentivesAPR);
 
       const rewardToken = opportunity.rewardsRecord.breakdowns[0].token;
 
@@ -223,15 +244,36 @@ export const useMerklIncentives = ({
         return null;
       }
 
+      const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
+        return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
+      }, 0);
+
+      const isBorrow = protocolAction === ProtocolAction.borrow;
+      const totalAPY = isBorrow
+        ? protocolAPY - protocolIncentivesAPR - merklIncentivesAPY
+        : protocolAPY + protocolIncentivesAPR + merklIncentivesAPY;
+
       const incentiveAdditionalData = rewardedAsset
         ? additionalIncentiveData[rewardedAsset]
         : undefined;
 
       return {
-        incentiveAPR: apr.toString(),
+        incentiveAPR: merklIncentivesAPY.toString(),
         rewardTokenAddress: rewardToken.address,
         rewardTokenSymbol: rewardToken.symbol,
         ...incentiveAdditionalData,
+        breakdown: {
+          protocolAPY,
+          protocolIncentivesAPR,
+          merklIncentivesAPR: merklIncentivesAPY,
+          totalAPY,
+          isBorrow,
+          breakdown: {
+            protocol: protocolAPY,
+            protocolIncentives: protocolIncentivesAPR,
+            merklIncentives: merklIncentivesAPY,
+          },
+        } as MerklIncentivesBreakdown,
       } as ExtendedReserveIncentiveResponse;
     },
   });
