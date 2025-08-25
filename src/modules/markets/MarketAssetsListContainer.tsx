@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { MarketAssetCategoryFilter } from 'src/components/MarketAssetCategoryFilter';
 import { NoSearchResults } from 'src/components/NoSearchResults';
@@ -18,14 +18,9 @@ import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/events';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
-import {
-  AssetCategory,
-  ETH_CORRELATED_SYMBOLS_FALLBACK,
-  isAssetInCategoryDynamic,
-  STABLECOINS_SYMBOLS_FALLBACK,
-} from './utils/assetCategories';
-import { fetchCoinGeckoEthCorrelated } from './utils/useCoinGeckoEthCorrelatedCat';
-import { fetchCoinGeckoStablecoins } from './utils/useCoinGeckoStablecoinCat';
+import { AssetCategory, isAssetInCategoryDynamic } from './utils/assetCategories';
+import { useCoinGeckoEthCorrelatedCat } from './utils/useCoinGeckoEthCorrelatedCat';
+import { useCoinGeckoStablecoinCat } from './utils/useCoinGeckoStablecoinCat';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -56,37 +51,16 @@ export const MarketAssetsListContainer = () => {
   );
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<AssetCategory>(AssetCategory.ALL);
-  const [stablecoinSymbols, setStablecoinSymbols] = useState<string[]>(
-    STABLECOINS_SYMBOLS_FALLBACK
-  );
-  const [ethCorrelatedSymbols, setEthCorrelatedSymbols] = useState<string[]>(
-    ETH_CORRELATED_SYMBOLS_FALLBACK
-  );
+
   const { breakpoints } = useTheme();
 
-  useEffect(() => {
-    const loadStablecoins = async () => {
-      try {
-        const symbols = await fetchCoinGeckoStablecoins();
-        setStablecoinSymbols(symbols);
-        const ethSymbols = await fetchCoinGeckoEthCorrelated();
-        setEthCorrelatedSymbols(ethSymbols);
-      } catch (error) {
-        console.error('Error loading stablecoins from CoinGecko, using fallback:', error);
-        // Mantiene los símbolos hardcodeados como fallback
-      }
-    };
-
-    loadStablecoins();
-  }, []);
+  const { stablecoinSymbols } = useCoinGeckoStablecoinCat();
+  const { ethCorrelatedSymbols } = useCoinGeckoEthCorrelatedCat();
 
   const sm = useMediaQuery(breakpoints.down('sm'));
 
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
-  console.log(
-    'ETH reserves:',
-    reserves.map((r) => r.symbol)
-  );
+
   const filteredData = reserves
     // Filter out any non-active reserves
     .filter((res) => res.isActive)
@@ -138,30 +112,37 @@ export const MarketAssetsListContainer = () => {
           <Box
             sx={{
               width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+              px: { xs: '1.6px', xsm: '1.6px' },
             }}
           >
-            <TitleWithSearchBar
-              onSearchTermChange={setSearchTerm}
-              title={
-                <>
-                  {currentMarketData.marketTitle} <Trans>assets</Trans>
-                </>
-              }
-              searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
-            />
+            <Box sx={{ width: '100%' }}>
+              <TitleWithSearchBar
+                onSearchTermChange={setSearchTerm}
+                title={
+                  <>
+                    {currentMarketData.marketTitle} <Trans>assets</Trans>
+                  </>
+                }
+                searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
+              />
+            </Box>
 
             <Box
               sx={{
+                width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
-                width: '100%',
-                pt: 1,
               }}
             >
-              <MarketAssetCategoryFilter
-                selectedCategory={selectedCategory}
-                onCategoryChange={setSelectedCategory}
-              />
+              <Box sx={{ width: '100%' }}>
+                <MarketAssetCategoryFilter
+                  selectedCategory={selectedCategory}
+                  onCategoryChange={setSelectedCategory}
+                />
+              </Box>
             </Box>
           </Box>
         ) : (

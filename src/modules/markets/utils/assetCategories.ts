@@ -91,14 +91,20 @@ export const ETH_CORRELATED_SYMBOLS_FALLBACK = [
   //proto_soneium_v3
   //proto_etherfi_v3
 ];
-function normalizeSymbol(symbol: string): string {
+function normalizeStableSymbol(symbol: string): string {
   return symbol
     .toUpperCase()
-    .replace(/\.E$/, '') // DAI.E → DAI, USDC.E → USDC
-    .replace(/^M\./, '') // M.USDC → USDC
-    .replace(/^W/, '') // WETH, WBTC → ETH, BTC
+    .replace(/\.E$/, '')
+    .replace(/^M\./, '')
+    .replace(/^W/, '')
     .replace(/USD₮0/g, 'USDT')
     .replace(/USD₮/g, 'USDT');
+}
+function normalizeEthCorrelatedSymbol(symbol: string): string {
+  return symbol
+    .toUpperCase()
+    .replace(/\.E$/, '')
+    .replace(/WRSETH/g, 'RSETH');
 }
 
 export const categorizeAssetDynamic = (
@@ -109,19 +115,18 @@ export const categorizeAssetDynamic = (
   const categories: AssetCategory[] = [AssetCategory.ALL];
 
   const upperSymbol = symbol.toUpperCase();
-  const normalizedStablecoinSymbol = normalizeSymbol(upperSymbol);
+  const normalizedStablecoinSymbol = normalizeStableSymbol(upperSymbol);
   if (stablecoinCoinGeckoSymbols.includes(normalizedStablecoinSymbol)) {
     categories.push(AssetCategory.STABLECOINS);
   }
-
-  if (ethCorrelatedCoinGeckoSymbols.includes(upperSymbol)) {
+  const normalizedEthCorrelatedSymbol = normalizeEthCorrelatedSymbol(upperSymbol);
+  if (ethCorrelatedCoinGeckoSymbols.includes(normalizedEthCorrelatedSymbol)) {
     categories.push(AssetCategory.ETH_CORRELATED);
   }
 
   return categories;
 };
 
-// Nueva función para verificar categoría dinámicamente
 export const isAssetInCategoryDynamic = (
   symbol: string,
   category: AssetCategory,
@@ -137,25 +142,3 @@ export const isAssetInCategoryDynamic = (
     ethCorrelatedCoinGeckoSymbols
   ).includes(category);
 };
-
-// export const categorizeAsset = (symbol: string): AssetCategory[] => {
-//   const categories: AssetCategory[] = [AssetCategory.ALL];
-
-//   const normalizedSymbol = symbol.toUpperCase();
-//   if (STABLECOINS_SYMBOLS_FALLBACK.includes(normalizedSymbol)) {
-//     categories.push(AssetCategory.STABLECOINS);
-//   }
-
-//   if (ETH_CORRELATED_SYMBOLS.includes(normalizedSymbol)) {
-//     categories.push(AssetCategory.ETH_CORRELATED);
-//   }
-
-//   return categories;
-// };
-
-// export const isAssetInCategory = (symbol: string, category: AssetCategory): boolean => {
-//   if (category === AssetCategory.ALL) {
-//     return true;
-//   }
-//   return categorizeAsset(symbol).includes(category);
-// };

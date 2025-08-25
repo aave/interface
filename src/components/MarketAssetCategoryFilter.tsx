@@ -15,7 +15,9 @@ export const MarketAssetCategoryFilter = ({
     <Box sx={{ mt: 2, mb: 2 }}>
       <ButtonGroup
         sx={{
+          width: '100%',
           '& .MuiButton-root': {
+            flex: 1,
             textTransform: 'none',
             whiteSpace: 'nowrap',
             minWidth: 'auto',
