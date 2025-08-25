@@ -126,6 +126,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDtb',
     aToken: true,
   },
+  aLinweETH: {
+    tokenIconSymbol: 'weETH',
+    symbol: 'aweETH',
+    aToken: true,
+  },
   aSonstS: {
     tokenIconSymbol: 'stS',
     symbol: 'astS',
