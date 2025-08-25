@@ -2868,6 +2868,10 @@ msgstr "and about SPK program"
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "Low health factor after swap. Please select a different asset or lower the amount."
+msgstr "Low health factor after swap. Please select a different asset or lower the amount."
+
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Select an asset"
 msgstr "Select an asset"

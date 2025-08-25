@@ -490,7 +490,7 @@ export const BaseSwitchModalContent = ({
   }, [txError]);
 
   // Compute HF effect of withdrawing inputAmount (copied from SwitchModalTxDetails)
-  const { hfEffectOfFromAmount } = useMemo(() => {
+  const { hfEffectOfFromAmount, hfAfterSwap } = useMemo(() => {
     try {
       if (!poolReserve || !userReserve || !extendedUser || !switchRates || !targetReserve)
         return { hfEffectOfFromAmount: '0' };
@@ -519,7 +519,7 @@ export const BaseSwitchModalContent = ({
         hfAfterSwap: hfAfterSwap.toString(),
       };
     } catch {
-      return { hfEffectOfFromAmount: '0' };
+      return { hfEffectOfFromAmount: '0', hfAfterSwap: undefined };
     }
   }, [
     poolReserve,
@@ -530,6 +530,16 @@ export const BaseSwitchModalContent = ({
     switchRates,
     safeSlippage,
   ]);
+
+  const isHFLow = useMemo(() => {
+    if (!hfAfterSwap) return false;
+
+    const hfNumber = new BigNumber(hfAfterSwap);
+
+    if (hfNumber.lt(0)) return false;
+
+    return hfNumber.lt(1.05);
+  }, [hfAfterSwap]);
 
   const shouldUseFlashloanFn = (healthFactor: string, hfEffectOfFromAmount: string) => {
     return (
@@ -954,6 +964,17 @@ export const BaseSwitchModalContent = ({
                 </Warning>
               )}
 
+              {modalType === ModalType.CollateralSwap && isHFLow && (
+                <Warning severity="error" icon={false} sx={{ mt: 5 }}>
+                  <Typography variant="caption">
+                    <Trans>
+                      Low health factor after swap. Please select a different asset or lower the
+                      amount.
+                    </Trans>
+                  </Typography>
+                </Warning>
+              )}
+
               <SwitchErrors
                 ratesError={ratesError}
                 balance={selectedInputToken.balance}
@@ -1057,7 +1078,10 @@ export const BaseSwitchModalContent = ({
                     slippageValidation?.severity === ValidationSeverity.ERROR ||
                     isSwappingSafetyModuleToken ||
                     (requireConfirmation && !highPriceImpactConfirmed) ||
-                    (shouldUseFlashloan === true && !!poolReserve && !poolReserve.flashLoanEnabled)
+                    (shouldUseFlashloan === true &&
+                      !!poolReserve &&
+                      !poolReserve.flashLoanEnabled) ||
+                    (modalType === ModalType.CollateralSwap && isHFLow)
                   }
                   chainId={selectedChainId}
                   switchRates={switchRates}
