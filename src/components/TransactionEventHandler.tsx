@@ -2,12 +2,14 @@ import { useEffect, useRef } from 'react';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/react/shallow';
 
 export const TransactionEventHandler = () => {
   const postedTransactionsRef = useRef<{ [chainId: string]: string[] }>({});
 
-  const trackEvent = useRootStore((store) => store.trackEvent);
-  const transactions = useRootStore((store) => store.transactions);
+  const [trackEvent, transactions, walletType] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.transactions, store.walletType])
+  );
 
   //tx's currently tracked: supply, borrow, withdraw, repay, repay with coll, collateral switch
 
@@ -42,6 +44,7 @@ export const TransactionEventHandler = () => {
             outAmountUsd: tx.outAmountUsd,
             chainId: chainIdNumber,
             chainName: networkConfig.displayName || networkConfig.name,
+            walletType,
           });
 
           // update ref
