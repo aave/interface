@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { MarketAssetCategoryFilter } from 'src/components/MarketAssetCategoryFilter';
 import { NoSearchResults } from 'src/components/NoSearchResults';
@@ -18,7 +18,14 @@ import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/events';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
-import { AssetCategory, isAssetInCategory } from './utils/assetCategories';
+import {
+  AssetCategory,
+  ETH_CORRELATED_SYMBOLS_FALLBACK,
+  isAssetInCategoryDynamic,
+  STABLECOINS_SYMBOLS_FALLBACK,
+} from './utils/assetCategories';
+import { fetchCoinGeckoEthCorrelated } from './utils/useCoinGeckoEthCorrelatedCat';
+import { fetchCoinGeckoStablecoins } from './utils/useCoinGeckoStablecoinCat';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -49,12 +56,37 @@ export const MarketAssetsListContainer = () => {
   );
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<AssetCategory>(AssetCategory.ALL);
+  const [stablecoinSymbols, setStablecoinSymbols] = useState<string[]>(
+    STABLECOINS_SYMBOLS_FALLBACK
+  );
+  const [ethCorrelatedSymbols, setEthCorrelatedSymbols] = useState<string[]>(
+    ETH_CORRELATED_SYMBOLS_FALLBACK
+  );
   const { breakpoints } = useTheme();
+
+  useEffect(() => {
+    const loadStablecoins = async () => {
+      try {
+        const symbols = await fetchCoinGeckoStablecoins();
+        setStablecoinSymbols(symbols);
+        const ethSymbols = await fetchCoinGeckoEthCorrelated();
+        setEthCorrelatedSymbols(ethSymbols);
+      } catch (error) {
+        console.error('Error loading stablecoins from CoinGecko, using fallback:', error);
+        // Mantiene los símbolos hardcodeados como fallback
+      }
+    };
+
+    loadStablecoins();
+  }, []);
 
   const sm = useMediaQuery(breakpoints.down('sm'));
 
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
-
+  console.log(
+    'ETH reserves:',
+    reserves.map((r) => r.symbol)
+  );
   const filteredData = reserves
     // Filter out any non-active reserves
     .filter((res) => res.isActive)
@@ -69,7 +101,14 @@ export const MarketAssetsListContainer = () => {
       );
     })
     // Filter by category
-    .filter((res) => isAssetInCategory(res.symbol, selectedCategory))
+    .filter((res) =>
+      isAssetInCategoryDynamic(
+        res.symbol,
+        selectedCategory,
+        stablecoinSymbols,
+        ethCorrelatedSymbols
+      )
+    )
     // Transform the object for list to consume it
     .map((reserve) => ({
       ...reserve,
