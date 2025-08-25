@@ -28,6 +28,13 @@ export const GENERAL = {
   MAX_INPUT_SELECTION: 'Select Max input',
 };
 
+export const REWARDS = {
+  CLAIM_ALL_REWARDS: 'Claim All Rewards',
+  CLAIM_PROTOCOL_REWARDS: 'Claim Protocol Rewards',
+  CLAIM_MERIT_REWARDS: 'Claim Merit Rewards',
+  CLAIM_INDIVIDUAL_REWARD: 'Claim Individual Reward',
+} as const;
+
 export const DASHBOARD = {
   CHANGE_MARKET: 'Change market on dashboard', //done
   VIEW_MARKETS: 'View markets on dashboard', // can be viewed in PAGEVIEW
