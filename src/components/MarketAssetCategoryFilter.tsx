@@ -12,7 +12,7 @@ export const MarketAssetCategoryFilter = ({
   onCategoryChange,
 }: MarketAssetCategoryFiltersProps) => {
   return (
-    <Box sx={{ mt: 2, mb: 2 }}>
+    <Box>
       <ButtonGroup
         sx={{
           width: '100%',
