@@ -161,6 +161,7 @@ const getUnderlyingAndAToken = (assets: {
 const otherTokensWhitelisted = [
   '0x04eadd7b10ea9a484c60860aea7a7c0aec09b9f0', // aUSDtb wrapper contract
   '0x3a4de44b29995a3d8cd02d46243e1563e55bcc8b', // Aave Ethereum USDe (wrapped)
+  '0xDcC1bcC6eCD1E63cBA178C289bC1dA9f757a2eF4', // Aave Line weETH (wrapper)
 ];
 
 const whitelistedRewardTokens = [
