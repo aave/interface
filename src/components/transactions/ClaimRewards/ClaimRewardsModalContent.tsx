@@ -1,9 +1,9 @@
-import { ChainId } from '@aave/contract-helpers';
+import { ChainId, ProtocolAction } from '@aave/contract-helpers';
 import { normalize, UserIncentiveData } from '@aave/math-utils';
 import { useMeritClaimRewards } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -15,6 +15,7 @@ import {
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { REWARDS } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
@@ -42,8 +43,8 @@ interface ClaimRewardsModalContentProps {
 
 export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalContentProps) => {
   const { gasLimit, mainTxState: claimRewardsTxState, txError } = useModalContext();
-  const [currentChainId, currentMarketData] = useRootStore(
-    useShallow((store) => [store.currentChainId, store.currentMarketData])
+  const [currentChainId, currentMarketData, trackEvent] = useRootStore(
+    useShallow((store) => [store.currentChainId, store.currentMarketData, store.trackEvent])
   );
   const { chainId: connectedChainId, readOnlyModeAddress, currentAccount } = useWeb3Context();
   const [claimableUsd, setClaimableUsd] = useState('0');
@@ -258,6 +259,81 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
       ? protocolAllReward
       : rewards.find((r) => r.symbol === selectedRewardSymbol) ||
         meritRewardsForSelect.find((r) => r.symbol === selectedRewardSymbol);
+
+  // Track analytics when claim transaction succeeds
+  const hasTrackedRef = useRef(false);
+
+  // Reset tracking flag when starting a new transaction
+  useEffect(() => {
+    if (!claimRewardsTxState.success) {
+      hasTrackedRef.current = false;
+    }
+  }, [claimRewardsTxState.success]);
+
+  useEffect(() => {
+    if (claimRewardsTxState.success && selectedReward && !hasTrackedRef.current) {
+      hasTrackedRef.current = true;
+
+      const networkConfig = getNetworkConfig(currentChainId);
+
+      let eventName: string;
+      const baseEventProps = {
+        chainId: currentChainId,
+        chainName: networkConfig.displayName || networkConfig.name,
+        totalClaimableUsd: claimableUsd,
+        txHash: claimRewardsTxState.txHash,
+        market: currentMarketData.market,
+        transactiontype: ProtocolAction.claimRewards,
+      };
+
+      // Determine event type and specific properties based on claim type
+      if (selectedRewardSymbol === 'all') {
+        eventName = REWARDS.CLAIM_ALL_REWARDS;
+        const protocolRewardsCount = rewards.length;
+        const meritRewardsCount = meritClaimRewards?.rewards?.length || 0;
+
+        trackEvent(eventName, {
+          ...baseEventProps,
+          claimType: 'all',
+          protocolRewardsCount,
+          meritRewardsCount,
+          totalRewardsCount: protocolRewardsCount + meritRewardsCount,
+        });
+      } else if (
+        selectedRewardSymbol === 'merit-all' ||
+        selectedRewardSymbol.startsWith('merit-display-')
+      ) {
+        eventName = REWARDS.CLAIM_MERIT_REWARDS;
+
+        trackEvent(eventName, {
+          ...baseEventProps,
+          claimType: 'merit-all',
+          meritRewardsCount: meritClaimRewards?.rewards?.length || 0,
+          claimableUsd: selectedReward.balanceUsd,
+        });
+      } else if (selectedRewardSymbol === 'protocol-all') {
+        eventName = REWARDS.CLAIM_PROTOCOL_REWARDS;
+
+        trackEvent(eventName, {
+          ...baseEventProps,
+          claimType: 'protocol-all',
+          protocolRewardsCount: rewards.length,
+          claimableUsd: selectedReward.balanceUsd,
+        });
+      } else {
+        eventName = REWARDS.CLAIM_INDIVIDUAL_REWARD;
+
+        trackEvent(eventName, {
+          ...baseEventProps,
+          claimType: 'individual',
+          rewardSymbol: selectedReward.symbol,
+          rewardBalance: selectedReward.balance,
+          claimableUsd: selectedReward.balanceUsd,
+          rewardTokenAddress: selectedReward.rewardTokenAddress,
+        });
+      }
+    }
+  }, [claimRewardsTxState.success]);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
