@@ -8,6 +8,7 @@ export interface BasicModalProps {
   setOpen: (value: boolean) => void;
   withCloseButton?: boolean;
   contentMaxWidth?: number;
+  minContentHeight?: number;
   contentHeight?: number;
   closeCallback?: () => void;
   disableEnforceFocus?: boolean;
@@ -19,6 +20,7 @@ export const BasicModal = ({
   setOpen,
   withCloseButton = true,
   contentMaxWidth = 420,
+  minContentHeight,
   contentHeight,
   children,
   closeCallback,

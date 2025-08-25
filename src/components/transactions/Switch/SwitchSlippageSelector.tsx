@@ -105,7 +105,7 @@ export const SwitchSlippageSelector = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: '4px' }}>
       <Typography variant="caption" color="text.secondary">
         {isCustomSlippage ? <Trans>Custom slippage</Trans> : <Trans>Auto Slippage</Trans>}
         {':'}

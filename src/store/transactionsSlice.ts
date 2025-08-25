@@ -35,7 +35,7 @@ export type TransactionEvent = TransactionDetails & {
 
 type TransactionState = 'success' | 'failed';
 
-type TransactionContext = {
+export type TransactionContext = {
   market?: CustomMarket | null;
   chainId?: number;
 };

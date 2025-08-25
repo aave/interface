@@ -14,7 +14,7 @@ import {
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CollateralType } from 'src/helpers/types';
 
-import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
+import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
 
 export type SupplyModalDetailsProps = {
   showHealthFactor: boolean;
@@ -25,9 +25,10 @@ export type SupplyModalDetailsProps = {
   toAmount: string;
   fromAmount: string;
   loading: boolean;
+  showBalance?: boolean;
 };
 
-export const SwapModalDetails = ({
+export const CollateralSwapModalDetails = ({
   showHealthFactor,
   healthFactor,
   healthFactorAfterSwap,
@@ -36,6 +37,7 @@ export const SwapModalDetails = ({
   toAmount,
   fromAmount,
   loading,
+  showBalance = true,
 }: SupplyModalDetailsProps) => {
   const sourceAmountAfterSwap = valueToBigNumber(swapSource.underlyingBalance).minus(
     valueToBigNumber(fromAmount)
@@ -116,89 +118,91 @@ export const SwapModalDetails = ({
         loading={loading}
       />
 
-      <Row
-        caption={<Trans>Supply balance after switch</Trans>}
-        captionVariant="description"
-        mb={4}
-        align="flex-start"
-      >
-        <Box sx={{ textAlign: 'right' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-            }}
-          >
-            {loading ? (
-              skeleton
-            ) : (
-              <>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <TokenIcon
-                    symbol={swapSource.reserve.iconSymbol}
-                    sx={{ mr: 2, ml: 4, fontSize: '16px' }}
-                  />
+      {showBalance && (
+        <Row
+          caption={<Trans>Supply balance after switch</Trans>}
+          captionVariant="description"
+          mb={4}
+          align="flex-start"
+        >
+          <Box sx={{ textAlign: 'right' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+              }}
+            >
+              {loading ? (
+                skeleton
+              ) : (
+                <>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <TokenIcon
+                      symbol={swapSource.reserve.iconSymbol}
+                      sx={{ mr: 2, ml: 4, fontSize: '16px' }}
+                    />
+                    <FormattedNumber
+                      value={sourceAmountAfterSwap.toString()}
+                      variant="secondary14"
+                      compact
+                    />
+                  </Box>
                   <FormattedNumber
-                    value={sourceAmountAfterSwap.toString()}
-                    variant="secondary14"
+                    value={sourceAmountAfterSwap
+                      .multipliedBy(valueToBigNumber(swapSource.reserve.priceInUSD))
+                      .toString()}
+                    variant="helperText"
                     compact
+                    symbol="USD"
+                    symbolsColor="text.secondary"
+                    color="text.secondary"
                   />
-                </Box>
-                <FormattedNumber
-                  value={sourceAmountAfterSwap
-                    .multipliedBy(valueToBigNumber(swapSource.reserve.priceInUSD))
-                    .toString()}
-                  variant="helperText"
-                  compact
-                  symbol="USD"
-                  symbolsColor="text.secondary"
-                  color="text.secondary"
-                />
-              </>
-            )}
-          </Box>
+                </>
+              )}
+            </Box>
 
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-            }}
-            mt={2}
-          >
-            {loading ? (
-              skeleton
-            ) : (
-              <>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <TokenIcon
-                    symbol={swapTarget.reserve.iconSymbol}
-                    sx={{ mr: 2, ml: 4, fontSize: '16px' }}
-                  />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+              }}
+              mt={2}
+            >
+              {loading ? (
+                skeleton
+              ) : (
+                <>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <TokenIcon
+                      symbol={swapTarget.reserve.iconSymbol}
+                      sx={{ mr: 2, ml: 4, fontSize: '16px' }}
+                    />
+                    <FormattedNumber
+                      value={targetAmountAfterSwap.toString()}
+                      variant="secondary14"
+                      compact
+                    />
+                  </Box>
                   <FormattedNumber
-                    value={targetAmountAfterSwap.toString()}
-                    variant="secondary14"
+                    value={targetAmountAfterSwap
+                      .multipliedBy(valueToBigNumber(swapTarget.reserve.priceInUSD))
+                      .toString()}
+                    variant="helperText"
                     compact
+                    symbol="USD"
+                    symbolsColor="text.secondary"
+                    color="text.secondary"
                   />
-                </Box>
-                <FormattedNumber
-                  value={targetAmountAfterSwap
-                    .multipliedBy(valueToBigNumber(swapTarget.reserve.priceInUSD))
-                    .toString()}
-                  variant="helperText"
-                  compact
-                  symbol="USD"
-                  symbolsColor="text.secondary"
-                  color="text.secondary"
-                />
-              </>
-            )}
+                </>
+              )}
+            </Box>
           </Box>
-        </Box>
-      </Row>
+        </Row>
+      )}
     </>
   );
 };

@@ -15,7 +15,7 @@ import {
   isOrderCancelled,
   isOrderFilled,
   isOrderLoading,
-} from 'src/components/transactions/Switch/cowprotocol.helpers';
+} from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { ActionFields, TransactionHistoryItemUnion } from 'src/modules/history/types';
 import { useRootStore } from 'src/store/root';
 import { findByChainId } from 'src/ui-config/marketsConfig';
@@ -66,7 +66,10 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
   useEffect(() => {
     if (transactions?.pages[0] && activeOrders.size === 0) {
       transactions.pages[0]
-        .filter((tx: TransactionHistoryItemUnion) => tx.action === 'CowSwap')
+        .filter(
+          (tx: TransactionHistoryItemUnion) =>
+            tx.action === 'CowSwap' || tx.action === 'CowCollateralSwap'
+        )
         .filter((tx: ActionFields['CowSwap']) => isOrderLoading(tx.status))
         .map((tx: TransactionHistoryItemUnion) => tx as ActionFields['CowSwap'])
         .filter((tx: ActionFields['CowSwap']) => !activeOrders.has(tx.orderId))
@@ -86,10 +89,27 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
           newMap.delete(orderId);
 
           queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.poolReservesDataHumanized(
+              findByChainId(order.chainId) ?? currentMarketData
+            ),
+          });
+
+          queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.userPoolReservesDataHumanized(
+              account,
+              findByChainId(order.chainId) ?? currentMarketData
+            ),
+          });
+
+          queryClient.invalidateQueries({
             queryKey: queryKeysFactory.transactionHistory(
               account,
               findByChainId(order.chainId) ?? currentMarketData
             ),
+          });
+
+          queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.poolTokens(account, currentMarketData),
           });
 
           if (newMap.size === 0) {

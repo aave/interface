@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { UNSUPPORTED_A_TOKENS_PER_CHAIN } from 'src/components/transactions/Switch/CollateralSwap/CollateralSwapModal';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -26,8 +27,9 @@ export const SuppliedPositionsListItem = ({
   underlyingAsset,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { isIsolated, aIncentivesData, aTokenAddress, isFrozen, isActive, isPaused } = reserve;
-  const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
+  const { openSupply, openWithdraw, openCollateralChange, openCollateralSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
   const [trackEvent, currentMarketData, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarketData, store.currentMarket])
@@ -105,7 +107,12 @@ export const SuppliedPositionsListItem = ({
       <ListButtonsColumn>
         {showSwitchButton ? (
           <Button
-            disabled={disableSwap}
+            disabled={
+              disableSwap ||
+              UNSUPPORTED_A_TOKENS_PER_CHAIN[currentNetworkConfig.wagmiChain.id]?.includes(
+                aTokenAddress.toLowerCase()
+              )
+            }
             variant="contained"
             onClick={() => {
               // track
@@ -116,7 +123,7 @@ export const SuppliedPositionsListItem = ({
                 assetName: reserve.name,
                 asset: underlyingAsset,
               });
-              openSwap(underlyingAsset);
+              openCollateralSwap(underlyingAsset);
             }}
             data-cy={`swapButton`}
           >

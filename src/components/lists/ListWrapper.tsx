@@ -18,6 +18,7 @@ interface ListWrapperProps {
   wrapperSx?: BoxProps['sx'];
   tooltipOpen?: boolean;
   paperSx?: PaperProps['sx'];
+  topInfoSx?: BoxProps['sx'];
 }
 
 export const ListWrapper = ({
@@ -32,6 +33,7 @@ export const ListWrapper = ({
   wrapperSx,
   tooltipOpen,
   paperSx,
+  topInfoSx,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -170,6 +172,7 @@ export const ListWrapper = ({
             px: { xs: 4, xsm: 6 },
             pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
             overflowX: tooltipOpen ? 'hidden' : 'auto',
+            ...topInfoSx,
           }}
         >
           {topInfo}

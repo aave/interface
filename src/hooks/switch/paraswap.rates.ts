@@ -1,6 +1,9 @@
 import { OptimalRate, SwapSide } from '@paraswap/sdk';
 import { constants } from 'ethers';
-import { ParaswapRatesType, SwitchParams } from 'src/components/transactions/Switch/switch.types';
+import {
+  ParaswapRatesType,
+  ProviderRatesParams,
+} from 'src/components/transactions/Switch/switch.types';
 
 import { getParaswap } from '../paraswap/common';
 
@@ -13,7 +16,7 @@ export async function getParaswapSellRates({
   destDecimals,
   user,
   options = {},
-}: SwitchParams): Promise<ParaswapRatesType> {
+}: ProviderRatesParams): Promise<ParaswapRatesType> {
   const { paraswap } = getParaswap(chainId);
   return paraswap
     .getRate({

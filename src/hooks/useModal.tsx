@@ -21,7 +21,7 @@ export enum ModalType {
   ClaimRewards,
   Emode,
   Faucet,
-  Swap,
+  CollateralSwap,
   DebtSwitch,
   GovDelegation,
   GovVote,
@@ -127,7 +127,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openClaimRewards: () => void;
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
-  openSwap: (underlyingAsset: string) => void;
+  openCollateralSwap: (underlyingAsset: string) => void;
   openDebtSwitch: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
   openRevokeGovDelegation: () => void;
@@ -354,9 +354,9 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           setType(ModalType.Faucet);
           setArgs({ underlyingAsset });
         },
-        openSwap: (underlyingAsset) => {
-          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Swap' });
-          setType(ModalType.Swap);
+        openCollateralSwap: (underlyingAsset) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Collateral Swap' });
+          setType(ModalType.CollateralSwap);
           setArgs({ underlyingAsset });
         },
         openBridge: () => {

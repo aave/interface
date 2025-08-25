@@ -20,6 +20,19 @@ export type PoolActionSubset = {
   };
 };
 
+export type CowSwapSubset = {
+  underlyingSrcToken: ReserveSubset;
+  srcAToken?: boolean;
+  underlyingDestToken: ReserveSubset;
+  destAToken?: boolean;
+  srcAmount: string;
+  destAmount: string;
+  status: OrderStatus;
+  timestamp: number;
+  orderId: string;
+  chainId: number;
+};
+
 export type ActionFields = {
   Supply: {
     reserve: ReserveSubset;
@@ -76,16 +89,8 @@ export type ActionFields = {
     toState: boolean;
     assetPriceUSD: string;
   } & PoolActionSubset;
-  CowSwap: {
-    srcToken: ReserveSubset;
-    destToken: ReserveSubset;
-    srcAmount: string;
-    destAmount: string;
-    status: OrderStatus;
-    timestamp: number;
-    orderId: string;
-    chainId: number;
-  };
+  CowSwap: CowSwapSubset;
+  CowCollateralSwap: CowSwapSubset;
 };
 
 export type TransactionHistoryItemUnion =
@@ -135,8 +140,8 @@ export const hasSrcOrDestToken = (
   txn: TransactionHistoryItemUnion
 ): txn is TransactionHistoryItem<ActionFields['CowSwap']> => {
   return (
-    (txn as TransactionHistoryItem<ActionFields['CowSwap']>).srcToken !== undefined ||
-    (txn as TransactionHistoryItem<ActionFields['CowSwap']>).destToken !== undefined
+    (txn as TransactionHistoryItem<ActionFields['CowSwap']>).underlyingSrcToken !== undefined ||
+    (txn as TransactionHistoryItem<ActionFields['CowSwap']>).underlyingDestToken !== undefined
   );
 };
 
@@ -197,6 +202,7 @@ export const actionFilterMap = (action: string): number => {
     case 'SwapBorrowRate': // v3
       return 4;
     case 'UsageAsCollateral':
+    case 'CowCollateralSwap':
       return 5;
     case 'LiquidationCall':
       return 6;

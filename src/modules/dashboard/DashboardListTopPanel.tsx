@@ -1,9 +1,6 @@
-import { Trans } from '@lingui/macro';
-import { Box, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, SxProps } from '@mui/material';
 import { FaucetButton } from 'src/components/FaucetButton';
 import { useRootStore } from 'src/store/root';
-import { DASHBOARD } from 'src/utils/events';
-import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { BridgeButton } from '../../components/BridgeButton';
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
@@ -13,6 +10,11 @@ interface DashboardListTopPanelProps extends Pick<NetworkConfig, 'bridge'> {
   value: boolean;
   onClick: (value: boolean) => void;
   localStorageName: string;
+  eventName: string;
+  label: React.ReactNode;
+  showFaucet: boolean;
+  showBridge: boolean;
+  sx?: SxProps;
 }
 
 export const DashboardListTopPanel = ({
@@ -20,6 +22,11 @@ export const DashboardListTopPanel = ({
   onClick,
   localStorageName,
   bridge,
+  eventName,
+  label,
+  showFaucet,
+  showBridge,
+  sx,
 }: DashboardListTopPanelProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -33,6 +40,7 @@ export const DashboardListTopPanel = ({
         px: { xs: 4, xsm: 6 },
         py: 2,
         pl: { xs: '18px', xsm: '27px' },
+        ...sx,
       }}
     >
       <FormControlLabel
@@ -40,15 +48,15 @@ export const DashboardListTopPanel = ({
         control={<Checkbox sx={{ p: '6px' }} />}
         checked={value}
         onChange={() => {
-          trackEvent(DASHBOARD.SHOW_ASSETS_0_BALANCE, {});
+          trackEvent(eventName, {});
 
           toggleLocalStorageClick(value, onClick, localStorageName);
         }}
-        label={<Trans>Show assets with 0 balance</Trans>}
+        label={label}
       />
 
-      {(STAGING_ENV || ENABLE_TESTNET) && <FaucetButton />}
-      {!ENABLE_TESTNET && <BridgeButton bridge={bridge} />}
+      {showFaucet && <FaucetButton />}
+      {showBridge && <BridgeButton bridge={bridge} />}
     </Box>
   );
 };

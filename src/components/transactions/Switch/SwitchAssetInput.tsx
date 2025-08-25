@@ -74,6 +74,7 @@ export interface AssetInputProps {
   selectedAsset: TokenInfoWithBalance;
   balanceTitle?: string;
   showBalance?: boolean;
+  allowCustomTokens?: boolean;
 }
 
 export const SwitchAssetInput = ({
@@ -91,6 +92,7 @@ export const SwitchAssetInput = ({
   selectedAsset,
   balanceTitle,
   showBalance = true,
+  allowCustomTokens = true,
 }: AssetInputProps) => {
   const theme = useTheme();
   const handleSelect = (asset: TokenInfoWithBalance) => {
@@ -105,6 +107,7 @@ export const SwitchAssetInput = ({
   const inputRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
+    if (!allowCustomTokens && assets.length === 1) return;
     setOpenModal(true);
   };
 
@@ -130,25 +133,37 @@ export const SwitchAssetInput = ({
         asset.name.toLowerCase().includes(searchQuery) ||
         asset.address.toLowerCase() === searchQuery
     );
-    if (matchingAssets.length === 0 && isAddress(value)) {
-      setLoadingNewAsset(true);
-      Promise.all([
-        erc20Service.getTokenInfo(value, chainId),
-        erc20Service.getBalance(value, user, chainId),
-      ])
-        .then(([tokenMetadata, userBalance]) => {
-          const tokenInfo = {
-            chainId: chainId,
-            balance: formatUnits(userBalance, tokenMetadata.decimals),
-            extensions: {
-              isUserCustom: true,
-            },
-            ...tokenMetadata,
-          };
-          setFilteredAssets([tokenInfo]);
-        })
-        .catch(() => setFilteredAssets([]))
-        .finally(() => setLoadingNewAsset(false));
+    if (matchingAssets.length === 0) {
+      // If custom tokens are not allowed, do not attempt to import by address
+      if (!allowCustomTokens) {
+        setLoadingNewAsset(false);
+        setFilteredAssets([]);
+        return;
+      }
+
+      if (isAddress(value)) {
+        setLoadingNewAsset(true);
+        Promise.all([
+          erc20Service.getTokenInfo(value, chainId),
+          erc20Service.getBalance(value, user, chainId),
+        ])
+          .then(([tokenMetadata, userBalance]) => {
+            const tokenInfo = {
+              chainId: chainId,
+              balance: formatUnits(userBalance, tokenMetadata.decimals),
+              extensions: {
+                isUserCustom: true,
+              },
+              ...tokenMetadata,
+            };
+            setFilteredAssets([tokenInfo]);
+          })
+          .catch(() => setFilteredAssets([]))
+          .finally(() => setLoadingNewAsset(false));
+        return;
+      }
+
+      setFilteredAssets([]);
     } else {
       setFilteredAssets(matchingAssets);
     }
@@ -240,7 +255,7 @@ export const SwitchAssetInput = ({
               backgroundColor: 'transparent',
             },
           }}
-          endIcon={<ExpandMore />}
+          endIcon={assets.length > 1 ? <ExpandMore /> : undefined}
         >
           <ExternalTokenIcon
             symbol={selectedAsset.symbol}
@@ -269,7 +284,7 @@ export const SwitchAssetInput = ({
           open={openModal}
           setOpen={setOpenModal}
           contentMaxWidth={420}
-          contentHeight={680}
+          contentHeight={800}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
@@ -292,7 +307,7 @@ export const SwitchAssetInput = ({
             >
               <SearchInput
                 onSearchTermChange={handleSearchAssetChange}
-                placeholder="Search name or paste address"
+                placeholder={allowCustomTokens ? 'Search name or paste address' : 'Search name'}
                 disableFocus={true}
               />
               {assets.length > 3 && (
@@ -342,7 +357,7 @@ export const SwitchAssetInput = ({
               sx={{
                 flexGrow: 1,
                 overflowY: 'auto',
-                maxHeight: 'calc(600px - 180px)',
+                maxHeight: 'calc(800px - 180px)',
                 '&::-webkit-scrollbar': {
                   width: '8px',
                 },
@@ -418,9 +433,13 @@ export const SwitchAssetInput = ({
                   color="text.primary"
                   sx={{ width: 'auto', textAlign: 'center', m: 4 }}
                 >
-                  <Trans>
-                    No results found. You can import a custom token with a contract address
-                  </Trans>
+                  {allowCustomTokens ? (
+                    <Trans>
+                      No results found. You can import a custom token with a contract address
+                    </Trans>
+                  ) : (
+                    <Trans>No results found.</Trans>
+                  )}
                 </Typography>
               )}
             </Box>
