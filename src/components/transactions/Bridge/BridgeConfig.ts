@@ -148,12 +148,24 @@ const prodConfig: Config[] = [
   {
     sourceChainId: ChainId.avalanche,
     chainSelector: '6433500567565415381',
-    burnMintTokenPool: '0xDe6539018B095353A40753Dc54C91C68c9487D4E',
+    burnMintTokenPool: '0xDe6539018B095353A40753Dc54C91C68c9487D4E', // GhoAvalanche.GHO_CCIP_TOKEN_POOL
     router: '0xF4c7E640EdA248ef95972845a62bdC74237805dB',
     tokenOracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12',
     wrappedNativeOracle: AaveV3Avalanche.ASSETS.WAVAX.ORACLE,
     subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7WRSEgg43s2CqpymK2wkHrhQjn4v5fEnufonwRkkokbM`,
     feeTokens: [
+      {
+        name: 'Gho Token',
+        address: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73', // AaveV3Avalanche.ASSETS.GHO.UNDERLYING,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: ChainId.avalanche,
+        oracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12', // AaveV3Avalanche.ASSETS.GHO.ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
       {
         name: 'AVAX',
         symbol: 'AVAX',
