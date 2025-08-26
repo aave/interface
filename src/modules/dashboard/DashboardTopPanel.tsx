@@ -1,5 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
+import { useMeritClaimRewards } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
@@ -53,7 +54,18 @@ export const DashboardTopPanel = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { claimableRewardsUsd } = user
+  const { data: meritClaimRewards } = useMeritClaimRewards({
+    user: currentAccount,
+    chainId: currentMarketData.chainId,
+  });
+
+  // Calculate merit rewards USD value
+  const meritRewardsUsd =
+    meritClaimRewards?.rewards?.reduce((total, reward) => {
+      return total + Number(reward.amount.usd || 0);
+    }, 0) || 0;
+
+  const { claimableRewardsUsd: baseClaimableRewardsUsd, assets } = user
     ? Object.keys(user.calculatedUserIncentives).reduce(
         (acc, rewardTokenAddress) => {
           const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
@@ -93,7 +105,19 @@ export const DashboardTopPanel = () => {
         },
         { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
       )
-    : { claimableRewardsUsd: 0 };
+    : { claimableRewardsUsd: 0, assets: [] };
+
+  // Add merit rewards to existing assets if they exist
+  if (meritClaimRewards?.rewards) {
+    meritClaimRewards.rewards.forEach((reward) => {
+      if (Number(reward.amount.usd) > 0 && assets.indexOf(reward.currency.symbol) === -1) {
+        assets.push(reward.currency.symbol);
+      }
+    });
+  }
+
+  // Aggregate total claimable rewards (base + merit)
+  const claimableRewardsUsd = baseClaimableRewardsUsd + meritRewardsUsd;
 
   const loanToValue =
     user?.totalCollateralMarketReferenceCurrency === '0'
