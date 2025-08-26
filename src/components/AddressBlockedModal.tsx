@@ -8,9 +8,14 @@ import { Link } from './primitives/Link';
 export interface AddressBlockedProps {
   address: string;
   onDisconnectWallet: () => void;
+  message?: string;
 }
 
-export const AddressBlockedModal = ({ address, onDisconnectWallet }: AddressBlockedProps) => {
+export const AddressBlockedModal = ({
+  address,
+  onDisconnectWallet,
+  message,
+}: AddressBlockedProps) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   const setOpen = (_value: boolean) => {}; // ignore, we want the modal to not be dismissable
 
@@ -34,13 +39,19 @@ export const AddressBlockedModal = ({ address, onDisconnectWallet }: AddressBloc
           {address}
         </Typography>
         <Typography variant="description" sx={{ textAlign: 'center', mb: 4 }}>
-          <Trans>
-            This address is blocked on app.aave.com because it is associated with one or more
-          </Trans>{' '}
-          <Link href="https://docs.aave.com/faq/#address-screening" underline="always">
-            <Trans>blocked activities</Trans>
-          </Link>
-          {'.'}
+          {message ? (
+            message
+          ) : (
+            <>
+              <Trans>
+                This address is blocked on app.aave.com because it is associated with one or more
+              </Trans>{' '}
+              <Link href="https://docs.aave.com/faq/#address-screening" underline="always">
+                <Trans>blocked activities</Trans>
+              </Link>
+              {'.'}
+            </>
+          )}
         </Typography>
         <Button variant="contained" onClick={onDisconnectWallet}>
           <SvgIcon fontSize="small" sx={{ mx: 1 }}>
