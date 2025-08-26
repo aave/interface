@@ -38,6 +38,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -79,7 +80,9 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     marketReferencePriceInUsd,
     userReserves,
   } = useAppDataContext();
-  const currentChainId = useRootStore((store) => store.currentChainId);
+  const [currentChainId, currentMarket] = useRootStore(
+    useShallow((store) => [store.currentChainId, store.currentMarket])
+  );
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
@@ -95,8 +98,20 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     ])
   );
 
+  // For Horizon markets (proto_horizon_v3 or proto_sepolia_horizon_v3), use eModeCategories[2] as default
+  // For all other markets, use eModeCategories[1] (eth correlanted) as default when user has no eMode enabled (userEmodeCategoryId === 0)
+  const getDefaultEModeCategory = () => {
+    if (user.userEmodeCategoryId !== 0) {
+      return eModeCategories[user.userEmodeCategoryId];
+    }
+
+    const isHorizonMarket =
+      currentMarket === 'proto_horizon_v3' || currentMarket === 'proto_sepolia_horizon_v3';
+    return isHorizonMarket ? eModeCategories[2] : eModeCategories[1];
+  };
+
   const [selectedEmode, setSelectedEmode] = useState<EModeCategoryDisplay>(
-    user.userEmodeCategoryId === 0 ? eModeCategories[1] : eModeCategories[user.userEmodeCategoryId]
+    getDefaultEModeCategory()
   );
   const networkConfig = getNetworkConfig(currentChainId);
 
