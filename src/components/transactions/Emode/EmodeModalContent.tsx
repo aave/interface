@@ -106,7 +106,9 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     }
 
     const isHorizonMarket =
-      currentMarket === 'proto_horizon_v3' || currentMarket === 'proto_sepolia_horizon_v3';
+      currentMarket.includes('proto_horizon_v3') ||
+      currentMarket.includes('fork_proto_horizon_v3') ||
+      currentMarket.includes('proto_sepolia_horizon_v3');
     return isHorizonMarket ? eModeCategories[2] : eModeCategories[1];
   };
 
