@@ -18,6 +18,7 @@ interface ListWrapperProps {
   wrapperSx?: BoxProps['sx'];
   tooltipOpen?: boolean;
   paperSx?: PaperProps['sx'];
+  onCollapseChange?: (collapsed: boolean) => void;
 }
 
 export const ListWrapper = ({
@@ -32,6 +33,7 @@ export const ListWrapper = ({
   wrapperSx,
   tooltipOpen,
   paperSx,
+  onCollapseChange,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -149,9 +151,11 @@ export const ListWrapper = ({
             onClick={() => {
               handleTrackingEvents();
 
-              !!localStorageName && !noData
-                ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
-                : undefined;
+              if (localStorageName && !noData) {
+                const nextIsCollapse = !isCollapse;
+                toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName);
+                onCollapseChange?.(nextIsCollapse);
+              }
             }}
           >
             <Typography variant="buttonM" color="text.secondary">

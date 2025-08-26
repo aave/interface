@@ -7,9 +7,13 @@ import { Fragment, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
+import { MarketAssetCategoryFilter } from 'src/components/MarketAssetCategoryFilter';
 import { Warning } from 'src/components/primitives/Warning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
+import { AssetCategory, isAssetInCategoryDynamic } from 'src/modules/markets/utils/assetCategories';
+import { useCoinGeckoEthCorrelatedCat } from 'src/modules/markets/utils/useCoinGeckoEthCorrelatedCat';
+import { useCoinGeckoStablecoinCat } from 'src/modules/markets/utils/useCoinGeckoStablecoinCat';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
@@ -43,6 +47,9 @@ const head = [
 ];
 
 export const SupplyAssetsList = () => {
+  const { stablecoinSymbols } = useCoinGeckoStablecoinCat();
+  const { ethCorrelatedSymbols } = useCoinGeckoEthCorrelatedCat();
+  const [selectedCategory, setSelectedCategory] = useState<AssetCategory>(AssetCategory.ALL);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
@@ -67,12 +74,25 @@ export const SupplyAssetsList = () => {
   const [isShowZeroAssets, setIsShowZeroAssets] = useState(
     localStorage.getItem(localStorageName) === 'true'
   );
+  const listCollapseKey = 'supplyAssetsDashboardTableCollapse';
+  const [isListCollapsed, setIsListCollapsed] = useState(
+    localStorage.getItem(listCollapseKey) === 'true'
+  );
 
   const tokensToSupply = reserves
     .filter(
       (reserve: ComputedReserveData) =>
         !(reserve.isFrozen || reserve.isPaused) &&
         !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket })
+    )
+    // filter by category
+    .filter((res) =>
+      isAssetInCategoryDynamic(
+        res.symbol,
+        selectedCategory,
+        stablecoinSymbols,
+        ethCorrelatedSymbols
+      )
     )
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
@@ -242,10 +262,34 @@ export const SupplyAssetsList = () => {
   return (
     <ListWrapper
       titleComponent={
-        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Assets to supply</Trans>
-        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="div" variant="h3" sx={{ flex: '0 0 auto', mr: 2 }}>
+            <Trans>Assets to supply</Trans>
+          </Typography>
+
+          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+            {!downToXSM && tokensToSupply.length >= 1 && !isListCollapsed && (
+              <MarketAssetCategoryFilter
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
+                sx={{
+                  buttonGroup: { height: '20px', maxWidth: '220px' },
+                  button: { fontSize: '0.7rem' },
+                }}
+              />
+            )}
+          </Box>
+
+          <Box sx={{ flex: '0 0 44px' }} />
+        </Box>
       }
+      onCollapseChange={setIsListCollapsed}
       localStorageName="supplyAssetsDashboardTableCollapse"
       withTopMargin
       noData={supplyDisabled}
@@ -277,12 +321,26 @@ export const SupplyAssetsList = () => {
           </Box>
 
           {filteredSupplyReserves.length >= 1 && (
-            <DashboardListTopPanel
-              value={isShowZeroAssets}
-              onClick={setIsShowZeroAssets}
-              localStorageName={localStorageName}
-              bridge={bridge}
-            />
+            <>
+              <Box sx={{ px: 4, pb: 2, pt: '2px' }}>
+                {downToXSM && tokensToSupply.length >= 1 && !isListCollapsed && (
+                  <MarketAssetCategoryFilter
+                    selectedCategory={selectedCategory}
+                    onCategoryChange={setSelectedCategory}
+                    sx={{
+                      buttonGroup: { width: '100%', maxWidth: '100%', height: '30px' },
+                      button: { fontSize: '0.7rem' },
+                    }}
+                  />
+                )}
+              </Box>
+              <DashboardListTopPanel
+                value={isShowZeroAssets}
+                onClick={setIsShowZeroAssets}
+                localStorageName={localStorageName}
+                bridge={bridge}
+              />
+            </>
           )}
         </>
       }
