@@ -22,6 +22,7 @@ import {
 } from '../../../../utils/dashboardSortUtils';
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
+import { isAssetHidden } from '../constants';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
@@ -60,6 +61,7 @@ const head = [
 export const SuppliedPositionsList = () => {
   const { user, loading } = useAppDataContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
@@ -68,7 +70,11 @@ export const SuppliedPositionsList = () => {
 
   const suppliedPositions =
     user?.userReservesData
-      .filter((userReserve) => userReserve.underlyingBalance !== '0')
+      .filter(
+        (userReserve) =>
+          userReserve.underlyingBalance !== '0' &&
+          !isAssetHidden(currentMarketData.market, userReserve.reserve.underlyingAsset)
+      )
       .map((userReserve) => ({
         ...userReserve,
         supplyAPY: userReserve.reserve.supplyAPY, // Note: added only for table sort
