@@ -1269,10 +1269,6 @@ msgstr "Wallet balance"
 msgid "Borrow balance after repay"
 msgstr "Borrow balance after repay"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Supply USDT and double your yield by <0><1>verifying your humanity through Self</1></0> for the first $1,000 USDT supplied per user."
-msgstr "Supply USDT and double your yield by <0><1>verifying your humanity through Self</1></0> for the first $1,000 USDT supplied per user."
-
 #: src/modules/migration/MigrationLists.tsx
 msgid "Supplied assets"
 msgstr "Supplied assets"
@@ -3408,6 +3404,10 @@ msgstr "Remove"
 #: src/components/transactions/Switch/SwitchSlippageSelector.tsx
 msgid "Auto Slippage"
 msgstr "Auto Slippage"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Supply {0} and double your yield by <0><1>verifying your humanity through Self</1></0> for {1} per user."
+msgstr "Supply {0} and double your yield by <0><1>verifying your humanity through Self</1></0> for {1} per user."
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"

@@ -23,7 +23,8 @@ interface CampaignConfig {
   hasSpecialContent: boolean;
 }
 
-const ENABLE_SAFE_CAMPAIGN = false;
+// const ENABLE_SAFE_CAMPAIGN = false;
+const ENABLE_SAFE_CAMPAIGN = true;
 
 const isCeloAction = (action: MeritAction): boolean => {
   return [
@@ -38,8 +39,25 @@ const isCeloAction = (action: MeritAction): boolean => {
     MeritAction.CELO_BORROW_WETH,
   ].includes(action);
 };
+
+const selfCampaignConfig: Map<MeritAction, { limit: string; token: string }> = new Map([
+  [
+    MeritAction.CELO_SUPPLY_USDT,
+    {
+      token: 'USDT',
+      limit: 'the first $1,000 USDT supplied',
+    },
+  ],
+  [
+    MeritAction.CELO_SUPPLY_WETH,
+    {
+      token: 'ETH',
+      limit: 'the first $35,000 of ETH supplied',
+    },
+  ],
+]);
 const isSelfVerificationCampaign = (action: MeritAction): boolean =>
-  ENABLE_SAFE_CAMPAIGN && action === MeritAction.CELO_SUPPLY_USDT;
+  selfCampaignConfig.has(action) && ENABLE_SAFE_CAMPAIGN;
 
 const getCampaignConfig = (action: MeritAction): CampaignConfig => {
   if (isSelfVerificationCampaign(action)) {
@@ -73,6 +91,7 @@ export const MeritIncentivesTooltipContent = ({
   const meritIncentivesFormatted = getSymbolMap(meritIncentives);
 
   const campaignConfig = getCampaignConfig(meritIncentives.action);
+  const selfConfig = selfCampaignConfig.get(meritIncentives.action);
 
   return (
     <Box
@@ -118,11 +137,11 @@ export const MeritIncentivesTooltipContent = ({
         </Link>
       </Typography>
 
-      {campaignConfig.type === CampaignType.SELF_VERIFICATION && (
+      {campaignConfig.type === CampaignType.SELF_VERIFICATION && selfConfig && (
         <>
           <Typography variant="caption" color="text.secondary">
             <Trans>
-              Supply USDT and double your yield by{' '}
+              Supply {selfConfig.token} and double your yield by{' '}
               <span>
                 <Link
                   href="https://aave.self.xyz/"
@@ -133,7 +152,7 @@ export const MeritIncentivesTooltipContent = ({
                   verifying your humanity through Self
                 </Link>
               </span>{' '}
-              for the first $1,000 USDT supplied per user.
+              for {selfConfig.limit} per user.
             </Trans>{' '}
           </Typography>
           <Typography variant="caption" color="text.secondary">
