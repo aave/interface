@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { MarketAssetCategoryFilter } from 'src/components/MarketAssetCategoryFilter';
 import { NoSearchResults } from 'src/components/NoSearchResults';
@@ -18,13 +18,8 @@ import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/events';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
-import {
-  AssetCategory,
-  ETH_CORRELATED_SYMBOLS_FALLBACK,
-  isAssetInCategoryDynamic,
-  STABLECOINS_SYMBOLS_FALLBACK,
-} from './utils/assetCategories';
-import { useCoingeckoCategories } from './utils/useCoinGeckoCategories';
+import { AssetCategory, isAssetInCategoryDynamic } from './utils/assetCategories';
+import { useAssetCategoryFilters } from './utils/useAssetCategoryFilters';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -44,7 +39,7 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
 }
 
 export const MarketAssetsListContainer = () => {
-  const { data } = useCoingeckoCategories();
+  const { stablecoinSymbols, ethCorrelatedSymbols } = useAssetCategoryFilters();
   const { reserves, loading } = useAppDataContext();
   const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [
@@ -56,21 +51,6 @@ export const MarketAssetsListContainer = () => {
   );
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<AssetCategory>(AssetCategory.ALL);
-  const [stablecoinSymbols, setStablecoinSymbols] = useState<string[]>(
-    STABLECOINS_SYMBOLS_FALLBACK
-  );
-  const [ethCorrelatedSymbols, setEthCorrelatedSymbols] = useState<string[]>(
-    ETH_CORRELATED_SYMBOLS_FALLBACK
-  );
-
-  useEffect(() => {
-    if (data?.stablecoinSymbols && data.stablecoinSymbols.length > 0) {
-      setStablecoinSymbols(data.stablecoinSymbols);
-    }
-    if (data?.ethCorrelatedSymbols && data.ethCorrelatedSymbols.length > 0) {
-      setEthCorrelatedSymbols(data.ethCorrelatedSymbols);
-    }
-  }, [data]);
 
   const { breakpoints } = useTheme();
 

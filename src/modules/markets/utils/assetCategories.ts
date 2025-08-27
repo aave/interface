@@ -50,7 +50,6 @@ export const STABLECOINS_SYMBOLS_FALLBACK = [
   'FDUSD',
   //proto_scroll_v3
   //proto_zksync_v3
-  'SUSDE',
   //proto_linea_v3
   //proto_celo_v3
   'USD₮',
