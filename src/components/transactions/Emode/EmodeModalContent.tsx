@@ -38,6 +38,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -79,7 +80,9 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     marketReferencePriceInUsd,
     userReserves,
   } = useAppDataContext();
-  const currentChainId = useRootStore((store) => store.currentChainId);
+  const [currentChainId, currentMarket] = useRootStore(
+    useShallow((store) => [store.currentChainId, store.currentMarket])
+  );
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
@@ -95,8 +98,33 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     ])
   );
 
+  // For Horizon markets, use the next available category after [1]
+  // For all other markets, use eModeCategories[1] (eth correlanted) as default when user has no eMode enabled (userEmodeCategoryId === 0)
+  const getDefaultEModeCategory = () => {
+    if (user.userEmodeCategoryId !== 0) {
+      return eModeCategories[user.userEmodeCategoryId];
+    }
+
+    const isHorizonMarket =
+      currentMarket.includes('proto_horizon_v3') ||
+      currentMarket.includes('fork_proto_horizon_v3') ||
+      currentMarket.includes('proto_sepolia_horizon_v3');
+
+    if (isHorizonMarket) {
+      // Find the next available category after [1], excluding USYC GHO
+      // TODO: Add USYC when its available
+      const availableCategories = Object.values(eModeCategories)
+        .filter((emode) => emode.id !== 0 && emode.id !== 1 && emode.label !== 'USYC GHO')
+        .sort((a, b) => a.id - b.id);
+
+      return availableCategories.length > 0 ? availableCategories[0] : eModeCategories[1];
+    }
+
+    return eModeCategories[1];
+  };
+
   const [selectedEmode, setSelectedEmode] = useState<EModeCategoryDisplay>(
-    user.userEmodeCategoryId === 0 ? eModeCategories[1] : eModeCategories[user.userEmodeCategoryId]
+    getDefaultEModeCategory()
   );
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -296,7 +324,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                 onChange={(e) => selectEMode(Number(e.target.value))}
               >
                 {Object.values(eModeCategories)
-                  .filter((emode) => emode.id !== 0)
+                  .filter((emode) => emode.id !== 0 && emode.label !== 'USYC GHO')
                   .sort((a, b) => {
                     if (a.available !== b.available) {
                       return a.available ? -1 : 1;

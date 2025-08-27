@@ -27,6 +27,7 @@ import {
 } from '../../../../utils/dashboardSortUtils';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardEModeButton } from '../../DashboardEModeButton';
+import { isAssetHidden } from '../constants';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
@@ -106,7 +107,7 @@ export const BorrowedPositionsList = () => {
     'position',
     preSortedReserves,
     true
-  );
+  ).filter((reserve) => !isAssetHidden(currentMarketData.market, reserve.underlyingAsset));
 
   const disableEModeSwitch =
     user.isInEmode &&
