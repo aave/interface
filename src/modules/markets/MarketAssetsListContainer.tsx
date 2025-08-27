@@ -16,10 +16,10 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
+import { useAssetCategoryFilters } from '../../hooks/useAssetCategoryFilters';
 import { GENERAL } from '../../utils/events';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
 import { AssetCategory, isAssetInCategoryDynamic } from './utils/assetCategories';
-import { useAssetCategoryFilters } from './utils/useAssetCategoryFilters';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
