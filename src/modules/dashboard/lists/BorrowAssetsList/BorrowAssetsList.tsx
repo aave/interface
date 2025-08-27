@@ -10,9 +10,8 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { MarketAssetCategoryFilter } from 'src/components/MarketAssetCategoryFilter';
 import { Warning } from 'src/components/primitives/Warning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useAssetCategoryFilters } from 'src/hooks/useAssetCategoryFilters';
 import { AssetCategory, isAssetInCategoryDynamic } from 'src/modules/markets/utils/assetCategories';
-import { useCoinGeckoEthCorrelatedCat } from 'src/modules/markets/utils/useCoinGeckoEthCorrelatedCat';
-import { useCoinGeckoStablecoinCat } from 'src/modules/markets/utils/useCoinGeckoStablecoinCat';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GENERAL } from 'src/utils/events';
@@ -79,8 +78,7 @@ const head = [
 ];
 
 export const BorrowAssetsList = () => {
-  const { stablecoinSymbols } = useCoinGeckoStablecoinCat();
-  const { ethCorrelatedSymbols } = useCoinGeckoEthCorrelatedCat();
+  const { stablecoinSymbols, ethCorrelatedSymbols } = useAssetCategoryFilters();
   const [selectedCategory, setSelectedCategory] = useState<AssetCategory>(AssetCategory.ALL);
 
   const [currentNetworkConfig, currentMarket] = useRootStore(

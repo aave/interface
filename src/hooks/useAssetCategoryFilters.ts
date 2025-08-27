@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { ETH_CORRELATED_SYMBOLS_FALLBACK, STABLECOINS_SYMBOLS_FALLBACK } from './assetCategories';
+import {
+  ETH_CORRELATED_SYMBOLS_FALLBACK,
+  STABLECOINS_SYMBOLS_FALLBACK,
+} from '../modules/markets/utils/assetCategories';
 import { useCoingeckoCategories } from './useCoinGeckoCategories';
 
 export function useAssetCategoryFilters() {
