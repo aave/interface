@@ -3179,6 +3179,10 @@ msgstr "The caller of this function must be a pool"
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
 
+#: src/components/AddressBlockedModal.tsx
+msgid "Connection Failed"
+msgstr "Connection Failed"
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Interest rate strategy"
 msgstr "Interest rate strategy"

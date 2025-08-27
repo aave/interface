@@ -4,12 +4,14 @@ import { usePolling } from './usePolling';
 
 export interface AddressAllowedResult {
   isAllowed: boolean;
+  message?: string;
 }
 
 const TWO_MINUTES = 2 * 60 * 1000;
 
 export const useAddressAllowed = (address: string): AddressAllowedResult => {
   const [isAllowed, setIsAllowed] = useState(true);
+  const [message, setMessage] = useState<string | undefined>(undefined);
 
   const screeningUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/addresses/status`;
   const queryParams = `?address=${address}`;
@@ -19,8 +21,9 @@ export const useAddressAllowed = (address: string): AddressAllowedResult => {
       try {
         const response = await fetch(screeningUrl + queryParams);
         if (response.ok) {
-          const data: { addressAllowed: boolean } = await response.json();
+          const data: { addressAllowed: boolean; message?: string } = await response.json();
           setIsAllowed(data.addressAllowed);
+          setMessage(data.message);
         }
       } catch (e) {}
     } else {
@@ -32,5 +35,6 @@ export const useAddressAllowed = (address: string): AddressAllowedResult => {
 
   return {
     isAllowed,
+    message,
   };
 };
