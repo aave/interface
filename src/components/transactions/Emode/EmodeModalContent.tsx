@@ -98,7 +98,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     ])
   );
 
-  // For Horizon markets (proto_horizon_v3 or proto_sepolia_horizon_v3), use eModeCategories[2] as default
+  // For Horizon markets, use the next available category after [1]
   // For all other markets, use eModeCategories[1] (eth correlanted) as default when user has no eMode enabled (userEmodeCategoryId === 0)
   const getDefaultEModeCategory = () => {
     if (user.userEmodeCategoryId !== 0) {
@@ -109,7 +109,18 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
       currentMarket.includes('proto_horizon_v3') ||
       currentMarket.includes('fork_proto_horizon_v3') ||
       currentMarket.includes('proto_sepolia_horizon_v3');
-    return isHorizonMarket ? eModeCategories[2] : eModeCategories[1];
+
+    if (isHorizonMarket) {
+      // Find the next available category after [1], excluding USYC GHO
+      // TODO: Add USYC when its available
+      const availableCategories = Object.values(eModeCategories)
+        .filter((emode) => emode.id !== 0 && emode.id !== 1 && emode.label !== 'USYC GHO')
+        .sort((a, b) => a.id - b.id);
+
+      return availableCategories.length > 0 ? availableCategories[0] : eModeCategories[1];
+    }
+
+    return eModeCategories[1];
   };
 
   const [selectedEmode, setSelectedEmode] = useState<EModeCategoryDisplay>(
@@ -309,7 +320,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                 onChange={(e) => selectEMode(Number(e.target.value))}
               >
                 {Object.values(eModeCategories)
-                  .filter((emode) => emode.id !== 0)
+                  .filter((emode) => emode.id !== 0 && emode.label !== 'USYC GHO')
                   .sort((a, b) => {
                     if (a.available !== b.available) {
                       return a.available ? -1 : 1;
