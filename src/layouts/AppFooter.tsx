@@ -72,8 +72,8 @@ export function AppFooter() {
     },
     {
       href: 'https://discord.com/invite/aave',
-      label: <Trans>Send feedback</Trans>,
-      key: 'Send feedback',
+      label: <Trans>Get Support</Trans>,
+      key: 'Get Support',
       onClick: (event: React.MouseEvent) => {
         event.preventDefault();
         setFeedbackOpen(true);
