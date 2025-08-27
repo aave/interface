@@ -13,8 +13,35 @@ const client = new PlainClient({ apiKey });
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const allowedOrigins = ['https://app.aave.com', 'https://aave.com'];
+  const origin = req.headers.origin;
+
+  const isOriginAllowed = (origin: string | undefined): boolean => {
+    if (!origin) return false;
+
+    if (allowedOrigins.includes(origin)) return true;
+
+    // Match any subdomain ending with avaraxyz.vercel.app for deployment urls
+    const allowedPatterns = [/^https:\/\/.*avaraxyz\.vercel\.app$/];
+
+    return allowedPatterns.some((pattern) => pattern.test(origin));
+  };
+
+  if (process.env.CORS_DOMAINS_ALLOWED === 'true') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  } else if (origin && isOriginAllowed(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
