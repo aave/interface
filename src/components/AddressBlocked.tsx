@@ -11,12 +11,17 @@ export const AddressBlocked = ({ children }: { children: ReactNode }) => {
   const { currentAccount, readOnlyMode } = useWeb3Context();
   const { disconnect } = useDisconnect();
   const screenAddress = readOnlyMode || ENABLE_TESTNET ? '' : currentAccount;
-  const { isAllowed } = useAddressAllowed(screenAddress);
+  const { isAllowed, message } = useAddressAllowed(screenAddress);
 
   if (!isAllowed) {
     return (
       <MainLayout>
-        <AddressBlockedModal address={currentAccount} onDisconnectWallet={() => disconnect()} />;
+        <AddressBlockedModal
+          address={currentAccount}
+          onDisconnectWallet={() => disconnect()}
+          message={message}
+        />
+        ;
       </MainLayout>
     );
   }
