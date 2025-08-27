@@ -32,7 +32,7 @@ export const AddressBlockedModal = ({
           <ExclamationCircleIcon />
         </SvgIcon>
         <Typography variant="h2">
-          <Trans>Blocked Address</Trans>
+          {message ? <Trans>Connection Failed</Trans> : <Trans>Blocked Address</Trans>}
         </Typography>
         <Typography variant="helperText" sx={{ my: 4 }}>
           {address}
