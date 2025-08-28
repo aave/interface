@@ -8,6 +8,7 @@ import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
+import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 import { BaseSwitchModal } from '../BaseSwitchModal';
 import { SwitchDetailsParams as SwitchDetailsParams } from '../BaseSwitchModalContent';
@@ -50,6 +51,7 @@ export const CollateralSwapModal = () => {
   };
 
   const { user, reserves } = useAppDataContext();
+  const currentMarket = useRootStore((store) => store.currentMarket);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const baseTokens: TokenInfo[] = reserves.map((reserve) => {
     return {
@@ -118,7 +120,9 @@ export const CollateralSwapModal = () => {
 
   // Tokens To should be the potential supply tokens (so we have an aToken)
   const tokensToSupply = reserves.filter(
-    (reserve: ComputedReserveData) => !(reserve.isFrozen || reserve.isPaused)
+    (reserve: ComputedReserveData) =>
+      !(reserve.isFrozen || reserve.isPaused) &&
+      !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket: currentMarket })
   );
   const tokensTo = tokensToSupply
     .map((reserve) => {
