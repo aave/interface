@@ -24,6 +24,7 @@ import { amountToUsd } from '../../../../utils/utils';
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
+import { isAssetHidden } from '../constants';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
@@ -64,6 +65,7 @@ export const SMALL_BALANCE_THRESHOLD = 0.001;
 export const SuppliedPositionsList = () => {
   const { user, loading, marketReferencePriceInUsd } = useAppDataContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
@@ -92,6 +94,11 @@ export const SuppliedPositionsList = () => {
   const suppliedPositions = useMemo(() => {
     return (
       user?.userReservesData
+        .filter(
+          (userReserve) =>
+            userReserve.underlyingBalance !== '0' &&
+            !isAssetHidden(currentMarketData.market, userReserve.reserve.underlyingAsset)
+        )
         .filter((userReserve) => {
           if (userReserve.underlyingBalance === '0') return false;
 

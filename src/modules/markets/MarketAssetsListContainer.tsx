@@ -15,6 +15,7 @@ import { GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
 import { GENERAL } from '../../utils/events';
+import { isAssetHidden } from '../dashboard/lists/constants';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
@@ -53,6 +54,8 @@ export const MarketAssetsListContainer = () => {
   const filteredData = reserves
     // Filter out any non-active reserves
     .filter((res) => res.isActive)
+    // Filter out any hidden assets
+    .filter((res) => !isAssetHidden(currentMarketData.market, res.underlyingAsset))
     // filter out any that don't meet search term criteria
     .filter((res) => {
       if (!searchTerm) return true;

@@ -29,6 +29,7 @@ import {
   handleSortDashboardReserves,
 } from '../../../../utils/dashboardSortUtils';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
+import { isAssetHidden } from '../constants';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
@@ -74,7 +75,8 @@ export const SupplyAssetsList = () => {
     .filter(
       (reserve: ComputedReserveData) =>
         !(reserve.isFrozen || reserve.isPaused) &&
-        !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket })
+        !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket }) &&
+        !isAssetHidden(currentMarketData.market, reserve.underlyingAsset)
     )
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
