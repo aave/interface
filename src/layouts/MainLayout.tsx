@@ -15,8 +15,7 @@ import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
 const getCampaignConfigs = (
-  // openSwitch: (token?: string, chainId?: number) => void,
-  // openSwap: (underlyingAsset: string) => void
+  // openSwitch: (underlyingAsset: string) => void,
   openMarket: (market: CustomMarket) => void
 ) => ({
   [ChainId.base]: {
@@ -120,7 +119,6 @@ const getCampaignConfigs = (
 });
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  // const { openSwap } = useModalContext();
   const router = useRouter();
   const setCurrentMarket = useRootStore(useShallow((store) => store.setCurrentMarket));
 

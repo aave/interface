@@ -4,7 +4,7 @@ import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/
 import React, { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
-import { generateCoWExplorerLink } from 'src/components/transactions/Switch/cowprotocol.helpers';
+import { generateCoWExplorerLink } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { useRootStore } from 'src/store/root';
 import { NetworkConfig } from 'src/ui-config/networksConfig';
 import { GENERAL } from 'src/utils/events';
@@ -30,7 +30,10 @@ export const getExplorerLink = (
   transaction: TransactionHistoryItem & ActionFields[keyof ActionFields],
   currentNetworkConfig: NetworkConfig
 ) => {
-  if (transaction.action === 'CowSwap' && currentNetworkConfig.wagmiChain.id) {
+  if (
+    (transaction.action === 'CowSwap' || transaction.action === 'CowCollateralSwap') &&
+    currentNetworkConfig.wagmiChain.id
+  ) {
     return generateCoWExplorerLink(currentNetworkConfig.wagmiChain.id, transaction.id);
   }
 

@@ -7,7 +7,6 @@ import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
-import { useSwitchProvider } from 'src/hooks/switch/useSwitchProvider';
 import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 import { parseUnits } from 'viem';
@@ -22,7 +21,7 @@ import {
   isOrderCancelled,
   isOrderFilled,
   isOrderLoading,
-} from './cowprotocol.helpers';
+} from './cowprotocol/cowprotocol.helpers';
 import { SwitchProvider } from './switch.types';
 
 export type SwitchTxSuccessViewProps = {
@@ -85,7 +84,6 @@ export const SwitchTxSuccessView = ({
   destDecimals,
   srcDecimals,
 }: SwitchTxSuccessViewProps) => {
-  const switchProvider = useSwitchProvider({ chainId: chainId });
   const { trackOrder, setHasActiveOrders } = useCowOrderToast();
 
   // Do polling each 10 seconds until the order get's filled
@@ -99,18 +97,18 @@ export const SwitchTxSuccessView = ({
 
   // Start tracking the order when the component mounts
   useEffect(() => {
-    if (switchProvider === 'cowprotocol' && txHashOrOrderId) {
+    if (provider === 'cowprotocol' && txHashOrOrderId) {
       trackOrder(txHashOrOrderId, chainId);
-    } else if (switchProvider === 'cowprotocol' && orderStatus === 'open') {
+    } else if (provider === 'cowprotocol' && orderStatus === 'open') {
       // If the order is open, force the spinner to show, waiting for order details e.g. eth flow
       setHasActiveOrders(true);
     }
-  }, [txHashOrOrderId, chainId, switchProvider, trackOrder, setHasActiveOrders]);
+  }, [txHashOrOrderId, chainId, provider, trackOrder, setHasActiveOrders]);
 
   // Poll the order status for UI updates
   const interval = useRef<NodeJS.Timeout | null>(null);
   const pollOrder = async () => {
-    if (switchProvider === 'cowprotocol' && txHashOrOrderId) {
+    if (provider === 'cowprotocol' && txHashOrOrderId) {
       getOrder(txHashOrOrderId, chainId)
         .then((order) => {
           if (isOrderFilled(order.status)) {
@@ -135,19 +133,21 @@ export const SwitchTxSuccessView = ({
           }
         })
         .catch(console.error);
+    } else if (provider === 'paraswap' && txHashOrOrderId) {
+      console.error('Paraswap! Implement tracking of hash.');
     }
   };
   useEffect(() => {
     if (
       txHashOrOrderId &&
-      switchProvider === 'cowprotocol' &&
+      provider === 'cowprotocol' &&
       chainId &&
       destDecimals &&
       interval.current === null
     ) {
       interval.current = setInterval(pollOrder, 10000);
     }
-  }, [txHashOrOrderId, chainId, switchProvider, destDecimals]);
+  }, [txHashOrOrderId, chainId, provider, destDecimals]);
 
   const View = useMemo(() => {
     if (provider === 'cowprotocol' && orderStatus === 'open') {
