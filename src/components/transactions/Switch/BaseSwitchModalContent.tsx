@@ -57,6 +57,8 @@ export type SwitchDetailsParams = Parameters<
   NonNullable<SwitchModalCustomizableProps['switchDetails']>
 >[0];
 
+const LIQUIDATION_SAFETY_THRESHOLD = 1.05;
+
 const valueLostPercentage = (destValueInUsd: number, srcValueInUsd: number) => {
   if (destValueInUsd === 0) return 1;
   if (srcValueInUsd === 0) return 0;
@@ -521,15 +523,7 @@ export const BaseSwitchModalContent = ({
     } catch {
       return { hfEffectOfFromAmount: '0', hfAfterSwap: undefined };
     }
-  }, [
-    poolReserve,
-    userReserve,
-    extendedUser,
-    inputAmount,
-    targetReserve,
-    switchRates,
-    safeSlippage,
-  ]);
+  }, [poolReserve, userReserve, extendedUser, targetReserve, switchRates, safeSlippage]);
 
   const isHFLow = useMemo(() => {
     if (!hfAfterSwap) return false;
@@ -538,13 +532,15 @@ export const BaseSwitchModalContent = ({
 
     if (hfNumber.lt(0)) return false;
 
-    return hfNumber.lt(1.05);
+    return hfNumber.lt(LIQUIDATION_SAFETY_THRESHOLD);
   }, [hfAfterSwap]);
 
   const shouldUseFlashloanFn = (healthFactor: string, hfEffectOfFromAmount: string) => {
     return (
       healthFactor !== '-1' &&
-      new BigNumber(healthFactor).minus(new BigNumber(hfEffectOfFromAmount)).lt('1.05')
+      new BigNumber(healthFactor)
+        .minus(new BigNumber(hfEffectOfFromAmount))
+        .lt(LIQUIDATION_SAFETY_THRESHOLD)
     );
   };
 
