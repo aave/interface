@@ -16,13 +16,20 @@ export const isSwapSupportedByCowProtocol = (
 
   if (unsupportedAssetsPerChainAndModalType === undefined) return true; // No unsupported assets for this chain and modal type
 
-  if (unsupportedAssetsPerChainAndModalType === 'ALL') return false; // All assets are unsupported
-
+  if (unsupportedAssetsPerChainAndModalType === 'ALL') {
+    console.log('All assets are unsupported in prod, using cow in this preview.');
+    return true;
+    // return false; // All assets are unsupported
+  }
   if (
     unsupportedAssetsPerChainAndModalType.includes(assetFrom.toLowerCase()) ||
     unsupportedAssetsPerChainAndModalType.includes(assetTo.toLowerCase())
-  )
-    return false;
+  ) {
+    console.log('Asset unsupported in prod, using cow in this preview.', assetFrom, assetTo);
+    return true;
+    // return false;
+    // return false;
+  }
 
   return true;
 };
