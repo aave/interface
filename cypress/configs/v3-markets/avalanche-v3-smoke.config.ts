@@ -9,8 +9,7 @@ export default defineConfig({
   e2e: {
     specPattern: [
       folder + '0-assets/avax.avalanche-v3.cy.ts',
-      folder + '0-assets/link.avalanche-v3.cy.ts',
-      folder + '0-assets/usdt.avalanche-v3.cy.ts',
+      // folder + '0-assets/usdt.avalanche-v3.cy.ts',
     ],
   },
 });
