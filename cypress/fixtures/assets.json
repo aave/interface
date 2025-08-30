@@ -13,8 +13,8 @@
       "wrapped": true
     },
     "DAI": {
-      "fullName": "DAI (DAI.e)",
-      "shortName": "DAI.e",
+      "fullName": "DAI (DAI.E)",
+      "shortName": "DAI.E",
       "collateral": true,
       "wrapped": false
     },
