@@ -1,26 +1,12 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import {
-  AaveV3Arbitrum,
-  AaveV3Avalanche,
-  AaveV3Base,
-  AaveV3BNB,
-  AaveV3Celo,
-  AaveV3Ethereum,
-  AaveV3EthereumEtherFi,
-  AaveV3EthereumLido,
-  AaveV3Gnosis,
-  AaveV3Linea,
-  AaveV3Metis,
-  AaveV3Optimism,
-  AaveV3Polygon,
-  AaveV3Scroll,
-  AaveV3Soneium,
-  AaveV3Sonic,
-} from '@bgd-labs/aave-address-book';
+  additionalIncentiveInfo,
+  whitelistedRewardTokens,
+} from '@aavechan/aave-merkl-token-whitelist';
 import { useQuery } from '@tanstack/react-query';
 import { convertAprToApy } from 'src/utils/utils';
-import { Address } from 'viem';
+import { Address, checksumAddress } from 'viem';
 
 enum OpportunityAction {
   LEND = 'LEND',
@@ -112,62 +98,7 @@ export type MerklIncentivesBreakdown = {
   };
 };
 
-const allAaveAssets = [
-  AaveV3Ethereum.ASSETS,
-  AaveV3EthereumLido.ASSETS,
-  AaveV3EthereumEtherFi.ASSETS,
-  AaveV3Base.ASSETS,
-  AaveV3Arbitrum.ASSETS,
-  AaveV3Avalanche.ASSETS,
-  AaveV3Sonic.ASSETS,
-  AaveV3Optimism.ASSETS,
-  AaveV3Polygon.ASSETS,
-  AaveV3Metis.ASSETS,
-  AaveV3Gnosis.ASSETS,
-  AaveV3BNB.ASSETS,
-  AaveV3Scroll.ASSETS,
-  AaveV3Linea.ASSETS,
-  AaveV3Celo.ASSETS,
-  AaveV3Soneium.ASSETS,
-];
-
-const additionalIncentiveData: Record<string, ReserveIncentiveAdditionalData> = {
-  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN]: {
-    customMessage:
-      'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate for the forseeable future.',
-  },
-  [AaveV3Ethereum.ASSETS.USDtb.A_TOKEN]: {
-    customMessage:
-      'You must supply USDtb to receive incentives. To be eligible, you must not be borrowing any USDtb.',
-    customClaimMessage: 'Rewards will be claimable starting in early August.',
-    customForumLink: 'https://x.com/ethena_labs/status/1950194502192550149',
-  },
-};
-
 const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {};
-
-const getUnderlyingAndAToken = (assets: {
-  [key: string]: {
-    UNDERLYING: Address;
-    A_TOKEN: Address;
-  };
-}) => {
-  return Object.entries(assets).flatMap(([, asset]) => [
-    asset.UNDERLYING.toLowerCase(),
-    asset.A_TOKEN.toLowerCase(),
-  ]);
-};
-
-const otherTokensWhitelisted = [
-  '0x04eadd7b10ea9a484c60860aea7a7c0aec09b9f0', // aUSDtb wrapper contract
-  '0x3a4de44b29995a3d8cd02d46243e1563e55bcc8b', // Aave Ethereum USDe (wrapped)
-  '0xdcc1bcc6ecd1e63cba178c289bc1da9f757a2ef4', // Aave Line weETH (wrapper)
-];
-
-const whitelistedRewardTokens = [
-  ...allAaveAssets.flatMap((assets) => getUnderlyingAndAToken(assets)),
-  ...otherTokensWhitelisted,
-].map((address) => address.toLowerCase());
 
 const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 
@@ -241,7 +172,13 @@ export const useMerklIncentives = ({
 
       const rewardToken = opportunity.rewardsRecord.breakdowns[0].token;
 
-      if (!whitelistedRewardTokens.includes(rewardToken.address.toLowerCase())) {
+      console.log({
+        whitelistedRewardTokens,
+        rewardToken: rewardToken.address,
+        got: whitelistedRewardTokens.has(checksumAddress(rewardToken.address as Address)),
+      });
+
+      if (!whitelistedRewardTokens.has(checksumAddress(rewardToken.address as Address))) {
         return null;
       }
 
@@ -255,7 +192,7 @@ export const useMerklIncentives = ({
         : protocolAPY + protocolIncentivesAPR + merklIncentivesAPY;
 
       const incentiveAdditionalData = rewardedAsset
-        ? additionalIncentiveData[rewardedAsset]
+        ? additionalIncentiveInfo[checksumAddress(rewardedAsset as Address)]
         : undefined;
 
       return {
