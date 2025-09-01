@@ -132,3 +132,7 @@ export const GHO_SUCCESS_MODAL = {
   GHO_BORROW_VIEW_TX_DETAILS: 'Click view TX details on GHO borrow',
   GHO_FAIL_COPY_IMAGE: 'Failed to copy image to clipboard',
 };
+
+export const SWITCH_MODAL = {
+  SWITCH_TYPE: 'Change switch type',
+};

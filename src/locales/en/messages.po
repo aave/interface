@@ -3146,7 +3146,7 @@ msgstr "Not enough staked balance"
 msgid "Switching to {networkName}..."
 msgstr "Switching to {networkName}..."
 
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModal.tsx
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
 msgid "Minimum new collateral"
 msgstr "Minimum new collateral"
 

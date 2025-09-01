@@ -20,7 +20,6 @@ const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
 
 export const BaseSwitchModal = ({
   modalType,
-  switchDetails: swapDetails,
   inputBalanceTitle: balanceTitle,
   forcedDefaultInputToken,
   forcedDefaultOutputToken,
@@ -112,7 +111,6 @@ export const BaseSwitchModal = ({
           initialToTokens={forcedTokensTo ?? initialToTokens ?? []}
           tokensLoading={fromTokensLoading || toTokensLoading}
           modalType={modalType}
-          switchDetails={swapDetails}
           inputBalanceTitle={balanceTitle}
           forcedDefaultInputToken={forcedDefaultInputToken}
           forcedDefaultOutputToken={forcedDefaultOutputToken}

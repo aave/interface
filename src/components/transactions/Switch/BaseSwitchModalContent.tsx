@@ -35,10 +35,11 @@ import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SupportedNetworkWithChainId } from './common';
 import { getOrders, isNativeToken } from './cowprotocol/cowprotocol.helpers';
 import { NetworkSelector } from './NetworkSelector';
-import { isCowProtocolRates, SwitchProvider, SwitchRatesType } from './switch.types';
+import { isCowProtocolRates } from './switch.types';
 import { SwitchActions } from './SwitchActions';
 import { SwitchAssetInput } from './SwitchAssetInput';
 import { SwitchErrors } from './SwitchErrors';
+import { SwitchModalTxDetails } from './SwitchModalTxDetails';
 import { SwitchRates } from './SwitchRates';
 import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import { SwitchTxSuccessView } from './SwitchTxSuccessView';
@@ -52,10 +53,6 @@ const SAFETY_MODULE_TOKENS = [
   'stkbpt',
   'stkabpt',
 ];
-
-export type SwitchDetailsParams = Parameters<
-  NonNullable<SwitchModalCustomizableProps['switchDetails']>
->[0];
 
 const valueLostPercentage = (destValueInUsd: number, srcValueInUsd: number) => {
   if (destValueInUsd === 0) return 1;
@@ -112,33 +109,6 @@ export const getFilteredTokensForSwitch = (
 };
 export interface SwitchModalCustomizableProps {
   modalType: ModalType;
-  switchDetails?: ({
-    user,
-    switchRates,
-    gasLimit,
-    selectedChainId,
-    selectedOutputToken,
-    selectedInputToken,
-    safeSlippage,
-    maxSlippage,
-    switchProvider,
-    loading,
-    ratesError,
-    showGasStation,
-  }: {
-    user: string;
-    switchRates?: SwitchRatesType;
-    gasLimit: string;
-    selectedChainId: number;
-    selectedOutputToken: TokenInfoWithBalance;
-    selectedInputToken: TokenInfoWithBalance;
-    safeSlippage: number;
-    maxSlippage: number;
-    switchProvider?: SwitchProvider;
-    loading: boolean;
-    ratesError: Error | null;
-    showGasStation?: boolean;
-  }) => React.ReactNode;
   inputBalanceTitle?: string;
   outputBalanceTitle?: string;
   tokensFrom?: TokenInfoWithBalance[];
@@ -155,7 +125,6 @@ export const BaseSwitchModalContent = ({
   forcedDefaultInputToken,
   forcedDefaultOutputToken,
   supportedNetworks,
-  switchDetails,
   inputBalanceTitle,
   outputBalanceTitle,
   initialFromTokens,
@@ -713,23 +682,6 @@ export const BaseSwitchModalContent = ({
     ? normalize(maxAmount.toString(), nativeDecimals).toString()
     : undefined;
 
-  const swapDetailsComponent = switchDetails
-    ? switchDetails({
-        switchProvider: switchRates?.provider,
-        user,
-        switchRates,
-        gasLimit,
-        selectedChainId,
-        selectedOutputToken,
-        selectedInputToken,
-        safeSlippage,
-        maxSlippage: Number(slippage),
-        loading: ratesLoading || !isSwapFlowSelected,
-        ratesError,
-        showGasStation,
-      })
-    : null;
-
   const lostValue = switchRates
     ? valueLostPercentage(
         Number(switchRates?.destUSD) * (1 - safeSlippage),
@@ -942,8 +894,25 @@ export const BaseSwitchModalContent = ({
                   </Typography>
                 </Warning>
               )}
-
-              {isSwapFlowSelected && swapDetailsComponent}
+              {isSwapFlowSelected && extendedUser && switchRates && (
+                <SwitchModalTxDetails
+                  switchRates={switchRates}
+                  user={extendedUser}
+                  selectedOutputToken={selectedOutputToken}
+                  selectedInputToken={selectedInputToken}
+                  safeSlippage={safeSlippage}
+                  gasLimit={gasLimit}
+                  selectedChainId={selectedChainId}
+                  showGasStation={showGasStation}
+                  reserves={reserves}
+                  modalType={modalType}
+                  customReceivedTitle={
+                    modalType === ModalType.CollateralSwap ? (
+                      <Trans>Minimum new collateral</Trans>
+                    ) : undefined
+                  }
+                />
+              )}
 
               {showSlippageWarning && (
                 <Warning severity="warning" icon={false} sx={{ mt: 5 }}>
