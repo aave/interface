@@ -48,13 +48,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ error: 'CoinGecko API key is not configured' });
     }
 
-    // Fetch for Stablecoins Category
-    const [resStable1, resStable2] = await Promise.all([
+    // Fetch for Stablecoins Category and Eth Correlated Categories
+    const [resStable1, resStable2, resEth1, resEth2, resEth3] = await Promise.all([
       fetch(`${CG_ENDPOINT}?vs_currency=usd&category=stablecoins&per_page=250&page=1`, {
         method: 'GET',
         headers: HEADERS,
       }),
       fetch(`${CG_ENDPOINT}?vs_currency=usd&category=stablecoins&per_page=250&page=2`, {
+        method: 'GET',
+        headers: HEADERS,
+      }),
+      fetch(`${CG_ENDPOINT}?vs_currency=usd&category=liquid-staked-eth&per_page=250&page=1`, {
+        method: 'GET',
+        headers: HEADERS,
+      }),
+      fetch(`${CG_ENDPOINT}?vs_currency=usd&category=ether-fi-ecosystem&per_page=250&page=1`, {
+        method: 'GET',
+        headers: HEADERS,
+      }),
+      fetch(`${CG_ENDPOINT}?vs_currency=usd&category=liquid-staking-tokens&per_page=250&page=1`, {
         method: 'GET',
         headers: HEADERS,
       }),
@@ -72,32 +84,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         details: resStable2.statusText,
       });
     }
-
-    const [dataStable1, dataStable2] = await Promise.all([resStable1.json(), resStable2.json()]);
-    const combinedData = [...dataStable1, ...dataStable2];
-
-    const processedSymbols = combinedData
-      .map((coin: CoinGeckoCoin) => coin.symbol?.toUpperCase())
-      .filter((symbol: string) => symbol);
-
-    const uniqueSymbolsStablecoins = [...new Set([...processedSymbols])];
-
-    // Fetch for ETH Categories
-    const [resEth1, resEth2, resEth3] = await Promise.all([
-      fetch(`${CG_ENDPOINT}?vs_currency=usd&category=liquid-staked-eth&per_page=250&page=1`, {
-        method: 'GET',
-        headers: HEADERS,
-      }),
-      fetch(`${CG_ENDPOINT}?vs_currency=usd&category=ether-fi-ecosystem&per_page=250&page=1`, {
-        method: 'GET',
-        headers: HEADERS,
-      }),
-      fetch(`${CG_ENDPOINT}?vs_currency=usd&category=liquid-staking-tokens&per_page=250&page=1`, {
-        method: 'GET',
-        headers: HEADERS,
-      }),
-    ]);
-
     if (!resEth1.ok) {
       return res.status(resEth1.status).json({
         error: `Error fetching liquid-staked-eth`,
@@ -117,11 +103,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    const [dataEth1, dataEth2, dataEth3] = await Promise.all([
+    const [dataStable1, dataStable2, dataEth1, dataEth2, dataEth3] = await Promise.all([
+      resStable1.json(),
+      resStable2.json(),
       resEth1.json(),
       resEth2.json(),
       resEth3.json(),
     ]);
+    const combinedData = [...dataStable1, ...dataStable2];
+
+    const processedSymbols = combinedData
+      .map((coin: CoinGeckoCoin) => coin.symbol?.toUpperCase())
+      .filter((symbol: string) => symbol);
+
+    const uniqueSymbolsStablecoins = [...new Set([...processedSymbols])];
+
     // Filter category 'liquid-staking-tokens' to only include coins correlated to ETH
     const filteredData3 = dataEth3.filter((coin: CoinGeckoCoin) => {
       const symbol = coin.symbol?.toUpperCase();

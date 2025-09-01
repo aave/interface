@@ -8,7 +8,7 @@ export function useCoingeckoCategories() {
       return await response.json();
     },
     queryKey: ['coingecko-categories'],
-    staleTime: 1000 * 60 * 60 * 24,
+    staleTime: 1000 * 60 * 60 * 24 * 7,
     refetchOnWindowFocus: false,
   });
 }
