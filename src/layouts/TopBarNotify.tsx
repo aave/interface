@@ -150,7 +150,7 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
               {currentCampaign.customIcon ? currentCampaign.customIcon : null}
 
               {currentCampaign.icon && !sm ? (
-                <MarketLogo sx={{ ml: 2 }} size={32} logo={currentCampaign.icon} />
+                <MarketLogo sx={{ ml: 2 }} size={28} logo={currentCampaign.icon} />
               ) : (
                 ''
               )}

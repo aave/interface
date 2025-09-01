@@ -31,3 +31,8 @@ export const CoWProtocolSupportedNetworks = [
 export const isChainIdSupportedByCoWProtocol = (chainId: number): chainId is SupportedChainId => {
   return CoWProtocolSupportedNetworks.includes(chainId);
 };
+
+export enum SwitchType {
+  CollateralSwap = 'collateralSwap',
+  TokenSwap = 'tokenSwap',
+}

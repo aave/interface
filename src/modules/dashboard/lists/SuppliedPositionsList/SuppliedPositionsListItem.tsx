@@ -27,7 +27,7 @@ export const SuppliedPositionsListItem = ({
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { isIsolated, aIncentivesData, aTokenAddress, isFrozen, isActive, isPaused } = reserve;
-  const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
+  const { openSupply, openWithdraw, openCollateralChange, openCollateralSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
   const [trackEvent, currentMarketData, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarketData, store.currentMarket])
@@ -116,7 +116,7 @@ export const SuppliedPositionsListItem = ({
                 assetName: reserve.name,
                 asset: underlyingAsset,
               });
-              openSwap(underlyingAsset);
+              openCollateralSwap(underlyingAsset);
             }}
             data-cy={`swapButton`}
           >

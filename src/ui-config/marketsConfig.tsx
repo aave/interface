@@ -100,6 +100,8 @@ export enum CustomMarket {
   proto_sonic_v3 = 'proto_sonic_v3',
   proto_celo_v3 = 'proto_celo_v3',
   proto_soneium_v3 = 'proto_soneium_v3',
+  proto_horizon_v3 = 'proto_horizon_v3',
+  proto_sepolia_horizon_v3 = 'proto_sepolia_horizon_v3',
   proto_aptos_v3 = 'proto_aptos_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
@@ -298,6 +300,29 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
       GHO_TOKEN_ADDRESS: '0xc4bF5CbDaBE595361438F8c6a187bDc330539c60',
+    },
+  },
+
+  [CustomMarket.proto_sepolia_horizon_v3]: {
+    marketTitle: 'Ethereum Sepolia Horizon',
+    market: CustomMarket.proto_sepolia_horizon_v3,
+    v3: true,
+    chainId: ChainId.sepolia,
+    enabledFeatures: {
+      switch: true,
+      faucet: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x8b1421Ca909B1b9d073ff321b5116b45f8BF4767',
+      LENDING_POOL: '0x553aA902Df9C6770c43Ef047cDD13431Ecdf09fF',
+      WETH_GATEWAY: '0xf43dfB8d231C404F60Bb6B35dfb1cdC321355A88',
+      FAUCET: AaveV3Sepolia.FAUCET,
+      WALLET_BALANCE_PROVIDER: '0x74218334de704596330a5Ab966FA1f3714f19da2',
+      UI_POOL_DATA_PROVIDER: '0x731129013c8aaFc18581D1Cf4f5378D9dEFc478E',
+      UI_INCENTIVE_DATA_PROVIDER: '0x70a20423393414B63968413B6b2d74d409E0CD50',
+
+      GHO_TOKEN_ADDRESS: '0xc4bF5CbDaBE595361438F8c6a187bDc330539c60',
+      // GHO_UI_DATA_PROVIDER: '0x69B9843A16a6E9933125EBD97659BA3CCbE2Ef8A', // TODO: Do we need?
     },
   },
   [CustomMarket.proto_base_v3]: {
@@ -533,6 +558,27 @@ export const marketsData: {
       REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Optimism.REPAY_WITH_COLLATERAL_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Optimism.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Optimism.WITHDRAW_SWAP_ADAPTER,
+    },
+  },
+  [CustomMarket.proto_horizon_v3]: {
+    marketTitle: 'Horizon RWA',
+    market: CustomMarket.proto_horizon_v3,
+    chainId: ChainId.mainnet,
+    v3: true,
+    logo: '/icons/markets/horizon.svg',
+    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/5vxMbXRhG1oQr55MWC5j6qg78waWujx1wjeuEWDA6j3`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x5D39E06b825C1F2B80bf2756a73e28eFAA128ba0',
+      LENDING_POOL: '0xAe05Cd22df81871bc7cC2a04BeCfb516bFe332C8',
+      WETH_GATEWAY: '0x973195fB8F67F5B0afe7beDB2A02cec829d89991',
+      // REPAY_WITH_COLLATERAL_ADAPTER: AaveV3EthereumLido.REPAY_WITH_COLLATERAL_ADAPTER,
+      // SWAP_COLLATERAL_ADAPTER: AaveV3EthereumLido.SWAP_COLLATERAL_ADAPTER,
+      WALLET_BALANCE_PROVIDER: '0xd8F7829ceB2692C90e418e0963b5Cbcbafc260Bd',
+      UI_POOL_DATA_PROVIDER: '0x2581d1f2Ce3860b651bF84AF416e7d28d9500D7F',
+      UI_INCENTIVE_DATA_PROVIDER: '0xC5E1717BEafC680E0148DD561591410b69650a5F',
+      COLLECTOR: '0x8b8d44751a933f190dde25A69E8cC6F9101b5435',
+      // WITHDRAW_SWITCH_ADAPTER: AaveV3EthereumLido.WITHDRAW_SWAP_ADAPTER,
+      // DEBT_SWITCH_ADAPTER: AaveV3EthereumLido.DEBT_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_polygon_v3]: {

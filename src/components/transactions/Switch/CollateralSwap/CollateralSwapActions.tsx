@@ -12,7 +12,7 @@ import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
-import { TxActionsWrapper } from '../TxActionsWrapper';
+import { TxActionsWrapper } from '../../TxActionsWrapper';
 
 interface SwapBaseProps extends BoxProps {
   amountToSwap: string;
@@ -36,7 +36,7 @@ export interface SwapActionProps extends SwapBaseProps {
   augustus: string;
 }
 
-export const SwapActions = ({
+export const CollateralSwapActions = ({
   amountToSwap,
   amountToReceive,
   isWrongNetwork,
