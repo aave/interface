@@ -1,4 +1,3 @@
-import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -6,14 +5,11 @@ import {
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
-import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { TokenInfo } from 'src/ui-config/TokenList';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import invariant from 'tiny-invariant';
 
 import { BaseSwitchModal } from '../BaseSwitchModal';
-
-export const UNSUPPORTED_A_TOKENS_PER_CHAIN: Record<number, string[]> = {
-  // [SupportedChainId.GNOSIS_CHAIN]: ['0xedbc7449a9b594ca4e053d9737ec5dc4cbccbfb2'.toLowerCase()], // EURe USD Price not supported
-};
 
 const sortByBalance = (a: TokenInfoWithBalance, b: TokenInfoWithBalance) => {
   const aBalance = parseFloat(a?.balance ?? '0');
@@ -36,7 +32,6 @@ export const CollateralSwapModal = () => {
   const { underlyingAsset } = args;
 
   const { user, reserves } = useAppDataContext();
-  const currentMarket = useRootStore((store) => store.currentMarket);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const baseTokens: TokenInfo[] = reserves.map((reserve) => {
     return {
@@ -59,43 +54,28 @@ export const CollateralSwapModal = () => {
         (baseToken) =>
           baseToken.address.toLowerCase() === position.reserve.underlyingAsset.toLowerCase()
       );
-      if (baseToken) {
-        // Prefer showing native symbol (e.g., ETH) instead of WETH when applicable, but keep underlying address
-        const realChainId = currentNetworkConfig.wagmiChain.id;
-        const wrappedNative =
-          WRAPPED_NATIVE_CURRENCIES[realChainId as SupportedChainId]?.address?.toLowerCase();
-        const isWrappedNative =
-          wrappedNative && position.reserve.underlyingAsset.toLowerCase() === wrappedNative;
-        const nativeToken = isWrappedNative
-          ? TOKEN_LIST.tokens.find(
-              (t) => (t as TokenInfoWithBalance).extensions?.isNative && t.chainId === realChainId
-            )
-          : undefined;
+      invariant(baseToken, 'Base token should exist');
+      // Prefer showing native symbol (e.g., ETH) instead of WETH when applicable, but keep underlying address
+      const realChainId = currentNetworkConfig.wagmiChain.id;
+      const networkConfig = getNetworkConfig(realChainId);
+      const isWrappedBaseAsset = position.reserve.isWrappedBaseAsset;
 
-        return {
-          ...baseToken,
-          symbol: nativeToken?.symbol ?? baseToken.symbol,
-          logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
-          balance: position.underlyingBalance,
-          aToken: position.reserve.aTokenAddress,
-        };
-      }
-      return undefined;
+      return {
+        ...baseToken,
+        symbol: isWrappedBaseAsset ? networkConfig.baseAssetSymbol : baseToken.symbol,
+        logoURI: isWrappedBaseAsset
+          ? `/icons/tokens/${networkConfig.baseAssetSymbol}.svg`
+          : baseToken.logoURI,
+        balance: position.underlyingBalance,
+        aToken: position.reserve.aTokenAddress,
+      };
     })
     .filter((token) => token !== undefined)
-    .filter(
-      (token) =>
-        !UNSUPPORTED_A_TOKENS_PER_CHAIN[currentNetworkConfig.wagmiChain.id]?.includes(
-          token.aToken.toLowerCase()
-        )
-    )
     .sort(sortByBalance);
 
   // Tokens To should be the potential supply tokens (so we have an aToken)
   const tokensToSupply = reserves.filter(
-    (reserve: ComputedReserveData) =>
-      !(reserve.isFrozen || reserve.isPaused) &&
-      !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket: currentMarket })
+    (reserve: ComputedReserveData) => !(reserve.isFrozen || reserve.isPaused)
   );
   const tokensTo = tokensToSupply
     .map((reserve) => {
@@ -104,7 +84,7 @@ export const CollateralSwapModal = () => {
         (baseToken) => baseToken.address.toLowerCase() === reserve.underlyingAsset.toLowerCase()
       );
 
-      if (!baseToken) return undefined;
+      invariant(baseToken, 'Base token should exist');
 
       const currentCollateral =
         suppliedPositions.find(
@@ -118,13 +98,6 @@ export const CollateralSwapModal = () => {
         balance: currentCollateral,
       };
     })
-    .filter((token) => token !== undefined)
-    .filter(
-      (token) =>
-        !UNSUPPORTED_A_TOKENS_PER_CHAIN[currentNetworkConfig.wagmiChain.id]?.includes(
-          token.aToken.toLowerCase()
-        )
-    )
     .sort(sortByBalance);
 
   const userSelectedInputToken = tokensFrom.find(
