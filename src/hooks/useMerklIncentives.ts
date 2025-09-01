@@ -172,12 +172,6 @@ export const useMerklIncentives = ({
 
       const rewardToken = opportunity.rewardsRecord.breakdowns[0].token;
 
-      console.log({
-        whitelistedRewardTokens,
-        rewardToken: rewardToken.address,
-        got: whitelistedRewardTokens.has(checksumAddress(rewardToken.address as Address)),
-      });
-
       if (!whitelistedRewardTokens.has(checksumAddress(rewardToken.address as Address))) {
         return null;
       }
