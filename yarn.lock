@@ -65,10 +65,10 @@
     neverthrow "^8.2.0"
     type-fest "^4.41.0"
 
-"@aavechan/aave-merkl-token-whitelist@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@aavechan/aave-merkl-token-whitelist/-/aave-merkl-token-whitelist-1.1.3.tgz#9064399c2aec64f4f06d1fd195866edc325a5386"
-  integrity sha512-7ctwu52McR/6QRuA9zZTWejehz4kEsD4G2vqd2wg6PQvDdloETNW5o7kzQ5/D5sqrB6HYnmeJ8pt1PgEaUdyzQ==
+"@aavechan/aave-merkl-token-whitelist@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@aavechan/aave-merkl-token-whitelist/-/aave-merkl-token-whitelist-1.1.4.tgz#948e6e5a7ea13d28e6605ac8c7d1028ca96d9b07"
+  integrity sha512-L1P4U8mc1nlIY1Yh/HxV3WXozz+1NKmbRbXWZkeo9LIztaz+WT6QXk4LFWDCEzCr765/NqRCsuQAnJAQnAB21w==
   dependencies:
     "@bgd-labs/aave-address-book" "^4.28.2"
     viem "^2.36.0"
