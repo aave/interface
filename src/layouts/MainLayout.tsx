@@ -41,7 +41,7 @@ const getCampaignConfigs = (
   // },
 
   [ChainId.mainnet]: {
-    notifyText: 'Horizon, the RWA market by Aave Labs, is now live.',
+    notifyText: 'Horizon, the RWA market is now live.',
     buttonText: 'Get Started',
     buttonAction: {
       type: 'function' as const,
