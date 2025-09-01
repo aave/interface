@@ -15,6 +15,20 @@ export const UNSUPPORTED_A_TOKENS_PER_CHAIN: Record<number, string[]> = {
   // [SupportedChainId.GNOSIS_CHAIN]: ['0xedbc7449a9b594ca4e053d9737ec5dc4cbccbfb2'.toLowerCase()], // EURe USD Price not supported
 };
 
+const sortByBalance = (a: TokenInfoWithBalance, b: TokenInfoWithBalance) => {
+  const aBalance = parseFloat(a?.balance ?? '0');
+  const bBalance = parseFloat(b?.balance ?? '0');
+  if (bBalance !== aBalance) {
+    return bBalance - aBalance;
+  }
+  // If balances are equal, sort by symbol alphabetically
+  const aSymbol = a?.symbol?.toLowerCase() ?? '';
+  const bSymbol = b?.symbol?.toLowerCase() ?? '';
+  if (aSymbol < bSymbol) return -1;
+  if (aSymbol > bSymbol) return 1;
+  return 0;
+};
+
 export const CollateralSwapModal = () => {
   const { args } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
@@ -75,19 +89,7 @@ export const CollateralSwapModal = () => {
           token.aToken.toLowerCase()
         )
     )
-    .sort((a, b) => {
-      const aBalance = parseFloat(a?.balance ?? '0');
-      const bBalance = parseFloat(b?.balance ?? '0');
-      if (bBalance !== aBalance) {
-        return bBalance - aBalance;
-      }
-      // If balances are equal, sort by symbol alphabetically
-      const aSymbol = a?.symbol?.toLowerCase() ?? '';
-      const bSymbol = b?.symbol?.toLowerCase() ?? '';
-      if (aSymbol < bSymbol) return -1;
-      if (aSymbol > bSymbol) return 1;
-      return 0;
-    });
+    .sort(sortByBalance);
 
   // Tokens To should be the potential supply tokens (so we have an aToken)
   const tokensToSupply = reserves.filter(
@@ -123,19 +125,7 @@ export const CollateralSwapModal = () => {
           token.aToken.toLowerCase()
         )
     )
-    .sort((a, b) => {
-      const aBalance = parseFloat(a?.balance ?? '0');
-      const bBalance = parseFloat(b?.balance ?? '0');
-      if (bBalance !== aBalance) {
-        return bBalance - aBalance;
-      }
-      // If balances are equal, sort by symbol alphabetically
-      const aSymbol = a?.symbol?.toLowerCase() ?? '';
-      const bSymbol = b?.symbol?.toLowerCase() ?? '';
-      if (aSymbol < bSymbol) return -1;
-      if (aSymbol > bSymbol) return 1;
-      return 0;
-    });
+    .sort(sortByBalance);
 
   const userSelectedInputToken = tokensFrom.find(
     (token) => token.address.toLowerCase() === underlyingAsset?.toLowerCase()
