@@ -12,7 +12,9 @@ import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { DASHBOARD } from 'src/utils/events';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -27,6 +29,7 @@ import {
   handleSortDashboardReserves,
 } from '../../../../utils/dashboardSortUtils';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
+import { isAssetHidden } from '../constants';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
@@ -72,7 +75,8 @@ export const SupplyAssetsList = () => {
     .filter(
       (reserve: ComputedReserveData) =>
         !(reserve.isFrozen || reserve.isPaused) &&
-        !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket })
+        !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket }) &&
+        !isAssetHidden(currentMarketData.market, reserve.underlyingAsset)
     )
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
@@ -169,7 +173,8 @@ export const SupplyAssetsList = () => {
   );
 
   const filteredSupplyReserves = sortedSupplyReserves.filter((reserve) => {
-    if (reserve.availableToDepositUSD !== '0') {
+    // Filter out dust amounts < $0.01 USD
+    if (reserve.availableToDepositUSD !== '0' && Number(reserve.availableToDepositUSD) >= 0.01) {
       return true;
     }
 
@@ -182,7 +187,10 @@ export const SupplyAssetsList = () => {
     }
 
     // The asset can be supplied if the user has a 'token in' balance, (DAI as sDAI for example)
-    return walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset]?.amount !== '0';
+    const wrappedBalance = walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset]?.amount;
+    const wrappedBalanceUSD = walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset]?.amountUSD;
+
+    return wrappedBalance !== '0' && Number(wrappedBalanceUSD || '0') >= 0.01;
   });
 
   // Filter out reserves
@@ -282,6 +290,10 @@ export const SupplyAssetsList = () => {
               onClick={setIsShowZeroAssets}
               localStorageName={localStorageName}
               bridge={bridge}
+              eventName={DASHBOARD.SHOW_ASSETS_0_BALANCE}
+              label={<Trans>Show assets with 0 balance</Trans>}
+              showFaucet={STAGING_ENV || ENABLE_TESTNET}
+              showBridge={!ENABLE_TESTNET}
             />
           )}
         </>

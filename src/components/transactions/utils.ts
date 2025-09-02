@@ -9,6 +9,7 @@ export enum ErrorType {
   FLASH_LOAN_NOT_AVAILABLE,
 }
 
+/// use flashloan if health factor is less than 1.05 when subtracting the HF effect of the from amount
 export const useFlashloan = (healthFactor: string, hfEffectOfFromAmount: string) => {
   return (
     healthFactor !== '-1' &&

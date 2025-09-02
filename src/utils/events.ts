@@ -23,6 +23,8 @@ export const GENERAL = {
   SWAP: 'Swap',
   SWAP_FAILED: 'Swap Failed',
   SWAP_COMPLETED: 'Swap Completed',
+  COLLATERAL_SWAP_WITHOUT_FLASHLOAN: 'Collateral Swap without Flashloan',
+  COLLATERAL_SWAP_WITH_FLASHLOAN: 'Collateral Swap with Flashloan',
   TRANSACTION_ERROR: 'Transaction Error',
   OPEN_MODAL: 'Open Modal',
   MAX_INPUT_SELECTION: 'Select Max input',
@@ -46,6 +48,7 @@ export const DASHBOARD = {
   NOTIFY_DASHBOARD: 'Notify dashboard', // done
   TILE_VISBILITY: 'Tile visibility',
   SHOW_ASSETS_0_BALANCE: 'Show assets with zero balance dashboard', // done
+  SHOW_ASSETS_SMALL_BALANCE: 'Show assets with small balance dashboard',
   SELECT_V3_ETH_MARKET: 'Clicks a V3 ETH market from dashboard', // done
 };
 

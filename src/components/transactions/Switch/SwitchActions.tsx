@@ -1,5 +1,10 @@
-import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
-import { valueToBigNumber } from '@aave/math-utils';
+import {
+  API_ETH_MOCK_ADDRESS,
+  ERC20Service,
+  gasLimitRecommendations,
+  ProtocolAction,
+} from '@aave/contract-helpers';
+import { normalize, valueToBigNumber } from '@aave/math-utils';
 import {
   calculateUniqueOrderId,
   COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
@@ -12,13 +17,20 @@ import { defaultAbiCoder, splitSignature } from 'ethers/lib/utils';
 import stringify from 'json-stringify-deterministic';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { isSmartContractWallet } from 'src/helpers/provider';
+import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
-import { calculateSignedAmount } from 'src/hooks/paraswap/common';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  calculateSignedAmount,
+  fetchExactInTxParams,
+  minimumReceivedAfterSlippage,
+} from 'src/hooks/paraswap/common';
 import { useParaswapSellTxParams } from 'src/hooks/paraswap/useParaswapRates';
-import { useModalContext } from 'src/hooks/useModal';
+import { ModalType, TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { useRootStore } from 'src/store/root';
+import { TransactionContext, TransactionDetails } from 'src/store/transactionsSlice';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { findByChainId } from 'src/ui-config/marketsConfig';
@@ -33,15 +45,22 @@ import { useShallow } from 'zustand/shallow';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
 import {
+  ADAPTER_APP_CODE,
   COW_APP_DATA,
   getPreSignTransaction,
   getUnsignerOrder,
+  HEADER_WIDGET_APP_CODE,
   isNativeToken,
   populateEthFlowTx,
   sendOrder,
   uploadAppData,
-} from './cowprotocol.helpers';
-import { isCowProtocolRates, isParaswapRates, SwitchRatesType } from './switch.types';
+} from './cowprotocol/cowprotocol.helpers';
+import {
+  isCowProtocolRates,
+  isParaswapRates,
+  ParaswapRatesType,
+  SwitchRatesType,
+} from './switch.types';
 
 interface SwitchProps {
   inputAmount: string;
@@ -57,6 +76,12 @@ interface SwitchProps {
   inputSymbol: string;
   outputSymbol: string;
   setShowGasStation: (showGasStation: boolean) => void;
+  modalType: ModalType;
+  useFlashloan: boolean;
+  poolReserve?: ComputedReserveData;
+  targetReserve?: ComputedReserveData;
+  isMaxSelected: boolean;
+  setIsExecutingActions?: (isExecuting: boolean) => void;
 }
 
 interface SignedParams {
@@ -65,6 +90,207 @@ interface SignedParams {
   amount: string;
   approvedToken: string;
 }
+
+export const ParaswapSwitchActionsWrapper = ({
+  inputAmount: amountToSwap,
+  inputSymbol,
+  slippage,
+  blocked,
+  loading,
+  isWrongNetwork,
+  chainId,
+  switchRates,
+  poolReserve,
+  targetReserve,
+  isMaxSelected,
+  addTransaction,
+  setMainTxState,
+  invalidate,
+}: {
+  inputAmount: string;
+  inputSymbol: string;
+  slippage: string;
+  blocked: boolean;
+  loading?: boolean;
+  isWrongNetwork: boolean;
+  chainId: number;
+  switchRates: ParaswapRatesType;
+  poolReserve: ComputedReserveData;
+  targetReserve: ComputedReserveData;
+  isMaxSelected: boolean;
+  addTransaction: (
+    txHash: string,
+    transaction: TransactionDetails,
+    context?: TransactionContext
+  ) => void;
+  setMainTxState: (txState: TxStateType) => void;
+  invalidate: () => void;
+}) => {
+  const userAddress = useRootStore.getState().account;
+  const [swapCollateral, currentMarketData, trackEvent] = useRootStore(
+    useShallow((state) => [state.swapCollateral, state.currentMarketData, state.trackEvent])
+  );
+
+  const slippageInPercent = (Number(slippage) * 100).toString();
+  const outputAmount = normalize(switchRates.destAmount, switchRates.destDecimals);
+  const minimumReceived = minimumReceivedAfterSlippage(
+    outputAmount,
+    slippageInPercent,
+    targetReserve.decimals
+  );
+
+  const buildTxFn = async () => {
+    if (!switchRates?.optimalRateData) throw new Error('Route required to build transaction');
+
+    // Create SwapData objects with only the required properties
+    const swapIn = {
+      amount: amountToSwap,
+      underlyingAsset: poolReserve.underlyingAsset,
+      decimals: poolReserve.decimals,
+      supplyAPY: poolReserve.supplyAPY,
+      variableBorrowAPY: poolReserve.variableBorrowAPY,
+    };
+
+    const swapOut = {
+      amount: normalize(switchRates.destAmount, switchRates.destDecimals),
+      underlyingAsset: targetReserve.underlyingAsset,
+      decimals: targetReserve.decimals,
+      supplyAPY: targetReserve.supplyAPY,
+      variableBorrowAPY: targetReserve.variableBorrowAPY,
+    };
+
+    const maxSlippage = Number(slippageInPercent);
+
+    return await fetchExactInTxParams(
+      switchRates.optimalRateData,
+      swapIn,
+      swapOut,
+      chainId,
+      userAddress,
+      maxSlippage
+    );
+  };
+
+  const {
+    approval,
+    action,
+    approvalTxState,
+    mainTxState,
+    loadingTxns,
+    requiresApproval,
+    requestingApproval,
+  } = useParaSwapTransactionHandler({
+    protocolAction: ProtocolAction.swapCollateral,
+    handleGetTxns: async (signature, deadline) => {
+      const route = await buildTxFn();
+      return swapCollateral({
+        amountToSwap,
+        amountToReceive: minimumReceived,
+        poolReserve,
+        targetReserve,
+        isWrongNetwork,
+        symbol: inputSymbol,
+        blocked,
+        isMaxSelected,
+        useFlashLoan: true,
+        swapCallData: route.swapCallData,
+        augustus: route.augustus,
+        signature,
+        deadline,
+        signedAmount: calculateSignedAmount(amountToSwap, poolReserve.decimals),
+      });
+    },
+    handleGetApprovalTxns: async () => {
+      return swapCollateral({
+        amountToSwap,
+        amountToReceive: minimumReceived,
+        poolReserve,
+        targetReserve,
+        isWrongNetwork,
+        symbol: inputSymbol,
+        blocked,
+        isMaxSelected,
+        useFlashLoan: false,
+        swapCallData: '0x',
+        augustus: API_ETH_MOCK_ADDRESS,
+      });
+    },
+    gasLimitRecommendation: gasLimitRecommendations[ProtocolAction.swapCollateral].limit,
+    skip: loading || !amountToSwap || parseFloat(amountToSwap) === 0,
+    spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER ?? '',
+    deps: [targetReserve.symbol, amountToSwap],
+  });
+
+  useEffect(() => {
+    if (mainTxState.success) {
+      invalidate();
+
+      trackEvent(GENERAL.COLLATERAL_SWAP_WITH_FLASHLOAN, {
+        chainId,
+        inputSymbol,
+        outputSymbol: targetReserve.symbol,
+        pair: `${inputSymbol}-${targetReserve.symbol}`,
+        inputAmount: amountToSwap,
+        outputAmount: normalize(switchRates.destAmount, switchRates.destDecimals),
+        inputAmountUSD: switchRates.srcUSD,
+        outputAmountUSD: switchRates.destUSD,
+        slippage,
+        provider: 'paraswap',
+        useFlashLoan: true,
+        modalType: 'CollateralSwap',
+        isMaxSelected,
+        txHash: mainTxState.txHash,
+        status: 'success',
+      });
+
+      addTransaction(
+        mainTxState.txHash || '',
+        {
+          txState: 'success',
+        },
+        {
+          chainId,
+        }
+      );
+
+      setMainTxState({
+        txHash: mainTxState.txHash || '',
+        loading: false,
+        success: true,
+      });
+    }
+  }, [mainTxState.success]);
+
+  return (
+    <TxActionsWrapper
+      mainTxState={mainTxState}
+      approvalTxState={approvalTxState}
+      isWrongNetwork={isWrongNetwork}
+      preparingTransactions={loadingTxns}
+      handleAction={action}
+      requiresAmount
+      amount={amountToSwap}
+      blocked={blocked || requestingApproval}
+      handleApproval={() =>
+        approval({
+          amount: calculateSignedAmount(amountToSwap, poolReserve.decimals),
+          underlyingAsset: poolReserve.aTokenAddress,
+        })
+      }
+      requiresApproval={requiresApproval}
+      actionText={requestingApproval ? <Trans>Checking approval</Trans> : <Trans>Swap</Trans>}
+      actionInProgressText={<Trans>Swapping</Trans>}
+      fetchingData={loading}
+      errorParams={{
+        loading: false,
+        disabled: blocked,
+        content: <Trans>Swap</Trans>,
+        handleClick: action,
+      }}
+      tryPermit
+    />
+  );
+};
 
 export const SwitchActions = ({
   inputAmount,
@@ -80,6 +306,12 @@ export const SwitchActions = ({
   chainId,
   switchRates,
   setShowGasStation,
+  modalType,
+  useFlashloan,
+  poolReserve,
+  targetReserve,
+  isMaxSelected,
+  setIsExecutingActions,
 }: SwitchProps) => {
   const [
     user,
@@ -117,6 +349,7 @@ export const SwitchActions = ({
   const { sendTx, signTxData } = useWeb3Context();
   const queryClient = useQueryClient();
   const networkConfig = getNetworkConfig(chainId);
+  const [swapCollateral] = useRootStore(useShallow((state) => [state.swapCollateral]));
 
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
@@ -142,7 +375,7 @@ export const SwitchActions = ({
 
   // Warning for USDT on Ethereum approval reset
   useEffect(() => {
-    if (!switchRates) {
+    if (!switchRates || modalType !== ModalType.Switch) {
       return;
     }
 
@@ -162,63 +395,187 @@ export const SwitchActions = ({
     }
   }, [inputSymbol, chainId, approvedAmount, inputAmount, setShowUSDTResetWarning, switchRates]);
 
+  const invalidate = () => {
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.poolReservesDataHumanized(
+        findByChainId(chainId) ?? currentMarketData
+      ),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.userPoolReservesDataHumanized(
+        user,
+        findByChainId(chainId) ?? currentMarketData
+      ),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.transactionHistory(
+        user,
+        findByChainId(chainId) ?? currentMarketData
+      ),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
+    });
+  };
+
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
     if (isParaswapRates(switchRates)) {
       try {
-        const tx = await fetchParaswapTxParams({
-          srcToken: inputToken,
-          srcDecimals: switchRates.srcDecimals,
-          destDecimals: switchRates.destDecimals,
-          destToken: outputToken,
-          route: switchRates.optimalRateData,
-          user,
-          maxSlippage: Number(slippageInPercent) * 10000,
-          permit: signatureParams && signatureParams.signature,
-          deadline: signatureParams && signatureParams.deadline,
-          partner: 'aave-widget',
-        });
-        tx.chainId = chainId;
-        const txWithGasEstimation = await estimateGasLimit(tx, chainId);
-        const response = await sendTx(txWithGasEstimation);
-        try {
-          await response.wait(1);
-          addTransaction(
-            response.hash,
+        if (
+          useFlashloan &&
+          modalType === ModalType.CollateralSwap &&
+          poolReserve &&
+          targetReserve
+        ) {
+          // Use fetchExactInTxParams with the SAME token addresses that were used for rate fetching
+          // This ensures the route data matches the transaction building context
+          const route = await fetchExactInTxParams(
+            switchRates.optimalRateData,
             {
-              txState: 'success',
+              amount: inputAmount,
+              underlyingAsset: switchRates.srcToken, // Use the SAME token used in rate fetching
+              decimals: switchRates.srcDecimals,
+              supplyAPY: poolReserve.supplyAPY,
+              variableBorrowAPY: poolReserve.variableBorrowAPY,
             },
             {
-              chainId,
-            }
-          );
-          setMainTxState({
-            txHash: response.hash,
-            loading: false,
-            success: true,
-          });
-          queryClient.invalidateQueries({
-            queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
-          });
-        } catch (error) {
-          const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
-          setTxError(parsedError);
-          setMainTxState({
-            txHash: response.hash,
-            loading: false,
-          });
-          addTransaction(
-            response.hash,
-            {
-              txState: 'failed',
+              amount: normalize(switchRates.destAmount, switchRates.destDecimals),
+              underlyingAsset: switchRates.destToken, // Use the SAME token used in rate fetching
+              decimals: switchRates.destDecimals,
+              supplyAPY: targetReserve.supplyAPY,
+              variableBorrowAPY: targetReserve.variableBorrowAPY,
             },
-            {
-              chainId,
-            }
+            chainId,
+            user,
+            Number(slippageInPercent)
           );
+
+          const minAmountToReceive = minimumReceivedAfterSlippage(
+            normalize(switchRates.destAmount, switchRates.destDecimals),
+            slippageInPercent,
+            targetReserve.decimals
+          );
+
+          const swapCollateralParams = {
+            amountToSwap: inputAmount,
+            amountToReceive: minAmountToReceive,
+            poolReserve,
+            targetReserve,
+            isWrongNetwork,
+            symbol: inputSymbol,
+            blocked,
+            isMaxSelected,
+            useFlashLoan: true,
+            swapCallData: route.swapCallData,
+            augustus: route.augustus,
+            signature: signatureParams?.signature,
+            deadline: signatureParams?.deadline,
+            signedAmount: calculateSignedAmount(inputAmount, poolReserve.decimals),
+          };
+
+          const txs = await swapCollateral(swapCollateralParams);
+
+          const tx = txs[0];
+          const params = await tx.tx();
+          delete params.gasPrice;
+          const response = await sendTx(params);
+
+          try {
+            await response.wait(1);
+            addTransaction(
+              response.hash,
+              {
+                txState: 'success',
+              },
+              {
+                chainId,
+              }
+            );
+            setMainTxState({
+              txHash: response.hash,
+              loading: false,
+              success: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
+            });
+          } catch (error) {
+            const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
+            setTxError(parsedError);
+            setMainTxState({
+              txHash: response.hash,
+              loading: false,
+            });
+            addTransaction(
+              response.hash,
+              {
+                txState: 'failed',
+              },
+              {
+                chainId,
+              }
+            );
+          }
+        } else {
+          // Normal switch using paraswap
+          const tx = await fetchParaswapTxParams({
+            srcToken: inputToken,
+            srcDecimals: switchRates.srcDecimals,
+            destDecimals: switchRates.destDecimals,
+            destToken: outputToken,
+            route: switchRates.optimalRateData,
+            user,
+            maxSlippage: Number(slippageInPercent) * 10000,
+            permit: signatureParams && signatureParams.signature,
+            deadline: signatureParams && signatureParams.deadline,
+            partner: 'aave-widget',
+          });
+          tx.chainId = chainId;
+          const txWithGasEstimation = await estimateGasLimit(tx, chainId);
+          const response = await sendTx(txWithGasEstimation);
+          try {
+            await response.wait(1);
+            addTransaction(
+              response.hash,
+              {
+                txState: 'success',
+              },
+              {
+                chainId,
+              }
+            );
+            setMainTxState({
+              txHash: response.hash,
+              loading: false,
+              success: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
+            });
+          } catch (error) {
+            const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
+            setTxError(parsedError);
+            setMainTxState({
+              txHash: response.hash,
+              loading: false,
+            });
+            addTransaction(
+              response.hash,
+              {
+                txState: 'failed',
+              },
+              {
+                chainId,
+              }
+            );
+          }
         }
       } catch (error) {
-        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
         setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
@@ -226,6 +583,17 @@ export const SwitchActions = ({
         });
       }
     } else if (isCowProtocolRates(switchRates)) {
+      if (useFlashloan) {
+        setTxError(
+          getErrorTextFromError(new Error('Please use flashloan'), TxAction.MAIN_ACTION, true)
+        );
+        setMainTxState({
+          txHash: undefined,
+          loading: false,
+        });
+        return;
+      }
+
       try {
         const provider = await getEthersProvider(wagmiConfig, { chainId });
         const destAmountWithSlippage = valueToBigNumber(switchRates.destAmount)
@@ -233,6 +601,8 @@ export const SwitchActions = ({
           .toFixed(0);
         const slippageBps = Math.round(Number(slippageInPercent) * 100 * 100); // percent to bps
         const smartSlippage = switchRates.suggestedSlippage == Number(slippageInPercent) * 100;
+        const appCode =
+          modalType === ModalType.CollateralSwap ? ADAPTER_APP_CODE : HEADER_WIDGET_APP_CODE;
 
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(inputToken)) {
@@ -331,6 +701,8 @@ export const SwitchActions = ({
                 inputSymbol,
                 outputSymbol,
                 quote: switchRates.order,
+                appCode,
+                orderBookQuote: switchRates.orderBookQuote,
               });
 
               const response = await sendTx({
@@ -372,6 +744,8 @@ export const SwitchActions = ({
                 provider,
                 inputSymbol,
                 outputSymbol,
+                appCode,
+                orderBookQuote: switchRates.orderBookQuote,
               });
               setMainTxState({
                 loading: false,
@@ -404,40 +778,69 @@ export const SwitchActions = ({
       );
     }
 
+    invalidate();
+
     try {
-      trackEvent(GENERAL.SWAP, {
+      const baseTrackingData: Record<string, string | number | undefined> = {
         chainId,
         inputSymbol,
         outputSymbol,
         pair: `${inputSymbol}-${outputSymbol}`,
-      });
+        inputAmount,
+        slippage: slippageInPercent,
+        provider: switchRates?.provider || 'unknown',
+        inputAmountUSD: switchRates?.srcUSD,
+        outputAmountUSD: switchRates?.destUSD,
+      };
+
+      if (modalType === ModalType.CollateralSwap) {
+        trackEvent(GENERAL.COLLATERAL_SWAP_WITHOUT_FLASHLOAN, {
+          ...baseTrackingData,
+          useFlashLoan: false,
+        });
+      } else {
+        trackEvent(GENERAL.SWAP, {
+          ...baseTrackingData,
+        });
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Error tracking swap event:', error);
     }
-
-    // Invalidate the pool tokens query to refresh the data
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolTokens(user, findByChainId(chainId) ?? currentMarketData),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.transactionHistory(
-        user,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
   };
 
   const approval = async () => {
     let spender;
     if (isParaswapRates(switchRates)) {
-      spender = switchRates.optimalRateData.tokenTransferProxy;
+      // For ParaSwap: use different spender based on whether we're using flashloan
+      if (useFlashloan && modalType === ModalType.CollateralSwap) {
+        // For flashloan collateral swaps, approve the Swap Collateral Adapter
+        spender = currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER;
+      } else {
+        // For regular ParaSwap swaps, approve the ParaSwap proxy
+        spender = switchRates.optimalRateData.tokenTransferProxy;
+      }
     } else if (isCowProtocolRates(switchRates)) {
       spender = COW_PROTOCOL_VAULT_RELAYER_ADDRESS[chainId as SupportedChainId];
     } else {
       // Error
       const parsedError = getErrorTextFromError(
         new Error('Invalid swap provider rates.'),
+        TxAction.APPROVAL,
+        false
+      );
+
+      setTxError(parsedError);
+      setApprovalTxState({
+        txHash: undefined,
+        loading: false,
+      });
+      return;
+    }
+
+    // Ensure spender is defined
+    if (!spender) {
+      const parsedError = getErrorTextFromError(
+        new Error('Unable to determine spender address for approval.'),
         TxAction.APPROVAL,
         false
       );
@@ -608,8 +1011,12 @@ export const SwitchActions = ({
       const approvedTargetAmount = await erc20Service.approvedAmount({
         user,
         token: inputToken,
-        spender: switchRates.optimalRateData.tokenTransferProxy,
+        spender:
+          useFlashloan && modalType === ModalType.CollateralSwap
+            ? currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER!
+            : switchRates.optimalRateData.tokenTransferProxy,
       });
+
       setApprovedAmount(approvedTargetAmount);
       setLoadingTxns(false);
     } else if (isCowProtocolRates(switchRates)) {
@@ -631,13 +1038,30 @@ export const SwitchActions = ({
       setApprovedAmount(approvedTargetAmount);
       setLoadingTxns(false);
     }
-  }, [chainId, setLoadingTxns, user, inputToken, switchRates, setApprovalTxState]);
+  }, [
+    chainId,
+    setLoadingTxns,
+    user,
+    inputToken,
+    switchRates,
+    setApprovalTxState,
+    useFlashloan,
+    modalType,
+    currentMarketData,
+  ]);
 
   useEffect(() => {
     if (user) {
       fetchApprovedAmount();
     }
   }, [fetchApprovedAmount, user]);
+
+  // Track execution state to pause rate updates during actions
+  useEffect(() => {
+    const isExecuting = mainTxState.loading || approvalTxState.loading || loadingTxns;
+
+    setIsExecutingActions?.(isExecuting);
+  }, [mainTxState.loading, approvalTxState.loading, loadingTxns, setIsExecutingActions]);
 
   useEffect(() => {
     let switchGasLimit = 0;
@@ -660,6 +1084,36 @@ export const SwitchActions = ({
     setGasLimit(switchGasLimit.toString());
     setShowGasStation(requiresApproval || isNativeToken(inputToken));
   }, [requiresApproval, approvalTxState, setGasLimit, setShowGasStation, requiresApprovalReset]);
+
+  // For flashloan collateral swaps with ParaSwap, use the SwapActions component
+  // which has the correct approval logic via useParaSwapTransactionHandler
+  if (
+    !loading &&
+    (useFlashloan || switchRates?.provider === 'paraswap') &&
+    modalType === ModalType.CollateralSwap
+  ) {
+    if (!switchRates || !poolReserve || !targetReserve || !isParaswapRates(switchRates))
+      return null;
+
+    return (
+      <ParaswapSwitchActionsWrapper
+        inputAmount={inputAmount}
+        inputSymbol={inputSymbol}
+        switchRates={switchRates}
+        poolReserve={poolReserve}
+        targetReserve={targetReserve}
+        slippage={slippageInPercent}
+        blocked={blocked}
+        loading={loading}
+        isWrongNetwork={isWrongNetwork}
+        chainId={chainId}
+        isMaxSelected={isMaxSelected}
+        addTransaction={addTransaction}
+        setMainTxState={setMainTxState}
+        invalidate={invalidate}
+      />
+    );
+  }
 
   return (
     <TxActionsWrapper

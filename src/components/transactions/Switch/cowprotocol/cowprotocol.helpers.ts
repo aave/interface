@@ -7,6 +7,7 @@ import {
   OrderKind,
   OrderParameters,
   OrderStatus,
+  QuoteAndPost,
   SellTokenSource,
   SigningScheme,
   SupportedChainId,
@@ -18,7 +19,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
 import { isSmartContractWallet } from 'src/helpers/provider';
 
-import { isChainIdSupportedByCoWProtocol } from './switch.constants';
+import { isChainIdSupportedByCoWProtocol } from '../switch.constants';
 
 export const COW_EVM_RECIPIENT = '0xC542C2F197c4939154017c802B0583C596438380';
 // export const COW_LENS_RECIPIENT = '0xce4eB8a1f6Bd0e0B9282102DC056B11E9D83b7CA';
@@ -67,7 +68,8 @@ const TOKEN_GROUPS: Record<'stable' | 'correlatedEth' | 'correlatedBtc', string[
 
 const cowSymbolGroup = (symbol: string): keyof typeof TOKEN_GROUPS | 'unknown' => {
   for (const [groupName, tokens] of Object.entries(TOKEN_GROUPS)) {
-    if (tokens.includes(symbol.toUpperCase())) {
+    // Allow for prefix matching e.g. aTokens
+    if (tokens.some((token) => symbol.toUpperCase().endsWith(token))) {
       return groupName as keyof typeof TOKEN_GROUPS;
     }
   }
@@ -83,21 +85,18 @@ export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) 
 export const COW_APP_DATA = (
   tokenFromSymbol: string,
   tokenToSymbol: string,
-  slippageBips?: number,
-  smartSlippage?: boolean
+  slippageBips: number,
+  smartSlippage: boolean,
+  appCode?: string
 ) => ({
-  appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
+  appCode: appCode || HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
   version: '1.4.0',
   metadata: {
     orderClass: { orderClass: 'market' as const }, // for CoW Swap UI & Analytics
-    quote:
-      slippageBips && smartSlippage
-        ? {
-            // for Analytics
-            slippageBips,
-            smartSlippage,
-          }
-        : undefined,
+    quote: {
+      slippageBips,
+      smartSlippage,
+    },
     partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol),
   },
 });
@@ -117,22 +116,20 @@ export type CowProtocolActionParams = {
   afterNetworkCostsBuyAmount: string;
   slippageBps: number;
   smartSlippage: boolean;
+  appCode?: string;
+  orderBookQuote: QuoteAndPost;
 };
 
 export const getPreSignTransaction = async ({
   provider,
-  tokenDest,
   chainId,
   user,
-  amount,
-  tokenSrc,
-  tokenSrcDecimals,
-  tokenDestDecimals,
-  afterNetworkCostsBuyAmount,
   slippageBps,
   smartSlippage,
   inputSymbol,
   outputSymbol,
+  appCode,
+  orderBookQuote,
 }: CowProtocolActionParams) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -150,25 +147,12 @@ export const getPreSignTransaction = async ({
     throw new Error('Only smart contract wallets should use presign.');
   }
 
-  const orderResult = await tradingSdk.postLimitOrder(
-    {
-      owner: user as `0x${string}`,
-      sellAmount: amount,
-      buyAmount: afterNetworkCostsBuyAmount,
-      kind: OrderKind.SELL,
-      sellToken: tokenSrc,
-      buyToken: tokenDest,
-      slippageBps,
-      sellTokenDecimals: tokenSrcDecimals,
-      buyTokenDecimals: tokenDestDecimals,
+  const orderResult = await orderBookQuote.postSwapOrderFromQuote({
+    additionalParams: {
+      signingScheme: SigningScheme.PRESIGN,
     },
-    {
-      appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage),
-      additionalParams: {
-        signingScheme: SigningScheme.PRESIGN,
-      },
-    }
-  );
+    appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
+  });
 
   const preSignTransaction = await tradingSdk.getPreSignTransaction({
     orderId: orderResult.orderId,
@@ -184,21 +168,16 @@ export const getPreSignTransaction = async ({
 // Only for EOA wallets
 export const sendOrder = async ({
   provider,
-  tokenDest,
   chainId,
   user,
-  amount,
-  tokenSrc,
-  tokenSrcDecimals,
-  tokenDestDecimals,
-  afterNetworkCostsBuyAmount,
   slippageBps,
   inputSymbol,
   outputSymbol,
   smartSlippage,
+  appCode,
+  orderBookQuote,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
-  const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
 
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -213,23 +192,10 @@ export const sendOrder = async ({
     throw new Error('Smart contract wallets should use presign.');
   }
 
-  return tradingSdk
-    .postLimitOrder(
-      {
-        owner: user as `0x${string}`,
-        sellAmount: amount,
-        buyAmount: afterNetworkCostsBuyAmount,
-        kind: OrderKind.SELL,
-        sellToken: tokenSrc,
-        slippageBps,
-        buyToken: tokenDest,
-        sellTokenDecimals: tokenSrcDecimals,
-        buyTokenDecimals: tokenDestDecimals,
-      },
-      {
-        appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage),
-      }
-    )
+  return orderBookQuote
+    .postSwapOrderFromQuote({
+      appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
+    })
     .then((orderResult) => orderResult.orderId);
 };
 
@@ -274,8 +240,8 @@ export const isOrderCancelled = (status: OrderStatus) => {
   return status === OrderStatus.CANCELLED;
 };
 
-export const isNativeToken = (token: string) => {
-  return token.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
+export const isNativeToken = (token?: string) => {
+  return token?.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 };
 
 export const getUnsignerOrder = async (
@@ -287,11 +253,12 @@ export const getUnsignerOrder = async (
   tokenFromSymbol: string,
   tokenToSymbol: string,
   slippageBps: number,
-  smartSlippage: boolean
+  smartSlippage: boolean,
+  appCode?: string
 ): Promise<UnsignedOrder> => {
   const metadataApi = new MetadataApi();
   const { appDataHex } = await metadataApi.getAppDataInfo(
-    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage)
+    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage, appCode)
   );
 
   return {

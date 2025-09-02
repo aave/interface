@@ -32,6 +32,7 @@ import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
 } from '../../../../utils/getMaxAmountAvailableToBorrow';
+import { isAssetHidden } from '../constants';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
@@ -75,9 +76,10 @@ const head = [
 ];
 
 export const BorrowAssetsList = () => {
-  const [currentNetworkConfig, currentMarket] = useRootStore(
-    useShallow((store) => [store.currentNetworkConfig, store.currentMarket])
+  const [currentNetworkConfig, currentMarketData] = useRootStore(
+    useShallow((store) => [store.currentNetworkConfig, store.currentMarketData])
   );
+  const currentMarket = currentMarketData.market;
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -88,6 +90,7 @@ export const BorrowAssetsList = () => {
 
   const tokensToBorrow = reserves
     .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
+    .filter((reserve) => !isAssetHidden(currentMarketData.market, reserve.underlyingAsset))
     .map((reserve: ComputedReserveData) => {
       const availableBorrows = user ? Number(getMaxAmountAvailableToBorrow(reserve, user)) : 0;
 

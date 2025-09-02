@@ -3,14 +3,18 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 
 import { BasicModal } from './primitives/BasicModal';
-import { Link } from './primitives/Link';
 
 export interface AddressBlockedProps {
   address: string;
   onDisconnectWallet: () => void;
+  message?: string;
 }
 
-export const AddressBlockedModal = ({ address, onDisconnectWallet }: AddressBlockedProps) => {
+export const AddressBlockedModal = ({
+  address,
+  onDisconnectWallet,
+  message,
+}: AddressBlockedProps) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   const setOpen = (_value: boolean) => {}; // ignore, we want the modal to not be dismissable
 
@@ -28,19 +32,24 @@ export const AddressBlockedModal = ({ address, onDisconnectWallet }: AddressBloc
           <ExclamationCircleIcon />
         </SvgIcon>
         <Typography variant="h2">
-          <Trans>Blocked Address</Trans>
+          <Trans>Connection Failed</Trans>
         </Typography>
         <Typography variant="helperText" sx={{ my: 4 }}>
           {address}
         </Typography>
         <Typography variant="description" sx={{ textAlign: 'center', mb: 4 }}>
-          <Trans>
-            This address is blocked on app.aave.com because it is associated with one or more
-          </Trans>{' '}
-          <Link href="https://docs.aave.com/faq/#address-screening" underline="always">
-            <Trans>blocked activities</Trans>
-          </Link>
-          {'.'}
+          {message ? (
+            message
+          ) : (
+            <>
+              <Trans>Something went wrong. Please try again later.</Trans>
+              <br />
+              <Typography variant="helperText" sx={{ mb: 1 }}>
+                {' '}
+                <Trans>error code: 1</Trans>{' '}
+              </Typography>
+            </>
+          )}
         </Typography>
         <Button variant="contained" onClick={onDisconnectWallet}>
           <SvgIcon fontSize="small" sx={{ mx: 1 }}>

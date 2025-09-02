@@ -1,14 +1,15 @@
-import { Typography } from '@mui/material';
+import { SxProps, Typography } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
 import { convertParaswapErrorMessage } from 'src/hooks/paraswap/common';
 
-import { convertCowProtocolErrorMessage } from './cowprotocol.errors';
+import { convertCowProtocolErrorMessage } from './cowprotocol/cowprotocol.errors';
 
 interface SwitchRatesErrorProps {
   error: unknown;
+  sx?: SxProps;
 }
 
-export const SwitchRatesError = ({ error }: SwitchRatesErrorProps) => {
+export const SwitchRatesError = ({ error, sx }: SwitchRatesErrorProps) => {
   let paraswapMessage;
   let cowProtocolMessage;
 
@@ -26,7 +27,7 @@ export const SwitchRatesError = ({ error }: SwitchRatesErrorProps) => {
       : 'There was an issue fetching rates.';
 
   return (
-    <Warning severity="error" icon={false} sx={{ mt: 4 }}>
+    <Warning severity="error" icon={false} sx={{ mt: 4, ...sx }}>
       <Typography variant="caption">{customErrorMessage}</Typography>
     </Warning>
   );

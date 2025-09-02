@@ -48,7 +48,7 @@ import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewar
 import { RewardSymbol } from 'src/components/transactions/ClaimRewards/constants';
 import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/DebtSwitchActions';
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
-import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
+import { SwapActionProps } from 'src/components/transactions/Switch/CollateralSwap/CollateralSwapActions';
 import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
