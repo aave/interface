@@ -1,6 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
-import { useMeritClaimRewards } from '@aave/react';
+import { chainId, evmAddress, useUserMeritRewards } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
@@ -25,6 +25,19 @@ import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { useEnhancedUserYield } from '../../hooks/useEnhancedUserYield';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
+
+interface MeritReward {
+  amount: {
+    usd: string;
+    amount: {
+      value: string;
+    };
+  };
+  currency: {
+    symbol: string;
+    address: string;
+  };
+}
 
 export const DashboardTopPanel = () => {
   const { user, reserves, loading } = useAppDataContext();
@@ -54,14 +67,15 @@ export const DashboardTopPanel = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { data: meritClaimRewards } = useMeritClaimRewards({
-    user: currentAccount,
-    chainId: currentMarketData.chainId,
+  const { data: meritClaimRewards } = useUserMeritRewards({
+    // Note: currentAccount is not always defined, so we need to check if it is and if not, use a fallback address
+    user: currentAccount ? evmAddress(currentAccount) : evmAddress(ZERO_ADDRESS),
+    chainId: chainId(currentMarketData.chainId),
   });
 
   // Calculate merit rewards USD value
   const meritRewardsUsd =
-    meritClaimRewards?.rewards?.reduce((total, reward) => {
+    meritClaimRewards?.claimable?.reduce((total: number, reward: MeritReward) => {
       return total + Number(reward.amount.usd || 0);
     }, 0) || 0;
 
@@ -108,8 +122,8 @@ export const DashboardTopPanel = () => {
     : { claimableRewardsUsd: 0, assets: [] };
 
   // Add merit rewards to existing assets if they exist
-  if (meritClaimRewards?.rewards) {
-    meritClaimRewards.rewards.forEach((reward) => {
+  if (meritClaimRewards?.claimable) {
+    meritClaimRewards.claimable.forEach((reward: MeritReward) => {
       if (Number(reward.amount.usd) > 0 && assets.indexOf(reward.currency.symbol) === -1) {
         assets.push(reward.currency.symbol);
       }

@@ -8,6 +8,7 @@ import { Reward } from 'src/helpers/types';
 
 import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { TokenIcon } from '../../primitives/TokenIcon';
+import { RewardSymbol } from './constants';
 
 export type RewardSelect = Pick<Reward, 'symbol' | 'balanceUsd'> & {
   isMeritReward?: boolean;
@@ -58,21 +59,21 @@ export const RewardsSelect = ({
         }}
         native={false}
         renderValue={(reward) => {
-          if (reward === 'all') {
+          if (reward === RewardSymbol.ALL) {
             return (
               <Typography color="text.primary">
                 <Trans>Claim all rewards</Trans>
               </Typography>
             );
           }
-          if (reward === 'merit-all') {
+          if (reward === RewardSymbol.MERIT_ALL) {
             return (
               <Typography color="text.primary">
                 <Trans>Claim all merit rewards</Trans>
               </Typography>
             );
           }
-          if (reward === 'protocol-all') {
+          if (reward === RewardSymbol.PROTOCOL_ALL) {
             return (
               <Typography color="text.primary">
                 <Trans>Claim all protocol rewards</Trans>
@@ -107,7 +108,7 @@ export const RewardsSelect = ({
             <Trans>All Rewards</Trans>
           </Typography>
         </MenuItem>
-        <MenuItem value={'all'}>
+        <MenuItem value={RewardSymbol.ALL}>
           <Typography variant="subheader1">
             <Trans>Claim all rewards</Trans>
           </Typography>
@@ -125,7 +126,7 @@ export const RewardsSelect = ({
               <Trans>Merit Rewards</Trans>
             </Typography>
           </MenuItem>,
-          <MenuItem value={'merit-all'} key="merit-all">
+          <MenuItem value={RewardSymbol.MERIT_ALL} key="merit-all">
             <Typography variant="subheader1" color="primary.main">
               <Trans>Claim all merit rewards</Trans>
             </Typography>
@@ -189,7 +190,7 @@ export const RewardsSelect = ({
           </MenuItem>,
           ...(rewards.length > 1
             ? [
-                <MenuItem value={'protocol-all'} key="protocol-all">
+                <MenuItem value={RewardSymbol.PROTOCOL_ALL} key="protocol-all">
                   <Typography variant="subheader1" color="text.primary">
                     <Trans>Claim all protocol rewards</Trans>
                   </Typography>

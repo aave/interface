@@ -15,13 +15,13 @@
     "@gql.tada/internal" "^1.0.0"
     graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
 
-"@aave/client@0.0.0-canary-20250821094950":
-  version "0.0.0-canary-20250821094950"
-  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.0.0-canary-20250821094950.tgz#96dbbb984cc8af7a23315cf7bfa188f511e90c97"
-  integrity sha512-MRQUpAnbVrWwhAHnoP9ZQW2w5sNg7+IuSf413t8eF4LobC2TKFVMK+nN9lK3+s96X8J7L6utRnsmNx/K8xkDQw==
+"@aave/client@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.6.1.tgz#8d4f5fdeaaaf2499bcbe9dfe8612c1804cc7cd6a"
+  integrity sha512-4B6MGm02jHgO1qSQtF/SHeGmNrCbnDXLwQI5WBImjR2DBCE51BNuqa/cl1kRd47XQDypLBaRiCsXCM11vfLzOA==
   dependencies:
-    "@aave/graphql" "0.0.0-canary-20250821094950"
-    "@aave/types" "0.1.0"
+    "@aave/graphql" "0.6.1"
+    "@aave/types" "0.1.1"
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
 
@@ -32,13 +32,13 @@
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/graphql@0.0.0-canary-20250821094950":
-  version "0.0.0-canary-20250821094950"
-  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.0.0-canary-20250821094950.tgz#874a1ba98574e30cd39d12776922eff028c758c5"
-  integrity sha512-7lTxqFUyjZkfd/S5aCRCjrEghar8JkTwUmz5ie6W+IJ/WD94h4jqt/vrFIxPY3l95TDi79Vh1XW1JPtsvOmqAA==
+"@aave/graphql@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.6.1.tgz#c82feddfc4fe87eb858d67c149c85f802a447179"
+  integrity sha512-1eYvzXILPYUdUwtTTOHqVJ1HiTg5nNpldohk/0nmLSf84/AGHVC5Qsl5xKA/JMkh8wsQh2opKsNwuFgAcuVbfw==
   dependencies:
-    "@aave/types" "0.1.0"
-    gql.tada "^1.8.11"
+    "@aave/types" "0.1.1"
+    gql.tada "^1.8.13"
     graphql "^16.11.0"
     type-fest "^4.41.0"
 
@@ -47,20 +47,20 @@
   resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.36.1.tgz#3e501962de3700250c213c981ea47b36a8e37a54"
   integrity sha512-rR1sbDX1IFb1B1TLdi8hZANvtviPeU8hfpLuHC9cwlXluujCdHttnNVODwco1J5d2k6KxnNnc0DZJj2yV7nLTQ==
 
-"@aave/react@canary":
-  version "0.0.0-canary-20250821094950"
-  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.0.0-canary-20250821094950.tgz#63dda63310aae59056a183e88d0a2a46d4f9ac57"
-  integrity sha512-IC6bNHLlvqsjKx4aVsKZFHh7K2Rb8GCiGRlINEHyHelGGzBgG2nwX+1QSnR+QS+USbde0eJoL6xAzD2kkvqv0Q==
+"@aave/react@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.6.1.tgz#4c5079ef87e74833376ef81c119ba3ba4b601e3f"
+  integrity sha512-SBi1Ix3y8sIHeIbw3JF3XGBXK0KSvia1QbGSyuobNj0/028rWJ+FAqFm5XcBfNpVImf1BWZylsuryyyLaU1zvQ==
   dependencies:
-    "@aave/client" "0.0.0-canary-20250821094950"
-    "@aave/graphql" "0.0.0-canary-20250821094950"
-    "@aave/types" "0.1.0"
+    "@aave/client" "0.6.1"
+    "@aave/graphql" "0.6.1"
+    "@aave/types" "0.1.1"
     urql "^4.2.2"
 
-"@aave/types@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@aave/types/-/types-0.1.0.tgz#23fad475f02521bf12a17fcbf1072080595bfdef"
-  integrity sha512-BFvS5MlauZ3ybZgcVM2lZT3eqZ0343DmSu4n3+QTq07ee1eIvv6tg0DFmtPx71lGT2bIGPnT7SjXrfrPcSpdiw==
+"@aave/types@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@aave/types/-/types-0.1.1.tgz#cf0ad6c17e586cabda2f4e62a37ff950b709c4dc"
+  integrity sha512-nqHsXg2adrur1C3Xc8rUMR/y1iYOkdm2XIw4QExfeTgrxr6s9M3DZWJiSJ2AqzgiYwBHLdkwrzYX3klxHg9jnA==
   dependencies:
     neverthrow "^8.2.0"
     type-fest "^4.41.0"
@@ -8291,7 +8291,7 @@ gopd@^1.2.0:
   resolved "https://registry.yarnpkg.com/gopd/-/gopd-1.2.0.tgz#89f56b8217bdbc8802bd299df6d7f1081d7e51a1"
   integrity sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==
 
-gql.tada@^1.8.11:
+gql.tada@^1.8.13:
   version "1.8.13"
   resolved "https://registry.yarnpkg.com/gql.tada/-/gql.tada-1.8.13.tgz#a724bbdaebe1d851d80bf59c5e8614956914b883"
   integrity sha512-fYoorairdPgxtE7Sf1X9/6bSN9Kt2+PN8KLg3hcF8972qFnawwUgs1OLVU8efZMHwL7EBHhhKBhrsGPlOs2lZQ==

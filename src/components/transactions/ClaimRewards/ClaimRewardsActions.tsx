@@ -3,7 +3,7 @@ import {
   EthereumTransactionTypeExtended,
   ProtocolAction,
 } from '@aave/contract-helpers';
-import { useMeritClaimRewards } from '@aave/react';
+import { chainId, evmAddress, useUserMeritRewards } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import { Reward } from 'src/helpers/types';
@@ -14,6 +14,7 @@ import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { ControllerIdentifier, RewardSymbol } from './constants';
 
 export type ClaimRewardsActionsProps = {
   isWrongNetwork: boolean;
@@ -35,9 +36,9 @@ export const ClaimRewardsActions = ({
     useShallow((store) => [store.currentMarketData, store.estimateGasLimit])
   );
 
-  const { data: meritClaimRewards } = useMeritClaimRewards({
-    user: currentAccount,
-    chainId: currentMarketData.chainId,
+  const { data: meritClaimRewards } = useUserMeritRewards({
+    user: evmAddress(currentAccount),
+    chainId: chainId(currentMarketData.chainId),
   });
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
@@ -49,11 +50,13 @@ export const ClaimRewardsActions = ({
     tryPermit: false,
     handleGetTxns: async () => {
       // Check if we need to claim both protocol and merit rewards
-      const isClaimingAll = selectedReward.symbol === 'all';
-      const isClaimingMeritAll = selectedReward.symbol === 'merit-all';
-      const isClaimingProtocolAll = selectedReward.symbol === 'protocol-all';
-      const hasProtocolRewards = selectedReward.incentiveControllerAddress !== 'MERIT_REWARD';
-      const hasMeritRewards = meritClaimRewards?.rewards && meritClaimRewards.rewards.length > 0;
+      const isClaimingAll = selectedReward.symbol === RewardSymbol.ALL;
+      const isClaimingMeritAll = selectedReward.symbol === RewardSymbol.MERIT_ALL;
+      const isClaimingProtocolAll = selectedReward.symbol === RewardSymbol.PROTOCOL_ALL;
+      const hasProtocolRewards =
+        selectedReward.incentiveControllerAddress !== ControllerIdentifier.MERIT_REWARD;
+      const hasMeritRewards =
+        meritClaimRewards?.claimable && meritClaimRewards.claimable.length > 0;
       const isIndividualProtocolReward =
         hasProtocolRewards && !isClaimingAll && !isClaimingProtocolAll && !isClaimingMeritAll;
 
@@ -83,10 +86,10 @@ export const ClaimRewardsActions = ({
         }
         const multicallTx = await createMulticallTransaction(
           protocolTxns,
-          meritClaimRewards.transaction
+          meritClaimRewards.transaction as unknown as PopulatedTransaction
         );
 
-        // Check if there are any approval transactions that need to be handled separately
+        // Check if there are approval transactions that need to be handled separately
         const approvalTxns = protocolTxns.filter((tx) => tx.txType === 'ERC20_APPROVAL');
 
         return approvalTxns.length > 0 ? [...approvalTxns, multicallTx] : [multicallTx];
@@ -95,7 +98,14 @@ export const ClaimRewardsActions = ({
         if (!meritClaimRewards?.transaction) {
           throw new Error('Merit rewards transaction not available');
         }
-        return [convertMeritTransactionToEthereum(meritClaimRewards.transaction)];
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        return [
+          convertMeritTransactionToEthereum(
+            meritClaimRewards.transaction as unknown as PopulatedTransaction
+          ),
+        ];
       } else {
         // Protocol-all or other cases - use existing protocol logic
         return claimRewards({
@@ -127,14 +137,18 @@ export const ClaimRewardsActions = ({
       calls.push({
         target: tx.to,
         callData: tx.data,
-        value: tx.value || '0',
+        value: tx.value ? (BigNumber.isBigNumber(tx.value) ? tx.value.toString() : tx.value) : '0',
       });
     }
 
     calls.push({
       target: meritTransaction.to,
       callData: meritTransaction.data,
-      value: meritTransaction.value || '0',
+      value: meritTransaction.value
+        ? BigNumber.isBigNumber(meritTransaction.value)
+          ? meritTransaction.value.toString()
+          : meritTransaction.value
+        : '0',
     });
 
     const multicallInterface = new utils.Interface([
@@ -150,13 +164,18 @@ export const ClaimRewardsActions = ({
 
     const data = multicallInterface.encodeFunctionData('aggregate3Value', [callsWithFailure]);
 
+    // Calculate total value needed for multicall by summing individual call values
+    const totalValue = calls.reduce((sum, call) => {
+      return BigNumber.from(sum).add(BigNumber.from(call.value)).toString();
+    }, '0');
+
     return {
       txType: eEthereumTxType.DLP_ACTION,
       tx: async () => ({
         to: multicallAddress,
         from: currentAccount,
         data,
-        value: '0',
+        value: totalValue,
       }),
       gas: async () => {
         try {
@@ -164,20 +183,20 @@ export const ClaimRewardsActions = ({
             to: multicallAddress,
             from: currentAccount,
             data,
-            value: BigNumber.from('0'),
+            value: BigNumber.from(totalValue),
           };
 
           const estimatedTx = await estimateGasLimit(tx, currentMarketData.chainId);
 
           return {
             gasLimit: estimatedTx.gasLimit?.toString(),
-            gasPrice: '0',
+            gasPrice: '0', // Legacy field - actual gas pricing handled by wallet (EIP-1559)
           };
         } catch (error) {
           console.warn('Gas estimation failed for multicall, using fallback:', error);
           return {
             gasLimit: '800000', // Conservative fallback
-            gasPrice: '0',
+            gasPrice: '0', // Legacy field - actual gas pricing handled by wallet (EIP-1559)
           };
         }
       },
@@ -213,13 +232,13 @@ export const ClaimRewardsActions = ({
 
           return {
             gasLimit: estimatedTx.gasLimit?.toString(),
-            gasPrice: '0',
+            gasPrice: '0', // Legacy field - actual gas pricing handled by wallet (EIP-1559)
           };
         } catch (error) {
           console.warn('Gas estimation failed for merit transaction, using fallback:', error);
           return {
             gasLimit: '400000',
-            gasPrice: '0',
+            gasPrice: '0', // Legacy field - actual gas pricing handled by wallet (EIP-1559)
           };
         }
       },
@@ -234,11 +253,11 @@ export const ClaimRewardsActions = ({
       mainTxState={mainTxState}
       handleAction={action}
       actionText={
-        selectedReward.symbol === 'all' ? (
+        selectedReward.symbol === RewardSymbol.ALL ? (
           <Trans>Claim all</Trans>
-        ) : selectedReward.symbol === 'merit-all' ? (
+        ) : selectedReward.symbol === RewardSymbol.MERIT_ALL ? (
           <Trans>Claim all merit rewards</Trans>
-        ) : selectedReward.symbol === 'protocol-all' ? (
+        ) : selectedReward.symbol === RewardSymbol.PROTOCOL_ALL ? (
           <Trans>Claim all protocol rewards</Trans>
         ) : (
           <Trans>Claim {selectedReward.symbol}</Trans>

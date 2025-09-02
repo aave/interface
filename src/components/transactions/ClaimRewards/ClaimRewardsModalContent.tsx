@@ -1,6 +1,6 @@
 import { ChainId, ProtocolAction } from '@aave/contract-helpers';
 import { normalize, UserIncentiveData } from '@aave/math-utils';
-import { useMeritClaimRewards } from '@aave/react';
+import { chainId, evmAddress, useUserMeritRewards } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
@@ -30,6 +30,7 @@ import {
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { ClaimRewardsActions } from './ClaimRewardsActions';
+import { ControllerIdentifier, RewardSymbol } from './constants';
 import { RewardsSelect } from './RewardsSelect';
 
 export enum ErrorType {
@@ -48,14 +49,16 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
   );
   const { chainId: connectedChainId, readOnlyModeAddress, currentAccount } = useWeb3Context();
   const [claimableUsd, setClaimableUsd] = useState('0');
-  const [selectedRewardSymbol, setSelectedRewardSymbol] = useState<string>('all');
+  const [selectedRewardSymbol, setSelectedRewardSymbol] = useState<string>(RewardSymbol.ALL);
   const [rewards, setRewards] = useState<Reward[]>([]);
   const [allReward, setAllReward] = useState<Reward>();
 
   const networkConfig = getNetworkConfig(currentChainId);
-  const { data: meritClaimRewards } = useMeritClaimRewards({
-    user: currentAccount,
-    chainId: currentMarketData.chainId,
+  const { data: meritClaimRewards } = useUserMeritRewards({
+    user: currentAccount
+      ? evmAddress(currentAccount)
+      : evmAddress('0x0000000000000000000000000000000000000000'),
+    chainId: chainId(currentMarketData.chainId),
   });
 
   const [meritRewardsForSelect, setMeritRewardsForSelect] = useState<Reward[]>([]);
@@ -112,8 +115,8 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
     });
 
     // Process merit rewards (can only be claimed all together)
-    if (meritClaimRewards?.rewards) {
-      meritClaimRewards.rewards.forEach((meritReward) => {
+    if (meritClaimRewards?.claimable) {
+      meritClaimRewards.claimable.forEach((meritReward) => {
         const meritRewardUsd = Number(meritReward.amount.usd || 0);
 
         if (meritRewardUsd > 0) {
@@ -124,7 +127,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
 
           meritRewards.push({
             assets: [], // Merit rewards don't have associated lending assets
-            incentiveControllerAddress: 'MERIT_REWARD', // Special identifier for merit rewards handled in actions
+            incentiveControllerAddress: ControllerIdentifier.MERIT_REWARD, // Special identifier for merit rewards handled in actions
             symbol: meritReward.currency.symbol,
             balance: meritReward.amount.amount.value,
             balanceUsd: meritReward.amount.usd,
@@ -148,8 +151,8 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
     if (hasMeritRewards) {
       const meritAllOption = {
         assets: allAssets.filter((asset) => meritRewards.some((mr) => mr.assets.includes(asset))),
-        incentiveControllerAddress: 'MERIT_REWARD',
-        symbol: 'merit-all',
+        incentiveControllerAddress: ControllerIdentifier.MERIT_REWARD,
+        symbol: RewardSymbol.MERIT_ALL,
         balance: '0',
         balanceUsd: totalMeritUsd.toString(),
         rewardTokenAddress: '',
@@ -166,7 +169,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
         incentiveControllerAddress: hasProtocolRewards
           ? protocolRewards[0].incentiveControllerAddress
           : '',
-        symbol: 'protocol-all',
+        symbol: RewardSymbol.PROTOCOL_ALL,
         balance: '0',
         balanceUsd: totalProtocolUsd.toString(),
         rewardTokenAddress: '',
@@ -179,13 +182,13 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
       const allRewardsOption = {
         assets: allAssets,
         incentiveControllerAddress: protocolRewards[0].incentiveControllerAddress,
-        symbol: 'all',
+        symbol: RewardSymbol.ALL,
         balance: '0',
         balanceUsd: totalClaimableUsd.toString(),
         rewardTokenAddress: '',
       };
 
-      setSelectedRewardSymbol('all');
+      setSelectedRewardSymbol(RewardSymbol.ALL);
       setAllReward(allRewardsOption);
     } else if (hasProtocolRewards && !hasMeritRewards) {
       // Only protocol rewards
@@ -197,27 +200,27 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
         const protocolAllOption = {
           assets: allAssets,
           incentiveControllerAddress: protocolRewards[0].incentiveControllerAddress,
-          symbol: 'protocol-all',
+          symbol: RewardSymbol.PROTOCOL_ALL,
           balance: '0',
           balanceUsd: totalProtocolUsd.toString(),
           rewardTokenAddress: '',
         };
 
-        setSelectedRewardSymbol('protocol-all');
+        setSelectedRewardSymbol(RewardSymbol.PROTOCOL_ALL);
         setAllReward(protocolAllOption);
       }
     } else if (!hasProtocolRewards && hasMeritRewards) {
       // Only merit rewards - default to merit-all
       const meritAllOption = {
         assets: allAssets,
-        incentiveControllerAddress: 'MERIT_REWARD',
-        symbol: 'merit-all',
+        incentiveControllerAddress: ControllerIdentifier.MERIT_REWARD,
+        symbol: RewardSymbol.MERIT_ALL,
         balance: '0',
         balanceUsd: totalMeritUsd.toString(),
         rewardTokenAddress: '',
       };
 
-      setSelectedRewardSymbol('merit-all');
+      setSelectedRewardSymbol(RewardSymbol.MERIT_ALL);
       setAllReward(meritAllOption);
     }
 
@@ -251,11 +254,12 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
   const selectedReward =
-    selectedRewardSymbol === 'all'
+    selectedRewardSymbol === RewardSymbol.ALL
       ? allReward
-      : selectedRewardSymbol === 'merit-all' || selectedRewardSymbol.startsWith('merit-display-')
+      : selectedRewardSymbol === RewardSymbol.MERIT_ALL ||
+        selectedRewardSymbol.startsWith('merit-display-')
       ? meritAllReward
-      : selectedRewardSymbol === 'protocol-all'
+      : selectedRewardSymbol === RewardSymbol.PROTOCOL_ALL
       ? protocolAllReward
       : rewards.find((r) => r.symbol === selectedRewardSymbol) ||
         meritRewardsForSelect.find((r) => r.symbol === selectedRewardSymbol);
@@ -287,10 +291,10 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
       };
 
       // Determine event type and specific properties based on claim type
-      if (selectedRewardSymbol === 'all') {
+      if (selectedRewardSymbol === RewardSymbol.ALL) {
         eventName = REWARDS.CLAIM_ALL_REWARDS;
         const protocolRewardsCount = rewards.length;
-        const meritRewardsCount = meritClaimRewards?.rewards?.length || 0;
+        const meritRewardsCount = meritClaimRewards?.claimable?.length || 0;
 
         trackEvent(eventName, {
           ...baseEventProps,
@@ -300,7 +304,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
           totalRewardsCount: protocolRewardsCount + meritRewardsCount,
         });
       } else if (
-        selectedRewardSymbol === 'merit-all' ||
+        selectedRewardSymbol === RewardSymbol.MERIT_ALL ||
         selectedRewardSymbol.startsWith('merit-display-')
       ) {
         eventName = REWARDS.CLAIM_MERIT_REWARDS;
@@ -308,10 +312,10 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
         trackEvent(eventName, {
           ...baseEventProps,
           claimType: 'merit-all',
-          meritRewardsCount: meritClaimRewards?.rewards?.length || 0,
+          meritRewardsCount: meritClaimRewards?.claimable?.length || 0,
           claimableUsd: selectedReward.balanceUsd,
         });
-      } else if (selectedRewardSymbol === 'protocol-all') {
+      } else if (selectedRewardSymbol === RewardSymbol.PROTOCOL_ALL) {
         eventName = REWARDS.CLAIM_PROTOCOL_REWARDS;
 
         trackEvent(eventName, {
@@ -352,14 +356,14 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
         />
       )}
 
-      {meritClaimRewards?.rewards && meritClaimRewards.rewards.length > 0 && (
+      {meritClaimRewards?.claimable && meritClaimRewards.claimable.length > 0 && (
         <Typography variant="description" color="text.secondary" sx={{ mb: 2 }}>
-          {selectedRewardSymbol === 'all' ? (
+          {selectedRewardSymbol === RewardSymbol.ALL ? (
             <Trans>Claiming all protocol rewards and merit rewards together</Trans>
-          ) : selectedRewardSymbol === 'merit-all' ||
+          ) : selectedRewardSymbol === RewardSymbol.MERIT_ALL ||
             selectedRewardSymbol.startsWith('merit-display-') ? (
             <Trans>Claiming all merit rewards only</Trans>
-          ) : selectedRewardSymbol === 'protocol-all' ? (
+          ) : selectedRewardSymbol === RewardSymbol.PROTOCOL_ALL ? (
             <Trans>
               Claiming all protocol rewards only. Merit rewards excluded - select &quot;claim
               all&quot; to include merit rewards.
@@ -381,8 +385,8 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
 
       {(rewards.length > 1 ||
         (rewards.length >= 1 &&
-          meritClaimRewards?.rewards &&
-          meritClaimRewards.rewards.length > 0)) && (
+          meritClaimRewards?.claimable &&
+          meritClaimRewards.claimable.length > 0)) && (
         <RewardsSelect
           rewards={rewards}
           meritRewards={meritRewardsForSelect}
@@ -393,7 +397,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
 
       {selectedReward && (
         <TxModalDetails gasLimit={gasLimit}>
-          {selectedRewardSymbol === 'all' && (
+          {selectedRewardSymbol === RewardSymbol.ALL && (
             <>
               {rewards.length > 0 && (
                 <Row
@@ -433,7 +437,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
                 </Row>
               )}
 
-              {meritClaimRewards?.rewards && meritClaimRewards.rewards.length > 0 && (
+              {meritClaimRewards?.claimable && meritClaimRewards.claimable.length > 0 && (
                 <Row
                   caption={<Trans>Merit Rewards</Trans>}
                   captionVariant="description"
@@ -441,7 +445,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
                   mb={4}
                 >
                   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                    {meritClaimRewards.rewards.map((meritReward) => (
+                    {meritClaimRewards.claimable.map((meritReward) => (
                       <Box
                         key={`claim-merit-${meritReward.currency.symbol}`}
                         sx={{
@@ -489,7 +493,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
             </>
           )}
 
-          {selectedRewardSymbol === 'merit-all' && (
+          {selectedRewardSymbol === RewardSymbol.MERIT_ALL && (
             <>
               <Row
                 caption={<Trans>Merit Rewards</Trans>}
@@ -544,7 +548,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
             </>
           )}
 
-          {selectedRewardSymbol === 'protocol-all' && (
+          {selectedRewardSymbol === RewardSymbol.PROTOCOL_ALL && (
             <>
               <Row
                 caption={<Trans>Protocol Rewards</Trans>}
@@ -588,10 +592,10 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
             </>
           )}
 
-          {selectedRewardSymbol !== 'all' &&
-            selectedRewardSymbol !== 'merit-all' &&
+          {selectedRewardSymbol !== RewardSymbol.ALL &&
+            selectedRewardSymbol !== RewardSymbol.MERIT_ALL &&
             !selectedRewardSymbol.startsWith('merit-display-') &&
-            selectedRewardSymbol !== 'protocol-all' && (
+            selectedRewardSymbol !== RewardSymbol.PROTOCOL_ALL && (
               <DetailsNumberLineWithSub
                 symbol={<TokenIcon symbol={selectedReward.symbol} />}
                 futureValue={selectedReward.balance}
@@ -599,8 +603,10 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
                 description={
                   <Trans>
                     {selectedReward.symbol} Balance
-                    {meritRewardsForSelect.some((r) => r.symbol === selectedReward.symbol) &&
-                      ' (Merit)'}
+                    {!rewards.find((r) => r.symbol === selectedReward.symbol) &&
+                    meritRewardsForSelect.find((r) => r.symbol === selectedReward.symbol)
+                      ? ' (Merit)'
+                      : ''}
                   </Trans>
                 }
               />
