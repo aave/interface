@@ -371,10 +371,6 @@ msgstr "Total amount staked"
 msgid "Transactions"
 msgstr "Transactions"
 
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
-msgid "For swapping safety module assets please unstake your position <0>here</0>."
-msgstr "For swapping safety module assets please unstake your position <0>here</0>."
-
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 msgstr "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
@@ -1107,7 +1103,6 @@ msgid "sGHO"
 msgstr "sGHO"
 
 #: src/components/transactions/Switch/BaseSwitchModal.tsx
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
 msgid "Please connect your wallet to swap tokens."
 msgstr "Please connect your wallet to swap tokens."
 
