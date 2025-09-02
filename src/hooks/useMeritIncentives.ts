@@ -15,6 +15,10 @@ import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { convertAprToApy } from 'src/utils/utils';
 
+// Enable or disable Self incentives campaign
+export const ENABLE_SELF_CAMPAIGN = true;
+// export const ENABLE_SELF_CAMPAIGN = false;
+
 export enum MeritAction {
   ETHEREUM_SGHO = 'ethereum-sgho',
   ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
@@ -673,7 +677,6 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
       },
-      //!We found bug
       {
         action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
         rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
@@ -726,7 +729,6 @@ export const useMeritIncentives = ({
       if (!meritReserveIncentiveData) {
         return null;
       }
-      console.log('Merit Reserve Incentive Data:', meritReserveIncentiveData);
 
       const incentives = meritReserveIncentiveData.filter(
         (item) => item.protocolAction === protocolAction
@@ -744,7 +746,7 @@ export const useMeritIncentives = ({
         if (!standardAPR) continue;
 
         const variants = getAprVariants(incentive.action, data.actionsAPR);
-        const selfAPR = variants.selfAPR ?? 0;
+        const selfAPR = ENABLE_SELF_CAMPAIGN ? variants.selfAPR ?? 0 : 0;
         const totalAPR = standardAPR + selfAPR; // Merit + Self APR
 
         if (maxTotalAPR === null || totalAPR > maxTotalAPR) {

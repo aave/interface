@@ -3,7 +3,7 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { ENABLE_SELF_CAMPAIGN, useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
@@ -75,7 +75,7 @@ export const IncentivesCard = ({
   });
 
   const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
-  const selfAPY = meritIncentives?.variants?.selfAPY ?? 0;
+  const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
   const totalMeritAPY = meritIncentivesAPR + selfAPY;
   const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
 

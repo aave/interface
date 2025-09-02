@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
 import {
+  ENABLE_SELF_CAMPAIGN,
   ExtendedReserveIncentiveResponse,
   MeritAction,
   MeritIncentivesBreakdown,
@@ -22,9 +23,6 @@ interface CampaignConfig {
   title: string;
   hasSpecialContent: boolean;
 }
-
-// const ENABLE_SAFE_CAMPAIGN = false;
-const ENABLE_SAFE_CAMPAIGN = true;
 
 const isCeloAction = (action: MeritAction): boolean => {
   return [
@@ -57,7 +55,7 @@ const selfCampaignConfig: Map<MeritAction, { limit: string; token: string }> = n
   ],
 ]);
 const isSelfVerificationCampaign = (action: MeritAction): boolean => {
-  return selfCampaignConfig.has(action) && ENABLE_SAFE_CAMPAIGN;
+  return selfCampaignConfig.has(action) && ENABLE_SELF_CAMPAIGN;
 };
 
 const getCampaignConfig = (action: MeritAction): CampaignConfig => {
@@ -191,10 +189,12 @@ export const MeritIncentivesTooltipContent = ({
       ) : null}
 
       <Typography variant="caption" color="text.primary" fontSize={13} fontWeight={'600'}>
-        {campaignConfig.type === CampaignType.SELF_VERIFICATION && selfConfig && (
+        {campaignConfig.type === CampaignType.SELF_VERIFICATION && selfConfig ? (
           <Trans>Merit Program and Self rewards are claimed through the</Trans>
+        ) : (
+          <Trans>Merit Program rewards are claimed through the</Trans>
         )}
-        <Trans>Merit Program rewards are claimed through the</Trans>
+
         <Link
           href={`https://apps.aavechan.com/merit/${meritIncentives.action}`}
           sx={{ textDecoration: 'underline', ml: 1 }}
