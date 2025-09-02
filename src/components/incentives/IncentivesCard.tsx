@@ -75,6 +75,8 @@ export const IncentivesCard = ({
   });
 
   const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
+  // TODO: This is a one-off for the Self campaign.
+  // Remove once the Self incentives are finished.
   const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
   const totalMeritAPY = meritIncentivesAPR + selfAPY;
   const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
