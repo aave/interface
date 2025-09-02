@@ -75,6 +75,8 @@ export const IncentivesCard = ({
   });
 
   const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
+  const selfAPY = meritIncentives?.variants?.selfAPY ?? 0;
+  const totalMeritAPY = meritIncentivesAPR + selfAPY;
   const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
 
   const isBorrow = protocolAction === ProtocolAction.borrow;
@@ -85,8 +87,8 @@ export const IncentivesCard = ({
   const displayAPY = hasInfiniteIncentives
     ? 'Infinity'
     : isBorrow
-    ? protocolAPY - (protocolIncentivesAPR as number) - meritIncentivesAPR - merklIncentivesAPR
-    : protocolAPY + (protocolIncentivesAPR as number) + meritIncentivesAPR + merklIncentivesAPR;
+    ? protocolAPY - (protocolIncentivesAPR as number) - totalMeritAPY - merklIncentivesAPR
+    : protocolAPY + (protocolIncentivesAPR as number) + totalMeritAPY + merklIncentivesAPR;
 
   const isSghoPage =
     typeof router?.asPath === 'string' && router.asPath.toLowerCase().startsWith('/sgho');

@@ -673,6 +673,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
       },
+      //!We found bug
       {
         action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
         rewardTokenAddress: AaveV3Celo.ASSETS.CELO.A_TOKEN,
@@ -689,6 +690,11 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
       },
     ],
   },
+};
+const getAprVariants = (action: MeritAction, actionsAPR: MeritIncentives['actionsAPR']) => {
+  const map = actionsAPR as Record<string, number | null | undefined>;
+  const selfAPR = map[`self-${action}`] ?? null;
+  return { selfAPR };
 };
 
 export const useMeritIncentives = ({
@@ -720,6 +726,7 @@ export const useMeritIncentives = ({
       if (!meritReserveIncentiveData) {
         return null;
       }
+      console.log('Merit Reserve Incentive Data:', meritReserveIncentiveData);
 
       const incentives = meritReserveIncentiveData.filter(
         (item) => item.protocolAction === protocolAction
@@ -729,22 +736,33 @@ export const useMeritIncentives = ({
         return null;
       }
 
-      let maxAPR = null;
+      let maxTotalAPR = null;
       let selectedIncentive = null;
 
       for (const incentive of incentives) {
-        const APR = data.actionsAPR[incentive.action];
-        if (APR && (maxAPR === null || APR > maxAPR)) {
-          maxAPR = APR;
+        const standardAPR = data.actionsAPR[incentive.action];
+        if (!standardAPR) continue;
+
+        const variants = getAprVariants(incentive.action, data.actionsAPR);
+        const selfAPR = variants.selfAPR ?? 0;
+        const totalAPR = standardAPR + selfAPR; // Merit + Self APR
+
+        if (maxTotalAPR === null || totalAPR > maxTotalAPR) {
+          maxTotalAPR = totalAPR;
           selectedIncentive = incentive;
         }
       }
 
-      if (!selectedIncentive || maxAPR === null) {
+      if (!selectedIncentive || maxTotalAPR === null) {
         return null;
       }
 
-      const meritIncentivesAPR = maxAPR / 100;
+      const variants = getAprVariants(selectedIncentive.action, data.actionsAPR);
+      const variantsAPY = {
+        selfAPY: variants.selfAPR ? convertAprToApy(variants.selfAPR / 100) : null,
+      };
+      const selectedStandardAPR = data.actionsAPR[selectedIncentive.action]!;
+      const meritIncentivesAPR = selectedStandardAPR / 100;
       const meritIncentivesAPY = convertAprToApy(meritIncentivesAPR);
 
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
@@ -755,6 +773,12 @@ export const useMeritIncentives = ({
       const totalAPY = isBorrow
         ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY
         : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY;
+      const totalAPYWithSelf =
+        variantsAPY.selfAPY !== null
+          ? isBorrow
+            ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - variantsAPY.selfAPY
+            : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY + variantsAPY.selfAPY
+          : null;
 
       return {
         incentiveAPR: meritIncentivesAPY.toString(),
@@ -763,6 +787,7 @@ export const useMeritIncentives = ({
         action: selectedIncentive.action,
         customMessage: selectedIncentive.customMessage,
         customForumLink: selectedIncentive.customForumLink,
+        variants: { selfAPY: variantsAPY.selfAPY, totalAPYWithSelf },
         breakdown: {
           protocolAPY,
           protocolIncentivesAPR,
@@ -775,7 +800,10 @@ export const useMeritIncentives = ({
             meritIncentives: meritIncentivesAPY,
           },
         } as MeritIncentivesBreakdown,
-      } as ExtendedReserveIncentiveResponse & { breakdown: MeritIncentivesBreakdown };
+      } as ExtendedReserveIncentiveResponse & {
+        breakdown: MeritIncentivesBreakdown;
+        variants: { selfAPY: number | null; totalAPYWithSelf: number | null };
+      };
     },
   });
 };
