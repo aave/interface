@@ -45,6 +45,7 @@ import { AaveSafetyModule, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
+import { RewardSymbol } from 'src/components/transactions/ClaimRewards/constants';
 import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/DebtSwitchActions';
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { SwapActionProps } from 'src/components/transactions/Switch/CollateralSwap/CollateralSwapActions';
@@ -671,7 +672,10 @@ export const createPoolSlice: StateCreator<
       );
 
       if (get().currentMarketData.v3) {
-        if (selectedReward.symbol === 'all') {
+        if (
+          selectedReward.symbol === RewardSymbol.ALL ||
+          selectedReward.symbol === RewardSymbol.PROTOCOL_ALL
+        ) {
           return incentivesTxBuilderV2.claimAllRewards({
             user: currentAccount,
             assets: allReserves,
