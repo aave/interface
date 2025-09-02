@@ -238,10 +238,6 @@ msgstr "Available liquidity"
 msgid "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
 msgstr "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
 
-#: src/components/AddressBlockedModal.tsx
-msgid "Blocked Address"
-msgstr "Blocked Address"
-
 #: src/modules/sGho/SavingsGhoCard.tsx
 msgid "Initiate Withdraw"
 msgstr "Initiate Withdraw"
@@ -1413,6 +1409,10 @@ msgstr "Maximum amount received"
 msgid "Activating Cooldown"
 msgstr "Activating Cooldown"
 
+#: src/components/AddressBlockedModal.tsx
+msgid "error code: 1"
+msgstr "error code: 1"
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "Recipient address"
@@ -1853,10 +1853,6 @@ msgstr "Show assets with small balance"
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
 msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
-
-#: src/components/AddressBlockedModal.tsx
-msgid "blocked activities"
-msgstr "blocked activities"
 
 #: pages/500.page.tsx
 msgid "Reload the page"
@@ -2542,10 +2538,6 @@ msgstr "Please connect your wallet to get free testnet assets."
 msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
 
-#: src/components/AddressBlockedModal.tsx
-msgid "This address is blocked on app.aave.com because it is associated with one or more"
-msgstr "This address is blocked on app.aave.com because it is associated with one or more"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
@@ -2896,6 +2888,10 @@ msgstr "English"
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
+
+#: src/components/AddressBlockedModal.tsx
+msgid "Something went wrong. Please try again later."
+msgstr "Something went wrong. Please try again later."
 
 #: src/modules/sGho/SGhoDepositPanel.tsx
 msgid "Deposit GHO and earn {0}% APY"
