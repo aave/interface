@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { useQuery } from '@tanstack/react-query';
+import { useRootStore } from 'src/store/root';
 import { additionalIncentiveInfo } from 'src/utils/addtional-incentive-infos';
 import { convertAprToApy } from 'src/utils/utils';
 import { whitelistedRewardTokens } from 'src/utils/whitelist';
@@ -127,6 +128,8 @@ export const useMerklIncentives = ({
   protocolAPY?: number;
   protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
+  const currentChainId = useRootStore((state) => state.currentChainId);
+
   return useQuery({
     queryFn: async () => {
       const response = await fetch(`${MERKL_ENDPOINT}`);
@@ -148,7 +151,8 @@ export const useMerklIncentives = ({
           opportunitiy.explorerAddress &&
           opportunitiy.explorerAddress.toLowerCase() === rewardedAsset.toLowerCase() &&
           protocolAction &&
-          checkOpportunityAction(opportunitiy.action, protocolAction)
+          checkOpportunityAction(opportunitiy.action, protocolAction) &&
+          opportunitiy.chainId === currentChainId
       );
 
       if (opportunities.length === 0) {
