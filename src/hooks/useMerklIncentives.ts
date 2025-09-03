@@ -1,11 +1,11 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { useQuery } from '@tanstack/react-query';
+import { useRootStore } from 'src/store/root';
 import { additionalIncentiveInfo } from 'src/utils/addtional-incentive-infos';
 import { convertAprToApy } from 'src/utils/utils';
 import { whitelistedRewardTokens } from 'src/utils/whitelist';
 import { Address, checksumAddress } from 'viem';
-import { useRootStore } from 'src/store/root';
 
 enum OpportunityAction {
   LEND = 'LEND',
