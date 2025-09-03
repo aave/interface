@@ -15,6 +15,10 @@ import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { convertAprToApy } from 'src/utils/utils';
 
+// Enable or disable Self incentives campaign
+export const ENABLE_SELF_CAMPAIGN = true;
+// export const ENABLE_SELF_CAMPAIGN = false;
+
 export enum MeritAction {
   ETHEREUM_SGHO = 'ethereum-sgho',
   ETHEREUM_SUPPLY_PYUSD = 'ethereum-supply-pyusd',
@@ -690,6 +694,11 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     ],
   },
 };
+const getAprVariants = (action: MeritAction, actionsAPR: MeritIncentives['actionsAPR']) => {
+  const map = actionsAPR as Record<string, number | null | undefined>;
+  const selfAPR = map[`self-${action}`] ?? null;
+  return { selfAPR };
+};
 
 export const useMeritIncentives = ({
   symbol,
@@ -729,22 +738,33 @@ export const useMeritIncentives = ({
         return null;
       }
 
-      let maxAPR = null;
+      let maxTotalAPR = null;
       let selectedIncentive = null;
 
       for (const incentive of incentives) {
-        const APR = data.actionsAPR[incentive.action];
-        if (APR && (maxAPR === null || APR > maxAPR)) {
-          maxAPR = APR;
+        const standardAPR = data.actionsAPR[incentive.action];
+        if (!standardAPR) continue;
+
+        const variants = getAprVariants(incentive.action, data.actionsAPR);
+        const selfAPR = ENABLE_SELF_CAMPAIGN ? variants.selfAPR ?? 0 : 0;
+        const totalAPR = standardAPR + selfAPR; // Merit + Self APR
+
+        if (maxTotalAPR === null || totalAPR > maxTotalAPR) {
+          maxTotalAPR = totalAPR;
           selectedIncentive = incentive;
         }
       }
 
-      if (!selectedIncentive || maxAPR === null) {
+      if (!selectedIncentive || maxTotalAPR === null) {
         return null;
       }
 
-      const meritIncentivesAPR = maxAPR / 100;
+      const variants = getAprVariants(selectedIncentive.action, data.actionsAPR);
+      const variantsAPY = {
+        selfAPY: variants.selfAPR ? convertAprToApy(variants.selfAPR / 100) : null,
+      };
+      const selectedStandardAPR = data.actionsAPR[selectedIncentive.action]!;
+      const meritIncentivesAPR = selectedStandardAPR / 100;
       const meritIncentivesAPY = convertAprToApy(meritIncentivesAPR);
 
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
@@ -755,6 +775,12 @@ export const useMeritIncentives = ({
       const totalAPY = isBorrow
         ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY
         : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY;
+      const totalAPYWithSelf =
+        variantsAPY.selfAPY !== null
+          ? isBorrow
+            ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - variantsAPY.selfAPY
+            : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY + variantsAPY.selfAPY
+          : null;
 
       return {
         incentiveAPR: meritIncentivesAPY.toString(),
@@ -763,6 +789,7 @@ export const useMeritIncentives = ({
         action: selectedIncentive.action,
         customMessage: selectedIncentive.customMessage,
         customForumLink: selectedIncentive.customForumLink,
+        variants: { selfAPY: variantsAPY.selfAPY, totalAPYWithSelf },
         breakdown: {
           protocolAPY,
           protocolIncentivesAPR,
@@ -775,7 +802,10 @@ export const useMeritIncentives = ({
             meritIncentives: meritIncentivesAPY,
           },
         } as MeritIncentivesBreakdown,
-      } as ExtendedReserveIncentiveResponse & { breakdown: MeritIncentivesBreakdown };
+      } as ExtendedReserveIncentiveResponse & {
+        breakdown: MeritIncentivesBreakdown;
+        variants: { selfAPY: number | null; totalAPYWithSelf: number | null };
+      };
     },
   });
 };
