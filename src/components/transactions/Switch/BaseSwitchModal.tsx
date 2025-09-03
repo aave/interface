@@ -1,22 +1,50 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
-import { BasicModal } from 'src/components/primitives/BasicModal';
 import { supportedNetworksWithEnabledMarket } from 'src/components/transactions/Switch/common';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { useTokensBalance } from 'src/hooks/generic/useTokensBalance';
-import { useModalContext } from 'src/hooks/useModal';
+import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
+import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { TOKEN_LIST } from 'src/ui-config/TokenList';
+import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
-import {
-  BaseSwitchModalContent,
-  getFilteredTokensForSwitch,
-  SwitchModalCustomizableProps,
-} from './BaseSwitchModalContent';
+import { BaseSwitchModalContent, SwitchModalCustomizableProps } from './BaseSwitchModalContent';
 
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
+
+export const getFilteredTokensForSwitch = (
+  chainId: number,
+  includeNative = false
+): TokenInfoWithBalance[] => {
+  let customTokenList = TOKEN_LIST.tokens;
+  if (includeNative) {
+    customTokenList = customTokenList.concat(
+      TOKEN_LIST.tokens.filter((token) => token.extensions?.isNative)
+    );
+  }
+  const savedCustomTokens = localStorage.getItem('customTokens');
+  if (savedCustomTokens) {
+    customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
+  }
+
+  const transformedTokens = customTokenList.map((token) => {
+    return { ...token, balance: '0' };
+  });
+  const realChainId = getNetworkConfig(chainId).underlyingChainId ?? chainId;
+
+  // Remove duplicates
+  const seen = new Set<string>();
+  return transformedTokens
+    .filter((token) => token.chainId === realChainId)
+    .filter((token) => {
+      const key = `${token.chainId}:${token.address.toLowerCase()}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+};
 
 export const BaseSwitchModal = ({
   modalType,
@@ -29,7 +57,6 @@ export const BaseSwitchModal = ({
   forcedChainId,
 }: SwitchModalCustomizableProps) => {
   const {
-    type,
     close,
     args: { chainId },
   } = useModalContext();
@@ -95,7 +122,7 @@ export const BaseSwitchModal = ({
   } = useTokensBalance(initialDefaultToTokens, selectedChainId, user);
 
   return (
-    <BasicModal open={type === modalType} setOpen={close}>
+    <>
       {!user ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
           <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
@@ -121,8 +148,9 @@ export const BaseSwitchModal = ({
             refetchInitialFromTokens();
             refetchInitialToTokens();
           }}
+          showTitle={modalType !== ModalType.Switch}
         />
       )}
-    </BasicModal>
+    </>
   );
 };

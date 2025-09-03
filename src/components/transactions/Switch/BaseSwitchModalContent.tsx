@@ -20,7 +20,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { findByChainId } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
+import { TokenInfo } from 'src/ui-config/TokenList';
 import { GENERAL } from 'src/utils/events';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -64,37 +64,6 @@ const shouldRequireConfirmation = (lostValue: number) => {
   return lostValue > 0.2;
 };
 
-export const getFilteredTokensForSwitch = (
-  chainId: number,
-  includeNative = false
-): TokenInfoWithBalance[] => {
-  let customTokenList = TOKEN_LIST.tokens;
-  if (includeNative) {
-    customTokenList = customTokenList.concat(
-      TOKEN_LIST.tokens.filter((token) => token.extensions?.isNative)
-    );
-  }
-  const savedCustomTokens = localStorage.getItem('customTokens');
-  if (savedCustomTokens) {
-    customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
-  }
-
-  const transformedTokens = customTokenList.map((token) => {
-    return { ...token, balance: '0' };
-  });
-  const realChainId = getNetworkConfig(chainId).underlyingChainId ?? chainId;
-
-  // Remove duplicates
-  const seen = new Set<string>();
-  return transformedTokens
-    .filter((token) => token.chainId === realChainId)
-    .filter((token) => {
-      const key = `${token.chainId}:${token.address.toLowerCase()}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-};
 export interface SwitchModalCustomizableProps {
   modalType: ModalType;
   inputBalanceTitle?: string;
@@ -152,6 +121,36 @@ export const BaseSwitchModalContent = ({
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
   const [isSwapFlowSelected, setIsSwapFlowSelected] = useState(false);
   const [isExecutingActions, setIsExecutingActions] = useState(false);
+
+  const { defaultInputToken, defaultOutputToken } = useMemo(() => {
+    let auxInputToken = forcedDefaultInputToken;
+    let auxOutputToken = forcedDefaultOutputToken;
+
+    const fromList = initialFromTokens;
+    const toList = initialToTokens;
+
+    if (!auxInputToken) {
+      auxInputToken = fromList.find(
+        (token) => (token.balance !== '0' || token.extensions?.isNative) && token.symbol !== 'GHO'
+      );
+    }
+
+    if (!auxOutputToken) {
+      auxOutputToken = toList.find((token) => token.symbol == 'GHO');
+    }
+
+    return {
+      defaultInputToken: auxInputToken ?? fromList[0],
+      defaultOutputToken: auxOutputToken ?? toList[1],
+    };
+  }, [initialFromTokens, initialToTokens]);
+
+  const [selectedInputToken, setSelectedInputToken] = useState<TokenInfoWithBalance>(
+    forcedDefaultInputToken ?? defaultInputToken
+  );
+  const [selectedOutputToken, setSelectedOutputToken] = useState<TokenInfoWithBalance>(
+    forcedDefaultOutputToken ?? defaultOutputToken
+  );
 
   const { isSmartContractWallet, isSafeWallet } = useGetConnectedWalletType();
 
@@ -254,37 +253,6 @@ export const BaseSwitchModalContent = ({
       localStorage.setItem('customTokens', JSON.stringify([newTokenInfo]));
     }
   };
-
-  const { defaultInputToken, defaultOutputToken } = useMemo(() => {
-    let auxInputToken = forcedDefaultInputToken;
-    let auxOutputToken = forcedDefaultOutputToken;
-
-    const fromList = initialFromTokens;
-    const toList = initialToTokens;
-
-    if (!auxInputToken) {
-      auxInputToken = fromList.find(
-        (token) => (token.balance !== '0' || token.extensions?.isNative) && token.symbol !== 'GHO'
-      );
-    }
-
-    if (!auxOutputToken) {
-      auxOutputToken = toList.find((token) => token.symbol == 'GHO');
-    }
-
-    return {
-      defaultInputToken: auxInputToken ?? fromList[0],
-      defaultOutputToken: auxOutputToken ?? toList[1],
-    };
-  }, [initialFromTokens, initialToTokens]);
-
-  const [selectedInputToken, setSelectedInputToken] = useState<TokenInfoWithBalance>(
-    forcedDefaultInputToken ?? defaultInputToken
-  );
-  const [selectedOutputToken, setSelectedOutputToken] = useState<TokenInfoWithBalance>(
-    forcedDefaultOutputToken ?? defaultOutputToken
-  );
-
   // Update selected tokens when defaults change (e.g., after network change)
   useEffect(() => {
     if (
@@ -313,13 +281,6 @@ export const BaseSwitchModalContent = ({
 
   // User and reserves (for HF and flashloan decision)
   const { user: extendedUser, reserves } = useAppDataContext();
-  const poolReserve = useMemo(
-    () =>
-      reserves.find(
-        (r) => r.underlyingAsset.toLowerCase() === selectedInputToken?.address.toLowerCase()
-      ),
-    [reserves, selectedInputToken]
-  );
   const targetReserve = useMemo(
     () =>
       reserves.find(
@@ -334,6 +295,7 @@ export const BaseSwitchModalContent = ({
       ),
     [extendedUser, selectedInputToken]
   );
+  const poolReserve = userReserve?.reserve;
 
   const [shouldUseFlashloan, setShouldUseFlashloan] = useState<boolean | undefined>(undefined);
 
@@ -639,13 +601,13 @@ export const BaseSwitchModalContent = ({
       ? parseUnits('0.01', nativeDecimals)
       : parseUnits('0.0001', nativeDecimals); // TODO: Ask for better value coming from the SDK
   const requiredAssetsLeftForGas =
-    isNativeToken(selectedInputToken.address) &&
+    isNativeToken(selectedInputToken?.address) &&
     !isSmartContractWallet &&
     modalType === ModalType.Switch
       ? gasRequiredForEthFlow
       : undefined;
   const maxAmount = (() => {
-    const balance = parseUnits(selectedInputToken.balance, nativeDecimals);
+    const balance = parseUnits(selectedInputToken?.balance || '0', nativeDecimals);
     if (!requiredAssetsLeftForGas) return balance;
     return balance > requiredAssetsLeftForGas ? balance - requiredAssetsLeftForGas : balance;
   })();
