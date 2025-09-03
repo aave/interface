@@ -5,6 +5,7 @@ import { additionalIncentiveInfo } from 'src/utils/addtional-incentive-infos';
 import { convertAprToApy } from 'src/utils/utils';
 import { whitelistedRewardTokens } from 'src/utils/whitelist';
 import { Address, checksumAddress } from 'viem';
+import { useRootStore } from 'src/store/root';
 
 enum OpportunityAction {
   LEND = 'LEND',
@@ -127,6 +128,8 @@ export const useMerklIncentives = ({
   protocolAPY?: number;
   protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
+  const currentChainId = useRootStore((state) => state.currentChainId);
+
   return useQuery({
     queryFn: async () => {
       const response = await fetch(`${MERKL_ENDPOINT}`);
@@ -148,7 +151,8 @@ export const useMerklIncentives = ({
           opportunitiy.explorerAddress &&
           opportunitiy.explorerAddress.toLowerCase() === rewardedAsset.toLowerCase() &&
           protocolAction &&
-          checkOpportunityAction(opportunitiy.action, protocolAction)
+          checkOpportunityAction(opportunitiy.action, protocolAction) &&
+          opportunitiy.chainId === currentChainId
       );
 
       if (opportunities.length === 0) {
@@ -186,7 +190,7 @@ export const useMerklIncentives = ({
       const incentiveAdditionalData = rewardedAsset
         ? additionalIncentiveInfo[checksumAddress(rewardedAsset as Address)]
         : undefined;
-
+        
       return {
         incentiveAPR: merklIncentivesAPY.toString(),
         rewardTokenAddress: rewardToken.address,
