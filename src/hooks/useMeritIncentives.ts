@@ -299,48 +299,48 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
       },
     ],
   },
-  [CustomMarket.proto_arbitrum_v3]: {
-    ETH: [
-      {
-        action: MeritAction.ARBITRUM_SUPPLY_ETH,
-        rewardTokenAddress: AaveV3Arbitrum.ASSETS.WETH.A_TOKEN,
-        rewardTokenSymbol: 'aArbWETH',
-        protocolAction: ProtocolAction.supply,
-        customMessage: antiLoopMessage,
-        customForumLink: joinedEthCorrelatedIncentiveForumLink,
-      },
-    ],
-    WETH: [
-      {
-        action: MeritAction.ARBITRUM_SUPPLY_ETH,
-        rewardTokenAddress: AaveV3Arbitrum.ASSETS.WETH.A_TOKEN,
-        rewardTokenSymbol: 'aArbWETH',
-        protocolAction: ProtocolAction.supply,
-        customMessage: antiLoopMessage,
-        customForumLink: joinedEthCorrelatedIncentiveForumLink,
-      },
-    ],
-    wstETH: [
-      {
-        action: MeritAction.ARBITRUM_SUPPLY_WSTETH,
-        rewardTokenAddress: AaveV3Ethereum.ASSETS.wstETH.UNDERLYING,
-        rewardTokenSymbol: 'aArbwstETH',
-        protocolAction: ProtocolAction.supply,
-        customMessage: antiLoopMessage,
-        customForumLink: joinedEthCorrelatedIncentiveForumLink,
-      },
-    ],
-    ezETH: [
-      {
-        action: MeritAction.ARBITRUM_SUPPLY_EZETH,
-        rewardTokenAddress: '0x3B50805453023a91a8bf641e279401a0b23FA6F9', // Renzo (REZ)
-        rewardTokenSymbol: 'REZ',
-        protocolAction: ProtocolAction.supply,
-        customMessage: antiLoopMessage,
-        customForumLink: joinedEthCorrelatedIncentiveForumLink,
-      },
-    ],
-  },
+  // [CustomMarket.proto_arbitrum_v3]: {
+  //   ETH: [
+  //     {
+  //       action: MeritAction.ARBITRUM_SUPPLY_ETH,
+  //       rewardTokenAddress: AaveV3Arbitrum.ASSETS.WETH.A_TOKEN,
+  //       rewardTokenSymbol: 'aArbWETH',
+  //       protocolAction: ProtocolAction.supply,
+  //       customMessage: antiLoopMessage,
+  //       customForumLink: joinedEthCorrelatedIncentiveForumLink,
+  //     },
+  //   ],
+  //   WETH: [
+  //     {
+  //       action: MeritAction.ARBITRUM_SUPPLY_ETH,
+  //       rewardTokenAddress: AaveV3Arbitrum.ASSETS.WETH.A_TOKEN,
+  //       rewardTokenSymbol: 'aArbWETH',
+  //       protocolAction: ProtocolAction.supply,
+  //       customMessage: antiLoopMessage,
+  //       customForumLink: joinedEthCorrelatedIncentiveForumLink,
+  //     },
+  //   ],
+  //   wstETH: [
+  //     {
+  //       action: MeritAction.ARBITRUM_SUPPLY_WSTETH,
+  //       rewardTokenAddress: AaveV3Ethereum.ASSETS.wstETH.UNDERLYING,
+  //       rewardTokenSymbol: 'aArbwstETH',
+  //       protocolAction: ProtocolAction.supply,
+  //       customMessage: antiLoopMessage,
+  //       customForumLink: joinedEthCorrelatedIncentiveForumLink,
+  //     },
+  //   ],
+  //   ezETH: [
+  //     {
+  //       action: MeritAction.ARBITRUM_SUPPLY_EZETH,
+  //       rewardTokenAddress: '0x3B50805453023a91a8bf641e279401a0b23FA6F9', // Renzo (REZ)
+  //       rewardTokenSymbol: 'REZ',
+  //       protocolAction: ProtocolAction.supply,
+  //       customMessage: antiLoopMessage,
+  //       customForumLink: joinedEthCorrelatedIncentiveForumLink,
+  //     },
+  //   ],
+  // },
   [CustomMarket.proto_base_v3]: {
     cbBTC: [
       // {
