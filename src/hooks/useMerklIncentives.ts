@@ -190,7 +190,7 @@ export const useMerklIncentives = ({
       const incentiveAdditionalData = rewardedAsset
         ? additionalIncentiveInfo[checksumAddress(rewardedAsset as Address)]
         : undefined;
-        
+
       return {
         incentiveAPR: merklIncentivesAPY.toString(),
         rewardTokenAddress: rewardToken.address,
