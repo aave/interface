@@ -61,6 +61,11 @@ const IncentivesSymbolMap: {
     symbol: 'aPYUSD',
     aToken: true,
   },
+  aArbARB: {
+    tokenIconSymbol: 'ARB',
+    symbol: 'aARB',
+    aToken: true,
+  },
   aArbWETH: {
     tokenIconSymbol: 'WETH',
     symbol: 'aWETH',
