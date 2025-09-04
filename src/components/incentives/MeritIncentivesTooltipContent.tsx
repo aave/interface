@@ -65,7 +65,6 @@ const isMultipleCampaigns = (actions: MeritAction[]): boolean => {
   return actions.length > 1;
 };
 
-
 const getCampaignConfig = (action: MeritAction): CampaignConfig => {
   if (isSelfVerificationCampaign(action)) {
     return {
@@ -97,7 +96,6 @@ export const MeritIncentivesTooltipContent = ({
     variants?: { selfAPY: number | null };
     activeActions: MeritAction[];
     actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>;
-
   };
 }) => {
   const theme = useTheme();
@@ -324,12 +322,10 @@ export const MeritIncentivesTooltipContent = ({
           )}
 
           {campaignConfig.type === CampaignType.STANDARD && (
-
             <Row
               height={24}
               caption={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
                   {isMultipleCampaigns(meritIncentives.activeActions) ? (
                     <Typography variant={typographyVariant}>Merit Incentives Combined</Typography>
                   ) : (
@@ -377,14 +373,12 @@ export const MeritIncentivesTooltipContent = ({
             </Row>
           )}
 
-
           {campaignConfig.type === CampaignType.SELF_VERIFICATION && selfConfig && (
             <>
               <Row
                 height={24}
                 caption={
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
                     {celoSupplyMultipleBorrowUsdtCampaign ? (
                       <Typography variant={typographyVariant}>Merit Incentives Combined</Typography>
                     ) : (
@@ -446,9 +440,7 @@ export const MeritIncentivesTooltipContent = ({
             width="100%"
           >
             <FormattedNumber
-
               value={meritIncentives.breakdown?.totalAPY ?? 0}
-
               percent
               variant={typographyVariant}
               fontWeight="600"

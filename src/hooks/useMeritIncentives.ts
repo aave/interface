@@ -691,11 +691,6 @@ const getAprVariants = (action: MeritAction, actionsAPR: MeritIncentives['action
   return { selfAPR };
 };
 
-const getAprVariants = (action: MeritAction, actionsAPR: MeritIncentives['actionsAPR']) => {
-  const map = actionsAPR as Record<string, number | null | undefined>;
-  const selfAPR = map[`self-${action}`] ?? null;
-  return { selfAPR };
-};
 export const useMeritIncentives = ({
   symbol,
   market,
@@ -735,7 +730,6 @@ export const useMeritIncentives = ({
         return null;
       }
 
-
       let totalMeritAPR = 0;
       let totalSelfAPR = 0;
 
@@ -751,13 +745,11 @@ export const useMeritIncentives = ({
           incentive.action === MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT
         ) {
           console.log('standardAPR', incentive.action, standardAPR);
-
         }
 
         totalSelfAPR += selfAPR;
         console.log('totalMeritAPR', totalMeritAPR);
       }
-
 
       if (totalMeritAPR === 0) {
         return null;
@@ -767,14 +759,12 @@ export const useMeritIncentives = ({
       console.log('meritIncentivesAPY', meritIncentivesAPY);
       const selfIncentivesAPY = totalSelfAPR > 0 ? convertAprToApy(totalSelfAPR / 100) : 0;
 
-
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
         return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
       }, 0);
 
       const isBorrow = protocolAction === ProtocolAction.borrow;
       const totalAPY = isBorrow
-
         ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - selfIncentivesAPY
         : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY + selfIncentivesAPY;
 
@@ -813,7 +803,6 @@ export const useMeritIncentives = ({
         activeActions: MeritAction[];
         actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>;
         variants: { selfAPY: number | null };
-
       };
     },
   });
