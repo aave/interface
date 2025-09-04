@@ -124,14 +124,19 @@ const StSLoopIncentiveProgramMessage =
 const weethUsdcCampaignMessage =
   'You must supply weETH and borrow new USDC, while maintaining a health factor of 2 or below, in order to receive merit rewards. Eligibility criteria for this campaign are different from usual, please refer to the forum post for full details.';
 
+const baseIncentivesUSDCCampaignsMessage =
+  'Users must have Moonwell and Gauntlet Morpho Vault positions on Base and must migrate all their positions to Aave on Base to receive rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+
+const baseIncentivesGHOCampaignsMessage =
+  'Users must have Moonwell and Gauntlet Morpho Vault positions on Base and must migrate all their positions to Aave on Base to receive rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 const baseIncentivesCbbtcCampaignsMessage =
-  'You must supply cbBTC and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'You must supply cbBTC and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Users must have Morpho positions on Base and/or Ethereum and must migrate all their positions to Aave on Base to receive rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const baseIncentivesWstETHCampaignsMessage =
-  'You must supply wstETH and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'You must supply wstETH and borrow USDC, GHO, EURC or wETH to receive Merit rewards. Users must have Morpho positions on Base and/or Ethereum and must migrate all their positions to Aave on Base to receive rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const baseIncentivesETHCampaignsMessage =
-  'Supplying ETH alone earns 1.25%, supplying ETH and borrowing USDC or EURC earns 1.50%, supplying ETH and borrowing GHO earns 1.75%. Some assets holding or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
+  'Supplying ETH alone earns 1.25%, supplying ETH and borrowing USDC or EURC earns 1.50%, supplying ETH and borrowing GHO earns 1.75%. Users must have Moonwell and Gauntlet Morpho Vault positions on Base and must migrate all their positions to Aave on Base to receive rewards. Holding some assets or positions on other protocols may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
 
 const celoSupplyMultipleBorrowUsdtMessage =
   'You must supply (CELO or ETH) and borrow USDT, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
@@ -371,6 +376,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
         action: MeritAction.BASE_SUPPLY_USDC,
         rewardTokenAddress: AaveV3Base.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'aBasUSDC',
+        customMessage: baseIncentivesUSDCCampaignsMessage,
         protocolAction: ProtocolAction.supply,
       },
       {
@@ -460,7 +466,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
         rewardTokenAddress: AaveV3Base.ASSETS.GHO.A_TOKEN,
         rewardTokenSymbol: 'aBasGHO',
         protocolAction: ProtocolAction.supply,
-        customMessage: antiLoopMessage,
+        customMessage: baseIncentivesGHOCampaignsMessage,
       },
       {
         action: MeritAction.BASE_BORROW_GHO,
