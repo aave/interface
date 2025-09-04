@@ -717,7 +717,7 @@ export const useMeritIncentives = ({
     staleTime: 1000 * 60 * 5,
     select: (data) => {
       const meritReserveIncentiveData = getMeritData(market, symbol);
-      console.log('meritReserveIncentiveData', meritReserveIncentiveData);
+
       if (!meritReserveIncentiveData) {
         return null;
       }
@@ -725,7 +725,7 @@ export const useMeritIncentives = ({
       const incentives = meritReserveIncentiveData.filter(
         (item) => item.protocolAction === protocolAction
       );
-      console.log('incentives', incentives, protocolAction);
+
       if (incentives.length === 0) {
         return null;
       }
@@ -744,11 +744,9 @@ export const useMeritIncentives = ({
           incentive.action === MeritAction.CELO_SUPPLY_WETH ||
           incentive.action === MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT
         ) {
-          console.log('standardAPR', incentive.action, standardAPR);
         }
 
         totalSelfAPR += selfAPR;
-        console.log('totalMeritAPR', totalMeritAPR);
       }
 
       if (totalMeritAPR === 0) {
@@ -756,7 +754,7 @@ export const useMeritIncentives = ({
       }
 
       const meritIncentivesAPY = convertAprToApy(totalMeritAPR / 100);
-      console.log('meritIncentivesAPY', meritIncentivesAPY);
+
       const selfIncentivesAPY = totalSelfAPR > 0 ? convertAprToApy(totalSelfAPR / 100) : 0;
 
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
