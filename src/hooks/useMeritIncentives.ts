@@ -54,7 +54,6 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   AVALANCHE_SUPPLY_GHO = 'avalanche-supply-gho',
-  AVALANCHE_BORROW_USDC = 'avalanche-borrow-usdc',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
   SONIC_SUPPLY_STS_BORROW_WS = 'sonic-supply-sts-borrow-ws',
   GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
@@ -148,7 +147,7 @@ const eurcForumLink =
 const AusdRenewalForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/88';
 const AvalancheRenewalForumLink =
-  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/146';
+  'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/89';
 
 const lbtcCbbtcForumLink =
   'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898/91';
@@ -495,7 +494,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     ['BTC.b']: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_BTCB,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.BTCb.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -505,25 +504,17 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     USDC: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_USDC,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.USDC.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
-        customForumLink: AvalancheRenewalForumLink,
-      },
-      {
-        action: MeritAction.AVALANCHE_BORROW_USDC,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
-        rewardTokenSymbol: 'aAvaSAVAX',
-        protocolAction: ProtocolAction.borrow,
-        customMessage: antiLoopBorrowMessage,
         customForumLink: AvalancheRenewalForumLink,
       },
     ],
     USDt: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_USDT,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.USDt.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -543,7 +534,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     AUSD: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_AUSD,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.AUSD.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -553,7 +544,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     GHO: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_GHO,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.GHO.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -694,12 +685,12 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     ],
   },
 };
+
 const getAprVariants = (action: MeritAction, actionsAPR: MeritIncentives['actionsAPR']) => {
   const map = actionsAPR as Record<string, number | null | undefined>;
   const selfAPR = map[`self-${action}`] ?? null;
   return { selfAPR };
 };
-
 export const useMeritIncentives = ({
   symbol,
   market,
@@ -726,6 +717,7 @@ export const useMeritIncentives = ({
     staleTime: 1000 * 60 * 5,
     select: (data) => {
       const meritReserveIncentiveData = getMeritData(market, symbol);
+      console.log('meritReserveIncentiveData', meritReserveIncentiveData);
       if (!meritReserveIncentiveData) {
         return null;
       }
@@ -733,39 +725,39 @@ export const useMeritIncentives = ({
       const incentives = meritReserveIncentiveData.filter(
         (item) => item.protocolAction === protocolAction
       );
-
+      console.log('incentives', incentives, protocolAction);
       if (incentives.length === 0) {
         return null;
       }
 
-      let maxTotalAPR = null;
-      let selectedIncentive = null;
+      let totalMeritAPR = 0;
+      let totalSelfAPR = 0;
 
       for (const incentive of incentives) {
-        const standardAPR = data.actionsAPR[incentive.action];
-        if (!standardAPR) continue;
+        const standardAPR = data.actionsAPR[incentive.action] ?? 0;
+        if (standardAPR == null) continue;
 
+        totalMeritAPR += standardAPR;
         const variants = getAprVariants(incentive.action, data.actionsAPR);
         const selfAPR = ENABLE_SELF_CAMPAIGN ? variants.selfAPR ?? 0 : 0;
-        const totalAPR = standardAPR + selfAPR; // Merit + Self APR
-
-        if (maxTotalAPR === null || totalAPR > maxTotalAPR) {
-          maxTotalAPR = totalAPR;
-          selectedIncentive = incentive;
+        if (
+          incentive.action === MeritAction.CELO_SUPPLY_WETH ||
+          incentive.action === MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT
+        ) {
+          console.log('standardAPR', incentive.action, standardAPR);
         }
+
+        totalSelfAPR += selfAPR;
+        console.log('totalMeritAPR', totalMeritAPR);
       }
 
-      if (!selectedIncentive || maxTotalAPR === null) {
+      if (totalMeritAPR === 0) {
         return null;
       }
 
-      const variants = getAprVariants(selectedIncentive.action, data.actionsAPR);
-      const variantsAPY = {
-        selfAPY: variants.selfAPR ? convertAprToApy(variants.selfAPR / 100) : null,
-      };
-      const selectedStandardAPR = data.actionsAPR[selectedIncentive.action]!;
-      const meritIncentivesAPR = selectedStandardAPR / 100;
-      const meritIncentivesAPY = convertAprToApy(meritIncentivesAPR);
+      const meritIncentivesAPY = convertAprToApy(totalMeritAPR / 100);
+      console.log('meritIncentivesAPY', meritIncentivesAPY);
+      const selfIncentivesAPY = totalSelfAPR > 0 ? convertAprToApy(totalSelfAPR / 100) : 0;
 
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
         return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
@@ -773,23 +765,25 @@ export const useMeritIncentives = ({
 
       const isBorrow = protocolAction === ProtocolAction.borrow;
       const totalAPY = isBorrow
-        ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY
-        : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY;
-      const totalAPYWithSelf =
-        variantsAPY.selfAPY !== null
-          ? isBorrow
-            ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - variantsAPY.selfAPY
-            : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY + variantsAPY.selfAPY
-          : null;
+        ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - selfIncentivesAPY
+        : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY + selfIncentivesAPY;
 
       return {
         incentiveAPR: meritIncentivesAPY.toString(),
-        rewardTokenAddress: selectedIncentive.rewardTokenAddress,
-        rewardTokenSymbol: selectedIncentive.rewardTokenSymbol,
-        action: selectedIncentive.action,
-        customMessage: selectedIncentive.customMessage,
-        customForumLink: selectedIncentive.customForumLink,
-        variants: { selfAPY: variantsAPY.selfAPY, totalAPYWithSelf },
+        rewardTokenAddress: incentives[0].rewardTokenAddress,
+        rewardTokenSymbol: incentives[0].rewardTokenSymbol,
+        activeActions: incentives.map((incentive) => incentive.action),
+        actionMessages: incentives.reduce((acc, incentive) => {
+          acc[incentive.action] = {
+            customMessage: incentive.customMessage,
+            customForumLink: incentive.customForumLink,
+          };
+          return acc;
+        }, {} as Record<string, { customMessage?: string; customForumLink?: string }>),
+        action: incentives[0].action,
+        customMessage: incentives[0].customMessage,
+        customForumLink: incentives[0].customForumLink,
+        variants: { selfAPY: selfIncentivesAPY },
         breakdown: {
           protocolAPY,
           protocolIncentivesAPR,
@@ -804,7 +798,9 @@ export const useMeritIncentives = ({
         } as MeritIncentivesBreakdown,
       } as ExtendedReserveIncentiveResponse & {
         breakdown: MeritIncentivesBreakdown;
-        variants: { selfAPY: number | null; totalAPYWithSelf: number | null };
+        activeActions: MeritAction[];
+        actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>;
+        variants: { selfAPY: number | null };
       };
     },
   });

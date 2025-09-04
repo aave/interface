@@ -1,7 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Box, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { ENABLE_SELF_CAMPAIGN, useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
@@ -46,8 +45,6 @@ export const IncentivesCard = ({
   protocolAction,
   inlineIncentives = false,
 }: IncentivesCardProps) => {
-  const router = useRouter();
-
   const protocolAPY = typeof value === 'string' ? parseFloat(value) : value;
 
   const protocolIncentivesAPR =
@@ -75,7 +72,7 @@ export const IncentivesCard = ({
   });
 
   const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
-  // TODO: This is a one-off for the Self campaign.
+  //! TODO: This is a one-off for the Self campaign.
   // Remove once the Self incentives are finished.
   const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
   const totalMeritAPY = meritIncentivesAPR + selfAPY;
@@ -92,10 +89,6 @@ export const IncentivesCard = ({
     ? protocolAPY - (protocolIncentivesAPR as number) - totalMeritAPY - merklIncentivesAPR
     : protocolAPY + (protocolIncentivesAPR as number) + totalMeritAPY + merklIncentivesAPR;
 
-  const isSghoPage =
-    typeof router?.asPath === 'string' && router.asPath.toLowerCase().startsWith('/sgho');
-  const hideMeritValue = symbol === 'GHO' && !isSghoPage;
-
   const incentivesContent = (
     <>
       <IncentivesButton
@@ -106,16 +99,13 @@ export const IncentivesCard = ({
         protocolAPY={protocolAPY}
         address={address}
       />
-
       <MeritIncentivesButton
         symbol={symbol}
         market={market}
         protocolAction={protocolAction}
         protocolAPY={protocolAPY}
         protocolIncentives={incentives || []}
-        hideValue={hideMeritValue}
       />
-
       <MerklIncentivesButton
         market={market}
         rewardedAsset={address}

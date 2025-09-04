@@ -57,6 +57,12 @@ const selfCampaignConfig: Map<MeritAction, { limit: string; token: string }> = n
 const isSelfVerificationCampaign = (action: MeritAction): boolean => {
   return selfCampaignConfig.has(action) && ENABLE_SELF_CAMPAIGN;
 };
+const isCeloSupplyMultipleBorrowUsdt = (actions: MeritAction[]): boolean => {
+  return actions.includes(MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT);
+};
+const isMultipleCampaigns = (actions: MeritAction[]): boolean => {
+  return actions.length > 1;
+};
 
 const getCampaignConfig = (action: MeritAction): CampaignConfig => {
   if (isSelfVerificationCampaign(action)) {
@@ -85,7 +91,9 @@ export const MeritIncentivesTooltipContent = ({
 }: {
   meritIncentives: ExtendedReserveIncentiveResponse & {
     breakdown?: MeritIncentivesBreakdown;
-    variants?: { selfAPY: number | null; totalAPYWithSelf: number | null };
+    variants?: { selfAPY: number | null };
+    activeActions: MeritAction[];
+    actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>;
   };
 }) => {
   const theme = useTheme();
@@ -94,6 +102,9 @@ export const MeritIncentivesTooltipContent = ({
 
   const campaignConfig = getCampaignConfig(meritIncentives.action);
   const selfConfig = selfCampaignConfig.get(meritIncentives.action);
+  const celoSupplyMultipleBorrowUsdtCampaign = isCeloSupplyMultipleBorrowUsdt(
+    meritIncentives.activeActions
+  );
 
   return (
     <Box
@@ -175,13 +186,16 @@ export const MeritIncentivesTooltipContent = ({
           </Typography>
         </>
       )}
-      {/* Show if SpecialContent is needed */}
-      {/* {campaignConfig.type === CampaignType.SELF_VERIFICATION &&
-        campaignConfig.hasSpecialContent &&
-        ''} */}
-      {/* Show if SpecialContent is needed */}
-      {/* {campaignConfig.type === CampaignType.CELO_STANDARD && campaignConfig.hasSpecialContent && ''} */}
-
+      {celoSupplyMultipleBorrowUsdtCampaign && (
+        <Typography variant="caption" color="text.secondary">
+          <Trans>
+            {
+              meritIncentives.actionMessages?.[MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT]
+                ?.customMessage
+            }
+          </Trans>
+        </Typography>
+      )}
       {meritIncentives.customMessage ? (
         <Typography variant="caption" color="text.secondary">
           <Trans>{meritIncentives.customMessage}</Trans>
@@ -304,12 +318,41 @@ export const MeritIncentivesTooltipContent = ({
               />
             </Row>
           )}
+          {campaignConfig.type === CampaignType.STANDARD && (
+            <Row
+              height={24}
+              caption={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  {isMultipleCampaigns(meritIncentives.activeActions) ? (
+                    <Typography variant={typographyVariant}>Merit Incentives Combined</Typography>
+                  ) : (
+                    <Typography variant={typographyVariant}>Merit Incentives Standard</Typography>
+                  )}
+                  <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                    {meritIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
+                  </Typography>
+                </Box>
+              }
+              width="100%"
+            >
+              <FormattedNumber
+                value={meritIncentives.breakdown.meritIncentivesAPR}
+                percent
+                variant={typographyVariant}
+              />
+            </Row>
+          )}
           {campaignConfig.type === CampaignType.CELO_STANDARD && (
             <Row
               height={24}
               caption={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant={typographyVariant}>Merit Incentives</Typography>
+                  {celoSupplyMultipleBorrowUsdtCampaign ? (
+                    <Typography variant={typographyVariant}>Merit Incentives Combined</Typography>
+                  ) : (
+                    <Typography variant={typographyVariant}>Merit Incentives Standard</Typography>
+                  )}
+
                   <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
                     {meritIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
                   </Typography>
@@ -331,7 +374,11 @@ export const MeritIncentivesTooltipContent = ({
                 height={24}
                 caption={
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant={typographyVariant}>Merit Incentives</Typography>
+                    {celoSupplyMultipleBorrowUsdtCampaign ? (
+                      <Typography variant={typographyVariant}>Merit Incentives Combined</Typography>
+                    ) : (
+                      <Typography variant={typographyVariant}>Merit Incentives Standard</Typography>
+                    )}
                     <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
                       {meritIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
                     </Typography>
@@ -387,11 +434,7 @@ export const MeritIncentivesTooltipContent = ({
             width="100%"
           >
             <FormattedNumber
-              value={
-                campaignConfig.type === CampaignType.SELF_VERIFICATION
-                  ? meritIncentives.variants?.totalAPYWithSelf ?? 0
-                  : meritIncentives.breakdown?.totalAPY ?? 0
-              }
+              value={meritIncentives.breakdown?.totalAPY ?? 0}
               percent
               variant={typographyVariant}
               fontWeight="600"
