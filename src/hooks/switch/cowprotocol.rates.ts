@@ -10,9 +10,12 @@ import {
   COW_PARTNER_FEE,
   HEADER_WIDGET_APP_CODE,
   isNativeToken,
-} from 'src/components/transactions/Switch/cowprotocol.helpers';
+} from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
-import { SwitchParams, SwitchRatesType } from 'src/components/transactions/Switch/switch.types';
+import {
+  ProviderRatesParams,
+  SwitchRatesType,
+} from 'src/components/transactions/Switch/switch.types';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
 import { FamilyPricesService } from 'src/services/FamilyPricesService';
@@ -60,7 +63,7 @@ export async function getCowProtocolSellRates({
   setError,
   isInputTokenCustom,
   isOutputTokenCustom,
-}: SwitchParams): Promise<SwitchRatesType> {
+}: ProviderRatesParams): Promise<SwitchRatesType> {
   const tradingSdk = new TradingSdk({ chainId });
 
   let orderBookQuote: QuoteAndPost | undefined;
@@ -199,6 +202,7 @@ export async function getCowProtocolSellRates({
     destUSD: destAmountInUsd.toString(),
     destAmount: orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString(),
     destDecimals,
+    orderBookQuote,
     provider: 'cowprotocol',
     order: orderBookQuote.quoteResults.orderToSign,
     quoteId: orderBookQuote.quoteResults.quoteResponse.id,

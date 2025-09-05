@@ -61,6 +61,11 @@ const IncentivesSymbolMap: {
     symbol: 'aPYUSD',
     aToken: true,
   },
+  aArbARB: {
+    tokenIconSymbol: 'ARB',
+    symbol: 'aARB',
+    aToken: true,
+  },
   aArbWETH: {
     tokenIconSymbol: 'WETH',
     symbol: 'aWETH',
@@ -96,6 +101,11 @@ const IncentivesSymbolMap: {
     symbol: 'aRLUSD',
     aToken: true,
   },
+  aHorRwaRLUSD: {
+    tokenIconSymbol: 'RLUSD',
+    symbol: 'aRLUSD',
+    aToken: true,
+  },
   aSonwS: {
     tokenIconSymbol: 'wS',
     symbol: 'awS',
@@ -124,6 +134,11 @@ const IncentivesSymbolMap: {
   aUSDtb: {
     tokenIconSymbol: 'USDtb',
     symbol: 'aUSDtb',
+    aToken: true,
+  },
+  aLinweETH: {
+    tokenIconSymbol: 'weETH',
+    symbol: 'aweETH',
     aToken: true,
   },
   aSonstS: {

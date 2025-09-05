@@ -12845,6 +12845,14 @@ export const TOKEN_LIST: TokenList = {
       logoURI: 'https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389',
     },
     {
+      name: 'USDC (old)',
+      address: '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83',
+      symbol: 'USDC',
+      decimals: 6,
+      chainId: 100,
+      logoURI: 'https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389',
+    },
+    {
       name: 'Wrapped xDAI',
       address: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
       symbol: 'WXDAI',
@@ -13023,6 +13031,15 @@ export const TOKEN_LIST: TokenList = {
       chainId: 146,
       logoURI:
         'https://assets.coingecko.com/coins/images/52937/standard/token-beets-staked-sonic.png?1734712659',
+    },
+    {
+      name: 'RLUSD',
+      address: '0x8292bb45bf1ee4d140127049757c2e0ff06317ed',
+      symbol: 'RLUSD',
+      decimals: 18,
+      chainId: 1,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/39651/standard/RLUSD_200x200_%281%29.png?1727376633',
     },
   ],
 };

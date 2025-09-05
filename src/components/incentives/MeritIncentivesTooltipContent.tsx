@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
 import {
+  ENABLE_SELF_CAMPAIGN,
   ExtendedReserveIncentiveResponse,
   MeritAction,
   MeritIncentivesBreakdown,
@@ -23,8 +24,6 @@ interface CampaignConfig {
   hasSpecialContent: boolean;
 }
 
-const ENABLE_SAFE_CAMPAIGN = false;
-
 const isCeloAction = (action: MeritAction): boolean => {
   return [
     MeritAction.CELO_SUPPLY_CELO,
@@ -38,8 +37,26 @@ const isCeloAction = (action: MeritAction): boolean => {
     MeritAction.CELO_BORROW_WETH,
   ].includes(action);
 };
-const isSelfVerificationCampaign = (action: MeritAction): boolean =>
-  ENABLE_SAFE_CAMPAIGN && action === MeritAction.CELO_SUPPLY_USDT;
+
+const selfCampaignConfig: Map<MeritAction, { limit: string; token: string }> = new Map([
+  [
+    MeritAction.CELO_SUPPLY_USDT,
+    {
+      token: 'USDT',
+      limit: 'the first $1,000 USDT supplied',
+    },
+  ],
+  [
+    MeritAction.CELO_SUPPLY_WETH,
+    {
+      token: 'WETH',
+      limit: 'the first $35,000 of ETH supplied',
+    },
+  ],
+]);
+const isSelfVerificationCampaign = (action: MeritAction): boolean => {
+  return selfCampaignConfig.has(action) && ENABLE_SELF_CAMPAIGN;
+};
 
 const getCampaignConfig = (action: MeritAction): CampaignConfig => {
   if (isSelfVerificationCampaign(action)) {
@@ -66,13 +83,17 @@ const getCampaignConfig = (action: MeritAction): CampaignConfig => {
 export const MeritIncentivesTooltipContent = ({
   meritIncentives,
 }: {
-  meritIncentives: ExtendedReserveIncentiveResponse & { breakdown?: MeritIncentivesBreakdown };
+  meritIncentives: ExtendedReserveIncentiveResponse & {
+    breakdown?: MeritIncentivesBreakdown;
+    variants?: { selfAPY: number | null; totalAPYWithSelf: number | null };
+  };
 }) => {
   const theme = useTheme();
   const typographyVariant = 'secondary12';
   const meritIncentivesFormatted = getSymbolMap(meritIncentives);
 
   const campaignConfig = getCampaignConfig(meritIncentives.action);
+  const selfConfig = selfCampaignConfig.get(meritIncentives.action);
 
   return (
     <Box
@@ -118,11 +139,11 @@ export const MeritIncentivesTooltipContent = ({
         </Link>
       </Typography>
 
-      {campaignConfig.type === CampaignType.SELF_VERIFICATION && (
+      {campaignConfig.type === CampaignType.SELF_VERIFICATION && selfConfig && (
         <>
           <Typography variant="caption" color="text.secondary">
             <Trans>
-              Supply USDT and double your yield by{' '}
+              Supply {selfConfig.token} and double your yield by{' '}
               <span>
                 <Link
                   href="https://aave.self.xyz/"
@@ -133,7 +154,7 @@ export const MeritIncentivesTooltipContent = ({
                   verifying your humanity through Self
                 </Link>
               </span>{' '}
-              for the first $1,000 USDT supplied per user.
+              for {selfConfig.limit} per user.
             </Trans>{' '}
           </Typography>
           <Typography variant="caption" color="text.secondary">
@@ -168,7 +189,12 @@ export const MeritIncentivesTooltipContent = ({
       ) : null}
 
       <Typography variant="caption" color="text.primary" fontSize={13} fontWeight={'600'}>
-        <Trans>Merit Program rewards are claimed through the</Trans>
+        {campaignConfig.type === CampaignType.SELF_VERIFICATION && selfConfig ? (
+          <Trans>Merit Program and Self rewards are claimed through the</Trans>
+        ) : (
+          <Trans>Merit Program rewards are claimed through the</Trans>
+        )}
+
         <Link
           href={`https://apps.aavechan.com/merit/${meritIncentives.action}`}
           sx={{ textDecoration: 'underline', ml: 1 }}
@@ -226,7 +252,13 @@ export const MeritIncentivesTooltipContent = ({
         >
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
             <FormattedNumber
-              value={+meritIncentivesFormatted.incentiveAPR}
+              value={
+                campaignConfig.type === CampaignType.SELF_VERIFICATION &&
+                meritIncentives.variants?.selfAPY !== null &&
+                meritIncentives.variants?.selfAPY !== undefined
+                  ? +meritIncentivesFormatted.incentiveAPR + meritIncentives.variants.selfAPY
+                  : +meritIncentivesFormatted.incentiveAPR
+              }
               percent
               variant={typographyVariant}
             />
@@ -240,16 +272,6 @@ export const MeritIncentivesTooltipContent = ({
       {/* Show breakdown if available */}
       {meritIncentives.breakdown && (
         <Box sx={{ width: '100%', mt: 2 }}>
-          {/* <Typography
-            variant="caption"
-            color="text.primary"
-            fontSize={13}
-            fontWeight={'600'}
-            sx={{ mb: 1 }}
-          >
-            <Trans>APY Breakdown</Trans>
-          </Typography> */}
-
           <Row
             height={24}
             caption={<Typography variant={typographyVariant}>Protocol APY</Typography>}
@@ -282,25 +304,73 @@ export const MeritIncentivesTooltipContent = ({
               />
             </Row>
           )}
+          {campaignConfig.type === CampaignType.CELO_STANDARD && (
+            <Row
+              height={24}
+              caption={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant={typographyVariant}>Merit Incentives</Typography>
+                  <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                    {meritIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
+                  </Typography>
+                </Box>
+              }
+              width="100%"
+            >
+              <FormattedNumber
+                value={meritIncentives.breakdown.meritIncentivesAPR}
+                percent
+                variant={typographyVariant}
+              />
+            </Row>
+          )}
 
-          <Row
-            height={24}
-            caption={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant={typographyVariant}>Merit Incentives</Typography>
-                <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
-                  {meritIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
-                </Typography>
-              </Box>
-            }
-            width="100%"
-          >
-            <FormattedNumber
-              value={meritIncentives.breakdown.meritIncentivesAPR}
-              percent
-              variant={typographyVariant}
-            />
-          </Row>
+          {campaignConfig.type === CampaignType.SELF_VERIFICATION && selfConfig && (
+            <>
+              <Row
+                height={24}
+                caption={
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography variant={typographyVariant}>Merit Incentives</Typography>
+                    <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                      {meritIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
+                    </Typography>
+                  </Box>
+                }
+                width="100%"
+              >
+                <FormattedNumber
+                  value={meritIncentives.breakdown.meritIncentivesAPR}
+                  percent
+                  variant={typographyVariant}
+                />
+              </Row>
+
+              <Row
+                height={24}
+                caption={
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography variant={typographyVariant}>Self Incentives</Typography>
+                    <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                      {meritIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
+                    </Typography>
+                  </Box>
+                }
+                width="100%"
+              >
+                <FormattedNumber
+                  value={
+                    meritIncentives.variants?.selfAPY !== null &&
+                    meritIncentives.variants?.selfAPY !== undefined
+                      ? meritIncentives.variants.selfAPY
+                      : meritIncentives.breakdown.meritIncentivesAPR
+                  }
+                  percent
+                  variant={typographyVariant}
+                />
+              </Row>
+            </>
+          )}
 
           <Row
             height={24}
@@ -317,7 +387,11 @@ export const MeritIncentivesTooltipContent = ({
             width="100%"
           >
             <FormattedNumber
-              value={meritIncentives.breakdown.totalAPY}
+              value={
+                campaignConfig.type === CampaignType.SELF_VERIFICATION
+                  ? meritIncentives.variants?.totalAPYWithSelf ?? 0
+                  : meritIncentives.breakdown?.totalAPY ?? 0
+              }
               percent
               variant={typographyVariant}
               fontWeight="600"
