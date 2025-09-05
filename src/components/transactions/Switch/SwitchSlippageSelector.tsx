@@ -66,17 +66,27 @@ export const SwitchSlippageSelector = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
   const [isCustomSlippage, setIsCustomSlippage] = useState(false);
   const [previousSlippage, setPreviousSlippage] = useState(slippage);
-
+  const [userHasSetCustomSlippage, setUserHasSetCustomSlippage] = useState(false);
   const open = Boolean(anchorEl);
 
   // Watch for slippage changes from outside the component
   useEffect(() => {
-    if (previousSlippage !== slippage) {
-      // If slippage change comes from outside, past wont be equal.
+    if (previousSlippage !== slippage && !userHasSetCustomSlippage) {
       setIsCustomSlippage(false);
       setPreviousSlippage(slippage);
+    } else if (previousSlippage !== slippage && userHasSetCustomSlippage) {
+      // Protect against external changes when user has set a custom slippage
+      setSlippage(previousSlippage);
     }
-  }, [slippage]);
+  }, [slippage, userHasSetCustomSlippage, previousSlippage, setSlippage]);
+
+  //Update slippage to suggested if user has not set a custom slippage
+  useEffect(() => {
+    if (suggestedSlippage && !userHasSetCustomSlippage && !isCustomSlippage) {
+      setSlippage(suggestedSlippage);
+      setPreviousSlippage(slippage);
+    }
+  }, [suggestedSlippage, userHasSetCustomSlippage, isCustomSlippage, setSlippage]);
 
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -89,6 +99,7 @@ export const SwitchSlippageSelector = ({
   const handleCustomSlippageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPreviousSlippage(event.target.value);
     setSlippage(event.target.value);
+    setUserHasSetCustomSlippage(true);
     setIsCustomSlippage(true);
   };
 
@@ -97,13 +108,20 @@ export const SwitchSlippageSelector = ({
       setPreviousSlippage(suggestedSlippage);
       setSlippage(suggestedSlippage);
       setIsCustomSlippage(false);
+      setUserHasSetCustomSlippage(false);
     } else {
       setPreviousSlippage(value);
       setSlippage(value);
       setIsCustomSlippage(true);
+      setUserHasSetCustomSlippage(true);
     }
   };
-
+  console.log('🎯 CURRENT STATE:', {
+    suggestedSlippage,
+    slippage,
+    isCustomSlippage,
+    userHasSetCustomSlippage,
+  });
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: '4px' }}>
       <Typography variant="caption" color="text.secondary">
@@ -220,6 +238,7 @@ export const SwitchSlippageSelector = ({
         sx={{ padding: 0, minWidth: 0 }}
         onClick={handleOpen}
         aria-controls="switch-slippage-selector"
+        disabled={!suggestedSlippage}
       >
         <SvgIcon sx={{ fontSize: '16px' }}>
           <CogIcon />

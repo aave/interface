@@ -200,6 +200,7 @@ export const BaseSwitchModalContent = ({
 
   const [userIsSmartContractWallet, setUserIsSmartContractWallet] = useState(false);
   const [userIsSafeWallet, setUserIsSafeWallet] = useState(false);
+
   useEffect(() => {
     try {
       if (user && connectedChainId) {
