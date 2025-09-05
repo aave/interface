@@ -156,11 +156,11 @@ const prodConfig: Config[] = [
     feeTokens: [
       {
         name: 'Gho Token',
-        address: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73',
+        address: AaveV3Avalanche.ASSETS.GHO.UNDERLYING,
         symbol: 'GHO',
         decimals: 18,
         chainId: ChainId.avalanche,
-        oracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12',
+        oracle: AaveV3Avalanche.ASSETS.GHO.ORACLE,
         extensions: {
           isNative: false,
         },
