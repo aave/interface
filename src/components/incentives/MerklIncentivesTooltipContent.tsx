@@ -124,7 +124,7 @@ export const MerklIncentivesTooltipContent = ({
                     variant={typographyVariant}
                   />
                   <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-                    <Trans>APR</Trans>
+                    <Trans>APY</Trans>
                   </Typography>
                 </Box>
               </Row>
@@ -167,7 +167,7 @@ export const MerklIncentivesTooltipContent = ({
                   variant={typographyVariant}
                 />
                 <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-                  <Trans>APR</Trans>
+                  <Trans>APY</Trans>
                 </Typography>
               </Box>
             </Row>
@@ -227,7 +227,7 @@ export const MerklIncentivesTooltipContent = ({
                 variant={typographyVariant}
               />
               <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-                <Trans>APR</Trans>
+                <Trans>APY</Trans>
               </Typography>
             </Box>
           </Row>
