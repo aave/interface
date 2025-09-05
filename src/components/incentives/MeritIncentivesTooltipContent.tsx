@@ -329,7 +329,7 @@ export const MeritIncentivesTooltipContent = ({
                   {isMultipleCampaigns(meritIncentives.activeActions) ? (
                     <Typography variant={typographyVariant}>Merit Incentives Combined</Typography>
                   ) : (
-                    <Typography variant={typographyVariant}>Merit Incentives Standard</Typography>
+                    <Typography variant={typographyVariant}>Merit Incentives</Typography>
                   )}
 
                   <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
@@ -355,7 +355,7 @@ export const MeritIncentivesTooltipContent = ({
                   {celoSupplyMultipleBorrowUsdtCampaign ? (
                     <Typography variant={typographyVariant}>Merit Incentives Combined</Typography>
                   ) : (
-                    <Typography variant={typographyVariant}>Merit Incentives Standard</Typography>
+                    <Typography variant={typographyVariant}>Merit Incentives</Typography>
                   )}
 
                   <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
@@ -382,7 +382,7 @@ export const MeritIncentivesTooltipContent = ({
                     {celoSupplyMultipleBorrowUsdtCampaign ? (
                       <Typography variant={typographyVariant}>Merit Incentives Combined</Typography>
                     ) : (
-                      <Typography variant={typographyVariant}>Merit Incentives Standard</Typography>
+                      <Typography variant={typographyVariant}>Merit Incentives</Typography>
                     )}
 
                     <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
