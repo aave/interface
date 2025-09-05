@@ -27,9 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return allowedPatterns.some((pattern) => pattern.test(origin));
   };
 
-  if (process.env.CORS_DOMAINS_ALLOWED === 'true') {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-  } else if (origin && isOriginAllowed(origin)) {
+  if (origin && isOriginAllowed(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
 
