@@ -101,6 +101,11 @@ const IncentivesSymbolMap: {
     symbol: 'aRLUSD',
     aToken: true,
   },
+  aHorRwaRLUSD: {
+    tokenIconSymbol: 'RLUSD',
+    symbol: 'aRLUSD',
+    aToken: true,
+  },
   aSonwS: {
     tokenIconSymbol: 'wS',
     symbol: 'awS',
