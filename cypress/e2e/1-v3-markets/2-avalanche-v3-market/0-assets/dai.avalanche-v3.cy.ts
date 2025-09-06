@@ -23,7 +23,7 @@ const testData = {
       {
         asset: assets.avalancheV3Market.DAI,
         amount: 50,
-        apyType: constants.borrowAPYType.default,
+        apyType: constants.borrowAPYType.variable,
         hasApproval: true,
       },
     ],
