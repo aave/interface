@@ -54,6 +54,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_SAVAX = 'avalanche-supply-savax',
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   AVALANCHE_SUPPLY_GHO = 'avalanche-supply-gho',
+  AVALANCHE_BORROW_USDC = 'avalanche-borrow-usdc',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
   SONIC_SUPPLY_STS_BORROW_WS = 'sonic-supply-sts-borrow-ws',
   GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
@@ -494,7 +495,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     ['BTC.b']: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_BTCB,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.BTCb.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -504,17 +505,25 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     USDC: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_USDC,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.USDC.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
+        customForumLink: AvalancheRenewalForumLink,
+      },
+      {
+        action: MeritAction.AVALANCHE_BORROW_USDC,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
         customForumLink: AvalancheRenewalForumLink,
       },
     ],
     USDt: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_USDT,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.USDt.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -534,7 +543,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     AUSD: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_AUSD,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.AUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
@@ -544,7 +553,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     GHO: [
       {
         action: MeritAction.AVALANCHE_SUPPLY_GHO,
-        rewardTokenAddress: AaveV3Avalanche.ASSETS.GHO.A_TOKEN,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
