@@ -139,6 +139,10 @@ msgstr "Rate change"
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Merit Program and Self rewards are claimed through the"
+msgstr "Merit Program and Self rewards are claimed through the"
+
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "Select token"
 msgstr "Select token"
@@ -233,10 +237,6 @@ msgstr "Available liquidity"
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
 msgstr "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
-
-#: src/components/AddressBlockedModal.tsx
-msgid "Blocked Address"
-msgstr "Blocked Address"
 
 #: src/modules/sGho/SavingsGhoCard.tsx
 msgid "Initiate Withdraw"
@@ -500,9 +500,6 @@ msgstr "Switch Network"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
-#: src/components/incentives/MerklIncentivesTooltipContent.tsx
-#: src/components/incentives/MerklIncentivesTooltipContent.tsx
-#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 msgid "APR"
@@ -1418,6 +1415,10 @@ msgstr "Maximum amount received"
 msgid "Activating Cooldown"
 msgstr "Activating Cooldown"
 
+#: src/components/AddressBlockedModal.tsx
+msgid "error code: 1"
+msgstr "error code: 1"
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "Recipient address"
@@ -1862,10 +1863,6 @@ msgstr "Show assets with small balance"
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
 msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
-
-#: src/components/AddressBlockedModal.tsx
-msgid "blocked activities"
-msgstr "blocked activities"
 
 #: pages/500.page.tsx
 msgid "Reload the page"
@@ -2552,10 +2549,6 @@ msgstr "Please connect your wallet to get free testnet assets."
 msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
 
-#: src/components/AddressBlockedModal.tsx
-msgid "This address is blocked on app.aave.com because it is associated with one or more"
-msgstr "This address is blocked on app.aave.com because it is associated with one or more"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
@@ -2906,6 +2899,10 @@ msgstr "English"
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
+
+#: src/components/AddressBlockedModal.tsx
+msgid "Something went wrong. Please try again later."
+msgstr "Something went wrong. Please try again later."
 
 #: src/modules/sGho/SGhoDepositPanel.tsx
 msgid "Deposit GHO and earn {0}% APY"
@@ -3291,6 +3288,9 @@ msgstr "Amount must be greater than 0"
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
