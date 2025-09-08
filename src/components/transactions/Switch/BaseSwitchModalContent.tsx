@@ -14,6 +14,7 @@ import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWall
 import { isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
+import { getParaswapSlippage } from 'src/hooks/switch/assetCorrelationParaswap.helpers';
 import { useMultiProviderSwitchRates } from 'src/hooks/switch/useMultiProviderSwitchRates';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
@@ -453,6 +454,28 @@ export const BaseSwitchModalContent = ({
     slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
       ? 0
       : Number(slippage) / 100;
+  // wether we use cow's suggested slippage or paraswap's correlated assets slippage default
+  const autoSlippage = useMemo(() => {
+    if (!switchRates) return undefined;
+
+    if (switchRates.provider === 'cowprotocol') {
+      return switchRates.suggestedSlippage?.toString();
+    }
+
+    if (switchRates.provider === 'paraswap') {
+      return getParaswapSlippage(
+        selectedInputToken?.symbol || '',
+        selectedOutputToken?.symbol || ''
+      );
+    }
+
+    return undefined;
+  }, [
+    switchRates?.provider,
+    switchRates?.suggestedSlippage,
+    selectedInputToken?.symbol,
+    selectedOutputToken?.symbol,
+  ]);
 
   useEffect(() => {
     if (ratesError) {
@@ -580,14 +603,24 @@ export const BaseSwitchModalContent = ({
     }
   }, [modalType, switchRates, ratesLoading, shouldUseFlashloan]);
 
-  // Define default slippage for CoW
+  // Define default slippage for CoW & Paraswap
   useEffect(() => {
     if (switchRates?.provider == 'cowprotocol' && isCowProtocolRates(switchRates)) {
       setSlippage(switchRates.suggestedSlippage.toString());
     } else if (modalType === ModalType.CollateralSwap && shouldUseFlashloan === true) {
-      setSlippage('0.5');
+      const paraswapSlippage = getParaswapSlippage(
+        selectedInputToken?.symbol || '',
+        selectedOutputToken?.symbol || ''
+      );
+      setSlippage(paraswapSlippage);
     }
-  }, [switchRates, shouldUseFlashloan, modalType]);
+  }, [
+    switchRates,
+    shouldUseFlashloan,
+    modalType,
+    selectedInputToken?.symbol,
+    selectedOutputToken?.symbol,
+  ]);
 
   const [showSlippageWarning, setShowSlippageWarning] = useState(false);
   useEffect(() => {
@@ -762,20 +795,7 @@ export const BaseSwitchModalContent = ({
   const isSwappingSafetyModuleToken = SAFETY_MODULE_TOKENS.includes(
     selectedInputToken.symbol.toLowerCase()
   );
-  const getSuggestedSlippage = () => {
-    if (!switchRates) return undefined;
 
-    if (switchRates.provider === 'cowprotocol') {
-      return switchRates.suggestedSlippage?.toString();
-    }
-
-    if (switchRates.provider === 'paraswap') {
-      return slippage;
-    }
-
-    return undefined;
-  };
-  console.log('🔍 switchRates.provider heredado a SwitchSlippageSelector:', switchRates?.provider);
   // Component
   return (
     <>
@@ -831,7 +851,8 @@ export const BaseSwitchModalContent = ({
           slippageValidation={slippageValidation}
           slippage={slippage}
           setSlippage={setSlippage}
-          suggestedSlippage={getSuggestedSlippage()}
+          suggestedSlippage={autoSlippage}
+          provider={switchRates?.provider}
         />
       </Box>
       {!selectedInputToken || !selectedOutputToken ? (

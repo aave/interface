@@ -2077,6 +2077,10 @@ msgstr "Stake token shares"
 msgid "Feedback"
 msgstr "Feedback"
 
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Default slippage"
+msgstr "Default slippage"
+
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
 msgstr "Testnet mode is ON"
@@ -3099,6 +3103,10 @@ msgstr "All borrow positions outside of this category must be closed to enable t
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
 msgstr "Available to supply"
+
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Default"
+msgstr "Default"
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the {market} has been frozen."

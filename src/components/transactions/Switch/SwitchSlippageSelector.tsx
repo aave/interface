@@ -22,6 +22,7 @@ type SwitchSlippageSelectorProps = {
   slippage: string;
   setSlippage: (value: string) => void;
   slippageValidation?: ValidationData;
+  provider?: string;
 };
 
 const defaultSlippageOptions = (suggested?: string) => {
@@ -30,7 +31,9 @@ const defaultSlippageOptions = (suggested?: string) => {
   }
 
   const suggestedNumber = Number(suggested);
-
+  if (suggestedNumber <= 0.1) {
+    return ['0.20', '0.50', 'Auto'];
+  }
   if (suggestedNumber < 1) {
     return ['0.10', '0.50', 'Auto'];
   }
@@ -55,6 +58,7 @@ export const SwitchSlippageSelector = ({
   slippage,
   setSlippage,
   slippageValidation,
+  provider,
 }: SwitchSlippageSelectorProps) => {
   const slippageOptions = defaultSlippageOptions(suggestedSlippage).map((option) => {
     if (Number(option) === Number(suggestedSlippage)) {
@@ -116,16 +120,17 @@ export const SwitchSlippageSelector = ({
       setUserHasSetCustomSlippage(true);
     }
   };
-  console.log('🎯 CURRENT STATE:', {
-    suggestedSlippage,
-    slippage,
-    isCustomSlippage,
-    userHasSetCustomSlippage,
-  });
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: '4px' }}>
       <Typography variant="caption" color="text.secondary">
-        {isCustomSlippage ? <Trans>Custom slippage</Trans> : <Trans>Auto Slippage</Trans>}
+        {isCustomSlippage ? (
+          <Trans>Custom slippage</Trans>
+        ) : provider === 'paraswap' ? (
+          <Trans>Default slippage</Trans>
+        ) : (
+          <Trans>Auto Slippage</Trans>
+        )}
         {':'}
         <Menu
           sx={{
@@ -178,7 +183,7 @@ export const SwitchSlippageSelector = ({
                 >
                   {isNaN(Number(option)) ? (
                     <Typography variant="subheader2" color="primary.main">
-                      <Trans>Auto</Trans>
+                      {provider === 'paraswap' ? <Trans>Default</Trans> : <Trans>Auto</Trans>}
                     </Typography>
                   ) : (
                     <FormattedNumber
