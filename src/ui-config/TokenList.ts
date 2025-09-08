@@ -13032,6 +13032,15 @@ export const TOKEN_LIST: TokenList = {
       logoURI:
         'https://assets.coingecko.com/coins/images/52937/standard/token-beets-staked-sonic.png?1734712659',
     },
+    {
+      name: 'RLUSD',
+      address: '0x8292bb45bf1ee4d140127049757c2e0ff06317ed',
+      symbol: 'RLUSD',
+      decimals: 18,
+      chainId: 1,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/39651/standard/RLUSD_200x200_%281%29.png?1727376633',
+    },
   ],
 };
 
