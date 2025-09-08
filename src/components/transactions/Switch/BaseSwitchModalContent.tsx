@@ -220,7 +220,7 @@ export const BaseSwitchModalContent = ({
   const debouncedInputChange = useMemo(() => {
     return debounce((value: string) => {
       setDebounceInputAmount(value);
-    }, 300);
+    }, 1500);
   }, [setDebounceInputAmount]);
 
   const handleInputChange = (value: string) => {
