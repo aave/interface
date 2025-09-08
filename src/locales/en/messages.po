@@ -1012,6 +1012,10 @@ msgstr "Current v2 balance"
 msgid "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
 msgstr "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "Your health factor after this swap will be critically low and you will be liquidated. Please choose a different asset or reduce the swap amount to stay safe."
+msgstr "Your health factor after this swap will be critically low and you will be liquidated. Please choose a different asset or reduce the swap amount to stay safe."
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
 msgstr "Borrow power used"
@@ -1921,6 +1925,10 @@ msgstr "Reserve factor"
 msgid "Migration risks"
 msgstr "Migration risks"
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "I understand the liquidation risk and want to proceed"
+msgstr "I understand the liquidation risk and want to proceed"
+
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Covered debt"
 msgstr "Covered debt"
@@ -2591,6 +2599,10 @@ msgstr "Net APY"
 msgid "Claimed"
 msgstr "Claimed"
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "Low health factor after swap. This may put you at risk of liquidation."
+msgstr "Low health factor after swap. This may put you at risk of liquidation."
+
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
@@ -2859,10 +2871,6 @@ msgstr "and about SPK program"
 #: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
-
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
-msgid "Low health factor after swap. Please select a different asset or lower the amount."
-msgstr "Low health factor after swap. Please select a different asset or lower the amount."
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Select an asset"

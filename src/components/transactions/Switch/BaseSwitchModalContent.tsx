@@ -58,6 +58,7 @@ export type SwitchDetailsParams = Parameters<
 >[0];
 
 const LIQUIDATION_SAFETY_THRESHOLD = 1.05;
+const LIQUIDATION_DANGER_THRESHOLD = 1.01;
 
 const valueLostPercentage = (destValueInUsd: number, srcValueInUsd: number) => {
   if (destValueInUsd === 0) return 1;
@@ -79,6 +80,11 @@ const shouldShowWarning = (lostValue: number, srcValueInUsd: number) => {
 
 const shouldRequireConfirmation = (lostValue: number) => {
   return lostValue > 0.2;
+};
+const shouldRequireConfirmationHFlow = (healthFactor: number) => {
+  return (
+    healthFactor < LIQUIDATION_SAFETY_THRESHOLD && healthFactor >= LIQUIDATION_DANGER_THRESHOLD
+  );
 };
 
 export const getFilteredTokensForSwitch = (
@@ -193,6 +199,7 @@ export const BaseSwitchModalContent = ({
   const trackEvent = useRootStore((store) => store.trackEvent);
   const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
   const [highPriceImpactConfirmed, setHighPriceImpactConfirmed] = useState(false);
+  const [lowHFConfirmed, setLowHFConfirmed] = useState(false);
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
   const [isSwapFlowSelected, setIsSwapFlowSelected] = useState(false);
@@ -227,6 +234,7 @@ export const BaseSwitchModalContent = ({
   const handleInputChange = (value: string) => {
     setTxError(undefined);
     setHighPriceImpactConfirmed(false);
+    setLowHFConfirmed(false);
     if (value === '-1') {
       // Max Selected
       setInputAmount(selectedInputToken.balance);
@@ -533,7 +541,16 @@ export const BaseSwitchModalContent = ({
 
     if (hfNumber.lt(0)) return false;
 
-    return hfNumber.lt(LIQUIDATION_SAFETY_THRESHOLD);
+    return hfNumber.lt(LIQUIDATION_SAFETY_THRESHOLD) && hfNumber.gte(LIQUIDATION_DANGER_THRESHOLD);
+  }, [hfAfterSwap]);
+  const isLiquidatable = useMemo(() => {
+    if (!hfAfterSwap) return false;
+
+    const hfNumber = new BigNumber(hfAfterSwap);
+
+    if (hfNumber.lt(0)) return false;
+
+    return hfNumber.lt(LIQUIDATION_DANGER_THRESHOLD);
   }, [hfAfterSwap]);
 
   const shouldUseFlashloanFn = (healthFactor: string, hfEffectOfFromAmount: string) => {
@@ -738,11 +755,27 @@ export const BaseSwitchModalContent = ({
     ? shouldShowWarning(lostValue, Number(switchRates?.srcUSD))
     : false;
   const requireConfirmation = switchRates ? shouldRequireConfirmation(lostValue) : false;
+  const requireConfirmationHFlow = isHFLow
+    ? shouldRequireConfirmationHFlow(Number(hfAfterSwap))
+    : false;
 
   const isSwappingSafetyModuleToken = SAFETY_MODULE_TOKENS.includes(
     selectedInputToken.symbol.toLowerCase()
   );
+  const getSuggestedSlippage = () => {
+    if (!switchRates) return undefined;
 
+    if (switchRates.provider === 'cowprotocol') {
+      return switchRates.suggestedSlippage?.toString();
+    }
+
+    if (switchRates.provider === 'paraswap') {
+      return slippage;
+    }
+
+    return undefined;
+  };
+  console.log('🔍 switchRates.provider heredado a SwitchSlippageSelector:', switchRates?.provider);
   // Component
   return (
     <>
@@ -798,11 +831,7 @@ export const BaseSwitchModalContent = ({
           slippageValidation={slippageValidation}
           slippage={slippage}
           setSlippage={setSlippage}
-          suggestedSlippage={
-            switchRates?.provider === 'cowprotocol'
-              ? switchRates?.suggestedSlippage.toString()
-              : undefined
-          }
+          suggestedSlippage={getSuggestedSlippage()}
         />
       </Box>
       {!selectedInputToken || !selectedOutputToken ? (
@@ -961,14 +990,64 @@ export const BaseSwitchModalContent = ({
                 </Warning>
               )}
 
-              {modalType === ModalType.CollateralSwap && isHFLow && (
-                <Warning severity="error" icon={false} sx={{ mt: 5 }}>
+              {modalType === ModalType.CollateralSwap && isLiquidatable && (
+                <Warning
+                  severity="error"
+                  icon={false}
+                  sx={{
+                    mt: 2,
+                    mb: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
                   <Typography variant="caption">
                     <Trans>
-                      Low health factor after swap. Please select a different asset or lower the
-                      amount.
+                      Your health factor after this swap will be critically low and you will be
+                      liquidated. Please choose a different asset or reduce the swap amount to stay
+                      safe.
                     </Trans>
                   </Typography>
+                </Warning>
+              )}
+              {modalType === ModalType.CollateralSwap && isHFLow && !isLiquidatable && (
+                <Warning
+                  severity="warning"
+                  icon={false}
+                  sx={{
+                    mt: 2,
+                    mb: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography variant="caption">
+                    <Trans>
+                      Low health factor after swap. This may put you at risk of liquidation.
+                    </Trans>
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      mt: 2,
+                    }}
+                  >
+                    <Typography variant="caption">
+                      <Trans>I understand the liquidation risk and want to proceed</Trans>
+                    </Typography>
+                    <Checkbox
+                      checked={lowHFConfirmed}
+                      onChange={() => {
+                        setLowHFConfirmed(!lowHFConfirmed);
+                      }}
+                      size="small"
+                      data-cy={'low-hf-checkbox'}
+                    />
+                  </Box>
                 </Warning>
               )}
 
@@ -1078,7 +1157,11 @@ export const BaseSwitchModalContent = ({
                     (shouldUseFlashloan === true &&
                       !!poolReserve &&
                       !poolReserve.flashLoanEnabled) ||
-                    (modalType === ModalType.CollateralSwap && isHFLow)
+                    (modalType === ModalType.CollateralSwap && isLiquidatable) ||
+                    (modalType === ModalType.CollateralSwap &&
+                      isHFLow &&
+                      requireConfirmationHFlow &&
+                      !lowHFConfirmed)
                   }
                   chainId={selectedChainId}
                   switchRates={switchRates}
