@@ -10,11 +10,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
+import { getAssetGroup } from 'src/components/transactions/Switch/assetCorrelation.helpers';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
-import { getParaswapSlippage } from 'src/hooks/switch/assetCorrelationParaswap.helpers';
 import { useMultiProviderSwitchRates } from 'src/hooks/switch/useMultiProviderSwitchRates';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
@@ -442,6 +442,16 @@ export const BaseSwitchModalContent = ({
 
   const [slippage, setSlippage] = useState(switchRates?.provider == 'cowprotocol' ? '0.5' : '0.10');
   const [showGasStation, setShowGasStation] = useState(switchRates?.provider == 'paraswap');
+
+  const getParaswapSlippage = (inputSymbol: string, outputSymbol: string): string => {
+    const inputGroup = getAssetGroup(inputSymbol);
+    const outputGroup = getAssetGroup(outputSymbol);
+
+    if (!inputGroup || !outputGroup || inputGroup === 'unknown' || outputGroup === 'unknown') {
+      return '0.20';
+    }
+    return inputGroup === outputGroup ? '0.10' : '0.20';
+  };
 
   const slippageValidation = validateSlippage(
     slippage,
