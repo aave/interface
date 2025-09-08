@@ -5,6 +5,7 @@ import { AssetCategory } from 'src/modules/markets/utils/assetCategories';
 interface MarketAssetCategoryFiltersProps {
   selectedCategory: AssetCategory;
   onCategoryChange: (category: AssetCategory) => void;
+  disabled?: boolean;
   sx?: {
     buttonGroup?: SxProps<Theme>;
     button?: SxProps<Theme>;
@@ -24,6 +25,7 @@ const categories = [
 export const MarketAssetCategoryFilter = ({
   selectedCategory,
   onCategoryChange,
+  disabled = false,
   ...props
 }: MarketAssetCategoryFiltersProps) => {
   const handleChange = (_event: React.MouseEvent<HTMLElement>, newCategory: AssetCategory) => {
@@ -38,6 +40,7 @@ export const MarketAssetCategoryFilter = ({
       exclusive
       onChange={handleChange}
       aria-label="Asset category"
+      disabled={disabled}
       sx={{
         width: '100%',
         height: '36px',

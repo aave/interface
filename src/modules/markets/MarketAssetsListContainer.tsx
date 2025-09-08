@@ -20,7 +20,7 @@ import { GENERAL } from '../../utils/events';
 import { isAssetHidden } from '../dashboard/lists/constants';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
 import { AssetCategory, isAssetInCategoryDynamic } from './utils/assetCategories';
-import { useAssetCategoryFilters } from './utils/useAssetCategoryFilters';
+import { useCoingeckoCategories } from './utils/useCoinGeckoCategories';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -40,7 +40,8 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
 }
 
 export const MarketAssetsListContainer = () => {
-  const { stablecoinSymbols, ethCorrelatedSymbols } = useAssetCategoryFilters();
+  const { data, isLoading, error } = useCoingeckoCategories();
+
   const { reserves, loading } = useAppDataContext();
   const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [
@@ -79,8 +80,8 @@ export const MarketAssetsListContainer = () => {
       isAssetInCategoryDynamic(
         res.symbol,
         selectedCategory,
-        stablecoinSymbols,
-        ethCorrelatedSymbols
+        data?.stablecoinSymbols,
+        data?.ethCorrelatedSymbols
       )
     )
     // Transform the object for list to consume it
@@ -142,6 +143,7 @@ export const MarketAssetsListContainer = () => {
                 <MarketAssetCategoryFilter
                   selectedCategory={selectedCategory}
                   onCategoryChange={setSelectedCategory}
+                  disabled={isLoading || !!error}
                 />
               </Box>
             </Box>
@@ -157,6 +159,7 @@ export const MarketAssetsListContainer = () => {
             searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
+            disabled={isLoading || !!error}
           />
         )
       }

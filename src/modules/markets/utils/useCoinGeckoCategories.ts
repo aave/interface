@@ -10,5 +10,11 @@ export function useCoingeckoCategories() {
     queryKey: ['coingecko-categories'],
     staleTime: 1000 * 60 * 60 * 24 * 7,
     refetchOnWindowFocus: false,
+    select: (data) => {
+      return {
+        stablecoinSymbols: data.uniqueSymbolsStablecoins || [],
+        ethCorrelatedSymbols: data.uniqueSymbolsEth || [],
+      };
+    },
   });
 }

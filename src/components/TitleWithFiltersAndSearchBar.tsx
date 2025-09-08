@@ -23,6 +23,7 @@ interface TitleWithFiltersAndSearchBarProps<C extends React.ElementType> {
   title: ReactNode;
   selectedCategory: AssetCategory;
   onCategoryChange: (category: AssetCategory) => void;
+  disabled?: boolean;
 }
 
 export const TitleWithFiltersAndSearchBar = <T extends React.ElementType>({
@@ -32,6 +33,7 @@ export const TitleWithFiltersAndSearchBar = <T extends React.ElementType>({
   title,
   selectedCategory,
   onCategoryChange,
+  disabled = false,
 }: TitleWithFiltersAndSearchBarProps<T>) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
 
@@ -75,6 +77,7 @@ export const TitleWithFiltersAndSearchBar = <T extends React.ElementType>({
         <MarketAssetCategoryFilter
           selectedCategory={selectedCategory}
           onCategoryChange={onCategoryChange}
+          disabled={disabled}
         />
         {showSearchIcon && (
           <IconButton onClick={() => setShowSearchBar(true)}>
