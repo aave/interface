@@ -74,6 +74,12 @@ msgstr "Remind me"
 msgid "Total amount of underlying assets staked. This number represents the combined sum of your original asset and the corresponding aTokens staked in Umbrella."
 msgstr "Total amount of underlying assets staked. This number represents the combined sum of your original asset and the corresponding aTokens staked in Umbrella."
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/ClaimRewards/RewardsSelect.tsx
+msgid "Protocol Rewards"
+msgstr "Protocol Rewards"
+
 #: src/modules/umbrella/helpers/ApyTooltip.tsx
 msgid "Reward APY adjusts with total staked amount, following a curve that targets optimal staking levels."
 msgstr "Reward APY adjusts with total staked amount, following a curve that targets optimal staking levels."
@@ -119,6 +125,8 @@ msgstr "Deposit GHO and earn up to <0>{0}%</0> APY"
 msgid "Stable borrowing is not enabled"
 msgstr "Stable borrowing is not enabled"
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
 msgstr "Total worth"
@@ -303,6 +311,10 @@ msgstr "Remaining supply"
 msgid "There is not enough collateral to cover a new borrow"
 msgstr "There is not enough collateral to cover a new borrow"
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+msgid "{0} Balance{1}"
+msgstr "{0} Balance{1}"
+
 #: src/components/transactions/Supply/SupplyActions.tsx
 #: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 msgid "Supply {symbol}"
@@ -421,6 +433,10 @@ msgstr "Allowance required action"
 msgid "Available rewards"
 msgstr "Available rewards"
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+msgid "Claiming individual protocol reward only. Merit rewards excluded - select \"claim all\" to include merit rewards."
+msgstr "Claiming individual protocol reward only. Merit rewards excluded - select \"claim all\" to include merit rewards."
+
 #: src/components/infoTooltips/ApprovalTooltip.tsx
 msgid "To continue, you need to grant smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 msgstr "To continue, you need to grant smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
@@ -504,9 +520,6 @@ msgstr "Switch Network"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
-#: src/components/incentives/MerklIncentivesTooltipContent.tsx
-#: src/components/incentives/MerklIncentivesTooltipContent.tsx
-#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 msgid "APR"
@@ -938,6 +951,10 @@ msgstr "Stake your Aave aTokens or underlying assets to earn rewards. In case of
 msgid "Aave per month"
 msgstr "Aave per month"
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+msgid "Claiming all protocol rewards only. Merit rewards excluded - select \"claim all\" to include merit rewards."
+msgstr "Claiming all protocol rewards only. Merit rewards excluded - select \"claim all\" to include merit rewards."
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/Switch/CollateralSwap/CollateralSwapModalDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -1222,10 +1239,6 @@ msgstr "Swapping"
 msgid "You can not use this currency as collateral"
 msgstr "You can not use this currency as collateral"
 
-#: src/components/transactions/ClaimRewards/RewardsSelect.tsx
-msgid "Reward(s) to claim"
-msgstr "Reward(s) to claim"
-
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1346,6 +1359,10 @@ msgstr "Market"
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
 msgid "Learn more about Ethena Rewards program"
 msgstr "Learn more about Ethena Rewards program"
+
+#: src/components/transactions/ClaimRewards/RewardsSelect.tsx
+msgid "Rewards to claim"
+msgstr "Rewards to claim"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -1647,6 +1664,12 @@ msgstr "View TX"
 msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/ClaimRewards/RewardsSelect.tsx
+msgid "Merit Rewards"
+msgstr "Merit Rewards"
+
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 msgid "Withdrawing"
 msgstr "Withdrawing"
@@ -1932,6 +1955,10 @@ msgstr "Total borrows"
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
 msgstr "YAE"
+
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+msgid "Claiming all merit rewards only"
+msgstr "Claiming all merit rewards only"
 
 #: src/components/transactions/FlowCommons/BaseCancelled.tsx
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
@@ -2473,7 +2500,6 @@ msgid "Preview tx and migrate"
 msgstr "Preview tx and migrate"
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -2721,6 +2747,12 @@ msgstr "Collateral usage is limited because of Isolation mode."
 msgid "Amount After Fee"
 msgstr "Amount After Fee"
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
+#: src/components/transactions/ClaimRewards/RewardsSelect.tsx
+#: src/components/transactions/ClaimRewards/RewardsSelect.tsx
+msgid "Claim all merit rewards"
+msgstr "Claim all merit rewards"
+
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Total APY"
@@ -2747,10 +2779,6 @@ msgstr "Disable E-Mode"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enable E-Mode"
 msgstr "Enable E-Mode"
-
-#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
-msgid "{0} Balance"
-msgstr "{0} Balance"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is restricted to assets within the selected category. <0>Learn more</0> about how it works and the applied restrictions."
@@ -3095,6 +3123,10 @@ msgstr "All borrow positions outside of this category must be closed to enable t
 msgid "Available to supply"
 msgstr "Available to supply"
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+msgid "Claiming all protocol rewards and merit rewards together"
+msgstr "Claiming all protocol rewards and merit rewards together"
+
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the {market} has been frozen."
 msgstr "Per the community, the {market} has been frozen."
@@ -3280,6 +3312,9 @@ msgstr "Amount must be greater than 0"
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -3471,6 +3506,12 @@ msgstr "No search results{0}"
 msgid "Status"
 msgstr "Status"
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
+#: src/components/transactions/ClaimRewards/RewardsSelect.tsx
+#: src/components/transactions/ClaimRewards/RewardsSelect.tsx
+msgid "Claim all protocol rewards"
+msgstr "Claim all protocol rewards"
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
@@ -3602,6 +3643,10 @@ msgstr "Faucet {0}"
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "Source"
 msgstr "Source"
+
+#: src/components/transactions/ClaimRewards/RewardsSelect.tsx
+msgid "All Rewards"
+msgstr "All Rewards"
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is different from using market pricing via oracles for other crypto assets. This creates stabilizing arbitrage opportunities when the price of GHO fluctuates."

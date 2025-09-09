@@ -8,24 +8,29 @@ import { Reward } from 'src/helpers/types';
 
 import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { TokenIcon } from '../../primitives/TokenIcon';
+import { RewardSymbol } from './constants';
 
-export type RewardSelect = Pick<Reward, 'symbol' | 'balanceUsd'>;
+export type RewardSelect = Pick<Reward, 'symbol' | 'balanceUsd'> & {
+  isMeritReward?: boolean;
+};
 
 export type RewardsSelectProps = {
   rewards: RewardSelect[];
+  meritRewards?: RewardSelect[];
   setSelectedReward: (key: string) => void;
   selectedReward: string;
 };
 
 export const RewardsSelect = ({
   rewards,
+  meritRewards = [],
   selectedReward,
   setSelectedReward,
 }: RewardsSelectProps) => {
   return (
-    <FormControl sx={{ mb: 1, width: '100%' }}>
-      <FormLabel sx={{ mb: 1, color: 'text.secondary' }}>
-        <Trans>Reward(s) to claim</Trans>
+    <FormControl sx={{ width: '100%' }}>
+      <FormLabel sx={{ mb: 1, mt: 3, color: 'text.secondary' }}>
+        <Trans>Rewards to claim</Trans>
       </FormLabel>
 
       <Select
@@ -54,14 +59,38 @@ export const RewardsSelect = ({
         }}
         native={false}
         renderValue={(reward) => {
-          if (reward === 'all') {
+          if (reward === RewardSymbol.ALL) {
             return (
               <Typography color="text.primary">
                 <Trans>Claim all rewards</Trans>
               </Typography>
             );
           }
-          const selected = rewards.find((r) => r.symbol === reward) as Reward;
+          if (reward === RewardSymbol.MERIT_ALL) {
+            return (
+              <Typography color="text.primary">
+                <Trans>Claim all merit rewards</Trans>
+              </Typography>
+            );
+          }
+          if (reward === RewardSymbol.PROTOCOL_ALL) {
+            return (
+              <Typography color="text.primary">
+                <Trans>Claim all protocol rewards</Trans>
+              </Typography>
+            );
+          }
+
+          // Don't render merit display items - these redirect to merit-all
+          if (reward.startsWith('merit-display-')) {
+            return null;
+          }
+
+          // Check protocol rewards only for individual display
+          const selected = rewards.find((r) => r.symbol === reward);
+
+          if (!selected) return null;
+
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <TokenIcon symbol={selected.symbol} sx={{ mr: 2, fontSize: '16px' }} />
@@ -70,38 +99,131 @@ export const RewardsSelect = ({
           );
         }}
       >
-        <MenuItem value={'all'}>
+        <MenuItem key="all-header" disabled sx={{ opacity: 1, cursor: 'default' }}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+          >
+            <Trans>All Rewards</Trans>
+          </Typography>
+        </MenuItem>
+        <MenuItem value={RewardSymbol.ALL}>
           <Typography variant="subheader1">
             <Trans>Claim all rewards</Trans>
           </Typography>
         </MenuItem>
-        <Divider />
-        {rewards.map((reward) => (
-          <MenuItem value={reward.symbol} key={`reward-token-${reward.symbol}`}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <TokenIcon symbol={reward.symbol} sx={{ fontSize: '24px', mr: 3 }} />
-              <Typography variant="subheader1" sx={{ mr: 1 }}>
-                {reward.symbol}
-              </Typography>
-              <Typography
-                component="span"
-                sx={{ display: 'inline-flex', alignItems: 'center' }}
-                variant="caption"
-                color="text.muted"
-              >
-                ~
-              </Typography>
-              <FormattedNumber
-                value={Number(reward.balanceUsd)}
-                variant="caption"
-                compact
-                symbol="USD"
-                symbolsColor="text.muted"
-                color="text.muted"
-              />
-            </Box>
-          </MenuItem>
-        ))}
+
+        {/* Merit Rewards Section */}
+        {meritRewards.length > 0 && [
+          <Divider key="merit-divider" />,
+          <MenuItem key="merit-header" disabled sx={{ opacity: 1, cursor: 'default' }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              <Trans>Merit Rewards</Trans>
+            </Typography>
+          </MenuItem>,
+          <MenuItem value={RewardSymbol.MERIT_ALL} key="merit-all">
+            <Typography variant="subheader1" color="primary.main">
+              <Trans>Claim all merit rewards</Trans>
+            </Typography>
+          </MenuItem>,
+          ...meritRewards.map((reward) => (
+            <MenuItem
+              value={`merit-display-${reward.symbol}`}
+              key={`merit-reward-${reward.symbol}`}
+              sx={{
+                pointerEvents: 'none',
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                },
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <TokenIcon symbol={reward.symbol} sx={{ fontSize: '24px', mr: 3 }} />
+                <Typography variant="subheader1" sx={{ mr: 1 }}>
+                  {reward.symbol}
+                </Typography>
+                <Typography
+                  ml={1}
+                  variant="caption"
+                  color="primary.main"
+                  sx={{ fontSize: '10px', mr: 2 }}
+                >
+                  MERIT
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{ display: 'inline-flex', alignItems: 'center' }}
+                  variant="caption"
+                  color="text.muted"
+                >
+                  ~
+                </Typography>
+                <FormattedNumber
+                  value={Number(reward.balanceUsd)}
+                  variant="caption"
+                  compact
+                  symbol="USD"
+                  symbolsColor="text.muted"
+                  color="text.muted"
+                />
+              </Box>
+            </MenuItem>
+          )),
+        ]}
+
+        {/* Protocol Rewards Section */}
+        {rewards.length > 0 && [
+          <Divider key="protocol-divider" />,
+          <MenuItem key="protocol-header" disabled sx={{ opacity: 1, cursor: 'default' }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              <Trans>Protocol Rewards</Trans>
+            </Typography>
+          </MenuItem>,
+          ...(rewards.length > 1
+            ? [
+                <MenuItem value={RewardSymbol.PROTOCOL_ALL} key="protocol-all">
+                  <Typography variant="subheader1" color="text.primary">
+                    <Trans>Claim all protocol rewards</Trans>
+                  </Typography>
+                </MenuItem>,
+              ]
+            : []),
+          ...rewards.map((reward) => (
+            <MenuItem value={reward.symbol} key={`protocol-reward-${reward.symbol}`}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <TokenIcon symbol={reward.symbol} sx={{ fontSize: '24px', mr: 3 }} />
+                <Typography variant="subheader1" sx={{ mr: 1 }}>
+                  {reward.symbol}
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{ display: 'inline-flex', alignItems: 'center' }}
+                  variant="caption"
+                  color="text.muted"
+                >
+                  ~
+                </Typography>
+                <FormattedNumber
+                  value={Number(reward.balanceUsd)}
+                  variant="caption"
+                  compact
+                  symbol="USD"
+                  symbolsColor="text.muted"
+                  color="text.muted"
+                />
+              </Box>
+            </MenuItem>
+          )),
+        ]}
       </Select>
     </FormControl>
   );
