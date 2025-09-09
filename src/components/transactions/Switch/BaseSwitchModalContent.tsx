@@ -60,6 +60,7 @@ export type SwitchDetailsParams = Parameters<
 
 const LIQUIDATION_SAFETY_THRESHOLD = 1.05;
 const LIQUIDATION_DANGER_THRESHOLD = 1.01;
+const SESSION_STORAGE_EXPIRY_MS = 15 * 60 * 1000;
 
 const valueLostPercentage = (destValueInUsd: number, srcValueInUsd: number) => {
   if (destValueInUsd === 0) return 1;
@@ -229,7 +230,7 @@ export const BaseSwitchModalContent = ({
   const debouncedInputChange = useMemo(() => {
     return debounce((value: string) => {
       setDebounceInputAmount(value);
-    }, 300);
+    }, 1500);
   }, [setDebounceInputAmount]);
 
   const handleInputChange = (value: string) => {
@@ -250,10 +251,12 @@ export const BaseSwitchModalContent = ({
     if (!initialFromTokens?.find((t) => t.address === token.address)) {
       addNewToken(token).then(() => {
         setSelectedInputToken(token);
+        saveTokenSelection(token, selectedOutputToken);
         setTxError(undefined);
       });
     } else {
       setSelectedInputToken(token);
+      saveTokenSelection(token, selectedOutputToken);
       setTxError(undefined);
     }
   };
@@ -262,10 +265,12 @@ export const BaseSwitchModalContent = ({
     if (!initialToTokens?.find((t) => t.address === token.address)) {
       addNewToken(token).then(() => {
         setSelectedOutputToken(token);
+        saveTokenSelection(selectedInputToken, token);
         setTxError(undefined);
       });
     } else {
       setSelectedOutputToken(token);
+      saveTokenSelection(selectedInputToken, token);
       setTxError(undefined);
     }
   };
@@ -350,12 +355,58 @@ export const BaseSwitchModalContent = ({
     };
   }, [initialFromTokens, initialToTokens]);
 
-  const [selectedInputToken, setSelectedInputToken] = useState<TokenInfoWithBalance>(
-    forcedDefaultInputToken ?? defaultInputToken
-  );
-  const [selectedOutputToken, setSelectedOutputToken] = useState<TokenInfoWithBalance>(
-    forcedDefaultOutputToken ?? defaultOutputToken
-  );
+  // Persist selected tokens in session storage to retain them on modal close/open but differentiating by modalType
+  const getStorageKey = (modalType: ModalType, chainId: number) =>
+    `aave_switch_tokens_${modalType}_${chainId}`;
+
+  const saveTokenSelection = (
+    inputToken: TokenInfoWithBalance,
+    outputToken: TokenInfoWithBalance
+  ) => {
+    try {
+      sessionStorage.setItem(
+        getStorageKey(modalType, selectedChainId),
+        JSON.stringify({
+          inputToken: forcedDefaultInputToken ? null : inputToken,
+          outputToken: forcedDefaultOutputToken ? null : outputToken,
+          timestamp: Date.now(),
+        })
+      );
+    } catch (e) {
+      console.error('Error saving token selection', e);
+    }
+  };
+
+  const loadTokenSelection = () => {
+    try {
+      const savedTokenSelection = sessionStorage.getItem(getStorageKey(modalType, selectedChainId));
+      if (!savedTokenSelection) return null;
+
+      const parsedTokenSelection = JSON.parse(savedTokenSelection);
+      if (
+        parsedTokenSelection.timestamp &&
+        Date.now() - parsedTokenSelection.timestamp > SESSION_STORAGE_EXPIRY_MS
+      ) {
+        sessionStorage.removeItem(getStorageKey(modalType, selectedChainId));
+        return null;
+      }
+      return parsedTokenSelection;
+    } catch (e) {
+      return null;
+    }
+  };
+  const [selectedInputToken, setSelectedInputToken] = useState<TokenInfoWithBalance>(() => {
+    if (forcedDefaultInputToken) return forcedDefaultInputToken;
+
+    const saved = loadTokenSelection();
+    return saved?.inputToken || defaultInputToken;
+  });
+  const [selectedOutputToken, setSelectedOutputToken] = useState<TokenInfoWithBalance>(() => {
+    if (forcedDefaultOutputToken) return forcedDefaultOutputToken;
+
+    const saved = loadTokenSelection();
+    return saved?.outputToken || defaultOutputToken;
+  });
 
   // Update selected tokens when defaults change (e.g., after network change)
   useEffect(() => {
