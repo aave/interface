@@ -1,5 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
+import { chainId, evmAddress, useUserMeritRewards } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
@@ -12,6 +13,7 @@ import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
 import { DASHBOARD, GENERAL } from 'src/utils/events';
@@ -24,6 +26,19 @@ import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { useEnhancedUserYield } from '../../hooks/useEnhancedUserYield';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
+
+interface MeritReward {
+  amount: {
+    usd: string;
+    amount: {
+      value: string;
+    };
+  };
+  currency: {
+    symbol: string;
+    address: string;
+  };
+}
 
 export const DashboardTopPanel = () => {
   const { user, reserves, loading } = useAppDataContext();
@@ -53,7 +68,19 @@ export const DashboardTopPanel = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { claimableRewardsUsd } = user
+  const { data: meritClaimRewards } = useUserMeritRewards({
+    // Note: currentAccount is not always defined, so we need to check if it is and if not, use a fallback address
+    user: currentAccount ? evmAddress(currentAccount) : evmAddress(ZERO_ADDRESS),
+    chainId: chainId(currentMarketData.chainId),
+  });
+
+  // Calculate merit rewards USD value
+  const meritRewardsUsd =
+    meritClaimRewards?.claimable?.reduce((total: number, reward: MeritReward) => {
+      return total + Number(reward.amount.usd || 0);
+    }, 0) || 0;
+
+  const { claimableRewardsUsd: baseClaimableRewardsUsd, assets } = user
     ? Object.keys(user.calculatedUserIncentives).reduce(
         (acc, rewardTokenAddress) => {
           const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
@@ -93,7 +120,19 @@ export const DashboardTopPanel = () => {
         },
         { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
       )
-    : { claimableRewardsUsd: 0 };
+    : { claimableRewardsUsd: 0, assets: [] };
+
+  // Add merit rewards to existing assets if they exist
+  if (meritClaimRewards?.claimable) {
+    meritClaimRewards.claimable.forEach((reward: MeritReward) => {
+      if (Number(reward.amount.usd) > 0 && assets.indexOf(reward.currency.symbol) === -1) {
+        assets.push(reward.currency.symbol);
+      }
+    });
+  }
+
+  // Aggregate total claimable rewards (base + merit)
+  const claimableRewardsUsd = baseClaimableRewardsUsd + meritRewardsUsd;
 
   const loanToValue =
     user?.totalCollateralMarketReferenceCurrency === '0'
