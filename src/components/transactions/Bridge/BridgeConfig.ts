@@ -155,6 +155,18 @@ const prodConfig: Config[] = [
     subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7WRSEgg43s2CqpymK2wkHrhQjn4v5fEnufonwRkkokbM`,
     feeTokens: [
       {
+        name: 'Gho Token',
+        address: AaveV3Avalanche.ASSETS.GHO.UNDERLYING,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: ChainId.avalanche,
+        oracle: AaveV3Avalanche.ASSETS.GHO.ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
+      {
         name: 'AVAX',
         symbol: 'AVAX',
         decimals: 18,
