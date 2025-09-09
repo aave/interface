@@ -4036,18 +4036,6 @@
   dependencies:
     "@tanstack/query-core" "5.62.8"
 
-"@team-plain/typescript-sdk@^5.10.3":
-  version "5.10.3"
-  resolved "https://registry.yarnpkg.com/@team-plain/typescript-sdk/-/typescript-sdk-5.10.3.tgz#1150d706895fd662f4cd8a9cfefd7ea3aa9b8b61"
-  integrity sha512-ud+pRKjyRzkoSj9o0HqeAVJ2ISuh2ZijugVXQHhklhGZKBzxgUpHfi+e4FrhuyIgZf9AvmliDHaK48gdqyFGKg==
-  dependencies:
-    "@graphql-typed-document-node/core" "^3.2.0"
-    ajv "^8.12.0"
-    ajv-formats "^2.1.1"
-    graphql "^16.6.0"
-    lodash.get "^4.4.2"
-    zod "3.22.4"
-
 "@testing-library/dom@^8.5.0":
   version "8.20.1"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-8.20.1.tgz#2e52a32e46fc88369eef7eef634ac2a192decd9f"
@@ -5167,13 +5155,6 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
-ajv-formats@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/ajv-formats/-/ajv-formats-2.1.1.tgz#6e669400659eb74973bbf2e33327180a0996b520"
-  integrity sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==
-  dependencies:
-    ajv "^8.0.0"
-
 ajv@^6.12.4:
   version "6.12.6"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.6.tgz#baf5a62e802b07d977034586f8c3baf5adf26df4"
@@ -5184,7 +5165,7 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.0.0, ajv@^8.11.0, ajv@^8.12.0:
+ajv@^8.11.0:
   version "8.17.1"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.17.1.tgz#37d9a5c776af6bc92d7f4f9510eba4c0a60d11a6"
   integrity sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==
@@ -8347,7 +8328,7 @@ graphql-request@^6.1.0:
     "@graphql-typed-document-node/core" "^3.2.0"
     cross-fetch "^3.1.5"
 
-"graphql@^15.5.0 || ^16.0.0 || ^17.0.0", graphql@^16.11.0, graphql@^16.6.0:
+"graphql@^15.5.0 || ^16.0.0 || ^17.0.0", graphql@^16.11.0:
   version "16.11.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.11.0.tgz#96d17f66370678027fdf59b2d4c20b4efaa8a633"
   integrity sha512-mS1lbMsxgQj6hge1XZ6p7GPhbrtFwUFYi3wRzXAC/FmYnyXMTvvI3td3rjmQ2u8ewXueaSvRPWaEcgVVOT9Jnw==

@@ -145,7 +145,14 @@ export const SupportModal = () => {
                 </SvgIcon>
               </Box>
 
-              <Typography variant="subheader1" sx={{ mt: 2 }}>
+              <Typography
+                variant="subheader1"
+                sx={{
+                  mt: 6,
+                  textAlign: 'center',
+                  px: 2,
+                }}
+              >
                 <Trans>
                   Submission did not work, please try again later or contact wecare@avara.xyz
                 </Trans>

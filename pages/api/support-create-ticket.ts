@@ -1,17 +1,31 @@
-import {
-  ComponentDividerSpacingSize,
-  ComponentSpacerSize,
-  ComponentTextColor,
-  ComponentTextSize,
-  PlainClient,
-} from '@team-plain/typescript-sdk';
 import type { NextApiRequest, NextApiResponse } from 'next';
+
+import { CREATE_THREAD_MUTATION, UPSERT_CUSTOMER_MUTATION } from './plain-mutations';
 
 const apiKey = process.env.PLAIN_API_KEY;
 if (!apiKey) throw new Error('PLAIN_API_KEY env variable is missing');
-const client = new PlainClient({ apiKey });
+
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 
+const makeGraphQLRequest = async (query: string, variables: Record<string, unknown>) => {
+  const response = await fetch('https://core-api.uk.plain.com/graphql/v1', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      query,
+      variables,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
+};
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowedOrigins = ['https://app.aave.com', 'https://aave.com'];
   const origin = req.headers.origin;
@@ -57,97 +71,115 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Missing inquiry' });
     }
 
-    const customerRes = await client.upsertCustomer({
-      identifier: {
-        emailAddress: email,
-      },
-
-      onCreate: {
-        fullName: email,
-        email: {
-          email: email,
-          isVerified: true,
+    const upsertCustomerVariables = {
+      input: {
+        identifier: {
+          emailAddress: email,
         },
+        onCreate: {
+          fullName: email,
+          email: {
+            email: email,
+            isVerified: true,
+          },
+        },
+        onUpdate: {},
       },
+    };
 
-      onUpdate: {},
-    });
+    const customerRes = await makeGraphQLRequest(UPSERT_CUSTOMER_MUTATION, upsertCustomerVariables);
 
-    if (customerRes.error) {
-      console.error('Error upserting Customer:', customerRes.error);
-
+    if (customerRes.errors) {
+      console.error('GraphQL errors:', customerRes.errors);
       return res
         .status(400)
-        .json({ message: 'Failed to create support ticket', error: customerRes.error });
+        .json({ message: 'Failed to create support ticket', error: customerRes.errors });
     }
-
-    const result = await client.createThread({
-      title: 'New Support Inquiry',
-      customerIdentifier: {
-        emailAddress: email,
-      },
-      components: [
-        {
-          componentText: {
-            text: 'Support inquiry from aave.com',
-          },
-        },
-        {
-          componentDivider: {
-            dividerSpacingSize: ComponentDividerSpacingSize.M,
-          },
-        },
-        {
-          componentText: {
-            textSize: ComponentTextSize.S,
-            textColor: ComponentTextColor.Muted,
-            text: 'Contact email',
-          },
-        },
-        {
-          componentText: {
-            text: email,
-          },
-        },
-        {
-          componentSpacer: {
-            spacerSize: ComponentSpacerSize.M,
-          },
-        },
-        {
-          componentText: {
-            textSize: ComponentTextSize.S,
-            textColor: ComponentTextColor.Muted,
-            text: 'Message',
-          },
-        },
-        {
-          componentPlainText: {
-            plainText: text,
-          },
-        },
-        {
-          componentSpacer: {
-            spacerSize: ComponentSpacerSize.M,
-          },
-        },
-      ],
-
-      // Label types for: web-support-form
-      labelTypeIds: ['lt_01K36FQ2J7ZGXQ55RV769TJHYN'],
-    });
-
-    if (result.error) {
-      console.error('Error creating support ticket:', result.error);
-
+    const customerResult = customerRes.data?.upsertCustomer;
+    if (customerResult?.error) {
+      console.error('Error upserting Customer:', customerResult.error);
       return res
         .status(400)
-        .json({ message: 'Failed to create support ticket', error: result.error });
+        .json({ message: 'Failed to create support ticket', error: customerResult.error });
     }
 
-    return res
-      .status(200)
-      .json({ message: 'Support Ticket Created Successfully', data: result.data.id, ok: true });
+    const createThreadVariables = {
+      input: {
+        title: 'New Support Inquiry',
+        customerIdentifier: {
+          emailAddress: email,
+        },
+        components: [
+          {
+            componentText: {
+              text: 'Support inquiry from aave.com',
+            },
+          },
+          {
+            componentDivider: {
+              dividerSpacingSize: 'M',
+            },
+          },
+          {
+            componentText: {
+              textSize: 'S',
+              textColor: 'MUTED',
+              text: 'Contact email',
+            },
+          },
+          {
+            componentText: {
+              text: email,
+            },
+          },
+          {
+            componentSpacer: {
+              spacerSize: 'M',
+            },
+          },
+          {
+            componentText: {
+              textSize: 'S',
+              textColor: 'MUTED',
+              text: 'Message',
+            },
+          },
+          {
+            componentPlainText: {
+              plainText: text,
+            },
+          },
+          {
+            componentSpacer: {
+              spacerSize: 'M',
+            },
+          },
+        ],
+        labelTypeIds: ['lt_01K36FQ2J7ZGXQ55RV769TJHYN'],
+      },
+    };
+    const result = await makeGraphQLRequest(CREATE_THREAD_MUTATION, createThreadVariables);
+
+    if (result.errors) {
+      console.error('GraphQL errors in createThread:', result.errors);
+      return res
+        .status(400)
+        .json({ message: 'Failed to create support ticket', error: result.errors });
+    }
+
+    const threadResult = result.data?.createThread;
+    if (threadResult?.error) {
+      console.error('Error creating support ticket:', threadResult.error);
+      return res
+        .status(400)
+        .json({ message: 'Failed to create support ticket', error: threadResult.error });
+    }
+
+    return res.status(200).json({
+      message: 'Support Ticket Created Successfully',
+      data: threadResult.thread.id,
+      ok: true,
+    });
   } catch (error) {
     console.error('Support ticket backend error:', error);
     return res.status(500).json({ message: 'Internal Server Error' });
