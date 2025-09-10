@@ -8,7 +8,7 @@ import { BaseSuccessView } from 'src/components/transactions/FlowCommons/BaseSuc
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
-export const FeedbackModal = () => {
+export const SupportModal = () => {
   const [feedbackDialogOpen, setFeedbackOpen] = useRootStore(
     useShallow((state) => [state.feedbackDialogOpen, state.setFeedbackOpen])
   );
@@ -45,7 +45,7 @@ export const FeedbackModal = () => {
     }
   };
 
-  const handleFeedbackSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSupportSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (emailError || !email) {
@@ -55,7 +55,7 @@ export const FeedbackModal = () => {
 
     setIsLoading(true);
 
-    const url = process.env.NEXT_PUBLIC_API_BASEURL + '/feedback';
+    const url = '/api/support-create-ticket';
 
     const payload = {
       text: value,
@@ -63,14 +63,20 @@ export const FeedbackModal = () => {
     };
 
     try {
-      await fetch(url, {
+      const response = await fetch(url, {
         body: JSON.stringify(payload),
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
+      if (!response.ok) {
+        setError(true);
+        setIsLoading(false);
+        setValue('');
+        setEmail('');
+        return;
+      }
       setSuccess(true);
     } catch (error) {
       setError(true);
@@ -82,9 +88,13 @@ export const FeedbackModal = () => {
   };
 
   const onClose = () => {
+    setFeedbackOpen(false);
     setEmailError('');
+    setEmail('');
     setValue('');
     setDirtyEmailField(false);
+    setSuccess(false);
+    setError(false);
   };
 
   return (
@@ -102,9 +112,9 @@ export const FeedbackModal = () => {
         {isLoading ? (
           <CircularProgress />
         ) : success ? (
-          <BaseSuccessView hideTx={true}>
+          <BaseSuccessView hideTx={true} onClose={onClose}>
             <Box display="flex" justifyContent={'center'} mt={3}>
-              <Trans>Thank you for submitting feedback!</Trans>
+              <Trans>Thank you for submitting your inquiry!</Trans>
             </Box>
           </BaseSuccessView>
         ) : error ? (
@@ -135,7 +145,14 @@ export const FeedbackModal = () => {
                 </SvgIcon>
               </Box>
 
-              <Typography variant="subheader1" sx={{ mt: 2 }}>
+              <Typography
+                variant="subheader1"
+                sx={{
+                  mt: 6,
+                  textAlign: 'center',
+                  px: 2,
+                }}
+              >
                 <Trans>
                   Submission did not work, please try again later or contact wecare@avara.xyz
                 </Trans>
@@ -144,32 +161,35 @@ export const FeedbackModal = () => {
           </div>
         ) : (
           <Box width={'100%'}>
-            <Typography variant="h3" display="flex" justifyContent="flex-start">
-              <Trans>Feedback </Trans>
+            <Typography
+              variant="h3"
+              display="flex"
+              justifyContent="flex-start"
+              color="text.primary"
+            >
+              <Trans>Support</Trans>
             </Typography>
 
             <Typography
               variant="subheader1"
-              color="text.secondary"
-              sx={{ textAlign: 'center', mb: 2, mt: 4 }}
+              color="text.primary"
+              sx={{ textAlign: 'start', mb: 4, mt: 4 }}
             >
               <Trans>
-                Let us know how we can make the app better for you. For user support related
-                inquiries please reach out on
+                Let us know how we can help you. You may also consider joining our community
               </Trans>{' '}
               <Link
                 target="_blank"
                 variant="subheader1"
-                color="text.secondary"
-                href="https://discord.com/invite/aave"
+                color="text.primary"
+                href="https://discord.gg/aave"
                 underline="always"
               >
-                discord
+                Discord server
               </Link>
-              {'.'}
             </Typography>
             <Box width={'100%'}>
-              <form style={{ width: '100%' }} onSubmit={handleFeedbackSubmit}>
+              <form style={{ width: '100%' }} onSubmit={handleSupportSubmit}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <Typography color="text.secondary">
                     <Trans>Email</Trans>
@@ -179,22 +199,28 @@ export const FeedbackModal = () => {
                 <TextField
                   // label="Email"
                   onBlur={onBlur}
+                  placeholder="Please enter a valid email address here"
                   fullWidth
                   value={email}
                   onChange={handleEmailChange}
                   error={dirtyEmailField && !!emailError}
                   helperText={dirtyEmailField ? emailError : undefined}
-                  sx={{ mb: 2 }}
+                  sx={{
+                    mb: 2,
+                    '& .MuiInputBase-input': {
+                      padding: '6px 12px',
+                    },
+                  }}
                 />
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <Typography color="text.secondary">
-                    <Trans>Feedback</Trans>
+                    <Trans>Inquiry</Trans>
                   </Typography>
                 </Box>
                 <TextField
                   multiline
                   rows={4}
-                  placeholder="Can you add this new feature"
+                  placeholder="Please describe your issue here"
                   fullWidth
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
@@ -210,7 +236,7 @@ export const FeedbackModal = () => {
                 />
                 <Box display="flex" flexDirection={'row-reverse'} mt={3}>
                   <Button disabled={!value || !!emailError} variant="contained" type="submit">
-                    <Trans>Send Feedback</Trans>
+                    <Trans>Submit</Trans>
                   </Button>
                 </Box>
               </form>
