@@ -22,6 +22,10 @@ msgstr "If you DO NOT unstake within {0} of unstake window, you will need to act
 msgid "Reward APY at target liquidity"
 msgstr "Reward APY at target liquidity"
 
+#: src/layouts/SupportModal.tsx
+msgid "Thank you for submitting your inquiry!"
+msgstr "Thank you for submitting your inquiry!"
+
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Receive (est.)"
 msgstr "Receive (est.)"
@@ -1080,10 +1084,6 @@ msgstr "Read-only mode. Connect to a wallet to perform transactions."
 msgid "ends"
 msgstr "ends"
 
-#: src/layouts/FeedbackDialog.tsx
-msgid "Thank you for submitting feedback!"
-msgstr "Thank you for submitting feedback!"
-
 #: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
@@ -1360,10 +1360,6 @@ msgstr "Market"
 msgid "Learn more about Ethena Rewards program"
 msgstr "Learn more about Ethena Rewards program"
 
-#: src/layouts/FeedbackDialog.tsx
-msgid "Send Feedback"
-msgstr "Send Feedback"
-
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Rewards to claim"
 msgstr "Rewards to claim"
@@ -1400,10 +1396,6 @@ msgstr "Maximum collateral amount to use"
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Eligible for incentives through Merkl."
 msgstr "Eligible for incentives through Merkl."
-
-#: src/layouts/FeedbackDialog.tsx
-msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
-msgstr "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
@@ -1522,6 +1514,10 @@ msgstr "Nothing staked"
 msgid "{m}m"
 msgstr "{m}m"
 
+#: src/layouts/SupportModal.tsx
+msgid "Inquiry"
+msgstr "Inquiry"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Unbacked mint cap is exceeded"
 msgstr "Unbacked mint cap is exceeded"
@@ -1530,7 +1526,7 @@ msgstr "Unbacked mint cap is exceeded"
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 msgstr "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 
-#: src/layouts/FeedbackDialog.tsx
+#: src/layouts/SupportModal.tsx
 msgid "Email"
 msgstr "Email"
 
@@ -1733,10 +1729,6 @@ msgstr "Links"
 #: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
 msgstr "Staking APR"
-
-#: src/layouts/AppFooter.tsx
-msgid "Send feedback"
-msgstr "Send feedback"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Health factor is lesser than the liquidation threshold"
@@ -1995,6 +1987,10 @@ msgstr "E-Mode increases your LTV for a selected category of assets up to<0/>. <
 msgid "Reserve status & configuration"
 msgstr "Reserve status & configuration"
 
+#: src/layouts/SupportModal.tsx
+msgid "Let us know how we can help you. You may also consider joining our community"
+msgstr "Let us know how we can help you. You may also consider joining our community"
+
 #: src/ui-config/errorMapping.tsx
 msgid "User cannot withdraw more than the available balance"
 msgstr "User cannot withdraw more than the available balance"
@@ -2040,6 +2036,10 @@ msgstr "{0} {symbol} to continue"
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Representative smart contract wallet (ie. Safe) addresses on other chains."
 msgstr "Representative smart contract wallet (ie. Safe) addresses on other chains."
+
+#: src/layouts/SupportModal.tsx
+msgid "Support"
+msgstr "Support"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You will exit isolation mode and other tokens can now be used as collateral"
@@ -2090,11 +2090,6 @@ msgstr "The total amount bridged minus CCIP fees. Paying in network token does n
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Stake token shares"
 msgstr "Stake token shares"
-
-#: src/layouts/FeedbackDialog.tsx
-#: src/layouts/FeedbackDialog.tsx
-msgid "Feedback"
-msgstr "Feedback"
 
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
@@ -2610,6 +2605,10 @@ msgstr "Available to Claim"
 msgid "Net APY"
 msgstr "Net APY"
 
+#: src/layouts/SupportModal.tsx
+msgid "Submit"
+msgstr "Submit"
+
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
@@ -2699,6 +2698,10 @@ msgstr "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
 msgstr "Select slippage tolerance"
+
+#: src/layouts/AppFooter.tsx
+msgid "Get Support"
+msgstr "Get Support"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
@@ -3812,7 +3815,7 @@ msgstr "Isolated Debt Ceiling"
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 
-#: src/layouts/FeedbackDialog.tsx
+#: src/layouts/SupportModal.tsx
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
 msgstr "Submission did not work, please try again later or contact wecare@avara.xyz"
 
