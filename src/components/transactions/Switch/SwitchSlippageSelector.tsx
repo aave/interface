@@ -73,24 +73,31 @@ export const SwitchSlippageSelector = ({
   const [userHasSetCustomSlippage, setUserHasSetCustomSlippage] = useState(false);
   const open = Boolean(anchorEl);
 
-  // Watch for slippage changes from outside the component
   useEffect(() => {
-    if (previousSlippage !== slippage && !userHasSetCustomSlippage) {
-      setIsCustomSlippage(false);
-      setPreviousSlippage(slippage);
-    } else if (previousSlippage !== slippage && userHasSetCustomSlippage) {
-      // Protect against external changes when user has set a custom slippage
-      setSlippage(previousSlippage);
+    // Watch for slippage changes from outside the component
+    if (previousSlippage !== slippage) {
+      if (!userHasSetCustomSlippage) {
+        setIsCustomSlippage(false);
+        setPreviousSlippage(slippage);
+      } else {
+        setSlippage(previousSlippage);
+        return;
+      }
     }
-  }, [slippage, userHasSetCustomSlippage, previousSlippage, setSlippage]);
 
-  //Update slippage to suggested if user has not set a custom slippage
-  useEffect(() => {
+    // Update slippage to suggested if user has not set custom slippage
     if (suggestedSlippage && !userHasSetCustomSlippage && !isCustomSlippage) {
       setSlippage(suggestedSlippage);
       setPreviousSlippage(slippage);
     }
-  }, [suggestedSlippage, userHasSetCustomSlippage, isCustomSlippage, setSlippage]);
+  }, [
+    slippage,
+    suggestedSlippage,
+    userHasSetCustomSlippage,
+    isCustomSlippage,
+    previousSlippage,
+    setSlippage,
+  ]);
 
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

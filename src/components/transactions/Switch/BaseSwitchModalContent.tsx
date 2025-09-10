@@ -10,7 +10,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
-import { getAssetGroup } from 'src/components/transactions/Switch/assetCorrelation.helpers';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -36,6 +35,7 @@ import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SupportedNetworkWithChainId } from './common';
 import { getOrders, isNativeToken } from './cowprotocol/cowprotocol.helpers';
 import { NetworkSelector } from './NetworkSelector';
+import { getParaswapSlippage } from './slippage.helpers';
 import { isCowProtocolRates, SwitchProvider, SwitchRatesType } from './switch.types';
 import { SwitchActions } from './SwitchActions';
 import { SwitchAssetInput } from './SwitchAssetInput';
@@ -493,16 +493,6 @@ export const BaseSwitchModalContent = ({
 
   const [slippage, setSlippage] = useState(switchRates?.provider == 'cowprotocol' ? '0.5' : '0.10');
   const [showGasStation, setShowGasStation] = useState(switchRates?.provider == 'paraswap');
-
-  const getParaswapSlippage = (inputSymbol: string, outputSymbol: string): string => {
-    const inputGroup = getAssetGroup(inputSymbol);
-    const outputGroup = getAssetGroup(outputSymbol);
-
-    if (!inputGroup || !outputGroup || inputGroup === 'unknown' || outputGroup === 'unknown') {
-      return '0.20';
-    }
-    return inputGroup === outputGroup ? '0.10' : '0.20';
-  };
 
   const slippageValidation = validateSlippage(
     slippage,
@@ -1086,8 +1076,8 @@ export const BaseSwitchModalContent = ({
                 >
                   <Typography variant="caption">
                     <Trans>
-                      Your health factor after this swap will be critically low and you will be
-                      liquidated. Please choose a different asset or reduce the swap amount to stay
+                      Your health factor after this swap will be critically low and may result in
+                      liquidation. Please choose a different asset or reduce the swap amount to stay
                       safe.
                     </Trans>
                   </Typography>
@@ -1107,7 +1097,8 @@ export const BaseSwitchModalContent = ({
                 >
                   <Typography variant="caption">
                     <Trans>
-                      Low health factor after swap. This may put you at risk of liquidation.
+                      Low health factor after swap. Your position will carry a higher risk of
+                      liquidation.
                     </Trans>
                   </Typography>
                   <Box
