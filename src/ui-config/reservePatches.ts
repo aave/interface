@@ -155,6 +155,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT sUSDe September',
       iconSymbol: 'ptsusde',
     },
+    '0xe6a934089bbee34f832060ce98848359883749b3': {
+      symbol: 'PT sUSDe November 27th 2025',
+      name: 'PT sUSDe November 2025',
+      iconSymbol: 'ptsusde',
+    },
     '0x917459337caac939d41d7493b3999f571d20d667': {
       symbol: 'PT USDe July',
       name: 'PT USDe July',
@@ -170,6 +175,12 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT USDe September 2025',
       iconSymbol: 'ptusde',
     },
+    '0x62c6e813b9589c3631ba0cdb013acdb8544038b7': {
+      symbol: 'PT USDe November 27th 2025',
+      name: 'PT USDe November 2025',
+      iconSymbol: 'ptusde',
+    },
+
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },
     '0x1eff8af5d577060ba4ac8a29a13525bb0ee2a3d5': { iconSymbol: 'BPT_WBTC_WETH' },
