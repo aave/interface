@@ -200,6 +200,7 @@ export const BaseSwitchModalContent = ({
 
   const [userIsSmartContractWallet, setUserIsSmartContractWallet] = useState(false);
   const [userIsSafeWallet, setUserIsSafeWallet] = useState(false);
+
   useEffect(() => {
     try {
       if (user && connectedChainId) {
@@ -684,6 +685,15 @@ export const BaseSwitchModalContent = ({
           .multipliedBy(1 - safeSlippage)
           .decimalPlaces(switchRates.destDecimals, BigNumber.ROUND_UP)
           .toString()}
+        amountUsd={Number(switchRates.srcUSD)}
+        outAmountUSD={Number(
+          switchRates.provider === 'cowprotocol' ? switchRates.destSpotInUsd : switchRates.destUSD
+        )}
+        addToken={{
+          address: selectedOutputToken.address,
+          symbol: selectedOutputToken.symbol,
+          decimals: selectedOutputToken.decimals,
+        }}
       />
     );
   }
