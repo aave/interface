@@ -739,32 +739,32 @@ export const useMeritIncentives = ({
         return null;
       }
 
-      let totalMeritAPR = 0;
-      let totalSelfAPR = 0;
+      let totalMeritAPR: number | null = null;
+      let totalSelfAPR: number | null = null;
 
       for (const incentive of incentives) {
-        const standardAPR = data.actionsAPR[incentive.action] ?? 0;
+        const standardAPR = data.actionsAPR[incentive.action];
         if (standardAPR == null) continue;
 
+        if (totalMeritAPR === null) totalMeritAPR = 0;
         totalMeritAPR += standardAPR;
-        const variants = getAprVariants(incentive.action, data.actionsAPR);
-        const selfAPR = ENABLE_SELF_CAMPAIGN ? variants.selfAPR ?? 0 : 0;
-        if (
-          incentive.action === MeritAction.CELO_SUPPLY_WETH ||
-          incentive.action === MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT
-        ) {
-        }
 
-        totalSelfAPR += selfAPR;
+        const variants = getAprVariants(incentive.action, data.actionsAPR);
+        const selfAPR = ENABLE_SELF_CAMPAIGN ? variants.selfAPR : null;
+
+        if (selfAPR != null) {
+          if (totalSelfAPR === null) totalSelfAPR = 0;
+          totalSelfAPR += selfAPR;
+        }
       }
 
-      if (totalMeritAPR === 0) {
+      if (totalMeritAPR === null) {
         return null;
       }
 
       const meritIncentivesAPY = convertAprToApy(totalMeritAPR / 100);
 
-      const selfIncentivesAPY = totalSelfAPR > 0 ? convertAprToApy(totalSelfAPR / 100) : 0;
+      const selfIncentivesAPY = totalSelfAPR != null ? convertAprToApy(totalSelfAPR / 100) : null;
 
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
         return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
@@ -772,8 +772,8 @@ export const useMeritIncentives = ({
 
       const isBorrow = protocolAction === ProtocolAction.borrow;
       const totalAPY = isBorrow
-        ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - selfIncentivesAPY
-        : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY + selfIncentivesAPY;
+        ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - (selfIncentivesAPY ?? 0)
+        : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY + (selfIncentivesAPY ?? 0);
 
       return {
         incentiveAPR: meritIncentivesAPY.toString(),
