@@ -276,18 +276,18 @@ export const SwitchTxSuccessView = ({
               </>
             </DarkTooltip>
 
-            <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
-              {symbol}
-            </Typography>
+            <Typography fontWeight={600}>{symbol}</Typography>
           </Box>
         </Box>
         {amountUsd && amountUsd > 0 && (
           <Box display="flex" justifyContent="flex-end" mb={2}>
-            <Typography variant="caption" color="text.muted">
+            <Typography>
               <FormattedNumber
                 value={amountUsd}
                 symbol="USD"
+                symbolsColor="text.muted"
                 variant="caption"
+                color="text.muted"
                 visibleDecimals={2}
                 compact={false}
               />
@@ -328,18 +328,18 @@ export const SwitchTxSuccessView = ({
               </>
             </DarkTooltip>
 
-            <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
-              {outSymbol}
-            </Typography>
+            <Typography fontWeight={600}>{outSymbol}</Typography>
           </Box>
         </Box>
         {outAmountUSD && outAmountUSD > 0 && (
           <Box display="flex" justifyContent="flex-end">
-            <Typography variant="caption" color="text.muted">
+            <Typography>
               <FormattedNumber
                 value={outAmountUSD}
                 symbol="USD"
+                symbolsColor="text.muted"
                 variant="caption"
+                color="text.muted"
                 visibleDecimals={2}
                 compact={false}
               />
