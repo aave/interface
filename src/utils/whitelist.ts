@@ -15,6 +15,7 @@ import {
   AaveV3Scroll,
   AaveV3Soneium,
   AaveV3Sonic,
+  AaveV3ZkSync,
 } from '@bgd-labs/aave-address-book';
 import { Address } from 'abitype';
 import { checksumAddress } from 'viem';
@@ -36,6 +37,7 @@ const allAaveAssets = [
   AaveV3Linea.ASSETS,
   AaveV3Celo.ASSETS,
   AaveV3Soneium.ASSETS,
+  AaveV3ZkSync.ASSETS,
 ];
 
 const getUnderlyingAndAToken = (assets: {
