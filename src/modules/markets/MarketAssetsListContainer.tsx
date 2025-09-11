@@ -10,6 +10,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithFiltersAndSearchBar } from 'src/components/TitleWithFiltersAndSearchBar';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -20,7 +21,6 @@ import { GENERAL } from '../../utils/events';
 import { isAssetHidden } from '../dashboard/lists/constants';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
 import { AssetCategory, isAssetInCategoryDynamic } from './utils/assetCategories';
-import { useCoingeckoCategories } from './utils/useCoinGeckoCategories';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
