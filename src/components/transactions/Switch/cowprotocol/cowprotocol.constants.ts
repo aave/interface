@@ -9,7 +9,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.AVALANCHE]: 'ALL', // Disabled until we have better solvers liquidity
     [SupportedChainId.GNOSIS_CHAIN]: [
       '0xedbc7449a9b594ca4e053d9737ec5dc4cbccbfb2'.toLowerCase(), // EURe USD Price not supported
-      '0x3FdCeC11B4f15C79d483Aedc56F37D302837Cf4d'.toLowerCase(), // aGHO not supported
     ],
     [SupportedChainId.ARBITRUM_ONE]: [
       '0xeBe517846d0F36eCEd99C735cbF6131e1fEB775D'.toLowerCase(), // aGHO not supported
