@@ -1428,6 +1428,10 @@ msgstr "Maximum amount received"
 msgid "Activating Cooldown"
 msgstr "Activating Cooldown"
 
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depenending on market conditions."
+msgstr "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depenending on market conditions."
+
 #: src/components/AddressBlockedModal.tsx
 msgid "error code: 1"
 msgstr "error code: 1"

@@ -7,6 +7,7 @@ import { formatEther } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
@@ -192,7 +193,12 @@ const SGhoHeaderUserDetails = ({
         hideIcon
         title={
           <Stack direction="row" alignItems="center">
-            <Trans>Weekly Rewards</Trans>
+            <TextWithTooltip text={<Trans>Weekly Rewards</Trans>} variant="inherit">
+              <Trans>
+                Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards
+                may vary depenending on market conditions.
+              </Trans>
+            </TextWithTooltip>
           </Stack>
         }
         loading={isLoadingStakeAPR}
