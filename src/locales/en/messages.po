@@ -637,6 +637,7 @@ msgid "Disconnect Wallet"
 msgstr "Disconnect Wallet"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"
 msgstr "assets"
 
@@ -1224,6 +1225,10 @@ msgstr "{0}"
 msgid "Manage analytics"
 msgstr "Manage analytics"
 
+#: src/components/MarketAssetCategoryFilter.tsx
+msgid "Stablecoins"
+msgstr "Stablecoins"
+
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 #: src/modules/umbrella/UnstakeModalActions.tsx
 msgid "Unstaking {symbol}"
@@ -1235,6 +1240,10 @@ msgstr "Unstaking {symbol}"
 #: src/components/transactions/Switch/SwitchActions.tsx
 msgid "Swapping"
 msgstr "Swapping"
+
+#: src/components/MarketAssetCategoryFilter.tsx
+msgid "ETH Correlated"
+msgstr "ETH Correlated"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not use this currency as collateral"
@@ -1474,6 +1483,10 @@ msgstr "Invalid return value of the flashloan executor function"
 #: src/components/infoTooltips/KernelAirdropTooltip.tsx
 msgid "Learn more about the Kernel points distribution"
 msgstr "Learn more about the Kernel points distribution"
+
+#: src/components/MarketAssetCategoryFilter.tsx
+msgid "All"
+msgstr "All"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
@@ -2360,6 +2373,7 @@ msgstr "You did not participate in this proposal"
 msgid "Governance"
 msgstr "Governance"
 
+#: src/components/TitleWithFiltersAndSearchBar.tsx
 #: src/components/TitleWithSearchBar.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Cancel"
