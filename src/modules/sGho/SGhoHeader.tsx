@@ -132,6 +132,13 @@ const SGhoHeaderUserDetails = ({
 
   const [displayedWeeklyRewards, setDisplayedWeeklyRewards] = useState(0);
 
+  const symbolsColor = theme.palette.text.muted;
+  const iconSize = valueTypographyVariant === 'main21' ? 20 : 16;
+  const fontSize =
+    valueTypographyVariant === 'main21'
+      ? theme.typography.main21.fontSize
+      : theme.typography.main16.fontSize;
+
   useEffect(() => {
     if (weeklyRewardsEstimate > 0) {
       setDisplayedWeeklyRewards(weeklyRewardsEstimate);
@@ -146,7 +153,7 @@ const SGhoHeaderUserDetails = ({
         <FormattedNumber
           value={stakeAPR?.apr ? convertAprToApy(parseFloat(stakeAPR.apr)) : 0}
           variant={valueTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={symbolsColor}
           visibleDecimals={2}
           percent
           symbolsVariant={symbolsTypographyVariant}
@@ -166,7 +173,7 @@ const SGhoHeaderUserDetails = ({
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={symbolsColor}
           visibleDecimals={2}
         />
       </TopInfoPanelItem>
@@ -184,7 +191,7 @@ const SGhoHeaderUserDetails = ({
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={symbolsColor}
           visibleDecimals={2}
         />
       </TopInfoPanelItem>
@@ -212,24 +219,24 @@ const SGhoHeaderUserDetails = ({
                 maximumFractionDigits: 2,
               }}
               style={{
-                fontSize: valueTypographyVariant === 'main21' ? '21px' : '16px',
-                fontWeight: 600,
+                fontSize: fontSize,
+                fontWeight: theme.typography.fontWeightMedium || 600,
                 color: 'inherit',
-                fontFamily: 'inherit',
+                fontFamily: theme.typography.fontFamily,
               }}
             />
             <TokenIcon
               symbol="sgho"
               sx={{
-                width: valueTypographyVariant === 'main21' ? 20 : 16,
-                height: valueTypographyVariant === 'main21' ? 20 : 16,
-                ml: 0.5,
-                pt: 0.5,
+                width: iconSize,
+                height: iconSize,
+                pt: theme.spacing(0.3),
+                pb: theme.spacing(0.3),
               }}
             />
           </Stack>
         ) : (
-          <Typography variant={valueTypographyVariant} color="#A5A8B6">
+          <Typography variant={valueTypographyVariant} color={symbolsColor}>
             —
           </Typography>
         )}
