@@ -1500,6 +1500,10 @@ msgstr "View all"
 msgid "Swap to"
 msgstr "Swap to"
 
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Weekly Rewards"
+msgstr "Weekly Rewards"
+
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Pending..."
