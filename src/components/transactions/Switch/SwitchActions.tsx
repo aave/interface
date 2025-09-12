@@ -687,15 +687,9 @@ export const SwitchActions = ({
             if (await isSmartContractWallet(user, provider)) {
               const preSignTransaction = await getPreSignTransaction({
                 provider,
-                tokenDest: outputToken,
                 chainId,
                 user,
                 amount: switchRates.srcAmount,
-                tokenSrc: inputToken,
-                tokenSrcDecimals: switchRates.srcDecimals,
-                tokenDestDecimals: switchRates.destDecimals,
-                afterNetworkCostsBuyAmount:
-                  switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
                 slippageBps,
                 smartSlippage,
                 inputSymbol,
@@ -729,14 +723,8 @@ export const SwitchActions = ({
               });
             } else {
               orderId = await sendOrder({
-                tokenSrc: inputToken,
-                tokenSrcDecimals: switchRates.srcDecimals,
-                tokenDest: outputToken,
-                tokenDestDecimals: switchRates.destDecimals,
                 quote: switchRates.order,
                 amount: switchRates.srcAmount,
-                afterNetworkCostsBuyAmount:
-                  switchRates.amountAndCosts.afterNetworkCosts.buyAmount.toString(),
                 slippageBps,
                 smartSlippage,
                 chainId,

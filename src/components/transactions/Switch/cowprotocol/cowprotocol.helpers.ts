@@ -107,13 +107,8 @@ export type CowProtocolActionParams = {
   chainId: number;
   user: string;
   amount: string;
-  tokenDest: string;
-  tokenSrc: string;
-  tokenSrcDecimals: number;
-  tokenDestDecimals: number;
   inputSymbol: string;
   outputSymbol: string;
-  afterNetworkCostsBuyAmount: string;
   slippageBps: number;
   smartSlippage: boolean;
   appCode?: string;

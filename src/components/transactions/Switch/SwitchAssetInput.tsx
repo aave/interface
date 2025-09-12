@@ -245,7 +245,7 @@ export const SwitchAssetInput = ({
         )}
         <Button
           disableRipple
-          onClick={handleClick}
+          onClick={assets.length > 1 ? handleClick : undefined}
           data-cy={`assetSelect`}
           sx={{
             p: 0,
