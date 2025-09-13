@@ -47,7 +47,6 @@ export const IncentivesCard = ({
   inlineIncentives = false,
 }: IncentivesCardProps) => {
   const router = useRouter();
-
   const protocolAPY = typeof value === 'string' ? parseFloat(value) : value;
 
   const protocolIncentivesAPR =
@@ -75,6 +74,7 @@ export const IncentivesCard = ({
   });
 
   const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
+
   // TODO: This is a one-off for the Self campaign.
   // Remove once the Self incentives are finished.
   const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
@@ -106,7 +106,6 @@ export const IncentivesCard = ({
         protocolAPY={protocolAPY}
         address={address}
       />
-
       <MeritIncentivesButton
         symbol={symbol}
         market={market}
@@ -115,7 +114,6 @@ export const IncentivesCard = ({
         protocolIncentives={incentives || []}
         hideValue={hideMeritValue}
       />
-
       <MerklIncentivesButton
         market={market}
         rewardedAsset={address}

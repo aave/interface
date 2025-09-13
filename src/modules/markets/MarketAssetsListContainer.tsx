@@ -3,11 +3,14 @@ import { Trans } from '@lingui/macro';
 import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { MarketAssetCategoryFilter } from 'src/components/MarketAssetCategoryFilter';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
+import { TitleWithFiltersAndSearchBar } from 'src/components/TitleWithFiltersAndSearchBar';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -17,6 +20,7 @@ import { useShallow } from 'zustand/shallow';
 import { GENERAL } from '../../utils/events';
 import { isAssetHidden } from '../dashboard/lists/constants';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
+import { AssetCategory, isAssetInCategoryDynamic } from './utils/assetCategories';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -36,6 +40,8 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
 }
 
 export const MarketAssetsListContainer = () => {
+  const { data, isLoading, error } = useCoingeckoCategories();
+
   const { reserves, loading } = useAppDataContext();
   const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [
@@ -46,7 +52,10 @@ export const MarketAssetsListContainer = () => {
     ])
   );
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<AssetCategory>(AssetCategory.ALL);
+
   const { breakpoints } = useTheme();
+
   const sm = useMediaQuery(breakpoints.down('sm'));
 
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
@@ -66,6 +75,15 @@ export const MarketAssetsListContainer = () => {
         res.underlyingAsset.toLowerCase().includes(term)
       );
     })
+    // Filter by category
+    .filter((res) =>
+      isAssetInCategoryDynamic(
+        res.symbol,
+        selectedCategory,
+        data?.stablecoinSymbols,
+        data?.ethCorrelatedSymbols
+      )
+    )
     // Transform the object for list to consume it
     .map((reserve) => ({
       ...reserve,
@@ -90,16 +108,60 @@ export const MarketAssetsListContainer = () => {
 
   return (
     <ListWrapper
+      wrapperSx={{ pt: { xs: '6px', xsm: '6px', sm: 3.5 } }}
       titleComponent={
-        <TitleWithSearchBar
-          onSearchTermChange={setSearchTerm}
-          title={
-            <>
-              {currentMarketData.marketTitle} <Trans>assets</Trans>
-            </>
-          }
-          searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
-        />
+        sm ? (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+              px: { xs: '1.6px', xsm: '1.6px' },
+            }}
+          >
+            <Box sx={{ width: '100%' }}>
+              <TitleWithSearchBar
+                onSearchTermChange={setSearchTerm}
+                title={
+                  <>
+                    {currentMarketData.marketTitle} <Trans>assets</Trans>
+                  </>
+                }
+                searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
+              />
+            </Box>
+
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Box sx={{ width: '100%' }}>
+                <MarketAssetCategoryFilter
+                  selectedCategory={selectedCategory}
+                  onCategoryChange={setSelectedCategory}
+                  disabled={isLoading || !!error}
+                />
+              </Box>
+            </Box>
+          </Box>
+        ) : (
+          <TitleWithFiltersAndSearchBar
+            onSearchTermChange={setSearchTerm}
+            title={
+              <>
+                {currentMarketData.marketTitle} <Trans>assets</Trans>
+              </>
+            }
+            searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            disabled={isLoading || !!error}
+          />
+        )
       }
     >
       {displayGhoBanner && (
