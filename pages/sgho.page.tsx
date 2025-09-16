@@ -3,6 +3,7 @@ import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
@@ -49,14 +50,16 @@ export default function SavingsGho() {
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
 
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
-
-  // Automatically switch to mainnet if not already on mainnet
+  const router = useRouter();
+  console.log('Router path:', router.pathname);
+  // Automatically switch to mainnet if not already on mainnet when entering the sGHO page
   // since sGHO only exists on Ethereum mainnet
+  // NOTE: Having currentMarket as a dependency in useEffect causes conflicts with the Horizon Banner interaction.
   useEffect(() => {
-    if (currentMarket !== CustomMarket.proto_mainnet_v3) {
+    if (router.pathname === '/sgho' && currentMarket !== CustomMarket.proto_mainnet_v3) {
       setCurrentMarket(CustomMarket.proto_mainnet_v3);
     }
-  }, [currentMarket, setCurrentMarket]);
+  }, [router.pathname, setCurrentMarket]);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
