@@ -105,7 +105,8 @@ export const SwitchTxSuccessView = ({
 
   // Market for chain id
   const networkConfig = networkConfigs[chainId].explorerLink;
-
+  const marketName = networkConfigs[chainId].name;
+  console.log('networkConfig', marketName);
   // Start tracking the order when the component mounts
   useEffect(() => {
     if (provider === 'cowprotocol' && txHashOrOrderId) {
@@ -206,6 +207,17 @@ export const SwitchTxSuccessView = ({
       )
     ) : undefined;
   }, [provider, txHashOrOrderId]);
+  const isEthereum = networkConfigs[chainId]?.name === 'Ethereum';
+  const getATokenSymbol = (marketName: string, tokenSymbol: string) => {
+    const marketPrefix = marketName.slice(0, 3).toLowerCase();
+    return `a${marketPrefix}${tokenSymbol}`;
+  };
+  const finalTokenSymbol: string =
+    addToken?.aToken && addToken
+      ? isEthereum
+        ? `a${addToken.symbol}`
+        : getATokenSymbol(networkConfigs[chainId].name, addToken.symbol)
+      : addToken?.symbol ?? '';
 
   return (
     <View
@@ -234,11 +246,10 @@ export const SwitchTxSuccessView = ({
       <Box
         sx={{
           background: 'background.default',
-          borderRadius: 2,
+          borderRadius: '8px',
           border: '1px solid',
           borderColor: 'divider',
           p: 3,
-          mb: 4,
           width: '80%',
         }}
       >
@@ -280,7 +291,7 @@ export const SwitchTxSuccessView = ({
           </Box>
         </Box>
         {amountUsd && amountUsd > 0 && (
-          <Box display="flex" justifyContent="flex-end" mb={2}>
+          <Box display="flex" justifyContent="flex-end" mb={'12px'}>
             <Typography>
               <FormattedNumber
                 value={amountUsd}
@@ -295,7 +306,7 @@ export const SwitchTxSuccessView = ({
           </Box>
         )}
         <Divider sx={{ my: 1 }} />
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1} mt={'12px'}>
           <Typography color="text.secondary">
             {provider == 'cowprotocol' && (orderStatus == 'open' || orderStatus == 'failed')
               ? 'Receive'
@@ -350,24 +361,24 @@ export const SwitchTxSuccessView = ({
           <Typography
             variant="helperText"
             fontWeight={500}
-            sx={{ float: 'right', color: 'text.secondary' }}
-            mt={0.5}
+            sx={{ float: 'right', color: 'text.secondary', mt: '4px' }}
           >
             {surplusDisplay}
           </Typography>
         )}
       </Box>
-      {addToken && (
+      {addToken && addToken.aToken && (
         <Box
           sx={(theme) => ({
             border: theme.palette.mode === 'dark' ? `1px solid ${theme.palette.divider}` : 'none',
             background: theme.palette.mode === 'dark' ? 'none' : '#F7F7F9',
-            borderRadius: '12px',
+            borderRadius: '8px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            mt: '24px',
+            mt: 4,
+
             width: '80%',
           })}
         >
@@ -386,7 +397,7 @@ export const SwitchTxSuccessView = ({
               addERC20Token({
                 address: addToken.address,
                 decimals: addToken.decimals,
-                symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
+                symbol: finalTokenSymbol,
                 image: !/_/.test(addToken.symbol) ? base64 : undefined,
               });
             }}

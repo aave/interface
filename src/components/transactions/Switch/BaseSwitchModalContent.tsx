@@ -690,13 +690,16 @@ export const BaseSwitchModalContent = ({
           switchRates.provider === 'cowprotocol' ? switchRates.destSpotInUsd : switchRates.destUSD
         )}
         addToken={{
-          address: selectedOutputToken.address,
+          address: selectedOutputToken.aToken ?? selectedOutputToken.address,
           symbol: selectedOutputToken.symbol,
           decimals: selectedOutputToken.decimals,
+          aToken: selectedOutputToken.aToken ? true : false,
         }}
       />
     );
   }
+  console.log('output token', `a${selectedOutputToken.symbol}`);
+  console.log('atoken token', selectedOutputToken.aToken);
 
   // Eth-Flow requires to leave some assets for gas
   const nativeDecimals = 18;
