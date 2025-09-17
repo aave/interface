@@ -17,7 +17,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.BASE]: [
       '0x067ae75628177FD257c2B1e500993e1a0baBcBd1'.toLowerCase(), // aGHO not supported
       '0x90072A4aA69B5Eb74984Ab823EFC5f91e90b3a72'.toLowerCase(), // alBTC does not have good solver liquidity
-      '0x7C307e128efA31F540F2E2d976C995E0B65F51F6'.toLowerCase(), // aWETH does not have good solver liquidity
     ],
     [SupportedChainId.MAINNET]: [
       '0x00907f9921424583e7ffBfEdf84F92B7B2Be4977'.toLowerCase(), // aGHO not supported
