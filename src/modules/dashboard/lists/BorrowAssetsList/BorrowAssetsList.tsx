@@ -239,6 +239,21 @@ export const BorrowAssetsList = () => {
       noData={borrowDisabled}
       subChildrenComponent={
         <>
+          {downToXSM && (
+            <>
+              <Box sx={{ px: 4, pb: 4, pt: '2px' }}>
+                <AssetCategoryMultiSelect
+                  selectedCategories={selectedCategories}
+                  onCategoriesChange={setSelectedCategories}
+                  disabled={isLoading || !!error}
+                  sx={{
+                    buttonGroup: { width: '100%', maxWidth: '100%', height: '30px' },
+                    button: { fontSize: '0.7rem' },
+                  }}
+                />
+              </Box>
+            </>
+          )}
           <Box sx={{ px: 6 }}>
             {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
               <Warning severity="error">
@@ -283,22 +298,6 @@ export const BorrowAssetsList = () => {
               </Warning>
             )}
           </Box>
-
-          {downToXSM && (
-            <>
-              <Box sx={{ px: 4, pb: 4, pt: '2px' }}>
-                <AssetCategoryMultiSelect
-                  selectedCategories={selectedCategories}
-                  onCategoriesChange={setSelectedCategories}
-                  disabled={isLoading || !!error}
-                  sx={{
-                    buttonGroup: { width: '100%', maxWidth: '100%', height: '30px' },
-                    button: { fontSize: '0.7rem' },
-                  }}
-                />
-              </Box>
-            </>
-          )}
         </>
       }
     >

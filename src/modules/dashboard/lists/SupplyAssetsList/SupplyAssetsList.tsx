@@ -302,6 +302,19 @@ export const SupplyAssetsList = () => {
       noData={supplyDisabled}
       subChildrenComponent={
         <>
+          {downToXSM && !isListCollapsed && (
+            <Box sx={{ px: 4, pb: 2, pt: '2px' }}>
+              <AssetCategoryMultiSelect
+                selectedCategories={selectedCategories}
+                onCategoriesChange={setSelectedCategories}
+                disabled={isLoading || !!error}
+                sx={{
+                  buttonGroup: { width: '100%', maxWidth: '100%', height: '30px' },
+                  button: { fontSize: '0.7rem' },
+                }}
+              />
+            </Box>
+          )}
           <Box sx={{ px: 6 }}>
             {user?.isInIsolationMode ? (
               <Warning severity="warning">
@@ -335,19 +348,6 @@ export const SupplyAssetsList = () => {
               </Warning>
             )}
           </Box>
-          {downToXSM && !isListCollapsed && (
-            <Box sx={{ px: 4, pb: 2, pt: '2px' }}>
-              <AssetCategoryMultiSelect
-                selectedCategories={selectedCategories}
-                onCategoriesChange={setSelectedCategories}
-                disabled={isLoading || !!error}
-                sx={{
-                  buttonGroup: { width: '100%', maxWidth: '100%', height: '30px' },
-                  button: { fontSize: '0.7rem' },
-                }}
-              />
-            </Box>
-          )}
 
           {filteredSupplyReserves.length >= 1 && (
             <>
