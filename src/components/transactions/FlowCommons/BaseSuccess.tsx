@@ -12,6 +12,7 @@ export type BaseSuccessTxViewProps = {
   hideTx?: boolean;
   customExplorerLink?: string;
   customExplorerLinkText?: ReactNode;
+  onClose?: () => void;
 };
 
 const ExtLinkIcon = () => (
@@ -26,8 +27,10 @@ export const BaseSuccessView = ({
   hideTx,
   customExplorerLink,
   customExplorerLinkText,
+  onClose,
 }: BaseSuccessTxViewProps) => {
-  const { close, mainTxState } = useModalContext();
+  const { close: modalClose, mainTxState } = useModalContext();
+  const handleClose = onClose || modalClose;
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
   return (
@@ -89,10 +92,10 @@ export const BaseSuccessView = ({
         )}
 
         <Button
-          onClick={close}
+          onClick={handleClose}
           variant="contained"
           size="large"
-          sx={{ minHeight: '50px' }}
+          sx={{ minHeight: '50px', mb: '30px' }}
           data-cy="closeButton"
         >
           <Trans>Ok, Close</Trans>
