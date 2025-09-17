@@ -155,6 +155,8 @@ export interface SwitchModalCustomizableProps {
   tokensTo?: TokenInfoWithBalance[];
   forcedDefaultInputToken?: TokenInfoWithBalance;
   forcedDefaultOutputToken?: TokenInfoWithBalance;
+  suggestedDefaultInputToken?: TokenInfoWithBalance;
+  suggestedDefaultOutputToken?: TokenInfoWithBalance;
   showSwitchInputAndOutputAssetsButton?: boolean;
   forcedChainId?: number;
 }
@@ -164,6 +166,8 @@ export const BaseSwitchModalContent = ({
   showTitle = true,
   forcedDefaultInputToken,
   forcedDefaultOutputToken,
+  suggestedDefaultInputToken,
+  suggestedDefaultOutputToken,
   supportedNetworks,
   switchDetails,
   inputBalanceTitle,
@@ -185,6 +189,8 @@ export const BaseSwitchModalContent = ({
   initialToTokens: TokenInfoWithBalance[];
   tokensLoading?: boolean;
   forcedDefaultOutputToken?: TokenInfoWithBalance;
+  suggestedDefaultInputToken?: TokenInfoWithBalance;
+  suggestedDefaultOutputToken?: TokenInfoWithBalance;
   supportedNetworks: SupportedNetworkWithChainId[];
   showChangeNetworkWarning?: boolean;
   modalType: ModalType;
@@ -333,8 +339,8 @@ export const BaseSwitchModalContent = ({
   };
 
   const { defaultInputToken, defaultOutputToken } = useMemo(() => {
-    let auxInputToken = forcedDefaultInputToken;
-    let auxOutputToken = forcedDefaultOutputToken;
+    let auxInputToken = forcedDefaultInputToken || suggestedDefaultInputToken;
+    let auxOutputToken = forcedDefaultOutputToken || suggestedDefaultOutputToken;
 
     const fromList = initialFromTokens;
     const toList = initialToTokens;
@@ -356,8 +362,13 @@ export const BaseSwitchModalContent = ({
   }, [initialFromTokens, initialToTokens]);
 
   // Persist selected tokens in session storage to retain them on modal close/open but differentiating by modalType
-  const getStorageKey = (modalType: ModalType, chainId: number) =>
-    `aave_switch_tokens_${modalType}_${chainId}`;
+  const getStorageKey = (modalType: ModalType, chainId: number) => {
+    if (ModalType.CollateralSwap === modalType) {
+      return `aave_switch_tokens_${modalType}_${chainId}_${forcedDefaultInputToken?.aToken?.toLowerCase()}`;
+    } else {
+      return `aave_switch_tokens_${modalType}_${chainId}`;
+    }
+  };
 
   const saveTokenSelection = (
     inputToken: TokenInfoWithBalance,
