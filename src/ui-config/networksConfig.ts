@@ -15,6 +15,7 @@ import {
   metis,
   optimism,
   optimismSepolia,
+  plasma,
   polygon,
   scroll,
   scrollSepolia,
@@ -425,6 +426,16 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       url: 'https://soneium.org/en/bridges/',
     },
     wagmiChain: soneium,
+  },
+  [9745]: {
+    name: 'Plasma',
+    publicJsonRPCUrl: ['https://rpc.plasma.to'],
+    baseAssetSymbol: 'XPL',
+    wrappedBaseAssetSymbol: 'WXPL',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://plasma.to',
+    networkLogoPath: '/icons/networks/plasma.svg',
+    wagmiChain: plasma,
   },
 };
 
