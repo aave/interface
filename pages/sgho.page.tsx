@@ -51,7 +51,6 @@ export default function SavingsGho() {
 
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
   const router = useRouter();
-  console.log('Router path:', router.pathname);
   // Automatically switch to mainnet if not already on mainnet when entering the sGHO page
   // since sGHO only exists on Ethereum mainnet
   // NOTE: Having currentMarket as a dependency in useEffect causes conflicts with the Horizon Banner interaction.
