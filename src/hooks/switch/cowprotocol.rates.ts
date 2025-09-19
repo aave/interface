@@ -23,7 +23,7 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-const getTokenUsdPrice = async (
+export const getTokenUsdPrice = async (
   chainId: number,
   tokenAddress: string,
   isTokenCustom: boolean,

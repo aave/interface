@@ -22,7 +22,7 @@ import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAd
 import { useRootStore } from 'src/store/root';
 import { findByChainId } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
+import { TokenInfo } from 'src/ui-config/TokenList';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { GENERAL } from 'src/utils/events';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
@@ -35,10 +35,11 @@ import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SupportedNetworkWithChainId } from './common';
 import { getOrders, isNativeToken } from './cowprotocol/cowprotocol.helpers';
 import { NetworkSelector } from './NetworkSelector';
-import { isCowProtocolRates, SwitchProvider, SwitchRatesType } from './switch.types';
+import { isCowProtocolRates } from './switch.types';
 import { SwitchActions } from './SwitchActions';
 import { SwitchAssetInput } from './SwitchAssetInput';
 import { SwitchErrors } from './SwitchErrors';
+import { SwitchModalTxDetails } from './SwitchModalTxDetails';
 import { SwitchRates } from './SwitchRates';
 import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import { SwitchTxSuccessView } from './SwitchTxSuccessView';
@@ -52,10 +53,6 @@ const SAFETY_MODULE_TOKENS = [
   'stkbpt',
   'stkabpt',
 ];
-
-export type SwitchDetailsParams = Parameters<
-  NonNullable<SwitchModalCustomizableProps['switchDetails']>
->[0];
 
 const LIQUIDATION_SAFETY_THRESHOLD = 1.05;
 
@@ -81,66 +78,8 @@ const shouldRequireConfirmation = (lostValue: number) => {
   return lostValue > 0.2;
 };
 
-export const getFilteredTokensForSwitch = (
-  chainId: number,
-  includeNative = false
-): TokenInfoWithBalance[] => {
-  let customTokenList = TOKEN_LIST.tokens;
-  if (includeNative) {
-    customTokenList = customTokenList.concat(
-      TOKEN_LIST.tokens.filter((token) => token.extensions?.isNative)
-    );
-  }
-  const savedCustomTokens = localStorage.getItem('customTokens');
-  if (savedCustomTokens) {
-    customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
-  }
-
-  const transformedTokens = customTokenList.map((token) => {
-    return { ...token, balance: '0' };
-  });
-  const realChainId = getNetworkConfig(chainId).underlyingChainId ?? chainId;
-
-  // Remove duplicates
-  const seen = new Set<string>();
-  return transformedTokens
-    .filter((token) => token.chainId === realChainId)
-    .filter((token) => {
-      const key = `${token.chainId}:${token.address.toLowerCase()}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-};
 export interface SwitchModalCustomizableProps {
   modalType: ModalType;
-  switchDetails?: ({
-    user,
-    switchRates,
-    gasLimit,
-    selectedChainId,
-    selectedOutputToken,
-    selectedInputToken,
-    safeSlippage,
-    maxSlippage,
-    switchProvider,
-    loading,
-    ratesError,
-    showGasStation,
-  }: {
-    user: string;
-    switchRates?: SwitchRatesType;
-    gasLimit: string;
-    selectedChainId: number;
-    selectedOutputToken: TokenInfoWithBalance;
-    selectedInputToken: TokenInfoWithBalance;
-    safeSlippage: number;
-    maxSlippage: number;
-    switchProvider?: SwitchProvider;
-    loading: boolean;
-    ratesError: Error | null;
-    showGasStation?: boolean;
-  }) => React.ReactNode;
   inputBalanceTitle?: string;
   outputBalanceTitle?: string;
   tokensFrom?: TokenInfoWithBalance[];
@@ -157,12 +96,10 @@ export const BaseSwitchModalContent = ({
   forcedDefaultInputToken,
   forcedDefaultOutputToken,
   supportedNetworks,
-  switchDetails,
   inputBalanceTitle,
   outputBalanceTitle,
   initialFromTokens,
   initialToTokens,
-  tokensLoading = false,
   showChangeNetworkWarning = true,
   modalType,
   selectedChainId,
@@ -175,7 +112,6 @@ export const BaseSwitchModalContent = ({
   forcedDefaultInputToken?: TokenInfoWithBalance;
   initialFromTokens: TokenInfoWithBalance[];
   initialToTokens: TokenInfoWithBalance[];
-  tokensLoading?: boolean;
   forcedDefaultOutputToken?: TokenInfoWithBalance;
   supportedNetworks: SupportedNetworkWithChainId[];
   showChangeNetworkWarning?: boolean;
@@ -346,6 +282,8 @@ export const BaseSwitchModalContent = ({
   const [selectedOutputToken, setSelectedOutputToken] = useState<TokenInfoWithBalance>(
     forcedDefaultOutputToken ?? defaultOutputToken
   );
+
+  console.log(selectedInputToken);
 
   // Update selected tokens when defaults change (e.g., after network change)
   useEffect(() => {
@@ -633,23 +571,6 @@ export const BaseSwitchModalContent = ({
     modalType,
   ]);
 
-  // Views
-  if (!initialFromTokens && !initialToTokens) {
-    return (
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (tokensLoading) {
-    return (
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
   // No tokens found
   if (
     (initialFromTokens !== undefined && initialFromTokens.length === 0) ||
@@ -709,22 +630,23 @@ export const BaseSwitchModalContent = ({
     ? normalize(maxAmount.toString(), nativeDecimals).toString()
     : undefined;
 
-  const swapDetailsComponent = switchDetails
-    ? switchDetails({
-        switchProvider: switchRates?.provider,
-        user,
-        switchRates,
-        gasLimit,
-        selectedChainId,
-        selectedOutputToken,
-        selectedInputToken,
-        safeSlippage,
-        maxSlippage: Number(slippage),
-        loading: ratesLoading || !isSwapFlowSelected,
-        ratesError,
-        showGasStation,
-      })
-    : null;
+  const swapDetailsComponent = (
+    <SwitchModalTxDetails
+      switchRates={switchRates}
+      selectedOutputToken={selectedOutputToken}
+      safeSlippage={safeSlippage}
+      gasLimit={gasLimit}
+      selectedChainId={selectedChainId}
+      showGasStation={showGasStation}
+      reserves={reserves}
+      user={extendedUser}
+      selectedInputToken={selectedInputToken}
+      modalType={modalType}
+      customReceivedTitle={
+        modalType === ModalType.CollateralSwap && <Trans>Minimum new collateral</Trans>
+      }
+    />
+  );
 
   const lostValue = switchRates
     ? valueLostPercentage(
