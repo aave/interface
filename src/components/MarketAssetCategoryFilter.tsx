@@ -15,11 +15,13 @@ const categoryLabels = {
   [AssetCategory.ALL]: <Trans>All</Trans>,
   [AssetCategory.STABLECOINS]: <Trans>Stablecoins</Trans>,
   [AssetCategory.ETH_CORRELATED]: <Trans>ETH Correlated</Trans>,
+  [AssetCategory.PTS]: <Trans>PTs</Trans>,
 } as const;
 const categories = [
   AssetCategory.ALL,
   AssetCategory.STABLECOINS,
   AssetCategory.ETH_CORRELATED,
+  AssetCategory.PTS,
 ] as const;
 
 export const MarketAssetCategoryFilter = ({

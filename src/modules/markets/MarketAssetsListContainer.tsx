@@ -2,8 +2,8 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
+import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
-import { MarketAssetCategoryFilter } from 'src/components/MarketAssetCategoryFilter';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
@@ -52,7 +52,7 @@ export const MarketAssetsListContainer = () => {
     ])
   );
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<AssetCategory>(AssetCategory.ALL);
+  const [selectedCategories, setSelectedCategories] = useState<AssetCategory[]>([]);
 
   const { breakpoints } = useTheme();
 
@@ -76,13 +76,17 @@ export const MarketAssetsListContainer = () => {
       );
     })
     // Filter by category
-    .filter((res) =>
-      isAssetInCategoryDynamic(
-        res.symbol,
-        selectedCategory,
-        data?.stablecoinSymbols,
-        data?.ethCorrelatedSymbols
-      )
+    .filter(
+      (res) =>
+        selectedCategories.length === 0 ||
+        selectedCategories.some((category) =>
+          isAssetInCategoryDynamic(
+            res.symbol,
+            category,
+            data?.stablecoinSymbols,
+            data?.ethCorrelatedSymbols
+          )
+        )
     )
     // Transform the object for list to consume it
     .map((reserve) => ({
@@ -120,32 +124,22 @@ export const MarketAssetsListContainer = () => {
               px: { xs: '1.6px', xsm: '1.6px' },
             }}
           >
-            <Box sx={{ width: '100%' }}>
-              <TitleWithSearchBar
-                onSearchTermChange={setSearchTerm}
-                title={
-                  <>
-                    {currentMarketData.marketTitle} <Trans>assets</Trans>
-                  </>
-                }
-                searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
-              />
-            </Box>
+            <TitleWithSearchBar
+              onSearchTermChange={setSearchTerm}
+              title={
+                <>
+                  {currentMarketData.marketTitle} <Trans>assets</Trans>
+                </>
+              }
+              searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
+            />
 
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <Box sx={{ width: '100%' }}>
-                <MarketAssetCategoryFilter
-                  selectedCategory={selectedCategory}
-                  onCategoryChange={setSelectedCategory}
-                  disabled={isLoading || !!error}
-                />
-              </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <AssetCategoryMultiSelect
+                selectedCategories={selectedCategories}
+                onCategoriesChange={setSelectedCategories}
+                disabled={isLoading || !!error}
+              />
             </Box>
           </Box>
         ) : (
@@ -157,8 +151,8 @@ export const MarketAssetsListContainer = () => {
               </>
             }
             searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
+            selectedCategories={selectedCategories}
+            onCategoriesChange={setSelectedCategories}
             disabled={isLoading || !!error}
           />
         )

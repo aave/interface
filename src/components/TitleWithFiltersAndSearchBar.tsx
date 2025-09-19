@@ -13,7 +13,7 @@ import {
 import { ReactNode, useState } from 'react';
 import { AssetCategory } from 'src/modules/markets/utils/assetCategories';
 
-import { MarketAssetCategoryFilter } from './MarketAssetCategoryFilter';
+import { AssetCategoryMultiSelect } from './AssetCategoryMultiselect';
 import { SearchInput } from './SearchInput';
 
 interface TitleWithFiltersAndSearchBarProps<C extends React.ElementType> {
@@ -21,8 +21,8 @@ interface TitleWithFiltersAndSearchBarProps<C extends React.ElementType> {
   searchPlaceholder: string;
   titleProps?: TypographyProps<C, { component?: C }>;
   title: ReactNode;
-  selectedCategory: AssetCategory;
-  onCategoryChange: (category: AssetCategory) => void;
+  selectedCategories: AssetCategory[];
+  onCategoriesChange: (category: AssetCategory[]) => void;
   disabled?: boolean;
 }
 
@@ -31,8 +31,8 @@ export const TitleWithFiltersAndSearchBar = <T extends React.ElementType>({
   searchPlaceholder,
   titleProps,
   title,
-  selectedCategory,
-  onCategoryChange,
+  selectedCategories,
+  onCategoriesChange,
   disabled = false,
 }: TitleWithFiltersAndSearchBarProps<T>) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -74,9 +74,9 @@ export const TitleWithFiltersAndSearchBar = <T extends React.ElementType>({
           justifyContent: 'space-between',
         }}
       >
-        <MarketAssetCategoryFilter
-          selectedCategory={selectedCategory}
-          onCategoryChange={onCategoryChange}
+        <AssetCategoryMultiSelect
+          selectedCategories={selectedCategories}
+          onCategoriesChange={onCategoriesChange}
           disabled={disabled}
         />
         {showSearchIcon && (

@@ -2,6 +2,7 @@ export enum AssetCategory {
   ALL = 'all',
   STABLECOINS = 'stablecoins',
   ETH_CORRELATED = 'eth_correlated',
+  PTS = 'pts',
 }
 
 function normalizeStableSymbol(symbol: string): string {
@@ -28,7 +29,11 @@ export const categorizeAssetDynamic = (
   const categories: AssetCategory[] = [AssetCategory.ALL];
 
   const upperSymbol = symbol.toUpperCase();
+  if (upperSymbol.startsWith('PT')) {
+    categories.push(AssetCategory.PTS);
+  }
   const normalizedStablecoinSymbol = normalizeStableSymbol(upperSymbol);
+
   if (stablecoinCoinGeckoSymbols.includes(normalizedStablecoinSymbol)) {
     categories.push(AssetCategory.STABLECOINS);
   }
@@ -48,6 +53,10 @@ export const isAssetInCategoryDynamic = (
 ): boolean => {
   if (category === AssetCategory.ALL) {
     return true;
+  }
+
+  if (category === AssetCategory.PTS) {
+    return symbol.toUpperCase().startsWith('PT');
   }
   return categorizeAssetDynamic(
     symbol,
