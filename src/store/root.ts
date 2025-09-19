@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
 import { AnalyticsSlice, createAnalyticsSlice } from './analyticsSlice';
+import { createFavoriteMarketsSlice, FavoriteMarketsSlice } from './favoriteMarketsSlice';
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
 import { createLayoutSlice, LayoutSlice } from './layoutSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
@@ -26,7 +27,8 @@ export type RootStore = StakeSlice &
   WalletDomainsSlice &
   AnalyticsSlice &
   TransactionsSlice &
-  LayoutSlice;
+  LayoutSlice &
+  FavoriteMarketsSlice;
 
 export const useRootStore = create<RootStore>()(
   subscribeWithSelector(
@@ -42,6 +44,7 @@ export const useRootStore = create<RootStore>()(
         ...createAnalyticsSlice(...args),
         ...createTransactionsSlice(...args),
         ...createLayoutSlice(...args),
+        ...createFavoriteMarketsSlice(...args),
       };
     })
   )
@@ -61,6 +64,9 @@ if (typeof document !== 'undefined') {
           setCurrentMarket(selectedMarket as CustomMarket, true);
         }
       }
+
+      // Hydrate favorite markets from localStorage
+      useRootStore.getState().hydrateFavoriteMarkets();
     }
   };
 }

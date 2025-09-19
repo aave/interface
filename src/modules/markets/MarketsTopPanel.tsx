@@ -35,6 +35,7 @@ export const MarketsTopPanel = () => {
       containerProps={marketContainerProps}
       pageTitle={<Trans>Markets</Trans>}
       withMarketSwitcher
+      withFavoriteButton
     >
       <TopInfoPanelItem hideIcon title={<Trans>Total market size</Trans>} loading={loading}>
         <FormattedNumber
