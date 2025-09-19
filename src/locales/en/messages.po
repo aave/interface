@@ -1238,6 +1238,7 @@ msgstr "Unstaking {symbol}"
 #: src/components/transactions/Switch/CollateralSwap/CollateralSwapActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
+#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
 msgid "Swapping"
 msgstr "Swapping"
 
@@ -1362,6 +1363,7 @@ msgstr "Claiming"
 msgid "Current LTV"
 msgstr "Current LTV"
 
+#: src/components/transactions/Switch/SwitchTypeSelector.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Market"
@@ -3196,7 +3198,7 @@ msgstr "Not enough staked balance"
 msgid "Switching to {networkName}..."
 msgstr "Switching to {networkName}..."
 
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModal.tsx
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
 msgid "Minimum new collateral"
 msgstr "Minimum new collateral"
 
@@ -3576,6 +3578,8 @@ msgstr "Restaked"
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
+#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
+#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -3767,6 +3771,10 @@ msgstr "Transaction overview"
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restake {symbol}"
 msgstr "Restake {symbol}"
+
+#: src/components/transactions/Switch/SwitchTypeSelector.tsx
+msgid "Limit"
+msgstr "Limit"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"

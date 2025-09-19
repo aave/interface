@@ -393,3 +393,25 @@ export const DetailsCooldownLine = ({
     </Row>
   );
 };
+
+interface DetailsTextLineProps {
+  description: string;
+  text: string;
+  loading?: boolean;
+}
+
+export const DetailsTextLine = ({ description, text, loading = false }: DetailsTextLineProps) => {
+  return (
+    <Row caption={description} captionVariant="description" mb={4}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="secondary14">{text}</Typography>
+          </Box>
+        )}
+      </Box>
+    </Row>
+  );
+};
