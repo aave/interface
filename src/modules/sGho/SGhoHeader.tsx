@@ -71,7 +71,7 @@ export const SGHOHeader: React.FC = () => {
                 {((stakeAPR?.apr ? convertAprToApy(parseFloat(stakeAPR.apr)) : 0) * 100).toFixed(2)}
                 %
               </Box>{' '}
-              APY on your GHO holdings. There&apos;s no lockups, no rehypothecation, and you can
+              APY on your GHO holdings. There&apos;s no lockup, no rehypothecation, and you can
               withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance,
               and watch your savings grow earning claimable rewards from merit.
             </Trans>{' '}
