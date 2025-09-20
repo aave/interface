@@ -35,6 +35,7 @@ import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SupportedNetworkWithChainId } from './common';
 import { getOrders, isNativeToken } from './cowprotocol/cowprotocol.helpers';
 import { NetworkSelector } from './NetworkSelector';
+import { getParaswapSlippage } from './slippage.helpers';
 import { isCowProtocolRates, SwitchProvider, SwitchRatesType } from './switch.types';
 import { SwitchActions } from './SwitchActions';
 import { SwitchAssetInput } from './SwitchAssetInput';
@@ -58,6 +59,8 @@ export type SwitchDetailsParams = Parameters<
 >[0];
 
 const LIQUIDATION_SAFETY_THRESHOLD = 1.05;
+const LIQUIDATION_DANGER_THRESHOLD = 1.01;
+const SESSION_STORAGE_EXPIRY_MS = 15 * 60 * 1000;
 
 const valueLostPercentage = (destValueInUsd: number, srcValueInUsd: number) => {
   if (destValueInUsd === 0) return 1;
@@ -79,6 +82,11 @@ const shouldShowWarning = (lostValue: number, srcValueInUsd: number) => {
 
 const shouldRequireConfirmation = (lostValue: number) => {
   return lostValue > 0.2;
+};
+const shouldRequireConfirmationHFlow = (healthFactor: number) => {
+  return (
+    healthFactor < LIQUIDATION_SAFETY_THRESHOLD && healthFactor >= LIQUIDATION_DANGER_THRESHOLD
+  );
 };
 
 export const getFilteredTokensForSwitch = (
@@ -147,6 +155,8 @@ export interface SwitchModalCustomizableProps {
   tokensTo?: TokenInfoWithBalance[];
   forcedDefaultInputToken?: TokenInfoWithBalance;
   forcedDefaultOutputToken?: TokenInfoWithBalance;
+  suggestedDefaultInputToken?: TokenInfoWithBalance;
+  suggestedDefaultOutputToken?: TokenInfoWithBalance;
   showSwitchInputAndOutputAssetsButton?: boolean;
   forcedChainId?: number;
 }
@@ -156,6 +166,8 @@ export const BaseSwitchModalContent = ({
   showTitle = true,
   forcedDefaultInputToken,
   forcedDefaultOutputToken,
+  suggestedDefaultInputToken,
+  suggestedDefaultOutputToken,
   supportedNetworks,
   switchDetails,
   inputBalanceTitle,
@@ -177,6 +189,8 @@ export const BaseSwitchModalContent = ({
   initialToTokens: TokenInfoWithBalance[];
   tokensLoading?: boolean;
   forcedDefaultOutputToken?: TokenInfoWithBalance;
+  suggestedDefaultInputToken?: TokenInfoWithBalance;
+  suggestedDefaultOutputToken?: TokenInfoWithBalance;
   supportedNetworks: SupportedNetworkWithChainId[];
   showChangeNetworkWarning?: boolean;
   modalType: ModalType;
@@ -193,6 +207,7 @@ export const BaseSwitchModalContent = ({
   const trackEvent = useRootStore((store) => store.trackEvent);
   const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
   const [highPriceImpactConfirmed, setHighPriceImpactConfirmed] = useState(false);
+  const [lowHFConfirmed, setLowHFConfirmed] = useState(false);
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
   const [isSwapFlowSelected, setIsSwapFlowSelected] = useState(false);
@@ -200,6 +215,7 @@ export const BaseSwitchModalContent = ({
 
   const [userIsSmartContractWallet, setUserIsSmartContractWallet] = useState(false);
   const [userIsSafeWallet, setUserIsSafeWallet] = useState(false);
+
   useEffect(() => {
     try {
       if (user && connectedChainId) {
@@ -220,12 +236,13 @@ export const BaseSwitchModalContent = ({
   const debouncedInputChange = useMemo(() => {
     return debounce((value: string) => {
       setDebounceInputAmount(value);
-    }, 300);
+    }, 1500);
   }, [setDebounceInputAmount]);
 
   const handleInputChange = (value: string) => {
     setTxError(undefined);
     setHighPriceImpactConfirmed(false);
+    setLowHFConfirmed(false);
     if (value === '-1') {
       // Max Selected
       setInputAmount(selectedInputToken.balance);
@@ -240,10 +257,12 @@ export const BaseSwitchModalContent = ({
     if (!initialFromTokens?.find((t) => t.address === token.address)) {
       addNewToken(token).then(() => {
         setSelectedInputToken(token);
+        saveTokenSelection(token, selectedOutputToken);
         setTxError(undefined);
       });
     } else {
       setSelectedInputToken(token);
+      saveTokenSelection(token, selectedOutputToken);
       setTxError(undefined);
     }
   };
@@ -252,10 +271,12 @@ export const BaseSwitchModalContent = ({
     if (!initialToTokens?.find((t) => t.address === token.address)) {
       addNewToken(token).then(() => {
         setSelectedOutputToken(token);
+        saveTokenSelection(selectedInputToken, token);
         setTxError(undefined);
       });
     } else {
       setSelectedOutputToken(token);
+      saveTokenSelection(selectedInputToken, token);
       setTxError(undefined);
     }
   };
@@ -318,8 +339,8 @@ export const BaseSwitchModalContent = ({
   };
 
   const { defaultInputToken, defaultOutputToken } = useMemo(() => {
-    let auxInputToken = forcedDefaultInputToken;
-    let auxOutputToken = forcedDefaultOutputToken;
+    let auxInputToken = forcedDefaultInputToken || suggestedDefaultInputToken;
+    let auxOutputToken = forcedDefaultOutputToken || suggestedDefaultOutputToken;
 
     const fromList = initialFromTokens;
     const toList = initialToTokens;
@@ -340,12 +361,63 @@ export const BaseSwitchModalContent = ({
     };
   }, [initialFromTokens, initialToTokens]);
 
-  const [selectedInputToken, setSelectedInputToken] = useState<TokenInfoWithBalance>(
-    forcedDefaultInputToken ?? defaultInputToken
-  );
-  const [selectedOutputToken, setSelectedOutputToken] = useState<TokenInfoWithBalance>(
-    forcedDefaultOutputToken ?? defaultOutputToken
-  );
+  // Persist selected tokens in session storage to retain them on modal close/open but differentiating by modalType
+  const getStorageKey = (modalType: ModalType, chainId: number) => {
+    if (ModalType.CollateralSwap === modalType) {
+      return `aave_switch_tokens_${modalType}_${chainId}_${forcedDefaultInputToken?.aToken?.toLowerCase()}`;
+    } else {
+      return `aave_switch_tokens_${modalType}_${chainId}`;
+    }
+  };
+
+  const saveTokenSelection = (
+    inputToken: TokenInfoWithBalance,
+    outputToken: TokenInfoWithBalance
+  ) => {
+    try {
+      sessionStorage.setItem(
+        getStorageKey(modalType, selectedChainId),
+        JSON.stringify({
+          inputToken: forcedDefaultInputToken ? null : inputToken,
+          outputToken: forcedDefaultOutputToken ? null : outputToken,
+          timestamp: Date.now(),
+        })
+      );
+    } catch (e) {
+      console.error('Error saving token selection', e);
+    }
+  };
+
+  const loadTokenSelection = () => {
+    try {
+      const savedTokenSelection = sessionStorage.getItem(getStorageKey(modalType, selectedChainId));
+      if (!savedTokenSelection) return null;
+
+      const parsedTokenSelection = JSON.parse(savedTokenSelection);
+      if (
+        parsedTokenSelection.timestamp &&
+        Date.now() - parsedTokenSelection.timestamp > SESSION_STORAGE_EXPIRY_MS
+      ) {
+        sessionStorage.removeItem(getStorageKey(modalType, selectedChainId));
+        return null;
+      }
+      return parsedTokenSelection;
+    } catch (e) {
+      return null;
+    }
+  };
+  const [selectedInputToken, setSelectedInputToken] = useState<TokenInfoWithBalance>(() => {
+    if (forcedDefaultInputToken) return forcedDefaultInputToken;
+
+    const saved = loadTokenSelection();
+    return saved?.inputToken || defaultInputToken;
+  });
+  const [selectedOutputToken, setSelectedOutputToken] = useState<TokenInfoWithBalance>(() => {
+    if (forcedDefaultOutputToken) return forcedDefaultOutputToken;
+
+    const saved = loadTokenSelection();
+    return saved?.outputToken || defaultOutputToken;
+  });
 
   // Update selected tokens when defaults change (e.g., after network change)
   useEffect(() => {
@@ -444,6 +516,28 @@ export const BaseSwitchModalContent = ({
     slippageValidation && slippageValidation.severity === ValidationSeverity.ERROR
       ? 0
       : Number(slippage) / 100;
+  // wether we use cow's suggested slippage or paraswap's correlated assets slippage default
+  const autoSlippage = useMemo(() => {
+    if (!switchRates) return undefined;
+
+    if (switchRates.provider === 'cowprotocol') {
+      return switchRates.suggestedSlippage?.toString();
+    }
+
+    if (switchRates.provider === 'paraswap') {
+      return getParaswapSlippage(
+        selectedInputToken?.symbol || '',
+        selectedOutputToken?.symbol || ''
+      );
+    }
+
+    return undefined;
+  }, [
+    switchRates?.provider,
+    switchRates?.suggestedSlippage,
+    selectedInputToken?.symbol,
+    selectedOutputToken?.symbol,
+  ]);
 
   useEffect(() => {
     if (ratesError) {
@@ -532,7 +626,16 @@ export const BaseSwitchModalContent = ({
 
     if (hfNumber.lt(0)) return false;
 
-    return hfNumber.lt(LIQUIDATION_SAFETY_THRESHOLD);
+    return hfNumber.lt(LIQUIDATION_SAFETY_THRESHOLD) && hfNumber.gte(LIQUIDATION_DANGER_THRESHOLD);
+  }, [hfAfterSwap]);
+  const isLiquidatable = useMemo(() => {
+    if (!hfAfterSwap) return false;
+
+    const hfNumber = new BigNumber(hfAfterSwap);
+
+    if (hfNumber.lt(0)) return false;
+
+    return hfNumber.lt(LIQUIDATION_DANGER_THRESHOLD);
   }, [hfAfterSwap]);
 
   const shouldUseFlashloanFn = (healthFactor: string, hfEffectOfFromAmount: string) => {
@@ -562,14 +665,24 @@ export const BaseSwitchModalContent = ({
     }
   }, [modalType, switchRates, ratesLoading, shouldUseFlashloan]);
 
-  // Define default slippage for CoW
+  // Define default slippage for CoW & Paraswap
   useEffect(() => {
     if (switchRates?.provider == 'cowprotocol' && isCowProtocolRates(switchRates)) {
       setSlippage(switchRates.suggestedSlippage.toString());
     } else if (modalType === ModalType.CollateralSwap && shouldUseFlashloan === true) {
-      setSlippage('0.5');
+      const paraswapSlippage = getParaswapSlippage(
+        selectedInputToken?.symbol || '',
+        selectedOutputToken?.symbol || ''
+      );
+      setSlippage(paraswapSlippage);
     }
-  }, [switchRates, shouldUseFlashloan, modalType]);
+  }, [
+    switchRates,
+    shouldUseFlashloan,
+    modalType,
+    selectedInputToken?.symbol,
+    selectedOutputToken?.symbol,
+  ]);
 
   const [showSlippageWarning, setShowSlippageWarning] = useState(false);
   useEffect(() => {
@@ -737,6 +850,9 @@ export const BaseSwitchModalContent = ({
     ? shouldShowWarning(lostValue, Number(switchRates?.srcUSD))
     : false;
   const requireConfirmation = switchRates ? shouldRequireConfirmation(lostValue) : false;
+  const requireConfirmationHFlow = isHFLow
+    ? shouldRequireConfirmationHFlow(Number(hfAfterSwap))
+    : false;
 
   const isSwappingSafetyModuleToken = SAFETY_MODULE_TOKENS.includes(
     selectedInputToken.symbol.toLowerCase()
@@ -797,11 +913,8 @@ export const BaseSwitchModalContent = ({
           slippageValidation={slippageValidation}
           slippage={slippage}
           setSlippage={setSlippage}
-          suggestedSlippage={
-            switchRates?.provider === 'cowprotocol'
-              ? switchRates?.suggestedSlippage.toString()
-              : undefined
-          }
+          suggestedSlippage={autoSlippage}
+          provider={switchRates?.provider}
         />
       </Box>
       {!selectedInputToken || !selectedOutputToken ? (
@@ -960,14 +1073,65 @@ export const BaseSwitchModalContent = ({
                 </Warning>
               )}
 
-              {modalType === ModalType.CollateralSwap && isHFLow && (
-                <Warning severity="error" icon={false} sx={{ mt: 5 }}>
+              {modalType === ModalType.CollateralSwap && isLiquidatable && (
+                <Warning
+                  severity="error"
+                  icon={false}
+                  sx={{
+                    mt: 2,
+                    mb: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
                   <Typography variant="caption">
                     <Trans>
-                      Low health factor after swap. Please select a different asset or lower the
-                      amount.
+                      Your health factor after this swap will be critically low and may result in
+                      liquidation. Please choose a different asset or reduce the swap amount to stay
+                      safe.
                     </Trans>
                   </Typography>
+                </Warning>
+              )}
+              {modalType === ModalType.CollateralSwap && isHFLow && !isLiquidatable && (
+                <Warning
+                  severity="warning"
+                  icon={false}
+                  sx={{
+                    mt: 2,
+                    mb: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography variant="caption">
+                    <Trans>
+                      Low health factor after swap. Your position will carry a higher risk of
+                      liquidation.
+                    </Trans>
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      mt: 2,
+                    }}
+                  >
+                    <Typography variant="caption">
+                      <Trans>I understand the liquidation risk and want to proceed</Trans>
+                    </Typography>
+                    <Checkbox
+                      checked={lowHFConfirmed}
+                      onChange={() => {
+                        setLowHFConfirmed(!lowHFConfirmed);
+                      }}
+                      size="small"
+                      data-cy={'low-hf-checkbox'}
+                    />
+                  </Box>
                 </Warning>
               )}
 
@@ -1077,7 +1241,11 @@ export const BaseSwitchModalContent = ({
                     (shouldUseFlashloan === true &&
                       !!poolReserve &&
                       !poolReserve.flashLoanEnabled) ||
-                    (modalType === ModalType.CollateralSwap && isHFLow)
+                    (modalType === ModalType.CollateralSwap && isLiquidatable) ||
+                    (modalType === ModalType.CollateralSwap &&
+                      isHFLow &&
+                      requireConfirmationHFlow &&
+                      !lowHFConfirmed)
                   }
                   chainId={selectedChainId}
                   switchRates={switchRates}
