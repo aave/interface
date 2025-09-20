@@ -21,6 +21,7 @@ export type ProviderRatesParams = {
 
   isInputTokenCustom?: boolean;
   isOutputTokenCustom?: boolean;
+  appCode?: string;
 
   setError?: (error: TxErrorType) => void;
 };
