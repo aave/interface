@@ -1,12 +1,17 @@
+import { Stake } from '@aave/contract-helpers';
 import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useEffect } from 'react';
+import NumberFlow from '@number-flow/react';
+import { formatEther } from 'ethers/lib/utils';
+import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -90,6 +95,7 @@ export const SGHOHeader: React.FC = () => {
 };
 
 const SGhoHeaderUserDetails = ({
+  currentMarketData,
   valueTypographyVariant,
   symbolsTypographyVariant,
   stkGho,
@@ -100,6 +106,7 @@ const SGhoHeaderUserDetails = ({
   stkGho: StakeTokenFormatted;
 }) => {
   const { data: stakeAPR, isLoading: isLoadingStakeAPR } = useStakeTokenAPR();
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.gho);
   const { reserves } = useAppDataContext();
 
   const {
@@ -114,13 +121,39 @@ const SGhoHeaderUserDetails = ({
 
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const stakeUserData = stakeUserResult?.[0];
+  const userSGhoBalance = stakeUserData?.stakeTokenRedeemableAmount || '0';
+  const userSGhoBalanceFormatted = formatEther(userSGhoBalance);
+
+  // Calculate estimated weekly rewards
+  // Formula: (balance * APR) / 52 weeks
+  const aprDecimal = stakeAPR?.apr ? parseFloat(stakeAPR.apr) : 0;
+  const weeklyRewardsEstimate = (parseFloat(userSGhoBalanceFormatted) * aprDecimal) / 52;
+
+  const [displayedWeeklyRewards, setDisplayedWeeklyRewards] = useState(0);
+
+  const symbolsColor = theme.palette.text.muted;
+  const iconSize = valueTypographyVariant === 'main21' ? 20 : 16;
+  const fontSize =
+    valueTypographyVariant === 'main21'
+      ? theme.typography.main21.fontSize
+      : theme.typography.main16.fontSize;
+
+  useEffect(() => {
+    if (weeklyRewardsEstimate > 0) {
+      setDisplayedWeeklyRewards(weeklyRewardsEstimate);
+    } else {
+      setDisplayedWeeklyRewards(0);
+    }
+  }, [weeklyRewardsEstimate]);
+
   return (
     <>
       <TopInfoPanelItem hideIcon title={<Trans>APY</Trans>} loading={isLoadingStakeAPR}>
         <FormattedNumber
           value={stakeAPR?.apr ? convertAprToApy(parseFloat(stakeAPR.apr)) : 0}
           variant={valueTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={symbolsColor}
           visibleDecimals={2}
           percent
           symbolsVariant={symbolsTypographyVariant}
@@ -140,7 +173,7 @@ const SGhoHeaderUserDetails = ({
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={symbolsColor}
           visibleDecimals={2}
         />
       </TopInfoPanelItem>
@@ -158,9 +191,55 @@ const SGhoHeaderUserDetails = ({
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={symbolsColor}
           visibleDecimals={2}
         />
+      </TopInfoPanelItem>
+
+      <TopInfoPanelItem
+        hideIcon
+        title={
+          <Stack direction="row" alignItems="center">
+            <TextWithTooltip text={<Trans>Weekly Rewards</Trans>} variant="inherit">
+              <Trans>
+                Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards
+                may vary depenending on market conditions.
+              </Trans>
+            </TextWithTooltip>
+          </Stack>
+        }
+        loading={isLoadingStakeAPR}
+      >
+        {parseFloat(userSGhoBalanceFormatted) > 0 ? (
+          <Stack direction="row" alignItems="baseline" spacing={0.5}>
+            <NumberFlow
+              value={displayedWeeklyRewards}
+              format={{
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }}
+              style={{
+                fontSize: fontSize,
+                fontWeight: theme.typography.fontWeightMedium || 600,
+                color: 'inherit',
+                fontFamily: theme.typography.fontFamily,
+              }}
+            />
+            <TokenIcon
+              symbol="sgho"
+              sx={{
+                width: iconSize,
+                height: iconSize,
+                pt: theme.spacing(0.3),
+                pb: theme.spacing(0.3),
+              }}
+            />
+          </Stack>
+        ) : (
+          <Typography variant={valueTypographyVariant} color={symbolsColor}>
+            —
+          </Typography>
+        )}
       </TopInfoPanelItem>
 
       <Box sx={{ display: 'inline-flex', alignItems: 'center', height: '40px' }}>

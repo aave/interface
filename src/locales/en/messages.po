@@ -1013,6 +1013,10 @@ msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
 msgid "Migrate to v3"
 msgstr "Migrate to v3"
 
+#: src/components/AddressBlockedModal.tsx
+msgid "error code: 2455"
+msgstr "error code: 2455"
+
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
 msgstr "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
@@ -1428,9 +1432,9 @@ msgstr "Maximum amount received"
 msgid "Activating Cooldown"
 msgstr "Activating Cooldown"
 
-#: src/components/AddressBlockedModal.tsx
-msgid "error code: 1"
-msgstr "error code: 1"
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depenending on market conditions."
+msgstr "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depenending on market conditions."
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
@@ -1499,6 +1503,10 @@ msgstr "View all"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Swap to"
 msgstr "Swap to"
+
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Weekly Rewards"
+msgstr "Weekly Rewards"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
