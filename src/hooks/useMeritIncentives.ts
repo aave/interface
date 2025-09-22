@@ -114,7 +114,8 @@ const antiLoopMessage =
 
 const antiLoopBorrowMessage =
   'Supplying of some assets or holding of some token may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
-
+const masivBorrowUsdcMessage =
+  'Only new debt created since the campaign start will be rewarded. Supplying of some assets or holding of some token may impact the amount of rewards you are eligible for.';
 const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
@@ -527,7 +528,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
         rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.borrow,
-        customMessage: antiLoopBorrowMessage,
+        customMessage: masivBorrowUsdcMessage,
         customForumLink: AvalancheRenewalForumLink,
       },
     ],
