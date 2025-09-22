@@ -58,11 +58,21 @@ const isSelfVerificationCampaign = (action: MeritAction): boolean => {
   return selfCampaignConfig.has(action) && ENABLE_SELF_CAMPAIGN;
 };
 
-const isCeloSupplyMultipleBorrowUsdt = (actions: MeritAction[]): boolean => {
-  return actions.includes(MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT);
-};
 const isMultipleCampaigns = (actions: MeritAction[]): boolean => {
   return actions.length > 1;
+};
+const getRemainingMessagesWhenCombined = (
+  actions: MeritAction[],
+  mainAction: MeritAction,
+  isCombined: boolean,
+  actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>
+): string => {
+  if (!isCombined) {
+    return '';
+  }
+
+  const otherAction = actions.find((action) => action !== mainAction);
+  return otherAction ? actionMessages[otherAction]?.customMessage || '' : '';
 };
 
 const getCampaignConfig = (action: MeritAction): CampaignConfig => {
@@ -95,17 +105,22 @@ export const MeritIncentivesTooltipContent = ({
 
     variants?: { selfAPY: number | null };
     activeActions: MeritAction[];
+    isCombinedMeritIncentives: boolean;
     actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>;
   };
 }) => {
   const theme = useTheme();
   const typographyVariant = 'secondary12';
   const meritIncentivesFormatted = getSymbolMap(meritIncentives);
-
+  const isCombinedMeritIncentives = meritIncentives.isCombinedMeritIncentives;
   const campaignConfig = getCampaignConfig(meritIncentives.action);
   const selfConfig = selfCampaignConfig.get(meritIncentives.action);
-  const celoSupplyMultipleBorrowUsdtCampaign = isCeloSupplyMultipleBorrowUsdt(
-    meritIncentives.activeActions
+
+  const remainingCustomMessage = getRemainingMessagesWhenCombined(
+    meritIncentives.activeActions,
+    meritIncentives.action,
+    isCombinedMeritIncentives,
+    meritIncentives.actionMessages
   );
 
   return (
@@ -188,14 +203,9 @@ export const MeritIncentivesTooltipContent = ({
           </Typography>
         </>
       )}
-      {celoSupplyMultipleBorrowUsdtCampaign && (
+      {isMultipleCampaigns(meritIncentives.activeActions) && remainingCustomMessage && (
         <Typography variant="caption" color="text.secondary">
-          <Trans>
-            {
-              meritIncentives.actionMessages?.[MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT]
-                ?.customMessage
-            }
-          </Trans>
+          <Trans>{remainingCustomMessage}</Trans>
         </Typography>
       )}
       {meritIncentives.customMessage ? (
@@ -352,7 +362,7 @@ export const MeritIncentivesTooltipContent = ({
               height={24}
               caption={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  {celoSupplyMultipleBorrowUsdtCampaign ? (
+                  {isCombinedMeritIncentives ? (
                     <Typography variant={typographyVariant}>Merit Incentives Combined</Typography>
                   ) : (
                     <Typography variant={typographyVariant}>Merit Incentives</Typography>
@@ -379,7 +389,7 @@ export const MeritIncentivesTooltipContent = ({
                 height={24}
                 caption={
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    {celoSupplyMultipleBorrowUsdtCampaign ? (
+                    {isCombinedMeritIncentives ? (
                       <Typography variant={typographyVariant}>Merit Incentives Combined</Typography>
                     ) : (
                       <Typography variant={typographyVariant}>Merit Incentives</Typography>

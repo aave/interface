@@ -752,9 +752,14 @@ export const useMeritIncentives = ({
 
       let totalMeritAPR: number | null = null;
       let totalSelfAPR: number | null = null;
+      const totalAmountIncentivesCampaigns: MeritAction[] = [];
 
       for (const incentive of incentives) {
         const standardAPR = data.actionsAPR[incentive.action];
+
+        if (standardAPR !== null && standardAPR !== undefined && standardAPR > 0) {
+          totalAmountIncentivesCampaigns.push(incentive.action);
+        }
         if (standardAPR == null) continue;
 
         if (totalMeritAPR === null) totalMeritAPR = 0;
@@ -782,25 +787,35 @@ export const useMeritIncentives = ({
       }, 0);
 
       const isBorrow = protocolAction === ProtocolAction.borrow;
+      const isCombinedMeritIncentives: boolean = totalAmountIncentivesCampaigns.length > 1;
+
       const totalAPY = isBorrow
         ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - (selfIncentivesAPY ?? 0)
         : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY + (selfIncentivesAPY ?? 0);
+
+      let finalAction: MeritAction | undefined = undefined;
+      if (totalAmountIncentivesCampaigns.length >= 1) {
+        finalAction = totalAmountIncentivesCampaigns[0];
+      }
+
+      const actionMessages = incentives.reduce((acc, incentive) => {
+        acc[incentive.action] = {
+          customMessage: incentive.customMessage,
+          customForumLink: incentive.customForumLink,
+        };
+        return acc;
+      }, {} as Record<string, { customMessage?: string; customForumLink?: string }>);
 
       return {
         incentiveAPR: meritIncentivesAPY.toString(),
         rewardTokenAddress: incentives[0].rewardTokenAddress,
         rewardTokenSymbol: incentives[0].rewardTokenSymbol,
-        activeActions: incentives.map((incentive) => incentive.action),
-        actionMessages: incentives.reduce((acc, incentive) => {
-          acc[incentive.action] = {
-            customMessage: incentive.customMessage,
-            customForumLink: incentive.customForumLink,
-          };
-          return acc;
-        }, {} as Record<string, { customMessage?: string; customForumLink?: string }>),
-        action: incentives[0].action,
-        customMessage: incentives[0].customMessage,
-        customForumLink: incentives[0].customForumLink,
+        activeActions: totalAmountIncentivesCampaigns,
+        isCombinedMeritIncentives,
+        actionMessages: actionMessages,
+        action: finalAction,
+        customMessage: finalAction ? actionMessages[finalAction]?.customMessage : undefined,
+        customForumLink: finalAction ? actionMessages[finalAction]?.customForumLink : undefined,
         variants: { selfAPY: selfIncentivesAPY },
 
         breakdown: {
@@ -819,6 +834,7 @@ export const useMeritIncentives = ({
         breakdown: MeritIncentivesBreakdown;
 
         activeActions: MeritAction[];
+        isCombinedMeritIncentives: boolean;
         actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>;
         variants: { selfAPY: number | null };
       };
