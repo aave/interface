@@ -407,7 +407,9 @@ export const SwitchAssetInput = ({
                     <ExternalTokenIcon
                       symbol={asset.symbol}
                       logoURI={asset.logoURI}
-                      sx={{ mr: 2, width: 28, height: 28 }}
+                      height="28px"
+                      width="28px"
+                      sx={{ mr: 2 }}
                     />
                     <ListItemText
                       sx={{ flexGrow: 0 }}

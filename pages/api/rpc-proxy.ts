@@ -45,6 +45,11 @@ const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
 };
 
 function getRpcUrl(chainId: number): string | null {
+  // Temp patch for Plasma
+  if (chainId === 9745) {
+    return 'https://rpc.plasma.to';
+  }
+
   const config = NETWORK_CONFIG[chainId];
   if (!config) return null;
   return `https://${config.network}.g.alchemy.com/v2/${config.apiKey}`;

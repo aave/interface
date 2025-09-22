@@ -12,6 +12,7 @@ import {
   GovernanceV3Linea,
   GovernanceV3Metis,
   GovernanceV3Optimism,
+  GovernanceV3Plasma,
   GovernanceV3Polygon,
   GovernanceV3Scroll,
   GovernanceV3Soneium,
@@ -144,6 +145,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.sonic]: GovernanceV3Sonic.PC_DATA_HELPER,
       [ChainId.celo]: GovernanceV3Celo.PC_DATA_HELPER,
       [ChainId.soneium]: GovernanceV3Soneium.PC_DATA_HELPER,
+      [9745]: GovernanceV3Plasma.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
