@@ -12,8 +12,9 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AssetCategory } from 'src/modules/markets/utils/assetCategories';
+import { useRootStore } from 'src/store/root';
 
 interface AssetCategoryMultiSelectProps {
   selectedCategories: AssetCategory[];
@@ -44,6 +45,11 @@ export const AssetCategoryMultiSelect = ({
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const currentMarket = useRootStore((store) => store.currentMarket);
+
+  useEffect(() => {
+    onCategoriesChange([]);
+  }, [currentMarket, onCategoriesChange]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
