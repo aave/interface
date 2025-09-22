@@ -1,14 +1,73 @@
 import { formatUnits } from 'ethers/lib/utils';
-import { fetchIconSymbolAndName, IconSymbolInterface } from 'src/ui-config/reservePatches';
+import { generateCoWExplorerLink } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
+import { NetworkConfig } from 'src/ui-config/networksConfig';
 
 import {
   hasAmountAndReserve,
   hasCollateralReserve,
-  hasPrincipalReserve,
-  hasReserve,
-  hasSwapBorrowRate,
+  hasSrcOrDestToken,
+  isCowSwapTransaction,
+  isSDKTransaction,
   TransactionHistoryItemUnion,
 } from './types';
+
+//Get timestamp for sdk or cowswap transaction
+export const getTransactionTimestamp = (transaction: TransactionHistoryItemUnion): number => {
+  if (isSDKTransaction(transaction)) {
+    return new Date(transaction.timestamp).getTime() / 1000;
+  }
+  return transaction.timestamp;
+};
+// Get action for sdk or cowswap transaction
+export const getTransactionAction = (transaction: TransactionHistoryItemUnion): string => {
+  if (isSDKTransaction(transaction)) {
+    return transaction.__typename;
+  }
+  return transaction.action;
+};
+
+// Get txHash for sdk or cowswap transaction
+export const getTransactionTxHash = (
+  transaction: TransactionHistoryItemUnion
+): string | undefined => {
+  if (isSDKTransaction(transaction)) {
+    return transaction.txHash;
+  }
+  // for cowswap, there is no txHash, return undefined
+  return undefined;
+};
+
+// Get id for sdk or cowswap transaction
+export const getTransactionId = (transaction: TransactionHistoryItemUnion): string => {
+  if (isSDKTransaction(transaction)) {
+    // For sdk transactions, use the txHash as id
+    return transaction.txHash;
+  }
+  return transaction.id;
+};
+
+// Get explorer link for sdk or cowswap transaction
+export const getExplorerLink = (
+  transaction: TransactionHistoryItemUnion,
+  currentNetworkConfig: NetworkConfig
+) => {
+  const action = getTransactionAction(transaction);
+
+  if (
+    (action === 'CowSwap' || action === 'CowCollateralSwap') &&
+    currentNetworkConfig.wagmiChain.id
+  ) {
+    const transactionId = getTransactionId(transaction);
+    return generateCoWExplorerLink(currentNetworkConfig.wagmiChain.id, transactionId);
+  }
+
+  const txHash = getTransactionTxHash(transaction);
+  if (!txHash) {
+    return undefined;
+  }
+
+  return currentNetworkConfig.explorerLinkBuilder({ tx: txHash });
+};
 
 export const unixTimestampToFormattedTime = ({ unixTimestamp }: { unixTimestamp: number }) => {
   const date = new Date(unixTimestamp * 1000);
@@ -39,20 +98,14 @@ export const groupByDate = (
   transactions: TransactionHistoryItemUnion[]
 ): Record<string, TransactionHistoryItemUnion[]> => {
   return transactions.reduce((grouped, transaction) => {
+    const timestamp = getTransactionTimestamp(transaction);
+
     const date = new Intl.DateTimeFormat(undefined, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-    }).format(
-      new Date(
-        // Check if timestamp is in seconds (Unix timestamp) or milliseconds
-        // Unix timestamps are typically 10 digits (seconds since 1970)
-        // While JavaScript timestamps are 13 digits (milliseconds since 1970)
-        transaction.timestamp < 10000000000
-          ? transaction.timestamp * 1000 // Convert seconds to milliseconds
-          : transaction.timestamp // Already in milliseconds
-      )
-    );
+    }).format(new Date(timestamp));
+
     if (!grouped[date]) {
       grouped[date] = [];
     }
@@ -60,34 +113,34 @@ export const groupByDate = (
     return grouped;
   }, {} as Record<string, TransactionHistoryItemUnion[]>);
 };
+//! CHECKEA ESTO
+// interface MappedReserveData {
+//   underlyingAsset: string;
+//   name: string;
+//   symbol: string;
+//   iconSymbol: string;
+// }
 
-interface MappedReserveData {
-  underlyingAsset: string;
-  name: string;
-  symbol: string;
-  iconSymbol: string;
-}
+// export const fetchIconSymbolAndNameHistorical = ({
+//   underlyingAsset,
+//   symbol,
+//   name,
+// }: IconSymbolInterface): MappedReserveData => {
+//   // Re-use general patches
+//   const reservePatch = fetchIconSymbolAndName({ underlyingAsset, symbol, name });
 
-export const fetchIconSymbolAndNameHistorical = ({
-  underlyingAsset,
-  symbol,
-  name,
-}: IconSymbolInterface): MappedReserveData => {
-  // Re-use general patches
-  const reservePatch = fetchIconSymbolAndName({ underlyingAsset, symbol, name });
+//   // Fix AMM market names and symbol, specific to tx history
+//   const updatedPatch = {
+//     underlyingAsset,
+//     symbol: reservePatch.symbol.includes('Amm')
+//       ? reservePatch.iconSymbol.replace(/_/g, '')
+//       : reservePatch.symbol,
+//     name: reservePatch.name ?? (name || ''),
+//     iconSymbol: reservePatch.iconSymbol || '',
+//   };
 
-  // Fix AMM market names and symbol, specific to tx history
-  const updatedPatch = {
-    underlyingAsset,
-    symbol: reservePatch.symbol.includes('Amm')
-      ? reservePatch.iconSymbol.replace(/_/g, '')
-      : reservePatch.symbol,
-    name: reservePatch.name ?? (name || ''),
-    iconSymbol: reservePatch.iconSymbol || '',
-  };
-
-  return updatedPatch;
-};
+//   return updatedPatch;
+// };
 
 interface FormatTransactionDataParams {
   data: TransactionHistoryItemUnion[];
@@ -100,58 +153,261 @@ export const formatTransactionData = ({
   csv,
 }: FormatTransactionDataParams): TransactionHistoryItemUnion[] => {
   return data.map((transaction: TransactionHistoryItemUnion) => {
-    // Using any since txn objects can have different fields based on ActionFields, using union type + type guards gets extrenely complicated for formatting newTransaction
-    //    since csv requires reserves formatted as strings with escape characters
+    // Structure of the newTransaction object following the actual CSV/JSON order
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const newTransaction: any = { ...transaction };
+    const newTransaction: any = {
+      action: '',
+      fromState: undefined,
+      id: '',
+      reserve: undefined,
+      timestamp: 0,
+      toState: undefined,
+      txHash: undefined,
+      amount: undefined,
+      assetPriceUSD: undefined,
+      // For CowSwap
+      underlyingSrcToken: undefined,
+      srcAToken: undefined,
+      underlyingDestToken: undefined,
+      destAToken: undefined,
+      srcAmount: undefined,
+      destAmount: undefined,
+      status: undefined,
+      orderId: undefined,
+      chainId: undefined,
+    };
 
-    // Format amounts in reserve decimals, and stringify reserve objects to fix CSV formatting
-    if (hasAmountAndReserve(transaction)) {
-      newTransaction.amount = formatUnits(transaction.amount, transaction.reserve.decimals);
-    }
-    if (hasReserve(transaction) && csv) {
-      const jsonString = JSON.stringify(transaction.reserve);
-      newTransaction.reserve = `"${jsonString.replace(/"/g, '""')}"`;
-    }
+    if (isSDKTransaction(transaction)) {
+      newTransaction.id = transaction.txHash;
+      newTransaction.txHash = transaction.txHash;
+      newTransaction.timestamp = new Date(transaction.timestamp).getTime() / 1000;
 
-    if (hasCollateralReserve(transaction) && transaction.collateralAmount) {
-      newTransaction.collateralAmount = formatUnits(
-        transaction.collateralAmount,
-        transaction.collateralReserve.decimals
-      );
-      if (csv) {
-        const jsonString = JSON.stringify(transaction.collateralReserve);
-        newTransaction.collateralReserve = `"${jsonString.replace(/"/g, '""')}"`;
+      if (hasAmountAndReserve(transaction)) {
+        const { amount, reserve } = transaction;
+
+        // Mapear action names
+        switch (transaction.__typename) {
+          case 'UserSupplyTransaction':
+            newTransaction.action = 'Supply';
+            break;
+          case 'UserWithdrawTransaction':
+            newTransaction.action = 'Withdraw';
+            break;
+          case 'UserBorrowTransaction':
+            newTransaction.action = 'Borrow';
+            break;
+          case 'UserRepayTransaction':
+            newTransaction.action = 'Repay';
+            break;
+        }
+
+        try {
+          if (amount.amount.raw && reserve.underlyingToken.decimals) {
+            newTransaction.amount = formatUnits(
+              amount.amount.raw,
+              reserve.underlyingToken.decimals
+            );
+          } else if (amount.amount.value) {
+            newTransaction.amount = amount.amount.value;
+          }
+        } catch (error) {
+          console.warn('Error formatting SDK amount:', error);
+          newTransaction.amount = amount.amount.value || amount.amount.raw;
+        }
+
+        newTransaction.assetPriceUSD = reserve.usdExchangeRate;
+
+        // ✅ Formatear reserve como en el original
+        const reserveInfo = {
+          name: reserve.underlyingToken.name,
+          symbol: reserve.underlyingToken.symbol,
+          decimals: reserve.underlyingToken.decimals,
+          underlyingAsset: reserve.underlyingToken.address,
+        };
+
+        if (csv) {
+          newTransaction.reserve = `"${JSON.stringify(reserveInfo).replace(/"/g, '""')}"`;
+        } else {
+          newTransaction.reserve = reserveInfo;
+        }
+
+        delete newTransaction.underlyingSrcToken;
+        delete newTransaction.srcAToken;
+        delete newTransaction.underlyingDestToken;
+        delete newTransaction.destAToken;
+        delete newTransaction.srcAmount;
+        delete newTransaction.destAmount;
+        delete newTransaction.status;
+        delete newTransaction.orderId;
+        delete newTransaction.chainId;
+        delete newTransaction.fromState;
+        delete newTransaction.toState;
+      }
+
+      // For UsageAsCollateral transactions
+      else if (transaction.__typename === 'UserUsageAsCollateralTransaction') {
+        const { enabled, reserve } = transaction;
+
+        newTransaction.action = 'UsageAsCollateral';
+        newTransaction.fromState = !enabled;
+        newTransaction.toState = enabled;
+
+        const reserveInfo = {
+          name: reserve.underlyingToken.name,
+          symbol: reserve.underlyingToken.symbol,
+          underlyingAsset: reserve.underlyingToken.address,
+        };
+
+        if (csv) {
+          newTransaction.reserve = `"${JSON.stringify(reserveInfo).replace(/"/g, '""')}"`;
+        } else {
+          newTransaction.reserve = reserveInfo;
+        }
+
+        delete newTransaction.amount;
+        delete newTransaction.assetPriceUSD;
+        delete newTransaction.underlyingSrcToken;
+        delete newTransaction.srcAToken;
+        delete newTransaction.underlyingDestToken;
+        delete newTransaction.destAToken;
+        delete newTransaction.srcAmount;
+        delete newTransaction.destAmount;
+        delete newTransaction.status;
+        delete newTransaction.orderId;
+        delete newTransaction.chainId;
+      }
+
+      // For LiquidationCall transactions
+      else if (hasCollateralReserve(transaction)) {
+        const { collateral, debtRepaid } = transaction;
+
+        newTransaction.action = 'LiquidationCall';
+
+        if (collateral.amount) {
+          try {
+            newTransaction.collateralAmount = formatUnits(
+              collateral.amount.amount.raw || collateral.amount.amount.value,
+              collateral.reserve.underlyingToken.decimals
+            );
+          } catch (error) {
+            newTransaction.collateralAmount = collateral.amount.amount.value;
+          }
+          newTransaction.collateralAmountUSD = collateral.amount.usd;
+        }
+
+        if (debtRepaid.amount) {
+          try {
+            newTransaction.debtRepaidAmount = formatUnits(
+              debtRepaid.amount.amount.raw || debtRepaid.amount.amount.value,
+              debtRepaid.reserve.underlyingToken.decimals
+            );
+          } catch (error) {
+            newTransaction.debtRepaidAmount = debtRepaid.amount.amount.value;
+          }
+          newTransaction.debtRepaidAmountUSD = debtRepaid.amount.usd;
+        }
+
+        const collateralReserveInfo = {
+          name: collateral.reserve.underlyingToken.name,
+          symbol: collateral.reserve.underlyingToken.symbol,
+          underlyingAsset: collateral.reserve.underlyingToken.address,
+        };
+        const debtReserveInfo = {
+          name: debtRepaid.reserve.underlyingToken.name,
+          symbol: debtRepaid.reserve.underlyingToken.symbol,
+          underlyingAsset: debtRepaid.reserve.underlyingToken.address,
+        };
+
+        if (csv) {
+          newTransaction.collateralReserve = `"${JSON.stringify(collateralReserveInfo).replace(
+            /"/g,
+            '""'
+          )}"`;
+          newTransaction.debtReserve = `"${JSON.stringify(debtReserveInfo).replace(/"/g, '""')}"`;
+        } else {
+          newTransaction.collateralReserve = collateralReserveInfo;
+          newTransaction.debtReserve = debtReserveInfo;
+        }
+
+        delete newTransaction.reserve;
+        delete newTransaction.amount;
+        delete newTransaction.assetPriceUSD;
+        delete newTransaction.underlyingSrcToken;
+        delete newTransaction.srcAToken;
+        delete newTransaction.underlyingDestToken;
+        delete newTransaction.destAToken;
+        delete newTransaction.srcAmount;
+        delete newTransaction.destAmount;
+        delete newTransaction.status;
+        delete newTransaction.orderId;
+        delete newTransaction.chainId;
+        delete newTransaction.fromState;
+        delete newTransaction.toState;
       }
     }
 
-    if (hasPrincipalReserve(transaction) && transaction.principalAmount) {
-      newTransaction.principalAmount = formatUnits(
-        transaction.principalAmount,
-        transaction.principalReserve.decimals
-      );
-      if (csv) {
-        const jsonString = JSON.stringify(transaction.principalReserve);
-        newTransaction.principalReserve = `"${jsonString.replace(/"/g, '""')}"`;
+    // For CowSwap transactions
+    else if (isCowSwapTransaction(transaction) && hasSrcOrDestToken(transaction)) {
+      const {
+        underlyingSrcToken,
+        underlyingDestToken,
+        srcAmount,
+        destAmount,
+        status,
+        chainId,
+        orderId,
+        action,
+      } = transaction;
+
+      newTransaction.action = action;
+      newTransaction.id = transaction.id;
+      newTransaction.timestamp = transaction.timestamp;
+      newTransaction.status = status;
+      newTransaction.orderId = orderId;
+      newTransaction.chainId = chainId;
+
+      try {
+        newTransaction.srcAmount = formatUnits(srcAmount, underlyingSrcToken.decimals);
+        newTransaction.destAmount = formatUnits(destAmount, underlyingDestToken.decimals);
+      } catch (error) {
+        console.warn('Error formatting CowSwap amounts:', error);
+        newTransaction.srcAmount = srcAmount;
+        newTransaction.destAmount = destAmount;
       }
-    }
 
-    if (hasSwapBorrowRate(transaction)) {
-      // RAY units (10^27) * 100 to express as percentage
-      newTransaction.variableBorrowRate = formatUnits(transaction.variableBorrowRate, 25) + ' %';
-      newTransaction.stableBorrowRate = formatUnits(transaction.stableBorrowRate, 25) + ' %';
-    }
+      const srcTokenInfo = {
+        underlyingAsset: underlyingSrcToken.underlyingAsset,
+        name: underlyingSrcToken.name,
+        symbol: underlyingSrcToken.symbol,
+        decimals: underlyingSrcToken.decimals,
+      };
+      const destTokenInfo = {
+        underlyingAsset: underlyingDestToken.underlyingAsset,
+        name: underlyingDestToken.name,
+        symbol: underlyingDestToken.symbol,
+        decimals: underlyingDestToken.decimals,
+      };
 
-    // Match V2 action names with V3
-    if (transaction.action === 'Deposit') {
-      newTransaction.action = 'Supply';
-    }
-    if (transaction.action === 'Swap') {
-      newTransaction.action = 'SwapBorrowRate';
-    }
-    // Consistent with UI
-    if (transaction.action === 'RedeemUnderlying') {
-      newTransaction.action = 'Withdraw';
+      if (csv) {
+        newTransaction.underlyingSrcToken = `"${JSON.stringify(srcTokenInfo).replace(/"/g, '""')}"`;
+        newTransaction.underlyingDestToken = `"${JSON.stringify(destTokenInfo).replace(
+          /"/g,
+          '""'
+        )}"`;
+      } else {
+        newTransaction.underlyingSrcToken = srcTokenInfo;
+        newTransaction.underlyingDestToken = destTokenInfo;
+      }
+
+      newTransaction.srcAToken = !!transaction.srcAToken;
+      newTransaction.destAToken = !!transaction.destAToken;
+
+      delete newTransaction.reserve;
+      delete newTransaction.amount;
+      delete newTransaction.assetPriceUSD;
+      delete newTransaction.fromState;
+      delete newTransaction.toState;
+      delete newTransaction.txHash;
     }
 
     return newTransaction;

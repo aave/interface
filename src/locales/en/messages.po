@@ -772,10 +772,6 @@ msgstr "Borrowing power and assets are limited due to Isolation mode."
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 
-#: src/modules/history/actions/BorrowRateModeBlock.tsx
-msgid "Stable"
-msgstr "Stable"
-
 #: src/modules/umbrella/helpers/SharesTooltip.tsx
 msgid "Shares"
 msgstr "Shares"
@@ -991,6 +987,10 @@ msgstr "Withdrawing {symbol}"
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "None"
 msgstr "None"
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Unknown"
+msgstr "Unknown"
 
 #: pages/safety-module.page.tsx
 msgid "We couldn't detect a wallet. Connect a wallet to stake and view your balance."
@@ -1863,10 +1863,6 @@ msgstr "Docs"
 msgid "User does not have outstanding stable rate debt on this reserve"
 msgstr "User does not have outstanding stable rate debt on this reserve"
 
-#: src/modules/history/actions/ActionDetails.tsx
-msgid "Borrow rate change"
-msgstr "Borrow rate change"
-
 #: src/modules/bridge/BridgeTopPanel.tsx
 msgid "Bridge history"
 msgstr "Bridge history"
@@ -1902,10 +1898,6 @@ msgstr "Asset is not borrowable in isolation mode"
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 msgstr "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
-
-#: src/modules/history/HistoryWrapper.tsx
-msgid "Transaction history is not currently available for this market"
-msgstr "Transaction history is not currently available for this market"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -2410,10 +2402,6 @@ msgstr "Borrowing is disabled due to an Aave community decision. <0>More details
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Collateral usage"
 msgstr "Collateral usage"
-
-#: src/modules/history/actions/BorrowRateModeBlock.tsx
-msgid "Variable"
-msgstr "Variable"
 
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
@@ -3338,8 +3326,6 @@ msgstr "Selected supply assets"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/history/actions/BorrowRateModeBlock.tsx
-#: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
@@ -3415,7 +3401,6 @@ msgstr "Review tx"
 msgid "NAY"
 msgstr "NAY"
 
-#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "for"
 msgstr "for"
@@ -3771,6 +3756,10 @@ msgstr "Restake {symbol}"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"
 msgstr "Not a valid address"
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Transaction details not available"
+msgstr "Transaction details not available"
 
 #: src/components/WalletConnection/ReadOnlyModal.tsx
 msgid "Track wallet"

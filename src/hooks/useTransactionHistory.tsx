@@ -1,3 +1,10 @@
+import {
+  chainId,
+  evmAddress,
+  OrderDirection,
+  PageSize,
+  useUserTransactionHistory,
+} from '@aave/react';
 import { OrderBookApi } from '@cowprotocol/cow-sdk';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -6,6 +13,7 @@ import {
   HEADER_WIDGET_APP_CODE,
 } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
+import { getTransactionAction } from 'src/modules/history/helpers';
 import {
   actionFilterMap,
   hasCollateralReserve,
@@ -14,12 +22,8 @@ import {
   hasSrcOrDestToken,
   HistoryFilters,
   TransactionHistoryItemUnion,
+  UserTransactionItem,
 } from 'src/modules/history/types';
-import {
-  USER_TRANSACTIONS_V2,
-  USER_TRANSACTIONS_V2_WITH_POOL,
-} from 'src/modules/history/v2-user-history-query';
-import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { ERC20Service } from 'src/services/Erc20Service';
 import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
@@ -50,21 +54,23 @@ export const applyTxHistoryFilters = ({
       let srcToken = '';
       let destToken = '';
 
+      //SDK structure
       if (hasCollateralReserve(txn)) {
-        collateralSymbol = txn.collateralReserve.symbol.toLowerCase();
-        collateralName = txn.collateralReserve.name.toLowerCase();
+        collateralSymbol = txn.collateral.reserve.underlyingToken.symbol.toLowerCase();
+        collateralName = txn.collateral.reserve.underlyingToken.name.toLowerCase();
       }
 
       if (hasPrincipalReserve(txn)) {
-        principalSymbol = txn.principalReserve.symbol.toLowerCase();
-        principalName = txn.principalReserve.name.toLowerCase();
+        principalSymbol = txn.debtRepaid.reserve.underlyingToken.symbol.toLowerCase();
+        principalName = txn.debtRepaid.reserve.underlyingToken.name.toLowerCase();
       }
 
       if (hasReserve(txn)) {
-        symbol = txn.reserve.symbol.toLowerCase();
-        name = txn.reserve.name.toLowerCase();
+        symbol = txn.reserve.underlyingToken.symbol.toLowerCase();
+        name = txn.reserve.underlyingToken.name.toLowerCase();
       }
 
+      // CowSwap structure
       if (hasSrcOrDestToken(txn)) {
         srcToken = txn.underlyingSrcToken.symbol.toLowerCase();
         destToken = txn.underlyingDestToken.symbol.toLowerCase();
@@ -92,7 +98,8 @@ export const applyTxHistoryFilters = ({
   // apply txn type filter
   if (filterQuery.length > 0) {
     filteredTxns = filteredTxns.filter((txn: TransactionHistoryItemUnion) => {
-      if (filterQuery.includes(actionFilterMap(txn.action))) {
+      const action = getTransactionAction(txn);
+      if (filterQuery.includes(actionFilterMap(action))) {
         return true;
       } else {
         return false;
@@ -108,89 +115,44 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   );
 
   const { reserves, loading: reservesLoading } = useAppDataContext();
-
   const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 
-  // Handle subgraphs with multiple markets (currently only ETH V2 and ETH V2 AMM)
-  let selectedPool: string | undefined = undefined;
-  if (!currentMarketData.v3 && currentMarketData.marketTitle === 'Ethereum') {
-    selectedPool = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER.toLowerCase();
-  }
+  const isAccountValid = account && account.length > 0;
 
-  interface TransactionHistoryParams {
-    account: string;
-    subgraphUrl: string;
-    first: number;
-    skip: number;
-    v3: boolean;
-    pool?: string;
-  }
-  const fetchTransactionHistory = async ({
-    account,
-    subgraphUrl,
-    first,
-    skip,
-    v3,
-    pool,
-  }: TransactionHistoryParams) => {
-    let query = '';
-    if (v3) {
-      query = USER_TRANSACTIONS_V3;
-    } else if (pool) {
-      query = USER_TRANSACTIONS_V2_WITH_POOL;
-    } else {
-      query = USER_TRANSACTIONS_V2;
-    }
+  const {
+    data: sdkData,
+    loading: sdkLoading,
+    error: sdkError,
+  } = useUserTransactionHistory({
+    market: evmAddress(currentMarketData.addresses.LENDING_POOL),
+    user: isAccountValid
+      ? evmAddress(account as string)
+      : evmAddress('0x0000000000000000000000000000000000000000'),
+    chainId: chainId(currentMarketData.chainId),
+    orderBy: { date: OrderDirection.Desc },
+    pageSize: PageSize.Fifty,
+    cursor: null,
+  });
 
-    const requestBody = {
-      query,
-      variables: { userAddress: account, first, skip, pool },
-    };
-    try {
-      const response = await fetch(subgraphUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Network error: ${response.status} - ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      return data.data?.userTransactions || [];
-    } catch (error) {
-      console.error('Error fetching transaction history:', error);
+  const getSDKTransactions = (): UserTransactionItem[] => {
+    if (!sdkData?.items) {
       return [];
     }
+    return sdkData.items;
   };
 
   const fetchForDownload = async ({
     searchQuery,
     filterQuery,
   }: HistoryFilters): Promise<TransactionHistoryItemUnion[]> => {
-    const allTransactions = [];
-    const batchSize = 100;
-    let skip = 0;
-    let currentBatchSize = batchSize;
+    const sdkTransactions = getSDKTransactions();
 
-    // Pagination over multiple sources is not perfect but since this is not a user facing feature, it's not noticeable
-    while (currentBatchSize === batchSize) {
-      const currentBatch = await fetchTransactionHistory({
-        first: batchSize,
-        skip: skip,
-        account,
-        subgraphUrl: currentMarketData.subgraphUrl ?? '',
-        v3: !!currentMarketData.v3,
-        pool: selectedPool,
-      });
-      const cowSwapOrders = await fetchCowSwapsHistory(batchSize, skip * batchSize);
-      allTransactions.push(...currentBatch, ...cowSwapOrders);
-      currentBatchSize = currentBatch.length;
-      skip += batchSize;
-    }
+    const allCowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, 0);
+
+    const allTransactions: TransactionHistoryItemUnion[] = [
+      ...sdkTransactions,
+      ...allCowSwapOrders,
+    ];
 
     const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: allTransactions });
     return filteredTxns;
@@ -339,8 +301,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     ).then((txns) => txns.filter((txn) => txn !== null));
   };
 
-  const PAGE_SIZE = 100;
-  // Pagination over multiple sources is not perfect but since we are using an infinite query, won't be noticeable
+  const PAGE_SIZE = 50; //Limit SDK and CowSwap to same page size
+
   const {
     data,
     fetchNextPage,
@@ -352,18 +314,19 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   } = useInfiniteQuery({
     queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
     queryFn: async ({ pageParam = 0 }) => {
-      const response = await fetchTransactionHistory({
-        account,
-        subgraphUrl: currentMarketData.subgraphUrl ?? '',
-        first: PAGE_SIZE,
-        skip: pageParam,
-        v3: !!currentMarketData.v3,
-        pool: selectedPool,
+      const sdkTransactions = getSDKTransactions();
+
+      const cowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, pageParam);
+
+      const allTransactions: TransactionHistoryItemUnion[] = [...sdkTransactions, ...cowSwapOrders];
+
+      return allTransactions.sort((a, b) => {
+        const aTime = '__typename' in a ? new Date(a.timestamp).getTime() : a.timestamp * 1000;
+        const bTime = '__typename' in b ? new Date(b.timestamp).getTime() : b.timestamp * 1000;
+        return bTime - aTime;
       });
-      const cowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, pageParam * PAGE_SIZE);
-      return [...response, ...cowSwapOrders].sort((a, b) => b.timestamp - a.timestamp);
     },
-    enabled: !!account && !!currentMarketData.subgraphUrl && !reservesLoading && !!reserves,
+    enabled: !!account && !reservesLoading && !!reserves && !sdkLoading,
     getNextPageParam: (
       lastPage: TransactionHistoryItemUnion[],
       allPages: TransactionHistoryItemUnion[][]
@@ -403,10 +366,9 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-    isLoading: reservesLoading || isLoadingHistory,
-    isError,
-    error,
+    isLoading: reservesLoading || isLoadingHistory || sdkLoading,
+    isError: isError || !!sdkError,
+    error: error || sdkError,
     fetchForDownload,
-    subgraphUrl: currentMarketData.subgraphUrl,
   };
 };

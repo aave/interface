@@ -4,15 +4,18 @@ import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/
 import React, { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
-import { generateCoWExplorerLink } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { useRootStore } from 'src/store/root';
-import { NetworkConfig } from 'src/ui-config/networksConfig';
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
-import { unixTimestampToFormattedTime } from './helpers';
-import { ActionFields, TransactionHistoryItem } from './types';
+import {
+  getExplorerLink,
+  getTransactionAction,
+  getTransactionTimestamp,
+  unixTimestampToFormattedTime,
+} from './helpers';
+import { TransactionHistoryItemUnion } from './types';
 
 function ActionTitle({ action }: { action: string }) {
   return (
@@ -23,26 +26,8 @@ function ActionTitle({ action }: { action: string }) {
 }
 
 interface TransactionHistoryItemProps {
-  transaction: TransactionHistoryItem & ActionFields[keyof ActionFields];
+  transaction: TransactionHistoryItemUnion;
 }
-
-export const getExplorerLink = (
-  transaction: TransactionHistoryItem & ActionFields[keyof ActionFields],
-  currentNetworkConfig: NetworkConfig
-) => {
-  if (
-    (transaction.action === 'CowSwap' || transaction.action === 'CowCollateralSwap') &&
-    currentNetworkConfig.wagmiChain.id
-  ) {
-    return generateCoWExplorerLink(currentNetworkConfig.wagmiChain.id, transaction.id);
-  }
-
-  if (!('txHash' in transaction)) {
-    return undefined;
-  }
-
-  return currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
-};
 
 function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
   const [copyStatus, setCopyStatus] = useState(false);
@@ -51,9 +36,10 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
   );
 
   const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
+  const action = getTransactionAction(transaction);
+  const timestamp = getTransactionTimestamp(transaction);
 
   const theme = useTheme();
-
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
@@ -89,9 +75,9 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
             mr: 6,
           }}
         >
-          <ActionTitle action={transaction.action} />
+          <ActionTitle action={action} />
           <Typography variant="caption" color="text.muted">
-            {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
+            {unixTimestampToFormattedTime({ unixTimestamp: timestamp })}
           </Typography>
         </Box>
 
