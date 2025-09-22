@@ -474,6 +474,16 @@ export const MarketSwitcher = () => {
                   {marketNaming.testChainName}
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  {market.externalUrl && (
+                    <SvgIcon
+                      sx={{
+                        fontSize: '16px',
+                        color: 'text.muted',
+                      }}
+                    >
+                      <ExternalLinkIcon />
+                    </SvgIcon>
+                  )}
                   <Tooltip title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
                     <IconButton
                       size="small"
@@ -498,16 +508,6 @@ export const MarketSwitcher = () => {
                       </SvgIcon>
                     </IconButton>
                   </Tooltip>
-                  {market.externalUrl && (
-                    <SvgIcon
-                      sx={{
-                        fontSize: '16px',
-                        color: 'text.muted',
-                      }}
-                    >
-                      <ExternalLinkIcon />
-                    </SvgIcon>
-                  )}
                 </Box>
               </ListItemText>
             </MenuItem>
