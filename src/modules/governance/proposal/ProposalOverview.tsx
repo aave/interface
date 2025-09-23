@@ -197,7 +197,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   if (!_src) return null;
                   const src = /^\.\.\//.test(_src)
                     ? _src.replace(
-                        '../',
+                        /\.\.\//g,
                         'https://raw.githubusercontent.com/aave/aip/main/content/'
                       )
                     : _src;
