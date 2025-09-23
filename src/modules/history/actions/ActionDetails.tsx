@@ -375,7 +375,7 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
           </DarkTooltip>
         </Box>
 
-        {/* ✅ Status para CowSwap */}
+        {/* Status para CowSwap */}
         {isOrderLoading(status) && (
           <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
             <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
