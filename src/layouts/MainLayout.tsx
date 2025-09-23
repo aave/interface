@@ -41,14 +41,14 @@ const getCampaignConfigs = (
   // },
 
   [ChainId.mainnet]: {
-    notifyText: 'Horizon, the RWA market is now live.',
+    notifyText: 'The plasma market is now live',
     buttonText: 'Get Started',
     buttonAction: {
       type: 'function' as const,
-      value: () => openMarket(CustomMarket.proto_horizon_v3),
+      value: () => openMarket(CustomMarket.proto_plasma_v3),
     },
-    bannerVersion: 'horizon-market-v0',
-    icon: '/icons/markets/horizon.svg',
+    bannerVersion: 'plasma-market-v0',
+    icon: '/icons/networks/plasma.svg',
   },
 
   // [ChainId.polygon]: {
