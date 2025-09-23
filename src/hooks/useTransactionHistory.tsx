@@ -5,15 +5,16 @@ import {
   PageSize,
   useUserTransactionHistory,
 } from '@aave/react';
+import { Cursor } from '@aave/types';
 import { OrderBookApi } from '@cowprotocol/cow-sdk';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ADAPTER_APP_CODE,
   HEADER_WIDGET_APP_CODE,
 } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
-import { getTransactionAction } from 'src/modules/history/helpers';
+import { getTransactionAction, getTransactionId } from 'src/modules/history/helpers';
 import {
   actionFilterMap,
   hasCollateralReserve,
@@ -32,6 +33,15 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
 import { useAppDataContext } from './app-data-provider/useAppDataProvider';
+
+const sortTransactionsByTimestampDesc = (
+  a: TransactionHistoryItemUnion,
+  b: TransactionHistoryItemUnion
+) => {
+  const aTime = '__typename' in a ? new Date(a.timestamp).getTime() : a.timestamp * 1000;
+  const bTime = '__typename' in b ? new Date(b.timestamp).getTime() : b.timestamp * 1000;
+  return bTime - aTime;
+};
 
 export const applyTxHistoryFilters = ({
   searchQuery,
@@ -115,6 +125,11 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   );
 
   const { reserves, loading: reservesLoading } = useAppDataContext();
+  const [sdkCursor, setSdkCursor] = useState<Cursor | null>(null);
+  const [sdkTransactions, setSdkTransactions] = useState<UserTransactionItem[]>([]);
+  const sdkTransactionIds = useRef<Set<string>>(new Set());
+  const [isFetchingAllSdkPages, setIsFetchingAllSdkPages] = useState(true);
+  const [hasLoadedInitialSdkPage, setHasLoadedInitialSdkPage] = useState(false);
   const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 
   const isAccountValid = account && account.length > 0;
@@ -131,14 +146,72 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     chainId: chainId(currentMarketData.chainId),
     orderBy: { date: OrderDirection.Desc },
     pageSize: PageSize.Fifty,
-    cursor: null,
+    cursor: sdkCursor,
   });
 
-  const getSDKTransactions = (): UserTransactionItem[] => {
-    if (!sdkData?.items) {
-      return [];
+  useEffect(() => {
+    setSdkCursor(null);
+    setSdkTransactions([]);
+    sdkTransactionIds.current.clear();
+    setIsFetchingAllSdkPages(true);
+    setHasLoadedInitialSdkPage(false);
+  }, [account, currentMarketData.addresses.LENDING_POOL, currentMarketData.chainId]);
+
+  useEffect(() => {
+    if (!sdkData?.items?.length) {
+      if (!sdkLoading && !sdkData?.pageInfo?.next) {
+        setIsFetchingAllSdkPages(false);
+        if (!hasLoadedInitialSdkPage) {
+          setHasLoadedInitialSdkPage(true);
+        }
+      }
+      return;
     }
-    return sdkData.items;
+
+    const newTransactions = sdkData.items.filter((transaction) => {
+      const transactionId = getTransactionId(transaction);
+      if (sdkTransactionIds.current.has(transactionId)) {
+        return false;
+      }
+      sdkTransactionIds.current.add(transactionId);
+      return true;
+    });
+
+    if (newTransactions.length > 0) {
+      setSdkTransactions((prev) => [...prev, ...newTransactions]);
+      if (!hasLoadedInitialSdkPage) {
+        setHasLoadedInitialSdkPage(true);
+      }
+    }
+  }, [sdkData, sdkLoading, hasLoadedInitialSdkPage]);
+
+  useEffect(() => {
+    if (sdkLoading) {
+      setIsFetchingAllSdkPages(true);
+      return;
+    }
+
+    const nextCursor = sdkData?.pageInfo?.next ?? null;
+    if (nextCursor && nextCursor !== sdkCursor) {
+      setIsFetchingAllSdkPages(true);
+      setSdkCursor(nextCursor);
+      return;
+    }
+
+    if (!nextCursor) {
+      setIsFetchingAllSdkPages(false);
+    }
+  }, [sdkData?.pageInfo?.next, sdkLoading, sdkCursor]);
+
+  useEffect(() => {
+    if (sdkError && !hasLoadedInitialSdkPage) {
+      setHasLoadedInitialSdkPage(true);
+      setIsFetchingAllSdkPages(false);
+    }
+  }, [sdkError, hasLoadedInitialSdkPage]);
+
+  const getSDKTransactions = (): UserTransactionItem[] => {
+    return sdkTransactions;
   };
 
   const fetchForDownload = async ({
@@ -314,17 +387,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   } = useInfiniteQuery({
     queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
     queryFn: async ({ pageParam = 0 }) => {
-      const sdkTransactions = getSDKTransactions();
-
       const cowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, pageParam);
-
-      const allTransactions: TransactionHistoryItemUnion[] = [...sdkTransactions, ...cowSwapOrders];
-
-      return allTransactions.sort((a, b) => {
-        const aTime = '__typename' in a ? new Date(a.timestamp).getTime() : a.timestamp * 1000;
-        const bTime = '__typename' in b ? new Date(b.timestamp).getTime() : b.timestamp * 1000;
-        return bTime - aTime;
-      });
+      return cowSwapOrders.sort(sortTransactionsByTimestampDesc);
     },
     enabled: !!account && !reservesLoading && !!reserves && !sdkLoading,
     getNextPageParam: (
@@ -339,6 +403,32 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     },
     initialPageParam: 0,
   });
+
+  const mergedData = useMemo(() => {
+    if (!data) {
+      if (sdkTransactions.length === 0) {
+        return data;
+      }
+
+      return {
+        pageParams: [0],
+        pages: [sdkTransactions.slice().sort(sortTransactionsByTimestampDesc)],
+      };
+    }
+
+    const pagesWithSdk = data.pages.map((page, index) => {
+      if (index === 0) {
+        const combined = [...sdkTransactions, ...page];
+        return combined.sort(sortTransactionsByTimestampDesc);
+      }
+      return page;
+    });
+
+    return {
+      ...data,
+      pages: pagesWithSdk,
+    };
+  }, [data, sdkTransactions]);
 
   // If filter is active, keep fetching until all data is returned so that it's guaranteed all filter results will be returned
   useEffect(() => {
@@ -361,12 +451,14 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     }
   }, [shouldKeepFetching, fetchNextPage, reservesLoading]);
 
+  const isInitialSdkLoading = !hasLoadedInitialSdkPage && (sdkLoading || isFetchingAllSdkPages);
+
   return {
-    data,
+    data: mergedData,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-    isLoading: reservesLoading || isLoadingHistory || sdkLoading,
+    isLoading: reservesLoading || isLoadingHistory || isInitialSdkLoading,
     isError: isError || !!sdkError,
     error: error || sdkError,
     fetchForDownload,

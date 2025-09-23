@@ -9,6 +9,7 @@ import {
   isCowSwapTransaction,
   isSDKTransaction,
   TransactionHistoryItemUnion,
+  UserTransactionItem,
 } from './types';
 
 //Get timestamp for sdk or cowswap transaction
@@ -41,8 +42,42 @@ export const getTransactionTxHash = (
 export const getTransactionId = (transaction: TransactionHistoryItemUnion): string => {
   if (isSDKTransaction(transaction)) {
     // For sdk transactions, use the txHash as id
-    return transaction.txHash;
+    if (
+      transaction.__typename === 'UserSupplyTransaction' ||
+      transaction.__typename === 'UserWithdrawTransaction' ||
+      transaction.__typename === 'UserBorrowTransaction' ||
+      transaction.__typename === 'UserRepayTransaction'
+    ) {
+      return [
+        transaction.txHash,
+        transaction.__typename,
+        transaction.reserve.underlyingToken.address.toLowerCase(),
+      ].join('-');
+    }
+
+    if (transaction.__typename === 'UserUsageAsCollateralTransaction') {
+      return [
+        transaction.txHash,
+        transaction.__typename,
+        transaction.reserve.underlyingToken.address.toLowerCase(),
+        transaction.enabled ? 'enabled' : 'disabled',
+      ].join('-');
+    }
+
+    if (transaction.__typename === 'UserLiquidationCallTransaction') {
+      return [
+        transaction.txHash,
+        transaction.__typename,
+        transaction.collateral.reserve.underlyingToken.address.toLowerCase(),
+        transaction.debtRepaid.reserve.underlyingToken.address.toLowerCase(),
+      ].join('-');
+    }
+
+    const sdkTransaction = transaction as UserTransactionItem;
+    return `${sdkTransaction.txHash!}-${sdkTransaction.__typename!}`;
   }
+
+  // For cowswap transactions, use the id field
   return transaction.id;
 };
 
