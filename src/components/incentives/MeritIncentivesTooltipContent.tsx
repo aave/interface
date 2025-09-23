@@ -112,7 +112,7 @@ export const MeritIncentivesTooltipContent = ({
   const theme = useTheme();
   const typographyVariant = 'secondary12';
   const meritIncentivesFormatted = getSymbolMap(meritIncentives);
-  const isCombinedMeritIncentives = meritIncentives.isCombinedMeritIncentives;
+  const isCombinedMeritIncentives: boolean = meritIncentives.activeActions.length > 1;
   const campaignConfig = getCampaignConfig(meritIncentives.action);
   const selfConfig = selfCampaignConfig.get(meritIncentives.action);
 

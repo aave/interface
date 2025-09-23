@@ -798,7 +798,6 @@ export const useMeritIncentives = ({
       }, 0);
 
       const isBorrow = protocolAction === ProtocolAction.borrow;
-      const isCombinedMeritIncentives: boolean = totalAmountIncentivesCampaigns.length > 1;
 
       const totalAPY = isBorrow
         ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - (selfIncentivesAPY ?? 0)
@@ -822,7 +821,6 @@ export const useMeritIncentives = ({
         rewardTokenAddress: incentives[0].rewardTokenAddress,
         rewardTokenSymbol: incentives[0].rewardTokenSymbol,
         activeActions: totalAmountIncentivesCampaigns,
-        isCombinedMeritIncentives,
         actionMessages: actionMessages,
         action: finalAction,
         customMessage: finalAction ? actionMessages[finalAction]?.customMessage : undefined,
@@ -845,7 +843,6 @@ export const useMeritIncentives = ({
         breakdown: MeritIncentivesBreakdown;
 
         activeActions: MeritAction[];
-        isCombinedMeritIncentives: boolean;
         actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>;
         variants: { selfAPY: number | null };
       };
