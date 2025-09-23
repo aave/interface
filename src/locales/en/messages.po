@@ -1225,6 +1225,10 @@ msgstr "{0}"
 msgid "Manage analytics"
 msgstr "Manage analytics"
 
+#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
+msgid "Create limit order"
+msgstr "Create limit order"
+
 #: src/components/MarketAssetCategoryFilter.tsx
 msgid "Stablecoins"
 msgstr "Stablecoins"
@@ -1362,6 +1366,7 @@ msgstr "Claiming"
 msgid "Current LTV"
 msgstr "Current LTV"
 
+#: src/components/transactions/Switch/SwitchTypeSelector.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Market"
@@ -1757,6 +1762,10 @@ msgstr "stkGHO is now Savings GHO"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
 msgstr "Enabled"
+
+#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
+msgid "Creating limit order"
+msgstr "Creating limit order"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
@@ -3196,7 +3205,7 @@ msgstr "Not enough staked balance"
 msgid "Switching to {networkName}..."
 msgstr "Switching to {networkName}..."
 
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModal.tsx
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
 msgid "Minimum new collateral"
 msgstr "Minimum new collateral"
 
@@ -3297,6 +3306,10 @@ msgstr "Invalid expiration"
 #: src/modules/umbrella/AvailableToClaimItem.tsx
 msgid "Rewards available to claim"
 msgstr "Rewards available to claim"
+
+#: src/components/transactions/Switch/ExpirySelector.tsx
+msgid "{key}"
+msgstr "{key}"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting"
@@ -3576,6 +3589,7 @@ msgstr "Restaked"
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
+#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -3767,6 +3781,10 @@ msgstr "Transaction overview"
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restake {symbol}"
 msgstr "Restake {symbol}"
+
+#: src/components/transactions/Switch/SwitchTypeSelector.tsx
+msgid "Limit"
+msgstr "Limit"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"

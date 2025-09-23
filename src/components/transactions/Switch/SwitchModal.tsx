@@ -1,36 +1,21 @@
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ModalType } from 'src/hooks/useModal';
+import { useState } from 'react';
+import { BasicModal } from 'src/components/primitives/BasicModal';
+import { ModalType, useModalContext } from 'src/hooks/useModal';
 
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { BaseSwitchModal } from './BaseSwitchModal';
-import { SwitchDetailsParams as SwitchDetailsParams } from './BaseSwitchModalContent';
-import { SwitchModalTxDetails } from './SwitchModalTxDetails';
+import { SwitchLimitOrdersModalContent } from './SwitchLimitOrdersModalContent';
+import { SwitchType, SwitchTypeSelector } from './SwitchTypeSelector';
 
 export const SwitchModal = () => {
-  const { reserves, user: userData } = useAppDataContext();
-  const switchDetails = ({
-    switchRates,
-    gasLimit,
-    selectedChainId,
-    selectedInputToken,
-    selectedOutputToken,
-    safeSlippage,
-    showGasStation,
-  }: SwitchDetailsParams) => {
-    return switchRates && userData ? (
-      <SwitchModalTxDetails
-        switchRates={switchRates}
-        selectedOutputToken={selectedOutputToken}
-        safeSlippage={safeSlippage}
-        gasLimit={gasLimit}
-        selectedChainId={selectedChainId}
-        showGasStation={showGasStation}
-        reserves={reserves}
-        user={userData}
-        selectedInputToken={selectedInputToken}
-        modalType={ModalType.Switch}
-      />
-    ) : null;
-  };
-
-  return <BaseSwitchModal modalType={ModalType.Switch} switchDetails={switchDetails} />;
+  const { type, close } = useModalContext();
+  const [switchType, setSwitchType] = useState(SwitchType.MARKET);
+  return (
+    <BasicModal open={type === ModalType.Switch} setOpen={close}>
+      <TxModalTitle title={`Swap Assets`} />
+      <SwitchTypeSelector switchType={switchType} setSwitchType={setSwitchType} />
+      {switchType === SwitchType.MARKET && <BaseSwitchModal modalType={ModalType.Switch} />}
+      {switchType === SwitchType.LIMIT && <SwitchLimitOrdersModalContent />}
+    </BasicModal>
+  );
 };
