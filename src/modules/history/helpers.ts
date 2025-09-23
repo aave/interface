@@ -14,9 +14,9 @@ import {
 //Get timestamp for sdk or cowswap transaction
 export const getTransactionTimestamp = (transaction: TransactionHistoryItemUnion): number => {
   if (isSDKTransaction(transaction)) {
-    return new Date(transaction.timestamp).getTime() / 1000;
+    return new Date(transaction.timestamp).getTime();
   }
-  return transaction.timestamp;
+  return transaction.timestamp * 1000;
 };
 // Get action for sdk or cowswap transaction
 export const getTransactionAction = (transaction: TransactionHistoryItemUnion): string => {
@@ -70,7 +70,7 @@ export const getExplorerLink = (
 };
 
 export const unixTimestampToFormattedTime = ({ unixTimestamp }: { unixTimestamp: number }) => {
-  const date = new Date(unixTimestamp * 1000);
+  const date = new Date(unixTimestamp);
   const hours24 = date.getHours();
   const hours12 = ((hours24 + 24 - 1) % 12) + 1; // Convert to 12-hour format
   const minutes = date.getMinutes();
@@ -113,35 +113,6 @@ export const groupByDate = (
     return grouped;
   }, {} as Record<string, TransactionHistoryItemUnion[]>);
 };
-//! CHECKEA ESTO
-// interface MappedReserveData {
-//   underlyingAsset: string;
-//   name: string;
-//   symbol: string;
-//   iconSymbol: string;
-// }
-
-// export const fetchIconSymbolAndNameHistorical = ({
-//   underlyingAsset,
-//   symbol,
-//   name,
-// }: IconSymbolInterface): MappedReserveData => {
-//   // Re-use general patches
-//   const reservePatch = fetchIconSymbolAndName({ underlyingAsset, symbol, name });
-
-//   // Fix AMM market names and symbol, specific to tx history
-//   const updatedPatch = {
-//     underlyingAsset,
-//     symbol: reservePatch.symbol.includes('Amm')
-//       ? reservePatch.iconSymbol.replace(/_/g, '')
-//       : reservePatch.symbol,
-//     name: reservePatch.name ?? (name || ''),
-//     iconSymbol: reservePatch.iconSymbol || '',
-//   };
-
-//   return updatedPatch;
-// };
-
 interface FormatTransactionDataParams {
   data: TransactionHistoryItemUnion[];
   csv: boolean;
@@ -185,7 +156,6 @@ export const formatTransactionData = ({
       if (hasAmountAndReserve(transaction)) {
         const { amount, reserve } = transaction;
 
-        // Mapear action names
         switch (transaction.__typename) {
           case 'UserSupplyTransaction':
             newTransaction.action = 'Supply';
@@ -217,7 +187,6 @@ export const formatTransactionData = ({
 
         newTransaction.assetPriceUSD = reserve.usdExchangeRate;
 
-        // ✅ Formatear reserve como en el original
         const reserveInfo = {
           name: reserve.underlyingToken.name,
           symbol: reserve.underlyingToken.symbol,
@@ -376,13 +345,13 @@ export const formatTransactionData = ({
       }
 
       const srcTokenInfo = {
-        underlyingAsset: underlyingSrcToken.underlyingAsset,
+        underlyingSrcAsset: underlyingSrcToken.underlyingAsset,
         name: underlyingSrcToken.name,
         symbol: underlyingSrcToken.symbol,
         decimals: underlyingSrcToken.decimals,
       };
       const destTokenInfo = {
-        underlyingAsset: underlyingDestToken.underlyingAsset,
+        underlyingDestAsset: underlyingDestToken.underlyingAsset,
         name: underlyingDestToken.name,
         symbol: underlyingDestToken.symbol,
         decimals: underlyingDestToken.decimals,
