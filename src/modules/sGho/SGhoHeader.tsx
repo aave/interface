@@ -203,7 +203,7 @@ const SGhoHeaderUserDetails = ({
             <TextWithTooltip text={<Trans>Weekly Rewards</Trans>} variant="inherit">
               <Trans>
                 Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards
-                may vary depenending on market conditions.
+                may vary depending on market conditions.
               </Trans>
             </TextWithTooltip>
           </Stack>
