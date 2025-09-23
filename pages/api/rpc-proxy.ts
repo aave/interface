@@ -25,6 +25,7 @@ const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
   [ChainId.sonic]: { network: 'sonic-mainnet', apiKey: process.env.SONIC_RPC_API_KEY || '' },
   [ChainId.celo]: { network: 'celo-mainnet', apiKey: process.env.CELO_RPC_API_KEY || '' },
   [ChainId.soneium]: { network: 'soneium-mainnet', apiKey: process.env.SONEIUM_RPC_API_KEY || '' },
+  [57073]: { network: 'ink-mainnet', apiKey: process.env.INK_RPC_API_KEY || '' },
 
   // Testnets
   [ChainId.sepolia]: { network: 'eth-sepolia', apiKey: process.env.MAINNET_RPC_API_KEY || '' },

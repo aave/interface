@@ -194,15 +194,23 @@ function SingleTokenIcon({ symbol, aToken, waToken, ...rest }: TokenIconProps) {
 
 interface ExternalTokenIconProps extends IconProps {
   symbol: string;
+  height?: string;
+  width?: string;
   logoURI?: string;
 }
 
-export function ExternalTokenIcon({ symbol, logoURI, ...rest }: ExternalTokenIconProps) {
+export function ExternalTokenIcon({
+  symbol,
+  logoURI,
+  height,
+  width,
+  ...rest
+}: ExternalTokenIconProps) {
   const [tokenSymbol, setTokenSymbol] = useState(symbol.toLowerCase());
 
   return (
     <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
-      <LazyLoad>
+      <LazyLoad height={height ?? '24px'} width={width ?? '24px'}>
         <img
           src={tokenSymbol === 'default' || !logoURI ? '/icons/tokens/default.svg' : logoURI}
           width="100%"
