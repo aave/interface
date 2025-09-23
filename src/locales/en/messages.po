@@ -399,6 +399,11 @@ msgstr "Fees help support the user experience and security of the Aave applicati
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr "Your {networkName} wallet is empty. Get free test assets at"
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+msgid "We couldn't find any assets related to your search. Try again with a different category."
+msgstr "We couldn't find any assets related to your search. Try again with a different category."
+
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "documentation"
 msgstr "documentation"
@@ -705,6 +710,10 @@ msgstr "This asset has almost reached its borrow cap. There is only {messageValu
 #: src/modules/migration/MigrationList.tsx
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
+
+#: src/components/AssetCategoryMultiselect.tsx
+msgid "Select Categories"
+msgstr "Select Categories"
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
@@ -1089,6 +1098,10 @@ msgstr "ends"
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
+#: src/components/AssetCategoryMultiselect.tsx
+msgid "{selectedCount} Categories"
+msgstr "{selectedCount} Categories"
+
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
@@ -1225,6 +1238,7 @@ msgstr "{0}"
 msgid "Manage analytics"
 msgstr "Manage analytics"
 
+#: src/components/AssetCategoryMultiselect.tsx
 #: src/components/MarketAssetCategoryFilter.tsx
 msgid "Stablecoins"
 msgstr "Stablecoins"
@@ -1241,6 +1255,7 @@ msgstr "Unstaking {symbol}"
 msgid "Swapping"
 msgstr "Swapping"
 
+#: src/components/AssetCategoryMultiselect.tsx
 #: src/components/MarketAssetCategoryFilter.tsx
 msgid "ETH Correlated"
 msgstr "ETH Correlated"
@@ -1484,6 +1499,7 @@ msgstr "Invalid return value of the flashloan executor function"
 msgid "Learn more about the Kernel points distribution"
 msgstr "Learn more about the Kernel points distribution"
 
+#: src/components/AssetCategoryMultiselect.tsx
 #: src/components/MarketAssetCategoryFilter.tsx
 msgid "All"
 msgstr "All"
@@ -1557,6 +1573,7 @@ msgstr "Proposal overview"
 msgid "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
 
+#: src/components/AssetCategoryMultiselect.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Reset"
 msgstr "Reset"
@@ -2368,6 +2385,10 @@ msgstr "Available"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "You did not participate in this proposal"
+
+#: src/components/AssetCategoryMultiselect.tsx
+msgid "Principle Tokens"
+msgstr "Principle Tokens"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -3314,6 +3335,10 @@ msgstr "User is in isolation mode or LTV is zero"
 msgid "Invalid amount to burn"
 msgstr "Invalid amount to burn"
 
+#: src/components/AssetCategoryMultiselect.tsx
+msgid "All Categories"
+msgstr "All Categories"
+
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/MoreMenu.tsx
 msgid "Migrate to Aave V3"
@@ -3596,6 +3621,10 @@ msgstr "Borrowing is not enabled"
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Approve with"
 msgstr "Approve with"
+
+#: src/components/MarketAssetCategoryFilter.tsx
+msgid "PTs"
+msgstr "PTs"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
