@@ -132,7 +132,7 @@ jobs:
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: ${{ env.PR_NUMBER }},
+              issue_number: Number(process.env.PR_NUMBER),
               body: `- Ipfs hash: ${{ steps.pinata.outputs.hash }}\n- Ipfs preview link: ${{ steps.pinata.outputs.uri }}`
             });
 
@@ -205,7 +205,7 @@ jobs:
         continue-on-error: true
         with:
           SUCCESS: 'false'
-          PULL_REQUEST_NUMBER: ${{ env.PR_NUMBER }}
+          PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   notify_success:
@@ -234,5 +234,5 @@ jobs:
         continue-on-error: true
         with:
           SUCCESS: 'true'
-          PULL_REQUEST_NUMBER: ${{ env.PR_NUMBER }}
+          PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
