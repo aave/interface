@@ -10,6 +10,7 @@ import {
   celo,
   Chain,
   gnosis,
+  ink,
   linea,
   mainnet,
   metis,
@@ -436,6 +437,16 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://plasma.to',
     networkLogoPath: '/icons/networks/plasma.svg',
     wagmiChain: plasma,
+  },
+  [57073]: {
+    name: 'Ink',
+    publicJsonRPCUrl: ['https://ink.drpc.org'],
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://explorer.inkonchain.com/',
+    networkLogoPath: '/icons/networks/ink.svg',
+    wagmiChain: ink,
   },
 };
 

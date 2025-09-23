@@ -9,6 +9,7 @@ import {
   GovernanceV3Celo,
   GovernanceV3Ethereum,
   GovernanceV3Gnosis,
+  GovernanceV3Ink,
   GovernanceV3Linea,
   GovernanceV3Metis,
   GovernanceV3Optimism,
@@ -146,6 +147,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.celo]: GovernanceV3Celo.PC_DATA_HELPER,
       [ChainId.soneium]: GovernanceV3Soneium.PC_DATA_HELPER,
       [9745]: GovernanceV3Plasma.PC_DATA_HELPER,
+      [57073]: GovernanceV3Ink.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,
