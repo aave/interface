@@ -248,6 +248,8 @@ const IntentTxDetails = ({
                 <ExternalTokenIcon
                   symbol={selectedOutputToken.symbol}
                   logoURI={selectedOutputToken.logoURI}
+                  height="16px"
+                  width="16px"
                   sx={{ mr: 2, ml: 4, fontSize: '16px' }}
                 />
                 <FormattedNumber value={networkFeeFormatted} variant="secondary12" compact />
@@ -275,6 +277,8 @@ const IntentTxDetails = ({
                 <ExternalTokenIcon
                   symbol={selectedOutputToken.symbol}
                   logoURI={selectedOutputToken.logoURI}
+                  height="16px"
+                  width="16px"
                   sx={{ mr: 2, ml: 4, fontSize: '16px' }}
                 />
                 <FormattedNumber value={partnerFeeFormatted} variant="secondary12" compact />
@@ -312,6 +316,8 @@ const IntentTxDetails = ({
             <ExternalTokenIcon
               symbol={selectedOutputToken.symbol}
               logoURI={selectedOutputToken.logoURI}
+              height="16px"
+              width="16px"
               sx={{ mr: 2, ml: 4, fontSize: '16px' }}
             />
             <FormattedNumber
@@ -379,6 +385,8 @@ const MarketOrderTxDetails = ({
             <ExternalTokenIcon
               symbol={selectedOutputToken.symbol}
               logoURI={selectedOutputToken.logoURI}
+              height="16px"
+              width="16px"
               sx={{ mr: 2, ml: 4, fontSize: '16px' }}
             />
             <FormattedNumber
