@@ -13,8 +13,8 @@ import {
 } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
 import {
+  CowProtocolRatesType,
   ProviderRatesParams,
-  SwitchRatesType,
 } from 'src/components/transactions/Switch/switch.types';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
@@ -63,7 +63,7 @@ export async function getCowProtocolSellRates({
   setError,
   isInputTokenCustom,
   isOutputTokenCustom,
-}: ProviderRatesParams): Promise<SwitchRatesType> {
+}: ProviderRatesParams): Promise<CowProtocolRatesType> {
   const tradingSdk = new TradingSdk({ chainId });
 
   let orderBookQuote: QuoteAndPost | undefined;

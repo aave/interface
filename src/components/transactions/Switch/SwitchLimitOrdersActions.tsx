@@ -1,4 +1,3 @@
-import { ERC20Service } from '@aave/contract-helpers';
 import {
   COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
   OrderKind,
@@ -7,24 +6,22 @@ import {
 } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
+import { useApprovalTx } from 'src/hooks/useApprovalTx';
+import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
-import { StaticRate } from 'src/hooks/useStaticRate';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { useRootStore } from 'src/store/root';
-import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { findByChainId } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { GENERAL } from 'src/utils/events';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { parseUnits } from 'viem';
 import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { checkRequiresApproval } from '../utils';
 import { HEADER_WIDGET_APP_CODE } from './cowprotocol/cowprotocol.helpers';
 
 interface SwitchProps {
@@ -37,14 +34,10 @@ interface SwitchProps {
   loading?: boolean;
   isWrongNetwork: boolean;
   chainId: number;
-  //switchRates?: SwitchRatesType;
   //setShowGasStation: (showGasStation: boolean) => void;
   poolReserve?: ComputedReserveData;
   targetReserve?: ComputedReserveData;
-  // isMaxSelected: boolean;
   // setIsExecutingActions?: (isExecuting: boolean) => void;
-  rate: string;
-  originalRate: StaticRate;
 }
 
 export const SwitchLimitOrdersActions = ({
@@ -57,23 +50,17 @@ export const SwitchLimitOrdersActions = ({
   isWrongNetwork,
   chainId,
   outputAmount,
-  rate,
-  originalRate,
 }: // setShowGasStation,
 // setIsExecutingActions,
 SwitchProps) => {
   const [
     user,
-    generateApproval,
-    estimateGasLimit,
     //addTransaction,
     currentMarketData,
     trackEvent,
   ] = useRootStore(
     useShallow((state) => [
       state.account,
-      state.generateApproval,
-      state.estimateGasLimit,
       //state.addTransaction,
       state.currentMarketData,
       state.trackEvent,
@@ -85,26 +72,48 @@ SwitchProps) => {
     mainTxState,
     loadingTxns,
     setMainTxState,
-    setTxError,
     //setGasLimit,
     setLoadingTxns,
-    setApprovalTxState,
   } = useModalContext();
 
-  const { sendTx } = useWeb3Context();
   const queryClient = useQueryClient();
-  const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
 
-  const requiresApproval = useMemo(() => {
-    if (
-      approvedAmount === undefined ||
-      approvedAmount === -1 ||
-      inputAmount === '0' ||
-      isWrongNetwork
-    )
-      return false;
-    else return approvedAmount < Number(inputAmount);
-  }, [approvedAmount, inputAmount, isWrongNetwork]);
+  const {
+    data: approvedAmount,
+    isFetching: fetchingApprovedAmount,
+    refetch: fetchApprovedAmount,
+  } = useApprovedAmount({
+    chainId,
+    token: inputToken.address,
+    spender: COW_PROTOCOL_VAULT_RELAYER_ADDRESS[chainId as SupportedChainId],
+  });
+
+  setLoadingTxns(fetchingApprovedAmount);
+
+  let requiresApproval = false;
+  if (approvedAmount !== undefined) {
+    requiresApproval = checkRequiresApproval({
+      approvedAmount: approvedAmount.toString(),
+      amount: inputAmount,
+      signedAmount: '0',
+    });
+  }
+
+  const { approval, requiresApprovalReset } = useApprovalTx({
+    usePermit: false,
+    approvedAmount: {
+      amount: approvedAmount?.toString() || '0',
+      spender: COW_PROTOCOL_VAULT_RELAYER_ADDRESS[chainId as SupportedChainId],
+      token: inputToken.address,
+      user,
+    },
+    requiresApproval,
+    assetAddress: inputToken.address,
+    symbol: inputToken.symbol,
+    decimals: inputToken.decimals,
+    signatureAmount: inputAmount,
+    onApprovalTxConfirmed: () => fetchApprovedAmount(),
+  });
 
   const invalidate = () => {
     queryClient.invalidateQueries({
@@ -138,31 +147,16 @@ SwitchProps) => {
     const provider = getEthersProvider(wagmiConfig, { chainId });
     const signer = (await provider).getSigner();
     const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
-    const orderType = Number(rate) < Number(originalRate?.rate) ? OrderKind.BUY : OrderKind.SELL;
-    let receipt;
-    if (orderType === OrderKind.BUY) {
-      receipt = await tradingSdk.postLimitOrder({
-        sellAmount: parseUnits(inputAmount, inputToken.decimals).toString(),
-        buyAmount: parseUnits(outputAmount, outputToken.decimals).toString(),
-        kind: OrderKind.BUY,
-        sellToken: inputToken.address,
-        buyToken: outputToken.address,
-        sellTokenDecimals: inputToken.decimals,
-        buyTokenDecimals: outputToken.decimals,
-        validFor: 86400, // 24 hours
-      });
-    } else {
-      receipt = await tradingSdk.postLimitOrder({
-        sellAmount: parseUnits(outputAmount, outputToken.decimals).toString(),
-        buyAmount: parseUnits(inputAmount, inputToken.decimals).toString(),
-        kind: OrderKind.SELL,
-        sellToken: inputToken.address,
-        buyToken: outputToken.address,
-        sellTokenDecimals: inputToken.decimals,
-        buyTokenDecimals: outputToken.decimals,
-        validFor: 86400, // 24 hours
-      });
-    }
+    const receipt = await tradingSdk.postLimitOrder({
+      sellAmount: parseUnits(inputAmount, inputToken.decimals).toString(),
+      buyAmount: parseUnits(outputAmount, outputToken.decimals).toString(),
+      kind: OrderKind.SELL,
+      sellToken: inputToken.address,
+      buyToken: outputToken.address,
+      sellTokenDecimals: inputToken.decimals,
+      buyTokenDecimals: outputToken.decimals,
+      validFor: 86400, // 24 hours
+    });
     setMainTxState({
       loading: false,
       success: true,
@@ -187,100 +181,6 @@ SwitchProps) => {
       console.error('Error tracking swap event:', error);
     }
   };
-
-  const approval = async () => {
-    const spender = COW_PROTOCOL_VAULT_RELAYER_ADDRESS[chainId as SupportedChainId];
-    const amountToApprove = parseUnits(inputAmount, inputToken.decimals);
-
-    // if (requiresApprovalReset) {
-    //   try {
-    //     // Create direct ERC20 approval transaction for reset to 0 as ERC20Service requires positive amount
-    //     const abi = new ethers.utils.Interface([
-    //       'function approve(address spender, uint256 amount)',
-    //     ]);
-    //     const encodedData = abi.encodeFunctionData('approve', [spender, '0']);
-    //     const resetTx = {
-    //       data: encodedData,
-    //       to: inputToken,
-    //       from: user,
-    //     };
-    //     const resetTxWithGasEstimation = await estimateGasLimit(resetTx, chainId);
-    //     setApprovalTxState({ ...approvalTxState, loading: true });
-    //     const resetResponse = await sendTx(resetTxWithGasEstimation);
-    //     await resetResponse.wait(1);
-    //   } catch (error) {
-    //     const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
-    //     console.error(parsedError);
-    //     setTxError(parsedError);
-    //     setApprovalTxState({
-    //       txHash: undefined,
-    //       loading: false,
-    //     });
-    //   }
-    //   fetchApprovedAmount().then(() => {
-    //     setApprovalTxState({
-    //       loading: false,
-    //       success: false,
-    //     });
-    //   });
-    //   return;
-    // }
-
-    const approvalData = {
-      spender,
-      user,
-      token: inputToken.address,
-      amount: amountToApprove.toString(),
-    };
-    try {
-      const tx = generateApproval(approvalData, { chainId, amount: amountToApprove.toString() });
-      const txWithGasEstimation = await estimateGasLimit(tx, chainId);
-      setApprovalTxState({ loading: true });
-      const response = await sendTx(txWithGasEstimation);
-      await response.wait(1);
-      fetchApprovedAmount().then(() => {
-        setApprovalTxState({
-          txHash: response.hash,
-          loading: false,
-          success: true,
-        });
-        setTxError(undefined);
-      });
-    } catch (error) {
-      const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
-      console.error(parsedError);
-      setTxError(parsedError);
-      setApprovalTxState({
-        txHash: undefined,
-        loading: false,
-      });
-    }
-  };
-
-  const fetchApprovedAmount = useCallback(async () => {
-    // Check approval to VaultRelayer
-    setApprovalTxState({
-      txHash: undefined,
-      loading: false,
-      success: false,
-    });
-    setLoadingTxns(true);
-    const rpc = getProvider(chainId);
-    const erc20Service = new ERC20Service(rpc);
-    const approvedTargetAmount = await erc20Service.approvedAmount({
-      user,
-      token: inputToken.address,
-      spender: COW_PROTOCOL_VAULT_RELAYER_ADDRESS[chainId as SupportedChainId],
-    });
-    setApprovedAmount(approvedTargetAmount);
-    setLoadingTxns(false);
-  }, [chainId, setLoadingTxns, user, inputToken, setApprovalTxState]);
-
-  useEffect(() => {
-    if (user) {
-      fetchApprovedAmount();
-    }
-  }, [fetchApprovedAmount, user]);
 
   // // Track execution state to pause rate updates during actions
   // useEffect(() => {
@@ -317,8 +217,8 @@ SwitchProps) => {
       amount={inputAmount}
       handleApproval={() => approval()}
       requiresApproval={!blocked && requiresApproval}
-      actionText={<Trans>Swap</Trans>}
-      actionInProgressText={<Trans>Swapping</Trans>}
+      actionText={<Trans>Create limit order</Trans>}
+      actionInProgressText={<Trans>Creating limit order</Trans>}
       errorParams={{
         loading: false,
         disabled: blocked || (!approvalTxState.success && requiresApproval),
@@ -328,6 +228,7 @@ SwitchProps) => {
       fetchingData={loading}
       blocked={blocked}
       tryPermit={false}
+      requiresApprovalReset={requiresApprovalReset}
     />
   );
 };

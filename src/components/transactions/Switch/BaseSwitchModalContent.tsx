@@ -283,8 +283,6 @@ export const BaseSwitchModalContent = ({
     forcedDefaultOutputToken ?? defaultOutputToken
   );
 
-  console.log(selectedInputToken);
-
   // Update selected tokens when defaults change (e.g., after network change)
   useEffect(() => {
     if (

@@ -14,16 +14,8 @@ import { BaseSwitchModalContent, SwitchModalCustomizableProps } from './BaseSwit
 
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
 
-export const getFilteredTokensForSwitch = (
-  chainId: number,
-  includeNative = false
-): TokenInfoWithBalance[] => {
+export const getFilteredTokensForSwitch = (chainId: number): TokenInfoWithBalance[] => {
   let customTokenList = TOKEN_LIST.tokens;
-  if (includeNative) {
-    customTokenList = customTokenList.concat(
-      TOKEN_LIST.tokens.filter((token) => token.extensions?.isNative)
-    );
-  }
   const savedCustomTokens = localStorage.getItem('customTokens');
   if (savedCustomTokens) {
     customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));

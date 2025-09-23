@@ -2,9 +2,12 @@ import { normalize } from '@aave/math-utils';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
+import { useCowSwitchRates } from 'src/hooks/switch/useCowSwitchRates';
 import { useGetConnectedWalletType } from 'src/hooks/useGetConnectedWalletType';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
+import { ModalType } from 'src/hooks/useModal';
 import { StaticRate, useStaticRate } from 'src/hooks/useStaticRate';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -13,15 +16,17 @@ import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { parseUnits } from 'viem';
 
-import { DetailsTextLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { getFilteredTokensForSwitch } from './BaseSwitchModal';
 import { supportedNetworksWithEnabledMarketLimit } from './common';
 import { isNativeToken } from './cowprotocol/cowprotocol.helpers';
+import { Expiry, ExpirySelector } from './ExpirySelector';
 import { NetworkSelector } from './NetworkSelector';
 import { PriceInput } from './PriceInput';
 import { SwitchAssetInput } from './SwitchAssetInput';
-import { SwitchLimitOrdersActions } from './SwitchLimitOrdersActions.tsx';
+import { SwitchErrors } from './SwitchErrors';
+import { SwitchLimitOrdersActions } from './SwitchLimitOrdersActions';
+import { SwitchModalTxDetails } from './SwitchModalTxDetails';
 
 const calculateMaxAmount = (token: TokenInfoWithBalance, chainId: number) => {
   const nativeDecimals = 18;
@@ -65,7 +70,7 @@ export const SwitchLimitOrdersInputs = ({
   initialRate,
   rateLoading,
 }: SwitchLimitOrdersInputsProps) => {
-  const { isSmartContractWallet, isSafeWallet } = useGetConnectedWalletType();
+  const { isSmartContractWallet } = useGetConnectedWalletType();
   const maxInputAmount = isSmartContractWallet
     ? calculateMaxAmount(inputToken, chainId)
     : inputToken.balance;
@@ -87,22 +92,7 @@ export const SwitchLimitOrdersInputs = ({
         chainId={chainId}
         balanceTitle={'from'}
         assets={tokens.filter(
-          (token) =>
-            token.address !== outputToken.address &&
-            Number(token.balance) !== 0 &&
-            // Remove native tokens for non-Safe smart contract wallets
-            !(isSmartContractWallet && !isSafeWallet && token.extensions?.isNative) &&
-            // Avoid wrapping
-            !(
-              isNativeToken(outputToken.address) &&
-              token.address.toLowerCase() ===
-                WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address.toLowerCase()
-            ) &&
-            !(
-              outputToken.address.toLowerCase() ===
-                WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address.toLowerCase() &&
-              isNativeToken(token.address)
-            )
+          (token) => token.address !== outputToken.address && !token.extensions?.isNative
         )}
         value={inputAmount}
         onChange={handleInputAmountChange}
@@ -123,11 +113,6 @@ export const SwitchLimitOrdersInputs = ({
               isNativeToken(inputToken.address) &&
               token.address.toLowerCase() ===
                 WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address.toLowerCase()
-            ) &&
-            !(
-              inputToken.address.toLowerCase() ===
-                WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address.toLowerCase() &&
-              isNativeToken(token.address)
             )
         )}
         value={outputAmount.toString()}
@@ -153,24 +138,29 @@ export const SwitchLimitOrdersInputs = ({
   );
 };
 
-export const SwitchLimitOrdersModalContent = () => {
+interface SwitchLimitOrdersInnerProps {
+  tokens: TokenInfoWithBalance[];
+  chainId: number;
+  setChainId: (chainId: number) => void;
+}
+
+export const SwitchLimitOrdersInner = ({
+  tokens,
+  chainId,
+  setChainId,
+}: SwitchLimitOrdersInnerProps) => {
   const { readOnlyModeAddress } = useWeb3Context();
 
-  const dashboardChainId = useRootStore((store) => store.currentChainId);
-  const user = useRootStore((store) => store.account);
-
-  const [selectedChainId, setSelectedChainId] = useState(() => {
-    if (supportedNetworksWithEnabledMarketLimit.find((elem) => elem.chainId === dashboardChainId))
-      return dashboardChainId;
-    return defaultNetwork.chainId;
-  });
-
-  const tokens = useMemo(() => getFilteredTokensForSwitch(selectedChainId), [selectedChainId]);
   const [inputToken, setInputToken] = useState(
     tokens.find(
-      (token) => (token.balance !== '0' || token.extensions?.isNative) && token.symbol !== 'GHO'
+      (token) => token.balance !== '0' && !token.extensions?.isNative && token.symbol !== 'GHO'
     ) || tokens[0]
   );
+
+  const { user } = useAppDataContext();
+  const userAddress = useRootStore((store) => store.account);
+
+  const [expiry, setExpiry] = useState(Expiry['One week']);
 
   const [inputAmount, setInputAmount] = useState('');
   // const [outputAmount, setOutputAmount] = useState('');
@@ -180,15 +170,31 @@ export const SwitchLimitOrdersModalContent = () => {
     tokens.find((token) => token.symbol == 'GHO') || tokens[1]
   );
 
-  const { data: tokensWithBalance } = useTokensBalance(tokens, selectedChainId, user);
+  const { data: staticRate } = useStaticRate({ chainId, inputToken, outputToken });
+  const {
+    data: quote,
+    isLoading: quoteLoading,
+    error: quoteError,
+  } = useCowSwitchRates({
+    chainId,
+    amount: inputAmount ? parseUnits(inputAmount, inputToken.decimals).toString() : '0',
+    srcUnderlyingToken: inputToken.address,
+    destUnderlyingToken: outputToken.address,
+    user: userAddress,
+    inputSymbol: inputToken.symbol,
+    isInputTokenCustom: !!inputToken.extensions?.isCustom,
+    isOutputTokenCustom: !!outputToken.extensions?.isCustom,
+    outputSymbol: outputToken.symbol,
+    srcDecimals: inputToken.decimals,
+    destDecimals: outputToken.decimals,
+    isTxSuccess: false,
+  });
 
-  const { data: staticRate } = useStaticRate({ chainId: selectedChainId, inputToken, outputToken });
-
-  const isWrongNetwork = useIsWrongNetwork(selectedChainId);
+  const isWrongNetwork = useIsWrongNetwork(chainId);
   const { isSmartContractWallet } = useGetConnectedWalletType();
 
   const showChangeNetworkWarning = isWrongNetwork.isWrongNetwork && !readOnlyModeAddress;
-  const selectedNetworkConfig = getNetworkConfig(selectedChainId);
+  const selectedNetworkConfig = getNetworkConfig(chainId);
 
   useEffect(() => {
     if (staticRate) {
@@ -196,35 +202,36 @@ export const SwitchLimitOrdersModalContent = () => {
     }
   }, [staticRate]);
 
-  if (!tokensWithBalance) {
-    return (
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
   return (
     <>
       {showChangeNetworkWarning && (
         <ChangeNetworkWarning
           autoSwitchOnMount={true}
           networkName={selectedNetworkConfig.name}
-          chainId={selectedChainId}
+          chainId={chainId}
           event={{
             eventName: GENERAL.SWITCH_NETWORK,
           }}
           askManualSwitch={isSmartContractWallet}
         />
       )}
-      <NetworkSelector
-        networks={supportedNetworksWithEnabledMarketLimit}
-        selectedNetwork={selectedChainId}
-        setSelectedNetwork={setSelectedChainId}
-      />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <NetworkSelector
+          networks={supportedNetworksWithEnabledMarketLimit}
+          selectedNetwork={chainId}
+          setSelectedNetwork={setChainId}
+        />
+        <ExpirySelector selectedExpiry={expiry} setSelectedExpiry={setExpiry} />
+      </Box>
       <SwitchLimitOrdersInputs
-        chainId={selectedChainId}
-        tokens={tokensWithBalance || []}
+        chainId={chainId}
+        tokens={tokens}
         inputToken={inputToken}
         inputAmount={inputAmount}
         handleInputAmountChange={setInputAmount}
@@ -236,28 +243,65 @@ export const SwitchLimitOrdersModalContent = () => {
         rateLoading={false}
         initialRate={staticRate}
       />
-      <TxModalDetails>
-        <DetailsTextLine
-          text={staticRate && Number(rate) < Number(staticRate?.rate) ? 'BUY' : 'SELL'}
-          description={'Type'}
-        />
-      </TxModalDetails>
+      <SwitchModalTxDetails
+        switchRates={quote}
+        selectedOutputToken={outputToken}
+        safeSlippage={0}
+        gasLimit="0"
+        selectedChainId={chainId}
+        customReceivedTitle={'Min received'}
+        reserves={[]}
+        selectedInputToken={inputToken}
+        loading={quoteLoading}
+        modalType={ModalType.SwitchLimitOrder}
+        showGasStation={false}
+        user={user}
+      />
+      <SwitchErrors
+        ratesError={quoteError}
+        balance={inputToken.balance}
+        inputAmount={inputAmount}
+      />
       <SwitchLimitOrdersActions
-        chainId={selectedChainId}
+        chainId={chainId}
         inputToken={inputToken}
         inputAmount={inputAmount}
         outputToken={outputToken}
-        rate={rate}
-        originalRate={staticRate}
-        // isMaxSelected={isMaxSelected}
         // setIsExecutingActions={setIsExecutingActions}
-        outputAmount={inputAmount && rate ? (Number(inputAmount) / Number(rate)).toString() : ''}
+        outputAmount={inputAmount && rate ? (Number(inputAmount) * Number(rate)).toString() : ''}
         // setShowGasStation={setShowGasStation}
-        // poolReserve={poolReserve}
-        // targetReserve={targetReserve}
         isWrongNetwork={isWrongNetwork.isWrongNetwork}
-        blocked={false}
+        loading={quoteLoading}
+        blocked={!!quoteError}
       />
     </>
+  );
+};
+
+export const SwitchLimitOrdersModalContent = () => {
+  const dashboardChainId = useRootStore((store) => store.currentChainId);
+  const user = useRootStore((store) => store.account);
+
+  const [selectedChainId, setSelectedChainId] = useState(() => {
+    if (supportedNetworksWithEnabledMarketLimit.find((elem) => elem.chainId === dashboardChainId))
+      return dashboardChainId;
+    return defaultNetwork.chainId;
+  });
+  const tokens = useMemo(() => getFilteredTokensForSwitch(selectedChainId), [selectedChainId]);
+
+  const { data: tokensWithBalance } = useTokensBalance(tokens, selectedChainId, user);
+  if (!tokensWithBalance) {
+    return (
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+  return (
+    <SwitchLimitOrdersInner
+      tokens={tokensWithBalance}
+      chainId={selectedChainId}
+      setChainId={setSelectedChainId}
+    />
   );
 };

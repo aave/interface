@@ -1225,6 +1225,10 @@ msgstr "{0}"
 msgid "Manage analytics"
 msgstr "Manage analytics"
 
+#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
+msgid "Create limit order"
+msgstr "Create limit order"
+
 #: src/components/MarketAssetCategoryFilter.tsx
 msgid "Stablecoins"
 msgstr "Stablecoins"
@@ -1238,7 +1242,6 @@ msgstr "Unstaking {symbol}"
 #: src/components/transactions/Switch/CollateralSwap/CollateralSwapActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
-#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
 msgid "Swapping"
 msgstr "Swapping"
 
@@ -1759,6 +1762,10 @@ msgstr "stkGHO is now Savings GHO"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
 msgstr "Enabled"
+
+#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
+msgid "Creating limit order"
+msgstr "Creating limit order"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
@@ -3300,6 +3307,10 @@ msgstr "Invalid expiration"
 msgid "Rewards available to claim"
 msgstr "Rewards available to claim"
 
+#: src/components/transactions/Switch/ExpirySelector.tsx
+msgid "{key}"
+msgstr "{key}"
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting"
 msgstr "Thank you for voting"
@@ -3578,7 +3589,6 @@ msgstr "Restaked"
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
-#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
 #: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx

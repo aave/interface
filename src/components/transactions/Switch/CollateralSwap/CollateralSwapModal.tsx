@@ -1,4 +1,5 @@
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
+import { BasicModal } from 'src/components/primitives/BasicModal';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -12,7 +13,7 @@ import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { BaseSwitchModal } from '../BaseSwitchModal';
 
 export const CollateralSwapModal = () => {
-  const { args } = useModalContext() as ModalContextType<{
+  const { args, type, close } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
   const { underlyingAsset } = args;
@@ -136,14 +137,16 @@ export const CollateralSwapModal = () => {
       : undefined;
 
   return (
-    <BaseSwitchModal
-      modalType={ModalType.CollateralSwap}
-      tokensFrom={tokensFrom}
-      tokensTo={tokensTo}
-      forcedDefaultInputToken={defaultInputToken}
-      forcedDefaultOutputToken={defaultOutputToken}
-      showSwitchInputAndOutputAssetsButton={false}
-      forcedChainId={currentNetworkConfig.wagmiChain.id}
-    />
+    <BasicModal open={type === ModalType.CollateralSwap} setOpen={close}>
+      <BaseSwitchModal
+        modalType={ModalType.CollateralSwap}
+        tokensFrom={tokensFrom}
+        tokensTo={tokensTo}
+        forcedDefaultInputToken={defaultInputToken}
+        forcedDefaultOutputToken={defaultOutputToken}
+        showSwitchInputAndOutputAssetsButton={false}
+        forcedChainId={currentNetworkConfig.wagmiChain.id}
+      />
+    </BasicModal>
   );
 };

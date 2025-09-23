@@ -40,6 +40,7 @@ export enum ModalType {
   UmbrellaUnstake,
   SavingsGhoDeposit,
   SavingsGhoWithdraw,
+  SwitchLimitOrder,
 }
 
 export interface ModalArgsType {
