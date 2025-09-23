@@ -282,6 +282,10 @@ msgstr "Total Deposited"
 msgid "{0}{name}"
 msgstr "{0}{name}"
 
+#: src/components/TopInfoPanel/PageTitle.tsx
+msgid "Favourited"
+msgstr "Favourited"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Stable borrowing is enabled"
 msgstr "Stable borrowing is enabled"
@@ -2999,6 +3003,10 @@ msgstr "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</
 #: src/components/transactions/Switch/SwitchActions.tsx
 msgid "Checking approval"
 msgstr "Checking approval"
+
+#: src/components/TopInfoPanel/PageTitle.tsx
+msgid "Favourite"
+msgstr "Favourite"
 
 #: src/modules/staking/BuyWithFiat.tsx
 msgid "Buy {cryptoSymbol} with Fiat"

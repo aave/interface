@@ -447,7 +447,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://explorer.inkonchain.com/',
     networkLogoPath: '/icons/networks/ink.svg',
     wagmiChain: ink,
-  }
+  },
 };
 
 export const networkConfigs = {
