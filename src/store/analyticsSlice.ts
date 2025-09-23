@@ -90,7 +90,7 @@ export const createAnalyticsSlice: StateCreator<
             autocapture: true, // disable if we don't want to capture every click and page view on the site
             trackingOptions: {
               ipAddress: false,
-              language: true,
+              language: false,
               platform: true,
             },
           });

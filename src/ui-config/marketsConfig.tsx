@@ -452,6 +452,7 @@ export const marketsData: {
     marketTitle: 'Linea',
     market: CustomMarket.proto_linea_v3,
     chainId: ChainId.linea,
+    logo: '/icons/markets/linea.svg',
     v3: true,
     subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/Gz2kjnmRV1fQj3R8cssoZa5y9VTanhrDo4Mh7nWW1wHa`,
     addresses: {

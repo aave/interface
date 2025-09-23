@@ -35,7 +35,7 @@
     "@aave/math-utils": "1.36.1",
     "@aave/react": "0.6.1",
     "@amplitude/analytics-browser": "^2.13.0",
-    "@bgd-labs/aave-address-book": "^4.29.1",
+    "@bgd-labs/aave-address-book": "^4.30.3",
     "@cowprotocol/app-data": "^3.1.0",
     "@cowprotocol/cow-sdk": "6.0.0-RC.47",
     "@emotion/cache": "11.10.3",
@@ -90,7 +90,7 @@
     "remark-gfm": "^3.0.1",
     "sonner": "^2.0.3",
     "tiny-invariant": "^1.3.1",
-    "viem": "^2.29.2",
+    "viem": "^2.37.6",
     "wagmi": "^2.15.2",
     "zustand": "^5.0.2"
   },
