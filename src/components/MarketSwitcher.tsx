@@ -125,14 +125,15 @@ const MARKET_ORDER_BY_TITLE: { [title: string]: number } = {
   OP: 8,
   Gnosis: 9,
   Aptos: 10,
-  'BNB Chain': 11,
-  Polygon: 12,
-  Scroll: 13,
-  ZKsync: 14,
-  Celo: 15,
-  Metis: 16,
-  Soneium: 17,
-  EtherFi: 18,
+  Plasma: 11,
+  'BNB Chain': 12,
+  Polygon: 13,
+  Scroll: 14,
+  ZKsync: 15,
+  Celo: 16,
+  Metis: 17,
+  Soneium: 18,
+  EtherFi: 19,
 };
 
 const getMarketOrder = (marketId: CustomMarket): number => {
