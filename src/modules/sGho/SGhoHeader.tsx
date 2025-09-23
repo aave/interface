@@ -146,11 +146,7 @@ const SGhoHeaderUserDetails = ({
       : theme.typography.main16.fontSize;
 
   useEffect(() => {
-    if (weeklyRewardsEstimate > 0) {
-      setDisplayedWeeklyRewards(weeklyRewardsEstimate);
-    } else {
-      setDisplayedWeeklyRewards(0);
-    }
+    setDisplayedWeeklyRewards(Math.max(0, weeklyRewardsEstimate));
   }, [weeklyRewardsEstimate]);
 
   return (
