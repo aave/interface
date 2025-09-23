@@ -3,6 +3,7 @@ import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import NumberFlow from '@number-flow/react';
+import { BigNumber } from 'bignumber.js';
 import { formatEther } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -73,7 +74,10 @@ export const SGHOHeader: React.FC = () => {
             <Trans>
               Deposit GHO into savings GHO (sGHO) and earn{' '}
               <Box component="span" sx={{ color: '#338E3C', fontWeight: 'bold' }}>
-                {((stakeAPR?.apr ? convertAprToApy(parseFloat(stakeAPR.apr)) : 0) * 100).toFixed(2)}
+                {(
+                  (stakeAPR?.apr ? convertAprToApy(new BigNumber(stakeAPR.apr).toNumber()) : 0) *
+                  100
+                ).toFixed(2)}
                 %
               </Box>{' '}
               APY on your GHO holdings. There&apos;s no lockups, no rehypothecation, and you can
@@ -125,10 +129,12 @@ const SGhoHeaderUserDetails = ({
   const userSGhoBalance = stakeUserData?.stakeTokenRedeemableAmount || '0';
   const userSGhoBalanceFormatted = formatEther(userSGhoBalance);
 
-  // Calculate estimated weekly rewards
+  // Calculate estimated weekly rewards with precision
   // Formula: (balance * APR) / 52 weeks
-  const aprDecimal = stakeAPR?.apr ? parseFloat(stakeAPR.apr) : 0;
-  const weeklyRewardsEstimate = (parseFloat(userSGhoBalanceFormatted) * aprDecimal) / 52;
+  const aprBN = stakeAPR?.apr ? new BigNumber(stakeAPR.apr) : new BigNumber(0);
+  const balanceBN = new BigNumber(userSGhoBalanceFormatted || '0');
+  const weeklyRewardsEstimateBN = balanceBN.multipliedBy(aprBN).dividedBy(52);
+  const weeklyRewardsEstimate = weeklyRewardsEstimateBN.toNumber();
 
   const [displayedWeeklyRewards, setDisplayedWeeklyRewards] = useState(0);
 
@@ -151,7 +157,7 @@ const SGhoHeaderUserDetails = ({
     <>
       <TopInfoPanelItem hideIcon title={<Trans>APY</Trans>} loading={isLoadingStakeAPR}>
         <FormattedNumber
-          value={stakeAPR?.apr ? convertAprToApy(parseFloat(stakeAPR.apr)) : 0}
+          value={stakeAPR?.apr ? convertAprToApy(new BigNumber(stakeAPR.apr).toNumber()) : 0}
           variant={valueTypographyVariant}
           symbolsColor={symbolsColor}
           visibleDecimals={2}
@@ -203,14 +209,14 @@ const SGhoHeaderUserDetails = ({
             <TextWithTooltip text={<Trans>Weekly Rewards</Trans>} variant="inherit">
               <Trans>
                 Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards
-                may vary depenending on market conditions.
+                may vary depending on market conditions.
               </Trans>
             </TextWithTooltip>
           </Stack>
         }
         loading={isLoadingStakeAPR}
       >
-        {parseFloat(userSGhoBalanceFormatted) > 0 ? (
+        {balanceBN.gt(0) ? (
           <Stack direction="row" alignItems="baseline" spacing={0.5}>
             <NumberFlow
               value={displayedWeeklyRewards}

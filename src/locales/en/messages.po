@@ -1451,10 +1451,6 @@ msgstr "Maximum amount received"
 msgid "Activating Cooldown"
 msgstr "Activating Cooldown"
 
-#: src/modules/sGho/SGhoHeader.tsx
-msgid "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depenending on market conditions."
-msgstr "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depenending on market conditions."
-
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "Recipient address"
@@ -2742,6 +2738,10 @@ msgstr "Safety Module"
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO holdings. There's no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
 msgstr "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO holdings. There's no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
+
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
+msgstr "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
