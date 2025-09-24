@@ -102,10 +102,8 @@ export const MeritIncentivesTooltipContent = ({
 }: {
   meritIncentives: ExtendedReserveIncentiveResponse & {
     breakdown?: MeritIncentivesBreakdown;
-
     variants?: { selfAPY: number | null };
     activeActions: MeritAction[];
-    isCombinedMeritIncentives: boolean;
     actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>;
   };
 }) => {
