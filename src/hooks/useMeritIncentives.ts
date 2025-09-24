@@ -55,6 +55,7 @@ export enum MeritAction {
   AVALANCHE_SUPPLY_AUSD = 'avalanche-supply-ausd',
   AVALANCHE_SUPPLY_GHO = 'avalanche-supply-gho',
   AVALANCHE_BORROW_USDC = 'avalanche-borrow-usdc',
+  AVALANCHE_BORROW_EURC = 'avalanche-borrow-eurc',
   SONIC_SUPPLY_USDCE = 'sonic-supply-usdce',
   SONIC_SUPPLY_STS_BORROW_WS = 'sonic-supply-sts-borrow-ws',
   GNOSIS_BORROW_EURE = 'gnosis-borrow-eure',
@@ -114,7 +115,8 @@ const antiLoopMessage =
 
 const antiLoopBorrowMessage =
   'Supplying of some assets or holding of some token may impact the amount of rewards you are eligible for. Please check the forum post for the full eligibility criteria.';
-
+const masivBorrowUsdcMessage =
+  'Only new debt created since the campaign start will be rewarded. Supplying of some assets or holding of some token may impact the amount of rewards you are eligible for.';
 const lbtcCbbtcCampaignMessage =
   'You must supply LBTC and borrow cbBTC, while maintaining a health factor of 1.5 or below, in order to receive merit rewards. Please check the forum post for the full eligibility criteria.';
 
@@ -527,7 +529,7 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
         rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.borrow,
-        customMessage: antiLoopBorrowMessage,
+        customMessage: masivBorrowUsdcMessage,
         customForumLink: AvalancheRenewalForumLink,
       },
     ],
@@ -568,6 +570,15 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
         rewardTokenSymbol: 'aAvaSAVAX',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
+      },
+    ],
+    EURC: [
+      {
+        action: MeritAction.AVALANCHE_BORROW_EURC,
+        rewardTokenAddress: AaveV3Avalanche.ASSETS.sAVAX.A_TOKEN,
+        rewardTokenSymbol: 'aAvaSAVAX',
+        protocolAction: ProtocolAction.borrow,
+        customMessage: antiLoopBorrowMessage,
       },
     ],
   },
@@ -752,9 +763,14 @@ export const useMeritIncentives = ({
 
       let totalMeritAPR: number | null = null;
       let totalSelfAPR: number | null = null;
+      const totalAmountIncentivesCampaigns: MeritAction[] = [];
 
       for (const incentive of incentives) {
         const standardAPR = data.actionsAPR[incentive.action];
+
+        if (standardAPR !== null && standardAPR !== undefined && standardAPR > 0) {
+          totalAmountIncentivesCampaigns.push(incentive.action);
+        }
         if (standardAPR == null) continue;
 
         if (totalMeritAPR === null) totalMeritAPR = 0;
@@ -782,25 +798,33 @@ export const useMeritIncentives = ({
       }, 0);
 
       const isBorrow = protocolAction === ProtocolAction.borrow;
+
       const totalAPY = isBorrow
         ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - (selfIncentivesAPY ?? 0)
         : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY + (selfIncentivesAPY ?? 0);
+
+      let finalAction: MeritAction | undefined = undefined;
+      if (totalAmountIncentivesCampaigns.length >= 1) {
+        finalAction = totalAmountIncentivesCampaigns[0];
+      }
+
+      const actionMessages = incentives.reduce((acc, incentive) => {
+        acc[incentive.action] = {
+          customMessage: incentive.customMessage,
+          customForumLink: incentive.customForumLink,
+        };
+        return acc;
+      }, {} as Record<string, { customMessage?: string; customForumLink?: string }>);
 
       return {
         incentiveAPR: meritIncentivesAPY.toString(),
         rewardTokenAddress: incentives[0].rewardTokenAddress,
         rewardTokenSymbol: incentives[0].rewardTokenSymbol,
-        activeActions: incentives.map((incentive) => incentive.action),
-        actionMessages: incentives.reduce((acc, incentive) => {
-          acc[incentive.action] = {
-            customMessage: incentive.customMessage,
-            customForumLink: incentive.customForumLink,
-          };
-          return acc;
-        }, {} as Record<string, { customMessage?: string; customForumLink?: string }>),
-        action: incentives[0].action,
-        customMessage: incentives[0].customMessage,
-        customForumLink: incentives[0].customForumLink,
+        activeActions: totalAmountIncentivesCampaigns,
+        actionMessages: actionMessages,
+        action: finalAction,
+        customMessage: finalAction ? actionMessages[finalAction]?.customMessage : undefined,
+        customForumLink: finalAction ? actionMessages[finalAction]?.customForumLink : undefined,
         variants: { selfAPY: selfIncentivesAPY },
 
         breakdown: {
