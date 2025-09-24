@@ -16,7 +16,7 @@ import {
   isOrderFilled,
   isOrderLoading,
 } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
-import { ActionFields, TransactionHistoryItemUnion } from 'src/modules/history/types';
+import { isCowSwapTransaction } from 'src/modules/history/types';
 import { useRootStore } from 'src/store/root';
 import { findByChainId } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
@@ -66,14 +66,10 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
   useEffect(() => {
     if (transactions?.pages[0] && activeOrders.size === 0) {
       transactions.pages[0]
-        .filter(
-          (tx: TransactionHistoryItemUnion) =>
-            tx.action === 'CowSwap' || tx.action === 'CowCollateralSwap'
-        )
-        .filter((tx: ActionFields['CowSwap']) => isOrderLoading(tx.status))
-        .map((tx: TransactionHistoryItemUnion) => tx as ActionFields['CowSwap'])
-        .filter((tx: ActionFields['CowSwap']) => !activeOrders.has(tx.orderId))
-        .forEach((tx: ActionFields['CowSwap']) => {
+        .filter(isCowSwapTransaction)
+        .filter((tx) => isOrderLoading(tx.status))
+        .filter((tx) => !activeOrders.has(tx.orderId))
+        .forEach((tx) => {
           trackOrder(tx.orderId, tx.chainId);
         });
     }
