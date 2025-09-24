@@ -614,7 +614,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0xc851e6147dcE6A469CC33BE3121b6B2D4CaD2763', //AaveV3Plasma.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Plasma.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Plasma.COLLECTOR,
-    }
+    },
   },
   [CustomMarket.proto_polygon_v3]: {
     marketTitle: 'Polygon',
