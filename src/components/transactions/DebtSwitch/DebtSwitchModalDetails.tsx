@@ -69,31 +69,6 @@ export const DebtSwitchModalDetails = ({
           loading={loading}
         />
       )}
-      {/* {!market && (
-        <>
-          <Row caption={<Trans>Borrow apy</Trans>} captionVariant="description" mb={4}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {loading ? (
-                <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
-              ) : (
-                <>
-                  <FormattedNumber value={sourceBorrowAPY} variant="secondary14" percent />
-                  {ArrowRightIcon}
-                  <FormattedNumber value={targetBorrowAPY} variant="secondary14" percent />
-                </>
-              )}
-            </Box>
-          </Row>
-
-          <DetailsIncentivesLine
-            incentives={switchSource.reserve.vIncentivesData}
-            symbol={switchSource.reserve.symbol}
-            futureIncentives={switchTarget.reserve.vIncentivesData}
-            futureSymbol={switchTarget.reserve.symbol}
-            loading={loading}
-          />
-        </>
-      )} */}
 
       <Row
         caption={<Trans>Borrow balance after switch</Trans>}
