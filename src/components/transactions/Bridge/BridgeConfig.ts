@@ -20,7 +20,7 @@ import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 export const bridgeGasLimit = '252000';
 
 type Config = {
-  sourceChainId: ChainId;
+  sourceChainId: ChainId | number;
   router: string;
   chainSelector: string;
   subgraphUrl: string;
@@ -194,6 +194,28 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.xdai,
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
+      },
+    ],
+  },
+  {
+    sourceChainId: 57073,
+    chainSelector: '3461204551265785888',
+    burnMintTokenPool: '0xDe6539018B095353A40753Dc54C91C68c9487D4E',
+    router: '0xca7c90A52B44E301AC01Cb5EB99b2fD99339433A',
+    tokenOracle: '0x20fd5f3FCac8883a3A0A2bBcD658A2d2c6EFa6B6',
+    wrappedNativeOracle: '0xA17887fd35B14A4c6e6ec87458591941934d444c',
+    subgraphUrl: '',
+    feeTokens: [
+      {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: 57073,
         extensions: {
           isNative: true,
         },
