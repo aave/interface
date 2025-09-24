@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -8,6 +9,7 @@ import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import {
   CollateralState,
+  DetailsAPYTransitionLine,
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
@@ -26,6 +28,7 @@ export type SupplyModalDetailsProps = {
   fromAmount: string;
   loading: boolean;
   showBalance?: boolean;
+  market?: string;
 };
 
 export const CollateralSwapModalDetails = ({
@@ -38,6 +41,7 @@ export const CollateralSwapModalDetails = ({
   fromAmount,
   loading,
   showBalance = true,
+  market,
 }: SupplyModalDetailsProps) => {
   const sourceAmountAfterSwap = valueToBigNumber(swapSource.underlyingBalance).minus(
     valueToBigNumber(fromAmount)
@@ -69,13 +73,23 @@ export const CollateralSwapModalDetails = ({
           loading={loading}
         />
       )}
-      <DetailsNumberLine
-        description={<Trans>Supply apy</Trans>}
-        value={swapSource.reserve.supplyAPY}
-        futureValue={swapTarget.reserve.supplyAPY}
-        percent
-        loading={loading}
-      />
+      {market && (
+        <DetailsAPYTransitionLine
+          symbol={swapSource.reserve.symbol}
+          market={market}
+          protocolAction={ProtocolAction.supply}
+          protocolAPY={+swapSource.reserve.supplyAPY}
+          incentives={swapSource.reserve.aIncentivesData}
+          address={swapSource.reserve.underlyingAsset}
+          futureSymbol={swapTarget.reserve.symbol}
+          futureMarket={market}
+          futureProtocolAPY={+swapTarget.reserve.supplyAPY}
+          futureIncentives={swapTarget.reserve.aIncentivesData}
+          futureAddress={swapTarget.reserve.aTokenAddress}
+          loading={loading}
+        />
+      )}
+
       <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
         <Box
           sx={{

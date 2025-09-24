@@ -3,8 +3,7 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
-import { ENABLE_SELF_CAMPAIGN, useMeritIncentives } from 'src/hooks/useMeritIncentives';
-import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
+import { useBoostedAPY } from 'src/hooks/useBoostedAPY';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
@@ -49,48 +48,16 @@ export const IncentivesCard = ({
   const router = useRouter();
   const protocolAPY = typeof value === 'string' ? parseFloat(value) : value;
 
-  const protocolIncentivesAPR =
-    incentives?.reduce((sum, inc) => {
-      if (inc.incentiveAPR === 'Infinity' || sum === 'Infinity') {
-        return 'Infinity';
-      }
-      return sum + +inc.incentiveAPR;
-    }, 0 as number | 'Infinity') || 0;
-
-  const { data: meritIncentives } = useMeritIncentives({
+  const boostedAPY = useBoostedAPY({
     symbol,
     market,
     protocolAction,
     protocolAPY,
-    protocolIncentives: incentives || [],
+    incentives,
+    address,
   });
 
-  const { data: merklIncentives } = useMerklIncentives({
-    market,
-    rewardedAsset: address,
-    protocolAction,
-    protocolAPY,
-    protocolIncentives: incentives || [],
-  });
-
-  const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
-
-  // TODO: This is a one-off for the Self campaign.
-  // Remove once the Self incentives are finished.
-  const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
-  const totalMeritAPY = meritIncentivesAPR + selfAPY;
-  const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
-
-  const isBorrow = protocolAction === ProtocolAction.borrow;
-
-  // If any incentive is infinite, the total should be infinite
-  const hasInfiniteIncentives = protocolIncentivesAPR === 'Infinity';
-
-  const displayAPY = hasInfiniteIncentives
-    ? 'Infinity'
-    : isBorrow
-    ? protocolAPY - (protocolIncentivesAPR as number) - totalMeritAPY - merklIncentivesAPR
-    : protocolAPY + (protocolIncentivesAPR as number) + totalMeritAPY + merklIncentivesAPR;
+  const { displayAPY } = boostedAPY;
 
   const isSghoPage =
     typeof router?.asPath === 'string' && router.asPath.toLowerCase().startsWith('/sgho');

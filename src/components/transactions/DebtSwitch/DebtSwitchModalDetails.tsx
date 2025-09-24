@@ -1,12 +1,12 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
-import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, SvgIcon } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { DetailsIncentivesLine } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { DetailsAPYTransitionLine } from 'src/components/transactions/FlowCommons/TxModalDetails';
 
 import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 
@@ -19,12 +19,8 @@ export type DebtSwitchModalDetailsProps = {
   sourceBalance: string;
   sourceBorrowAPY: string;
   targetBorrowAPY: string;
+  market?: string;
 };
-const ArrowRightIcon = (
-  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-    <ArrowNarrowRightIcon />
-  </SvgIcon>
-);
 
 export const DebtSwitchModalDetails = ({
   switchSource,
@@ -35,6 +31,7 @@ export const DebtSwitchModalDetails = ({
   sourceBalance,
   sourceBorrowAPY,
   targetBorrowAPY,
+  market,
 }: DebtSwitchModalDetailsProps) => {
   const sourceAmountAfterSwap = valueToBigNumber(sourceBalance).minus(valueToBigNumber(fromAmount));
 
@@ -56,27 +53,22 @@ export const DebtSwitchModalDetails = ({
 
   return (
     <>
-      <Row caption={<Trans>Borrow apy</Trans>} captionVariant="description" mb={4}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {loading ? (
-            <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
-          ) : (
-            <>
-              <FormattedNumber value={sourceBorrowAPY} variant="secondary14" percent />
-              {ArrowRightIcon}
-              <FormattedNumber value={targetBorrowAPY} variant="secondary14" percent />
-            </>
-          )}
-        </Box>
-      </Row>
-
-      <DetailsIncentivesLine
-        incentives={switchSource.reserve.aIncentivesData}
-        symbol={switchSource.reserve.symbol}
-        futureIncentives={switchSource.reserve.aIncentivesData}
-        futureSymbol={switchSource.reserve.symbol}
-        loading={loading}
-      />
+      {market && (
+        <DetailsAPYTransitionLine
+          symbol={switchSource.reserve.symbol}
+          market={market}
+          protocolAction={ProtocolAction.borrow}
+          protocolAPY={+sourceBorrowAPY}
+          incentives={switchSource.reserve.vIncentivesData}
+          address={switchSource.reserve.underlyingAsset}
+          futureSymbol={switchTarget.reserve.symbol}
+          futureMarket={market}
+          futureProtocolAPY={+targetBorrowAPY}
+          futureIncentives={switchTarget.reserve.vIncentivesData}
+          futureAddress={switchTarget.reserve.aTokenAddress}
+          loading={loading}
+        />
+      )}
 
       <Row
         caption={<Trans>Borrow balance after switch</Trans>}

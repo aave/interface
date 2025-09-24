@@ -66,6 +66,7 @@ export const DebtSwitchModalContent = ({
   const { reserves } = useAppDataContext();
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
 
@@ -302,6 +303,7 @@ export const DebtSwitchModalContent = ({
           sourceBalance={maxAmountToSwitch}
           sourceBorrowAPY={poolReserve.variableBorrowAPY}
           targetBorrowAPY={switchTarget.reserve.variableBorrowAPY}
+          market={currentMarketData.market}
         />
       </TxModalDetails>
 
