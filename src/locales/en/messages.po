@@ -1655,10 +1655,6 @@ msgstr "Votes"
 msgid "Disable fork"
 msgstr "Disable fork"
 
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-msgid "Borrow apy"
-msgstr "Borrow apy"
-
 #: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
 #: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Fee"
@@ -3043,10 +3039,6 @@ msgstr "No eligible assets to swap."
 msgid "Depositing"
 msgstr "Depositing"
 
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModalDetails.tsx
-msgid "Supply apy"
-msgstr "Supply apy"
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
 msgstr "With a voting power of <0/>"
@@ -3278,8 +3270,6 @@ msgstr "Interest rate strategy"
 msgid "Staked"
 msgstr "Staked"
 
-#: src/components/transactions/Supply/SupplyModalContent.tsx
-#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
@@ -3365,6 +3355,8 @@ msgstr "Selected supply assets"
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/transactions/FlowCommons/DetailsAPYLine.tsx
+#: src/components/transactions/FlowCommons/DetailsAPYTransitionLine.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx

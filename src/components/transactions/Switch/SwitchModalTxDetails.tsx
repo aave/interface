@@ -25,6 +25,7 @@ import {
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { ModalType } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
@@ -432,6 +433,7 @@ const CollateralSwapModalTxDetailsContent = ({
   user: ExtendedFormattedUser;
   selectedInputToken: TokenInfoWithBalance;
 }) => {
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
   // Map selected tokens to reserves and user reserves
   const poolReserve = reserves.find(
     (r) => r.underlyingAsset.toLowerCase() === selectedInputToken.address.toLowerCase()
@@ -503,6 +505,7 @@ const CollateralSwapModalTxDetailsContent = ({
       fromAmount={fromAmount === '' ? '0' : fromAmount}
       loading={false}
       showBalance={false}
+      market={currentMarketData.market}
     />
   );
 };

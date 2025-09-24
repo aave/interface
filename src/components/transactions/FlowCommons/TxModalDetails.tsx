@@ -393,3 +393,6 @@ export const DetailsCooldownLine = ({
     </Row>
   );
 };
+
+export { DetailsAPYLine } from './DetailsAPYLine';
+export { DetailsAPYTransitionLine } from './DetailsAPYTransitionLine';

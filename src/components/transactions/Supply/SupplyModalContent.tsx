@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ProtocolAction } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Skeleton, Stack, Typography } from '@mui/material';
@@ -42,10 +42,9 @@ import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import {
+  DetailsAPYLine,
   DetailsCollateralLine,
   DetailsHFLine,
-  DetailsIncentivesLine,
-  DetailsNumberLine,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { getAssetCollateralType } from '../utils';
@@ -262,10 +261,13 @@ export const SupplyModalContent = React.memo(
         />
 
         <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(amount) === 0}>
-          <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} percent />
-          <DetailsIncentivesLine
-            incentives={poolReserve.aIncentivesData}
+          <DetailsAPYLine
             symbol={poolReserve.symbol}
+            market={currentMarketData.marketTitle}
+            protocolAction={ProtocolAction.supply}
+            protocolAPY={+supplyApy}
+            incentives={poolReserve.aIncentivesData}
+            address={poolReserve.underlyingAsset}
           />
           <DetailsCollateralLine collateralType={collateralType} />
           <DetailsHFLine
@@ -464,14 +466,13 @@ export const SupplyWrappedTokenModalContent = ({
       />
 
       <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(amount) === 0}>
-        <DetailsNumberLine
-          description={<Trans>Supply APY</Trans>}
-          value={poolReserve.supplyAPY}
-          percent
-        />
-        <DetailsIncentivesLine
-          incentives={poolReserve.aIncentivesData}
+        <DetailsAPYLine
           symbol={poolReserve.symbol}
+          market={currentMarketData.marketTitle}
+          protocolAction={ProtocolAction.supply}
+          protocolAPY={+poolReserve.supplyAPY}
+          incentives={poolReserve.aIncentivesData}
+          address={poolReserve.underlyingAsset}
         />
         <DetailsCollateralLine collateralType={collateralType} />
         <DetailsHFLine
