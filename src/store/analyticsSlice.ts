@@ -124,9 +124,30 @@ export const createAnalyticsSlice: StateCreator<
       set({ isTrackingEnabled: true, analyticsConfigOpen: false });
 
       get().initializeEventsTracking();
+      // Track the opt-in event
+      get().trackEvent('analytics_consent_given');
     },
     rejectAnalytics: () => {
       localStorage.setItem('userAcceptedAnalytics', 'false');
+
+      // Track the opt-out event BEFORE disabling tracking
+      // This is the only data we collect from users who opt out
+      if (AMPLITUDE_API_KEY && !get().eventsTrackingInitialized) {
+        // Initialize minimal tracking just for this one event
+        init(AMPLITUDE_API_KEY, {
+          autocapture: false,
+          trackingOptions: {
+            ipAddress: false,
+            language: false,
+            platform: false,
+          },
+        });
+      }
+
+      // Send the opt-out count event (no personal data, just the event)
+      get().trackEvent('analytics_consent_declined');
+
+      // Now disable all tracking
       setOptOut(true);
       set({ isTrackingEnabled: false, analyticsConfigOpen: false });
     },
