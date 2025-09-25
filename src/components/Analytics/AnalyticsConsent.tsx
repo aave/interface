@@ -27,7 +27,7 @@ export default function AnalyticsBanner() {
   const isMobile = useMediaQuery(breakpoints.down('sm'));
 
   const hasUserMadeChoice =
-    typeof window !== 'undefined' && localStorage.getItem('userAcceptedAnalytics') !== null;
+    typeof window !== 'undefined' && localStorage.getItem('userAcceptedAnalytics_v1') !== null;
 
   // Note: If they have already chosen don't show again unless configured from footer
   if (hasUserMadeChoice) return null;
@@ -109,7 +109,7 @@ export default function AnalyticsBanner() {
         onAccept={() => {
           optInAnalytics();
         }}
-        cookieName="userAcceptedAnalytics"
+        cookieName="userAcceptedAnalytics_v1"
       >
         <Box>
           We may employ on-the-spot tracking techniques during your browsing session to collect data
