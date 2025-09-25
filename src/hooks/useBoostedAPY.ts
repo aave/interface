@@ -58,7 +58,7 @@ export const useBoostedAPY = ({
 
   const { data: merklIncentives } = useMerklIncentives({
     market,
-    rewardedAsset: address,
+    rewardedAsset: address, // aToken for supply and variableDebtToken for borrow
     protocolAction,
     protocolAPY,
     protocolIncentives: incentives,

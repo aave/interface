@@ -267,7 +267,7 @@ export const SupplyModalContent = React.memo(
             protocolAction={ProtocolAction.supply}
             protocolAPY={+supplyApy}
             incentives={poolReserve.aIncentivesData}
-            address={poolReserve.underlyingAsset}
+            address={poolReserve.aTokenAddress}
           />
           <DetailsCollateralLine collateralType={collateralType} />
           <DetailsHFLine
