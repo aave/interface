@@ -116,9 +116,8 @@ enum SelectedMarketVersion {
 const MARKET_ORDER_BY_TITLE: { [title: string]: number } = {
   Core: 0,
   Prime: 1,
-  Base: 2,
-  Plasma: 3,
-
+  Plasma: 2,
+  Base: 3,
   Arbitrum: 4,
   Avalanche: 5,
   Linea: 6,
