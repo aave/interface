@@ -437,6 +437,11 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://plasmascan.to',
     networkLogoPath: '/icons/networks/plasma.svg',
     wagmiChain: plasma,
+    bridge: {
+      icon: '/icons/networks/plasma.svg',
+      name: 'Plasma Bridge',
+      url: 'https://stargate.finance/bridge?srcChain=ethereum&srcToken=0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE&dstChain=plasma&dstToken=0x9895D81bB462A195b4922ED7De0e3ACD007c32CB',
+    },
   },
   [57073]: {
     name: 'Ink',
