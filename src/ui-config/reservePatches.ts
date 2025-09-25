@@ -175,10 +175,16 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT USDe September 2025',
       iconSymbol: 'ptusde',
     },
-    '0x62c6e813b9589c3631ba0cdb013acdb8544038b7': {
+    [AaveV3Ethereum.ASSETS.PT_USDe_27NOV2025.UNDERLYING.toLowerCase()]: {
       symbol: 'PT USDe November 27th 2025',
       name: 'PT USDe November 2025',
       iconSymbol: 'ptusde',
+    },
+    '0x6100E367285b01F48D07953803A2d8dCA5D19873': {
+      //not yet in @bgd-labs/aave-address-book
+      symbol: 'WXLP',
+      name: 'Wrapped XLP',
+      iconSymbol: 'wxlp',
     },
 
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
