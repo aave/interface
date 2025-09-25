@@ -60,12 +60,12 @@ export const DebtSwitchModalDetails = ({
           protocolAction={ProtocolAction.borrow}
           protocolAPY={+sourceBorrowAPY}
           incentives={switchSource.reserve.vIncentivesData}
-          address={switchSource.reserve.underlyingAsset}
+          address={switchSource.reserve.variableDebtTokenAddress}
           futureSymbol={switchTarget.reserve.symbol}
           futureMarket={market}
           futureProtocolAPY={+targetBorrowAPY}
           futureIncentives={switchTarget.reserve.vIncentivesData}
-          futureAddress={switchTarget.reserve.aTokenAddress}
+          futureAddress={switchTarget.reserve.variableDebtTokenAddress}
           loading={loading}
         />
       )}
